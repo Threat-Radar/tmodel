@@ -7,7 +7,7 @@ description: "Execution plan for the CS 490 Fall 2026 senior project. Subordinat
 type: plan
 category: process
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 version_policy: "semver; MINOR = additive; version and updated move together (§9.5)"
 date: "2026-09-23"
 updated: "2026-09-23"
@@ -96,6 +96,13 @@ selected records by PR. It is vendored into `tmodel` as a submodule pinned to a
 commit, so every report's bibliography is reproducible as `library@<commit>`.
 **Expanding the library is a first-class deliverable** (R-030): every research
 source becomes a record; technical specs are distilled toward schema and code.
+
+The fork also **decouples us from upstream schema churn.** m-of-n/library's
+`record.schema.yaml` is at v5 and still moving; tmodel is now a *second*
+consumer (threat modeling, and possibly SBOM), so a pinned fork lets us adopt
+schema changes deliberately — and propose our own — instead of tracking a moving
+target. Changes both consumers need are coordinated with the m-of-n project
+before either side depends on them.
 
 ## 6. Research — the first work
 
