@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+*.swp
+*~
+# a published site, once bin/build-site exists (BACKLOG T-006)
+site/

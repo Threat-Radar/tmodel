@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# wt — git worktree helper. Several people (or an agent) on parallel branches
+# without stashing or stepping on each other. Worktrees live OUTSIDE the repo.
+set -euo pipefail
+ROOT="$(git rev-parse --show-toplevel)"
+WT="$(dirname "$ROOT")/tmodel-wt"
+case "${1:-}" in
+  new)
+    b="${2:?usage: wt new <branch>}"; d="$WT/${b//\//-}"
+    mkdir -p "$WT"
+    if git show-ref --verify --quiet "refs/heads/$b"; then
+      git worktree add "$d" "$b"
+    else
+      git worktree add "$d" -b "$b"
+    fi
+    git -C "$d" submodule update --init --recursive >/dev/null 2>&1 || true
+    echo "worktree ready:  cd $d"
+    ;;
+  list) git worktree list ;;
+  rm)
+    b="${2:?usage: wt rm <branch>}"; d="$WT/${b//\//-}"
+    [ -d "$d" ] || { echo "no such worktree: $d"; exit 1; }
+    dirty="$(git -C "$d" status --porcelain --ignore-submodules=all)"
+    if [ -n "$dirty" ]; then
+      echo "ERROR uncommitted changes in $d:"; echo "$dirty"
+      echo "commit or discard them first, or: git worktree remove --force '$d'"
+      exit 1
+    fi
+    git worktree remove --force "$d" && echo "removed $d"
+    ;;
+  prune) git worktree prune && echo "pruned" ;;
+  *) echo "usage: wt {new|list|rm|prune} [branch]"; exit 1 ;;
+esac

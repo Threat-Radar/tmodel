@@ -1,0 +1,8 @@
+# Catch-all: any repo admin may review.
+# Student handles are added once the roster is confirmed (BACKLOG T-004);
+# a @Threat-Radar/tmodel team is the durable way to route to all four.
+*                          @Threat-Radar/tmodel
+
+# Normative surfaces stay with the sponsor (CONTRIBUTING.md §5).
+/spec/                     @nymble
+/.github/                  @nymble

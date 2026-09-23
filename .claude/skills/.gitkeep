@@ -1,0 +1,7 @@
+# Role skills for the tmodel/ project root are ported/authored in increment I0
+# (BACKLOG T-005). Candidates, adapted from the m-of-n project:
+#   research/       drive a research report from its dimensions.md
+#   propose-arch/   propose a diff against ARCH-0001, never a parallel doc
+#   close-topic/    fold a finished topic branch back into the plan
+# Skills load from the project root ONLY (see CLAUDE.md, PROC-0001 §1) — library
+# ingestion skills live in the library repo, not here.
