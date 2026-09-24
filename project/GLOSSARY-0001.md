@@ -7,9 +7,9 @@ description: "Controlled definitions for terms that mean more than one thing acr
 type: process
 category: process
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 date: "2026-09-23"
-updated: "2026-09-23"
+updated: "2026-09-24"
 needs_review: true
 reviewed: false
 canonical_path: project/GLOSSARY-0001.md
@@ -23,7 +23,8 @@ ARCH-0001 §3; this restates them plainly and adds the surrounding vocabulary.
 
 - **Threat** — an adverse action against an asset. Not the same as a vulnerability.
 - **Weakness** — a *class* of flaw (maps to **MITRE CWE**). A `Vulnerability` is a concrete instance (maps to **CVE / NVD**).
-- **Attack path / threat chain** — an ordered set of threats leading to damage; rendered as a graph.
+- **Attack step** — one atomic action an attacker takes; the unit an attack path is built from (`step_of`).
+- **Attack path / threat chain** — an ordered set of attack steps leading to damage; rendered as a graph.
 - **Mitigation** — a control reducing a threat, mapped to the threat(s) it addresses; its state is per product and versioned.
 - **Risk** — *how bad* a threat is, **in an environment**. Not intrinsic. See ARCH-0001 §6.
 - **Review** — human judgement attached to any element: impact, verdict, rationale, reviewer, date. An AI-proposed element is a hypothesis until reviewed.
