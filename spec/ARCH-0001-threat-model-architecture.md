@@ -7,10 +7,10 @@ description: "The source of truth for tmodel: the logical object model, requirem
 type: architecture
 category: security
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 version_policy: "semver; PATCH = editorial; MINOR = additive; MAJOR = breaking. version and updated move together (§9.5)."
 date: "2026-09-23"
-updated: "2026-09-23"
+updated: "2026-09-24"
 authors:
   - role: sponsor
     id: paul-lambert
@@ -86,13 +86,14 @@ Encoding-neutral. Names are working labels; DEC-001 ratifies the model.
 | **Weakness** | A class of flaw — maps to **MITRE CWE** |
 | **Vulnerability** | A concrete instance — maps to **CVE / NVD** |
 | **Threat** | An adverse action against an asset via a component/boundary |
-| **AttackPath / ThreatChain** | An ordered set of threats leading to damage; rendered as a graph |
+| **AttackStep** | One atomic action an attacker takes — a single move in a path |
+| **AttackPath / ThreatChain** | An ordered set of attack steps leading to damage; rendered as a graph |
 | **Mitigation** | A control that reduces a threat, mapped to the threat(s) it addresses |
 | **RiskScore** | *How bad* — per §6, per product/environment |
 | **Review** | Human judgement attached to any element: impact, accept/reject, rationale, reviewer, date (§7) |
 | **Product / ProductFamily** | The concrete thing a generic threat is mapped onto; family members may differ in which attack paths are mitigated |
 
-Relations are **typed edges** (`exploits`, `mitigated_by`, `part_of`,
+Relations are **typed edges** (`exploits`, `mitigated_by`, `part_of`, `step_of`,
 `instance_of`, `reviewed_by`, `applies_to_product`, `supersedes`) — the same
 discipline the `library/` knowledge graph uses. Typed edges make the model
 queryable ("every unmitigated attack path bearing on asset X in product Y").
