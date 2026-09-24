@@ -1,7 +1,6 @@
 # tmodel
 
-**Best-in-class threat modeling.** A knowledge-graph-backed threat-modeling
-system: an object model for threats, attack paths and mitigations; a graphical,
+A knowledge-graph-backed threat-modeling system: an object model for vulnerabilities, threats, weaknesses, assets, attack paths, attack steps,  and mitigations; a graphical,
 interactive model that a human reviews and annotates; risk metrics that say *how
 bad* a threat is; and mappings from generic threats to specific products and
 product families, tracked over a product's design lifecycle.
