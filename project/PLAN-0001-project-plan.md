@@ -7,10 +7,10 @@ description: "Execution plan for the CS 490 Fall 2026 senior project. Subordinat
 type: plan
 category: process
 status: draft
-version: "0.1.1"
+version: "0.1.2"
 version_policy: "semver; MINOR = additive; version and updated move together (§9.5)"
 date: "2026-09-23"
-updated: "2026-09-23"
+updated: "2026-09-25"
 authors:
   - role: sponsor
     id: paul-lambert
@@ -57,6 +57,11 @@ per attack-path mitigation) suitable for corporate use; and expansion of the
 `library/` knowledge graph as a deliverable in its own right. The first work is
 **deep research** to define requirements and remaining implementation goals.
 
+**Learning is an explicit outcome** (sponsor, kickoff 2026-09-23). The references
+library is not just a way to make AI output predictable — it is how the team
+learns cybersecurity in depth. Read the sources and the summaries; a generated
+summary nobody read is not a deliverable.
+
 ## 2. Week-0 gate — this week
 
 **Requirements and final goals are finalized in week 1.** Until the gate:
@@ -67,6 +72,8 @@ per attack-path mitigation) suitable for corporate use; and expansion of the
   downstream.
 - Bootstrap completes: repos created, roster added as admins, library forked and
   wired as a submodule (see §4–§5 and the harness increment I0).
+- **Research starts now, in parallel** — per the kickoff, the team begins filing
+  references and drafting reports in week 1 without waiting for the gate (§8).
 
 ## 3. Team and how we work
 
@@ -128,17 +135,19 @@ lifecycle · library expansion.
 
 ## 8. Increments (scrum, ~2-week sprints)
 
-**The demo floor is I3 (Nov 10).** Everything after is upside. Each increment
-opens a draft PR on day one and ends with a demo at the weekly Zoom.
+**The demo floor is I3 (Nov 5).** Everything after is upside. Each increment
+opens a draft PR on day one and ends with a demo at the weekly Zoom. Per the
+2026-09-23 kickoff, **research (I1) starts in week 1**, overlapping I0 and the
+Week-0 gate — starting a week early buys buffer before the early-December demo.
 
 | inc | window | outcome |
 |---|---|---|
-| **I0 Harness** | Sep 23–29 | Repos, roster as admins, library fork + submodule, CI, backlog, Week-0 gate. **This PR + hand-off.** |
-| **I1 Research** | Sep 30–Oct 13 | RPT-0001 v0.x across all dimensions; references in `library/`; target use cases; DEC-005/DEC-003 evidence. |
-| **I2 Model** | Oct 14–Oct 27 | ARCH-0001 → v0.2 with a chosen object model (DEC-001) and a first `spec/schema/` draft importing an existing format; CWE/NVD design (DEC-008); risk-metric survey → DEC-003 direction. |
-| **I3 MVP core** *(demo floor)* | Oct 28–Nov 10 | Interactive graphical threat model + threat-chain view over the chosen dimension (DEC-005/DEC-006), with the human review/annotation model wired (R-018…R-021). End-to-end on one worked example. |
-| **I4 Risk & mitigation** | Nov 11–Nov 24 | Risk metrics computed (DEC-003), mitigation mappings, generic→product & product-family mapping, mitigation-lifecycle tracking, NVD automation. |
-| **I5 Integrate & demo** | Nov 25–Dec 5 | Polish, docs, published site, vectors green, MVP demo. |
+| **I0 Harness** | Sep 23–29 | Repos, roster as admins, library fork + submodule, CI, backlog, Week-0 gate. **Done.** (Research reading begins in parallel.) |
+| **I1 Research** | Sep 25–Oct 8 | The research reports (issues #6–#13) drafted; references filed via the fixed ingestion pipeline (#5); target use cases; DEC-005/DEC-003 evidence. |
+| **I2 Model** | Oct 9–Oct 22 | ARCH-0001 → v0.2 with a chosen object model (DEC-001) and a first `spec/schema/` draft importing an existing format; CWE/NVD design (DEC-008); risk-metric survey → DEC-003 direction. |
+| **I3 MVP core** *(demo floor)* | Oct 23–Nov 5 | Interactive graphical threat model + threat-chain view over the chosen dimension (DEC-005/DEC-006), with the human review/annotation model wired (R-018…R-021). End-to-end on one worked example. |
+| **I4 Risk & mitigation** | Nov 6–Nov 19 | Risk metrics computed (DEC-003), mitigation mappings, generic→product & product-family mapping, mitigation-lifecycle tracking, NVD automation. |
+| **I5 Integrate & demo** | Nov 20–Dec 5 | Polish, docs, published site, vectors green, MVP demo. |
 
 ## 9. Definition of MVP (the demo)
 
@@ -156,11 +165,13 @@ format (round-trip proven by a vector).
 - **Cross-org library.** The submodule is cross-org (Threat-Radar ← forked from m-of-n). Absolute URL, not relative; `git submodule status` in every pre-PR check.
 - **Detached-HEAD data loss** in `library/`. Never work inside the submodule checkout; open the `library` repo (PROC-0001 §1).
 - **AI without traceability.** An AI threat model is worthless if it cannot be reviewed. R-018…R-021 are not deferrable past I3.
-- **Team ramp.** Four students, new stack. I0/I1 front-load setup and reading.
+- **ISO/SAE 21434 is paywalled** (kickoff). The core standard must be purchased and cannot be committed to the repo. Mitigate with free secondary sources (SAE summaries, academic papers, tool docs, university library access) and record locators/digests only — never the document text (#11).
+- **AI summaries unread.** The learning goal fails if generated summaries are rubber-stamped. Every report's human-review gate checks that a person actually read and validated the sources, not just the AI output.
+- **Team ramp.** Four students, new stack. I0/I1 front-load setup and reading; each student ingests a couple of references in week 1 to learn the pipeline (dogfoods #5).
 
 ## 11. Milestones
 
-- **Week 1** — requirements + final goals finalized (Week-0 gate).
-- **Oct 13** — research landscape complete enough to take DEC-005/DEC-003.
-- **Nov 10** — MVP core demoable (floor).
+- **Week 1** — requirements + final goals finalized (Week-0 gate); research begins in parallel.
+- **Oct 8** — research reports complete enough to take DEC-005/DEC-003.
+- **Nov 5** — MVP core demoable (floor).
 - **early Dec** — MVP demo.
