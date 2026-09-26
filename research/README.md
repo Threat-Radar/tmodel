@@ -25,3 +25,4 @@ a reference we did not need.
 | id | report | status |
 |---|---|---|
 | `RPT-0001` | [Threat-modeling landscape](0001-threat-modeling-landscape/report.md) | draft (I1) |
+| `RPT-0011` | [Knowledge Graphs and NSF OKN](0011-knowledge-graphs-nsf-okn/report.md) | draft (#25) |
