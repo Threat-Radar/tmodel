@@ -25,3 +25,4 @@ a reference we did not need.
 | id | report | status |
 |---|---|---|
 | `RPT-0001` | [Threat-modeling landscape](0001-threat-modeling-landscape/report.md) | draft (I1) |
+| `RPT-0003` | [Threat-modeling products](0003-threat-modeling-products/report.md) | draft (#7) |
