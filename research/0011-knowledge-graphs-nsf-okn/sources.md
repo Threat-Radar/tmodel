@@ -44,7 +44,7 @@ until it is at least logged here.
 | `osv-schema` | OSV Schema (OpenSSF) |
 | `bron` | BRON — ATT&CK↔CAPEC↔CWE↔CVE↔CPE |
 | `guac` | GUAC — supply-chain graph (OpenSSF) |
-| `spdx-3-rdf` | SPDX 3.0 RDF model |
+| `spdx-3-0-1` | SPDX 3.0 RDF model |
 | `mulval` | MulVAL attack-path analyzer |
 | `graphrag-ms` | GraphRAG (Microsoft) |
 | `unifying-llm-kg` | Unifying LLMs and KGs: a roadmap |

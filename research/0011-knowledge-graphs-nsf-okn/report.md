@@ -53,7 +53,7 @@ asks, for each source, *what does tmodel take from it?*
 |---|---|---|
 | NSF OKN | `nsf-okn-launch`, `frink-fabric`, `securechain-okn`, `sudokn-okn`, `okn-roadmap-2022` | federation pattern (named graphs + one SPARQL endpoint), provenance-by-construction, a supply-chain-security precedent, a possible network to join |
 | KG standards | `rdf-1-1-concepts`, `owl-2-primer`, `sparql-1-1`, `shacl`, `prov-o`, `linkml`, `hogan-kg-survey` | an **RDF-world stack**: LinkML → SHACL + OWL/RDF → RML/JSON-LD → PROV-O → SPARQL |
-| Cyber KGs | `stix-2-1`, `mitre-attack`, `cwe`, `capec`, `d3fend`, `cve-json-5`, `osv-schema`, `bron`, `guac`, `spdx-3-rdf`, `mulval` | reuse existing vocab/IDs + the **BRON backbone**; D3FEND/SPDX as importable OWL/RDF; GUAC as the supply-chain analog |
+| Cyber KGs | `stix-2-1`, `mitre-attack`, `cwe`, `capec`, `d3fend`, `cve-json-5`, `osv-schema`, `bron`, `guac`, `spdx-3-0-1`, `mulval` | reuse existing vocab/IDs + the **BRON backbone**; D3FEND/SPDX as importable OWL/RDF; GUAC as the supply-chain analog |
 | AI grounding | `graphrag-ms`, `unifying-llm-kg`, RoG, ToG | the mechanism for *AI proposes / KG constrains / human corrects* — traceable, auditable |
 
 ## 1. NSF OKN — a national, federated, governed KG
@@ -84,7 +84,7 @@ The field already offers most of tmodel's vocabulary and a working backbone:
 - **MITRE data as graphs**: `mitre-attack`, `cwe`, `capec`, `d3fend`. CWE/CAPEC ship typed relations + XSD; **D3FEND is already an OWL knowledge graph** (defense→offense edges) with a Digital Artifact Ontology that seeds asset modeling.
 - **Vulnerabilities**: `cve-json-5` (CVE→CWE, CVSS metrics), `osv-schema` (vuln→exact package/version).
 - **BRON** (`bron`): a bidirectional graph already linking **ATT&CK↔CAPEC↔CWE↔CVE↔CPE** — a reusable reference implementation of tmodel's exact backbone.
-- **Supply chain**: **GUAC** (`guac`) is the closest working analog (SBOMs + attestations + vulns as a graph; three trees — Evidence/Actor/Software — that map to review-provenance / actors / assets-components); **SPDX 3.0** (`spdx-3-rdf`) is a graph-native SBOM in RDF/OWL/SHACL.
+- **Supply chain**: **GUAC** (`guac`) is the closest working analog (SBOMs + attestations + vulns as a graph; three trees — Evidence/Actor/Software — that map to review-provenance / actors / assets-components); **SPDX 3.0** (`spdx-3-0-1`) is a graph-native SBOM in RDF/OWL/SHACL.
 - **Attack paths**: `mulval` (logic/Datalog derivation of reachable paths) — facts=nodes, rules=logic, derivation graph = the reviewable attack-path artifact (ties to our Attack step / Attack path model).
 
 **Takeaway:** don't invent vocabulary — **align to STIX + MITRE + CVE/OSV and reuse the BRON backbone**; import D3FEND/SPDX OWL if RDF; study GUAC for the supply-chain portion.
