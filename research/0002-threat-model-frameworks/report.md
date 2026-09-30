@@ -43,7 +43,7 @@ Axes: [`dimensions.md`](dimensions.md). References live in `library/`.
 | Attack trees | an attacker goal decomposed into alternative (OR) and required (AND) sub-goals | tree diagram with AND/OR nodes; one tree per goal | strong — leaves are concrete steps; an attack is a set of leaves that satisfies the root. Basic trees do not order steps (sequential-AND extensions do) | medium — scoring and cheapest-path analysis are computable once values are assigned; building a realistic tree is expert work | SecurITree (commercial); ADTool, SeaMonster (academic, unmaintained); mostly general diagram tools (see §4) | mature concept (Schneier, 1999); tooling maturity mixed | `sei-threat-modeling-methods-2018`; `schneier-attack-trees-1999` |
 | LINDDUN | privacy threats: seven categories mapped onto data-flow-diagram elements | DFD + threat-to-element mapping table + privacy threat trees; GO variant uses cards | moderate — privacy threat trees detail how a threat is realised; no ordered steps | medium — the element mapping is a rule a tool can apply (as for STRIDE); judging privacy impact is human | OWASP Threat Dragon (LINDDUN threats); LINDDUN GO cards | mature (KU Leuven, 2011; actively maintained, renamed categories) | `deng-linddun-2011`, `linddun-org`, `sei-threat-modeling-methods-2018` |
 | OCTAVE | organisational risk to critical (information) assets, not a system design | process with worksheets and questionnaires; threat trees classify threat sources | weak — threat trees list actor, means and outcome, not multi-step attacks | low — workshop or worksheet driven; Allegro can be done by one person | worksheets in the SEI reports; no open-source tool found | mature (SEI/CERT: 1999; OCTAVE-S 2005; Allegro 2007) | `sei-octave-allegro-2007`, `sei-threat-modeling-methods-2018` |
-| Trike | | | | | | | |
+| Trike | who may do what to which asset (actor–asset–action matrix); threats are violations of that | matrix + DFDs; attack trees joined into an attack graph | strong — attack trees per threat, merged into one attack graph that can share nodes | high (by design) — threats generated deterministically from the matrix; judging attacks and risk is human | Trike tools (MIT, dormant since 2019) | niche; v1 (2005) documented, v2 never documented; dormant | `trike-v1-2005`, `sei-threat-modeling-methods-2018` |
 | VAST | | | | | | | |
 | Cyber Kill Chain | an intrusion as seven ordered phases, each a point where defenders can act | linear phase list + courses-of-action matrix | ordered but coarse — phases, not concrete actions; one broken phase stops the attack | manual analysis; phases used as labels in threat-intelligence tooling | no dedicated tooling; used alongside ATT&CK | mature (Lockheed Martin, 2011); very widely known | `lockheed-kill-chain-2011` |
 | MITRE ATT&CK | observed adversary behaviour: tactics (why), techniques and sub-techniques (how), procedures, groups, software, mitigations | matrix (tactics × techniques); STIX 2.1 JSON data | concrete steps, but **unordered** — tactics are tags; sequences need Attack Flow | high — machine-readable catalog; mapping a system's threats to techniques still needs people | ATT&CK Navigator, Attack Flow (Apache-2.0); used by many security products | mature (MITRE, 2013–); de-facto industry vocabulary | `mitre-attack`, `mitre-attack-design-philosophy` |
@@ -430,7 +430,74 @@ from 2007).
 
 ## 7. Trike
 
-_Pending._
+**What it is.** A formal, automation-oriented threat-modeling method for
+security **auditing** from a risk and **defender's** perspective, by Paul
+Saitta, Brenda Larcom and Michael Eddington (Trike v1 methodology, 2005, MIT
+license). Where STRIDE starts from threat *types*, Trike starts from the
+system's **requirements** — what each actor is *supposed* to be able to do — and
+treats every deviation from that as a threat.
+
+**How it works (v1).**
+1. **Requirements model.** List the actors, the assets, and the intended actions
+   on each asset (create, read, update, delete), plus any rules. Summarise them in
+   an **actor–asset–action matrix**: rows are actors, columns are assets, and each
+   cell says, for each CRUD action, allowed, disallowed, or allowed with rules.
+2. **Implementation model.** Data-flow diagrams and "use flows" showing how the
+   intended actions are carried out.
+3. **Threat generation — automatic.** Threats follow deterministically from the
+   matrix and come in only **two kinds**:
+   - **denial of service** — an actor is prevented from an intended action;
+   - **elevation of privilege** — an actor does something disallowed, breaks an
+     action's rules, or uses the system against another system.
+
+   Trike argues that spoofing, tampering and information disclosure are really
+   *attacks* or kinds of elevation of privilege — a direct critique of STRIDE.
+4. **Attacks.** Each threat is the root of an **attack tree**; the trees are
+   joined into one **attack graph**. Weaknesses, vulnerabilities and mitigations
+   are then identified, and reusable **attack libraries** kept.
+5. **Risk model.** Asset values, actor risk ratings and action probabilities on
+   five-point scales.
+
+**Notation.** The actor–asset–action matrix, data-flow diagrams, and attack
+trees/graph.
+
+**Attack paths / steps.** Strong. Trike is the only framework in this report
+whose v1 explicitly merges attack trees into an **attack graph**, where one attack
+step can serve several threats — the limitation of plain trees noted in §4. Its
+separation of **threat** (a business-rule event, never technology-specific) from
+**attack** (a technology-specific step) is also a precise distinction.
+
+**Manual vs automatable.** High by design: once the matrix exists, threat
+generation is mechanical. Building the matrix, finding attacks and judging risk
+remain human work.
+
+**Tooling.** The Trike tool (v2, Smalltalk, [GitHub](https://github.com/octotrike/trike))
+and an older Python port ([GitHub](https://github.com/Dymaxion00/octotrike)), both
+MIT-licensed and unchanged since 2019 and 2015. The project site
+(octotrike.org) refuses automated access; the v1 document was read from the
+Internet Archive.
+
+**Maturity and adoption.** Niche and dormant. Versions 1.5 (which drops threat
+trees) and 2 (with "attack chaining") exist, but v2 was never documented; the
+site still says it is under active development, yet its repository last changed
+in 2019. SEI calls its documentation vague and insufficient.
+
+**Strengths.** Formal and repeatable; threats come from the system's own access
+rules, so coverage is systematic; automatic threat generation; attack graph
+rather than isolated trees; clear threat/attack/weakness/vulnerability/mitigation
+vocabulary; defender's perspective.
+
+**Limits.** Draft-quality, partly experimental documentation with no worked
+example; v2 undocumented and the project dormant; only two threat categories
+may feel coarse in practice; SEI finds its five-point risk scales too vague for a
+formal method; the actor–asset–action matrix grows quickly for large systems.
+
+**Relevance to tmodel.** Trike v1's model — actor, asset, action, rule, threat,
+attack, attack tree/graph, weakness, vulnerability, mitigation, attack library —
+is very close to ARCH-0001 §3's object types, and it shows threats generated *by
+rule* from a model. Worth reading in full for #15. **No decision is taken here.**
+
+**Sources.** `trike-v1-2005`; `sei-threat-modeling-methods-2018`.
 
 ## 8. VAST
 
