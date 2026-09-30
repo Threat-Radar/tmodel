@@ -22,6 +22,7 @@ A source is not "in the report" until it is a `library/` record.
 | MITRE ATT&CK: Design and Philosophy (Strom et al., MITRE, 2018/2020) | paper | MITRE ATT&CK | `mitre-attack-design-philosophy` | DEC-001, DEC-005 |
 | MITRE ATT&CK knowledge base + STIX data | dataset | MITRE ATT&CK | `mitre-attack` (existing, from #25) | DEC-001 |
 | MulVAL (attack graphs) | paper | attack trees → attack graphs | `mulval` (existing, from #25) | — |
+| VAST — ThreatModeler product page (vendor) | web | VAST | `threatmodeler-vast` | DEC-005, DEC-006 |
 | Trike v.1 Methodology Document [Draft] (Saitta, Larcom & Eddington, 2005) — Internet Archive copy | paper | Trike | `trike-v1-2005` | DEC-001, DEC-003, DEC-005 |
 | Introducing OCTAVE Allegro (Caralli, Stevens, Young & Wilson, SEI CMU/SEI-2007-TR-012) | paper | OCTAVE | `sei-octave-allegro-2007` | DEC-001, DEC-003, DEC-005 |
 | A privacy threat analysis framework (Deng, Wuyts, Scandariato, Preneel & Joosen, Requirements Engineering, 2011) | paper | LINDDUN | `deng-linddun-2011` | DEC-001, DEC-005 |

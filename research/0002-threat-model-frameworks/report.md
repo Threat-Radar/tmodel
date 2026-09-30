@@ -44,7 +44,7 @@ Axes: [`dimensions.md`](dimensions.md). References live in `library/`.
 | LINDDUN | privacy threats: seven categories mapped onto data-flow-diagram elements | DFD + threat-to-element mapping table + privacy threat trees; GO variant uses cards | moderate — privacy threat trees detail how a threat is realised; no ordered steps | medium — the element mapping is a rule a tool can apply (as for STRIDE); judging privacy impact is human | OWASP Threat Dragon (LINDDUN threats); LINDDUN GO cards | mature (KU Leuven, 2011; actively maintained, renamed categories) | `deng-linddun-2011`, `linddun-org`, `sei-threat-modeling-methods-2018` |
 | OCTAVE | organisational risk to critical (information) assets, not a system design | process with worksheets and questionnaires; threat trees classify threat sources | weak — threat trees list actor, means and outcome, not multi-step attacks | low — workshop or worksheet driven; Allegro can be done by one person | worksheets in the SEI reports; no open-source tool found | mature (SEI/CERT: 1999; OCTAVE-S 2005; Allegro 2007) | `sei-octave-allegro-2007`, `sei-threat-modeling-methods-2018` |
 | Trike | who may do what to which asset (actor–asset–action matrix); threats are violations of that | matrix + DFDs; attack trees joined into an attack graph | strong — attack trees per threat, merged into one attack graph that can share nodes | high (by design) — threats generated deterministically from the matrix; judging attacks and risk is human | Trike tools (MIT, dormant since 2019) | niche; v1 (2005) documented, v2 never documented; dormant | `trike-v1-2005`, `sei-threat-modeling-methods-2018` |
-| VAST | | | | | | | |
+| VAST | enterprise-scale threat modeling: separate application and operational (infrastructure) models | process-flow diagrams (application) and data-flow diagrams (operational) | not documented publicly | high, via the ThreatModeler platform | ThreatModeler (commercial) only | vendor method; little public documentation | `threatmodeler-vast`, `sei-threat-modeling-methods-2018` |
 | Cyber Kill Chain | an intrusion as seven ordered phases, each a point where defenders can act | linear phase list + courses-of-action matrix | ordered but coarse — phases, not concrete actions; one broken phase stops the attack | manual analysis; phases used as labels in threat-intelligence tooling | no dedicated tooling; used alongside ATT&CK | mature (Lockheed Martin, 2011); very widely known | `lockheed-kill-chain-2011` |
 | MITRE ATT&CK | observed adversary behaviour: tactics (why), techniques and sub-techniques (how), procedures, groups, software, mitigations | matrix (tactics × techniques); STIX 2.1 JSON data | concrete steps, but **unordered** — tactics are tags; sequences need Attack Flow | high — machine-readable catalog; mapping a system's threats to techniques still needs people | ATT&CK Navigator, Attack Flow (Apache-2.0); used by many security products | mature (MITRE, 2013–); de-facto industry vocabulary | `mitre-attack`, `mitre-attack-design-philosophy` |
 | ISO/SAE 21434 TARA | see #11 | | | | | | `iso-sae-21434-2021` |
@@ -501,7 +501,50 @@ rule* from a model. Worth reading in full for #15. **No decision is taken here.*
 
 ## 8. VAST
 
-_Pending._
+**What it is.** *Visual, Agile, and Simple Threat* modeling — a method created
+by Anurag Agarwal (per SEI) and built into **ThreatModeler**, a commercial
+threat-modeling platform. Its aim is to make threat modeling scale across a
+large organisation and fit Agile/DevOps work, rather than be a one-off expert
+exercise.
+
+**What it models.** VAST recognises that development and infrastructure teams
+have different concerns, so it uses **two kinds of model** (SEI):
+- **application threat models** — the architecture of an application, drawn as
+  *process-flow diagrams*;
+- **operational threat models** — the infrastructure, drawn as *data-flow
+  diagrams* from an attacker's point of view.
+
+The vendor describes it by four characteristics: **scalable**, **automated**,
+**integrated** with Agile/DevOps tooling, and **collaborative** across
+stakeholders.
+
+**Notation.** Process-flow diagrams and data-flow diagrams, as drawn in the
+ThreatModeler tool.
+
+**Attack paths / steps.** Not documented in any public source found. Whatever
+the product does is not described as part of the method.
+
+**Manual vs automatable.** High, through the ThreatModeler platform, which the
+vendor says automates repetitive tasks. Outside that product there is no public
+procedure to automate.
+
+**Tooling.** ThreatModeler only (commercial; compared in RPT-0003, #7). No
+open-source implementation found (searched 2026-09-29).
+
+**Maturity and adoption.** A vendor method tied to one product; adoption is
+that product's customer base. SEI notes it is explicitly designed to scale but
+has **little publicly available documentation**.
+
+**Strengths.** Designed for scale and continuous (Agile/DevOps) use; separates
+application and infrastructure views, which match how teams are organised;
+built-in automation and prioritisation (SEI).
+
+**Limits.** No public specification — steps, inputs, outputs and threat
+identification are not documented; vendor-defined and promoted with one
+commercial product; the vendor's performance claims come without evidence.
+**This section rests on SEI's survey and the vendor's own page only.**
+
+**Sources.** `threatmodeler-vast`; `sei-threat-modeling-methods-2018`.
 
 ## 9. Cyber Kill Chain and MITRE ATT&CK
 
