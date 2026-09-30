@@ -27,4 +27,5 @@ a reference we did not need.
 | `RPT-0001` | [Threat-modeling landscape](0001-threat-modeling-landscape/report.md) | draft (I1) |
 | `RPT-0003` | [Threat-modeling products](0003-threat-modeling-products/report.md) | draft (#7) |
 | `RPT-0004` | [Product composition](0004-product-composition/report.md) | draft (I1) |
+| `RPT-0009` | [SAGAI & AI-security specs](0009-sagai/report.md) | draft (#13) |
 | `RPT-0011` | [Knowledge Graphs and NSF OKN](0011-knowledge-graphs-nsf-okn/report.md) | draft (#25) |
