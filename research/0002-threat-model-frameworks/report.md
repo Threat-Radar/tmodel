@@ -45,7 +45,8 @@ Axes: [`dimensions.md`](dimensions.md). References live in `library/`.
 | OCTAVE | | | | | | | |
 | Trike | | | | | | | |
 | VAST | | | | | | | |
-| Kill chain / MITRE ATT&CK | | | | | | | |
+| Cyber Kill Chain | an intrusion as seven ordered phases, each a point where defenders can act | linear phase list + courses-of-action matrix | ordered but coarse — phases, not concrete actions; one broken phase stops the attack | manual analysis; phases used as labels in threat-intelligence tooling | no dedicated tooling; used alongside ATT&CK | mature (Lockheed Martin, 2011); very widely known | `lockheed-kill-chain-2011` |
+| MITRE ATT&CK | observed adversary behaviour: tactics (why), techniques and sub-techniques (how), procedures, groups, software, mitigations | matrix (tactics × techniques); STIX 2.1 JSON data | concrete steps, but **unordered** — tactics are tags; sequences need Attack Flow | high — machine-readable catalog; mapping a system's threats to techniques still needs people | ATT&CK Navigator, Attack Flow (Apache-2.0); used by many security products | mature (MITRE, 2013–); de-facto industry vocabulary | `mitre-attack`, `mitre-attack-design-philosophy` |
 | ISO/SAE 21434 TARA | see #11 | | | | | | `iso-sae-21434-2021` |
 
 ## 2. STRIDE
@@ -245,9 +246,123 @@ _Pending._
 
 _Pending._
 
-## 9. Kill chain and MITRE ATT&CK
+## 9. Cyber Kill Chain and MITRE ATT&CK
 
-_Pending._
+Unlike STRIDE and attack trees, which are used to analyse a system being
+*designed*, these two describe how *real attackers behave*. Both came from
+defenders studying real intrusions.
+
+### 9.1 Cyber Kill Chain
+
+**What it is.** A model of an intrusion as seven ordered phases, introduced by
+Lockheed Martin (Hutchins, Cloppert & Amin, 2011). The paper's argument is that
+conventional defence looks only at vulnerabilities and fails against
+persistent, well-resourced adversaries (APTs); defenders should study the
+adversary instead.
+
+| # | phase | what the attacker does |
+|---|---|---|
+| 1 | Reconnaissance | researches and selects the target (e.g. harvests email addresses) |
+| 2 | Weaponization | couples an exploit with a backdoor into a deliverable payload |
+| 3 | Delivery | transmits it (email attachment, website, USB) |
+| 4 | Exploitation | the exploit runs on the victim's system |
+| 5 | Installation | installs a backdoor to keep access |
+| 6 | Command and Control | the compromised host contacts the attacker |
+| 7 | Actions on Objectives | the real goal: steal, destroy, or move further |
+
+**What it models and notation.** The phases of an intrusion, plus a
+**courses-of-action matrix**: for each phase, what defenders can do — detect,
+deny, disrupt, degrade, deceive, destroy (from US DoD information-operations
+doctrine). Indicators seen across intrusions are linked into **campaigns**,
+creating an intelligence feedback loop.
+
+**Attack paths / steps.** **Ordered, but coarse.** The adversary must succeed at
+every phase, so *one mitigation anywhere breaks the chain*. This is the only
+framework so far whose steps have a built-in order — the property ARCH-0001 §3
+asks of an `AttackPath`. But a phase is a stage, not a concrete action, and real
+intrusions loop back (e.g. reconnaissance again after gaining access).
+
+**Manual vs automatable.** Mostly manual analysis of intrusions; the phases are
+widely used as labels in threat-intelligence tools.
+
+**Maturity and adoption.** Mature and very widely known; a standard vocabulary
+in security operations and threat intelligence.
+
+**Strengths.** Simple; shows defenders they can stop an attack at any phase, not
+only at exploitation; ties detection to a defensive action per phase.
+
+**Limits.** Built for malware-delivered network intrusions by external
+attackers — fits insiders, cloud-account abuse, or attacks with no malware
+poorly; linear and coarse; a model for analysing intrusions, not a method for
+finding threats in a design.
+
+### 9.2 MITRE ATT&CK
+
+**What it is.** A knowledge base of real adversary behaviour, maintained by
+MITRE since 2013 and built from observed incidents. Its design rationale is
+*MITRE ATT&CK: Design and Philosophy* (Strom et al., 2018, revised 2020).
+
+**What it models.**
+- **Tactics** — the adversary's *why*: a tactical objective, e.g. Initial
+  Access, Execution, Persistence, Privilege Escalation, Exfiltration.
+- **Techniques** and **sub-techniques** — the *how*, e.g. Phishing (T1566) →
+  Spearphishing Attachment (T1566.001).
+- **Procedures** — how a specific group actually carried out a technique.
+- Linked **groups**, **software**, and **mitigations**; three domains:
+  Enterprise, Mobile, ICS.
+
+**Notation.** A matrix: tactics as columns, techniques in the cells. Also
+published as machine-readable STIX 2.1 JSON (`mitre-attack`), which makes it a
+ready graph source (RPT-0011).
+
+**How it relates to STRIDE and the Kill Chain.** The source itself answers this
+(Design and Philosophy §4.1.3): high-level models such as the Kill Chain and
+STRIDE explain adversary goals but not individual actions or how one action
+relates to another; exploit and malware databases are too specific. ATT&CK is
+the **mid-level** model between them.
+
+**Attack paths / steps.** **Concrete, but unordered.** Techniques are good
+candidates for tmodel's `AttackStep`, but tactics are *tags*, not stages — one
+technique can serve several tactics, and ATT&CK does not record the order in
+which techniques are used. Sequences need something extra: MITRE's
+**Attack Flow** format (Center for Threat-Informed Defense) exists precisely to
+describe ordered sequences of ATT&CK techniques, or the Kill Chain's phases can
+supply a coarse order.
+
+**Manual vs automatable.** High for the catalog — it is structured data with
+stable IDs. Mapping *your* system's threats to techniques still needs people.
+
+**Tooling.**
+
+| tool | what it does | license |
+|---|---|---|
+| [ATT&CK Navigator](https://github.com/mitre-attack/attack-navigator) | web tool for annotating and colouring the matrix (e.g. coverage, threat profiles) | Apache-2.0 |
+| [Attack Flow](https://github.com/center-for-threat-informed-defense/attack-flow) | format and tools for ordered sequences of techniques | Apache-2.0 |
+| ATT&CK STIX data | the whole knowledge base as JSON | see `mitre-attack` |
+
+**Maturity and adoption.** Mature and the de-facto industry vocabulary for
+adversary behaviour; stated uses are adversary emulation, red teaming,
+behavioural-analytics development, defensive gap assessment, SOC maturity
+assessment, and threat-intelligence enrichment.
+
+**Strengths.** Evidence-based (observed, not hypothesised); stable IDs; very
+detailed; linked to mitigations; machine-readable; shared vocabulary across
+tools and teams.
+
+**Limits.** Not a threat-modeling method by itself — no process for analysing a
+system under design; covers only behaviour someone has already seen and
+reported; no ordering of steps; strongest for enterprise IT; changes with each
+release.
+
+### 9.3 Implications for tmodel
+
+Together they cover the two halves of an attack path that neither has alone:
+the Kill Chain gives **order** (coarse), ATT&CK gives **concrete steps**
+(unordered), and Attack Flow shows one existing way to combine them. This is
+input to #15 and DEC-001; **no decision is taken here.**
+
+**Sources.** `lockheed-kill-chain-2011`; `mitre-attack-design-philosophy`;
+`mitre-attack`.
 
 ## 10. Others found in the search
 
