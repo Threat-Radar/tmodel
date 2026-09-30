@@ -42,7 +42,7 @@ Axes: [`dimensions.md`](dimensions.md). References live in `library/`.
 | PASTA | business risk: threats to an application ranked by business impact, across seven stages | a process; uses DFDs, attack trees, use/abuse cases, CWE/CVSS inside stages | strong — stage 6 builds attack trees and links attacks to vulnerabilities and exploits | low — a heavy, multi-role process; individual stages use automatable inputs (threat intel, scanners, CWE) | no open-source tool found; supported by some commercial platforms (see RPT-0003) | mature (2012; book 2015); moderate adoption, mainly in risk-focused organisations | `ucedavelez-pasta-owasp-2012`, `pasta-risk-centric-threat-modeling`, `sei-threat-modeling-methods-2018` |
 | Attack trees | an attacker goal decomposed into alternative (OR) and required (AND) sub-goals | tree diagram with AND/OR nodes; one tree per goal | strong — leaves are concrete steps; an attack is a set of leaves that satisfies the root. Basic trees do not order steps (sequential-AND extensions do) | medium — scoring and cheapest-path analysis are computable once values are assigned; building a realistic tree is expert work | SecurITree (commercial); ADTool, SeaMonster (academic, unmaintained); mostly general diagram tools (see §4) | mature concept (Schneier, 1999); tooling maturity mixed | `sei-threat-modeling-methods-2018`; `schneier-attack-trees-1999` |
 | LINDDUN | privacy threats: seven categories mapped onto data-flow-diagram elements | DFD + threat-to-element mapping table + privacy threat trees; GO variant uses cards | moderate — privacy threat trees detail how a threat is realised; no ordered steps | medium — the element mapping is a rule a tool can apply (as for STRIDE); judging privacy impact is human | OWASP Threat Dragon (LINDDUN threats); LINDDUN GO cards | mature (KU Leuven, 2011; actively maintained, renamed categories) | `deng-linddun-2011`, `linddun-org`, `sei-threat-modeling-methods-2018` |
-| OCTAVE | | | | | | | |
+| OCTAVE | organisational risk to critical (information) assets, not a system design | process with worksheets and questionnaires; threat trees classify threat sources | weak — threat trees list actor, means and outcome, not multi-step attacks | low — workshop or worksheet driven; Allegro can be done by one person | worksheets in the SEI reports; no open-source tool found | mature (SEI/CERT: 1999; OCTAVE-S 2005; Allegro 2007) | `sei-octave-allegro-2007`, `sei-threat-modeling-methods-2018` |
 | Trike | | | | | | | |
 | VAST | | | | | | | |
 | Cyber Kill Chain | an intrusion as seven ordered phases, each a point where defenders can act | linear phase list + courses-of-action matrix | ordered but coarse — phases, not concrete actions; one broken phase stops the attack | manual analysis; phases used as labels in threat-intelligence tooling | no dedicated tooling; used alongside ATT&CK | mature (Lockheed Martin, 2011); very widely known | `lockheed-kill-chain-2011` |
@@ -365,7 +365,68 @@ disagree on terms; no license stated for its materials.
 
 ## 6. OCTAVE
 
-_Pending._
+**What it is.** *Operationally Critical Threat, Asset, and Vulnerability
+Evaluation* — a family of **organisational risk assessments** from the CERT
+Division of SEI/CMU. It asks: *which information assets matter most to this
+organisation, what threatens them, and what would it cost us?* It is a
+risk-assessment method more than a design-time threat-modeling method.
+
+**History** (from OCTAVE Allegro's own timeline): OCTAVE Framework 1.0 in
+**September 1999**, developed with the US DoD for HIPAA compliance; framework 2.0
+in 2001; **OCTAVE-S** for small organisations (v0.9 2003, v1.0 2005);
+**OCTAVE Allegro** in 2007. *The SEI survey says OCTAVE was created in 2003 and
+refined in 2005 — that appears to confuse it with OCTAVE-S (recorded as a
+`contradicts` relation in the library).*
+
+**Three variants.**
+
+| variant | for | approach |
+|---|---|---|
+| OCTAVE method | large organisations | workshops; three phases: asset-based threat profiles → infrastructure vulnerabilities → security strategy and plans |
+| OCTAVE-S | small organisations (20–80 people, per SEI) | a small team with good knowledge of the organisation; fewer workshops |
+| OCTAVE Allegro | information assets | eight streamlined steps; can be done by a small team or one person |
+
+**OCTAVE Allegro's eight steps.** (1) establish risk measurement criteria;
+(2) profile the information asset; (3) identify its **containers** — where it
+lives: technical (servers, laptops), physical (paper, rooms), people;
+(4) identify areas of concern; (5) identify threat scenarios using **threat
+trees**; (6) identify risks; (7) analyse risks with a **relative risk score**;
+(8) select a mitigation approach.
+
+**Notation.** Worksheets and questionnaires, plus four standard **threat
+trees** that classify *where a threat comes from*: human actors using technical
+means; human actors using physical access; technical problems (defects,
+malware); other problems (natural disasters, power or supplier failure).
+
+**Attack paths / steps.** Weak. OCTAVE's threat trees are a classification of
+threat *sources* (actor, access, motive, outcome), not multi-step attack paths —
+despite the similar name to attack trees.
+
+**Manual vs automatable.** Low: judgement-heavy workshops or worksheets; the
+impact criteria are defined by the organisation itself.
+
+**Risk.** Its strength. Impact criteria are set per organisation (reputation,
+financial, productivity, safety, legal…), producing a **relative risk score**;
+probability is optional because it is hard to quantify. Relevant to DEC-003 and
+#14.
+
+**Tooling.** Worksheets, questionnaires and guidance in the SEI reports; no
+open-source tool found (searched 2026-09-29).
+
+**Maturity and adoption.** Mature and well known in organisational risk
+management and compliance; SEI notes it is designed to be scalable.
+
+**Strengths.** Ties security to business impact and the organisation's own
+risk tolerance; covers people and physical threats as well as technical ones;
+the "container" idea captures everywhere an asset lives; Allegro makes it
+lighter.
+
+**Limits.** Organisational, not system-design — it does not analyse a
+software architecture or data flows; no attack paths; qualitative scoring;
+time-consuming and, per SEI, large and vague documentation; dated (Allegro is
+from 2007).
+
+**Sources.** `sei-octave-allegro-2007`; `sei-threat-modeling-methods-2018`.
 
 ## 7. Trike
 
