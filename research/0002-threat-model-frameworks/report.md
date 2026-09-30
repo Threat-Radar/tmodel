@@ -41,7 +41,7 @@ Axes: [`dimensions.md`](dimensions.md). References live in `library/`.
 | STRIDE | six threat categories, each the violation of one security property, applied to system elements | data-flow diagram (DFD) + threat table | weak — finds individual threats per element; chains must be built by hand (or with attack trees) | medium — per-element rules generate candidate threats; realism, impact, mitigation and priority are human | MS Threat Modeling Tool, OWASP Threat Dragon, pytm, IriusRisk, ThreatModeler (see RPT-0003) | most mature method (1999; Microsoft 2002); high adoption in software security | `sei-threat-modeling-methods-2018`, `shostack-threat-modeling-2014` (to ingest) |
 | PASTA | business risk: threats to an application ranked by business impact, across seven stages | a process; uses DFDs, attack trees, use/abuse cases, CWE/CVSS inside stages | strong — stage 6 builds attack trees and links attacks to vulnerabilities and exploits | low — a heavy, multi-role process; individual stages use automatable inputs (threat intel, scanners, CWE) | no open-source tool found; supported by some commercial platforms (see RPT-0003) | mature (2012; book 2015); moderate adoption, mainly in risk-focused organisations | `ucedavelez-pasta-owasp-2012`, `pasta-risk-centric-threat-modeling`, `sei-threat-modeling-methods-2018` |
 | Attack trees | an attacker goal decomposed into alternative (OR) and required (AND) sub-goals | tree diagram with AND/OR nodes; one tree per goal | strong — leaves are concrete steps; an attack is a set of leaves that satisfies the root. Basic trees do not order steps (sequential-AND extensions do) | medium — scoring and cheapest-path analysis are computable once values are assigned; building a realistic tree is expert work | SecurITree (commercial); ADTool, SeaMonster (academic, unmaintained); mostly general diagram tools (see §4) | mature concept (Schneier, 1999); tooling maturity mixed | `sei-threat-modeling-methods-2018`; `schneier-attack-trees-1999` |
-| LINDDUN | | | | | | | |
+| LINDDUN | privacy threats: seven categories mapped onto data-flow-diagram elements | DFD + threat-to-element mapping table + privacy threat trees; GO variant uses cards | moderate — privacy threat trees detail how a threat is realised; no ordered steps | medium — the element mapping is a rule a tool can apply (as for STRIDE); judging privacy impact is human | OWASP Threat Dragon (LINDDUN threats); LINDDUN GO cards | mature (KU Leuven, 2011; actively maintained, renamed categories) | `deng-linddun-2011`, `linddun-org`, `sei-threat-modeling-methods-2018` |
 | OCTAVE | | | | | | | |
 | Trike | | | | | | | |
 | VAST | | | | | | | |
@@ -295,7 +295,73 @@ and scores them with CVSS (§10).
 
 ## 5. LINDDUN
 
-_Pending._
+**What it is.** A **privacy** threat-modeling framework — the privacy
+counterpart to STRIDE. Introduced by Deng, Wuyts, Scandariato, Preneel and
+Joosen at KU Leuven (*Requirements Engineering*, 2011) and maintained at
+linddun.org by the DistriNet research unit. Like STRIDE, the name is a mnemonic
+for its threat categories, and it works over a data-flow diagram.
+
+**The seven threat types** (current names from linddun.org; the 2011 paper and
+SEI use older names such as *Linkability*, *Identifiability*, *Detectability*):
+
+| threat | meaning (linddun.org) |
+|---|---|
+| **L**inking | associating data items or user actions to learn more about someone |
+| **I**dentifying | learning someone's identity through leaks, deduction or inference |
+| **N**on-repudiation | being able to attribute a claim to an individual |
+| **D**etecting | deducing someone's involvement through observation |
+| **D**ata disclosure | excessively collecting, storing, processing or sharing personal data |
+| **U**nawareness & unintervenability | not informing, involving or empowering people about their data |
+| **N**on-compliance | deviating from best practice, standards or legislation |
+
+Note **non-repudiation** is a *threat* here but a security *property* in STRIDE
+(where *repudiation* is the threat): for privacy, being unable to deny an action
+can itself harm the user.
+
+**What it models.** Privacy threats to personal data in a system. The 2011 paper
+separates **hard privacy** (data minimisation — share as little as possible)
+from **soft privacy** (the user must trust the organisation holding the data).
+
+**Notation and process.** A data-flow diagram of the system; a **mapping table**
+of which threat types apply to which DFD element types; a catalogue of **privacy
+threat tree patterns** that detail how each threat can be realised; threats
+documented as misuse cases; finally mapped to **privacy-enhancing technologies**
+(PETs) as countermeasures.
+
+**Three flavours today** (linddun.org):
+- **LINDDUN GO** — a card deck for a lean team brainstorm from informal sketches;
+- **LINDDUN PRO** — systematic analysis of interactions between DFD elements
+  with threat trees and mapping tables; described as STRIDE-compatible;
+- **LINDDUN MAESTRO** — model-driven, using enriched system descriptions; still
+  "more info coming soon". *Not* the Cloud Security Alliance's MAESTRO framework
+  for agentic AI, which shares the name.
+
+**Attack paths / steps.** Moderate. Threat trees break a privacy threat into the
+conditions that realise it (similar to attack trees), but there are no ordered
+steps.
+
+**Manual vs automatable.** Medium, like STRIDE: the threat-to-element mapping is
+a rule a tool can apply; judging privacy impact and choosing PETs is human.
+
+**Tooling.** [OWASP Threat Dragon](https://owasp.org/www-project-threat-dragon/)
+lists LINDDUN among its threat categories (Apache-2.0); the LINDDUN GO card deck
+is available from linddun.org (no license stated). See RPT-0003 for commercial
+tools.
+
+**Maturity and adoption.** Mature (2011) and actively maintained, with an
+extensive privacy knowledge base (SEI); the standard reference for privacy
+threat modeling.
+
+**Strengths.** Brings privacy into the same DFD workflow as STRIDE; reusable
+threat-tree knowledge; direct link from threats to privacy-enhancing
+technologies; lighter (GO) and heavier (PRO) options.
+
+**Limits.** Same scaling problem as STRIDE — threats multiply with system size;
+labour-intensive, and generic threats reduce efficiency (SEI); privacy only, so
+used alongside a security method; category names changed since 2011, so sources
+disagree on terms; no license stated for its materials.
+
+**Sources.** `deng-linddun-2011`; `linddun-org`; `sei-threat-modeling-methods-2018`.
 
 ## 6. OCTAVE
 
