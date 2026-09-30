@@ -664,10 +664,43 @@ input to #15 and DEC-001; **no decision is taken here.**
 **Sources.** `lockheed-kill-chain-2011`; `mitre-attack-design-philosophy`;
 `mitre-attack`.
 
-## 10. Others found in the search
+## 10. Other methods
 
-_Pending._ (e.g. hTMM, Quantitative TM, persona non grata, CVSS-based — only if
-sources justify them.) ISO/SAE 21434 TARA is covered by #11; one-line pointer here.
+Shorter entries: methods the SEI survey covers that are rarely used on their
+own, combinations of the main methods, and related frameworks covered elsewhere.
+Unless noted, the source is `sei-threat-modeling-methods-2018`; the original
+papers it cites are listed for later ingestion.
+
+| method | what it is | attack paths | note |
+|---|---|---|---|
+| Persona non Grata (PnG) | attacker personas — archetypes with skills, motives and goals — that help analysts see the system from the misuse side | none | easy to adopt but rarely used or researched; few false positives but finds only a subset of threat types (SEI) |
+| Security Cards | a 42-card brainstorming deck in four dimensions: human impact, adversary motivations, adversary resources, adversary methods | none | good for unusual threats; many false positives; rarely used (SEI) |
+| hTMM | SEI's Hybrid Threat Modeling Method (2018): SQUARE security-requirements engineering + Security Cards + PnG, then a formal risk assessment | none | targets no false positives, no missed threats and consistent results; applied to one cyber-physical scenario (SEI) |
+| Quantitative TMM | attack trees built for STRIDE categories per component, then scored with CVSS; "attack ports" pass risk between connected components | yes — component attack trees | Potteiger, Martins & Koutsoukos, 2016; used on a railway network (SEI) |
+| CVSS | a severity **score** for vulnerabilities (base, temporal, environmental metrics), maintained by FIRST — not a threat-modeling method | none | covered by #14 (metrics); library record `first-cvss` |
+| DREAD | Microsoft's risk-rating mnemonic (Damage potential, Reproducibility, Exploitability, Affected users, Discoverability), each rated 0/5/10 and averaged | none | a rating scheme, not a method; SEI cites a Microsoft engineer's critique of it (LeBlanc, *DREADful*, 2007) — see #14 |
+| ISO/SAE 21434 TARA | the automotive threat analysis and risk assessment method (asset → threat scenario → attack path → attack feasibility → risk) | yes — attack paths with feasibility ratings | covered by #11; library record `iso-sae-21434-2021` |
+| MAESTRO (Cloud Security Alliance, 2025) | threat modeling for **agentic AI**: a seven-layer reference architecture (foundation models → agent ecosystem) with layer-specific and **cross-layer** threats | cross-layer threats, no path notation | extends STRIDE for AI agents; central to #12; library record `csa-maestro-2025`. Not the same as LINDDUN MAESTRO (§5) |
+
+**Observations.**
+- **PnG and Security Cards** are brainstorming aids about *who* attacks and
+  *why*; they add the attacker's motives and resources, which none of the main
+  methods model explicitly.
+- **hTMM and Quantitative TMM** confirm the pattern seen throughout this report:
+  in practice the methods are **combined** — one to find threats, one to show
+  attack paths, one to score them.
+- **MAESTRO** is the only method here designed for AI agents; the others predate
+  them (SEI's survey is from 2018).
+
+**Original sources to ingest later** (cited by SEI): Cleland-Huang, *How Well Do
+You Know Your Personae Non Gratae?*, IEEE Software 31(4), 2014 (PnG); Mead &
+Shull, *The Hybrid Threat Modeling Method*, SEI Blog, 2018 (hTMM); Potteiger,
+Martins & Koutsoukos, *Software and attack centric integrated threat modeling
+for quantitative risk assessment*, HotSoS 2016, DOI 10.1145/2898375.2898390
+(Quantitative TMM).
+
+**Sources.** `sei-threat-modeling-methods-2018`; `csa-maestro-2025`;
+`first-cvss`; `iso-sae-21434-2021`.
 
 ## 11. Implications for tmodel
 

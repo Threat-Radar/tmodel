@@ -22,6 +22,9 @@ A source is not "in the report" until it is a `library/` record.
 | MITRE ATT&CK: Design and Philosophy (Strom et al., MITRE, 2018/2020) | paper | MITRE ATT&CK | `mitre-attack-design-philosophy` | DEC-001, DEC-005 |
 | MITRE ATT&CK knowledge base + STIX data | dataset | MITRE ATT&CK | `mitre-attack` (existing, from #25) | DEC-001 |
 | MulVAL (attack graphs) | paper | attack trees → attack graphs | `mulval` (existing, from #25) | — |
+| Agentic AI Threat Modeling Framework: MAESTRO (Huang, Cloud Security Alliance, 2025) | web | MAESTRO (§10) | `csa-maestro-2025` | DEC-001, DEC-005 |
+| FIRST CVSS | spec | CVSS (§10) | `first-cvss` (existing) | DEC-003 |
+| ISO/SAE 21434:2021 | spec | TARA (§10) | `iso-sae-21434-2021` (existing, #11) | DEC-003, DEC-005 |
 | VAST — ThreatModeler product page (vendor) | web | VAST | `threatmodeler-vast` | DEC-005, DEC-006 |
 | Trike v.1 Methodology Document [Draft] (Saitta, Larcom & Eddington, 2005) — Internet Archive copy | paper | Trike | `trike-v1-2005` | DEC-001, DEC-003, DEC-005 |
 | Introducing OCTAVE Allegro (Caralli, Stevens, Young & Wilson, SEI CMU/SEI-2007-TR-012) | paper | OCTAVE | `sei-octave-allegro-2007` | DEC-001, DEC-003, DEC-005 |
