@@ -22,6 +22,9 @@ Every source found, and the `library/` record it became.
 | CycloneDX property taxonomy, `cdx:device` namespace (github.com/CycloneDX/cyclonedx-property-taxonomy) | spec (side list) | 1, 2 | not yet a record | DEC-001, DEC-002 |
 | SPDX 3.0.1 | spec | 1 | `spdx-3-0-1` (in fork via Threat-Radar/library#5; `queued`, summary still blank) | DEC-002 |
 | SPDX 3.0.1 model file (spdx.org/rdf/3.0.1/spdx-model.ttl) | spec (machine-readable) | 1 | same spec as `spdx-3-0-1`; used for the checks in Tool runs | DEC-002 |
+| ISO/IEC 19770-2:2015, Software identification tag (SWID) | spec | 1 | not yet a record; paywalled, not read; listed in `ntia-sbom-minimum-elements`'s references | DEC-002 |
+| NIST IR 8060, Guidelines for the Creation of Interoperable Software Identification (SWID) Tags (2016) | guide | 1 | not yet a record; listed in `ntia-sbom-minimum-elements`'s references | DEC-002 |
+| RFC 9393, Concise Software Identification Tags (CoSWID) | spec | 1 | not yet a record | DEC-002 |
 | NTIA, Minimum Elements for an SBOM (2021) | spec | 1 | `ntia-sbom-minimum-elements` (in fork via Threat-Radar/library#5; `summarized`) | DEC-002 |
 | CISA, Framing Software Component Transparency (3rd ed., 2024) | spec | 1, 6 | `cisa-framing-software-component-transparency` (in fork via Threat-Radar/library#5; `summarized`) | DEC-002 |
 | gitoid URI scheme (IANA provisional registration), used by OmniBOR | spec | 1 | not yet a record | DEC-002 |
