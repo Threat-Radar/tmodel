@@ -22,4 +22,5 @@ A source is not "in the report" until it is a `library/` record.
 | MITRE ATT&CK: Design and Philosophy (Strom et al., MITRE, 2018/2020) | paper | MITRE ATT&CK | `mitre-attack-design-philosophy` | DEC-001, DEC-005 |
 | MITRE ATT&CK knowledge base + STIX data | dataset | MITRE ATT&CK | `mitre-attack` (existing, from #25) | DEC-001 |
 | MulVAL (attack graphs) | paper | attack trees → attack graphs | `mulval` (existing, from #25) | — |
-| Risk Centric Threat Modeling: PASTA (UcedaVélez & Morana) | book | PASTA | `pasta-risk-centric-threat-modeling` (existing stub) | DEC-005 |
+| Real World Threat Modeling Using the PASTA Methodology (UcedaVélez, OWASP AppSec EU 2012) | slides | PASTA | `ucedavelez-pasta-owasp-2012` | DEC-001, DEC-003, DEC-005 |
+| Risk Centric Threat Modeling (UcedaVélez & Morana, Wiley 2015) — not read, paywalled | book | PASTA | `pasta-risk-centric-threat-modeling` (existing stub, completed) | DEC-001, DEC-003, DEC-005 |

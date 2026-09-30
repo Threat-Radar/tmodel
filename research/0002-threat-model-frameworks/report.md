@@ -39,8 +39,8 @@ Axes: [`dimensions.md`](dimensions.md). References live in `library/`.
 | framework | what it models | notation | attack path / steps | manual vs automatable | tooling | maturity / adoption | library record |
 |---|---|---|---|---|---|---|---|
 | STRIDE | six threat categories, each the violation of one security property, applied to system elements | data-flow diagram (DFD) + threat table | weak — finds individual threats per element; chains must be built by hand (or with attack trees) | medium — per-element rules generate candidate threats; realism, impact, mitigation and priority are human | MS Threat Modeling Tool, OWASP Threat Dragon, pytm, IriusRisk, ThreatModeler (see RPT-0003) | most mature method (1999; Microsoft 2002); high adoption in software security | `sei-threat-modeling-methods-2018`, `shostack-threat-modeling-2014` (to ingest) |
-| PASTA | | | | | | | `pasta-risk-centric-threat-modeling` |
-| Attack trees | an attacker goal decomposed into alternative (OR) and required (AND) sub-goals | tree diagram with AND/OR nodes; one tree per goal | strong — leaves are concrete steps; an attack is a set of leaves that satisfies the root. Basic trees do not order steps (sequential-AND extensions do) | medium — scoring and cheapest-path analysis are computable once values are assigned; building a realistic tree is expert work | ADTool, SecurITree; general diagram tools (see §4) | mature concept (Schneier, 1999); tooling maturity mixed | `sei-threat-modeling-methods-2018`; `schneier-attack-trees-1999` |
+| PASTA | business risk: threats to an application ranked by business impact, across seven stages | a process; uses DFDs, attack trees, use/abuse cases, CWE/CVSS inside stages | strong — stage 6 builds attack trees and links attacks to vulnerabilities and exploits | low — a heavy, multi-role process; individual stages use automatable inputs (threat intel, scanners, CWE) | no open-source tool found; supported by some commercial platforms (see RPT-0003) | mature (2012; book 2015); moderate adoption, mainly in risk-focused organisations | `ucedavelez-pasta-owasp-2012`, `pasta-risk-centric-threat-modeling`, `sei-threat-modeling-methods-2018` |
+| Attack trees | an attacker goal decomposed into alternative (OR) and required (AND) sub-goals | tree diagram with AND/OR nodes; one tree per goal | strong — leaves are concrete steps; an attack is a set of leaves that satisfies the root. Basic trees do not order steps (sequential-AND extensions do) | medium — scoring and cheapest-path analysis are computable once values are assigned; building a realistic tree is expert work | SecurITree (commercial); ADTool, SeaMonster (academic, unmaintained); mostly general diagram tools (see §4) | mature concept (Schneier, 1999); tooling maturity mixed | `sei-threat-modeling-methods-2018`; `schneier-attack-trees-1999` |
 | LINDDUN | | | | | | | |
 | OCTAVE | | | | | | | |
 | Trike | | | | | | | |
@@ -124,7 +124,69 @@ quality; can miss domain-specific threats; not suited on its own to privacy
 
 ## 3. PASTA
 
-_Pending._
+**What it is.** The *Process for Attack Simulation and Threat Analysis*: a
+**risk-centric** threat-modeling method created by Tony UcedaVélez (SEI dates it
+to 2012), described in full in UcedaVélez & Morana's book (Wiley, 2015). Where
+STRIDE asks *what can go wrong*, PASTA asks *which threats matter most to the
+business* and works backwards from business objectives to countermeasures. Its
+author's argument: pen tests, vulnerability scans and static analysis each give a
+partial view; a unifying method should connect them to business impact.
+
+**The seven stages.**
+
+| # | stage | main activities |
+|---|---|---|
+| 1 | Define objectives | business objectives, security and compliance requirements, business impact analysis |
+| 2 | Define technical scope | boundaries of the technical environment; infrastructure, application and software dependencies |
+| 3 | Application decomposition | use cases, entry points, actors, assets, trust boundaries, data-flow diagrams |
+| 4 | Threat analysis | threat intelligence, security logs and incident data → likely threats |
+| 5 | Vulnerability and weakness analysis | existing vulnerability reports; mapping to MITRE CWE/CVE; CVSS/CWSS scoring |
+| 6 | Attack modeling | attack surface; **attack trees**; use and abuse cases; attack → vulnerability → exploit mapping |
+| 7 | Risk and impact analysis | business impact, residual risk, countermeasures and mitigation strategy |
+
+**Notation.** Not a notation of its own — a process that *uses* other notations
+inside its stages: data-flow diagrams (stage 3), attack trees and use/abuse-case
+diagrams (stage 6), CWE/CVE enumerations and CVSS scores (stage 5).
+
+**Attack paths / steps.** Strong, through stage 6: attack trees show how attacks
+are built, and each attack is linked to the vulnerabilities and exploits it uses.
+The author's slides even define an attack tree as the *relationship among
+asset, actor, use case, abuse case, vulnerability, exploit and countermeasure* —
+close to a graph of tmodel's own object types (ARCH-0001 §3).
+
+**Manual vs automatable.** Low overall. The method is a workshop-heavy process
+needing business, architecture, operations and security people (SEI: laborious,
+though richly documented). Several *inputs* are automatable — threat-intelligence
+feeds, vulnerability scanners, CWE/CVE lookups, CVSS scoring — but tying them to
+business impact is human work.
+
+**Risk.** PASTA's distinguishing feature. It ends in business impact and
+residual risk, and the author argues risk should include a **probability** term
+informed by attack simulation, not only threat × vulnerability × impact — though
+the slides do not define how to compute it. Relevant to DEC-003 and #14.
+
+**Tooling.** No open-source PASTA tool found (searched 2026-09-29). Consulting and
+tooling are offered by VerSprite (the author's firm), and some commercial
+threat-modeling platforms list PASTA among supported methods — see RPT-0003.
+
+**Maturity and adoption.** Mature and well documented (a 2015 book); used mainly
+by organisations that want threat modeling tied to risk management. SEI notes it
+encourages collaboration across stakeholders and has built-in prioritisation.
+
+**Strengths.** Ties threats to business impact; covers the whole path from
+objectives to countermeasures; built-in prioritisation; combines attack trees,
+CWE and CVSS rather than replacing them; attacker-centric analysis with
+asset-centric output.
+
+**Limits.** Heavy and time-consuming — hard for small teams or fast iterations;
+depends on good threat intelligence and on business input; the risk calculation
+is not precisely specified in the free sources; examples are web applications;
+the primary sources are written by the method's creator, whose firm sells
+PASTA services. **The book itself was not read for this report** (paywalled) —
+this section rests on the author's 2012 slides and the SEI survey.
+
+**Sources.** `ucedavelez-pasta-owasp-2012`; `pasta-risk-centric-threat-modeling`;
+`sei-threat-modeling-methods-2018`.
 
 ## 4. Attack trees
 
@@ -187,12 +249,13 @@ tmodel:
 
 **Tooling.**
 
-| tool | kind | notes |
+| tool | kind | notes (checked 2026-09-29) |
 |---|---|---|
-| ADTool | open-source, academic | attack–defence trees (adds countermeasure nodes); _verify license and maintenance_ |
-| SecurITree (Amenaza) | commercial | dedicated attack-tree modeling and analysis; _verify_ |
-| SeaMonster | open-source, academic | attack trees and misuse cases; _verify whether still maintained_ |
-| IriusRisk, ThreatModeler, OWASP Threat Dragon | threat-modeling tools | _verify whether they support attack trees at all_ (see RPT-0003) |
+| [ADTool](https://satoss.uni.lu/members/piotr/adtool/) | academic, free (University of Luxembourg, SnT) | attack–defence trees: adds countermeasure nodes, bottom-up evaluation of values. Described by its authors as free and open source, but the [source repo](https://github.com/tahti/ADTool2) has no license file and was last updated in 2017 — effectively unmaintained |
+| [SecurITree](https://www.amenaza.com/securitree-main.php) (Amenaza) | commercial | dedicated attack-tree modeling; generates attack scenarios; ships a library of pre-built trees; also fault-tree analysis |
+| [SeaMonster](https://sourceforge.net/projects/seamonster/) | open source, academic (SINTEF) | attack trees and misuse cases; project activity ended in 2016 — unmaintained |
+| IriusRisk | commercial threat-modeling tool | no attack-tree editor; its documentation describes reproducing repeatable attack-tree patterns as threat libraries and templates |
+| OWASP Threat Dragon | open-source threat-modeling tool | no attack-tree support: data-flow diagrams only; threat trees are an open feature request ([issue #607](https://github.com/OWASP/threat-dragon/issues/607)) |
 | draw.io, Mermaid, Graphviz, Visio, Miro | general diagramming | common in practice; no AND/OR semantics or scoring |
 
 Questions per tool: AND/OR nodes? node scoring? easiest-path calculation?
