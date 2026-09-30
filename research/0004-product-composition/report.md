@@ -34,7 +34,45 @@ Axes: [`dimensions.md`](dimensions.md).
 
 ## Comparison table
 
-_In progress. Starting point: CISA Framing (3rd ed.) Table 1, updated to CycloneDX 1.7, plus SWID._
+**Baseline attributes.** Rows are CISA's twelve baseline attributes. The CycloneDX and SPDX columns start from CISA's own Table 1 (`cisa-framing-software-component-transparency`, §2.5), which maps CycloneDX 1.6 and SPDX 3.0; every field name was re-checked against CycloneDX 1.7 and SPDX 3.0.1 (see Tool runs in `searches.md`). Two things are ours: SPDX's `packageUrl`, which CISA's table leaves out, and the SWID column, based on NIST IR 8060 and RFC 9393 (see 1.3). Cells marked "our reading" are closest matches, not official mappings.
+
+| CISA attribute | CycloneDX 1.7 | SPDX 3.0.1 | SWID |
+|---|---|---|---|
+| SBOM Author Name | `metadata.authors` | `CreationInfo.createdBy` | the tag-creator `Entity` (required) |
+| SBOM Timestamp | `metadata.timestamp` | `CreationInfo.created` | no field |
+| SBOM Type | `metadata.lifecycles` | `Sbom.sbomType` | tag type: corpus before installation, primary once installed (our reading) |
+| SBOM Primary Component | `metadata.component` | `Sbom.rootElement` | the tag itself (one tag, one piece of software) |
+| Component Name | `components[].name` | `name` | `name` |
+| Component Version String | `components[].version` | `packageVersion` | `version` (optional, default "0.0") |
+| Component Supplier Name | `metadata.supplier`, `components[].supplier` | `suppliedBy` | an `Entity` with role `softwareCreator` or `distributor`; there is no supplier role (our reading) |
+| Component Cryptographic Hash | `components[].hashes[]` | `verifiedUsing` | per-file hashes in `Payload` or `Evidence` |
+| Component Unique Identifier | `serialNumber` + `version`, `components[].cpe`, `purl`, `swid`, `omniborId`, `swhid`, `evidence.identity` | `spdxId`, `packageUrl`, `contentIdentifier`, `externalIdentifier` | `tagId` |
+| Component Relationships | `dependencies[]`, `components[].components` | `Relationship` (`dependsOn`, `contains`, `hasStaticLink`, `hasDynamicLink`, `hasProvidedDependency`, `hasOptionalDependency`) | `Link` (`requires`, `component`, `parent` and others) |
+| Component License | `components[].licenses[]`, with `acknowledgement` declared or concluded | `hasDeclaredLicense` and `hasConcludedLicense` relationships | no license field; only a `licensor` role |
+| Component Copyright Holder | `components[].copyright` | `copyrightText` | no field |
+
+**The five questions at a glance.** A summary of sections 1.1 to 1.3:
+
+| | CycloneDX 1.7 | SPDX 3.0.1 | SWID |
+|---|---|---|---|
+| Required to name a component | `type`, `name` | `spdxId`, `name`, `creationInfo` | `name`, `tagId`, tag creator |
+| Every component has a global ID | no (global IDs are optional; `bom-ref` is local) | yes (`spdxId`) | yes (`tagId`) |
+| Hardware | `device` type, plus a separate list of property names | only as a purpose label (`device`) | none |
+| Kinds of relationship | 3 | 59 | 11 link types, mostly about installation |
+| Completeness | `compositions`, 10 values | `completeness` on each relationship, 3 values | none |
+| "None" versus "unknown" | empty entry versus missing entry | `NoneElement` versus `NoAssertionElement` | not expressible |
+| CWE | `cwes` (integers) | external reference of type `cwe` | none |
+| VEX | `analysis` inside each vulnerability | relationship classes | none |
+
+**VEX statuses.** CISA's four VEX statuses are the reference (CISA, Minimum Requirements for VEX, §2.7.1; see `sources.md`). Each SPDX class states which VEX status it represents, and SPDX's five justifications are CISA's five. CycloneDX has no published mapping to these statuses (neither CISA's document nor CycloneDX's own VEX page gives one), so the CycloneDX column is our reading of the definitions, rated in the last column; its nine justifications are cut differently and are not mapped.
+
+| CISA status | SPDX 3.0.1 | CycloneDX 1.7 (our reading) | Match |
+|---|---|---|---|
+| `not_affected` | `VexNotAffectedVulnAssessmentRelationship` | `not_affected` | same meaning |
+| `under_investigation` | `VexUnderInvestigationVulnAssessmentRelationship` | `in_triage` | same meaning |
+| `fixed` | `VexFixedVulnAssessmentRelationship` | `resolved`, `resolved_with_pedigree` | close: "has been remediated" is broader than "contain fixes" |
+| `affected` | `VexAffectedVulnAssessmentRelationship` | `exploitable` | partial: "may be directly or indirectly exploitable" is not the same claim as "affects" |
+| (none) | (none) | `false_positive` | no clean match; the nearest is `not_affected` |
 
 ## 1. SBOM formats (CycloneDX, SPDX, SWID)
 
@@ -140,7 +178,7 @@ Two things stand out. First, SPDX has a named value for "none" (`NoneElement`) t
 | VEX under investigation | `VexUnderInvestigationVulnAssessmentRelationship` |
 | Severity and priority | CVSS v2, v3 and v4, EPSS, exploit catalog (`kev` or `other`), SSVC |
 
-Three things stand out. First, SPDX supports CWEs but has no dedicated CWE field: a weakness is attached as an external reference (`externalRef`) of type `cwe` ("a reference to a source of software flaw defined within the official CWE List"), whose value goes in a free-text `locator`, where CycloneDX has a dedicated `cwes` list of integers. Second, the VEX vocabularies differ: SPDX has four statuses and five justifications (`componentNotPresent`, `vulnerableCodeNotPresent`, `vulnerableCodeNotInExecutePath`, `vulnerableCodeCannotBeControlledByAdversary`, `inlineMitigationsAlreadyExist`), CycloneDX six states and nine justifications, and neither specification maps its values onto the other's. Third, SPDX is stricter in one place and not in another: an "affected" statement must carry an `actionStatement` (CycloneDX's `response` is only "strongly encouraged", and only when a vulnerability is exploitable), but for "not affected" the spec says one of `impactStatement` or `justificationType` "MUST be defined" while giving both a cardinality of 0..1, "making them optional". SPDX also covers EPSS and exploit catalogs such as KEV, which CycloneDX 1.7 has no field for. This bears on DEC-008 (CWE/NVD integration) and, since VEX statuses become typed links between vulnerabilities and products, on DEC-001.
+Three things stand out. First, SPDX supports CWEs but has no dedicated CWE field: a weakness is attached as an external reference (`externalRef`) of type `cwe` ("a reference to a source of software flaw defined within the official CWE List"), whose value goes in a free-text `locator`, where CycloneDX has a dedicated `cwes` list of integers. Second, the VEX vocabularies differ: SPDX has four statuses and five justifications (`componentNotPresent`, `vulnerableCodeNotPresent`, `vulnerableCodeNotInExecutePath`, `vulnerableCodeCannotBeControlledByAdversary`, `inlineMitigationsAlreadyExist`), CycloneDX six states and nine justifications, and neither specification maps its values onto the other's. SPDX's four statuses and five justifications match those in CISA's Minimum Requirements for VEX (§2.7.1); the comparison table adds our reading of how CycloneDX's states line up. Third, SPDX is stricter in one place and not in another: an "affected" statement must carry an `actionStatement` (CycloneDX's `response` is only "strongly encouraged", and only when a vulnerability is exploitable), but for "not affected" the spec says one of `impactStatement` or `justificationType` "MUST be defined" while giving both a cardinality of 0..1, "making them optional". SPDX also covers EPSS and exploit catalogs such as KEV, which CycloneDX 1.7 has no field for. This bears on DEC-008 (CWE/NVD integration) and, since VEX statuses become typed links between vulnerabilities and products, on DEC-001.
 
 **Takeaway:** SPDX 3.0.1 is built as a graph: every package, vulnerability and relationship is an element with a global `spdxId`, so it can link across documents, and it offers far more relationship types (59) and more kinds of vulnerability assessment (adding EPSS and exploit catalogs) than CycloneDX. It is weaker where CycloneDX is strong: hardware is only a purpose label, a CWE has no dedicated field (only an external-reference type), and completeness has three values with no stated default. As with CycloneDX, almost everything beyond an ID, a name and creation information is optional and asserted by the author, and some rules the text states (a "MUST" that a not-affected statement give a justification or an impact statement) are not enforced by the model.
 

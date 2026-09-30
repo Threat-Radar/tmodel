@@ -31,6 +31,7 @@ Every source found, and the `library/` record it became.
 | SWHID specification (Software Heritage) | spec | 1 | not yet a record | DEC-002 |
 | RFC 6149 and RFC 6150 (IETF, "MD2 to Historic Status", "MD4 to Historic Status") | spec | 1 | not yet a record | DEC-002 |
 | NIST FIPS 203 (ML-KEM) and FIPS 204 (ML-DSA) | spec | 1 | not yet a record | DEC-002 |
+| CISA, Minimum Requirements for Vulnerability Exploitability eXchange (VEX) (April 2023) | spec | 5 | not yet a record | DEC-008 |
 | OWASP CycloneDX Authoritative Guide to SBOM | guide | 1 | not yet a record | DEC-002 |
 | Syft (anchore/syft, Apache-2.0) | tool | 3, 4 | not yet a record | DEC-007 |
 | Grype (anchore/grype, Apache-2.0) | tool | 3, 5 | not yet a record | DEC-007, DEC-008 |
