@@ -7,7 +7,7 @@ description: "Task backlog. Each task becomes a GitHub issue; this file is the d
 type: backlog
 category: process
 status: draft
-version: "0.2.2"
+version: "0.2.3"
 date: "2026-09-23"
 updated: "2026-10-01"
 needs_review: true
@@ -94,8 +94,8 @@ the umbrella landscape scaffold. Each report: sources → `library/` records
 | T-043 | Risk-metric survey → DEC-003 direction (CVSS / ISO 21434 / CC feasibility) | #14 | M | todo |
 | T-044 | RDF-vs-LPG + PROV-O/SHACL/STIX decision, from RPT-0011 gap analysis | #17 | M | todo |
 | T-045 | Application requirements (APP-0001): product shape, GUI/platform/perf/CLI, radar vs tmodel split | #18 | M | **doing** (APP-0001 draft in; hardens after RPT-0012) |
-| T-046 | RPT-0012 — GUI, platform & implementation stack (feeds DEC-006/DEC-010); multi-agent, 5 lanes | #10 | L | **todo** (scaffold + plan in) |
-| T-047 | DEC-010 — pick implementation stack & language from RPT-0012 (ADR) | #18 | M | todo |
+| T-046 | RPT-0012 — GUI, platform & implementation stack | #10 | L | **review** (direction decided → Path A; residual = A-044 viz comparison) |
+| T-047 | DEC-006 + DEC-010 — stack & language | #18 | M | **done** (ADR-0003, Path A) |
 
 ## I3 — MVP core (demo floor Nov 5) · Oct 28–Nov 5
 
@@ -121,6 +121,24 @@ the umbrella landscape scaffold. Each report: sources → `library/` records
 |---|---|---|---|---|
 | T-100 | Vectors green; docs; published site | all | M | todo |
 | T-101 | Demo script + dry run | all | M | todo |
+
+## I-App — Path A application (ADR-0003) · parallel track
+
+The desktop app, built as progressive vertical slices (ADR-0003). Cadence per slice:
+**design → documents → code → build → test → validate → GUI integrate → review → plan
+next.** Progressive UI: **tables → KG browse → threat chains → WebGL.** Local-only; no
+remote servers. Tracking epic: the GitHub "Path A" issue. Slices 0–3 are the spine; Slice
+4 is the ADR-0002 interactive attack-path graph.
+
+| id | task | issue | sz | status |
+|---|---|---|---|---|
+| T-200 | **Slice 0 — scaffolding**: Tauri+TS shell, Python engine package, local API `health`, CLI stub, CI build/test (no cloud) | Path A epic | M | todo |
+| T-201 | **Slice 1 — tabular filter UI**: tables of filter info, sample → live; `tmodel filters list` | Path A epic | M | todo |
+| T-202 | **Slice 2 — KG browse/query** (gated by DEC-004): browse/query through the store façade; CLI parity | Path A epic | L | todo |
+| T-203 | **Slice 3 — threat chains/paths**: compute + display chains (tabular + linked); CLI path cmd | Path A epic | L | todo |
+| T-204 | **Slice 4 — WebGL graph viz**: interactive graph; pick viz lib under A-044; chain highlight | Path A epic | L | todo |
+| T-205 | **Slice 5 — polish, packaging, agent CLI recipes**: Mac build/signing, loopback hardening | Path A epic | M | todo |
+| T-206 | App toolchain in CONTRIBUTING (current Node, Python ver, Tauri deps; harness node-v8 ≠ product) | Path A epic | S | todo |
 
 ## Parking lot
 
