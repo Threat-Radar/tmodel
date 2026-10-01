@@ -7,10 +7,10 @@ description: "The source of truth for tmodel: the logical object model, requirem
 type: architecture
 category: security
 status: draft
-version: "0.1.3"
+version: "0.1.4"
 version_policy: "semver; PATCH = editorial; MINOR = additive; MAJOR = breaking. version and updated move together (§9.5)."
 date: "2026-09-23"
-updated: "2026-09-30"
+updated: "2026-10-01"
 authors:
   - role: sponsor
     id: paul-lambert
@@ -162,8 +162,11 @@ All open. An `ADR-NNNN` accepts one; nothing else does (§9).
 | **DEC-007** | Relationship to `tradar`: reuse / wrap / greenfield. **ACCEPTED → ADR-0001** (radar/tmodel split). |
 | **DEC-008** | CWE/NVD integration: live lookup vs cached mirror; how automation runs. |
 | **DEC-009** | Generic-threat → product / product-family mapping and mitigation-lifecycle tracking model. |
+| **DEC-010** | Implementation stack & language for the application — driven by GUI/platform research (RPT-0012); requirements in APP-0001. |
 
 The register with status and evidence links is `project/DECISIONS-0001.md`.
+Application (product) requirements are `spec/APP-0001`; the object-model requirements
+here (§4) are distinct from them.
 
 ## 9. Governance
 
