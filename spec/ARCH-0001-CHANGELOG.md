@@ -6,10 +6,10 @@ description: "Every change to ARCH-0001, newest first. §9.5 requires an entry p
 type: process
 category: security
 status: active
-version: "0.1.1"
+version: "0.1.2"
 version_policy: "tracks ARCH-0001; one entry per version bump"
 date: "2026-09-23"
-updated: "2026-09-24"
+updated: "2026-09-30"
 needs_review: false
 reviewed: true
 canonical_path: spec/ARCH-0001-CHANGELOG.md
@@ -19,6 +19,10 @@ defers_to: ARCH-0001
 # ARCH-0001 changelog
 
 Newest first. Every ARCH-0001 version bump appends a line here (§9.5).
+
+## 0.1.2 — 2026-09-30
+
+DEC-007 **accepted** via ADR-0001: split into **radar** (tradar — composition/finding) and **tmodel** (architectural modeling); radar feeds tmodel. Scopes DEC-005.
 
 ## 0.1.1 — 2026-09-24
 
