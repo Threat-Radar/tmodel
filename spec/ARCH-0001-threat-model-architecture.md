@@ -7,10 +7,10 @@ description: "The source of truth for tmodel: the logical object model, requirem
 type: architecture
 category: security
 status: draft
-version: "0.1.1"
+version: "0.1.2"
 version_policy: "semver; PATCH = editorial; MINOR = additive; MAJOR = breaking. version and updated move together (§9.5)."
 date: "2026-09-23"
-updated: "2026-09-24"
+updated: "2026-09-30"
 authors:
   - role: sponsor
     id: paul-lambert
@@ -158,7 +158,7 @@ All open. An `ADR-NNNN` accepts one; nothing else does (§9).
 | **DEC-004** | Knowledge-graph substrate and the annotation/review model (§7). |
 | **DEC-005** | MVP scope: which expansion dimension(s) beyond container SCA the demo implements. |
 | **DEC-006** | UI stack and interaction model for the graphical, interactive threat model. |
-| **DEC-007** | Relationship to `tradar`: reuse its code, wrap it, or greenfield. |
+| **DEC-007** | Relationship to `tradar`: reuse / wrap / greenfield. **ACCEPTED → ADR-0001** (radar/tmodel split). |
 | **DEC-008** | CWE/NVD integration: live lookup vs cached mirror; how automation runs. |
 | **DEC-009** | Generic-threat → product / product-family mapping and mitigation-lifecycle tracking model. |
 
