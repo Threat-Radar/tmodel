@@ -7,7 +7,7 @@ description: "Task backlog. Each task becomes a GitHub issue; this file is the d
 type: backlog
 category: process
 status: draft
-version: "0.2.0"
+version: "0.2.1"
 date: "2026-09-23"
 updated: "2026-09-30"
 needs_review: true
@@ -56,7 +56,7 @@ Size: `S` <½day · `M` ~1day · `L` ~3days. Increments are in `PLAN-0001` §8.
 | T-005 | Port/author role skills into `tmodel/.claude/skills/` | all | M | todo |
 | T-006 | Publishing site (mkdocs or equivalent) | all | M | parked |
 | T-007 | Branch protection on `main` (PR-only, 1 review) | PL | S | done |
-| T-008 | **Week-0 gate:** ratify R-set, DEC-005 (MVP scope), DEC-007 (tradar) | all | L | **doing** |
+| T-008 | **Week-0 gate:** R-set + DEC-005 (ADR-0002) + DEC-007 (ADR-0001) ratified | all | L | **done** |
 
 ## I1 — Research · Sep 30–Oct 13 · underway
 
@@ -88,7 +88,7 @@ the umbrella landscape scaffold. Each report: sources → `library/` records
 
 | id | task | issue | sz | status |
 |---|---|---|---|---|
-| T-040 | ARCH-0001 → v0.2: core object model (input to DEC-001) | #15 | L | todo |
+| T-040 | ARCH-0001 → v0.2: core object model (input to DEC-001) | #15 | L | **doing** (ARCH-0001-PROPOSAL-v0.2.0, iteration 1) |
 | T-041 | `spec/schema/` first draft (LinkML?) importing one existing format; a round-trip vector | #16/#17 | L | todo |
 | T-042 | CWE/NVD integration design (DEC-008) | #17 | M | todo |
 | T-043 | Risk-metric survey → DEC-003 direction (CVSS / ISO 21434 / CC feasibility) | #14 | M | todo |
