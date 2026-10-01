@@ -6,7 +6,7 @@ description: "Every change to ARCH-0001, newest first. §9.5 requires an entry p
 type: process
 category: security
 status: active
-version: "0.1.5"
+version: "0.1.6"
 version_policy: "tracks ARCH-0001; one entry per version bump"
 date: "2026-09-23"
 updated: "2026-10-01"
@@ -19,6 +19,13 @@ defers_to: ARCH-0001
 # ARCH-0001 changelog
 
 Newest first. Every ARCH-0001 version bump appends a line here (§9.5).
+
+## 0.1.6 — 2026-10-01
+
+**DEC-011 accepted** via ADR-0004 (storage & edges): file canonical SoT (YAML/JSON/LinkML +
+link records), edge-rich typed-edge logical invariant (stable IDs across LPG / RDF-star /
+reified encodings), local embedded rebuildable working store, derived (non-canonical) export.
+**Narrows DEC-004** to the working-store engine pick (still open). Tracking: Edge Rich KG (#50).
 
 ## 0.1.5 — 2026-10-01
 
