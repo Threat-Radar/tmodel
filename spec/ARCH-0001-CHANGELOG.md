@@ -6,7 +6,7 @@ description: "Every change to ARCH-0001, newest first. §9.5 requires an entry p
 type: process
 category: security
 status: active
-version: "0.1.2"
+version: "0.1.3"
 version_policy: "tracks ARCH-0001; one entry per version bump"
 date: "2026-09-23"
 updated: "2026-09-30"
@@ -19,6 +19,10 @@ defers_to: ARCH-0001
 # ARCH-0001 changelog
 
 Newest first. Every ARCH-0001 version bump appends a line here (§9.5).
+
+## 0.1.3 — 2026-09-30
+
+DEC-005 **accepted** via ADR-0002 (MVP = reviewed attack-path graph over multiple products in ≥2 domains, one deep). Adds R-022 (domain/instance-type generalization).
 
 ## 0.1.2 — 2026-09-30
 

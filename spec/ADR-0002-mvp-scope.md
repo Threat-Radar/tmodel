@@ -3,108 +3,113 @@ schema: "archdoc/v1"
 id: ADR-0002
 title: "MVP scope for the early-December demo"
 short_title: "MVP scope"
-description: "PROPOSED decision for DEC-005 — what the tmodel MVP demonstrates, scoped by the ADR-0001 radar/tmodel split. Options + recommendation; accept at the Week-0 gate."
+description: "Accepts DEC-005 — the tmodel MVP is a reviewed attack-path graph over multiple products across at least two domains (one deep), demonstrating diverse-domain architecture and generic-model→instance-type mapping. Scoped by the ADR-0001 radar/tmodel split."
 type: decision
 category: process
-status: proposed
-version: "0.1.0"
-version_policy: "semver; accept by flipping status to accepted and bumping to 1.0.0"
+status: accepted
+version: "1.0.0"
+version_policy: "semver; an accepted ADR is 1.0.0 and only changes to record superseding"
 date: "2026-09-30"
 updated: "2026-09-30"
 decision_makers:
   - role: sponsor
     id: paul-lambert
 reviewers: []
-needs_review: true
-reviewed: false
+needs_review: false
+reviewed: true
 canonical_path: spec/ADR-0002-mvp-scope.md
-proposes: DEC-005
+accepts: DEC-005
 defers_to: ARCH-0001
 ---
 
-# ADR-0002 — MVP scope (PROPOSED)
+# ADR-0002 — MVP scope
 
-**Status: proposed. This drafts DEC-005 for ratification at the Week-0 gate — it
-does not accept it.** To accept: pick an option, flip `status: accepted`, bump to
-1.0.0, add a changelog line, and update ARCH-0001 §8 DEC-005.
+**Status: accepted (2026-09-30). Accepts DEC-005.** Option A (reviewed attack-path
+graph), **expanded by the sponsor** to span multiple products and domains.
 
 ## Context
 
 - **ADR-0001** split the work: **radar** (= `tradar`) does composition & finding;
   **tmodel** is the architectural threat-modeling / knowledge-graph / human-review
-  layer that **consumes** radar output. So the MVP is **not a scanner** — it is the
-  modeling, review, risk, and graph layer.
-- **Demo floor is I3 (Nov 5)**; ~5 weeks, 4 students. Review criteria reward a
-  **modest, achievable** end-to-end slice over a wildly ambitious one.
-- Evidence in hand: RPT-0011 (lean RDF stack; reuse STIX/BRON/CWE/CVE/D3FEND;
-  PROV-O + SHACL for provenance/review), the ISO 21434 requirement catalog, the
-  FIPS 140 family, and the composition work (RPT-0004).
-- Still open and **not required to finalize** for this choice: DEC-001 (object
-  model), DEC-002/004 (graph substrate), DEC-006 (UI), DEC-003 (risk metric) —
-  the MVP proceeds on provisional, RPT-0011-aligned choices.
+  layer that **consumes** radar output. The MVP is **not a scanner**.
+- **Demo floor is I3 (Nov 5)**; ~5 weeks, 4 students; achievable beats ambitious.
+- Evidence: RPT-0011 (lean RDF; reuse STIX/BRON/CWE/CVE/D3FEND; PROV-O + SHACL),
+  the ISO 21434 catalog, FIPS 140 family, RPT-0004 composition.
 
-## Decision to make (DEC-005)
+## Decision
 
-*What single vertical slice does the early-December MVP demonstrate?*
+The MVP is **Option A — a reviewed, grounded attack-path graph** — proven **not on
+one product but across multiple products in at least two domains**, with **one
+modeled deeply** and the other(s) demonstrating breadth:
 
-## Options
+For each product: ingest **radar output** → build the KG (assets, components,
+CVEs → CWE → CAPEC → ATT&CK via the **BRON** backbone) → render an **interactive
+threat / attack-path graph** → a human **reviews & annotates** an attack path
+(impact S/F/O/P, accept/reject, rationale, **PROV-O** provenance) → a **risk score
+that reflects the human input**.
 
-### Option A — Reviewed attack-path graph over one real product  *(recommended)*
-Ingest **radar output for one real product** (e.g. a container image) → build the
-KG (assets, components, CVEs → CWE → CAPEC → ATT&CK via the **BRON** backbone) →
-render an **interactive threat / attack-path graph** → a human **reviews &
-annotates** an attack path (impact S/F/O/P, accept/reject, rationale, **PROV-O**
-provenance) → a **risk score that reflects the human input**.
-- **Proves the differentiating thesis end-to-end**: AI proposes, human reviews,
-  grounded + auditable. Hits the PLAN §9 demo definition directly.
-- Reuses what's already in the library; consumes radar per ADR-0001.
-- In: object model + graph + human review + a simple risk score. Out (→ upside):
-  product families, mitigation-lifecycle automation, compliance, multi-dimension.
-- **Lowest-risk path to a compelling Nov-5 demo.**
+Two sponsor requirements make this more than a single-product slice:
 
-### Option B — Compliance / audit-first (ISO 21434 or FIPS 140 driven)
-MVP = the **requirement → work-product → evidence** audit model: load a product,
-map applicable requirements (ISO 21434 TARA or FIPS 140), check coverage, emit an
-**audit/gap report** with human review.
-- Leverages the already-extracted ISO 21434 + FIPS 140 records; strong corporate
-  angle. But less visual "threat graph," narrower wow-factor, and depends on #19.
-- Good as **I4 upside built on Option A's graph**, not as the MVP floor.
+1. **Diverse-domain architecture.** The object model must **generalize across
+   domains** (e.g. software / OSS, automotive-embedded, hardware-system), not be
+   hardcoded to one. The MVP includes an explicit **architecture note** on domain
+   abstraction and demonstrates the model on products from **≥2 domains**.
+2. **Generic model → diverse instance types.** Demonstrate mapping the **generic**
+   model (threats/weaknesses/attack patterns) onto **specific product instances of
+   different types**, where instance identity differs by type:
+   - **software** — a build / commit / hash / SBOM,
+   - **hardware** — firmware + buses + compute cores (HBOM),
+   - **system** — hierarchical composition of the above.
+   This engages R-020 and the generic↔instance half of DEC-009 at MVP level.
 
-### Option C — Breadth demo (several dimensions, shallow)
-Touch SCA + rule-based + CWE/NVD + risk + graph shallowly.
-- **Not recommended:** thin everywhere, nothing end-to-end; violates the demo-floor
-  discipline and the "achievable beats ambitious" criterion.
+## Scope
 
-### Option D — KG + NSF OKN federation / cross-graph query
-Build toward OKN federation; demo a cross-graph query (à la the semiconductor
-supply-chain example).
-- **Not recommended for the MVP:** federation is a parking-lot item; too much risk
-  for 5 weeks. Keep as a post-demo direction.
+**In:**
+- Multiple products across **≥2 domains**; **one deep** (full graph + review + risk),
+  the other(s) a breadth demonstration that the model generalizes.
+- KG with the CVE→CWE→CAPEC→ATT&CK backbone; interactive attack-path graph.
+- Human review/annotation (impact, verdict, rationale, provenance).
+- A simple risk score reflecting the review.
+- **Domain-abstraction architecture note** + **product-type → instance mapping**
+  (software/hardware/system identity).
 
-## Recommendation
+**Out (post-MVP upside, same graph):**
+- Automated product-**family** mitigation divergence; mitigation-lifecycle
+  automation (I4); full compliance/audit (ADR-0001 Option B / #19); NSF OKN
+  federation (#25 parking lot); multiple scanning dimensions (radar's job).
 
-**Option A.** It proves the thesis end-to-end, is demoable by Nov 5, reuses the
-existing library backbone, and leaves B (compliance/audit), mitigation lifecycle,
-and product-family mapping as **I4 upside on the same graph**. B's audit model and
-D's federation become the "what's next" story at the demo, not the MVP.
+## Architectural considerations for diverse domains (MVP-level)
 
-## If Option A is accepted — MVP definition
+- **Domain** and **product type** are first-class: a small **product-type taxonomy**
+  (software / hardware / system) with per-type **instance-identity** schema
+  (hash/commit/SBOM vs firmware/bus/core vs hierarchy).
+- **Generic ↔ instance split:** generic threats/weaknesses/attack patterns live
+  once; a per-instance overlay records applicability + review + (later) mitigation
+  status. The MVP shows the overlay for instances of ≥2 types.
+- **Domain-specific vocabulary binds to the shared backbone:** e.g. automotive via
+  the ISO 21434 object model (asset/damage/threat-scenario) mapping onto the same
+  CWE/CVE/ATT&CK graph; software via SBOM/components.
+- Captured in ARCH-0001 (R-022) and detailed in the modeling-requirements work (#15).
 
-- **In:** one real product via radar; KG with the CVE→CWE→CAPEC→ATT&CK backbone;
-  interactive attack-path graph; human review/annotation (impact, verdict,
-  rationale, provenance); one risk score reflecting the review.
-- **Out (upside):** product families, automated mitigation lifecycle, compliance
-  audit, multiple expansion dimensions, OKN federation.
-- **Acceptance (demo script):** load product → see threats + a threat chain as a
-  graph → review/annotate an attack path → risk score updates from the human input
-  → mapped to the product, mitigation state visible. (= PLAN §9.)
-- **Depends on:** DEC-001/002/004/006 provisional choices (lean RDF; reuse
-  STIX/BRON vocab; a graph UI from #10); DEC-003 — use a **simple risk metric**
-  (CVSS environmental + human impact) for the MVP, deferring ISO 21434 / Common
-  Criteria feasibility to I4.
+## Acceptance (demo script)
+
+For each product: load (radar) → see threats + a threat chain as a graph →
+review/annotate an attack path → risk score updates from the human input → mapped
+to the specific product instance (correct type), mitigation state visible. Show it
+on the **deep** product fully and on a **second-domain** product to prove
+generalization.
+
+## Risk & bound
+
+Multi-product / multi-domain is more than a single-product slice — scope risk.
+**Bound it:** go *deep on exactly one* product; the second domain is a
+**generalization demonstration** (architecture + a working-but-shallower graph),
+with the domain-abstraction documented even where not fully implemented. Demo
+floor stays Nov 5; depth is the gate, breadth is the proof-of-generality.
 
 ## Consequences
 
-Narrows I1–I3 effort to the Option-A slice; the student research reports feed it
-(frameworks → model, products/UI → graph UI, schema → object model, composition →
-radar input). B/D move to the post-MVP backlog.
+Pulls R-020 and the generic↔instance part of DEC-009 to MVP level; adds R-022
+(domain/instance-type generalization) to ARCH-0001. Student reports feed it
+(frameworks→model, products/UI→graph, schema→object model + instance types,
+composition→radar input). Compliance (B) and federation (D) remain post-MVP.
