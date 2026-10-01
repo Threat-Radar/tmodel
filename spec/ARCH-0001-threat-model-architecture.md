@@ -7,10 +7,10 @@ description: "The source of truth for tmodel: the logical object model, requirem
 type: architecture
 category: security
 status: draft
-version: "0.1.1"
+version: "0.1.5"
 version_policy: "semver; PATCH = editorial; MINOR = additive; MAJOR = breaking. version and updated move together (§9.5)."
 date: "2026-09-23"
-updated: "2026-09-24"
+updated: "2026-10-01"
 authors:
   - role: sponsor
     id: paul-lambert
@@ -118,6 +118,7 @@ queryable ("every unmitigated attack path bearing on asset X in product Y").
 - **R-019** A human sets the real impact of a damage type in their environment.
 - **R-020** Map a generic threat onto a specific product and a product family.
 - **R-021** Track whether a threat is mitigated across a product's design lifecycle; family members may differ per attack path.
+- **R-022** Generalize across **domains**: map generic threats/weaknesses onto specific product **instances of different types** — software (build/commit/hash/SBOM), hardware (firmware/buses/compute cores), and hierarchical systems (ADR-0002).
 - **R-030** Expand the `library/` knowledge graph as a first-class deliverable.
 
 ## 5. Interchange
@@ -156,13 +157,16 @@ All open. An `ADR-NNNN` accepts one; nothing else does (§9).
 | **DEC-002** | Encoding / serialization, and which existing formats we import (and export). |
 | **DEC-003** | Risk-metric scheme: CVSS, custom, ISO/SAE 21434, Common Criteria feasibility — or a composite. |
 | **DEC-004** | Knowledge-graph substrate and the annotation/review model (§7). |
-| **DEC-005** | MVP scope: which expansion dimension(s) beyond container SCA the demo implements. |
-| **DEC-006** | UI stack and interaction model for the graphical, interactive threat model. |
-| **DEC-007** | Relationship to `tradar`: reuse its code, wrap it, or greenfield. |
+| **DEC-005** | MVP scope. **ACCEPTED → ADR-0002**: reviewed attack-path graph over multiple products in ≥2 domains (one deep); diverse-domain + instance-type architecture. |
+| **DEC-006** | UI stack and interaction model. **ACCEPTED → ADR-0003** (Path A — local Tauri/TS desktop; tables→graph). |
+| **DEC-007** | Relationship to `tradar`: reuse / wrap / greenfield. **ACCEPTED → ADR-0001** (radar/tmodel split). |
 | **DEC-008** | CWE/NVD integration: live lookup vs cached mirror; how automation runs. |
 | **DEC-009** | Generic-threat → product / product-family mapping and mitigation-lifecycle tracking model. |
+| **DEC-010** | Implementation stack & language. **ACCEPTED → ADR-0003** (Tauri+TS / Python engine / local IPC / shared CLI); viz lib (A-044) & substrate (DEC-004) stay open behind adapters. |
 
 The register with status and evidence links is `project/DECISIONS-0001.md`.
+Application (product) requirements are `spec/APP-0001`; the object-model requirements
+here (§4) are distinct from them.
 
 ## 9. Governance
 
