@@ -7,7 +7,7 @@ description: "The product requirements for the tmodel application, distinct from
 type: application
 category: process
 status: draft
-version: "0.2.0"
+version: "0.2.1"
 date: "2026-10-01"
 updated: "2026-10-01"
 needs_review: true
@@ -45,7 +45,10 @@ and annotate what the model (and radar, and AI) propose. It is realized as **Pat
 local IPC, shared CLI. Its parts:
 
 - **Backend / graph engine** — ingest, the knowledge-graph store and queries, risk
-  computation, provenance and review state. (Substrate is `DEC-004`; RDF-vs-LPG is `T-044`.)
+  computation, provenance and review state. **Canonical SoT = git files** (YAML/JSON/LinkML +
+  link records); the store is a **local embedded, rebuildable working store** with **edge-rich
+  typed edges** and stable IDs (ADR-0004, DEC-011). The RDF-vs-LPG engine pick is the narrowed
+  `DEC-004` / `T-044`.
 - **Interactive GUI (console)** — the graphical threat model and review surface (`DEC-006`;
   ARCH-0001 §10 presentation layer; viz research `#10`).
 - **CLI (optional)** — a thin client over the same backend/API for scriptable actions
@@ -120,9 +123,11 @@ engine.
   its requirements; the viz-library sub-choice is deferred to A-044.
 - **DEC-010** — implementation stack & language. **Accepted → ADR-0003** (Tauri+TS /
   Python engine / local IPC / CLI). RPT-0012's residual work is the A-044 viz comparison.
-- **DEC-004** — knowledge-graph substrate (RDF vs LPG) and the review model; the backend
-  (A-001, A-030) depends on it (`T-044`).
-- **DEC-002** — interchange formats, which A-008 depends on.
+- **DEC-011** — storage & edge model. **Accepted → ADR-0004** (file canonical SoT, edge-rich
+  typed edges, local embedded working store, derived export). Shapes A-001/A-030/A-008.
+- **DEC-004** — KG substrate (RDF vs LPG), now **narrowed by ADR-0004** to the working-store
+  engine pick; the backend (A-001, A-030) depends on it (`T-044`).
+- **DEC-002** — interchange formats (export side only per ADR-0004), which A-008 depends on.
 
 ## 7. Scope — the radar / tmodel boundary (ADR-0001)
 
