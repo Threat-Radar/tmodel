@@ -7,7 +7,7 @@ description: "The DEC-* register: status, what blocks on each, and the evidence 
 type: process
 category: process
 status: active
-version: "0.1.5"
+version: "0.1.6"
 date: "2026-09-23"
 updated: "2026-10-01"
 needs_review: false
@@ -28,13 +28,14 @@ Status: `open` · `researching` · `proposed` (an ADR is drafted) · `accepted`.
 | **DEC-001** | The core object model — first-class types and typed relations | open | I2, the schema, the UI | RPT-0001 §schemas/object-models |
 | **DEC-002** | Encoding/serialization; which existing formats we import (and export) | open | schema, vectors, MAP-* | RPT-0001 §schemas |
 | **DEC-003** | Risk-metric scheme: CVSS / custom / ISO 21434 / Common Criteria / composite | open | I4 risk, R-011…R-013 | RPT-0001 §risk metrics |
-| **DEC-004** | Knowledge-graph substrate and the annotation/review model | open | I3, R-018…R-021 | RPT-0001 §schemas, library design |
+| **DEC-004** | KG substrate — **RDF vs LPG implementation of the local working store** (narrowed by ADR-0004; logical model is edge-rich either way) | open | I3, R-018…R-021 | ADR-0004; RPT-0001 §schemas, library design |
 | **DEC-005** | MVP scope — what the early-Dec demo demonstrates | **accepted → ADR-0002** | everything downstream | ADR-0002 (Option A, multi-product/≥2-domain) |
 | **DEC-006** | UI stack and interaction model for the graphical threat model | **accepted → ADR-0003** | I3 | ADR-0003 (Path A); RPT-0012, APP-0001 |
 | **DEC-007** | Relationship to `tradar`: reuse / wrap / greenfield | **accepted → ADR-0001** | I2, I3 | ADR-0001 (radar/tmodel split) |
 | **DEC-008** | CWE/NVD integration: live vs cached mirror; automation | open | I2, I4, R-010 | RPT-0001 §CWE/NVD |
 | **DEC-009** | Generic-threat → product / product-family mapping; mitigation lifecycle | open | I4, R-020, R-021 | RPT-0001, ARCH-0001 §7 |
-| **DEC-010** | Implementation stack & language for the application (GUI + backend + CLI) | open | I3 build, DEC-006 | RPT-0012; requirements APP-0001 |
+| **DEC-010** | Implementation stack & language for the application (GUI + backend + CLI) | **accepted → ADR-0003** | I3 build | ADR-0003 (Path A); RPT-0012, APP-0001 |
+| **DEC-011** | Storage & edge model — file canonical SoT, edge-rich logical invariant, local embedded working store, derived export | **accepted → ADR-0004** | I-App build; narrows DEC-004 | ADR-0004; #50 |
 
 ## Priority
 
@@ -45,3 +46,7 @@ RPT-0001 and taken across I2–I4 as the evidence lands.
 **Stack decided (2026-10-01):** DEC-006 and DEC-010 accepted → ADR-0003 (Path A). The
 substrate (DEC-004) and the commercial-viz filter (A-044) are deliberately kept open
 behind adapters so slice work can start without pre-empting them.
+
+**Storage/edges pinned (2026-10-01):** DEC-011 accepted → ADR-0004 (file canonical SoT +
+edge-rich logical model + local embedded working store + derived export). This **narrows**
+DEC-004 to the working-store engine pick, which stays open.

@@ -7,7 +7,7 @@ description: "The source of truth for tmodel: the logical object model, requirem
 type: architecture
 category: security
 status: draft
-version: "0.1.5"
+version: "0.1.6"
 version_policy: "semver; PATCH = editorial; MINOR = additive; MAJOR = breaking. version and updated move together (§9.5)."
 date: "2026-09-23"
 updated: "2026-10-01"
@@ -156,13 +156,14 @@ All open. An `ADR-NNNN` accepts one; nothing else does (§9).
 | **DEC-001** | The core object model — the first-class types and typed relations (§3). |
 | **DEC-002** | Encoding / serialization, and which existing formats we import (and export). |
 | **DEC-003** | Risk-metric scheme: CVSS, custom, ISO/SAE 21434, Common Criteria feasibility — or a composite. |
-| **DEC-004** | Knowledge-graph substrate and the annotation/review model (§7). |
+| **DEC-004** | KG substrate — **RDF vs LPG implementation of the local working store** (narrowed by ADR-0004; logical model edge-rich either way). Open. |
 | **DEC-005** | MVP scope. **ACCEPTED → ADR-0002**: reviewed attack-path graph over multiple products in ≥2 domains (one deep); diverse-domain + instance-type architecture. |
 | **DEC-006** | UI stack and interaction model. **ACCEPTED → ADR-0003** (Path A — local Tauri/TS desktop; tables→graph). |
 | **DEC-007** | Relationship to `tradar`: reuse / wrap / greenfield. **ACCEPTED → ADR-0001** (radar/tmodel split). |
 | **DEC-008** | CWE/NVD integration: live lookup vs cached mirror; how automation runs. |
 | **DEC-009** | Generic-threat → product / product-family mapping and mitigation-lifecycle tracking model. |
 | **DEC-010** | Implementation stack & language. **ACCEPTED → ADR-0003** (Tauri+TS / Python engine / local IPC / shared CLI); viz lib (A-044) & substrate (DEC-004) stay open behind adapters. |
+| **DEC-011** | Storage & edge model. **ACCEPTED → ADR-0004** (file canonical SoT + edge-rich typed edges + local embedded working store + derived export); narrows DEC-004. |
 
 The register with status and evidence links is `project/DECISIONS-0001.md`.
 Application (product) requirements are `spec/APP-0001`; the object-model requirements
