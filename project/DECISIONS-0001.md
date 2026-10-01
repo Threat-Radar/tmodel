@@ -7,9 +7,9 @@ description: "The DEC-* register: status, what blocks on each, and the evidence 
 type: process
 category: process
 status: active
-version: "0.1.3"
+version: "0.1.4"
 date: "2026-09-23"
-updated: "2026-09-30"
+updated: "2026-10-01"
 needs_review: false
 reviewed: true
 canonical_path: project/DECISIONS-0001.md
@@ -30,10 +30,11 @@ Status: `open` · `researching` · `proposed` (an ADR is drafted) · `accepted`.
 | **DEC-003** | Risk-metric scheme: CVSS / custom / ISO 21434 / Common Criteria / composite | open | I4 risk, R-011…R-013 | RPT-0001 §risk metrics |
 | **DEC-004** | Knowledge-graph substrate and the annotation/review model | open | I3, R-018…R-021 | RPT-0001 §schemas, library design |
 | **DEC-005** | MVP scope — what the early-Dec demo demonstrates | **accepted → ADR-0002** | everything downstream | ADR-0002 (Option A, multi-product/≥2-domain) |
-| **DEC-006** | UI stack and interaction model for the graphical threat model | open | I3 | RPT-0001 §UI comparison |
+| **DEC-006** | UI stack and interaction model for the graphical threat model | open | I3 | RPT-0012, APP-0001, RPT-0001 §UI; #10 |
 | **DEC-007** | Relationship to `tradar`: reuse / wrap / greenfield | **accepted → ADR-0001** | I2, I3 | ADR-0001 (radar/tmodel split) |
 | **DEC-008** | CWE/NVD integration: live vs cached mirror; automation | open | I2, I4, R-010 | RPT-0001 §CWE/NVD |
 | **DEC-009** | Generic-threat → product / product-family mapping; mitigation lifecycle | open | I4, R-020, R-021 | RPT-0001, ARCH-0001 §7 |
+| **DEC-010** | Implementation stack & language for the application (GUI + backend + CLI) | open | I3 build, DEC-006 | RPT-0012; requirements APP-0001 |
 
 ## Priority
 

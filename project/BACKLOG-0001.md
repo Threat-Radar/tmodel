@@ -7,9 +7,9 @@ description: "Task backlog. Each task becomes a GitHub issue; this file is the d
 type: backlog
 category: process
 status: draft
-version: "0.2.1"
+version: "0.2.2"
 date: "2026-09-23"
-updated: "2026-09-30"
+updated: "2026-10-01"
 needs_review: true
 reviewed: false
 canonical_path: project/BACKLOG-0001.md
@@ -88,12 +88,14 @@ the umbrella landscape scaffold. Each report: sources → `library/` records
 
 | id | task | issue | sz | status |
 |---|---|---|---|---|
-| T-040 | ARCH-0001 → v0.2: core object model (input to DEC-001) | #15 | L | **doing** (ARCH-0001-PROPOSAL-v0.2.0, iteration 1) |
+| T-040 | ARCH-0001 → v0.2: core object model (input to DEC-001) | #15 | L | **doing** (PROPOSAL proposed.5: iter-4 + sponsor display/redundancy round, §10) |
 | T-041 | `spec/schema/` first draft (LinkML?) importing one existing format; a round-trip vector | #16/#17 | L | todo |
 | T-042 | CWE/NVD integration design (DEC-008) | #17 | M | todo |
 | T-043 | Risk-metric survey → DEC-003 direction (CVSS / ISO 21434 / CC feasibility) | #14 | M | todo |
 | T-044 | RDF-vs-LPG + PROV-O/SHACL/STIX decision, from RPT-0011 gap analysis | #17 | M | todo |
-| T-045 | Application requirements: radar vs tmodel split | #18 | M | todo |
+| T-045 | Application requirements (APP-0001): product shape, GUI/platform/perf/CLI, radar vs tmodel split | #18 | M | **doing** (APP-0001 draft in; hardens after RPT-0012) |
+| T-046 | RPT-0012 — GUI, platform & implementation stack (feeds DEC-006/DEC-010); multi-agent, 5 lanes | #10 | L | **todo** (scaffold + plan in) |
+| T-047 | DEC-010 — pick implementation stack & language from RPT-0012 (ADR) | #18 | M | todo |
 
 ## I3 — MVP core (demo floor Nov 5) · Oct 28–Nov 5
 

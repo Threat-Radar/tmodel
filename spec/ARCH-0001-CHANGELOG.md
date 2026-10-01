@@ -6,10 +6,10 @@ description: "Every change to ARCH-0001, newest first. §9.5 requires an entry p
 type: process
 category: security
 status: active
-version: "0.1.3"
+version: "0.1.4"
 version_policy: "tracks ARCH-0001; one entry per version bump"
 date: "2026-09-23"
-updated: "2026-09-30"
+updated: "2026-10-01"
 needs_review: false
 reviewed: true
 canonical_path: spec/ARCH-0001-CHANGELOG.md
@@ -19,6 +19,13 @@ defers_to: ARCH-0001
 # ARCH-0001 changelog
 
 Newest first. Every ARCH-0001 version bump appends a line here (§9.5).
+
+## 0.1.4 — 2026-10-01
+
+Register (§8) adds **DEC-010** (implementation stack & language, driven by RPT-0012).
+Notes that application (product) requirements now live in `spec/APP-0001`, distinct from
+the object-model requirements (§4). No model change — the display/redundancy additions
+(R-033/034/035) are in `ARCH-0001-PROPOSAL-v0.2.0` and fold into §3/§4 at DEC-001 acceptance.
 
 ## 0.1.3 — 2026-09-30
 
