@@ -4,9 +4,9 @@ id: RPT-0009-searches
 title: "RPT-0009 search log"
 type: research
 status: draft
-version: "0.1.0"
+version: "0.2.0"
 date: "2026-09-28"
-updated: "2026-09-30"
+updated: "2026-10-01"
 record: RPT-0009
 ---
 
@@ -40,3 +40,10 @@ Every query run, so the survey is reproducible. One row per query.
 | 2026-09-28 | `pypdf` text extraction + normative-verb count | CISA AI-in-OT PDF, version 508cV2 (25 pages) | 4 principles, 12 subsections; whole document: 40 should, 37 may, 5 must |
 | 2026-09-28 | `shasum -a 256` | CISA PDF | `1fde3cbaadf9f75411158a144595631f8dd4029e52b11545c49811d29f531560` |
 | 2026-09-30 | `pypdf` text extraction; `shasum -a 256` | Hines et al., Spotlighting, arXiv 2403.14720v1 (8 pages) | read in full for §2.1; sha256 `8c57c6da480eb46c0deaec1f34dfd98fc75810bd352d4391c6f423430774877d` |
+| 2026-09-30 | `pypdf` text extraction; `shasum -a 256` | Sharma et al., Image-Based Prompt Attacks, author PDF (20 pages) | read for §2.2; sha256 `e315bf3a3488339f9e93c6150e90685387330e26c794be8e4832ec4972a4a1f8` |
+| 2026-09-30 | `pypdf` text extraction; `shasum -a 256` | Kang et al., Programmatic Behavior of LLMs, arXiv 2302.05733v1 (14 pages) | read for §2.3; sha256 `3340777038e9909067f6deed3e1b7a57cd6bb98ff3c9e25148c9512bec601adf` |
+| 2026-09-30 | `pypdf` text extraction; `shasum -a 256` | Liu et al., Pre-trained Encoders, arXiv 2212.03334v1 (33 pages; body and conclusion) | read for §2.4; sha256 `4ca85a38891f99bcc5fe2e86201f7817adeca10cd3b247c5b5fdfe1a4015ec86` |
+| 2026-09-30 | `pypdf` text extraction; `shasum -a 256` | Christodorescu et al., Systems Security Foundations, arXiv 2512.01295v2 (27 pages) | read for §2.5; sha256 `a6afdd4020ac8007ea062fe5c7e6aab1e5200d969a416999282c7a6a63d9d4df` |
+| 2026-09-30 | `pypdf` text extraction; `shasum -a 256` | Christodorescu et al., Agent Security is a Systems Problem, arXiv 2605.18991v2 (18 pages) | read for §2.6; sha256 `eb02d189389663de9e0b4a315ca9f33b07fa1b2e32b23972ea245273134bbadf` |
+| 2026-09-30 | `pypdf` text extraction; `shasum -a 256` | Christodorescu et al., Securing the Future of GenAI, arXiv 2407.12999v1 (25 pages; intro, §6–8) | read for §2.7; sha256 `1a6596654e07c708bb09d8b374a1415489fdae72d6e26e689b80a3b3c41020e1` |
+| 2026-09-30 | `pypdf` text extraction | CISA AI-in-OT PDF, principles 1–4 | read in full for §4 |

@@ -4,9 +4,9 @@ id: RPT-0009-sources
 title: "RPT-0009 source log"
 type: research
 status: draft
-version: "0.1.0"
+version: "0.2.0"
 date: "2026-09-28"
-updated: "2026-09-29"
+updated: "2026-10-01"
 record: RPT-0009
 ---
 
@@ -32,6 +32,8 @@ not yet assessed.
 | ETSI TS 104 216, *SAI; Conformance assessment for AI (EN 304 223)* | spec | 3 | not yet a record | — |
 | ETSI Technical Committee Securing Artificial Intelligence (TC SAI) | consortium | 3 | not yet a record | — |
 | CISA et al., *Principles for the Secure Integration of Artificial Intelligence in Operational Technology* (Dec 2025) | spec | 4 | not yet a record | R-018 |
+| ETSI TR 104 048, *SAI; Data Supply Chain Security* (cited by CISA §3.4) | spec | 3 | not yet a record | — |
+| Barrett et al., *Identifying and Mitigating the Security Risks of Generative AI* (July 2023 workshop; cited by arXiv 2407.12999) | paper | 2 | not yet a record | — |
 | NCSC-UK and CISA, *Guidelines for Secure AI System Development* | spec | 5 | not yet a record | — |
 | UK Government, *Code of Practice for the Cyber Security of AI* and its Implementation Guide | spec | 5 | not yet a record | — |
 | NIST AI 100-1, *AI Risk Management Framework* | spec | 5 | not yet a record | — |
