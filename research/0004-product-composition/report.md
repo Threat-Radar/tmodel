@@ -9,7 +9,7 @@ category: security
 status: draft
 version: "0.1.0"
 date: "2026-09-28"
-updated: "2026-09-30"
+updated: "2026-10-01"
 authors:
     - role: student
       id: ty-van-heerden
@@ -22,12 +22,12 @@ reviewed: false
 canonical_path: research/0004-product-composition/report.md
 library_commit: "see library/ submodule pointer at time of merge"
 informs: [DEC-001, DEC-002, DEC-007, DEC-008]
-open_decisions: [DEC-001, DEC-002, DEC-007, DEC-008]
+open_decisions: [DEC-001, DEC-002, DEC-008]
 ---
 
 # Product composition
 
-> **This report does not select a design.** It is evidence for the open decisions listed above.
+> **This report does not select a design.** It is evidence for the open decisions listed above. DEC-007, which it also informs, has since been accepted in ADR-0001 (radar / tmodel split).
 
 Search log: [`searches.md`](searches.md). Source log: [`sources.md`](sources.md). 
 Axes: [`dimensions.md`](dimensions.md).
@@ -220,7 +220,7 @@ Input to DEC-001.
 
 ## 3. Tools (Syft, Grype, Trivy, Dependency-Track)
 
-Input to DEC-002 and DEC-007.
+Input to DEC-002, and to the radar-to-tmodel data contract set by ADR-0001 (DEC-007).
 
 We ran the three command-line tools on two inputs: the `alpine:latest` container image (2026-09-28) and the tradar source repository (2026-09-30), with Syft 1.52.0, Grype 0.119.0 and Trivy 0.74.0 (Tool runs in `searches.md`). Two inputs are a small sample, so the counts below describe these runs, not the tools in general.
 
@@ -236,11 +236,11 @@ We ran the three command-line tools on two inputs: the `alpine:latest` container
 
 **GUAC (not run; from its documentation).** GUAC (OpenSSF, v1.1.0, 2026-03-13) is not a scanner but a graph built from many documents: its README lists CycloneDX, SPDX, SLSA, in-toto, DSSE, OpenVEX, CSAF, OSV, deps.dev and OpenSSF Scorecard as inputs. "We represent a package by a pURL", and for artifacts "we separate the algorithm used for the checksum from the digest value" (GUAC GraphQL docs); vulnerabilities come from an OSV certifier that works by "Package identification through PURL". Its SPDX parser reads SPDX 2.x (it imports `spdx/v2` from spdx/tools-golang), SPDX 3.0 is an open long-term issue (#1850), and its default storage is "a non-persistent in-memory backend". It describes itself as "under active development" and an OpenSSF incubating project (README).
 
-**Takeaway:** No single tool covers the whole chain. Syft writes the SBOM, with mostly guessed CPEs and without SPDX 3; Grype and Trivy match it against different data and can disagree on the same input; Dependency-Track reads only CycloneDX; and GUAC reads SPDX only in version 2. So an SPDX 3.0.1 import path (DEC-002) has no support in Syft, Dependency-Track or GUAC today, and anything that reuses tradar (DEC-007) inherits the choices its Syft and Grype defaults make.
+**Takeaway:** No single tool covers the whole chain. Syft writes the SBOM, with mostly guessed CPEs and without SPDX 3; Grype and Trivy match it against different data and can disagree on the same input; Dependency-Track reads only CycloneDX; and GUAC reads SPDX only in version 2. So an SPDX 3.0.1 import path (DEC-002) has no support in Syft, Dependency-Track or GUAC today, and radar (tradar), which ADR-0001 makes tmodel's source of composition data, inherits the choices its Syft and Grype defaults make.
 
 ## 4. How tradar uses these today
 
-Input to DEC-007.
+Input to the radar-to-tmodel data contract. ADR-0001 accepted DEC-007 on 2026-09-30: tradar becomes "radar", the composition and finding tool whose output tmodel consumes, and "the interface is the composition→model-input mapping surveyed in RPT-0004 (#8)".
 
 This section describes `tradar` at commit `26d9c76` (2026-09-10). Paths are relative to its `threat_radar/` package.
 
@@ -252,7 +252,7 @@ This section describes `tradar` at commit `26d9c76` (2026-09-10). Paths are rela
 
 **CWE, NVD and the rest.** The current code has no CWE handling and calls no vulnerability API; a case-insensitive search for "cwe" across its code, tests and docs finds nothing. The git history shows an NVD client that extracted CWE IDs, added on 2025-10-05 (`629d92a`) and removed on 2025-10-09 (`3e26837`, "Remove manual SBOM package converter and replace with Grype integration"). Nothing in the code handles hardware, VEX or completeness. The nearest thing to build identity is a local Docker image ID, which could label a container node (`graph/builders.py:100`), but both CLI paths that build graphs call `build_from_scan` without a container (`cli/graph.py:152`, `cli/env.py:247`). tradar's saved scan files also keep Grype's `source` block, which for an image includes its `manifestDigest` (`cli/cve.py:151, 337, 480`), but no code reads that digest.
 
-**Takeaway:** tradar is a thin wrapper around Syft and Grype whose graph keeps only the name, version and ecosystem of vulnerable packages. Reusing or wrapping it (DEC-007) would mean carrying through what its pipeline now drops, such as purl and CPE, dependency links and CWEs, all of which Syft's and Grype's JSON outputs already contain (see section 3).
+**Takeaway:** tradar is a thin wrapper around Syft and Grype whose graph keeps only the name, version and ecosystem of vulnerable packages. Under ADR-0001, tmodel consumes radar's output instead of re-implementing scanning, so what radar's pipeline now drops, such as purl and CPE, dependency links and CWEs, is what the composition-to-model-input contract would have to add if tmodel needs it; Syft's and Grype's JSON outputs already contain all of it (see section 3).
 
 ## 5. The bridge: components to CVEs and CWEs
 
@@ -284,7 +284,7 @@ Input to DEC-001.
 
 ## 7. Synthesis: implications for tmodel
 
-This section gathers the evidence above by open decision. It does not select a design.
+This section gathers the evidence above by decision: the three that are still open, and DEC-007, which ADR-0001 has since accepted. It does not select a design.
 
 **DEC-001 (core object model).**
 - *Identity.* A component can carry several identifiers at once, and only some can be checked against its bytes (`hashes`, OmniBOR, SWHID; 1.1, 1.2, comparison table). Names such as CPEs can be guesses (section 3).
@@ -298,7 +298,7 @@ This section gathers the evidence above by open decision. It does not select a d
 - CycloneDX 1.7 is what our tools wrote and what Dependency-Track reads. SPDX 3.0.1 is the more graph-like model, but Syft cannot write it and Dependency-Track and GUAC cannot read it yet. SWID is an identification tag, not a composition format (1.2, 1.3, section 3). Both main formats are on their way to ISO: SPDX 3.0 as ISO/IEC DIS 5962 and CycloneDX as ISO/IEC CD 27055 (section 1).
 - The same scan carries different data depending on the output format (Syft's CPEs, section 3), and converting between formats can lose a hash's algorithm name and VEX distinctions (1.2, comparison table).
 
-**DEC-007 (relationship to tradar).** tradar's graph keeps only the name, version and ecosystem of vulnerable packages; purl, CPE, dependency links and CWEs are dropped on the way, although the Syft and Grype outputs it already uses contain them (section 4).
+**DEC-007 (accepted in ADR-0001, radar / tmodel split).** Under ADR-0001, tmodel consumes radar's (tradar's) output, and "the interface is the composition→model-input mapping surveyed in RPT-0004 (#8)". Today radar's graph keeps only the name, version and ecosystem of vulnerable packages; purl, CPE, dependency links and CWEs are dropped on the way, although the Syft and Grype outputs it already uses contain them (section 4).
 
 **DEC-008 (CWE/NVD integration).** NVD is one source among several: its CPE configurations can be missing for CVEs awaiting analysis, CWEs come from Primary and Secondary sources that can differ, and NVD uses placeholder values that some formats cannot store. In our runs most reported matches came from GitHub advisory data, and all Alpine matches came from NVD CPE data, since the Alpine feed listed neither CVE (section 5).
 

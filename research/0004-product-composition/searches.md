@@ -6,7 +6,7 @@ type: research
 status: draft
 version: "0.1.0"
 date: "2026-09-28"
-updated: "2026-09-30"
+updated: "2026-10-01"
 record: RPT-0004
 ---
 
@@ -88,5 +88,6 @@ Every query run, so the survey is reproducible. One row per query.
 | 2026-09-30 | `jq` of `cpe` fields and `syft:cpe23` properties | `alpine.cdx.json` | 16 standard `cpe` values plus 65 properties = 81 candidates (§3) |
 | 2026-09-30 | `jq` of `packages[].supplier` | Syft SPDX output of tradar | suppliers for the 9 GitHub Actions: "Organization: GitHub" (6), "Organization: anthropics" (2), "Organization: softprops" (1) (§3) |
 | 2026-09-30 | `grep` for "@date", "applicable licenses", `rel="license"`, "Link Relation Types" | NIST IR 8060 text; RFC 9393 | Evidence `@date` (§3.1.3); Link used for "documents containing applicable licenses" with a `rel="license"` example; `rel` may be an IANA "Link Relation Types" name (RFC 9393 §2.7) (comparison table, §1.3) |
+| 2026-10-01 | `git show origin/main:spec/ADR-0001-radar-model-split.md` and `origin/main:project/DECISIONS-0001.md` | tmodel `main` | DEC-007 accepted in ADR-0001 (2026-09-30): tradar becomes "radar", tmodel consumes its output, and "the interface is the composition→model-input mapping surveyed in RPT-0004 (#8)"; DEC-001, DEC-002 and DEC-008 still open (front matter, §3, §4, §7) |
 | 2026-09-30 | `gh issue view 12` | tmodel issue #12 | "Agentic Threats & Weaknesses"; no mention of bills of materials, so no overlap claimed (§7) |
 | 2026-09-30 | `curl` of the page, then word counts | cyclonedx.org/capabilities/vex/ (the CycloneDX page CISA cites) | `under_investigation`, `in_triage`, `not_affected`, `fixed`, `CISA`, `justification`: all `0`: no mapping to CISA's statuses |
