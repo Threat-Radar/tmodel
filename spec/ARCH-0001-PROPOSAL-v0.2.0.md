@@ -1,16 +1,16 @@
 ---
 schema: "archdoc/v1"
 id: ARCH-0001-PROPOSAL
-title: "Proposed ARCH-0001 v0.2.0 — core object model & modeling requirements (iteration 3)"
+title: "Proposed ARCH-0001 v0.2.0 — core object model & modeling requirements (iteration 4)"
 short_title: "Object-model proposal v0.2.0"
-description: "Iteration 3 of the DEC-001 object-model synthesis (#15). Three layers — structure (composition, networks, deployment/environment), behavior (data-flow/DFD, workflows), and provenance (PROV-O over nodes, edges, and processes) — plus the generic/instance threat catalog. Proposed, not accepted."
+description: "Iteration 4 of the DEC-001 object-model synthesis (#15). Reconciles the three layers after the iteration-3 adversarial pass: one authoritative artifact layer with DFD roles projected onto it, STRIDE as a facet of the single threat vocabulary, one provenance spine, honest matrix, and an explicit MVP/post-MVP split. Proposed, not accepted."
 type: architecture
 category: security
 status: proposed
-version: "0.2.0-proposed.3"
+version: "0.2.0-proposed.4"
 version_policy: "iterate the -proposed.N suffix; folds into ARCH-0001 §3/§4 (and an ADR accepts DEC-001)"
 date: "2026-09-30"
-updated: "2026-09-30"
+updated: "2026-10-01"
 decision_makers:
   - role: sponsor
     id: paul-lambert
@@ -19,171 +19,158 @@ reviewers:
     id: paul-lambert
   - role: adversarial-critic
     id: agent-iteration-2
+  - role: adversarial-critic
+    id: agent-iteration-3
 needs_review: true
 reviewed: false
 canonical_path: spec/ARCH-0001-PROPOSAL-v0.2.0.md
 proposes: DEC-001
 defers_to: ARCH-0001
 agent_notes: >
-  Proposes against ARCH-0001 §3/§4 — not a parallel model (§9.4). Iteration 3 folds
-  in two rounds of sponsor review (design-log/0003): physical/environment, codebase
-  findings + Jira, vulnerability propagation + VEX, hardware composition depth + buses;
-  and networks/topology, data-flow (DFD), process provenance (compile / AI-generation).
-  The §7 matrix and §8 vectors are the gate. DEC-001 is accepted by an ADR after
-  iteration (research #6/#7/#9 + the reification decision DEC-002/DEC-004).
+  Proposes against ARCH-0001 §3/§4 — not a parallel model (§9.4). Iteration 4 folds the
+  iteration-3 adversarial findings F1–F13 (design-log/0004): reconcile the layers,
+  unify the threat vocabulary and the provenance spine, add the missing requirements,
+  make the matrix honest, and bound the MVP (§9). Open items (reification DEC-002/004,
+  risk metric DEC-003, DFD-standard alignment pending #9) are marked ◐, not pretended.
 ---
 
-# Proposed ARCH-0001 v0.2.0 — core object model (iteration 3)
+# Proposed ARCH-0001 v0.2.0 — core object model (iteration 4)
 
-**Status: proposed (iteration 3).** The model is now **three layers plus a threat
-catalog and cross-cutting provenance** — enough to express the sponsor's review
-cases (physical exposure, networks/DNS, AI workflows across phone↔server, build and
-AI-generation provenance), while the MVP (ADR-0002) still exercises only a slice (§9).
+**Status: proposed (iteration 4).** Iteration 3 added three layers but, per the
+adversarial pass (DL-0004), **double-modeled reality on three axes**, ran two threat
+taxonomies and two provenance mechanisms without crosswalks, and claimed DFD-standard
+alignment ahead of the research (#9). Iteration 4 **reconciles** them and **bounds the
+MVP**.
 
-## 1. Layers
+## 0. One-artifact rule (F1) — how the layers relate
 
-1. **Structural** — *what a thing is made of and where it runs*: Product,
-   ProductInstance, Component, composition, Interconnect/Network, TrustBoundary,
-   AttackSurface, Deployment→Environment.
-2. **Behavioral (data-flow / DFD)** — *what it does*: ExternalEntity, Process,
-   DataStore, DataFlow, Workflow — laid over the structure, crossing trust boundaries.
-3. **Threat & catalog** — generic catalog (Weakness, AttackPattern, Mitigation,
-   ThreatActor) + instance threats (ThreatInstance, DamageScenario, AttackStep,
-   AttackPath, Finding, Vulnerability, MitigationInstance, RiskScore).
-4. **Cross-cutting** — Provenance (PROV-O over nodes, **edges via Assertion**, and
-   **Processes**), Review, ProductFamily, external refs.
+- **`Component` is the authoritative layer** — the deployed artifact that *exists*
+  (service, container, dependency, chip, core).
+- **DFD elements are behavioral *roles* projected onto Components**, not new things:
+  a `Process`/`DataStore` MUST resolve to ≥1 Component via **`realized_by`/`runs_on`/
+  `stored_in`**. A `DataFlow` resolves to a `connected_via` path between those
+  Components' hosts. When the two disagree, the Component layer wins and the DFD is
+  invalid until it resolves. This removes the Component-vs-Process and
+  reachability double-modeling.
 
-Threats/attack-paths attach to elements of **either** layer 1 or 2 (STRIDE-per-element
-on the DFD; attack steps traverse structure and networks). Everything is
-**deployment/environment-relative** (feasibility & risk, §2).
+## 1. Layers (reconciled)
 
-## 2. Structural layer
+1. **Structural (authoritative)** — Product/ProductInstance(versioned), Component
+   (CPE/purl, shared), `composed_of`, Interconnect/Network/NetworkLink, TrustBoundary
+   (a **zone**: elements declare `in_trust_zone`, F12), AttackSurface, Deployment→Environment.
+2. **Behavioral (DFD) — projected onto (1)** — ExternalEntity, Process, DataStore,
+   DataFlow, Workflow, each `realized_by` Component(s), with **security properties**
+   (authenticated? encrypted? privilege) and **data `classification`** that drive STRIDE.
+3. **Threat & catalog (one vocabulary, F2)** — generic Weakness(CWE)/AttackPattern
+   (CAPEC/ATT&CK)/Mitigation(D3FEND)/ThreatActor; instance ThreatInstance (carries a
+   **STRIDE facet**, `realizes` DamageScenario), AttackStep(pre/postconditions)/AttackPath
+   (`attack_feasibility`), Finding/Vulnerability, MitigationInstance, RiskScore.
+4. **Cross-cutting** — **one provenance spine** (F6): PROV-O Entity/Activity/Agent
+   nodes + a reified **`Assertion`** for AI-proposed edges that *points at* its
+   generating Activity; Review; ProductFamily; external refs.
 
-- **Composition is recursive:** `composed_of` is a graph — server ⊃ board ⊃ chip ⊃
-  core works at any depth, software and hardware alike.
-- **Interconnect ≠ containment.** `Interconnect` generalizes to **`Network`**
-  (short-range `Bus` — CAN/PCIe/I²C — through LAN **Ethernet** to **WAN/Internet**),
-  joined by **`NetworkLink`** (server↔server, with distance / latency / exposure).
-  Components connect via `connected_via`; a bus/network is also an `AttackSurface`/
-  `TrustBoundary` that `AttackStep`s `pivot_to` across (reaches multiple ECUs/servers).
-- **Network services are Components:** `DNS`, gateway, load-balancer, CA. A flow or
-  link that relies on one gets `depends_on` → DNS-spoofing / resolver-outage are
-  modelable threats on that dependency.
-- **Deployment & Environment (per instance, not per build).** `ProductInstance`
-  (versioned) → `Deployment` → `Environment`:
-  `physical_security` (secure-facility / controlled / unattended-public),
-  `connectivity` (air-gapped / LAN / internet-facing), `operational_context`. One
-  build → many deployments → **different risk**.
-- **AttackSurface / Interface** with `exposure` (internal / external / remote) — the
-  "inside vs outside the car" / "locked rack vs phone in pocket" distinction. Referenced
-  by `AttackStep.precondition` and by `attack_feasibility`.
+**Reachability is one concept at three levels, not three models:** `connected_via`
+(physical/network reachability) → an `AttackStep.precondition` may require it → an
+`AttackPath` `pivots_to` across it. DataFlow is the *intended* traffic; AttackStep is
+the *adversary* use of the same substrate.
 
-**Feasibility & risk are computed relative to the Deployment's Environment and the
-exposure of the surfaces an AttackPath uses** (ISO 21434 window-of-opportunity /
-CC attack-potential). The same build is high-risk on a phone, low-risk in a locked rack.
+## 2. Threat vocabulary — STRIDE is a facet, not a parallel list (F2)
 
-## 3. Behavioral layer — data flow / DFD
+A STRIDE "Tampering-on-this-DataFlow" **is a `ThreatInstance`** whose `AttackPattern`
+carries a `stride` facet and anchors to CWE/CAPEC; an `AttackStep` `exploits` the flow.
+One threat list, classifiable by STRIDE *and* traceable to BRON. (The STRIDE↔CWE/CAPEC
+mapping table is deferred to #9; the integration rule is fixed here.)
 
-A classic threat-modeling DFD, over the structural substrate (aligns us with
-STRIDE / Threat Dragon / pytm / threagile / OTM — #6/#7/#9):
+## 3. Structure, networks, deployment (as iteration 3, with fixes)
 
-- **`Process`** — a unit of processing (also a PROV `Activity`, §5).
-- **`DataFlow`** — data moving between processes/stores/entities **over** an
-  Interconnect/Network, crossing `TrustBoundary`s (where most threats live).
-- **`DataStore`** (data at rest) · **`ExternalEntity`** (user / outside system).
-- **`Workflow`** — a DAG of Processes + DataFlows.
+Recursive `composed_of`; Interconnect→Network/NetworkLink (bus→Ethernet→WAN); DNS/
+services as Components + `depends_on`. **Environment is a first-class, reusable node**
+(F9): `ProductInstance` 1→N `Deployment`, each →1 `Environment`
+(physical_security/connectivity/operational_context, enum-typed). **Environment +
+AttackSurface.exposure are risk *inputs that parameterize the chosen metric*** (F5) —
+they feed ISO 21434 window-of-opportunity / CVSS Attack-Vector+environmental, **never a
+parallel adjustment**. Attacker position relative to a Network is an `AttackStep`
+precondition type (F10).
 
-**Worked case — AI in phone vs AI in secure server, communicating:**
-`ExternalEntity(user)` → `Process(phone-side AI)` [Deployment: handheld, exposure
-external] → `DataFlow(prompt)` over a `NetworkLink` crossing the phone↔datacenter
-`TrustBoundary` → `Process(server inference)` [Deployment: secure-facility] →
-`DataFlow(response)`. Two Deployments of (maybe) one model, a channel between, each
-element carrying its own threats/exposure.
+## 4. Provenance — one spine (F6/F7)
 
-## 4. Threat & catalog layer (from iteration 2)
+PROV-O is the node model (Entity/Activity/Agent + used/wasGeneratedBy/wasDerivedFrom/
+wasAssociatedWith). An AI-proposed edge is a reified **`Assertion`** whose provenance
+**points at the AI-generation `Activity`** — *one* event, not two mechanisms.
+**AI-generation provenance** (prompt→output) stays in-model (the "AI proposes → human
+reviews" audit). **Compile / SLSA build provenance moves to the radar→tmodel contract
+as imported attestations** (supply-chain integrity = radar's territory, ADR-0001) —
+out of the MVP core (F7). The provenance **view (#10) does not exist yet**; SLSA/in-toto
+equivalence is unverified against `in-toto-attestation-v1`/`guac` — both marked ◐.
 
-Generic catalog authored once (`Weakness` CWE · `AttackPattern` CAPEC/ATT&CK ·
-`Mitigation` D3FEND `defends_against` · `ThreatActor` capability · shared `Component`
-CPE/purl). Instance overlay per product: `ThreatInstance` `realizes` `DamageScenario`
-(S/F/O/P, many-to-many) · `AttackStep` (pre/postconditions) → `AttackPath`
-(`attack_feasibility`, cross-product `pivots_to`) · `Finding` (concrete weakness, no
-CVE needed) / `Vulnerability` (CVE) · `MitigationInstance` (effectiveness, validity
-time) `reduces` a step/path · `RiskScore`. (Unchanged from iter 2 except the
-attachment points now include DFD elements.)
+## 5. Propagation & VEX (F8)
 
-## 5. Provenance (PROV-O over nodes, edges, and processes)
+Vulnerability/Finding propagation along `uses_component`/`composed_of` is sound (✅).
+The per-instance **VEX override** is an `Assertion`+`Review` on the propagated edge —
+same open reification as §4 — so it is **◐**, not ✅. External refs (Jira) unchanged.
 
-- **Edges:** AI-proposed relationships are reified as `Assertion`s carrying
-  `confidence` + `Review` verdict + provenance (gates DEC-002/DEC-004 — §10).
-- **Processes = PROV Activities.** Processing transforms inputs→outputs:
-  - **Compile:** `Process(compile)` `used` source, `wasGeneratedBy`→binary,
-    `wasAssociatedWith` toolchain `Agent` — this **is SLSA / in-toto build provenance**
-    (GUAC already a library record; reuse, don't reinvent).
-  - **AI generation:** `Process(generate)` `used` {prompt, model, context},
-    `wasGeneratedBy`→output, `wasAssociatedWith` the model/agent.
-- **Provenance of a flow** = the PROV subgraph over the Workflow: the transitive
-  `wasDerivedFrom` chain from an output back to its sources (toolchain / prompt /
-  model / upstream data). **Shown** as a provenance view in the review console (#10) —
-  the same KG, filtered to Activity/Entity/Agent + derivation edges. Doubles as the
-  "AI proposes → human reviews" audit trail and the supply-chain trust layer (SLSA).
+## 6. Requirements-coverage matrix — honest (F4/F8/F11)
 
-## 6. Propagation & VEX
+R-001…R-022 as before, with these corrections and additions:
 
-- A `Vulnerability`/`Finding` `affects` a shared `Component`; applicability
-  **propagates** along `uses_component` and recursively up `composed_of` (a vuln in a
-  core carries to chip → board → server → product) — a derived `applies_to` via graph
-  traversal, not hand-duplication. Answers *"which products use this vulnerable
-  component?"* in one query.
-- **VEX stops over-reporting:** a per-instance `vex_status` (`not_affected` / `affected`
-  / `fixed` + justification) overrides the propagated applicability — modeled as an
-  `Assertion` + `Review` on the propagated edge (OpenVEX/CSAF).
-- **External tracking:** `Finding` / `MitigationInstance` / `Review` carry
-  `external_refs` (`{system: jira, id, url, status}`) — a codebase issue across three
-  products, tracked in Jira, is one query (Finding → shared Component → products +
-  external_ref).
+| req | covered by | status |
+|---|---|---|
+| R-023 (deployment-relative risk) | Environment/exposure as metric inputs | ◐ (gated on DEC-003) |
+| R-024 (data-flow / DFD) | Process/DataFlow/… projected via realized_by | ◐ (needs data classification, below) |
+| R-025 (process provenance) | PROV-O + Assertion spine; AI-gen in-model | ◐ (gated on reification; view #10 TBD) |
+| R-026 (network topology) | Network/NetworkLink + service depends_on | ✅ |
+| R-027a (vuln propagation) | traversal of uses_component/composed_of | ✅ |
+| R-027b (VEX override) | Assertion+Review on propagated edge | ◐ (gated on reification) |
+| R-028 (external refs / Jira) | external_refs attribute | ✅ |
+| **R-029 (data classification)** | `classification` on DataStore/DataFlow/Asset | ✅ (new) |
+| **R-031 (workflow ordering)** | ordering/sequence on Workflow | ◐ (new; define in iter 5) |
+| **R-032 (entity/agent trust)** | trust level on ExternalEntity + PROV Agent | ◐ (new) |
 
-## 7. Requirements-coverage matrix (gate)
+Honest deltas from iteration 3: R-023/R-024/R-025 and R-027b downgraded to ◐; R-029/R-031/R-032 added.
 
-Existing R-001…R-022 as iteration 2 (R-021 ✅ via time axis; provenance/edge-review ◐
-pending reification). New, from the two review rounds:
+## 7. MVP / post-MVP split (F3) — *the scope gate*
 
-| req | needs | covered by | status |
-|---|---|---|---|
-| R-023 | feasibility/risk **relative to deployment environment** (physical security, connectivity, exposure) | Deployment→Environment + AttackSurface.exposure → attack_feasibility/RiskScore | ✅ |
-| R-024 | **data-flow modeling** (DFD: processes, flows, stores, external entities, workflows) over structure, crossing boundaries | Process/DataFlow/DataStore/ExternalEntity/Workflow | ✅ |
-| R-025 | **process provenance** (compile, AI-generation) captured and shown | Process=PROV Activity + used/wasGeneratedBy/wasAssociatedWith; SLSA/in-toto; provenance view | ◐ (gated on DEC-002/004 reification) |
-| R-026 | **network topology** incl. long-distance + service dependencies (DNS) | Network/NetworkLink + service Components + depends_on | ✅ |
-| R-027 | **vulnerability/finding propagation** + VEX override | affects + uses_component/composed_of traversal + vex_status Assertion | ✅ |
-| R-028 | **external tracker refs** (Jira) on findings/mitigations/reviews | external_refs attribute | ✅ |
+ADR-0002 accepted an **attack-path knowledge graph** (Option A), not a DFD/STRIDE tool.
+The model expresses more than the MVP builds; this table is binding for Nov 5.
 
-## 8. Test suite / vectors (must become `spec/vectors/`)
+| object / capability | MVP (Nov 5) | post-MVP |
+|---|---|---|
+| Product/ProductInstance, Component(CPE/purl)+composition | ✅ build | |
+| BRON backbone: Weakness/AttackPattern/Vulnerability/Finding | ✅ build | |
+| ThreatInstance / AttackStep / AttackPath (+feasibility) | ✅ build | |
+| Review + provenance of AI-proposed nodes/edges | ✅ build (minimal) | |
+| RiskScore (simple: CVSS-env + human impact) | ✅ build | |
+| generic↔instance mapping, ≥2 domains/instance types | ✅ build | |
+| full **DFD layer** (Process/DataFlow/DataStore/ExternalEntity/Workflow) | *one illustrative flow only* | ✅ post-MVP |
+| **Network/NetworkLink/DNS** topology | — | ✅ post-MVP |
+| **Deployment/Environment/exposure** | *single deployment assumed* | ✅ post-MVP |
+| **compile/SLSA build provenance** | — (radar contract) | ✅ post-MVP |
+| **VEX** override | — | ✅ post-MVP |
+| **Jira external_refs**, audit (Requirement/WorkProduct) | — | ✅ post-MVP (#19) |
 
-Iteration-2 cases 1–13, plus:
-14. **AI phone↔secure-server flow** — DFD across two Deployments + a NetworkLink crossing a TrustBoundary; threats on the prompt/response flows. → §3.
-15. **Server-to-server over a WAN with a DNS dependency** — NetworkLink (long-distance) + `depends_on` DNS service; DNS-spoofing threat on the link. → §2.
-16. **Compile / AI-generation provenance** — a built artifact's `wasDerivedFrom` chain back to source+toolchain (SLSA) and a generated output back to prompt+model. → §5.
-17. **Deployment-relative risk** — same build, two Deployments (locked rack vs phone), different `attack_feasibility`/risk. → §2.
-18. **Vuln carries through core→chip→server but VEX `not_affected` in product X** — propagation + override. → §6.
+**The MVP is the attack-path KG.** Students build the top block; DFD/networks/
+provenance are modeled but **not built** for Nov 5 (at most one illustrative flow +
+one AI-gen provenance chain, if time).
 
-## 9. MVP scope (ADR-0002) vs. full model
+## 8. Vectors (must become `spec/vectors/`)
 
-The full model above is the DEC-001 target; the **MVP demonstrates a slice**: the
-deep product exercises structure + a small DFD + the attack-path graph + review +
-risk; the second-domain product proves generalization. **Networks/DNS, multi-step
-AI workflows, and full process provenance are representable now but need only a
-minimal demonstration in the MVP** (one flow, one provenance chain) — the rest is
-post-demo depth. Audit objects (Requirement/WorkProduct) remain deferred (#19).
+MVP vectors 1–6 + 18 (vuln-carry) first. Post-MVP vectors 7–17 (DFD, networks,
+provenance, env-relative risk) follow, and need the element security properties +
+attacker-position preconditions added in §1/§3 (F10).
+
+## 9. Caveat — DFD-standard alignment is provisional
+
+iteration 3 claimed alignment with OTM/threagile/pytm/Threat Dragon; **those records
+don't exist yet and RPT-0001 §3/§5 is pending.** Only RPT-0003 (products) is verified.
+The DFD design here is **provisional pending #9**; interchange/layout (OTM) and the fact
+that these tools are mutually incompatible are flagged for DEC-002 (F13).
 
 ## 10. Iteration log & next
 
-- **Iter 1–2:** generic/instance split; adversarial fixes (shared CPE component,
-  cross-product paths, step pre/postconditions, time axis, edge reification,
-  restored boundary/family/damage/actor/finding).
-- **Iter 3 (this):** +structural depth (recursive composition, Interconnect→Network,
-  DNS services, Deployment/Environment/exposure); +behavioral DFD layer
-  (Process/DataFlow/DataStore/ExternalEntity/Workflow); +process provenance
-  (compile/AI-gen = SLSA/in-toto + prompt); +VEX propagation; +external refs
-  (Jira). New R-023…R-028; vectors 14–18. (design-log/0003)
-- **Iter 4 (next):** fold frameworks (#6) / products (#7) / schema-crosswalk (#9);
-  **decide the reification mechanism → DEC-002/DEC-004**; build vectors; then fold the
-  matured model into ARCH-0001 §3/§4 and **accept DEC-001 via an ADR**.
+- **Iter 1–3:** split, adversarial fixes, three layers.
+- **Iter 4 (this):** reconcile layers (one-artifact rule), unify threat vocabulary
+  (STRIDE facet) and provenance (one spine), add R-029/031/032 + data classification,
+  honest matrix, **MVP/post-MVP table**, move compile/SLSA to radar contract (F1–F13; DL-0004).
+- **Iter 5 (next):** fold frameworks (#6)/products (#7)/schema-crosswalk (#9);
+  **decide reification (DEC-002/DEC-004)** and the **risk metric (DEC-003)** — these flip
+  the ◐s; build the MVP vectors; then fold into ARCH-0001 §3/§4 and **accept DEC-001 via an ADR**.
