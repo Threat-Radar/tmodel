@@ -7,7 +7,7 @@ description: "The product requirements for the tmodel application, distinct from
 type: application
 category: process
 status: draft
-version: "0.1.0"
+version: "0.2.0"
 date: "2026-10-01"
 updated: "2026-10-01"
 needs_review: true
@@ -30,15 +30,19 @@ agent_notes: >
 **application** must do and how well (A-0NN). It is the home the sponsor asked for when
 they asked "where are we capturing the application requirements?".
 
-**Status: draft.** The MVP functional set is bounded by `ADR-0002`; the platform and
-quality targets below are proposed and harden once `RPT-0012` (GUI / platform / stack)
-lands and `DEC-006`/`DEC-010` are taken. Nothing here selects a language or UI stack.
+**Status: draft.** The MVP functional set is bounded by `ADR-0002`. The stack is now
+**decided — Path A (`ADR-0003`)**: a local-only, macOS-first Tauri (Rust) + TypeScript/
+WebGL frontend over a Python KG engine, with a shared CLI; DEC-006 and DEC-010 accepted.
+The viz library (**A-044**) and the KG substrate (**DEC-004**) remain open behind adapters.
+The platform/quality targets below are the living requirements for the Path A slices.
 
 ## 1. Product shape
 
 The tmodel product is, for the MVP, a **single-user desktop application on macOS** that
 loads a threat-model knowledge graph, displays it interactively, and lets a human review
-and annotate what the model (and radar, and AI) propose. Its parts:
+and annotate what the model (and radar, and AI) propose. It is realized as **Path A
+(ADR-0003)** — a Tauri (Rust) shell + TypeScript/WebGL frontend over a Python KG engine,
+local IPC, shared CLI. Its parts:
 
 - **Backend / graph engine** — ingest, the knowledge-graph store and queries, risk
   computation, provenance and review state. (Substrate is `DEC-004`; RDF-vs-LPG is `T-044`.)
@@ -112,10 +116,10 @@ engine.
 
 ## 6. Open decisions this feeds
 
-- **DEC-006** — UI stack & interaction model. APP-0001 §2–§4 are its requirements input;
-  the candidate stacks and the decision criteria are researched in **RPT-0012**.
-- **DEC-010** (new) — implementation stack & language. "Language choice to be driven by
-  GUI and platform research" (sponsor). See DECISIONS-0001 and **RPT-0012**.
+- **DEC-006** — UI stack & interaction model. **Accepted → ADR-0003 (Path A).** §2–§4 are
+  its requirements; the viz-library sub-choice is deferred to A-044.
+- **DEC-010** — implementation stack & language. **Accepted → ADR-0003** (Tauri+TS /
+  Python engine / local IPC / CLI). RPT-0012's residual work is the A-044 viz comparison.
 - **DEC-004** — knowledge-graph substrate (RDF vs LPG) and the review model; the backend
   (A-001, A-030) depends on it (`T-044`).
 - **DEC-002** — interchange formats, which A-008 depends on.

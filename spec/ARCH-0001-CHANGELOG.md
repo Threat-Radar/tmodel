@@ -6,7 +6,7 @@ description: "Every change to ARCH-0001, newest first. §9.5 requires an entry p
 type: process
 category: security
 status: active
-version: "0.1.4"
+version: "0.1.5"
 version_policy: "tracks ARCH-0001; one entry per version bump"
 date: "2026-09-23"
 updated: "2026-10-01"
@@ -19,6 +19,13 @@ defers_to: ARCH-0001
 # ARCH-0001 changelog
 
 Newest first. Every ARCH-0001 version bump appends a line here (§9.5).
+
+## 0.1.5 — 2026-10-01
+
+**DEC-006 and DEC-010 accepted** via ADR-0003 (**Path A**): a local-only, macOS-first
+desktop app — Tauri (Rust) shell + TypeScript/WebGL frontend over a Python KG engine,
+shared CLI, local IPC. Viz library (A-044) and KG substrate (DEC-004) stay open behind
+adapters. Opens the I-App slice increment.
 
 ## 0.1.4 — 2026-10-01
 

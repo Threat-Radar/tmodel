@@ -7,7 +7,7 @@ description: "Evidence toward the implementation stack for a commercial-grade, m
 type: research
 category: application
 status: draft
-version: "0.1.0"
+version: "0.2.0"
 date: "2026-10-01"
 updated: "2026-10-01"
 authors:
@@ -37,7 +37,19 @@ The search plan is `dimensions.md`. Requirements: `APP-0001` A-020…A-046.
 
 ## 0. Summary & recommendation
 
-_pending — one recommended stack (or two finalists to spike), with the matrix in §6._
+**Direction decided by the sponsor (2026-10-01): Path A** — a local-only, macOS-first
+desktop app, **Tauri (Rust) shell + TypeScript/WebGL frontend over a Python KG engine**,
+with a shared CLI and local IPC. Accepted in **`ADR-0003`** (DEC-006 + DEC-010). The
+decision was taken from the landscape below without running every lane to exhaustion.
+
+**Residual research (still live against the fixed shell/engine):**
+- **Lane 1 / A-044** — the WebGL **viz-library** comparison (open: Sigma.js / G6 /
+  Cytoscape.js; commercial only if open fails the quality/scale bar): the one sub-choice
+  Path A deliberately left open.
+- **Lane 3 / DEC-004** — the KG substrate (RDF vs LPG) behind the Python façade; informed
+  by the iteration-5 reification analysis (#15).
+- Lanes 4–5 (interaction patterns, licensing/longevity) inform the slice work (I-App) but
+  no longer gate the stack direction.
 
 ## 1. Graph visualization libraries & rendering (Lane 1)
 
