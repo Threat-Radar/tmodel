@@ -63,7 +63,9 @@ TS frontend / Python engine / local IPC / shared CLI).
 
 - **DEC-004** — RDF vs LPG (or hybrid) for the Python KG layer. Every slice that touches
   storage/query keeps adapters behind a stable façade until DEC-004 lands. (Iteration-5
-  reification analysis, #15, recommends the *logical* model that survives either.)
+  reification analysis, #15, recommends the *logical* model that survives either.) **Narrowed by
+  ADR-0004 (DEC-011):** the canonical SoT is git files and the logical model is edge-rich either
+  way; DEC-004 is now just the working-store engine pick. See Edge Rich KG (#50).
 - **A-044** — commercial viz licence filter (ReGraph / KeyLines / Ogma / yFiles). Prefer
   open WebGL first (Sigma.js / G6 / Cytoscape.js); pick the concrete library later, with a
   licence note, per A-044.

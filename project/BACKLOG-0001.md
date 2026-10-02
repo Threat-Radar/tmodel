@@ -7,7 +7,7 @@ description: "Task backlog. Each task becomes a GitHub issue; this file is the d
 type: backlog
 category: process
 status: draft
-version: "0.2.3"
+version: "0.2.5"
 date: "2026-09-23"
 updated: "2026-10-01"
 needs_review: true
@@ -134,11 +134,19 @@ remote servers. Tracking epic: the GitHub "Path A" issue. Slices 0–3 are the s
 |---|---|---|---|---|
 | T-200 | **Slice 0 — scaffolding**: Tauri+TS shell, Python engine package, local API `health`, CLI stub, CI build/test (no cloud) | Path A epic | M | todo |
 | T-201 | **Slice 1 — tabular filter UI**: tables of filter info, sample → live; `tmodel filters list` | Path A epic | M | todo |
-| T-202 | **Slice 2 — KG browse/query** (gated by DEC-004): browse/query through the store façade; CLI parity | Path A epic | L | todo |
+| T-202 | **Slice 2 — KG browse/query**: browse/query through the store façade; CLI parity. **Logical edges pinned (ADR-0004); DEC-004 = substrate only** | Path A epic | L | todo |
 | T-203 | **Slice 3 — threat chains/paths**: compute + display chains (tabular + linked); CLI path cmd | Path A epic | L | todo |
 | T-204 | **Slice 4 — WebGL graph viz**: interactive graph; pick viz lib under A-044; chain highlight | Path A epic | L | todo |
 | T-205 | **Slice 5 — polish, packaging, agent CLI recipes**: Mac build/signing, loopback hardening | Path A epic | M | todo |
 | T-206 | App toolchain in CONTRIBUTING (current Node, Python ver, Tauri deps; harness node-v8 ≠ product) | Path A epic | S | todo |
+| T-207 | **Edge Rich KG — loader**: rebuild working store from git SoT (YAML/JSON + link records) | #51 | M | todo |
+| T-208 | **Edge Rich KG — edge façade**: typed edges w/ properties; LPG + RDF-star/reified adapters, no ID churn | #52 | L | todo |
+| T-209 | **Edge Rich KG — export generators**: Turtle / JSON-LD / GraphML / CSV (non-canonical) | #53 | M | todo |
+| T-210 | **Edge Rich KG — docs sync**: ADR-0003 + Slice 2 cite ADR-0004; DEC-004 scoped to substrate | #54 | S | todo |
+| T-211 | **CI/CD**: lint + test + build (TS + Python), PR-gated, no cloud (PLAN-0002 Track A) | #47 | M | todo |
+| T-212 | **Packaging + signing + download**: `tauri build` → signed `.dmg` → GitHub Releases (PLAN-0002 Track A) | #47 | M | todo |
+| T-213 | **CWE lossless import**: merge 3 CWE views (699/1000/1194) losslessly into `Weakness`; allow non-MITRE `tr-weak-*`; reconciliation test (PLAN-0002 §5) | #47 | L | todo |
+| T-214 | **Library ↔ weakness-type link**: typed edge `record characterised_by Weakness` (PLAN-0002 B4) | #47 | S | todo |
 
 ## Parking lot
 
