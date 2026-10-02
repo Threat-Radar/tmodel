@@ -7,7 +7,7 @@ description: "Task backlog. Each task becomes a GitHub issue; this file is the d
 type: backlog
 category: process
 status: draft
-version: "0.2.4"
+version: "0.2.5"
 date: "2026-09-23"
 updated: "2026-10-01"
 needs_review: true
@@ -143,6 +143,10 @@ remote servers. Tracking epic: the GitHub "Path A" issue. Slices 0–3 are the s
 | T-208 | **Edge Rich KG — edge façade**: typed edges w/ properties; LPG + RDF-star/reified adapters, no ID churn | #52 | L | todo |
 | T-209 | **Edge Rich KG — export generators**: Turtle / JSON-LD / GraphML / CSV (non-canonical) | #53 | M | todo |
 | T-210 | **Edge Rich KG — docs sync**: ADR-0003 + Slice 2 cite ADR-0004; DEC-004 scoped to substrate | #54 | S | todo |
+| T-211 | **CI/CD**: lint + test + build (TS + Python), PR-gated, no cloud (PLAN-0002 Track A) | #47 | M | todo |
+| T-212 | **Packaging + signing + download**: `tauri build` → signed `.dmg` → GitHub Releases (PLAN-0002 Track A) | #47 | M | todo |
+| T-213 | **CWE lossless import**: merge 3 CWE views (699/1000/1194) losslessly into `Weakness`; allow non-MITRE `tr-weak-*`; reconciliation test (PLAN-0002 §5) | #47 | L | todo |
+| T-214 | **Library ↔ weakness-type link**: typed edge `record characterised_by Weakness` (PLAN-0002 B4) | #47 | S | todo |
 
 ## Parking lot
 
