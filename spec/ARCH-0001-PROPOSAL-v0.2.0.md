@@ -7,7 +7,7 @@ description: "Iteration 5 of the DEC-001 object-model synthesis (#15), with the 
 type: architecture
 category: security
 status: proposed
-version: "0.2.0-proposed.9"
+version: "0.2.0-proposed.10"
 version_policy: "iterate the -proposed.N suffix; folds into ARCH-0001 §3/§4 (and an ADR accepts DEC-001)"
 date: "2026-09-30"
 updated: "2026-10-01"
@@ -37,6 +37,9 @@ reviewers:
     round: lifecycle-parties-tara-schema
   - role: adversarial-critic
     id: agent-iteration-7
+  - role: sponsor-review
+    id: paul-lambert
+    round: composite-risk-vector
 needs_review: true
 reviewed: false
 canonical_path: spec/ARCH-0001-PROPOSAL-v0.2.0.md
@@ -68,7 +71,10 @@ returns, stakeholder-relative TARA impact, and the schema-definition approach. *
 the iteration-7 adversarial critic (DL-0010):** defined `RiskScore` multiplicity, stopped
 overloading ISO S/F/O/P by stakeholder, downgraded the LinkML claims, unified actor identity,
 softened the lifecycle "state machine", and **pushed Party/lifecycle/stakeholder-impact to
-post-MVP**. **Legend:** ✅
+post-MVP**. **proposed.10 folds a sponsor round (DL-0011):** risk is a **composite vector**
+(feasibility + impact + **mitigation status** + derived Risk), feasibility method stays ISO 21434
+Table-1 with **CC-style display only** (the ADR-0005 idea folded; DEC-003 not accepted here).
+**Legend:** ✅
 covered · ✅\* proposed direction (accepted only via the gating DEC's ADR) · ◐ still open. **These
 are *proposed* requirements — several (R-023…R-039) are not yet in ARCH-0001 §4** (L13).
 
@@ -176,10 +182,16 @@ Recursive `composed_of`; Interconnect→Network/NetworkLink; DNS/services as Com
 `depends_on`. **Environment is a first-class, reusable node** (F9): `ProductInstance` 1→N
 `Deployment`, each →1 `Environment` (physical_security/connectivity/operational_context).
 
-### Risk metric (proposes DEC-003 — corrected by the critic pass)
+### Risk metric — a *composite risk vector* (proposes DEC-003; sponsor round folds the ADR-0005 idea)
 
-**MVP metric (simple, per ADR-0002 "a simple risk score reflecting the review"):**
-`RiskScore = M(Impact, Feasibility)`, an ISO 21434-*shaped* impact×feasibility matrix
+**Risk is a *vector*, not a lone scalar (sponsor, 2026-10-02).** The row/record for a threat
+carries, as peer fields: **feasibility**, **impact** (per-category), **mitigation status**, and a
+**derived `Risk`** — the derived field is shown *alongside* its inputs, never instead of them, and a
+single CVSS-like number is **not** the accepted scheme. (This folds the bot-authored ADR-0005
+composite-vector idea; DEC-003 itself is **not** accepted here — it accepts later via one clean ADR.)
+
+**MVP metric (simple, per ADR-0002 "a simple risk score reflecting the review"):** the derived
+`Risk = M(Impact, Feasibility)`, an ISO 21434-*shaped* impact×feasibility matrix
 (`iso-sae-21434-2021#RQ-15-15/16`, Annex H), where:
 
 - **Feasibility `F` is rated at the *attack-path level*** on 21434's 4-point scale (High/Medium/
@@ -207,6 +219,15 @@ Recursive `composed_of`; Interconnect→Network/NetworkLink; DNS/services as Com
   `AttackPath` crosses assets with **different owners**, the scenario's score is reported **for each
   affected owner** (no fictional single "owner of the path"). (MVP: one stakeholder, S/F/O/P only,
   no `business_impact` axis — all of R-039 beyond `owned_by` is post-MVP, H5.)
+- **Mitigation status is a first-class vector component (R-045, sponsor round).** The risk row/record
+  surfaces the threat/path's mitigation lifecycle state (planned / in-progress / complete /
+  accepted-risk / n-a — refined by DEC-009) as a **peer field** of feasibility and impact, filterable
+  on its own — **not** buried inside the derived `Risk`. (It reads `MitigationInstance.status`, §5; MVP.)
+- **Display is CC-flavoured; the *method* stays ISO 21434 Table-1 (sponsor round).** Table/row views
+  MUST show **concise metric numbers + a human-readable feasibility label + a colour indicator**, not
+  an opaque float. This is **presentation only** — the feasibility *computation* remains the ISO 21434
+  path-level 4-point rating above; **Common Criteria / ISO 18045 is not the MVP method** (the
+  iteration-5 research down-selected it; `iso-iec-18045` is a library stub).
 
 **Environment/exposure parameterise *feasibility only*, and only its exploitability side** (F5
 double-count ban, tightened by H2): exposure/connectivity/physical_security feed **attack vector,
@@ -334,6 +355,7 @@ flagged in the CHANGELOG as proposed). ✅\* = proposed direction, ADR-gated.
 | **R-037 (lifecycle-phase axis)** | `LifecyclePhase` enum + `applies_in_phase`, bounded vs Environment (§3b) | ◐ (new; enum modeled, scoping post-MVP) |
 | **R-038 (reverse logistics / returns)** | phase set now; state machine + custody provenance later (§3b) | ◐ (new; post-MVP) |
 | **R-039 (asset owner + stakeholder/business impact)** | `Asset.owned_by`; separate `business_impact` axis (S/F/O/P stays end-user); RiskScore reduction per RQ-15-16 (§3) | ◐ (new; post-MVP — MVP risk is single end-user) |
+| **R-045 (composite risk vector)** | risk = {feasibility, impact, **mitigation status**, derived Risk}; CC-style display, ISO 21434 Table-1 method (§3) | ✅\* (new; MVP — proposes DEC-003) |
 
 Iter-5+critic deltas: R-025/R-027b/R-031 → ✅\*; **R-023 moved to post-MVP** (was ✅\*, H3);
 STRIDE↔CWE/CAPEC remains unasserted (§2). Iter-6 adds R-036…R-039 (§2b/§3/§3b) and §13 schema.
@@ -348,7 +370,7 @@ ADR-0002 accepted an **attack-path knowledge graph** (Option A). Binding for Nov
 | BRON backbone: Weakness/AttackPattern/Vulnerability/Finding | ✅ build | |
 | ThreatInstance / AttackStep / AttackPath (+feasibility, AND/OR, ordering) | ✅ build | |
 | Review + substrate-neutral Assertion provenance of AI-proposed nodes/edges | ✅ build (minimal, **firm** — not "if time") | provenance **view** |
-| **RiskScore** = `M(per-category S/F/O/P, path-level 4-point feasibility)`, **human-rated, no CVSS** | ✅ build | CVSS-feasibility; per-step aggregation; full-TARA annexes |
+| **Composite risk vector** = {feasibility (ISO 21434 Table-1, CC-style display), per-category S/F/O/P impact, **mitigation status**, derived `Risk=M(I,F)`} — human-rated, no CVSS | ✅ build | CVSS-feasibility; per-step aggregation; full-TARA annexes; `business_impact` axis |
 | **MitigationInstance + mitigation-state visible** (ADR-0002 demo) | ✅ build (minimal) | owner/work-item/verification enrichment |
 | generic↔instance mapping, ≥2 domains/instance types | ✅ build | |
 | full **DFD layer** (Process/DataFlow/DataStore/ExternalEntity/Workflow) | *one illustrative flow only* | ✅ post-MVP |
@@ -446,6 +468,10 @@ views/layers and redundancy are post-MVP (§7).
   machine" to a phase enum** + named `ProductInstance` as state-bearer + flagged the temporal axis +
   bounded phase vs Environment + custody provenance → post-MVP; **pushed Party/lifecycle/stakeholder
   impact to post-MVP** (MVP overload). (SDL round, DL-0009, folds in iteration 8.)
+- **proposed.10 (sponsor round; DL-0011):** risk is a **composite risk vector** (feasibility +
+  impact + **mitigation status** + derived Risk) — folded the bot-authored **ADR-0005** idea
+  (R-045); **feasibility method stays ISO 21434 Table-1, CC is display-only**; **ADR-0005 dropped**
+  (bot self-marked accepted, no governance) and **DEC-003 stays open** (accepts via a clean ADR later).
 - **Next:** pin the 5 absent method records + get a human-reviewed ISO 21434 extraction + gather an
   RDF-star record; **author the LinkML schema in `spec/schema`** (§13; lane #64); fold #9 (schema
   crosswalk) to close R-024/lift §9 fully; **build the §8 MVP vectors**; then the ADRs (§12);
@@ -457,9 +483,12 @@ views/layers and redundancy are post-MVP (§7).
 proposed.6 claimed DEC-003 and the DEC-002/004 logical model were "ADR-ready now." The critic pass
 shows they are **strengthened but not yet ADR-ready**; the gates are:
 
-- **DEC-003 (risk metric)** — direction sound *after* this pass (path-level feasibility ×
-  per-category S/F/O/P). **Blockers:** a human-reviewed ISO 21434 extraction (annexes are
-  `not-reviewed`); `first-cvss` distilled *if* the CVSS option is wanted.
+- **DEC-003 (risk metric)** — direction now a **composite risk vector** (feasibility + impact +
+  mitigation status + derived Risk; ISO 21434 Table-1 feasibility method, CC-style display), folding
+  the ADR-0005 idea per the sponsor. **Accepts via one clean ADR** (full governance: ARCH §8 +
+  CHANGELOG) once settled — **not** the bot's self-marked ADR-0005, which was dropped. **Blockers:**
+  a human-reviewed ISO 21434 extraction (annexes `not-reviewed`); the derived-`Risk` aggregation
+  function documented; `first-cvss` distilled *if* the post-MVP CVSS option is wanted.
 - **DEC-002/DEC-004 (logical reification)** — substrate-neutral `Assertion`/`Review`/PROV-O with a
   substrate-neutral validation gate. **Blockers:** an RDF-star library record; `prov-o`/`shacl`/
   `stix-2-1` are only `summarized`; and the sponsor must accept that node-reification **narrows**
