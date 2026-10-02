@@ -27,4 +27,6 @@ Every source found, and the `library/` record it became.
 | FIRST, Common Vulnerability Scoring System v4.0: Specification Document (first.org/cvss/v4.0/specification-document); read 2026-10-01 | spec | 3 | `first-cvss` (`queued`, no version pinned) | DEC-003 |
 | ARCH-0001-PROPOSAL v0.2.0 (`0.2.0-proposed.7`, 2026-10-01), the proposed object model (#15) | design proposal (this repo) | 5, 6 | n/a (in `spec/`) | DEC-001, DEC-003 |
 | ADR-0002, MVP scope (accepts DEC-005) | decision (this repo) | 1, 5 | n/a (in `spec/`) | DEC-005 (accepted) |
+| ARCH-0001 v0.1.6, §3 object model (the current working labels) | architecture (this repo) | 5 | n/a (in `spec/`) | DEC-001 |
+| ADR-0004, storage and edges (accepts DEC-011): typed edges with properties, stable IDs | decision (this repo) | 4, 5 | n/a (in `spec/`) | DEC-011 (accepted) |
 | Full extraction standard FX-1 (`docs/extraction.md` in the upstream m-of-n/library; not yet in the Threat-Radar fork) | process standard | 7 | n/a | none |

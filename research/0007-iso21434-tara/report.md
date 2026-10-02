@@ -367,13 +367,123 @@ The example risk matrix (Table H.8):
 
 ### 4.4 As a candidate test case for #17
 
-Counted from the tables and figures: one item with five kinds of components inside the boundary, two named ECUs and three external interfaces outside it, 3 assets, 4 written-out damage scenarios, 3 impact ratings, 3 threat scenarios, 5 attack paths with 21 steps between them, 5 feasibility ratings (3 by attack vector, 2 by attack potential), 2 risk values and 2 treatment decisions. The expected results a test could check are the two aggregated ratings (High, Low), the two risk values (5 and 2, by matrix and by formula) and the two decisions (reduce, reduce). Under the library's full-extraction standard (FX-1), examples like this one become fixture files with expected results in the library record. Turning this one into a fixture would first need the inconsistencies in item 5 resolved, and links between rows by identifier, since the wording drifts between tables.
+Counted from the tables and figures: one item with five kinds of components inside the boundary, two named ECUs and three external interfaces outside it, 3 assets, 4 written-out damage scenarios, 3 impact ratings, 3 threat scenarios, 5 attack paths with 21 steps between them, 5 feasibility ratings (3 by attack vector, 2 by attack potential), 2 risk values and 2 treatment decisions. The expected results a test could check are the two aggregated ratings (High, Low), the two risk values (5 and 2, by matrix and by formula) and the two decisions (reduce, reduce). Under the library's full-extraction standard (FX-1), examples like this one become fixture files with expected results in the library record. Turning this one into a fixture would first need the inconsistencies in item 5 resolved, and links between rows by identifier, since the wording drifts between tables. ADR-0004 already requires one stable ID for every object and edge.
 
 **Takeaway:** The example walks the whole chain on a small system and confirms the shapes from §2: ratings on paths, aggregation per threat scenario, and a risk value labelled by impact category. It also shows what the clauses leave open. Two feasibility methods can be mixed in one analysis, the example risk formula and risk matrix are not interchangeable in general, and the risk value need not be a whole number. Its small inconsistencies are a reason to link the objects by identifier, not by text.
 
 ## 5. TARA objects mapped onto the proposed object model
 
-_Pending._
+This section lines up the objects ISO/SAE 21434 uses with the types in ARCH-0001 §3 (v0.1.6, the current working labels) and in ARCH-0001-PROPOSAL v0.2.0 (`0.2.0-proposed.7`, the DEC-001 synthesis for #15). It is evidence for #15 and #17, not a model of its own: where the standard and the models differ, it says so and leaves the choice to DEC-001. ADR-0002 expects this mapping, with the ISO 21434 object model binding onto the shared graph.
+
+### 5.1 The standard's own object model
+
+Figure 3 relates ten things through thirteen labelled edges. Each row reads an arrow from its tail to its head. The figure was checked on a zoomed page image, because the direction of three arrows matters (searches.md, Tool runs).
+
+| from | edge | to |
+|---|---|---|
+| item | implements | function |
+| item | consists of | component |
+| item | contains | asset |
+| cybersecurity property | is an attribute of | asset |
+| cybersecurity goal | protects | asset |
+| cybersecurity goal | is associated with | item |
+| cybersecurity goal | is associated with | threat scenario |
+| cybersecurity goal | is realized by | cybersecurity requirement |
+| cybersecurity requirement | is allocated to | item |
+| cybersecurity requirement | is allocated to | component |
+| threat scenario | compromises | cybersecurity property |
+| threat scenario | realizes | damage scenario |
+| damage scenario | affects | road user |
+
+The definition of item agrees with the first row: one or more components that together provide a vehicle-level function (3.1.25). Three of these edges point differently in the library's distilled notes (§7).
+
+Clause 15, Clause 9 and the annexes add relations the figure does not draw:
+
+| relation | source |
+|---|---|
+| a threat scenario names its targeted asset, the compromised property and the cause | RQ-15-03 |
+| damage scenarios and threat scenarios are many-to-many | 15.4, NOTE 3 |
+| a damage scenario gets one impact rating for each category assessed (S, F, O, P) | RQ-15-04, RQ-15-05, PM-15-07 |
+| an attack path is linked to every threat scenario it can realize | RQ-15-09 |
+| each attack path gets one feasibility rating, from one of three methods | RQ-15-10, RC-15-11 |
+| a threat scenario gets one or more risk values, each from 1 to 5 | RQ-15-15, NOTE 1; RQ-15-16 |
+| a threat scenario gets one or more treatment options: avoid, reduce, share, retain | RQ-15-17 |
+| reducing a risk leads to cybersecurity goals; sharing it, or retaining it because of assumptions, leads to cybersecurity claims | RQ-09-05, RQ-09-06 |
+| a goal can carry a CAL, which its requirements inherit; a component takes the highest CAL it receives | E.1, E.2, E.3.2 |
+| an item has an operational environment, whose description can include assumptions | RQ-09-02, NOTE 8 |
+| an attacker carries out an attack path | 3.1.5 |
+| a weakness counts as a vulnerability only if an attack path can exploit it | 3.1.38; RQ-08-05, EXAMPLE 1 |
+| each work product results from one or more provisions | §1.3 |
+
+### 5.2 The mapping
+
+**Fit:** *same* means the same meaning; *close* means the same idea with something missing; *partial* means the meanings only overlap; *none* means there is no type; *extension* means the model has something 21434 does not.
+
+| ISO/SAE 21434 | ARCH-0001 §3 (v0.1.6) | ARCH-0001-PROPOSAL (proposed.7) | fit | what differs |
+|---|---|---|---|---|
+| component | Component | Component, with `composed_of` | same | |
+| asset | Asset | Asset, named only in the R-029 row, with `classification` (§6) | close | 21434 gives each asset its cybersecurity properties (3.1.2); neither model records them, and neither has the item-contains-asset edge |
+| cybersecurity property | none | `violates_property`, the security property each STRIDE category violates (§2) | partial | this records the property a threat violates, which matches the `compromises` edge, but not the properties an asset has. Its values come from STRIDE and add authentication, non-repudiation and authorization; 21434's examples are confidentiality, integrity and availability, as an open list (3.1.20) |
+| damage scenario | none | DamageScenario, the target of `realizes` (§1) | close | named only as the target of `realizes`; in 21434 it also affects a road user and carries the impact ratings |
+| road user | none | none | none | the party a damage scenario harms (3.1.22) |
+| impact rating, per category | part of Review: impact is a human judgement (§3) | the impact input of RiskScore: per category S, F, O, P, supplied by a human (§3, risk metric) | partial | 21434 attaches the rating to the damage scenario, per category (RQ-15-05); the proposal keeps the category vector but does not say which object carries it |
+| threat scenario | Threat, an adverse action against an asset | ThreatInstance, with `realizes` DamageScenario and a method facet (§1, §2) | close | 21434 also requires the targeted asset and the cause (RQ-15-03). ARCH-0001's Threat names an asset; the proposal anchors threats to DFD elements and components and states no asset link; neither has a cause |
+| attack path | AttackPath / ThreatChain | AttackPath, made of AttackSteps | same | one path can realize several threat scenarios (RQ-15-09) |
+| (attack step) | AttackStep | AttackStep, with AND/OR gates and `precedes` ordering (§2a) | extension | 21434 has no term for it: it lists a path's actions in order (15.6; Table H.5) and rates only the whole path |
+| attack feasibility rating | none | `attack_feasibility` on AttackPath, 4-point, human-rated at MVP (§3) | close | no field records the rating method or its inputs (factor levels, CVSS v3.1 metrics, attack vector); `source_method` records which threat method proposed a threat, not which rating method rated a path |
+| attacker | none | ThreatActor, a generic catalog type (§1) | partial | 21434's attacker is whoever carries out a path (3.1.5) |
+| risk value | RiskScore | RiskScore = M(Impact, Feasibility), keeping the category vector (§3) | same | the range 1 to 5 is fixed (RQ-15-16); whole numbers are not (§4.3) |
+| risk treatment decision | none | MitigationInstance, which by our reading corresponds to reducing (§5, §7) | partial | avoiding, sharing and retaining have no home; each leads somewhere else (§2.9, §2.10) |
+| cybersecurity control | Mitigation | Mitigation (D3FEND) and MitigationInstance | same | a measure that modifies risk (3.1.14) |
+| cybersecurity goal | none | none | none | central to 9.4: created by reduce decisions, protects assets, can carry a CAL |
+| cybersecurity claim | none | none | none | a statement about a risk (3.1.12). Not the proposal's `Assertion`, which records where a proposed node or edge came from (§4) |
+| cybersecurity requirement | none | Requirement, post-MVP (#19; §7) | partial | in 21434 it realizes a goal and is allocated to an item or component (Figure 3); the proposal's Requirement belongs to the audit model |
+| CAL | none | none | none | an attribute of a goal, inherited by requirements and components (Annex E) |
+| weakness | Weakness (CWE) | Weakness (CWE) | partial | 21434's weakness is broader than CWE: its examples include a missing requirement and a flawed operational procedure (3.1.40) |
+| vulnerability | Vulnerability (CVE, NVD) | Finding / Vulnerability | partial | in 21434 a weakness becomes a vulnerability when an attack path can exploit it (3.1.38), whether or not a CVE exists |
+| item | Product, the closest type | Product / ProductInstance, with `composed_of` | partial | an item is scoped by one vehicle-level function and has a boundary (RQ-09-01); neither model has a function-scoped unit |
+| function | none | Process / Workflow, DFD roles (§1) | partial | a 21434 function is a vehicle-level purpose; a DFD process is a behavioral role that components realize |
+| operational environment | none | Environment, one per Deployment, post-MVP (§3, §7) | partial | 21434 describes it per item, with assumptions (RQ-09-02; Table H.1); neither model has a type for assumptions |
+| provision and work product | none | Requirement / WorkProduct, post-MVP (#19; §7) | close | the RQ, RC, PM and WP identifiers can serve as keys (§1.3) |
+
+Section numbers in the third column refer to ARCH-0001-PROPOSAL.
+
+### 5.3 Gaps, both ways
+
+**What 21434 needs that neither model has yet:**
+1. Cybersecurity goals and claims, and the links from treatment decisions to them (RQ-09-05, RQ-09-06).
+2. The treatment options other than reducing: avoiding, sharing and retaining (RQ-15-17).
+3. CALs on goals, and their inheritance by requirements and components (Annex E).
+4. The cybersecurity properties of an asset, and the item-contains-asset edge (Figure 3).
+5. The threat scenario's cause, and, in the proposal, its link to the targeted asset (RQ-15-03).
+6. Road users, and an owner for the per-category impact rating (RQ-15-04, RQ-15-05).
+7. The method and inputs behind each feasibility rating (RC-15-11 to RC-15-14; §3).
+8. The item as a function-scoped unit, and its operational environment with assumptions (RQ-09-01, RQ-09-02).
+
+**What the proposal has beyond 21434:**
+- AttackSteps with AND/OR gates, ordering and shared steps (proposal §2a). 21434 rates whole paths, so step-level data would still have to yield one rating per path; the proposal already treats per-step aggregation as a post-MVP deviation from 21434 (proposal §3).
+- Method facets such as STRIDE, provenance (`Assertion`, Review), VEX, the DFD layer, networks, redundancy and the view layer. These are outside 21434's scope and do not conflict with it.
+- Product families and the generic-to-instance mapping. 21434 works one item at a time.
+
+**Names to watch:** a 21434 "claim" is not the proposal's `Assertion`; "requirement" means an engineering cybersecurity requirement in 21434 (Figure 3) but a standard's provision in the audit model (#19); and the ARCH-0001 "Threat" corresponds to a 21434 "threat scenario".
+
+### 5.4 Cardinalities the standard fixes
+
+| relation | how many | source |
+|---|---|---|
+| damage scenario to threat scenario | many-to-many | 15.4, NOTE 3 |
+| attack path to threat scenario | many-to-many: a path is linked to every threat scenario it can realize | RQ-15-09 |
+| threat scenario to asset | one or more | 3.1.33; RQ-15-03 |
+| damage scenario to impact rating | one per category assessed: up to four (S, F, O, P), more if the organization adds categories, fewer when PM-15-07 applies | RQ-15-04, RQ-15-05, PM-15-07 |
+| attack path to feasibility rating | one | RQ-15-10 |
+| threat scenario to risk value | one or more; one per impact rating is allowed | RQ-15-15, NOTE 1 |
+| threat scenario to treatment option | one to four | RQ-15-17 |
+| reduce decision to cybersecurity goal | one or more | RQ-09-05 |
+| share or assumption-based retain decision to cybersecurity claim | one or more | RQ-09-06 |
+| cybersecurity goal to CAL | at most one; combined goals take the highest | E.2 |
+| component to CAL | the highest of the CALs it receives, unless it is shown to be isolated | E.3.2 |
+
+**Takeaway:** Of the 23 objects in the mapping table, not counting the attack step, 9 have the same or a close type in the proposal, 10 overlap only partly, and 4 have no type at all: road user, cybersecurity goal, cybersecurity claim and CAL. The core of TARA is covered: component, asset, damage scenario, threat scenario (as ThreatInstance), attack path with its feasibility, risk value and cybersecurity control. The concept-phase objects that turn a risk decision into engineering work have none: cybersecurity goals, claims and CALs, the treatment options other than reducing, and, before #19, cybersecurity requirements. The smaller gaps are the properties on assets, the threat scenario's cause, road users, the method behind each rating, and the item with its operational assumptions. In the other direction, the proposal's AND/OR attack steps go beyond 21434, which works as long as one rating per path can still be recorded, as 21434 requires.
 
 ## 6. How ISO/SAE 21434 risk relates to the risk-metric work
 
@@ -381,7 +491,7 @@ _Pending._
 
 ## 7. Check of the library's requirement catalog
 
-_Pending. Results so far are logged in `searches.md` (Tool runs): 16 of the 118 catalog entries do not match the standard._
+_Pending. Results so far are logged in `searches.md` (Tool runs): 16 of the 118 catalog entries do not match the standard, and three Figure 3 edges in `distilled/normative.md` point differently from the figure (§5.1)._
 
 ## 8. Synthesis
 
