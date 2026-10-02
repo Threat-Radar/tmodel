@@ -6,7 +6,7 @@ type: research
 status: draft
 version: "0.1.0"
 date: "2026-10-01"
-updated: "2026-10-01"
+updated: "2026-10-02"
 record: RPT-0007
 ---
 
@@ -30,3 +30,4 @@ Every source found, and the `library/` record it became.
 | ARCH-0001 v0.1.6, §3 object model (the current working labels) | architecture (this repo) | 5 | n/a (in `spec/`) | DEC-001 |
 | ADR-0004, storage and edges (accepts DEC-011): typed edges with properties, stable IDs | decision (this repo) | 4, 5 | n/a (in `spec/`) | DEC-011 (accepted) |
 | Full extraction standard FX-1 (`docs/extraction.md` in the upstream m-of-n/library; not yet in the Threat-Radar fork) | process standard | 7 | n/a | none |
+| Library rules for requirement catalogs (`docs/requirements.md` in the Threat-Radar library fork: `text` is verbatim) | process rule | 7 | n/a | none |

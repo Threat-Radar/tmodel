@@ -541,7 +541,55 @@ The proposal's statements below come from its §3 ("Risk metric") and §12, at `
 
 ## 7. Check of the library's requirement catalog
 
-_Pending. Results so far are logged in `searches.md` (Tool runs): 16 of the 118 catalog entries do not match the standard, and three Figure 3 edges in `distilled/normative.md` point differently from the figure (§5.1)._
+The library holds the sponsor's catalog of the standard's provisions and work products (`iso-sae-21434-2021`, `distilled/requirements.yaml`) and a short distillation (`distilled/normative.md`). We checked them at library `5b82f83`, the commit tmodel pins, which holds the same 21434 record as library `main` (`25a4cf8`). The catalog is the closest thing to the referenceable requirements file that #11 asks for, although #11 asked for requirements in our own words and the catalog is verbatim; the proposal cites its entries (§6.2). The checks follow the second, adversarial pass of the library's full-extraction standard (FX-1): counts, word-for-word text, dropped or spliced statements, locators, and the links between provisions and work products (searches.md, Tool runs). An independent subagent then recomputed every number in this section and corrected one classification (RQ-07-04). Nothing in the library was changed; fixes belong in a library pull request.
+
+### 7.1 What matches
+
+- **Counts.** 101 requirements, 13 recommendations, 4 permissions and 42 work products, as in the standard (§1.3), with every identifier present.
+- **Labels.** Every entry's normativity and verb match its tag: RQ with "shall", RC with "should", PM with "may".
+- **Text.** 102 of the 118 provision texts equal the standard's after normalizing whitespace, dashes, quotes and list labels. Two of them keep small extraction artifacts: a stray space at a line break in RQ-07-01, and Table 1 flattened into RQ-15-10.
+- **Locators.** 113 of the 118 provision locators point to the subclause that holds the provision.
+- **Work-product links.** Of the 32 work products that the standard ties to named provisions, 16 list exactly those provisions, and every link recorded on the provision side also appears in the standard.
+
+### 7.2 What does not match
+
+| problem | entries (PDF page of our copy) | detail |
+|---|---|---|
+| annex text instead of the provision | RQ-07-04 (26), RQ-09-03 (33), RQ-09-04 (33), RQ-10-08 (39), RQ-11-01 (41) | the extractor took a later mention of the identifier in an annex and copied what followed it: Annex C's interface agreement template for RQ-07-04, and Annex E, F or H text for the others. RQ-09-04's entry runs on into the bibliography (6,698 characters). RQ-09-03 and RQ-09-04 are the provisions that run the TARA in the concept phase (§2.10) |
+| list cut short where a NOTE or EXAMPLE interrupts it | RQ-05-11 (15), RQ-06-02 (19), RQ-06-15 (20), RQ-06-16 (21), RQ-06-30 (23), RQ-09-01 (32), RQ-10-01 (37), RQ-10-04 (38), RQ-12-02 (42), RQ-13-01 (44), RQ-15-17 (54) | 11 entries lose the list items after the interruption; RQ-15-17 keeps only the first of the four treatment options (§2.9) |
+| clause-level provision locator | RQ-07-04, RQ-09-03, RQ-09-04, RQ-10-08, RQ-11-01 | the same five entries as the first row; they point to a clause instead of the subclause that holds them (7.4.3, 9.4.2, 9.4.2, 10.4.1, 11.4) |
+| work product with no links | WP-05-02, WP-08-02, WP-08-03, WP-09-03, WP-09-04, WP-09-05, WP-09-07, WP-10-02 to WP-10-07, WP-14-01, WP-15-02 | 15 work products have an empty list although the standard names the provisions they result from |
+| incomplete link | WP-15-04, impact ratings | lists RQ-15-04 only; the standard gives the range RQ-15-04 to RQ-15-06 |
+| links missing in total | 22 of the 48 provision-to-work-product links the standard names | from the two rows above; each is missing on both sides, from the work product's list and from the provision's `expects_deliverables` |
+| work-product locator | 14 of the 15 work products with no links | they point somewhere other than the subclause that defines the work product, for example WP-08-02 to 8.3 instead of 8.3.3, and WP-05-02 to 5.4.2 instead of 5.5 |
+| subclause links not recorded | WP-05-01, WP-05-03 to WP-05-05, WP-06-01 to WP-06-04, WP-07-01, WP-09-01 | the standard ties these 10 work products to subclauses (for example 5.4.1 to 5.4.3) rather than to provisions; the catalog leaves them empty |
+| work-product titles from Annex A | WP-09-07, WP-10-03, WP-10-07 | the catalog uses the wording of the Annex A summary table, which differs from the clause (WP-10-03 loses "if applicable"); for WP-09-07 and WP-10-07, neighbouring table text is attached as well |
+| Figure 3 edges in `normative.md` | five of thirteen edges | three differ in meaning: the notes have function implements item, function contains asset, and goal allocated to item or component, where the figure has item implements function(s), item contains asset, and cybersecurity requirement allocated to item (the notes' requirement-to-component edge is correct). Two more are written the other way round with the same meaning (item associated with goal; asset has attribute property) (§5.1) |
+| inaccurate note in `summary.md` | its Limits section | describes the texts as prefixes of at most 320 characters; 14 are longer |
+
+### 7.3 Why it matters
+
+- **The proposal's risk anchors are mostly sound.** The entries it cites for the risk metric (RQ-15-04 to RQ-15-06, RQ-15-10, RC-15-12, RC-15-13, RQ-15-15, RQ-15-16; §6.2) have the right text and locators, but RQ-15-05 and RQ-15-06 lack their link to WP-15-04. The defects next to them are the treatment step (RQ-15-17), the concept-phase TARA (RQ-09-03, RQ-09-04) and the impact-rating work product (WP-15-04).
+- **The defects are spread across the catalog.** The 16 text defects fall in 9 of the 11 clauses that have provisions, Clause 6 having the most (4); Clause 15 has one in 17.
+- **Audit automation needs the links.** The library's notes propose the provision-to-work-product structure as the seed for automated audits (`normative.md` §4, which cites tmodel #15; automated compliance validation is #19). With 22 of the 48 named links missing, a coverage query over the catalog would report gaps that are not in the standard.
+- **Fixing the text is still a licensing decision.** The library's draft policy requires requirement text to be verbatim (its `docs/requirements.md`), while the standard's copyright page forbids posting its text online without prior written permission, which can be requested from ISO or SAE International (see "About quotations" at the top). Correcting the entries would shrink the standard's text in the catalog, from about 32,700 to about 22,600 characters, because the five annex-text entries alone hold about 13,200 characters, including the whole bibliography; but the catalog would still be verbatim, and #11 asked for our own wording. That choice belongs to the sponsor (§8).
+
+### 7.4 Against the full-extraction standard (FX-1)
+
+FX-1 lives in the upstream m-of-n/library and is not yet in the Threat-Radar fork. It applies to a spec record once a pull request touches it; records older than FX-1 (normative from 2026-09-28), like this one (ingested on 2026-09-25), are left as they are until then. A pull request that fixes the catalog would therefore have to meet FX-1's definition of done: the full artifact set, or a written reason for each missing artifact, reconciled keyword counts, and passes 1 to 3 recorded.
+
+| FX-1 artifact | this record |
+|---|---|
+| summary and labels | present, except `topic`, which is empty; one inaccurate note (§7.2) |
+| normative statements, verbatim, with locators | `normative.md` is an overview, not every statement |
+| requirements | present; 16 texts, 5 provision locators, 14 work-product locators, 16 work-product link lists and 3 titles need fixing (§7.2), and FX-1's fields `testable` and `kind` and its keyword-count header are missing |
+| schema, messages, protocol, state machine | the standard defines no data format (§1.1), which is the kind of reason FX-1 asks for when these are marked not applicable |
+| examples and test vectors | Annex H could become a fixture once its inconsistencies are resolved (§4.4) |
+| design notes | none yet; §5 and §6 of this report hold the material |
+
+No passes are recorded on the record. Counting the sponsor's extraction as the first, this section is the mechanical part of the second; the cross-check and the human review (`reviewed_by` is empty on every artifact) remain.
+
+**Takeaway:** The catalog's counts and labels are right and most of its texts match the standard, but 16 provision texts, 16 work-product link lists, 19 locators, 3 titles and 3 Figure 3 edges do not, and the defects are spread across the catalog. The ones that matter most here are the concept-phase TARA provisions (RQ-09-03, RQ-09-04), the treatment step (RQ-15-17), and the provision-to-work-product links that audit automation would build on. A library pull request can fix them, but under FX-1 it would also have to complete the record, and the sponsor first has to decide how much of the standard's text the public library may hold.
 
 ## 8. Synthesis
 
