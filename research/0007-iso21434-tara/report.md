@@ -36,7 +36,19 @@ Axes: [`dimensions.md`](dimensions.md).
 
 ## TARA at a glance
 
-_Pending: filled in after sections 2 and 3._
+The seven Clause 15 methods, what each one produces or rates, and on which scale. Details are in §2 (steps) and §3 (scales).
+
+| step | clause | produces or rates | scale | guidance | provisions | work product |
+|---|---|---|---|---|---|---|
+| asset identification | 15.3 | damage scenarios; assets with cybersecurity properties | none | | RQ-15-01, RQ-15-02 | WP-15-01, WP-15-02 |
+| threat scenario identification | 15.4 | threat scenarios, each naming an asset, a property and a cause | none | EVITA, TVRA, PASTA and STRIDE as examples | RQ-15-03 | WP-15-03 |
+| impact rating | 15.5 | each damage scenario, in each category S, F, O, P | severe, major, moderate, negligible | Annex F; safety from ISO 26262-3 | RQ-15-04 to RQ-15-06, PM-15-07 | WP-15-04 |
+| attack path analysis | 15.6 | attack paths, each linked to the threat scenarios it realizes | none | top-down (attack trees, attack graphs) or bottom-up (from vulnerabilities) | RQ-15-08, RQ-15-09 | WP-15-05 |
+| attack feasibility rating | 15.7 | each attack path | High, Medium, Low, Very low | Annex G: attack potential, CVSS v3.1 or attack vector | RQ-15-10, RC-15-11 to RC-15-14 | WP-15-06 |
+| risk value determination | 15.8 | each threat scenario, optionally per damage scenario and category | 1 to 5 | Annex H: a risk matrix or a risk formula | RQ-15-15, RQ-15-16 | WP-15-07 |
+| risk treatment decision | 15.9 | each threat scenario | avoid, reduce, share, retain | | RQ-15-17 | WP-15-08 |
+
+Related: a cybersecurity goal can carry a CAL (CAL1 to CAL4 in Annex E's example), set from impact and attack vector (§3.3).
 
 ## 1. The standard and how we use it
 
@@ -232,7 +244,85 @@ Clauses 10 to 14 never cite Clause 15, its subclauses or its work products by nu
 
 ## 3. Rating scales and methods (Annexes E, F and G)
 
-_Pending._
+All three annexes are informative. Their tables are examples that an organization can adopt, adapt or replace, as long as its own scales map onto the standard's (15.1). Annex G calls its point values a proposal "based on" ISO/IEC 18045 (G.2.2.6), and Annex E says its Tables E.2 to E.4 are there so that industry can gain experience with CALs (E.3.1). The numbers below are those example values, not requirements. They were checked against the PDF, including page images for Tables E.1, G.6 and G.7, whose layout does not survive text extraction (searches.md, Tool runs).
+
+### 3.1 Impact criteria (Annex F)
+
+Annex F gives one example table per impact category (Tables F.1 to F.4). In our words:
+
+| level | safety (Table F.1) | financial (Table F.2) | operational (Table F.3) | privacy (Table F.4) |
+|---|---|---|---|---|
+| severe | ISO 26262 class S3: fatal or life-threatening injuries, survival uncertain | harm the road user might not recover from | a core vehicle function is lost or impaired | highly sensitive information that is easy to link to the person |
+| major | S2: severe and life-threatening injuries, survival probable | serious harm the road user can recover from | an important vehicle function is lost or impaired | highly sensitive but hard to link, or sensitive and easy to link |
+| moderate | S1: light and moderate injuries | inconvenient harm, recoverable with limited resources | a vehicle function is partly degraded | sensitive but hard to link, or non-sensitive and easy to link |
+| negligible | S0: no injuries | no or negligible effect, or irrelevant to the road user | no impairment, or none the user would notice | not sensitive and hard to link |
+
+- **Safety** reuses ISO 26262-3:2018's severity classes, and that standard's controllability and exposure can also be considered if a rationale is given (F.2).
+- **Operational** examples include a vehicle that does not work, or limp-home mode, for severe, and annoyance or lower user satisfaction for the lower levels. Operational damage may or may not also have safety consequences (F.4).
+- **Privacy** is a grid of two questions: how sensitive the information is (highly sensitive, sensitive, not sensitive), and how easily it links to the person it is about, the "PII principal" of ISO/IEC 29100 (F.5).
+- **Scale of damage** is left out. The examples do not cover one damage scenario hurting many road users at once, but an organization can add that to its own criteria (F.1, citing EVITA).
+
+### 3.2 Attack feasibility: the three methods (Annex G)
+
+Annex G gives guidance for each of the three approaches in RC-15-11. For any of them, whether an attack can scale, meaning it extends easily to many instances and targets, can be included in the rating (G.1).
+
+**Attack potential (G.2).** Attack potential, a concept from ISO/IEC 18045, measures the effort an attack takes in terms of the attacker's expertise and resources (G.2.1). The five factors, their levels, and the example points of Table G.6:
+
+| factor | what it measures | levels and points (Table G.6) |
+|---|---|---|
+| elapsed time | time to find the vulnerability and to develop and apply an exploit, judged by what experts know at the time of rating (G.2.2.1) | ≤1 day 0, ≤1 week 1, ≤1 month 4, ≤6 months 17, >6 months 19 |
+| specialist expertise | the attacker's skill and experience; "multiple experts" means distinct steps of the attack need experts in different fields (G.2.2.2) | layman 0, proficient 3, expert 6, multiple experts 8 |
+| knowledge of the item or component | the information the attacker has about the item or component, graded by how closely it is held (G.2.2.3) | public 0, restricted 3, confidential 7, strictly confidential 11 |
+| window of opportunity | the access the attack needs: logical or physical, limited or unlimited in time (G.2.2.4) | unlimited 0, easy 1, moderate 4, difficult/none 10 |
+| equipment | the tools needed; "multiple bespoke" means distinct steps need different bespoke equipment (G.2.2.5) | standard 0, specialized 4, bespoke 7, multiple bespoke 9 |
+
+The points of all five factors are added (G.2.2.6, following ISO/IEC 18045), and Table G.7 maps the total to a rating: **0 to 13 is High** (the table lists two bands, 0 to 9 and 10 to 13, both High), 14 to 19 Medium, 20 to 24 Low, and 25 or more Very low. More points mean more effort, so a higher total means a lower feasibility. By our arithmetic, totals run from 0 to 57.
+
+**CVSS (G.3).** Only the four exploitability metrics of the CVSS base group are used: attack vector, attack complexity, privileges required and user interaction. The other CVSS metrics, such as impact, are covered by the standard's own damage scenarios and impact rating (G.3).
+- The exploitability value is E = 8.22 × AV × AC × PR × UI, the product of the four metric weights times 8.22, which gives values from 0.12 to 3.89 (G.3). This is the exploitability equation of CVSS v3.1 (FIRST's v3.1 specification, 7.1), the version the standard cites (Bibliography [24]). FIRST's v3.1 metric weights reproduce the 0.12 to 3.89 range (searches.md, Tool runs).
+- Table G.8 cuts that range into four equal steps: 2.96 to 3.89 High, 2.00 to 2.95 Medium, 1.06 to 1.99 Low, 0.12 to 1.05 Very low.
+- A NOTE says that using only the exploitability metrics does not strictly follow CVSS's own rules, and lets the standard's impact rating (Annex F) stand in for the missing impact part (G.3).
+- An organization can add its own examples to the metric descriptions, but not change the metric values. The metrics can rate conceptual weaknesses, flaws and gaps, not only vulnerabilities (G.3).
+- **CVSS v4.0 does not fit this method directly** (our finding, from FIRST's specifications). Version 4.0 has five exploitability metrics, adding attack requirements (AT); it scores through MacroVector lookup tables with interpolation; and its specification defines no exploitability equation or subscore. A v4.0 vector therefore cannot be put through E and Table G.8 as they stand (searches.md, Tool runs).
+
+**Attack vector (G.4).** The more remote an attacker can be, logically and physically, the higher the feasibility, on the assumption that far more people can attack over the internet than with physical access (G.4). Table G.9:
+
+| attack vector | rating | meaning, with the standard's example |
+|---|---|---|
+| network | High | reachable through the network stack without limits, e.g. an ECU on the internet through a cellular connection |
+| adjacent | Medium | through the network stack, but only over a physically or logically limited connection, e.g. Bluetooth or a VPN |
+| local | Low | not through the network stack; the attacker needs direct access to the item, e.g. a USB storage device or a memory card |
+| physical | Very low | the attacker needs physical access |
+
+The four values are the CVSS attack vector values, given automotive examples. RC-15-14 asks for the path's predominant attack vector, and NOTE 6 recommends this approach for early phases, when specific attack paths cannot be identified yet (§2.7).
+
+**Side by side:**
+
+| approach | input per attack path | output before mapping | when the standard suggests it |
+|---|---|---|---|
+| attack potential (G.2) | five factor levels | points, 0 to 57 | no phase given |
+| CVSS (G.3) | four CVSS v3.1 exploitability metrics | E, 0.12 to 3.89 | no phase given |
+| attack vector (G.4) | one attack vector | none: maps straight to a rating | early phases, such as the concept (RC-15-14, NOTE 6) |
+
+### 3.3 Cybersecurity assurance levels (Annex E)
+
+- **What a CAL is.** A level of rigour for the assurance activities that protect an item's assets. It gives organizations a common language for assurance requirements and sets no technical requirements for controls (E.1).
+- **Who sets it.** The organization developing the item, or, for a component developed out of context, the component's developer by assumption (E.1).
+- **Where it lives.** A CAL can be an attribute of a cybersecurity goal, inherited by the cybersecurity requirements refined from the goal (E.1; E.3.2). An item can have one CAL for all its goals or one per goal, and goals that are combined take the highest of their CALs (E.2). A component that receives requirements with different CALs takes the highest; one shown to be isolated from the other components can have its CAL lowered or dropped, with a rationale (E.3.2).
+- **Why it is not a risk value.** A CAL relates to risk only indirectly. The risk value changes as the specification, design, implementation and operational environment change, while a CAL is meant to stay fixed. So a CAL is set in the concept phase, from parameters expected to stay stable until the end of cybersecurity support, before controls are considered (E.2). Figure E.1 shows this: the risk value falls when a control is shown to work, rises when a vulnerability is found in the field, and falls again when it is fixed, while the CAL set at the start does not move.
+- **Example determination (Table E.1),** using two inputs from the threat scenarios concerned: their highest impact rating and their attack vector. The table notes that attack vector is the part of attack feasibility that stays static.
+
+| impact | physical | local | adjacent | network |
+|---|---|---|---|---|
+| severe | CAL2 | CAL3 | CAL4 | CAL4 |
+| major | CAL1 | CAL2 | CAL3 | CAL4 |
+| moderate | CAL1 | CAL1 | CAL2 | CAL3 |
+| negligible | none: a dash, pointing to PM-06-08 | none | none | none |
+
+- **What it scales.** The methods used for development and verification, the methods for finding weaknesses and analysing vulnerabilities, and the approach to cybersecurity assessment (E.3.1). The examples set how independent each check must be, from a different person (I1) to a different department (I3) (Table E.3), and which testing parameters apply to functional testing, vulnerability scanning, fuzz testing and penetration testing (Table E.4).
+- ISO/SAE PAS 8475, on CALs and targeted attack feasibility (TAF), is under publication (§1.2). We have not read it.
+
+**Takeaway:** Every scale in the annexes is an example. A rating therefore only means something together with the method and scale that produced it: attack potential points, a CVSS v3.1 exploitability value, or an attack vector. The CVSS route is tied to v3.1 and does not take CVSS v4.0 vectors as they are. Privacy impact can be derived from two properties of the data, its sensitivity and its linkability. A CAL behaves differently from risk: it is fixed early, attached to cybersecurity goals, and inherited by requirements and components, which take the highest CAL they receive. Section 5 looks at what these facts mean for the object model.
 
 ## 4. Worked example: the Annex H headlamp system
 
