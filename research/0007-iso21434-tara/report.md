@@ -29,7 +29,7 @@ open_decisions: [DEC-001, DEC-003, DEC-009]
 
 > **This report does not select a design.** It is evidence for the open decisions listed above. It also serves ADR-0002 (which accepted DEC-005), because ADR-0002 names the ISO 21434 object model as the automotive vocabulary that maps onto the shared graph.
 
-> **About quotations.** ISO/SAE 21434 is a paid standard, and its copyright page forbids reproducing it or posting it online. This repository is public, so the report describes the standard in our own words and points to clause, table and figure numbers (for example 15.9 or Table G.9). Apart from names (defined terms, impact categories, rating levels and rating factors, clause and table titles, requirement identifiers) and single keywords such as "shall", no wording is taken from it.
+> **About quotations.** ISO/SAE 21434 is a paid standard, and its copyright page forbids reproducing it or posting it online without written permission, except where otherwise specified or required to implement it. This repository is public, so the report describes the standard in our own words and points to clause, table and figure numbers (for example 15.9 or Table G.9). Apart from names (defined terms, impact categories, rating levels and rating factors, clause and table titles, requirement identifiers) and single keywords such as "shall", no wording is taken from it.
 
 Search log: [`searches.md`](searches.md). Source log: [`sources.md`](sources.md).
 Axes: [`dimensions.md`](dimensions.md).
@@ -537,7 +537,7 @@ The proposal's statements below come from its §3 ("Risk metric") and §12, at `
 - **Human-set impact per environment (R-019).** This fits the standard, whose damage scenarios can describe the situation they happen in (Table H.2).
 - **CAL.** A CAL can be set in the concept phase and is meant to stay fixed; it cannot be read directly off a risk value (E.2), and it can be attached to a cybersecurity goal as one of the goal's attributes (E.1; §3.3, §5.2).
 
-**Takeaway:** On the points that matter for the MVP, the proposal's metric is consistent with the standard. The checks found one overstatement (item 6: per-category risk values are allowed, not required), one rule stricter than the standard (item 7) and an imprecise caveat (item 10). Three facts bear on the choices still open in DEC-003: the risk value's range is fixed but its function and number type are not, and Annex H's own matrix and formula disagree on 4 of 16 pairs; Annex G's CVSS guidance is tied to v3.1; and the attack potential approach shares its source with the Common Criteria option (R-013), which links #11 to #14.
+**Takeaway:** On the points that matter for the MVP, the proposal's metric is consistent with the standard. The checks found one overstatement (item 6: per-category risk values are allowed, not required), one rule stricter than the standard (item 7) and a partly wrong caveat (item 10). Three facts bear on the choices still open in DEC-003: the risk value's range is fixed but its function and number type are not, and Annex H's own matrix and formula disagree on 4 of 16 pairs; Annex G's CVSS guidance is tied to v3.1; and the attack potential approach shares its source with the Common Criteria option (R-013), which links #11 to #14.
 
 ## 7. Check of the library's requirement catalog
 
@@ -572,7 +572,7 @@ The library holds the sponsor's catalog of the standard's provisions and work pr
 - **The proposal's risk anchors are mostly sound.** The entries it cites for the risk metric (RQ-15-04 to RQ-15-06, RQ-15-10, RC-15-12, RC-15-13, RQ-15-15, RQ-15-16; §6.2) have the right text and locators, but RQ-15-05 and RQ-15-06 lack their link to WP-15-04. The defects next to them are the treatment step (RQ-15-17), the concept-phase TARA (RQ-09-03, RQ-09-04) and the impact-rating work product (WP-15-04).
 - **The defects are spread across the catalog.** The 16 text defects fall in 9 of the 11 clauses that have provisions, Clause 6 having the most (4); Clause 15 has one in 17.
 - **Audit automation needs the links.** The library's notes propose the provision-to-work-product structure as the seed for automated audits (`normative.md` §4, which cites tmodel #15; automated compliance validation is #19). With 22 of the 48 named links missing, a coverage query over the catalog would report gaps that are not in the standard.
-- **Fixing the text is still a licensing decision.** The library's draft policy requires requirement text to be verbatim (its `docs/requirements.md`), while the standard's copyright page forbids posting its text online without prior written permission, which can be requested from ISO or SAE International (see "About quotations" at the top). Correcting the entries would shrink the standard's text in the catalog, from about 32,700 to about 22,600 characters, because the five annex-text entries alone hold about 13,200 characters, including the whole bibliography; but the catalog would still be verbatim, and #11 asked for our own wording. That choice belongs to the sponsor (§8).
+- **Fixing the text is still a licensing decision.** The library's draft policy requires requirement text to be verbatim (its `docs/requirements.md`), while the standard's copyright page forbids posting its text online without written permission, which can be requested from ISO or SAE International, except where otherwise specified or required to implement the standard (see "About quotations" at the top). Correcting the entries would shrink the standard's text in the catalog, from about 32,700 to about 22,600 characters, because the five annex-text entries alone hold about 13,200 characters, including the whole bibliography; but the catalog would still be verbatim, and #11 asked for our own wording. That choice belongs to the sponsor (§8).
 
 ### 7.4 Against the full-extraction standard (FX-1)
 
@@ -593,4 +593,39 @@ No passes are recorded on the record. Counting the sponsor's extraction as the f
 
 ## 8. Synthesis
 
-_Pending._
+This section gathers the evidence above by decision. It does not select a design.
+
+**DEC-001 (object model).**
+- Of the 23 objects mapped, 9 have the same or a close type in the proposal, 9 overlap only partly, and 5 have no type at all (§5.2). The core of TARA is at least named there: component, asset, damage scenario, threat scenario (as ThreatInstance), attack path with its feasibility, risk value and cybersecurity control. Asset and damage scenario are named but not yet defined in the proposal, and neither ARCH-0001 nor the proposal links an attack path to the threat scenarios it realizes (§5.2, §5.3).
+- The concept-phase objects that turn risk decisions into engineering work are missing: cybersecurity goals, claims, engineering cybersecurity requirements and CALs, and the treatment options other than reducing. Smaller gaps are the properties on assets and the item-contains-asset edge; a field for the threat scenario's cause and, in the proposal, its link to the targeted asset; road users and an owner for the per-category impact rating; the method behind each feasibility rating; and the item with its operational assumptions (§5.3).
+- The standard states cardinalities a schema has to allow: damage scenarios and threat scenarios are many-to-many, so are attack paths and threat scenarios, each path gets one feasibility rating, and a threat scenario can carry several risk values (§5.4).
+- Figure 3 covers ten objects and thirteen edges but no attack paths, ratings, risk values, treatment decisions, claims or CALs, which come from Clauses 9 and 15 and the annexes (§5.1). The library's notes state three of its edges with a different meaning (§7.2).
+- Annex H's wording drifts between tables (§4.3), which is a reason to link objects by identifier (§4.4); ADR-0004 already requires stable IDs.
+
+**DEC-003 (risk metric).**
+- The standard fixes the reference levels (four impact levels, four feasibility levels, risk values from 1 to 5), onto which an organization's own scales can be mapped (15.1). It leaves open the combining function, the aggregation across paths, the rating method and whether risk values are whole numbers (§6.1).
+- The proposal's MVP metric is consistent with the standard on the points that matter for the MVP. The checks found one overstatement (per-category risk values are allowed, not required), one rule stricter than the standard (environment never shaping impact, which also sits uneasily with R-019), and a partly wrong caveat about the catalog (§6.2).
+- Three facts bear on the open choices: Annex G's CVSS guidance follows CVSS v3.1, which a CVSS v4.0 vector does not fit as it stands (§3.2); the attack potential approach shares its source, ISO/IEC 18045, with the Common Criteria option R-013 (§6.3); and Annex H's own risk matrix and risk formula disagree on 4 of 16 pairs (§4.3). A CAL cannot be read directly off a risk value (§3.3, §6.3).
+- Sections 2 to 4 and 7 cover the ground of the proposal's blocker, a human-reviewed extraction; whether they clear it, after human review, is the sponsor's call (§6.2).
+
+**DEC-009 (generic-threat to product mapping; mitigation lifecycle).**
+- The standard ties the mitigation lifecycle to TARA. Treatment decisions lead to goals, claims or a changed item (§2.9, §2.10); claims are covered by monitoring and vulnerability management (15.9, NOTE); evaluated events can update threat scenarios (RQ-08-04, NOTE 3); a vulnerability's risks go back through the treatment decision unless a remediation removes it (RQ-08-07); and a reuse analysis can identify a TARA as an affected or missing work product, for assets, threat scenarios or risk values that are new or have changed (RQ-06-16, EXAMPLE 4). These continual activities run in every lifecycle phase, and vulnerability management runs until the end of cybersecurity support (8.1).
+- The metric has a process effect: threat scenarios with risk value 1 need not conform to 9.5 or to Clauses 10 and 11 (PM-06-08).
+- The standard works one item, or component, at a time and says nothing about product families (§1.1, §5.3).
+
+**ADR-0002 (accepted).** It names the ISO 21434 object model as the automotive vocabulary that binds to the shared graph. Section 5 now maps it type by type, with the gaps listed.
+
+**Tool support.** Not surveyed. RPT-0003 covers IriusRisk, one of the candidate tools the library record lists, as a general threat-modeling tool, but it never mentions ISO/SAE 21434, TARA or automotive use. The library record lists its candidates without a survey (`iso-sae-21434-2021`, summary.md, Implementations).
+
+**Limits.**
+- One standard, read in full: the 2021 first edition. The other ISO documents this report names (ISO 26262-3, ISO/IEC 15408, ISO/IEC 18045, ISO/IEC 27000, ISO/IEC 29100, ISO 31000, ISO/SAE PAS 8475, ISO/SAE TR 8477, ISO/PAS 5112, ISO 24089) were not read, nor were EVITA, TVRA and PASTA. The report gives only what ISO/SAE 21434 or our own issues say about them, plus the ISO status of those in §1.2, where the stage names still need a manual check on iso.org.
+- The report paraphrases the standard and cites clause numbers, so a reader needs the standard to check it. It reproduces the example values of Tables E.1, G.6 to G.9, H.8 and H.10, and results from Tables H.7 and H.9.
+- The fit labels in §5.2 and the verdicts in §6.2 are our reading.
+- The catalog check in §7 is the mechanical part of an adversarial pass; FX-1's cross-check and a human review and sign-off remain (§7.4).
+- Annex H illustrates only the concept phase, with one small example (§4).
+- Every section was fact-checked by an independent subagent against the sources, and each finding was re-checked before it was fixed (searches.md, Tool runs); a human review is still needed.
+
+**Open questions for the sponsor.**
+1. May the public library keep the standard's verbatim text? The library's draft policy requires verbatim text, while the standard's copyright page forbids posting it online without written permission, except where otherwise specified or required to implement the standard. Or should the library hold locators, digests and our own wording, as #11 asked (§7.3)? If the catalog stays verbatim, fixing it still cuts its copy of the standard by nearly a third (about 32,700 to 22,600 characters); our own wording would remove the verbatim copy altogether.
+2. Once reviewed and signed off, do sections 2 to 4 and 7 meet the DEC-003 blocker of a human-reviewed extraction, or must the catalog be fixed first (§6.2, §7)?
+3. Who fixes the catalog in a library pull request, and should Annex H become a fixture? FX-1 would govern that pull request once it reaches the fork, or if the pull request goes upstream (§4.4, §7.4).
