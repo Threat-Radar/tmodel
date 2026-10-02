@@ -31,3 +31,4 @@ a reference we did not need.
 | `RPT-0009` | [SAGAI & AI-security specs](0009-sagai/report.md) | draft (#13) |
 | `RPT-0011` | [Knowledge Graphs and NSF OKN](0011-knowledge-graphs-nsf-okn/report.md) | draft (#25) |
 | `RPT-0012` | [GUI, platform & implementation stack](0012-gui-platform-stack/report.md) | scaffold (plan in dimensions.md) |
+| `RPT-0013` | [Secure Development Lifecycle & conformance](0013-sdl-conformance/report.md) | scaffold (plan in dimensions.md) |

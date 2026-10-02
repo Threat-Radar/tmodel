@@ -7,7 +7,7 @@ description: "Task backlog. Each task becomes a GitHub issue; this file is the d
 type: backlog
 category: process
 status: draft
-version: "0.2.5"
+version: "0.2.7"
 date: "2026-09-23"
 updated: "2026-10-01"
 needs_review: true
@@ -76,6 +76,8 @@ the umbrella landscape scaffold. Each report: sources → `library/` records
 | T-030 | RPT — Agentic Threats & Weaknesses | #12 · paria03 | L | todo |
 | T-031 | Extraction: SAGAI (Secure AI) & related specifications | #13 · Maimcghee | M | todo |
 | T-032 | RPT-0001 umbrella landscape — reconcile with the per-topic reports | — | M | todo |
+| T-033 | RPT-0013 — SDL & conformance (3-lane multi-agent first draft folded) | #67 | L | **review** (draft merged) |
+| T-034 | MAP-0001 — SDL requirements crosswalk | #67 | M | **review** (first draft in; cells flagged approx; guidelines need ingestion) |
 | T-028 | Define target use cases; draft DEC-005 options with evidence | all | M | **doing** |
 
 ## I1b — Extraction standard (cross-cutting, high priority)
@@ -147,6 +149,16 @@ remote servers. Tracking epic: the GitHub "Path A" issue. Slices 0–3 are the s
 | T-212 | **Packaging + signing + download**: `tauri build` → signed `.dmg` → GitHub Releases (PLAN-0002 Track A) | #47 | M | todo |
 | T-213 | **CWE lossless import**: merge 3 CWE views (699/1000/1194) losslessly into `Weakness`; allow non-MITRE `tr-weak-*`; reconciliation test (PLAN-0002 §5) | #47 | L | todo |
 | T-214 | **Library ↔ weakness-type link**: typed edge `record characterised_by Weakness` (PLAN-0002 B4) | #47 | S | todo |
+
+## SDL / conformance (iteration-7 model; mostly post-MVP · DL-0009)
+
+| id | task | issue | sz | status |
+|---|---|---|---|---|
+| T-220 | Mitigation `kind` ∈ {technical, documentation, process} (R-040) — MVP-adjacent | #15 | S | todo |
+| T-221 | SDL / SecurityProgram object: ordered/named/dated Gates/Checkpoints/Milestones + program mgmt (R-041) — post-MVP | #15/#67 | L | todo |
+| T-222 | Conformance validation: Requirement↔Mitigation/Evidence+Review; automatable "threats-mitigated" check (R-042) | #19/#67 | M | todo |
+| T-223 | Governed document-views: TM & SDL as owned/approved/versioned views over KG-SoT (R-043) | #15 | M | todo |
+| T-224 | Requirement object + cross-spec mappings from MAP-0001 (R-044) | #67 | M | todo |
 
 ## Parking lot
 
