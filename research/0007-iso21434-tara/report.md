@@ -326,7 +326,50 @@ The four values are the CVSS attack vector values, given automotive examples. RC
 
 ## 4. Worked example: the Annex H headlamp system
 
-_Pending._
+Annex H illustrates the TARA methods on a headlamp system. It is for illustration only, covers just the concept phase (item definition and TARA), and is simplified (H.1). It says the methods can run in any order and gives two sample orders; the example itself goes from assets to impact rating, threat scenarios, attack paths, feasibility, risk value and treatment (H.1). Figure H.1 shows the concept-phase wiring from §2.10: RQ-09-03 calls 15.3 to 15.8, RQ-09-04 calls 15.9, and RQ-09-05 then specifies cybersecurity goals. The figures and the tables discussed below were checked on page images (searches.md, Tool runs).
+
+### 4.1 The item
+
+- **Function.** The system switches the headlamps on and off when the driver uses the switch. In high-beam mode it dips to low beam automatically when it detects an oncoming vehicle, and returns to high beam once that vehicle is no longer detected (H.2.1). The headlamp function does not depend on the navigation or gateway ECUs (H.2.1, NOTE).
+- **Inside the item boundary** (Figure H.2): a headlamp switch, a body control ECU, a camera ECU, a power switch actuator and the lamps. Two signals matter: the lamp request (low, high or off) from the body control ECU to the power switch actuator, and the oncoming car information (yes or no) from the camera ECU.
+- **Outside the boundary, in the operational environment** (Figure H.2, Table H.1): a gateway ECU connected to the item and to a navigation ECU, and other ECUs. The navigation ECU has Bluetooth and cellular interfaces; the gateway has an OBD-II connector. Two assumptions are recorded: the navigation ECU's firewall blocks invalid data from its external interfaces, and the gateway has strong controls, including a firewall, developed to CAL4 (Table H.1).
+
+### 4.2 The chain, step by step
+
+| step | what the example produces | source |
+|---|---|---|
+| assets | Three assets: the lamp request communication (integrity, availability), the oncoming car information communication (integrity, availability), and the body control ECU's firmware (confidentiality, integrity; its damage scenario is left out). Four damage scenarios are written out, for example a front collision with a tree when the headlamps switch off while driving at night at medium speed. | Table H.2 |
+| impact rating | Three damage scenarios rated, each in one category: the collision S, severe (S3); a vehicle that cannot be driven at night because the headlamps seem disabled while parked O, major; automatic high beam stuck on low beam O, moderate. | Table H.3 |
+| threat scenarios | Two for the collision: spoofing the lamp request signal, and tampering with the signal the body control ECU sends, either of which can switch the headlamps off. One for the stuck high beam, written as RQ-15-03's three elements: asset oncoming car information, property availability, cause denial of service. | Table H.4 |
+| attack paths | Spoofing has three 4-step paths into the navigation ECU (through its cellular or its Bluetooth interface) or into the OBD connector (local access), then through the gateway to the power switch actuator. Denial of service has a 4-step path through cellular and a 5-step path through a Bluetooth OBD dongle and the driver's compromised smartphone, both ending in flooding the bus. Tampering gets no paths. Paths that require getting physically inside the item, for example to the body control ECU's microcontroller, are excluded by assumption (H.2.5). | Table H.5, Figure H.3 |
+| attack feasibility | Spoofing paths, by attack vector (G.4): cellular High, Bluetooth Medium, OBD Low. This approach suits the concept phase, when not all vulnerability information can be known (NOTE 1). Denial-of-service paths, by attack potential (G.2): 1 + 8 + 7 + 0 + 4 = 20 points and 1 + 8 + 7 + 4 + 4 = 24 points, both Low. The second path's window of opportunity is 4 (moderate) because it needs physical access (NOTE 2). | Tables H.6, H.7 |
+| risk value | Each threat scenario's feasibility is aggregated over its paths (spoofing High, denial of service Low) and combined with its impact through the example risk matrix below: spoofing gets "S: 5", denial of service "O: 2". The example formula R = 1 + I × F, with I and F set to 0, 1, 1.5 or 2 for the four impact and feasibility levels, gives the same two values. | Tables H.8 to H.10 |
+| treatment | Both threat scenarios: reduce the risk. The example ends here; it shows no cybersecurity goals or claims. | Table H.11 |
+
+The example risk matrix (Table H.8):
+
+| impact | very low | low | medium | high |
+|---|---|---|---|---|
+| severe | 2 | 3 | 4 | 5 |
+| major | 1 | 2 | 3 | 4 |
+| moderate | 1 | 2 | 2 | 3 |
+| negligible | 1 | 1 | 1 | 1 |
+
+### 4.3 What the example shows that the clauses do not
+
+1. **Two feasibility methods in one analysis.** One threat scenario's paths are rated by attack vector and the other's by attack potential (Tables H.6, H.7), and both end up in the same risk table (Table H.9).
+2. **Aggregation by the highest rating.** The spoofing threat scenario takes High from its High, Medium and Low paths (Table H.9), the example given in RQ-15-15, NOTE 2.
+3. **Risk values labelled by category.** Each value carries its impact category ("S: 5", "O: 2"; Table H.9), in line with RQ-15-15, NOTE 1. Each threat scenario here has only one rated category, so the example never shows a threat scenario with several risk values.
+4. **The matrix and the formula do not agree everywhere.** The standard only says they give the same values for the two threat scenarios shown. Over all 16 combinations, by our arithmetic, they agree on 12 and differ on 4: severe with very low feasibility (formula 1, matrix 2), major with low (2.5 and 2), major with medium (3.25 and 3), and moderate with medium (2.5 and 2). Three of the four formula results are not whole numbers, and the standard gives no rounding rule. RQ-15-16 asks for a value from 1 to 5 without saying it must be a whole number.
+5. **The tables are not fully consistent.** Table H.6 has the spoofing paths switch the lamp request "ON" and gives the OBD path three steps. Table H.5 says "OFF" for all three paths, as does Figure H.3 for the cellular one, which matches the threat scenario, and gives the OBD path four steps. The threat scenario's own wording also changes slightly between Tables H.4, H.5, H.9 and H.11.
+6. **Assumptions shape the result.** The firewall and CAL4 assumptions (Table H.1) and the exclusion of paths that go physically inside the item (H.2.5) decide which paths exist at all.
+7. **The example is partial.** One written-out damage scenario (oncoming drivers dazzled because the beam cannot dip) is never rated, the firmware asset's damage scenario is left out, and the tampering threat scenario gets no attack paths.
+
+### 4.4 As a candidate test case for #17
+
+Counted from the tables and figures: one item with five kinds of components inside the boundary, two named ECUs and three external interfaces outside it, 3 assets, 4 written-out damage scenarios, 3 impact ratings, 3 threat scenarios, 5 attack paths with 21 steps between them, 5 feasibility ratings (3 by attack vector, 2 by attack potential), 2 risk values and 2 treatment decisions. The expected results a test could check are the two aggregated ratings (High, Low), the two risk values (5 and 2, by matrix and by formula) and the two decisions (reduce, reduce). Under the library's full-extraction standard (FX-1), examples like this one become fixture files with expected results in the library record. Turning this one into a fixture would first need the inconsistencies in item 5 resolved, and links between rows by identifier, since the wording drifts between tables.
+
+**Takeaway:** The example walks the whole chain on a small system and confirms the shapes from §2: ratings on paths, aggregation per threat scenario, and a risk value labelled by impact category. It also shows what the clauses leave open. Two feasibility methods can be mixed in one analysis, the example risk formula and risk matrix are not interchangeable in general, and the risk value need not be a whole number. Its small inconsistencies are a reason to link the objects by identifier, not by text.
 
 ## 5. TARA objects mapped onto the proposed object model
 
