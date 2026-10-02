@@ -7,7 +7,7 @@ description: "Task backlog. Each task becomes a GitHub issue; this file is the d
 type: backlog
 category: process
 status: draft
-version: "0.2.6"
+version: "0.2.7"
 date: "2026-09-23"
 updated: "2026-10-01"
 needs_review: true
@@ -76,8 +76,8 @@ the umbrella landscape scaffold. Each report: sources → `library/` records
 | T-030 | RPT — Agentic Threats & Weaknesses | #12 · paria03 | L | todo |
 | T-031 | Extraction: SAGAI (Secure AI) & related specifications | #13 · Maimcghee | M | todo |
 | T-032 | RPT-0001 umbrella landscape — reconcile with the per-topic reports | — | M | todo |
-| T-033 | RPT-0013 — Secure Development Lifecycle & conformance (collect → ingest → MAP-0001 overlap → conformance/doc-governance); multi-agent, 5 lanes | #67 | L | **doing** (scaffold + plan in) |
-| T-034 | MAP-0001 — SDL requirements crosswalk (how specs share/overlap common requirements) | #67 | M | todo |
+| T-033 | RPT-0013 — SDL & conformance (3-lane multi-agent first draft folded) | #67 | L | **review** (draft merged) |
+| T-034 | MAP-0001 — SDL requirements crosswalk | #67 | M | **review** (first draft in; cells flagged approx; guidelines need ingestion) |
 | T-028 | Define target use cases; draft DEC-005 options with evidence | all | M | **doing** |
 
 ## I1b — Extraction standard (cross-cutting, high priority)

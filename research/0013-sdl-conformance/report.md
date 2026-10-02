@@ -7,7 +7,7 @@ description: "Landscape of secure-development-lifecycle guidelines (NIST SSDF, M
 type: research
 category: process
 status: draft
-version: "0.1.0"
+version: "0.2.0"
 date: "2026-10-01"
 updated: "2026-10-01"
 authors:
@@ -38,31 +38,82 @@ requirements crosswalk showing how the SDL specs overlap.
 
 ## 0. Summary & gap analysis
 
-_pending — the common-requirement set, the biggest overlaps/gaps, and the recommended SDL +
-conformance model for tmodel._
+**First draft from a 3-lane multi-agent pass** (landscape, crosswalk, conformance/governance).
+Framework structures verified against primary sources; many atomic cells are `approx` pending the
+purchased standards, and **no guideline is a library record yet** (ingestion = T-033/T-029).
+
+- **Two kinds of guideline + maturity models.** Lifecycle/process standards (MS SDL, IEC 62443-4-1,
+  ISO/SAE 21434, ISO 26262, ISO 27034) have phases + work products; outcome catalogues (NIST SSDF,
+  SAFECode, CISA Secure by Design, SLSA, SP 800-161) have no phases; SAMM/BSIMM measure maturity.
+- **The near-universal requirements** (MAP-0001): **threat modeling/TARA** (all 7 — the anchor for
+  tmodel), security requirements, security testing before release, vulnerability management +
+  disclosure, third-party/SBOM, secure design + coding.
+- **Real divergences:** crypto standards (first-class only in MS SDL + SAFECode), secure-build/
+  provenance (strong in SSDF/MS, thin elsewhere), hardening (IEC SG most prescriptive), operational
+  IR (IEC 4-1 defers it), and the **release gate** (only SSDF PO.4 names it as a discrete auditable
+  practice — our SDL `Gate` exit-criteria hook).
+- **Recommendation shape:** model each common requirement as a `Requirement` with cross-spec
+  `maps_to` edges (MAP-0001); SDL `Gate`s carry phase-due requirements as exit criteria; conformance
+  is the automatable "every in-scope threat has an approved, evidenced mitigation" check (§4).
+  Crosswalk: **MAP-0001**.
 
 ## 1. SDL / SSDL guideline landscape (Lane 1)
 
-_pending — NIST SSDF (SP 800-218/218A), Microsoft SDL, OWASP SAMM, BSIMM, SAFECode,
-ISO/IEC 27034, ISO/SAE 21434 process, ISO 26262, IEC 62443-4-1, CISA Secure by Design,
-SLSA / SP 800-161. Each → a library record._
+Verified structures (sources in `sources.md`): **NIST SSDF 800-218** (PO/PS/PW/RV, 19 practices/42
+tasks; SDLC-agnostic; PW.1.1 = threat modeling) + **800-218A** (generative-AI profile); **Microsoft
+SDL** (now 10 named practices, no IDs; rooted in Training→Req→Design→Impl→Verif→Release→Response);
+**OWASP SAMM v2** (5 functions × 3 practices × 2 streams, maturity 0–3); **BSIMM** (4 domains / 12
+practices; descriptive, observation-based); **ISO/SAE 21434** (Cl.5–15; Cl.9 concept, **Cl.15 TARA**,
+Cl.11 validation, Cl.13 ops/IR, Cl.8 continual); **IEC 62443-4-1** (8 practices SM/SR/SD/SI/SVV/DM/
+SUM/SG, ML1–ML4; **SR-2 = threat model**); **SAFECode 2018** (ASC Definition → Design → Secure Coding
+→ Testing → Manage Findings → Vuln Response). Context-setters: **CISA Secure by Design** (principles,
+pledge), **SLSA** (build track L0–L3, provenance), **SP 800-161** (C-SCRM). *SSDF 1.2 (800-218r1)
+was in public draft Dec 2025; final status unconfirmed as of today.*
 
 ## 2. Phases, gates, checkpoints, milestones (Lane 2)
 
-_pending — per-framework stage/gate vocabulary; the gate crosswalk onto the canonical
-LifecyclePhase axis; program-management attributes (entry/exit criteria, owner, dates, deps)._
+Each framework's native phase/gate vocabulary and the **canonical phase-line crosswalk** are in
+**MAP-0001**. Key points: lifecycle standards (MS SDL, IEC 4-1, ISO 21434) order explicit phases with
+**gates** (MS "mandatory checks and approvals"; ISO 21434 "release for post-development"; IEC ML-scored
+practices); catalogues (SSDF, SAFECode) and maturity models (SAMM, BSIMM) are **not** phase-ordered —
+their placement onto the canonical line is best-fit. Program-management attributes a `Gate` needs:
+entry/exit criteria, owner, approval, planned vs actual dates, dependencies.
 
 ## 3. Requirements mapping & overlap → MAP-0001 (Lane 3)
 
-_pending — atomic requirements per spec; the crosswalk (rows = common requirement, columns =
-spec, cells = clause/ID); mapping onto our object model._
+**Delivered as a first-draft crosswalk: [`spec/MAP-0001`](../../spec/MAP-0001-sdl-requirements-crosswalk.md)**
+— 19 atomic requirements × 7 frameworks, with the big overlaps, the divergences, and the phase line.
+A "cell" means different things per column (hard requirement vs maturity activity vs named practice);
+`approx` cells + IEC/ISO IDs need verification against the purchased standards before acceptance.
 
 ## 4. Conformance validation & automation (Lane 4)
 
-_pending — how conformance is evidenced/assessed; the automatable "every in-scope threat has an
-approved mitigation" check; relation to ISO 21434 work-products and #19._
+Conformance spans self-attestation (SSDF via the CISA form; SLSA; CISA pledge), maturity scoring
+(SAMM self-assessment, BSIMM paid benchmark), internal gate enforcement (MS SDL), and third-party
+certification/audit (IEC 62443-4-1 via ISASecure SDLA; ISO 21434/26262). **Nobody mandates a
+machine-checkable format.** Automatable today: signed **attestations** (in-toto + SLSA predicate +
+Sigstore/cosign; policy engines like Kyverno), **SBOM/VEX** schema checks, and **OSCAL** control
+mapping (catalog/profile/SSP/assessment-results/POA&M; compliance-trestle, C2P). **Not** automatable:
+maturity scores, independence/adequacy judgements, and whether a mitigation is *actually* adequate.
+
+**The automatable "threats-mitigated" check (design for R-042):** over a machine-readable threat
+model, fail the gate unless — every in-scope threat has a `disposition` (mitigate/accept/transfer/
+avoid, mirroring ISO 21434 risk treatment); every "mitigate" threat links ≥1 mitigation with status
+≥ approved; each such mitigation has ≥1 resolvable, fresh, digest-matching **evidence** record;
+accept/transfer carry an authorised approval; out-of-scope threats carry a rationale; no dangling IDs.
+Validate schema (JSON Schema) + semantics (OPA/Rego or CEL) as a required CI check; approvals as
+signed records; optionally emit OSCAL assessment-results. **Limit:** this proves linkage + approval,
+not adequacy — the human cybersecurity-assessment role (ISO 21434) remains.
 
 ## 5. Document governance as views over the KG (Lane 5)
 
-_pending — owner / change-tracking / approval / version patterns; the governed document-view
-(threat model, SDL plan) as an approvable projection over the KG-as-SoT (ADR-0004, §10, §4)._
+Governance attributes seen in practice (synthesised; not one standard): **document owner (role),
+version, change history (author/reviewer/approver, dated), status** (draft/in-review/approved/
+superseded), review cadence, a link to the **baseline** (release/commit) it describes. Prior art for
+**document-as-view-over-a-SoT**: MBSE / **SysML v2 View & Viewpoint** (documents generated from the
+model); **OMG SACM** assurance cases (structured argument is the SoT, the rendered case is a view);
+**OSCAL → Word** (the machine-readable file is authoritative, the Word doc is generated); GRC
+platforms. Consequence for our **governed document-view**: approval attaches to a **specific snapshot**
+(commit/digest) so "approved" is reproducible; the view carries the governance metadata but **stamps it
+from the KG snapshot**, not free-text; hand-edits to a rendered view are rejected/flagged; signed
+attestations (in-toto / signed git tags) are the natural sign-off. Folds into §10 + §4 at iteration 8.
