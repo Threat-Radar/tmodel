@@ -7,7 +7,7 @@ description: "Iteration 5 of the DEC-001 object-model synthesis (#15), with the 
 type: architecture
 category: security
 status: proposed
-version: "0.2.0-proposed.8"
+version: "0.2.0-proposed.9"
 version_policy: "iterate the -proposed.N suffix; folds into ARCH-0001 §3/§4 (and an ADR accepts DEC-001)"
 date: "2026-09-30"
 updated: "2026-10-01"
@@ -35,6 +35,8 @@ reviewers:
   - role: sponsor-review
     id: paul-lambert
     round: lifecycle-parties-tara-schema
+  - role: adversarial-critic
+    id: agent-iteration-7
 needs_review: true
 reviewed: false
 canonical_path: spec/ARCH-0001-PROPOSAL-v0.2.0.md
@@ -61,8 +63,12 @@ agent_notes: >
 
 **Status: proposed (iteration 6, proposed.8).** proposed.5 added the presentation layer +
 redundancy; proposed.6 folded #6/#7 + three decision analyses; proposed.7 folded the adversarial
-critic; **proposed.8 folds a sponsor round (DL-0008): parties/organizations, a lifecycle axis with
-returns, stakeholder-relative TARA impact, and the schema-definition approach.** **Legend:** ✅
+critic; proposed.8 folded a sponsor round (DL-0008): parties/organizations, a lifecycle axis with
+returns, stakeholder-relative TARA impact, and the schema-definition approach. **proposed.9 folds
+the iteration-7 adversarial critic (DL-0010):** defined `RiskScore` multiplicity, stopped
+overloading ISO S/F/O/P by stakeholder, downgraded the LinkML claims, unified actor identity,
+softened the lifecycle "state machine", and **pushed Party/lifecycle/stakeholder-impact to
+post-MVP**. **Legend:** ✅
 covered · ✅\* proposed direction (accepted only via the gating DEC's ADR) · ◐ still open. **These
 are *proposed* requirements — several (R-023…R-039) are not yet in ARCH-0001 §4** (L13).
 
@@ -142,19 +148,27 @@ Attack Flow record are **not yet pinned** — ingest before relying on the phase
 
 ## 2b. Parties & organizations (sponsor round — R-036)
 
-Companies and standards groups **are** referenced across the model, so they are first-class.
-A single **`Party`** node (an organization or a person) carries one or more **roles** rather than
-a subclass per role (one company is often both a manufacturer and an operator):
+Companies and standards groups **are** referenced across the model, so they are first-class — a
+reusable **`Party`** node (an organization or a person), shared like `Component`.
 
-- **Roles:** `vendor`, `manufacturer` (incl. *product manufacturer* vs *chip/component manufacturer*),
-  `supplier`, `integrator`, `operator`/`service-provider`, `consumer`/`end-user`, `owner`,
-  `standards-body`, `cna`/`advisory-source`, `regulator`.
-- **Where they attach:** `Vulnerability`/`Finding` → `reported_by`/`assigned_by` a CNA and
-  `affects` a vendor's `Product`; `Product`/`ProductFamily` → `manufactured_by`/`supplied_by` a
-  Party; library standard records (ISO 21434, FIPS, CWE/CAPEC/ATT&CK) → `published_by` a
-  standards body (ISO, NIST, MITRE); `Asset` → `owned_by` a Party (drives TARA impact, §3).
-- Modeled as typed edges per ADR-0004 (stable IDs). Parties are reusable nodes (shared like
-  `Component`), so "all CVEs from vendor X" or "everything governed by ISO" are one-hop queries.
+- **One identity, many facets (critic M1).** `Party`, the `ThreatActor` of §1.3, and the PROV-O
+  `Agent` of §4 are **facets of one identified entity**, not three separate nodes: a vendor who is
+  also an insider adversary and the agent behind an AI-proposed assertion is **one** `Party` with a
+  `ThreatActor` facet and a PROV `Agent` role. Identity is a single `party_id` (with a dedup rule on
+  canonical org identifiers); the facets are attached, not cloned. (ExternalEntity stays a DFD role
+  that *resolves to* a Party, per the §0 one-artifact rule.)
+- **Intrinsic classification vs relational role (critic M2).** Only **intrinsic** classifications
+  live on the node (`standards-body`, `cna`). **Relational** roles — `supplier`, `integrator`,
+  `operator`, `consumer`, `owner`, `vendor-of` — are **edge types**, because the same Party is a
+  supplier *to A* and a consumer *to B*: `Product` `manufactured_by`/`supplied_by` a Party;
+  `Asset` `owned_by` a Party (drives the §3 owner-selection); `Vulnerability`/`Finding`
+  `reported_by`/`assigned_by` a CNA and `affects` a vendor's `Product`.
+- **Publishers reference the library record's publisher (critic L2b).** Standards (ISO 21434, FIPS,
+  CWE/CAPEC) are `published_by` the `Party` that the `library/` record already names — **one org
+  registry**, not a parallel one; the domain `Party` *is* that canonical identity, referenced by the
+  library record, not re-minted.
+- Typed edges per ADR-0004 (stable IDs), so "all CVEs from vendor X" or "everything governed by
+  ISO" are one-hop queries.
 
 ## 3. Structure, networks, deployment, and the risk metric
 
@@ -176,15 +190,23 @@ Recursive `composed_of`; Interconnect→Network/NetworkLink; DNS/services as Com
   safety ← ISO 26262 `#RQ-15-06`), **human-supplied**. 21434 determines a risk value *per
   category* (Annex H.9), so **keep the category vector**; any single-number collapse (e.g. `max`)
   is an explicit **display** simplification, not the method (M12).
-- **Impact is stakeholder-relative — the asset *owner* determines it (sponsor round, R-039).**
-  An `Asset` has an `owned_by` Party (§2b); the **same** damage scenario weighs differently for a
-  **consumer** vs a **service operator** vs a **product manufacturer** vs a **chip manufacturer**
-  (e.g. a recall is severe-financial for the product maker, operational for the operator, privacy
-  for the consumer). So `DamageScenario` impact is a **(category, stakeholder-role, severity)**
-  tuple — the per-category vector from above, indexed by stakeholder. The `RiskScore` is computed
-  **for the relevant owner/stakeholder**; whose impact "counts" is driven by `Asset.owned_by`.
-  ISO 21434 fixes the stakeholder to the road user; our multi-domain model generalises to the
-  owner. (MVP: one stakeholder per asset — the owner; multi-stakeholder impact is post-MVP.)
+- **Asset ownership & a *separate* stakeholder-impact axis (R-039 — critic-corrected, H3).** An
+  `Asset` has an `owned_by` Party (§2b). **The ISO S/F/O/P categories above stay fixed to the
+  end-beneficiary** (road user / data subject / end-user) so severities remain comparable — we do
+  **not** re-index S/F/O/P by owner (that would change what "privacy" or "financial" *means* and
+  break the ISO alignment). Instead, the owner's view is a **distinct `business_impact` axis**
+  (e.g. recall cost / liability / reputation for a manufacturer; service-outage for an operator),
+  assessed *in addition to* S/F/O/P, not as a relabelling of it. `Asset.owned_by` selects *whose*
+  `business_impact` applies.
+- **`RiskScore` multiplicity & reduction (H2).** ISO 21434 `#RQ-15-15/16` require a **single value
+  1–5 per (threat-scenario)** derived from its damage-scenario impact and the feasibility of its
+  attack path(s) — so a reduction *is* required (the earlier "no aggregation" meant **no collapse
+  across impact categories**, not "no value"). Definition: feasibility is aggregated **over the set
+  of attack paths** realising the scenario (worst path), then `M(I, F)` yields one score **per
+  (threat-scenario, impact-category)** and, where owners differ, **per stakeholder**. When an
+  `AttackPath` crosses assets with **different owners**, the scenario's score is reported **for each
+  affected owner** (no fictional single "owner of the path"). (MVP: one stakeholder, S/F/O/P only,
+  no `business_impact` axis — all of R-039 beyond `owned_by` is post-MVP, H5.)
 
 **Environment/exposure parameterise *feasibility only*, and only its exploitability side** (F5
 double-count ban, tightened by H2): exposure/connectivity/physical_security feed **attack vector,
@@ -216,28 +238,35 @@ treatment + the two-location compare are in §10.
 ## 3b. Lifecycle & reverse logistics (sponsor round — R-037/R-038)
 
 **Every step in a product's life is a different place with different threats, and this must be
-captured.** A `Product`/`ProductInstance`/`Component` moves through a **`LifecyclePhase`**, and
-threats, weaknesses, attack surfaces and mitigations are **scoped to the phase(s) they apply in**
-(`applies_in_phase`). The forward phases (aligned to ISO/SAE 21434's lifecycle and ISO 26262):
+captured.** Threats, weaknesses, attack surfaces and mitigations are **scoped to the phase(s) they
+apply in** (`applies_in_phase`) along a **`LifecyclePhase`** enum (aligned to ISO/SAE 21434 + ISO 26262):
 
 `concept → architecture → design → implementation → verification/validation → production/
 manufacturing → distribution → deployment/commissioning → operation/use → maintenance/update →
 end-of-support → decommission/disposal`.
 
-- **Phase-scoped threats (R-037).** The same component faces *different* threats per phase: a
-  supply-chain tamper in **production**, a design flaw in **design**, a runtime exploit in
-  **operation**, data remanence in **decommission**. A `ThreatInstance`/`Mitigation`/`AttackSurface`
-  carries the phase(s) it applies in; a query can ask "threats in the manufacturing phase".
-- **Lifecycle is a state machine, not a line — reverse logistics / returns (R-038).** A unit can
-  **return** (RMA) → **inspect** → **refurbish** → **resell/redeploy**, or → **recycle/dispose**.
-  Returns carry their own threats: **data remanence** on returned devices, **counterfeit or
-  tampered re-insertion** into the refurbished supply chain, warranty fraud, and a **changed
-  provenance/trust** when a unit re-enters `operation` under a new owner. Model as lifecycle states
-  + transitions (including the return/refurbish loop); a refurbished `ProductInstance` gets a new
-  `Deployment` and an updated provenance (§4) recording who refurbished it.
-- This is an **axis**, not a new layer: it cross-cuts structure, threats, risk, and provenance.
-  (MVP: the phase enum + `applies_in_phase` on threats for one worked example; the full state
-  machine and returns branch are post-MVP.)
+- **The state-bearing entity is the `ProductInstance` (critic M4).** A *lifecycle state* is a
+  time-stamped attribute of a `ProductInstance` (not of the generic `Product` or a `Component`),
+  and it needs the **time/version axis** the model already owes (`valid_from`/`valid_to` — flagged
+  as still-missing: add it with this). A refurbished unit has the *same* firmware hash — i.e. the
+  same identity-by-hash `ProductInstance` — but a **new lifecycle state + new `Deployment` + new
+  owner**, so state is carried by a (ProductInstance, time) pair, not by the hash alone.
+- **Phase-scoped threats (R-037), bounded against Environment (critic M6).** `applies_in_phase` =
+  the **coarse lifecycle stage** a threat belongs to (design flaw in *design*, supply-chain tamper
+  in *production*, data remanence in *decommission*). This is **distinct from** the §3 `Environment`
+  (the *concrete operational exposure* of a running deployment): "runtime exploit" is scoped by
+  Environment, *not* by `applies_in_phase=operation` — the phase answers *when in the lifecycle*,
+  the Environment answers *where/how exposed at runtime*. One threat picks the axis that fits; it
+  does not get both (the F1/F5 no-double-model rule).
+- **Reverse logistics / returns (R-038) — a phase set now, a state machine later (critic M3).**
+  What is modeled today is the **phase enum tag** (returns/refurbish/resale/dispose as phases);
+  the **transitions, guards and current-state history** (the actual state machine) are **future
+  work**, not yet modeled. Returns carry their own threats (data remanence, counterfeit/tampered
+  re-insertion, warranty fraud). **Custody provenance** — "who refurbished it", the changed
+  trust on re-entry — is **supply-chain provenance**, the class §4 defers to the radar→tmodel
+  contract (ADR-0001); it is **post-MVP**, not part of the in-model epistemic Assertion spine.
+- This is an **axis**, not a new layer. (MVP: the phase enum + `applies_in_phase` on threats for
+  one worked example; the state machine, the returns branch, and custody provenance are post-MVP.)
 
 ## 4. Provenance — one spine, a substrate-neutral reified Assertion (proposes DEC-002/004 logical half)
 
@@ -301,10 +330,10 @@ flagged in the CHANGELOG as proposed). ✅\* = proposed direction, ADR-gated.
 | R-033 (presentation/view layer) | View/Perspective + transient view-state (§10) | ◐ (MVP = one graph projection) |
 | R-034 (redundancy / common-mode) | RedundancyGroup/replica_of (§3/§10) | ◐ (post-MVP) |
 | R-035 (compare / diff) | compare projection over two subgraphs (§10) | ◐ (post-MVP) |
-| **R-036 (parties/organizations)** | `Party` node + roles; reported_by/manufactured_by/published_by/owned_by (§2b) | ✅\* (new) |
-| **R-037 (lifecycle-phase axis)** | `LifecyclePhase` + `applies_in_phase` on threats/mitigations (§3b) | ✅\* (new; MVP = enum + one example) |
-| **R-038 (reverse logistics / returns)** | lifecycle state machine incl. return/refurbish/resale/dispose (§3b) | ◐ (new; post-MVP) |
-| **R-039 (stakeholder-relative impact)** | `Asset.owned_by` Party → per-stakeholder DamageScenario impact (§3 TARA) | ✅\* (new; MVP = one stakeholder/asset) |
+| **R-036 (parties/organizations)** | one `Party` identity (ThreatActor/PROV-Agent facets); relational roles on edges; publisher via library (§2b) | ◐ (new; post-MVP — H5) |
+| **R-037 (lifecycle-phase axis)** | `LifecyclePhase` enum + `applies_in_phase`, bounded vs Environment (§3b) | ◐ (new; enum modeled, scoping post-MVP) |
+| **R-038 (reverse logistics / returns)** | phase set now; state machine + custody provenance later (§3b) | ◐ (new; post-MVP) |
+| **R-039 (asset owner + stakeholder/business impact)** | `Asset.owned_by`; separate `business_impact` axis (S/F/O/P stays end-user); RiskScore reduction per RQ-15-16 (§3) | ◐ (new; post-MVP — MVP risk is single end-user) |
 
 Iter-5+critic deltas: R-025/R-027b/R-031 → ✅\*; **R-023 moved to post-MVP** (was ✅\*, H3);
 STRIDE↔CWE/CAPEC remains unasserted (§2). Iter-6 adds R-036…R-039 (§2b/§3/§3b) and §13 schema.
@@ -329,16 +358,16 @@ ADR-0002 accepted an **attack-path knowledge graph** (Option A). Binding for Nov
 | **compile/SLSA build provenance** | — (radar contract) | ✅ post-MVP |
 | **VEX** override | — | ✅ post-MVP |
 | **Jira external_refs**, audit (Requirement/WorkProduct) | — | ✅ post-MVP (#19) |
-| **interactive graph view** — *one working projection* (force layout, type colours, click-expand/inspect, progressive load) — **gated on the stack ADR (DEC-006/010, #48) landing first** | ✅ build (working, not yet "best-in-class" A-042) | best-in-class bar; matrix/timeline/compare; saved views; layer/tag compositing |
+| **interactive graph view** — *one working projection* (force layout, type colours, click-expand/inspect, progressive load); stack is decided (ADR-0003, Path A) | ✅ build (working, not yet "best-in-class" A-042) | best-in-class bar; matrix/timeline/compare; saved views; layer/tag compositing |
 | **redundancy / common-mode / compare** (RedundancyGroup, diff projection) | — | ✅ post-MVP |
-| **Party/Organization** (vendor/manufacturer/CNA/standards-body/owner) | ✅ build (minimal — CVE vendors/CNAs, mfr, owner) | full role set, supplier graph |
-| **lifecycle phase** (`applies_in_phase` on threats) | *enum + one worked example* | full state machine + **returns/reverse logistics** |
-| **stakeholder-relative impact** (`Asset.owned_by` → impact) | ✅ build (one stakeholder/asset) | multi-stakeholder impact |
+| **Party/Organization** (vendor/manufacturer/CNA/owner) | — (modeled; only CVE vendor/CNA labels, free from NVD) | full role/edge set, supplier graph |
+| **lifecycle phase** (`applies_in_phase`) | — (modeled; phase enum only) | phase-scoped threats, state machine, **returns/reverse logistics** |
+| **stakeholder impact** (`Asset.owned_by` + `business_impact`) | — (MVP risk is single end-user, S/F/O/P only) | owner-selection + business-impact axis |
 
 **The MVP is the attack-path KG.** DFD/networks/Environment are modeled but **not built** for
-Nov 5 (at most one illustrative flow). The interactive view is a **working single projection**
-contingent on the stack decision (#48) merging first (M8); the "best-in-class" bar (APP-0001
-A-042) is post-MVP.
+Nov 5 (at most one illustrative flow). The interactive view is a **working single projection** on
+the decided stack (ADR-0003, Path A); the "best-in-class" bar (APP-0001 A-042) is post-MVP. The
+iter-6 additions (Party, lifecycle, stakeholder impact) are **modeled, not built** for Nov 5 (H5).
 
 ## 8. Vectors (must become `spec/vectors/`)
 
@@ -367,8 +396,8 @@ layout; our §10 "never written back" is stricter), and the pytm licence conflic
 ## 10. Presentation / view layer & redundancy (sponsor display round)
 
 The display is a **derived lens, not domain truth** — a fifth, UI-facing concern (§1.5) computed
-from the four domain layers and never stored back. DEC-006 (proposed in ADR-0003, #48); product
-requirements live in **APP-0001**.
+from the four domain layers and never stored back. DEC-006 (**accepted — ADR-0003, Path A**);
+product requirements live in **APP-0001**.
 
 - **`View`/`Perspective` (spec; persisted or transient)** = query/filter + projection + layer/tag
   composition + layout + styling. Saved views are reviewable artifacts; ad-hoc is transient.
@@ -409,6 +438,14 @@ views/layers and redundancy are post-MVP (§7).
   **lifecycle-phase axis + reverse logistics/returns** (R-037/R-038, §3b), **stakeholder-relative
   impact** via asset ownership (R-039, §3), and the **schema-definition approach (LinkML, §13)**.
   Dependency note updated: ADR-0003 + ADR-0004 now accepted.
+- **proposed.9 (iteration 7 critic; DL-0010):** folded the adversarial critic on proposed.8 —
+  defined `RiskScore` multiplicity/reduction (RQ-15-16) and **stopped overloading ISO S/F/O/P by
+  stakeholder** (added a separate `business_impact` axis); **downgraded LinkML** (no LPG generator,
+  gate needs hand-written SHACL, CI loop is lane-#64 future); **unified Party/ThreatActor/Agent
+  identity** + relational-roles-on-edges + publisher-via-library; **softened the lifecycle "state
+  machine" to a phase enum** + named `ProductInstance` as state-bearer + flagged the temporal axis +
+  bounded phase vs Environment + custody provenance → post-MVP; **pushed Party/lifecycle/stakeholder
+  impact to post-MVP** (MVP overload). (SDL round, DL-0009, folds in iteration 8.)
 - **Next:** pin the 5 absent method records + get a human-reviewed ISO 21434 extraction + gather an
   RDF-star record; **author the LinkML schema in `spec/schema`** (§13; lane #64); fold #9 (schema
   crosswalk) to close R-024/lift §9 fully; **build the §8 MVP vectors**; then the ADRs (§12);
@@ -442,19 +479,25 @@ Each `DEC-*` is accepted **only** by an `ADR-NNNN` + changelog + ARCH-0001 statu
 object model as **[LinkML](https://linkml.io)** — YAML schema files in **`spec/schema/`** — as the
 single machine-readable encoding of ARCH-0001 §3. Why LinkML:
 
-- **One source, many targets.** A LinkML schema generates **JSON Schema**, **SHACL** (the §4
-  acceptance gate), **Python** types (pydantic/dataclasses for the engine), ER diagrams, and docs —
-  so it fits ADR-0004's "YAML/JSON / LinkML-shaped objects" canonical SoT and the Path A Python
-  engine, and is **substrate-neutral** (works for files + both RDF and LPG, so it survives DEC-004).
+- **One source, several targets.** A LinkML schema generates **JSON Schema**, **SHACL**, **OWL/RDF**,
+  **Python** types (pydantic/dataclasses), ER diagrams and docs — fitting ADR-0004's "YAML/JSON /
+  LinkML-shaped objects" canonical SoT and the Path A Python engine. **Honest limits (critic H4,
+  L1):** LinkML has **no first-class LPG/Cypher generator** (the pinned `community/linkml` record,
+  `status: summarized`, lists JSON-Schema/SHACL/OWL/RDF only) — the **LPG lowering needs a custom
+  adapter** (the §4 edge-reification); and `gen-shacl` emits **structural** shapes (cardinality/
+  range/pattern), so the §4 **conditional acceptance gate** ("provenance + review before
+  `status=accepted`") needs **hand-written SHACL/constraints**, not generation. So LinkML covers
+  files + RDF/SHACL/JSON/Python; it does **not** by itself make the model substrate-neutral.
 - **Objects = classes, typed edges = slots.** Proposed classes mirror §3 (Product, ProductInstance,
   Component, Party, Weakness, Vulnerability, AttackPattern, ThreatInstance, AttackStep, AttackPath,
   DamageScenario, Mitigation, RiskScore, Review, Assertion, Deployment, Environment, LifecyclePhase,
   RedundancyGroup, View); relations are slots with ranges + an edge reification (`Assertion`) for the
   reviewed ones (§4). Local/non-MITRE extensions (e.g. `tr-weak-*`) are just added classes/instances.
-- **How we iterate (the ask).** Schemas are versioned like any archdoc (version/updated); a change is
-  a `spec/schema` PR; CI regenerates JSON Schema + SHACL and runs the **§8 vectors** against them, so
-  a schema change that breaks a vector fails CI. The *logical* model (this proposal → ARCH-0001 §3)
-  and the *machine* schema (LinkML) iterate together; the schema never diverges silently.
+- **How we iterate (the ask) — *target* workflow, not yet built (H4).** Schemas versioned like any
+  archdoc; a change is a `spec/schema` PR; CI regenerates JSON Schema + SHACL and runs the §8 vectors,
+  so a schema change that breaks a vector fails CI. **Today `spec/schema/` and `spec/vectors/` are
+  README stubs** — this loop is the deliverable of **lane #64**, stated as a goal, not a current
+  property. The *logical* model and the *machine* schema are meant to iterate together.
 - **Scope/relationship:** LinkML is the **IDL** (DEC-002's schema-language half). The *interchange/
   export* formats (Turtle/JSON-LD/GraphML/CSV) are derived per ADR-0004, and the OTM semantic
   round-trip remains the DEC-002 interchange test (#9). First cut is lane **#64** (Mai Li).
