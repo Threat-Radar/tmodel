@@ -7,9 +7,9 @@ description: "The DEC-* register: status, what blocks on each, and the evidence 
 type: process
 category: process
 status: active
-version: "0.1.6"
+version: "0.1.7"
 date: "2026-09-23"
-updated: "2026-10-01"
+updated: "2026-10-02"
 needs_review: false
 reviewed: true
 canonical_path: project/DECISIONS-0001.md
@@ -27,7 +27,7 @@ Status: `open` · `researching` · `proposed` (an ADR is drafted) · `accepted`.
 |---|---|---|---|---|
 | **DEC-001** | The core object model — first-class types and typed relations | open | I2, the schema, the UI | RPT-0001 §schemas/object-models |
 | **DEC-002** | Encoding/serialization; which existing formats we import (and export) | open | schema, vectors, MAP-* | RPT-0001 §schemas |
-| **DEC-003** | Risk-metric scheme: CVSS / custom / ISO 21434 / Common Criteria / composite | open | I4 risk, R-011…R-013 | RPT-0001 §risk metrics |
+| **DEC-003** | Risk-metric scheme: CVSS / custom / ISO 21434 / Common Criteria / composite | **accepted → ADR-0005** | I4 risk, R-011…R-013 | ADR-0005; RPT-0001 §risk metrics |
 | **DEC-004** | KG substrate — **RDF vs LPG implementation of the local working store** (narrowed by ADR-0004; logical model is edge-rich either way) | open | I3, R-018…R-021 | ADR-0004; RPT-0001 §schemas, library design |
 | **DEC-005** | MVP scope — what the early-Dec demo demonstrates | **accepted → ADR-0002** | everything downstream | ADR-0002 (Option A, multi-product/≥2-domain) |
 | **DEC-006** | UI stack and interaction model for the graphical threat model | **accepted → ADR-0003** | I3 | ADR-0003 (Path A); RPT-0012, APP-0001 |
@@ -50,3 +50,6 @@ behind adapters so slice work can start without pre-empting them.
 **Storage/edges pinned (2026-10-01):** DEC-011 accepted → ADR-0004 (file canonical SoT +
 edge-rich logical model + local embedded working store + derived export). This **narrows**
 DEC-004 to the working-store engine pick, which stays open.
+
+**Risk metric accepted (2026-10-02):** DEC-003 accepted → ADR-0005 (composite risk vector:
+CC-style feasibility × impact × mitigation × derived Risk). Not a lone CVSS-like score.
