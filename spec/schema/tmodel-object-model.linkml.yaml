@@ -1,0 +1,728 @@
+# Generated from ARCH-0001-PROPOSAL v0.2.0 §13 (proposed.10, file dated through the
+# composite-risk sponsor round). NOT normative until an ADR accepts DEC-001.
+# Federation / import of OTM, STIX, CAPEC-as-source, and other external models is a
+# separate mapping layer (DEC-002 / #9). This file is OUR model, not those schemas.
+# spec/schema/ in the tmodel repo is still a README stub on purpose; landing this
+# file there is lane #64, not this cut.
+# Risk vector follows sponsor DEC-003 / ADR-0005 (accepted 2026-10-02):
+# composite = CC attack feasibility + impact (damage / 21434 S/F/O/P) + mitigation status + derived risk.
+# design-log/0011's "CC display-only" note is superseded by that decision.
+
+id: https://threat-radar.github.io/tmodel/schema/object-model
+name: TmodelObjectModel
+title: ThreatRadar tmodel object model (draft)
+description: >-
+  First-cut LinkML IDL for the ThreatRadar tmodel object model.
+  Source is ARCH-0001-PROPOSAL v0.2.0 §13 (classes) with edges named in §§2–4 and §10.
+  Draft proposal — DEC-001 is not accepted. ADR-0004 is the accepted storage/edges
+  pin (files in git, stable IDs, typed edges); this schema does not close DEC-002 or DEC-004.
+version: 0.1.0
+status: draft
+annotations:
+  proposes: DEC-001
+  source_proposal: ARCH-0001-PROPOSAL-v0.2.0
+  source_sections: "§2, §2a, §2b, §3, §3b, §4, §5, §10, §13"
+  normative: "false"
+  federation: "out of scope; mappings are DEC-002 / #9"
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+  tmodel: https://threat-radar.github.io/tmodel/schema/object-model/
+  prov: http://www.w3.org/ns/prov#
+  stix: https://docs.oasis-open.org/cti/stix/v2.1/
+default_prefix: tmodel
+default_range: string
+
+imports:
+  - linkml:types
+
+classes:
+  Node:
+    abstract: true
+    description: >-
+      Shared identity for every §13 class. `id` is the stable object id ADR-0004
+      requires across file, LPG, and RDF encodings. Not itself a §13 class.
+    slots:
+      - id
+      - name
+      - description
+
+  Product:
+    is_a: Node
+    description: >-
+      A product design (structural layer, §1). Recursive composition is `composed_of`
+      Components (§3). Relational party roles are edges (§2b).
+    slots:
+      - composed_of
+      - manufactured_by
+      - supplied_by
+      - owned_by
+
+  ProductInstance:
+    is_a: Node
+    description: >-
+      A versioned, identity-bearing instance of a Product (§1, §3b). Lifecycle
+      *state* sits here (with valid_from/valid_to), not on Product or Component.
+      A refurbished unit can share a firmware hash and still carry a new phase,
+      Deployment, and owner.
+    slots:
+      - of_product
+      - current_phase
+      - valid_from
+      - valid_to
+      - owned_by
+
+  Component:
+    is_a: Node
+    description: >-
+      Authoritative deployed artifact (service, container, dependency, chip, core) —
+      not an OTM diagram node (§0). `uses_component` / `composed_of` are the
+      propagation paths for vulnerabilities (§5).
+    slots:
+      - composed_of
+      - depends_on
+      - uses_component
+      - owned_by
+
+  Party:
+    is_a: Node
+    description: >-
+      One reusable identity for an organization or a person (§2b). ThreatActor and
+      PROV Agent are facets of this identity, not separate §13 classes. Only
+      intrinsic classifications live on the node; supplier/owner/vendor-of are edges.
+    slots:
+      - party_kind
+      - classifications
+
+  Weakness:
+    is_a: Node
+    description: >-
+      Generic weakness, catalogued as CWE (§1 layer 3). The CWE↔CAPEC link is a
+      human-reviewed mapping (an Assertion), not a facet property (§2) — no hard
+      edge to AttackPattern in this cut.
+    slots:
+      - catalog_ref
+
+  Vulnerability:
+    is_a: Node
+    description: >-
+      A finding/vulnerability (CVE/NVD-shaped) that `affects` a Product (§2b).
+      Propagation along uses_component/composed_of and the per-instance VEX
+      override are Assertions plus Reviews (§5), not extra classes.
+    slots:
+      - catalog_ref
+      - affects
+      - reported_by
+      - assigned_by
+
+  AttackPattern:
+    is_a: Node
+    description: >-
+      Generic attack pattern (CAPEC / ATT&CK technique = *what*, §1, §2a).
+      STRIDE is not a property of this class (§2). Kill-chain phase is on
+      AttackStep, not here.
+    slots:
+      - catalog_ref
+
+  ThreatInstance:
+    is_a: Node
+    description: >-
+      A threat in a model, not the generic catalog entry (§1). Carries the method
+      facet (STRIDE and, post-MVP, LINDDUN/MAESTRO) and `realizes` a DamageScenario.
+      Phase scope is `applies_in_phase` (§3b), distinct from Environment.
+    slots:
+      - realizes_damage
+      - method_facet
+      - source_method
+      - violates_property
+      - applies_in_phase
+
+  AttackStep:
+    is_a: Node
+    description: >-
+      A step in an attack graph (§2a): AND/OR `gate`, explicit `precedes` order,
+      shareable across paths. Optional kill-chain phase is coarse order, not the
+      ATT&CK technique. Pre/postconditions are not given a schema shape in §2a.
+    slots:
+      - gate
+      - precedes
+      - kill_chain_phase
+
+  AttackPath:
+    is_a: Node
+    description: >-
+      An ordered set of AttackSteps realising a ThreatInstance (§2a, §3).
+      Feasibility is rated here, at path level (human-rated at MVP).
+      Method is Common Criteria attack feasibility (DEC-003 / ADR-0005):
+      concise metric numbers + feasibility label. No per-step aggregation at MVP.
+      ISO 21434 Table-1 may inform the scale but is not the vector method.
+    slots:
+      - steps
+      - realizes_threat
+      - attack_feasibility
+      - pivots_to
+
+  DamageScenario:
+    is_a: Node
+    description: >-
+      The damage a ThreatInstance realizes (§1). Impact categories are recorded
+      on RiskScore, not collapsed here (§3).
+    slots: []
+
+  Mitigation:
+    is_a: Node
+    description: >-
+      A mitigation/control (catalog example D3FEND, §1). §5 instance fields
+      (implementation owner, external work-item refs, status) are on this class
+      until a separate MitigationInstance class is accepted. Status is also
+      surfaced as RiskScore.mitigation_status (R-045) — a peer of the derived risk,
+      not an input to it.
+    slots:
+      - catalog_ref
+      - mitigates
+      - applies_in_phase
+      - implementation_owner
+      - external_refs
+      - mitigation_status
+
+  RiskScore:
+    is_a: Node
+    description: >-
+      Composite risk vector (DEC-003 accepted via ADR-0005, 2026-10-02).
+      Peer slots: feasibility (Common Criteria attack feasibility — numbers,
+      label, and a colored indicator in table views), impact (from attack
+      damage; 21434 S/F/O/P), mitigation_status, and derived risk.
+      Shown alongside its inputs, never instead of them. Not a single CVSS score.
+      More components only with a further sponsor decision. MVP: one stakeholder;
+      business_impact is post-MVP and intentionally has no slot.
+    slots:
+      - threat
+      - attack_paths
+      - damage_scenario
+      - for_stakeholder
+      - feasibility
+      - impact
+      - mitigation_status
+      - risk
+
+  Review:
+    is_a: Node
+    description: >-
+      Human verdict on an Assertion (§4, §5). Kept separate from the proposal.
+      Carries status, priority, and justification. STIX Opinion/Note is a future
+      mapping (DEC-002 / #9), not a parent class.
+    slots:
+      - reviews
+      - reviewer
+      - review_status
+      - priority
+      - justification
+
+  Assertion:
+    is_a: Node
+    description: >-
+      Reified edge (§4): subject / predicate / object, so a Review, confidence,
+      and provenance can point at the statement. Substrate-neutral logical node;
+      RDF-star, named graphs, and LPG edge-properties are storage lowerings
+      (ADR-0004) and are not chosen here. Promoting a reviewed edge to this node
+      narrows DEC-004 (no pure edge-property-only form for reviewed assertions).
+      The acceptance gate (provenance + review before status=accepted) is a
+      hand-written constraint, not something gen-shacl emits (§13).
+    slots:
+      - subject
+      - predicate
+      - object
+      - confidence
+      - assertion_status
+
+  Deployment:
+    is_a: Node
+    description: >-
+      A placement of one ProductInstance (§3). Many Deployments per instance;
+      each points at one Environment. Single deployment is the MVP assumption;
+      deployment-relative risk (R-023) is post-MVP.
+    slots:
+      - product_instance
+      - environment
+
+  Environment:
+    is_a: Node
+    description: >-
+      Reusable operational exposure of a running deployment (§3, F9): physical
+      security, connectivity, operational context. Parameterises feasibility's
+      exploitability side only — never impact CIA (F5). Distinct from
+      LifecyclePhase (§3b). The MVP metric runs without requiring this node.
+    slots:
+      - physical_security
+      - connectivity
+      - operational_context
+
+  LifecyclePhase:
+    is_a: Node
+    description: >-
+      Coarse lifecycle stage (§3b). The vocabulary is LifecyclePhaseCode
+      (concept through decommission/disposal, ISO 21434 + ISO 26262 aligned).
+      Reverse-logistics transitions and custody provenance are post-MVP and are
+      not modeled. `name` is the human label; `code` is the enum.
+    slots:
+      - code
+
+  RedundancyGroup:
+    is_a: Node
+    description: >-
+      Marks Deployments (or whole build/review systems) as replicas (§3, §10):
+      `replica_of` / `redundant_with`. Supports common-mode risk and per-replica
+      mitigation divergence. Post-MVP (R-034).
+    slots:
+      - replicas
+      - redundancy_relation
+
+  View:
+    is_a: Node
+    description: >-
+      Derived presentation lens (§10): query/filter + projection. Not domain
+      truth and never written back onto domain nodes. Saved views may be
+      persisted; rendered geometry is transient and out of this schema.
+      One graph projection is MVP; other projections are post-MVP.
+    slots:
+      - projection
+      - focus_query
+
+  ImpactVector:
+    description: >-
+      Inlined value object for RiskScore.impact (§3). ISO 21434 safety / financial /
+      operational / privacy, each severe|major|moderate|negligible. Keeping the
+      four categories is the method; collapsing to one number is display-only.
+      Not a §13 domain class. business_impact is a different post-MVP axis and
+      is not a field here.
+    attributes:
+      safety:
+        range: ImpactSeverity
+        description: Safety impact; ISO 26262-informed (§3, RQ-15-06).
+      financial:
+        range: ImpactSeverity
+        description: Financial impact on the end-beneficiary, not the owner's P&L (§3).
+      operational:
+        range: ImpactSeverity
+        description: Operational impact (§3).
+      privacy:
+        range: ImpactSeverity
+        description: Privacy impact (§3). Not re-indexed by asset owner.
+
+slots:
+  id:
+    identifier: true
+    range: uriorcurie
+    required: true
+    description: Stable object id (ADR-0004). Adapters must not renumber it.
+
+  name:
+    range: string
+    description: Human-readable name.
+
+  description:
+    range: string
+    description: Short prose description.
+
+  composed_of:
+    range: Component
+    multivalued: true
+    description: Recursive structural composition (§3). Inlined as references, not as nested trees.
+    inlined: false
+
+  depends_on:
+    range: Component
+    multivalued: true
+    description: Dependency edge, including DNS/service-style depends_on (§3).
+
+  uses_component:
+    range: Component
+    multivalued: true
+    description: Use edge along which vuln/finding propagation is sound (§5).
+
+  manufactured_by:
+    range: Party
+    description: Relational role edge (§2b), not a classification on Party.
+
+  supplied_by:
+    range: Party
+    description: Relational role edge (§2b). The same Party may supply one product and consume another.
+
+  owned_by:
+    range: Party
+    description: >-
+      Proposal attaches owned_by to Asset (§2b, §3). Asset is not a §13 class;
+      the slot is on Product, ProductInstance, and Component as the structural
+      stand-in. It selects whose business_impact would apply. The business_impact
+      axis itself is post-MVP and has no slot.
+
+  of_product:
+    range: Product
+    required: true
+    description: The Product this ProductInstance instantiates (§1).
+
+  current_phase:
+    range: LifecyclePhase
+    description: Lifecycle state of this ProductInstance at valid_from/valid_to (§3b).
+
+  valid_from:
+    range: datetime
+    description: Start of the (ProductInstance, time) state interval (§3b). Temporal axis was flagged as still-missing; included here because §3b says to add it with lifecycle state.
+
+  valid_to:
+    range: datetime
+    description: End of the (ProductInstance, time) state interval (§3b). Open-ended if absent.
+
+  party_kind:
+    range: PartyKind
+    description: Organization or person (§2b).
+
+  classifications:
+    range: string
+    multivalued: true
+    description: Intrinsic classifications only, e.g. standards-body, cna (§2b).
+    examples:
+      - value: standards-body
+      - value: cna
+
+  catalog_ref:
+    range: string
+    description: >-
+      External catalog identifier when the proposal names one (CWE, CAPEC,
+      ATT&CK, CVE, D3FEND). The identifier scheme is not pinned in §13.
+
+  affects:
+    range: Product
+    multivalued: true
+    description: Vulnerability/Finding affects a vendor Product (§2b).
+
+  reported_by:
+    range: Party
+    description: Reporter (§2b).
+
+  assigned_by:
+    range: Party
+    description: Assigning CNA (§2b). Party.classifications should include cna when this is set; not enforced here.
+
+  realizes_damage:
+    range: DamageScenario
+    description: ThreatInstance realizes a DamageScenario (§1).
+
+  method_facet:
+    range: MethodFacet
+    multivalued: true
+    description: >-
+      Which method classified this threat (§2). STRIDE is a facet, not an
+      AttackPattern property. Facets beyond STRIDE are post-MVP.
+
+  source_method:
+    range: string
+    description: Which method proposed this ThreatInstance (§2).
+
+  violates_property:
+    range: string
+    description: >-
+      Security property the facet says is violated (§2). STRIDE sketch, not a
+      closed enum: S authentication, T integrity, R non-repudiation,
+      I confidentiality, D availability, E authorization.
+
+  applies_in_phase:
+    range: LifecyclePhase
+    multivalued: true
+    description: >-
+      Coarse lifecycle stage a threat or mitigation belongs to (§3b). Not a
+      substitute for Environment. One threat uses the axis that fits.
+
+  gate:
+    range: AttackGate
+    description: AND/OR combination of this step with its predecessors (§2a, R-031).
+
+  precedes:
+    range: AttackStep
+    multivalued: true
+    description: Explicit ordering edge (§2a). Steps may be shared across paths.
+
+  kill_chain_phase:
+    range: string
+    description: >-
+      Optional coarse order tag (§2a). Distinct from the ATT&CK technique.
+      The Lockheed kill-chain record is not pinned; do not rely on a fixed vocabulary.
+
+  steps:
+    range: AttackStep
+    multivalued: true
+    description: AttackSteps in this path (§2a). Order is the `precedes` edges, not list position.
+
+  realizes_threat:
+    range: ThreatInstance
+    description: This path realises the threat scenario (§3).
+
+  attack_feasibility:
+    range: FeasibilityLevel
+    description: >-
+      Path-level feasibility, ISO 21434 4-point scale, human-rated at MVP (§3,
+      Table 1 / RQ-15-10). Not CVSS. Not per-step min/max (that is post-MVP).
+
+  pivots_to:
+    range: AttackPath
+    multivalued: true
+    description: Path-level pivot across a reachability substrate (§1). Reachability's other two levels (connected_via, step preconditions) are not classes in §13.
+
+  mitigates:
+    range: ThreatInstance
+    multivalued: true
+    description: Threats this mitigation addresses (§5). Phase binding is applies_in_phase.
+
+  implementation_owner:
+    range: Party
+    description: Who implements the mitigation (§5).
+
+  external_refs:
+    range: string
+    multivalued: true
+    description: Linked work items, e.g. a Jira key (§5). Opaque strings; no tracker schema.
+
+  mitigation_status:
+    range: MitigationStatus
+    description: >-
+      Lifecycle of the mitigation (§3 R-045, §5): planned / in-progress / complete /
+      accepted-risk / n-a. Vocabulary may be refined by DEC-009. On RiskScore this
+      is a peer column of feasibility and impact, not folded into `risk`.
+
+  threat:
+    range: ThreatInstance
+    required: true
+    description: Threat scenario this score is about (§3, RQ-15-15/16).
+
+  attack_paths:
+    range: AttackPath
+    multivalued: true
+    description: >-
+      Paths whose feasibilities feed this score. Reduction across paths is
+      worst-path (§3); this schema stores the set, not the fold function.
+
+  damage_scenario:
+    range: DamageScenario
+    description: Damage scenario whose impact feeds M(I, F) (§3).
+
+  for_stakeholder:
+    range: Party
+    description: >-
+      Owner this score is reported for, when a path crosses assets with different
+      owners (§3). MVP assumes one stakeholder; omit unless needed.
+
+  feasibility:
+    range: FeasibilityLevel
+    description: >-
+      Vector component (§3, DL-0011). Copied or reduced from AttackPath.attack_feasibility
+      (worst path). Method is ISO 21434 Table-1, not Common Criteria.
+
+  impact:
+    range: ImpactVector
+    inlined: true
+    description: >-
+      Per-category S/F/O/P vector (§3). Human-supplied. Do not replace this
+      object with a single severity.
+
+  risk:
+    range: string
+    description: >-
+      Derived Risk = M(Impact, Feasibility) (§3). ISO 21434 wants one value 1–5
+      per (threat-scenario, impact-category), and per stakeholder when owners
+      differ. Stored as text because the aggregation function is not fixed
+      until a DEC-003 ADR. Not a CVSS base score. Display may add a colour and
+      a feasibility label; that styling is not a slot.
+
+  reviews:
+    range: Assertion
+    required: true
+    description: The Assertion this Review judges (§4).
+
+  reviewer:
+    range: Party
+    description: Human (or, later, an agent facet of a Party) who issued the verdict (§4).
+
+  review_status:
+    range: string
+    description: "Verdict status (§5). Kept open: proposal does not enumerate the values."
+
+  priority:
+    range: string
+    description: Review priority (§5). Scale not specified in the proposal.
+
+  justification:
+    range: string
+    description: Why the verdict was reached (§5). Separate from the Assertion text.
+
+  subject:
+    range: Node
+    required: true
+    description: Subject of the reified statement (§4).
+
+  predicate:
+    range: string
+    required: true
+    description: >-
+      Edge type name (§4), e.g. composed_of, affects, realizes, owned_by.
+      Not a closed enum: reviewed edges that are not first-class slots still
+      reify here (including the human-reviewed CWE↔CAPEC mapping, §2).
+
+  object:
+    range: Node
+    required: true
+    description: Object of the reified statement (§4).
+
+  confidence:
+    range: string
+    description: Confidence attached to the Assertion (§4). Scale is not fixed in the proposal.
+
+  assertion_status:
+    range: string
+    description: >-
+      Proposal status of the Assertion (§4). Must not be `accepted` until
+      provenance and a review are present. That gate is not encoded as a
+      LinkML cardinality rule (§13).
+
+  product_instance:
+    range: ProductInstance
+    required: true
+    description: The instance this Deployment places (§3).
+
+  environment:
+    range: Environment
+    required: true
+    description: The one Environment for this Deployment (§3).
+
+  physical_security:
+    range: string
+    description: Environment facet (§3). Feeds feasibility exploitability only, post-MVP.
+
+  connectivity:
+    range: string
+    description: Environment facet (§3). Feeds attack vector / reachability / window, not impact.
+
+  operational_context:
+    range: string
+    description: Environment facet (§3).
+
+  code:
+    range: LifecyclePhaseCode
+    required: true
+    identifier: false
+    description: Controlled phase code (§3b).
+
+  replicas:
+    range: Deployment
+    multivalued: true
+    description: Deployments in this redundancy group (§3, §10).
+
+  redundancy_relation:
+    range: RedundancyRelation
+    description: replica_of or redundant_with (§3).
+
+  projection:
+    range: ViewProjection
+    description: Which derived projection this View spec names (§10).
+
+  focus_query:
+    range: string
+    description: >-
+      Bounded query / filter that defines the view (§10, R-033). Opaque to this
+      schema (not a committed query language — DEC-004 is open).
+
+enums:
+  PartyKind:
+    description: Party is an organization or a person (§2b).
+    permissible_values:
+      organization:
+      person:
+
+  MethodFacet:
+    description: Method that proposed a ThreatInstance (§2). Only STRIDE is in MVP.
+    permissible_values:
+      stride:
+        description: Per-element DFD classification. Not an AttackPattern field.
+      linddun:
+        description: Privacy facet. Post-MVP; library record not pinned (§2).
+      maestro:
+        description: Agentic-AI facet (#12). Post-MVP; library record not pinned (§2).
+
+  AttackGate:
+    description: How an AttackStep combines (§2a).
+    permissible_values:
+      and_gate:
+        description: Proposal text "AND" (§2a). All predecessors required. Post-MVP per-step feasibility would take min.
+      or_gate:
+        description: Proposal text "OR" (§2a). Any predecessor suffices. Post-MVP per-step feasibility would take max.
+
+  FeasibilityLevel:
+    description: >-
+      ISO/SAE 21434 path-level 4-point scale (§3, Table 1). Human-rated at MVP.
+      Not a Common Criteria score and not a CVSS exploitability number.
+    permissible_values:
+      high:
+      medium:
+      low:
+      very_low:
+
+  ImpactSeverity:
+    description: ISO 21434 impact ordinal per S/F/O/P category (§3, RQ-15-04/05).
+    permissible_values:
+      severe:
+      major:
+      moderate:
+      negligible:
+
+  MitigationStatus:
+    description: Mitigation lifecycle (§3 R-045). Refined later by DEC-009.
+    permissible_values:
+      planned:
+      in_progress:
+        description: Proposal text says "in-progress".
+      complete:
+      accepted_risk:
+        description: Proposal text says "accepted-risk".
+      not_applicable:
+        description: Proposal text says "n-a".
+
+  LifecyclePhaseCode:
+    description: >-
+      LifecyclePhase vocabulary (§3b), aligned to ISO/SAE 21434 + ISO 26262.
+      Returns/refurbish/resale/dispose are called out as future phase tags;
+      they are not given codes here because §3b says the returns branch is post-MVP.
+    permissible_values:
+      concept:
+      architecture:
+      design:
+      implementation:
+      verification_validation:
+        description: Proposal text "verification/validation".
+      production:
+        description: Proposal text "production/manufacturing".
+      distribution:
+      deployment:
+        description: Proposal text "deployment/commissioning".
+      operation:
+        description: Proposal text "operation/use". Runtime exposure is Environment, not this code (§3b).
+      maintenance:
+        description: Proposal text "maintenance/update".
+      end_of_support:
+      decommission:
+        description: Proposal text "decommission/disposal".
+
+  RedundancyRelation:
+    description: Edge names inside a RedundancyGroup (§3).
+    permissible_values:
+      replica_of:
+      redundant_with:
+
+  ViewProjection:
+    description: Named projections over one graph (§10). Matrix, compare, saved views are post-MVP.
+    permissible_values:
+      graph:
+      threat_mitigation_matrix:
+      attack_path:
+      dfd:
+      timeline:
+      provenance:
+      compare:
