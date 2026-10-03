@@ -68,7 +68,7 @@ Ask Claude to run the named workflows with your lane's arguments, for example:
 ## Lanes
 
 | lane | issue | owner | extraction units (`rpt0014-extract`) | sweep (`rpt0014-sweep`) | reviews |
-|---|---|---|---|---|
+|---|---|---|---|---|---|
 | agentic and MCP | #78 | @paria03 | `TM-058-csa-maestro`, `TM-059-owasp-agentic-threats`, `TM-060-owasp-mas-guide`, `TM-064-agentic-threat-frameworks`, `TM-084-mcp-threat-models`, `S-papers-prompt-injection` | `news-2026` | Mai's units |
 | catalogs and schema | #79 | @Maimcghee | `TM-004-nist-ai-100-2-e2025`, `CAT-mitre-atlas-2026-09`, `CAT-owasp-llm-top10-2025`, `TM-041-cosai-risk-map`, `TM-043-dasf-and-safe-ai` | `venues-ml` | Tyler's units |
 | supply chain and infrastructure | #80 | @Clovier | `TM-099-rand-model-weights`, `TM-026-aws-threat-composer-genai`, `S-papers-supply-chain-infra`, `S-papers-poisoning-backdoor`, `S-papers-jailbreak-alignment` | `national-intl` | Krishna's units |
