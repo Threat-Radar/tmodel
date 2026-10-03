@@ -67,13 +67,13 @@ Ask Claude to run the named workflows with your lane's arguments, for example:
 
 ## Lanes
 
-| lane | owner | extraction units (`rpt0014-extract`) | sweep (`rpt0014-sweep`) | reviews |
+| lane | issue | owner | extraction units (`rpt0014-extract`) | sweep (`rpt0014-sweep`) | reviews |
 |---|---|---|---|---|
-| agentic and MCP | @paria03 | `TM-058-csa-maestro`, `TM-059-owasp-agentic-threats`, `TM-060-owasp-mas-guide`, `TM-064-agentic-threat-frameworks`, `TM-084-mcp-threat-models`, `S-papers-prompt-injection` | `news-2026` | Mai's units |
-| catalogs and schema | @Maimcghee | `TM-004-nist-ai-100-2-e2025`, `CAT-mitre-atlas-2026-09`, `CAT-owasp-llm-top10-2025`, `TM-041-cosai-risk-map`, `TM-043-dasf-and-safe-ai` | `venues-ml` | Tyler's units |
-| supply chain and infrastructure | @Clovier | `TM-099-rand-model-weights`, `TM-026-aws-threat-composer-genai`, `S-papers-supply-chain-infra`, `S-papers-poisoning-backdoor`, `S-papers-jailbreak-alignment` | `national-intl` | Krishna's units |
-| ML risk and assets | @kriishnaa-18 | `TM-014-biml-78`, `TM-024-biml-81-llm`, `TM-012-microsoft-ai-threat-models`, `TM-005-asset-centric-models`, `S-papers-privacy-extraction` | `arxiv-2025-2026` | Paria's units |
-| integration | @nymble | `S-papers-classical-adversarial` | `venues-security`, `critic-gaps` | all lanes; then runs `rpt0014-integrate` |
+| agentic and MCP | #78 | @paria03 | `TM-058-csa-maestro`, `TM-059-owasp-agentic-threats`, `TM-060-owasp-mas-guide`, `TM-064-agentic-threat-frameworks`, `TM-084-mcp-threat-models`, `S-papers-prompt-injection` | `news-2026` | Mai's units |
+| catalogs and schema | #79 | @Maimcghee | `TM-004-nist-ai-100-2-e2025`, `CAT-mitre-atlas-2026-09`, `CAT-owasp-llm-top10-2025`, `TM-041-cosai-risk-map`, `TM-043-dasf-and-safe-ai` | `venues-ml` | Tyler's units |
+| supply chain and infrastructure | #80 | @Clovier | `TM-099-rand-model-weights`, `TM-026-aws-threat-composer-genai`, `S-papers-supply-chain-infra`, `S-papers-poisoning-backdoor`, `S-papers-jailbreak-alignment` | `national-intl` | Krishna's units |
+| ML risk and assets | #81 | @kriishnaa-18 | `TM-014-biml-78`, `TM-024-biml-81-llm`, `TM-012-microsoft-ai-threat-models`, `TM-005-asset-centric-models`, `S-papers-privacy-extraction` | `arxiv-2025-2026` | Paria's units |
+| integration | #82 | @nymble | `S-papers-classical-adversarial` | `venues-security`, `critic-gaps` | all lanes; then runs `rpt0014-integrate` |
 
 Lanes line up with existing work: Paria with #12 (agentic threats); Mai with
 schema (#9, #64) and the catalogs that feed #74; Tyler with product
