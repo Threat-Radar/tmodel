@@ -21,3 +21,5 @@ Two hard requirements shape it, both open as `DEC-*` until settled:
 This directory is empty of a chosen schema on purpose: selecting an encoding now
 would decide `DEC-*` by accident. Draft schemas go in as proposals against
 ARCH-0001.
+
+A Grok draft (not accepted) is in [`PROPOSAL-grok-object-model.md`](PROPOSAL-grok-object-model.md) with [`tmodel-object-model.linkml.yaml`](tmodel-object-model.linkml.yaml). It does not choose the schema.
