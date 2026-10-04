@@ -1,0 +1,100 @@
+# Live manifest for the WAVE 1 bibliography subset. Not the whole library.
+# Playbook: docs/publishing/SKILL.md
+# Categorization rules: docs/publishing/bibliography-review.md
+# Regenerate: python3 docs/publishing/render_bibliography.py
+schema: tmodel.publishing/v0
+id: pub-bibliography-wave1
+title: WAVE 1 bibliography, first pass
+kind: site-page
+status: draft
+template: docs/publishing/render_bibliography.py
+source:
+  wave: 1
+  bibliography_issue: 91
+  record_ids:
+    - capec
+    - cwe
+    - bron
+    - stix-2-1
+    - osv-schema
+    - cve-json-5
+    - guac
+    - ntia-sbom-minimum-elements
+    - cisa-framing-software-component-transparency
+    - cyclonedx-1-7
+    - rfc-8949
+    - draft-ietf-vcon-vcon-core-04
+    - iso-sae-21434-2021
+    - fips-140-3
+    - prov-o
+    - nsf-okn-launch
+records:
+  - id: capec
+    type: dataset
+    topic: attack-pattern
+  - id: cwe
+    type: dataset
+    topic: weakness
+  - id: bron
+    type: paper
+    topic: attack
+  - id: stix-2-1
+    type: spec
+    topic: threat-intel
+  - id: osv-schema
+    type: spec
+    topic: vulnerability
+  - id: cve-json-5
+    type: spec
+    topic: vulnerability
+  - id: guac
+    type: repo
+    topic: supply-chain
+  - id: ntia-sbom-minimum-elements
+    type: spec
+    topic: sbom
+  - id: cisa-framing-software-component-transparency
+    type: spec
+    topic: sbom
+  - id: cyclonedx-1-7
+    type: spec
+    topic: sbom
+  - id: rfc-8949
+    type: rfc
+    topic: cbor-implementation
+  - id: draft-ietf-vcon-vcon-core-04
+    type: draft
+    topic: artifact-statements
+  - id: iso-sae-21434-2021
+    type: spec
+    topic: threat-modeling
+  - id: fips-140-3
+    type: spec
+    topic: cryptography
+  - id: prov-o
+    type: spec
+    topic: provenance
+  - id: nsf-okn-launch
+    type: web
+    topic: knowledge-graph
+outputs:
+  - path: docs/bibliography/index.html
+    format: html
+  - path: docs/bibliography/by-topic.html
+    format: html
+  - path: docs/bibliography/by-type.html
+    format: html
+  - path: docs/bibliography/by-body.html
+    format: html
+  - path: docs/bibliography/crosswalk.html
+    format: html
+security:
+  remote_scripts: false
+  trackers: false
+  secrets: false
+  links: relative
+review:
+  human_required: true
+pdf:
+  status: not-built
+  tool: null
