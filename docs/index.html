@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>tmodel — threat modeling</title>
+  <meta name="description" content="tmodel is a knowledge-graph threat-modeling application. This page is a static distribution mock. No binary is published.">
+  <meta name="referrer" content="no-referrer">
+  <style>
+    :root {
+      --ink: #1a1916;
+      --muted: #5c574e;
+      --line: #e2dcd0;
+      --paper: #f6f3ec;
+      --card: #fffcf7;
+      --accent: #1e4d3a;
+      --accent-ink: #f4f7f5;
+      --warn: #6b4e16;
+      --warn-bg: #f3ead3;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 17px;
+      line-height: 1.55;
+    }
+    a { color: var(--accent); }
+    a:hover { text-decoration: none; }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 0 24px; }
+    header {
+      border-bottom: 1px solid var(--line);
+      background: var(--card);
+    }
+    .bar {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 0;
+    }
+    .mark {
+      font-weight: 650;
+      letter-spacing: -0.03em;
+      font-size: 1.15rem;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    nav { display: flex; gap: 18px; font-size: 0.92rem; }
+    nav a { color: var(--muted); text-decoration: none; }
+    nav a:hover { color: var(--ink); }
+    .hero { padding: 56px 0 28px; }
+    .kicker {
+      margin: 0 0 10px;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 650;
+    }
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(2.1rem, 4vw, 3rem);
+      line-height: 1.12;
+      letter-spacing: -0.035em;
+      font-weight: 640;
+    }
+    .lede { margin: 0; max-width: 38rem; color: var(--muted); font-size: 1.08rem; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .btn {
+      display: inline-block;
+      padding: 10px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .btn-primary { background: var(--accent); color: var(--accent-ink); }
+    .btn-primary:hover { background: #173d2e; color: var(--accent-ink); }
+    .btn-quiet {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+    .btn-quiet:hover { border-color: var(--ink); }
+    section { padding: 28px 0 8px; }
+    h2 {
+      margin: 0 0 8px;
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+    }
+    .section-lead { margin: 0 0 18px; color: var(--muted); }
+    .notice {
+      background: var(--warn-bg);
+      color: var(--warn);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin: 0 0 18px;
+      font-size: 0.95rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px 16px 14px;
+    }
+    .card h3 { margin: 0 0 4px; font-size: 1.05rem; }
+    .meta { margin: 0 0 12px; color: var(--muted); font-size: 0.88rem; }
+    .card .btn { width: 100%; text-align: center; }
+    .facts {
+      display: grid;
+      grid-template-columns: 8.5rem 1fr;
+      gap: 6px 12px;
+      margin: 18px 0 0;
+      font-size: 0.92rem;
+    }
+    .facts dt { color: var(--muted); }
+    .facts dd { margin: 0; }
+    .steps { margin: 8px 0 0; padding-left: 1.1rem; }
+    .steps li { margin: 6px 0; }
+    code, .path {
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.88em;
+    }
+    .about { display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 28px; }
+    .about p { margin: 0 0 12px; }
+    .side {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 0.95rem;
+    }
+    .side h3 { margin: 0 0 8px; font-size: 1rem; }
+    .side ul { margin: 0; padding-left: 1.1rem; }
+    .side li { margin: 6px 0; }
+    footer {
+      margin-top: 48px;
+      border-top: 1px solid var(--line);
+      padding: 22px 0 36px;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+    footer p { margin: 0 0 6px; }
+    @media (max-width: 760px) {
+      .grid, .about { grid-template-columns: 1fr; }
+      .bar { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap bar">
+      <a class="mark" href="./">tmodel</a>
+      <nav>
+        <a href="#download">Download</a>
+        <a href="#install">Install</a>
+        <a href="#about">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap hero">
+      <p class="kicker">Threat-Radar</p>
+      <h1>Threat models you can review.</h1>
+      <p class="lede">tmodel is a desktop application for building a knowledge-graph threat model: assets, weaknesses, attack paths, mitigations, and a human verdict on every claim an assistant proposes.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#download">Get the app</a>
+        <a class="btn btn-quiet" href="#about">Project summary</a>
+      </div>
+    </div>
+
+    <section id="download">
+      <div class="wrap">
+        <h2>Download</h2>
+        <p class="section-lead">Product-grade installers will be listed here. This page is the mock: the buttons do not fetch a file.</p>
+        <p class="notice" id="not-a-release">Mock only. No binary, disk image, archive, or installer is published from this repository. There is no checksum to verify because there is no artifact.</p>
+        <div class="grid">
+          <article class="card">
+            <h3>macOS</h3>
+            <p class="meta">Apple silicon and Intel · mock</p>
+            <a class="btn btn-primary" href="#not-a-release">Download for macOS</a>
+          </article>
+          <article class="card">
+            <h3>Linux</h3>
+            <p class="meta">x86_64 · mock</p>
+            <a class="btn btn-primary" href="#not-a-release">Download for Linux</a>
+          </article>
+          <article class="card">
+            <h3>Windows</h3>
+            <p class="meta">64-bit · mock</p>
+            <a class="btn btn-primary" href="#not-a-release">Download for Windows</a>
+          </article>
+        </div>
+        <dl class="facts">
+          <dt>Version</dt>
+          <dd>0.0.0-mock</dd>
+          <dt>Channel</dt>
+          <dd>none — not a release</dd>
+          <dt>Integrity</dt>
+          <dd>sha256 will be printed beside a real build</dd>
+        </dl>
+      </div>
+    </section>
+
+    <section id="install">
+      <div class="wrap">
+        <h2>Install</h2>
+        <p class="section-lead">The steps below are the intended flow. They are not instructions for a file you can obtain today.</p>
+        <div class="grid">
+          <article class="card">
+            <h3>macOS</h3>
+            <ol class="steps">
+              <li>Open the disk image when one is published.</li>
+              <li>Move tmodel into Applications.</li>
+              <li>Launch it and confirm the build stamp matches the checksum on this page.</li>
+            </ol>
+          </article>
+          <article class="card">
+            <h3>Linux</h3>
+            <ol class="steps">
+              <li>Unpack the archive when one is published.</li>
+              <li>Place the binary on <span class="path">PATH</span>.</li>
+              <li>Run <code>tmodel --version</code> and compare it with the stamp on this page.</li>
+            </ol>
+          </article>
+          <article class="card">
+            <h3>Windows</h3>
+            <ol class="steps">
+              <li>Run the installer when one is published.</li>
+              <li>Accept only the local, per-user defaults. No telemetry switch exists.</li>
+              <li>Start tmodel and confirm the build stamp.</li>
+            </ol>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="wrap about">
+        <div>
+          <h2>About this project</h2>
+          <p>tmodel tracks vulnerabilities, threats, weaknesses, assets, attack paths, and mitigations as linked, reviewable nodes, then maps generic threats onto products over a design lifecycle.</p>
+          <p>An attack path from a model or an assistant is a hypothesis until a person with domain knowledge accepts it. Review and annotation are part of the product, not a later export.</p>
+          <p>USF CS 490, Fall 2026. Sponsor: Paul Lambert (Threat-Radar). The architecture and open decisions live in the repository, not on this page.</p>
+        </div>
+        <aside class="side">
+          <h3>This page</h3>
+          <ul>
+            <li>Static HTML and CSS only.</li>
+            <li>No scripts, trackers, or remote assets.</li>
+            <li>Publishing rules: <a href="publishing/SKILL.md">skill</a></li>
+            <li>Example input: <a href="publishing/manifest.example.yaml">manifest</a></li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>tmodel · Threat-Radar · distribution mock for GitHub Pages.</p>
+      <p>Source and issues: <a href="https://github.com/Threat-Radar/tmodel">github.com/Threat-Radar/tmodel</a></p>
+    </div>
+  </footer>
+</body>
+</html>

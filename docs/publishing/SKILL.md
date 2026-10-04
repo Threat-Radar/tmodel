@@ -1,0 +1,92 @@
+# Skill: publish from a manifest
+
+v0 playbook for publishing tmodel material **from this repository**.
+It is not an external bot skill and it does not add a deploy workflow.
+
+Nothing in this file accepts a `DEC-*`. SDL citations point at
+[`spec/MAP-0001`](../../spec/MAP-0001-sdl-requirements-crosswalk.md) (draft evidence
+from RPT-0013), not at an accepted decision.
+
+## When to use
+
+Use this when adding or refreshing a GitHub Pages HTML page, and later a PDF
+slide deck, whose inputs are named in a manifest. The first real content source
+is the WAVE 1 bibliography (#86). A knowledge-graph dashboard is later (#75),
+and only after the WAVE 2 gate (#84).
+
+## What v0 contains
+
+| File | Role |
+|---|---|
+| `docs/index.html` | First template. Landing page and distribution mock. |
+| `docs/publishing/manifest.example.yaml` | Example manifest. Copy it; do not treat the example as a live release. |
+| `docs/publishing/SKILL.md` | This playbook. |
+
+There is no PDF template and no renderer yet. `.github/workflows/ci.yml` only
+validates archdoc front matter. Do not invent a Pages deploy workflow in the
+same change as a content edit.
+
+## Security bar
+
+Follow the published SDL crosswalk. MAP-0001 is still draft; these are the
+rows this pipeline is written to satisfy:
+
+| MAP-0001 row | How publishing complies |
+|---|---|
+| 2 Security requirements | A manifest states audience, inputs, and what must not ship (secrets, trackers, unreleased data). |
+| 3 Threat modeling | The publish surface is static hosting plus a reviewed git commit. No account, no upload endpoint, no telemetry. |
+| 4 Secure design | Defense in depth: no remote scripts, no remote fonts, no third-party pixels. |
+| 8 Approved toolchain | HTML is authored in-repo. PDF rendering, when built, runs with local tools only. |
+| 13 Release integrity | A real binary later carries sha256, version, and the manifest id. A mock must not ship a file that pretends to be a binary. |
+| 14 Secure defaults | Pages are public-read and otherwise inert. No optional analytics flag. |
+| 15 Release gate | A human reviews the PR before the page is treated as current. |
+| 16 Source integrity | No secrets, tokens, or credentials in the page, the manifest, or the history. |
+
+Also:
+
+- Links to files in this site are relative (`publishing/SKILL.md`, not a host-specific absolute path).
+- An absolute link is only for a stable off-site page, such as the GitHub repository.
+- Enabling GitHub Pages (folder `/docs` on `main`) is a separate human step. The HTML must already be valid for that.
+
+## Manifest
+
+One YAML file per published item, or one file with several `items` once there
+is more than the landing page. Fields in v0:
+
+- `schema` — `tmodel.publishing/v0`
+- `id` — stable id (`pub-…`)
+- `title`, `kind` (`site-page` now; `slides` later), `status` (`mock`, `draft`, `current`)
+- `template` — path of the HTML (or, later, slide) template in-repo
+- `source.wave` — `1` bibliography or, later, `kg`
+- `source.bibliography_issue` — GitHub issue for the bibliography pass while wave is 1
+- `source.record_ids` — library or report ids actually rendered. Empty while the page is still a product mock.
+- `outputs` — path and format committed for Pages
+- `security` — flags that must stay false: remote scripts, trackers, secrets
+- `review.human_required` — always true for `current`
+- `pdf` — `status: not-built` until the slide pipeline exists
+
+See [manifest.example.yaml](manifest.example.yaml).
+
+## HTML pipeline (v0)
+
+1. Copy `manifest.example.yaml` to a real manifest name when the page leaves mock status. Keep the example.
+2. Edit the template (`docs/index.html` or a new file under `docs/`). One self-contained HTML file per page: CSS in the file, no `<script>`, no remote URL in `src` or `@import`.
+3. Point `outputs[].path` at that file. Relative links only, so the page works at the Pages root (`/docs` served as `/`) and in the GitHub blob view.
+4. Open the file in a browser from disk. Confirm the distribution block cannot download a binary.
+5. Open a PR. State which manifest and which bibliography records (if any) changed. Do not mark a `DEC-*` accepted.
+
+Tools stay ordinary: an editor and git. A later local generator may fill a template from the manifest; v0 does not add one.
+
+## PDF slideware pipeline (not built)
+
+Described so the manifest has somewhere to grow. Do not implement this in v0.
+
+1. A manifest item with `kind: slides` names a template that will live beside this skill.
+2. Render **locally**. Preferred tools, in order, once one is chosen on a maintainer machine: Typst, or Pandoc into HTML then a local HTML-to-PDF engine (WeasyPrint or Prince with an offline license). No hosted render API. No network during the render.
+3. Inputs are the same source block as HTML. WAVE 1 fills slides from bibliography summaries, tags, and the applicability table (#86). Later, each figure and number comes from the KG, and a KG update means regenerate from the manifest rather than hand-editing the deck. That dashboard behavior is WAVE 2 / #75, not this file.
+4. Provenance on the deck: manifest `id`, input record ids, tool name and version. Commit the PDF only when a reviewer needs the bytes; otherwise the manifest plus the local command is the recipe.
+5. The same release gate applies: human review, no secrets, checksum noted if the PDF is an artifact that ships.
+
+## Content rule
+
+A published item acts like a dashboard only once its manifest `source.wave` is `kg`. Until then it must say which bibliography records it used, or say that it is a product mock with an empty `record_ids` list. Do not invent KG edges to fill a page.

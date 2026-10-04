@@ -1,0 +1,29 @@
+# Example only. Not a release. Copy before use.
+# Playbook: docs/publishing/SKILL.md
+schema: tmodel.publishing/v0
+id: pub-0001
+title: tmodel
+kind: site-page
+status: mock
+template: docs/index.html
+source:
+  wave: 1
+  # First content source. KG dashboard is later (issues 84 and 75).
+  bibliography_issue: 86
+  record_ids: []
+  kg: null
+outputs:
+  - path: docs/index.html
+    format: html
+security:
+  remote_scripts: false
+  trackers: false
+  secrets: false
+  links: relative
+review:
+  human_required: true
+pdf:
+  status: not-built
+  # Local only, when built: Typst, or Pandoc plus a local HTML-to-PDF engine.
+  # No hosted render API. See SKILL.md.
+  tool: null
