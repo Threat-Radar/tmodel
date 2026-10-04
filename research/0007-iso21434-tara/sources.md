@@ -6,7 +6,7 @@ type: research
 status: draft
 version: "0.1.0"
 date: "2026-10-01"
-updated: "2026-10-02"
+updated: "2026-10-03"
 record: RPT-0007
 ---
 
@@ -25,9 +25,12 @@ Every source found, and the `library/` record it became.
 | Methods and metrics that ISO/SAE 21434 points to, not read for this report: ISO/IEC 18045 (attack potential factors, RC-15-12, G.2), EVITA, TVRA, PASTA and STRIDE (RQ-15-03, NOTE 2; EVITA also in F.1), ISO/IEC 29100 (PII principal, F.5) | spec | 2, 3 | `iso-iec-18045`, `etsi-ts-102-165-1` (TVRA) and `pasta-risk-centric-threat-modeling`, all `queued`; EVITA and ISO/IEC 29100 have no record (EVITA is a gap listed in `iso-sae-21434-2021`); STRIDE is covered by RPT-0002 | DEC-003 |
 | FIRST, Common Vulnerability Scoring System v3.1: Specification Document (first.org/cvss/v3.1/specification-document), the CVSS version ISO/SAE 21434 cites ([24]); read 2026-10-01 | spec | 3 | `first-cvss` (`queued`, no version pinned) | DEC-003 |
 | FIRST, Common Vulnerability Scoring System v4.0: Specification Document (first.org/cvss/v4.0/specification-document); read 2026-10-01 | spec | 3 | `first-cvss` (`queued`, no version pinned) | DEC-003 |
-| ARCH-0001-PROPOSAL v0.2.0 (`0.2.0-proposed.7`, 2026-10-01), the proposed object model (#15) | design proposal (this repo) | 5, 6 | n/a (in `spec/`) | DEC-001, DEC-003 |
+| ARCH-0001-PROPOSAL v0.2.0 (`0.2.0-proposed.10`, tmodel `main` `05aca39`, read 2026-10-03; first mapped at `0.2.0-proposed.7`, 2026-10-01), the proposed object model (#15) | design proposal (this repo) | 5, 6 | n/a (in `spec/`) | DEC-001, DEC-003 |
+| DL-0008, DL-0010 and DL-0011, the design-log entries for `proposed.8` to `proposed.10` (sponsor rounds and the iteration-7 critic) | design record (this repo) | 5, 6 | n/a (in `design-log/`) | DEC-001, DEC-003 |
+| Sponsor's note on tmodel PR #69 (2026-10-02): five holds before merge; and the sponsor's comment closing PR #70 (2026-10-02): ADR-0005 dropped, DEC-003 stays open | review comments (GitHub) | 4, 5, 6, 7 | n/a | DEC-003 |
+| Threat-Radar/library PR #9 (ours; open, opened 2026-10-02): new records for RPT-0007's sources, and metadata fixes to the `iso-sae-21434-2021` catalog | library pull request | 7 | n/a | none |
 | ADR-0002, MVP scope (accepts DEC-005) | decision (this repo) | 1, 5 | n/a (in `spec/`) | DEC-005 (accepted) |
 | ARCH-0001 v0.1.6, §3 object model (the current working labels) | architecture (this repo) | 5 | n/a (in `spec/`) | DEC-001 |
 | ADR-0004, storage and edges (accepts DEC-011): typed edges with properties, stable IDs | decision (this repo) | 4, 5 | n/a (in `spec/`) | DEC-011 (accepted) |
-| Full extraction standard FX-1 (`docs/extraction.md` in the upstream m-of-n/library; not yet in the Threat-Radar fork) | process standard | 7 | n/a | none |
+| Full extraction standard FX-1 (`docs/extraction.md` in the upstream m-of-n/library; not yet in the Threat-Radar fork; re-read 2026-10-03: the normative and requirements artifacts are verbatim, with no not-applicable option) | process standard | 7 | n/a | none |
 | Library rules for requirement catalogs (`docs/requirements.md` in the Threat-Radar library fork: `text` is verbatim) | process rule | 7 | n/a | none |
