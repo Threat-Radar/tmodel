@@ -1,0 +1,704 @@
+{
+ "verdict": "The survey is not complete: accurate where it cites, but far from complete. It must not be treated as a PhD-level bibliography until the top-venue sweep and the non-US sweep below are done. Several structural defects must also be fixed before KG ingestion.\n\n**Method.** The session WebSearch budget was already exhausted (200/200), so ground truth came from five sources:\n- Semantic Scholar bulk search, sorted by citation count, with venue filters.\n- The arXiv API and abstract pages.\n- NVD CVE API 2.0 and Crossref.\n- The USENIX Security 2026 technical-sessions page.\n- Direct fetches of vendor and government pages.\n\nThe corpus is 838 `###` blocks across 6 files (about 820 real entries) with 422 unique arXiv ids.\n\n**Accuracy checks (good overall).**\n- arXiv ids: 483 of 484 id/title pairs match arXiv. The one wrong id (Casey et al.) was scraped from reference [67] in the paper's bibliography.\n- CVEs: 32 of 34 checked in NVD match. Two are mis-paired: CamoLeak's heading uses CVE-2025-59145, which is actually the color-name npm hijack, and the GrafanaGhost pairing with CVE-2026-27876 is wrong.\n- Venues: 41 venue claims marked \"per memory\" were checked in S2. Nearly all hold. Morris II at CCS 2025 is a retitled version with DOI 10.1145/3719027.3765196.\n- URLs: of 60 random URLs, nearly all resolve. 403s come from paywalls or bot walls. ATLAS deep links return 404 to curl because the site is a single-page app.\n- ATLAS 2026.09: the counts verify (16 tactics, 208 techniques of which 120 top-level and 88 sub-techniques, 40 mitigations, 73 case studies), and so do the cited case-study ids.\n- Extraordinary 2026 claims are real: the OpenAI-agent intrusion at Hugging Face (HF and METR posts), SalesBleed, the Taiwan MODA release, the Anthropic September 2026 report, and the GTIG statistics.\n- Enumeration claims verify: CWE 4.20 (2026-04-30, 969 weaknesses), CWE-1448, CAPEC 3.9 still current, ETSI TS 104 158 and EN 304 223, NIST IR 8596 and COSAiS, and GCVE.\n\n**KG-blocking defects.**\n- 36 entries map to ATLAS ids deleted in 2026.09. T0019, T0058 and T0104 became T0115.000, .001 and .002.\n- 40 papers carry 2 or 3 different ids with conflicting years. This violates the workspace rule that ids are stable.\n- 16 group headings at `###` level parse as phantom entries.\n- Confidence is miscalibrated: 698 high vs 9 low, including summaries written \"from memory\".\n\n**Completeness is the failure.** Citation-sorted Semantic Scholar diffs show the gaps venue by venue:\n- **Top-4 security venues, LLM papers 2023-26:** 60 of the 80 most-cited are absent, at least 30 of them in scope. Examples: Lukas et al. on PII leakage (S&P 2023), MasterKey (NDSS 2024), JudgeDeceiver (CCS 2024), Malla (USENIX 2024), BAIT, PEFTGuard.\n- **Top-4 security venues, ML papers 2016-26:** 57 of 80 are absent, about 30 in scope. Examples: Sharif CCS'16, Hitaj CCS'17, Pierazzi S&P'20, Arp USENIX'22, Hidden Voice Commands, LiDAR CCS'19, Song and Mittal, Ye CCS'22, BadEncoder, Back-to-the-Drawing-Board.\n- **SaTML:** 46 of the 50 most-cited papers are absent.\n- **NeurIPS, ICML and ICLR attack papers:** 54 of 80 are absent.\n- **USENIX Security 2026:** about 70 AI-security papers are listed and the survey has 2.\n- **S&P 2026 and CCS 2025:** swept only by keyword, which missed agentic browsers, GPU Rowhammer, TDX, MoE side channels and artifact authentication.\n\nWhole lineages are empty or thin: voice and audio, NLP adversarial examples, GNN and RL, FL poisoning, side-channel and fault attacks before 2019, the classic MIA canon, unlearning attacks, image watermark removal, T2I jailbreaks, AI-generated-code security, and the most-cited LLM-security surveys.\n\n**Imbalance.**\n- 85% of dated entries are from 2023-2026.\n- 38% of the 391 papers state no venue.\n- The incident log is 55% vendor research.\n- There is zero government guidance from China (TC260 and CAC, including the September 2026 AI-application and agent-system security guides), Singapore (CSA, IMDA), Japan (AISI), India (CERT-In AIBOM), France (ANSSI), Germany (BSI), Canada or Australia.\n- The only non-English source is one Taiwanese press release.\n- Israeli government guidance could not be checked (gov.il returned 403). Israeli academic work is only partly represented.\n- The incident log is US-centric and misses ByteDance training sabotage, the Grok system-prompt tampering, McHire, and the Slovakia deepfake.\n- KG prior art is missing: IBM AI Atlas Nexus, a LinkML risk KG with crosswalks.\n- Catalogs are missing: OWASP MCP Top 10 (MCP01-10:2025) and OWASP Agentic Skills Top 10.\n\n**Before the report goes out:**\n- Sweep USENIX Security 2025-26, S&P 2025-26, CCS 2024-25, NDSS 2025-26 and SaTML 2023-26 from the official program pages.\n- Backfill the classical lineages.\n- Add the non-US guidance.\n- Fix the suspect entries below.\n- Remap ATLAS ids to 2026.09.\n- Merge duplicate ids.",
+ "gaps": [
+  {
+   "area": "papers",
+   "what": "Evasion against security classifiers (problem-space attacks): Pierazzi et al., 'Intriguing Properties of Adversarial ML Attacks in the Problem Space', IEEE S&P 2020 https://arxiv.org/abs/1911.02142 ; Arp et al., 'Dos and Don'ts of ML in Computer Security', USENIX Sec 2022 https://arxiv.org/abs/2010.09470 ; Rosenberg et al., 'Adversarial ML Attacks and Defense Methods in the Cyber Security Domain', ACM CSUR 2021 https://arxiv.org/abs/2007.02407 ; Nasr et al., 'Evaluating the Robustness of a Production Malware Detection System to Transferable Adversarial Attacks', CCS 2025 (S2-indexed).",
+   "why": "Only Apruzzese 2023 covers evasion of security classifiers (malware, phishing, IDS). These papers define the feasible-transformation and evaluation constraints that an attacker-capability field needs. Pierazzi and Arp are among the most-cited ML-security papers at the top-4 venues (S2: 391 and 359 citations), and both are absent.",
+   "suggested_queries": [
+    "problem-space adversarial attack malware classifier",
+    "adversarial malware evasion survey ACM Computing Surveys",
+    "pitfalls machine learning computer security USENIX",
+    "production malware detector transferable adversarial attack"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Adaptive-attack and robustness-evaluation papers: Carlini & Wagner, 'Adversarial Examples Are Not Easily Detected', AISec 2017 https://arxiv.org/abs/1705.07263 ; Tramer et al., 'On Adaptive Attacks to Adversarial Example Defenses', NeurIPS 2020 https://arxiv.org/abs/2002.08347 ; Tramer et al., 'Ensemble Adversarial Training', ICLR 2018 https://arxiv.org/abs/1705.07204 ; Suya et al., 'SoK: Pitfalls in Evaluating Black-Box Attacks', SaTML 2024 https://arxiv.org/abs/2310.17534 ; Debenedetti et al., 'Evading Black-box Classifiers Without Breaking Eggs', SaTML 2024.",
+   "why": "The KG needs control-effectiveness edges. Without the adaptive-attack literature, detector and guardrail claims get recorded uncritically. Only Athalye 2018 and AutoAttack are present.",
+   "suggested_queries": [
+    "adaptive attacks adversarial example defenses evaluation",
+    "bypassing adversarial example detectors",
+    "SoK black-box attack evaluation pitfalls"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Physical-world and sensor attacks on perception (autonomous vehicles, biometrics):\n- Sharif et al., 'Accessorize to a Crime', CCS 2016, doi 10.1145/2976749.2978392.\n- Cao et al., 'Adversarial Sensor Attack on LiDAR-based Perception', CCS 2019 https://arxiv.org/abs/1907.06826 .\n- Nassi et al., 'Phantom of the ADAS', CCS 2020, doi 10.1145/3372297.3423359.\n- Sato et al., 'Dirty Road Can Attack', USENIX Sec 2021 https://arxiv.org/abs/2009.06701 .\n- Cao et al., 'Invisible for both Camera and LiDAR', S&P 2021.\n- 'ControlLoc' (physical-world camera hijacking), CCS 2025.\n- 'Weaponizing Reflectivity for Pointcloud Deception', S&P 2026.",
+   "why": "Cyber-physical assets (vehicles, face recognition, access control) have no attack nodes beyond the stop-sign and adversarial-patch papers. There is no LiDAR or multi-sensor-fusion work at all.",
+   "suggested_queries": [
+    "adversarial attack LiDAR perception autonomous driving",
+    "physical adversarial face recognition eyeglasses",
+    "phantom attack ADAS split-second projection",
+    "lane centering physical adversarial patch"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Voice and audio interface attacks: Carlini et al., 'Hidden Voice Commands', USENIX Sec 2016 https://www.usenix.org/conference/usenixsecurity16/technical-sessions/presentation/carlini ; Zhang et al., 'DolphinAttack', CCS 2017 https://arxiv.org/abs/1708.09537 ; Yuan et al., 'CommanderSong', USENIX Sec 2018 https://arxiv.org/abs/1801.08535 ; Schonherr et al., psychoacoustic hiding, NDSS 2019 https://arxiv.org/abs/1808.05665 ; Sugawara et al., 'Light Commands', USENIX Sec 2020 https://www.usenix.org/conference/usenixsecurity20/presentation/sugawara ; 'Sirens' Whisper: Inaudible Near-Ultrasonic Jailbreaks of Speech-Driven LLMs', USENIX Sec 2026.",
+   "why": "Voice assistants and speech-driven agents can be attacked through physical channels (ultrasound, laser, songs). Only C&W audio 2018, AudioHijack and AdvWave are present. The ML file itself lists over-the-air audio as uncovered.",
+   "suggested_queries": [
+    "inaudible voice command attack ultrasound",
+    "adversarial audio speech recognition over-the-air",
+    "laser injection microphone voice assistant",
+    "near-ultrasonic jailbreak speech LLM"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Adversarial examples against NLP classifiers (the lineage behind guardrail evasion): Ebrahimi et al., 'HotFlip', ACL 2018 https://arxiv.org/abs/1712.06751 ; Jin et al., 'Is BERT Really Robust?' (TextFooler), AAAI 2020 https://arxiv.org/abs/1907.11932 ; Wallace et al., 'Universal Adversarial Triggers', EMNLP 2019 https://arxiv.org/abs/1908.07125 ; Li et al., 'TextBugger', NDSS 2019 https://arxiv.org/abs/1812.05271 ; 'What the Eyes See, the LLMs Miss: Exploiting Human Perception for Adversarial Text Attacks', USENIX Sec 2026.",
+   "why": "Moderation, spam and LLM-based guard classifiers are evaded with these primitives, and GCG descends from universal triggers. The ML file lists 'attacks on LLM-based classifiers and guardrails' as uncovered.",
+   "suggested_queries": [
+    "adversarial text attack text classification",
+    "universal adversarial triggers NLP",
+    "adversarial examples content moderation classifier"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Attacks on graph and reinforcement-learning models: Zugner et al., 'Adversarial Attacks on NNs for Graph Data' (Nettack), KDD 2018 https://arxiv.org/abs/1805.07984 ; He et al., 'Stealing Links from GNNs', USENIX Sec 2021 https://arxiv.org/abs/2005.02131 ; Gleave et al., 'Adversarial Policies', ICLR 2020 https://arxiv.org/abs/1905.10615 ; Wang et al., 'Adversarial Policies Beat Superhuman Go AIs', ICML 2023 https://arxiv.org/abs/2211.00241 ; 'Are LLM-Enhanced GNNs Robust Against Poisoning Attacks?', S&P 2026.",
+   "why": "Fraud-detection, recommender and anomaly-detection GNNs and RL controllers are common enterprise assets. The ML file admits that GNN and RL attacks are uncovered, and no entry covers them.",
+   "suggested_queries": [
+    "adversarial attack graph neural network poisoning",
+    "link stealing graph neural network",
+    "adversarial policies reinforcement learning",
+    "GNN fraud detection adversarial"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Classic backdoor attacks and defenses:\n- Attacks:\n  - Yao et al., 'Latent Backdoor Attacks', CCS 2019 (appears only in the search log).\n  - Saha et al., 'Hidden Trigger Backdoor Attacks', AAAI 2020 https://arxiv.org/abs/1910.00033 .\n  - Nguyen & Tran, 'Input-Aware Dynamic Backdoor', NeurIPS 2020 https://arxiv.org/abs/2010.08138 .\n  - Turner et al., 'Label-Consistent Backdoor Attacks' https://arxiv.org/abs/1912.02771 .\n  - Jia et al., 'BadEncoder', S&P 2022 https://arxiv.org/abs/2108.00352 .\n  - Shen et al., 'Backdoor Pre-trained Models Can Transfer to All', CCS 2021 https://arxiv.org/abs/2111.00197 .\n- Defenses:\n  - STRIP https://arxiv.org/abs/1902.06531 .\n  - Activation Clustering https://arxiv.org/abs/1811.03728 .\n  - Xu et al., 'Detecting AI Trojans Using Meta Neural Analysis', S&P 2021 https://arxiv.org/abs/1910.03137 .",
+   "why": "Trigger type, clean-label versus poisoned-label, encoder-level and latent backdoors imply different preconditions and controls. Only BadNets, Trojaning and Chen 2017 (plus Neural Cleanse and spectral signatures) are present. Bober-Irizar's architectural backdoors (CVPR 2023) are absent too and are listed under the malware-in-weights gap.",
+   "suggested_queries": [
+    "clean-label backdoor attack",
+    "backdoor self-supervised pre-trained encoder",
+    "backdoor detection meta neural analysis",
+    "latent backdoor transfer learning"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Backdoors in LLMs, PEFT adapters and model merging, at top venues: Li et al., 'BadEdit', ICLR 2024 https://arxiv.org/abs/2403.13355 ; Xiang et al., 'BadChain', ICLR 2024 https://arxiv.org/abs/2401.12242 ; Zhang et al., 'Instruction Backdoor Attacks Against Customized LLMs', USENIX Sec 2024 https://arxiv.org/abs/2402.09179 ; Dong et al., 'The Philosopher's Stone: Trojaning Plugins of LLMs', NDSS 2025 https://arxiv.org/abs/2312.00374 ; Shu et al., 'On the Exploitability of Instruction Tuning', NeurIPS 2023 https://arxiv.org/abs/2306.17194 ; 'BAIT', S&P 2025, doi 10.1109/SP61157.2025.00103 ; 'PEFTGuard', S&P 2025 https://arxiv.org/abs/2411.17453 ; Lethe and Patcher (purifying backdoored LLMs), USENIX Sec 2026. BadMerging (CCS 2024) is listed under the malware-in-weights gap.",
+   "why": "Model-editing, chain-of-thought, custom-GPT-instruction, LoRA-plugin and merge-time backdoors are distinct supply-chain paths with distinct controls. PEFTGuard appears only as UNVERIFIED, and the others are absent.",
+   "suggested_queries": [
+    "backdoor large language model model editing",
+    "backdoor chain-of-thought prompting",
+    "trojan LoRA plugin LLM",
+    "backdoor model merging attack",
+    "LLM backdoor scanning"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Data-poisoning canon and LLM scaling evidence: Cina et al., 'Wild Patterns Reloaded: A Survey of ML Security against Training Data Poisoning', ACM CSUR 2023 https://arxiv.org/abs/2205.01992 ; Schwarzschild et al., 'Just How Toxic is Data Poisoning?', ICML 2021 https://arxiv.org/abs/2006.12557 ; Munoz-Gonzalez et al., back-gradient poisoning, AISec 2017 https://arxiv.org/abs/1708.08689 ; Steinhardt et al., 'Certified Defenses for Data Poisoning', NeurIPS 2017 https://arxiv.org/abs/1706.03691 ; Carlini & Terzis, 'Poisoning and Backdooring Contrastive Learning', ICLR 2022 https://arxiv.org/abs/2106.09667 ; Tramer et al., 'Truth Serum', CCS 2022 https://arxiv.org/abs/2204.00032 ; Bowen et al., 'Scaling Trends for Data Poisoning in LLMs' https://arxiv.org/abs/2408.02946 ; 'Cascading Adversarial Bias from Injection to Distillation in LMs', CCS 2025.",
+   "why": "The definitive poisoning survey and benchmark are missing. Truth Serum links poisoning to privacy leakage, a cross-class edge the KG needs. CLIP-scale poisoning is the precursor of web-scale poisoning. Bowen 2024 sits in UNVERIFIED only because the wrong title was searched.",
+   "suggested_queries": [
+    "data poisoning survey ACM Computing Surveys",
+    "poisoning contrastive learning CLIP",
+    "poisoning to amplify membership inference",
+    "data poisoning scaling LLM jailbreak-tuning"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Federated-learning poisoning and leakage canon: Hitaj et al., 'Deep Models Under the GAN', CCS 2017 https://arxiv.org/abs/1702.07464 ; Shejwalkar & Houmansadr, 'Manipulating the Byzantine', NDSS 2021, doi 10.14722/ndss.2021.24498 ; Shejwalkar et al., 'Back to the Drawing Board: Poisoning Attacks on Production FL', S&P 2022 https://arxiv.org/abs/2108.10241 ; Wang et al., 'Attack of the Tails', NeurIPS 2020 https://arxiv.org/abs/2007.05084 ; Baruch et al., 'A Little Is Enough', NeurIPS 2019 https://arxiv.org/abs/1902.06156 ; Cao et al., 'FLTrust', NDSS 2021 https://arxiv.org/abs/2012.13995 ; Lyu et al., 'Threats to Federated Learning: A Survey' https://arxiv.org/abs/2003.02133 ; 'When the Aggregator Cheats: Data-Free Backdoors in Federated LLM-based QA', USENIX Sec 2026.",
+   "why": "'Back to the Drawing Board' is the key realism paper for production-FL threat models. FL has only 8 entries and none of these is among them.",
+   "suggested_queries": [
+    "model poisoning federated learning byzantine",
+    "backdoor federated learning edge-case",
+    "production federated learning poisoning evaluation",
+    "GAN information leakage collaborative learning"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Model extraction, imitation and LLM fingerprinting:\n- Truong et al., 'Data-Free Model Extraction', CVPR 2021 https://arxiv.org/abs/2011.14779 .\n- Kariyappa et al., 'MAZE' https://arxiv.org/abs/2005.03161 .\n- Chandrasekaran et al., 'Exploring Connections Between Active Learning and Model Extraction', USENIX Sec 2020 https://arxiv.org/abs/1811.02054 .\n- Yu et al., 'CloudLeak', NDSS 2020, doi 10.14722/ndss.2020.24178.\n- Wallace et al., 'Imitation Attacks and Defenses for Black-box MT', EMNLP 2020 https://arxiv.org/abs/2004.15015 .\n- Orekondy et al., 'Prediction Poisoning', ICLR 2020 https://arxiv.org/abs/1906.10908 .\n- Pasquini et al., 'LLMmap', USENIX Sec 2025 https://arxiv.org/abs/2407.15847 .\n- 'Beyond Indistinguishability: Measuring Extraction Risk in LLM APIs', S&P 2026.\n- 'Differentiation-Based Extraction of Proprietary Data from Fine-Tuned LLMs', CCS 2025.",
+   "why": "Data-free extraction and imitation of production APIs are the realistic theft paths behind the distillation campaigns the survey records. LLM fingerprinting is the reconnaissance step for model-specific exploits.",
+   "suggested_queries": [
+    "data-free model extraction",
+    "model extraction active learning",
+    "LLM fingerprinting identify model behind API",
+    "imitation attack production API"
+   ]
+  },
+  {
+   "area": "supply-infra",
+   "what": "Model stealing through side channels (GPU, accelerator, memory bus): Naghibijouybari et al., 'Rendered Insecure: GPU Side Channel Attacks are Practical', CCS 2018 (appears only in the search log); Zhu et al., 'Hermes Attack' (PCIe snooping), USENIX Sec 2021 https://arxiv.org/abs/2006.12784 ; Hu et al., 'DeepSniffer', ASPLOS 2020, doi 10.1145/3373376.3378460 ; Rakin et al., 'DeepSteal', S&P 2022 https://arxiv.org/abs/2111.04625 ; Duddu et al., 'Stealing NNs via Timing Side Channels' https://arxiv.org/abs/1812.11720 ; Hong et al., cache side-channel DNN reconnaissance https://arxiv.org/abs/1810.03487 ; Horvath et al., 'BarraCUDA: Edge GPUs do Leak DNN Weights' https://arxiv.org/abs/2312.07783 ; 'CipherSteal', S&P 2025 ; 'MoEcho' (side channels in MoE LLMs), CCS 2025.",
+   "why": "The supply file admits GPU multi-tenancy coverage is thin. These papers are the canonical weight- and architecture-theft paths for on-prem and edge inference assets. Rendered Insecure was found during search and then dropped.",
+   "suggested_queries": [
+    "GPU side channel neural network model extraction",
+    "PCIe snooping DNN model stealing",
+    "edge GPU electromagnetic weight leakage",
+    "mixture-of-experts side channel privacy"
+   ]
+  },
+  {
+   "area": "supply-infra",
+   "what": "Fault-injection and Rowhammer attacks on models, from the first papers to 2026 GPU Rowhammer:\n- Liu et al., 'Fault Injection Attack on Deep Neural Network', ICCAD 2017, doi 10.1109/ICCAD.2017.8203770.\n- Breier et al., 'Practical Fault Attack on DNNs', CCS 2018, doi 10.1145/3243734.3278519.\n- Rakin et al., 'TBT: Targeted Neural Network Attack with Bit Trojan', CVPR 2020 https://arxiv.org/abs/1909.05193 .\n- Breier et al., 'SNIFF' https://arxiv.org/abs/2002.11021 .\n- Li et al., 'Rowhammer-Based Trojan Injection: One Bit Flip Is Sufficient' (OneFlip), USENIX Sec 2025 https://www.usenix.org/conference/usenixsecurity25/presentation/li-xiang . The ML file lists this as UNVERIFIED.\n- Lin et al., 'GPUBreach: Privilege Escalation Attacks on GPUs using Rowhammer', S&P 2026 https://arxiv.org/abs/2605.03812 .\n- 'GDDRHammer', S&P 2026.",
+   "why": "The bit-flip group starts in 2019 and misses the first fault attacks and the bit-flip trojans. GPUBreach turns GPU Rowhammer into host privilege escalation, so the impact field changes from accuracy loss to infrastructure compromise.",
+   "suggested_queries": [
+    "fault injection attack deep neural network laser glitch",
+    "bit trojan neural network rowhammer",
+    "GPU rowhammer privilege escalation",
+    "one bit flip backdoor DNN"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Membership-inference canon (pre-LLM and diffusion): Song & Mittal, 'Systematic Evaluation of Privacy Risks of ML Models', USENIX Sec 2021 https://arxiv.org/abs/2003.10595 ; Leino & Fredrikson, 'Stolen Memories', USENIX Sec 2020 https://arxiv.org/abs/1906.11798 ; Sablayrolles et al., Bayes-optimal MIA, ICML 2019 https://arxiv.org/abs/1908.11229 ; Ye et al., 'Enhanced MIA', CCS 2022 https://arxiv.org/abs/2111.09679 ; Li & Zhang, 'Membership Leakage in Label-Only Exposures', CCS 2021 https://arxiv.org/abs/2007.15528 ; Nasr et al., 'Adversary Instantiation', S&P 2021 https://arxiv.org/abs/2101.04535 ; Liu et al., 'ML-Doctor', USENIX Sec 2022 https://arxiv.org/abs/2102.02551 ; Zarifzadeh et al., 'Low-Cost High-Power MIA' (RMIA), ICML 2024 https://arxiv.org/abs/2312.03262 ; Duan et al., 'Are Diffusion Models Vulnerable to MIA?', ICML 2023 https://arxiv.org/abs/2302.01316 .",
+   "why": "Most of the highly cited MIA papers that S2 returns are absent. RMIA is the current reference attack. ML-Doctor is a holistic inference-risk assessment that could serve directly as threat-model scoring.",
+   "suggested_queries": [
+    "membership inference attack evaluation USENIX",
+    "label-only membership inference",
+    "membership inference diffusion models",
+    "holistic inference attack risk assessment"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Membership and dataset inference for LLMs and VLMs:\n- Fu et al., SPV-MIA, NeurIPS 2024 https://arxiv.org/abs/2311.06062 .\n- Meeus et al., 'Did the Neurons Read your Book?', USENIX Sec 2024 https://arxiv.org/abs/2310.15007 .\n- Wen et al., 'MIA Against In-Context Learning', CCS 2024 https://arxiv.org/abs/2409.01380 .\n- He et al., label-only MIA against pre-trained LLMs, USENIX Sec 2025 https://arxiv.org/abs/2502.18943 .\n- Hu et al., 'MIA Against VLMs', USENIX Sec 2025 https://arxiv.org/abs/2501.18624 .\n- Maini et al., 'LLM Dataset Inference', NeurIPS 2024 https://arxiv.org/abs/2406.06443 .\n- Das et al., 'Blind Baselines Beat MIAs for Foundation Models' https://arxiv.org/abs/2406.16201 .\n- Zhang et al., 'MIAs Cannot Prove a Model Was Trained On Your Data', SaTML 2025 https://arxiv.org/abs/2409.19798 .\n- USENIX Sec 2026: MIA on tokenizers, VidLeaks (text-to-video), Window-based MIA, Imitative MIA.",
+   "why": "Copyright and consent disputes turn on dataset inference and its limits. Fine-tuned-LLM and in-context-learning MIAs attack deployed customization rather than pretraining.",
+   "suggested_queries": [
+    "membership inference fine-tuned LLM",
+    "dataset inference LLM copyright",
+    "membership inference in-context learning",
+    "membership inference vision language model"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "PII leakage and attribute inference in LLMs:\n- Lukas et al., 'Analyzing Leakage of PII in LMs', S&P 2023 https://arxiv.org/abs/2302.00539 .\n- Li et al., 'Multi-step Jailbreaking Privacy Attacks on ChatGPT', EMNLP Findings 2023 https://arxiv.org/abs/2304.05197 .\n- Staab et al., 'Beyond Memorization: Violating Privacy via Inference with LLMs', ICLR 2024 https://arxiv.org/abs/2310.07298 .\n- Panda et al., 'Teach LLMs to Phish', ICLR 2024 https://arxiv.org/abs/2403.00871 .\n- Kim et al., 'ProPILE', NeurIPS 2023 https://arxiv.org/abs/2307.01881 .\n- Chen et al., 'The Janus Interface', CCS 2024 https://arxiv.org/abs/2310.15469 .\n- Niu et al., 'CodexLeaks', USENIX Sec 2023 https://www.usenix.org/conference/usenixsecurity23/presentation/niu .\n- Mireshghallah et al., 'Can LLMs Keep a Secret?' (ConfAIde), ICLR 2024 https://arxiv.org/abs/2310.17884 .\n- Shao et al., 'PrivacyLens', NeurIPS 2024 https://arxiv.org/abs/2409.00138 .\n- 'Large-scale online deanonymization with LLMs', USENIX Sec 2026.",
+   "why": "Lukas 2023 is the most-cited LLM privacy paper at a top-4 venue (about 446 S2 citations) and is absent. PII in training data, fine-tuning data and agent context is the main regulated asset in company threat models.",
+   "suggested_queries": [
+    "PII leakage language model extraction",
+    "LLM attribute inference privacy",
+    "fine-tuning amplifies privacy leakage",
+    "contextual integrity LLM privacy benchmark"
+   ]
+  },
+  {
+   "area": "supply-infra",
+   "what": "Privacy of inference infrastructure (distributed and collaborative inference, KV cache, local agents): Qu et al., 'Prompt Inversion Attack against Collaborative Inference', S&P 2025 https://arxiv.org/abs/2503.09022 ; Luo et al., 'Prompt Inference Attack on Distributed LLM Inference Frameworks', CCS 2025 https://arxiv.org/abs/2503.09291 ; Luo et al., 'Shadow in the Cache' (KV cache), NDSS 2026 https://arxiv.org/abs/2508.09442 ; Dong et al., 'Depth Gives a False Sense of Privacy: LLM Internal States Inversion', USENIX Sec 2025 https://arxiv.org/abs/2507.16372 ; USENIX Sec 2026 'From Length to Content: Token-Length Side-Channel Attacks on LLM API Merged Outputs' and 'Network-Level Prompt and Trait Leakage in Local Research Agents'; 'Recovering ... Mobile Local LLM Conversations via Memory Forensics', S&P 2026.",
+   "why": "Split, pipeline and edge inference and shared KV caches are real deployment assets with trust boundaries. The survey covers timing and token-length channels but not inversion of activations or hidden states across those boundaries.",
+   "suggested_queries": [
+    "prompt inversion collaborative inference activations",
+    "KV cache privacy leakage LLM serving",
+    "split inference LLM hidden state inversion",
+    "local LLM agent network traffic leakage"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Machine-unlearning attacks and unlearning evaluation: Chen et al., 'When Machine Unlearning Jeopardizes Privacy', CCS 2021 https://arxiv.org/abs/2005.02205 ; Hu et al., 'Jogging the Memory of Unlearned LLMs via Benign Relearning', ICLR 2025 https://arxiv.org/abs/2406.13356 ; Lucki et al., 'An Adversarial Perspective on Machine Unlearning for AI Safety' https://arxiv.org/abs/2409.18025 ; Hayes et al., 'Inexact Unlearning Needs More Careful Evaluations', SaTML 2025 https://arxiv.org/abs/2403.01218 ; Li et al., 'WMDP', ICML 2024 https://arxiv.org/abs/2403.03218 ; Thaker et al., 'Position: LLM Unlearning Benchmarks are Weak', SaTML 2025 https://arxiv.org/abs/2410.02879 .",
+   "why": "Unlearning serves as both a GDPR erasure control and a safety control. Attacks that revert it are control-bypass edges. The ML file lists unlearning only in its search log.",
+   "suggested_queries": [
+    "machine unlearning attack relearning",
+    "unlearning privacy leakage membership",
+    "WMDP unlearning robustness evaluation"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Jailbreak papers at top security venues: Deng et al., 'MasterKey', NDSS 2024 https://arxiv.org/abs/2307.08715 ; Liu et al., 'Making Them Ask and Answer' (DRA), USENIX Sec 2024 https://arxiv.org/abs/2402.18104 ; Yu et al., 'Don't Listen To Me', USENIX Sec 2024 https://arxiv.org/abs/2403.17336 ; Yu et al., 'LLM-Fuzzer', USENIX Sec 2024 ; Krauss et al., 'TwinBreak', USENIX Sec 2025 https://arxiv.org/abs/2506.07596 ; Wu et al., 'NeuroStrike', NDSS 2026 https://arxiv.org/abs/2509.11864 ; Gong et al., 'Safety Misalignment Against LLMs', NDSS 2025 ; USENIX Sec 2026 'JailbreakScope' and 'Bypassing Prompt Guards in Production with Controlled-Release Prompting'.",
+   "why": "The jailbreak group leans on arXiv and vendor blogs. These are peer-reviewed results, including bypasses of production guards, which are the evidence a control-effectiveness field needs.",
+   "suggested_queries": [
+    "jailbreak LLM chatbots NDSS USENIX",
+    "neuron-level attack aligned LLM",
+    "bypass production prompt guard"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Alignment fragility and jailbreak work at ML venues:\n- Carlini et al., 'Are Aligned NNs Adversarially Aligned?', NeurIPS 2023 https://arxiv.org/abs/2306.15447 .\n- Huang et al., 'Catastrophic Jailbreak of Open-source LLMs via Exploiting Generation', ICLR 2024 https://arxiv.org/abs/2310.06987 .\n- Deng et al., 'Multilingual Jailbreak Challenges', ICLR 2024 https://arxiv.org/abs/2310.06474 .\n- Qi et al., 'Safety Alignment Should Be Made More Than Just a Few Tokens Deep', ICLR 2025 https://arxiv.org/abs/2406.05946 .\n- Wei et al., 'Assessing the Brittleness of Safety Alignment via Pruning and Low-Rank Modifications', ICML 2024 https://arxiv.org/abs/2402.05162 .\n- 'AutoDAN-Turbo', ICLR 2025 https://arxiv.org/abs/2410.05295 .\n- 'WildTeaming', NeurIPS 2024 https://arxiv.org/abs/2406.18510 .\n- 'AdvPrompter', ICML 2024 https://arxiv.org/abs/2404.16873 .\n- 'COLD-Attack', ICML 2024 https://arxiv.org/abs/2402.08679 .\n- 'ReNeLLM', NAACL 2024 https://arxiv.org/abs/2311.08268 .\n- Past-tense refusal failure https://arxiv.org/abs/2407.11969 .",
+   "why": "Catastrophic Jailbreak (563 citations) and Few-Tokens-Deep (524) are among the most-cited jailbreak papers in S2. Qi 2025 explains why prefill and fine-tuning attacks work, which is the root-cause node a weakness layer needs.",
+   "suggested_queries": [
+    "shallow safety alignment prefill attack",
+    "jailbreak decoding generation exploitation",
+    "lifelong jailbreak agent strategy",
+    "safety alignment brittleness pruning low-rank"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Red-teaming foundations, trustworthiness benchmarks and guard models: Perez et al., 'Red Teaming LMs with LMs', EMNLP 2022 https://arxiv.org/abs/2202.03286 ; Ganguli et al., 'Red Teaming LMs to Reduce Harms' https://arxiv.org/abs/2209.07858 ; Wang et al., 'DecodingTrust', NeurIPS 2023 https://arxiv.org/abs/2306.11698 ; Han et al., 'WildGuard', NeurIPS 2024 https://arxiv.org/abs/2406.18495 ; Tamirisa et al., 'Tamper-Resistant Safeguards for Open-Weight LLMs', ICLR 2025 https://arxiv.org/abs/2408.00761 ; open-source probe catalogs NVIDIA garak https://github.com/NVIDIA/garak and Microsoft PyRIT https://github.com/Azure/PyRIT .",
+   "why": "DecodingTrust (720 citations) and both red-teaming foundation papers are absent. garak and PyRIT appear only in gaps prose, yet their probe taxonomies are what practitioners run, and they could seed test-case nodes in the KG.",
+   "suggested_queries": [
+    "automated red teaming language models",
+    "trustworthiness benchmark GPT adversarial robustness privacy",
+    "tamper-resistant safeguards open-weight",
+    "garak probe taxonomy"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Prompt injection at top venues, manipulation of LLM judges and LLM search, and 2026 in-the-wild studies:\n- Shi et al., 'JudgeDeceiver', CCS 2024 https://arxiv.org/abs/2403.17710 .\n- Liu et al., 'Demystifying RCE Vulnerabilities in LLM-Integrated Apps', CCS 2024 https://arxiv.org/abs/2309.02926 .\n- Nestaas et al., 'Adversarial SEO for LLMs', ICLR 2025 https://arxiv.org/abs/2406.18382 .\n- Kumar & Lakkaraju, 'Manipulating LLMs to Increase Product Visibility' https://arxiv.org/abs/2404.07981 .\n- Zverev et al., 'Can LLMs Separate Instructions From Data?', ICLR 2025 https://arxiv.org/abs/2403.06833 .\n- Piet et al., 'Jatmo' https://arxiv.org/abs/2312.17673 .\n- Kim et al., 'When LLMs Go Online', USENIX Sec 2025 https://arxiv.org/abs/2410.14569 .\n- USENIX Sec 2026: 'Overcoming the Retrieval Barrier: IPI in the Wild', 'Measuring Real-World PI Attacks in LLM-based Resume Screening', 'When AIOps Become AI Oops', 'Context Contamination in LLM Analysis of Network Security Logs'.",
+   "why": "LLM judges, LLM search ranking, resume screening, SOC and AIOps are concrete business processes exposed to injection. The survey frames prompt injection mostly around chat, agents and email.",
+   "suggested_queries": [
+    "prompt injection LLM-as-a-judge",
+    "LLM search engine optimization manipulation",
+    "prompt injection resume screening",
+    "LLM AIOps telemetry injection"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Privilege-control, isolation and guard architectures for agents (mitigation nodes):\n- Shi et al., 'Progent: Securing AI Agents with Privilege Control' https://arxiv.org/abs/2504.11703 . The LLM file lists it as UNVERIFIED because the wrong title was searched.\n- Kim et al., 'Prompt Flow Integrity' https://arxiv.org/abs/2503.15547 .\n- Li et al., 'DRIFT', NeurIPS 2025 https://arxiv.org/abs/2506.12104 .\n- Syros et al., 'SAGA', NDSS 2026 https://arxiv.org/abs/2504.21034 .\n- Wu et al., 'Towards Automating Data Access Permissions in AI Agents', S&P 2026 https://arxiv.org/abs/2511.17959 .\n- 'LlamaFirewall' https://arxiv.org/abs/2505.03574 .\n- 'PromptArmor' https://arxiv.org/abs/2507.15219 .\n- 'DataFilter', SaTML 2026 https://arxiv.org/abs/2510.19207 .\n- 'GuardAgent' https://arxiv.org/abs/2406.09187 .\n- 'ShieldAgent', ICML 2025 https://arxiv.org/abs/2503.22738 .\n- USENIX Sec 2026: 'Breaking the Lethal Trifecta: Secure Agentic Computing via Causal Isolation Architecture' and 'AttriGuard'.",
+   "why": "A threat-model generator needs mitigation nodes that carry known bypass results. CaMeL, FIDES and IsolateGPT are present, but the privilege-control, permissioning and guard-agent families are absent.",
+   "suggested_queries": [
+    "privilege control LLM agents",
+    "agent permission policy enforcement",
+    "guard agent safety policy",
+    "causal isolation agentic computing"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "RAG attacks and RAG privacy:\n- Zhong et al., 'Poisoning Retrieval Corpora by Injecting Adversarial Passages', EMNLP 2023 https://arxiv.org/abs/2310.19156 . This is the seminal corpus-poisoning paper.\n- Qi et al., 'Follow My Instruction and Spill the Beans', ICLR 2025 https://arxiv.org/abs/2402.17840 .\n- Anderson et al., 'Is My Data in Your Retrieval Database?' https://arxiv.org/abs/2405.20446 .\n- 'Topic-FlipRAG', USENIX Sec 2025 https://arxiv.org/abs/2502.01386 .\n- 'GraphRAG under Fire', S&P 2026 https://arxiv.org/abs/2501.14050 .\n- 'Pandora' https://arxiv.org/abs/2402.08416 .\n- 'Certifiably Robust RAG', SaTML 2026 https://arxiv.org/abs/2405.15556 .\n- 'SoK: Privacy Risks and Mitigations in RAG', SaTML 2026 https://arxiv.org/abs/2601.03979 .\n- GEIA embedding inversion https://arxiv.org/abs/2305.03010 .\n- 'DCMI', CCS 2025.\n- USENIX Sec 2026: 'BadGraph', 'Confundo', 'Connect the Dots: KG-guided crawler attack on RAG', 'Five Queries Are Enough: MIA on RAG'.",
+   "why": "The LLM file admits that RAG privacy and embedding inversion are thin. GraphRAG and KG-RAG attacks are the most relevant for this project's KG-centric target architecture.",
+   "suggested_queries": [
+    "corpus poisoning dense retrieval adversarial passages",
+    "RAG data extraction attack",
+    "GraphRAG knowledge graph poisoning",
+    "membership inference retrieval-augmented generation"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "MCP ecosystem measurement and attacks:\n- Zhao et al., 'Parasites in the Toolchain: A Large-Scale Analysis of Attacks on the MCP Ecosystem', S&P 2026 https://arxiv.org/abs/2509.06572 .\n- Hasan et al., 'MCP at First Glance', TOSEM https://arxiv.org/abs/2506.13538 .\n- Song et al., 'Beyond the Protocol' https://arxiv.org/abs/2506.02040 .\n- 'MPMA: Preference Manipulation Attack Against MCP' https://arxiv.org/abs/2505.11154 .\n- 'MCP Security Bench (MSB)' https://arxiv.org/abs/2510.15994 .\n- Gaire et al., 'SoK: Security and Safety in the MCP Ecosystem' https://arxiv.org/abs/2512.08290 .\n- 'When MCP Servers Attack' https://arxiv.org/abs/2509.24272 .\n- 'Attractive Metadata Attack', NeurIPS 2025 https://arxiv.org/abs/2508.02110 .\n- Narajala & Habler, 'Enterprise-Grade Security for MCP' https://arxiv.org/abs/2504.08623 .",
+   "why": "The only peer-reviewed top-venue MCP measurement (S&P 2026) is absent. The MCP section relies on vendor blogs and 2026 arXiv papers.",
+   "suggested_queries": [
+    "Model Context Protocol security measurement",
+    "MCP server malicious tool ecosystem",
+    "MCP benchmark attack",
+    "SoK MCP security"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Supply chain for agent skills: 'Do Not Mention This to the User: Detecting and Understanding Malicious Agent Skills in the Wild', USENIX Sec 2026 (program https://www.usenix.org/conference/usenixsecurity26/technical-sessions) ; Liu et al., 'Agent Skills in the Wild' https://arxiv.org/abs/2601.10338 ; Schmotz et al., 'Skill-Inject' https://arxiv.org/abs/2602.20156 ; Jiang et al., 'SoK: Agentic Skills' https://arxiv.org/abs/2602.20867 ; OWASP Agentic Skills Top 10 (AST10, v1.0-2026) https://owasp.org/www-project-agentic-skills-top-10/ .",
+   "why": "Skills (SKILL.md and similar) form a new execution layer distinct from MCP. The survey has only two 2026 arXiv items (Etteib, SkillSecurer) and no catalog for this class.",
+   "suggested_queries": [
+    "agent skills malicious marketplace",
+    "skill file injection agent",
+    "SoK agentic skills security"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Multi-agent collusion, propagation and resilience: Motwani et al., 'Secret Collusion among AI Agents', NeurIPS 2024 https://arxiv.org/abs/2402.07510 ; Ju et al., 'Flooding Spread of Manipulated Knowledge' https://arxiv.org/abs/2407.07791 ; Zhang et al., 'PsySafe', ACL 2024 https://arxiv.org/abs/2401.11880 ; Huang et al., 'On the Resilience of LLM-Based Multi-Agent Collaboration with Faulty Agents', ICML 2025 https://arxiv.org/abs/2408.00989 ; Wang et al., 'G-Safeguard', ACL 2025 https://arxiv.org/abs/2502.11127 ; Hammond et al., 'Multi-Agent Risks from Advanced AI' https://arxiv.org/abs/2502.14143 ; El Yagoubi et al., 'AgentLeak' https://arxiv.org/abs/2602.11510 ; 'MASLeak', USENIX Sec 2026.",
+   "why": "Secret collusion between agents over steganographic channels appears only as an attack-class label inside one threat-model entry. The most-cited multi-agent security papers are absent.",
+   "suggested_queries": [
+    "secret collusion LLM agents steganography",
+    "malicious agent multi-agent system resilience",
+    "manipulated knowledge spread multi-agent",
+    "multi-agent risks advanced AI"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Persistence through agent memory and self-evolution: Srivastava & He, 'MemoryGraft' https://arxiv.org/abs/2512.16962 ; Yang et al., 'Zombie Agents: Persistent Control of Self-Evolving LLM Agents' https://arxiv.org/abs/2602.15654 ; Patlan et al., 'Real AI Agents with Fake Memories' (ElizaOS and Web3 agents) https://arxiv.org/abs/2503.16248 ; Wei et al., 'A-MemGuard' https://arxiv.org/abs/2510.02373 ; DeChant, 'Episodic Memory in AI Agents Poses Risks', SaTML 2025 https://arxiv.org/abs/2501.11739 ; 'FragFuse: bypassing access control of LLM agents via memory-based query fragmentation', USENIX Sec 2026.",
+   "why": "Persistence is a kill-chain stage. ElizaOS memory injection is tied to real financial losses in crypto agents. A-MemGuard was searched for but never captured.",
+   "suggested_queries": [
+    "agent memory poisoning persistent",
+    "self-evolving agent injection",
+    "Web3 agent memory manipulation ElizaOS"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Attacks on embodied and robotic agents: Zhang et al., 'BadRobot: Jailbreaking Embodied LLM Agents in the Physical World', ICLR 2025 https://arxiv.org/abs/2407.20242 ; Jiao et al., backdoor attacks against embodied LLM decision-making, ICLR 2025 ; Burbano et al., 'CHAI: Command Hijacking against Embodied AI', SaTML 2026 https://arxiv.org/abs/2510.00181 ; 'ControlLoc', CCS 2025 ; 'BADControl: Backdoor Attacks Against Control Systems', USENIX Sec 2026.",
+   "why": "Only RoboPAIR, the VLA bit-flip paper and one physical prompt-injection paper cover cyber-physical impact. Safety-critical assets need these.",
+   "suggested_queries": [
+    "jailbreak embodied LLM robot physical",
+    "backdoor embodied agent decision making",
+    "command hijacking visual language robot"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Jailbreaks and adversarial attacks on VLMs and text-to-image models:\n- VLM attacks:\n  - Zhao et al., 'On Evaluating Adversarial Robustness of LVLMs', NeurIPS 2023 https://arxiv.org/abs/2305.16934 .\n  - 'JailBreakV' https://arxiv.org/abs/2404.03027 .\n  - 'HADES', ECCV 2024 https://arxiv.org/abs/2403.09792 .\n  - 'MM-SafetyBench' https://arxiv.org/abs/2311.17600 .\n  - 'Adversarial Illusions', USENIX Sec 2024 https://arxiv.org/abs/2308.11804 .\n  - 'Mirage in the Eyes', USENIX Sec 2025 https://arxiv.org/abs/2501.15269 .\n  - Dong et al., Bard adversarial images https://arxiv.org/abs/2309.11751 .\n  - Survey of attacks on LVLMs https://arxiv.org/abs/2407.07403 .\n- Text-to-image safety-filter bypass:\n  - Yang et al., 'SneakyPrompt', S&P 2024 https://arxiv.org/abs/2305.12082 .\n  - 'Ring-A-Bell', ICLR 2024 https://arxiv.org/abs/2310.10012 .\n  - 'MMA-Diffusion', CVPR 2024 https://arxiv.org/abs/2311.17516 .\n  - Qu et al., 'Unsafe Diffusion', CCS 2023 https://arxiv.org/abs/2305.13873 .\n  - Rando et al., 'Red-Teaming the SD Safety Filter' https://arxiv.org/abs/2210.04610 .\n  - 'SurrogatePrompt', CCS 2024 https://arxiv.org/abs/2309.14122 .",
+   "why": "Bypassing text-to-image safety filters is entirely absent, although image-generation abuse (NCII, deepfakes) is a major real-world harm class.",
+   "suggested_queries": [
+    "jailbreak text-to-image safety filter",
+    "concept removal diffusion red teaming",
+    "adversarial robustness vision-language models",
+    "multimodal jailbreak benchmark"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Energy-latency and DoS attacks beyond text LLMs, including resource abuse by agents: Gao et al., 'Inducing High Energy-Latency of LVLMs with Verbose Images', ICLR 2024 https://arxiv.org/abs/2401.11170 ; NICGSlowDown, CVPR 2022 ; ILFO, CVPR 2020 ; Zhang et al., 'Crabs' (LLM DoS) https://arxiv.org/abs/2412.13879 (UNVERIFIED in the supply file, now confirmed) ; 'Autonomy Comes with Costs: Detecting DoS Vulnerabilities Caused by Resource Abusing in LLM-based Agents', USENIX Sec 2026.",
+   "why": "Denial of wallet against multimodal and agent deployments threatens cost as an asset. The DoS group covers only text-LLM sponge attacks, Engorgio and OverThink.",
+   "suggested_queries": [
+    "energy-latency attack vision language model",
+    "slowdown attack image captioning",
+    "LLM agent resource exhaustion denial of service"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Removal and forgery of watermarks, provenance marks and fingerprints:\n- Image watermarks and detectors:\n  - Zhao et al., 'Invisible Image Watermarks Are Provably Removable Using Generative AI', NeurIPS 2024 https://arxiv.org/abs/2306.01953 .\n  - 'WAVES', ICML 2024 https://arxiv.org/abs/2401.08573 .\n  - Saberi et al., 'Robustness of AI-Image Detectors', ICLR 2024 https://arxiv.org/abs/2310.00076 .\n  - Jiang et al., 'Evading Watermark-based Detection', CCS 2023 https://arxiv.org/abs/2305.03807 .\n  - 'Stable Signature' https://arxiv.org/abs/2303.15435 .\n  - 'Tree-Ring' https://arxiv.org/abs/2305.20030 .\n- Text watermarks:\n  - Kirchenbauer et al., 'On the Reliability of Watermarks for LLMs', ICLR 2024 https://arxiv.org/abs/2306.04634 .\n  - Kuditipudi et al., distortion-free watermarks https://arxiv.org/abs/2307.15593 .\n  - 'MarkMyWords', SaTML 2025 https://arxiv.org/abs/2312.00273 .\n  - SynthID-Text, Nature 2024 https://doi.org/10.1038/s41586-024-08025-4 .\n- Fingerprints: 'Are Robust LLM Fingerprints Adversarially Robust?', SaTML 2026 https://arxiv.org/abs/2509.26598 .\n- 2025-26 venue papers: WRATH (S&P 2026), MarkNull (USENIX Sec 2026).\n- Provenance standard: C2PA specification https://c2pa.org/specifications/ .",
+   "why": "Attacks on image watermarks are completely absent, as are the production deployments (SynthID) and C2PA. Content-provenance and anti-deepfake controls depend on all of these.",
+   "suggested_queries": [
+    "image watermark removal attack diffusion",
+    "watermark robustness benchmark",
+    "C2PA content credentials attack",
+    "LLM fingerprint robustness adversarial"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Academic measurement and evaluation of AI-enabled offense:\n- Lin et al., 'Malla', USENIX Sec 2024 https://www.usenix.org/conference/usenixsecurity24/presentation/lin-zilong .\n- Shen et al., 'GPTracker: A Large-Scale Measurement of Misused GPTs', S&P 2025, doi 10.1109/SP61157.2025.00118.\n- Roy et al., 'From Chatbots to PhishBots?' https://arxiv.org/abs/2310.19181 .\n- Singer et al., 'Incalmo', S&P 2026 https://arxiv.org/abs/2501.16466 .\n- Schroer et al., 'SoK: On the Offensive Potential of AI', SaTML 2025 https://arxiv.org/abs/2412.18442 .\n- 'BountyBench', NeurIPS 2025 https://arxiv.org/abs/2505.15216 .\n- 'SEC-bench' https://arxiv.org/abs/2506.11791 .\n- 'NYU CTF Bench' https://arxiv.org/abs/2406.05590 .\n- MITRE 'OCCULT' https://arxiv.org/abs/2502.15797 .\n- Rodriguez et al. (Google DeepMind), 'A Framework for Evaluating Emerging Cyberattack Capabilities of AI' https://arxiv.org/abs/2503.11917 .\n- USENIX Sec 2026: personalized-phishing study, romance-baiting scams, SoK on DARPA AIxCC, AI use in a live CTF.",
+   "why": "WormGPT and FraudGPT are left UNVERIFIED, yet Malla is the peer-reviewed measurement of exactly those services. The offense group is dominated by vendor threat-intelligence reports.",
+   "suggested_queries": [
+    "malicious LLM services underground WormGPT measurement",
+    "LLM autonomous multi-host network attack",
+    "SoK offensive AI",
+    "AI cyber capability evaluation framework"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Security of AI-generated code and coding assistants: Perry et al., 'Do Users Write More Insecure Code with AI Assistants?', CCS 2023 https://arxiv.org/abs/2211.03622 ; Sandoval et al., 'Lost at C', USENIX Sec 2023 https://arxiv.org/abs/2208.09727 ; He & Vechev, 'SVEN', CCS 2023 https://arxiv.org/abs/2302.05319 ; Oh et al., 'Poisoned ChatGPT Finds Work for Idle Hands', S&P 2024 https://arxiv.org/abs/2312.06227 ; Hajipour et al., 'CodeLMSec', SaTML 2024 https://arxiv.org/abs/2302.04012 ; Vero et al., 'BaxBench', ICML 2025 https://arxiv.org/abs/2502.11844 ; 'GoodVibe', USENIX Sec 2026.",
+   "why": "Insecure AI-generated code is the highest-volume enterprise AI risk. Only Asleep at the Keyboard and one vibe-coding measurement are present.",
+   "suggested_queries": [
+    "AI code assistant insecure code user study",
+    "LLM generated code security benchmark",
+    "poisoned code suggestions developer study"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "Highly cited LLM-security surveys and SoKs that are absent: Yao et al., 'A Survey on LLM Security and Privacy: The Good, the Bad, and the Ugly' https://arxiv.org/abs/2312.02003 (about 1.4k S2 citations) ; Das et al., 'Security and Privacy Challenges of LLMs', ACM CSUR https://arxiv.org/abs/2402.00888 ; Gupta et al., 'From ChatGPT to ThreatGPT', IEEE Access https://arxiv.org/abs/2307.00691 ; Barrett et al., 'Identifying and Mitigating the Security Risks of Generative AI' https://arxiv.org/abs/2308.14840 ; Yu et al., 'A Survey on Trustworthy LLM Agents', KDD 2025 https://arxiv.org/abs/2503.09648 ; Shayegani et al. https://arxiv.org/abs/2310.10844 ; 'SoK: Attack and Defense Landscape of Agentic AI Systems', USENIX Sec 2026.",
+   "why": "A PhD-level bibliography must cite and position itself against the most-cited syntheses. The four most-cited LLM-security surveys are all absent.",
+   "suggested_queries": [
+    "survey large language model security privacy",
+    "SoK agentic AI attack defense",
+    "LLM agent trustworthiness survey"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "USENIX Security 2026 proceedings were never swept. https://www.usenix.org/conference/usenixsecurity26/technical-sessions lists about 70 AI-security papers, and the survey contains 2 (Cordyceps; The Attacker Moves Second). Absent examples include:\n- GateBreaker (attacks on MoE gates).\n- MIA on tokenizers.\n- VidLeaks.\n- Attacks on approximate caches in T2I diffusion.\n- The Prompt Stealing Fallacy.\n- The Art of Hide and Seek (stealthy pickle poisoning).\n- MUZZLE (agentic red-teaming of web agents).\n- MATE (mobile agents).\n- Love, Lies and LMs (romance scams).\n- 'Abuse Risks are Often Inherent to Product Features' (AI vendor bug bounties).\n- 'When AI Stops Answering and Starts Acting: Field Notes from Red-Teaming the Agentic Era'.",
+   "why": "The agent's own gaps note says USENIX 2025-26 was never enumerated. This venue is the largest single source of peer-reviewed 2026 work.",
+   "suggested_queries": [
+    "site:usenix.org usenixsecurity26 LLM",
+    "USENIX Security 2026 agent prompt injection",
+    "USENIX Security 2026 membership inference"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "IEEE S&P 2026 and ACM CCS 2025 AI papers missed by the keyword-limited Crossref sweep:\n- S&P 2026:\n  - 'Site Isolation is Dead: How Site Isolation is Broken in Agentic Browsers and Extensions'.\n  - 'WebCloak' (LLM web agents as scrapers).\n  - 'ENCHTABLE' (transfer of safety alignment).\n  - 'Hollow-LLM' (zero-knowledge verification of LLM inference).\n  - 'Beyond Indistinguishability: Measuring Extraction Risk in LLM APIs'.\n  - 'WRATH'.\n  - 'GPUBreach', 'GDDRHammer', 'TDXRay'.\n  - 'The Person Behind the Sound' (audio attribute profiling via MLLMs).\n- CCS 2025:\n  - 'AgentSentinel'.\n  - 'MoEcho'.\n  - 'Cascading Adversarial Bias from Injection to Distillation'.\n  - 'DCMI'.\n  - 'RAG-WM'.\n  - 'Sentry: Authenticating ML Artifacts on the Fly'.\n  - Nasr et al., production malware detector vs. transferable attacks.\n  - 'WireTap' (SGX DRAM bus interposition).",
+   "why": "Crossref queries were limited to the keywords LLM, agent, jailbreak, prompt injection and RAG. They therefore missed agentic-browser, confidential-computing, MoE and artifact-integrity papers.",
+   "suggested_queries": [
+    "IEEE S&P 2026 accepted papers machine learning",
+    "CCS 2025 accepted papers LLM security",
+    "agentic browser site isolation"
+   ]
+  },
+  {
+   "area": "papers",
+   "what": "SaTML 2023-2026 was barely swept: only 4 of its 50 most-cited papers are present. Absent and in scope:\n- Certifiably Robust RAG https://arxiv.org/abs/2405.15556\n- MarkMyWords https://arxiv.org/abs/2312.00273\n- CodeLMSec https://arxiv.org/abs/2302.04012\n- SoK: On the Offensive Potential of AI https://arxiv.org/abs/2412.18442\n- SoK: Privacy Risks in RAG https://arxiv.org/abs/2601.03979\n- Inexact Unlearning https://arxiv.org/abs/2403.01218\n- MIAs Cannot Prove Training https://arxiv.org/abs/2409.19798\n- Episodic Memory Risks https://arxiv.org/abs/2501.11739\n- CHAI https://arxiv.org/abs/2510.00181\n- DataFilter https://arxiv.org/abs/2510.19207\n- Robust LLM Fingerprints https://arxiv.org/abs/2509.26598\n- SoK: Pitfalls in Evaluating Black-Box Attacks https://arxiv.org/abs/2310.17534",
+   "why": "SaTML is the dedicated venue for this field, so a survey of this scope must sweep its full proceedings.",
+   "suggested_queries": [
+    "IEEE SaTML 2026 accepted papers",
+    "SaTML 2025 proceedings",
+    "secure and trustworthy machine learning conference"
+   ]
+  },
+  {
+   "area": "threat-models",
+   "what": "Threat-model methodology papers at top venues: Grosse et al., 'Towards More Practical Threat Models in AI Security', USENIX Sec 2024 https://arxiv.org/abs/2311.09994 ; Tidjon & Khomh, 'Threat Assessment in ML-based Systems' (mapped to ATLAS) https://arxiv.org/abs/2207.00091 ; Wu et al., 'A New Era in LLM Security: Exploring Security Concerns in Real-World LLM-based Systems' https://arxiv.org/abs/2402.18649 ; Mirsky et al., 'The Threat of Offensive AI to Organizations' (Computers & Security) https://arxiv.org/abs/2106.15764 ; Pitropakis et al., 'A Taxonomy and Survey of Attacks against ML', Computer Science Review 2019.",
+   "why": "Grosse 2024 measures the gap between academic threat models and industry practice. It is the closest peer-reviewed analogue to this KG project, yet it is absent while Grosse's industry survey is present.",
+   "suggested_queries": [
+    "practical threat models AI security USENIX",
+    "threat assessment machine learning systems ATLAS",
+    "LLM-based system security real-world threat model"
+   ]
+  },
+  {
+   "area": "threat-models",
+   "what": "Frontier and systemic threat models, including government-backed assessments:\n- International AI Safety Report (Bengio et al., January 2025) https://arxiv.org/abs/2501.17805 and https://www.gov.uk/government/publications/international-ai-safety-report-2025 , plus the 2026 edition.\n- Google DeepMind, 'An Approach to Technical AGI Safety and Security' https://arxiv.org/abs/2504.01849 .\n- Shanghai AI Lab and Concordia, 'Frontier AI Risk Management Framework in Practice' https://arxiv.org/abs/2507.16534 .\n- Pan et al. (Fudan), 'Frontier AI Systems Have Surpassed the Self-Replicating Red Line' https://arxiv.org/abs/2412.12140 .\n- Brundage et al., 'The Malicious Use of AI' https://arxiv.org/abs/1802.07228 .\n- Goldstein et al., 'Generative LMs and Automated Influence Operations' https://arxiv.org/abs/2301.04246 .\n- UC Berkeley CLTC, AI Risk-Management Standards Profile https://cltc.berkeley.edu/publication/ai-risk-management-standards-profile/ .",
+   "why": "The frontier-lab frameworks (RSP, FSF, Preparedness) are present. The multilateral and Chinese frontier-risk assessments and the seminal malicious-use threat model are not. The rogue-agent incidents (Hugging Face, July 2026) need this framing.",
+   "suggested_queries": [
+    "International AI Safety Report 2026",
+    "frontier AI risk management framework Shanghai AI Lab",
+    "self-replication red line frontier AI",
+    "malicious use of AI forecasting prevention"
+   ]
+  },
+  {
+   "area": "threat-models",
+   "what": "Threat models for agent governance, identity and delegation: Shavit et al. (OpenAI), 'Practices for Governing Agentic AI Systems' https://cdn.openai.com/papers/practices-for-governing-agentic-ai-systems.pdf ; Google, 'An Introduction to Google's Approach for Secure AI Agents' https://research.google/pubs/an-introduction-to-googles-approach-for-secure-ai-agents/ ; South et al., 'Authenticated Delegation and Authorized AI Agents' https://arxiv.org/abs/2501.09674 ; South et al., 'Identity Management for Agentic AI' (2025 white paper, S2-indexed) ; Syros et al., 'SAGA', NDSS 2026 https://arxiv.org/abs/2504.21034 .",
+   "why": "The supply file leaves OAuth for agents, IETF drafts and NCCoE agent identity unconfirmed. These works supply the delegation and identity threat model behind ASI03 (identity and privilege abuse).",
+   "suggested_queries": [
+    "authenticated delegation AI agents OAuth",
+    "agent identity management authorization",
+    "IETF draft OAuth AI agent on-behalf-of"
+   ]
+  },
+  {
+   "area": "catalogs",
+   "what": "Chinese national AI-security standards and frameworks (2024-2026):\n- TC260 Cybersecurity Standard Practice Guides, 'AI Application Security Guidance' (General Principles, Education, Healthcare, Broadcasting), published 2026-09-15 https://www.tc260.org.cn/tc260/tzgg/202609/ec149159dcb246268eda751eee89967d.shtml .\n- TC260 draft 'Intelligent Agent System Development Security Guide' (comments closed 2026-10-02) https://www.tc260.org.cn/tc260/tzgg/202609/e5b82ae7aca244d19d36b39575cbb458.shtml .\n- CAC/TC260 'AI Safety Governance Framework' 1.0 (2024-09-09) https://www.cac.gov.cn/2024-09/09/c_1727567886199789.htm and version 2.0 (2025).\n- GB/T 45654-2025, basic security requirements for generative AI services.\n- TC260-003.",
+   "why": "The corpus has zero Chinese government or standards sources. China publishes binding GenAI security requirements and, as of September 2026, an agent-system security guide. A non-US-centric weakness enumeration needs both.",
+   "suggested_queries": [
+    "\u4eba\u5de5\u667a\u80fd\u5b89\u5168\u6cbb\u7406\u6846\u67b6 2.0",
+    "GB/T 45654-2025 \u751f\u6210\u5f0f\u4eba\u5de5\u667a\u80fd\u670d\u52a1\u5b89\u5168\u57fa\u672c\u8981\u6c42",
+    "\u7f51\u7edc\u5b89\u5168\u6807\u51c6\u5b9e\u8df5\u6307\u5357 \u667a\u80fd\u4f53\u7cfb\u7edf\u5f00\u53d1\u5b89\u5168\u6307\u5357",
+    "TC260 \u4eba\u5de5\u667a\u80fd\u5e94\u7528\u5b89\u5168\u6307\u5f15"
+   ]
+  },
+  {
+   "area": "catalogs",
+   "what": "Singapore guidance: CSA 'Guidelines and Companion Guide on Securing AI Systems' (2024-10-15) https://www.csa.gov.sg/resources/publications/guidelines-and-companion-guide-on-securing-ai-systems ; its Companion Guide maps controls to ATLAS and OWASP. IMDA 'Model AI Governance Framework for Generative AI' (2024) https://www.imda.gov.sg/resources/press-releases-factsheets-and-speeches/press-releases/2024/public-consult-model-ai-governance-framework-genai . Still to confirm: IMDA's Model AI Governance Framework for Agentic AI (2026) and CSA's agentic-AI addendum.",
+   "why": "The task names Singapore CSA explicitly. It is absent from the survey and appears only in the enumerations agent's list of likely omissions.",
+   "suggested_queries": [
+    "CSA Singapore securing agentic AI addendum",
+    "IMDA model AI governance framework agentic AI",
+    "CSA companion guide securing AI systems"
+   ]
+  },
+  {
+   "area": "catalogs",
+   "what": "National guidance from Japan, India, Korea and Israel:\n- Japan AISI, 'Guide to Red Teaming Methodology on AI Safety' v1.00 https://aisi.go.jp/assets/pdf/ai_safety_RT_v1.00_en.pdf , plus the evaluation-perspectives guide (outputs page https://aisi.go.jp/output/).\n- India CERT-In, 'Technical Guidelines on SBOM, QBOM & CBOM, AIBOM and HBOM' v2.0 https://www.cert-in.org.in/PDF/TechnicalGuidelines-on-SBOM,QBOM&CBOM,AIBOM_and_HBOM_ver2.0.pdf .\n- Korea (MSIT and KISA AI security guidance) and Israel (INCD AI guidance) are still unconfirmed because gov.il returned 403.",
+   "why": "The corpus cites only US, UK and EU sources. India's AIBOM guidance extends the survey's SPDX and CycloneDX AIBOM entries. Japan's red-teaming guide is an evaluation-method catalog.",
+   "suggested_queries": [
+    "Japan AISI red teaming methodology guide",
+    "CERT-In AIBOM technical guidelines",
+    "KISA AI security guide",
+    "Israel National Cyber Directorate AI security guidelines"
+   ]
+  },
+  {
+   "area": "catalogs",
+   "what": "Reports from EU national agencies, ETSI, ENISA and Europol:\n- ANSSI, 'Security Recommendations for a Generative AI System' (2024) https://cyber.gouv.fr/publications/recommandations-de-securite-pour-un-systeme-dia-generative .\n- ANSSI-led multinational paper, 'Building Trust in AI through a Cyber Risk-Based Approach' (2025) https://cyber.gouv.fr/en/publications/building-trust-ai-through-cyber-risk-based-approach .\n- BSI, 'Evasion Attacks on LLMs \u2013 Countermeasures in Practice' https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/KI/Evasion_Attacks_on_LLMs-Countermeasures.pdf .\n- BSI, 'Generative AI Models: Opportunities and Risks' https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/KI/Generative_AI_Models.pdf .\n- ETSI GR SAI 004 https://www.etsi.org/deliver/etsi_gr/SAI/001_099/004/01.01.01_60/gr_SAI004v010101p.pdf , plus GR SAI 002, 005, 006 and 009.\n- ENISA Multilayer Framework (2023) https://www.enisa.europa.eu/publications/multilayer-framework-for-good-cybersecurity-practices-for-ai . The TM file lists it as UNVERIFIED; the URL resolves.\n- ENISA-JRC, AI in autonomous driving https://www.enisa.europa.eu/publications/enisa-jrc-cybersecurity-challenges-in-the-uptake-of-artificial-intelligence-in-autonomous-driving .\n- Europol, ChatGPT and law enforcement https://www.europol.europa.eu/publications-events/publications/chatgpt-impact-of-large-language-models-law-enforcement .",
+   "why": "The task names the EU explicitly. Only ENISA 2020 and 2021, ETSI EN 304 223 and the AI Act are present. BSI's catalogue of evasion countermeasures is control-level material the KG needs.",
+   "suggested_queries": [
+    "BSI evasion attacks LLM countermeasures",
+    "ANSSI recommandations s\u00e9curit\u00e9 IA g\u00e9n\u00e9rative",
+    "ETSI GR SAI group report",
+    "ENISA multilayer framework AI"
+   ]
+  },
+  {
+   "area": "catalogs",
+   "what": "Five Eyes, US, Canadian and Australian guidance, and NIST and EU documents not yet captured:\n- NSA AISC et al., 'Deploying AI Systems Securely' (2024). The TM file lists it as UNVERIFIED; media.defense.gov blocks automated fetches.\n- Five Eyes, 'AI Data Security: Best Practices' (May 2025).\n- CISA et al., 'Principles for the Secure Integration of AI in OT'.\n- Canada CCCS ITSAP.00.041 https://www.cyber.gc.ca/en/guidance/generative-artificial-intelligence-ai-itsap00041 .\n- Australia ASD, 'Engaging with AI'.\n- NIST AI 800-1, second draft https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.800-1.ipd2.pdf .\n- NIST SP 800-218A https://csrc.nist.gov/pubs/sp/800/218/a/final .\n- NIST AI 100-4 https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-4.pdf .\n- EU GPAI Code of Practice, Safety & Security chapter https://digital-strategy.ec.europa.eu/en/policies/contents-code-gpai .",
+   "why": "SP 800-218A (secure development for GenAI) and AI 800-1 (misuse risk) are the NIST companions to AI 100-2. The EU GPAI Code is now the operative EU security obligation for systemic-risk models.",
+   "suggested_queries": [
+    "AI data security best practices CISA NSA 2025",
+    "deploying AI systems securely NSA",
+    "NIST SP 800-218A",
+    "GPAI code of practice safety and security chapter"
+   ]
+  },
+  {
+   "area": "catalogs",
+   "what": "OWASP catalogs that are absent:\n- OWASP MCP Top 10, MCP01:2025 to MCP10:2025 https://owasp.org/www-project-mcp-top-10/ . Items: token mismanagement, scope creep, tool poisoning, supply chain, command injection, contextual prompt injection, authentication and authorization, audit and telemetry, shadow MCP servers, context over-sharing.\n- OWASP Agentic Skills Top 10 (AST10, v1.0-2026) https://owasp.org/www-project-agentic-skills-top-10/ .\n- OWASP AI Testing Guide https://owasp.org/www-project-ai-testing-guide/ .",
+   "why": "The enumerations file says MCP-38 is the only structured MCP enumeration. OWASP MCP01-10 is exactly such an enumeration and is absent, and the skills layer also has its own OWASP list.",
+   "suggested_queries": [
+    "OWASP MCP Top 10 2025",
+    "OWASP Agentic Skills Top 10",
+    "OWASP AI Testing Guide"
+   ]
+  },
+  {
+   "area": "catalogs",
+   "what": "Existing AI-risk knowledge graphs and ontologies (prior art for the KG phase):\n- IBM AI Atlas Nexus https://github.com/IBM/ai-atlas-nexus . Apache-2.0, built on a LinkML schema. It unifies the IBM AI Risk Atlas, the NIST AI RMF GenAI profile, the MIT AI Risk Repository, AIR 2024, AILuminate, Credo UCF and the OWASP LLM, Agentic and Agentic-Skills Top 10s, with proposed crosswalks between them.\n- IBM AI Risk Atlas https://www.ibm.com/think/topics/ai-risk-atlas .\n- The MITRE ATLAS STIX bundle, which the survey mentions only in a note.",
+   "why": "The project's goal is a KG with schemas, and a LinkML AI-risk KG with crosswalks already exists. It should be reused or aligned with, not reinvented. This is the most consequential gap for the extraction phase.",
+   "suggested_queries": [
+    "AI Atlas Nexus LinkML ontology",
+    "AI risk ontology knowledge graph crosswalk",
+    "MITRE ATLAS STIX knowledge graph"
+   ]
+  },
+  {
+   "area": "catalogs",
+   "what": "Incident repositories and sharing programs:\n- AIAAIC Repository https://www.aiaaic.org/aiaaic-repository . It is mentioned only in gaps prose and has no entry.\n- MITRE's AI Incident Sharing initiative (October 2024). mitre.org returns 403 to automated fetches.\n- ATLAS legacy case studies AML.CS0000-CS0014 (Cylance bypass, ProofPoint evasion, VirusTotal poisoning and others), which the incidents agent left unwritten.\n- The current AIID snapshot count.",
+   "why": "The stated KG gap is linking incidents to techniques. AIAAIC and MITRE's sharing program are the other two major incident sources. The pre-LLM ATLAS cases are the only technique-coded evidence for classical ML attacks.",
+   "suggested_queries": [
+    "AIAAIC repository AI incidents export",
+    "MITRE AI incident sharing initiative",
+    "ATLAS case study Cylance ProofPoint VirusTotal"
+   ]
+  },
+  {
+   "area": "incidents",
+   "what": "Insider and configuration-integrity attacks on AI systems: ByteDance intern sabotage of LLM training (October 2024; malicious code planted in the training cluster; ByteDance later sued) https://arstechnica.com/ai/2024/10/bytedance-intern-fired-for-planting-malicious-code-in-ai-models/ ; xAI Grok unauthorized system-prompt modification ('white genocide', May 2025) https://www.theguardian.com/technology/2025/may/16/elon-musks-ai-firm-blames-unauthorised-change-for-chatbots-rant-about-white-genocide , and the July 2025 recurrence.",
+   "why": "The survey says in-the-wild training-time attacks are thin (Tay, VirusTotal, Pravda). ByteDance is the best-documented real insider attack on model training, and Grok is insider tampering with production configuration. Both are absent, and both are non-US or insider cases.",
+   "suggested_queries": [
+    "ByteDance intern sabotage AI model training lawsuit",
+    "Grok unauthorized system prompt modification",
+    "insider threat AI model training cluster"
+   ]
+  },
+  {
+   "area": "incidents",
+   "what": "Exploits against agents and coding assistants, 2025-2026:\n- GitLab Duo remote prompt injection leading to source theft (Legit, May 2025) https://www.legitsecurity.com/blog/remote-prompt-injection-in-gitlab-duo .\n- Gemini CLI code-execution hijack (Tracebit, July 2025) https://tracebit.com/blog/code-exec-deception-gemini-ai-cli-hijack .\n- Supabase MCP private-table leak (General Analysis) https://www.generalanalysis.com/blog/supabase-mcp-blog .\n- Asana MCP cross-tenant exposure https://www.upguard.com/blog/asana-discloses-data-exposure-bug-in-mcp-server .\n- 'Wayback Copilot', private repositories exposed through the Bing cache (Lasso, February 2025) https://www.lasso.security/blog/lasso-major-vulnerability-in-microsoft-copilot .\n- ShadowLeak, zero-click exfiltration via Deep Research (Radware, September 2025) https://www.radware.com/blog/threat-intelligence/shadowleak/ . ZombieAgent, which is present, is its follow-on.\n- Claude Cowork file exfiltration (PromptArmor) https://www.promptarmor.com/resources/claude-cowork-exfiltrates-files .\n- Rehberger's 'Month of AI Bugs' (August 2025) https://embracethered.com/blog/posts/2025/announcement-the-month-of-ai-bugs/ .",
+   "why": "These are first-party-confirmed exploit chains in widely deployed developer and enterprise agents. The Month of AI Bugs alone documents dozens of vendor-acknowledged agent flaws, each mapping directly to ASI and ATLAS techniques.",
+   "suggested_queries": [
+    "Month of AI Bugs embracethered",
+    "ShadowLeak Deep Research zero-click",
+    "MCP data exposure incident Asana Supabase",
+    "prompt injection coding agent CLI"
+   ]
+  },
+  {
+   "area": "incidents",
+   "what": "Breaches, data exposure and availability attacks against AI platforms:\n- McDonald's McHire / Paradox.ai: default credentials plus an IDOR exposed about 64 million applicant records (July 2025) https://ian.sh/mcdonalds .\n- DeepSeek iOS app security and privacy flaws (NowSecure, February 2025) https://www.nowsecure.com/blog/2025/02/06/nowsecure-uncovers-multiple-security-and-privacy-flaws-in-deepseek-ios-mobile-app/ .\n- Disney Slack breach through a trojanized ComfyUI extension (DOJ plea) https://www.justice.gov/usao-cdca/pr/santa-clarita-man-agrees-plead-guilty-hacking-disney-employees-computer-downloading . The incidents file lists this only as 'recalled'.\n- DDoS against DeepSeek (January 2025; QiAnXin XLab analysis, URL still to confirm).\n- Exposed vector databases holding corporate data.",
+   "why": "Conventional security failures in AI vendors and AI features are the most frequent real breach class. McHire (an AI hiring agent) and the ComfyUI trojan are canonical examples, and both are absent.",
+   "suggested_queries": [
+    "McHire Paradox.ai breach",
+    "DeepSeek DDoS January 2025 XLab",
+    "ComfyUI malicious extension Disney Nullbulge",
+    "exposed vector database Weaviate Qdrant leak"
+   ]
+  },
+  {
+   "area": "incidents",
+   "what": "Deepfake-enabled fraud and social engineering beyond Arup:\n- KnowBe4 hired a North Korean fake IT worker who used an AI-altered photo (July 2024) https://blog.knowbe4.com/how-a-north-korean-fake-it-worker-tried-to-infiltrate-us .\n- Retool breach using a deepfaked voice of an IT employee (August 2023) https://retool.com/blog/mfa-isnt-mfa .\n- Deepfake audio in the Slovak election (September 2023) https://www.wired.com/story/slovakias-election-deepfakes-show-ai-is-a-danger-to-democracy/ .\n- Voice-clone attempts against Ferrari and WPP CEOs (2024).\n- Follow-on deepfake scams in Singapore and Hong Kong (still to confirm).",
+   "why": "Deepfakes attack company assets such as identity proofing, the helpdesk and MFA-reset processes. The log has Arup, the 2019 CEO voice case and the Biden robocall, but no hiring or helpdesk compromise.",
+   "suggested_queries": [
+    "deepfake voice helpdesk MFA reset breach",
+    "North Korean IT worker AI-generated identity",
+    "deepfake CEO voice clone attempt 2024",
+    "election deepfake audio Europe"
+   ]
+  },
+  {
+   "area": "incidents",
+   "what": "Manipulation of production RAG systems and chatbots, and model-safety failures: Google AI Overviews surfacing satirical or poisoned web content ('glue on pizza', May 2024) https://www.theverge.com/2024/5/23/24162896/google-ai-overview-hallucinations-glue-in-pizza ; DPD's customer-service chatbot jailbroken into abusing the company (January 2024) https://www.theguardian.com/technology/2024/jan/20/dpd-ai-chatbot-swears-calls-itself-useless-and-criticises-firm ; Cisco and Robust Intelligence found a 100% attack success rate on DeepSeek-R1 with HarmBench (January 2025) https://blogs.cisco.com/security/evaluating-security-risk-in-deepseek-and-other-frontier-reasoning-models ; NewsGuard on 'Pravda network' LLM grooming (UNVERIFIED in the file).",
+   "why": "These are the canonical public examples of poisoned retrieval sources and brand-damaging jailbreaks in production. They anchor the misinformation and reputational impact nodes.",
+   "suggested_queries": [
+    "AI Overviews poisoned source satire",
+    "customer service chatbot jailbreak brand",
+    "DeepSeek R1 jailbreak evaluation HarmBench",
+    "Pravda network LLM grooming NewsGuard"
+   ]
+  },
+  {
+   "area": "incidents",
+   "what": "Physical-world adversarial incidents and the pre-LLM ATLAS cases: Tencent Keen Security Lab, 'Experimental Security Research of Tesla Autopilot' (2019; adversarial lane markings, wiper trigger) https://keenlab.tencent.com/en/whitepapers/Experimental_Security_Research_of_Tesla_Autopilot.pdf ; McAfee 'Model Hacking ADAS' (2020; a taped 35 mph sign read as 85 mph; mcafee.com blocks automated fetches) ; ATLAS case studies AML.CS0000-CS0014.",
+   "why": "The log has no cyber-physical evasion incidents, so evasion rests on research evidence alone. Keen Lab is a Chinese primary source.",
+   "suggested_queries": [
+    "Tesla Autopilot adversarial lane Keen Lab",
+    "speed sign adversarial tape McAfee",
+    "adversarial attack deployed perception incident"
+   ]
+  },
+  {
+   "area": "supply-infra",
+   "what": "Malware hidden in weights, and attacks on artifact integrity: Wang et al., 'EvilModel: Hiding Malware Inside of NN Models' https://arxiv.org/abs/2107.08590 ; StegoNet (ACSAC 2020) and MaleficNet (ESORICS 2022), still to confirm ; 'The Art of Hide and Seek: Making Pickle-Based Model Supply Chain Poisoning Stealthy Again', USENIX Sec 2026 ; 'Sentry: Authenticating ML Artifacts on the Fly', CCS 2025 ; Zhang et al., 'BadMerging', CCS 2024 https://arxiv.org/abs/2408.07362 ; Bober-Irizar et al., 'Architectural Backdoors in NNs' https://arxiv.org/abs/2206.07840 .",
+   "why": "A payload embedded in the weights themselves, rather than in pickle code, evades format scanners. Artifact authentication (Sentry, OpenSSF model signing) is the matching control, and the KG needs both ends.",
+   "suggested_queries": [
+    "malware hidden neural network weights steganography",
+    "stealthy pickle model poisoning scanner evasion",
+    "ML artifact authentication signing",
+    "backdoor model merging"
+   ]
+  },
+  {
+   "area": "supply-infra",
+   "what": "Syntheses of the ML and LLM supply chain, which contradict the supply file's claim that no SoK exists: Wang et al., 'Large Language Model Supply Chain: A Research Agenda' (TOSEM) https://arxiv.org/abs/2404.12736 ; Huang et al., 'LLM Supply Chain: Open Problems From the Security Perspective' https://arxiv.org/abs/2411.01604 ; Jiang et al., 'An Empirical Study of Pre-Trained Model Reuse in the Hugging Face Registry', ICSE 2023 https://arxiv.org/abs/2303.02552 .",
+   "why": "The supply file states that no SoK or survey on the ML/LLM supply chain was found. These exist, and they provide the component taxonomy (data, model, hub, adapter, toolchain) for supply-chain asset nodes.",
+   "suggested_queries": [
+    "LLM supply chain security survey",
+    "pre-trained model reuse Hugging Face empirical",
+    "ML model supply chain SoK"
+   ]
+  },
+  {
+   "area": "supply-infra",
+   "what": "Attacks on GPU memory, confidential computing and TEEs (2025-2026): 'GPUBreach' (GPU Rowhammer leading to privilege escalation), S&P 2026 https://arxiv.org/abs/2605.03812 ; 'GDDRHammer' (cross-component Rowhammer from GPUs), S&P 2026 ; 'TDXRay' (Intel TDX side channels), S&P 2026 ; 'WireTap' (SGX DRAM bus interposition), CCS 2025 ; 'Jailbreaking the AMD Secure Processor', USENIX Sec 2026 ; 'Rendered Insecure', CCS 2018 (appears only in the search log).",
+   "why": "Confidential AI inference depends on TDX, SEV-SNP and H100 confidential computing. The survey has TEE.fail, Battering RAM and MOLE, but misses the S&P 2026 GPU and TDX results and the GPU-to-host escalation path.",
+   "suggested_queries": [
+    "GPU rowhammer privilege escalation",
+    "Intel TDX side channel workloads",
+    "SEV-SNP secure processor attack",
+    "confidential AI inference attack H100"
+   ]
+  }
+ ],
+ "suspect_entries": [
+  {
+   "file": "supply-infra-misuse.md",
+   "id": "casey-2024-hf-exploit-instrumentation",
+   "problem": "Wrong arXiv id. 2403.04786 is Chowdhury et al., 'Breaking Down the Defenses: A Comparative Survey of Attacks on LLMs'. That id appears as reference [67] in the Casey PDF's bibliography, which is where the agent 'read' it. The correct id is arXiv:2410.04490 (Casey, Santos, Mirakhorli, 2024-10-06). The cached PDF (sha256 8e2431...) is the correct paper; only the citation id is wrong. Any other id described as 'read from the PDF' should be rechecked the same way."
+  },
+  {
+   "file": "incidents-news.md",
+   "id": "camoleak-2025",
+   "problem": "The heading asserts CVE-2025-59145, but NVD's CVE-2025-59145 (published 2025-09-15, CWE-506) is the color-name npm account-takeover malware, not GitHub Copilot Chat. The pairing comes only from secondary blogs. Remove the CVE, or cite GitHub's actual advisory if one exists."
+  },
+  {
+   "file": "llm-agent-attacks.md",
+   "id": "legit-2025-camoleak",
+   "problem": "Propagates the wrong CVE-2025-59145 'per sibling incidents file'. That id belongs to the color-name npm compromise in NVD."
+  },
+  {
+   "file": "incidents-news.md",
+   "id": "grafanaghost-2026",
+   "problem": "The secondary-source pairing with CVE-2026-27876 (also in the UNVERIFIED list) is wrong. NVD describes CVE-2026-27876 as an RCE chain via SQL Expressions and a Grafana Enterprise plugin (CWE-89/94), not the AI-assistant prompt injection and URL-validation bypass. Drop the CVE association."
+  },
+  {
+   "file": "ml-model-attacks.md",
+   "id": "gu-2017-badnets (+11: goldblum-2022-dataset-security-survey, liu-2018-trojaning-attack, kurita-2020-weight-poisoning, schuster-2021-you-autocomplete-me, carlini-2024-poisoning-web-scale, wan-2023-poisoning-instruction-tuning, hubinger-2024-sleeper-agents, souly-2025-near-constant-poison, shan-2024-nightshade, egashira-2024-exploiting-llm-quantization, kuchler-2025-architectural-backdoors-batch)",
+   "problem": "catalog_ids use AML.T0019 and AML.T0058, which do not exist in ATLAS 2026.09. atlas-changelog.md shows them renamed to AML.T0115.000 (Datasets) and AML.T0115.001 (Models). The file's catalog key comes from the deprecated v5.6.0 YAML."
+  },
+  {
+   "file": "llm-agent-attacks.md",
+   "id": "ndss2026-toolhijacker (+9: ndss2026-les-dissonances-xthp, invariant-2025-mcp-tool-poisoning, hou-2025-mcp-landscape, kraishan-2026-mcp-silent-drift, lee-2026-webmcp-tool-surface-poisoning, aghakhani-2023-trojanpuzzle, etteib-2026-malicious-agent-skills, mecca-2026-skillsecurer, wan-2023-poisoning-instruction-tuning)",
+   "problem": "These map to AML.T0104 'Publish Poisoned AI Agent Tool' or AML.T0019, both absent from ATLAS 2026.09. Use AML.T0115.002 (AI Agent Tools) and AML.T0115.000."
+  },
+  {
+   "file": "supply-infra-misuse.md",
+   "id": "zhao-2024-malhug (+13: jfrog-2024-baller423, rl-2025-nullifai, cve-2025-1945-picklescan, pradhan-2026-shadowpickle, fogel-2026-chat-template-backdoor, wang-2026-badtemplate, egashira-2024-quantization, unit42-2025-namespace-reuse, mithril-2023-poisongpt, hiddenlayer-2024-sfconvertbot, carlini-2023-web-scale-poisoning, liu-2025-loratk, openssf-2025-model-signing)",
+   "problem": "These use the deprecated AML.T0058 and AML.T0019 (renamed AML.T0115.001 and .000 in 2026.09). The incidents and threat-models files already use 2026.09 ids, so the KG would receive mixed ATLAS versions without version-pinned (framework, version, id) triples."
+  },
+  {
+   "file": "ml-model-attacks.md / llm-agent-attacks.md / supply-infra-misuse.md / incidents-news.md / threat-models.md / enumerations.md",
+   "id": "40 duplicated papers (examples: qi-2023- vs qi-2024-finetuning-compromises-safety; carlini-2023-web-scale-poisoning vs carlini-2024-poisoning-web-scale vs split-view-poisoning-2024; deng-2024-agents-under-threat vs deng-2025-ai-agents-under-threat vs deng-agents-under-threat-2024; dong-2024- vs dong-2025-engorgio; bailey-2023 vs bailey-2024-image-hijacks; aghakhani-2023 vs aghakhani-2024-trojanpuzzle; zhang-2023 vs zhang-2024-watermarks-in-the-sand; rando-2023 vs rando-tramer-2024; mcp-38-2026 vs mcp-38-threat-taxonomy vs shen-2026-mcp-38)",
+   "problem": "The same arXiv paper carries 2 or 3 different ids, often with conflicting years. This violates the workspace rule that ids are kebab-case and stable and mean the same thing everywhere. The KG load needs a merge table keyed on arXiv id or DOI and a single canonical id per work."
+  },
+  {
+   "file": "llm-agent-attacks.md",
+   "id": "cohen-2024-morris-ii",
+   "problem": "'ACM CCS 2025 per memory' is imprecise. S2 lists arXiv 2403.02817 as arXiv-only. The CCS 2025 publication by the same authors is retitled 'Here Comes the AI Worm: Preventing the Propagation of Adversarial Self-Replicating Prompts Within GenAI Ecosystems' (DOI 10.1145/3719027.3765196) and adds defense content. Cite that DOI and title for the venue claim."
+  },
+  {
+   "file": "ml-model-attacks.md",
+   "id": "UNVERIFIED: Bowen et al. 2024 'Scaling Laws for Data Poisoning in LLMs'",
+   "problem": "It stayed unresolved only because the wrong title was searched. The paper is Bowen et al., 'Scaling Trends for Data Poisoning in LLMs', arXiv:2408.02946 (confirmed). Promote it to Sources."
+  },
+  {
+   "file": "ml-model-attacks.md",
+   "id": "UNVERIFIED: 'OneFlip' (2025)",
+   "problem": "It exists: 'Rowhammer-Based Trojan Injection: One Bit Flip Is Sufficient for Backdooring DNNs', USENIX Security 2025, https://www.usenix.org/conference/usenixsecurity25/presentation/li-xiang (confirmed). Promote it to Sources. Fredrikson et al. 2014 (warfarin, USENIX Sec 2014) is likewise confirmed at usenix.org."
+  },
+  {
+   "file": "llm-agent-attacks.md",
+   "id": "UNVERIFIED: Progent ('Programmable Privilege Control for LLM Agents')",
+   "problem": "It exists under the title 'Progent: Securing AI Agents with Privilege Control', arXiv:2504.11703 (Shi et al., confirmed). The search used the wrong title."
+  },
+  {
+   "file": "supply-infra-misuse.md",
+   "id": "UNVERIFIED: Crabs / PEFTGuard / BountyBench",
+   "problem": "All three are confirmed: Crabs is arXiv:2412.13879, PEFTGuard is arXiv:2411.17453 (IEEE S&P 2025), and BountyBench is arXiv:2505.15216 (NeurIPS 2025 per S2). Move them out of UNVERIFIED and write full entries."
+  },
+  {
+   "file": "incidents-news.md",
+   "id": "anthropic-sep-2026",
+   "problem": "The title is wrong. The page is titled 'Detecting and countering misuse of AI: September 2026' (covering December 2025 to August 2026, cases GTG-20006, GTG-50014, GTG-10007, GTG-50020 and others), but the entry says 'Countering misuse of AI: September 2026'. Fix it so exact-title dedup against other sources works."
+  },
+  {
+   "file": "llm-agent-attacks.md",
+   "id": "kang-2023-dual-use-programmatic-behavior",
+   "problem": "Marked confidence: high, but the summary says its attack examples come 'from memory of the paper'. More broadly, about 40 entries carry venue 'per memory' while rated high, and the corpus has 698 high, 115 medium and only 9 low. Confidence is not calibrated to the verification actually done."
+  },
+  {
+   "file": "supply-infra-misuse.md / enumerations.md",
+   "id": "### A. ... ### N. (group headings); ### A./### B. (CROSSWALK sections)",
+   "problem": "16 non-entry headings use the entry-level ### marker. A block parser will create 16 phantom sources with no citation, type, confirmed_via or other fields. Change them to ## or HTML comments, as llm-agent-attacks.md does, before KG ingestion."
+  }
+ ]
+}

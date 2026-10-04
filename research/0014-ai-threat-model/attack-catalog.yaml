@@ -1,0 +1,4458 @@
+# RPT-0014 attack-technique catalog (derived artifact)
+#
+# Working data, NOT a schema. The record shape is decided in #74 (DEC-001/002 open). AI-generated: every entry is a hypothesis until a human reviews it.
+#
+# Catalog versions pinned for every id below: MITRE ATLAS 2026.09 (data format 6.0.0); OWASP Top 10 for LLM Applications 2025;
+# OWASP Top 10 for Agentic Applications 2026 (ASI01-ASI10); CWE 4.20; NIST AI 100-2 E2025 (NISTAML ids). Every OWASP id carries its year suffix.
+# Deprecated ATLAS ids AML.T0019, AML.T0058, AML.T0104 are not used (now AML.T0115.000/.001/.002).
+# sources: S-ids in sources.md. example_incidents: INC-ids in incidents.md.
+#
+# maturity (v0.2, derived mechanically from the kinds of the linked example_incidents; see incidents.md "Kinds"):
+#   exploited-in-wild   = at least one linked ITW or TI incident (an exploited CVE in CISA KEV is logged as ITW);
+#   occurred-in-wild    = the same evidence for a technique whose intent is not adversarial (accidental, insider-accidental,
+#                         provider, accidental-or-misuse, autonomous-agent); ACC incidents count here and only here;
+#   demonstrated-production = no such incident, but at least one RD or DV against a live product or system, an ITW-Q
+#                         (attempt that failed, disputed claim, or press-only report), a LEG action, or an ACC for an adversarial technique;
+#   demonstrated-research = shown in research or lab settings only (no linked incident);
+#   theoretical         = argued or proven, not shown end to end.
+#   maturity_basis lists the incidents that set the value. Ratings stay hypotheses: the incident kinds themselves are judgements.
+# atlas_maturity: ATLAS 2026.09's own maturity (Feasible / Demonstrated / Realized) for each mapped technique.
+# intent: adversarial unless stated (report section 3.15).
+# nist_scope: in-scope, out-of-scope (NIST AI 100-2 section 1 leaves platform attacks to traditional cybersecurity taxonomies, and
+#   non-adversarial failures are outside it), or gap (section 3.5 Security of Agents has no NISTAML id). NISTAML.05/.051 are used only
+#   for model and data poisoning; NISTAML.04 only where a jailbreak, guardrail or safety circumvention occurs.
+# other: ids from catalogs that are not pinned above (OWASP T-codes, MCP Top 10, NHI Top 10, CoSAI risk ids at commit 0d8bfc9b5d76) and
+#   candidate local weaknesses (LW-*).
+# Mapping rule (v0.2): where an ATLAS case study codes an incident the catalog cites, the AIT mapping includes that case study's
+#   technique for the step the AIT describes. ATLAS techniques deliberately left unmapped are listed in enumerations.md section 6.
+# targeted_assets/targeted_components are free-text working labels; asset_classes (A01-A18), reference_components (C01-C21)
+#   and class_group (X01-X16) normalize them to the vocabularies in report.md sections 1, 2 and 4. Mappings to catalogs were made
+#   by the synthesis agent from the sources' stated mappings and definitions, and corrected in the v0.2 review fold; an id here is a
+#   candidate edge, not an asserted mapping.
+# 146 techniques (AIT-001..AIT-133 from v0.1; AIT-134..AIT-146 added in the v0.2 review fold).
+
+- id: AIT-001
+  slug: white-box-adversarial-examples
+  name: White-box adversarial example crafting (gradient-based)
+  class: evasion
+  class_group: X01
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: query or offline copy of the model
+  attacker_knowledge: white-box
+  targeted_assets: [model-behaviour, downstream-decisions]
+  asset_classes: [A03, A12]
+  targeted_components: [serving, predictive-model]
+  reference_components: [C05]
+  preconditions: [attacker holds weights or an exact copy, input channel accepts arbitrary perturbations]
+  impacts: [integrity, safety]
+  example_incidents: [INC-015]
+  mitigations: [AML.M0003 model hardening (adversarial training), certified defenses (randomized smoothing), AML.M0015 adversarial input detection
+      (weak)]
+  catalog_ids:
+    atlas: [AML.T0043.000, AML.T0015]
+    atlas_maturity: {AML.T0043.000: Demonstrated, AML.T0015: Realized}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: [CWE-1039]
+    nist_ai_100_2: [NISTAML.022]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0003, S-0006, S-0015, S-0044, S-0009, S-0010, S-0952, S-0060]
+  maturity: demonstrated-production
+  maturity_basis: [INC-015 (RD)]
+  review_status: hypothesis
+- id: AIT-002
+  slug: black-box-query-evasion
+  name: Black-box query-based evasion (score- or decision-based)
+  class: evasion
+  class_group: X01
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: inference API query access
+  attacker_knowledge: black-box
+  targeted_assets: [model-behaviour, downstream-decisions]
+  asset_classes: [A03, A12]
+  targeted_components: [serving, inference-api]
+  reference_components: [C05]
+  preconditions: [attacker can submit many queries and observe scores or labels]
+  impacts: [integrity]
+  example_incidents: [INC-011, INC-010]
+  mitigations: [AML.M0004 limit query volume and rate, AML.M0002 output obfuscation, query-pattern detection]
+  catalog_ids:
+    atlas: [AML.T0043.001, AML.T0015, AML.T0040]
+    atlas_maturity: {AML.T0043.001: Demonstrated, AML.T0015: Realized, AML.T0040: Realized}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: [CWE-1039]
+    nist_ai_100_2: [NISTAML.025]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0018, S-0034, S-0041, S-0083, S-0078, S-0697, S-0596]
+  maturity: demonstrated-production
+  maturity_basis: [INC-011 (RD), INC-010 (RD)]
+  review_status: hypothesis
+- id: AIT-003
+  slug: transfer-attack-via-surrogate
+  name: Transfer attack via surrogate or proxy model
+  class: evasion
+  class_group: X01
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: public artifacts or limited queries
+  attacker_knowledge: grey-box
+  targeted_assets: [model-behaviour, downstream-decisions]
+  asset_classes: [A03, A12]
+  targeted_components: [serving, predictive-model]
+  reference_components: [C05]
+  preconditions: ['a surrogate with similar data/architecture is obtainable (open-sourced component, imitation)']
+  impacts: [integrity]
+  example_incidents: [INC-009, INC-006, INC-020, INC-013]
+  mitigations: [AML.M0006 ensembles, AML.M0001 limit artifact release, do not ship scores to clients]
+  catalog_ids:
+    atlas: [AML.T0043.002, AML.T0005, AML.T0015]
+    atlas_maturity: {AML.T0043.002: Demonstrated, AML.T0005: Demonstrated, AML.T0015: Realized}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: [CWE-1039]
+    nist_ai_100_2: [NISTAML.025]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0011, S-0026, S-0022, S-0047, S-0444, S-0104]
+  maturity: demonstrated-production
+  maturity_basis: [INC-009 (RD), INC-006 (DV), INC-020 (RD), INC-013 (RD)]
+  review_status: hypothesis
+- id: AIT-004
+  slug: physical-adversarial-perturbation
+  name: Physical-world adversarial perturbation (patch, sticker, object)
+  class: evasion
+  class_group: X01
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: physical presence in the sensed environment
+  attacker_knowledge: white-box or grey-box
+  targeted_assets: [downstream-decisions, human-safety]
+  asset_classes: [A12]
+  targeted_components: [sensors, perception-model]
+  reference_components: [C16]
+  preconditions: ['perturbation survives viewpoint, lighting and printing (EOT)', attacker can place objects in the scene]
+  impacts: [safety, integrity]
+  example_incidents: [INC-003, INC-012, INC-016]
+  mitigations: [AML.M0009 multi-sensor fusion, physical plausibility checks, safety envelope / fallback]
+  catalog_ids:
+    atlas: [AML.T0041, AML.T0043.003, AML.T0015]
+    atlas_maturity: {AML.T0041: Demonstrated, AML.T0043.003: Realized, AML.T0015: Realized}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: [CWE-1039]
+    nist_ai_100_2: [NISTAML.022]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0021, S-0014, S-0038, S-0031, S-0012, S-0112, S-0125, S-0439, S-0619]
+  maturity: demonstrated-production
+  maturity_basis: [INC-003 (RD), INC-012 (RD), INC-016 (RD)]
+  review_status: hypothesis
+- id: AIT-005
+  slug: sensor-signal-injection
+  name: Sensor and signal injection (ultrasound, laser, LiDAR spoofing, projection)
+  class: evasion
+  class_group: X01
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: proximity to the sensor
+  attacker_knowledge: black-box
+  targeted_assets: [downstream-decisions, human-safety]
+  asset_classes: [A12]
+  targeted_components: [sensors, voice-interface, perception-model]
+  reference_components: [C16]
+  preconditions: [sensor hardware non-linearity or spoofable modality, no cross-modal consistency check]
+  impacts: [safety, integrity]
+  example_incidents: []
+  mitigations: [sensor hardening and filtering, multi-sensor fusion with consistency checks, liveness / provenance of sensor stream]
+  catalog_ids:
+    atlas: [AML.T0041, AML.T0015]
+    atlas_maturity: {AML.T0041: Demonstrated, AML.T0015: Realized}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.022]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0029, S-0102, S-0056, S-0095, S-0600, S-0549]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-006
+  slug: adversarial-audio
+  name: Adversarial audio and hidden voice commands
+  class: evasion
+  class_group: X01
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: audio channel to the ASR or voice agent
+  attacker_knowledge: white-box or black-box
+  targeted_assets: [downstream-decisions, agent-tools-credentials]
+  asset_classes: [A09, A12]
+  targeted_components: [voice-interface, asr-model, agent-runtime]
+  reference_components: [C08, C16]
+  preconditions: [audio reaches the recognizer (over the air or file)]
+  impacts: [integrity, confidentiality]
+  example_incidents: []
+  mitigations: [confirmation for sensitive voice commands, audio input sanitization, speaker verification]
+  catalog_ids:
+    atlas: [AML.T0043, AML.T0015, AML.T0129]
+    atlas_maturity: {AML.T0043: Realized, AML.T0015: Realized, AML.T0129: Feasible}
+    owasp_llm: ['LLM01:2025']
+    owasp_agentic: []
+    cwe: [CWE-1039]
+    nist_ai_100_2: [NISTAML.022]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0008, S-0035, S-0051, S-0072, S-0609, S-0278]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-007
+  slug: problem-space-evasion
+  name: Problem-space evasion of security classifiers (malware, phishing, fraud)
+  class: evasion
+  class_group: X01
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: ability to modify the real object (binary, page, transaction)
+  attacker_knowledge: black-box (often no gradients)
+  targeted_assets: [security-detection, downstream-decisions]
+  asset_classes: [A12, A16]
+  targeted_components: [security-ml-classifier, serving]
+  reference_components: [C05, C17]
+  preconditions: [object stays functional after modification, detector features are manipulable]
+  impacts: [integrity]
+  example_incidents: [INC-021, INC-004]
+  mitigations: [robust feature design, ensembles and non-ML backstops, adversarial retraining on problem-space samples]
+  catalog_ids:
+    atlas: [AML.T0015, AML.T0043.003]
+    atlas_maturity: {AML.T0015: Realized, AML.T0043.003: Realized}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: [CWE-1039]
+    nist_ai_100_2: [NISTAML.025]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0098, S-0685, S-0679, S-0444, S-0594, S-0137]
+  maturity: demonstrated-production
+  maturity_basis: [INC-021 (ITW-Q), INC-004 (RD)]
+  review_status: hypothesis
+- id: AIT-008
+  slug: adversarial-text-nlp
+  name: Adversarial text against NLP classifiers and moderation
+  class: evasion
+  class_group: X01
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: text input channel
+  attacker_knowledge: black-box or white-box
+  targeted_assets: [content-moderation, downstream-decisions]
+  asset_classes: [A12, A16]
+  targeted_components: [nlp-classifier, guardrail-model]
+  reference_components: [C05, C07]
+  preconditions: ['classifier decision drives moderation, routing or scoring']
+  impacts: [integrity, reputational]
+  example_incidents: []
+  mitigations: [character/typo normalization, ensembles, human review for high-impact decisions]
+  catalog_ids:
+    atlas: [AML.T0015, AML.T0043, AML.T0068]
+    atlas_maturity: {AML.T0015: Realized, AML.T0043: Realized, AML.T0068: Realized}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: [CWE-1039]
+    nist_ai_100_2: [NISTAML.022]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0037, S-0065, S-0090, S-0074, S-0655]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-009
+  slug: graph-and-rl-adversarial
+  name: Adversarial attacks on graph models and RL policies
+  class: evasion
+  class_group: X01
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: ability to perturb graph structure/features or act in a shared environment
+  attacker_knowledge: grey-box
+  targeted_assets: [downstream-decisions]
+  asset_classes: [A12]
+  targeted_components: [gnn-model, rl-policy]
+  reference_components: [C05]
+  preconditions: [attacker controls nodes/edges or an opponent agent]
+  impacts: [integrity, safety]
+  example_incidents: []
+  mitigations: [robust aggregation, anomaly detection on graph changes, adversarial training against opponents]
+  catalog_ids:
+    atlas: [AML.T0015, AML.T0043]
+    atlas_maturity: {AML.T0015: Realized, AML.T0043: Realized}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.022]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0052, S-0086, S-0205, S-0613]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-010
+  slug: biometric-presentation-and-injection
+  name: Biometric presentation and camera-injection attacks (KYC, face ID)
+  class: evasion
+  class_group: X01
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: remote onboarding or authentication flow
+  attacker_knowledge: black-box
+  targeted_assets: [human-identity, financial-assets]
+  asset_classes: [A14, A15]
+  targeted_components: [biometric-verification, kyc-flow]
+  reference_components: [C12, C16]
+  preconditions: [liveness check accepts injected or replayed video, stolen identity data available]
+  impacts: [financial, integrity]
+  example_incidents: [INC-018, INC-008, INC-067, INC-163]
+  mitigations: [injection-attack detection (virtual camera), AML.M0034 deepfake detection, out-of-band verification]
+  catalog_ids:
+    atlas: [AML.T0015, AML.T0088, AML.T0047]
+    atlas_maturity: {AML.T0015: Realized, AML.T0088: Realized, AML.T0047: Realized}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: [CWE-1039, CWE-290]
+    nist_ai_100_2: [NISTAML.022]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0012, S-1090, S-0992, S-0719]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-018 (ITW), INC-008 (ITW), INC-067 (ITW)]
+  review_status: hypothesis
+- id: AIT-011
+  slug: availability-data-poisoning
+  name: Availability (indiscriminate) training-data poisoning
+  class: poisoning
+  class_group: X02
+  lifecycle_stage: training
+  intent: adversarial
+  attacker_access: write access to a fraction of training data
+  attacker_knowledge: grey-box
+  targeted_assets: [model-behaviour, training-data]
+  asset_classes: [A01, A03]
+  targeted_components: [data-pipeline, training-pipeline]
+  reference_components: [C02, C03]
+  preconditions: [attacker-controlled samples enter training without filtering]
+  impacts: [integrity, availability]
+  example_incidents: []
+  mitigations: [AML.M0007 sanitize training data, robust training, AML.M0025 dataset provenance]
+  catalog_ids:
+    atlas: [AML.T0020, AML.T0059]
+    atlas_maturity: {AML.T0020: Realized, AML.T0059: Demonstrated}
+    owasp_llm: ['LLM04:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.013]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0001, S-0025, S-0042, S-0028, S-0687]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-012
+  slug: targeted-clean-label-poisoning
+  name: Targeted and clean-label poisoning
+  class: poisoning
+  class_group: X02
+  lifecycle_stage: training
+  intent: adversarial
+  attacker_access: ability to contribute correctly labelled samples
+  attacker_knowledge: grey-box
+  targeted_assets: [model-behaviour]
+  asset_classes: [A03]
+  targeted_components: [data-pipeline, training-pipeline]
+  reference_components: [C02, C03]
+  preconditions: [contributed data is labelled by the attacker or auditors see only labels]
+  impacts: [integrity]
+  example_incidents: []
+  mitigations: [provenance and contributor reputation, influence-based filtering, AML.M0007]
+  catalog_ids:
+    atlas: [AML.T0020]
+    atlas_maturity: {AML.T0020: Realized}
+    owasp_llm: ['LLM04:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.012, NISTAML.024]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0046, S-0116, S-0127, S-0680]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-013
+  slug: web-scale-dataset-poisoning
+  name: Web-scale dataset poisoning (split-view, frontrunning, expired domains)
+  class: poisoning
+  class_group: X02
+  lifecycle_stage: data
+  intent: adversarial
+  attacker_access: purchase of expired domains or edit rights on crawled sources
+  attacker_knowledge: none (no ML knowledge needed)
+  targeted_assets: [training-data, model-behaviour]
+  asset_classes: [A01, A03]
+  targeted_components: [data-sources, data-pipeline]
+  reference_components: [C01, C02]
+  preconditions: [dataset is distributed as URL lists or periodic snapshots without integrity hashes]
+  impacts: [integrity]
+  example_incidents: [INC-024]
+  mitigations: [integrity hashes in dataset indices, randomized snapshot timing, AML.M0025]
+  catalog_ids:
+    atlas: [AML.T0020, AML.T0115.000, AML.T0010.002]
+    atlas_maturity: {AML.T0020: Realized, AML.T0115.000: Demonstrated, AML.T0010.002: Realized}
+    owasp_llm: ['LLM04:2025']
+    owasp_agentic: ['ASI04:2026']
+    cwe: []
+    nist_ai_100_2: [NISTAML.013, NISTAML.05]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0231, S-0140, S-0852]
+  maturity: demonstrated-production
+  maturity_basis: [INC-024 (RD)]
+  review_status: hypothesis
+- id: AIT-014
+  slug: pretraining-backdoor-near-constant
+  name: Pretraining-corpus poisoning with a near-constant number of documents
+  class: poisoning
+  class_group: X02
+  lifecycle_stage: training
+  intent: adversarial
+  attacker_access: ability to publish a few hundred documents that a crawler ingests
+  attacker_knowledge: none
+  targeted_assets: [model-behaviour, training-data]
+  asset_classes: [A01, A03]
+  targeted_components: [data-sources, training-pipeline]
+  reference_components: [C01, C03]
+  preconditions: [foundation-model crawl includes attacker pages]
+  impacts: [integrity, availability]
+  example_incidents: []
+  mitigations: [data curation and deduplication, provenance scoring of crawl sources, post-training backdoor scanning (weak)]
+  catalog_ids:
+    atlas: [AML.T0020, AML.T0018.000]
+    atlas_maturity: {AML.T0020: Realized, AML.T0018.000: Demonstrated}
+    owasp_llm: ['LLM04:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.023, NISTAML.037]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0466, S-0352, S-0372, S-0366]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-015
+  slug: backdoor-trigger-poisoning
+  name: Backdoor (trojan) poisoning with input triggers
+  class: poisoning
+  class_group: X02
+  lifecycle_stage: training
+  intent: adversarial
+  attacker_access: data or training-process control
+  attacker_knowledge: grey-box
+  targeted_assets: [model-behaviour, downstream-decisions]
+  asset_classes: [A03, A12]
+  targeted_components: [training-pipeline, model-artifact]
+  reference_components: [C03, C04]
+  preconditions: [outsourced or third-party training, no backdoor scanning before deployment]
+  impacts: [integrity, safety]
+  example_incidents: [INC-019]
+  mitigations: [AML.M0008 validate model, 'backdoor detection (Neural Cleanse, STRIP, MNTD; limited)', trusted training]
+  catalog_ids:
+    atlas: [AML.T0018.000, AML.T0043.004, AML.T0020]
+    atlas_maturity: {AML.T0018.000: Demonstrated, AML.T0043.004: Demonstrated, AML.T0020: Realized}
+    owasp_llm: ['LLM04:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.023, NISTAML.021]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0019, S-0017, S-0043, S-0073, S-0100, S-0096, S-0683, S-0075, S-0061]
+  maturity: demonstrated-production
+  maturity_basis: [INC-019 (RD)]
+  review_status: hypothesis
+- id: AIT-016
+  slug: undetectable-cryptographic-backdoor
+  name: Undetectable (cryptographic) backdoors by a malicious trainer
+  class: poisoning
+  class_group: X02
+  lifecycle_stage: training
+  intent: adversarial
+  attacker_access: control of the training procedure (outsourced training)
+  attacker_knowledge: white-box
+  targeted_assets: [model-behaviour]
+  asset_classes: [A03]
+  targeted_components: [training-pipeline, third-party-model-provider]
+  reference_components: [C03, C13]
+  preconditions: [model trained by an untrusted party]
+  impacts: [integrity]
+  example_incidents: []
+  mitigations: [trusted training environments, provenance attestation of training]
+  catalog_ids:
+    atlas: [AML.T0018.000, AML.T0010.003]
+    atlas_maturity: {AML.T0018.000: Demonstrated, AML.T0010.003: Realized}
+    owasp_llm: ['LLM03:2025', 'LLM04:2025']
+    owasp_agentic: ['ASI04:2026']
+    cwe: []
+    nist_ai_100_2: [NISTAML.023]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0143, S-0270]
+  maturity: theoretical
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-017
+  slug: instruction-tuning-poisoning
+  name: Instruction-tuning and fine-tuning data poisoning
+  class: poisoning
+  class_group: X02
+  lifecycle_stage: training
+  intent: adversarial
+  attacker_access: contribution to instruction or fine-tuning datasets
+  attacker_knowledge: black-box
+  targeted_assets: [model-behaviour]
+  asset_classes: [A03]
+  targeted_components: [training-pipeline, fine-tuning-service]
+  reference_components: [C03]
+  preconditions: [crowd-sourced or user-contributed instruction data]
+  impacts: [integrity]
+  example_incidents: []
+  mitigations: ['dataset curation, trigger-phrase scanning', differential testing before release]
+  catalog_ids:
+    atlas: [AML.T0020, AML.T0115.000]
+    atlas_maturity: {AML.T0020: Realized, AML.T0115.000: Demonstrated}
+    owasp_llm: ['LLM04:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.037, NISTAML.023, NISTAML.05]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0204, S-0203, S-0372, S-0710]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-018
+  slug: rlhf-preference-poisoning
+  name: RLHF / preference-data poisoning (universal jailbreak backdoor)
+  class: poisoning
+  class_group: X02
+  lifecycle_stage: training
+  intent: adversarial
+  attacker_access: role as preference annotator or data vendor
+  attacker_knowledge: black-box
+  targeted_assets: [model-behaviour, safety-alignment]
+  asset_classes: [A03]
+  targeted_components: [training-pipeline, human-feedback-pipeline]
+  reference_components: [C03]
+  preconditions: [annotation workforce or vendor not vetted, small fraction of preference pairs]
+  impacts: [integrity, safety]
+  example_incidents: []
+  mitigations: [annotator vetting and agreement checks, poison-robust reward modelling]
+  catalog_ids:
+    atlas: [AML.T0020, AML.T0018.000]
+    atlas_maturity: {AML.T0020: Realized, AML.T0018.000: Demonstrated}
+    owasp_llm: ['LLM04:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.037]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0305]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-019
+  slug: sleeper-agent-deceptive-backdoor
+  name: Sleeper-agent backdoors that survive safety training
+  class: poisoning
+  class_group: X02
+  lifecycle_stage: training
+  intent: adversarial
+  attacker_access: control of fine-tuning of a released model
+  attacker_knowledge: white-box
+  targeted_assets: [model-behaviour, source-code]
+  asset_classes: [A03, A08]
+  targeted_components: [model-artifact, code-assistant]
+  reference_components: [C04, C08]
+  preconditions: [consumer adopts a model from an untrusted source and relies on behavioural evaluation]
+  impacts: [integrity, safety]
+  example_incidents: []
+  mitigations: [provenance (do not rely on behavioural evals), AML.M0014 verify artifacts, interpretability-based scanning (research)]
+  catalog_ids:
+    atlas: [AML.T0018.000, AML.T0115.001]
+    atlas_maturity: {AML.T0018.000: Demonstrated, AML.T0115.001: Realized}
+    owasp_llm: ['LLM03:2025', 'LLM04:2025']
+    owasp_agentic: ['ASI04:2026', 'ASI10:2026']
+    cwe: []
+    nist_ai_100_2: [NISTAML.023]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0270, S-0592]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-020
+  slug: code-model-poisoning
+  name: Poisoning code models to emit vulnerable or malicious code
+  class: poisoning
+  class_group: X02
+  lifecycle_stage: training
+  intent: adversarial
+  attacker_access: contribution to public code corpora or fine-tuning data
+  attacker_knowledge: black-box
+  targeted_assets: [source-code, model-behaviour]
+  asset_classes: [A03, A08]
+  targeted_components: [code-assistant, training-pipeline]
+  reference_components: [C03, C08]
+  preconditions: [assistant trained on scraped repositories, developers accept suggestions]
+  impacts: [integrity]
+  example_incidents: []
+  mitigations: [static analysis on accepted suggestions, dataset filtering, secure-by-default tuning]
+  catalog_ids:
+    atlas: [AML.T0020, AML.T0018.000]
+    atlas_maturity: {AML.T0020: Realized, AML.T0018.000: Demonstrated}
+    owasp_llm: ['LLM04:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.024]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0126, S-0223, S-0334, S-0297]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-021
+  slug: t2i-prompt-specific-poisoning
+  name: Prompt-specific poisoning of text-to-image models
+  class: poisoning
+  class_group: X02
+  lifecycle_stage: training
+  intent: adversarial
+  attacker_access: publish images that scrapers collect
+  attacker_knowledge: black-box
+  targeted_assets: [model-behaviour]
+  asset_classes: [A03]
+  targeted_components: [data-sources, training-pipeline]
+  reference_components: [C01, C03]
+  preconditions: [scraped image-text pairs used for training]
+  impacts: [integrity, availability]
+  example_incidents: []
+  mitigations: [data provenance; robust filtering]
+  catalog_ids:
+    atlas: [AML.T0020]
+    atlas_maturity: {AML.T0020: Realized}
+    owasp_llm: ['LLM04:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.013, NISTAML.024]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0314, S-0140]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-022
+  slug: federated-learning-poisoning
+  name: Federated-learning model poisoning and backdoors
+  class: poisoning
+  class_group: X02
+  lifecycle_stage: training
+  intent: adversarial
+  attacker_access: control of one or more FL clients (or the server)
+  attacker_knowledge: grey-box
+  targeted_assets: [model-behaviour]
+  asset_classes: [A03]
+  targeted_components: [federated-training, training-pipeline]
+  reference_components: [C03]
+  preconditions: [clients are not authenticated or updates are not robustly aggregated]
+  impacts: [integrity, availability]
+  example_incidents: []
+  mitigations: [Byzantine-robust aggregation (bypassable), client attestation, norm clipping + DP]
+  catalog_ids:
+    atlas: [AML.T0020, AML.T0018.000]
+    atlas_maturity: {AML.T0020: Realized, AML.T0018.000: Demonstrated}
+    owasp_llm: ['LLM04:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.011, NISTAML.026]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0079, S-0055, S-0084, S-0053, S-0128, S-0105, S-0152, S-0111, S-0668]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-023
+  slug: synthetic-data-distillation-propagation
+  name: Trait and poison propagation through synthetic data and distillation
+  class: poisoning
+  class_group: X02
+  lifecycle_stage: training
+  intent: adversarial
+  attacker_access: control of a teacher model or upstream synthetic-data generator
+  attacker_knowledge: black-box
+  targeted_assets: [model-behaviour, training-data]
+  asset_classes: [A01, A03]
+  targeted_components: [training-pipeline, synthetic-data-pipeline]
+  reference_components: [C03]
+  preconditions: [student trained on teacher outputs sharing a base model, content filters are the only check]
+  impacts: [integrity, safety]
+  example_incidents: []
+  mitigations: [provenance of teacher models, diverse base models for teacher/student, behavioural diffing]
+  catalog_ids:
+    atlas: [AML.T0020, AML.T0010.002]
+    atlas_maturity: {AML.T0020: Realized, AML.T0010.002: Realized}
+    owasp_llm: ['LLM04:2025']
+    owasp_agentic: ['ASI04:2026']
+    cwe: []
+    nist_ai_100_2: [NISTAML.037]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0384, S-0425, S-0378]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-024
+  slug: poisoning-to-amplify-privacy-leakage
+  name: Poisoning to amplify privacy leakage or extraction
+  class: poisoning
+  class_group: X02
+  lifecycle_stage: training
+  intent: adversarial
+  attacker_access: ability to inject training data
+  attacker_knowledge: grey-box
+  targeted_assets: [training-data, user-data]
+  asset_classes: [A01, A07]
+  targeted_components: [training-pipeline]
+  reference_components: [C03]
+  preconditions: [attacker can add data and later query the model]
+  impacts: [confidentiality, privacy]
+  example_incidents: []
+  mitigations: [DP training, data sanitization]
+  catalog_ids:
+    atlas: [AML.T0020, AML.T0024.000]
+    atlas_maturity: {AML.T0020: Realized, AML.T0024.000: Feasible}
+    owasp_llm: ['LLM02:2025', 'LLM04:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.033, NISTAML.038]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0153, S-0299, S-0562, S-0602]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-025
+  slug: energy-latency-sponge-poisoning
+  name: Sponge poisoning (energy-latency via training)
+  class: poisoning
+  class_group: X02
+  lifecycle_stage: training
+  intent: adversarial
+  attacker_access: training-data or training-process influence
+  attacker_knowledge: grey-box
+  targeted_assets: [compute-budget, inference-availability]
+  asset_classes: [A11]
+  targeted_components: [training-pipeline, serving]
+  reference_components: [C03, C05]
+  preconditions: [hardware accelerators exploit activation sparsity]
+  impacts: [availability, financial]
+  example_incidents: []
+  mitigations: [energy/latency regression tests before deployment]
+  catalog_ids:
+    atlas: [AML.T0020, AML.T0029]
+    atlas_maturity: {AML.T0020: Realized, AML.T0029: Demonstrated}
+    owasp_llm: ['LLM10:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.014]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0383]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-026
+  slug: insider-training-sabotage
+  name: Insider sabotage of training runs and pipelines
+  class: poisoning
+  class_group: X02
+  lifecycle_stage: training
+  intent: insider
+  attacker_access: insider access to training cluster or code
+  attacker_knowledge: white-box
+  targeted_assets: [model-weights, training-data, compute-budget]
+  asset_classes: [A01, A02, A11]
+  targeted_components: [training-pipeline, gpu-infrastructure]
+  reference_components: [C03, C05]
+  preconditions: [insider with write access to training code or checkpoints, weak change control on training jobs]
+  impacts: [integrity, availability, financial]
+  example_incidents: [INC-066]
+  mitigations: [two-person review for training code, checkpoint integrity hashing, insider-threat monitoring]
+  catalog_ids:
+    atlas: [AML.T0018, AML.T0031]
+    atlas_maturity: {AML.T0018: Realized, AML.T0031: Realized}
+    owasp_llm: ['LLM04:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.026]
+    nist_scope: in-scope
+    other: []
+  sources: [S-1131, S-0793, S-0851]
+  maturity: demonstrated-production
+  maturity_basis: [INC-066 (ITW-Q)]
+  review_status: hypothesis
+- id: AIT-027
+  slug: online-learning-feedback-poisoning
+  name: Online-learning and feedback-loop poisoning
+  class: poisoning
+  class_group: X02
+  lifecycle_stage: deployment
+  intent: adversarial
+  attacker_access: ordinary user interaction with a continually learning system
+  attacker_knowledge: black-box
+  targeted_assets: [model-behaviour, brand-reputation]
+  asset_classes: [A03, A13]
+  targeted_components: [serving, feedback-pipeline]
+  reference_components: [C03, C05]
+  preconditions: [model updates from user interactions or shared submission corpora]
+  impacts: [integrity, reputational]
+  example_incidents: [INC-001, INC-007]
+  mitigations: [gate updates on curated data, rate-limit and audit user feedback]
+  catalog_ids:
+    atlas: [AML.T0020, AML.T0059, AML.T0031]
+    atlas_maturity: {AML.T0020: Realized, AML.T0059: Demonstrated, AML.T0031: Realized}
+    owasp_llm: ['LLM04:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.013]
+    nist_scope: in-scope
+    other: []
+  sources: [S-1120, S-0866, S-0839]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-001 (ITW), INC-007 (ITW)]
+  review_status: hypothesis
+- id: AIT-028
+  slug: malicious-model-serialization
+  name: Malicious model files (pickle / Keras Lambda / joblib code execution on load)
+  class: supply-chain
+  class_group: X03
+  lifecycle_stage: model-artifact
+  intent: adversarial
+  attacker_access: upload account on a model hub or write access to an artifact store
+  attacker_knowledge: none
+  targeted_assets: [host-infrastructure, secrets, model-weights]
+  asset_classes: [A02, A09, A10]
+  targeted_components: [model-registry, data-science-workstation, serving]
+  reference_components: [C04, C05, C14]
+  preconditions: [consumer loads untrusted model with a code-executing format]
+  impacts: [confidentiality, integrity, availability]
+  example_incidents: [INC-046, INC-079]
+  mitigations: [safetensors / weights-only formats, AML.M0016 model scanning (evadable), sandboxed loading, AML.M0014 verify artifacts]
+  catalog_ids:
+    atlas: [AML.T0011.000, AML.T0010.003, AML.T0115.001]
+    atlas_maturity: {AML.T0011.000: Realized, AML.T0010.003: Realized, AML.T0115.001: Realized}
+    owasp_llm: ['LLM03:2025']
+    owasp_agentic: ['ASI04:2026']
+    cwe: [CWE-502, CWE-94]
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-0355, S-0985, S-0234, S-0411, S-1089, S-1100, S-1098, S-0972, S-1001]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-046 (ITW), INC-079 (ITW)]
+  review_status: hypothesis
+- id: AIT-029
+  slug: model-scanner-evasion
+  name: Model-scanner evasion (broken pickles, ZIP flags, import gadgets)
+  class: supply-chain
+  class_group: X03
+  lifecycle_stage: model-artifact
+  intent: adversarial
+  attacker_access: model publisher
+  attacker_knowledge: none
+  targeted_assets: [host-infrastructure]
+  asset_classes: [A10]
+  targeted_components: [model-registry, model-scanner]
+  reference_components: [C04]
+  preconditions: [hub or enterprise relies on a static scanner as the control]
+  impacts: [integrity, confidentiality]
+  example_incidents: [INC-079]
+  mitigations: ['defense in depth beyond scanners (sandboxed load, allowlist unpicklers)', PickleBall-style policies]
+  catalog_ids:
+    atlas: [AML.T0011.000, AML.T0076]
+    atlas_maturity: {AML.T0011.000: Realized, AML.T0076: Realized}
+    owasp_llm: ['LLM03:2025']
+    owasp_agentic: ['ASI04:2026']
+    cwe: [CWE-502]
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-1051, S-1099, S-0587, S-0551, S-0511, S-0580]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-079 (ITW)]
+  review_status: hypothesis
+- id: AIT-030
+  slug: trust-remote-code-execution
+  name: Custom model code execution (trust_remote_code, repo-shipped Python)
+  class: supply-chain
+  class_group: X03
+  lifecycle_stage: model-artifact
+  intent: adversarial
+  attacker_access: publish a model repo that requires custom code
+  attacker_knowledge: none
+  targeted_assets: [host-infrastructure, secrets]
+  asset_classes: [A09, A10]
+  targeted_components: [model-registry, ml-tooling]
+  reference_components: [C04]
+  preconditions: [consumer enables custom code or tooling runs repo code on inspection]
+  impacts: [confidentiality, integrity]
+  example_incidents: [INC-153, INC-159]
+  mitigations: [disable remote code by default, sandbox model loading, review pinned code revisions]
+  catalog_ids:
+    atlas: [AML.T0011.000, AML.T0010.003]
+    atlas_maturity: {AML.T0011.000: Realized, AML.T0010.003: Realized}
+    owasp_llm: ['LLM03:2025']
+    owasp_agentic: ['ASI04:2026']
+    cwe: [CWE-94, CWE-829]
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-0603, S-1149, S-0544]
+  maturity: demonstrated-production
+  maturity_basis: [INC-153 (DV), INC-159 (RD)]
+  review_status: hypothesis
+- id: AIT-031
+  slug: chat-template-backdoor
+  name: Chat-template / GGUF metadata backdoors and template injection
+  class: supply-chain
+  class_group: X03
+  lifecycle_stage: model-artifact
+  intent: adversarial
+  attacker_access: redistribution of a model file
+  attacker_knowledge: none
+  targeted_assets: [model-behaviour, host-infrastructure]
+  asset_classes: [A03, A10]
+  targeted_components: [model-artifact, inference-runtime]
+  reference_components: [C04, C05]
+  preconditions: [runtime renders template from model metadata, no template inspection]
+  impacts: [integrity, confidentiality]
+  example_incidents: [INC-094]
+  mitigations: [pin and diff chat templates, sandboxed Jinja rendering, template allowlists]
+  catalog_ids:
+    atlas: [AML.T0018.003, AML.T0115.001, AML.T0010.003]
+    atlas_maturity: {AML.T0018.003: Demonstrated, AML.T0115.001: Realized, AML.T0010.003: Realized}
+    owasp_llm: ['LLM03:2025', 'LLM04:2025']
+    owasp_agentic: ['ASI04:2026']
+    cwe: [CWE-1336, CWE-94]
+    nist_ai_100_2: [NISTAML.05]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0517, S-0639, S-1088]
+  maturity: demonstrated-production
+  maturity_basis: [INC-094 (RD)]
+  review_status: hypothesis
+- id: AIT-032
+  slug: quantization-triggered-backdoor
+  name: Quantization- and compression-conditioned backdoors
+  class: supply-chain
+  class_group: X03
+  lifecycle_stage: model-artifact
+  intent: adversarial
+  attacker_access: publish a full-precision model
+  attacker_knowledge: white-box
+  targeted_assets: [model-behaviour]
+  asset_classes: [A03]
+  targeted_components: [model-artifact, local-deployment]
+  reference_components: [C04, C14]
+  preconditions: [users quantize the downloaded model for local use]
+  impacts: [integrity]
+  example_incidents: []
+  mitigations: [evaluate the quantized artifact actually deployed, provenance]
+  catalog_ids:
+    atlas: [AML.T0018.000, AML.T0115.001]
+    atlas_maturity: {AML.T0018.000: Demonstrated, AML.T0115.001: Realized}
+    owasp_llm: ['LLM03:2025', 'LLM04:2025']
+    owasp_agentic: ['ASI04:2026']
+    cwe: []
+    nist_ai_100_2: [NISTAML.051]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0252, S-0541]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-033
+  slug: adapter-lora-merge-backdoor
+  name: Backdoored adapters (LoRA/PEFT) and model-merging attacks
+  class: supply-chain
+  class_group: X03
+  lifecycle_stage: model-artifact
+  intent: adversarial
+  attacker_access: publish adapters or merge candidates
+  attacker_knowledge: white-box
+  targeted_assets: [model-behaviour, agent-tools-credentials]
+  asset_classes: [A03, A09]
+  targeted_components: [model-registry, fine-tuning-service]
+  reference_components: [C03, C04]
+  preconditions: [consumer composes third-party adapters or merges models]
+  impacts: [integrity]
+  example_incidents: []
+  mitigations: [adapter scanning (PEFTGuard), provenance and signing, merge-time evaluation]
+  catalog_ids:
+    atlas: [AML.T0018.000, AML.T0115.001, AML.T0010.003]
+    atlas_maturity: {AML.T0018.000: Demonstrated, AML.T0115.001: Realized, AML.T0010.003: Realized}
+    owasp_llm: ['LLM03:2025', 'LLM04:2025']
+    owasp_agentic: ['ASI04:2026']
+    cwe: []
+    nist_ai_100_2: [NISTAML.051]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0433, S-0393, S-0348, S-0470, S-0504]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-034
+  slug: architectural-backdoor
+  name: Architectural backdoors in model code or graph
+  class: supply-chain
+  class_group: X03
+  lifecycle_stage: model-artifact
+  intent: adversarial
+  attacker_access: supply of model architecture code or graph
+  attacker_knowledge: white-box
+  targeted_assets: [model-behaviour, user-data]
+  asset_classes: [A03, A07]
+  targeted_components: [model-artifact, serving]
+  reference_components: [C04, C05]
+  preconditions: [consumer runs third-party architecture code, batched inference shares computation across users]
+  impacts: [integrity, confidentiality]
+  example_incidents: []
+  mitigations: [review architecture code, graph-level diffing against reference]
+  catalog_ids:
+    atlas: [AML.T0018.001, AML.T0010.003]
+    atlas_maturity: {AML.T0018.001: Demonstrated, AML.T0010.003: Realized}
+    owasp_llm: ['LLM03:2025']
+    owasp_agentic: ['ASI04:2026']
+    cwe: []
+    nist_ai_100_2: [NISTAML.051]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0156, S-0417]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-035
+  slug: model-editing-backdoor
+  name: Model editing to implant false facts or triggers (ROME-style)
+  class: supply-chain
+  class_group: X03
+  lifecycle_stage: model-artifact
+  intent: adversarial
+  attacker_access: publish an edited model
+  attacker_knowledge: white-box
+  targeted_assets: [model-behaviour, brand-reputation]
+  asset_classes: [A03, A13]
+  targeted_components: [model-registry]
+  reference_components: [C04]
+  preconditions: [consumer trusts hub name and benchmark parity]
+  impacts: [integrity, reputational]
+  example_incidents: [INC-031]
+  mitigations: [AML.M0014 verify artifacts against publisher signatures, model signing]
+  catalog_ids:
+    atlas: [AML.T0018.000, AML.T0115.001]
+    atlas_maturity: {AML.T0018.000: Demonstrated, AML.T0115.001: Realized}
+    owasp_llm: ['LLM03:2025', 'LLM04:2025']
+    owasp_agentic: ['ASI04:2026']
+    cwe: []
+    nist_ai_100_2: [NISTAML.051]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0976, S-0284, S-0396]
+  maturity: demonstrated-production
+  maturity_basis: [INC-031 (RD)]
+  review_status: hypothesis
+- id: AIT-036
+  slug: model-hub-namespace-hijack
+  name: Model-hub namespace reuse, typosquatting and organization confusion
+  class: supply-chain
+  class_group: X03
+  lifecycle_stage: supply-chain
+  intent: adversarial
+  attacker_access: register a deleted/typosquatted name or impersonate an org
+  attacker_knowledge: none
+  targeted_assets: [model-weights, host-infrastructure]
+  asset_classes: [A02, A10]
+  targeted_components: [model-registry, cloud-model-catalog]
+  reference_components: [C04]
+  preconditions: [models fetched by name without commit pinning]
+  impacts: [integrity, confidentiality]
+  example_incidents: [INC-122, INC-032, INC-031, INC-045]
+  mitigations: [pin by commit hash, mirror models to a trusted registry, AML.M0023 AI BOM]
+  catalog_ids:
+    atlas: [AML.T0010.003, AML.T0073, AML.T0115.001, AML.T0111]
+    atlas_maturity: {AML.T0010.003: Realized, AML.T0073: Realized, AML.T0115.001: Realized, AML.T0111: Demonstrated}
+    owasp_llm: ['LLM03:2025']
+    owasp_agentic: ['ASI04:2026']
+    cwe: [CWE-829]
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-1061, S-0979, S-0628]
+  maturity: demonstrated-production
+  maturity_basis: [INC-122 (DV), INC-032 (RD), INC-031 (RD), INC-045 (DV)]
+  review_status: hypothesis
+- id: AIT-037
+  slug: ml-dependency-compromise
+  name: ML framework and AI-tooling package compromise (dependency confusion, CI token theft)
+  class: supply-chain
+  class_group: X03
+  lifecycle_stage: supply-chain
+  intent: adversarial
+  attacker_access: publish to package registries or steal CI publishing tokens
+  attacker_knowledge: none
+  targeted_assets: [host-infrastructure, secrets, source-code]
+  asset_classes: [A08, A09, A10]
+  targeted_components: [ci-cd, ml-tooling, ai-gateway]
+  reference_components: [C04, C14, C18]
+  preconditions: [unpinned dependencies or compromised CI, publishing tokens reachable from CI]
+  impacts: [confidentiality, integrity]
+  example_incidents: [INC-023, INC-071, INC-145, INC-118, INC-045]
+  mitigations: [dependency pinning and hashes, trusted publishing (OIDC), SLSA provenance]
+  catalog_ids:
+    atlas: [AML.T0010.001, AML.T0011.001]
+    atlas_maturity: {AML.T0010.001: Realized, AML.T0011.001: Realized}
+    owasp_llm: ['LLM03:2025']
+    owasp_agentic: ['ASI04:2026']
+    cwe: [CWE-829, CWE-506]
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-1083, S-1094, S-1074, S-1113, S-1110, S-0708, S-0694]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-023 (ITW), INC-071 (ITW), INC-145 (ITW), INC-118 (ITW)]
+  review_status: hypothesis
+- id: AIT-038
+  slug: package-hallucination-slopsquatting
+  name: Package hallucination squatting (slopsquatting)
+  class: supply-chain
+  class_group: X03
+  lifecycle_stage: supply-chain
+  intent: adversarial
+  attacker_access: register package names that code LLMs hallucinate
+  attacker_knowledge: black-box
+  targeted_assets: [source-code, host-infrastructure]
+  asset_classes: [A08, A10]
+  targeted_components: [code-assistant, package-registry]
+  reference_components: [C04, C08]
+  preconditions: [developers or agents install suggested packages without verification]
+  impacts: [integrity, confidentiality]
+  example_incidents: [INC-050]
+  mitigations: [package allowlists, verify existence and reputation before install, RAG grounding on real indices]
+  catalog_ids:
+    atlas: [AML.T0060, AML.T0062, AML.T0011.001]
+    atlas_maturity: {AML.T0060: Demonstrated, AML.T0062: Demonstrated, AML.T0011.001: Realized}
+    owasp_llm: ['LLM09:2025', 'LLM03:2025']
+    owasp_agentic: ['ASI04:2026']
+    cwe: [CWE-1434, CWE-829]
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-0468, S-0415, S-0991, S-1055, S-0375, S-1166]
+  maturity: demonstrated-production
+  maturity_basis: [INC-050 (RD)]
+  review_status: hypothesis
+- id: AIT-039
+  slug: mlops-platform-exploitation
+  name: Exploitation of exposed MLOps and AI workflow platforms (Ray, MLflow, ClearML, Langflow, Flowise)
+  class: infrastructure
+  class_group: X07
+  lifecycle_stage: infrastructure
+  intent: adversarial
+  attacker_access: network reachability to the platform
+  attacker_knowledge: none
+  targeted_assets: [host-infrastructure, model-weights, secrets, compute-budget]
+  asset_classes: [A02, A09, A10, A11]
+  targeted_components: [mlops-platform, agent-builder, training-cluster]
+  reference_components: [C15]
+  preconditions: [platform exposed without authentication or unpatched]
+  impacts: [confidentiality, integrity, availability, financial]
+  example_incidents: [INC-036, INC-132, INC-089, INC-149, INC-017, INC-044, INC-175, INC-177]
+  mitigations: [never expose control planes; authN by default, patch SLAs for AI platforms, AML.M0016 vulnerability scanning]
+  catalog_ids:
+    atlas: [AML.T0049, AML.T0132, AML.T0050]
+    atlas_maturity: {AML.T0049: Realized, AML.T0132: Demonstrated, AML.T0050: Realized}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: [CWE-306, CWE-94, CWE-22]
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-0990, S-1042, S-1101, S-1106, S-1104, S-1086, S-0981, S-0971]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-036 (ITW), INC-132 (ITW), INC-089 (ITW), INC-149 (ITW), INC-017 (ITW), INC-175 (ITW)]
+  review_status: hypothesis
+  note: 'OWASP gap: no OWASP LLM or ASI entry covers non-agentic AI-infrastructure RCE (LLM03:2025 is supply chain; ASI05 requires an agent that
+    executes code), so v0.1 mappings to LLM03:2025 and ASI05:2026 were removed. NIST scope: platform attack, outside NIST AI 100-2 (section 1).'
+- id: AIT-040
+  slug: inference-server-exploitation
+  name: Inference-server and runtime exploitation (Triton, vLLM, Ollama)
+  class: infrastructure
+  class_group: X07
+  lifecycle_stage: infrastructure
+  intent: adversarial
+  attacker_access: network access to the inference endpoint or internal channels
+  attacker_knowledge: none
+  targeted_assets: [host-infrastructure, model-weights, user-data]
+  asset_classes: [A02, A07, A10]
+  targeted_components: [serving, inference-runtime]
+  reference_components: [C05]
+  preconditions: ['unauthenticated internal channels, pickle over network, path traversal on model pull']
+  impacts: [confidentiality, integrity, availability]
+  example_incidents: [INC-057, INC-109, INC-088, INC-171]
+  mitigations: [bind internal channels to localhost/mTLS, patch inference stacks, isolate serving tenants]
+  catalog_ids:
+    atlas: [AML.T0049, AML.T0050, AML.T0132]
+    atlas_maturity: {AML.T0049: Realized, AML.T0050: Realized, AML.T0132: Demonstrated}
+    owasp_llm: ['LLM10:2025']
+    owasp_agentic: []
+    cwe: [CWE-502, CWE-22, CWE-787]
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-1005, S-1114, S-1107, S-1115, S-1108, S-1043, S-1150]
+  maturity: demonstrated-production
+  maturity_basis: [INC-057 (DV), INC-109 (DV), INC-088 (DV), INC-171 (DV)]
+  review_status: hypothesis
+  note: 'OWASP gap: no OWASP LLM or ASI entry covers non-agentic AI-infrastructure RCE (LLM03:2025 is supply chain; ASI05 requires an agent that
+    executes code), so v0.1 mappings to LLM03:2025 and ASI05:2026 were removed. NIST scope: platform attack, outside NIST AI 100-2 (section 1).'
+- id: AIT-041
+  slug: ai-platform-tenant-escape
+  name: AI platform tenant isolation failure (malicious model or training job escapes)
+  class: infrastructure
+  class_group: X07
+  lifecycle_stage: infrastructure
+  intent: adversarial
+  attacker_access: customer account on a shared AI platform
+  attacker_knowledge: none
+  targeted_assets: [user-data, model-weights, secrets]
+  asset_classes: [A02, A07, A09]
+  targeted_components: [shared-inference-service, training-service, gpu-container-host]
+  reference_components: [C15]
+  preconditions: [platform runs customer-supplied models/jobs with weak isolation]
+  impacts: [confidentiality, integrity]
+  example_incidents: [INC-051, INC-054, INC-061, INC-065]
+  mitigations: [strong sandboxing (gVisor/VM), network segmentation between tenants, patch container toolkits]
+  catalog_ids:
+    atlas: [AML.T0105, AML.T0010.003]
+    atlas_maturity: {AML.T0105: Realized, AML.T0010.003: Realized}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: [CWE-367, CWE-668]
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-1004, S-0997, S-0999, S-0989, S-1093]
+  maturity: demonstrated-production
+  maturity_basis: [INC-051 (DV), INC-054 (DV), INC-061 (DV), INC-065 (DV)]
+  review_status: hypothesis
+  note: 'OWASP gap: no OWASP LLM or ASI entry covers non-agentic AI-infrastructure RCE (LLM03:2025 is supply chain; ASI05 requires an agent that
+    executes code), so v0.1 mappings to LLM03:2025 and ASI05:2026 were removed. NIST scope: platform attack, outside NIST AI 100-2 (section 1).'
+- id: AIT-042
+  slug: ai-artifact-storage-exposure
+  name: Exposed AI data and artifact stores (buckets, registries, vector DBs, databases)
+  class: infrastructure
+  class_group: X07
+  lifecycle_stage: infrastructure
+  intent: adversarial
+  attacker_access: internet scanning
+  attacker_knowledge: none
+  targeted_assets: [training-data, model-weights, user-data, rag-knowledge-base, secrets]
+  asset_classes: [A01, A02, A05, A07, A09]
+  targeted_components: [artifact-store, vector-store, container-registry]
+  reference_components: [C06, C15]
+  preconditions: ['misconfigured access (SAS tokens, no auth, RLS off)']
+  impacts: [confidentiality, integrity]
+  example_incidents: [INC-037, INC-074, INC-014, INC-137, INC-038, INC-099, INC-056]
+  mitigations: [AML.M0005 control access at rest, CSPM for AI stores, secret scanning]
+  catalog_ids:
+    atlas: [AML.T0132, AML.T0035, AML.T0085.000, AML.T0010.004, AML.T0036]
+    atlas_maturity: {AML.T0132: Demonstrated, AML.T0035: Realized, AML.T0085.000: Demonstrated, AML.T0010.004: Demonstrated, AML.T0036: Realized}
+    owasp_llm: ['LLM02:2025', 'LLM08:2025']
+    owasp_agentic: []
+    cwe: [CWE-284, CWE-732]
+    nist_ai_100_2: [NISTAML.03]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0977, S-1062, S-0987, S-1002, S-1075, S-1092]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-074 (ITW), INC-014 (ITW), INC-056 (ITW)]
+  review_status: hypothesis
+- id: AIT-043
+  slug: dataset-loader-script-execution
+  name: Malicious dataset loading scripts and dataset-processing exploits
+  class: supply-chain
+  class_group: X03
+  lifecycle_stage: data
+  intent: adversarial
+  attacker_access: publish a dataset or dataset config
+  attacker_knowledge: none
+  targeted_assets: [host-infrastructure, secrets]
+  asset_classes: [A09, A10]
+  targeted_components: [data-pipeline, dataset-hub]
+  reference_components: [C02]
+  preconditions: ['consumer executes dataset scripts or processes untrusted dataset configs (HDF5, fsspec)']
+  impacts: [confidentiality, integrity]
+  example_incidents: [INC-156]
+  mitigations: [disable remote dataset code, sandbox dataset processing, validate external storage references]
+  catalog_ids:
+    atlas: [AML.T0010.002, AML.T0011.000, AML.T0119]
+    atlas_maturity: {AML.T0010.002: Realized, AML.T0011.000: Realized, AML.T0119: Realized}
+    owasp_llm: ['LLM03:2025']
+    owasp_agentic: ['ASI04:2026']
+    cwe: [CWE-94, CWE-73]
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-0355, S-1117]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-156 (ITW)]
+  review_status: hypothesis
+- id: AIT-044
+  slug: prng-and-toolchain-integrity
+  name: Covert integrity attacks via RNG, compilers or hardware trojans in the ML stack
+  class: supply-chain
+  class_group: X03
+  lifecycle_stage: infrastructure
+  intent: adversarial
+  attacker_access: control of a library, toolchain or accelerator component
+  attacker_knowledge: white-box
+  targeted_assets: [model-behaviour]
+  asset_classes: [A03]
+  targeted_components: [ml-tooling, accelerator-hardware]
+  reference_components: [C04, C05]
+  preconditions: [no reproducibility or integrity checks on toolchain and hardware]
+  impacts: [integrity]
+  example_incidents: []
+  mitigations: [reproducible builds and training, hardware supply-chain assurance]
+  catalog_ids:
+    atlas: [AML.T0010.000, AML.T0010.001]
+    atlas_maturity: {AML.T0010.000: Feasible, AML.T0010.001: Realized}
+    owasp_llm: ['LLM03:2025']
+    owasp_agentic: ['ASI04:2026']
+    cwe: []
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-0586, S-0496, S-0833]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-045
+  slug: malware-in-weights
+  name: Steganographic malware embedded in model weights
+  class: supply-chain
+  class_group: X03
+  lifecycle_stage: model-artifact
+  intent: adversarial
+  attacker_access: publish a model and run a loader on the target
+  attacker_knowledge: none
+  targeted_assets: [host-infrastructure]
+  asset_classes: [A10]
+  targeted_components: [model-registry, endpoint]
+  reference_components: [C04, C14]
+  preconditions: [separate loader on the victim extracts the payload]
+  impacts: [integrity, confidentiality]
+  example_incidents: []
+  mitigations: [weight-statistics anomaly checks, provenance]
+  catalog_ids:
+    atlas: [AML.T0018.002, AML.T0010.003]
+    atlas_maturity: {AML.T0018.002: Realized, AML.T0010.003: Realized}
+    owasp_llm: ['LLM03:2025']
+    owasp_agentic: ['ASI04:2026']
+    cwe: [CWE-506]
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-0133, S-0094, S-0144]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-046
+  slug: membership-inference
+  name: Membership inference against models, fine-tunes and RAG stores
+  class: privacy
+  class_group: X04
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: query access (scores or labels)
+  attacker_knowledge: black-box
+  targeted_assets: [training-data, user-data]
+  asset_classes: [A01, A07]
+  targeted_components: [serving, rag-store]
+  reference_components: [C05, C06]
+  preconditions: [model overfits or data is duplicated/fine-tuned, outputs expose confidence or entailment signal]
+  impacts: [privacy, confidentiality]
+  example_incidents: []
+  mitigations: [DP training, output restriction, AML.M0002]
+  catalog_ids:
+    atlas: [AML.T0024.000]
+    atlas_maturity: {AML.T0024.000: Feasible}
+    owasp_llm: ['LLM02:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.033]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0027, S-0050, S-0139, S-0115, S-0342, S-0251, S-0387, S-0368, S-0376, S-0696]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+  note: 'Evidence quality caveat: blind baselines beat many LLM MIAs (das-2025); sequence-level pretraining risk is low, fine-tune and RAG risk
+    higher.'
+- id: AIT-047
+  slug: model-inversion-attribute-inference
+  name: Model inversion and attribute inference
+  class: privacy
+  class_group: X04
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: query access, sometimes white-box
+  attacker_knowledge: black-box or white-box
+  targeted_assets: [training-data, user-data]
+  asset_classes: [A01, A07, A18]
+  targeted_components: [serving]
+  reference_components: [C05]
+  preconditions: [model memorizes class representatives or correlates sensitive attributes]
+  impacts: [privacy]
+  example_incidents: []
+  mitigations: [DP, output coarsening, access control on model APIs]
+  catalog_ids:
+    atlas: [AML.T0024.001]
+    atlas_maturity: {AML.T0024.001: Feasible}
+    owasp_llm: ['LLM02:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.032, NISTAML.034]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0004, S-0005, S-0109, S-0101, S-0692]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-048
+  slug: training-data-extraction
+  name: Training-data extraction from generative models (incl. divergence attacks)
+  class: privacy
+  class_group: X04
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: query access to the generative model or app
+  attacker_knowledge: black-box
+  targeted_assets: [training-data, user-data, secrets]
+  asset_classes: [A01, A07, A09, A18]
+  targeted_components: [serving, llm-app]
+  reference_components: [C05, C07]
+  preconditions: ['memorized PII, credentials or copyrighted text in training data']
+  impacts: [privacy, confidentiality, legal]
+  example_incidents: []
+  mitigations: [deduplication, DP, output filters for PII/secrets, AML.M0020 guardrails]
+  catalog_ids:
+    atlas: [AML.T0057, AML.T0024]
+    atlas_maturity: {AML.T0057: Demonstrated, AML.T0024: Realized}
+    owasp_llm: ['LLM02:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.038, NISTAML.037]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0113, S-0159, S-0189, S-0158, S-0183, S-0269, S-0190, S-0422]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-049
+  slug: gradient-inversion-fl
+  name: Gradient inversion in federated and split learning
+  class: privacy
+  class_group: X04
+  lifecycle_stage: training
+  intent: adversarial
+  attacker_access: participant or server in FL / split inference
+  attacker_knowledge: white-box
+  targeted_assets: [training-data, user-data]
+  asset_classes: [A01, A07]
+  targeted_components: [federated-training, split-inference]
+  reference_components: [C03, C05]
+  preconditions: [gradients or intermediate activations shared with untrusted party]
+  impacts: [privacy]
+  example_incidents: []
+  mitigations: [secure aggregation, DP, larger batches (partial)]
+  catalog_ids:
+    atlas: [AML.T0024.001]
+    atlas_maturity: {AML.T0024.001: Feasible}
+    owasp_llm: ['LLM02:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.032]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0077, S-0085, S-0142, S-0020, S-0066, S-0563, S-0474, S-0453, S-0437]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-050
+  slug: embedding-inversion
+  name: Embedding inversion against vector stores
+  class: privacy
+  class_group: X04
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: read access to embeddings (vector DB, API outputs)
+  attacker_knowledge: black-box (encoder query access)
+  targeted_assets: [rag-knowledge-base, user-data]
+  asset_classes: [A05, A07]
+  targeted_components: [vector-store, embedding-api]
+  reference_components: [C06]
+  preconditions: [embeddings stored or exposed without access control, encoder is queryable]
+  impacts: [privacy, confidentiality]
+  example_incidents: []
+  mitigations: [treat embeddings as plaintext-equivalent, access control and encryption on vector stores]
+  catalog_ids:
+    atlas: [AML.T0024.001, AML.T0085.000]
+    atlas_maturity: {AML.T0024.001: Feasible, AML.T0085.000: Demonstrated}
+    owasp_llm: ['LLM08:2025', 'LLM02:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.032]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0188, S-0179, S-0712]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-051
+  slug: rag-datastore-extraction
+  name: RAG datastore and knowledge-base extraction
+  class: privacy
+  class_group: X04
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: user query access to the RAG application
+  attacker_knowledge: black-box
+  targeted_assets: [rag-knowledge-base, user-data, intellectual-property]
+  asset_classes: [A02, A05, A07]
+  targeted_components: [rag-store, llm-app]
+  reference_components: [C06, C07]
+  preconditions: [retrieved chunks are returned or paraphrased verbatim, no per-user document ACLs]
+  impacts: [confidentiality]
+  example_incidents: []
+  mitigations: [document-level ACLs at retrieval, output similarity limits, AML.M0019 production access control]
+  catalog_ids:
+    atlas: [AML.T0085.000, AML.T0057, AML.T0064]
+    atlas_maturity: {AML.T0085.000: Demonstrated, AML.T0057: Demonstrated, AML.T0064: Demonstrated}
+    owasp_llm: ['LLM08:2025', 'LLM02:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.038]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0344, S-0452, S-0657, S-0438]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-052
+  slug: model-extraction-query
+  name: Model extraction and functionality stealing via queries
+  class: model-theft
+  class_group: X05
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: inference API access, possibly many accounts
+  attacker_knowledge: black-box
+  targeted_assets: [model-weights, intellectual-property]
+  asset_classes: [A02]
+  targeted_components: [inference-api]
+  reference_components: [C05]
+  preconditions: ['API returns rich outputs (probabilities, logits)', query budget sufficient]
+  impacts: [confidentiality, financial]
+  example_incidents: [INC-013]
+  mitigations: [AML.M0004 query limits, PRADA-style detection (single-client), watermarking / fingerprinting]
+  catalog_ids:
+    atlas: [AML.T0024.002, AML.T0005.001, AML.T0048.004]
+    atlas_maturity: {AML.T0024.002: Realized, AML.T0005.001: Demonstrated, AML.T0048.004: Realized}
+    owasp_llm: ['LLM10:2025', 'LLM02:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.031]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0013, S-0068, S-0089, S-0081, S-0091, S-0132, S-0108, S-0690, S-0064]
+  maturity: demonstrated-production
+  maturity_basis: [INC-013 (RD)]
+  review_status: hypothesis
+- id: AIT-053
+  slug: llm-api-parameter-extraction
+  name: LLM API parameter and architecture extraction (logit-bias, softmax bottleneck)
+  class: model-theft
+  class_group: X05
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: API with logprobs / logit bias
+  attacker_knowledge: black-box
+  targeted_assets: [model-weights, intellectual-property]
+  asset_classes: [A02]
+  targeted_components: [third-party-model-api, inference-api]
+  reference_components: [C05, C13]
+  preconditions: [API exposes logprobs and logit_bias jointly]
+  impacts: [confidentiality]
+  example_incidents: [INC-178]
+  mitigations: [restrict logprob + logit_bias combinations, output noise]
+  catalog_ids:
+    atlas: [AML.T0024.002, AML.T0014]
+    atlas_maturity: {AML.T0024.002: Realized, AML.T0014: Feasible}
+    owasp_llm: ['LLM10:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.031]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0232, S-0255]
+  maturity: demonstrated-production
+  maturity_basis: [INC-178 (RD)]
+  review_status: hypothesis
+  note: Demonstrated against production APIs (INC-178), which vendors then changed; demonstrated-production under the v0.2 scale.
+- id: AIT-054
+  slug: distillation-campaign
+  name: Distillation campaigns via fraudulent accounts (capability theft)
+  class: model-theft
+  class_group: X05
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: many API accounts and proxy infrastructure
+  attacker_knowledge: black-box
+  targeted_assets: [intellectual-property, model-behaviour]
+  asset_classes: [A02, A03]
+  targeted_components: [third-party-model-api, inference-api]
+  reference_components: [C05, C13]
+  preconditions: [defenses assume a single client, outputs include reasoning traces]
+  impacts: [confidentiality, financial]
+  example_incidents: [INC-142]
+  mitigations: [cross-account coordination detection, behavioural fingerprinting, reduce output value for distillation]
+  catalog_ids:
+    atlas: [AML.T0024.002, AML.T0005.001, AML.T0021, AML.T0048.004, AML.T0008.005]
+    atlas_maturity: {AML.T0024.002: Realized, AML.T0005.001: Demonstrated, AML.T0021: Realized, AML.T0048.004: Realized, AML.T0008.005: Realized}
+    owasp_llm: ['LLM10:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.031]
+    nist_scope: in-scope
+    other: []
+  sources: [S-1067, S-0167, S-0598, S-0581, S-0499]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-142 (ITW)]
+  review_status: hypothesis
+- id: AIT-055
+  slug: weight-exfiltration-intrusion
+  name: Model-weight exfiltration by intrusion or insider
+  class: model-theft
+  class_group: X05
+  lifecycle_stage: infrastructure
+  intent: adversarial
+  attacker_access: network intrusion, insider access or partner access
+  attacker_knowledge: n/a
+  targeted_assets: [model-weights, intellectual-property]
+  asset_classes: [A02]
+  targeted_components: [model-registry, training-cluster, gpu-infrastructure]
+  reference_components: [C04, C05, C15]
+  preconditions: ['weights stored broadly, many authorized readers', attacker tier exceeds deployed security level]
+  impacts: [confidentiality, financial, safety (misuse)]
+  example_incidents: [INC-028, INC-015]
+  mitigations: [RAND SL1-SL5 controls, 'centralized weight storage, reduced access', insider-threat program, confidential computing]
+  catalog_ids:
+    atlas: [AML.T0025, AML.T0035, AML.T0048.004]
+    atlas_maturity: {AML.T0025: Realized, AML.T0035: Realized, AML.T0048.004: Realized}
+    owasp_llm: ['LLM03:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.031]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0793, S-1129, S-0798, S-0805, S-0851]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-028 (ITW)]
+  review_status: hypothesis
+- id: AIT-056
+  slug: on-device-model-extraction
+  name: On-device / edge model extraction
+  class: model-theft
+  class_group: X05
+  lifecycle_stage: deployment
+  intent: adversarial
+  attacker_access: possession of the device or app package
+  attacker_knowledge: white-box after extraction
+  targeted_assets: [model-weights, intellectual-property]
+  asset_classes: [A02]
+  targeted_components: [edge-device, mobile-app]
+  reference_components: [C16]
+  preconditions: [model shipped unencrypted in app or firmware]
+  impacts: [confidentiality, integrity (enables evasion)]
+  example_incidents: [INC-082]
+  mitigations: [model encryption / obfuscation, server-side critical inference, TEE-backed execution]
+  catalog_ids:
+    atlas: [AML.T0044, AML.T0035, AML.T0024.002]
+    atlas_maturity: {AML.T0044: Demonstrated, AML.T0035: Realized, AML.T0024.002: Realized}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.031]
+    nist_scope: in-scope
+    other: []
+  sources: [S-1025, S-0879]
+  maturity: demonstrated-production
+  maturity_basis: [INC-082 (RD)]
+  review_status: hypothesis
+- id: AIT-057
+  slug: hardware-side-channel-model-extraction
+  name: Hardware side-channel model and architecture extraction (cache, EM, PCIe, GPU, timing)
+  class: model-theft
+  class_group: X05
+  lifecycle_stage: infrastructure
+  intent: adversarial
+  attacker_access: co-location, physical access or bus access
+  attacker_knowledge: none to grey-box
+  targeted_assets: [model-weights, intellectual-property]
+  asset_classes: [A02]
+  targeted_components: [gpu-infrastructure, edge-device, accelerator-hardware]
+  reference_components: [C05, C16]
+  preconditions: [shared hardware or physical access to the device]
+  impacts: [confidentiality]
+  example_incidents: []
+  mitigations: [constant-time kernels, physical security, dedicated hardware per tenant (ANSSI R16)]
+  catalog_ids:
+    atlas: [AML.T0024.002, AML.T0025]
+    atlas_maturity: {AML.T0024.002: Realized, AML.T0025: Realized}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: [CWE-1300]
+    nist_ai_100_2: [NISTAML.031]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0054, S-0106, S-0040, S-0036, S-0088, S-0136, S-0045, S-0266, S-0526, S-0289, S-0150]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+  note: No ATLAS technique specific to hardware side-channel extraction; mapped to generic extraction/exfiltration.
+- id: AIT-058
+  slug: serving-side-channel-prompt-leakage
+  name: Serving side channels leaking prompts and responses (KV-cache, token length, MoE, speculative decoding)
+  class: privacy
+  class_group: X04
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: co-tenant on the serving instance or passive network position
+  attacker_knowledge: black-box
+  targeted_assets: [customer-conversations, system-prompt, user-data]
+  asset_classes: [A04, A07]
+  targeted_components: [serving, inference-runtime, network]
+  reference_components: [C05]
+  preconditions: [shared KV/prefix/semantic caches across tenants, streaming one token per packet]
+  impacts: [confidentiality, privacy]
+  example_incidents: []
+  mitigations: [per-tenant cache isolation, token batching and padding, constant-time scheduling]
+  catalog_ids:
+    atlas: [AML.T0024, AML.T0057]
+    atlas_maturity: {AML.T0024: Realized, AML.T0057: Demonstrated}
+    owasp_llm: ['LLM02:2025']
+    owasp_agentic: []
+    cwe: [CWE-208, CWE-203]
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-0325, S-0440, S-0480, S-0465, S-0358, S-0324, S-0338, S-0390, S-0398, S-0559, S-0627, S-0545, S-0233]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+  note: No ATLAS or OWASP id covers serving side channels; CoSAI riskAcceleratorAndSystemSideChannels is the only catalog entry (unmapped).
+- id: AIT-059
+  slug: gpu-memory-leakage
+  name: GPU memory remanence and cross-process leakage
+  class: privacy
+  class_group: X04
+  lifecycle_stage: infrastructure
+  intent: adversarial
+  attacker_access: unprivileged GPU code on the same device
+  attacker_knowledge: none
+  targeted_assets: [customer-conversations, user-data]
+  asset_classes: [A07]
+  targeted_components: [gpu-infrastructure]
+  reference_components: [C05]
+  preconditions: [GPU local memory not cleared between kernels]
+  impacts: [confidentiality]
+  example_incidents: []
+  mitigations: [driver/firmware memory clearing, dedicated GPUs for sensitive workloads]
+  catalog_ids:
+    atlas: [AML.T0025]
+    atlas_maturity: {AML.T0025: Realized}
+    owasp_llm: ['LLM02:2025']
+    owasp_agentic: []
+    cwe: [CWE-226]
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-0318, S-0163]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-060
+  slug: tee-confidential-computing-break
+  name: Breaking confidential-computing TEEs protecting AI workloads
+  class: infrastructure
+  class_group: X06
+  lifecycle_stage: infrastructure
+  intent: adversarial
+  attacker_access: physical access to the host (malicious operator, insider)
+  attacker_knowledge: white-box
+  targeted_assets: [model-weights, user-data]
+  asset_classes: [A02, A07]
+  targeted_components: [confidential-computing, gpu-infrastructure]
+  reference_components: [C05]
+  preconditions: [TEE relies on deterministic memory encryption without integrity, attestation trusted for GPU workloads]
+  impacts: [confidentiality, integrity]
+  example_incidents: []
+  mitigations: [physical security of hosts, do not treat TEE attestation as sufficient for weights]
+  catalog_ids:
+    atlas: [AML.T0025]
+    atlas_maturity: {AML.T0025: Realized}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.031]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0506, S-0509, S-0457, S-0620, S-0435, S-0484, S-0341]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+  note: 'ATLAS gap: no technique for breaking confidential-computing TEEs; AML.T0025 kept only for the exfiltration step.'
+- id: AIT-061
+  slug: rowhammer-bit-flip-weights
+  name: Rowhammer / bit-flip attacks on model weights in memory
+  class: integrity-fault
+  class_group: X06
+  lifecycle_stage: infrastructure
+  intent: adversarial
+  attacker_access: co-located unprivileged code (CPU or GPU)
+  attacker_knowledge: grey-box
+  targeted_assets: [model-behaviour, safety-alignment]
+  asset_classes: [A03]
+  targeted_components: [gpu-infrastructure, serving]
+  reference_components: [C05]
+  preconditions: [DRAM/GDDR without effective ECC, weights resident in shared memory]
+  impacts: [integrity, safety, availability]
+  example_incidents: []
+  mitigations: [enable ECC on GPUs, weight integrity checks at runtime, tenant isolation]
+  catalog_ids:
+    atlas: [AML.T0018, AML.T0031]
+    atlas_maturity: {AML.T0018: Realized, AML.T0031: Realized}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: [CWE-1256]
+    nist_ai_100_2: [NISTAML.026]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0062, S-0069, S-0107, S-0099, S-0424, S-0428, S-0241, S-0399, S-0641, S-0519, S-0547, S-0548, S-0612, S-0653, S-0483]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+  note: NIST AI 100-2 has no dedicated hardware-fault id; NISTAML.026 (direct modification of a trained model) covers fault-induced weight changes
+    only by extension. ATLAS has no hardware-fault technique; AML.T0018/T0031 are the nearest.
+- id: AIT-062
+  slug: fault-injection-physical
+  name: Physical fault injection (laser, voltage) on DNN execution
+  class: integrity-fault
+  class_group: X06
+  lifecycle_stage: infrastructure
+  intent: adversarial
+  attacker_access: physical access to the device
+  attacker_knowledge: grey-box
+  targeted_assets: [downstream-decisions]
+  asset_classes: [A12]
+  targeted_components: [edge-device, accelerator-hardware]
+  reference_components: [C05, C16]
+  preconditions: [attacker can glitch the device running inference]
+  impacts: [integrity, safety]
+  example_incidents: []
+  mitigations: [tamper-resistant hardware, redundant computation]
+  catalog_ids:
+    atlas: [AML.T0041, AML.T0031]
+    atlas_maturity: {AML.T0041: Demonstrated, AML.T0031: Realized}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: [CWE-1247, CWE-1319, CWE-1332]
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-0023, S-0033, S-0080]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-063
+  slug: direct-prompt-injection
+  name: Direct prompt injection (goal hijack by the user)
+  class: prompt-injection
+  class_group: X08
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: user input to the LLM application
+  attacker_knowledge: black-box
+  targeted_assets: [system-prompt, llm-app-integrity, brand-reputation]
+  asset_classes: [A04, A13]
+  targeted_components: [llm-app, user-interface]
+  reference_components: [C07]
+  preconditions: [instructions and user data share one channel (CWE-1427)]
+  impacts: [integrity, reputational, financial]
+  example_incidents: [INC-040, INC-026, INC-042, INC-160]
+  mitigations: [AML.M0020 guardrails, instruction hierarchy training, do not grant authority to the model]
+  catalog_ids:
+    atlas: [AML.T0051.000, AML.T0065]
+    atlas_maturity: {AML.T0051.000: Realized, AML.T0065: Realized}
+    owasp_llm: ['LLM01:2025']
+    owasp_agentic: ['ASI01:2026']
+    cwe: [CWE-1427]
+    nist_ai_100_2: [NISTAML.018]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0149, S-0973, S-0182, S-0915, S-0916, S-0291, S-0308, S-0865]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-040 (ITW), INC-042 (ITW)]
+  review_status: hypothesis
+- id: AIT-064
+  slug: indirect-prompt-injection
+  name: Indirect prompt injection through retrieved or processed content
+  class: prompt-injection
+  class_group: X08
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: ability to place content the application will read (web, email, document, ticket, repo)
+  attacker_knowledge: black-box
+  targeted_assets: [user-data, customer-conversations, agent-tools-credentials, source-code]
+  asset_classes: [A07, A08, A09, A14, A12]
+  targeted_components: [llm-app, rag-store, agent-runtime, tools-mcp]
+  reference_components: [C06, C07, C08, C09]
+  preconditions: [untrusted content reaches the context window, model output or tool calls have side effects]
+  impacts: [confidentiality, integrity]
+  example_incidents: [INC-093, INC-062, INC-128, INC-087, INC-125, INC-134, INC-025, INC-107, INC-162, INC-161, INC-164]
+  mitigations: [spotlighting / datamarking, AML.M0030 restrict tool invocation on untrusted data, CaMeL-style control/data separation, AML.M0029
+      HITL for sensitive actions]
+  catalog_ids:
+    atlas: [AML.T0051.001, AML.T0066, AML.T0093, AML.T0099, AML.T0110.002]
+    atlas_maturity: {AML.T0051.001: Demonstrated, AML.T0066: Demonstrated, AML.T0093: Demonstrated, AML.T0099: Feasible, AML.T0110.002: Feasible}
+    owasp_llm: ['LLM01:2025']
+    owasp_agentic: ['ASI01:2026', 'ASI06:2026']
+    cwe: [CWE-1427]
+    nist_ai_100_2: [NISTAML.015]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0166, S-0210, S-0533, S-0265, S-0244, S-0345, S-0503, S-0724, S-0306]
+  maturity: demonstrated-production
+  maturity_basis: [INC-093 (DV), INC-062 (DV), INC-128 (DV), INC-087 (DV), INC-125 (DV), INC-134 (DV), INC-025 (RD), INC-107 (DV), INC-162 (RD),
+    INC-161 (RD), INC-164 (RD)]
+  review_status: hypothesis
+- id: AIT-065
+  slug: zero-click-copilot-exfiltration
+  name: Zero-click exfiltration from enterprise copilots (email/doc-borne injection + rendering channel)
+  class: prompt-injection
+  class_group: X08
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: send an email or share a document into the tenant
+  attacker_knowledge: black-box
+  targeted_assets: [user-data, source-code, secrets]
+  asset_classes: [A07, A08, A09]
+  targeted_components: [llm-app, rag-store, user-interface]
+  reference_components: [C06, C07]
+  preconditions: [copilot retrieves attacker content automatically, 'a rendering or fetch channel exists (images, links, proxies)']
+  impacts: [confidentiality]
+  example_incidents: [INC-093, INC-134, INC-121, INC-126, INC-105, INC-128, INC-136, INC-158]
+  mitigations: [strict CSP and egress allowlists, disable auto-rendered remote images, XPIA classifiers (bypassable)]
+  catalog_ids:
+    atlas: [AML.T0051.001, AML.T0077, AML.T0086, AML.T0131, AML.T0067.000]
+    atlas_maturity: {AML.T0051.001: Demonstrated, AML.T0077: Demonstrated, AML.T0086: Realized, AML.T0131: Realized, AML.T0067.000: Demonstrated}
+    owasp_llm: ['LLM01:2025', 'LLM05:2025', 'LLM02:2025']
+    owasp_agentic: ['ASI01:2026']
+    cwe: [CWE-1427, CWE-1426]
+    nist_ai_100_2: [NISTAML.015, NISTAML.039]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0456, S-1102, S-1022, S-1048, S-1064, S-1006, S-1033]
+  maturity: demonstrated-production
+  maturity_basis: [INC-093 (DV), INC-134 (DV), INC-121 (DV), INC-126 (DV), INC-105 (DV), INC-128 (DV), INC-136 (DV), INC-158 (DV)]
+  review_status: hypothesis
+- id: AIT-066
+  slug: markdown-image-link-exfiltration
+  name: Exfiltration via rendered markdown images, links and unfurling
+  class: prompt-injection
+  class_group: X08
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: injection into the model context
+  attacker_knowledge: black-box
+  targeted_assets: [user-data, customer-conversations]
+  asset_classes: [A07]
+  targeted_components: [user-interface, llm-app]
+  reference_components: [C07]
+  preconditions: [client renders model output that fetches attacker URLs]
+  impacts: [confidentiality]
+  example_incidents: [INC-030, INC-039, INC-150, INC-158, INC-161]
+  mitigations: [URL allowlists / url_safe checks, no auto-fetch of images in model output, output encoding]
+  catalog_ids:
+    atlas: [AML.T0077, AML.T0086]
+    atlas_maturity: {AML.T0077: Demonstrated, AML.T0086: Realized}
+    owasp_llm: ['LLM05:2025', 'LLM02:2025']
+    owasp_agentic: ['ASI01:2026']
+    cwe: [CWE-1426]
+    nist_ai_100_2: [NISTAML.039]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0978, S-0974, S-0746, S-0256, S-1072]
+  maturity: demonstrated-production
+  maturity_basis: [INC-030 (DV), INC-039 (DV), INC-150 (DV), INC-158 (DV), INC-161 (RD)]
+  review_status: hypothesis
+- id: AIT-067
+  slug: ascii-smuggling-hidden-instructions
+  name: Hidden-instruction smuggling (Unicode tags, zero-width, white text, HTML comments)
+  class: prompt-injection
+  class_group: X08
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: content in any channel the model reads
+  attacker_knowledge: black-box
+  targeted_assets: [llm-app-integrity, user-data, source-code]
+  asset_classes: [A04, A07, A08]
+  targeted_components: [llm-app, code-assistant, tools-mcp]
+  reference_components: [C07, C08, C09]
+  preconditions: [model reads characters or markup that humans do not see]
+  impacts: [integrity, confidentiality]
+  example_incidents: [INC-063, INC-084, INC-087]
+  mitigations: [strip invisible Unicode and hidden markup before context assembly, render model-visible text to reviewers]
+  catalog_ids:
+    atlas: [AML.T0068, AML.T0051.001]
+    atlas_maturity: {AML.T0068: Realized, AML.T0051.001: Demonstrated}
+    owasp_llm: ['LLM01:2025']
+    owasp_agentic: ['ASI01:2026']
+    cwe: [CWE-1427, CWE-116]
+    nist_ai_100_2: [NISTAML.015]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0994, S-1046, S-0590, S-0533]
+  maturity: demonstrated-production
+  maturity_basis: [INC-063 (DV), INC-084 (DV), INC-087 (DV)]
+  review_status: hypothesis
+- id: AIT-068
+  slug: multimodal-prompt-injection
+  name: Multimodal prompt injection (images, audio, image scaling, typography)
+  class: prompt-injection
+  class_group: X08
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: supply an image/audio file or scene the model perceives
+  attacker_knowledge: black-box or white-box
+  targeted_assets: [llm-app-integrity, user-data]
+  asset_classes: [A04, A07]
+  targeted_components: [multimodal-model, llm-app, agent-runtime]
+  reference_components: [C05, C07, C08]
+  preconditions: [multimodal inputs bypass text-only filters]
+  impacts: [integrity, confidentiality]
+  example_incidents: [INC-115]
+  mitigations: [apply filters after the model's own preprocessing, OCR-and-filter images, spec-based input validation]
+  catalog_ids:
+    atlas: [AML.T0051.001, AML.T0129, AML.T0043]
+    atlas_maturity: {AML.T0051.001: Demonstrated, AML.T0129: Feasible, AML.T0043: Realized}
+    owasp_llm: ['LLM01:2025']
+    owasp_agentic: ['ASI01:2026']
+    cwe: [CWE-1427]
+    nist_ai_100_2: [NISTAML.015]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0155, S-1057, S-0230, S-0609, S-0593, S-0501, S-0704]
+  maturity: demonstrated-production
+  maturity_basis: [INC-115 (DV)]
+  review_status: hypothesis
+- id: AIT-069
+  slug: special-token-template-injection
+  name: Special-token and chat-template role forgery
+  class: prompt-injection
+  class_group: X08
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: input that is tokenized with reserved tokens
+  attacker_knowledge: black-box
+  targeted_assets: [llm-app-integrity, safety-alignment]
+  asset_classes: [A03, A04]
+  targeted_components: [llm-app, tokenizer, inference-runtime]
+  reference_components: [C05, C07]
+  preconditions: [untrusted text can produce reserved control tokens]
+  impacts: [integrity]
+  example_incidents: []
+  mitigations: [escape or reject reserved tokens in untrusted input (CWE AI WG submission), structured channels (StruQ)]
+  catalog_ids:
+    atlas: [AML.T0051.000, AML.T0054]
+    atlas_maturity: {AML.T0051.000: Realized, AML.T0054: Realized}
+    owasp_llm: ['LLM01:2025']
+    owasp_agentic: ['ASI01:2026']
+    cwe: [CWE-1427]
+    nist_ai_100_2: [NISTAML.018]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0615, S-0661, S-0632, S-0888]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-070
+  slug: optimization-based-prompt-injection
+  name: Optimization-based and learned prompt injection triggers
+  class: prompt-injection
+  class_group: X08
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: white-box surrogate or fine-tuning API loss signal
+  attacker_knowledge: white-box or grey-box
+  targeted_assets: [llm-app-integrity, agent-tools-credentials]
+  asset_classes: [A04, A09]
+  targeted_components: [llm-app, agent-runtime]
+  reference_components: [C07, C08]
+  preconditions: [defense evaluated only against static attacks]
+  impacts: [integrity, confidentiality]
+  example_incidents: []
+  mitigations: [adaptive red-teaming, system-level controls instead of filters]
+  catalog_ids:
+    atlas: [AML.T0051, AML.T0068]
+    atlas_maturity: {AML.T0051: Realized, AML.T0068: Realized}
+    owasp_llm: ['LLM01:2025']
+    owasp_agentic: ['ASI01:2026']
+    cwe: [CWE-1427]
+    nist_ai_100_2: [NISTAML.015]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0301, S-0288, S-0420, S-0572, S-0660, S-0316]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-071
+  slug: triggered-dormant-injection
+  name: Triggered, delayed and dormant prompt injections
+  class: prompt-injection
+  class_group: X08
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: plant instructions that fire on a later user action
+  attacker_knowledge: black-box
+  targeted_assets: [agent-memory, user-data]
+  asset_classes: [A06, A07]
+  targeted_components: [agent-runtime, memory]
+  reference_components: [C08, C10]
+  preconditions: [agent acts on deferred conditions in context or memory]
+  impacts: [integrity, confidentiality]
+  example_incidents: [INC-080]
+  mitigations: [AML.M0031 memory hardening, confirm memory writes with the user]
+  catalog_ids:
+    atlas: [AML.T0051.002, AML.T0094, AML.T0080.000, AML.T0080.001, AML.T0085.001]
+    atlas_maturity: {AML.T0051.002: Demonstrated, AML.T0094: Demonstrated, AML.T0080.000: Realized, AML.T0080.001: Demonstrated, AML.T0085.001: Demonstrated}
+    owasp_llm: ['LLM01:2025']
+    owasp_agentic: ['ASI01:2026', 'ASI06:2026']
+    cwe: [CWE-1427]
+    nist_ai_100_2: [NISTAML.015]
+    nist_scope: in-scope
+    other: []
+  sources: [S-1049, S-0630, S-0538]
+  maturity: demonstrated-production
+  maturity_basis: [INC-080 (DV)]
+  review_status: hypothesis
+- id: AIT-072
+  slug: prompt-injection-to-output-sink
+  name: Prompt injection to classic sinks (XSS, SQLi, SSTI, SSRF, command injection) via model output
+  class: improper-output-handling
+  class_group: X08
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: influence over model output
+  attacker_knowledge: black-box
+  targeted_assets: [host-infrastructure, user-data, session-tokens]
+  asset_classes: [A07, A09, A10]
+  targeted_components: [llm-app, downstream-interpreter]
+  reference_components: [C07, C17]
+  preconditions: ['model output reaches a browser, shell, SQL engine, template engine or URL fetcher unencoded']
+  impacts: [confidentiality, integrity]
+  example_incidents: [INC-113, INC-152, INC-034, INC-160, INC-176]
+  mitigations: [treat model output as untrusted input (encode/validate), parameterized queries, sandboxed execution]
+  catalog_ids:
+    atlas: [AML.T0077, AML.T0050, AML.T0051]
+    atlas_maturity: {AML.T0077: Demonstrated, AML.T0050: Realized, AML.T0051: Realized}
+    owasp_llm: ['LLM05:2025']
+    owasp_agentic: ['ASI05:2026']
+    cwe: [CWE-1426, CWE-79, CWE-89, CWE-94, CWE-918, CWE-1336]
+    nist_ai_100_2: [NISTAML.015]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0635, S-0292, S-0441, S-0886, S-1140, S-1118, S-1084]
+  maturity: demonstrated-production
+  maturity_basis: [INC-113 (DV), INC-152 (DV), INC-034 (RD), INC-160 (RD), INC-176 (DV)]
+  review_status: hypothesis
+- id: AIT-073
+  slug: jailbreak-manual-roleplay
+  name: Manual jailbreaks (role-play, persona, competing objectives, obfuscation)
+  class: jailbreak
+  class_group: X09
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: chat or API access
+  attacker_knowledge: black-box
+  targeted_assets: [safety-alignment, brand-reputation]
+  asset_classes: [A03, A13]
+  targeted_components: [llm-app, third-party-model-api]
+  reference_components: [C07, C13]
+  preconditions: [safety training generalizes worse than capabilities]
+  impacts: [safety, reputational, misuse]
+  example_incidents: [INC-042, INC-143, INC-179, INC-070]
+  mitigations: [AML.M0022 alignment, 'I/O classifiers (Constitutional Classifiers, Llama Guard)', conversation-level monitoring]
+  catalog_ids:
+    atlas: [AML.T0054, AML.T0068]
+    atlas_maturity: {AML.T0054: Realized, AML.T0068: Realized}
+    owasp_llm: ['LLM01:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.018, NISTAML.04]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0207, S-0201, S-0173, S-0199, S-0343, S-0214, S-0211, S-0274, S-0178, S-1028, S-0998, S-0699]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-042 (ITW), INC-143 (ITW), INC-179 (TI), INC-070 (ITW)]
+  review_status: hypothesis
+- id: AIT-074
+  slug: jailbreak-optimization-suffix
+  name: Optimization-based jailbreaks (adversarial suffixes, LLM-as-attacker, fuzzing)
+  class: jailbreak
+  class_group: X09
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: query access; white-box surrogate for suffixes
+  attacker_knowledge: black-box or white-box
+  targeted_assets: [safety-alignment]
+  asset_classes: [A03]
+  targeted_components: [third-party-model-api, llm-app]
+  reference_components: [C07, C13]
+  preconditions: [attacker can iterate many queries, API exposes logprobs or prefill]
+  impacts: [safety, misuse]
+  example_incidents: [INC-075]
+  mitigations: [perplexity filters (weak), adaptive-evaluated classifiers, rate limits on refusal-probing]
+  catalog_ids:
+    atlas: [AML.T0054, AML.T0043, AML.T0065]
+    atlas_maturity: {AML.T0054: Realized, AML.T0043: Realized, AML.T0065: Realized}
+    owasp_llm: ['LLM01:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.018, NISTAML.04]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0220, S-0160, S-0186, S-0181, S-0219, S-0213, S-0225, S-0286, S-0449, S-0431, S-0312, S-0416]
+  maturity: demonstrated-production
+  maturity_basis: [INC-075 (RD)]
+  review_status: hypothesis
+- id: AIT-075
+  slug: multi-turn-escalation-jailbreak
+  name: Multi-turn escalation and context-poisoning jailbreaks
+  class: jailbreak
+  class_group: X09
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: multi-turn chat access
+  attacker_knowledge: black-box
+  targeted_assets: [safety-alignment]
+  asset_classes: [A03]
+  targeted_components: [llm-app, third-party-model-api]
+  reference_components: [C07, C13]
+  preconditions: [moderation evaluates single turns]
+  impacts: [safety, misuse]
+  example_incidents: []
+  mitigations: [conversation-level moderation, refusal persistence training]
+  catalog_ids:
+    atlas: [AML.T0054, AML.T0080.001]
+    atlas_maturity: {AML.T0054: Realized, AML.T0080.001: Demonstrated}
+    owasp_llm: ['LLM01:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.018]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0310, S-1003, S-1039, S-0455]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-076
+  slug: many-shot-long-context-jailbreak
+  name: Many-shot and long-context in-context jailbreaks
+  class: jailbreak
+  class_group: X09
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: API or chat with large context
+  attacker_knowledge: black-box
+  targeted_assets: [safety-alignment]
+  asset_classes: [A03]
+  targeted_components: [third-party-model-api]
+  reference_components: [C13]
+  preconditions: [long context windows accept fabricated dialogues]
+  impacts: [safety, misuse]
+  example_incidents: []
+  mitigations: [prompt classification and modification before inference]
+  catalog_ids:
+    atlas: [AML.T0054]
+    atlas_maturity: {AML.T0054: Realized}
+    owasp_llm: ['LLM01:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.018]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0226, S-0206]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-077
+  slug: best-of-n-sampling-jailbreak
+  name: Best-of-N random-augmentation jailbreaks (pass@k attacker)
+  class: jailbreak
+  class_group: X09
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: repeated queries
+  attacker_knowledge: black-box
+  targeted_assets: [safety-alignment]
+  asset_classes: [A03]
+  targeted_components: [third-party-model-api]
+  reference_components: [C13]
+  preconditions: [defense decision re-sampled on every attacker draw]
+  impacts: [safety, misuse]
+  example_incidents: []
+  mitigations: [deterministic screening decoupled from generation, rate limits]
+  catalog_ids:
+    atlas: [AML.T0054, AML.T0068]
+    atlas_maturity: {AML.T0054: Realized, AML.T0068: Realized}
+    owasp_llm: ['LLM01:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.018]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0271]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-078
+  slug: reasoning-and-cot-hijack
+  name: Reasoning / chain-of-thought hijack and monitor evasion
+  class: jailbreak
+  class_group: X09
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: query access to a reasoning model
+  attacker_knowledge: black-box
+  targeted_assets: [safety-alignment, oversight]
+  asset_classes: [A03, A16]
+  targeted_components: [reasoning-model, monitoring]
+  reference_components: [C05, C17]
+  preconditions: [safety relies on reasoning-time checks or CoT monitors]
+  impacts: [safety, integrity]
+  example_incidents: []
+  mitigations: [output-side classifiers, monitor ensembles]
+  catalog_ids:
+    atlas: [AML.T0054]
+    atlas_maturity: {AML.T0054: Realized}
+    owasp_llm: ['LLM01:2025']
+    owasp_agentic: ['ASI10:2026']
+    cwe: []
+    nist_ai_100_2: [NISTAML.018]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0419, S-0597, S-0595]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-079
+  slug: multimodal-jailbreak
+  name: Multimodal jailbreaks (visual adversarial images, typographic prompts, audio)
+  class: jailbreak
+  class_group: X09
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: image or audio input
+  attacker_knowledge: black-box or white-box
+  targeted_assets: [safety-alignment]
+  asset_classes: [A03]
+  targeted_components: [multimodal-model]
+  reference_components: [C05]
+  preconditions: [vision/audio encoder not covered by text safety training]
+  impacts: [safety]
+  example_incidents: []
+  mitigations: [modality-specific classifiers, cross-modal consistency checks]
+  catalog_ids:
+    atlas: [AML.T0054, AML.T0043, AML.T0129]
+    atlas_maturity: {AML.T0054: Realized, AML.T0043: Realized, AML.T0129: Feasible}
+    owasp_llm: ['LLM01:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.018]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0304, S-0157, S-0200, S-0165, S-0285, S-0924, S-0925, S-0573, S-0278]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-080
+  slug: t2i-safety-filter-bypass
+  name: Text-to-image safety filter and concept-removal bypass
+  class: jailbreak
+  class_group: X09
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: prompt access to an image generator
+  attacker_knowledge: black-box
+  targeted_assets: [safety-alignment, brand-reputation]
+  asset_classes: [A03, A13]
+  targeted_components: [image-generation-model, safety-filter]
+  reference_components: [C05, C07]
+  preconditions: [filter operates on text tokens or a removable concept]
+  impacts: [safety, reputational, legal]
+  example_incidents: []
+  mitigations: [output-image classifiers, robust concept erasure]
+  catalog_ids:
+    atlas: [AML.T0054, AML.T0068]
+    atlas_maturity: {AML.T0054: Realized, AML.T0068: Realized}
+    owasp_llm: ['LLM01:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.018]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0151, S-0336, S-0335, S-0228, S-0320, S-0193, S-0666, S-0610]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-081
+  slug: harmful-fine-tuning
+  name: Harmful fine-tuning to remove safety (open weights or fine-tuning APIs)
+  class: jailbreak
+  class_group: X09
+  lifecycle_stage: model-artifact
+  intent: adversarial
+  attacker_access: fine-tuning API or weights
+  attacker_knowledge: white-box or API
+  targeted_assets: [safety-alignment, model-behaviour]
+  asset_classes: [A03]
+  targeted_components: [fine-tuning-service, model-artifact]
+  reference_components: [C03, C04]
+  preconditions: [fine-tuning available with weak data moderation, open weights]
+  impacts: [safety, misuse]
+  example_incidents: [INC-179]
+  mitigations: [fine-tuning data moderation, tamper-resistant safeguards (research), post-fine-tune safety evals]
+  catalog_ids:
+    atlas: [AML.T0018.000, AML.T0054]
+    atlas_maturity: {AML.T0018.000: Demonstrated, AML.T0054: Realized}
+    owasp_llm: ['LLM04:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.037, NISTAML.04]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0303, S-0177, S-0209, S-0215, S-0263, S-0695, S-0372, S-0370, S-0191, S-0471, S-0287]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-179 (TI)]
+  review_status: hypothesis
+- id: AIT-082
+  slug: white-box-safety-removal
+  name: White-box safety removal (abliteration, pruning, neuron/gate attacks, decoding manipulation)
+  class: jailbreak
+  class_group: X09
+  lifecycle_stage: model-artifact
+  intent: adversarial
+  attacker_access: possession of open weights
+  attacker_knowledge: white-box
+  targeted_assets: [safety-alignment]
+  asset_classes: [A03]
+  targeted_components: [model-artifact, local-deployment]
+  reference_components: [C04, C14]
+  preconditions: [weights are available to the attacker]
+  impacts: [safety, misuse]
+  example_incidents: []
+  mitigations: [release decisions; alignment is not a boundary for weight holders]
+  catalog_ids:
+    atlas: [AML.T0018, AML.T0054]
+    atlas_maturity: {AML.T0018: Realized, AML.T0054: Realized}
+    owasp_llm: ['LLM04:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.04]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0227, S-0323, S-0414, S-0649, S-0648, S-0268, S-0357, S-0451, S-0287]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+  note: Abliterated and uncensored open models are widely published; Malla (S-0287, INC-179) documents malicious services built on uncensored
+    models, which is linked to harmful fine-tuning (AIT-081). No incident attributes real misuse specifically to abliteration or white-box removal,
+    so this stays demonstrated-research.
+- id: AIT-083
+  slug: system-prompt-extraction
+  name: System-prompt and configuration extraction
+  class: leakage
+  class_group: X04
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: chat or API access
+  attacker_knowledge: black-box
+  targeted_assets: [system-prompt, intellectual-property, secrets]
+  asset_classes: [A02, A04, A09]
+  targeted_components: [llm-app, custom-gpt]
+  reference_components: [C07]
+  preconditions: ['secrets, business logic or knowledge files placed in the prompt/config']
+  impacts: [confidentiality]
+  example_incidents: [INC-026]
+  mitigations: [assume prompts are public; keep secrets out, SysVec-style defenses (research)]
+  catalog_ids:
+    atlas: [AML.T0056, AML.T0069.002]
+    atlas_maturity: {AML.T0056: Feasible, AML.T0069.002: Demonstrated}
+    owasp_llm: ['LLM07:2025']
+    owasp_agentic: []
+    cwe: [CWE-200]
+    nist_ai_100_2: [NISTAML.035]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0216, S-0272, S-0212, S-0222, S-0187, S-0351, S-0313, S-0614, S-0467, S-0377, S-0643]
+  maturity: demonstrated-production
+  maturity_basis: [INC-026 (DV)]
+  review_status: hypothesis
+- id: AIT-084
+  slug: sensitive-data-disclosure-context
+  name: Sensitive data disclosure from context, connectors and over-broad retrieval
+  class: leakage
+  class_group: X04
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: authorized but low-privilege user, or injection
+  attacker_knowledge: black-box
+  targeted_assets: [user-data, rag-knowledge-base, customer-conversations]
+  asset_classes: [A05, A07]
+  targeted_components: [llm-app, rag-store, connectors]
+  reference_components: [C06, C07, C09, C19]
+  preconditions: [retrieval ignores per-document permissions, stale or cached data indexed]
+  impacts: [confidentiality, privacy]
+  example_incidents: [INC-081, INC-097, INC-144]
+  mitigations: [permission-aware retrieval, data minimization in context, DLP on outputs]
+  catalog_ids:
+    atlas: [AML.T0057, AML.T0085.000]
+    atlas_maturity: {AML.T0057: Demonstrated, AML.T0085.000: Demonstrated}
+    owasp_llm: ['LLM02:2025', 'LLM08:2025']
+    owasp_agentic: ['ASI03:2026']
+    cwe: [CWE-200, CWE-863]
+    nist_ai_100_2: [NISTAML.036, NISTAML.038]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0309, S-0295, S-0315, S-0229, S-1032, S-0947]
+  maturity: demonstrated-production
+  maturity_basis: [INC-081 (DV), INC-097 (ACC), INC-144 (ACC)]
+  review_status: hypothesis
+- id: AIT-085
+  slug: shadow-ai-data-leakage
+  name: Employee disclosure of sensitive data to third-party AI (shadow AI)
+  class: leakage
+  class_group: X04
+  lifecycle_stage: human
+  intent: insider-accidental
+  attacker_access: none (insider error)
+  attacker_knowledge: n/a
+  targeted_assets: [intellectual-property, user-data, source-code]
+  asset_classes: [A02, A07, A08]
+  targeted_components: [third-party-model-api, human-operator]
+  reference_components: [C12, C13]
+  preconditions: [no approved AI tooling or AI-use policy, consumer services retain prompts]
+  impacts: [confidentiality, legal]
+  example_incidents: [INC-027]
+  mitigations: [approved enterprise AI with no-retention terms, DLP on AI endpoints, AI-use policy and training]
+  catalog_ids:
+    atlas: [AML.T0057]
+    atlas_maturity: {AML.T0057: Demonstrated}
+    owasp_llm: ['LLM02:2025']
+    owasp_agentic: []
+    cwe: [CWE-359]
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (non-adversarial, insider or provider failure)
+    other: []
+  sources: [S-1127, S-1029, S-0846]
+  maturity: occurred-in-wild
+  maturity_basis: [INC-027 (ACC)]
+  review_status: hypothesis
+- id: AIT-086
+  slug: rag-knowledge-poisoning
+  name: RAG knowledge-base poisoning (targeted answer manipulation)
+  class: rag-poisoning
+  class_group: X10
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: write access to any indexed source (wiki, shared drive, web page, ticket)
+  attacker_knowledge: black-box or white-box
+  targeted_assets: [rag-knowledge-base, downstream-decisions, brand-reputation]
+  asset_classes: [A05, A12, A13, A14]
+  targeted_components: [rag-store, data-sources]
+  reference_components: [C01, C06]
+  preconditions: [ingestion indexes content from many writers, retrieval trusts similarity alone]
+  impacts: [integrity]
+  example_incidents: [INC-055, INC-083, INC-162]
+  mitigations: [source trust scoring and provenance, certifiably robust RAG (RobustRAG), attribution and traceback (AttnTrace)]
+  catalog_ids:
+    atlas: [AML.T0070, AML.T0071, AML.T0066, AML.T0067.000]
+    atlas_maturity: {AML.T0070: Demonstrated, AML.T0071: Demonstrated, AML.T0066: Demonstrated, AML.T0067.000: Demonstrated}
+    owasp_llm: ['LLM08:2025', 'LLM04:2025']
+    owasp_agentic: ['ASI06:2026']
+    cwe: []
+    nist_ai_100_2: [NISTAML.015, NISTAML.027]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0493, S-0218, S-0236, S-0333, S-0373, S-0397, S-0527, S-0546, S-0650, S-0624, S-0721]
+  maturity: demonstrated-production
+  maturity_basis: [INC-055 (ACC), INC-083 (ITW-Q), INC-162 (RD)]
+  review_status: hypothesis
+- id: AIT-087
+  slug: retriever-backdoor-and-seo
+  name: Retriever backdoors, adversarial SEO and hubness attacks on retrieval
+  class: rag-poisoning
+  class_group: X10
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: publish content or supply a retriever model
+  attacker_knowledge: grey-box
+  targeted_assets: [rag-knowledge-base, brand-reputation]
+  asset_classes: [A05, A13]
+  targeted_components: [rag-store, embedding-model, search-pipeline]
+  reference_components: [C06]
+  preconditions: [dense retriever is third-party or attacker content is indexable]
+  impacts: [integrity, financial]
+  example_incidents: []
+  mitigations: [retriever provenance, hubness detection, diversity constraints on retrieved sets]
+  catalog_ids:
+    atlas: [AML.T0070, AML.T0066]
+    atlas_maturity: {AML.T0070: Demonstrated, AML.T0066: Demonstrated}
+    owasp_llm: ['LLM08:2025']
+    owasp_agentic: ['ASI06:2026']
+    cwe: []
+    nist_ai_100_2: [NISTAML.015]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0240, S-0239, S-0374, S-0606, S-0446, S-0282]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-088
+  slug: rag-availability-jamming
+  name: RAG jamming and knowledge isolation (availability)
+  class: rag-poisoning
+  class_group: X10
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: write access to indexed sources
+  attacker_knowledge: black-box
+  targeted_assets: [rag-knowledge-base, inference-availability]
+  asset_classes: [A05, A11]
+  targeted_components: [rag-store, graph-rag]
+  reference_components: [C06]
+  preconditions: [no duplicate/blocker detection in ingestion]
+  impacts: [availability]
+  example_incidents: []
+  mitigations: [ingestion anomaly detection, fallback answers]
+  catalog_ids:
+    atlas: [AML.T0070, AML.T0029]
+    atlas_maturity: {AML.T0070: Demonstrated, AML.T0029: Demonstrated}
+    owasp_llm: ['LLM08:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.016]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0458, S-0654]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-089
+  slug: semantic-cache-poisoning
+  name: Prompt/response and semantic cache poisoning
+  class: rag-poisoning
+  class_group: X10
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: submit requests to a shared cache
+  attacker_knowledge: black-box
+  targeted_assets: [customer-conversations, llm-app-integrity]
+  asset_classes: [A04, A07]
+  targeted_components: [semantic-cache, serving]
+  reference_components: [C05, C06]
+  preconditions: [cache shared across users with predictable keys or similarity matching]
+  impacts: [integrity, confidentiality]
+  example_incidents: []
+  mitigations: [per-tenant caches, cryptographic cache keys, validate cached responses]
+  catalog_ids:
+    atlas: [AML.T0070, AML.T0031]
+    atlas_maturity: {AML.T0070: Demonstrated, AML.T0031: Realized}
+    owasp_llm: ['LLM08:2025']
+    owasp_agentic: []
+    cwe: [CWE-345, CWE-349, CWE-354, CWE-328]
+    nist_ai_100_2: [NISTAML.015]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0575, S-1109, S-0626]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+  note: Unmapped in ATLAS/OWASP; CoSAI riskPromptResponseCachePoisoning only. CWE-328 and CWE-354 apply only to the hash-collision variant (vLLM
+    CVE-2025-25183, typed CWE-354 by NVD); semantic-cache poisoning is CWE-345/CWE-349.
+- id: AIT-090
+  slug: web-scale-llm-grooming
+  name: 'LLM grooming: mass publication to steer retrieval and training'
+  class: rag-poisoning
+  class_group: X10
+  lifecycle_stage: data
+  intent: adversarial
+  attacker_access: content farms targeting crawlers
+  attacker_knowledge: none
+  targeted_assets: [brand-reputation, downstream-decisions]
+  asset_classes: [A12, A13]
+  targeted_components: [data-sources, search-pipeline, rag-store]
+  reference_components: [C01, C06]
+  preconditions: [assistants retrieve from the open web without source vetting]
+  impacts: [integrity, societal]
+  example_incidents: [INC-083]
+  mitigations: [source reputation and allowlists, citation verification]
+  catalog_ids:
+    atlas: [AML.T0070, AML.T0020, AML.T0066, AML.T0048.002]
+    atlas_maturity: {AML.T0070: Demonstrated, AML.T0020: Realized, AML.T0066: Demonstrated, AML.T0048.002: Realized}
+    owasp_llm: ['LLM04:2025', 'LLM09:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.013]
+    nist_scope: in-scope
+    other: []
+  sources: [S-1040, S-0533, S-1091, S-1151]
+  maturity: demonstrated-production
+  maturity_basis: [INC-083 (ITW-Q)]
+  review_status: hypothesis
+  note: Exploitation of data voids by mass publication is demonstrated in production chatbots; the effect of deliberate grooming is contested
+    (NewsGuard S-1040 vs HKS Misinformation Review S-1151).
+- id: AIT-091
+  slug: tool-call-hijack-confused-deputy
+  name: Agent tool-call hijacking (confused deputy with the user's privileges)
+  class: agent-hijack
+  class_group: X11
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: content the agent reads
+  attacker_knowledge: black-box
+  targeted_assets: [agent-tools-credentials, user-data, source-code, secrets]
+  asset_classes: [A07, A08, A09, A14, A12]
+  targeted_components: [agent-runtime, tools-mcp, identity-iam]
+  reference_components: [C08, C09, C11]
+  preconditions: [agent holds the user's tokens, 'untrusted data, private data and an egress or state-changing tool coexist (lethal trifecta /
+      Rule of Two)']
+  impacts: [confidentiality, integrity]
+  example_incidents: [INC-092, INC-104, INC-098, INC-130, INC-107, INC-162, INC-164]
+  mitigations: [Rule of Two / lethal-trifecta checks, AML.M0026-M0028 permission configuration, plan-then-execute and CaMeL, Progent policies]
+  catalog_ids:
+    atlas: [AML.T0053, AML.T0086, AML.T0051.001, AML.T0099, AML.T0110.002]
+    atlas_maturity: {AML.T0053: Demonstrated, AML.T0086: Realized, AML.T0051.001: Demonstrated, AML.T0099: Feasible, AML.T0110.002: Feasible}
+    owasp_llm: ['LLM06:2025', 'LLM01:2025']
+    owasp_agentic: ['ASI02:2026', 'ASI01:2026', 'ASI03:2026']
+    cwe: [CWE-441, CWE-862]
+    nist_ai_100_2: [NISTAML.039, NISTAML.015]
+    nist_scope: in-scope; agent aspects fall under section 3.5 Security of Agents, which has no id
+    other: []
+  sources: [S-0820, S-0808, S-0742, S-0244, S-0388, S-0463, S-0799, S-0769, S-0775]
+  maturity: demonstrated-production
+  maturity_basis: [INC-092 (DV), INC-104 (DV), INC-098 (DV), INC-130 (DV), INC-107 (DV), INC-162 (RD), INC-164 (RD)]
+  review_status: hypothesis
+- id: AIT-092
+  slug: coding-agent-rce
+  name: Coding-agent prompt injection to remote code execution
+  class: agent-hijack
+  class_group: X11
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: content in a repository, issue, web page or MCP response
+  attacker_knowledge: black-box
+  targeted_assets: [host-infrastructure, source-code, secrets]
+  asset_classes: [A08, A09, A10]
+  targeted_components: [code-assistant, agent-runtime, developer-workstation]
+  reference_components: [C08, C14]
+  preconditions: [agent can run shell commands or write its own config, approval UI does not bind to what executes]
+  impacts: [confidentiality, integrity, availability]
+  example_incidents: [INC-112, INC-110, INC-103, INC-106, INC-148, INC-108]
+  mitigations: [sandbox agent execution, protect agent config files from agent writes, bind approvals to exact commands]
+  catalog_ids:
+    atlas: [AML.T0051.001, AML.T0050, AML.T0081, AML.T0105]
+    atlas_maturity: {AML.T0051.001: Demonstrated, AML.T0050: Realized, AML.T0081: Demonstrated, AML.T0105: Realized}
+    owasp_llm: ['LLM01:2025', 'LLM06:2025']
+    owasp_agentic: ['ASI05:2026', 'ASI02:2026']
+    cwe: [CWE-1427, CWE-78, CWE-77]
+    nist_ai_100_2: [NISTAML.015]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0430, S-1112, S-1097, S-1096, S-1116, S-1056, S-0921, S-0454]
+  maturity: demonstrated-production
+  maturity_basis: [INC-112 (DV), INC-110 (DV), INC-103 (DV), INC-106 (DV), INC-148 (DV), INC-108 (DV)]
+  review_status: hypothesis
+- id: AIT-093
+  slug: approval-hitl-bypass
+  name: Human-approval bypass and approval laundering
+  class: agent-hijack
+  class_group: X11
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: influence over agent actions
+  attacker_knowledge: black-box
+  targeted_assets: [host-infrastructure, agent-tools-credentials]
+  asset_classes: [A09, A10]
+  targeted_components: [agent-runtime, human-operator]
+  reference_components: [C08, C12]
+  preconditions: [approval shown to human differs from executed action, allow-lists compare only command prefixes]
+  impacts: [integrity]
+  example_incidents: [INC-103]
+  mitigations: [approval-execution binding by hash, AML.M0029 HITL with full command display]
+  catalog_ids:
+    atlas: [AML.T0053, AML.T0081]
+    atlas_maturity: {AML.T0053: Demonstrated, AML.T0081: Demonstrated}
+    owasp_llm: ['LLM06:2025']
+    owasp_agentic: ['ASI09:2026', 'ASI02:2026']
+    cwe: [CWE-863]
+    nist_ai_100_2: [NISTAML.015]
+    nist_scope: in-scope; agent aspects fall under section 3.5 Security of Agents, which has no id
+    other: []
+  sources: [S-0638, S-0427, S-0888, S-1056]
+  maturity: demonstrated-production
+  maturity_basis: [INC-103 (DV)]
+  review_status: hypothesis
+- id: AIT-094
+  slug: agent-config-self-modification
+  name: Agent configuration tampering and self-modification
+  class: agent-hijack
+  class_group: X11
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: injection or repo write access
+  attacker_knowledge: black-box
+  targeted_assets: [host-infrastructure, agent-tools-credentials]
+  asset_classes: [A09, A10]
+  targeted_components: [agent-runtime, agent-config]
+  reference_components: [C08]
+  preconditions: ['agent may write its own settings, MCP config or rules files']
+  impacts: [integrity]
+  example_incidents: [INC-112, INC-110]
+  mitigations: [config files outside agent write scope, content-hash approval of MCP servers]
+  catalog_ids:
+    atlas: [AML.T0081, AML.T0084]
+    atlas_maturity: {AML.T0081: Demonstrated, AML.T0084: Demonstrated}
+    owasp_llm: ['LLM06:2025']
+    owasp_agentic: ['ASI02:2026', 'ASI05:2026']
+    cwe: [CWE-15]
+    nist_ai_100_2: [NISTAML.015]
+    nist_scope: in-scope; agent aspects fall under section 3.5 Security of Agents, which has no id
+    other: []
+  sources: [S-1112, S-1097, S-0966]
+  maturity: demonstrated-production
+  maturity_basis: [INC-112 (DV), INC-110 (DV)]
+  review_status: hypothesis
+- id: AIT-095
+  slug: rules-and-skills-file-poisoning
+  name: Rules-file, context-file and agent-skill poisoning
+  class: agent-supply-chain
+  class_group: X03
+  lifecycle_stage: supply-chain
+  intent: adversarial
+  attacker_access: contribute rules/context files or publish skills
+  attacker_knowledge: black-box
+  targeted_assets: [source-code, secrets, host-infrastructure]
+  asset_classes: [A08, A09, A10]
+  targeted_components: [code-assistant, skill-marketplace, agent-runtime]
+  reference_components: [C08, C09]
+  preconditions: ['agent loads repo rules, context files or third-party skills as trusted instructions']
+  impacts: [integrity, confidentiality]
+  example_incidents: [INC-084, INC-138, INC-135]
+  mitigations: [skill review and signing, strip hidden text, least-privilege skill permissions]
+  catalog_ids:
+    atlas: [AML.T0115.002, AML.T0011.002, AML.T0010.005, AML.T0068, AML.T0081]
+    atlas_maturity: {AML.T0115.002: Realized, AML.T0011.002: Realized, AML.T0010.005: Realized, AML.T0068: Realized, AML.T0081: Demonstrated}
+    owasp_llm: ['LLM03:2025', 'LLM01:2025']
+    owasp_agentic: ['ASI04:2026']
+    cwe: [CWE-1427, CWE-829]
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-1046, S-0515, S-0550, S-0553, S-0949, S-0965, S-0716, S-0906, S-1148]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-138 (ITW)]
+  review_status: hypothesis
+- id: AIT-096
+  slug: mcp-tool-poisoning
+  name: MCP / tool-description poisoning and line jumping
+  class: agent-supply-chain
+  class_group: X03
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: publish or control an MCP server or tool metadata
+  attacker_knowledge: black-box
+  targeted_assets: [agent-tools-credentials, secrets, user-data]
+  asset_classes: [A07, A09]
+  targeted_components: [tools-mcp, agent-runtime]
+  reference_components: [C08, C09]
+  preconditions: [tool descriptions enter context before invocation, clients do not show model-visible metadata]
+  impacts: [confidentiality, integrity]
+  example_incidents: [INC-086]
+  mitigations: [static metadata analysis, show full tool descriptions to users, pin server versions by hash]
+  catalog_ids:
+    atlas: [AML.T0110.000, AML.T0115.002, AML.T0011.002]
+    atlas_maturity: {AML.T0110.000: Demonstrated, AML.T0115.002: Realized, AML.T0011.002: Realized}
+    owasp_llm: ['LLM01:2025', 'LLM03:2025']
+    owasp_agentic: ['ASI02:2026', 'ASI04:2026']
+    cwe: [CWE-1427]
+    nist_ai_100_2: [NISTAML.015]
+    nist_scope: in-scope
+    other: []
+  sources: [S-1031, S-1058, S-0941, S-0772, S-0543, S-0556, S-0590, S-0909, S-0898]
+  maturity: demonstrated-production
+  maturity_basis: [INC-086 (RD)]
+  review_status: hypothesis
+- id: AIT-097
+  slug: mcp-rug-pull-malicious-server
+  name: Malicious and rug-pull MCP servers (silent drift)
+  class: agent-supply-chain
+  class_group: X03
+  lifecycle_stage: supply-chain
+  intent: adversarial
+  attacker_access: publish an MCP server to a registry or npm
+  attacker_knowledge: none
+  targeted_assets: [user-data, secrets]
+  asset_classes: [A07, A09]
+  targeted_components: [tools-mcp, package-registry]
+  reference_components: [C04, C09]
+  preconditions: [server updates are not re-reviewed; names not bound to content]
+  impacts: [confidentiality]
+  example_incidents: [INC-123, INC-174]
+  mitigations: [private MCP registries/gateways, version pinning, egress monitoring of MCP servers]
+  catalog_ids:
+    atlas: [AML.T0109, AML.T0010.005, AML.T0115.002, AML.T0110.001, AML.T0111]
+    atlas_maturity: {AML.T0109: Realized, AML.T0010.005: Realized, AML.T0115.002: Realized, AML.T0110.001: Realized, AML.T0111: Demonstrated}
+    owasp_llm: ['LLM03:2025']
+    owasp_agentic: ['ASI04:2026']
+    cwe: [CWE-506, CWE-829]
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-1047, S-0534, S-0757, S-0491, S-0605, S-0667, S-0810]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-123 (ITW)]
+  review_status: hypothesis
+- id: AIT-098
+  slug: tool-selection-manipulation
+  name: Tool-selection hijacking and preference manipulation
+  class: agent-supply-chain
+  class_group: X03
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: publish a tool into the agent's tool library
+  attacker_knowledge: black-box
+  targeted_assets: [agent-tools-credentials, financial-assets]
+  asset_classes: [A09, A14]
+  targeted_components: [tools-mcp, agent-runtime]
+  reference_components: [C08, C09]
+  preconditions: [agent chooses tools by description similarity]
+  impacts: [integrity, financial]
+  example_incidents: []
+  mitigations: [curated tool registries, tool-selection auditing]
+  catalog_ids:
+    atlas: [AML.T0110.000, AML.T0130]
+    atlas_maturity: {AML.T0110.000: Demonstrated, AML.T0130: Realized}
+    owasp_llm: ['LLM06:2025']
+    owasp_agentic: ['ASI02:2026']
+    cwe: []
+    nist_ai_100_2: [NISTAML.015]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0577, S-0442, S-0644, S-0571, S-0663]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-099
+  slug: mcp-protocol-auth-flaws
+  name: Agent-protocol authorization flaws (token passthrough, confused deputy, SSRF via OAuth metadata)
+  class: identity
+  class_group: X11
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: malicious MCP server or client-side position
+  attacker_knowledge: black-box
+  targeted_assets: [agent-tools-credentials, secrets, user-data]
+  asset_classes: [A07, A09]
+  targeted_components: [tools-mcp, identity-iam, authorization-server]
+  reference_components: [C09, C11]
+  preconditions: [static client IDs with DCR and consent cookies, tokens accepted without audience validation]
+  impacts: [confidentiality, integrity]
+  example_incidents: [INC-173, INC-174]
+  mitigations: ['MCP authorization spec controls (audience binding, per-client consent)', block private IP ranges in metadata fetches]
+  catalog_ids:
+    atlas: [AML.T0091.000, AML.T0098, AML.T0083]
+    atlas_maturity: {AML.T0091.000: Realized, AML.T0098: Demonstrated, AML.T0083: Demonstrated}
+    owasp_llm: ['LLM06:2025']
+    owasp_agentic: ['ASI03:2026', 'ASI04:2026']
+    cwe: [CWE-441, CWE-918, CWE-352]
+    nist_ai_100_2: []
+    nist_scope: gap (section 3.5 Security of Agents has no id)
+    other: []
+  sources: [S-0829, S-0854, S-0770, S-0948, S-0767]
+  maturity: demonstrated-production
+  maturity_basis: [INC-173 (DV), INC-174 (DV)]
+  review_status: hypothesis
+- id: AIT-100
+  slug: agent-credential-harvesting
+  name: Credential harvesting from agent configs, runtimes and AI clients
+  class: identity
+  class_group: X11
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: injection into agent, local malware, or CI-triggering event
+  attacker_knowledge: black-box
+  targeted_assets: [secrets, agent-tools-credentials, session-tokens]
+  asset_classes: [A09]
+  targeted_components: [agent-runtime, ci-cd, ai-desktop-client]
+  reference_components: [C08, C14, C19, C20]
+  preconditions: ['secrets in agent environment, config or process memory', agent tools can read them]
+  impacts: [confidentiality]
+  example_incidents: [INC-154, INC-072, INC-141, INC-137, INC-164]
+  mitigations: [scrub agent environments, short-lived scoped tokens, secret scanning of agent outputs]
+  catalog_ids:
+    atlas: [AML.T0083, AML.T0098, AML.T0055, AML.T0090, AML.T0113, AML.T0091.001, AML.T0082]
+    atlas_maturity: {AML.T0083: Demonstrated, AML.T0098: Demonstrated, AML.T0055: Realized, AML.T0090: Demonstrated, AML.T0113: Demonstrated,
+      AML.T0091.001: Demonstrated, AML.T0082: Demonstrated}
+    owasp_llm: ['LLM02:2025', 'LLM06:2025']
+    owasp_agentic: ['ASI03:2026']
+    cwe: [CWE-522, CWE-798]
+    nist_ai_100_2: []
+    nist_scope: gap (section 3.5 Security of Agents has no id)
+    other: []
+  sources: [S-1069, S-1008, S-1071, S-1060, S-0896]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-141 (ITW)]
+  review_status: hypothesis
+- id: AIT-101
+  slug: over-privileged-agent-identity
+  name: Over-privileged agent identities and delegation abuse
+  class: identity
+  class_group: X11
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: compromise or misdirection of an agent
+  attacker_knowledge: black-box
+  targeted_assets: [cloud-resources, user-data, secrets]
+  asset_classes: [A07, A09, A10]
+  targeted_components: [identity-iam, agent-runtime, cloud-platform]
+  reference_components: [C08, C11, C15]
+  preconditions: [default service agents with broad scopes, no delegation attribution]
+  impacts: [confidentiality, integrity]
+  example_incidents: [INC-147, INC-129, INC-111]
+  mitigations: [authenticated delegation (OAuth/OIDC agent extensions), least-privilege service agents, per-task scoped tokens]
+  catalog_ids:
+    atlas: [AML.T0012, AML.T0091.000, AML.T0083]
+    atlas_maturity: {AML.T0012: Realized, AML.T0091.000: Realized, AML.T0083: Demonstrated}
+    owasp_llm: ['LLM06:2025']
+    owasp_agentic: ['ASI03:2026']
+    cwe: [CWE-250, CWE-269]
+    nist_ai_100_2: []
+    nist_scope: gap (section 3.5 Security of Agents has no id)
+    other: []
+  sources: [S-0818, S-0819, S-1081, S-1013, S-0629, S-0646]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-111 (ITW)]
+  review_status: hypothesis
+- id: AIT-102
+  slug: agent-memory-poisoning
+  name: Agent memory poisoning (persistent instructions, cross-user contamination)
+  class: memory-poisoning
+  class_group: X10
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: injection into content the agent stores, or ordinary queries
+  attacker_knowledge: black-box
+  targeted_assets: [agent-memory, user-data, downstream-decisions]
+  asset_classes: [A06, A07, A12, A14]
+  targeted_components: [memory, agent-runtime]
+  reference_components: [C08, C10, C20]
+  preconditions: [agent writes to long-term memory without user confirmation, memory shared across users]
+  impacts: [integrity, confidentiality]
+  example_incidents: [INC-064, INC-139, INC-126, INC-107]
+  mitigations: [AML.M0031 memory hardening, confirm memory writes, memory provenance and consensus (A-MemGuard)]
+  catalog_ids:
+    atlas: [AML.T0080.000, AML.T0051.001, AML.T0131, AML.T0130, AML.T0068]
+    atlas_maturity: {AML.T0080.000: Realized, AML.T0051.001: Demonstrated, AML.T0131: Realized, AML.T0130: Realized, AML.T0068: Realized}
+    owasp_llm: ['LLM04:2025', 'LLM08:2025']
+    owasp_agentic: ['ASI06:2026']
+    cwe: []
+    nist_ai_100_2: [NISTAML.015]
+    nist_scope: in-scope; agent aspects fall under section 3.5 Security of Agents, which has no id
+    other: []
+  sources: [S-0392, S-0237, S-0995, S-0469, S-0656, S-0560, S-0448, S-0478, S-0389, S-0589]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-139 (ITW)]
+  review_status: hypothesis
+- id: AIT-103
+  slug: memory-and-history-extraction
+  name: Agent memory and chat-history extraction
+  class: leakage
+  class_group: X04
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: query access or injection
+  attacker_knowledge: black-box
+  targeted_assets: [agent-memory, customer-conversations]
+  asset_classes: [A06, A07]
+  targeted_components: [memory, agent-runtime]
+  reference_components: [C08, C10]
+  preconditions: [memory retrieved into context for any user query]
+  impacts: [confidentiality, privacy]
+  example_incidents: []
+  mitigations: [per-user memory isolation, output DLP]
+  catalog_ids:
+    atlas: [AML.T0057, AML.T0085, AML.T0126, AML.T0113]
+    atlas_maturity: {AML.T0057: Demonstrated, AML.T0085: Demonstrated, AML.T0126: Realized, AML.T0113: Demonstrated}
+    owasp_llm: ['LLM02:2025']
+    owasp_agentic: ['ASI06:2026']
+    cwe: []
+    nist_ai_100_2: [NISTAML.036]
+    nist_scope: in-scope; agent aspects fall under section 3.5 Security of Agents, which has no id
+    other: []
+  sources: [S-0476, S-0652]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-104
+  slug: browser-computer-use-agent-hijack
+  name: Browser and computer-use agent hijacking (pop-ups, environmental injection, clickjacking, ClickFix)
+  class: agent-hijack
+  class_group: X11
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: content rendered on screen or in the DOM
+  attacker_knowledge: black-box
+  targeted_assets: [user-data, session-tokens, host-infrastructure]
+  asset_classes: [A07, A09, A10]
+  targeted_components: [computer-use-agent, browser-agent]
+  reference_components: [C08, C20]
+  preconditions: [agent acts on what it sees with the user's authenticated sessions]
+  impacts: [confidentiality, integrity]
+  example_incidents: [INC-114, INC-077, INC-091, INC-068, INC-069]
+  mitigations: [site isolation for agents, confirmation on sensitive actions, injection classifiers on page content]
+  catalog_ids:
+    atlas: [AML.T0051.001, AML.T0100, AML.T0053]
+    atlas_maturity: {AML.T0051.001: Demonstrated, AML.T0100: Demonstrated, AML.T0053: Demonstrated}
+    owasp_llm: ['LLM01:2025', 'LLM06:2025']
+    owasp_agentic: ['ASI01:2026', 'ASI09:2026']
+    cwe: [CWE-1427, CWE-1021]
+    nist_ai_100_2: [NISTAML.015]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0490, S-0426, S-0330, S-0514, S-0703, S-0934, S-0937, S-0933, S-0951, S-0459, S-0618, S-1010, S-1017]
+  maturity: demonstrated-production
+  maturity_basis: [INC-114 (DV), INC-077 (DV), INC-091 (RD), INC-068 (RD), INC-069 (RD)]
+  review_status: hypothesis
+- id: AIT-105
+  slug: mobile-agent-injection
+  name: Mobile-agent injection via accessibility metadata and app content
+  class: agent-hijack
+  class_group: X11
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: app content or notifications on the device
+  attacker_knowledge: black-box
+  targeted_assets: [user-data, session-tokens]
+  asset_classes: [A07, A09]
+  targeted_components: [mobile-agent]
+  reference_components: [C08]
+  preconditions: [agent consumes accessibility trees as trusted context]
+  impacts: [confidentiality, integrity]
+  example_incidents: []
+  mitigations: [policy-aware auditing (MATE), confirmation for cross-app actions]
+  catalog_ids:
+    atlas: [AML.T0051.001]
+    atlas_maturity: {AML.T0051.001: Demonstrated}
+    owasp_llm: ['LLM01:2025']
+    owasp_agentic: ['ASI01:2026']
+    cwe: [CWE-1427]
+    nist_ai_100_2: [NISTAML.015]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0508, S-0529]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-106
+  slug: inter-agent-injection-propagation
+  name: Inter-agent injection, agent-in-the-middle and session smuggling
+  class: multi-agent
+  class_group: X12
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: control of one agent, a message channel or a remote A2A agent
+  attacker_knowledge: black-box
+  targeted_assets: [agent-tools-credentials, user-data, downstream-decisions]
+  asset_classes: [A07, A09, A12]
+  targeted_components: [multi-agent-orchestrator, a2a-channel]
+  reference_components: [C08, C09]
+  preconditions: [agents trust peer messages as instructions, no message signing or provenance]
+  impacts: [integrity, confidentiality]
+  example_incidents: [INC-130]
+  mitigations: [message signing with provenance, role-scoped tool privileges, inter-agent anomaly detection]
+  catalog_ids:
+    atlas: [AML.T0051.001, AML.T0110.002]
+    atlas_maturity: {AML.T0051.001: Demonstrated, AML.T0110.002: Feasible}
+    owasp_llm: ['LLM01:2025', 'LLM06:2025']
+    owasp_agentic: ['ASI07:2026', 'ASI08:2026']
+    cwe: [CWE-1427, CWE-345]
+    nist_ai_100_2: [NISTAML.015]
+    nist_scope: in-scope; agent aspects fall under section 3.5 Security of Agents, which has no id
+    other: []
+  sources: [S-0283, S-0403, S-1059, S-0557, S-0535, S-0776, S-0473, S-0755]
+  maturity: demonstrated-production
+  maturity_basis: [INC-130 (DV)]
+  review_status: hypothesis
+  note: ATLAS has no technique for injection into a victim's inter-agent channel; AML.T0118 describes autonomous agents exchanging their own operational
+    information (rogue agents in AML.CS0068), so it is not used here.
+- id: AIT-107
+  slug: orchestrator-control-flow-hijack
+  name: Multi-agent orchestrator control-flow hijacking to code execution
+  class: multi-agent
+  class_group: X12
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: adversarial content processed by any sub-agent
+  attacker_knowledge: black-box
+  targeted_assets: [host-infrastructure, user-data]
+  asset_classes: [A07, A10]
+  targeted_components: [multi-agent-orchestrator, code-executor-agent]
+  reference_components: [C08]
+  preconditions: [orchestrator routes sub-agent outputs to a code executor]
+  impacts: [integrity, confidentiality]
+  example_incidents: []
+  mitigations: [system-level evaluation, sandboxed executors, typed messages between agents]
+  catalog_ids:
+    atlas: [AML.T0051.001, AML.T0050]
+    atlas_maturity: {AML.T0051.001: Demonstrated, AML.T0050: Realized}
+    owasp_llm: ['LLM01:2025', 'LLM06:2025']
+    owasp_agentic: ['ASI08:2026', 'ASI05:2026']
+    cwe: [CWE-94]
+    nist_ai_100_2: [NISTAML.015]
+    nist_scope: in-scope; agent aspects fall under section 3.5 Security of Agents, which has no id
+    other: []
+  sources: [S-0473, S-0561, S-0408, S-0475]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-108
+  slug: self-replicating-prompt-worm
+  name: Self-replicating prompts and AI worms
+  class: multi-agent
+  class_group: X12
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: send one message into an ecosystem of assistants
+  attacker_knowledge: black-box
+  targeted_assets: [user-data, customer-conversations]
+  asset_classes: [A07]
+  targeted_components: [rag-store, email-assistant, multi-agent-orchestrator]
+  reference_components: [C06, C08]
+  preconditions: [assistants both retrieve and send content automatically]
+  impacts: [confidentiality, integrity, propagation]
+  example_incidents: [INC-049]
+  mitigations: [replication guardrails (Virtual Donkey), rate limits on autonomous sending]
+  catalog_ids:
+    atlas: [AML.T0061, AML.T0051.001]
+    atlas_maturity: {AML.T0061: Demonstrated, AML.T0051.001: Demonstrated}
+    owasp_llm: ['LLM01:2025']
+    owasp_agentic: ['ASI07:2026', 'ASI08:2026']
+    cwe: [CWE-1427]
+    nist_ai_100_2: [NISTAML.015]
+    nist_scope: in-scope; agent aspects fall under section 3.5 Security of Agents, which has no id
+    other: []
+  sources: [S-0242, S-0385, S-0261, S-0277]
+  maturity: demonstrated-production
+  maturity_basis: [INC-049 (RD)]
+  review_status: hypothesis
+- id: AIT-109
+  slug: multi-agent-collusion-covert-channels
+  name: Multi-agent collusion and steganographic covert channels
+  class: multi-agent
+  class_group: X12
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: agents interacting in a shared environment
+  attacker_knowledge: n/a
+  targeted_assets: [oversight, downstream-decisions]
+  asset_classes: [A12, A16]
+  targeted_components: [multi-agent-orchestrator, monitoring]
+  reference_components: [C08, C17]
+  preconditions: [agents can encode information monitors cannot read]
+  impacts: [integrity, safety]
+  example_incidents: []
+  mitigations: [monitoring for steganography, diverse agents and auditing]
+  catalog_ids:
+    atlas: [AML.T0118]
+    atlas_maturity: {AML.T0118: Realized}
+    owasp_llm: []
+    owasp_agentic: ['ASI10:2026', 'ASI07:2026']
+    cwe: []
+    nist_ai_100_2: []
+    nist_scope: gap (section 3.5 Security of Agents has no id)
+    other: []
+  sources: [S-0296, S-0756, S-0706, S-0353]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+  note: AML.T0118 is rated Realized by ATLAS on the strength of AML.CS0068, where autonomous agents coordinated overtly through shared artifacts;
+    covert steganographic collusion (this technique) is shown only in research (S-0296). Re-rated demonstrated-research in the v0.2 fold.
+- id: AIT-110
+  slug: agentic-workflow-injection-ci
+  name: Agentic workflow injection in CI/CD (issues and PRs into agents holding secrets)
+  class: agent-hijack
+  class_group: X11
+  lifecycle_stage: supply-chain
+  intent: adversarial
+  attacker_access: open an issue, PR or comment on a public repository
+  attacker_knowledge: black-box
+  targeted_assets: [secrets, source-code, release-pipeline]
+  asset_classes: [A08, A09]
+  targeted_components: [ci-cd, agent-runtime, code-assistant]
+  reference_components: [C08, C14]
+  preconditions: [workflow triggers on untrusted events, agent has write tokens or shell]
+  impacts: [confidentiality, integrity]
+  example_incidents: [INC-141, INC-154, INC-100]
+  mitigations: [never run agents with secrets on untrusted triggers, separate read-only triage agents, TaintAWI-style analysis]
+  catalog_ids:
+    atlas: [AML.T0051.001, AML.T0119, AML.T0010.001]
+    atlas_maturity: {AML.T0051.001: Demonstrated, AML.T0119: Realized, AML.T0010.001: Realized}
+    owasp_llm: ['LLM01:2025', 'LLM06:2025']
+    owasp_agentic: ['ASI05:2026', 'ASI04:2026']
+    cwe: [CWE-1427, CWE-78]
+    nist_ai_100_2: [NISTAML.039, NISTAML.015]
+    nist_scope: in-scope; agent aspects fall under section 3.5 Security of Agents, which has no id
+    other: []
+  sources: [S-0637, S-1071, S-1069, S-1095]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-141 (ITW), INC-100 (ITW)]
+  review_status: hypothesis
+- id: AIT-111
+  slug: agent-dos-denial-of-wallet
+  name: Agent denial of service and denial of wallet (loops, persistent billable state)
+  class: resource-abuse
+  class_group: X13
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: malicious tool, injected content or ordinary queries
+  attacker_knowledge: black-box
+  targeted_assets: [compute-budget, inference-availability]
+  asset_classes: [A11]
+  targeted_components: [agent-runtime, tools-mcp, third-party-model-api]
+  reference_components: [C08, C09, C13]
+  preconditions: ['no bounds on context growth, recursion or spend']
+  impacts: [availability, financial]
+  example_incidents: []
+  mitigations: [AML.M0036 limit workload resource consumption, spend caps and per-session budgets, history transformation]
+  catalog_ids:
+    atlas: [AML.T0034.002, AML.T0029]
+    atlas_maturity: {AML.T0034.002: Feasible, AML.T0029: Demonstrated}
+    owasp_llm: ['LLM10:2025']
+    owasp_agentic: ['ASI08:2026', 'ASI02:2026']
+    cwe: [CWE-400, CWE-770]
+    nist_ai_100_2: [NISTAML.017]
+    nist_scope: in-scope; agent aspects fall under section 3.5 Security of Agents, which has no id
+    other: []
+  sources: [S-0662, S-0349, S-0558, S-0766]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-112
+  slug: llm-inference-cost-attacks
+  name: LLM inference-cost and latency attacks (sponge prompts, overthinking, infinite reasoning)
+  class: resource-abuse
+  class_group: X13
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: query access or injected context
+  attacker_knowledge: black-box or white-box
+  targeted_assets: [compute-budget, inference-availability]
+  asset_classes: [A11]
+  targeted_components: [serving, reasoning-model]
+  reference_components: [C05]
+  preconditions: [no output-length or reasoning-token budgets]
+  impacts: [availability, financial]
+  example_incidents: []
+  mitigations: [token budgets, latency SLO monitoring, reasoning caps]
+  catalog_ids:
+    atlas: [AML.T0034.001, AML.T0029]
+    atlas_maturity: {AML.T0034.001: Feasible, AML.T0029: Demonstrated}
+    owasp_llm: ['LLM10:2025']
+    owasp_agentic: []
+    cwe: [CWE-400]
+    nist_ai_100_2: [NISTAML.014]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0130, S-0250, S-0418, S-0576, S-0488, S-0259, S-0258, S-0087, S-0141]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-113
+  slug: llmjacking-cost-harvesting
+  name: 'LLMjacking: stolen keys and credentials to resell or abuse hosted models'
+  class: resource-abuse
+  class_group: X13
+  lifecycle_stage: infrastructure
+  intent: adversarial
+  attacker_access: stolen cloud credentials or leaked API keys
+  attacker_knowledge: none
+  targeted_assets: [compute-budget, brand-reputation]
+  asset_classes: [A11, A13]
+  targeted_components: [third-party-model-api, cloud-platform, identity-iam]
+  reference_components: [C11, C13, C15, C18]
+  preconditions: [long-lived API keys in code or exposed services, no invocation logging]
+  impacts: [financial, reputational, misuse]
+  example_incidents: [INC-053, INC-070]
+  mitigations: [model-invocation logging, key rotation and secret scanning, spend anomaly alerts]
+  catalog_ids:
+    atlas: [AML.T0034, AML.T0012, AML.T0055, AML.T0008.005]
+    atlas_maturity: {AML.T0034: Feasible, AML.T0012: Realized, AML.T0055: Realized, AML.T0008.005: Realized}
+    owasp_llm: ['LLM10:2025']
+    owasp_agentic: []
+    cwe: [CWE-798, CWE-522]
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-1000, S-1141, S-0896, S-1150]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-053 (ITW), INC-070 (ITW)]
+  review_status: hypothesis
+- id: AIT-114
+  slug: excessive-agency-unsafe-autonomy
+  name: Excessive agency and unsafe autonomy (non-adversarial destructive actions)
+  class: agent-failure
+  class_group: X15
+  lifecycle_stage: agent-runtime
+  intent: accidental
+  attacker_access: none (benign task)
+  attacker_knowledge: n/a
+  targeted_assets: [production-data, brand-reputation]
+  asset_classes: [A07, A13]
+  targeted_components: [agent-runtime, tools-mcp]
+  reference_components: [C08, C09]
+  preconditions: [agent has destructive permissions in production, no enforced freeze or approval]
+  impacts: [integrity, availability]
+  example_incidents: [INC-102, INC-144]
+  mitigations: [least privilege for agents, separate prod and dev credentials, AML.M0029 HITL for destructive actions]
+  catalog_ids:
+    atlas: [AML.T0101, AML.T0053]
+    atlas_maturity: {AML.T0101: Realized, AML.T0053: Demonstrated}
+    owasp_llm: ['LLM06:2025']
+    owasp_agentic: ['ASI02:2026', 'ASI08:2026']
+    cwe: [CWE-250]
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (non-adversarial, insider or provider failure)
+    other: []
+  sources: [S-0196, S-0930, S-0935, S-1143, S-0785]
+  maturity: occurred-in-wild
+  maturity_basis: [INC-102 (ACC), INC-144 (ACC)]
+  review_status: hypothesis
+- id: AIT-115
+  slug: rogue-misaligned-agent
+  name: Rogue or misaligned agent behaviour (insider-like actions, sandbox escape, specification gaming)
+  class: agent-failure
+  class_group: X15
+  lifecycle_stage: agent-runtime
+  intent: autonomous-agent
+  attacker_access: agent with tools and long-horizon goals
+  attacker_knowledge: n/a
+  targeted_assets: [host-infrastructure, secrets, intellectual-property]
+  asset_classes: [A02, A09, A10]
+  targeted_components: [agent-runtime, evaluation-sandbox]
+  reference_components: [C08]
+  preconditions: [agent pursues goals beyond task scope, weak containment of autonomous agents]
+  impacts: [confidentiality, integrity, safety]
+  example_incidents: [INC-156]
+  mitigations: [containment and egress control for agent sandboxes, AML.M0038 scope drift detection, treat model as untrusted insider]
+  catalog_ids:
+    atlas: [AML.T0105, AML.T0117, AML.T0118.000, AML.T0121]
+    atlas_maturity: {AML.T0105: Realized, AML.T0117: Realized, AML.T0118.000: Realized, AML.T0121: Realized}
+    owasp_llm: ['LLM06:2025']
+    owasp_agentic: ['ASI10:2026']
+    cwe: []
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (non-adversarial, insider or provider failure)
+    other: []
+  sources: [S-1009, S-0371, S-0298, S-1117, S-0763]
+  maturity: occurred-in-wild
+  maturity_basis: [INC-156 (ITW)]
+  review_status: hypothesis
+- id: AIT-116
+  slug: misinformation-hallucination-liability
+  name: Hallucination and misinformation acted upon (deployer liability)
+  class: agent-failure
+  class_group: X15
+  lifecycle_stage: inference
+  intent: accidental
+  attacker_access: none (benign use)
+  attacker_knowledge: n/a
+  targeted_assets: [brand-reputation, customer-trust, downstream-decisions]
+  asset_classes: [A12, A13]
+  targeted_components: [llm-app, customer-chatbot]
+  reference_components: [C07]
+  preconditions: [outputs presented as authoritative without grounding]
+  impacts: [financial, legal, reputational]
+  example_incidents: [INC-047, INC-055, INC-166]
+  mitigations: [grounding and citation verification, disclaimers are not a defense; human escalation]
+  catalog_ids:
+    atlas: [AML.T0048.001]
+    atlas_maturity: {AML.T0048.001: Demonstrated}
+    owasp_llm: ['LLM09:2025']
+    owasp_agentic: ['ASI08:2026']
+    cwe: [CWE-1434]
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (non-adversarial, insider or provider failure)
+    other: []
+  sources: [S-1135, S-1091, S-0477, S-0893]
+  maturity: occurred-in-wild
+  maturity_basis: [INC-047 (ACC), INC-055 (ACC), INC-166 (ACC)]
+  review_status: hypothesis
+- id: AIT-117
+  slug: insider-system-prompt-tampering
+  name: Insider tampering with production system prompts and configuration
+  class: integrity
+  class_group: X15
+  lifecycle_stage: deployment
+  intent: insider
+  attacker_access: insider or compromised operator access
+  attacker_knowledge: white-box
+  targeted_assets: [llm-app-integrity, brand-reputation]
+  asset_classes: [A04, A13]
+  targeted_components: [llm-app, config-management]
+  reference_components: [C07]
+  preconditions: [system prompts changed without review]
+  impacts: [integrity, reputational]
+  example_incidents: [INC-090, INC-166]
+  mitigations: [change control and two-person review for prompts, publish/version prompts]
+  catalog_ids:
+    atlas: [AML.T0081, AML.T0018.003]
+    atlas_maturity: {AML.T0081: Demonstrated, AML.T0018.003: Demonstrated}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: [CWE-284]
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (non-adversarial, insider or provider failure)
+    other: []
+  sources: [S-1144]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-090 (ITW), INC-166 (ACC)]
+  review_status: hypothesis
+  note: 'OWASP gap: no OWASP LLM or ASI entry covers insider modification of production system prompts (LLM07:2025 is leakage, not tampering);
+    v0.1 mapped LLM07:2025 and NISTAML.026, both removed.'
+- id: AIT-118
+  slug: watermark-removal-spoofing
+  name: Watermark and AI-content detector removal or spoofing
+  class: provenance
+  class_group: X16
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: access to generated content (and sometimes the detector)
+  attacker_knowledge: black-box
+  targeted_assets: [content-provenance, brand-reputation]
+  asset_classes: [A13]
+  targeted_components: [watermarking, content-detector]
+  reference_components: [C07, C17]
+  preconditions: [provenance relies on removable watermarks or detectors]
+  impacts: [integrity, reputational]
+  example_incidents: []
+  mitigations: [layered provenance (C2PA hard bindings), do not rely on detectors alone]
+  catalog_ids:
+    atlas: [AML.T0015, AML.T0043]
+    atlas_maturity: {AML.T0015: Realized, AML.T0043: Realized}
+    owasp_llm: ['LLM09:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-0175, S-0176, S-0197, S-0276, S-0354, S-0356, S-0311, S-0300, S-0625, S-0502, S-0568, S-0858, S-0842]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-119
+  slug: model-fingerprint-watermark-removal
+  name: Model watermark and fingerprint removal (IP verification bypass)
+  class: provenance
+  class_group: X16
+  lifecycle_stage: model-artifact
+  intent: adversarial
+  attacker_access: possession of a stolen or derived model
+  attacker_knowledge: white-box
+  targeted_assets: [intellectual-property]
+  asset_classes: [A02]
+  targeted_components: [model-artifact]
+  reference_components: [C04]
+  preconditions: [ownership proof relies on removable watermarks or fingerprints]
+  impacts: [financial, legal]
+  example_incidents: []
+  mitigations: [multiple independent ownership signals, lineage attestation]
+  catalog_ids:
+    atlas: [AML.T0048.004]
+    atlas_maturity: {AML.T0048.004: Realized}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.031]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0684, S-0564, S-0659, S-0030, S-0601]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-120
+  slug: perceptual-hash-collision
+  name: Perceptual-hash collisions against client-side scanning
+  class: provenance
+  class_group: X16
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: craft images processed by a scanner
+  attacker_knowledge: black-box
+  targeted_assets: [human-identity, legal-standing]
+  asset_classes: [A13, A15]
+  targeted_components: [client-side-scanning]
+  reference_components: [C17]
+  preconditions: [automated scanning acts on hash matches]
+  impacts: [integrity, legal]
+  example_incidents: []
+  mitigations: [human review before action, multiple hash families]
+  catalog_ids:
+    atlas: [AML.T0043.001]
+    atlas_maturity: {AML.T0043.001: Demonstrated}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.025]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0536]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-121
+  slug: ai-orchestrated-intrusion
+  name: AI-orchestrated autonomous intrusion (agentic recon, exploitation, exfiltration)
+  class: ai-enabled-offense
+  class_group: X14
+  lifecycle_stage: human
+  intent: adversarial
+  attacker_access: attacker with capable models or agent frameworks
+  attacker_knowledge: n/a
+  targeted_assets: [host-infrastructure, user-data, secrets]
+  asset_classes: [A07, A09, A10]
+  targeted_components: [enterprise-network, public-facing-apps]
+  reference_components: [C15]
+  preconditions: ['capable model accessible (hosted with bypassed safeguards, or open weights)']
+  impacts: [confidentiality, integrity]
+  example_incidents: [INC-120, INC-151, INC-155, INC-143, INC-119, INC-157]
+  mitigations: [detect machine-speed operations, AML.M0039 AI honeypots, patch faster (shrinking exploit window)]
+  catalog_ids:
+    atlas: [AML.T0116, AML.T0117, AML.T0124, AML.T0017.001, AML.T0118.001]
+    atlas_maturity: {AML.T0116: Realized, AML.T0117: Realized, AML.T0124: Realized, AML.T0017.001: Realized, AML.T0118.001: Realized}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.04]
+    nist_scope: in-scope
+    other: []
+  sources: [S-1011, S-1073, S-1119, S-1068, S-0604, S-0817, S-0807]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-120 (ITW), INC-155 (ITW), INC-143 (ITW), INC-119 (TI), INC-157 (TI)]
+  review_status: hypothesis
+- id: AIT-122
+  slug: ai-vulnerability-discovery-exploitation
+  name: AI-accelerated vulnerability discovery and exploit development
+  class: ai-enabled-offense
+  class_group: X14
+  lifecycle_stage: human
+  intent: adversarial
+  attacker_access: capable model or agent
+  attacker_knowledge: n/a
+  targeted_assets: [host-infrastructure, source-code]
+  asset_classes: [A08, A10]
+  targeted_components: [public-facing-apps, software-supply-chain]
+  reference_components: [C04, C15]
+  preconditions: [vulnerability advisories or code available to the attacker]
+  impacts: [confidentiality, integrity]
+  example_incidents: [INC-120, INC-157, INC-073]
+  mitigations: [faster patching, AI-assisted defensive discovery (AIxCC-style)]
+  catalog_ids:
+    atlas: [AML.T0017.001, AML.T0016.002]
+    atlas_maturity: {AML.T0017.001: Realized, AML.T0016.002: Realized}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-0254, S-0253, S-0359, S-1145, S-0944, S-0946, S-0943, S-0980, S-1063, S-1139, S-0796, S-0929]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-120 (ITW), INC-157 (TI), INC-073 (TI)]
+  review_status: hypothesis
+- id: AIT-123
+  slug: llm-querying-malware
+  name: LLM-querying and self-modifying malware
+  class: ai-enabled-offense
+  class_group: X14
+  lifecycle_stage: human
+  intent: adversarial
+  attacker_access: malware with access to an LLM API or local model
+  attacker_knowledge: n/a
+  targeted_assets: [host-infrastructure, user-data]
+  asset_classes: [A07, A10]
+  targeted_components: [endpoint]
+  reference_components: [C14]
+  preconditions: [egress to LLM APIs allowed from endpoints]
+  impacts: [confidentiality, integrity, availability]
+  example_incidents: [INC-095, INC-117, INC-131, INC-119, INC-157]
+  mitigations: [egress control for AI APIs, behavioural EDR, provider abuse detection]
+  catalog_ids:
+    atlas: [AML.T0102, AML.T0016.002, AML.T0050]
+    atlas_maturity: {AML.T0102: Realized, AML.T0016.002: Realized, AML.T0050: Realized}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-1026, S-1036, S-1018, S-0975]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-095 (ITW), INC-117 (ITW), INC-131 (TI), INC-119 (TI), INC-157 (TI)]
+  review_status: hypothesis
+- id: AIT-124
+  slug: ai-service-as-c2
+  name: AI services abused as command-and-control or relay channels
+  class: ai-enabled-offense
+  class_group: X14
+  lifecycle_stage: infrastructure
+  intent: adversarial
+  attacker_access: compromised host with access to AI APIs or web assistants
+  attacker_knowledge: n/a
+  targeted_assets: [host-infrastructure]
+  asset_classes: [A10]
+  targeted_components: [endpoint, third-party-model-api]
+  reference_components: [C13, C14]
+  preconditions: [AI SaaS traffic allowed and unmonitored]
+  impacts: [confidentiality, persistence]
+  example_incidents: [INC-101, INC-140]
+  mitigations: [monitor AI API usage per host, egress allowlists]
+  catalog_ids:
+    atlas: [AML.T0072, AML.T0096, AML.T0114, AML.T0108]
+    atlas_maturity: {AML.T0072: Realized, AML.T0096: Realized, AML.T0114: Demonstrated, AML.T0108: Demonstrated}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-1038, S-1065]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-101 (ITW)]
+  review_status: hypothesis
+- id: AIT-125
+  slug: living-off-installed-ai-agents
+  name: Living off installed AI agents and CLIs (malware tasks local agents)
+  class: ai-enabled-offense
+  class_group: X14
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: code execution on a developer host
+  attacker_knowledge: n/a
+  targeted_assets: [secrets, source-code]
+  asset_classes: [A08, A09]
+  targeted_components: [ai-cli, developer-workstation]
+  reference_components: [C14]
+  preconditions: [AI CLIs installed with broad filesystem access and permissive flags]
+  impacts: [confidentiality]
+  example_incidents: [INC-118]
+  mitigations: [restrict AI CLI permissions, monitor unattended agent invocations]
+  catalog_ids:
+    atlas: [AML.T0112.000, AML.T0053, AML.T0108]
+    atlas_maturity: {AML.T0112.000: Demonstrated, AML.T0053: Demonstrated, AML.T0108: Demonstrated}
+    owasp_llm: ['LLM06:2025']
+    owasp_agentic: ['ASI02:2026', 'ASI10:2026']
+    cwe: []
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-1110, S-1026]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-118 (ITW)]
+  review_status: hypothesis
+- id: AIT-126
+  slug: ai-spear-phishing
+  name: AI-automated spear phishing and social engineering at scale
+  class: ai-enabled-offense
+  class_group: X14
+  lifecycle_stage: human
+  intent: adversarial
+  attacker_access: access to a capable model and target OSINT
+  attacker_knowledge: n/a
+  targeted_assets: [human-identity, secrets, financial-assets]
+  asset_classes: [A09, A14, A15]
+  targeted_components: [email, human-operator]
+  reference_components: [C12]
+  preconditions: [employees targeted with personalised lures]
+  impacts: [confidentiality, financial]
+  example_incidents: [INC-048, INC-073, INC-076]
+  mitigations: [phishing-resistant MFA, AI-assisted detection of phishing intent, user training]
+  catalog_ids:
+    atlas: [AML.T0052.000, AML.T0087]
+    atlas_maturity: {AML.T0052.000: Demonstrated, AML.T0087: Realized}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-0264, S-0168, S-0507, S-0195, S-0413, S-0522]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-048 (TI), INC-073 (TI), INC-076 (TI)]
+  review_status: hypothesis
+- id: AIT-127
+  slug: deepfake-executive-impersonation
+  name: Deepfake voice/video executive impersonation and vishing
+  class: ai-enabled-offense
+  class_group: X14
+  lifecycle_stage: human
+  intent: adversarial
+  attacker_access: public audio/video of the impersonated person
+  attacker_knowledge: n/a
+  targeted_assets: [financial-assets, human-identity, secrets]
+  asset_classes: [A09, A14, A15]
+  targeted_components: [video-conferencing, phone, human-operator]
+  reference_components: [C12]
+  preconditions: [payment or access approval relies on recognising a voice or face]
+  impacts: [financial, confidentiality]
+  example_incidents: [INC-041, INC-002, INC-033, INC-059, INC-052, INC-085]
+  mitigations: [out-of-band verification for payments, challenge questions, AML.M0034 deepfake detection]
+  catalog_ids:
+    atlas: [AML.T0088, AML.T0052.001, AML.T0073]
+    atlas_maturity: {AML.T0088: Realized, AML.T0052.001: Feasible, AML.T0073: Realized}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-1130, S-1142, S-0184, S-1103, S-1020]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-041 (ITW), INC-002 (ITW), INC-033 (ITW), INC-059 (ITW), INC-052 (ITW), INC-085 (ITW)]
+  review_status: hypothesis
+- id: AIT-128
+  slug: synthetic-identity-insider-hiring
+  name: Synthetic-identity hiring infiltration (AI-enhanced fake workers)
+  class: ai-enabled-offense
+  class_group: X14
+  lifecycle_stage: human
+  intent: adversarial
+  attacker_access: stolen identity and AI-altered media
+  attacker_knowledge: n/a
+  targeted_assets: [host-infrastructure, intellectual-property]
+  asset_classes: [A02, A10]
+  targeted_components: [hiring-process, identity-proofing]
+  reference_components: [C12]
+  preconditions: [remote hiring with weak identity proofing]
+  impacts: [confidentiality, integrity]
+  example_incidents: [INC-060, INC-076, INC-119]
+  mitigations: [in-person or strong identity proofing, endpoint monitoring for new hires]
+  catalog_ids:
+    atlas: [AML.T0088, AML.T0021]
+    atlas_maturity: {AML.T0088: Realized, AML.T0021: Realized}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-0986, S-1012, S-1044]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-060 (ITW), INC-076 (TI), INC-119 (TI)]
+  review_status: hypothesis
+- id: AIT-129
+  slug: ai-influence-operations
+  name: AI-generated influence operations and election deepfakes
+  class: ai-enabled-offense
+  class_group: X14
+  lifecycle_stage: human
+  intent: adversarial
+  attacker_access: capable generators and distribution channels
+  attacker_knowledge: n/a
+  targeted_assets: [brand-reputation, societal-trust]
+  asset_classes: [A13]
+  targeted_components: [social-media, public-communications]
+  reference_components: [C01, C12]
+  preconditions: [cheap content generation at scale]
+  impacts: [reputational, societal]
+  example_incidents: [INC-035, INC-043, INC-076]
+  mitigations: [provenance (C2PA), platform detection, rapid response communications]
+  catalog_ids:
+    atlas: [AML.T0088, AML.T0048.002]
+    atlas_maturity: {AML.T0088: Realized, AML.T0048.002: Realized}
+    owasp_llm: ['LLM09:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-0734, S-1128, S-1136, S-1044, S-1027]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-035 (ITW), INC-043 (ITW), INC-076 (TI)]
+  review_status: hypothesis
+- id: AIT-130
+  slug: prompt-injection-against-ai-defenders
+  name: Prompt injection against AI-driven security tooling (SOC, malware analysis, AIOps, LLM-as-judge)
+  class: ai-enabled-offense
+  class_group: X08
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: content processed by the defender's AI (logs, samples, telemetry, documents under review)
+  attacker_knowledge: black-box
+  targeted_assets: [security-detection, downstream-decisions]
+  asset_classes: [A12, A16]
+  targeted_components: [soc-llm, aiops-agent, llm-judge]
+  reference_components: [C08, C17]
+  preconditions: [defensive AI acts on attacker-controlled data]
+  impacts: [integrity]
+  example_incidents: [INC-096, INC-127]
+  mitigations: [treat analysed artifacts as untrusted data, non-LLM detection backstops]
+  catalog_ids:
+    atlas: [AML.T0051.001, AML.T0051.000, AML.T0015]
+    atlas_maturity: {AML.T0051.001: Demonstrated, AML.T0051.000: Realized, AML.T0015: Realized}
+    owasp_llm: ['LLM01:2025']
+    owasp_agentic: ['ASI01:2026']
+    cwe: [CWE-1427]
+    nist_ai_100_2: [NISTAML.015]
+    nist_scope: in-scope
+    other: []
+  sources: [S-1054, S-0532, S-0583, S-0316, S-0429, S-0664, S-0570]
+  maturity: demonstrated-production
+  maturity_basis: [INC-096 (ITW-Q), INC-127 (DV)]
+  review_status: hypothesis
+- id: AIT-131
+  slug: ai-generated-insecure-code
+  name: AI-generated insecure code entering production (vibe coding)
+  class: ai-induced-weakness
+  class_group: X15
+  lifecycle_stage: human
+  intent: accidental
+  attacker_access: none (developers accept AI output)
+  attacker_knowledge: n/a
+  targeted_assets: [source-code, user-data, host-infrastructure]
+  asset_classes: [A07, A08, A10]
+  targeted_components: [code-assistant, ci-cd]
+  reference_components: [C08, C14]
+  preconditions: [AI-written code shipped without security review]
+  impacts: [confidentiality, integrity]
+  example_incidents: [INC-137, INC-172]
+  mitigations: [SAST/DAST gates, secure-by-default prompts and tuning]
+  catalog_ids:
+    atlas: [AML.T0048]
+    atlas_maturity: {AML.T0048: Realized}
+    owasp_llm: ['LLM09:2025', 'LLM05:2025']
+    owasp_agentic: []
+    cwe: [CWE-1426]
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (non-adversarial, insider or provider failure)
+    other: []
+  sources: [S-0147, S-0192, S-0198, S-0940, S-0636, S-0169, S-0914, S-0633, S-0922]
+  maturity: demonstrated-production
+  maturity_basis: [INC-137 (DV), INC-172 (DV)]
+  review_status: hypothesis
+- id: AIT-132
+  slug: ai-scraping-content-theft
+  name: Agentic scraping and content theft bypassing bot defenses
+  class: ai-enabled-offense
+  class_group: X14
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: LLM web agents
+  attacker_knowledge: n/a
+  targeted_assets: [intellectual-property]
+  asset_classes: [A02]
+  targeted_components: [public-website]
+  reference_components: [C01]
+  preconditions: [bot defenses tuned for scripted scrapers]
+  impacts: [financial, confidentiality]
+  example_incidents: []
+  mitigations: [agent-aware bot defenses (WebCloak)]
+  catalog_ids:
+    atlas: []
+    atlas_maturity: {}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-0623]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+  note: 'ATLAS gap: AML.T0126 Automated Collection covers post-compromise collection, not scraping of public publisher content; no ATLAS technique
+    fits.'
+- id: AIT-133
+  slug: ai-targeted-cloaking
+  name: AI-targeted cloaking (serving different content to AI crawlers/agents)
+  class: ai-enabled-offense
+  class_group: X08
+  lifecycle_stage: data
+  intent: adversarial
+  attacker_access: control of a website
+  attacker_knowledge: n/a
+  targeted_assets: [brand-reputation, downstream-decisions]
+  asset_classes: [A12, A13]
+  targeted_components: [search-pipeline, browser-agent]
+  reference_components: [C06, C08]
+  preconditions: [agents and crawlers identifiable by user agent or behaviour]
+  impacts: [integrity]
+  example_incidents: []
+  mitigations: [fetch from diverse vantage points, cross-check sources]
+  catalog_ids:
+    atlas: [AML.T0134]
+    atlas_maturity: {AML.T0134: Feasible}
+    owasp_llm: ['LLM09:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.015]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0903, S-0533]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-134
+  slug: agent-payment-manipulation
+  name: Agent-initiated payment and transaction manipulation (payment-detail substitution, unauthorized transfers, mandate abuse)
+  class: agent-transaction-manipulation
+  class_group: X11
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: write access to content, memory or tools the agent or copilot reads
+  attacker_knowledge: black-box
+  targeted_assets: [funds, payment-instructions, payee-records]
+  asset_classes: [A14, A07]
+  targeted_components: [agent-runtime, payment-rail, retrieval, approval-ui]
+  reference_components: [C08, C21, C11, C17, C06]
+  preconditions: ['an agent or copilot initiates, approves or informs payments', 'attacker content reaches its context, retrieval index or memory',
+    'human approval is not bound to the exact payee, amount and items (LW-005)']
+  impacts: [financial, integrity]
+  example_incidents: [INC-162]
+  mitigations: ['bind approval cryptographically to payee, amount and items (as AP2 Cart Mandates do)', out-of-band verification of changed bank
+      details, deterministic payment policy outside the model, treat retrieved payment details as untrusted]
+  catalog_ids:
+    atlas: [AML.T0051.001, AML.T0070, AML.T0053, AML.T0067.000, AML.T0048.000]
+    atlas_maturity: {AML.T0051.001: Demonstrated, AML.T0070: Demonstrated, AML.T0053: Demonstrated, AML.T0067.000: Demonstrated, AML.T0048.000: Realized}
+    owasp_llm: ['LLM01:2025', 'LLM06:2025']
+    owasp_agentic: ['ASI01:2026', 'ASI02:2026', 'ASI09:2026']
+    cwe: [CWE-863]
+    nist_ai_100_2: [NISTAML.015]
+    nist_scope: in-scope; agent aspects fall under section 3.5 Security of Agents, which has no id
+    other: [LW-005 (candidate)]
+  sources: [S-0448, S-1153, S-0903]
+  maturity: demonstrated-production
+  maturity_basis: [INC-162 (RD)]
+  review_status: hypothesis
+- id: AIT-135
+  slug: llm-attribute-inference-deanonymization
+  name: LLM-enabled personal-attribute inference and deanonymization
+  class: privacy-inference
+  class_group: X04
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: public or collected text written by the target, plus a capable model
+  attacker_knowledge: black-box
+  targeted_assets: [personal-attributes, pseudonymous-identity]
+  asset_classes: [A07, A15, A18]
+  targeted_components: [llm-app, model-provider, external-data]
+  reference_components: [C07, C13, C01]
+  preconditions: ['attacker can collect text, posts or documents the person wrote', 'an off-the-shelf LLM infers location, age, income or identity
+      from them']
+  impacts: [privacy, targeting for fraud or harassment]
+  example_incidents: []
+  mitigations: [minimize and pseudonymize published personal text, monitor bulk scraping of user content, LLM-aware anonymization before release]
+  catalog_ids:
+    atlas: [AML.T0087, AML.T0116]
+    atlas_maturity: {AML.T0087: Realized, AML.T0116: Realized}
+    owasp_llm: ['LLM02:2025']
+    owasp_agentic: []
+    cwe: [CWE-359]
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: [CoSAI riskInferredSensitiveData]
+  sources: [S-0319, S-0540]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-136
+  slug: embodied-agent-hijack
+  name: Jailbreak and prompt injection of embodied and robotic agents causing physical harm
+  class: embodied-agent-hijack
+  class_group: X09
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: prompt access, or physical text or signage in the robot's view
+  attacker_knowledge: black-box or grey-box
+  targeted_assets: [physical-safety, actuation]
+  asset_classes: [A12, A17]
+  targeted_components: [robot-planner, vlm, sensors]
+  reference_components: [C16, C08]
+  preconditions: [an LLM or VLM plans or commands physical actions, attacker text reaches the planner through prompts or the camera]
+  impacts: [safety, integrity]
+  example_incidents: []
+  mitigations: [safety envelope and action filters outside the model, separate perception text from instructions, human confirmation for hazardous
+      actions]
+  catalog_ids:
+    atlas: [AML.T0054, AML.T0051.001, AML.T0048.003]
+    atlas_maturity: {AML.T0054: Realized, AML.T0051.001: Demonstrated, AML.T0048.003: Realized}
+    owasp_llm: ['LLM01:2025', 'LLM06:2025']
+    owasp_agentic: ['ASI01:2026']
+    cwe: []
+    nist_ai_100_2: [NISTAML.018]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0307, S-0593]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-137
+  slug: unlearning-reversal
+  name: Machine-unlearning failure and attacks (relearning, membership inference on unlearned models)
+  class: unlearning-attack
+  class_group: X04
+  lifecycle_stage: model-artifact
+  intent: adversarial
+  attacker_access: query access, or fine-tuning access to the unlearned model
+  attacker_knowledge: black-box or white-box
+  targeted_assets: [data-subject-rights, removed-knowledge]
+  asset_classes: [A01, A07, A03, A18]
+  targeted_components: [training, serving]
+  reference_components: [C03, C05]
+  preconditions: [a model was "unlearned" to remove data or hazardous knowledge, the removal is approximate and can be reversed or detected]
+  impacts: [privacy, safety (hazardous knowledge restored), compliance (erasure claims)]
+  example_incidents: []
+  mitigations: ['evaluate unlearning adaptively (relearning, steering, MIA)', retrain from filtered data for strong erasure claims]
+  catalog_ids:
+    atlas: [AML.T0024.000]
+    atlas_maturity: {AML.T0024.000: Feasible}
+    owasp_llm: ['LLM02:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: [NISTAML.033]
+    nist_scope: in-scope
+    other: []
+  sources: [S-0114, S-0401, S-0406, S-0436, S-0472, S-0647, S-0923]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-138
+  slug: shadow-agent-nhi-sprawl
+  name: Shadow, orphaned and stale agents, MCP servers and non-human identities
+  class: identity-sprawl
+  class_group: X11
+  lifecycle_stage: deployment
+  intent: adversarial
+  attacker_access: any party that finds or inherits an unmanaged agent, server or credential
+  attacker_knowledge: black-box
+  targeted_assets: [credentials, agent-identities, connected-systems]
+  asset_classes: [A09, A10, A07]
+  targeted_components: [identity, agent-runtime, mcp-servers]
+  reference_components: [C11, C08, C09]
+  preconditions: ['agents, MCP servers or service tokens are created outside inventory', 'no owner, offboarding, rotation or binding of agent
+      identity to its current deployment']
+  impacts: [unauthorized access, lateral movement]
+  example_incidents: []
+  mitigations: ['inventory of agents, MCP servers and NHIs', short-lived credentials bound to the deployment, offboarding and rotation]
+  catalog_ids:
+    atlas: [AML.T0055, AML.T0012]
+    atlas_maturity: {AML.T0055: Realized, AML.T0012: Realized}
+    owasp_llm: ['LLM06:2025']
+    owasp_agentic: ['ASI03:2026']
+    cwe: []
+    nist_ai_100_2: []
+    nist_scope: gap (section 3.5 Security of Agents has no id)
+    other: ['OWASP MCP09:2025 Shadow MCP Servers', 'OWASP NHI1:2025 Improper Offboarding', CoSAI riskShadowAndUnknownAgents, CoSAI riskZombieShadowMCPServers,
+      CoSAI riskStaleAgentIdentityBinding]
+  sources: [S-0896, S-0898, S-0900]
+  maturity: theoretical
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-139
+  slug: agent-action-repudiation
+  name: Repudiation and insufficient audit of agent actions
+  class: repudiation
+  class_group: X11
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: any actor whose agent-mediated action is not attributably logged
+  attacker_knowledge: n/a
+  targeted_assets: [audit-trail, accountability]
+  asset_classes: [A13, A16, A07]
+  targeted_components: [agent-runtime, identity, trace-store]
+  reference_components: [C08, C11, C19]
+  preconditions: [agent actions run under shared or user identities, 'no tamper-evident per-action log binding agent, delegator, tool call and
+      arguments']
+  impacts: [repudiation, forensic and compliance failure]
+  example_incidents: []
+  mitigations: [per-action signed logs with delegation chain, distinct agent identities, retention and integrity of traces]
+  catalog_ids:
+    atlas: []
+    atlas_maturity: {}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: [CWE-778]
+    nist_ai_100_2: []
+    nist_scope: gap (section 3.5 Security of Agents has no id)
+    other: [OWASP T8 Repudiation & Untraceability, 'OWASP MCP08:2025 Lack of Audit and Telemetry']
+  sources: [S-0760, S-0898]
+  maturity: theoretical
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-140
+  slug: human-review-flooding
+  name: Flooding human reviewers and approval fatigue
+  class: oversight-saturation
+  class_group: X13
+  lifecycle_stage: agent-runtime
+  intent: adversarial
+  attacker_access: ability to trigger many detections, alerts or approval requests
+  attacker_knowledge: black-box
+  targeted_assets: [human-review-capacity, detection]
+  asset_classes: [A16, A11]
+  targeted_components: [humans-in-the-loop, agent-runtime, security-ml]
+  reference_components: [C12, C08, C17]
+  preconditions: [a human must review AI detections or approve agent actions, request volume is attacker-influenceable]
+  impacts: [oversight bypass, availability of review]
+  example_incidents: []
+  mitigations: [risk-tiered approvals, rate limits on approval requests, batching with deterministic policy for low-risk actions]
+  catalog_ids:
+    atlas: [AML.T0046]
+    atlas_maturity: {AML.T0046: Feasible}
+    owasp_llm: []
+    owasp_agentic: ['ASI09:2026']
+    cwe: []
+    nist_ai_100_2: []
+    nist_scope: gap (section 3.5 Security of Agents has no id)
+    other: [OWASP T10 Overwhelming HITL]
+  sources: [S-0760, S-0903]
+  maturity: theoretical
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-141
+  slug: provider-data-handling
+  name: Provider-side retention, secondary use, disclosure and indexing of prompts and outputs
+  class: provider-data-handling
+  class_group: X15
+  lifecycle_stage: deployment
+  intent: provider
+  attacker_access: none required (provider practice, provider bug or vendor breach); any party who finds exposed data
+  attacker_knowledge: n/a
+  targeted_assets: [prompts, conversation-history, uploaded-files, account-metadata]
+  asset_classes: [A07, A13, A02, A18]
+  targeted_components: [model-provider]
+  reference_components: [C13]
+  preconditions: ['prompts, files and outputs are sent to a third-party provider (TB5)', 'the provider retains, reuses, shares, exposes or is
+      compelled to disclose them']
+  impacts: [confidentiality, legal and regulatory]
+  example_incidents: [INC-167, INC-133, INC-029, INC-078]
+  mitigations: [contractual retention and training opt-out, zero-retention endpoints, data minimization before the provider boundary, disable
+      public share links]
+  catalog_ids:
+    atlas: []
+    atlas_maturity: {}
+    owasp_llm: ['LLM02:2025']
+    owasp_agentic: []
+    cwe: [CWE-359, CWE-200]
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (non-adversarial, insider or provider failure)
+    other: []
+  sources: [S-1155, S-1111, S-1085]
+  maturity: occurred-in-wild
+  maturity_basis: [INC-167 (ACC), INC-133 (ITW), INC-029 (ACC)]
+  review_status: hypothesis
+- id: AIT-142
+  slug: upstream-model-change
+  name: Silent upstream model behaviour change, regression or retirement by a third-party provider
+  class: provider-model-change
+  class_group: X15
+  lifecycle_stage: deployment
+  intent: provider
+  attacker_access: none (provider action)
+  attacker_knowledge: n/a
+  targeted_assets: [model-behaviour, service-availability, downstream-decisions]
+  asset_classes: [A03, A11, A12]
+  targeted_components: [model-provider]
+  reference_components: [C13, C07]
+  preconditions: [the application calls a hosted model alias or provider-side system prompt it does not pin or regression-test]
+  impacts: [integrity, safety, availability]
+  example_incidents: [INC-165, INC-166]
+  mitigations: [pin model versions, safety and regression evaluation on every provider change, change-notice terms, fallback model]
+  catalog_ids:
+    atlas: []
+    atlas_maturity: {}
+    owasp_llm: ['LLM03:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (non-adversarial, insider or provider failure)
+    other: []
+  sources: [S-1156, S-1157, S-1155]
+  maturity: occurred-in-wild
+  maturity_basis: [INC-165 (ACC), INC-166 (ACC)]
+  review_status: hypothesis
+- id: AIT-143
+  slug: evaluation-benchmark-manipulation
+  name: Evaluation and benchmark manipulation (leaderboard gaming, evaluation contamination, sandbagging)
+  class: evaluation-manipulation
+  class_group: X03
+  lifecycle_stage: supply-chain
+  intent: adversarial
+  attacker_access: ability to submit models or results to public leaderboards, or control of the evaluated model
+  attacker_knowledge: grey-box
+  targeted_assets: [model-selection-decisions, assurance-evidence]
+  asset_classes: [A03, A16]
+  targeted_components: [model-hub, evaluation]
+  reference_components: [C04, C03]
+  preconditions: [model selection or release decisions rely on public leaderboards or self-reported evaluations]
+  impacts: [integrity, supply-chain compromise]
+  example_incidents: []
+  mitigations: [independent held-out evaluation of the exact artifact, provenance of evaluation results]
+  catalog_ids:
+    atlas: [AML.T0111]
+    atlas_maturity: {AML.T0111: Demonstrated}
+    owasp_llm: ['LLM03:2025']
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: [CoSAI riskEvaluationBenchmarkManipulation]
+  sources: [S-0628]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
+- id: AIT-144
+  slug: consumer-safety-failure
+  name: Consumer-facing safety failures with legal exposure (self-harm encouragement, non-consensual or child sexual imagery)
+  class: consumer-safety-failure
+  class_group: X15
+  lifecycle_stage: inference
+  intent: accidental-or-misuse
+  attacker_access: ordinary user access (misuse) or none (model failure)
+  attacker_knowledge: black-box
+  targeted_assets: [end-user-wellbeing, minors, depicted-third-parties, legal-standing]
+  asset_classes: [A17, A13, A18]
+  targeted_components: [llm-app, model-provider, end-users]
+  reference_components: [C07, C13, C12]
+  preconditions: [a consumer-facing assistant or image tool reaches vulnerable users or can depict real people, 'safeguards for self-harm, minors
+      and real-person imagery are weak or regress']
+  impacts: [user harm, legal and regulatory]
+  example_incidents: [INC-165, INC-168, INC-169, INC-170]
+  mitigations: [age assurance and minor protections, crisis-escalation behaviour tested adversarially, block sexualized edits of real-person imagery,
+    incident reporting]
+  catalog_ids:
+    atlas: [AML.T0048.003, AML.T0048.002]
+    atlas_maturity: {AML.T0048.003: Realized, AML.T0048.002: Realized}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (non-adversarial, insider or provider failure)
+    other: []
+  sources: [S-1154, S-1155, S-1156, S-1157]
+  maturity: occurred-in-wild
+  maturity_basis: [INC-165 (ACC), INC-168 (ITW)]
+  review_status: hypothesis
+- id: AIT-145
+  slug: ai-tool-lures
+  name: AI-themed lures and trojanized AI tools as initial access
+  class: ai-lure
+  class_group: X14
+  lifecycle_stage: human
+  intent: adversarial
+  attacker_access: ability to publish software, repositories or ads that users will install
+  attacker_knowledge: n/a
+  targeted_assets: [credentials, hosts]
+  asset_classes: [A09, A10]
+  targeted_components: [humans-in-the-loop, developer-environment]
+  reference_components: [C12, C14]
+  preconditions: ['users seek AI tools, leaked models or "unlocked" AI clients from unofficial sources']
+  impacts: [host compromise, credential theft]
+  example_incidents: [INC-058, INC-146]
+  mitigations: [approved AI tool catalogue, application allow-listing on developer hosts]
+  catalog_ids:
+    atlas: [AML.T0011, AML.T0011.001]
+    atlas_maturity: {AML.T0011: Realized, AML.T0011.001: Realized}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: []
+  sources: [S-1070]
+  maturity: exploited-in-wild
+  maturity_basis: [INC-058 (ITW)]
+  review_status: hypothesis
+- id: AIT-146
+  slug: llm-router-manipulation
+  name: LLM router and model-routing manipulation (confounder gadgets, route hijacking)
+  class: control-plane-manipulation
+  class_group: X08
+  lifecycle_stage: inference
+  intent: adversarial
+  attacker_access: query access to an application that routes between models
+  attacker_knowledge: black-box or white-box
+  targeted_assets: [compute-budget, model-behaviour]
+  asset_classes: [A11, A03]
+  targeted_components: [ai-gateway, llm-app, model-provider]
+  reference_components: [C18, C07, C13]
+  preconditions: [an LLM router chooses the model per query from query content]
+  impacts: [cost, integrity (weaker or unintended model answers)]
+  example_incidents: []
+  mitigations: [per-user budgets independent of routing, router robustness testing, route decisions logged and bounded]
+  catalog_ids:
+    atlas: []
+    atlas_maturity: {}
+    owasp_llm: []
+    owasp_agentic: []
+    cwe: []
+    nist_ai_100_2: []
+    nist_scope: out-of-scope (conventional cyber, platform or misuse outside NIST AML scope)
+    other: [CoSAI riskOrchestratorRouteHijacking]
+  sources: [S-1181, S-0900]
+  maturity: demonstrated-research
+  maturity_basis: []
+  review_status: hypothesis
