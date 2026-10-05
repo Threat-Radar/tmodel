@@ -4,9 +4,9 @@ id: RPT-0003-sources
 title: "RPT-0003 source log"
 type: research
 status: draft
-version: "0.1.0"
+version: "0.2.0"
 date: "2026-09-26"
-updated: "2026-09-26"
+updated: "2026-10-04"
 record: RPT-0003
 ---
 
@@ -16,6 +16,8 @@ All URLs were resolved on 2026-09-26. **Frontier** means verified and logged
 here, but not yet promoted to a complete record in the separate `library`
 repository. Issue #7 depends on #P1 for that ingestion; this checkout must not
 edit the detached `library/` submodule.
+
+ThreatTree sources were resolved on 2026-10-04 and remain frontier sources pending #P1 ingestion.
 
 | id | source | kind | status | report use |
 |---|---|---|---|---|
@@ -33,6 +35,9 @@ edit the detached `library/` submodule.
 | `devici-product` | [Devici product page](https://www.securitycompass.com/devici/) | vendor documentation | frontier | layered diagrams, AI/MCP, review traceability, OTM handoff |
 | `devici-sdelements` | [Devici–SD Elements integration](https://www.securitycompass.com/blog/devici-sd-elements-integration-generally-available/) | vendor release note | frontier | OTM handoff and Jira/GitHub/Azure DevOps delivery |
 | `tutamantic-product` | [Tutamantic services](https://www.tutamantic.com/) | vendor documentation | frontier | diagram/IaC ingestion and generated paths/mitigations |
+| `threattree-product` | [ThreatTree product site](https://threattree.com/) | vendor product documentation | frontier | DFDs, linked AND/OR attack trees, framework tags, risk scoring/register, controls, collaboration, JSON/STIX/PDF exports |
+| `threattree-help` | [ThreatTree Help Center](https://threattree.com/app/help) | vendor technical documentation | frontier | object and interaction model, plan limits, review/treatment fields, import/export details, audit logs, ticket/SIEM/GRC integrations |
+| `threattree-pricing` | [ThreatTree Plans & Pricing](https://threattree.com/app/membership) | vendor pricing documentation | frontier | Free/Pro/Enterprise pricing, delivery, plan-specific exports and integrations |
 | `threat-dragon` | [OWASP Threat Dragon repository](https://github.com/OWASP/threat-dragon) | OSS repository, Apache-2.0; reviewed `5d6db4f735b0430431a495f4821ccdbe1ec5db8a` | frontier | DFD editor, threats, repository storage, maturity |
 | `threat-dragon-release` | [OWASP Threat Dragon releases](https://github.com/OWASP/threat-dragon/releases) | OSS release history | frontier | v2.6.0 activity observation |
 | `threat-dragon-guide` | [OWASP Developer Guide — Threat Dragon](https://github.com/OWASP/DevGuide/blob/main/docs/en/04-design/01-threat-modeling/03-threat-dragon.md) | OWASP project documentation | frontier | supported methods, editing flow, desktop/web delivery, PDF reports |

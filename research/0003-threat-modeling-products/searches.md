@@ -4,9 +4,9 @@ id: RPT-0003-searches
 title: "RPT-0003 search log"
 type: research
 status: draft
-version: "0.1.0"
+version: "0.2.0"
 date: "2026-09-26"
-updated: "2026-09-26"
+updated: "2026-10-04"
 record: RPT-0003
 ---
 
@@ -24,6 +24,7 @@ tested in this pass.
 | Model-as-code | OWASP pytm README license; Threagile README YAML risk rules REST outputs | two developer-centered approaches with inspectable models and automation surfaces |
 | Interchange | Open Threat Model specification; Threat Dragon TMF/TM-BOM; product import/export docs | portability is fragmented; OTM and TM-BOM are two documented convergence attempts in the reviewed sample |
 | Workflow evidence | Jira GitHub Azure DevOps integrations; CI/CD APIs; repository storage; reports and review status | enterprise products emphasize workflow orchestration; OSS emphasizes inspectable, versionable artifacts |
+| ThreatTree extension (2026-10-04) | ThreatTree official product, help center, pricing, DFD attack tree risk register, JSON STIX export, integrations, GitHub repository | first-party product/help/pricing evidence verified; no official public source repository identified; no installation or acceptance test performed |
 
 ## Rejected or downgraded evidence
 

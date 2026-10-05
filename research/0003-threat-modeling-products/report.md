@@ -7,9 +7,9 @@ description: "Evidence-first comparison of commercial and open-source threat-mod
 type: research
 category: security
 status: draft
-version: "0.1.0"
+version: "0.2.0"
 date: "2026-09-26"
-updated: "2026-09-26"
+updated: "2026-10-04"
 authors:
   - role: research
     id: kriishnaa-18
@@ -38,6 +38,7 @@ issue: 7
 
 Claim notes: “Documented” or “vendor-documented” means the capability is supported by first-party product documentation. “Researcher inference” means the conclusion was drawn from the available evidence rather than explicitly stated by the product. “Unclear” means the reviewed sources did not confirm the capability. None of the products were acceptance-tested.
 Maturity reflects the product/project status observed on 2026-09-26 and does not guarantee future maintenance or support.
+ThreatTree status was observed on 2026-10-04 and was not acceptance-tested.
 
 | product | pricing / delivery | features | integrations | model portability | UI / interaction model | maturity |
 |---|---|---|---|---|---|---|
@@ -47,6 +48,7 @@ Maturity reflects the product/project status observed on 2026-09-26 and does not
 | SD Elements | commercial SaaS or on-premises platform | Generates threats, weaknesses, countermeasures, developer guidance, and compliance mappings; supports tracking and verification | Jira, GitHub, GitLab, Azure DevOps, and security-testing tools | Supports OTM transfer from Devici; broader threat-model export is unclear | surveys, generated requirements, diagrams, and portfolio dashboards | active 2026 enterprise platform |
 | Devici | commercial product | layered architecture modeling; vendor-documented STRIDE, LINDDUN, and MAESTRO proposals; editable threats and mitigations; AI-assisted modeling | GitHub/code scanning, AI clients through MCP, and SD Elements delivery to Jira, GitHub, and Azure DevOps | supports OTM transfer to SD Elements; broader cross-tool export is unclear | Collaborative layered diagram canvas with AI/MCP interaction | active 2026 product integrated into Security Compass |
 | Tutamantic | commercial cloud service | Generates threats, mitigations, attack paths, and areas of concern from existing security/architecture designs | CI/CD integration is mentioned, but specific supported tools are not clearly documented | imports draw.io, Visio, Lucidchart, IaC, and infrastructure schemas; neutral export unclear | reuse and enrich existing diagrams or infrastructure schemas | active service site; public technical detail is limited |
+| ThreatTree | commercial browser-based product; Free $0, Pro $29/user/month early-adopter pricing, Enterprise quote; dedicated/VPC deployment is an Enterprise option | DFDs with trust boundaries and architecture elements; AND/OR attack trees linked to DFD nodes; framework tagging; likelihood × impact scoring and ranked risk register; mitigations/control mappings; team collaboration and audit logs on paid plans | Enterprise integrations include two-way Jira, ServiceNow, Linear, and Azure DevOps ticketing; Splunk feed; Vanta/Drata sync; Confluence/Notion embeds; OpenAPI, CloudFormation, and Terraform import | JSON export on all plans; STIX 2.1 export on Pro+; PDF exports; Enterprise DFD import from OpenAPI, CloudFormation, and Terraform; cross-tool round trip was not tested | browser DFD editor, attack-tree editor, risk register, and reports | active official product, help, and pricing documentation observed 2026-10-04; no official public source repository was identified; not independently tested |
 | OWASP Threat Dragon | Free and open source (Apache-2.0): web, desktop, or self-hosted | DFD modeling; suggested and manually added threats; mitigations; multiple threat categories; PDF reports | GitHub, GitLab, and Bitbucket model storage; no broad CI or issue-tracker layer documented | text-based tool JSON; TMF is tool-specific; TM-BOM is the stated successor direction | DFD canvas, threat forms, and report view | OWASP Production project; v2.6.0 released in 2026; exact reviewed revision logged in `sources.md` |
 | OWASP pytm | Free and Open Source (GPL-3.0): Python CLI/library | Python object model; rule-based threat generation; generated DFD and sequence diagrams | Can fit into version-control and CI workflows; no built-in issue-tracker integration is clearly documented | Python model source plus generated diagrams and reports; cross-tool round-trip support is unclear | model-as-code in Python with generated visual/report outputs | established OWASP project; exact reviewed revision logged in `sources.md` |
 | Threagile | Free and Open Source (MIT): Go CLI, container, or server | architecture/assets in YAML; standard and custom risk rules; explicit risk tracking; generated diagrams and risk reports | version-control/CI compatibility is a researcher inference from YAML/container operation; tracker integrations not documented | YAML input; JSON, PDF, XLSX, and diagram outputs; REST server; neutral round trip not established | model-as-code with generated diagrams/reports; project states its UI is limited | maintained repository at the exact revision logged in `sources.md` |
@@ -76,6 +78,7 @@ is as research evidence for tmodel, not the overall quality of the product. None
 | SD Elements | adjacent | adjacent — OTM handoff through Devici; broader cross-tool exchange is unclear | core | adjacent | core — work-item delivery and verification workflows are documented |
 | Devici | core | adjacent — OTM handoff documented; broader cross-tool exchange is unclear | adjacent | core | core — editable threats/mitigations and downstream traceability are documented |
 | Tutamantic | adjacent | limited | adjacent | adjacent | unclear — public sources do not clearly describe human-review or lifecycle tracking |
+| ThreatTree | core — DFD and attack-tree object structures are documented | adjacent — JSON/STIX exports and architecture imports are documented, but round trip was not tested | core — likelihood × impact scoring and a ranked risk register are documented | core — linked DFD, attack-tree, risk-register, and report views are documented | core — collaboration, audit logs, ownership/treatment fields, and ticket-driven mitigation status are documented on paid tiers; not acceptance-tested |
 | OWASP Threat Dragon | core | limited — tool-specific JSON; TM-BOM is a direction | adjacent | core | adjacent — manual threat/mitigation editing is documented; lifecycle traceability is limited |
 | OWASP pytm | core | limited — executable Python and generated outputs, no neutral round trip | adjacent | limited | limited — no native review/lifecycle model is documented |
 | Threagile | core | adjacent — structured YAML/JSON outputs, neutral round trip not established | core | limited | adjacent — explicit risk tracking exists; graphical review/lifecycle support is limited |
@@ -146,6 +149,14 @@ and areas of concern.
 For tmodel, this is useful because it shows how existing architecture files, such as Visio or draw.io diagrams, could be reused
 as inputs to a threat model. However, Tutamantic has limited public technical documentation. The reviewed sources do not clearly explain its object schema, API, review-state model, or export format, so it provides less evidence for tmodel’s design decisions 
 than some of the other products.
+
+### ThreatTree — linked DFD, attack-tree, and risk-register workflow
+
+ThreatTree is a commercial browser-based threat-modeling product with Free, Pro, and Enterprise plans. Its official documentation describes a forest that contains Data Flow Diagrams and Attack Trees. DFDs represent processes, data stores, trust boundaries, external entities, and data flows. Attack Trees use AND/OR logic to decompose a goal into atomic attack steps and can link back to the DFD node they target. ThreatTree supports framework tags, likelihood × impact scoring, mitigations and treatment information, standards-based control mappings, and a ranked risk register.
+
+The documented interface includes DFD and Attack Tree editors, a risk-register view, and PDF reports. JSON export is available on all plans, while Pro and Enterprise add STIX 2.1 export. Enterprise documentation describes DFD imports from OpenAPI, CloudFormation, and Terraform, plus integrations with ticketing, SIEM, GRC, and documentation systems. In particular, its ticketing documentation says closing or reopening a linked ticket changes the risk's mitigation state in ThreatTree.
+
+For tmodel, ThreatTree provides directly relevant evidence for linking architecture elements to ordered or branching attack steps, for risk prioritization, and for tracking mitigation through external work items. Its collaboration, audit, and ticket-sync features also provide evidence for R-018/R-021 review and lifecycle requirements. These are first-party documented capabilities only: the product was not acceptance-tested, cross-tool round trips were not verified, and no official public source repository was identified during this pass.
 
 ## Open-source approaches
 
