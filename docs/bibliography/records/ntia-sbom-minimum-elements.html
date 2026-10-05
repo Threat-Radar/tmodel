@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>The Minimum Elements For a Software Bill of Materials (SBOM)</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 24px 64px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.15; letter-spacing: -0.03em; margin: 28px 0 8px; }
+h2 { font-size: 1.25rem; margin: 1.6em 0 0.4em; }
+h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
+.kicker { margin: 22px 0 0; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.6em 0 1em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 8px 10px; font-size: 0.95rem; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+</style>
+</head>
+<body>
+<header><div class="bar"><a class="mark" href="../index.html">Bibliography</a><nav><a href="../../index.html">tmodel</a><a href="../index.html">Index</a><a href="../by-topic.html">Topic</a><a href="../by-type.html">Type</a><a href="../by-body.html">Issuing body</a><a href="../crosswalk.html">Crosswalk</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">WAVE 1 draft · ntia-sbom-minimum-elements</p>
+<h1>The Minimum Elements For a Software Bill of Materials (SBOM)</h1>
+<p class="lede">NTIA Minimum Elements</p>
+<p>
+  <span class="badge">spec</span>
+  <span class="badge">regulator</span>
+  <span class="badge">summarized</span>
+  <span class="badge">high</span>
+</p>
+<p class="meta">Publish topic: <strong>sbom</strong> (record.yaml topic). Status <code>summarized</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://www.ntia.gov/sites/default/files/publications/sbom_minimum_elements_report_0.pdf">https://www.ntia.gov/sites/default/files/publications/sbom_minimum_elements_report_0.pdf</a></li><li>Identifier URL: <a href="https://www.ntia.gov/report/2021/minimum-elements-software-bill-materials-sbom">https://www.ntia.gov/report/2021/minimum-elements-software-bill-materials-sbom</a></li><li>SHA-256: <code>b0fbbe5e3c5773977df1f402eceb845c4d5715a02cde4d967e54aef51856b716</code></li></ul>
+<h2>Specification</h2>
+<table><tbody><tr><td>Authors</td><td>National Telecommunications and Information Administration</td></tr><tr><td>Date</td><td>2021-07-12</td></tr><tr><td>Publisher</td><td>United States Department of Commerce</td></tr><tr><td>Maturity</td><td>best-practice</td></tr><tr><td>eo</td><td>Executive Order 14028 §4(f)</td></tr><tr><td>Pages</td><td>28</td></tr><tr><td>Media type</td><td>application/pdf</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge adjacent">adjacent</span></td></tr><tr><td>This project</td><td><span class="badge adjacent">adjacent</span></td></tr></tbody></table><p class="meta">Ratings are the <code>applicability</code> map on <code>record.yaml</code>. A missing axis is not assessed — it is not <code>none</code>. The summary's Why column is not scraped; two summary dialects exist, and a blank template cell is not a judgement.</p>
+<h2>Tags</h2>
+<h3>Topic tags</h3><p><span class="badge">sbom</span> <span class="badge">supply-chain</span> <span class="badge">regulation</span></p><p class="meta">Subject vocabulary and free tags. These are what the topic view and the tag crosswalk use.</p><h3>Role tags</h3><p><span class="badge">evidence</span></p><p class="meta">Why the record was kept (normative, prior-art, evidence, …). Not a subject.</p>
+<h2>Bears on</h2>
+<ul><li><code>R-M-07</code></li><li><code>R-M-11</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> Establishes the floor for what an SBOM must contain, and — decisively for us — puts the component hash OUTSIDE that floor. That omission is the evidence R-M-07 needs.</p><p class="meta">Assessed 2026-09-27.</p>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> on this record only. Empty lists are omitted. These are not crosswalk edges and not a knowledge graph.</p><h3><code>see_also</code></h3><ul><li><code>sp-800-161r1</code> <span class="meta">not in this subset</span></li></ul>
+<h2>Document cites</h2><p class="meta">From <code>cites</code>: what the document references. Fact about the source, not our crosswalk. Gaps stay gaps.</p><ul><li><a href="https://www.ntia.gov/files/ntia/publications/framingsbom_20191112.pdf">Framing Software Component Transparency (2019, 1st ed.)</a> <span class="meta">cited, no library record</span></li><li><a href="https://www.ntia.gov/files/ntia/publications/ntia_sbom_software_identity-2021mar30.pdf">Software Identification Challenges and Guidance</a> <span class="meta">cited, no library record</span></li><li><a href="https://www.ntia.gov/files/ntia/publications/ntia_sbom_use_cases_roles_benefits-nov2019.pdf">Roles and Benefits for SBOM Across the Supply Chain</a> <span class="meta">cited, no library record</span></li><li><a href="http://oasis-open.github.io/csaf-documentation/">OASIS Common Security Advisory Framework (CSAF) — VEX profile</a> <span class="meta">cited, no library record</span></li><li>Guidelines for the Creation of Interoperable Software Identification (SWID) Tags <span class="meta">cited, no library record</span></li><li><a href="https://www.iso.org/standard/65666.html">ISO/IEC 19770-2:2015 — Software identification tag</a> <span class="meta">cited, no library record</span></li><li><a href="https://github.com/package-url/purl-spec">Package URL (purl) specification</a> <span class="meta">cited, no library record</span></li><li><a href="https://spdx.dev/">SPDX project site — SPDX 2.2.x when cited; the line is held as `spdx-3-0-1`, no ingestion gap</a> <span class="meta">cited, no library record</span></li><li><a href="https://cyclonedx.org/">CycloneDX project site — CycloneDX 1.3 when cited; the line is held as `cyclonedx-1-7`, no ingestion gap</a> <span class="meta">cited, no library record</span></li></ul>
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited. The strip above is <code>record.yaml</code>. If they disagree, the record wins for type, tags, applicability ratings, and bears_on.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec</td></tr><tr><td><strong>Maturity</strong></td><td><code>best-practice</code> — a Department of Commerce report issued under EO 14028 §4(f). It sets a floor for federal procurement, and says in §III that it creates no new federal requirement</td></tr><tr><td><strong>Authors</strong></td><td>National Telecommunications and Information Administration</td></tr><tr><td><strong>Published</strong></td><td>2021-07-12</td></tr><tr><td><strong>Identifier</strong></td><td>EO 14028 §4(f) · US Dept. of Commerce</td></tr><tr><td><strong>Source</strong></td><td>https://www.ntia.gov/sites/default/files/publications/sbom_minimum_elements_report_0.pdf</td></tr><tr><td><strong>Digest</strong></td><td><code>sha256:b0fbbe5e3c5773977df1f402eceb845c4d5715a02cde4d967e54aef51856b716</code></td></tr></tbody></table>
+<h2>Overview</h2>
+<p>Defines the floor for what an SBOM must contain, in three interlocking parts: <strong>data fields</strong>, <strong>automation support</strong>, and <strong>practices and processes</strong>. The seven minimum data fields are Supplier Name, Component Name, Version of the Component, Other Unique Identifiers, Dependency Relationship, Author of SBOM Data, and Timestamp (§IV). Automation support names three acceptable formats — SPDX, CycloneDX, and SWID tags — and requires that an SBOM crossing an organisational boundary be conveyed in one of them.</p>
+<p><strong>The decisive fact for this library is what the minimum does not include.</strong> A cryptographic hash of the component is <em>not</em> a minimum field. It appears in §V, &quot;Beyond Minimum Elements&quot;, among the <em>recommended</em> fields, where the report argues its own case against itself: &quot;A hash is a key foundation for using SBOM to have trust in the software supply chain.&quot; Component identity at the minimum tier is therefore carried entirely by <strong>names and namespace identifiers</strong> — supplier string, component string, version string, and optionally CPE, SWID or PURL — none of which binds to bytes.</p>
+<p>The report is equally explicit that <strong>&quot;Author of SBOM Data&quot; is not the author of the software</strong>: it is &quot;just the source of the descriptive data&quot;, and may be the supplier, an upstream supplier, or a third-party analysis tool. Two of the three practice elements then limit what any SBOM asserts at all. <strong>Known Unknowns</strong> requires that &quot;the default interpretation of the data should be that the data is incomplete&quot;, with completeness affirmatively stated when it holds. <strong>Accommodation of Mistakes</strong> asks consumers to be &quot;explicitly tolerant of the occasional incidental error.&quot;</p>
+<p>§V&#x27;s &quot;SBOM Integrity and Authenticity&quot; treats signing as desirable and unspecified: suppliers &quot;are encouraged to explore options to both sign SBOMs and verify tamper-detection&quot;, with no mechanism, envelope or key-binding named.</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td><code>core</code></td><td>Sets the floor that every downstream SBOM mandate inherits, including what that floor omits</td></tr><tr><td>Cryptography</td><td><code>adjacent</code></td><td>Names hashes and signatures as valuable; specifies neither algorithm, encoding, nor binding</td></tr><tr><td>This project</td><td><code>adjacent</code></td><td>Evidence about a gap, not a mechanism we conform to</td></tr></tbody></table>
+<p><code>bears_on: R-M-07</code> — R-M-07 requires at least one content digest. This document is the evidence that the federal SBOM floor <strong>does not</strong>, which makes the requirement a real constraint rather than a restatement of common practice.</p>
+<p><code>bears_on: R-M-11</code> — R-M-11&#x27;s <code>ArtifactId</code> admits a structured description of an artifact&#x27;s composition as one identification mode. The seven minimum fields are precisely that mode at its weakest: a name-and-version description with no digest, authored by a party that may be neither the producer nor the supplier.</p>
+<p><code>see_also: sp-800-161r1</code> — not a generic relation. SP 800-161r1 is the enterprise C-SCRM process that <em>consumes</em> SBOM data and supplies the institutional vocabulary this report writes into procurement; it is also the record whose orphaning opened this topic. Neither document specifies a mechanism, and reading either as though it does is the mistake both invite.</p>
+<h2>Implementations</h2>
+<p>Not searched. This is a policy report, not a specification with implementations — the implementations belong to the format records (<code>spdx-3-0-1</code>, <code>cyclonedx-1-7</code>), where <code>implementations.searched</code> is still empty.</p>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata</td></tr><tr><td><code>summary.md</code></td><td>this document</td></tr></tbody></table>
+<p>No <code>distilled/</code>. We conform to no clause here; §5.1 of <code>docs/requirements.md</code> is the test, and this fails it. The requirements worth extracting in this topic are CISA&#x27;s maturity levels, not these.</p>
+<h2>Limits</h2>
+<ul><li><strong>It defines a floor, not a proof.</strong> Every field is a <em>description</em> supplied by an author who may have no relationship to the software. Nothing in the minimum elements makes an SBOM checkable against the artifact it describes.</li><li><strong>No digest at the minimum tier.</strong> Component identity rests on strings the report itself concedes are unstable — §IV notes that &quot;corporate mergers and open source forking will make ubiquitous and permanent solutions on this basis unlikely.&quot;</li><li><strong>Signing is gestured at, not specified.</strong> §V asks for signatures and names no envelope, algorithm or key-binding. It also asks that a mechanism &quot;allow the signing of each component&quot; — a per-component signing model that no minimum field supports, since components carry no digest to sign over.</li><li><strong>Superseded in practice on the hash question.</strong> CISA&#x27;s 2024 third edition moves the cryptographic hash to <em>Minimum Expected</em>. Citing this report in 2026 as the current statement of the SBOM floor would be wrong; see <code>cisa-framing-software-component-transparency</code>.</li><li><strong>It is US federal procurement policy.</strong> §III disclaims creating new federal requirements and excludes hardware and regulatory questions from scope. It carries no weight as a technical specification.</li></ul>
+
+<footer><p>Generated from <code>docs/publishing/bibliography.yaml</code> by <code>docs/publishing/render_bibliography.py</code>. Do not hand-edit. Static HTML, no scripts, no trackers. See <a href="../../publishing/bibliography-review.md">bibliography-review.md</a>.</p></footer>
+</main>
+</body>
+</html>

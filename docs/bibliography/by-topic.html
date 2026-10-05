@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>By topic</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 24px 64px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.15; letter-spacing: -0.03em; margin: 28px 0 8px; }
+h2 { font-size: 1.25rem; margin: 1.6em 0 0.4em; }
+h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
+.kicker { margin: 22px 0 0; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.6em 0 1em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 8px 10px; font-size: 0.95rem; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+</style>
+</head>
+<body>
+<header><div class="bar"><a class="mark" href="index.html">Bibliography</a><nav><a href="../index.html">tmodel</a><a href="index.html">Index</a><a href="by-topic.html" aria-current="page">Topic</a><a href="by-type.html">Type</a><a href="by-body.html">Issuing body</a><a href="crosswalk.html">Crosswalk</a></nav></div></header>
+<main class="wrap">
+<p class="kicker">WAVE 1</p><h1>By topic</h1>
+<p class="lede">Primary topic is <code>record.topic</code> when that field is set, otherwise one tag the record already carries. The manifest cannot introduce a topic the record does not.</p>
+<h2 id="artifact-statements">artifact-statements</h2>
+<p class="meta">Primary publish topic. One home per record.</p>
+<a class="cardlink" href="records/draft-ietf-vcon-vcon-core-04.html"><strong>The JSON format for vCon - Conversation Data Container</strong><br><span class="meta">draft · ietf · topic artifact-statements · distilled · summary written</span><br><span class="meta">An independently-designed signed container with must-understand extension semantics and a supersession model - the best available test of whether our statement form can express something we did not design.</span></a>
+<h2 id="attack">attack</h2>
+<p class="meta">Primary publish topic. One home per record.</p>
+<a class="cardlink" href="records/bron.html"><strong>BRON — Linking ATT&amp;CK, CAPEC, CWE, CVE, CPE (Hemberg et al., 2020)</strong><br><span class="meta">paper · academic · topic attack · summarized · summary written</span><br><span class="meta">The most directly relevant prior art: a reusable reference implementation of tmodel&#x27;s CVE→CWE→CAPEC→ATT&amp;CK backbone.</span></a>
+<h2 id="attack-pattern">attack-pattern</h2>
+<p class="meta">Primary publish topic. One home per record.</p>
+<a class="cardlink" href="records/capec.html"><strong>MITRE CAPEC — Common Attack Pattern Enumeration and Classification</strong><br><span class="meta">dataset · other · topic attack-pattern · summarized · summary written</span><br><span class="meta">Supplies tmodel&#x27;s weakness→attack-pattern→technique edges.</span></a>
+<h2 id="cbor-implementation">cbor-implementation</h2>
+<p class="meta">Primary publish topic. One home per record.</p>
+<a class="cardlink" href="records/rfc-8949.html"><strong>Concise Binary Object Representation (CBOR)</strong><br><span class="meta">rfc · ietf · topic cbor-implementation · read · summary written</span><br><span class="meta">STD 94. DEC-002 option 2 makes this the candidate native encoding, and Sec.4.2 is the deterministic-encoding text every signing profile starts from.</span></a>
+<h2 id="cryptography">cryptography</h2>
+<p class="meta">Primary publish topic. One home per record.</p>
+<a class="cardlink" href="records/fips-140-3.html"><strong>FIPS 140-3, Security Requirements for Cryptographic Modules</strong><br><span class="meta">spec · nist · topic cryptography · distilled · summary written</span><br><span class="meta">A second, contrasting requirement framework: it ADOPTS another standard (ISO/IEC 19790) rather than restating requirements, and structures conformance as a 4-level x 11-area matrix validated by a program (CMVP). Exercises cross-document conformance (FIPS -&gt; ISO 19790, modified by SP 800-140x) and shows requirement granularity varies by source (tmodel #5/#15).</span></a>
+<h2 id="knowledge-graph">knowledge-graph</h2>
+<p class="meta">Primary publish topic. One home per record.</p>
+<a class="cardlink" href="records/nsf-okn-launch.html"><strong>NSF Open Knowledge Network (NSF OKN) — public launch</strong><br><span class="meta">web · other · topic knowledge-graph · summarized · summary written</span><br><span class="meta">Defines / demonstrates a national federated knowledge-graph infrastructure with a verifiable, attributed, governed knowledge layer for grounding AI — the properties tmodel wants for human-reviewed threat models — and treats supply-chain cybersecurity as a use case tmodel could align or federate with.</span></a>
+<h2 id="provenance">provenance</h2>
+<p class="meta">Primary publish topic. One home per record.</p>
+<a class="cardlink" href="records/prov-o.html"><strong>PROV-O: The PROV Ontology</strong><br><span class="meta">spec · w3c · topic provenance · summarized · summary written</span><br><span class="meta">The backbone for tmodel&#x27;s provenance + human-review annotations: model each assertion&#x27;s source, the analysis activity, and the human reviewer as an agent — full audit trail.</span></a>
+<h2 id="sbom">sbom</h2>
+<p class="meta">Primary publish topic. One home per record.</p>
+<a class="cardlink" href="records/ntia-sbom-minimum-elements.html"><strong>The Minimum Elements For a Software Bill of Materials (SBOM)</strong><br><span class="meta">spec · regulator · topic sbom · summarized · summary written</span><br><span class="meta">Establishes the floor for what an SBOM must contain, and — decisively for us — puts the component hash OUTSIDE that floor. That omission is the evidence R-M-07 needs.</span></a>
+<a class="cardlink" href="records/cisa-framing-software-component-transparency.html"><strong>Framing Software Component Transparency: Establishing a Common Software Bill of Materials (SBOM)</strong><br><span class="meta">spec · regulator · topic sbom · summarized · summary written</span><br><span class="meta">Promotes the cryptographic hash from NTIA&#x27;s recommended tier to Minimum Expected, and defines relationship completeness with an explicit open-world default. Both are directly load-bearing for R-M-07 and R-M-11.</span></a>
+<a class="cardlink" href="records/cyclonedx-1-7.html"><strong>CycloneDX Bill of Materials Specification</strong><br><span class="meta">spec · community · topic sbom · queued · summary not written</span></a>
+<h2 id="supply-chain">supply-chain</h2>
+<p class="meta">Primary publish topic. One home per record.</p>
+<a class="cardlink" href="records/guac.html"><strong>GUAC — Graph for Understanding Artifact Composition (OpenSSF)</strong><br><span class="meta">repo · openssf · topic supply-chain · summarized · summary written</span><br><span class="meta">Closest working analog to tmodel&#x27;s supply-chain portion; its 3-tree split maps to assets/components vs threats/mitigations vs review provenance.</span></a>
+<h2 id="threat-intel">threat-intel</h2>
+<p class="meta">Primary publish topic. One home per record.</p>
+<a class="cardlink" href="records/stix-2-1.html"><strong>STIX Version 2.1 (OASIS Standard)</strong><br><span class="meta">spec · oasis · topic threat-intel · summarized · summary written</span><br><span class="meta">Proven graph schema to align tmodel to (Vulnerability↔CVE, Attack Pattern↔threat, Course of Action↔mitigation); Opinion/Note map onto the human-review layer.</span></a>
+<h2 id="threat-modeling">threat-modeling</h2>
+<p class="meta">Primary publish topic. One home per record.</p>
+<a class="cardlink" href="records/iso-sae-21434-2021.html"><strong>Road vehicles — Cybersecurity engineering</strong><br><span class="meta">spec · iso · topic threat-modeling · distilled · summary written</span><br><span class="meta">The reference method for automotive threat modeling and risk: a structured TARA pipeline (asset -&gt; threat scenario -&gt; impact rating S/F/O/P -&gt; attack path -&gt; attack feasibility -&gt; risk value -&gt; treatment), a normative object model (Fig 3), and a requirement/work-product structure that is itself the template for automating conformance audits (tmodel #15).</span></a>
+<h2 id="vulnerability">vulnerability</h2>
+<p class="meta">Primary publish topic. One home per record.</p>
+<a class="cardlink" href="records/osv-schema.html"><strong>OSV Schema (OpenSSF)</strong><br><span class="meta">spec · openssf · topic vulnerability · summarized · summary written</span><br><span class="meta">Best template for linking tmodel vuln nodes to specific component/version nodes.</span></a>
+<a class="cardlink" href="records/cve-json-5.html"><strong>CVE JSON Record Format v5</strong><br><span class="meta">spec · other · topic vulnerability · summarized · summary written</span><br><span class="meta">Canonical ingestion schema for tmodel&#x27;s Vulnerability nodes; defines CVE→CWE edge + severity.</span></a>
+<h2 id="weakness">weakness</h2>
+<p class="meta">Primary publish topic. One home per record.</p>
+<a class="cardlink" href="records/cwe.html"><strong>MITRE CWE — Common Weakness Enumeration</strong><br><span class="meta">dataset · other · topic weakness · summarized · summary written</span><br><span class="meta">Source for tmodel&#x27;s Weakness nodes and their hierarchy; XSD validates ingestion. Ties to ARCH-0001 §3.</span></a>
+<h2>Other topic tags</h2>
+<p class="meta">A record can sit in more than one subject tag. Tags equal to the primary topic are not repeated. Body, role, and standing tags are not listed here.</p>
+<h3 id="tag-ai-grounding">ai-grounding</h3>
+<a class="cardlink" href="records/nsf-okn-launch.html"><strong>NSF Open Knowledge Network (NSF OKN) — public launch</strong><br><span class="meta">web · other · topic knowledge-graph · summarized · summary written</span><br><span class="meta">Defines / demonstrates a national federated knowledge-graph infrastructure with a verifiable, attributed, governed knowledge layer for grounding AI — the properties tmodel wants for human-reviewed threat models — and treats supply-chain cybersecurity as a use case tmodel could align or federate with.</span></a>
+<h3 id="tag-attestation">attestation</h3>
+<a class="cardlink" href="records/draft-ietf-vcon-vcon-core-04.html"><strong>The JSON format for vCon - Conversation Data Container</strong><br><span class="meta">draft · ietf · topic artifact-statements · distilled · summary written</span><br><span class="meta">An independently-designed signed container with must-understand extension semantics and a supersession model - the best available test of whether our statement form can express something we did not design.</span></a>
+<h3 id="tag-attribution">attribution</h3>
+<a class="cardlink" href="records/prov-o.html"><strong>PROV-O: The PROV Ontology</strong><br><span class="meta">spec · w3c · topic provenance · summarized · summary written</span><br><span class="meta">The backbone for tmodel&#x27;s provenance + human-review annotations: model each assertion&#x27;s source, the analysis activity, and the human reviewer as an agent — full audit trail.</span></a>
+<h3 id="tag-audit">audit</h3>
+<a class="cardlink" href="records/prov-o.html"><strong>PROV-O: The PROV Ontology</strong><br><span class="meta">spec · w3c · topic provenance · summarized · summary written</span><br><span class="meta">The backbone for tmodel&#x27;s provenance + human-review annotations: model each assertion&#x27;s source, the analysis activity, and the human reviewer as an agent — full audit trail.</span></a>
+<h3 id="tag-automotive">automotive</h3>
+<a class="cardlink" href="records/iso-sae-21434-2021.html"><strong>Road vehicles — Cybersecurity engineering</strong><br><span class="meta">spec · iso · topic threat-modeling · distilled · summary written</span><br><span class="meta">The reference method for automotive threat modeling and risk: a structured TARA pipeline (asset -&gt; threat scenario -&gt; impact rating S/F/O/P -&gt; attack path -&gt; attack feasibility -&gt; risk value -&gt; treatment), a normative object model (Fig 3), and a requirement/work-product structure that is itself the template for automating conformance audits (tmodel #15).</span></a>
+<h3 id="tag-backbone">backbone</h3>
+<a class="cardlink" href="records/bron.html"><strong>BRON — Linking ATT&amp;CK, CAPEC, CWE, CVE, CPE (Hemberg et al., 2020)</strong><br><span class="meta">paper · academic · topic attack · summarized · summary written</span><br><span class="meta">The most directly relevant prior art: a reusable reference implementation of tmodel&#x27;s CVE→CWE→CAPEC→ATT&amp;CK backbone.</span></a>
+<h3 id="tag-bron">bron</h3>
+<a class="cardlink" href="records/bron.html"><strong>BRON — Linking ATT&amp;CK, CAPEC, CWE, CVE, CPE (Hemberg et al., 2020)</strong><br><span class="meta">paper · academic · topic attack · summarized · summary written</span><br><span class="meta">The most directly relevant prior art: a reusable reference implementation of tmodel&#x27;s CVE→CWE→CAPEC→ATT&amp;CK backbone.</span></a>
+<h3 id="tag-canonicalization">canonicalization</h3>
+<a class="cardlink" href="records/rfc-8949.html"><strong>Concise Binary Object Representation (CBOR)</strong><br><span class="meta">rfc · ietf · topic cbor-implementation · read · summary written</span><br><span class="meta">STD 94. DEC-002 option 2 makes this the candidate native encoding, and Sec.4.2 is the deterministic-encoding text every signing profile starts from.</span></a>
+<h3 id="tag-capec">capec</h3>
+<a class="cardlink" href="records/capec.html"><strong>MITRE CAPEC — Common Attack Pattern Enumeration and Classification</strong><br><span class="meta">dataset · other · topic attack-pattern · summarized · summary written</span><br><span class="meta">Supplies tmodel&#x27;s weakness→attack-pattern→technique edges.</span></a>
+<a class="cardlink" href="records/bron.html"><strong>BRON — Linking ATT&amp;CK, CAPEC, CWE, CVE, CPE (Hemberg et al., 2020)</strong><br><span class="meta">paper · academic · topic attack · summarized · summary written</span><br><span class="meta">The most directly relevant prior art: a reusable reference implementation of tmodel&#x27;s CVE→CWE→CAPEC→ATT&amp;CK backbone.</span></a>
+<h3 id="tag-compliance">compliance</h3>
+<a class="cardlink" href="records/iso-sae-21434-2021.html"><strong>Road vehicles — Cybersecurity engineering</strong><br><span class="meta">spec · iso · topic threat-modeling · distilled · summary written</span><br><span class="meta">The reference method for automotive threat modeling and risk: a structured TARA pipeline (asset -&gt; threat scenario -&gt; impact rating S/F/O/P -&gt; attack path -&gt; attack feasibility -&gt; risk value -&gt; treatment), a normative object model (Fig 3), and a requirement/work-product structure that is itself the template for automating conformance audits (tmodel #15).</span></a>
+<a class="cardlink" href="records/fips-140-3.html"><strong>FIPS 140-3, Security Requirements for Cryptographic Modules</strong><br><span class="meta">spec · nist · topic cryptography · distilled · summary written</span><br><span class="meta">A second, contrasting requirement framework: it ADOPTS another standard (ISO/IEC 19790) rather than restating requirements, and structures conformance as a 4-level x 11-area matrix validated by a program (CMVP). Exercises cross-document conformance (FIPS -&gt; ISO 19790, modified by SP 800-140x) and shows requirement granularity varies by source (tmodel #5/#15).</span></a>
+<h3 id="tag-cti">cti</h3>
+<a class="cardlink" href="records/stix-2-1.html"><strong>STIX Version 2.1 (OASIS Standard)</strong><br><span class="meta">spec · oasis · topic threat-intel · summarized · summary written</span><br><span class="meta">Proven graph schema to align tmodel to (Vulnerability↔CVE, Attack Pattern↔threat, Course of Action↔mitigation); Opinion/Note map onto the human-review layer.</span></a>
+<h3 id="tag-cve">cve</h3>
+<a class="cardlink" href="records/bron.html"><strong>BRON — Linking ATT&amp;CK, CAPEC, CWE, CVE, CPE (Hemberg et al., 2020)</strong><br><span class="meta">paper · academic · topic attack · summarized · summary written</span><br><span class="meta">The most directly relevant prior art: a reusable reference implementation of tmodel&#x27;s CVE→CWE→CAPEC→ATT&amp;CK backbone.</span></a>
+<a class="cardlink" href="records/cve-json-5.html"><strong>CVE JSON Record Format v5</strong><br><span class="meta">spec · other · topic vulnerability · summarized · summary written</span><br><span class="meta">Canonical ingestion schema for tmodel&#x27;s Vulnerability nodes; defines CVE→CWE edge + severity.</span></a>
+<h3 id="tag-cwe">cwe</h3>
+<a class="cardlink" href="records/cwe.html"><strong>MITRE CWE — Common Weakness Enumeration</strong><br><span class="meta">dataset · other · topic weakness · summarized · summary written</span><br><span class="meta">Source for tmodel&#x27;s Weakness nodes and their hierarchy; XSD validates ingestion. Ties to ARCH-0001 §3.</span></a>
+<a class="cardlink" href="records/bron.html"><strong>BRON — Linking ATT&amp;CK, CAPEC, CWE, CVE, CPE (Hemberg et al., 2020)</strong><br><span class="meta">paper · academic · topic attack · summarized · summary written</span><br><span class="meta">The most directly relevant prior art: a reusable reference implementation of tmodel&#x27;s CVE→CWE→CAPEC→ATT&amp;CK backbone.</span></a>
+<h3 id="tag-encoding">encoding</h3>
+<a class="cardlink" href="records/rfc-8949.html"><strong>Concise Binary Object Representation (CBOR)</strong><br><span class="meta">rfc · ietf · topic cbor-implementation · read · summary written</span><br><span class="meta">STD 94. DEC-002 option 2 makes this the candidate native encoding, and Sec.4.2 is the deterministic-encoding text every signing profile starts from.</span></a>
+<a class="cardlink" href="records/draft-ietf-vcon-vcon-core-04.html"><strong>The JSON format for vCon - Conversation Data Container</strong><br><span class="meta">draft · ietf · topic artifact-statements · distilled · summary written</span><br><span class="meta">An independently-designed signed container with must-understand extension semantics and a supersession model - the best available test of whether our statement form can express something we did not design.</span></a>
+<h3 id="tag-federation">federation</h3>
+<a class="cardlink" href="records/nsf-okn-launch.html"><strong>NSF Open Knowledge Network (NSF OKN) — public launch</strong><br><span class="meta">web · other · topic knowledge-graph · summarized · summary written</span><br><span class="meta">Defines / demonstrates a national federated knowledge-graph infrastructure with a verifiable, attributed, governed knowledge layer for grounding AI — the properties tmodel wants for human-reviewed threat models — and treats supply-chain cybersecurity as a use case tmodel could align or federate with.</span></a>
+<h3 id="tag-fips">fips</h3>
+<a class="cardlink" href="records/fips-140-3.html"><strong>FIPS 140-3, Security Requirements for Cryptographic Modules</strong><br><span class="meta">spec · nist · topic cryptography · distilled · summary written</span><br><span class="meta">A second, contrasting requirement framework: it ADOPTS another standard (ISO/IEC 19790) rather than restating requirements, and structures conformance as a 4-level x 11-area matrix validated by a program (CMVP). Exercises cross-document conformance (FIPS -&gt; ISO 19790, modified by SP 800-140x) and shows requirement granularity varies by source (tmodel #5/#15).</span></a>
+<h3 id="tag-graph">graph</h3>
+<a class="cardlink" href="records/capec.html"><strong>MITRE CAPEC — Common Attack Pattern Enumeration and Classification</strong><br><span class="meta">dataset · other · topic attack-pattern · summarized · summary written</span><br><span class="meta">Supplies tmodel&#x27;s weakness→attack-pattern→technique edges.</span></a>
+<a class="cardlink" href="records/cwe.html"><strong>MITRE CWE — Common Weakness Enumeration</strong><br><span class="meta">dataset · other · topic weakness · summarized · summary written</span><br><span class="meta">Source for tmodel&#x27;s Weakness nodes and their hierarchy; XSD validates ingestion. Ties to ARCH-0001 §3.</span></a>
+<a class="cardlink" href="records/stix-2-1.html"><strong>STIX Version 2.1 (OASIS Standard)</strong><br><span class="meta">spec · oasis · topic threat-intel · summarized · summary written</span><br><span class="meta">Proven graph schema to align tmodel to (Vulnerability↔CVE, Attack Pattern↔threat, Course of Action↔mitigation); Opinion/Note map onto the human-review layer.</span></a>
+<a class="cardlink" href="records/guac.html"><strong>GUAC — Graph for Understanding Artifact Composition (OpenSSF)</strong><br><span class="meta">repo · openssf · topic supply-chain · summarized · summary written</span><br><span class="meta">Closest working analog to tmodel&#x27;s supply-chain portion; its 3-tree split maps to assets/components vs threats/mitigations vs review provenance.</span></a>
+<h3 id="tag-guac">guac</h3>
+<a class="cardlink" href="records/guac.html"><strong>GUAC — Graph for Understanding Artifact Composition (OpenSSF)</strong><br><span class="meta">repo · openssf · topic supply-chain · summarized · summary written</span><br><span class="meta">Closest working analog to tmodel&#x27;s supply-chain portion; its 3-tree split maps to assets/components vs threats/mitigations vs review provenance.</span></a>
+<h3 id="tag-mitre">mitre</h3>
+<a class="cardlink" href="records/capec.html"><strong>MITRE CAPEC — Common Attack Pattern Enumeration and Classification</strong><br><span class="meta">dataset · other · topic attack-pattern · summarized · summary written</span><br><span class="meta">Supplies tmodel&#x27;s weakness→attack-pattern→technique edges.</span></a>
+<a class="cardlink" href="records/cwe.html"><strong>MITRE CWE — Common Weakness Enumeration</strong><br><span class="meta">dataset · other · topic weakness · summarized · summary written</span><br><span class="meta">Source for tmodel&#x27;s Weakness nodes and their hierarchy; XSD validates ingestion. Ties to ARCH-0001 §3.</span></a>
+<h3 id="tag-nsf">nsf</h3>
+<a class="cardlink" href="records/nsf-okn-launch.html"><strong>NSF Open Knowledge Network (NSF OKN) — public launch</strong><br><span class="meta">web · other · topic knowledge-graph · summarized · summary written</span><br><span class="meta">Defines / demonstrates a national federated knowledge-graph infrastructure with a verifiable, attributed, governed knowledge layer for grounding AI — the properties tmodel wants for human-reviewed threat models — and treats supply-chain cybersecurity as a use case tmodel could align or federate with.</span></a>
+<h3 id="tag-okn">okn</h3>
+<a class="cardlink" href="records/nsf-okn-launch.html"><strong>NSF Open Knowledge Network (NSF OKN) — public launch</strong><br><span class="meta">web · other · topic knowledge-graph · summarized · summary written</span><br><span class="meta">Defines / demonstrates a national federated knowledge-graph infrastructure with a verifiable, attributed, governed knowledge layer for grounding AI — the properties tmodel wants for human-reviewed threat models — and treats supply-chain cybersecurity as a use case tmodel could align or federate with.</span></a>
+<h3 id="tag-osv">osv</h3>
+<a class="cardlink" href="records/osv-schema.html"><strong>OSV Schema (OpenSSF)</strong><br><span class="meta">spec · openssf · topic vulnerability · summarized · summary written</span><br><span class="meta">Best template for linking tmodel vuln nodes to specific component/version nodes.</span></a>
+<h3 id="tag-package">package</h3>
+<a class="cardlink" href="records/osv-schema.html"><strong>OSV Schema (OpenSSF)</strong><br><span class="meta">spec · openssf · topic vulnerability · summarized · summary written</span><br><span class="meta">Best template for linking tmodel vuln nodes to specific component/version nodes.</span></a>
+<h3 id="tag-prov-o">prov-o</h3>
+<a class="cardlink" href="records/prov-o.html"><strong>PROV-O: The PROV Ontology</strong><br><span class="meta">spec · w3c · topic provenance · summarized · summary written</span><br><span class="meta">The backbone for tmodel&#x27;s provenance + human-review annotations: model each assertion&#x27;s source, the analysis activity, and the human reviewer as an agent — full audit trail.</span></a>
+<h3 id="tag-provenance">provenance</h3>
+<a class="cardlink" href="records/cyclonedx-1-7.html"><strong>CycloneDX Bill of Materials Specification</strong><br><span class="meta">spec · community · topic sbom · queued · summary not written</span></a>
+<a class="cardlink" href="records/nsf-okn-launch.html"><strong>NSF Open Knowledge Network (NSF OKN) — public launch</strong><br><span class="meta">web · other · topic knowledge-graph · summarized · summary written</span><br><span class="meta">Defines / demonstrates a national federated knowledge-graph infrastructure with a verifiable, attributed, governed knowledge layer for grounding AI — the properties tmodel wants for human-reviewed threat models — and treats supply-chain cybersecurity as a use case tmodel could align or federate with.</span></a>
+<h3 id="tag-regulation">regulation</h3>
+<a class="cardlink" href="records/ntia-sbom-minimum-elements.html"><strong>The Minimum Elements For a Software Bill of Materials (SBOM)</strong><br><span class="meta">spec · regulator · topic sbom · summarized · summary written</span><br><span class="meta">Establishes the floor for what an SBOM must contain, and — decisively for us — puts the component hash OUTSIDE that floor. That omission is the evidence R-M-07 needs.</span></a>
+<a class="cardlink" href="records/cisa-framing-software-component-transparency.html"><strong>Framing Software Component Transparency: Establishing a Common Software Bill of Materials (SBOM)</strong><br><span class="meta">spec · regulator · topic sbom · summarized · summary written</span><br><span class="meta">Promotes the cryptographic hash from NTIA&#x27;s recommended tier to Minimum Expected, and defines relationship completeness with an explicit open-world default. Both are directly load-bearing for R-M-07 and R-M-11.</span></a>
+<h3 id="tag-risk-assessment">risk-assessment</h3>
+<a class="cardlink" href="records/iso-sae-21434-2021.html"><strong>Road vehicles — Cybersecurity engineering</strong><br><span class="meta">spec · iso · topic threat-modeling · distilled · summary written</span><br><span class="meta">The reference method for automotive threat modeling and risk: a structured TARA pipeline (asset -&gt; threat scenario -&gt; impact rating S/F/O/P -&gt; attack path -&gt; attack feasibility -&gt; risk value -&gt; treatment), a normative object model (Fig 3), and a requirement/work-product structure that is itself the template for automating conformance audits (tmodel #15).</span></a>
+<h3 id="tag-sbom">sbom</h3>
+<a class="cardlink" href="records/guac.html"><strong>GUAC — Graph for Understanding Artifact Composition (OpenSSF)</strong><br><span class="meta">repo · openssf · topic supply-chain · summarized · summary written</span><br><span class="meta">Closest working analog to tmodel&#x27;s supply-chain portion; its 3-tree split maps to assets/components vs threats/mitigations vs review provenance.</span></a>
+<h3 id="tag-schema">schema</h3>
+<a class="cardlink" href="records/cve-json-5.html"><strong>CVE JSON Record Format v5</strong><br><span class="meta">spec · other · topic vulnerability · summarized · summary written</span><br><span class="meta">Canonical ingestion schema for tmodel&#x27;s Vulnerability nodes; defines CVE→CWE edge + severity.</span></a>
+<h3 id="tag-stix">stix</h3>
+<a class="cardlink" href="records/stix-2-1.html"><strong>STIX Version 2.1 (OASIS Standard)</strong><br><span class="meta">spec · oasis · topic threat-intel · summarized · summary written</span><br><span class="meta">Proven graph schema to align tmodel to (Vulnerability↔CVE, Attack Pattern↔threat, Course of Action↔mitigation); Opinion/Note map onto the human-review layer.</span></a>
+<h3 id="tag-supply-chain">supply-chain</h3>
+<a class="cardlink" href="records/ntia-sbom-minimum-elements.html"><strong>The Minimum Elements For a Software Bill of Materials (SBOM)</strong><br><span class="meta">spec · regulator · topic sbom · summarized · summary written</span><br><span class="meta">Establishes the floor for what an SBOM must contain, and — decisively for us — puts the component hash OUTSIDE that floor. That omission is the evidence R-M-07 needs.</span></a>
+<a class="cardlink" href="records/cisa-framing-software-component-transparency.html"><strong>Framing Software Component Transparency: Establishing a Common Software Bill of Materials (SBOM)</strong><br><span class="meta">spec · regulator · topic sbom · summarized · summary written</span><br><span class="meta">Promotes the cryptographic hash from NTIA&#x27;s recommended tier to Minimum Expected, and defines relationship completeness with an explicit open-world default. Both are directly load-bearing for R-M-07 and R-M-11.</span></a>
+<a class="cardlink" href="records/cyclonedx-1-7.html"><strong>CycloneDX Bill of Materials Specification</strong><br><span class="meta">spec · community · topic sbom · queued · summary not written</span></a>
+<h3 id="tag-tara">tara</h3>
+<a class="cardlink" href="records/iso-sae-21434-2021.html"><strong>Road vehicles — Cybersecurity engineering</strong><br><span class="meta">spec · iso · topic threat-modeling · distilled · summary written</span><br><span class="meta">The reference method for automotive threat modeling and risk: a structured TARA pipeline (asset -&gt; threat scenario -&gt; impact rating S/F/O/P -&gt; attack path -&gt; attack feasibility -&gt; risk value -&gt; treatment), a normative object model (Fig 3), and a requirement/work-product structure that is itself the template for automating conformance audits (tmodel #15).</span></a>
+<h3 id="tag-validation">validation</h3>
+<a class="cardlink" href="records/fips-140-3.html"><strong>FIPS 140-3, Security Requirements for Cryptographic Modules</strong><br><span class="meta">spec · nist · topic cryptography · distilled · summary written</span><br><span class="meta">A second, contrasting requirement framework: it ADOPTS another standard (ISO/IEC 19790) rather than restating requirements, and structures conformance as a 4-level x 11-area matrix validated by a program (CMVP). Exercises cross-document conformance (FIPS -&gt; ISO 19790, modified by SP 800-140x) and shows requirement granularity varies by source (tmodel #5/#15).</span></a>
+<footer><p>Generated from <code>docs/publishing/bibliography.yaml</code> by <code>docs/publishing/render_bibliography.py</code>. Do not hand-edit. Static HTML, no scripts, no trackers. See <a href="../publishing/bibliography-review.md">bibliography-review.md</a>.</p></footer>
+</main>
+</body>
+</html>
