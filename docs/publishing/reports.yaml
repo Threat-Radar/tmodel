@@ -1,0 +1,18 @@
+# Report pages published as static HTML from archdoc markdown.
+# Revision = the source's front-matter `version`; the page regenerates only when
+# the source changes (not per build). Rendered by render_report.py.
+# NO personal identities in output — enforced by check_identities.py.
+schema: tmodel.publishing/v0
+id: pub-reports
+status: draft
+security:
+  remote_scripts: false
+  trackers: false
+  links: relative
+reports:
+  - src: research/0013-sdl-conformance/report.md
+    out: docs/reports/sdl.html
+    title: "Secure Development Lifecycle & conformance"
+    links:
+      - { text: "SDL bibliography", href: "../bibliography/" }
+      - { text: "Requirements crosswalk (MAP-0001)", href: "../bibliography/crosswalk.html" }

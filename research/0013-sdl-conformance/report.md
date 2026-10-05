@@ -7,9 +7,9 @@ description: "Landscape of secure-development-lifecycle guidelines (NIST SSDF, M
 type: research
 category: process
 status: draft
-version: "0.2.0"
+version: "0.3.0"
 date: "2026-10-01"
-updated: "2026-10-01"
+updated: "2026-10-03"
 authors:
   - role: sponsor
     id: paul-lambert
@@ -37,6 +37,19 @@ agent_notes: >
 requirements crosswalk showing how the SDL specs overlap.
 
 ## 0. Summary & gap analysis
+
+> **Update 2026-10-03 (v0.3.0).** The guidelines are now library records (topic `sdl`, 44 records,
+> 29 with full FX-1 extraction + independent verify/cross-check; see `sources.md`). MAP-0001 is rebuilt
+> as **v0.2.0** from source-published mappings (34 requirements × 16 frameworks, companion
+> `spec/MAP-0001.yaml`), and the per-reference object-model passes are consolidated in
+> **`sdl-object-model.md`** (RPT-0013-OM: 46 canonical objects, 60 relationships, answers to the
+> R-040…R-044 design questions). Corrections to this draft found on the way: the release gate is
+> **not** unique to SSDF PO.4 (SDL 5.2 FSR, BSIMM SM1.4/SM1.7/SM2.6, IEC 62443-4-1 SM-12,
+> BSI TR-03185 and ENISA all define one); crypto is first-class in more frameworks (ASVS, FDA, ENISA);
+> SSDF 1.2 (800-218r1) is still an initial public draft; OMB M-26-05 (2026-01-23) rescinded M-22-18
+> and M-23-16, so SSDF attestation is now optional for US agencies. The sections below are the
+> 2026-10-01 first draft, kept for the record.
+
 
 **First draft from a 3-lane multi-agent pass** (landscape, crosswalk, conformance/governance).
 Framework structures verified against primary sources; many atomic cells are `approx` pending the
