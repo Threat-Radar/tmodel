@@ -1,0 +1,1182 @@
+source_id,lane,batch,tier,type,year,cites,title
+S-0166,agentic-mcp,calibration,1,paper,2023,1,Not what you've signed up for: Compromising Real-World LLM-Integrated Applications with Indirect Prompt Injection
+S-0244,agentic-mcp,subset-1,1,paper,2024,2,AgentDojo: A Dynamic Environment to Evaluate Prompt Injection Attacks and Defenses for LLM Agents
+S-0533,agentic-mcp,subset-1,1,paper,2026,4,"Indirect Prompt Injection in the Wild: An Empirical Study of Prevalence, Techniques, and Objectives"
+S-0703,agentic-mcp,subset-1,1,survey,2025,1,"Daniel Jones, Giorgio Severi, Martin Pouliot, Gary Lopez, Joris de Gruyter, Santiago Zanella-Beguelin, Justin Song, Blake Bullwinkel, Pamela"
+S-0704,agentic-mcp,subset-1,1,survey,2025,1,"A Survey of Attacks on Large Vision-Language Models: Resources, Advances, and Future Trends"
+S-0755,agentic-mcp,subset-1,1,threat-model,2025,1,Building A Secure Agentic AI Application Leveraging A2A Protocol
+S-0760,agentic-mcp,subset-1,1,threat-model,2025,2,Agentic AI - Threats and Mitigations
+S-0785,agentic-mcp,subset-1,1,framework,2023,1,Practices for Governing Agentic AI Systems
+S-0799,agentic-mcp,subset-1,1,framework,2025,1,Design Patterns for Securing LLM Agents against Prompt Injections
+S-0829,agentic-mcp,subset-1,1,standard,n.d.,1,Security Best Practices
+S-0848,agentic-mcp,subset-1,1,standard,2025,0,Principles for the Secure Integration of Artificial Intelligence in Operational Technology
+S-0886,agentic-mcp,subset-1,1,catalog,2024,1,CWE-1426: Improper Validation of Generative AI Output
+S-0898,agentic-mcp,subset-1,1,catalog,2025,3,OWASP MCP Top 10
+S-0915,agentic-mcp,subset-1,1,dataset,2023,1,Ignore This Title and HackAPrompt: Exposing Systemic Vulnerabilities of LLMs through a Global Scale Prompt Hacking Competition
+S-0916,agentic-mcp,subset-1,1,dataset,2023,1,Tensor Trust: Interpretable Prompt Injection Attacks from an Online Game
+S-0965,agentic-mcp,subset-1,1,tool,2026,1,SkillSecurer: Detecting and Patching Prompt-Injection Vulnerabilities in AI Agent Skills
+S-1046,agentic-mcp,subset-1,1,vendor-research,2025,2,New Vulnerability in GitHub Copilot and Cursor: How Hackers Can Weaponize Code Agents
+S-1056,agentic-mcp,subset-1,1,vendor-research,2025,2,Code Execution Through Deception: Gemini AI CLI Hijack
+S-1091,agentic-mcp,subset-1,1,advisory,2024,2,AI Overviews: About last week
+S-1097,agentic-mcp,subset-1,1,advisory,2025,2,"CVE-2025-54135, CVE-2025-54136: Vulnerabilities in Cursor (CurXecute, MCPoison)"
+S-1140,agentic-mcp,subset-1,1,news,2025,1,Critical flaw plagues Lenovo AI chatbot: attackers can run malicious code and steal cookies
+S-0086,agentic-mcp,later,1,paper,2020,1,Adversarial Policies: Attacking Deep Reinforcement Learning
+S-0147,agentic-mcp,later,1,paper,2022,1,Asleep at the Keyboard? Assessing the Security of GitHub Copilot's Code Contributions
+S-0149,agentic-mcp,later,1,paper,2022,1,Ignore Previous Prompt: Attack Techniques For Language Models
+S-0155,agentic-mcp,later,1,paper,2023,1,Abusing Images and Sounds for Indirect Instruction Injection in Multi-Modal LLMs
+S-0176,agentic-mcp,later,1,paper,2023,1,"Paraphrasing evades detectors of AI-generated text, but retrieval is an effective defense"
+S-0182,agentic-mcp,later,1,paper,2023,1,Prompt Injection attack against LLM-integrated Applications
+S-0190,agentic-mcp,later,1,paper,2023,1,CodexLeaks: Privacy Leaks from Code Generation Language Models in GitHub Copilot
+S-0191,agentic-mcp,later,1,paper,2023,1,Exploiting Novel GPT-4 APIs
+S-0196,agentic-mcp,later,1,paper,2023,1,Identifying the Risks of LM Agents with an LM-Emulated Sandbox
+S-0201,agentic-mcp,later,1,paper,2023,1,Do Anything Now
+S-0210,agentic-mcp,later,1,paper,2023,1,Benchmarking and Defending Against Indirect Prompt Injection Attacks on Large Language Models
+S-0212,agentic-mcp,later,1,paper,2023,1,Assessing Prompt Injection Risks in 200+ Custom GPTs
+S-0218,agentic-mcp,later,1,paper,2023,1,Poisoning Retrieval Corpora by Injecting Adversarial Passages
+S-0221,agentic-mcp,later,2,paper,2024,0,Get my drift? Catching LLM Task Drift with Activation Deltas
+S-0222,agentic-mcp,later,1,paper,2024,1,Prompt Leakage effect and defense strategies for multi-turn LLM interactions
+S-0229,agentic-mcp,later,1,paper,2024,1,AirGapAgent: Protecting Privacy-Conscious Conversational Agents
+S-0236,agentic-mcp,later,1,paper,2024,1,Phantom: General Backdoor Attacks on Retrieval Augmented Language Generation
+S-0237,agentic-mcp,later,1,paper,2024,1,AgentPoison: Red-teaming LLM Agents via Poisoning Memory or Knowledge Bases
+S-0239,agentic-mcp,later,1,paper,2024,1,TrojanRAG: Retrieval-Augmented Generation Can Be Backdoor Driver in Large Language Models
+S-0240,agentic-mcp,later,1,paper,2024,1,Backdoored Retrievers for Prompt Injection Attacks on Retrieval Augmented Generation of Large Language Models
+S-0242,agentic-mcp,later,1,paper,2024,1,Here Comes The AI Worm: Unleashing Zero-click Worms that Target GenAI-Powered Applications
+S-0248,agentic-mcp,later,2,paper,2024,0,Pandora: Jailbreak GPTs by Retrieval Augmented Generation Poisoning
+S-0253,agentic-mcp,later,1,paper,2024,1,LLM Agents can Autonomously Hack Websites
+S-0254,agentic-mcp,later,1,paper,2024,1,LLM Agents can Autonomously Exploit One-day Vulnerabilities
+S-0256,agentic-mcp,later,1,paper,2024,1,Imprompter: Tricking LLM Agents into Improper Tool Use
+S-0261,agentic-mcp,later,1,paper,2024,1,Agent Smith: A Single Image Can Jailbreak One Million Multimodal LLM Agents Exponentially Fast
+S-0265,agentic-mcp,later,1,paper,2024,1,Defending Against Indirect Prompt Injection Attacks With Spotlighting
+S-0270,agentic-mcp,later,1,paper,2024,2,Sleeper Agents: Training Deceptive LLMs that Persist Through Safety Training
+S-0273,agentic-mcp,later,2,paper,2024,0,The Task Shield: Enforcing Task Alignment to Defend Against Indirect Prompt Injection in LLM Agents
+S-0277,agentic-mcp,later,1,paper,2024,1,Flooding Spread of Manipulated Knowledge in LLM-Based Multi-Agent Communities
+S-0281,agentic-mcp,later,2,paper,2024,0,Refusal-Trained LLMs Are Easily Jailbroken As Browser Agents
+S-0283,agentic-mcp,later,1,paper,2024,1,Prompt Infection: LLM-to-LLM Prompt Injection within Multi-Agent Systems
+S-0288,agentic-mcp,later,1,paper,2024,1,Automatic and Universal Prompt Injection Attacks against Large Language Models
+S-0291,agentic-mcp,later,1,paper,2024,1,Formalizing and Benchmarking Prompt Injection Attacks and Defenses
+S-0292,agentic-mcp,later,1,paper,2024,1,Demystifying RCE Vulnerabilities in LLM-Integrated Apps
+S-0296,agentic-mcp,later,1,paper,2024,1,Secret Collusion among AI Agents: Multi-Agent Deception via Steganography
+S-0298,agentic-mcp,later,1,paper,2024,1,Frontier AI systems have surpassed the self-replicating red line
+S-0301,agentic-mcp,later,1,paper,2024,1,Neural Exec: Learning (and Learning from) Execution Triggers for Prompt Injection Attacks
+S-0302,agentic-mcp,later,2,paper,2024,0,Jatmo: Prompt Injection Defense by Task-Specific Finetuning
+S-0306,agentic-mcp,later,1,paper,2024,1,Trust No AI: Prompt Injection Along The CIA Security Triad
+S-0307,agentic-mcp,later,1,paper,2024,1,Jailbreaking LLM-Controlled Robots
+S-0308,agentic-mcp,later,1,paper,2024,1,An Early Categorization of Prompt Injection Attacks on Large Language Models
+S-0309,agentic-mcp,later,1,paper,2024,1,ConfusedPilot: Confused Deputy Risks in RAG-based LLMs
+S-0315,agentic-mcp,later,1,paper,2024,1,PrivacyLens: Evaluating Privacy Norm Awareness of Language Models in Action
+S-0316,agentic-mcp,later,1,paper,2024,2,Optimization-based Prompt Injection Attack to LLM-as-a-Judge
+S-0321,agentic-mcp,later,2,paper,2024,0,The Instruction Hierarchy: Training LLMs to Prioritize Privileged Instructions
+S-0322,agentic-mcp,later,2,paper,2024,0,BadAgent: Inserting and Activating Backdoor Attacks in LLM Agents
+S-0327,agentic-mcp,later,2,paper,2024,0,Dissecting Adversarial Robustness of Multimodal LM Agents
+S-0328,agentic-mcp,later,2,paper,2024,0,System-Level Defense against Indirect Prompt Injection Attacks: An Information Flow Control Perspective
+S-0329,agentic-mcp,later,2,paper,2024,0,IsolateGPT: An Execution Isolation Architecture for LLM-Based Agentic Systems
+S-0330,agentic-mcp,later,1,paper,2024,1,WIPI: A New Web Threat for LLM-Driven Web Agents
+S-0333,agentic-mcp,later,1,paper,2024,1,BadRAG: Identifying Vulnerabilities in Retrieval Augmented Generation of Large Language Models
+S-0337,agentic-mcp,later,2,paper,2024,0,Watch Out for Your Agents! Investigating Backdoor Threats to LLM-Based Agents
+S-0344,agentic-mcp,later,1,paper,2024,1,The Good and The Bad: Exploring Privacy Issues in Retrieval-Augmented Generation (RAG)
+S-0345,agentic-mcp,later,1,paper,2024,1,InjecAgent: Benchmarking Indirect Prompt Injections in Tool-Integrated Large Language Model Agents
+S-0347,agentic-mcp,later,2,paper,2024,0,Agent Security Bench (ASB): Formalizing and Benchmarking Attacks and Defenses in LLM-based Agents
+S-0349,agentic-mcp,later,1,paper,2024,1,Breaking Agents: Compromising Autonomous LLM Agents Through Malfunction Amplification
+S-0353,agentic-mcp,later,1,paper,2024,1,"PsySafe: A Comprehensive Framework for Psychological-based Attack, Defense, and Evaluation of Multi-agent System Safety"
+S-0359,agentic-mcp,later,1,paper,2024,1,Teams of LLM Agents can Exploit Zero-Day Vulnerabilities
+S-0360,agentic-mcp,later,2,paper,2024,0,Improving Alignment and Robustness with Circuit Breakers
+S-0361,agentic-mcp,later,2,paper,2025,0,Firewalls to Secure Dynamic LLM Agentic Networks
+S-0367,agentic-mcp,later,2,paper,2025,0,IPIGuard: A Novel Tool Dependency Graph-Based Defense Against Indirect Prompt Injection in LLM Agents
+S-0368,agentic-mcp,later,1,paper,2025,1,Is My Data in Your Retrieval Database? Membership Inference Attacks Against Retrieval Augmented Generation
+S-0373,agentic-mcp,later,1,paper,2025,1,FlippedRAG: Black-Box Opinion Manipulation Adversarial Attacks to Retrieval-Augmented Generation Models
+S-0374,agentic-mcp,later,1,paper,2025,1,GASLITEing the Retrieval: Exploring Vulnerabilities in Dense Embedding-based Search
+S-0375,agentic-mcp,later,1,paper,2025,1,ImportSnare: Directed 'Code Manual' Hijacking in Retrieval-Augmented Code Generation
+S-0376,agentic-mcp,later,1,paper,2025,1,Riddle Me This! Stealthy Membership Inference for Retrieval-Augmented Generation
+S-0379,agentic-mcp,later,2,paper,2025,0,Meta-SecAlign: Training LLMs against Prompt Injection for Robust Agents
+S-0380,agentic-mcp,later,2,paper,2025,0,SecAlign: Defending Against Prompt Injection with Preference Optimization
+S-0381,agentic-mcp,later,2,paper,2025,0,ShieldAgent: Shielding Agents via Verifiable Safety Policy Reasoning
+S-0382,agentic-mcp,later,2,paper,2025,0,StruQ: Defending Against Prompt Injection with Structured Queries
+S-0385,agentic-mcp,later,1,paper,2025,1,Here Comes the AI Worm: Preventing the Propagation of Adversarial Self-Replicating Prompts Within GenAI Ecosystems
+S-0386,agentic-mcp,later,2,paper,2025,0,Securing AI Agents with Information-Flow Control
+S-0388,agentic-mcp,later,1,paper,2025,1,Defeating Prompt Injections by Design
+S-0389,agentic-mcp,later,1,paper,2025,1,Episodic memory in AI agents poses risks that should be studied and mitigated
+S-0392,agentic-mcp,later,1,paper,2025,1,Memory Injection Attacks on LLM Agents via Query-Only Interaction
+S-0393,agentic-mcp,later,1,paper,2025,1,The Philosopher's Stone: Trojaning Plugins of Large Language Models
+S-0395,agentic-mcp,later,2,paper,2025,0,DCMI: A Differential Calibration Membership Inference Attack Against Retrieval-Augmented Generation
+S-0397,agentic-mcp,later,1,paper,2025,1,Topic-FlipRAG: Topic-Orientated Adversarial Opinion Manipulation Attacks to Retrieval-Augmented Generation Models
+S-0400,agentic-mcp,later,2,paper,2025,0,Model Context Protocol (MCP) at First Glance: Studying the Security and Maintainability of MCP Servers
+S-0403,agentic-mcp,later,1,paper,2025,1,Red-Teaming LLM Multi-Agent Systems via Communication Attacks
+S-0405,agentic-mcp,later,2,paper,2025,0,AgentSentinel: An End-to-End and Real-Time Security Defense Framework for Computer-Use Agents
+S-0408,agentic-mcp,later,1,paper,2025,1,On the Resilience of LLM-Based Multi-Agent Collaboration with Faulty Agents
+S-0410,agentic-mcp,later,2,paper,2025,0,Can We Trust Embodied Agents? Exploring Backdoor Attacks against Embodied LLM-based Decision-Making Systems
+S-0412,agentic-mcp,later,2,paper,2025,0,Prompt Flow Integrity to Prevent Privilege Escalation in LLM Agents
+S-0420,agentic-mcp,later,1,paper,2025,1,Fun-tuning: Characterizing the Vulnerability of Proprietary LLMs to Optimization-Based Prompt Injection Attacks via the Fine-Tuning Interfac
+S-0421,agentic-mcp,later,2,paper,2025,0,Commercial LLM Agents Are Already Vulnerable to Simple Yet Dangerous Attacks
+S-0423,agentic-mcp,later,2,paper,2025,0,DRIFT: Dynamic Rule-Based Defense with Injection Isolation for Securing LLM Agents
+S-0426,agentic-mcp,later,1,paper,2025,1,EIA: Environmental Injection Attack on Generalist Web Agents for Privacy Leakage
+S-0427,agentic-mcp,later,1,paper,2025,1,Mind the Gap: Time-of-Check to Time-of-Use Vulnerabilities in LLM-Enabled Agents
+S-0429,agentic-mcp,later,1,paper,2025,1,Hidden Prompts in Manuscripts Exploit AI-Assisted Peer Review
+S-0430,agentic-mcp,later,1,paper,2025,1,"Your AI, My Shell"
+S-0431,agentic-mcp,later,1,paper,2025,1,AutoDAN-Turbo: A Lifelong Agent for Strategy Self-Exploration to Jailbreak LLMs
+S-0432,agentic-mcp,later,2,paper,2025,0,DataSentinel: A Game-Theoretic Detection of Prompt Injection Attacks
+S-0438,agentic-mcp,later,1,paper,2025,1,RAG-WM: An Efficient Black-Box Watermarking Approach for Retrieval-Augmented Generation of Large Language Models
+S-0441,agentic-mcp,later,1,paper,2025,1,Prompt Injection 2.0: Hybrid AI Threats
+S-0442,agentic-mcp,later,1,paper,2025,1,Attractive Metadata Attack: Inducing LLM Agents to Invoke Malicious Tools
+S-0443,agentic-mcp,later,2,paper,2025,0,The Attacker Moves Second: Stronger Adaptive Attacks Bypass Defenses Against LLM Jailbreaks and Prompt Injections
+S-0445,agentic-mcp,later,2,paper,2025,0,Invitation Is All You Need! Promptware Attacks Against LLM-Powered Assistants in Production Are Practical and Dangerous
+S-0446,agentic-mcp,later,1,paper,2025,1,Adversarial Search Engine Optimization for Large Language Models
+S-0448,agentic-mcp,later,1,paper,2025,2,Real AI Agents with Fake Memories: Fatal Context Manipulation Attacks on Web3 Agents
+S-0452,agentic-mcp,later,1,paper,2025,1,Follow My Instruction and Spill the Beans: Scalable Data Extraction from Retrieval-Augmented Generation Systems
+S-0454,agentic-mcp,later,1,paper,2025,1,MCP Safety Audit: LLMs with the Model Context Protocol Allow Major Security Exploits
+S-0455,agentic-mcp,later,1,paper,2025,1,X-Teaming: Multi-Turn Jailbreaks and Defenses with Adaptive Multi-Agents
+S-0456,agentic-mcp,later,1,paper,2025,1,EchoLeak: The First Real-World Zero-Click Prompt Injection Exploit in a Production LLM System
+S-0458,agentic-mcp,later,1,paper,2025,1,Machine Against the RAG: Jamming Retrieval-Augmented Generation with Blocker Documents
+S-0459,agentic-mcp,later,1,paper,2025,1,Mind the Web: The Security of Web Use Agents
+S-0463,agentic-mcp,later,1,paper,2025,1,Progent: Securing AI Agents with Privilege Control
+S-0464,agentic-mcp,later,2,paper,2025,0,PromptArmor: Simple yet Effective Prompt Injection Defenses
+S-0469,agentic-mcp,later,1,paper,2025,1,MemoryGraft: Persistent Compromise of LLM Agents via Poisoned Experience Retrieval
+S-0473,agentic-mcp,later,1,paper,2025,2,Multi-Agent Systems Execute Arbitrary Malicious Code
+S-0475,agentic-mcp,later,1,paper,2025,1,G-Safeguard: A Topology-Guided Security Lens and Treatment on LLM-based Multi-agent Systems
+S-0476,agentic-mcp,later,1,paper,2025,1,Unveiling Privacy Risks in LLM Agent Memory
+S-0478,agentic-mcp,later,1,paper,2025,1,A-MemGuard: A Proactive Defense Framework for LLM-Based Agent Memory
+S-0479,agentic-mcp,later,2,paper,2025,0,Instructional Segment Embedding: Improving LLM Safety with Instruction Hierarchy
+S-0481,agentic-mcp,later,2,paper,2025,0,GuardAgent: Safeguard LLM Agents by a Guard Agent via Knowledge-Enabled Reasoning
+S-0486,agentic-mcp,later,2,paper,2025,0,Adaptive Attacks Break Defenses Against Indirect Prompt Injection Attacks on LLM Agents
+S-0487,agentic-mcp,later,2,paper,2025,0,BadRobot: Jailbreaking Embodied LLM Agents in the Physical World
+S-0490,agentic-mcp,later,1,paper,2025,1,Attacking Vision-Language Computer Agents via Pop-ups
+S-0491,agentic-mcp,later,1,paper,2025,1,"When MCP Servers Attack: Taxonomy, Feasibility, and Mitigation"
+S-0492,agentic-mcp,later,2,paper,2025,0,MELON: Provable Defense Against Indirect Prompt Injection Attacks in AI Agents
+S-0493,agentic-mcp,later,1,paper,2025,1,PoisonedRAG: Knowledge Corruption Attacks to Retrieval-Augmented Generation of Large Language Models
+S-0494,agentic-mcp,later,2,paper,2025,0,Can LLMs Separate Instructions From Data? And What Do We Even Mean By That?
+S-0501,agentic-mcp,later,1,paper,2026,1,CHAI: Command Hijacking against embodied AI
+S-0503,agentic-mcp,later,1,paper,2026,1,Overcoming the Retrieval Barrier: Indirect Prompt Injection in the Wild for LLM Systems
+S-0508,agentic-mcp,later,1,paper,2026,1,Not an A11y: How Android Accessibility Exposes Mobile AI Agents to Indirect Prompt Injection
+S-0512,agentic-mcp,later,2,paper,2026,0,On the Robustness of Tabular Foundation Models: Test-Time Attacks and In-Context Defenses
+S-0514,agentic-mcp,later,1,paper,2026,1,Investigating the Impact of Dark Patterns on LLM-Based Web Agents
+S-0515,agentic-mcp,later,1,paper,2026,1,Detecting Malicious Agent Skills in the Wild using Attention
+S-0517,agentic-mcp,later,1,paper,2026,1,Inference-Time Backdoors via Chat Templates: From LLM Supply Chains to Agentic System Compromise
+S-0520,agentic-mcp,later,2,paper,2026,0,BinaryShield: Cross-Service Threat Intelligence in LLM Services using Privacy-Preserving Fingerprints
+S-0524,agentic-mcp,later,2,paper,2026,0,AttriGuard: Defeating Indirect Prompt Injection in LLM Agents via Causal Attribution of Tool Invocations
+S-0527,agentic-mcp,later,1,paper,2026,1,Confundo: Learning to Generate Robust Poison for Practical RAG Systems
+S-0528,agentic-mcp,later,2,paper,2026,0,Network-Level Prompt and Trait Leakage in Local Research Agents
+S-0529,agentic-mcp,later,1,paper,2026,1,MATE: Policy-Aware Security Auditing for Mobile Agents via Synthesis-Driven Trajectory Learning
+S-0532,agentic-mcp,later,1,paper,2026,1,Context Contamination in LLM Analysis of Network Security Logs: Poison with Passive Prompt Injection and Mitigation Evaluation
+S-0534,agentic-mcp,later,1,paper,2026,1,"Same Name, Different Server: A Security Census of Silent Drift in the Model Context Protocol Ecosystem"
+S-0535,agentic-mcp,later,1,paper,2026,1,Agent Name Collision Attacks in Multi-Agent Systems
+S-0537,agentic-mcp,later,2,paper,2026,0,Will the User Ever Know? Covert Indirect Prompt Injection Attacks on Tool-Using LLM Agents
+S-0538,agentic-mcp,later,1,paper,2026,1,Divide and Inject: Can Agents Reconstruct an Indirect Prompt Injection from Fragments?
+S-0539,agentic-mcp,later,2,paper,2026,0,WebMCP Tool Surface Poisoning: Runtime Manipulation Attacks on LLM Agents
+S-0543,agentic-mcp,later,1,paper,2026,1,MCP-ITP: An Automated Framework for Implicit Tool Poisoning in MCP
+S-0549,agentic-mcp,later,1,paper,2026,1,Sirens' Whisper: Inaudible Near-Ultrasonic Jailbreaks of Speech-Driven LLMs
+S-0550,agentic-mcp,later,1,paper,2026,1,Agent Skills in the Wild: An Empirical Study of Security Vulnerabilities at Scale
+S-0553,agentic-mcp,later,1,paper,2026,1,'Do Not Mention This to the User': Detecting and Understanding Malicious Agent Skills in the Wild
+S-0556,agentic-mcp,later,1,paper,2026,1,ShareLock: A Stealthy Multi-Tool Threshold Poisoning Attack Against MCP
+S-0557,agentic-mcp,later,1,paper,2026,1,A2ABreak: Systematic Security Analysis of the A2A Protocol
+S-0558,agentic-mcp,later,1,paper,2026,1,Autonomy Comes with Costs: Detecting Denial-of-Service Vulnerabilities Caused by Resource Abusing in LLM-based Agents
+S-0560,agentic-mcp,later,1,paper,2026,1,ZoneClaw: Mitigating Persistent Memory Attacks by Establishing Memory-Zoning in OpenClaw-Style Computer-Use Agents
+S-0561,agentic-mcp,later,1,paper,2026,1,From Monoliths to Swarms: A Study of Attack Surface Evolution in the Transition to Multi-Agent Web Systems
+S-0571,agentic-mcp,later,1,paper,2026,1,Les Dissonances: Cross-Tool Harvesting and Polluting in Pool-of-Tools Empowered LLM Agents
+S-0572,agentic-mcp,later,1,paper,2026,1,ObliInjection: Order-Oblivious Prompt Injection Attack to LLM Agents with Multi-source Data
+S-0574,agentic-mcp,later,2,paper,2026,0,Attention is All You Need to Defend Against Indirect Prompt Injection Attacks in LLMs
+S-0577,agentic-mcp,later,1,paper,2026,1,Prompt Injection Attack to Tool Selection in LLM Agents
+S-0578,agentic-mcp,later,2,paper,2026,0,Five Queries Are Enough: Query-Efficient and Surrogate-Free Membership Inference Attacks on RAG via Entailment
+S-0583,agentic-mcp,later,1,paper,2026,1,When AIOps Become 'AI Oops': Subverting LLM-driven IT Operations via Telemetry Manipulation
+S-0588,agentic-mcp,later,2,paper,2026,0,The Framing Gap: Indirect Prompt-Injection Exfiltration Defeats Surface-Level Defenses in Tool-Using Agents
+S-0589,agentic-mcp,later,1,paper,2026,1,FragFuse: Bypassing Access Control of Large Language Model Agents via Memory-Based Query Fragmentation and Fusion
+S-0590,agentic-mcp,later,1,paper,2026,2,Unicode TAG-Block Concealment of Tool-Metadata Payloads in the Model Context Protocol: An Approval-View Fidelity Gap Across Three Independen
+S-0591,agentic-mcp,later,2,paper,2026,0,Adversarial News and Lost Profits: Manipulating Headlines in LLM-Driven Algorithmic Trading
+S-0593,agentic-mcp,later,1,paper,2026,2,Hijacking Robots with a Piece of Paper: A Systematic Study of Physical Prompt Injection in VLM-Controlled Robots
+S-0602,agentic-mcp,later,1,paper,2026,1,Cordyceps: Covert Control Attacks on LLMs via Data Poisoning
+S-0604,agentic-mcp,later,1,paper,2026,1,Incalmo: An Autonomous LLM-assisted System for Red Teaming Multi-Host Networks
+S-0605,agentic-mcp,later,1,paper,2026,1,Beyond the Protocol: Unveiling Attack Vectors in the Model Context Protocol (MCP) Ecosystem
+S-0606,agentic-mcp,later,1,paper,2026,1,Adversarial Hubness in Multi-Modal Retrieval
+S-0608,agentic-mcp,later,2,paper,2026,0,AttnTrace: Contextual Attribution of Prompt Injection and Knowledge Corruption
+S-0609,agentic-mcp,later,1,paper,2026,2,Hijacking Large Audio-Language Models via Context-Agnostic and Imperceptible Auditory Prompt Injection
+S-0617,agentic-mcp,later,2,paper,2026,0,PromptLocate: Localizing Prompt Injection Attacks
+S-0618,agentic-mcp,later,1,paper,2026,1,Site Isolation is Dead: How Site Isolation is Broken in Agentic Browsers and Extensions
+S-0621,agentic-mcp,later,2,paper,2026,0,When AI Meets the Web: Prompt Injection Risks in Third-Party AI Chatbot Plugins
+S-0622,agentic-mcp,later,2,paper,2026,0,URLcoat: Exploiting Web Search Capability to Jailbreak Large Language Models
+S-0623,agentic-mcp,later,1,paper,2026,1,WebCloak: Characterizing and Mitigating Threats from LLM-Driven Web Agents as Intelligent Scrapers
+S-0624,agentic-mcp,later,1,paper,2026,1,Who Taught the Lie? Responsibility Attribution for Poisoned Knowledge in Retrieval-Augmented Generation
+S-0627,agentic-mcp,later,1,paper,2026,1,Agent-Assisted Side-Channel Attacks on Non-Prefix KV Cache in RAG
+S-0629,agentic-mcp,later,1,paper,2026,1,SAGA: A Security Architecture for Governing AI Agentic Systems
+S-0630,agentic-mcp,later,1,paper,2026,1,Defusing Explosive Prompts: Understanding and Preventing Trigger-Based Prompt Injections in LLM Agents
+S-0635,agentic-mcp,later,1,paper,2026,1,From Prompt Injection to Web Exploitation: Revisiting Classic Vulnerabilities in LLM-Integrated Applications
+S-0637,agentic-mcp,later,1,paper,2026,1,Demystifying and Detecting Agentic Workflow Injection Vulnerabilities in GitHub Actions
+S-0638,agentic-mcp,later,1,paper,2026,1,Approval Laundering: Systematizing Approval--Execution Binding Failures in AI Coding-Agent Harnesses
+S-0639,agentic-mcp,later,1,paper,2026,1,BadTemplate: A Training-Free Backdoor Attack via Chat Template Against Large Language Models
+S-0640,agentic-mcp,later,2,paper,2026,0,Defending Against Prompt Injection with DataFilter
+S-0641,agentic-mcp,later,1,paper,2026,1,Targeted Bit-Flip Attacks on LLM-Based Agents
+S-0643,agentic-mcp,later,1,paper,2026,1,MASLeak: Investigating and Exposing Intellectual Property Leakage Vulnerabilities in Multi-Agent Systems
+S-0644,agentic-mcp,later,1,paper,2026,1,MPMA: Preference Manipulation Attack Against Model Context Protocol
+S-0646,agentic-mcp,later,1,paper,2026,1,Towards Automating Data Access Permissions in AI Agents
+S-0650,agentic-mcp,later,1,paper,2026,1,Certifiably Robust RAG against Retrieval Corruption
+S-0654,agentic-mcp,later,1,paper,2026,1,BadGraph: Structural Knowledge Isolation Attacks against Graph Retrieval-Augmented Generation
+S-0656,agentic-mcp,later,1,paper,2026,1,Zombie Agents: Persistent Control of Self-Evolving LLM Agents via Self-Reinforcing Injections
+S-0657,agentic-mcp,later,1,paper,2026,1,Connect the Dots: Knowledge Graph–Guided Crawler Attack on Retrieval-Augmented Generation Systems
+S-0660,agentic-mcp,later,1,paper,2026,1,Climbing the Hill: Prompt Injection Red-Teaming Against Frontier Models with Curriculum Reinforcement Learning
+S-0661,agentic-mcp,later,1,paper,2026,1,"Same Bytes, Different Authority: Reserved-Token Representations in Chat-Template Prompt Injection"
+S-0662,agentic-mcp,later,1,paper,2026,1,Persistent Billable State: Denial-of-Wallet Attacks and Defenses in Tool-Calling LLM Agents
+S-0663,agentic-mcp,later,1,paper,2026,1,MemMorph: Tool Hijacking in LLM Agents via Memory Poisoning
+S-0664,agentic-mcp,later,1,paper,2026,1,Measuring Real-World Prompt Injection Attacks in LLM-based Resume Screening
+S-0667,agentic-mcp,later,1,paper,2026,1,Parasites in the Toolchain: A Large-Scale Analysis of Attacks on the MCP Ecosystem
+S-0691,agentic-mcp,later,2,survey,2023,0,Survey of Vulnerabilities in Large Language Models Revealed by Adversarial Attacks
+S-0693,agentic-mcp,later,2,survey,2024,0,Security of AI Agents
+S-0700,agentic-mcp,later,2,survey,2025,0,Security and Privacy Challenges of Large Language Models: A Survey
+S-0701,agentic-mcp,later,1,survey,2025,0,AI Agents Under Threat: A Survey of Key Security Challenges and Future Pathways
+S-0702,agentic-mcp,later,2,survey,2025,0,Systematization of Knowledge: Security and Safety in the Model Context Protocol Ecosystem
+S-0706,agentic-mcp,later,1,survey,2025,1,Open Challenges in Multi-Agent Security: Towards Secure Systems of Interacting AI Agents
+S-0709,agentic-mcp,later,2,survey,2025,0,A Survey on Trustworthy LLM Agents: Threats and Countermeasures
+S-0711,agentic-mcp,later,1,survey,2026,0,"Connecting the Dots in Agentic AI Security: A Cross-Dimensional Threat Taxonomy, Evaluation Maturity, and Open Challenges"
+S-0712,agentic-mcp,later,1,survey,2026,1,SoK: Privacy Risks and Mitigations in Retrieval-Augmented Generation Systems
+S-0713,agentic-mcp,later,2,survey,2026,0,A Systematic Literature Review on LLM Defenses Against Prompt Injection and Jailbreaking: Expanding NIST Taxonomy
+S-0714,agentic-mcp,later,1,survey,2026,0,SoK: The Attack Surface of Agentic AI - Tools and Autonomy
+S-0716,agentic-mcp,later,1,survey,2026,1,SoK: Agentic Skills -- Beyond Tool Use in LLM Agents
+S-0717,agentic-mcp,later,2,survey,2026,0,SOK: A Taxonomy of Attack Vectors and Defense Strategies for Agentic Supply Chain Runtime
+S-0718,agentic-mcp,later,2,survey,2026,0,SoK: Attack and Defense Landscape of Agentic AI Systems
+S-0720,agentic-mcp,later,2,survey,2026,0,"SoK: Rethinking Jailbreaking in the Era of Agentic AI: Attacks, Defenses, and Practical Consideration"
+S-0721,agentic-mcp,later,1,survey,2026,1,"Towards Secure Retrieval-Augmented Generation: A Comprehensive Review of Threats, Defenses and Benchmarks"
+S-0724,agentic-mcp,later,1,survey,2026,1,The Landscape of Prompt Injection Threats in LLM Agents: From Taxonomy to Analysis
+S-0749,agentic-mcp,later,1,threat-model,2025,0,ASTRIDE: A Security Threat Modeling Platform for Agentic-AI Applications
+S-0750,agentic-mcp,later,1,threat-model,2025,0,ATAG: AI-Agent Application Threat Assessment with Attack Graphs
+S-0754,agentic-mcp,later,1,threat-model,2025,0,Agentic AI Threat Modeling Framework: MAESTRO
+S-0756,agentic-mcp,later,1,threat-model,2025,1,Multi-Agent Risks from Advanced AI
+S-0757,agentic-mcp,later,1,threat-model,2025,1,"Model Context Protocol (MCP): Landscape, Security Threats, and Future Research Directions"
+S-0758,agentic-mcp,later,1,threat-model,2025,0,Extending the OWASP Multi-Agentic System Threat Modeling Guide: Insights from Multi-Agent Security Research
+S-0759,agentic-mcp,later,1,threat-model,2025,0,Securing Agentic AI: A Comprehensive Threat Model and Mitigation Framework for Generative AI Agents
+S-0761,agentic-mcp,later,1,threat-model,2025,0,Agentic AI - Multi-Agentic System Threat Modelling Guide
+S-0766,agentic-mcp,later,1,threat-model,2025,1,Securing Agentic AI: Threat Modeling and Risk Analysis for Network Monitoring Agentic AI System
+S-0767,agentic-mcp,later,1,threat-model,2026,1,"Security Threat Modeling for Emerging AI-Agent Protocols: A Comparative Analysis of MCP, A2A, Agora, and ANP"
+S-0769,agentic-mcp,later,1,threat-model,2026,1,Agent Security is a Systems Problem
+S-0770,agentic-mcp,later,1,threat-model,2026,1,Model Context Protocol (MCP) Security
+S-0772,agentic-mcp,later,1,threat-model,2026,1,Model Context Protocol Threat Modeling and Analyzing Vulnerabilities to Prompt Injection with Tool Poisoning
+S-0774,agentic-mcp,later,1,threat-model,2026,0,MATRA: Modeling the Attack Surface of Agentic AI Systems -- OpenClaw Case Study
+S-0775,agentic-mcp,later,1,threat-model,2026,1,Owner-Harm: A Missing Threat Model for AI Agent Safety
+S-0776,agentic-mcp,later,1,threat-model,2026,1,Beyond Single-Model Injection: A Threat Model and Defense Architecture for Prompt Injection in Multi-Agent Systems
+S-0778,agentic-mcp,later,1,threat-model,2026,0,Agent2Agent Threats in Safety-Critical LLM Assistants: A Human-Centric Taxonomy
+S-0795,agentic-mcp,later,1,framework,2025,0,AAGATE: A NIST AI RMF-Aligned Governance Platform for Agentic AI
+S-0802,agentic-mcp,later,1,framework,2025,0,Agentic AI Red Teaming Guide
+S-0804,agentic-mcp,later,1,framework,2025,0,"Securing the Model Context Protocol (MCP): Risks, Controls, and Governance"
+S-0806,agentic-mcp,later,1,framework,2025,0,Google's Approach for Secure AI Agents: An Introduction
+S-0808,agentic-mcp,later,1,framework,2025,1,Agents Rule of Two: A Practical Approach to AI Agent Security
+S-0810,agentic-mcp,later,1,framework,2025,1,Enterprise-Grade Security for the Model Context Protocol (MCP): Frameworks and Mitigation Strategies
+S-0816,agentic-mcp,later,1,framework,2025,0,Securing Agentic Applications Guide 1.0
+S-0818,agentic-mcp,later,1,framework,2025,1,Authenticated Delegation and Authorized AI Agents
+S-0819,agentic-mcp,later,1,framework,2025,1,"Identity Management for Agentic AI: The new frontier of authorization, authentication, and security for an AI agent world"
+S-0820,agentic-mcp,later,1,framework,2025,1,"The lethal trifecta for AI agents: private data, untrusted content, and external communication"
+S-0822,agentic-mcp,later,2,framework,2026,0,MCP Security
+S-0824,agentic-mcp,later,2,framework,2026,0,Singapore Launches New Model AI Governance Framework for Agentic AI
+S-0826,agentic-mcp,later,1,framework,2026,0,OWASP AI Exchange
+S-0860,agentic-mcp,later,2,standard,2026,0,AIVSS Scoring System For OWASP Agentic AI Core Security Risks v0.8
+S-0861,agentic-mcp,later,2,standard,2026,0,Cybersecurity Standard Practice Guide — Intelligent Agent System Development Security Guide (draft for comments)
+S-0891,agentic-mcp,later,2,catalog,2025,0,AI Incident Roundup
+S-0902,agentic-mcp,later,1,catalog,2026,0,Taxonomy of Failure Modes in Agentic AI Systems
+S-0906,agentic-mcp,later,1,catalog,2026,1,OWASP Agentic Skills Top 10 (AST10)
+S-0907,agentic-mcp,later,2,catalog,2026,0,OWASP GenAI Exploit Round-up Report Q1 2026
+S-0908,agentic-mcp,later,2,catalog,2026,0,OWASP Top 10 for Agentic Applications for 2026
+S-0909,agentic-mcp,later,1,catalog,2026,1,MCP-38: A Comprehensive Threat Taxonomy for Model Context Protocol Systems (v1.0)
+S-0919,agentic-mcp,later,2,dataset,2024,0,CyberSecEval 2: A Wide-Ranging Cybersecurity Evaluation Suite for Large Language Models
+S-0921,agentic-mcp,later,1,dataset,2024,1,RedCode: Risky Code Execution and Generation Benchmark for Code Agents
+S-0930,agentic-mcp,later,1,dataset,2024,1,Agent-SafetyBench: Evaluating the Safety of LLM Agents
+S-0931,agentic-mcp,later,2,dataset,2025,0,LLMail-Inject: A Dataset from a Realistic Adaptive Prompt Injection Challenge
+S-0932,agentic-mcp,later,2,dataset,2025,0,AgentHarm: A Benchmark for Measuring Harmfulness of LLM Agents
+S-0933,agentic-mcp,later,1,dataset,2025,1,VPI-Bench: Visual Prompt Injection Attacks for Computer-Use Agents
+S-0934,agentic-mcp,later,1,dataset,2025,1,WASP: Benchmarking Web Agent Security Against Prompt Injection Attacks
+S-0935,agentic-mcp,later,1,dataset,2025,1,OS-Harm: A Benchmark for Measuring Safety of Computer Use Agents
+S-0936,agentic-mcp,later,2,dataset,2025,0,SEC-bench: Automated Benchmarking of LLM Agents on Real-World Software Security Tasks
+S-0937,agentic-mcp,later,1,dataset,2025,1,RedTeamCUA: Realistic Adversarial Testing of Computer-Use Agents in Hybrid Web-OS Environments
+S-0939,agentic-mcp,later,2,dataset,2025,0,SafeArena: Evaluating the Safety of Autonomous Web Agents
+S-0941,agentic-mcp,later,1,dataset,2025,1,MCPTox: A Benchmark for Tool Poisoning Attack on Real-World MCP Servers
+S-0942,agentic-mcp,later,2,dataset,2025,0,MCPSecBench: A Systematic Security Benchmark and Playground for Testing Model Context Protocols
+S-0943,agentic-mcp,later,1,dataset,2025,1,BountyBench: Dollar Impact of AI Agent Attackers and Defenders on Real-World Cybersecurity Systems
+S-0945,agentic-mcp,later,2,dataset,2025,0,MCP Security Bench (MSB): Benchmarking Attacks Against Model Context Protocol in LLM Agents
+S-0946,agentic-mcp,later,1,dataset,2025,1,CVE-Bench: A Benchmark for AI Agents' Ability to Exploit Real-World Web Application Vulnerabilities
+S-0947,agentic-mcp,later,1,dataset,2026,1,AgentLeak: A Benchmark for Internal-Channel Privacy Leakage in Multi-Agent LLM Systems
+S-0948,agentic-mcp,later,1,dataset,2026,1,In-house measurement (not a publication): analysis by the enumerations agent of NVD CVE API 2.0 (keywordSearch) and CVE.org cvelistV5 record
+S-0949,agentic-mcp,later,1,dataset,2026,1,Skill-Inject: Measuring Agent Vulnerability to Skill File Attacks
+S-0951,agentic-mcp,later,1,dataset,2026,1,StepJack: Benchmarking Computer-Use Agent Safety Against Multi-Step Indirect Prompt Injection
+S-0955,agentic-mcp,later,2,tool,2024,0,garak: A Framework for Security Probing Large Language Models
+S-0961,agentic-mcp,later,2,tool,2025,0,LlamaFirewall: An open source guardrail system for building secure AI agents
+S-0963,agentic-mcp,later,2,tool,2025,0,AgentVigil: Generic Black-Box Red-teaming for Indirect Prompt Injection against LLM Agents
+S-0964,agentic-mcp,later,1,tool,2026,0,MCPThreatHive: Automated Threat Intelligence for Model Context Protocol Ecosystems
+S-0966,agentic-mcp,later,1,tool,2026,1,Aletheia: Permission-Minimality Testing for Coding-Agent Rules
+S-0967,agentic-mcp,later,1,tool,2026,0,STRIDE GPT
+S-0968,agentic-mcp,later,2,tool,2026,0,MUZZLE: Adaptive Agentic Red-Teaming of Web Agents Against Indirect Prompt Injection Attacks
+S-0973,agentic-mcp,later,1,vendor-research,2022,1,Prompt injection attacks against GPT-3
+S-0974,agentic-mcp,later,1,vendor-research,2023,1,Hacking Google Bard - From Prompt Injection to Data Exfiltration
+S-0978,agentic-mcp,later,1,vendor-research,2023,1,Bing Chat: Data Exfiltration Exploit Explained
+S-0983,agentic-mcp,later,2,vendor-research,2024,0,Indirect Prompt Injection of Claude Computer Use
+S-0984,agentic-mcp,later,2,vendor-research,2024,0,AI Threat Landscape Report 2025
+S-0987,agentic-mcp,later,1,vendor-research,2024,1,The Risks Lurking in Publicly Exposed GenAI Development Services
+S-0993,agentic-mcp,later,2,vendor-research,2024,0,Data Exfiltration from Slack AI via indirect prompt injection
+S-0994,agentic-mcp,later,1,vendor-research,2024,1,Microsoft Copilot: From Prompt Injection to Exfiltration of Personal Information
+S-0995,agentic-mcp,later,1,vendor-research,2024,1,Spyware Injection Into Your ChatGPT's Long-Term Memory (SpAIware)
+S-0996,agentic-mcp,later,2,vendor-research,2024,0,ZombAIs: From Prompt Injection to C2 with Claude Computer Use
+S-1006,agentic-mcp,later,1,vendor-research,2025,1,AgentFlayer
+S-1007,agentic-mcp,later,2,vendor-research,2025,0,AI ClickFix: Hijacking Computer-Use Agents Using ClickFix
+S-1008,agentic-mcp,later,1,vendor-research,2025,1,AIKatz - All Your Chats Are Belong To Us
+S-1009,agentic-mcp,later,1,vendor-research,2025,1,Agentic Misalignment: How LLMs could be insider threats
+S-1010,agentic-mcp,later,1,vendor-research,2025,1,Mitigating the risk of prompt injections in browser use
+S-1011,agentic-mcp,later,1,vendor-research,2025,1,Disrupting an AI-orchestrated cyber espionage campaign
+S-1012,agentic-mcp,later,1,vendor-research,2025,1,Threat Intelligence Report: August 2025
+S-1013,agentic-mcp,later,1,vendor-research,2025,1,BodySnatcher (CVE-2025-12420): agentic hijacking vulnerability in ServiceNow
+S-1014,agentic-mcp,later,2,vendor-research,2025,0,Agentic Browser Security: Indirect Prompt Injection in Perplexity Comet
+S-1015,agentic-mcp,later,2,vendor-research,2025,0,Technical Blog: Strengthening AI Agent Hijacking Evaluations
+S-1017,agentic-mcp,later,1,vendor-research,2025,1,Piloting Claude for Chrome
+S-1019,agentic-mcp,later,2,vendor-research,2025,0,ForcedLeak: AI Agent risks exposed in Salesforce AgentForce
+S-1021,agentic-mcp,later,2,vendor-research,2025,0,"The Trifecta: How Three New Gemini Vulnerabilities in Cloud Assist, Search Model, and Browsing Allowed Private Data Exfiltration"
+S-1022,agentic-mcp,later,1,vendor-research,2025,1,GeminiJack
+S-1023,agentic-mcp,later,2,vendor-research,2025,0,Supabase MCP can leak your entire SQL database
+S-1024,agentic-mcp,later,2,vendor-research,2025,0,Mitigating prompt injection attacks with a layered defense strategy
+S-1030,agentic-mcp,later,2,vendor-research,2025,0,GitHub MCP Exploited: Accessing private repositories via MCP
+S-1031,agentic-mcp,later,1,vendor-research,2025,1,MCP Security Notification: Tool Poisoning Attacks
+S-1032,agentic-mcp,later,1,vendor-research,2025,1,Major vulnerability in Microsoft Copilot: Wayback Copilot
+S-1033,agentic-mcp,later,1,vendor-research,2025,1,CamoLeak: Critical GitHub Copilot Vulnerability Leaks Private Source Code
+S-1034,agentic-mcp,later,2,vendor-research,2025,0,Remote Prompt Injection in GitLab Duo Leads to Source Code Theft
+S-1035,agentic-mcp,later,2,vendor-research,2025,0,PoC Attack Targeting Atlassian's Model Context Protocol (MCP) Introduces New 'Living Off AI' Risk
+S-1037,agentic-mcp,later,2,vendor-research,2025,0,McHire
+S-1040,agentic-mcp,later,1,vendor-research,2025,1,A well-funded Moscow-based global 'news' network has infected Western artificial intelligence tools worldwide with Russian propaganda
+S-1045,agentic-mcp,later,2,vendor-research,2025,0,ChatGPT Operator: Prompt Injection Exploits And Defenses
+S-1047,agentic-mcp,later,1,vendor-research,2025,1,Malicious MCP Server on npm postmark-mcp Harvests Emails
+S-1048,agentic-mcp,later,1,vendor-research,2025,1,ShadowLeak
+S-1049,agentic-mcp,later,1,vendor-research,2025,1,Hacking Gemini's Memory with Prompt Injection and Delayed Tool Invocation
+S-1050,agentic-mcp,later,2,vendor-research,2025,0,Announcement: The Month of AI Bugs
+S-1052,agentic-mcp,later,2,vendor-research,2025,0,When AI Turns on Its Team: Exploiting Agent-to-Agent Discovery via Prompt Injection
+S-1053,agentic-mcp,later,2,vendor-research,2025,0,Lessons from Defending Gemini Against Indirect Prompt Injections
+S-1054,agentic-mcp,later,1,vendor-research,2025,1,In the Wild: Malware Prototype with Embedded Prompt Injection
+S-1057,agentic-mcp,later,1,vendor-research,2025,1,Weaponizing image scaling against production AI systems
+S-1058,agentic-mcp,later,1,vendor-research,2025,1,Jumping the line: How MCP servers can attack you before you ever use them
+S-1059,agentic-mcp,later,1,vendor-research,2025,1,When AI Agents Go Rogue: Agent Session Smuggling Attack in A2A Systems
+S-1060,agentic-mcp,later,1,vendor-research,2025,1,AI Agents Are Here. So Are the Threats.
+S-1064,agentic-mcp,later,1,vendor-research,2025,1,ZombieAgent: New ChatGPT Vulnerabilities Let Data Theft Continue (and Spread)
+S-1066,agentic-mcp,later,2,vendor-research,2026,0,Manipulating AI memory for profit: The rise of AI Recommendation Poisoning
+S-1068,agentic-mcp,later,1,vendor-research,2026,1,Detecting and countering misuse of AI: September 2026
+S-1069,agentic-mcp,later,1,vendor-research,2026,2,Securing CI/CD in an agentic world: Claude Code GitHub action case
+S-1071,agentic-mcp,later,1,vendor-research,2026,2,How 'Clinejection' Turned an AI Bot into a Supply Chain Attack
+S-1072,agentic-mcp,later,1,vendor-research,2026,1,GrafanaGhost: The Phantom Stealing Your Data
+S-1075,agentic-mcp,later,1,vendor-research,2026,1,Hacking Moltbook: AI Social Network Reveals 1.5M API Keys
+S-1076,agentic-mcp,later,2,vendor-research,2026,0,Claude Cowork Exfiltrates Files
+S-1078,agentic-mcp,later,2,vendor-research,2026,0,Reprompt
+S-1079,agentic-mcp,later,2,vendor-research,2026,0,"Salesforce Agentforce vulns allowed 0-click CRM data theft, anonymous phishing"
+S-1080,agentic-mcp,later,2,vendor-research,2026,0,Breaking the Lethal Trifecta: Secure Agentic Computing via Causal Isolation Architecture
+S-1081,agentic-mcp,later,1,vendor-research,2026,1,Double Agents
+S-1082,agentic-mcp,later,2,vendor-research,2026,0,When AI Stops Answering and Starts Acting: Field Notes from Red-Teaming the Agentic Era
+S-1084,agentic-mcp,later,1,advisory,2023,1,"NVD CVE records (NIST), various CNAs, 2023-2026. [link](https://nvd.nist.gov/)"
+S-1095,agentic-mcp,later,1,advisory,2025,1,Security Update for Amazon Q Developer Extension for Visual Studio Code (Version #1.84)
+S-1102,agentic-mcp,later,1,advisory,2025,1,EchoLeak
+S-1104,agentic-mcp,later,1,advisory,2025,1,Max severity Flowise RCE vulnerability now exploited in attacks
+S-1105,agentic-mcp,later,2,advisory,2025,0,Widespread Data Theft Targets Salesforce Instances via Salesloft Drift
+S-1106,agentic-mcp,later,1,advisory,2025,1,Critical Langflow Vulnerability (CVE-2025-3248) Actively Exploited to Deliver Flodrix Botnet
+S-1110,agentic-mcp,later,1,advisory,2025,2,Malicious versions of Nx and some supporting plugins were published
+S-1112,agentic-mcp,later,1,advisory,2025,2,GitHub Copilot: Remote Code Execution via Prompt Injection (CVE-2025-53773)
+S-1116,agentic-mcp,later,1,advisory,2026,1,"Cato AI Labs, DuneSlide, reported 2026-02-26, fixed in Cursor 3.0 (2026-04-02), CVEs 2026-06-05, public 2026-07. Press: The Hacker News [lin"
+S-1117,agentic-mcp,later,1,advisory,2026,2,Security Incident Disclosure - July 2026
+S-1118,agentic-mcp,later,1,advisory,2026,1,When prompts become shells: RCE vulnerabilities in AI agent frameworks
+S-1119,agentic-mcp,later,1,advisory,2026,1,"Taiwan Ministry of Digital Affairs, Administration for Cyber Security press release, 2026-08-13, ; MITRE ATLAS AML.CS0071 (cites a DreamGrou"
+S-1125,agentic-mcp,later,2,news,2023,0,Sydney (Microsoft)
+S-1126,agentic-mcp,later,2,news,2023,0,Chevrolet Dealer Chatbot Agrees to Sell Tahoe for $1
+S-1132,agentic-mcp,later,2,news,2024,0,NullBulge
+S-1133,agentic-mcp,later,2,news,2024,0,"DPD chatbot blasts courier company, swears, and dabbles in awful poetry"
+S-1138,agentic-mcp,later,2,news,2025,0,Asana Discloses Data Exposure Bug in MCP Server
+S-1143,agentic-mcp,later,1,news,2025,1,"Vibe coding service Replit deleted user's production database, faked data, told fibs galore"
+S-1145,agentic-mcp,later,1,news,2026,1,"Google Threat Intelligence Group analysis cited in The Hacker News ThreatsDay, 2026-10. (GTIG primary not fetched) [link](https://thehackern"
+S-1148,agentic-mcp,later,1,news,2026,1,Malicious MoltBot skills used to push password-stealing malware
+S-1151,agentic-mcp,later,1,paper,2025,1,"LLMs grooming or data voids? LLM-powered chatbot references to Kremlin disinformation reflect information gaps, not manipulation"
+S-1153,agentic-mcp,later,1,vendor-research,2025,1,Announcing Agent Payments Protocol (AP2)
+S-1158,agentic-mcp,later,2,advisory,2025,0,"NVD, CVE-2025-6514 (published 2025-07-09). [link](https://nvd.nist.gov/vuln/detail/CVE-2025-6514)"
+S-1164,agentic-mcp,later,2,advisory,2024,0,"NVD, CVE-2024-50050 (published 2024-10-23). [link](https://nvd.nist.gov/vuln/detail/CVE-2024-50050)"
+S-1167,agentic-mcp,later,2,advisory,2026,0,Anatomy of a Frontier Lab Agent Intrusion
+S-1168,agentic-mcp,later,2,vendor-research,2026,0,OpenAI Hugging Face Incident Investigation
+S-1170,agentic-mcp,later,2,vendor-research,2026,0,Hugging Face model evaluation security incident
+S-1171,agentic-mcp,later,2,vendor-research,2026,0,The Hugging Face incident and the road ahead
+S-1172,agentic-mcp,later,2,paper,2026,0,OpenAI-HuggingFace: A Reproduction & Lessons for Alignment Testing
+S-1173,agentic-mcp,later,2,paper,2026,0,Mean field games as a tool for AI safety: a worked example from the July 2026 Hugging Face incident
+S-0728,catalogs-schema,calibration,1,threat-model,2020,0,An Architectural Risk Analysis of Machine Learning Systems: Toward More Secure Machine Learning
+S-0855,catalogs-schema,calibration,1,standard,2025,0,Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations
+S-0726,catalogs-schema,subset-1,1,threat-model,2018,0,"The Malicious Use of Artificial Intelligence: Forecasting, Prevention, and Mitigation"
+S-0734,catalogs-schema,subset-1,1,threat-model,2023,1,Generative Language Models and Automated Influence Operations: Emerging Threats and Potential Mitigations
+S-0742,catalogs-schema,subset-1,1,threat-model,2024,1,Analyzing AI Application Threat Models
+S-0746,catalogs-schema,subset-1,1,threat-model,2024,1,A New Era in LLM Security: Exploring Security Concerns in Real-World LLM-based Systems
+S-0763,catalogs-schema,subset-1,1,threat-model,2025,1,An Approach to Technical AGI Safety and Security
+S-0793,catalogs-schema,subset-1,1,framework,2024,2,Securing AI Model Weights: Preventing Theft and Misuse of Frontier Models
+S-0796,catalogs-schema,subset-1,1,framework,2025,1,Frontier AI Trends Report
+S-0798,catalogs-schema,subset-1,1,framework,2025,1,Responsible Scaling Policy
+S-0805,catalogs-schema,subset-1,1,framework,2025,1,Frontier Safety Framework
+S-0807,catalogs-schema,subset-1,1,framework,2025,1,OCCULT: Evaluating Large Language Models for Offensive Cyber Operation Capabilities
+S-0833,catalogs-schema,subset-1,1,standard,2021,1,Securing Artificial Intelligence (SAI); Data Supply Chain Security
+S-0839,catalogs-schema,subset-1,1,standard,2024,1,"Regulation (EU) 2024/1689 (Artificial Intelligence Act), Article 15. [link](https://artificialintelligenceact.eu/article/15/)"
+S-0842,catalogs-schema,subset-1,1,standard,2024,1,Reducing Risks Posed by Synthetic Content: An Overview of Technical Approaches to Digital Content Transparency
+S-0846,catalogs-schema,subset-1,1,standard,2025,1,Generative artificial intelligence (AI)
+S-0851,catalogs-schema,subset-1,1,standard,2025,2,The General-Purpose AI Code of Practice
+S-0865,catalogs-schema,subset-1,1,catalog,n.d.,1,Arcanum Prompt Injection Taxonomy
+S-0888,catalogs-schema,subset-1,1,catalog,2024,2,CWE AI Working Group
+S-0896,catalogs-schema,subset-1,1,catalog,2025,3,OWASP Non-Human Identities Top 10 - 2025
+S-0900,catalogs-schema,subset-1,1,catalog,2026,2,CoSAI Risk Map
+S-0903,catalogs-schema,subset-1,1,catalog,2026,3,ATLAS: Adversarial Threat Landscape for Artificial-Intelligence Systems
+S-0727,catalogs-schema,later,1,threat-model,2019,0,Threat Modeling AI/ML Systems and Dependencies
+S-0729,catalogs-schema,later,1,threat-model,2020,0,Artificial Intelligence Cybersecurity Challenges: Threat Landscape for Artificial Intelligence
+S-0730,catalogs-schema,later,1,threat-model,2021,0,Cybersecurity Challenges in the Uptake of Artificial Intelligence in Autonomous Driving
+S-0731,catalogs-schema,later,1,threat-model,2022,0,Modeling Threats to AI-ML Systems Using STRIDE
+S-0732,catalogs-schema,later,1,threat-model,2022,0,Threat Assessment in Machine Learning based Systems
+S-0733,catalogs-schema,later,1,threat-model,2023,0,An Integrated Approach of Threat Analysis for Autonomous Vehicles Perception System
+S-0735,catalogs-schema,later,1,threat-model,2023,0,YOLOv7 Threat Model and Code Review
+S-0736,catalogs-schema,later,1,threat-model,2023,0,Attack Tree Analysis for Adversarial Evasion Attacks
+S-0737,catalogs-schema,later,1,threat-model,2024,0,"ADMIn: Attacks on Dataset, Model and Input. A Threat Model for AI Based Software"
+S-0738,catalogs-schema,later,1,threat-model,2024,0,"D. Cortegaca, A. Malhotra, K. Abdol-Hamid, AWS Security Blog, 2024-11-18. ; re:Invent 2023 SEC214 deck [link](https://aws.amazon.com/blogs/s"
+S-0739,catalogs-schema,later,1,threat-model,2024,0,An Architectural Risk Analysis of Large Language Models: Applied Machine Learning Security
+S-0740,catalogs-schema,later,1,threat-model,2024,0,Towards More Practical Threat Models in Artificial Intelligence Security
+S-0741,catalogs-schema,later,1,threat-model,2024,0,LLM Platform Security: Applying a Systematic Evaluation Framework to OpenAI's ChatGPT Plugins
+S-0743,catalogs-schema,later,1,threat-model,2024,0,Threat Modelling and Risk Analysis for Large Language Model (LLM)-Powered Applications
+S-0744,catalogs-schema,later,1,threat-model,2024,0,Asset-centric Threat Modeling for AI-based Systems
+S-0745,catalogs-schema,later,1,threat-model,2024,0,Operationalizing a Threat Model for Red-Teaming Large Language Models (LLMs)
+S-0747,catalogs-schema,later,1,threat-model,2025,0,Building trust in AI through a cyber risk-based approach
+S-0748,catalogs-schema,later,1,threat-model,2025,0,RAG Security and Privacy: Formalizing the Threat Model and Attack Surface
+S-0751,catalogs-schema,later,2,threat-model,2025,0,International AI Safety Report
+S-0752,catalogs-schema,later,2,threat-model,2025,0,International AI Safety Report 2025: Second Key Update: Technical Safeguards and Risk Management
+S-0753,catalogs-schema,later,1,threat-model,2025,0,Lessons From Red Teaming 100 Generative AI Products
+S-0762,catalogs-schema,later,1,threat-model,2025,0,Threat Modeling for AI: The Case for an Asset-Centric Approach
+S-0764,catalogs-schema,later,1,threat-model,2025,0,Frontier AI Risk Management Framework in Practice: A Risk Analysis Technical Report
+S-0765,catalogs-schema,later,1,threat-model,2025,0,ThreMoLIA: Threat Modeling of Large Language Model-Integrated Applications
+S-0768,catalogs-schema,later,1,threat-model,2026,0,International AI Safety Report 2026
+S-0771,catalogs-schema,later,1,threat-model,2026,0,STRIDE-AI: A Threat Modeling Framework for Generative AI Security Assessment
+S-0773,catalogs-schema,later,1,threat-model,2026,0,A LINDDUN-based Privacy Threat Modeling Framework for GenAI
+S-0777,catalogs-schema,later,1,threat-model,2026,0,PriMod4AI: Lifecycle-Aware Privacy Threat Modeling for AI Systems using LLM
+S-0779,catalogs-schema,later,1,framework,n.d.,0,Databricks AI Security Framework (DASF)
+S-0780,catalogs-schema,later,1,framework,n.d.,0,Secure AI Framework (SAIF): Risks
+S-0781,catalogs-schema,later,1,framework,2021,0,Securing Machine Learning Algorithms
+S-0782,catalogs-schema,later,2,framework,2023,0,Multilayer Framework for Good Cybersecurity Practices for AI
+S-0783,catalogs-schema,later,2,framework,2023,0,Artificial Intelligence Risk Management Framework (AI RMF 1.0)
+S-0784,catalogs-schema,later,1,framework,2023,0,NVIDIA AI Red Team: An Introduction
+S-0786,catalogs-schema,later,1,framework,2023,0,Toward Comprehensive Risk Assessments and Assurance of AI-Based Systems
+S-0787,catalogs-schema,later,2,framework,2023,0,The Dual LLM pattern for building AI assistants that can resist prompt injection
+S-0788,catalogs-schema,later,2,framework,2024,0,Pre-deployment evaluation of Anthropic's upgraded Claude 3.5 Sonnet
+S-0789,catalogs-schema,later,1,framework,2024,0,Companion Guide on Securing AI Systems
+S-0790,catalogs-schema,later,2,framework,2024,0,Model AI Governance Framework for Generative AI
+S-0791,catalogs-schema,later,1,framework,2024,0,Guide to Red Teaming Methodology on AI Safety
+S-0792,catalogs-schema,later,1,framework,2024,0,Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile
+S-0794,catalogs-schema,later,1,framework,2024,0,AI Safety Governance Framework v1.0
+S-0797,catalogs-schema,later,1,framework,2025,0,Securing RAG: A Risk Assessment and Mitigation Framework
+S-0800,catalogs-schema,later,2,framework,2025,0,"Office of the Central Cyberspace Affairs Commission / CAC, with CNCERT leading drafting, 《人工智能安全治理框架》2.0版, released 2025-09-15 at the Nation"
+S-0801,catalogs-schema,later,1,framework,2025,0,Cisco Integrated AI Security and Safety Framework Report
+S-0803,catalogs-schema,later,2,framework,2025,0,AI Controls Matrix (AICM)
+S-0809,catalogs-schema,later,1,framework,2025,0,SAFE-AI: A Framework for Securing AI-Enabled Systems
+S-0811,catalogs-schema,later,1,framework,2025,0,Managing Misuse Risk for Dual-Use Foundation Models
+S-0812,catalogs-schema,later,2,framework,2025,0,Control Overlays for Securing AI Systems (COSAiS)
+S-0813,catalogs-schema,later,2,framework,2025,0,Cybersecurity Framework Profile for Artificial Intelligence (Cyber AI Profile): NIST Community Profile
+S-0814,catalogs-schema,later,1,framework,2025,0,Preparedness Framework
+S-0815,catalogs-schema,later,2,framework,2025,0,OWASP AI Testing Guide
+S-0817,catalogs-schema,later,1,framework,2025,1,A Framework for Evaluating Emerging Cyberattack Capabilities of AI
+S-0821,catalogs-schema,later,1,framework,2026,0,The Promptware Kill Chain: How Prompt Injections Gradually Evolved Into a Multistep Malware Delivery Mechanism
+S-0823,catalogs-schema,later,1,framework,2026,0,A Deterministic and Auditable AI Security Risk Assessment Framework with ATLAS Aligned Executable Rules and Formal Verification
+S-0825,catalogs-schema,later,2,framework,2026,0,The Anatomy of a Prompt Injection: A Component Model for Structured Analysis
+S-0827,catalogs-schema,later,2,standard,n.d.,0,Machine Learning Bill of Materials (AI/ML-BOM)
+S-0828,catalogs-schema,later,2,standard,n.d.,0,"ISO/IEC JTC 1/SC 42 and SC 27 standards: ISO/IEC 42001 (AI management system), ISO/IEC 23894 (AI risk management guidance), ISO/IEC 5338 (AI"
+S-0830,catalogs-schema,later,2,standard,n.d.,0,Vulnerability Severity Classification for AI Systems
+S-0831,catalogs-schema,later,2,standard,2019,0,AI/ML Pivots to the Security Development Lifecycle Bug Bar
+S-0832,catalogs-schema,later,1,standard,2020,0,Securing Artificial Intelligence (SAI); Problem Statement
+S-0834,catalogs-schema,later,1,standard,2022,0,Securing Artificial Intelligence (SAI); AI Threat Ontology
+S-0835,catalogs-schema,later,1,standard,2023,0,Guidelines for secure AI system development
+S-0836,catalogs-schema,later,1,standard,2024,0,Security Recommendations for a Generative AI System
+S-0837,catalogs-schema,later,1,standard,2024,0,Guidelines on Securing AI Systems
+S-0838,catalogs-schema,later,2,standard,2024,0,CVE Artificial Intelligence (CVEAI) Working Group Charter
+S-0840,catalogs-schema,later,2,standard,2024,0,Implementing AI Bill of Materials (AI BOM) with SPDX 3.0
+S-0841,catalogs-schema,later,2,standard,2024,0,Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations
+S-0843,catalogs-schema,later,2,standard,2024,0,Secure Software Development Practices for Generative AI and Dual-Use Foundation Models: An SSDF Community Profile
+S-0844,catalogs-schema,later,1,standard,2025,0,Evasion Attacks on LLMs – Countermeasures in Practice
+S-0845,catalogs-schema,later,1,standard,2025,0,Generative AI Models – Opportunities and Risks for Industry and Authorities
+S-0849,catalogs-schema,later,1,standard,2025,0,Securing Artificial Intelligence (SAI); Baseline Cyber Security Requirements for AI Models and Systems
+S-0850,catalogs-schema,later,2,standard,2025,0,Securing Artificial Intelligence (SAI); Baseline Cyber Security Requirements for AI Models and Systems
+S-0852,catalogs-schema,later,1,standard,2025,1,AI Data Security: Best Practices for Securing Data Used to Train & Operate AI Systems
+S-0853,catalogs-schema,later,2,standard,2025,0,Cybersecurity technology — Basic security requirements for generative artificial intelligence services
+S-0854,catalogs-schema,later,1,standard,2025,1,Authorization
+S-0856,catalogs-schema,later,2,standard,2025,0,Towards a Common Reporting Framework for AI Incidents
+S-0857,catalogs-schema,later,2,standard,2025,0,Code of Practice for the Cyber Security of AI
+S-0858,catalogs-schema,later,1,standard,2026,1,Content Credentials: C2PA Technical Specification
+S-0859,catalogs-schema,later,2,standard,2026,0,Securing Artificial Intelligence (SAI); AI Incident Reporting; Part 1: AI Common Incident Expression (AICIE) Global Framework
+S-0862,catalogs-schema,later,2,standard,2026,0,"National Cybersecurity Standardization Technical Committee (TC260) Secretariat, 《网络安全标准实践指南——人工智能应用安全指引 总则》 and 教育, 卫生健康, 广播电视和网络视听 parts ("""
+S-0863,catalogs-schema,later,2,catalog,n.d.,0,Jailbreak Taxonomy
+S-0864,catalogs-schema,later,2,catalog,n.d.,0,"AI Incident Database, Incident 6 (Tay), [link](https://incidentdatabase.ai/)"
+S-0866,catalogs-schema,later,1,catalog,n.d.,1,MITRE ATLAS case study AML.CS0002 (Incident; McAfee ATR observation). [link](https://atlas.mitre.org/studies/AML.CS0002)
+S-0867,catalogs-schema,later,2,catalog,n.d.,0,MITRE ATLAS case study AML.CS0004 (Incident; two individuals in China). [link](https://atlas.mitre.org/studies/AML.CS0004)
+S-0868,catalogs-schema,later,2,catalog,2018,0,CWE-1039: Inadequate Detection or Handling of Adversarial Input Perturbations in Automated Recognition Mechanism
+S-0869,catalogs-schema,later,2,catalog,2019,0,"MITRE ATLAS case study AML.CS0003 (Exercise, 2019-09-07; Skylight Cyber). ; primary: [link](https://atlas.mitre.org/studies/AML.CS0003)"
+S-0870,catalogs-schema,later,2,catalog,2019,0,"MITRE ATLAS case study AML.CS0007 (Exercise, 2019-08-22; Brown University researchers)."
+S-0871,catalogs-schema,later,2,catalog,2019,0,"MITRE ATLAS case study AML.CS0008 (Exercise, 2019-09-09; Silent Break Security). CVE-2019-20634 (cited in the ATLAS record)"
+S-0872,catalogs-schema,later,1,catalog,2019,0,Failure Modes in Machine Learning Systems
+S-0873,catalogs-schema,later,2,catalog,2020,0,"MITRE ATLAS case study AML.CS0000 (Exercise, 2020; Palo Alto Networks AI Research Team). [link](https://atlas.mitre.org/studies/AML.CS0000)"
+S-0874,catalogs-schema,later,2,catalog,2020,0,"MITRE ATLAS case study AML.CS0001 (Exercise, 2020; Palo Alto Networks). [link](https://atlas.mitre.org/studies/AML.CS0001)"
+S-0875,catalogs-schema,later,2,catalog,2020,0,"MITRE ATLAS case study AML.CS0005 (Exercise, 2020-04-30; UC Berkeley). Primary: Wallace et al., arXiv:2004.15015 [link](https://arxiv.org/ab"
+S-0876,catalogs-schema,later,2,catalog,2020,0,"MITRE ATLAS case study AML.CS0010 (Exercise, 2020; Microsoft AI Red Team)"
+S-0877,catalogs-schema,later,2,catalog,2020,0,"MITRE ATLAS case study AML.CS0011 (Exercise, 2020-02; Azure Red Team)"
+S-0878,catalogs-schema,later,2,catalog,2020,0,"MITRE ATLAS case study AML.CS0012 (Exercise, 2020; MITRE AI Red Team)"
+S-0879,catalogs-schema,later,1,catalog,2021,1,"MITRE ATLAS case study AML.CS0013 (Exercise, 2021-01-18; Y. Li, J. Hua, H. Wang, C. Chen, Y. Liu). Primary: arXiv:2101.06896 [link](https://"
+S-0880,catalogs-schema,later,2,catalog,2021,0,"MITRE ATLAS case study AML.CS0014 (Exercise, 2021-06-23; Kaspersky ML Research Team). Reference: [link](https://securelist.com/how-to-confus"
+S-0881,catalogs-schema,later,1,catalog,2022,0,PLOT4ai - Practical Library of Threats for AI
+S-0882,catalogs-schema,later,2,catalog,2023,0,Common Attack Pattern Enumeration and Classification (CAPEC)
+S-0883,catalogs-schema,later,2,catalog,2023,0,OWASP Top 10 for LLM Applications
+S-0884,catalogs-schema,later,2,catalog,2023,0,Machine Learning Security Top 10
+S-0885,catalogs-schema,later,2,catalog,2024,0,CSET-AIID-harm-taxonomy
+S-0887,catalogs-schema,later,2,catalog,2024,0,CWE-1427: Improper Neutralization of Input Used for LLM Prompting
+S-0889,catalogs-schema,later,2,catalog,2024,0,"The AI Risk Repository: A Comprehensive Meta-Review, Database, and Taxonomy of Risks From Artificial Intelligence"
+S-0890,catalogs-schema,later,2,catalog,2024,0,MITRE Launches AI Incident Sharing Initiative
+S-0892,catalogs-schema,later,2,catalog,2025,0,AI Risk Atlas: Taxonomy and Tooling for Navigating AI Risks and Resources
+S-0893,catalogs-schema,later,1,catalog,2025,1,New Entry
+S-0894,catalogs-schema,later,2,catalog,2025,0,GCVE: Global CVE Allocation System
+S-0895,catalogs-schema,later,2,catalog,2025,0,LLM03:2025 Supply Chain
+S-0897,catalogs-schema,later,2,catalog,2025,0,OWASP Top 10 for LLM Applications 2025
+S-0899,catalogs-schema,later,2,catalog,2026,0,AVID Taxonomy: Effect (SEP) View and Lifecycle View
+S-0901,catalogs-schema,later,2,catalog,2026,0,CWE-1448: Weaknesses Related to AI/ML Products
+S-0904,catalogs-schema,later,2,catalog,2026,0,"MITRE, atlas-data (attack-reference fields) and atlas-navigator-data (STIX bundles), 2026. [link](https://github.com/mitre-atlas/atlas-navig"
+S-0905,catalogs-schema,later,2,catalog,2026,0,"MITRE ATLAS data CHANGELOG, release 2026.07 (2026-07-31). [link](https://github.com/mitre-atlas/atlas-data/blob/main/CHANGELOG.md)"
+S-1165,catalogs-schema,later,2,catalog,2026,0,"CISA, Known Exploited Vulnerabilities Catalog, JSON feed, catalogVersion 2026.10.02 (1,733 entries). [link](https://www.cisa.gov/known-explo"
+S-1174,catalogs-schema,later,2,standard,2021,0,Securing Artificial Intelligence (SAI); Mitigation Strategy Report
+S-1175,catalogs-schema,later,2,standard,2022,0,Securing Artificial Intelligence (SAI); The role of hardware in security of AI
+S-1176,catalogs-schema,later,2,standard,2023,0,Securing Artificial Intelligence (SAI); Artificial Intelligence Computing Platform Security Framework
+S-1177,catalogs-schema,later,2,threat-model,2025,0,International AI Safety Report 2025: First Key Update: Capabilities and Risk Implications
+S-1178,catalogs-schema,later,1,framework,n.d.,0,Securing Generative AI: The Generative AI Security Scoping Matrix
+S-1179,catalogs-schema,later,1,framework,2025,0,Our Approach to Frontier AI
+S-1180,catalogs-schema,later,1,framework,2024,0,Deploying AI Systems Securely: Best Practices for Deploying Secure and Resilient AI Systems
+S-0101,integration,subset-1,1,paper,2020,1,Overlearning Reveals Sensitive Attributes
+S-0137,integration,subset-1,1,paper,2022,1,Dos and Don'ts of Machine Learning in Computer Security
+S-0914,integration,subset-1,1,dataset,2023,1,Purple Llama CyberSecEval: A Secure Coding Benchmark for Language Models
+S-0923,integration,subset-1,1,dataset,2024,1,The WMDP Benchmark: Measuring and Reducing Malicious Use With Unlearning
+S-0960,integration,subset-1,1,tool,2025,0,AegisShield: Democratizing Cyber Threat Modeling with Generative AI
+S-0980,integration,subset-1,1,vendor-research,2024,1,From Naptime to Big Sleep: Using Large Language Models To Catch Vulnerabilities In Real-World Code
+S-1044,integration,subset-1,1,vendor-research,2025,2,Disrupting malicious uses of our models: an update
+S-1092,integration,subset-1,1,advisory,2024,1,Space secrets leak disclosure
+S-1111,integration,subset-1,1,advisory,2025,1,What to know about a recent Mixpanel security incident
+S-1155,integration,subset-1,1,news,2026,3,Grok (chatbot)
+S-0039,integration,later,2,paper,2018,0,Property Inference Attacks on Fully Connected Neural Networks using Permutation Invariant Representations
+S-0134,integration,later,2,paper,2021,0,Ethical and social risks of harm from Language Models
+S-0148,integration,later,2,paper,2022,0,Red Teaming Language Models with Language Models
+S-0192,integration,later,1,paper,2023,1,Do Users Write More Insecure Code with AI Assistants?
+S-0198,integration,later,1,paper,2023,1,Lost at C: A User Study on the Security Implications of Large Language Model Code Assistants
+S-0235,integration,later,2,paper,2024,0,Coordinated Flaw Disclosure for AI: Beyond Security Vulnerabilities
+S-0250,integration,later,1,paper,2024,1,An Engorgio Prompt Makes Large Language Model Babble on
+S-0282,integration,later,1,paper,2024,1,Manipulating Large Language Models to Increase Product Visibility
+S-0320,integration,later,1,paper,2024,1,Ring-A-Bell! How Reliable are Concept Removal Methods for Diffusion Models?
+S-0332,integration,later,2,paper,2024,0,Instructional Fingerprinting of Large Language Models
+S-0362,integration,later,1,paper,2025,0,LLMs' Suitability for Network Security: A Case Study of STRIDE Threat Modeling
+S-0365,integration,later,1,paper,2025,0,AI-Enhanced threat analysis and risk assessment for connected and autonomous vehicles
+S-0371,integration,later,1,paper,2025,1,Demonstrating specification gaming in reasoning models
+S-0415,integration,later,1,paper,2025,1,Importing Phantoms: Measuring LLM Package Hallucination Vulnerabilities
+S-0418,integration,later,1,paper,2025,1,OverThink: Slowdown Attacks on Reasoning LLMs
+S-0447,integration,later,2,paper,2025,0,LLMmap: Fingerprinting For Large Language Models
+S-0457,integration,later,1,paper,2025,1,WireTap: Breaking Server SGX via DRAM Bus Interposition
+S-0462,integration,later,2,paper,2025,0,GPTracker: A Large-Scale Measurement of Misused GPTs
+S-0472,integration,later,1,paper,2025,1,Position: LLM Unlearning Benchmarks are Weak Measures of Progress
+S-0477,integration,later,1,paper,2025,1,Mirage in the Eyes: Hallucination Attack on Multi-modal Large Language Models with Only Attention Sink
+S-0497,integration,later,2,paper,2026,0,"'Org-Wide, We're Not Ready': C-Level Lessons on Securing Generative AI Systems"
+S-0498,integration,later,2,paper,2026,0,Position: Mind the Gap -- Closing the Growing Disconnect Between Vulnerability Disclosure and AI Security
+S-0509,integration,later,1,paper,2026,1,Battering RAM: Low-Cost Interposer Attacks on Confidential Computing via Dynamic Memory Aliasing
+S-0521,integration,later,2,paper,2026,0,Hollow-LLM Attack: Computationally Trivial Weights in Zero-Knowledge Verification of LLM Inference
+S-0523,integration,later,2,paper,2026,0,Identifying Provenance of Generative Text-to-Image Models
+S-0540,integration,later,1,paper,2026,1,Large-scale online deanonymization with LLMs
+S-0565,integration,later,2,paper,2026,0,ACE: A Security Architecture for LLM-Integrated App Systems
+S-0569,integration,later,2,paper,2026,0,Chasing Shadows: Pitfalls in LLM Security Research
+S-0576,integration,later,1,paper,2026,1,ThinkTrap: Denial-of-Service Attacks against Black-box LLM Services via Infinite Thinking
+S-0584,integration,later,2,paper,2026,0,'Abuse Risks are Often Inherent to Product Features': Exploring AI Vendors' Bug Bounty and Responsible Disclosure Policies
+S-0585,integration,later,2,paper,2026,0,Off-The-Shelf Image-to-Image Models Are All You Need To Defeat Image Protection Schemes
+S-0603,integration,later,1,paper,2026,1,An Empirical Study on Remote Code Execution in Machine Learning Model Hosting Ecosystems
+S-0607,integration,later,2,paper,2026,0,AI Wrote My Paper and All I Got Was This False Negative: Measuring the Efficacy of Commercial AI Text Detectors
+S-0636,integration,later,1,paper,2026,1,Understanding the (In)Security of Vibe-Coded Applications
+S-0647,integration,later,1,paper,2026,1,Evaluating Deep Unlearning in Large Language Models
+S-0652,integration,later,1,paper,2026,1,Recovering and Rehosting Mobile Local LLM Conversations and Contexts via Memory Forensics
+S-0674,integration,later,2,survey,2019,0,A taxonomy and survey of attacks against machine learning
+S-0681,integration,later,2,survey,2022,0,Machine Learning Security in Industry: A Quantitative Survey
+S-0686,integration,later,2,survey,2023,0,Identifying and Mitigating the Security Risks of Generative AI
+S-0705,integration,later,2,survey,2025,0,What We Know about AIBOMs: Results from a Multivocal Literature Review on Artificial Intelligence Bill of Materials
+S-0715,integration,later,2,survey,2026,0,SoK: Colluding Adversaries in Machine Learning Pipelines
+S-0725,integration,later,2,survey,2026,0,"SoK: DARPA's AI Cyber Challenge (AIxCC): Competition Design, Architectures, and Lessons Learned"
+S-0847,integration,later,2,QBOM & CBOM \,AIBOM \,0,"Indian Computer Emergency Response Team (CERT-In), MeitY, ""Technical Guidelines on SBOM \"
+S-0911,integration,later,2,dataset,n.d.,0,AI Incidents and Hazards Monitor (AIM)
+S-0913,integration,later,2,dataset,2022,0,"Red Teaming Language Models to Reduce Harms: Methods, Scaling Behaviors, and Lessons Learned"
+S-0953,integration,later,2,tool,2023,0,Llama Guard: LLM-based Input-Output Safeguard for Human-AI Conversations
+S-0954,integration,later,2,tool,2024,0,PentestGPT: An LLM-empowered Automatic Penetration Testing Tool
+S-0957,integration,later,2,tool,2024,0,AI Atlas Nexus
+S-0958,integration,later,2,tool,2024,0,PyRIT: A Framework for Security Risk Identification and Red Teaming in Generative AI System
+S-0988,integration,later,2,vendor-research,2024,0,Staying ahead of threat actors in the age of AI
+S-0991,integration,later,1,vendor-research,2024,1,Diving into AI Package Hallucinations
+S-0999,integration,later,1,vendor-research,2024,1,SAPwned: SAP AI vulnerabilities expose customers' cloud environments and private AI artifacts
+S-1000,integration,later,1,vendor-research,2024,1,LLMjacking: Stolen Cloud Credentials Used in New AI Attack
+S-1029,integration,later,1,vendor-research,2025,1,Cost of a Data Breach Report 2025
+S-1063,integration,later,1,vendor-research,2025,1,The Road to Top 1: How XBOW Did It
+S-1077,integration,later,1,vendor-research,2026,0,Detecting Security Posture Drift in AI-Driven Software Development via Continuous Threat Modeling
+S-1127,integration,later,1,news,2023,1,Oops: Samsung Employees Leaked Confidential Data to ChatGPT
+S-1129,integration,later,1,news,2023,1,Meta's powerful AI language model has leaked online — what happens now?
+S-1131,integration,later,1,news,2024,1,"Incident, October 2024. ByteDance dismissed an intern for sabotaging model training in its commercialization-technology team. In November 20"
+S-1135,integration,later,1,news,2024,1,"Civil Resolution Tribunal of British Columbia, Moffatt v. Air Canada, 2024 BCCRT 149, decided 2024-02-14. (403 on fetch) [link](https://www."
+S-1139,integration,later,1,news,2025,1,AI Cyber Challenge marks pivotal inflection point for cyber defense
+S-1141,integration,later,1,news,2025,1,Disrupting a global cybercrime network abusing generative AI
+S-1144,integration,later,1,news,2025,1,white genocide in South Africa
+S-1149,integration,later,1,news,2026,1,"Pillar Security disclosure, patched in Unsloth Studio 2026.6.9 (2026-06-18); reported in The Hacker News ThreatsDay, 2026-10. [link](https:/"
+S-1157,integration,later,1,news,2026,2,Sycophancy (artificial intelligence)
+S-1166,integration,later,1,paper,2026,1,Names Can Hurt: Spotting Slopsquatting Risks Caused by Package Name Hallucinations in Local Coding LLMs
+S-1169,integration,later,2,vendor-research,2026,0,JFrog and OpenAI Collaboration on Zero-Day Security Findings
+S-1181,integration,later,1,paper,2025,1,Rerouting LLM Routers
+S-0003,ml-risk-assets,subset-1,1,paper,2013,1,Intriguing properties of neural networks
+S-0012,ml-risk-assets,subset-1,1,paper,2016,2,Accessorize to a Crime: Real and Stealthy Attacks on State-of-the-Art Face Recognition
+S-0278,ml-risk-assets,subset-1,1,paper,2024,2,AdvWave: Stealthy Adversarial Jailbreak Attack against Large Audio-Language Models
+S-0287,ml-risk-assets,subset-1,1,paper,2024,2,Malla: Demystifying Real-world Large Language Model Integrated Malicious Services
+S-0684,ml-risk-assets,subset-1,1,survey,2022,1,SoK: How Robust is Image Classification Deep Neural Network Watermarking?
+S-0685,ml-risk-assets,subset-1,1,survey,2023,1,Real Attackers Don't Compute Gradients
+S-0692,ml-risk-assets,subset-1,1,survey,2024,1,Privacy Leakage on DNNs: A Survey of Model Inversion Attacks and Defenses
+S-0695,ml-risk-assets,subset-1,1,survey,2024,1,Harmful Fine-tuning Attacks and Defenses for Large Language Models: A Survey
+S-0696,ml-risk-assets,subset-1,1,survey,2024,1,SoK: Membership Inference Attacks on LLMs are Rushing Nowhere (and How to Fix It)
+S-0922,ml-risk-assets,subset-1,1,dataset,2024,1,CodeLMSec Benchmark: Systematically Evaluating and Finding Security Vulnerabilities in Black-Box Code Language Models
+S-0924,ml-risk-assets,subset-1,1,dataset,2024,1,MM-SafetyBench: A Benchmark for Safety Evaluation of Multimodal Large Language Models
+S-0925,ml-risk-assets,subset-1,1,dataset,2024,1,JailBreakV: A Benchmark for Assessing the Robustness of MultiModal Large Language Models against Jailbreak Attacks
+S-0952,ml-risk-assets,subset-1,1,tool,2020,1,Reliable evaluation of adversarial robustness with an ensemble of diverse parameter-free attacks
+S-0959,ml-risk-assets,subset-1,1,tool,2024,0,PILLAR: an AI-Powered Privacy Threat Modeling Tool
+S-0998,ml-risk-assets,subset-1,1,vendor-research,2024,1,"Mitigating Skeleton Key, a new type of generative AI jailbreak technique"
+S-1003,ml-risk-assets,subset-1,1,vendor-research,2024,1,Deceptive Delight: Jailbreak LLMs Through Camouflage and Distraction
+S-1025,ml-risk-assets,subset-1,1,vendor-research,2025,1,Google Photos AI Models: The Secret Sauce That Can Be Stolen
+S-1027,ml-risk-assets,subset-1,1,vendor-research,2025,1,Adversarial Misuse of Generative AI
+S-1154,ml-risk-assets,subset-1,1,advisory,2025,1,FTC Launches Inquiry into AI Chatbots Acting as Companions
+S-1156,ml-risk-assets,subset-1,1,news,2026,2,GPT-4o
+S-0002,ml-risk-assets,later,2,paper,2013,0,Evasion Attacks against Machine Learning at Test Time
+S-0004,ml-risk-assets,later,1,paper,2014,1,Privacy in Pharmacogenetics: An End-to-End Case Study of Personalized Warfarin Dosing
+S-0006,ml-risk-assets,later,1,paper,2015,1,Explaining and Harnessing Adversarial Examples
+S-0007,ml-risk-assets,later,2,paper,2016,0,Deep Learning with Differential Privacy
+S-0009,ml-risk-assets,later,1,paper,2016,1,DeepFool: a simple and accurate method to fool deep neural networks
+S-0010,ml-risk-assets,later,1,paper,2016,1,The Limitations of Deep Learning in Adversarial Settings
+S-0011,ml-risk-assets,later,1,paper,2016,1,Transferability in Machine Learning: from Phenomena to Black-Box Attacks using Adversarial Samples
+S-0013,ml-risk-assets,later,1,paper,2016,1,Stealing Machine Learning Models via Prediction APIs
+S-0014,ml-risk-assets,later,1,paper,2017,1,Adversarial Patch
+S-0015,ml-risk-assets,later,1,paper,2017,1,Towards Evaluating the Robustness of Neural Networks
+S-0016,ml-risk-assets,later,2,paper,2017,0,Adversarial Examples Are Not Easily Detected: Bypassing Ten Detection Methods
+S-0018,ml-risk-assets,later,1,paper,2017,1,ZOO: Zeroth Order Optimization based Black-box Attacks to Deep Neural Networks without Training Substitute Models
+S-0020,ml-risk-assets,later,1,paper,2017,1,Deep Models Under the GAN: Information Leakage from Collaborative Deep Learning
+S-0021,ml-risk-assets,later,1,paper,2017,1,Adversarial examples in the physical world
+S-0022,ml-risk-assets,later,1,paper,2017,1,Delving into Transferable Adversarial Examples and Black-box Attacks
+S-0024,ml-risk-assets,later,2,paper,2017,0,Universal Adversarial Perturbations
+S-0026,ml-risk-assets,later,1,paper,2017,1,Practical Black-Box Attacks against Machine Learning
+S-0027,ml-risk-assets,later,1,paper,2017,1,Membership Inference Attacks Against Machine Learning Models
+S-0031,ml-risk-assets,later,1,paper,2018,1,Synthesizing Robust Adversarial Examples
+S-0032,ml-risk-assets,later,2,paper,2018,0,Obfuscated Gradients Give a False Sense of Security: Circumventing Defenses to Adversarial Examples
+S-0034,ml-risk-assets,later,1,paper,2018,1,Decision-Based Adversarial Attacks: Reliable Attacks Against Black-Box Machine Learning Models
+S-0035,ml-risk-assets,later,1,paper,2018,1,Audio Adversarial Examples: Targeted Attacks on Speech-to-Text
+S-0037,ml-risk-assets,later,1,paper,2018,1,HotFlip: White-Box Adversarial Examples for Text Classification
+S-0038,ml-risk-assets,later,1,paper,2018,1,Robust Physical-World Attacks on Deep Learning Visual Classification
+S-0041,ml-risk-assets,later,1,paper,2018,1,Black-box Adversarial Attacks with Limited Queries and Information
+S-0044,ml-risk-assets,later,1,paper,2018,1,Towards Deep Learning Models Resistant to Adversarial Attacks
+S-0047,ml-risk-assets,later,1,paper,2018,1,Ensemble Adversarial Training: Attacks and Defenses
+S-0049,ml-risk-assets,later,2,paper,2018,0,Stealing Hyperparameters in Machine Learning
+S-0050,ml-risk-assets,later,1,paper,2018,1,Privacy Risk in Machine Learning: Analyzing the Connection to Overfitting
+S-0057,ml-risk-assets,later,2,paper,2019,0,The Secret Sharer: Evaluating and Testing Unintended Memorization in Neural Networks
+S-0058,ml-risk-assets,later,1,paper,2019,0,On Evaluating Adversarial Robustness
+S-0060,ml-risk-assets,later,1,paper,2019,1,Certified Adversarial Robustness via Randomized Smoothing
+S-0063,ml-risk-assets,later,2,paper,2019,0,"Adversarial Examples Are Not Bugs, They Are Features"
+S-0064,ml-risk-assets,later,1,paper,2019,1,PRADA: Protecting Against DNN Model Stealing Attacks
+S-0065,ml-risk-assets,later,1,paper,2019,1,TextBugger: Generating Adversarial Text Against Real-world Applications
+S-0067,ml-risk-assets,later,2,paper,2019,0,Comprehensive Privacy Analysis of Deep Learning: Passive and Active White-box Inference Attacks against Centralized and Federated Learning
+S-0068,ml-risk-assets,later,1,paper,2019,1,Knockoff Nets: Stealing Functionality of Black-Box Models
+S-0070,ml-risk-assets,later,2,paper,2019,0,White-box vs Black-box: Bayes Optimal Strategies for Membership Inference
+S-0071,ml-risk-assets,later,2,paper,2019,0,ML-Leaks: Model and Data Independent Membership Inference Attacks and Defenses on Machine Learning Models
+S-0072,ml-risk-assets,later,1,paper,2019,1,Adversarial Attacks Against Automatic Speech Recognition Systems via Psychoacoustic Hiding
+S-0074,ml-risk-assets,later,1,paper,2019,1,Universal Adversarial Triggers for Attacking and Analyzing NLP
+S-0077,ml-risk-assets,later,1,paper,2019,1,Deep Leakage from Gradients
+S-0078,ml-risk-assets,later,1,paper,2020,1,Square Attack: A Query-Efficient Black-Box Adversarial Attack via Random Search
+S-0081,ml-risk-assets,later,1,paper,2020,1,Cryptanalytic Extraction of Neural Network Models
+S-0082,ml-risk-assets,later,2,paper,2020,0,Exploring Connections Between Active Learning and Model Extraction
+S-0083,ml-risk-assets,later,1,paper,2020,1,HopSkipJumpAttack: A Query-Efficient Decision-Based Attack
+S-0085,ml-risk-assets,later,1,paper,2020,1,Inverting Gradients -- How easy is it to break privacy in federated learning?
+S-0087,ml-risk-assets,later,1,paper,2020,1,ILFO: Adversarial Attack on Adaptive Neural Networks
+S-0089,ml-risk-assets,later,1,paper,2020,1,High Accuracy and High Fidelity Extraction of Neural Networks
+S-0090,ml-risk-assets,later,1,paper,2020,1,Is BERT Really Robust? A Strong Baseline for Natural Language Attack on Text Classification and Entailment
+S-0091,ml-risk-assets,later,1,paper,2020,1,Thieves on Sesame Street! Model Extraction of BERT-based APIs
+S-0093,ml-risk-assets,later,2,paper,2020,0,Stolen Memories: Leveraging Model Memorization for Calibrated White-Box Membership Inference
+S-0103,ml-risk-assets,later,2,paper,2020,0,On Adaptive Attacks to Adversarial Example Defenses
+S-0104,ml-risk-assets,later,1,paper,2020,1,Imitation Attacks and Defenses for Black-box Machine Translation Systems
+S-0108,ml-risk-assets,later,1,paper,2020,1,CloudLeak: Large-Scale Deep Learning Models Stealing Through Adversarial Examples
+S-0109,ml-risk-assets,later,1,paper,2020,1,The Secret Revealer: Generative Model-Inversion Attacks Against Deep Neural Networks
+S-0111,ml-risk-assets,later,1,paper,2021,1,FLTrust: Byzantine-robust Federated Learning via Trust Bootstrapping
+S-0113,ml-risk-assets,later,1,paper,2021,1,Extracting Training Data from Large Language Models
+S-0114,ml-risk-assets,later,1,paper,2021,1,When Machine Unlearning Jeopardizes Privacy
+S-0115,ml-risk-assets,later,1,paper,2021,1,Label-Only Membership Inference Attacks
+S-0117,ml-risk-assets,later,2,paper,2021,0,Stealing Links from Graph Neural Networks
+S-0118,ml-risk-assets,later,2,paper,2021,0,Entangled Watermarks as a Defense against Model Extraction
+S-0119,ml-risk-assets,later,2,paper,2021,0,MAZE: Data-Free Model Stealing Attack Using Zeroth-Order Gradient Estimation
+S-0120,ml-risk-assets,later,2,paper,2021,0,Membership Leakage in Label-Only Exposures
+S-0121,ml-risk-assets,later,2,paper,2021,0,Deep Neural Network Fingerprinting by Conferrable Adversarial Examples
+S-0122,ml-risk-assets,later,2,paper,2021,0,Dataset Inference: Ownership Resolution in Machine Learning
+S-0123,ml-risk-assets,later,2,paper,2021,0,Adversary Instantiation: Lower Bounds for Differentially Private Machine Learning
+S-0125,ml-risk-assets,later,1,paper,2021,1,Dirty Road Can Attack: Security of Deep Learning based Automated Lane Centering under Physical-World Attack
+S-0130,ml-risk-assets,later,1,paper,2021,1,Sponge Examples: Energy-Latency Attacks on Neural Networks
+S-0131,ml-risk-assets,later,2,paper,2021,0,Systematic Evaluation of Privacy Risks of Machine Learning Models
+S-0132,ml-risk-assets,later,1,paper,2021,1,Data-Free Model Extraction
+S-0138,ml-risk-assets,later,2,paper,2022,0,Reconstructing Training Data with Informed Adversaries
+S-0139,ml-risk-assets,later,1,paper,2022,1,Membership Inference Attacks From First Principles
+S-0141,ml-risk-assets,later,1,paper,2022,1,NICGSlowDown: Evaluating the Efficiency Robustness of Neural Image Caption Generation Models
+S-0142,ml-risk-assets,later,1,paper,2022,1,Robbing the Fed: Directly Obtaining Private Data in Federated Learning with Modified Models
+S-0146,ml-risk-assets,later,2,paper,2022,0,ML-Doctor: Holistic Risk Assessment of Inference Attacks Against Machine Learning Models
+S-0151,ml-risk-assets,later,1,paper,2022,1,Red-Teaming the Stable Diffusion Safety Filter
+S-0154,ml-risk-assets,later,2,paper,2022,0,Enhanced Membership Inference Attacks against Machine Learning Models
+S-0157,ml-risk-assets,later,1,paper,2023,1,Are aligned neural networks adversarially aligned?
+S-0158,ml-risk-assets,later,1,paper,2023,1,Extracting Training Data from Diffusion Models
+S-0159,ml-risk-assets,later,1,paper,2023,1,Quantifying Memorization Across Neural Language Models
+S-0160,ml-risk-assets,later,1,paper,2023,1,Jailbreaking Black Box Large Language Models in Twenty Queries
+S-0161,ml-risk-assets,later,2,paper,2023,0,How Robust is Google's Bard to Adversarial Image Attacks?
+S-0162,ml-risk-assets,later,2,paper,2023,0,Are Diffusion Models Vulnerable to Membership Inference Attacks?
+S-0164,ml-risk-assets,later,2,paper,2023,0,The Stable Signature: Rooting Watermarks in Latent Diffusion Models
+S-0165,ml-risk-assets,later,1,paper,2023,1,FigStep: Jailbreaking Large Vision-Language Models via Typographic Visual Prompts
+S-0167,ml-risk-assets,later,1,paper,2023,1,The False Promise of Imitating Proprietary LLMs
+S-0169,ml-risk-assets,later,1,paper,2023,1,Large Language Models for Code: Security Hardening and Adversarial Testing
+S-0170,ml-risk-assets,later,2,paper,2023,0,Baseline Defenses for Adversarial Attacks Against Aligned Language Models
+S-0171,ml-risk-assets,later,2,paper,2023,0,Evading Watermark based Detection of AI-Generated Content
+S-0174,ml-risk-assets,later,2,paper,2023,0,ProPILE: Probing Privacy Leakage in Large Language Models
+S-0175,ml-risk-assets,later,1,paper,2023,1,A Watermark for Large Language Models
+S-0177,ml-risk-assets,later,1,paper,2023,1,LoRA Fine-tuning Efficiently Undoes Safety Training in Llama 2-Chat 70B
+S-0178,ml-risk-assets,later,1,paper,2023,1,DeepInception: Hypnotize Large Language Model to Be Jailbreaker
+S-0179,ml-risk-assets,later,1,paper,2023,1,Sentence Embedding Leaks More Information than You Expect: Generative Embedding Inversion Attack to Recover the Whole Sentence
+S-0180,ml-risk-assets,later,2,paper,2023,0,Multi-step Jailbreaking Privacy Attacks on ChatGPT
+S-0181,ml-risk-assets,later,1,paper,2023,1,AutoDAN: Generating Stealthy Jailbreak Prompts on Aligned Large Language Models
+S-0183,ml-risk-assets,later,1,paper,2023,1,Analyzing Leakage of Personally Identifiable Information in Language Models
+S-0185,ml-risk-assets,later,2,paper,2023,0,Membership Inference Attacks against Language Models via Neighbourhood Comparison
+S-0186,ml-risk-assets,later,1,paper,2023,1,Tree of Attacks: Jailbreaking Black-Box LLMs Automatically
+S-0187,ml-risk-assets,later,1,paper,2023,1,Language Model Inversion
+S-0188,ml-risk-assets,later,1,paper,2023,1,Text Embeddings Reveal (Almost) As Much As Text
+S-0189,ml-risk-assets,later,1,paper,2023,1,Scalable Extraction of Training Data from (Production) Language Models
+S-0193,ml-risk-assets,later,1,paper,2023,1,Unsafe Diffusion: On the Generation of Unsafe Images and Hateful Memes From Text-To-Image Models
+S-0194,ml-risk-assets,later,2,paper,2023,0,SmoothLLM: Defending Large Language Models Against Jailbreaking Attacks
+S-0197,ml-risk-assets,later,1,paper,2023,1,Can AI-Generated Text be Reliably Detected?
+S-0199,ml-risk-assets,later,1,paper,2023,1,Scalable and Transferable Black-Box Jailbreaks for Language Models via Persona Modulation
+S-0200,ml-risk-assets,later,1,paper,2023,1,Jailbreak in pieces: Compositional Adversarial Attacks on Multi-Modal Language Models
+S-0202,ml-risk-assets,later,2,paper,2023,0,Prompt Stealing Attacks Against Text-to-Image Generation Models
+S-0205,ml-risk-assets,later,1,paper,2023,1,Adversarial Policies Beat Superhuman Go AIs
+S-0206,ml-risk-assets,later,1,paper,2023,1,Jailbreak and Guard Aligned Language Models with Only Few In-Context Demonstrations
+S-0207,ml-risk-assets,later,1,paper,2023,1,Jailbroken: How Does LLM Safety Training Fail?
+S-0208,ml-risk-assets,later,2,paper,2023,0,Tree-Ring Watermarks: Fingerprints for Diffusion Images that are Invisible and Robust
+S-0209,ml-risk-assets,later,1,paper,2023,1,Shadow Alignment: The Ease of Subverting Safely-Aligned Language Models
+S-0213,ml-risk-assets,later,1,paper,2023,1,GPTFUZZER: Red Teaming Large Language Models with Auto-Generated Jailbreak Prompts
+S-0214,ml-risk-assets,later,1,paper,2023,1,GPT-4 Is Too Smart To Be Safe: Stealthy Chat with LLMs via Cipher
+S-0215,ml-risk-assets,later,1,paper,2023,1,Removing RLHF Protections in GPT-4 via Fine-Tuning
+S-0216,ml-risk-assets,later,1,paper,2023,1,Effective Prompt Extraction from Language Models
+S-0217,ml-risk-assets,later,2,paper,2023,0,On Evaluating Adversarial Robustness of Large Vision-Language Models
+S-0219,ml-risk-assets,later,1,paper,2023,1,AutoDAN: Interpretable Gradient-Based Adversarial Attacks on Large Language Models
+S-0220,ml-risk-assets,later,1,paper,2023,1,Universal and Transferable Adversarial Attacks on Aligned Language Models
+S-0224,ml-risk-assets,later,2,paper,2024,0,AI Risk Categorization Decoded (AIR 2024): From Government Regulations to Corporate Policies
+S-0225,ml-risk-assets,later,1,paper,2024,1,Jailbreaking Leading Safety-Aligned LLMs with Simple Adaptive Attacks
+S-0226,ml-risk-assets,later,1,paper,2024,1,Many-shot Jailbreaking
+S-0227,ml-risk-assets,later,1,paper,2024,1,Refusal in Language Models Is Mediated by a Single Direction
+S-0230,ml-risk-assets,later,1,paper,2024,1,Image Hijacks: Adversarial Images can Control Generative Models at Runtime
+S-0232,ml-risk-assets,later,1,paper,2024,1,Stealing Part of a Production Language Model
+S-0238,ml-risk-assets,later,2,paper,2024,0,The Janus Interface: How Fine-Tuning in Large Language Models Amplifies the Privacy Risks
+S-0243,ml-risk-assets,later,2,paper,2024,0,Scalable watermarking for identifying large language model outputs
+S-0246,ml-risk-assets,later,2,paper,2024,0,MasterKey: Automated Jailbreak Across Multiple Large Language Model Chatbots
+S-0249,ml-risk-assets,later,2,paper,2024,0,A Wolf in Sheep's Clothing: Generalized Nested Jailbreak Prompts can Fool Large Language Models Easily
+S-0251,ml-risk-assets,later,1,paper,2024,1,Do Membership Inference Attacks Work on Large Language Models?
+S-0255,ml-risk-assets,later,1,paper,2024,1,Logits of API-Protected LLMs Leak Proprietary Information
+S-0257,ml-risk-assets,later,2,paper,2024,0,Practical Membership Inference Attacks against Fine-tuned Large Language Models via Self-prompt Calibration
+S-0259,ml-risk-assets,later,1,paper,2024,1,Inducing High Energy-Latency of Large Vision-Language Models with Verbose Images
+S-0260,ml-risk-assets,later,2,paper,2024,0,Coercing LLMs to do and reveal (almost) anything
+S-0262,ml-risk-assets,later,2,paper,2024,0,COLD-Attack: Jailbreaking LLMs with Stealthiness and Controllability
+S-0263,ml-risk-assets,later,1,paper,2024,1,Covert Malicious Finetuning: Challenges in Safeguarding LLM Adaptation
+S-0269,ml-risk-assets,later,1,paper,2024,1,Your Code Secret Belongs to Me: Neural Code Completion Tools Can Memorize Hard-Coded Credentials
+S-0271,ml-risk-assets,later,1,paper,2024,1,Best-of-N Jailbreaking
+S-0272,ml-risk-assets,later,1,paper,2024,1,PLeak: Prompt Leaking Attacks against Large Language Model Applications
+S-0274,ml-risk-assets,later,1,paper,2024,1,ArtPrompt: ASCII Art-based Jailbreak Attacks against Aligned LLMs
+S-0275,ml-risk-assets,later,2,paper,2024,0,WildTeaming at Scale: From In-the-Wild Jailbreaks to (Adversarially) Safer Language Models
+S-0276,ml-risk-assets,later,1,paper,2024,1,Watermark Stealing in Large Language Models
+S-0279,ml-risk-assets,later,2,paper,2024,0,On the Reliability of Watermarks for Large Language Models
+S-0280,ml-risk-assets,later,2,paper,2024,0,Robust Distortion-free Watermarks for Language Models
+S-0286,ml-risk-assets,later,1,paper,2024,1,AmpleGCG: Learning a Universal and Transferable Generative Model of Adversarial Suffixes for Jailbreaking Both Open and Closed LLMs
+S-0290,ml-risk-assets,later,2,paper,2024,0,Making Them Ask and Answer: Jailbreaking Large Language Models in Few Queries via Disguise and Reconstruction
+S-0293,ml-risk-assets,later,2,paper,2024,0,LLM Dataset Inference: Did you train on my dataset?
+S-0294,ml-risk-assets,later,2,paper,2024,0,Did the Neurons Read your Book? Document-level Membership Inference for Large Language Models
+S-0295,ml-risk-assets,later,1,paper,2024,1,Can LLMs Keep a Secret? Testing Privacy Implications of Language Models via Contextual Integrity Theory
+S-0300,ml-risk-assets,later,1,paper,2024,1,No Free Lunch in LLM Watermarking: Trade-offs in Watermarking Design Choices
+S-0304,ml-risk-assets,later,1,paper,2024,1,Visual Adversarial Examples Jailbreak Aligned Large Language Models
+S-0310,ml-risk-assets,later,1,paper,2024,1,"Great, Now Write an Article About That: The Crescendo Multi-Turn LLM Jailbreak Attack"
+S-0312,ml-risk-assets,later,1,paper,2024,1,Rainbow Teaming: Open-Ended Generation of Diverse Adversarial Prompts
+S-0313,ml-risk-assets,later,1,paper,2024,1,Prompt Stealing Attacks Against Large Language Models
+S-0317,ml-risk-assets,later,2,paper,2024,0,Detecting Pretraining Data from Large Language Models
+S-0319,ml-risk-assets,later,1,paper,2024,1,Beyond Memorization: Violating Privacy Via Inference with Large Language Models
+S-0323,ml-risk-assets,later,1,paper,2024,1,Assessing the Brittleness of Safety Alignment via Pruning and Low-Rank Modifications
+S-0326,ml-risk-assets,later,2,paper,2024,0,Membership Inference Attacks Against In-Context Learning
+S-0335,ml-risk-assets,later,1,paper,2024,1,MMA-Diffusion: MultiModal Attack on Diffusion Models
+S-0336,ml-risk-assets,later,1,paper,2024,1,SneakyPrompt: Jailbreaking Text-to-image Generative Models
+S-0339,ml-risk-assets,later,2,paper,2024,0,Don't Listen To Me: Understanding and Exploring Jailbreak Prompts of Large Language Models
+S-0340,ml-risk-assets,later,2,paper,2024,0,LLM-Fuzzer: Scaling Assessment of Large Language Model Jailbreaks
+S-0342,ml-risk-assets,later,1,paper,2024,1,Low-Cost High-Power Membership Inference Attacks
+S-0343,ml-risk-assets,later,1,paper,2024,1,How Johnny Can Persuade LLMs to Jailbreak Them: Rethinking Persuasion to Challenge AI Safety by Humanizing LLMs
+S-0346,ml-risk-assets,later,2,paper,2024,0,Adversarial Illusions in Multi-Modal Embeddings
+S-0351,ml-risk-assets,later,1,paper,2024,1,Extracting Prompts by Inverting LLM Outputs
+S-0354,ml-risk-assets,later,1,paper,2024,1,Watermarks in the Sand: Impossibility of Strong Watermarking for Generative Models
+S-0356,ml-risk-assets,later,1,paper,2024,1,Invisible Image Watermarks Are Provably Removable Using Generative AI
+S-0357,ml-risk-assets,later,1,paper,2024,1,Weak-to-Strong Jailbreaking on Large Language Models
+S-0369,ml-risk-assets,later,2,paper,2025,0,Does Refusal Training in LLMs Generalize to the Past Tense?
+S-0377,ml-risk-assets,later,1,paper,2025,1,You Can't Steal Nothing: Mitigating Prompt Leakages in LLMs via System Vectors
+S-0387,ml-risk-assets,later,1,paper,2025,1,Blind Baselines Beat Membership Inference Attacks for Foundation Models
+S-0391,ml-risk-assets,later,2,paper,2025,0,Depth Gives a False Sense of Privacy: LLM Internal States Inversion
+S-0396,ml-risk-assets,later,1,paper,2025,1,Safety Misalignment Against Large Language Models
+S-0401,ml-risk-assets,later,1,paper,2025,1,Inexact Unlearning Needs More Careful Evaluations to Avoid a False Sense of Privacy
+S-0402,ml-risk-assets,later,2,paper,2025,0,Exploring the limits of strong membership inference attacks on large language models
+S-0404,ml-risk-assets,later,2,paper,2025,0,Towards Label-Only Membership Inference Attack against Pre-trained Large Language Models
+S-0406,ml-risk-assets,later,1,paper,2025,1,Unlearning or Obfuscating? Jogging the Memory of Unlearned LLMs via Benign Relearning
+S-0407,ml-risk-assets,later,2,paper,2025,0,Membership Inference Attacks Against Vision-Language Models
+S-0414,ml-risk-assets,later,1,paper,2025,1,TwinBreak: Jailbreaking LLM Security Alignments based on Twin Prompts
+S-0416,ml-risk-assets,later,1,paper,2025,1,Jailbreaking to Jailbreak
+S-0419,ml-risk-assets,later,1,paper,2025,1,"H-CoT: Hijacking the Chain-of-Thought Safety Reasoning Mechanism to Jailbreak Large Reasoning Models, Including OpenAI o1/o3, DeepSeek-R1, a"
+S-0422,ml-risk-assets,later,1,paper,2025,1,Differentiation-Based Extraction of Proprietary Data from Fine-Tuned LLMs
+S-0434,ml-risk-assets,later,2,paper,2025,0,In-House Evaluation Is Not Enough: Towards Robust Third-Party Flaw Disclosure for General-Purpose AI
+S-0436,ml-risk-assets,later,1,paper,2025,1,An Adversarial Perspective on Machine Unlearning for AI Safety
+S-0437,ml-risk-assets,later,1,paper,2025,1,Prompt Inference Attack on Distributed Large Language Model Inference Frameworks
+S-0449,ml-risk-assets,later,1,paper,2025,1,AdvPrompter: Fast Adaptive Adversarial Prompting for LLMs
+S-0450,ml-risk-assets,later,2,paper,2025,0,A Domain-Based Taxonomy of Jailbreak Vulnerabilities in Large Language Models
+S-0451,ml-risk-assets,later,1,paper,2025,1,Safety Alignment Should Be Made More Than Just a Few Tokens Deep
+S-0453,ml-risk-assets,later,1,paper,2025,1,Prompt Inversion Attack Against Collaborative Inference of Large Language Models
+S-0460,ml-risk-assets,later,2,paper,2025,0,Constitutional Classifiers: Defending against Universal Jailbreaks across Thousands of Hours of Red Teaming
+S-0467,ml-risk-assets,later,1,paper,2025,1,On the Effectiveness of Prompt Stealing Attacks on In-the-Wild Prompts
+S-0471,ml-risk-assets,later,1,paper,2025,1,Tamper-Resistant Safeguards for Open-Weight LLMs
+S-0474,ml-risk-assets,later,1,paper,2025,1,Practical Feasibility of Gradient Inversion Attacks in Federated Learning
+S-0489,ml-risk-assets,later,2,paper,2025,0,Membership Inference Attacks Cannot Prove that a Model Was Trained On Your Data
+S-0495,ml-risk-assets,later,2,paper,2026,0,On the Effectiveness of Membership Inference in Targeted Data Extraction from Large Language Models
+S-0499,ml-risk-assets,later,1,paper,2026,1,Can Watermarking Techniques Help Prevent LLM Model Stealing?
+S-0502,ml-risk-assets,later,1,paper,2026,1,MarkNull: Model-Agnostic Watermark Removal in AI-Generated Images via On-Manifold Latent Manipulation
+S-0505,ml-risk-assets,later,2,paper,2026,0,Window-based Membership Inference Attacks Against Fine-tuned Large Language Models
+S-0506,ml-risk-assets,later,1,paper,2026,1,TEE.Fail: Breaking Trusted Execution Environments via DDR5 Memory Bus Interposition
+S-0510,ml-risk-assets,later,2,paper,2026,0,"The Prompt Stealing Fallacy: Rethinking Metrics, Attacks, and Defenses"
+S-0513,ml-risk-assets,later,2,paper,2026,0,Imitative Membership Inference Attack
+S-0522,ml-risk-assets,later,1,paper,2026,1,"Love, Lies, and Language Models: Investigating AI's Role in Romance-Baiting Scams"
+S-0525,ml-risk-assets,later,2,paper,2026,0,JailbreakScope: Interpreting Jailbreak Mechanism through Representation and Circuit Analyses
+S-0530,ml-risk-assets,later,2,paper,2026,0,Privacy Risks in Time Series Forecasting: User- and Record-Level Membership Inference
+S-0531,ml-risk-assets,later,2,paper,2026,0,Can we estimate privacy vulnerability of individual records? Towards Mitigating Attribute Inference Attacks on ML Models
+S-0541,ml-risk-assets,later,1,paper,2026,1,CompLeak: Deep Learning Model Compression Exacerbates Privacy Leakage
+S-0542,ml-risk-assets,later,2,paper,2026,0,On Evaluating the Robustness of Large Vision-Language Models via Untargeted Modality Alignment Breaking Adversarial Attack
+S-0552,ml-risk-assets,later,2,paper,2026,0,Beyond Indistinguishability: Measuring Extraction Risk in LLM APIs
+S-0555,ml-risk-assets,later,2,paper,2026,0,Quantifying Large Language Model Attacks Through the Lens of Model Cognition
+S-0559,ml-risk-assets,later,1,paper,2026,1,Shadow in the Cache: Unveiling and Mitigating Privacy Risks of KV-cache in LLM Inference
+S-0563,ml-risk-assets,later,1,paper,2026,1,FedSpy-LLM: Towards Scalable and Generalizable Data Reconstruction Attacks from Gradients on LLMs
+S-0564,ml-risk-assets,later,1,paper,2026,1,Are Robust LLM Fingerprints Adversarially Robust?
+S-0566,ml-risk-assets,later,2,paper,2026,0,Beyond Jailbreak: Unveiling Risks in LLM Applications Arising from Blurred Capability Boundaries
+S-0567,ml-risk-assets,later,2,paper,2026,0,Bleeding Pathways: Vanishing Discriminability in LLM Hidden States Fuels Jailbreak Attacks
+S-0568,ml-risk-assets,later,1,paper,2026,1,Character-Level Perturbations Disrupt LLM Watermarks
+S-0570,ml-risk-assets,later,1,paper,2026,1,"Trust Me, I Know This Function: Hijacking LLM Static Analysis using Bias"
+S-0573,ml-risk-assets,later,1,paper,2026,1,Odysseus: Jailbreaking Commercial Multimodal LLM-integrated Systems via Dual Steganography
+S-0579,ml-risk-assets,later,2,paper,2026,0,Targeting Alignment: Extracting Safety Classifiers of Aligned LLMs
+S-0581,ml-risk-assets,later,1,paper,2026,1,Stealing Reasoning Traces from Proprietary LLM APIs
+S-0596,ml-risk-assets,later,1,paper,2026,1,RobustBlack: Challenging Black-Box Adversarial Attacks on State-of-the-Art Defenses
+S-0597,ml-risk-assets,later,1,paper,2026,1,Monitor Jailbreaking: Evading Chain-of-Thought Monitoring Without Encoded Reasoning
+S-0598,ml-risk-assets,later,1,paper,2026,1,AI Model Extraction Attacks: Bypassing Single-Client Assumptions in Defenses
+S-0601,ml-risk-assets,later,1,paper,2026,1,Attesting Model Lineage by Consisted Knowledge Evolution with Fine-Tuning Trajectory
+S-0610,ml-risk-assets,later,1,paper,2026,1,Evaluating Concept Filtering Defenses against Child Sexual Abuse Material Generation by Text-to-Image Models
+S-0611,ml-risk-assets,later,2,paper,2026,0,EnchTable: Unified Safety Alignment Transfer in Fine-tuned Large Language Models
+S-0614,ml-risk-assets,later,1,paper,2026,1,LLMThief: Evaluating Configuration Leaking Risks in Commercial LLM App Stores
+S-0615,ml-risk-assets,later,1,paper,2026,1,MetaBreak: Jailbreaking Online LLM Services via Special Token Manipulation
+S-0616,ml-risk-assets,later,2,paper,2026,0,The Person Behind the Sound: Demystifying Audio Private Attribute Profiling via Multimodal Large Language Models
+S-0625,ml-risk-assets,later,1,paper,2026,1,WRATH: Turning Watermark Robustness Against Itself via a Watermark-Agnostic Black-Box Invalidation Attack
+S-0632,ml-risk-assets,later,1,paper,2026,1,"One Bad Token Spoils the Barrel: Assessment, Detection, and Remediation of Glitch Tokens in Large Language Models"
+S-0633,ml-risk-assets,later,1,paper,2026,1,GoodVibe: Security-by-Vibe for LLM-Based Code Generation
+S-0634,ml-risk-assets,later,2,paper,2026,0,Membership Inference Attacks on Tokenizers of Large Language Models
+S-0642,ml-risk-assets,later,2,paper,2026,0,Inference Attacks Against Graph Generative Diffusion Models
+S-0645,ml-risk-assets,later,2,paper,2026,0,VidLeaks: Membership Inference Attacks Against Text-to-Video Models
+S-0648,ml-risk-assets,later,1,paper,2026,1,GateBreaker: Gate-Guided Attacks on Mixture-of-Expert LLMs
+S-0649,ml-risk-assets,later,1,paper,2026,1,NeuroStrike: Neuron-Level Attacks on Aligned LLMs
+S-0651,ml-risk-assets,later,2,paper,2026,0,A False Sense of Privacy: Evaluating Textual Data Sanitization Beyond Surface-level Privacy Leakage
+S-0658,ml-risk-assets,later,2,paper,2026,0,From Zero to Hero: Cross-modal-enhanced Adversarial Item Promotion Attack against Multimodal Recommender Systems
+S-0659,ml-risk-assets,later,1,paper,2026,1,Smudged Fingerprints: A Systematic Evaluation of the Robustness of AI Image Fingerprints
+S-0666,ml-risk-assets,later,1,paper,2026,1,When Memory Becomes a Vulnerability: Towards Multi-turn Jailbreak Attacks against Text-to-Image Generation Systems
+S-0670,ml-risk-assets,later,2,paper,2026,0,Cracking Federated Privacy: Initialization-Resilient Gradient Inversion with Fine-Grained Reconstruction
+S-0671,ml-risk-assets,later,2,survey,2018,0,Threat of Adversarial Attacks on Deep Learning in Computer Vision: A Survey
+S-0675,ml-risk-assets,later,2,survey,2020,0,Adversarial Machine Learning -- Industry Perspectives
+S-0677,ml-risk-assets,later,2,survey,2020,0,A Survey of Privacy Attacks in Machine Learning
+S-0682,ml-risk-assets,later,2,survey,2022,0,Membership Inference Attacks on Machine Learning: A Survey
+S-0697,ml-risk-assets,later,1,survey,2024,1,SoK: Pitfalls in Evaluating Black-Box Attacks
+S-0698,ml-risk-assets,later,2,survey,2024,0,"A Survey on Large Language Model (LLM) Security and Privacy: The Good, the Bad, and the Ugly"
+S-0699,ml-risk-assets,later,1,survey,2024,1,Jailbreak Attacks and Defenses Against Large Language Models: A Survey
+S-0722,ml-risk-assets,later,2,survey,2026,0,SoK: Evaluating Jailbreak Guardrails for Large Language Models
+S-0723,ml-risk-assets,later,2,survey,2026,0,SoK: Robustness in Large Language Models against Jailbreak Attacks
+S-0910,ml-risk-assets,later,2,dataset,n.d.,0,AIAAIC Repository
+S-0917,ml-risk-assets,later,2,dataset,2023,0,DecodingTrust: A Comprehensive Assessment of Trustworthiness in GPT Models
+S-0918,ml-risk-assets,later,2,dataset,2024,0,WAVES: Benchmarking the Robustness of Image Watermarks
+S-0920,ml-risk-assets,later,2,dataset,2024,0,JailbreakBench: An Open Robustness Benchmark for Jailbreaking Large Language Models
+S-0926,ml-risk-assets,later,2,dataset,2024,0,HarmBench: A Standardized Evaluation Framework for Automated Red Teaming and Robust Refusal
+S-0928,ml-risk-assets,later,2,dataset,2024,0,A StrongREJECT for Empty Jailbreaks
+S-0938,ml-risk-assets,later,2,dataset,2025,0,Mark My Words: Analyzing and Evaluating Language Model Watermarks
+S-0956,ml-risk-assets,later,2,tool,2024,0,"WildGuard: Open One-Stop Moderation Tools for Safety Risks, Jailbreaks, and Refusals of LLMs"
+S-0969,ml-risk-assets,later,2,vendor-research,2019,0,Experimental Security Research of Tesla Autopilot
+S-0970,ml-risk-assets,later,2,vendor-research,2020,0,Model Hacking ADAS to Pave Safer Roads for Autonomous Vehicles
+S-1016,ml-risk-assets,later,2,vendor-research,2025,0,Evaluating Security Risk in DeepSeek and Other Frontier Reasoning Models
+S-1028,ml-risk-assets,later,1,vendor-research,2025,1,Novel Universal Bypass for All Major LLMs
+S-1065,ml-risk-assets,later,1,vendor-research,2026,1,AI in the Middle: Turning Web-Based AI Services into C2 Proxies & The Future Of AI Driven Attacks
+S-1146,ml-risk-assets,later,2,news,2026,0,"The Guardian report, 2026-03-20 (primary URL not fetched; listed in the OWASP Q1-2026 round-up). Secondary: [link](https://securitybrief.asi"
+S-1152,ml-risk-assets,later,2,vendor-research,2025,0,Constitutional Classifiers: Defending against universal jailbreaks
+S-0140,supply-chain-infra,subset-1,1,paper,2022,2,Poisoning and Backdooring Contrastive Learning
+S-0355,supply-chain-infra,subset-1,1,paper,2024,2,Models Are Codes: Towards Measuring Malicious Code Poisoning Attacks on Pre-trained Model Hubs
+S-0372,supply-chain-infra,subset-1,1,paper,2025,3,Scaling Trends for Data Poisoning in LLMs
+S-0679,supply-chain-infra,subset-1,1,survey,2021,1,Adversarial Machine Learning Attacks and Defense Methods in the Cyber Security Domain
+S-0680,supply-chain-infra,subset-1,1,survey,2022,1,"Dataset Security for Machine Learning: Data Poisoning, Backdoor Attacks, and Defenses"
+S-0683,supply-chain-infra,subset-1,1,survey,2022,1,Backdoor Learning: A Survey
+S-0687,supply-chain-infra,subset-1,1,survey,2023,1,Wild Patterns Reloaded: A Survey of Machine Learning Security against Training Data Poisoning
+S-0929,supply-chain-infra,subset-1,1,dataset,2024,1,CYBERSECEVAL 3: Advancing the Evaluation of Cybersecurity Risks and Capabilities in Large Language Models
+S-0940,supply-chain-infra,subset-1,1,dataset,2025,1,BaxBench: Can LLMs Generate Correct and Secure Backends?
+S-0944,supply-chain-infra,subset-1,1,dataset,2025,1,Cybench: A Framework for Evaluating Cybersecurity Capabilities and Risks of Language Models
+S-0950,supply-chain-infra,subset-1,1,dataset,2026,0,"AWS Labs, threat-composer, `packages/threat-composer/src/data/workspaceExamples/GenAIChatbot.tc.json`, commit 3d4ed92f96a2 (2026-09-23). [li"
+S-0971,supply-chain-infra,subset-1,1,vendor-research,2020,1,Misconfigured Kubeflow workloads are a security risk
+S-1026,supply-chain-infra,subset-1,1,vendor-research,2025,2,GTIG AI Threat Tracker: Advances in Threat Actor Usage of AI Tools
+S-1083,supply-chain-infra,subset-1,1,advisory,2022,1,"Compromised PyTorch-nightly dependency chain between December 25th and December 30th, 2022"
+S-1085,supply-chain-infra,subset-1,1,advisory,2023,1,March 20 ChatGPT outage: Here's what happened
+S-1086,supply-chain-infra,subset-1,1,advisory,2023,1,"NVD, CVE-2023-1177 (published 2023-03-24), CVSS 9.3; huntr bounty 1fe8f21a-c438-4cba-9add-e8a5dab94e28. Also CVE-2023-6831 (mlflow < 2.9.2, "
+S-1120,supply-chain-infra,subset-1,1,news,2016,1,Learning from Tay's introduction
+S-1128,supply-chain-infra,subset-1,1,news,2023,1,"Incident, September 2023. An audio clip circulated online that purported to show Progressive Slovakia leader Michal Šimečka discussing elect"
+S-1130,supply-chain-infra,subset-1,1,news,2024,1,Finance worker pays out $25 million after video call with deepfake 'chief financial officer'
+S-1150,supply-chain-infra,subset-1,1,vendor-research,2026,2,Silent Brothers: Ollama Hosts Form Anonymous AI Network Beyond Platform Guardrails
+S-0001,supply-chain-infra,later,1,paper,2012,1,Poisoning Attacks against Support Vector Machines
+S-0005,supply-chain-infra,later,1,paper,2015,1,Model Inversion Attacks that Exploit Confidence Information and Basic Countermeasures
+S-0008,supply-chain-infra,later,1,paper,2016,1,Hidden Voice Commands
+S-0017,supply-chain-infra,later,1,paper,2017,1,Targeted Backdoor Attacks on Deep Learning Systems Using Data Poisoning
+S-0019,supply-chain-infra,later,1,paper,2017,1,BadNets: Identifying Vulnerabilities in the Machine Learning Model Supply Chain
+S-0023,supply-chain-infra,later,1,paper,2017,1,Fault Injection Attack on Deep Neural Network
+S-0025,supply-chain-infra,later,1,paper,2017,1,Towards Poisoning of Deep Learning Algorithms with Back-gradient Optimization
+S-0028,supply-chain-infra,later,1,paper,2017,1,Certified Defenses for Data Poisoning Attacks
+S-0029,supply-chain-infra,later,1,paper,2017,1,DolphinAttack: Inaudible Voice Commands
+S-0030,supply-chain-infra,later,1,paper,2018,1,Turning Your Weakness Into a Strength: Watermarking Deep Neural Networks by Backdooring
+S-0033,supply-chain-infra,later,1,paper,2018,1,Practical Fault Attack on Deep Neural Networks
+S-0036,supply-chain-infra,later,1,paper,2018,1,Stealing Neural Networks via Timing Side Channels
+S-0040,supply-chain-infra,later,1,paper,2018,1,Security Analysis of Deep Neural Networks Operating in the Presence of Cache Side-Channel Attacks
+S-0042,supply-chain-infra,later,1,paper,2018,1,Manipulating Machine Learning: Poisoning Attacks and Countermeasures for Regression Learning
+S-0043,supply-chain-infra,later,1,paper,2018,1,Trojaning Attack on Neural Networks
+S-0045,supply-chain-infra,later,1,paper,2018,1,Rendered Insecure: GPU Side Channel Attacks are Practical
+S-0046,supply-chain-infra,later,1,paper,2018,1,Poison Frogs! Targeted Clean-Label Poisoning Attacks on Neural Networks
+S-0048,supply-chain-infra,later,2,paper,2018,0,Spectral Signatures in Backdoor Attacks
+S-0051,supply-chain-infra,later,1,paper,2018,1,CommanderSong: A Systematic Approach for Practical Adversarial Voice Recognition
+S-0052,supply-chain-infra,later,1,paper,2018,1,Adversarial Attacks on Neural Networks for Graph Data
+S-0053,supply-chain-infra,later,1,paper,2019,1,A Little Is Enough: Circumventing Defenses For Distributed Learning
+S-0054,supply-chain-infra,later,1,paper,2019,1,CSI NN: Reverse Engineering of Neural Network Architectures Through Electromagnetic Side Channel
+S-0055,supply-chain-infra,later,1,paper,2019,1,Analyzing Federated Learning through an Adversarial Lens
+S-0056,supply-chain-infra,later,1,paper,2019,1,Adversarial Sensor Attack on LiDAR-based Perception in Autonomous Driving
+S-0059,supply-chain-infra,later,2,paper,2019,0,Detecting Backdoor Attacks on Deep Neural Networks by Activation Clustering
+S-0061,supply-chain-infra,later,1,paper,2019,1,STRIP: A Defence Against Trojan Attacks on Deep Neural Networks
+S-0062,supply-chain-infra,later,1,paper,2019,1,Terminal Brain Damage: Exposing the Graceless Degradation in Deep Neural Networks Under Hardware Fault Attacks
+S-0066,supply-chain-infra,later,1,paper,2019,1,Exploiting Unintended Feature Leakage in Collaborative Learning
+S-0069,supply-chain-infra,later,1,paper,2019,1,Bit-Flip Attack: Crushing Neural Network With Progressive Bit Search
+S-0073,supply-chain-infra,later,1,paper,2019,1,Label-Consistent Backdoor Attacks
+S-0075,supply-chain-infra,later,1,paper,2019,1,Neural Cleanse: Identifying and Mitigating Backdoor Attacks in Neural Networks
+S-0076,supply-chain-infra,later,2,paper,2019,0,Latent Backdoor Attacks on Deep Neural Networks
+S-0079,supply-chain-infra,later,1,paper,2020,1,How To Backdoor Federated Learning
+S-0080,supply-chain-infra,later,1,paper,2020,1,SNIFF: Reverse Engineering of Neural Networks with Fault Attacks
+S-0084,supply-chain-infra,later,1,paper,2020,1,Local Model Poisoning Attacks to Byzantine-Robust Federated Learning
+S-0088,supply-chain-infra,later,1,paper,2020,1,DeepSniffer: A DNN Model Extraction Framework Based on Learning Architectural Hints
+S-0092,supply-chain-infra,later,2,paper,2020,0,Weight Poisoning Attacks on Pre-trained Models
+S-0094,supply-chain-infra,later,1,paper,2020,1,StegoNet: Turn Deep Neural Network into a Stegomalware
+S-0095,supply-chain-infra,later,1,paper,2020,1,Phantom of the ADAS: Securing Advanced Driver-Assistance Systems from Split-Second Phantom Attacks
+S-0096,supply-chain-infra,later,1,paper,2020,1,Input-Aware Dynamic Backdoor Attack
+S-0097,supply-chain-infra,later,2,paper,2020,0,Prediction Poisoning: Towards Defenses Against DNN Model Stealing Attacks
+S-0098,supply-chain-infra,later,1,paper,2020,1,Intriguing Properties of Adversarial ML Attacks in the Problem Space
+S-0099,supply-chain-infra,later,1,paper,2020,1,TBT: Targeted Neural Network Attack With Bit Trojan
+S-0100,supply-chain-infra,later,1,paper,2020,1,Hidden Trigger Backdoor Attacks
+S-0102,supply-chain-infra,later,1,paper,2020,1,Light Commands: Laser-Based Audio Injection Attacks on Voice-Controllable Systems
+S-0105,supply-chain-infra,later,1,paper,2020,1,"Attack of the Tails: Yes, You Really Can Backdoor Federated Learning"
+S-0106,supply-chain-infra,later,1,paper,2020,1,Cache Telepathy: Leveraging Shared Resource Attacks to Learn DNN Architectures
+S-0107,supply-chain-infra,later,1,paper,2020,1,DeepHammer: Depleting the Intelligence of Deep Neural Networks through Targeted Chain of Bit Flips
+S-0110,supply-chain-infra,later,2,paper,2021,0,Blind Backdoors in Deep Learning Models
+S-0112,supply-chain-infra,later,1,paper,2021,1,Invisible for both Camera and LiDAR: Security of Multi-Sensor Fusion based Perception in Autonomous Driving Under Physical-World Attacks
+S-0116,supply-chain-infra,later,1,paper,2021,1,Witches' Brew: Industrial Scale Data Poisoning via Gradient Matching
+S-0124,supply-chain-infra,later,2,paper,2021,0,Hidden Killer: Invisible Textual Backdoor Attacks with Syntactic Trigger
+S-0126,supply-chain-infra,later,1,paper,2021,1,You Autocomplete Me: Poisoning Vulnerabilities in Neural Code Completion
+S-0127,supply-chain-infra,later,1,paper,2021,1,Just How Toxic is Data Poisoning? A Unified Benchmark for Backdoor and Data Poisoning Attacks
+S-0128,supply-chain-infra,later,1,paper,2021,1,Manipulating the Byzantine: Optimizing Model Poisoning Attacks and Defenses for Federated Learning
+S-0129,supply-chain-infra,later,2,paper,2021,0,Backdoor Pre-trained Models Can Transfer to All
+S-0133,supply-chain-infra,later,1,paper,2021,1,EvilModel: Hiding Malware Inside of Neural Network Models
+S-0135,supply-chain-infra,later,2,paper,2021,0,Detecting AI Trojans Using Meta Neural Analysis
+S-0136,supply-chain-infra,later,1,paper,2021,1,Hermes Attack: Steal DNN Models with Lossless Inference Accuracy
+S-0143,supply-chain-infra,later,1,paper,2022,1,Planting Undetectable Backdoors in Machine Learning Models
+S-0144,supply-chain-infra,later,1,paper,2022,1,MaleficNet: Hiding Malware into Deep Neural Networks Using Spread-Spectrum Channel Coding
+S-0145,supply-chain-infra,later,2,paper,2022,0,BadEncoder: Backdoor Attacks to Pre-trained Encoders in Self-Supervised Learning
+S-0150,supply-chain-infra,later,1,paper,2022,1,DeepSteal: Advanced Model Extractions Leveraging Efficient Weight Stealing in Memories
+S-0152,supply-chain-infra,later,1,paper,2022,1,Back to the Drawing Board: A Critical Evaluation of Poisoning Attacks on Production Federated Learning
+S-0153,supply-chain-infra,later,1,paper,2022,1,Truth Serum: Poisoning Machine Learning Models to Reveal Their Secrets
+S-0156,supply-chain-infra,later,1,paper,2023,1,Architectural Backdoors in Neural Networks
+S-0163,supply-chain-infra,later,1,paper,2023,1,Spy in the GPU-box: Covert and Side Channel Attacks on Multi-GPU Systems
+S-0168,supply-chain-infra,later,1,paper,2023,1,Spear Phishing With Large Language Models
+S-0172,supply-chain-infra,later,2,paper,2023,0,An Empirical Study of Pre-Trained Model Reuse in the Hugging Face Deep Learning Model Registry
+S-0173,supply-chain-infra,later,1,paper,2023,1,Exploiting Programmatic Behavior of LLMs: Dual-Use Through Standard Security Attacks
+S-0184,supply-chain-infra,later,1,paper,2023,1,Warning: Humans cannot reliably detect speech deepfakes
+S-0195,supply-chain-infra,later,1,paper,2023,1,"From Chatbots to PhishBots? -- Preventing Phishing scams created using ChatGPT, Google Bard and Claude"
+S-0203,supply-chain-infra,later,1,paper,2023,1,On the Exploitability of Instruction Tuning
+S-0204,supply-chain-infra,later,1,paper,2023,1,Poisoning Language Models During Instruction Tuning
+S-0211,supply-chain-infra,later,1,paper,2023,1,Low-Resource Languages Jailbreak GPT-4
+S-0223,supply-chain-infra,later,1,paper,2024,1,TrojanPuzzle: Covertly Poisoning Code-Suggestion Models
+S-0228,supply-chain-infra,later,1,paper,2024,1,SurrogatePrompt: Bypassing the Safety Filter of Text-to-Image Models via Substitution
+S-0231,supply-chain-infra,later,1,paper,2024,1,Poisoning Web-Scale Training Datasets is Practical
+S-0233,supply-chain-infra,later,1,paper,2024,1,Remote Timing Attacks on Efficient Language Model Inference
+S-0234,supply-chain-infra,later,1,paper,2024,1,A Large-Scale Exploit Instrumentation Study of AI/ML Supply Chain Attacks in Hugging Face Models
+S-0241,supply-chain-infra,later,1,paper,2024,1,PrisonBreak: Jailbreaking Large Language Models with at Most Twenty-Five Targeted Bit-flips
+S-0245,supply-chain-infra,later,2,paper,2024,0,Privacy Side Channels in Machine Learning Systems
+S-0247,supply-chain-infra,later,2,paper,2024,0,Multilingual Jailbreak Challenges in Large Language Models
+S-0252,supply-chain-infra,later,1,paper,2024,1,Exploiting LLM Quantization
+S-0258,supply-chain-infra,later,1,paper,2024,1,Denial-of-Service Poisoning Attacks against Large Language Models
+S-0264,supply-chain-infra,later,1,paper,2024,1,Evaluating Large Language Models' Capability to Launch Fully Automated Spear Phishing Campaigns
+S-0266,supply-chain-infra,later,1,paper,2024,1,BarraCUDA: Edge GPUs do Leak DNN Weights
+S-0267,supply-chain-infra,later,2,paper,2024,0,On the (In)Security of LLM App Stores
+S-0268,supply-chain-infra,later,1,paper,2024,1,Catastrophic Jailbreak of Open-source LLMs via Exploiting Generation
+S-0284,supply-chain-infra,later,1,paper,2024,1,BadEdit: Backdooring Large Language Models by Model Editing
+S-0285,supply-chain-infra,later,1,paper,2024,1,Images are Achilles' Heel of Alignment: Exploiting Visual Vulnerabilities for Jailbreaking Multimodal Large Language Models
+S-0289,supply-chain-infra,later,1,paper,2024,1,DeepCache: Revisiting Cache Side-Channel Attacks in Deep Neural Networks Executables
+S-0297,supply-chain-infra,later,1,paper,2024,1,Poisoned ChatGPT Finds Work for Idle Hands: Exploring Developers' Coding Practices with Insecure Suggestions from Poisoned AI Models
+S-0299,supply-chain-infra,later,1,paper,2024,1,Teach LLMs to Phish: Stealing Private Information from Language Models
+S-0303,supply-chain-infra,later,1,paper,2024,1,"Fine-tuning Aligned Language Models Compromises Safety, Even When Users Do Not Intend To!"
+S-0305,supply-chain-infra,later,1,paper,2024,1,Universal Jailbreak Backdoors from Poisoned Human Feedback
+S-0311,supply-chain-infra,later,1,paper,2024,1,Robustness of AI-Image Detectors: Fundamental Limits and Practical Attacks
+S-0314,supply-chain-infra,later,1,paper,2024,1,Nightshade: Prompt-Specific Poisoning Attacks on Text-to-Image Generative Models
+S-0318,supply-chain-infra,later,1,paper,2024,1,LeftoverLocals: Listening to LLM Responses Through Leaked GPU Local Memory
+S-0324,supply-chain-infra,later,1,paper,2024,1,When Speculation Spills Secrets: Side Channels via Speculative Decoding In LLMs
+S-0325,supply-chain-infra,later,1,paper,2024,1,What Was Your Prompt? A Remote Keylogging Attack on AI Assistants
+S-0331,supply-chain-infra,later,2,paper,2024,0,BadChain: Backdoor Chain-of-Thought Prompting for Large Language Models
+S-0334,supply-chain-infra,later,1,paper,2024,1,An LLM-Assisted Easy-to-Trigger Backdoor Attack on Code Completion Models: Injecting Disguised Vulnerabilities against Strong Detection
+S-0338,supply-chain-infra,later,1,paper,2024,1,Stealing User Prompts from Mixture of Experts
+S-0341,supply-chain-infra,later,1,paper,2024,1,HyperTheft: Thieving Model Weights from TEE-Shielded Neural Networks via Ciphertext Side Channels
+S-0348,supply-chain-infra,later,1,paper,2024,1,BadMerging: Backdoor Attacks Against Model Merging
+S-0350,supply-chain-infra,later,2,paper,2024,0,Instruction Backdoor Attacks Against Customized LLMs
+S-0352,supply-chain-infra,later,1,paper,2024,1,Persistent Pre-Training Poisoning of LLMs
+S-0358,supply-chain-infra,later,1,paper,2024,1,InputSnatch: Stealing Input in LLM Services via Timing Side-Channel Attacks
+S-0363,supply-chain-infra,later,2,paper,2025,0,Spill The Beans: Exploiting CPU Cache Side-Channels to Leak Tokens from Large Language Models
+S-0364,supply-chain-infra,later,2,paper,2025,0,Standardised schema and taxonomy for AI incident databases in critical digital infrastructure
+S-0366,supply-chain-infra,later,1,paper,2025,1,Medical large language models are vulnerable to data-poisoning attacks
+S-0370,supply-chain-infra,later,1,paper,2025,1,Emergent Misalignment: Narrow finetuning can produce broadly misaligned LLMs
+S-0378,supply-chain-infra,later,1,paper,2025,1,Cascading Adversarial Bias from Injection to Distillation in Language Models
+S-0383,supply-chain-infra,later,1,paper,2025,1,Energy-latency attacks via sponge poisoning
+S-0384,supply-chain-infra,later,1,paper,2025,1,Subliminal Learning: Language models transmit behavioral traits via hidden signals in data
+S-0390,supply-chain-infra,later,1,paper,2025,1,MoEcho: Exploiting Side-Channel Attacks to Compromise User Privacy in Mixture-of-Experts LLMs
+S-0394,supply-chain-infra,later,2,paper,2025,0,Sentry: Authenticating Machine Learning Artifacts on the Fly
+S-0398,supply-chain-infra,later,1,paper,2025,1,Auditing Prompt Caching in Language Model APIs
+S-0399,supply-chain-infra,later,1,paper,2025,1,SBFA: Single Sneaky Bit Flip Attack to Break Large Language Models
+S-0409,supply-chain-infra,later,1,paper,2025,0,"Standardized Threat Taxonomy for AI Security, Governance, and Regulatory Compliance"
+S-0411,supply-chain-infra,later,1,paper,2025,1,PickleBall: Secure Deserialization of Pickle-based Machine Learning Models
+S-0413,supply-chain-infra,later,1,paper,2025,1,When LLMs Go Online: The Emerging Threat of Web-Enabled LLMs
+S-0417,supply-chain-infra,later,1,paper,2025,1,Architectural Backdoors for Within-Batch Data Stealing and Model Inference Manipulation
+S-0424,supply-chain-infra,later,1,paper,2025,1,Rowhammer-Based Trojan Injection: One Bit Flip Is Sufficient for Backdooring DNNs
+S-0425,supply-chain-infra,later,1,paper,2025,1,Virus Infection Attack on LLMs: Your Poisoning Can Spread 
+S-0428,supply-chain-infra,later,1,paper,2025,1,GPUHammer: Rowhammer Attacks on GPU Memories are Practical
+S-0433,supply-chain-infra,later,1,paper,2025,1,"LoRATK: LoRA Once, Backdoor Everywhere in the Share-and-Play Ecosystem"
+S-0435,supply-chain-infra,later,1,paper,2025,1,MOLE: Breaking GPU TEE with GPU-Embedded MCU
+S-0439,supply-chain-infra,later,1,paper,2025,1,ControlLoc: Physical-World Hijacking Attack on Camera-based Perception in Autonomous Driving
+S-0440,supply-chain-infra,later,1,paper,2025,1,Whisper Leak: a side-channel attack on Large Language Models
+S-0444,supply-chain-infra,later,1,paper,2025,2,Evaluating the Robustness of a Production Malware Detection System to Transferable Adversarial Attacks
+S-0461,supply-chain-infra,later,2,paper,2025,0,BAIT: Large Language Model Backdoor Scanning by Inverting Attack Target
+S-0465,supply-chain-infra,later,1,paper,2025,1,The Early Bird Catches the Leak: Unveiling Timing Side Channels in LLM Serving Systems
+S-0466,supply-chain-infra,later,1,paper,2025,1,Poisoning Attacks on LLMs Require a Near-constant Number of Poison Samples
+S-0468,supply-chain-infra,later,1,paper,2025,1,We Have a Package for You! A Comprehensive Analysis of Package Hallucinations by Code Generating LLMs
+S-0470,supply-chain-infra,later,1,paper,2025,1,PEFTGuard: Detecting Backdoor Attacks Against Parameter-Efficient Fine-Tuning
+S-0480,supply-chain-infra,later,1,paper,2025,1,I Know What You Asked: Prompt Leakage via KV-Cache Sharing in Multi-Tenant LLM Serving
+S-0482,supply-chain-infra,later,2,paper,2025,0,BitHydra: Towards Bit-flip Inference Cost Attack against Large Language Models
+S-0483,supply-chain-infra,later,1,paper,2025,1,Has the Two-Decade-Old Prophecy Come True? Artificial Bad Intelligence Triggered by Merely a Single-Bit Flip in Large Language Models
+S-0484,supply-chain-infra,later,1,paper,2025,1,CipherSteal: Stealing Input Data from TEE-Shielded Neural Networks with Ciphertext Side Channels
+S-0485,supply-chain-infra,later,2,paper,2025,0,On Jailbreaking Quantized Language Models Through Fault Injection Attacks
+S-0488,supply-chain-infra,later,1,paper,2025,1,Crabs: Consuming Resource via Auto-generation for LLM-DoS Attack under Black-box Settings
+S-0496,supply-chain-infra,later,1,paper,2026,1,HAMLOCK: HArdware-Model LOgically Combined attacK
+S-0500,supply-chain-infra,later,2,paper,2026,0,BADControl: Backdoor Attacks Against Control Systems
+S-0504,supply-chain-infra,later,1,paper,2026,1,Lethe: Purifying Backdoored Large Language Models with Knowledge Dilution
+S-0507,supply-chain-infra,later,1,paper,2026,1,A Large-Scale Study of Personalized Phishing using Large Language Models
+S-0511,supply-chain-infra,later,1,paper,2026,1,On the (In)Security of Loading Machine Learning Models
+S-0516,supply-chain-infra,later,2,paper,2026,0,Bypassing Prompt Guards in Production with Controlled-Release Prompting
+S-0518,supply-chain-infra,later,2,paper,2026,0,Patcher: Post-Hoc Patching of Backdoored Large Language Models
+S-0519,supply-chain-infra,later,1,paper,2026,1,Bit-Flip Attacks on Vision-Language-Action Models: Action-Decoding Architecture Shapes the Vulnerability
+S-0526,supply-chain-infra,later,1,paper,2026,1,Kraken: Higher-order EM side-channel attacks on DNNs in near and far field
+S-0536,supply-chain-infra,later,1,paper,2026,1,Breaking Widely Deployed Perceptual Hash Functions: Black-Box Collisions in Apple NeuralHash and Microsoft PhotoDNA
+S-0544,supply-chain-infra,later,1,paper,2026,1,Secret Stealing Attacks on Local LLM Fine-Tuning through Supply-Chain Model Code Backdoors
+S-0545,supply-chain-infra,later,1,paper,2026,1,From Length to Content: Token-Length Side-Channel Attacks on LLM API Merged Outputs
+S-0546,supply-chain-infra,later,1,paper,2026,1,GraphRAG under Fire
+S-0547,supply-chain-infra,later,1,paper,2026,1,GPUBreach: Privilege Escalation Attacks on GPUs using Rowhammer
+S-0548,supply-chain-infra,later,1,paper,2026,1,GPUThor: Amplifying Rowhammer Attacks via Non-Uniform Patterns to Exploit ECC-Protected GPUs
+S-0551,supply-chain-infra,later,1,paper,2026,1,The Art of Hide and Seek: Making Pickle-Based Model Supply Chain Poisoning Stealthy Again
+S-0554,supply-chain-infra,later,2,paper,2026,0,Robust Watermarks Meet Backdoored Models: Evading Diffusion Semantic Watermarks via Stealthy Backdoor
+S-0562,supply-chain-infra,later,1,paper,2026,1,Loss Landscape Poisoning: Targeted Extraction of Unseen Training Data from LLMs
+S-0575,supply-chain-infra,later,1,paper,2026,1,When Cache Poisoning Meets LLM Systems: Semantic Cache Poisoning and Its Countermeasures
+S-0580,supply-chain-infra,later,1,paper,2026,1,SafePickle: Robust and Generic ML Detection of Malicious Pickle-based ML Models
+S-0582,supply-chain-infra,later,2,paper,2026,0,DualSentinel: A Lightweight Framework for Detecting Targeted Attacks in Black-box LLM via Dual Entropy Lull Pattern
+S-0586,supply-chain-infra,later,1,paper,2026,1,One RNG to Rule Them All: How Randomness Becomes an Attack Vector in Machine Learning
+S-0587,supply-chain-infra,later,1,paper,2026,1,ShadowPickle: Evading Machine Learning Model Scanners via Stealthy Pickle Deserialization Attacks
+S-0592,supply-chain-infra,later,1,paper,2026,1,Position: Stateless Yet Not Forgetful: Implicit Memory as a Hidden Channel in LLMs
+S-0594,supply-chain-infra,later,1,paper,2026,1,The Feature-Space Illusion: Exposing Practical Vulnerabilities in Blockchain GNN Fraud Detection
+S-0595,supply-chain-infra,later,1,paper,2026,1,Reasoning Introduces New Poisoning Attacks Yet Makes Them More Complicated
+S-0599,supply-chain-infra,later,2,paper,2026,0,On Improving Robustness of Deepfake Image Detectors
+S-0600,supply-chain-infra,later,1,paper,2026,1,Temporal Misalignment Attacks against Multimodal Perception in Autonomous Driving
+S-0612,supply-chain-infra,later,1,paper,2026,1,GDDRHammer: Greatly Disturbing DRAM Rows -- Cross-Component Rowhammer Attacks From Modern GPUs
+S-0613,supply-chain-infra,later,1,paper,2026,1,Are LLM-Enhanced Graph Neural Networks Robust against Poisoning Attacks?
+S-0619,supply-chain-infra,later,1,paper,2026,1,Weaponizing Reflectivity for Pointcloud Deception with Forged Invisible Geometries
+S-0620,supply-chain-infra,later,1,paper,2026,1,TDXRay: Microarchitectural Side-Channel Analysis of Intel TDX for Real-World Workloads
+S-0626,supply-chain-infra,later,1,paper,2026,1,Attacks on Approximate Caches in Text-to-Image Diffusion Models
+S-0628,supply-chain-infra,later,1,paper,2026,2,Exploiting Leaderboards for Large-Scale Distribution of Poisoned Models
+S-0631,supply-chain-infra,later,2,paper,2026,0,From Assistance to Autonomy: An Empirical Study of AI Use in a Live Capture-the-Flag (CTF) Competition
+S-0653,supply-chain-infra,later,1,paper,2026,1,Bit-Flip Vulnerability of Shared KV-Cache Blocks in LLM Serving Systems
+S-0655,supply-chain-infra,later,1,paper,2026,1,"What the Eyes See, the LLMs Miss: Exploiting Human Perception for Adversarial Text Attacks"
+S-0665,supply-chain-infra,later,2,paper,2026,0,Unveiling the Pitfalls of Data-Free Backdoor Detection Against Pre-Trained Models
+S-0668,supply-chain-infra,later,1,paper,2026,1,When the Aggregator Cheats: Data-Free Backdoors in Federated LLM-based QA Systems
+S-0669,supply-chain-infra,later,2,paper,2026,0,Fend for Yourself! Backdoor Purification in Federated Graph Learning with an Evolving Knowledge Anchor
+S-0672,supply-chain-infra,later,1,survey,2018,0,Wild patterns: Ten years after the rise of adversarial machine learning
+S-0673,supply-chain-infra,later,1,survey,2018,0,SoK: Security and Privacy in Machine Learning
+S-0676,supply-chain-infra,later,2,survey,2020,0,Threats to Federated Learning: A Survey
+S-0678,supply-chain-infra,later,2,survey,2021,0,Advances and Open Problems in Federated Learning
+S-0688,supply-chain-infra,later,2,survey,2023,0,From ChatGPT to ThreatGPT: Impact of Generative AI in Cybersecurity and Privacy
+S-0689,supply-chain-infra,later,1,survey,2023,0,The Threat of Offensive AI to Organizations
+S-0690,supply-chain-infra,later,1,survey,2023,1,I Know What You Trained Last Summer: A Survey on Stealing Machine Learning Models and Defences
+S-0694,supply-chain-infra,later,1,survey,2024,1,Large Language Model Supply Chain: Open Problems From the Security Perspective
+S-0707,supply-chain-infra,later,2,survey,2025,0,SoK: On the Offensive Potential of AI
+S-0708,supply-chain-infra,later,1,survey,2025,1,Large Language Model Supply Chain: A Research Agenda
+S-0710,supply-chain-infra,later,1,survey,2025,1,"A Survey on Backdoor Threats in Large Language Models (LLMs): Attacks, Defenses, and Evaluations"
+S-0719,supply-chain-infra,later,1,survey,2026,1,SoK: On the Survivability of Backdoor Attacks on Unconstrained Face Recognition Systems
+S-0912,supply-chain-infra,later,2,dataset,2021,0,Preventing Repeated Real World AI Failures by Cataloging Incidents: The AI Incident Database
+S-0927,supply-chain-infra,later,2,dataset,2024,0,NYU CTF Bench: A Scalable Open-Source Benchmark Dataset for Evaluating LLMs in Offensive Security
+S-0962,supply-chain-infra,later,2,tool,2025,0,Launch of Model Signing v1.0: OpenSSF AI/ML Working Group Secures the Machine Learning Supply Chain
+S-0972,supply-chain-infra,later,1,vendor-research,2022,1,Practical Attacks on Machine Learning Systems
+S-0975,supply-chain-infra,later,1,vendor-research,2023,1,BlackMamba: Using AI to Generate Polymorphic Malware
+S-0976,supply-chain-infra,later,1,vendor-research,2023,1,PoisonGPT: How to poison LLM supply chain on Hugging Face
+S-0977,supply-chain-infra,later,1,vendor-research,2023,1,38TB of data accidentally exposed by Microsoft AI researchers
+S-0979,supply-chain-infra,later,1,vendor-research,2023,1,Model Confusion - Weaponizing ML models for red teams and bounty hunters
+S-0981,supply-chain-infra,later,1,vendor-research,2024,1,Not So Clear: How MLOps Solutions Can Muddy the Waters of Your Supply Chain
+S-0982,supply-chain-infra,later,2,vendor-research,2024,0,Silent Sabotage: Hijacking Safetensors Conversion on Hugging Face
+S-0985,supply-chain-infra,later,1,vendor-research,2024,1,Data Scientists Targeted by Malicious Hugging Face ML Models with Silent Backdoor
+S-0986,supply-chain-infra,later,1,vendor-research,2024,1,How a North Korean Fake IT Worker Tried to Infiltrate Us
+S-0989,supply-chain-infra,later,1,vendor-research,2024,1,"Wiz Research Finds Critical NVIDIA AI Vulnerability Affecting Containers Using NVIDIA GPUs, Including Over 35% of Cloud Environments"
+S-0990,supply-chain-infra,later,1,vendor-research,2024,1,ShadowRay: First Known Attack Campaign Targeting AI Workloads Actively Exploited In The Wild
+S-0992,supply-chain-infra,later,1,vendor-research,2024,1,ProKYC - Deepfake Tool for Account Fraud Attacks
+S-0997,supply-chain-infra,later,1,vendor-research,2024,1,Wiz Research discovers critical vulnerability in Replicate
+S-1001,supply-chain-infra,later,1,vendor-research,2024,1,Exploiting ML models with pickle file attacks: Part 1
+S-1002,supply-chain-infra,later,1,vendor-research,2024,1,Silent Sabotage: Weaponizing AI Models in Exposed Containers
+S-1004,supply-chain-infra,later,1,vendor-research,2024,1,Hugging Face works with Wiz to strengthen AI cloud security
+S-1005,supply-chain-infra,later,1,vendor-research,2024,1,Probllama: Ollama Remote Code Execution Vulnerability (CVE-2024-37032)
+S-1018,supply-chain-infra,later,1,vendor-research,2025,1,First known AI-powered ransomware uncovered by ESET Research
+S-1020,supply-chain-infra,later,1,vendor-research,2025,1,Gartner Survey Reveals Generative Artificial Intelligence Attacks Are on the Rise
+S-1036,supply-chain-infra,later,1,vendor-research,2025,1,"APT28's New Arsenal: LAMEHUG, the First AI-Powered Malware"
+S-1038,supply-chain-infra,later,1,vendor-research,2025,1,SesameOp: Novel backdoor uses OpenAI Assistants API for command and control
+S-1039,supply-chain-infra,later,1,vendor-research,2025,1,Echo Chamber: A Context-Poisoning Jailbreak That Bypasses LLM Guardrails
+S-1041,supply-chain-infra,later,2,vendor-research,2025,0,NowSecure Uncovers Multiple Security and Privacy Flaws in DeepSeek iOS Mobile App
+S-1042,supply-chain-infra,later,1,vendor-research,2025,1,ShadowRay 2.0: Attackers Turn AI Against Itself in Global Campaign that Hijacks AI Into Self-Propagating Botnet
+S-1043,supply-chain-infra,later,1,vendor-research,2025,1,Detecting Exposed LLM Servers: A Shodan Case Study on Ollama
+S-1051,supply-chain-infra,later,1,vendor-research,2025,1,Malicious ML models discovered on Hugging Face platform
+S-1055,supply-chain-infra,later,1,vendor-research,2025,1,The Rise of Slopsquatting: How AI Hallucinations Are Fueling a New Class of Supply Chain Attacks
+S-1061,supply-chain-infra,later,1,vendor-research,2025,1,Model Namespace Reuse: An AI Supply-Chain Attack Exploiting Model Name Trust
+S-1062,supply-chain-infra,later,1,vendor-research,2025,1,"Wiz Research Uncovers Exposed DeepSeek Database Leaking Sensitive Information, Including Chat History"
+S-1067,supply-chain-infra,later,1,vendor-research,2026,1,Detecting and Preventing Distillation Attacks
+S-1070,supply-chain-infra,later,1,vendor-research,2026,1,Claude Code Leak
+S-1073,supply-chain-infra,later,1,vendor-research,2026,1,Chinese-Speaking Threat Actor Harnesses AI Models for Autonomous Cyberattacks
+S-1074,supply-chain-infra,later,1,vendor-research,2026,1,LiteLLM and Telnyx compromised on PyPI: Tracing the TeamPCP supply chain campaign
+S-1087,supply-chain-infra,later,2,advisory,2023,0,When MFA isn't actually MFA
+S-1088,supply-chain-infra,later,1,advisory,2024,1,"NVD, CVE-2024-34359 (published 2024-05-14), CVSS 9.6, GHSA-56xg-wfcc-g829. [link](https://nvd.nist.gov/vuln/detail/CVE-2024-34359)"
+S-1089,supply-chain-infra,later,1,advisory,2024,1,"NVD, CVE-2024-3660 (published 2024-04-16), CVSS 9.8; CERT/CC VU#253266. [link](https://nvd.nist.gov/vuln/detail/CVE-2024-3660)"
+S-1090,supply-chain-infra,later,1,advisory,2024,1,FinCEN Issues Alert on Fraud Schemes Involving Deepfake Media Targeting Financial Institutions
+S-1093,supply-chain-infra,later,1,advisory,2024,1,"NVD, CVE-2024-0132 (2024-09-26, CVSS 9.0, CWE-367 TOCTOU) and CVE-2025-23266 (2025-07-17, CVSS 9.0, CWE-426 hook initialization). [link](htt"
+S-1094,supply-chain-infra,later,1,advisory,2024,1,Supply-chain attack analysis: Ultralytics
+S-1096,supply-chain-infra,later,1,advisory,2025,1,GitHub Security Advisories for anthropics/claude-code: GHSA-x56v-x2h6-7j34 (CVE-2025-54795) ; GHSA-4fgq-fpq9-mr3g (CVE-2025-59536) ; GHSA-7m
+S-1098,supply-chain-infra,later,1,advisory,2025,1,"NVD, CVE-2025-1550 (published 2025-03-11), CVSS 9.8. [link](https://nvd.nist.gov/vuln/detail/CVE-2025-1550)"
+S-1099,supply-chain-infra,later,1,advisory,2025,1,"NVD, CVE-2025-1945 (published 2025-03-10), GHSA-w8jq-xcqf-f792; Sonatype advisory. [link](https://nvd.nist.gov/vuln/detail/CVE-2025-1945)"
+S-1100,supply-chain-infra,later,1,advisory,2025,1,"NVD, CVE-2025-32434 (published 2025-04-18), GHSA-53q9-r3pm-6pq6. [link](https://nvd.nist.gov/vuln/detail/CVE-2025-32434)"
+S-1101,supply-chain-infra,later,1,advisory,2025,1,"NVD, CVE-2025-3248 (published 2025-04-07), CVSS 9.8, CWE-306/CWE-94. [link](https://nvd.nist.gov/vuln/detail/CVE-2025-3248)"
+S-1103,supply-chain-infra,later,1,advisory,2025,1,Senior US Officials Continue to be Impersonated in Malicious Messaging Campaign
+S-1107,supply-chain-infra,later,1,advisory,2025,1,"NVD records for NVIDIA Triton Inference Server, including CVE-2025-23310 and CVE-2025-23311 (stack overflow, CVSS 9.8), CVE-2025-23317 (HTTP"
+S-1108,supply-chain-infra,later,1,advisory,2025,1,"NVD records: CVE-2025-32444 (CVSS 10.0; vLLM 0.6.5 to before 0.8.5 with Mooncake, pickle over unsecured ZMQ), CVE-2025-29783 (CVSS 9.0; Moon"
+S-1109,supply-chain-infra,later,1,advisory,2025,1,"NVD, CVE-2025-25183 (published 2025-02-07), GHSA-rm76-4mrf-v9r8; related CVE-2025-1953 (vLLM AIBrix prefix-cache hashing). [link](https://nv"
+S-1113,supply-chain-infra,later,1,advisory,2025,1,Widespread Supply Chain Compromise Impacting npm Ecosystem
+S-1114,supply-chain-infra,later,1,advisory,2025,1,NVIDIA Triton Inference Server - August 2025
+S-1115,supply-chain-infra,later,1,advisory,2025,1,vLLM Allows Remote Code Execution via PyNcclPipe Communication Service
+S-1121,supply-chain-infra,later,2,news,2019,0,"Euler Hermes (Allianz) via Wall Street Journal reporting, 2019-08; secondary: PaymentsJournal. [link](https://www.paymentsjournal.com/it-hap"
+S-1122,supply-chain-infra,later,2,news,2020,0,ClearviewAI Misconfiguration
+S-1123,supply-chain-infra,later,2,news,2020,0,New Jersey Man Indicted in Fraud Scheme to Steal California Unemployment Insurance Benefits
+S-1124,supply-chain-infra,later,2,news,2020,0,Camera Hijack Attack on Facial Recognition System
+S-1134,supply-chain-infra,later,2,news,2024,0,Ferrari exec foils deepfake attempt by asking a question only CEO could answer
+S-1136,supply-chain-infra,later,1,news,2024,1,Criminal charges and FCC fines issued for deepfake Biden robocalls
+S-1137,supply-chain-infra,later,2,news,2024,0,CEO of biggest ad firm targeted by deepfake scam
+S-1142,supply-chain-infra,later,1,news,2025,1,Arup deepfake case study
+S-1147,supply-chain-infra,later,2,news,2026,0,Hacker Used Anthropic's Claude to Steal Sensitive Mexican Data
+S-1159,supply-chain-infra,later,2,advisory,2025,0,"NVD, CVE-2025-49596 (published 2025-06-13). [link](https://nvd.nist.gov/vuln/detail/CVE-2025-49596)"
+S-1160,supply-chain-infra,later,2,advisory,2025,0,"NVD, CVE-2025-68664 (published 2025-12-23). [link](https://nvd.nist.gov/vuln/detail/CVE-2025-68664)"
+S-1161,supply-chain-infra,later,2,advisory,2025,0,"NVD, CVE-2025-68613 (published 2025-12-19); listed in CISA KEV 2026-03-11. [link](https://nvd.nist.gov/vuln/detail/CVE-2025-68613)"
+S-1162,supply-chain-infra,later,2,advisory,2026,0,"NVD, CVE-2026-21858 (published 2026-01-08). [link](https://nvd.nist.gov/vuln/detail/CVE-2026-21858)"
+S-1163,supply-chain-infra,later,2,advisory,2025,0,"NVD, CVE-2025-48757 (published 2025-05-30; disputed by the supplier). [link](https://nvd.nist.gov/vuln/detail/CVE-2025-48757)"

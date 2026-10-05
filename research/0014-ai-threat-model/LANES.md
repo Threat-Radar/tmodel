@@ -4,14 +4,112 @@ id: RPT-0014-lanes
 title: "RPT-0014 work lanes: extraction and round-2 sweeps across five accounts"
 type: research
 status: draft
-version: "0.1.0"
+version: "0.2.0"
 date: "2026-10-03"
-updated: "2026-10-03"
+updated: "2026-10-05"
 record: RPT-0014
 issue: 71
 ---
 
 # RPT-0014 work lanes
+
+> **2026-10-05: the lanes run WAVE 1 now (#86).** WAVE 1 is a bibliography
+> pass: summary, tags, applicability, and reference expansion. It is **not**
+> full extraction, and it is not a KG load. The FX-TM / FX-AP extraction below
+> is **WAVE 2** (#84). It waits until the five lanes produce similar results
+> on the same calibration sources. The lane issues (#78-#82), the owners and
+> the review pairs are unchanged.
+
+## WAVE 1: what each lane does
+
+Assignments: [`wave1-assignments.csv`](wave1-assignments.csv). Each row is a
+`sources.md` id with its lane and batch. Batches are `calibration` (everyone
+does them), `subset-1` (about 20 per student lane, 10 for integration) and
+`later` (after the gate). The lane split is a keyword heuristic. If a source
+belongs in another lane, say so in your PR rather than skipping it.
+
+The work happens in the **library** repo (`Threat-Radar/library`), opened as
+the Claude Code project root so that its skills load: `ingest-reference`,
+`summarize`, `distill`.
+
+### Step 1: calibration (everyone, same three sources)
+
+| source | why it is in the calibration set |
+|---|---|
+| S-0855 NIST AI 100-2 E2025 *Adversarial ML taxonomy* | standard and catalog; public domain |
+| S-0166 Greshake et al. *indirect prompt injection* | the seminal attack paper |
+| S-0728 BIML *Architectural Risk Analysis of ML Systems* | a published AI threat model |
+
+Each lane does all three **independently** and does not look at the others'
+work. Commit them to the tmodel repo, not the library, under
+`research/0014-ai-threat-model/calibration/<lane>/<record-id>/`
+(`record.yaml` + `summary.md`). The integration lane compares the five
+versions: tags, applicability ratings, linked ids and summary claims. It
+records the differences in `calibration/COMPARISON.md`, and only the merged
+best version becomes the library record. Similar results across the lanes is
+the #84 gate; large differences mean the instructions get fixed before anyone
+scales up.
+
+### Step 2: subset-1 (your lane's rows)
+
+For each source:
+
+1. **Ingest:** `bin/ingest <type> <source>` (skill `ingest-reference`).
+   Check `records/` first, because a few already exist (for example
+   `csa-maestro-2025` and `spotlighting-indirect-prompt-injection`). Record
+   `content.sha256` and the URL. The PDF stays in your local cache
+   (`bin/fetch-pdfs` in tmodel).
+2. **Summarize:** use skill `summarize` to write all six sections. Set
+   `applicability` (security / cryptography / this_project), `bears_on` (only
+   real `DEC-*` or `R-*` ids), `usefulness` (a negative verdict is a valid
+   result), `confidence`, and `topic: ai-threat-model-<lane>`.
+3. **Tags:** use the controlled tags from `schema/tags.yaml` where they fit,
+   plus the AI subject tags in the next section.
+4. **RPT-0014 applicability:** add this section to `summary.md`. It is
+   many-to-many: one source can apply to many topics.
+
+   ```markdown
+   ## RPT-0014 applicability
+
+   | Topic of interest | Rating | Linked ids | Why |
+   |---|---|---|---|
+   | Published attacks | core / adjacent / none / not assessed | AIT-… | |
+   | Existing AI threat models | | TM-… | |
+   | Weakness enumerations | | CWE-…, AML.T…, LLM0x:2025 | |
+   | Attack → asset mapping | | asset / component ids from report §1 | |
+   ```
+
+   A topic you did not assess is `not assessed`, not `none`.
+5. **Reference expansion:** list the source's cited references that are in
+   scope and **not** in `sources.md`. Add each as a `status: stub` record with
+   `relations.cited_by: [<this record>]`. Do not summarize stubs in this pass.
+
+Open **one library PR per lane** for subset-1, with a body that says
+`Part of Threat-Radar/tmodel#<your lane issue>`. Run `bin/validate` before you
+push. Your review partner checks at least five of your records against the
+source.
+
+### Step 3: sweeps (optional this wave)
+
+The `rpt0014-sweep` workflow (below) is the periodic search loop that #86
+asks for. Run your lane's sweep only after subset-1 is in review.
+
+### AI subject tags (proposed; promote to `schema/tags.yaml` by PR)
+
+`prompt-injection`, `jailbreak`, `data-poisoning`, `backdoor`,
+`model-extraction`, `membership-inference`, `model-inversion`,
+`training-data-extraction`, `evasion`, `agent-security`, `mcp`,
+`rag-security`, `ai-supply-chain`, `ai-infrastructure`, `side-channel`,
+`deepfake`, `ai-enabled-offense`, `ai-threat-model`, `ai-weakness-catalog`,
+`ai-incident`, `ai-benchmark`, `ai-governance`
+
+---
+
+# WAVE 2 (paused until the #84 gate): full extraction
+
+
+The original lane plan from 2026-10-03 follows. The lanes, issues and
+review pairs still hold. The extraction runs only in WAVE 2.
 
 The work is split so that five Claude Code accounts share the load. Each
 account also has its own WebSearch quota, which ran out in round 1 when one
