@@ -1,0 +1,29 @@
+# Protected identities — must NOT appear in any published page (docs/**/*.html)
+# unless explicitly listed under `approved`. This file lives OUTSIDE docs/ so it
+# is never itself published (GitHub Pages serves main:/docs only).
+#
+# Policy: no personal name or identity in published pages without clear approval
+# (sponsor rule, 2026-10-05). Public *bibliographic* authors of cited external
+# standards (e.g. NIST authors on a public spec) are allowed — this list is the
+# PROJECT's own people and handles, which are the privacy concern.
+schema: "tmodel.publishing-identities/v1"
+updated: "2026-10-05"
+protected:
+  # names
+  - "Paul Lambert"
+  - "Paul Haskell"
+  - "Paria Akhtarmoghaddam"
+  - "Krishna Patel"
+  - "Tyler Van Heerden"
+  - "Mai Li Mcghee"
+  - "Mai-Li Mcghee"
+  # ids / handles / emails
+  - "paul-lambert"
+  - "paul-haskell"
+  - "phaskell"
+  - "nymble"
+  - "paria03"
+  - "kriishnaa-18"
+  - "Clovier"
+  - "Maimcghee"
+approved: []   # names cleared for publication go here, with sponsor sign-off

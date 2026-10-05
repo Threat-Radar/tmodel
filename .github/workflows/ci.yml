@@ -16,3 +16,5 @@ jobs:
           python-version: "3.12"
       - name: Validate archdoc/v1 front matter
         run: python3 bin/validate-archdoc
+      - name: Guard — no personal identity in published pages
+        run: python3 docs/publishing/check_identities.py
