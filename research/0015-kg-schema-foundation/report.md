@@ -7,7 +7,7 @@ description: "Stage 1 of #104: ingest KG state-of-the-art (incl. Google's actual
 type: research
 category: knowledge-graph
 status: draft
-version: "0.1.0"
+version: "0.2.0"
 date: "2026-10-05"
 updated: "2026-10-05"
 authors:
@@ -16,7 +16,9 @@ authors:
 decision_makers:
   - role: sponsor
     id: sponsor
-reviewers: []
+reviewers:
+  - role: adversarial-review
+    id: agent-stage1-review
 needs_review: true
 reviewed: false
 canonical_path: research/0015-kg-schema-foundation/report.md
@@ -38,20 +40,27 @@ not a decision.
 
 ## 0. Summary
 
-- **Schema language → LinkML** (authoring IDL), with **JSON Schema + SHACL** generated for
-  validation (+ **hand-written SHACL-SPARQL** for the one constraint codegen can't emit — the
-  Assertion acceptance gate), and **RDF-star** + a **custom LinkML→LPG adapter** as the
-  substrate lowerings DEC-004 leaves open. LinkML's only real gap is LPG (no native generator)
-  — already ADR-0004's edge-façade work (#52).
+- **Schema language → LinkML** (authoring IDL), with **JSON Schema + SHACL 1.0** generated for
+  validation, plus a **substrate-neutral integrity/gate checker** (a Python rule over loaded
+  instances — *not* SHACL-only, because the SoT is files and DEC-004 may pick LPG) for the
+  Assertion acceptance gate and cross-instance rules. **LinkML has *two* native gaps, not one:
+  the LPG generator AND the RDF-star lowering** of `Assertion` (gen-rdf emits plain
+  `rdf:Statement` reification, not RDF-star) — both custom adapters (ADR-0004 edge-façade #52).
+  RDF-star / SHACL-star are **pre-stable (FPWD)** → a flagged post-stable option, not an MVP layer.
 - **KG approach holds, with improvements:** git files stay canonical and the working store is a
-  **rebuildable cache** (reinforced by the Kuzu collapse, below); **schema-guided extraction**
-  (constrain the LLM with the LinkML schema) + **grounding** + **quote-grounding** + a
-  **validation gate**; a **vector index beside** the graph; expose read-only via a **small local
-  MCP**. No substrate change forced; a mild industry tilt to LPG/GQL argues for keeping DEC-004 open.
-- **The current draft schema has structural defects** (§4) that Stage 2 must fix — including a
-  **feasibility contradiction** (Common-Criteria text vs ISO-21434 enum — the dropped ADR-0005
-  ghost), **no `Requirement` class**, `risk` as a free string, an **Assertion with no provenance
-  slots**, and pervasive missing patterns/cardinality/enums/rules.
+  **rebuildable cache** (the standing ADR-0004 pin, independently reinforced by the reported Kuzu
+  archival); **schema-guided extraction** (constrain the LLM with the LinkML schema) +
+  **grounding** + **quote-grounding** + a **validation gate**; a **vector index beside** the
+  graph; expose read-only via a **small local MCP**. No substrate change forced. DEC-004 is
+  already open (status quo); the lower-risk MVP substrate is **RDF (oxigraph)** — the GQL/LPG
+  graph-type adapter has **no mature embedded target** today (see §1), so it is a post-DEC-004
+  contingency, not a Stage-2 input.
+- **The current draft schema has structural defects** (§4) that Stage 2 must fix — the
+  **feasibility contradiction** (Common-Criteria text vs ISO-21434 enum; the schema **header even
+  claims "ADR-0005 accepted"**, which is false — it was dropped, DEC-003 is open), `risk` as a
+  free string, the **Assertion acceptance gate not expressible in LinkML**, an **Assertion with
+  no provenance slots**, and pervasive missing patterns/cardinality/enums/rules. (`Requirement` is
+  a **post-MVP** stub, not a day-one structural fix — §4.)
 
 ## 1. KG state of the art — deltas since RPT-0011, and improvements
 
@@ -107,6 +116,10 @@ DEC/requirement it traces to + worked `examples`; `unique_keys` beyond id; **cla
 (cross-field invariants); node-vs-reified-edge declaration + which relational roles are **edges**;
 MVP/post-MVP + normative/draft marker.
 
+**Versioning/evolution (review M5):** per-slot/class `deprecated` + replacement pointer; an instance
+`schema_version` (or source-proposal) stamp; and a **vector-regression rule for breaking changes** —
+the loop proposal §13 sells (schema PR → regenerate validators → run §8 vectors).
+
 **Per slot:** name + § anchor; **range/type** (scalar incl. `uri`/`curie`, class, or enum);
 **required**; **multivalued + explicit cardinality**; **closed enum** where the vocab is
 controlled (state open/closed); **pattern/format** for id strings (`CVE-\d{4}-\d+`, `CWE-\d+`,
@@ -118,16 +131,23 @@ can it carry Assertion+Review?); **external mapping** (`slot_uri`); **scale/unit
 
 ## 4. Gap list — Stage-2 work on the current draft
 
-**Four structural problems to settle first:**
-1. **No `Requirement` class** — yet it's a core object (ISO 21434 FX-1 already supplies its fields;
-   MAP-0001 needs it). Add a thin `Requirement` class.
-2. **Feasibility contradiction** — `AttackPath`/`RiskScore` descriptions say Common Criteria
-   (dropped **ADR-0005** ghost) while `feasibility`/`FeasibilityLevel` say ISO 21434 Table-1.
-   **Resolve to ISO 21434 Table-1** (method); CC is display-only (per the merged proposal §3).
-3. **`risk` is a free string** (M(I,F) unfixed) → RiskScore vectors are "structure-only" until
-   DEC-003 fixes the aggregation.
-4. **Assertion acceptance gate not expressible in LinkML** → a hand-written SHACL-SPARQL or Python
-   checker, separate from the schema.
+**Three structural problems to settle first:**
+1. **Feasibility contradiction + a false "accepted" claim.** `AttackPath`/`RiskScore` descriptions
+   say Common Criteria while `feasibility`/`FeasibilityLevel` say ISO 21434 Table-1 — and the
+   schema **header asserts "ADR-0005 accepted (2026-10-02) … CC display-only superseded."** That is
+   **false and a governance violation**: ADR-0005 was **dropped**, DEC-003 is **open**, and the
+   merged proposal §3 + DL-0011 keep *ISO 21434 Table-1 as the method, CC display-only*. Fix the
+   header and the class descriptions to match (Stage-2 item #1; a false accepted-DEC claim in a
+   committed file breaks CLAUDE.md).
+2. **`risk` is a free string** (M(I,F) unfixed) → RiskScore vectors are "structure-only" until a
+   DEC-003 ADR fixes the aggregation.
+3. **Assertion acceptance gate not expressible in LinkML** → a **substrate-neutral Python checker**
+   over loaded instances (matches ADR-0004's "SHACL on RDF *or* equivalent LPG checks"; SHACL-SPARQL
+   would force RDF materialization while DEC-004 is open), separate from the schema.
+
+**Scope correction (review):** `Requirement` is **post-MVP** (proposal §3c R-044 / §7, with the #19
+audit model), *not* a day-one structural fix. Add it as a **post-MVP stub** only (for MAP-0001
+traceability), consistent with the proposal — do not pull the SDL/conformance objects into MVP.
 
 **Systemic (nearly every class):** no `pattern`s; no cardinality beyond required/multivalued; no
 `ifabsent` defaults; **free-string slots that must be enums** (`review_status`, `priority`,
@@ -149,6 +169,15 @@ DataFlow/ExternalEntity + `realized_by` — where STRIDE attaches), TrustBoundar
 Network, **Asset** (the real `owned_by` target), ProductFamily, PROV Activity/Agent, and the
 iteration-8 SDL objects (SDL/Gate/Requirement/WorkProduct/GovernedView — post-MVP).
 
+**Also, reconcile with the proposal (review):** (a) **STRIDE-facet placement** — the draft puts
+`method_facet`/`violates_property`/`source_method` on `ThreatInstance`, but proposal §2 records the
+STRIDE facet **on the DFD target** (Process/DataStore/DataFlow/ExternalEntity); settle this before
+Stage 2 (compounded because the DFD classes don't exist yet). (b) **`RiskScore.feasibility`** is a
+stored peer of `AttackPath.attack_feasibility` with **no derivation rule** (worst-path) — make it a
+derived view or add the rule. (c) **Edge vs Assertion canonical rule** — every plain slot-edge (e.g.
+`Vulnerability.affects`) can also exist as an `Assertion(subject,predicate,object)`; add an identity
+rule so the two forms cannot diverge (ADR-0004's "reviewed edge promoted to a reified node").
+
 **Keep as the quality bar:** `LifecyclePhase*`, `ImpactVector` (S/F/O/P each an `ImpactSeverity`
 enum), and the `PartyKind`/`MethodFacet`/`AttackGate`/`FeasibilityLevel`/`MitigationStatus`/
 `RedundancyRelation`/`ViewProjection` enums — these show the target quality the rest must meet.
@@ -161,15 +190,22 @@ enum), and the `PartyKind`/`MethodFacet`/`AttackGate`/`FeasibilityLevel`/`Mitiga
   checked verbatim against the source (fits FX-1). Every extracted fact → an `Assertion` with a PROV
   Activity (model id, prompt hash, source digest, locator, quote) + a separate `Review`; accept only
   after the gate.
-- **Validation:** `linkml-validate --target-class X` pass/fail is the per-vector check; wire into CI.
-- **Vectors = conformance triples per class:** ≥1 valid, ≥1 invalid (missing-required / bad-enum /
-  bad-id-pattern / dangling-ref / rule-violation e.g. accepted-without-review), ≥1 boundary; plus
-  **round-trip** (serialize→load→revalidate) and an optional **Layer-B** extraction regression
-  (source-span → expected instance, field-level scored, non-gating). Track **per-class coverage**.
-- **Prerequisite:** CWE/CAPEC/D3FEND/ATT&CK are only `summarized` — **FX-1-distill them first** so
-  vectors can cite `record#locator` (as ISO 21434 already does). Build **one connected scenario**
-  (a CWE → its CAPEC → a mitigating D3FEND → a CVE instance → one AttackPath+RiskScore) to cover
-  §8 vectors 1–6.
+- **Two-checker validation harness (review H1) — critical, or negative vectors never fire:**
+  - `linkml-validate --target-class X` owns the **intra-instance** invalid vectors: *missing-required,
+    bad-enum, bad-id-pattern, out-of-range*. Wire into CI.
+  - A **separate integrity/gate checker** (the §4 Python rule over the loaded graph) owns the
+    **cross-instance** invalid vectors: *accepted-without-review* (the gate), *dangling-ref*,
+    and other cross-object rules — `linkml-validate` on a single instance **cannot** catch these.
+  - Each negative vector must declare **which checker** is expected to fail it.
+- **Vectors = conformance triples per class:** ≥1 valid, ≥1 invalid (routed to the right checker
+  above), ≥1 boundary; plus **round-trip** (serialize→load→revalidate) and an optional **Layer-B**
+  extraction regression (source-span → expected instance, field-level scored, non-gating). Track
+  **per-class coverage**.
+- **Prerequisite (scoped — review M4):** CWE/CAPEC/D3FEND/ATT&CK are only `summarized`. FX-1-distill
+  **only the handful of records on the one worked scenario path** (a CWE → its CAPEC → a mitigating
+  D3FEND → a CVE instance → one AttackPath+RiskScore, covering §8 vectors 1–6) — **not** the whole
+  catalogs. Full-catalog FX-1 (~900 CWE, ~550 CAPEC, all ATT&CK/D3FEND) is a separate later program,
+  **not** a Stage-3 blocker.
 - **Per-object reference** (extract each from): Weakness←CWE, Vulnerability←CVE(JSON-5),
   AttackPattern←CAPEC/ATT&CK, AttackStep←ATT&CK chain/attack-tree (AND+OR), AttackPath←ATT&CK
   tactic chain, ThreatInstance←a worked STRIDE-on-DFD example, DamageScenario←ISO 21434 TARA,
@@ -183,8 +219,10 @@ Verified this session (search/fetch): LinkML generator catalog (no LPG target) +
 39075:2024 graph types; Google Data Commons MCP (2025–26), Spanner Graph; GraphRAG surveys (ACM
 10.1145/3777378; arXiv 2501.13958, 2507.03226); ontology-guided extraction (arXiv 2603.25152,
 2511.05991); SPIRES/OntoGPT (arXiv 2304.02711); OntoLogX (arXiv 2510.01409); `linkml-validate` docs.
-**Unverified (flagged, verify before the DEC-002/004 ADR):** most claims are from search snippets
-not full-text; `schema-automator` import behavior; LinkML advanced-constraint syntax at the pinned
+**Unverified (flagged, verify before the DEC-002/004 ADR):** most claims are **snippet-level, not
+full-text verified** — in particular the **Kuzu acqui-hire/archival** and the **Data Commons "hosted
+Feb 2026"** date are specific product claims taken from snippets (the "cache not SoT" principle rests
+on **ADR-0004**, not on that anecdote); also `schema-automator` import behavior; LinkML advanced-constraint syntax at the pinned
 version; CWE/CAPEC/ATT&CK/D3FEND current version numbers; that the library holds a worked ISO 21434
 TARA example. **Gather an RDF-star library record** (RDF 1.2 is now real/CR) before the ADR.
 
@@ -194,3 +232,5 @@ TARA example. **Gather an RDF-star library record** (RDF 1.2 is now real/CR) bef
 schemas** to the §3 standard, fixing the §4 gaps (MVP-core classes first), and **review each against
 its requirements**. **Stage 3:** build the per-object extraction vectors (§5), distilling CWE/CAPEC/
 D3FEND/ATT&CK first. Both run multi-agent with an adversarial review at the gate.
+
+**Stage-1 adversarial review folded (v0.2.0):** two-checker vector harness (H1); two LinkML gaps not one + SHACL 1.0 MVP (H2); Requirement demoted to post-MVP (H3); gate as a substrate-neutral Python checker (M1); LPG/GQL tilt caveated, RDF/oxigraph as MVP substrate (M2); SOTA product claims flagged snippet-level (M3); distillation scoped to the worked scenario (M4); versioning added to the standard (M5); STRIDE-placement + RiskScore-derivation + edge/Assertion-canonical gaps + the false 'ADR-0005 accepted' schema-header claim added (L1/L2 + governance).
