@@ -30,6 +30,7 @@ a reference we did not need.
 | `RPT-0004` | [Product composition](0004-product-composition/report.md) | draft (I1) |
 | `RPT-0006` | [Knowledge graph visualization & review console](0006-knowledge-graph-visualization/report.md) | issue (#10) |
 | `RPT-0007` | [ISO/SAE 21434 and TARA](0007-iso21434-tara/report.md) | draft (#11) |
+| `RPT-0005` | [Schema representations](0005-schema-representations/report.md) | scaffold (plan in dimensions.md; #39) |
 | `RPT-0009` | [SAGAI & AI-security specs](0009-sagai/report.md) | draft (#13) |
 | `RPT-0011` | [Knowledge Graphs and NSF OKN](0011-knowledge-graphs-nsf-okn/report.md) | draft (#25) |
 | `RPT-0012` | [GUI, platform & implementation stack](0012-gui-platform-stack/report.md) | scaffold (plan in dimensions.md) |
