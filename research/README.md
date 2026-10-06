@@ -35,3 +35,4 @@ a reference we did not need.
 | `RPT-0012` | [GUI, platform & implementation stack](0012-gui-platform-stack/report.md) | scaffold (plan in dimensions.md) |
 | `RPT-0013` | [Secure Development Lifecycle & conformance](0013-sdl-conformance/report.md) | draft (#67): 44 library records, MAP-0001 v0.2.0, [object model](0013-sdl-conformance/sdl-object-model.md) |
 | `RPT-0014` | [AI threat model: attacks, threat models, enumerations](0014-ai-threat-model/report.md) | in progress (#71) |
+| `RPT-0015` | [KG schema foundation (Stage 1)](0015-kg-schema-foundation/report.md) | draft (#104): schema language=LinkML, per-object standard + gap list |
