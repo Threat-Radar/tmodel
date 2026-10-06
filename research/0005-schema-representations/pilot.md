@@ -4,9 +4,9 @@ id: RPT-0005-pilot
 title: "RPT-0005 Phase 1 pilot: CWE, CVE, NVD and OTM"
 type: research
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 date: "2026-10-05"
-updated: "2026-10-05"
+updated: "2026-10-06"
 record: RPT-0005
 ---
 
@@ -93,7 +93,7 @@ Findings that bear on tmodel:
 | Identifier scheme | Free strings, unique within one file (the example uses UUIDs); no namespace. |
 | Encoding | JSON or YAML, validated by JSON Schema. |
 | Extension mechanism | A free-form `attributes` map on every element, and no `additionalProperties: false` anywhere, so unknown keys also validate. |
-| Licence | CC BY-SA 4.0 (licence file added 2024-11-20). |
+| Licence | Split: the repository (specification text) is CC BY-SA 4.0 (licence file added 2024-11-20), but the schema file's `$comment` says it "is published under the terms of the Apache License 2.0". Corrected after the fan-out (agent 3). |
 | Producers and consumers | IriusRisk imports and exports it; IriusRisk's StartLeft (Apache-2.0, active 2026) generates OTM from infrastructure-as-code, diagrams and other tools' exports; Devici hands models to SD Elements in OTM (RPT-0003). |
 | Library record | none yet. |
 
@@ -116,7 +116,7 @@ Marks as in [dimensions.md](dimensions.md), plus `txt` (added after this pilot):
 | CWE 4.20 / schema 7.3 | weakness | MITRE (CISA-sponsored); submissions to the CWE team | Weakness, Category, View | `CWE-<int>`, never reused | XML + XSD; CSV | — (closed XSD) | MITRE CWE terms, attribution | `cwe`, summarized |
 | CVE Record Format 5.2.0 | vulnerability | CVE Program (Board; MITRE secretariat; CISA sponsor) | Record → CNA container + ADP containers | `CVE-YYYY-N{4,19}`; org UUIDs | JSON + JSON Schema draft-07 | `x_` properties and tags; `metrics.other`; `taxonomyMappings` | schema CC0-1.0; records ? | `cve-json-5`, summarized |
 | NVD CVE API 2.0 | vulnerability (enrichment) | NIST | cve with weaknesses, metrics, configurations, KEV fields | CVE id; CPE 2.3; match UUIDs | JSON REST | — | ? | none |
-| OTM 0.2.0 | threat model | IriusRisk | project, asset, trustZone, component, dataflow, threat, mitigation, representation | free strings, file-local | JSON/YAML + JSON Schema | `attributes` map; open objects | CC BY-SA 4.0 | none |
+| OTM 0.2.0 | threat model | IriusRisk | project, asset, trustZone, component, dataflow, threat, mitigation, representation | free strings, file-local | JSON/YAML + JSON Schema | `attributes` map; open objects | spec CC BY-SA 4.0; schema file Apache-2.0 | none |
 
 ### Table 2. Concept crosswalk (pilot rows)
 

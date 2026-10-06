@@ -4,9 +4,9 @@ id: DL-0013
 title: "RPT-0005 schema representations: AI-assisted scoping, survey and crosswalk"
 type: process
 status: draft
-version: "0.2.0"
+version: "0.3.0"
 date: "2026-10-05"
-updated: "2026-10-05"
+updated: "2026-10-06"
 record: DL-0013
 ---
 
@@ -77,4 +77,49 @@ Facts were taken from the artifacts, not from summaries: the CWE XSD and XML, th
 - **"The Apache CNA asserts CVSS 3.1 for CVE-2021-44228"**, in the agent's first draft of `pilot.md`. Rejected on checking the record: the CNA container has only `other` ("critical"); the CVSS 3.1 vector and SSVC decision come from the CISA-ADP container.
 - **"A rejected CVE names its replacement only in prose"**, in the same draft. Rejected on checking the schema: `cnaRejectedContainer.replacedBy` lists the CVE ids it was rejected in favor of. The `supersedes` cell for CVE was changed from `txt` to `=`.
 - **Press reports that NVD "will drop the 'Deferred' status"** are not used as fact: the live API still returned `Deferred` on 2026-10-05, and `pilot.md` records what was observed.
+
+## Phase 1 fan-out: three research agents (2026-10-05 to 2026-10-06)
+
+### Question asked
+
+Run the rest of Phase 1 as planned in `dimensions.md`: three research agents in parallel, each filling the per-format record and Tables 1 to 6 for its dimensions, to the pilot's standard (artifacts over summaries, SHA-256 per file, every rejected claim recorded).
+
+### What was produced
+
+- `fanout-vuln-data.md` (dimensions 1 to 3): OSV, CVSS 3.1 and 4.0, EPSS, VEX in four encodings, CSAF 2.0 and 2.1; light records for CPE, purl, CISA KEV and SSVC; adoption rows for CWE, CVE and NVD; the pilot's open items closed.
+- `fanout-attack-composition.md` (dimensions 4 and 7): ATT&CK 19.2, CAPEC 3.9, D3FEND 1.6.0, STIX 2.1, TAXII 2.1, and the security-relevant parts of SPDX 3.0.1 and CycloneDX 1.7.
+- `fanout-models-requirements.md` (dimensions 5 and 6): threagile, pytm, OWASP Threat Dragon, OSCAL 1.2.3, ReqIF 1.2, SysML v2.0, OMG SACM 2.3, and a TM-BOM coverage check; `fanout-models-requirements-sha256.txt` lists its 138 downloaded files.
+- `searches.md` and `sources.md` 0.3.0: the agents' query and source rows appended.
+
+The three files are kept as the agents wrote them. Downloaded third-party files stayed in the session scratch folder and are not committed.
+
+### Method and what went wrong
+
+- Three agents, not five, to control cost (the student's cap). All three hit the account's usage limit on 2026-10-05. Agents 2 and 3 had already written their complete files; agent 1 had downloaded its sources (171 files) but written nothing.
+- Agent 1 was re-run on 2026-10-06 on a cheaper model (Sonnet), told to reuse the downloaded files and re-verify each one's source URL and hash. It rejected nine of the previous run's files as unusable (empty, error pages, JavaScript stubs, an unrecoverable source).
+
+### How the main session checked the agents
+
+Ten facts were re-derived from the downloaded artifacts or live data, and all matched: CAPEC 3.9 has 615 attack patterns, 402 Draft; ATT&CK 19.2 has 697 `detects`, 157 `revoked-by` and 26 `attributed-to` relationships, and no active technique carries a CAPEC reference; the OTM schema file states Apache License 2.0; pytm's licence file is MIT; CycloneDX issue #462 (TM-BOM) closed 2026-08-20; the NVD placeholder weaknesses `NVD-CWE-noinfo` and `NVD-CWE-Other` count 36,262 and 30,013 (36,258 and 30,007 a day earlier, in the agent's file); CycloneDX defines 9 VEX justification codes and OpenVEX 5. This is a sample, not a full check; Phase 4's adversarial review is the full one.
+
+### Corrections the fan-out forced on earlier work
+
+- **`pilot.md` (0.1.1):** OTM's licence is split, CC BY-SA 4.0 for the specification text and Apache-2.0 for the schema file (agent 3). Corrected.
+- **RPT-0003:** it gives pytm's licence as GPL-3.0; the licence file is MIT (agent 3, confirmed). Not changed here, because RPT-0003 is outside this PR; to be raised separately.
+- **Library summaries** (`stix-2-1`, `capec`, `d3fend`, `mitre-attack`) and RPT-0011 contain claims the agents found wrong or out of date: STIX 2.1 has 19 SDOs, not 17; CAPEC's ATT&CK links are pinned to ATT&CK 12.0, and ATT&CK dropped its CAPEC links in v13; D3FEND has no direct defence-to-offence edges, because those pairs are inferred and published separately. These feed Phase 2, when the records are extracted to FX-1.
+- **The pilot's "NVD CVE API 2.0" label:** the response says `version: "2.0"`, but the schema document is titled version 2.2.4. Both are kept.
+
+### Choices the agents made, open to review
+
+- **TM-BOM as a full format** (agent 3): CycloneDX 2.0's threat-model modules were merged into the `2.0-dev` branch on 2026-08-20 but are unreleased. The 2.0 milestone's due date (2026-08-31) has passed with 90 of 176 issues open, and the TM-BOM schema review (#731) is still open. Recommended: cover it as a draft pinned to a commit, subject to @nymble's agreement.
+- **CSAF 2.1 is rated as a draft:** it is a Committee Specification Draft (2026-09-11), not an OASIS Standard.
+
+### What a human accepted
+
+- The student approved the fan-out after the pilot (2026-10-05), and on 2026-10-06 approved re-running agent 1 on a cheaper model, reusing its downloads, to save cost.
+- Technical review of the three files is pending, through Phase 4 and @nymble.
+
+### What was rejected, and why
+
+The agents' own rejected claims are listed in section 11 or 12 of each `fanout-*.md` file: 13 in agent 1's, 10 in agent 2's and 13 in agent 3's. Most of them corrected summaries, file names and version labels against the artifact.
 
