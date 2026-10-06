@@ -4,7 +4,7 @@ id: RPT-0005-dimensions
 title: "RPT-0005 dimensions: the search axes"
 type: research
 status: draft
-version: "0.1.0"
+version: "0.2.0"
 date: "2026-10-05"
 updated: "2026-10-05"
 record: RPT-0005
@@ -44,17 +44,20 @@ Rows are concepts. Columns are formats. A cell holds the format's element (path 
 | `≈` | close; import loses something (say what in a note) |
 | `⊂` / `⊃` | the format's element is narrower / broader than ours |
 | `ext` | absent, but the format's extension mechanism could carry it |
+| `txt` | present only as prose, not machine-readable (for example a deprecated CWE entry naming its successor in its description) |
 | `—` | absent and not extensible |
 
 **Rows, part 1: ARCH-0001 §3 types.** Asset, Component, TrustBoundary, Weakness, Vulnerability, Threat, AttackStep, AttackPath/ThreatChain, Mitigation, RiskScore, Review, Product/ProductFamily.
 
 **Rows, part 2: concepts the formats carry that ARCH-0001 §3 does not.** Candidates to confirm or drop during the survey: DataFlow, Requirement/Control, Applicability statement (VEX status and justification), Advisory/Remediation, Exploitation evidence (EPSS probability, known-exploited flag), Party (CNA, vendor, threat actor), DamageScenario and Assertion (both in the unaccepted LinkML draft), Software identifier (CPE, purl, SWID), Detection/Indicator. A row kept here is a gap-analysis input, not a proposal to add the type.
 
-**Rows, part 3: cross-cutting fields.** Identifier, version/revision, status and deprecation, provenance (who asserted it, when), references, human review or approval state.
+**Rows, part 3: cross-cutting fields.** Identifier, version/revision, status and deprecation, provenance (who asserted it, when), references, human review or approval state, edge qualifiers (properties a relation carries, such as CWE's `View_ID` or NVD's AND/OR and `negate`).
+
+**Columns.** One per format. CVE and NVD are separate columns: they differ in steward, provenance model and applicability logic (pilot).
 
 ### Table 3. Relation crosswalk (report §8)
 
-Same marks as Table 2. Rows are the typed edges of ARCH-0001 §3 (`exploits`, `mitigated_by`, `part_of`, `step_of`, `instance_of`, `reviewed_by`, `applies_to_product`, `supersedes`) plus edges the formats have that we lack (for example CWE `ChildOf`/`CanPrecede`, STIX `uses`/`mitigates`/`detects`, VEX `not_affected` with justification). ADR-0004 made the logical model edge-rich, so this table matters as much as Table 2.
+Same marks as Table 2. Rows are the typed edges of ARCH-0001 §3 (`exploits`, `mitigated_by`, `part_of`, `step_of`, `instance_of`, `reviewed_by`, `applies_to_product`, `supersedes`) plus edges the formats have that we lack (for example CWE `ChildOf`/`CanPrecede`, STIX `uses`/`mitigates`/`detects`, VEX `not_affected` with justification). ADR-0004 made the logical model edge-rich, so this table matters as much as Table 2. A cell also names the qualifiers the edge carries (scope, order, fit grade), because the pilot found that relations in CWE and NVD are not meaningful without them.
 
 ### Table 4. Adoption (report §9)
 
@@ -82,6 +85,8 @@ Each format is rated on the five axes #39 sets, 0 to 3:
 | AI-grounding | an agent can cite an entry by a stable id and retrieve its normative text |
 
 0 = absent, 1 = mentioned or weak, 2 = partial (needs extension), 3 = strong. Every rating cites the field or section that justifies it.
+
+Ratings are within the format's own scope: a catalog such as CWE is not marked down on Object model for lacking Asset, and for a catalog the Provenance and Human review axes rate the editorial history of its entries (pilot).
 
 ### Table 6. Local extension needs (report §8)
 
@@ -162,7 +167,7 @@ Table 4. For each format, which products and services produce and consume it, wi
 
 ### 10. Adversarial coverage review (Phase 4)
 A fresh agent that did not write the draft checks:
-1. **Coverage.** Against an independent list of formats, did we miss one that matters? Candidates to test against: CISA KEV, CPE, purl, SWID, OpenC2 (in #9, not in #39), MITRE ATLAS (covered by RPT-0014), CACAO, OCSF, MAEC, SARIF, OVAL/SCAP, VERIS.
+1. **Coverage.** Against an independent list of formats, did we miss one that matters? Candidates to test against: CISA KEV, CPE, purl, SWID, OpenC2 (in #9, not in #39), MITRE ATLAS (covered by RPT-0014), CACAO, OCSF, MAEC, SARIF, OVAL/SCAP, VERIS, SSVC (already inside CVE ADP containers and the NVD API, found in the pilot), TM-BOM (emerging threat-model interchange, named in RPT-0003).
 2. **Citations.** Is every claim traceable to a verified source?
 3. **Extraction.** For each specification: count the normative statements first, then check that the library record extracted the same number.
 4. **Crosswalk accuracy.** Spot-check a sample of cells against the specification text.
@@ -177,7 +182,7 @@ Each Phase 1 search returns, for every format: citation and verified URL, versio
 
 Agent count is capped at three per round to keep cost down (the #39 playbook suggests three to five).
 
-1. **Pilot first, in the main session:** CWE, CVE/NVD and OTM, as #9's self-improving loop suggests. This tests Tables 2 and 5 on one catalog, one record format and one threat-model format before scaling. If the columns or marks do not work, this file is revised before the fan-out.
+1. **Pilot first, in the main session:** CWE, CVE/NVD and OTM, as #9's self-improving loop suggests. This tests Tables 2 and 5 on one catalog, one record format and one threat-model format before scaling. If the columns or marks do not work, this file is revised before the fan-out. **Done 2026-10-05:** results in [pilot.md](pilot.md); this file's version 0.2.0 carries its changes (the `txt` mark, edge qualifiers, separate CVE and NVD columns, the rubric scope note and two coverage candidates).
 2. **Fan-out, three agents in parallel:**
    - agent 1: dimensions 1 to 3 (vulnerability data: CWE, CVE, NVD, OSV, CVSS, EPSS, VEX, CSAF)
    - agent 2: dimensions 4 and 7 (attack knowledge and composition: ATT&CK, CAPEC, D3FEND, STIX/TAXII, SPDX, CycloneDX)
