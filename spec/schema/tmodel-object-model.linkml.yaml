@@ -4,9 +4,10 @@
 # separate mapping layer (DEC-002 / #9). This file is OUR model, not those schemas.
 # spec/schema/ in the tmodel repo is still a README stub on purpose; landing this
 # file there is lane #64, not this cut.
-# Risk vector follows sponsor DEC-003 / ADR-0005 (accepted 2026-10-02):
-# composite = CC attack feasibility + impact (damage / 21434 S/F/O/P) + mitigation status + derived risk.
-# design-log/0011's "CC display-only" note is superseded by that decision.
+# Risk is a composite vector (sponsor round, proposed.10 / DL-0011): feasibility + impact
+# (21434 S/F/O/P) + mitigation status + derived risk. Feasibility METHOD is ISO/SAE 21434
+# Table-1; Common Criteria styling is display-only. DEC-003 is OPEN — ADR-0005 was DROPPED,
+# not accepted (DL-0011); no DEC is accepted by this file.
 
 id: https://threat-radar.github.io/tmodel/schema/object-model
 name: TmodelObjectModel
@@ -153,9 +154,9 @@ classes:
     description: >-
       An ordered set of AttackSteps realising a ThreatInstance (§2a, §3).
       Feasibility is rated here, at path level (human-rated at MVP).
-      Method is Common Criteria attack feasibility (DEC-003 / ADR-0005):
-      concise metric numbers + feasibility label. No per-step aggregation at MVP.
-      ISO 21434 Table-1 may inform the scale but is not the vector method.
+      Feasibility METHOD is ISO/SAE 21434 Table-1 (§3, DL-0011), human-rated at MVP;
+      Common Criteria is display-only (numbers + label). No per-step aggregation at MVP.
+      DEC-003 is open; ADR-0005 was dropped, not accepted.
     slots:
       - steps
       - realizes_threat
@@ -188,8 +189,9 @@ classes:
   RiskScore:
     is_a: Node
     description: >-
-      Composite risk vector (DEC-003 accepted via ADR-0005, 2026-10-02).
-      Peer slots: feasibility (Common Criteria attack feasibility — numbers,
+      Composite risk vector (sponsor round, proposed.10 / DL-0011; DEC-003 OPEN —
+      ADR-0005 was dropped, not accepted). Peer slots: feasibility (ISO 21434 Table-1
+      method; Common Criteria display-only — numbers,
       label, and a colored indicator in table views), impact (from attack
       damage; 21434 S/F/O/P), mitigation_status, and derived risk.
       Shown alongside its inputs, never instead of them. Not a single CVSS score.
