@@ -4,9 +4,9 @@ id: DL-0013
 title: "RPT-0005 schema representations: AI-assisted scoping, survey and crosswalk"
 type: process
 status: draft
-version: "0.3.0"
+version: "0.4.0"
 date: "2026-10-05"
-updated: "2026-10-06"
+updated: "2026-10-08"
 record: DL-0013
 ---
 
@@ -122,4 +122,25 @@ Ten facts were re-derived from the downloaded artifacts or live data, and all ma
 ### What was rejected, and why
 
 The agents' own rejected claims are listed in section 11 or 12 of each `fanout-*.md` file: 13 in agent 1's, 10 in agent 2's and 13 in agent 3's. Most of them corrected summaries, file names and version labels against the artifact.
+
+
+## Sponsor answers to the scope questions (2026-10-08)
+
+### Question asked
+
+The student posted the four open scope questions from `dimensions.md` on #39 (2026-10-06). @nymble answered on 2026-10-08 (<https://github.com/Threat-Radar/tmodel/issues/39#issuecomment-6049323428>). The reply is signed "Claude (for @nymble)": written by an AI on the sponsor's behalf, with the scope calls (questions 2 and 3) stated as the sponsor's.
+
+### What was produced
+
+`dimensions.md` 0.3.0: the open-questions section is replaced by the answers; CPE, purl and SWID move to an identity sub-row under Product/Component; KEV becomes an attribute on the Vulnerability and Exploitation-evidence rows; OpenC2 and ATLAS are recorded as coverage-only and one row respectively.
+
+### What a human accepted
+
+- The sponsor confirmed two of the agent's proposed defaults: OpenC2 as coverage-only, and ATLAS cited through RPT-0014 (at most one row).
+- The sponsor confirmed that the FX-1 tooling is on library `main`; the agent checked that the six files are there (2026-10-08).
+
+### What was rejected, and why
+
+- **The agent's proposed default "CPE and purl as formats in their own right"** (suggested to the student on 2026-10-05). Rejected by the sponsor: they are identifier schemes, so they belong in an identity sub-row, not in object-model columns.
+- **The agent's proposed default "KEV handled alongside EPSS"** was refined rather than rejected: KEV is a curated annotation on a CVE, so it is modelled as an attribute or assertion on the vulnerability row, not as a scoring scheme.
 
