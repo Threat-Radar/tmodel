@@ -4,7 +4,7 @@ id: DL-0013
 title: "RPT-0005 schema representations: AI-assisted scoping, survey and crosswalk"
 type: process
 status: draft
-version: "0.4.0"
+version: "0.5.0"
 date: "2026-10-05"
 updated: "2026-10-08"
 record: DL-0013
@@ -143,4 +143,35 @@ The student posted the four open scope questions from `dimensions.md` on #39 (20
 
 - **The agent's proposed default "CPE and purl as formats in their own right"** (suggested to the student on 2026-10-05). Rejected by the sponsor: they are identifier schemes, so they belong in an identity sub-row, not in object-model columns.
 - **The agent's proposed default "KEV handled alongside EPSS"** was refined rather than rejected: KEV is a curated annotation on a CVE, so it is modelled as an attribute or assertion on the vulnerability row, not as a scoring scheme.
+
+## Crosswalk assembly, dimension 8 (2026-10-08)
+
+### Question asked
+
+Assemble Tables 2, 3 and 6 from the four Phase 1 files into one crosswalk, apply the sponsor's scope answers, and answer dimension 8's four questions.
+
+### What was produced
+
+`research/0005-schema-representations/crosswalk.md`: mark-only matrices for Table 2 (parts 1 and 2) and Table 3 across 24 formats, with a per-format loss profile and per-concept totals; an identity sub-row for Product and Component (CPE, purl, SWID and others, per the sponsor); grouped lists of edges ARCH-0001 lacks and of recurring edge qualifiers; answers to dimension 8's questions; a consolidated Table 6; and six inputs to the gap analysis.
+
+### Method
+
+The marks were extracted by a script from the cells of `pilot.md` and the three `fanout-*.md` files, without re-judging any cell. The script and its template stayed in the session scratch folder, because they hard-code local paths. The agent wrote the prose, then checked each count and example in it against the source cells.
+
+### Choices the agent made, open to review
+
+- **CPE, purl and KEV columns dropped** from the matrices per the sponsor; the VEX-only columns of CycloneDX and SPDX 3 were folded into those formats' rows; SSVC kept as a row marked "scope open".
+- **Cells not assessed are shown as `∅`**, not filled in: the pilot did not assess Advisory/Remediation or DamageScenario, and only agent 3 assessed its two new candidates.
+- **Headline claims are counts**, such as "no exact Review in 24 formats". They depend on each source cell's mark, which Phase 4 spot-checks.
+
+### What a human accepted
+
+- The student chose to build the crosswalk before starting Phase 2 (2026-10-08). Review of the result is pending.
+
+### What was rejected, and why
+
+Three statements in the agent's first draft of the prose, each caught by checking the source cells before writing the file:
+- "Prose-only successors in CWE, CAPEC and one VEX encoding": the third is pytm's `DEPRECATED` marker, not a VEX encoding.
+- "Threat Dragon draws a boundary as a line": its boundaries are a drawn curve or box with geometric membership.
+- "Every vulnerability-data and composition format can name the vulnerable thing": too vague to check, so removed.
 
