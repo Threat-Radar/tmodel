@@ -24,12 +24,12 @@ body {
   color: var(--ink);
   background: var(--paper);
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
-  font-size: 17px;
-  line-height: 1.55;
+  font-size: 16px;
+  line-height: 1.5;
 }
 a { color: var(--accent); }
 a:hover { text-decoration: none; }
-.wrap { max-width: 920px; margin: 0 auto; padding: 0 24px 64px; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px 40px; }
 header { border-bottom: 1px solid var(--line); background: var(--card); }
 .bar {
   max-width: 920px; margin: 0 auto; padding: 16px 24px;
@@ -39,10 +39,10 @@ header { border-bottom: 1px solid var(--line); background: var(--card); }
 nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
 nav a { color: var(--muted); text-decoration: none; }
 nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
-h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.15; letter-spacing: -0.03em; margin: 28px 0 8px; }
-h2 { font-size: 1.25rem; margin: 1.6em 0 0.4em; }
-h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
-.kicker { margin: 22px 0 0; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+h1 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); line-height: 1.15; letter-spacing: -0.03em; margin: 20px 0 6px; }
+h2 { font-size: 1.15rem; margin: 1.25em 0 0.3em; padding-top: 0.6em; border-top: 1px solid var(--line); }
+h3 { font-size: 1rem; margin: 1em 0 0.2em; }
+.kicker { margin: 18px 0 0; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
 .lede { color: var(--muted); margin-top: 0; }
 .banner, .callout {
   background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
@@ -50,8 +50,11 @@ h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
 .callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
 .callout strong { color: var(--ink); }
 ul.clean { padding-left: 1.2rem; }
-table { width: 100%; border-collapse: collapse; margin: 0.6em 0 1em; background: var(--card); }
-th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 8px 10px; font-size: 0.95rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.4em 0 0.8em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 6px 10px; font-size: 0.93rem; }
+table.kv { background: transparent; }
+table.kv td { border-bottom: none; padding: 2px 12px 2px 0; }
+td.rowhead { color: var(--muted); font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; width: 1%; padding-top: 6px; }
 th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
 code { font-size: 0.9em; }
 .badge {
@@ -91,15 +94,15 @@ nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font
 <h2>Specification</h2>
 <table><tbody><tr><td>Authors</td><td>CISA SBOM Tooling and Implementation Working Group</td></tr><tr><td>Date</td><td>2024-09-03</td></tr><tr><td>Publisher</td><td>Cybersecurity and Infrastructure Security Agency</td></tr><tr><td>Version</td><td>Third Edition</td></tr><tr><td>Maturity</td><td>best-practice</td></tr><tr><td>Pages</td><td>39</td></tr><tr><td>Media type</td><td>application/pdf</td></tr></tbody></table>
 <h2>Applicability</h2>
-<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge adjacent">adjacent</span></td></tr><tr><td>This project</td><td><span class="badge core">core</span></td></tr></tbody></table><p class="meta">Ratings are the <code>applicability</code> map on <code>record.yaml</code>. A missing axis is not assessed — it is not <code>none</code>. The summary's Why column is not scraped; two summary dialects exist, and a blank template cell is not a judgement.</p>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge adjacent">adjacent</span></td></tr><tr><td>This project</td><td><span class="badge core">core</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
 <h2>Tags</h2>
-<h3>Topic tags</h3><p><span class="badge">sbom</span> <span class="badge">supply-chain</span> <span class="badge">regulation</span></p><p class="meta">Subject vocabulary and free tags. These are what the topic view and the tag crosswalk use.</p><h3>Role tags</h3><p><span class="badge">normative</span></p><p class="meta">Why the record was kept (normative, prior-art, evidence, …). Not a subject.</p>
+<table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">sbom</span> <span class="badge">supply-chain</span> <span class="badge">regulation</span></td></tr><tr><td class="rowhead">Role</td><td><span class="badge">normative</span></td></tr></tbody></table>
 <h2>Bears on</h2>
 <ul><li><code>R-M-07</code></li><li><code>R-M-11</code></li></ul>
 <h2>Usefulness</h2><p><span class="badge">useful</span> Promotes the cryptographic hash from NTIA&#x27;s recommended tier to Minimum Expected, and defines relationship completeness with an explicit open-world default. Both are directly load-bearing for R-M-07 and R-M-11.</p><p class="meta">Assessed 2026-09-27.</p>
-<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> on this record only. Empty lists are omitted. These are not crosswalk edges and not a knowledge graph.</p><h3><code>updates</code></h3><ul><li><a class="rec" data-id="ntia-sbom-minimum-elements" href="../../regulator/ntia-sbom-minimum-elements/summary.html">NTIA Minimum Elements</a></li></ul>
-<h2>Document cites</h2><p class="meta">From <code>cites</code>: what the document references. Fact about the source, not our crosswalk. Gaps stay gaps.</p><ul><li><a class="rec" data-id="iso-iec-5962-2021" href="../../iso/iso-iec-5962-2021/summary.html">ISO/IEC 5962:2021</a></li><li><a class="rec" data-id="spdx-3-0-1" href="../../community/spdx-3-0-1/summary.html">SPDX 3.0.1</a></li><li><a class="rec" data-id="cyclonedx-1-7" href="../../community/cyclonedx-1-7/summary.html">CycloneDX 1.7 / ECMA-424</a></li><li><a href="https://www.ntia.gov/files/ntia/publications/ntia_sbom_software_identity-2021mar30.pdf">Software Identification Challenges and Guidance</a> <span class="meta">cited, no library record</span></li><li><a href="https://www.cisa.gov/resources-tools/resources/software-identification-ecosystem-option-analysis">CISA, Software Identification Ecosystem Analysis</a> <span class="meta">cited, no library record</span></li><li><a href="https://www.softwareheritage.org/swhid/">SoftWare Heritage Persistent Identifiers (SWHIDs)</a> <span class="meta">cited, no library record</span></li><li><a href="https://github.com/omnibor/spec">OmniBOR Specification</a> <span class="meta">cited, no library record</span></li><li><a href="https://www.iso.org/iso-8601-date-and-time-format.html">ISO 8601 — Date and time format</a> <span class="meta">cited, no library record</span></li></ul>
-<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited. The strip above is <code>record.yaml</code>. If they disagree, the record wins for type, tags, applicability ratings, and bears_on.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec</td></tr><tr><td><strong>Maturity</strong></td><td><code>best-practice</code> — working-group guidance hosted by CISA. It frames and clarifies; it confers no conformance claim and carries no procurement mandate of its own</td></tr><tr><td><strong>Authors</strong></td><td>CISA SBOM Tooling and Implementation Working Group</td></tr><tr><td><strong>Published</strong></td><td>2024-09-03 (released October 2024) — Third Edition</td></tr><tr><td><strong>Identifier</strong></td><td>CISA, Third Edition</td></tr><tr><td><strong>Source</strong></td><td>https://www.cisa.gov/sites/default/files/2024-10/SBOM%20Framing%20Software%20Component%20Transparency%202024.pdf</td></tr><tr><td><strong>Digest</strong></td><td><code>sha256:3a204b5f6f988b5f32e635132feabc885789efc436d0756294d388f148cb3397</code></td></tr></tbody></table>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> only — not crosswalk edges.</p><h3><code>updates</code></h3><ul><li><a class="rec" data-id="ntia-sbom-minimum-elements" href="../../regulator/ntia-sbom-minimum-elements/summary.html">NTIA Minimum Elements</a></li></ul>
+<h2>Document cites</h2><p class="meta">From <code>cites</code> — what the source references.</p><ul><li><a class="rec" data-id="iso-iec-5962-2021" href="../../iso/iso-iec-5962-2021/summary.html">ISO/IEC 5962:2021</a></li><li><a class="rec" data-id="spdx-3-0-1" href="../../community/spdx-3-0-1/summary.html">SPDX 3.0.1</a></li><li><a class="rec" data-id="cyclonedx-1-7" href="../../community/cyclonedx-1-7/summary.html">CycloneDX 1.7 / ECMA-424</a></li><li><a href="https://www.ntia.gov/files/ntia/publications/ntia_sbom_software_identity-2021mar30.pdf">Software Identification Challenges and Guidance</a> <span class="meta">cited, no library record</span></li><li><a href="https://www.cisa.gov/resources-tools/resources/software-identification-ecosystem-option-analysis">CISA, Software Identification Ecosystem Analysis</a> <span class="meta">cited, no library record</span></li><li><a href="https://www.softwareheritage.org/swhid/">SoftWare Heritage Persistent Identifiers (SWHIDs)</a> <span class="meta">cited, no library record</span></li><li><a href="https://github.com/omnibor/spec">OmniBOR Specification</a> <span class="meta">cited, no library record</span></li><li><a href="https://www.iso.org/iso-8601-date-and-time-format.html">ISO 8601 — Date and time format</a> <span class="meta">cited, no library record</span></li></ul>
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec</td></tr><tr><td><strong>Maturity</strong></td><td><code>best-practice</code> — working-group guidance hosted by CISA. It frames and clarifies; it confers no conformance claim and carries no procurement mandate of its own</td></tr><tr><td><strong>Authors</strong></td><td>CISA SBOM Tooling and Implementation Working Group</td></tr><tr><td><strong>Published</strong></td><td>2024-09-03 (released October 2024) — Third Edition</td></tr><tr><td><strong>Identifier</strong></td><td>CISA, Third Edition</td></tr><tr><td><strong>Source</strong></td><td>https://www.cisa.gov/sites/default/files/2024-10/SBOM%20Framing%20Software%20Component%20Transparency%202024.pdf</td></tr><tr><td><strong>Digest</strong></td><td><code>sha256:3a204b5f6f988b5f32e635132feabc885789efc436d0756294d388f148cb3397</code></td></tr></tbody></table>
 <h2>Overview</h2>
 <p>The third edition of the framing document that NTIA&#x27;s 2021 minimum elements were drawn from. It restates the SBOM baseline as <strong>twelve Baseline Attributes</strong> — four of SBOM meta-information (Author Name, Timestamp, Type, Primary Component) and eight per component — and grades each one across three <strong>data maturity levels</strong>: <em>Minimum Expected</em>, <em>Recommended Practice</em>, <em>Aspirational Goal</em>. That grading is the structural change: where NTIA gave a flat list, this gives each attribute a floor and a direction.</p>
 <p><strong>The consequential move is §2.2.2.5.</strong> Cryptographic Hash becomes a <em>Minimum Expected</em> component attribute — &quot;provide a hash for any Component listed in the SBOM for which the hash was provided or sufficient information is available to generate the hash. If sufficient information is not available, indicate as unknown.&quot; It requires the algorithm and the hashed object alongside the value &quot;to enable reproducibility&quot;, accepts MD5/SHA1/SHA2 at the minimum tier while noting MD5 and SHA1 &quot;will be formally discontinued in 2030&quot;, and requires SHA-2 (SHA-256 or higher) at <em>Recommended Practice</em>. §2.2.2.4 goes further and says the hash &quot;may also effectively function as a unique identifier&quot;, listing content-derived identifiers — SWHID, OmniBOR artifact IDs — alongside CPE, PURL and SWID.</p>

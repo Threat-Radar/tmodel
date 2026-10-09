@@ -425,9 +425,13 @@ def publish_record_pages(records: list[dict], library: dict[str, dict], publishe
     wanted = set()
     for rec in records:
         text = rec["page_path"].read_text(encoding="utf-8")
-        if rh.SITE_NAV_SLOT not in text:
-            raise SystemExit(f"{rec['id']}: library page has no site-nav slot")
-        text = text.replace(rh.SITE_NAV_SLOT, nav, 1)
+        start = text.find(rh.SITE_NAV_SLOT)
+        end = text.find(rh.SITE_NAV_END)
+        if start < 0 or end < 0:
+            raise SystemExit(f"{rec['id']}: library page has no site-nav region")
+        # Replace the whole region (both markers inclusive) so no library-relative
+        # banner link leaks and there is no double chrome (PLAN-0003 A0).
+        text = text[:start] + nav + text[end + len(rh.SITE_NAV_END):]
         text = _REC_LINK.sub(
             lambda m: m.group(0) if m.group(1) in published
             else f'{m.group(2)} <span class="meta">(not published)</span>',
