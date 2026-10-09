@@ -4,7 +4,7 @@ id: RPT-0004-dimensions
 title: "RPT-0004 dimensions: the search axes"
 type: research
 status: draft
-version: "0.2.0"
+version: "0.3.0"
 date: "2026-09-28"
 updated: "2026-10-08"
 record: RPT-0004
@@ -122,18 +122,20 @@ Rows: Syft, Grype, Trivy, Dependency-Track, GUAC, deps.dev, and any tool the cov
 
 ### Table 6. Composition → model-input mapping (§10, the deliverable for #15 and #17)
 
-One row per model input. Rows come from ARCH-0001 §3, the source of truth, and, marked as draft, from the types and slots that the ARCH-0001 proposal (`0.2.0-proposed.11`) and the LinkML draft (`spec/schema/tmodel-object-model.linkml.yaml`, 0.1.0) add, because #15 and #17 iterate those. Starting rows: Product, ProductInstance, Component, `composed_of`, `depends_on`, `uses_component`, Party with `supplied_by` and `manufactured_by`, Vulnerability with `affects`, Weakness, Assertion (for a vulnerability match and for a VEX override), and Review. Composition facts with no target yet get rows too, marked as gaps: completeness claims, a component's set of identifiers, the build record, hardware attributes. If #15 or #17 change the draft, the table is re-pointed, as RPT-0007 §5 was.
+One row per model input. Rows come from ARCH-0001 §3, the source of truth, and, marked as draft, from the types and slots that the ARCH-0001 proposal (`0.2.0-proposed.11`) and the LinkML draft (`spec/schema/tmodel-object-model.linkml.yaml`, 0.1.0) add, because #15 and #17 iterate those. Rows: Product, ProductInstance, Component, `composed_of`, `depends_on`, `uses_component`, Party with `supplied_by` and `manufactured_by`, Vulnerability with `affects`, Weakness, Assertion (for a vulnerability match and for a VEX override), and Review. Composition facts with no target yet get rows too, marked as gaps: a component's set of identifiers, its version, its kind, its upstream (source) package, completeness claims, match provenance, fix information, scores, the operating system, the SBOM document and its creation, the SBOM capture stage, the build record, hardware attributes and licences. If #15 or #17 change the draft, the table is re-pointed, as RPT-0007 §5 was.
 
 | column | what goes in it |
 |---|---|
-| Model input | the type, slot or edge, and the draft version it comes from |
-| CycloneDX 1.7 | source path |
-| SPDX 3.0.1 | source class and property |
-| radar today | what Syft's and Grype's outputs give, and what tradar keeps (§4) |
-| Fidelity | mark |
+| Model input | the type, slot or edge, and the draft version it comes from; for a gap row, "target: none" |
+| CycloneDX 1.7 | source path, with its fidelity mark |
+| SPDX 3.0.1 | source class and property, with its fidelity mark |
+| Syft and Grype output | the output field radar could pass on today, with its fidelity mark |
+| tradar keeps | what reaches tradar's graph or saved files today (§4) |
 | Rule | how the value would be derived: which identifier keys a Component across scans, how two SBOMs of one build merge, which way an edge runs. Each rule is a candidate, not a decision |
 | Lost | what the import drops |
 | Routes to | the `DEC-*` or issue that decides it |
+
+The pilot ([pilot.md](pilot.md)) moved the fidelity mark into each source cell, because one row can fit differently in each source, and split the radar column in two.
 
 RPT-0005's concept crosswalk (its Table 2) rates what each format can express for each concept. This table is the input contract instead, so it adds the radar column, the derivation rules, and the identity and merge rules. Where RPT-0005 has a cell for SPDX or CycloneDX, this table cites it rather than redoing it.
 
@@ -217,7 +219,7 @@ New in this pass:
 1. **Re-runs.** Run Syft, Grype and Trivy at their current versions on the two 0.1.0 inputs and on one more input that exercises other matchers (a Debian-based image or a Java project, as 0.1.0's limits suggest).
 2. **deps.dev.** What does it hold (packages, versions, resolved dependency graphs, advisories, licences, OpenSSF Scorecard results, provenance), through which interfaces (API, dataset), and keyed on what (purl, version, hash)? Can it answer "which package version has this hash"?
 3. **GUAC's graph model.** Which node and edge types does its ontology define, how does it merge documents about the same package or artifact, and how does it record where a fact came from? It is the closest existing composition knowledge graph to tmodel's (DEC-001, DEC-004, #25).
-4. **SPDX 3 support.** Which tools read or write SPDX 3 today? (0.1.0: not Syft, Dependency-Track or GUAC.)
+4. **SPDX 3 support.** Which tools read or write SPDX 3 today? (0.1.0 said not Syft, Dependency-Track or GUAC; the fan-out found that Syft has written SPDX 3.0.1 since version 1.46.0.)
 5. **Dependency-Track 5.** What changed in version 5 that affects composition data (its data model, its API)?
 
 ### 4. How radar (tradar) uses these today
@@ -229,7 +231,7 @@ Which formats and fields tradar reads, and what it keeps or drops on the way to 
 0.1.0's question stays: how a component is matched to CVEs (CPE versus purl, NVD versus distribution advisories) and to CWEs, where each CWE assignment comes from, and what happens to NVD's placeholder values. New in this pass:
 
 1. **How each vulnerability source names affected software** (CVE Record Format 5.x `affected`, NVD CPE match criteria, OSV `affected` with purl and ranges, GHSA, distribution feeds), and which identifier each one needs from an SBOM. Record structure in depth is RPT-0005 (dimension 1); this section asks only what a match needs.
-2. **Match provenance.** What does each scanner record about how it made a match (method, data source, confidence), and could that become an Assertion with a confidence (ARCH-0001 proposal §4, §5)?
+2. **Match provenance.** What does each scanner record about how it made a match (method, data source, the database snapshot it used, confidence), and could that become an Assertion with a confidence (ARCH-0001 proposal §4, §5)? The pilot found the same SBOM gave 4 matches on 2026-09-28 and 30 on 2026-10-08, with the same tool versions, because the database changed.
 3. **Version ranges.** How are affected versions written (CPE `versionEnd*`, OSV ranges, `vers` in CycloneDX), and where does version comparison differ by ecosystem?
 4. **Disagreement.** Is there published evidence on how often CPE matching and ecosystem matching disagree? (0.1.0 showed one case, on Alpine.)
 
@@ -239,7 +241,7 @@ Boundary: VEX encodings in depth are RPT-0005's (dimension 3). 0.1.0's VEX statu
 
 0.1.0's question stays: how composition pins one specific product version (commit, hash, image digest, SBOM serial number). New in this pass:
 
-1. **Which identity anchors which model type.** In the current draft, what pins a Product, a ProductInstance (the proposal's "identity-by-hash" instance, §3b) and a Component? When is a rescan the same ProductInstance, and when is it a new one?
+1. **Which identity anchors which model type.** In the current draft, what pins a Product, a ProductInstance (the proposal's "identity-by-hash" instance, §3b) and a Component? When is a rescan the same ProductInstance, and when is it a new one? For a container image, which of its three digests (the multi-platform index, the platform manifest, the image configuration; the pilot found all three in one scan) should anchor it? Does the answer depend on how the image was named (by tag, as `latest`, or by digest), as Syft's own output does?
 2. **Attestations as carriers.** How do in-toto statements, SLSA provenance (library record `slsa-1-2`, already FX-1), Sigstore bundles and OCI referrers attach an SBOM or a provenance record to an artifact digest?
 3. **The contract.** What would radar have to emit for tmodel to fill Table 6: which fields, in which format, with which identity guarantees? Evidence only: ADR-0001 owns the contract, and the proposal puts build provenance after the MVP (§7).
 4. **Other domains.** How a firmware image and a vehicle's software set are identified (with dimension 2, question 8).
@@ -302,7 +304,7 @@ What each Phase 1 agent returns for every source: the citation and a verified UR
 
 ## Phase 1 plan
 
-1. **Pilot first, in the main session.** Fill Table 6 for one real composition (Syft's CycloneDX output and Grype's JSON for `alpine:latest`, re-run with the tool versions recorded) and Table 3's rows for purl and CPE. This tests Table 6's rows and columns before the fan-out, and it gives #15 and #17 a first mapping early in I2 (PLAN-0001: October 9 to 22, when ARCH-0001 moves to v0.2 and a first schema draft imports an existing format). If the columns do not work, this file is revised first.
+1. **Pilot first, in the main session.** Fill Table 6 for one real composition (Syft's CycloneDX output and Grype's JSON for `alpine:latest`, re-run with the tool versions recorded) and Table 3's rows for purl and CPE. This tests Table 6's rows and columns before the fan-out, and it gives #15 and #17 a first mapping early in I2 (PLAN-0001: October 9 to 22, when ARCH-0001 moves to v0.2 and a first schema draft imports an existing format). If the columns do not work, this file is revised first. **Done 2026-10-08**, run alongside the fan-out (the agents do not fill Table 6): results in [pilot.md](pilot.md). This file's version 0.3.0 carries its changes: Table 6's revised columns and added rows, and sharper questions 5.2 and 6.1.
 2. **Fan-out: five agents in parallel, at maximum effort.**
    - agent 1: dimensions 1, 8 and 9 (formats, baselines, other bill types; Tables 1 and 2)
    - agent 2: dimensions 6 and 7 (build identity and identifier schemes; Table 3)
