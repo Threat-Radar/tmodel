@@ -24,12 +24,12 @@ body {
   color: var(--ink);
   background: var(--paper);
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
-  font-size: 17px;
-  line-height: 1.55;
+  font-size: 16px;
+  line-height: 1.5;
 }
 a { color: var(--accent); }
 a:hover { text-decoration: none; }
-.wrap { max-width: 920px; margin: 0 auto; padding: 0 24px 64px; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px 40px; }
 header { border-bottom: 1px solid var(--line); background: var(--card); }
 .bar {
   max-width: 920px; margin: 0 auto; padding: 16px 24px;
@@ -39,10 +39,10 @@ header { border-bottom: 1px solid var(--line); background: var(--card); }
 nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
 nav a { color: var(--muted); text-decoration: none; }
 nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
-h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.15; letter-spacing: -0.03em; margin: 28px 0 8px; }
-h2 { font-size: 1.25rem; margin: 1.6em 0 0.4em; }
-h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
-.kicker { margin: 22px 0 0; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+h1 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); line-height: 1.15; letter-spacing: -0.03em; margin: 20px 0 6px; }
+h2 { font-size: 1.15rem; margin: 1.25em 0 0.3em; padding-top: 0.6em; border-top: 1px solid var(--line); }
+h3 { font-size: 1rem; margin: 1em 0 0.2em; }
+.kicker { margin: 18px 0 0; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
 .lede { color: var(--muted); margin-top: 0; }
 .banner, .callout {
   background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
@@ -50,8 +50,11 @@ h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
 .callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
 .callout strong { color: var(--ink); }
 ul.clean { padding-left: 1.2rem; }
-table { width: 100%; border-collapse: collapse; margin: 0.6em 0 1em; background: var(--card); }
-th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 8px 10px; font-size: 0.95rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.4em 0 0.8em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 6px 10px; font-size: 0.93rem; }
+table.kv { background: transparent; }
+table.kv td { border-bottom: none; padding: 2px 12px 2px 0; }
+td.rowhead { color: var(--muted); font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; width: 1%; padding-top: 6px; }
 th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
 code { font-size: 0.9em; }
 .badge {
@@ -93,15 +96,15 @@ nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font
 <table><tbody><tr><td>Authors</td><td>O. Steele, H. Birkholz, A. Delignat-Lavaud, C. Fournet</td></tr><tr><td>Date</td><td>2026-06</td></tr><tr><td>Publisher</td><td>IETF</td></tr><tr><td>Maturity</td><td>standard</td></tr><tr><td>doi</td><td><a href="https://doi.org/10.17487/RFC9942">10.17487/RFC9942</a></td></tr><tr><td>rfc</td><td>9942</td></tr></tbody></table>
 <p class="meta">4 open-source implementations are on the record. The summary prose below is the reviewed short list; this page does not re-typeset every note.</p>
 <h2>Applicability</h2>
-<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge core">core</span></td></tr><tr><td>This project</td><td><span class="badge core">core</span></td></tr></tbody></table><p class="meta">Ratings are the <code>applicability</code> map on <code>record.yaml</code>. A missing axis is not assessed — it is not <code>none</code>. The summary's Why column is not scraped; two summary dialects exist, and a blank template cell is not a judgement.</p>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge core">core</span></td></tr><tr><td>This project</td><td><span class="badge core">core</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
 <h2>Tags</h2>
-<h3>Topic tags</h3><p><span class="badge">transparency-log</span> <span class="badge">attestation</span> <span class="badge">signatures</span></p><p class="meta">Subject vocabulary and free tags. These are what the topic view and the tag crosswalk use.</p><h3>Body tags</h3><p><span class="badge">ietf</span></p><p class="meta">Issuing-body names. Shown here, excluded from the topic view so it is not a second copy of the body index.</p>
+<table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">transparency-log</span> <span class="badge">attestation</span> <span class="badge">signatures</span></td></tr><tr><td class="rowhead">Body</td><td><span class="badge">ietf</span></td></tr></tbody></table>
 <h2>Bears on</h2>
 <ul><li><code>DEC-005</code></li><li><code>R-M-12</code></li></ul>
 <h2>Usefulness</h2><p><span class="badge">useful</span> The receipt format the SCITT architecture (RFC 9943, already held) relies on. Directly relevant to the transparency story.</p><p class="meta">Assessed 2026-09-22.</p>
-<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> on this record only. Empty lists are omitted. These are not crosswalk edges and not a knowledge graph.</p><h3><code>see_also</code></h3><ul><li><a class="rec" data-id="rfc-9943" href="../../ietf/rfc-9943/summary.html">An Architecture for Trustworthy and Transparent Digital Supply Chains</a></li></ul><h3><code>part_of</code></h3><ul><li><a class="rec" data-id="ietf-cose-wg" href="../../ietf/ietf-cose-wg/summary.html">IETF CBOR Object Signing and Encryption (COSE) Working Group</a></li></ul>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> only — not crosswalk edges.</p><h3><code>see_also</code></h3><ul><li><a class="rec" data-id="rfc-9943" href="../../ietf/rfc-9943/summary.html">An Architecture for Trustworthy and Transparent Digital Supply Chains</a></li></ul><h3><code>part_of</code></h3><ul><li><a class="rec" data-id="ietf-cose-wg" href="../../ietf/ietf-cose-wg/summary.html">IETF CBOR Object Signing and Encryption (COSE) Working Group</a></li></ul>
 
-<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited. The strip above is <code>record.yaml</code>. If they disagree, the record wins for type, tags, applicability ratings, and bears_on.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>rfc (IETF, Standards Track)</td></tr><tr><td><strong>Maturity</strong></td><td><code>standard</code> — Standards Track, IESG-approved. <strong>Not an STD</strong></td></tr><tr><td><strong>Authors</strong></td><td>O. Steele (Tradeverifyd), H. Birkholz (Fraunhofer SIT), A. Delignat-Lavaud, C. Fournet (Microsoft)</td></tr><tr><td><strong>Published</strong></td><td>2026-06</td></tr><tr><td><strong>Identifier</strong></td><td>RFC 9942 · DOI 10.17487/RFC9942</td></tr><tr><td><strong>Source</strong></td><td>https://www.rfc-editor.org/rfc/rfc9942.txt</td></tr><tr><td><strong>Digest</strong></td><td><code>sha256:da8ed24e…</code> — full value in <code>record.yaml</code>, re-fetched and re-verified 2026-09-28 against the digest recorded 2026-09-22</td></tr></tbody></table>
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>rfc (IETF, Standards Track)</td></tr><tr><td><strong>Maturity</strong></td><td><code>standard</code> — Standards Track, IESG-approved. <strong>Not an STD</strong></td></tr><tr><td><strong>Authors</strong></td><td>O. Steele (Tradeverifyd), H. Birkholz (Fraunhofer SIT), A. Delignat-Lavaud, C. Fournet (Microsoft)</td></tr><tr><td><strong>Published</strong></td><td>2026-06</td></tr><tr><td><strong>Identifier</strong></td><td>RFC 9942 · DOI 10.17487/RFC9942</td></tr><tr><td><strong>Source</strong></td><td>https://www.rfc-editor.org/rfc/rfc9942.txt</td></tr><tr><td><strong>Digest</strong></td><td><code>sha256:da8ed24e…</code> — full value in <code>record.yaml</code>, re-fetched and re-verified 2026-09-28 against the digest recorded 2026-09-22</td></tr></tbody></table>
 <h2>Overview</h2>
 <p>A Receipt is a <code>COSE_Sign1</code> carrying a proof about a Verifiable Data Structure — typically that an entry is in a log (inclusion) or that a log has only been appended to (consistency). The document&#x27;s actual mechanism is three COSE header parameters (§2): <code>receipts</code> (394) holding an array of receipts, <code>vds</code> (395) naming the data-structure algorithm, and <code>vdp</code> (396) holding the proofs keyed by proof type. It then defines <strong>exactly one</strong> VDS — <code>RFC9162_SHA256</code>, value 1, a SHA-256 binary Merkle tree (§5) — with inclusion (<code>-1</code>) and consistency (<code>-2</code>) proofs given as CBOR arrays.</p>
 <p>The lasting product is therefore not the one algorithm but the two IANA registries it opens under Specification Required (§8.2): COSE Verifiable Data Structure Algorithms, and COSE Verifiable Data Structure Proofs. Everything beyond Merkle/SHA-256 arrives by registration, not by revision. And the document is candid about the limit of that design: §4.2 states plainly that implementers <strong>should not expect interoperability across</strong> VDSs, and that a security analysis MUST precede migrating to a new one. The envelope is unified; the proof layer inside it is not.</p>

@@ -24,12 +24,12 @@ body {
   color: var(--ink);
   background: var(--paper);
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
-  font-size: 17px;
-  line-height: 1.55;
+  font-size: 16px;
+  line-height: 1.5;
 }
 a { color: var(--accent); }
 a:hover { text-decoration: none; }
-.wrap { max-width: 920px; margin: 0 auto; padding: 0 24px 64px; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px 40px; }
 header { border-bottom: 1px solid var(--line); background: var(--card); }
 .bar {
   max-width: 920px; margin: 0 auto; padding: 16px 24px;
@@ -39,10 +39,10 @@ header { border-bottom: 1px solid var(--line); background: var(--card); }
 nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
 nav a { color: var(--muted); text-decoration: none; }
 nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
-h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.15; letter-spacing: -0.03em; margin: 28px 0 8px; }
-h2 { font-size: 1.25rem; margin: 1.6em 0 0.4em; }
-h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
-.kicker { margin: 22px 0 0; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+h1 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); line-height: 1.15; letter-spacing: -0.03em; margin: 20px 0 6px; }
+h2 { font-size: 1.15rem; margin: 1.25em 0 0.3em; padding-top: 0.6em; border-top: 1px solid var(--line); }
+h3 { font-size: 1rem; margin: 1em 0 0.2em; }
+.kicker { margin: 18px 0 0; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
 .lede { color: var(--muted); margin-top: 0; }
 .banner, .callout {
   background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
@@ -50,8 +50,11 @@ h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
 .callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
 .callout strong { color: var(--ink); }
 ul.clean { padding-left: 1.2rem; }
-table { width: 100%; border-collapse: collapse; margin: 0.6em 0 1em; background: var(--card); }
-th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 8px 10px; font-size: 0.95rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.4em 0 0.8em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 6px 10px; font-size: 0.93rem; }
+table.kv { background: transparent; }
+table.kv td { border-bottom: none; padding: 2px 12px 2px 0; }
+td.rowhead { color: var(--muted); font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; width: 1%; padding-top: 6px; }
 th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
 code { font-size: 0.9em; }
 .badge {
@@ -91,15 +94,15 @@ nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font
 <h2>Specification</h2>
 <table><tbody><tr><td>Authors</td><td>FIRST</td></tr><tr><td>Publisher</td><td>FIRST (Forum of Incident Response and Security Teams)</td></tr><tr><td>Version</td><td>3.1, Revision 1</td></tr></tbody></table>
 <h2>Applicability</h2>
-<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge not-assessed">not assessed</span></td></tr><tr><td>Cryptography</td><td><span class="badge not-assessed">not assessed</span></td></tr><tr><td>This project</td><td><span class="badge not-assessed">not assessed</span></td></tr></tbody></table><p class="meta">Ratings are the <code>applicability</code> map on <code>record.yaml</code>. A missing axis is not assessed — it is not <code>none</code>. The summary's Why column is not scraped; two summary dialects exist, and a blank template cell is not a judgement.</p>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge not-assessed">not assessed</span></td></tr><tr><td>Cryptography</td><td><span class="badge not-assessed">not assessed</span></td></tr><tr><td>This project</td><td><span class="badge not-assessed">not assessed</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
 <h2>Tags</h2>
-<h3>Topic tags</h3><p><span class="badge">cvss</span> <span class="badge">vulnerability-scoring</span> <span class="badge">first</span></p><p class="meta">Subject vocabulary and free tags. These are what the topic view and the tag crosswalk use.</p>
+<table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">cvss</span> <span class="badge">vulnerability-scoring</span> <span class="badge">first</span></td></tr></tbody></table>
 <h2>Bears on</h2>
 <ul><li><code>DEC-003</code></li><li><code>R-011</code></li></ul>
 
-<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> on this record only. Empty lists are omitted. These are not crosswalk edges and not a knowledge graph.</p><h3><code>see_also</code></h3><ul><li><a class="rec" data-id="first-cvss" href="../../community/first-cvss/summary.html">FIRST, Common Vulnerability Scoring System (CVSS)</a></li></ul>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> only — not crosswalk edges.</p><h3><code>see_also</code></h3><ul><li><a class="rec" data-id="first-cvss" href="../../community/first-cvss/summary.html">FIRST, Common Vulnerability Scoring System (CVSS)</a></li></ul>
 
-<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited. The strip above is <code>record.yaml</code>. If they disagree, the record wins for type, tags, applicability ratings, and bears_on.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec</td></tr><tr><td><strong>Maturity</strong></td><td>not set</td></tr><tr><td><strong>Authors</strong></td><td>FIRST</td></tr><tr><td><strong>Published</strong></td><td>not stated in the document (Revision 1)</td></tr><tr><td><strong>Identifier</strong></td><td>CVSS v3.1, Revision 1</td></tr><tr><td><strong>Source</strong></td><td>https://www.first.org/cvss/v3-1/cvss-v31-specification_r1.pdf</td></tr><tr><td><strong>Digest</strong></td><td><code>6321d986c680205a…</code> (full value in record.yaml)</td></tr></tbody></table>
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec</td></tr><tr><td><strong>Maturity</strong></td><td>not set</td></tr><tr><td><strong>Authors</strong></td><td>FIRST</td></tr><tr><td><strong>Published</strong></td><td>not stated in the document (Revision 1)</td></tr><tr><td><strong>Identifier</strong></td><td>CVSS v3.1, Revision 1</td></tr><tr><td><strong>Source</strong></td><td>https://www.first.org/cvss/v3-1/cvss-v31-specification_r1.pdf</td></tr><tr><td><strong>Digest</strong></td><td><code>6321d986c680205a…</code> (full value in record.yaml)</td></tr></tbody></table>
 <h2>Overview</h2>
 <p>FIRST&#x27;s specification of CVSS version 3.1 (Revision 1, 24 pages). It defines the Base, Temporal and Environmental metric groups and their equations; the Base equations include the exploitability subscore, 8.22 × AttackVector × AttackComplexity × PrivilegesRequired × UserInteraction (section 7.1), with the metric weights in section 7.4. ISO/SAE 21434 cites this version (its Bibliography [24]) and builds its CVSS-based attack feasibility approach on these four metrics (Annex G, G.3 and Table G.8). Added for tmodel RPT-0007 (#11), §3.2.</p>
 <h2>Applicability</h2>

@@ -24,12 +24,12 @@ body {
   color: var(--ink);
   background: var(--paper);
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
-  font-size: 17px;
-  line-height: 1.55;
+  font-size: 16px;
+  line-height: 1.5;
 }
 a { color: var(--accent); }
 a:hover { text-decoration: none; }
-.wrap { max-width: 920px; margin: 0 auto; padding: 0 24px 64px; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px 40px; }
 header { border-bottom: 1px solid var(--line); background: var(--card); }
 .bar {
   max-width: 920px; margin: 0 auto; padding: 16px 24px;
@@ -39,10 +39,10 @@ header { border-bottom: 1px solid var(--line); background: var(--card); }
 nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
 nav a { color: var(--muted); text-decoration: none; }
 nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
-h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.15; letter-spacing: -0.03em; margin: 28px 0 8px; }
-h2 { font-size: 1.25rem; margin: 1.6em 0 0.4em; }
-h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
-.kicker { margin: 22px 0 0; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+h1 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); line-height: 1.15; letter-spacing: -0.03em; margin: 20px 0 6px; }
+h2 { font-size: 1.15rem; margin: 1.25em 0 0.3em; padding-top: 0.6em; border-top: 1px solid var(--line); }
+h3 { font-size: 1rem; margin: 1em 0 0.2em; }
+.kicker { margin: 18px 0 0; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
 .lede { color: var(--muted); margin-top: 0; }
 .banner, .callout {
   background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
@@ -50,8 +50,11 @@ h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
 .callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
 .callout strong { color: var(--ink); }
 ul.clean { padding-left: 1.2rem; }
-table { width: 100%; border-collapse: collapse; margin: 0.6em 0 1em; background: var(--card); }
-th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 8px 10px; font-size: 0.95rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.4em 0 0.8em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 6px 10px; font-size: 0.93rem; }
+table.kv { background: transparent; }
+table.kv td { border-bottom: none; padding: 2px 12px 2px 0; }
+td.rowhead { color: var(--muted); font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; width: 1%; padding-top: 6px; }
 th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
 code { font-size: 0.9em; }
 .badge {
@@ -92,15 +95,15 @@ nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font
 <p class="meta">RFC number and DOI are identifiers on the record. Maturity is the record's field.</p>
 <table><tbody><tr><td>Authors</td><td>J. Schaad</td></tr><tr><td>Date</td><td>2022-08</td></tr><tr><td>Publisher</td><td>IETF</td></tr><tr><td>Maturity</td><td>standard</td></tr><tr><td>doi</td><td><a href="https://doi.org/10.17487/RFC9052">10.17487/RFC9052</a></td></tr><tr><td>rfc</td><td>9052</td></tr></tbody></table>
 <h2>Applicability</h2>
-<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge core">core</span></td></tr><tr><td>This project</td><td><span class="badge core">core</span></td></tr></tbody></table><p class="meta">Ratings are the <code>applicability</code> map on <code>record.yaml</code>. A missing axis is not assessed — it is not <code>none</code>. The summary's Why column is not scraped; two summary dialects exist, and a blank template cell is not a judgement.</p>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge core">core</span></td></tr><tr><td>This project</td><td><span class="badge core">core</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
 <h2>Tags</h2>
-<h3>Topic tags</h3><p><span class="badge">signatures</span> <span class="badge">attestation</span></p><p class="meta">Subject vocabulary and free tags. These are what the topic view and the tag crosswalk use.</p><h3>Body tags</h3><p><span class="badge">ietf</span></p><p class="meta">Issuing-body names. Shown here, excluded from the topic view so it is not a second copy of the body index.</p><h3>Role tags</h3><p><span class="badge">normative</span></p><p class="meta">Why the record was kept (normative, prior-art, evidence, …). Not a subject.</p>
+<table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">signatures</span> <span class="badge">attestation</span></td></tr><tr><td class="rowhead">Body</td><td><span class="badge">ietf</span></td></tr><tr><td class="rowhead">Role</td><td><span class="badge">normative</span></td></tr></tbody></table>
 <h2>Bears on</h2>
 <ul><li><code>DEC-002</code></li><li><code>DEC-005</code></li><li><code>R-M-12</code></li></ul>
 <h2>Usefulness</h2><p><span class="badge">useful</span> STD 96 with RFC 9338. COSE_Sign1 is one of the two envelope options in DEC-005, and its header parameters are IANA-allocated, so R-M-12 applies.</p><p class="meta">Assessed 2026-09-22.</p>
-<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> on this record only. Empty lists are omitted. These are not crosswalk edges and not a knowledge graph.</p><h3><code>supersedes</code></h3><ul><li><a class="rec" data-id="rfc-8152" href="../../ietf/rfc-8152/summary.html">CBOR Object Signing and Encryption (COSE)</a></li></ul><h3><code>part_of</code></h3><ul><li><a class="rec" data-id="ietf-cose-wg" href="../../ietf/ietf-cose-wg/summary.html">IETF CBOR Object Signing and Encryption (COSE) Working Group</a></li></ul>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> only — not crosswalk edges.</p><h3><code>supersedes</code></h3><ul><li><a class="rec" data-id="rfc-8152" href="../../ietf/rfc-8152/summary.html">CBOR Object Signing and Encryption (COSE)</a></li></ul><h3><code>part_of</code></h3><ul><li><a class="rec" data-id="ietf-cose-wg" href="../../ietf/ietf-cose-wg/summary.html">IETF CBOR Object Signing and Encryption (COSE) Working Group</a></li></ul>
 
-<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited. The strip above is <code>record.yaml</code>. If they disagree, the record wins for type, tags, applicability ratings, and bears_on.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>rfc</td></tr><tr><td><strong>Maturity</strong></td><td>standard — Internet Standards Track; <strong>Internet Standard</strong>, and <strong>STD 96</strong> jointly with RFC 9338</td></tr><tr><td><strong>Authors</strong></td><td>J. Schaad (August Cellars)</td></tr><tr><td><strong>Published</strong></td><td>August 2022</td></tr><tr><td><strong>Identifier</strong></td><td>RFC 9052 · DOI 10.17487/RFC9052 · STD 96 · obsoletes RFC 8152 (together with RFC 9053)</td></tr><tr><td><strong>Source</strong></td><td>https://www.rfc-editor.org/rfc/rfc9052.txt</td></tr><tr><td><strong>Digest</strong></td><td><code>01eecd7f6465…</code> (sha-256 of the .txt, retrieved 2026-09-22; re-verified against <code>.cache/</code> on 2026-09-30)</td></tr></tbody></table>
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>rfc</td></tr><tr><td><strong>Maturity</strong></td><td>standard — Internet Standards Track; <strong>Internet Standard</strong>, and <strong>STD 96</strong> jointly with RFC 9338</td></tr><tr><td><strong>Authors</strong></td><td>J. Schaad (August Cellars)</td></tr><tr><td><strong>Published</strong></td><td>August 2022</td></tr><tr><td><strong>Identifier</strong></td><td>RFC 9052 · DOI 10.17487/RFC9052 · STD 96 · obsoletes RFC 8152 (together with RFC 9053)</td></tr><tr><td><strong>Source</strong></td><td>https://www.rfc-editor.org/rfc/rfc9052.txt</td></tr><tr><td><strong>Digest</strong></td><td><code>01eecd7f6465…</code> (sha-256 of the .txt, retrieved 2026-09-22; re-verified against <code>.cache/</code> on 2026-09-30)</td></tr></tbody></table>
 <p><strong>On STD 96, precisely.</strong> STD 96 is RFC 9052 <strong>plus RFC 9338</strong> and nothing else. Both documents carry <code>STD: 96</code> on their front page (RFC 9052 p.1; RFC 9338 p.1, which also reads <code>Updates: 9052</code>). RFC 9053 (&quot;Initial Algorithms&quot;) and RFC 9054 (&quot;Hash Algorithms&quot;) were published the same month but as <strong>Informational</strong>, and are <strong>not</strong> part of STD 96 — even though RFC 9052 §13.1 lists RFC 9053 as a <em>normative</em> reference and even though RFC 9052 + RFC 9053 are jointly what obsoletes RFC 8152 (§1, abstract). So STD 96 is an Internet Standard whose mandatory algorithm document sits outside the standard. That asymmetry is the detail most write-ups collapse, and it matters to us: citing &quot;STD 96&quot; does not cite any algorithm.</p>
 <h2>Overview</h2>
 <p>COSE does for CBOR what JOSE did for JSON — signatures, MACs and authenticated encryption over a CBOR-serialised payload — but only for store-and-forward or offline use (§1). Its structural argument is uniformity: all six message types are CBOR arrays whose first three elements are always the same (protected header bytes, unprotected header map, content), so one parser and one dispatch path serve signing, MACing and encryption, with type identified by CBOR tag (18 = <code>COSE_Sign1</code>, 98 = <code>COSE_Sign</code>, 16/96 = Encrypt0/Encrypt, 17/97 = Mac0/Mac), by the <code>cose-type</code> parameter of <code>application/cose</code>, by CoAP Content-Format, or by context (§2). The protected/unprotected split exists to dodge canonicalisation: the protected map is CBOR-encoded, wrapped in a <code>bstr</code>, and transported as opaque bytes, so verifiers re-use the bytes that were signed instead of re-serialising a map — §3 states the motive outright, that this &quot;avoids the problem of all parties needing to be able to do a common canonical encoding of the map for input to cryptographic operations&quot;. The unprotected bucket carries only hints whose corruption is either harmless or self-detecting (<code>kid</code>, <code>IV</code>, <code>Partial IV</code>); attributes MUST be read from the protected bucket first, and a label repeated within one map MUST make the message malformed. The <code>Sig_structure</code> indirection is the same argument applied to the whole object: nothing signs the transmitted array. A verifier rebuilds a separate, never- transmitted array — a context string (<code>&quot;Signature&quot;</code> or <code>&quot;Signature1&quot;</code>), the body protected bytes, the signer protected bytes (omitted for <code>COSE_Sign1</code>), <code>external_aad</code>, and the full payload — encodes it under §9&#x27;s restricted rules, and <em>that</em> byte string is signed (§4.4). The context string is what makes <code>COSE_Sign</code> and <code>COSE_Sign1</code> non-convertible (§4), i.e. domain separation is carried in the signed bytes rather than trusted to the envelope; <code>Enc_structure</code> (§5.3) and <code>MAC_structure</code> (§6.3) repeat the pattern for AAD and for to-be-MACed bytes. COSE deliberately defines <strong>no</strong> digest structure, arguing that each protocol wants different adjacent fields (§1).</p>

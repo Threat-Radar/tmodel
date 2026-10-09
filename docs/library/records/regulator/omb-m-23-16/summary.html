@@ -24,12 +24,12 @@ body {
   color: var(--ink);
   background: var(--paper);
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
-  font-size: 17px;
-  line-height: 1.55;
+  font-size: 16px;
+  line-height: 1.5;
 }
 a { color: var(--accent); }
 a:hover { text-decoration: none; }
-.wrap { max-width: 920px; margin: 0 auto; padding: 0 24px 64px; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px 40px; }
 header { border-bottom: 1px solid var(--line); background: var(--card); }
 .bar {
   max-width: 920px; margin: 0 auto; padding: 16px 24px;
@@ -39,10 +39,10 @@ header { border-bottom: 1px solid var(--line); background: var(--card); }
 nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
 nav a { color: var(--muted); text-decoration: none; }
 nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
-h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.15; letter-spacing: -0.03em; margin: 28px 0 8px; }
-h2 { font-size: 1.25rem; margin: 1.6em 0 0.4em; }
-h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
-.kicker { margin: 22px 0 0; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+h1 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); line-height: 1.15; letter-spacing: -0.03em; margin: 20px 0 6px; }
+h2 { font-size: 1.15rem; margin: 1.25em 0 0.3em; padding-top: 0.6em; border-top: 1px solid var(--line); }
+h3 { font-size: 1rem; margin: 1em 0 0.2em; }
+.kicker { margin: 18px 0 0; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
 .lede { color: var(--muted); margin-top: 0; }
 .banner, .callout {
   background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
@@ -50,8 +50,11 @@ h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
 .callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
 .callout strong { color: var(--ink); }
 ul.clean { padding-left: 1.2rem; }
-table { width: 100%; border-collapse: collapse; margin: 0.6em 0 1em; background: var(--card); }
-th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 8px 10px; font-size: 0.95rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.4em 0 0.8em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 6px 10px; font-size: 0.93rem; }
+table.kv { background: transparent; }
+table.kv td { border-bottom: none; padding: 2px 12px 2px 0; }
+td.rowhead { color: var(--muted); font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; width: 1%; padding-top: 6px; }
 th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
 code { font-size: 0.9em; }
 .badge {
@@ -91,15 +94,15 @@ nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font
 <h2>Specification</h2>
 <table><tbody><tr><td>Authors</td><td>Shalanda D. Young (Director, OMB)</td></tr><tr><td>Date</td><td>2023-06-09</td></tr><tr><td>Publisher</td><td>Executive Office of the President, Office of Management and Budget</td></tr><tr><td>Version</td><td>M-23-16</td></tr><tr><td>omb</td><td>M-23-16</td></tr><tr><td>original_url</td><td>https://www.whitehouse.gov/wp-content/uploads/2023/06/M-23-16-Update-to-M-22-18-Enhancing-Software-Security.pdf</td></tr><tr><td>Pages</td><td>5</td></tr><tr><td>Media type</td><td>application/pdf</td></tr></tbody></table>
 <h2>Applicability</h2>
-<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge none">none</span></td></tr><tr><td>This project</td><td><span class="badge adjacent">adjacent</span></td></tr></tbody></table><p class="meta">Ratings are the <code>applicability</code> map on <code>record.yaml</code>. A missing axis is not assessed — it is not <code>none</code>. The summary's Why column is not scraped; two summary dialects exist, and a blank template cell is not a judgement.</p>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge none">none</span></td></tr><tr><td>This project</td><td><span class="badge adjacent">adjacent</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
 <h2>Tags</h2>
-<h3>Topic tags</h3><p><span class="badge">sdl</span> <span class="badge">regulation</span> <span class="badge">attestation</span> <span class="badge">supply-chain</span> <span class="badge">us-federal</span> <span class="badge">omb</span> <span class="badge">historical</span></p><p class="meta">Subject vocabulary and free tags. These are what the topic view and the tag crosswalk use.</p><h3>Role tags</h3><p><span class="badge">normative</span></p><p class="meta">Why the record was kept (normative, prior-art, evidence, …). Not a subject.</p>
+<table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">sdl</span> <span class="badge">regulation</span> <span class="badge">attestation</span> <span class="badge">supply-chain</span> <span class="badge">us-federal</span> <span class="badge">omb</span> <span class="badge">historical</span></td></tr><tr><td class="rowhead">Role</td><td><span class="badge">normative</span></td></tr></tbody></table>
 <h2>Bears on</h2>
 <ul><li><code>R-041</code></li><li><code>R-042</code></li><li><code>R-044</code></li><li><code>DEC-009</code></li></ul>
 <h2>Usefulness</h2><p><span class="badge">useful</span> Rescinded; useful for the end-product accountability rule, the compound POA&amp;M+extension guard and an OMB-stated six-phase SDL list.</p><p class="meta">Assessed 2026-10-02.</p>
-<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> on this record only. Empty lists are omitted. These are not crosswalk edges and not a knowledge graph.</p><h3><code>superseded_by</code></h3><ul><li><a class="rec" data-id="omb-m-26-05" href="../../regulator/omb-m-26-05/summary.html">OMB M-26-05</a></li></ul><h3><code>updates</code></h3><ul><li><a class="rec" data-id="omb-m-22-18" href="../../regulator/omb-m-22-18/summary.html">OMB M-22-18</a></li></ul><h3><code>see_also</code></h3><ul><li><a class="rec" data-id="eo-14028" href="../../regulator/eo-14028/summary.html">EO 14028</a></li><li><a class="rec" data-id="sp-800-218" href="../../nist/sp-800-218/summary.html">SSDF 1.1</a></li><li><a class="rec" data-id="cisa-ssdf-attestation-form-2024" href="../../regulator/cisa-ssdf-attestation-form-2024/summary.html">CISA Secure Software Development Attestation Form</a></li></ul>
-<h2>Document cites</h2><p class="meta">From <code>cites</code>: what the document references. Fact about the source, not our crosswalk. Gaps stay gaps.</p><ul><li><a class="rec" data-id="omb-m-22-18" href="../../regulator/omb-m-22-18/summary.html">OMB M-22-18</a></li><li><a class="rec" data-id="eo-14028" href="../../regulator/eo-14028/summary.html">EO 14028</a></li><li><a class="rec" data-id="sp-800-218" href="../../nist/sp-800-218/summary.html">SSDF 1.1</a></li><li>fn 2-3, 7 NIST, Software Supply Chain Security Guidance Under Executive Order (EO) 14028 Section 4e <span class="meta">cited, no library record</span></li><li>fn 4 NIST SP 800-95, Guide to Secure Web Services <span class="meta">cited, no library record</span></li><li>fn 5 NIST, Open Source Code (December 6, 2018) <span class="meta">cited, no library record</span></li></ul>
-<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited. The strip above is <code>record.yaml</code>. If they disagree, the record wins for type, tags, applicability ratings, and bears_on.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec (OMB memorandum)</td></tr><tr><td><strong>Maturity</strong></td><td>_unset_ — binding 2023-06-09 → <strong>rescinded 2026-01-23</strong></td></tr><tr><td><strong>Authors</strong></td><td>Shalanda D. Young, Director, OMB</td></tr><tr><td><strong>Published</strong></td><td>2023-06-09</td></tr><tr><td><strong>Identifier</strong></td><td>OMB M-23-16</td></tr><tr><td><strong>Source</strong></td><td>https://bidenwhitehouse.archives.gov/wp-content/uploads/2023/06/M-23-16-Update-to-M-22-18-Enhancing-Software-Security.pdf</td></tr><tr><td><strong>Digest</strong></td><td><code>f9f920e49032707f9a58a4ef32fdf44ef5253ed5c66f1bc8de3824fcedbcfa5b</code> (5 pp, retrieved 2026-10-02)</td></tr></tbody></table>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> only — not crosswalk edges.</p><h3><code>superseded_by</code></h3><ul><li><a class="rec" data-id="omb-m-26-05" href="../../regulator/omb-m-26-05/summary.html">OMB M-26-05</a></li></ul><h3><code>updates</code></h3><ul><li><a class="rec" data-id="omb-m-22-18" href="../../regulator/omb-m-22-18/summary.html">OMB M-22-18</a></li></ul><h3><code>see_also</code></h3><ul><li><a class="rec" data-id="eo-14028" href="../../regulator/eo-14028/summary.html">EO 14028</a></li><li><a class="rec" data-id="sp-800-218" href="../../nist/sp-800-218/summary.html">SSDF 1.1</a></li><li><a class="rec" data-id="cisa-ssdf-attestation-form-2024" href="../../regulator/cisa-ssdf-attestation-form-2024/summary.html">CISA Secure Software Development Attestation Form</a></li></ul>
+<h2>Document cites</h2><p class="meta">From <code>cites</code> — what the source references.</p><ul><li><a class="rec" data-id="omb-m-22-18" href="../../regulator/omb-m-22-18/summary.html">OMB M-22-18</a></li><li><a class="rec" data-id="eo-14028" href="../../regulator/eo-14028/summary.html">EO 14028</a></li><li><a class="rec" data-id="sp-800-218" href="../../nist/sp-800-218/summary.html">SSDF 1.1</a></li><li>fn 2-3, 7 NIST, Software Supply Chain Security Guidance Under Executive Order (EO) 14028 Section 4e <span class="meta">cited, no library record</span></li><li>fn 4 NIST SP 800-95, Guide to Secure Web Services <span class="meta">cited, no library record</span></li><li>fn 5 NIST, Open Source Code (December 6, 2018) <span class="meta">cited, no library record</span></li></ul>
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec (OMB memorandum)</td></tr><tr><td><strong>Maturity</strong></td><td>_unset_ — binding 2023-06-09 → <strong>rescinded 2026-01-23</strong></td></tr><tr><td><strong>Authors</strong></td><td>Shalanda D. Young, Director, OMB</td></tr><tr><td><strong>Published</strong></td><td>2023-06-09</td></tr><tr><td><strong>Identifier</strong></td><td>OMB M-23-16</td></tr><tr><td><strong>Source</strong></td><td>https://bidenwhitehouse.archives.gov/wp-content/uploads/2023/06/M-23-16-Update-to-M-22-18-Enhancing-Software-Security.pdf</td></tr><tr><td><strong>Digest</strong></td><td><code>f9f920e49032707f9a58a4ef32fdf44ef5253ed5c66f1bc8de3824fcedbcfa5b</code> (5 pp, retrieved 2026-10-02)</td></tr></tbody></table>
 <p><strong>Status / currency (checked 2026-10-02).</strong> Supersession chain: M-22-18 (2022-09-14) → updated by <strong>M-23-16</strong> (2023-06-09; controls over M-22-18 where they conflict) → <strong>both rescinded by M-26-05</strong> (2026-01-23). Verified from M-26-05&#x27;s text and the OMB memoranda index (no later software-security memo through M-26-19).</p>
 <h2>Overview</h2>
 <p>Reaffirms M-22-18, <strong>re-anchors the attestation deadlines</strong> to the PRA approval of CISA&#x27;s common form (critical software +3 months, all software +6 months), and <strong>clarifies scope</strong>: attestations come from the producer of the <em>end product</em>, which carries the burden for its third-party components; free/publicly available proprietary software and freely obtained OSS are out of scope (but still risk-assessed); agency-developed software is out, with contractor-developed software decided by the CIO against an explicit six-phase SDL test. It tightens the <strong>POA&amp;M path</strong>: an agency may keep using software under a satisfactory POA&amp;M only if it concurrently files an OMB extension request carrying the POA&amp;M; otherwise use must stop.</p>
