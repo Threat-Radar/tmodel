@@ -7,7 +7,7 @@ description: "Iteration 5 of the DEC-001 object-model synthesis (#15), with the 
 type: architecture
 category: security
 status: proposed
-version: "0.2.0-proposed.13"
+version: "0.2.0-proposed.14"
 version_policy: "iterate the -proposed.N suffix; folds into ARCH-0001 §3/§4 (and an ADR accepts DEC-001)"
 date: "2026-09-30"
 updated: "2026-10-09"
@@ -87,6 +87,12 @@ promotes R-041…R-044 from §3c prose to named first-class objects in the §13 
 `ThreatModel`, `SecurityProgram` + `Gate`/`Milestone`/`Checkpoint`, `Requirement`, and a governed
 `GovernedView` — as **versioned, human-reviewed, program-managed views over the KG-SoT**; still
 post-MVP, **DEC-001 still open**.
+**proposed.14 (this; DL-0019) dogfoods the §13 draft with worked example threat models** (two
+domains, software + hardware/firmware) under `spec/vectors/`, each validating under `linkml-validate`.
+The exercise forced ONE additive draft slot — opaque `identifiers` on `Product`/`ProductInstance`/
+`Component` for ADR-0002 per-type instance identity (CPE/purl/SBOM/firmware-hash), which only catalog
+classes' `catalog_ref` could otherwise approximate — and surfaced the rest as findings, not fixes.
+**DEC-001 still open.**
 **Legend:** ✅
 covered · ✅\* proposed direction (accepted only via the gating DEC's ADR) · ◐ still open. **These
 are *proposed* requirements — several (R-023…R-039) are not yet in ARCH-0001 §4** (L13).
@@ -577,6 +583,22 @@ views/layers and redundancy are post-MVP (§7).
   iteration-7 guardrails (owner is a Party role; approval uses the existing Review spine; conformance
   proves linkage + approval, not adequacy). **Still post-MVP; DEC-001 stays open — this is the DEC-001
   proposal vehicle, nothing accepted.**
+- **proposed.14 (this; DL-0019):** **dogfood** the §13 draft with worked **example threat models** in
+  `spec/vectors/` — a *software* product (deep: components with CPE/purl, CVE→CWE propagation as a
+  reviewed Assertion, two AttackPaths with AND + OR gates, Mitigations with status, a composite-vector
+  RiskScore, a governed `ThreatModel` with a supersedes chain, and an SDL `SecurityProgram` whose
+  release Gate `validates_conformance_of` the ThreatModel and whose `Requirement` carries an opaque
+  `library:` `source_ref`) and a *hardware/firmware* product (breadth: firmware-hash + compute-core
+  identity, a physical/glitch AttackPath, LifecyclePhase + Environment). Each validates under
+  `linkml-validate` (0 failures) via a test-harness `ExampleModel` container that imports the model
+  (kept out of the domain schema and `OBJECT-MODEL.md`). The exercise **forced one additive draft
+  slot** — opaque, multivalued `identifiers` on `Product`/`ProductInstance`/`Component` for ADR-0002
+  per-type instance identity, since `catalog_ref` names a *generic* catalog entry, not the concrete
+  build/firmware artifact. Other gaps (no `Assertion` provenance-agent/`asserted_by` edge; `PartyKind`
+  has no software-agent value for an AI author facet; no structural slot on `AttackPath`/`AttackStep`
+  recording AI-vs-human origin — distinguished today only via the Assertion `proposed` status +
+  `confidence` + a Review, plus `ThreatInstance.source_method`) are recorded as **findings, not
+  fixes** (DL-0019). **DEC-001 stays open; nothing accepted; §8 untouched.**
 - **Next:** pin the 5 absent method records + get a human-reviewed ISO 21434 extraction + gather an
   RDF-star record; **author the LinkML schema in `spec/schema`** (§13; lane #64); fold #9 (schema
   crosswalk) to close R-024/lift §9 fully; **build the §8 MVP vectors**; then the ADRs (§12);

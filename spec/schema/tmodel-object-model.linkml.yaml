@@ -60,6 +60,7 @@ classes:
       - manufactured_by
       - supplied_by
       - owned_by
+      - identifiers
 
   ProductInstance:
     is_a: Node
@@ -67,13 +68,15 @@ classes:
       A versioned, identity-bearing instance of a Product (§1, §3b). Lifecycle
       *state* sits here (with valid_from/valid_to), not on Product or Component.
       A refurbished unit can share a firmware hash and still carry a new phase,
-      Deployment, and owner.
+      Deployment, and owner. The firmware image digest / build hash is an opaque
+      `identifiers` string (ADR-0002 per-type instance identity), not a pinned slot.
     slots:
       - of_product
       - current_phase
       - valid_from
       - valid_to
       - owned_by
+      - identifiers
 
   Component:
     is_a: Node
@@ -86,6 +89,7 @@ classes:
       - depends_on
       - uses_component
       - owned_by
+      - identifiers
 
   Party:
     is_a: Node
@@ -524,6 +528,26 @@ slots:
       the slot is on Product, ProductInstance, and Component as the structural
       stand-in. It selects whose business_impact would apply. The business_impact
       axis itself is post-MVP and has no slot.
+
+  identifiers:
+    range: string
+    multivalued: true
+    description: >-
+      Opaque external / instance-identity strings for a structural node — Product,
+      ProductInstance, or Component (§1). This is ADR-0002's per-type instance
+      identity ("software = a build/commit/hash/SBOM; hardware = firmware + buses +
+      cores (HBOM)") and the generic↔instance half of DEC-009, which the §13 classes
+      otherwise could not carry: `catalog_ref` names a GENERIC catalog entry
+      (CWE/CVE/CAPEC), not the concrete artifact. Scheme-prefixed and OPAQUE, like
+      `catalog_ref` / `external_refs` — a CPE, a package URL (purl), a SWID/SBOM ref,
+      a build/commit hash, or a firmware-image digest. The scheme is NOT pinned and
+      no CPE/SBOM schema is imported (ADR-0004 substrate-neutrality). Additive DRAFT
+      slot (DEC-001 open); not a new §13 class.
+    examples:
+      - value: "pkg:npm/lodash@4.17.20"
+      - value: "cpe:2.3:a:openssl:openssl:3.0.2:*:*:*:*:*:*:*"
+      - value: "swid:acme-ecu-fw-2.4.1"
+      - value: "sha256:9f2c1a7e...firmware-image-digest"
 
   of_product:
     range: Product

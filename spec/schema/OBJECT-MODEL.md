@@ -3,7 +3,7 @@
 
 > **DRAFT, incrementable.** Generated from `spec/schema/tmodel-object-model.linkml.yaml` (schema v0.1.0, status draft) on 2026-10-09. Regenerate: `python3 spec/schema/render_object_model.py`. **Not normative** — DEC-001 (object model) and DEC-002 (encoding) are open; this view grows as the schema is filled out (RPT-0015 §3/§4).
 
-**30 object types · 93 slots · 14 enums.** Base type `Node` (abstract) gives every object a stable `id` (ADR-0004); its inheritance edges are omitted from the graph for readability.
+**30 object types · 94 slots · 14 enums.** Base type `Node` (abstract) gives every object a stable `id` (ADR-0004); its inheritance edges are omitted from the graph for readability.
 
 ## Object relation graph
 
@@ -170,6 +170,7 @@ Authoritative deployed artifact (service, container, dependency, chip, core) —
 | `depends_on` | → `Component` |  | ✓ | Dependency edge, including DNS/service-style depends_on (§3). |
 | `uses_component` | → `Component` |  | ✓ | Use edge along which vuln/finding propagation is sound (§5). |
 | `owned_by` | → `Party` |  |  | Proposal attaches owned_by to Asset (§2b, §3). Asset is not a §13 class; the slot is on Product, ProductInstance, and Component as the st… |
+| `identifiers` | `string` |  | ✓ | Opaque external / instance-identity strings for a structural node — Product, ProductInstance, or Component (§1). This is ADR-0002's per-t… |
 
 ### DamageScenario — `is_a: Node`
 
@@ -302,10 +303,11 @@ A product design (structural layer, §1). Recursive composition is `composed_of`
 | `manufactured_by` | → `Party` |  |  | Relational role edge (§2b), not a classification on Party. |
 | `supplied_by` | → `Party` |  |  | Relational role edge (§2b). The same Party may supply one product and consume another. |
 | `owned_by` | → `Party` |  |  | Proposal attaches owned_by to Asset (§2b, §3). Asset is not a §13 class; the slot is on Product, ProductInstance, and Component as the st… |
+| `identifiers` | `string` |  | ✓ | Opaque external / instance-identity strings for a structural node — Product, ProductInstance, or Component (§1). This is ADR-0002's per-t… |
 
 ### ProductInstance — `is_a: Node`
 
-A versioned, identity-bearing instance of a Product (§1, §3b). Lifecycle *state* sits here (with valid_from/valid_to), not on Product or Component. A refurbished unit can share a firmware hash and still carry a new phase, Deployment, and owner.
+A versioned, identity-bearing instance of a Product (§1, §3b). Lifecycle *state* sits here (with valid_from/valid_to), not on Product or Component. A refurbished unit can share a firmware hash and still carry a new phase, Deployment, and owner. The firmware image digest / build hash is an opaque `identifiers` string (ADR-0002 per-type instance identity), not a pinned slot.
 
 
 | slot | type | req | multi | notes |
@@ -315,6 +317,7 @@ A versioned, identity-bearing instance of a Product (§1, §3b). Lifecycle *stat
 | `valid_from` | `datetime` |  |  | Start of the (ProductInstance, time) state interval (§3b). Temporal axis was flagged as still-missing; included here because §3b says to … |
 | `valid_to` | `datetime` |  |  | End of the (ProductInstance, time) state interval (§3b). Open-ended if absent. |
 | `owned_by` | → `Party` |  |  | Proposal attaches owned_by to Asset (§2b, §3). Asset is not a §13 class; the slot is on Product, ProductInstance, and Component as the st… |
+| `identifiers` | `string` |  | ✓ | Opaque external / instance-identity strings for a structural node — Product, ProductInstance, or Component (§1). This is ADR-0002's per-t… |
 
 ### ProgramNode — `is_a: Node`, **abstract**
 
