@@ -1,5 +1,7 @@
-# Generated from ARCH-0001-PROPOSAL v0.2.0 §13 (proposed.10, file dated through the
-# composite-risk sponsor round). NOT normative until an ADR accepts DEC-001.
+# Generated from ARCH-0001-PROPOSAL v0.2.0 §13 + §3c (proposed.13, file dated through the
+# governed-objects fold: ThreatModel / SecurityProgram+Gate/Milestone/Checkpoint /
+# Requirement / GovernedView — first-class, versioned, human-reviewed, program-managed
+# objects per §3c R-041…R-044). NOT normative until an ADR accepts DEC-001.
 # Federation / import of OTM, STIX, CAPEC-as-source, and other external models is a
 # separate mapping layer (DEC-002 / #9). This file is OUR model, not those schemas.
 # spec/schema/ in the tmodel repo is still a README stub on purpose; landing this
@@ -14,7 +16,7 @@ name: TmodelObjectModel
 title: ThreatRadar tmodel object model (draft)
 description: >-
   First-cut LinkML IDL for the ThreatRadar tmodel object model.
-  Source is ARCH-0001-PROPOSAL v0.2.0 §13 (classes) with edges named in §§2–4 and §10.
+  Source is ARCH-0001-PROPOSAL v0.2.0 §13 (classes) with edges named in §§2–4, §10 and §3c.
   Draft proposal — DEC-001 is not accepted. ADR-0004 is the accepted storage/edges
   pin (files in git, stable IDs, typed edges); this schema does not close DEC-002 or DEC-004.
 version: 0.1.0
@@ -22,7 +24,7 @@ status: draft
 annotations:
   proposes: DEC-001
   source_proposal: ARCH-0001-PROPOSAL-v0.2.0
-  source_sections: "§2, §2a, §2b, §3, §3b, §4, §5, §10, §13"
+  source_sections: "§2, §2a, §2b, §3, §3b, §3c, §4, §5, §10, §13"
   normative: "false"
   federation: "out of scope; mappings are DEC-002 / #9"
 
@@ -289,6 +291,171 @@ classes:
     slots:
       - projection
       - focus_query
+
+  ThreatModel:
+    is_a: Node
+    description: >-
+      A GOVERNED, VERSIONED view/snapshot over the KG-as-SoT (§3c R-043). NOT domain
+      truth re-stated: a reviewed LENS whose membership and verdicts are tracked
+      across review cycles. Scope is either a bounded `scope_query` or an explicit
+      `members` set (in-scope ThreatInstances / AttackPaths / Components / Products).
+      Governance is the shared governed-view facet: `owner` (a Party ROLE, §2b — not
+      a new actor type), `revision`, approval through the existing Review spine
+      (`approved_by`) pinned to an `approval_digest` so sign-off is REPRODUCIBLE
+      against KG state at a point in time, `governance_status`
+      (draft/in-review/approved/superseded), and `supersedes` the prior revision.
+      ARCH-0001 has no ThreatModel class; this is the scope node for "the threat
+      model itself" (RPT-0013-OM §2). Post-MVP as an SDL object (the threat content
+      it scopes is MVP).
+    slots:
+      - scope_query
+      - members
+      - owner
+      - revision
+      - approved_by
+      - approval_digest
+      - approval_status
+      - governance_status
+      - supersedes
+      - created
+      - updated
+    slot_usage:
+      supersedes:
+        range: ThreatModel
+        description: The prior revision of this threat-model snapshot it replaces (§3c R-043).
+
+  SecurityProgram:
+    is_a: Node
+    description: >-
+      The SDL as a first-class, GOVERNED, VERSIONED object (§3c R-041). An ordered,
+      named, dated program `governs` a Product / ProductInstance / ProductFamily and
+      is composed of `program_nodes` (Gate / Milestone / Checkpoint) mapped onto the
+      LifecyclePhase axis (§3b, each node's `at_phase`). It `incorporates` the
+      Requirements it enforces; its gates run the conformance check (R-042). Full
+      program management lives on the program nodes (owner, planned/actual dates,
+      status per node). It is itself a governed view (owner / revision /
+      approved_by + approval_digest / governance_status / supersedes), reconciling
+      §10 "views are transient": the SDL plan is a named, versioned, signed-off
+      snapshot over the one SoT, iterating across review cycles. Post-MVP.
+    slots:
+      - governs
+      - program_nodes
+      - incorporates
+      - owner
+      - revision
+      - approved_by
+      - approval_digest
+      - approval_status
+      - governance_status
+      - supersedes
+      - created
+      - updated
+    slot_usage:
+      supersedes:
+        range: SecurityProgram
+        description: The prior revision of this SDL program it replaces (§3c R-041/R-043).
+
+  ProgramNode:
+    is_a: Node
+    abstract: true
+    description: >-
+      Shared shape for an SDL program node (§3c R-041): a named, `order`-ed, dated
+      governance point on a SecurityProgram, mapped onto the LifecyclePhase axis
+      (§3b, `at_phase`). Carries program-management fields — `order`, `planned_date`
+      vs `actual_date`, `gate_status`, `owner` (Party ROLE, §2b), the Requirements
+      that gate passage (`gated_by`), the Reviews that decide it (`decided_by` — the
+      §4 human-review spine, not a parallel mechanism), and node dependencies /
+      entry criteria (`depends_on_node`). Corporate gate-naming varies, so `name` is
+      the local label and `at_phase` the canonical mapping (MAP-0001 gate crosswalk).
+      Not instantiated directly; use Gate / Milestone / Checkpoint.
+    slots:
+      - order
+      - planned_date
+      - actual_date
+      - gate_status
+      - owner
+      - at_phase
+      - gated_by
+      - decided_by
+      - depends_on_node
+
+  Gate:
+    is_a: ProgramNode
+    description: >-
+      A named, ordered, dated DECISION point with exit criteria and an approving
+      Review (§3c R-041). Its exit criterion runs the conformance check
+      (`validates_conformance_of` a ThreatModel): a model is conformant when every
+      in-scope ThreatInstance has an approved, evidenced Mitigation (R-042). The
+      check PROVES linkage + approval, NOT adequacy — the human
+      cybersecurity-assessment judgement stays a human input (CLAUDE.md).
+    slots:
+      - validates_conformance_of
+
+  Checkpoint:
+    is_a: ProgramNode
+    description: >-
+      A lighter, recurring review point on a SecurityProgram (§3c R-041) — a
+      ProgramNode with no extra shape; it reuses `gated_by` / `decided_by` /
+      `at_phase`. Corporate SDLs name these variously (checkpoint, review, stage).
+    slots: []
+
+  Milestone:
+    is_a: ProgramNode
+    description: >-
+      A dated, owned deliverable point on a SecurityProgram (§3c R-041), optionally
+      dated relative to another node (`offset_from`). May serve as a gate entry
+      condition via another node's `depends_on_node`.
+    slots:
+      - offset_from
+
+  Requirement:
+    is_a: Node
+    description: >-
+      A normative statement from a spec, satisfied through the SDL (§3c R-044). Its
+      `text` is the normative statement and `normativity` says how binding it is.
+      `source_ref` is an OPAQUE uriorcurie into the library requirement record
+      (Threat-Radar/library) — tmodel aligns by reference ONLY; it does not import
+      or depend on the library schema. `maps_to` carries the MAP-0001 cross-spec
+      crosswalk (how SSDF ↔ MS SDL ↔ SAMM ↔ 21434 … overlap; reviewed mappings
+      reify as Assertions, §4). `satisfied_by` links the Mitigation(s) that
+      discharge it; `conformance_status` is the automatable R-042 verdict — it
+      proves linkage + approval, NOT adequacy. ARCH lists audit
+      (Requirement/WorkProduct) as post-MVP (#19); not yet a §13 class. Post-MVP.
+    slots:
+      - text
+      - normativity
+      - source_ref
+      - maps_to
+      - satisfied_by
+      - conformance_status
+
+  GovernedView:
+    is_a: View
+    description: >-
+      The governed, persisted subtype of View (§3c R-043). The existing `View` stays
+      the TRANSIENT lens (query/projection, never written back); a GovernedView is
+      the TRACKED artifact — an owned / approved / reproducible snapshot. It keeps
+      View's `projection`/`focus_query` and adds governance: `owner` (Party ROLE,
+      §2b), `revision` (the saved view's version), approval via the Review spine
+      (`approved_by`) pinned to an `approval_digest` so the sign-off is reproducible
+      against KG state at a point in time (SysML v2 View/Viewpoint, OMG SACM,
+      OSCAL→Word prior art), `governance_status`, and `supersedes`. `renders` the KG
+      scope it materializes (e.g. a ThreatModel or SecurityProgram). Post-MVP.
+    slots:
+      - renders
+      - owner
+      - revision
+      - approved_by
+      - approval_digest
+      - approval_status
+      - governance_status
+      - supersedes
+      - created
+      - updated
+    slot_usage:
+      supersedes:
+        range: GovernedView
+        description: The prior revision of this governed snapshot it replaces (§3c R-043).
 
   ImpactVector:
     description: >-
@@ -632,6 +799,196 @@ slots:
       Bounded query / filter that defines the view (§10, R-033). Opaque to this
       schema (not a committed query language — DEC-004 is open).
 
+  scope_query:
+    range: string
+    description: >-
+      Bounded query/filter defining a ThreatModel snapshot's membership (§3c R-043).
+      Opaque to this schema (DEC-004 open), like View.focus_query. Use `members`
+      for an explicit set instead.
+
+  members:
+    range: Node
+    multivalued: true
+    inlined: false
+    description: >-
+      Explicit in-scope members of a ThreatModel snapshot (§3c R-043):
+      ThreatInstances, AttackPaths, Components, Products. References, not copies —
+      membership is a reviewed lens over the KG, never domain truth re-stated.
+
+  owner:
+    range: Party
+    description: >-
+      Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one
+      identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010).
+
+  revision:
+    range: string
+    description: >-
+      Monotonic revision/version of a governed snapshot (§3c R-043). This is the
+      saved view's "version"; ThreatModel and SecurityProgram name the same field
+      `revision`. Tracked across review cycles via `supersedes`.
+
+  approved_by:
+    range: Review
+    multivalued: true
+    description: >-
+      Approving Review(s) of a governed artifact (§3c R-043). Approval runs through
+      the existing Review + Assertion spine (§4) — NOT a parallel provenance
+      mechanism (iteration-7 guardrail, DL-0010).
+
+  approval_digest:
+    range: string
+    description: >-
+      Commit/content digest the approval is pinned to, so the sign-off is
+      REPRODUCIBLE against KG state at a point in time (§3c R-043; SysML v2
+      View/Viewpoint, OMG SACM, OSCAL→Word prior art). Opaque string; digest scheme
+      not pinned here.
+
+  approval_status:
+    range: ApprovalStatus
+    description: >-
+      Standing of the current sign-off, read from the approving Review(s) (§4 spine).
+      Distinct from `governance_status` (where the snapshot is in its life): this
+      tracks the verdict of its review cycle. Denormalized convenience — the
+      authoritative verdict is the Review, not this field.
+
+  governance_status:
+    range: ThreatModelStatus
+    description: >-
+      Lifecycle of a governed snapshot (§3c R-043): draft → in-review → approved →
+      superseded. The shared governed-view lifecycle (named for the ThreatModel
+      case; reused by SecurityProgram and GovernedView).
+
+  supersedes:
+    range: Node
+    description: >-
+      The prior revision this governed artifact replaces (§3c R-043). Narrowed to
+      the same type per class via slot_usage.
+
+  created:
+    range: datetime
+    description: When the governed artifact was created (§3c R-043 change tracking).
+
+  updated:
+    range: datetime
+    description: When the governed artifact was last updated (§3c R-043 change tracking).
+
+  governs:
+    range: Node
+    description: >-
+      The Product / ProductInstance / ProductFamily a SecurityProgram is attached to
+      (§3c R-041). Range Node: ProductFamily is not a §13 class.
+
+  program_nodes:
+    range: ProgramNode
+    multivalued: true
+    inlined: false
+    description: >-
+      Ordered Gate / Milestone / Checkpoint nodes of a SecurityProgram (§3c R-041).
+      Order is each node's `order`, not list position.
+
+  incorporates:
+    range: Requirement
+    multivalued: true
+    description: Requirements a SecurityProgram enforces (§3c R-041/R-044).
+
+  order:
+    range: integer
+    description: Position of a program node within its SecurityProgram (§3c R-041).
+
+  planned_date:
+    range: date
+    description: Planned date of a program node (§3c R-041 program management).
+
+  actual_date:
+    range: date
+    description: Actual date a program node occurred (§3c R-041). Open if not yet reached.
+
+  gate_status:
+    range: GateStatus
+    description: >-
+      Passage status of a program node (§3c R-041):
+      planned / in-progress / passed / failed / waived / blocked.
+
+  at_phase:
+    range: LifecyclePhase
+    description: >-
+      Canonical LifecyclePhase a program node maps onto (§3b/§3c R-041). Gates are
+      the governance points between phases; `name` is the local corporate label
+      (MAP-0001 gate crosswalk).
+
+  gated_by:
+    range: Requirement
+    multivalued: true
+    description: Requirements whose conformance gates passage of this program node (§3c R-041/R-042).
+
+  decided_by:
+    range: Review
+    multivalued: true
+    description: >-
+      Reviews that decide a program node's passage (§3c R-041). The §4 human-review
+      spine — not a parallel approval mechanism.
+
+  depends_on_node:
+    range: ProgramNode
+    multivalued: true
+    description: Entry-criteria / dependency edges between program nodes (§3c R-041).
+
+  validates_conformance_of:
+    range: ThreatModel
+    description: >-
+      The ThreatModel whose conformance this Gate's exit criterion checks (§3c R-042):
+      every in-scope ThreatInstance has an approved, evidenced Mitigation. Proves
+      linkage + approval, NOT adequacy (CLAUDE.md human-judgement rule).
+
+  offset_from:
+    range: ProgramNode
+    description: Another program node this Milestone is dated relative to (§3c R-041).
+
+  renders:
+    range: Node
+    multivalued: true
+    inlined: false
+    description: >-
+      The KG scope a GovernedView materializes (§3c R-043) — e.g. a ThreatModel or
+      SecurityProgram. Content derives from KG state; never written back.
+
+  text:
+    range: string
+    description: The normative statement of a Requirement (§3c R-044). Distinct from `description`.
+
+  normativity:
+    range: Normativity
+    description: >-
+      How binding a Requirement is (§3c R-044): mandatory / recommended / optional /
+      informative / conditional. MAP-0001 shows a cell means different things per
+      framework (hard requirement vs maturity activity vs recommendation).
+
+  source_ref:
+    range: uriorcurie
+    description: >-
+      OPAQUE reference to a library requirement record (Threat-Radar/library), by
+      uriorcurie id only (§3c R-044, §2b). tmodel aligns by reference — it does NOT
+      import or depend on the library schema.
+
+  maps_to:
+    range: Requirement
+    multivalued: true
+    description: >-
+      Cross-spec crosswalk edges (§3c R-044) = the MAP-0001 overlap. Reviewed
+      mappings reify as Assertions (§4) so they can carry provenance + a Review.
+
+  satisfied_by:
+    range: Mitigation
+    multivalued: true
+    description: Mitigation(s) that discharge this Requirement (§3c R-042).
+
+  conformance_status:
+    range: RequirementConformanceStatus
+    description: >-
+      Automatable R-042 conformance verdict for a Requirement: whether it has an
+      approved, evidenced mitigation. Proves linkage + approval, NOT adequacy.
+
 enums:
   PartyKind:
     description: Party is an organization or a person (§2b).
@@ -728,3 +1085,62 @@ enums:
       timeline:
       provenance:
       compare:
+
+  GateStatus:
+    description: Passage status of an SDL program node — Gate / Milestone / Checkpoint (§3c R-041).
+    permissible_values:
+      planned:
+      in_progress:
+        description: Proposal text "in-progress".
+      passed:
+      failed:
+      waived:
+        description: Passage waived by an approved exception (a Review verdict, §4/§5).
+      blocked:
+
+  ThreatModelStatus:
+    description: >-
+      Lifecycle of a governed snapshot (§3c R-043). Named for the ThreatModel case;
+      the same lifecycle is reused by SecurityProgram and GovernedView.
+    permissible_values:
+      draft:
+      in_review:
+        description: Proposal text "in-review".
+      approved:
+      superseded:
+
+  ApprovalStatus:
+    description: >-
+      Standing of a governed artifact's sign-off, read from its approving Review(s)
+      (§4 spine). Distinct from ThreatModelStatus (the content lifecycle).
+    permissible_values:
+      pending:
+      approved:
+      changes_requested:
+      rejected:
+      withdrawn:
+
+  RequirementConformanceStatus:
+    description: >-
+      Automatable R-042 conformance verdict for a Requirement — linkage + approval,
+      NOT adequacy (the human cybersecurity-assessment role remains, CLAUDE.md).
+    permissible_values:
+      conformant:
+        description: An approved, evidenced Mitigation satisfies the requirement.
+      nonconformant:
+      partial:
+      not_applicable:
+        description: Out of scope for this product/profile, with a recorded reason.
+      not_assessed:
+
+  Normativity:
+    description: >-
+      How binding a Requirement is (§3c R-044). A MAP-0001 cell means different
+      things per framework (hard requirement vs maturity activity vs recommendation).
+    permissible_values:
+      mandatory:
+      recommended:
+      optional:
+      informative:
+      conditional:
+        description: Applies only when a stated condition holds.
