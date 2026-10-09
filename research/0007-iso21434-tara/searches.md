@@ -22,7 +22,7 @@ Every query run, so the survey is reproducible. One row per query.
 
 | date | command | input | result |
 |---|---|---|---|
-| 2026-10-01 | `shasum -a 256`; `pdfinfo` | the sponsor's copy of ISO/SAE 21434:2021 (see sources.md) | `73f99007...7cdf4`, the digest in #11 and in `iso-sae-21434-2021`; 87 pages; every page stamped "Downloaded from SAE International by Paul Lambert, Friday, September 25, 2026" |
+| 2026-10-01 | `shasum -a 256`; `pdfinfo` | the sponsor's copy of ISO/SAE 21434:2021 (see sources.md) | `73f99007...7cdf4`, the digest in #11 and in `iso-sae-21434-2021`; 87 pages; every page stamped "Downloaded from SAE International by [sponsor — name redacted], Friday, September 25, 2026" |
 | 2026-10-01 | `pdftotext` and `pdftotext -layout` | same | plain-text extracts for searching and checking; kept outside the repository, never committed |
 | 2026-10-01 | `grep -o -E '\[RQ-[0-9]{2}-[0-9]{2}\]' \| sort -u \| wc -l`, and the same for RC, PM and WP | same | 101 RQ, 13 RC, 4 PM and 42 WP distinct identifiers (§1.3) |
 | 2026-10-01 | count, per clause, of identifiers that start a line before Annex A | same | all 118 provisions and 42 work products are defined in Clauses 5 to 15. Clause 5: 17 provisions, 5 work products; 6: 34, 4; 7: 8, 1; 8: 8, 6; 9: 11, 7; 10: 13, 7; 11: 2, 1; 12: 3, 1; 13: 3, 1; 14: 2, 1; 15: 17, 8. Clause 15's provisions run RQ-15-01 to RQ-15-06, PM-15-07, RQ-15-08 to RQ-15-10, RC-15-11 to RC-15-14, RQ-15-15 to RQ-15-17 (§1.3) |

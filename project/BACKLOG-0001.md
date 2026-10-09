@@ -51,7 +51,7 @@ Size: `S` <½day · `M` ~1day · `L` ~3days. Increments are in `PLAN-0001` §8.
 |---|---|---|---|---|
 | T-001 | Create GitHub repo `Threat-Radar/tmodel` (public) | PL | S | done |
 | T-002 | Fork `m-of-n/library`; wire as submodule (absolute URL) | PL | S | done |
-| T-003 | Add 4 students + Prof. Haskell as repo admins | PL | S | done |
+| T-003 | Add 4 students + faculty as repo admins | PL | S | done |
 | T-004 | Confirm roster; student handles in `CODEOWNERS`; vault people files | PL | S | done |
 | T-005 | Port/author role skills into `tmodel/.claude/skills/` | all | M | todo |
 | T-006 | Publishing site (mkdocs or equivalent) | all | M | parked |

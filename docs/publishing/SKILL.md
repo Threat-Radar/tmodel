@@ -55,8 +55,13 @@ name, handle, or email unless it is explicitly approved.** Public *bibliographic
 authors of cited external standards are fine; the project's own people are not.
 
 - Protected identities live in **`publishing/identities.yaml`** (repo root, *outside*
-  `docs/`, so the list itself is never published). To clear a name for publication,
-  add it under `approved:` **with sponsor sign-off**, in its own PR.
+  `docs/`, so the list itself is never published). **This tracked file lists GITHUB
+  IDS ONLY — never real names** — because the repo is world-viewable and the list must
+  not itself leak identities. To clear an id for publication, add it under `approved:`
+  **with sponsor sign-off**, in its own PR.
+- Real names are **never committed anywhere** in this repo. To also match names in the
+  guard, put them in an untracked `publishing/identities.local.yaml` (gitignored);
+  `check_identities.py` merges it when present.
 - `check_identities.py` scans `docs/**/*.html` and **fails CI** on any protected
   identity not in `approved`. Run it before opening a publishing PR.
 - When authoring a record/report/manifest that will be published, prefer the
@@ -64,8 +69,8 @@ authors of cited external standards are fine; the project's own people are not.
 
 > **Pages-scope note:** GitHub Pages currently serves `main:/docs`, which also
 > exposes the publishing tooling under `/docs/publishing/`. That is harmless (no
-> personal data in the scripts/manifests), and the names list is deliberately kept
-> at repo-root `publishing/`. A future improvement is to publish only a built
+> personal data in the scripts/manifests — `identities.yaml` is github-ids-only and
+> holds no real names). A future improvement is to publish only a built
 > subtree (`docs/bibliography/` + `docs/reports/`). Tracked, not done here.
 
 ## Security bar

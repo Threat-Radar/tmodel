@@ -15,7 +15,7 @@ authors:
     id: ai-assisted
 decision_makers:
   - role: sponsor
-    id: paul-lambert
+    id: nymble
 reviewers:
   - role: adversarial-review
     id: ai-assisted

@@ -2,28 +2,23 @@
 # unless explicitly listed under `approved`. This file lives OUTSIDE docs/ so it
 # is never itself published (GitHub Pages serves main:/docs only).
 #
-# Policy: no personal name or identity in published pages without clear approval
-# (sponsor rule, 2026-10-05). Public *bibliographic* authors of cited external
-# standards (e.g. NIST authors on a public spec) are allowed — this list is the
-# PROJECT's own people and handles, which are the privacy concern.
-schema: "tmodel.publishing-identities/v1"
-updated: "2026-10-05"
+# Policy: no project person's name, handle, or email in a published page without
+# clear approval (sponsor rule). **This tracked file lists GITHUB IDS ONLY — never
+# real names** — because the repo is world-viewable and the list itself must not
+# leak identities. Public *bibliographic* authors of cited external standards
+# (e.g. NIST authors on a public spec) are allowed; this list is the project's own people.
+#
+# Real names are matched too, but they live ONLY in an untracked local override —
+# `publishing/identities.local.yaml` (gitignored) — which check_identities.py merges
+# at runtime if present. Keep names out of this file and out of every committed file.
+schema: "tmodel.publishing-identities/v2"
+updated: "2026-10-08"
 protected:
-  # names
-  - "Paul Lambert"
-  - "Paul Haskell"
-  - "Paria Akhtarmoghaddam"
-  - "Krishna Patel"
-  - "Tyler Van Heerden"
-  - "Mai Li Mcghee"
-  - "Mai-Li Mcghee"
-  # ids / handles / emails
-  - "paul-lambert"
-  - "paul-haskell"
-  - "phaskell"
+  # github ids / handles only — NO real names in this tracked file
   - "nymble"
+  - "phaskell"
   - "paria03"
   - "kriishnaa-18"
   - "Clovier"
   - "Maimcghee"
-approved: []   # names cleared for publication go here, with sponsor sign-off
+approved: []   # ids cleared for publication go here, with sponsor sign-off

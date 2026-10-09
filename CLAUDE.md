@@ -27,13 +27,19 @@ or UI stack has been selected. Do not write code or documents that assume one.
 - **Never work inside `library/`** from this checkout — it is a submodule on a
   detached HEAD, so commits there belong to no branch and are trivially lost.
   Open the `library` repo directly (PROC-0001 §1).
-- **Never publish a project person's name, handle, or email** in a page under
-  `docs/` (GitHub Pages) without explicit approval. Protected identities live in
-  `publishing/identities.yaml` (repo root, unpublished); clear a name only by
-  adding it under `approved:` with sponsor sign-off. CI runs
-  `docs/publishing/check_identities.py` to enforce this; prefer the publisher/org
-  over personal authors. Public bibliographic authors of cited external standards
-  are fine. See `docs/publishing/SKILL.md`.
+- **Never put a project person's real name in ANY committed file** — not in docs,
+  specs, plans, research, design-logs, front matter (`authors`/`decision_makers`/
+  `reviewers`), commit messages, or PR bodies. The repo is world-viewable. Refer to
+  project people by **github id** only (e.g. `@nymble`, `@phaskell`) or by role
+  (sponsor, faculty, student). This covers everyone — sponsor, faculty, students.
+- **Never publish a project identity** in a page under `docs/` (GitHub Pages) without
+  explicit approval. `publishing/identities.yaml` (repo root, unpublished) lists
+  **github ids only — never real names**; real names, if matched at all, live only in
+  the untracked `publishing/identities.local.yaml` (gitignored). Clear an id by adding
+  it under `approved:` with sponsor sign-off. CI runs
+  `docs/publishing/check_identities.py`. Prefer the publisher/org over personal authors;
+  public bibliographic authors of cited external standards are fine. See
+  `docs/publishing/SKILL.md`.
 
 ## Layout
 
