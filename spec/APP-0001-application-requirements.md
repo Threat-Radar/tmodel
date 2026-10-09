@@ -7,9 +7,9 @@ description: "The product requirements for the tmodel application, distinct from
 type: application
 category: process
 status: draft
-version: "0.2.1"
+version: "0.2.2"
 date: "2026-10-01"
-updated: "2026-10-01"
+updated: "2026-10-08"
 needs_review: true
 reviewed: false
 canonical_path: spec/APP-0001-application-requirements.md
@@ -122,12 +122,18 @@ engine.
 - **DEC-006** — UI stack & interaction model. **Accepted → ADR-0003 (Path A).** §2–§4 are
   its requirements; the viz-library sub-choice is deferred to A-044.
 - **DEC-010** — implementation stack & language. **Accepted → ADR-0003** (Tauri+TS /
-  Python engine / local IPC / CLI). RPT-0012's residual work is the A-044 viz comparison.
+  Python engine / local IPC / CLI); **engine language split → ADR-0009** (Python brain + Rust
+  store/hot-paths). RPT-0012's residual work is the A-044 viz comparison.
 - **DEC-011** — storage & edge model. **Accepted → ADR-0004** (file canonical SoT, edge-rich
   typed edges, local embedded working store, derived export). Shapes A-001/A-030/A-008.
-- **DEC-004** — KG substrate (RDF vs LPG), now **narrowed by ADR-0004** to the working-store
-  engine pick; the backend (A-001, A-030) depends on it (`T-044`).
-- **DEC-002** — interchange formats (export side only per ADR-0004), which A-008 depends on.
+- **DEC-004** — KG substrate. **Accepted → ADR-0008** (Oxigraph — embedded RDF — behind the
+  ADR-0004 façade). The backend (A-001, A-030) targets it via the store façade.
+- **DEC-002** — interchange formats. **Accepted → ADR-0007** (import OTM + STIX 2.1; export
+  JSON-LD/Turtle/GraphML/CSV, derived). A-008 resolves to: import OTM at MVP, export the derived set.
+- **DEC-003** — risk metric (feeds A-006). **Accepted → ADR-0006** (composite vector; ISO 21434
+  Table-1 feasibility; Common Criteria display-only).
+- **A-044** — commercial viz-library filter. **Direction:** open WebGL first (Sigma.js / Cytoscape.js);
+  a commercial engine (ReGraph / KeyLines / yFiles) only after a licence note. Concrete pick still deferred.
 
 ## 7. Scope — the radar / tmodel boundary (ADR-0001)
 

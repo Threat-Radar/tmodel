@@ -7,10 +7,10 @@ description: "The source of truth for tmodel: the logical object model, requirem
 type: architecture
 category: security
 status: draft
-version: "0.1.6"
+version: "0.1.7"
 version_policy: "semver; PATCH = editorial; MINOR = additive; MAJOR = breaking. version and updated move together (§9.5)."
 date: "2026-09-23"
-updated: "2026-10-01"
+updated: "2026-10-08"
 authors:
   - role: sponsor
     id: paul-lambert
@@ -32,7 +32,11 @@ agent_notes: >
 
 # ARCH-0001 — Threat-model architecture
 
-**Status: draft (v0.1.0). Nothing here is accepted. Every `DEC-*` in §8 is open.**
+**Status: draft. Accepted so far:** DEC-005 (ADR-0002), DEC-006 + DEC-010 (ADR-0003, engine
+split amended by ADR-0009), DEC-007 (ADR-0001), DEC-011 (ADR-0004), **DEC-002 (ADR-0007),
+DEC-003 (ADR-0006), DEC-004 (ADR-0008)**. **Still open:** DEC-001 (object model), DEC-008
+(CWE/NVD), DEC-009 (threat→product / mitigation-lifecycle). An `ADR-NNNN` accepts a `DEC-*`;
+nothing else does (§9).
 
 This is a **skeleton set for week 1**. Requirements and final goals are ratified
 in the Week-0 gate (PLAN-0001). It records the shape of the problem and the
@@ -128,6 +132,12 @@ The field already has formats and object models (surveyed in RPT-0001). tmodel
 form. Imported formats are recorded as `library/` records; the mapping to our
 model is a `MAP-NNNN` document; round-trips are proven by `spec/vectors/`.
 
+**DEC-002 accepted → ADR-0007.** The canonical schema IDL is **LinkML** (JSON-Schema and SHACL
+are generated from it, never hand-authored); canonical instance data is LinkML-shaped YAML/JSON +
+link records in git (ADR-0004). Committed interchange: **import OTM and STIX 2.1; export JSON-LD /
+Turtle / GraphML / CSV** (exports derived, never canonical). The #39 crosswalk refines and may
+extend import coverage.
+
 ## 6. Risk — "how bad is a threat"
 
 A threat's badness is **not** intrinsic; it depends on the asset and the
@@ -135,6 +145,11 @@ environment. The metric scheme is open (DEC-003) and must at least accommodate:
 CVSS (base/temporal/environmental), a per-environment impact set by a human
 (R-019), and — as options — ISO/SAE 21434 and a Common Criteria feasibility
 score. RPT-0001 surveys these before DEC-003 is taken.
+
+**DEC-003 accepted → ADR-0006.** The metric is a **composite vector**, shown alongside its
+inputs and never collapsed to one number: feasibility (ISO 21434 Table-1 method, human-rated at
+MVP), impact (S/F/O/P vector), mitigation-status (a peer, not a silent input), and derived
+Risk = M(Impact, Feasibility) per 21434. Common Criteria feasibility (R-013) is **display-only**.
 
 ## 7. Human review, annotation, and traceability
 
@@ -154,15 +169,15 @@ All open. An `ADR-NNNN` accepts one; nothing else does (§9).
 | id | question |
 |---|---|
 | **DEC-001** | The core object model — the first-class types and typed relations (§3). |
-| **DEC-002** | Encoding / serialization, and which existing formats we import (and export). |
-| **DEC-003** | Risk-metric scheme: CVSS, custom, ISO/SAE 21434, Common Criteria feasibility — or a composite. |
-| **DEC-004** | KG substrate — **RDF vs LPG implementation of the local working store** (narrowed by ADR-0004; logical model edge-rich either way). Open. |
+| **DEC-002** | Encoding / serialization and import/export formats. **ACCEPTED → ADR-0007** (LinkML canonical IDL; generated JSON-Schema/SHACL; import OTM + STIX 2.1; export JSON-LD/Turtle/GraphML/CSV). |
+| **DEC-003** | Risk-metric scheme. **ACCEPTED → ADR-0006** (composite vector: feasibility [ISO 21434 Table-1] + impact [S/F/O/P] + mitigation-status + derived risk; Common Criteria display-only). |
+| **DEC-004** | KG working-store substrate (narrowed by ADR-0004). **ACCEPTED → ADR-0008** (Oxigraph — embedded RDF, SPARQL, RDF-star — behind the ADR-0004 façade). |
 | **DEC-005** | MVP scope. **ACCEPTED → ADR-0002**: reviewed attack-path graph over multiple products in ≥2 domains (one deep); diverse-domain + instance-type architecture. |
 | **DEC-006** | UI stack and interaction model. **ACCEPTED → ADR-0003** (Path A — local Tauri/TS desktop; tables→graph). |
 | **DEC-007** | Relationship to `tradar`: reuse / wrap / greenfield. **ACCEPTED → ADR-0001** (radar/tmodel split). |
 | **DEC-008** | CWE/NVD integration: live lookup vs cached mirror; how automation runs. |
 | **DEC-009** | Generic-threat → product / product-family mapping and mitigation-lifecycle tracking model. |
-| **DEC-010** | Implementation stack & language. **ACCEPTED → ADR-0003** (Tauri+TS / Python engine / local IPC / shared CLI); viz lib (A-044) & substrate (DEC-004) stay open behind adapters. |
+| **DEC-010** | Implementation stack & language. **ACCEPTED → ADR-0003** (Tauri+TS / Python engine / local IPC / shared CLI), **engine language split refined by ADR-0009** (Python brain + Rust store/hot-paths); viz lib (A-044) stays open behind adapters. |
 | **DEC-011** | Storage & edge model. **ACCEPTED → ADR-0004** (file canonical SoT + edge-rich typed edges + local embedded working store + derived export); narrows DEC-004. |
 
 The register with status and evidence links is `project/DECISIONS-0001.md`.
