@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Secure by Demand: Priority Considerations for Operational Technology Owners and Operators when Selecting Digital Products</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 24px 64px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.15; letter-spacing: -0.03em; margin: 28px 0 8px; }
+h2 { font-size: 1.25rem; margin: 1.6em 0 0.4em; }
+h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
+.kicker { margin: 22px 0 0; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.6em 0 1em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 8px 10px; font-size: 0.95rem; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../../../../index.html">tmodel</a><nav aria-label="Site"><a href="../../../../index.html">Home</a><a href="../../../../bibliography/index.html" aria-current="page">Bibliography</a><a href="../../../../reports/index.html">Reports</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">Library record · cisa-secure-by-demand-ot-2025</p>
+<h1>Secure by Demand: Priority Considerations for Operational Technology Owners and Operators when Selecting Digital Products</h1>
+<p class="lede">Secure by Demand — OT priority considerations</p>
+<p>
+  <span class="badge">spec</span>
+  <span class="badge">regulator</span>
+  <span class="badge">summarized</span>
+  <span class="badge">medium</span>
+</p>
+<p class="meta">Topic: <strong>sdl</strong> (<code>record.yaml</code> topic). Status <code>summarized</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://www.cisa.gov/sites/default/files/2025-01/joint-guide-secure-by-demand-priority-considerations-for-ot-owners-and-operators-508c_0.pdf">https://www.cisa.gov/sites/default/files/2025-01/joint-guide-secure-by-demand-priority-considerations-for-ot-owners-and-operators-508c_0.pdf</a></li><li>Identifier URL: <a href="https://www.cisa.gov/resources-tools/resources/secure-demand-priority-considerations-operational-technology-owners-and-operators-when-selecting">https://www.cisa.gov/resources-tools/resources/secure-demand-priority-considerations-operational-technology-owners-and-operators-when-selecting</a></li><li>SHA-256: <code>172daac421ad9d3c535cba962f9aa4a3b894065c4c2522bcdbb0f064c6696d16</code></li></ul>
+<h2>Specification</h2>
+<table><tbody><tr><td>Authors</td><td>Cybersecurity and Infrastructure Security Agency (CISA), National Security Agency (NSA), Federal Bureau of Investigation (FBI), Environmental Protection Agency (EPA), Transportation Security Administration (TSA), Australian Signals Directorate&#x27;s Australian Cyber Security Centre (ASD&#x27;s ACSC), Canadian Centre for Cyber Security (CCCS), European Commission DG CONNECT, Federal Office for Information Security (BSI), Netherlands&#x27; National Cyber Security Centre (NCSC-NL), New Zealand&#x27;s National Cyber Security Centre (NCSC-NZ), United Kingdom&#x27;s National Cyber Security Centre (NCSC-UK)</td></tr><tr><td>Date</td><td>2025-01-13</td></tr><tr><td>Publisher</td><td>Cybersecurity and Infrastructure Security Agency (CISA), with 11 partner agencies</td></tr><tr><td>Version</td><td>2025-01-13</td></tr><tr><td>Maturity</td><td>best-practice</td></tr><tr><td>pdf</td><td>https://www.cisa.gov/sites/default/files/2025-01/joint-guide-secure-by-demand-priority-considerations-for-ot-owners-and-operators-508c_0.pdf</td></tr><tr><td>pdf_2025_04</td><td>https://www.cisa.gov/sites/default/files/2025-04/Priority-Considerations-for-OT-508c.pdf</td></tr><tr><td>tlp</td><td>TLP:CLEAR</td></tr><tr><td>Pages</td><td>22</td></tr><tr><td>Media type</td><td>application/pdf</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge adjacent">adjacent</span></td></tr><tr><td>This project</td><td><span class="badge adjacent">adjacent</span></td></tr></tbody></table><p class="meta">Ratings are the <code>applicability</code> map on <code>record.yaml</code>. A missing axis is not assessed — it is not <code>none</code>. The summary's Why column is not scraped; two summary dialects exist, and a blank template cell is not a judgement.</p>
+<h2>Tags</h2>
+<h3>Topic tags</h3><p><span class="badge">sdl</span> <span class="badge">ot</span> <span class="badge">procurement</span> <span class="badge">threat-modeling</span> <span class="badge">cisa</span> <span class="badge">secure-by-design</span></p><p class="meta">Subject vocabulary and free tags. These are what the topic view and the tag crosswalk use.</p><h3>Role tags</h3><p><span class="badge">background</span></p><p class="meta">Why the record was kept (normative, prior-art, evidence, …). Not a subject.</p>
+<h2>Bears on</h2>
+<ul><li><code>R-042</code></li><li><code>R-043</code></li><li><code>R-044</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> Buyers are told to demand a &#x27;full and detailed threat model&#x27; from OT manufacturers (element 10) — direct demand-side motivation for tmodel&#x27;s exportable, governed threat-model view.</p><p class="meta">Assessed 2026-10-02.</p>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> on this record only. Empty lists are omitted. These are not crosswalk edges and not a knowledge graph.</p><h3><code>see_also</code></h3><ul><li><a class="rec" data-id="cisa-secure-by-demand-guide-2024" href="../../regulator/cisa-secure-by-demand-guide-2024/summary.html">CISA/FBI Secure by Demand Guide</a></li><li><a class="rec" data-id="cisa-secure-by-design-2023" href="../../regulator/cisa-secure-by-design-2023/summary.html">CISA Secure by Design (2023)</a></li><li><a class="rec" data-id="eu-cra-2024-2847" href="../../regulator/eu-cra-2024-2847/summary.html">Cyber Resilience Act (CRA)</a></li></ul>
+<h2>Document cites</h2><p class="meta">From <code>cites</code>: what the document references. Fact about the source, not our crosswalk. Gaps stay gaps.</p><ul><li><a class="rec" data-id="cisa-secure-by-design-2023" href="../../regulator/cisa-secure-by-design-2023/summary.html">CISA Secure by Design (2023)</a></li><li><a class="rec" data-id="eu-cra-2024-2847" href="../../regulator/eu-cra-2024-2847/summary.html">Cyber Resilience Act (CRA)</a></li><li>p.7 ISA/IEC 62443 (62443-4-2 SL3, 62443-3-3) <span class="meta">cited, no library record</span></li><li>p.7 NIST SP 800-82 (OT security); NIST SP 800-213A (IIoT) <span class="meta">cited, no library record</span></li><li>p.17 MITRE EMB3D <span class="meta">cited, no library record</span></li><li>p.18 ISO/IEC 29147; ISO/IEC 30111; CVE Program; CSAF; BSI TR-03191; RFC 9116 security.txt <span class="meta">cited, no library record</span></li><li>p.4 fn 5 EU NIS2 Directive; Delegated Regulation under the Radio Equipment Directive <span class="meta">cited, no library record</span></li><li>p.9 Joint guide: Best practices for event logging and threat detection <span class="meta">cited, no library record</span></li></ul>
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited. The strip above is <code>record.yaml</code>. If they disagree, the record wins for type, tags, applicability ratings, and bears_on.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec (joint guidance, TLP:CLEAR)</td></tr><tr><td><strong>Maturity</strong></td><td>best-practice (voluntary guidance)</td></tr><tr><td><strong>Authors</strong></td><td>CISA with NSA, FBI, EPA, TSA, ASD&#x27;s ACSC, CCCS, EC DG CONNECT, BSI, NCSC-NL, NCSC-NZ, NCSC-UK</td></tr><tr><td><strong>Published</strong></td><td>2025-01-13</td></tr><tr><td><strong>Identifier</strong></td><td>https://www.cisa.gov/resources-tools/resources/secure-demand-priority-considerations-operational-technology-owners-and-operators-when-selecting</td></tr><tr><td><strong>Source</strong></td><td>https://www.cisa.gov/sites/default/files/2025-01/joint-guide-secure-by-demand-priority-considerations-for-ot-owners-and-operators-508c_0.pdf (Internet Archive id_ copy; cisa.gov 403s scripts)</td></tr><tr><td><strong>Digest</strong></td><td><code>172daac421ad9d3c535cba962f9aa4a3b894065c4c2522bcdbb0f064c6696d16</code> (22 pp, retrieved 2026-10-02)</td></tr></tbody></table>
+<p><strong>Secondary record — <code>status: summarized</code>.</strong> Summary and object-model pass only, as allowed for lane context-setters. Read in full (pdftotext). <strong>Currency:</strong> CISA&#x27;s page lists this Jan 2025 guide plus a 2025-04 PDF (likely a re-issue/short version; not fetched). This is the only 2025 &quot;Secure by Demand&quot; priorities document found; it is OT-specific.</p>
+<h2>Overview</h2>
+<p>Threat actors target <em>OT products</em> (not organizations) because weaknesses — weak authentication, known vulnerabilities, limited logging, insecure defaults, legacy protocols — replicate across victims. OT owners/operators (&quot;buyers&quot;) should select products from manufacturers that prioritize <strong>12 security elements</strong> (not in priority order): configuration management, logging in the baseline product, open standards, ownership, protection of data, secure by default, secure communications, secure controls, strong authentication, <strong>threat modeling</strong>, vulnerability management, and upgrade and patch tooling. Each has a selection criterion, questions to ask and &quot;why this matters&quot;. It aligns with ISA/IEC 62443 (4-2 SL3, 3-3), NIST SP 800-82/800-213A and the EU CRA, and points to NIS2/RED/CE marking.</p>
+<p>Most relevant to tmodel: element 10 asks for &quot;a full and detailed threat model&quot; that is kept up to date, tracks public threat sources such as MITRE EMB3D, states the assumed external controls, communication paths and intended environment, and has a roadmap for gaps; buyers should partner with the manufacturer&#x27;s threat-modeling capability. Element 11 asks for SBOM <em>and HBOM</em>, CVE-based handling per ISO/IEC 29147/30111, CSAF advisories, VEX via CSAF, a CVD policy and RFC 9116 security.txt.</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td>core</td><td>buyer-side OT product security criteria</td></tr><tr><td>Cryptography</td><td>adjacent</td><td>certificates that fail loudly; disabling SSL/TLS 1.0/1.1, SNMPv1/2, Telnet</td></tr><tr><td>This project</td><td>adjacent</td><td>demand-side case for an exportable product threat model (R-043), consumer-selected requirement profile (R-042), document-level alignment to 62443/CRA (R-044); VEX/CSAF ties to ARCH-0001 §5</td></tr></tbody></table>
+<h2>Implementations</h2>
+<p>Searched 2026-10-02: none specific. Related tooling: CSAF (OASIS) producers/validators, security.txt generators, MITRE EMB3D.</p>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata, cites (62443, NIST, EMB3D, CSAF, 29147/30111, NIS2, CRA)</td></tr><tr><td><code>distilled/README.md</code></td><td>index</td></tr><tr><td><code>distilled/object-model.yaml</code> + <code>.md</code></td><td>object-model pass</td></tr></tbody></table>
+<p>Local only: <code>.cache/cisa-secure-by-demand-ot-2025.{pdf,txt,raw.txt}</code>.</p>
+<h2>Limits</h2>
+<p>Not extracted to FX-1 (secondary). OT-specific; no thresholds beyond named protocol versions; the 62443 alignment is asserted at document level, without an item-level mapping.</p>
+
+<footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
+</main>
+</body>
+</html>

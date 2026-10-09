@@ -1267,6 +1267,9 @@ outputs:
     format: html
   - path: docs/bibliography/crosswalk.html
     format: html
+  - path: docs/library/records/<body>/<id>/summary.html
+    format: html
+    source: library bin/render-html (copied, site-nav slot filled)
 security:
   remote_scripts: false
   trackers: false

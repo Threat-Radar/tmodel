@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Securing Artificial Intelligence (SAI); Baseline Cyber Security Requirements for AI Models and Systems</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 24px 64px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.15; letter-spacing: -0.03em; margin: 28px 0 8px; }
+h2 { font-size: 1.25rem; margin: 1.6em 0 0.4em; }
+h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
+.kicker { margin: 22px 0 0; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.6em 0 1em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 8px 10px; font-size: 0.95rem; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../../../../index.html">tmodel</a><nav aria-label="Site"><a href="../../../../index.html">Home</a><a href="../../../../bibliography/index.html" aria-current="page">Bibliography</a><a href="../../../../reports/index.html">Reports</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">Library record · etsi-en-304-223</p>
+<h1>Securing Artificial Intelligence (SAI); Baseline Cyber Security Requirements for AI Models and Systems</h1>
+<p class="lede">ETSI EN 304 223</p>
+<p>
+  <span class="badge">spec</span>
+  <span class="badge">other</span>
+  <span class="badge">distilled</span>
+  <span class="badge">medium</span>
+</p>
+<p class="meta">Topic: <strong>sagai</strong> (<code>record.yaml</code> topic). Status <code>distilled</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://www.etsi.org/deliver/etsi_en/304200_304299/304223/02.01.01_60/en_304223v020101p.pdf">https://www.etsi.org/deliver/etsi_en/304200_304299/304223/02.01.01_60/en_304223v020101p.pdf</a></li><li>SHA-256: <code>1ef542acf1fac7f108aa0b3c8548d91d82395fe026f0036bffe7f1f32456d21a</code></li></ul>
+<h2>Specification</h2>
+<table><tbody><tr><td>Authors</td><td>ETSI Technical Committee Securing Artificial Intelligence (SAI)</td></tr><tr><td>Date</td><td>2025-12</td></tr><tr><td>Publisher</td><td>ETSI</td></tr><tr><td>Version</td><td>V2.1.1</td></tr><tr><td>Maturity</td><td>standard</td></tr><tr><td>etsi</td><td>EN 304 223 V2.1.1</td></tr><tr><td>etsi_reference</td><td>REN/SAI-0022</td></tr><tr><td>Pages</td><td>16</td></tr><tr><td>Media type</td><td>application/pdf</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge adjacent">adjacent</span></td></tr><tr><td>This project</td><td><span class="badge core">core</span></td></tr></tbody></table><p class="meta">Ratings are the <code>applicability</code> map on <code>record.yaml</code>. A missing axis is not assessed — it is not <code>none</code>. The summary's Why column is not scraped; two summary dialects exist, and a blank template cell is not a judgement.</p>
+<h2>Tags</h2>
+<h3>Topic tags</h3><p><span class="badge">ai-security</span> <span class="badge">regulation</span></p><p class="meta">Subject vocabulary and free tags. These are what the topic view and the tag crosswalk use.</p><h3>Role tags</h3><p><span class="badge">normative</span></p><p class="meta">Why the record was kept (normative, prior-art, evidence, …). Not a subject.</p>
+<h2>Bears on</h2>
+<ul><li><code>DEC-001</code></li><li><code>R-018</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> The only ratified, testable requirement set in the #13 source family: 72 provisions across the AI lifecycle, including AI-specific threat modelling (5.1.3-1) and human oversight (5.1.4).</p><p class="meta">Assessed 2026-10-01.</p>
+
+<h2>Document cites</h2><p class="meta">From <code>cites</code>: what the document references. Fact about the source, not our crosswalk. Gaps stay gaps.</p><ul><li>[i.1] <a href="https://www.etsi.org/deliver/etsi_tr/104100_104199/104128/01.01.01_60/tr_104128v010101p.pdf">ETSI TR 104 128, Securing Artificial Intelligence (SAI); Guide to Cyber Security for AI Models and Systems</a> <span class="meta">cited, no library record</span></li><li>[i.2] <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj">Regulation (EU) 2024/1689 (Artificial Intelligence Act)</a> <span class="meta">cited, no library record</span></li><li>[i.3] ISO/IEC 22989:2022, Artificial intelligence concepts and terminology <span class="meta">cited, no library record</span></li><li>[i.4] <a href="https://portal.etsi.org/webapp/WorkProgram/Report_WorkItem.asp?WKI_ID=74988">ETSI TS 104 216, Securing Artificial Intelligence TC (SAI); Conformance assessment for AI (EN 304 223) — draft work item DTS/SAI-00025</a> <span class="meta">cited, no library record</span></li><li>[i.5] ISO/IEC 27001:2022, Information security management systems — Requirements <span class="meta">cited, no library record</span></li><li>[i.6] CISA, Software Bill of Materials (SBOM) <span class="meta">cited, no library record</span></li><li>[i.7] NIST, AI Risk Management Framework: Second Draft, 2022 <span class="meta">cited, no library record</span></li><li>[i.8] <a href="https://doi.org/10.6028/NIST.AI.100-1">NIST AI 100-1, AI Risk Management Framework (AI RMF 1.0), 2023</a> <span class="meta">cited, no library record</span></li><li>[i.9] Australian Signals Directorate, An introduction to Artificial Intelligence, 2023 <span class="meta">cited, no library record</span></li><li>[i.10] World Economic Forum, IBM, Presidio AI Framework: Towards Safe Generative AI Models, 2024 <span class="meta">cited, no library record</span></li><li>[i.11] <a href="https://owaspai.org/">OWASP AI Exchange</a> <span class="meta">cited, no library record</span></li><li>[i.12] <a href="https://atlas.mitre.org/">MITRE ATLAS, Mitigations</a> <span class="meta">cited, no library record</span></li><li>[i.13] <a href="https://safety.google/cybersecurity-advancements/saif/">Google, Secure AI Framework (SAIF): a quick guide, 2023</a> <span class="meta">cited, no library record</span></li><li>[i.14] ELSA — European Lighthouse on Secure and Safe AI, 2023 <span class="meta">cited, no library record</span></li><li>[i.15] Cisco, The Cisco Responsible AI Framework, 2024 <span class="meta">cited, no library record</span></li><li>[i.16] Amazon, AWS Cloud Adoption Framework for Artificial Intelligence, Machine Learning, and Generative AI, 2024 <span class="meta">cited, no library record</span></li><li>[i.17] <a href="https://csrc.nist.gov/pubs/ai/100/2/e2023/final">NIST AI 100-2 E2023, Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations</a> <span class="meta">cited, no library record</span></li><li>[i.18] ENISA, Multilayer Framework for Good Cybersecurity Practices for AI, 2023 <span class="meta">cited, no library record</span></li><li>[i.19] <a href="https://www.ncsc.gov.uk/collection/guidelines-secure-ai-system-development">NCSC, Guidelines for secure AI system development, 2023</a> <span class="meta">cited, no library record</span></li><li>[i.20] BSI, AI Security Concerns in a Nutshell, 2023 <span class="meta">cited, no library record</span></li><li>[i.21] G7 Hiroshima Process International Code of Conduct for Organizations Developing Advanced AI Systems, 2023 <span class="meta">cited, no library record</span></li><li>[i.22] US HHS, Trustworthy AI (TAI) Playbook: Executive Summary, 2021 <span class="meta">cited, no library record</span></li><li>[i.23] OpenAI, Preparedness Framework (Beta), 2023 <span class="meta">cited, no library record</span></li><li>[i.24] ICO, Guidance on the AI Auditing Framework, 2020 <span class="meta">cited, no library record</span></li><li>[i.25] <a href="https://github.com/NVIDIA/NeMo-Guardrails">NVIDIA, NeMo-Guardrails, 2023</a> <span class="meta">cited, no library record</span></li></ul>
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited. The strip above is <code>record.yaml</code>. If they disagree, the record wins for type, tags, applicability ratings, and bears_on.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec (European Standard)</td></tr><tr><td><strong>Maturity</strong></td><td><code>standard</code> — EN adopted 2025-12-08; national transposition by 2026-09-30</td></tr><tr><td><strong>Authors</strong></td><td>ETSI Technical Committee Securing Artificial Intelligence (SAI)</td></tr><tr><td><strong>Published</strong></td><td>2025-12 — V2.1.1</td></tr><tr><td><strong>Identifier</strong></td><td>ETSI EN 304 223 V2.1.1 (REN/SAI-0022)</td></tr><tr><td><strong>Source</strong></td><td>https://www.etsi.org/deliver/etsi_en/304200_304299/304223/02.01.01_60/en_304223v020101p.pdf</td></tr><tr><td><strong>Digest</strong></td><td><code>sha256:1ef542acf1fac7f108aa0b3c8548d91d82395fe026f0036bffe7f1f32456d21a</code></td></tr></tbody></table>
+<h2>Overview</h2>
+<p>The European baseline for securing AI models and systems, including generative AI (§1). It sets <strong>13 principles</strong> across five lifecycle phases — secure design, development, deployment, maintenance and end of life — and <strong>72 numbered provisions</strong> (49 <em>shall</em>, 23 <em>should</em>), each assigned to stakeholders: Developers, System Operators, Data Custodians and End-users (§4, §5). It treats AI as different from ordinary software because of risks such as data poisoning, model obfuscation and indirect prompt injection (Introduction), and requires threat modelling that covers AI-specific attacks (5.1.3-1), human oversight (5.1.4), audit trails of models, datasets and prompts (5.1.2-3, 5.2.4-1, 5.2.4-3), and published hashes of shared model components (5.2.4-1.2). It was first published as ETSI TS 104 223 V1.1.1 (April 2025) and became this EN in December 2025 (History).</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td><code>core</code></td><td>A baseline security requirement set for AI systems</td></tr><tr><td>Cryptography</td><td><code>adjacent</code></td><td>Requires cryptographic hashes for shared model components (5.2.4-1.2); specifies no algorithm</td></tr><tr><td>This project</td><td><code>core</code></td><td>The testable requirement set behind tmodel #13; names AI threats the object model must express</td></tr></tbody></table>
+<p><code>bears_on: DEC-001</code> — 5.1.3-1 asks threat models to address data poisoning, model inversion and membership inference; <code>distilled/normative.md</code> §4 lists every AI threat the standard names. <code>bears_on: R-018</code> — Principle 4 asks for human oversight and outputs humans can assess, matching ARCH-0001 §7.</p>
+<h2>Implementations</h2>
+<p>Nothing to list. This is a requirements standard, not a file format or protocol, so no software &quot;implements&quot; it. Conformance is to be assessed under ETSI TS 104 216, which is still a draft work item; tools for individual provisions (e.g. NeMo-Guardrails, cited as [i.25]) belong in their own records.</p>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata, including all 25 informative references as <code>cites</code></td></tr><tr><td><code>summary.md</code></td><td>this document</td></tr><tr><td><code>distilled/README.md</code></td><td>index of the distillation, the checks run and their results</td></tr><tr><td><code>distilled/requirements.yaml</code></td><td><strong>machine source:</strong> all 72 provisions, verbatim, typed for audit</td></tr><tr><td><code>distilled/requirements.md</code></td><td>human view of the provisions, generated from the YAML</td></tr><tr><td><code>distilled/normative.md</code></td><td>stakeholders, the 13 principles by phase, AI threats named, bearing on tmodel</td></tr></tbody></table>
+<h2>Limits</h2>
+<ul><li><strong>No way to check conformance yet.</strong> The provisions are high-level (&quot;shall analyse threats and manage security risks&quot;), and the companion that would say how to assess them, TS 104 216, is unpublished.</li><li><strong>Who is obliged is sometimes unclear.</strong> Four provisions name no stakeholder (marked <code>(implied)</code> in the YAML), and several bind &quot;Developers and/or System Operators&quot; jointly.</li><li><strong>Generic on threats.</strong> It names AI attack classes but offers no taxonomy or catalogue; pair it with MITRE ATLAS or NIST AI 100-2 (both cited informatively) for that.</li><li><strong>Predecessor not held.</strong> TS 104 223 V1.1.1 is not yet a record, so no <code>supersedes</code> link.</li></ul>
+
+<footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
+</main>
+</body>
+</html>

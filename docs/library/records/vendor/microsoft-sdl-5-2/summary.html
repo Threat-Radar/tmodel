@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Microsoft Security Development Lifecycle (SDL) Process Guidance – Version 5.2</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 24px 64px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.15; letter-spacing: -0.03em; margin: 28px 0 8px; }
+h2 { font-size: 1.25rem; margin: 1.6em 0 0.4em; }
+h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
+.kicker { margin: 22px 0 0; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.6em 0 1em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 8px 10px; font-size: 0.95rem; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../../../../index.html">tmodel</a><nav aria-label="Site"><a href="../../../../index.html">Home</a><a href="../../../../bibliography/index.html" aria-current="page">Bibliography</a><a href="../../../../reports/index.html">Reports</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">Library record · microsoft-sdl-5-2</p>
+<h1>Microsoft Security Development Lifecycle (SDL) Process Guidance – Version 5.2</h1>
+<p class="lede">Microsoft SDL 5.2</p>
+<p>
+  <span class="badge">spec</span>
+  <span class="badge">vendor</span>
+  <span class="badge">distilled</span>
+  <span class="badge">medium</span>
+</p>
+<p class="meta">Topic: <strong>sdl</strong> (<code>record.yaml</code> topic). Status <code>distilled</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://download.microsoft.com/download/3/4/3/343bafcb-c685-4a70-9639-ff76bcbb609c/Microsoft%20SDL_Version%205.2.docx">https://download.microsoft.com/download/3/4/3/343bafcb-c685-4a70-9639-ff76bcbb609c/Microsoft%20SDL_Version%205.2.docx</a></li><li>Identifier URL: <a href="https://www.microsoft.com/en-us/download/details.aspx?id=29884">https://www.microsoft.com/en-us/download/details.aspx?id=29884</a></li><li>SHA-256: <code>108cd2ee8cc7a1eb082da5a6e8c796a17ad93104e7b00ed772da7e86abf975f2</code></li></ul>
+<h2>Specification</h2>
+<table><tbody><tr><td>Authors</td><td>Microsoft Corporation</td></tr><tr><td>Date</td><td>2012-05-23</td></tr><tr><td>Publisher</td><td>Microsoft Corporation</td></tr><tr><td>Version</td><td>5.2</td></tr><tr><td>Maturity</td><td>historic</td></tr><tr><td>Pages</td><td>168</td></tr><tr><td>Media type</td><td>application/vnd.openxmlformats-officedocument.wordprocessingml.document</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge adjacent">adjacent</span></td></tr><tr><td>This project</td><td><span class="badge core">core</span></td></tr></tbody></table><p class="meta">Ratings are the <code>applicability</code> map on <code>record.yaml</code>. A missing axis is not assessed — it is not <code>none</code>. The summary's Why column is not scraped; two summary dialects exist, and a blank template cell is not a judgement.</p>
+<h2>Tags</h2>
+<h3>Topic tags</h3><p><span class="badge">sdl</span> <span class="badge">threat-modeling</span></p><p class="meta">Subject vocabulary and free tags. These are what the topic view and the tag crosswalk use.</p><h3>Role tags</h3><p><span class="badge">normative</span> <span class="badge">method</span> <span class="badge">prior-art</span></p><p class="meta">Why the record was kept (normative, prior-art, evidence, …). Not a subject.</p>
+<h2>Bears on</h2>
+<ul><li><code>R-041</code></li><li><code>R-042</code></li><li><code>R-044</code></li><li><code>R-040</code></li><li><code>DEC-009</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> Legacy, but the most complete public SDL with a real release gate: the Final Security Review&#x27;s entry guard, reviewer, checks, outcomes, exception path and carry-over are the template for the R-041 Gate and the R-042 threats-mitigated check.</p><p class="meta">Assessed 2026-10-02.</p>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> on this record only. Empty lists are omitted. These are not crosswalk edges and not a knowledge graph.</p><h3><code>superseded_by</code></h3><ul><li><a class="rec" data-id="microsoft-sdl" href="../../vendor/microsoft-sdl/summary.html">Microsoft SDL (10 practices)</a></li></ul><h3><code>see_also</code></h3><ul><li><a class="rec" data-id="microsoft-sdl-simplified-2010" href="../../vendor/microsoft-sdl-simplified-2010/summary.html">Simplified SDL (2010)</a></li><li><a class="rec" data-id="sp-800-218" href="../../nist/sp-800-218/summary.html">SSDF 1.1</a></li><li><a class="rec" data-id="owasp-samm-2" href="../../community/owasp-samm-2/summary.html">OWASP SAMM 2.2</a></li><li><a class="rec" data-id="bsimm-16" href="../../vendor/bsimm-16/summary.html">BSIMM16</a></li><li><a class="rec" data-id="safecode-fpssd-3" href="../../community/safecode-fpssd-3/summary.html">SAFECode FPSSD 3rd ed.</a></li></ul>
+<h2>Document cites</h2><p class="meta">From <code>cites</code>: what the document references. Fact about the source, not our crosswalk. Gaps stay gaps.</p><ul><li><a class="rec" data-id="microsoft-sdl-simplified-2010" href="../../vendor/microsoft-sdl-simplified-2010/summary.html">Simplified SDL (2010)</a></li><li>15 Resources sections Michael Howard, Steve Lipner, The Security Development Lifecycle (Microsoft Press, 2006), ISBN 9780735622142 <span class="meta">cited, no library record</span></li><li>Appendix B; Design resources Michael Howard, David LeBlanc, Writing Secure Code, Second Edition, ISBN 9780735617223 <span class="meta">cited, no library record</span></li><li>Privacy resources Microsoft Privacy Guidelines for Developing Software Products and Services <span class="meta">cited, no library record</span></li><li>Design resources Saltzer and Schroeder, The Protection of Information in Computer Systems <span class="meta">cited, no library record</span></li><li>Design resources Measuring Relative Attack Surfaces (research paper) <span class="meta">cited, no library record</span></li><li>Design resources Threat Modeling: Uncover Security Design Flaws Using The STRIDE Approach (MSDN Magazine) <span class="meta">cited, no library record</span></li><li>Verification resources James Whittaker, How to Break Software (ISBN 978-0201796193); How to Break Software Security (ISBN 978-0321194336) <span class="meta">cited, no library record</span></li><li>Privacy resources Privacy: What Developers and IT Professionals Should Know, ISBN-13 978-0-321-22409-5 <span class="meta">cited, no library record</span></li><li>LOB resources Improving Web Application Security: Threats and Countermeasures, Chapter 5 <span class="meta">cited, no library record</span></li></ul>
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited. The strip above is <code>record.yaml</code>. If they disagree, the record wins for type, tags, applicability ratings, and bears_on.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec (vendor process guidance, 168 pp. Word document)</td></tr><tr><td><strong>Maturity</strong></td><td>historic — superseded by the current web practice set; Microsoft files it under &quot;Legacy archive&quot;</td></tr><tr><td><strong>Authors</strong></td><td>Microsoft Corporation</td></tr><tr><td><strong>Published</strong></td><td>May 23, 2012 (title page). The Download Center page (id 29884) shows &quot;Date Published: 7/15/2024&quot; for the same file (2,372,954 bytes, file version 1) — a re-publication date of the page, not of the document (checked 2026-10-03)</td></tr><tr><td><strong>Identifier</strong></td><td>Microsoft Download Center id 29884</td></tr><tr><td><strong>Source</strong></td><td>https://download.microsoft.com/download/3/4/3/343bafcb-c685-4a70-9639-ff76bcbb609c/Microsoft%20SDL_Version%205.2.docx (via https://www.microsoft.com/en-us/download/details.aspx?id=29884)</td></tr><tr><td><strong>Digest</strong></td><td><code>108cd2ee8cc7a1eb082da5a6e8c796a17ad93104e7b00ed772da7e86abf975f2</code></td></tr><tr><td><strong>Licence</strong></td><td>&quot;Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported&quot; (front matter)</td></tr></tbody></table>
+<p><strong>Version verified 2026-10-02.</strong> The download page still serves 5.2 as the last version of the process guidance; Microsoft&#x27;s SDL Resources page lists &quot;Microsoft SDL Process Guidance Version 5.2&quot; under <strong>Legacy archive</strong>, and the SDL FAQ answers &quot;Should I use the Microsoft SDL Process Guidance as a resource to implement the SDL at my organization?&quot; with &quot;No.&quot; The current guidance is the 10-practice web set (<code>microsoft-sdl</code>). 5.2&#x27;s own &quot;Changes in This Version&quot;: typographical corrections plus new/updated requirements in Design, Implementation (two recommendations promoted to requirements) and SDL-LOB, and updated Appendix N.</p>
+<h2>Overview</h2>
+<p>SDL 5.2 is the detailed process Microsoft applied to its own products: a pre-SDL training requirement, five phases (Requirements, Design, Implementation, Verification, Release) and a post-release Response requirement, each with explicit Security/Privacy <em>Requirements</em> (mandatory for SDL-subject projects) and <em>Recommendations</em>. Release is gated by the <strong>Final Security Review</strong>, run by an assigned security advisor, with outcomes Passed, Passed (with exceptions) and FSR escalation. It adds SDL-Agile (every-sprint, bucket and one-time requirement categories) and SDL-LOB (risk-tiered service levels for line-of-business apps), plus appendices with tool/compiler requirements, bug bars and a sample security plan.</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td>core</td><td>The classic reference SDL; MAP-0001&#x27;s phase line comes from it</td></tr><tr><td>Cryptography</td><td>adjacent</td><td>crypto requirements in Design/Implementation (e.g. strong crypto only, in the Agile every-sprint list)</td></tr><tr><td>This project</td><td>core</td><td>The FSR is the most complete public model of an SDL gate (R-041); its threat-model review and the rule &quot;Create an individual work item for each vulnerability listed in the threat model&quot; (Phase Two &gt; Risk Analysis) are the R-042 check; bug bars and work-item fields feed severity and Finding classification</td></tr></tbody></table>
+<p>Bears on <strong>R-041, R-042, R-044</strong>, and R-040.</p>
+<h2>Implementations</h2>
+<p>Searched 2026-10-02. Tools the document mandates or recommends that still exist: BinSkim (successor of BinScope; https://github.com/Microsoft/binskim), Microsoft Threat Modeling Tool (successor of the SDL Threat Modeling Tool), Application Verifier (Windows SDK), Attack Surface Analyzer (https://github.com/microsoft/attacksurfaceanalyzer, MIT). Many 2012 tools (FxCop, CAT.NET, MiniFuzz, RegexFuzzer, BinScope) are retired.</p>
+<table><thead><tr><th>Name</th><th>Kind</th><th>License</th><th>URL</th></tr></thead><tbody><tr><td>BinSkim</td><td>binary analyzer</td><td>see repository</td><td>https://github.com/Microsoft/binskim</td></tr><tr><td>Attack Surface Analyzer</td><td>attack surface diff</td><td>MIT</td><td>https://github.com/microsoft/attacksurfaceanalyzer</td></tr><tr><td>Microsoft Threat Modeling Tool</td><td>threat modeling</td><td>freeware</td><td>https://www.microsoft.com/download/details.aspx?id=49168</td></tr></tbody></table>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata, relations, distillation</td></tr><tr><td><code>distilled/README.md</code></td><td>artifact index</td></tr><tr><td><code>distilled/normative.md</code></td><td>every requirement/recommendation statement by section, plus Appendices B, M, N</td></tr><tr><td><code>distilled/requirements.yaml</code></td><td>510 entries (408 extract pass + 102 added by the verify pass)</td></tr><tr><td><code>distilled/schema/</code></td><td>derived JSON Schema</td></tr><tr><td><code>distilled/protocol.yaml</code>, <code>protocol.md</code></td><td>FSR and privacy-escalation exchanges</td></tr><tr><td><code>distilled/state-machine.yaml</code></td><td>phases, applicability, FSR gate, Agile cadence</td></tr><tr><td><code>distilled/examples/</code></td><td>bug bars, LOB/Agile tables</td></tr><tr><td><code>distilled/design-notes.md</code></td><td>bearing on our design</td></tr><tr><td><code>distilled/object-model.yaml</code>, <code>object-model.md</code></td><td>object-model pass</td></tr></tbody></table>
+<h2>Limits</h2>
+<ul><li>Legacy and Windows-centric (2012 toolchain, Win32/Win64/CE appendices).</li><li>Requirements carry no identifiers; our R-NNNN are document-order ids.</li><li>The &quot;security score of B or above&quot; FSR criterion is never defined.</li><li>Two release criteria are worded differently (bug-bar severity criteria vs &quot;no known vulnerabilities ... Critical, Important, Moderate, or Low&quot;).</li><li>Proprietary internal resources were omitted by Microsoft (&quot;Proprietary technologies and resources that are only available internally at Microsoft have been omitted&quot;).</li></ul>
+
+<footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
+</main>
+</body>
+</html>

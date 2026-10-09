@@ -16,6 +16,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = ROOT / "docs" / "publishing" / "reports.yaml"
+INDEX = ROOT / "docs" / "reports" / "index.html"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import site_nav  # noqa: E402  (site nav from docs/publishing/site.yaml)
 
 
 def front_matter(text: str) -> tuple[dict, str]:
@@ -83,7 +86,7 @@ def md_to_html(md: str) -> str:
     return "\n".join(out)
 
 
-CSS = """body{max-width:52rem;margin:2rem auto;padding:0 1rem;font:16px/1.6 -apple-system,Segoe UI,Roboto,sans-serif;color:#1a1a1a}
+CSS = """body{max-width:52rem;margin:0 auto 2rem;padding:0 1rem;font:16px/1.6 -apple-system,Segoe UI,Roboto,sans-serif;color:#1a1a1a}
 h1,h2,h3,h4{line-height:1.25} h1{border-bottom:2px solid #eee;padding-bottom:.3rem}
 code{background:#f4f4f4;padding:.1em .3em;border-radius:3px;font-size:.9em}
 pre{background:#f4f4f4;padding:1rem;overflow:auto;border-radius:6px}
@@ -102,6 +105,7 @@ def render(rep: dict) -> None:
     page = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{html.escape(title)}</title><style>{CSS}</style></head><body>
+{site_nav.header(rep["out"].count("/") - 1, "reports/index.html")}
 <h1>{html.escape(title)}</h1>
 <div class="rev"><strong>Revision {html.escape(rev)}</strong> · updated {html.escape(updated)} · static page (regenerated only when the source changes)</div>
 {f'<p class="rl">{links}</p>' if links else ''}
@@ -110,6 +114,28 @@ def render(rep: dict) -> None:
 </body></html>"""
     out = ROOT / rep["out"]; out.parent.mkdir(parents=True, exist_ok=True); out.write_text(page)
     print(f"  {rep['out']}  (revision {rev})")
+    return {"title": title, "rev": rev, "updated": updated, "out": rep["out"]}
+
+
+def render_index(done: list[dict]) -> None:
+    """docs/reports/index.html: one line per report in reports.yaml."""
+    items = "".join(
+        f'<li><a href="{html.escape(Path(d["out"]).name)}">{html.escape(d["title"])}</a> '
+        f'<span class="rev">revision {html.escape(str(d["rev"]))} · updated {html.escape(str(d["updated"]))}</span></li>'
+        for d in done
+    )
+    page = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reports — tmodel</title><style>{CSS}</style></head><body>
+{site_nav.header(1, "reports/index.html")}
+<h1>Reports</h1>
+<p>Research reports published from <code>research/</code>. Each page is versioned by its source's front matter.</p>
+<ul>{items}</ul>
+<footer>Generated from <code>docs/publishing/reports.yaml</code> by <code>render_report.py</code>. Do not hand-edit.</footer>
+</body></html>"""
+    INDEX.parent.mkdir(parents=True, exist_ok=True)
+    INDEX.write_text(page)
+    print(f"  {INDEX.relative_to(ROOT)}  (index)")
 
 
 def main() -> int:
@@ -126,8 +152,7 @@ def main() -> int:
             elif mt and "title" not in cur: cur["title"] = mt.group(1)
             elif ml: cur["links"].append({"text": ml.group(1), "href": ml.group(2)})
     print(f"render_report: {len(reps)} report page(s)")
-    for r in reps:
-        render(r)
+    render_index([render(r) for r in reps])
     return 0
 
 

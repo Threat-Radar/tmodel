@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Information technology — Security techniques — Vulnerability disclosure</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 24px 64px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.15; letter-spacing: -0.03em; margin: 28px 0 8px; }
+h2 { font-size: 1.25rem; margin: 1.6em 0 0.4em; }
+h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
+.kicker { margin: 22px 0 0; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.6em 0 1em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 8px 10px; font-size: 0.95rem; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../../../../index.html">tmodel</a><nav aria-label="Site"><a href="../../../../index.html">Home</a><a href="../../../../bibliography/index.html" aria-current="page">Bibliography</a><a href="../../../../reports/index.html">Reports</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">Library record · iso-iec-29147-2018</p>
+<h1>Information technology — Security techniques — Vulnerability disclosure</h1>
+<p class="lede">ISO/IEC 29147</p>
+<p>
+  <span class="badge">spec</span>
+  <span class="badge">iso</span>
+  <span class="badge">summarized</span>
+  <span class="badge">medium</span>
+</p>
+<p class="meta">Topic: <strong>sdl</strong> (<code>record.yaml</code> topic). Status <code>summarized</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://cdn.standards.iteh.ai/samples/72311/06fe3b1905aa4f3f8d9c5824ebc3c396/ISO-IEC-29147-2018.pdf">https://cdn.standards.iteh.ai/samples/72311/06fe3b1905aa4f3f8d9c5824ebc3c396/ISO-IEC-29147-2018.pdf</a></li><li>Identifier URL: <a href="https://www.iso.org/standard/72311.html">https://www.iso.org/standard/72311.html</a></li><li>SHA-256: <code>e433e9e17bf3aafd52542d58c0ddbe51e115455030aff72fd148e22c7d42a8c1</code></li></ul>
+<h2>Specification</h2>
+<table><tbody><tr><td>Authors</td><td>ISO/IEC JTC 1/SC 27</td></tr><tr><td>Date</td><td>2018-10</td></tr><tr><td>Publisher</td><td>ISO/IEC (JTC 1/SC 27)</td></tr><tr><td>Version</td><td>2018 (Edition 2)</td></tr><tr><td>Maturity</td><td>standard</td></tr><tr><td>iso</td><td>ISO/IEC 29147:2018</td></tr><tr><td>Pages</td><td>13</td></tr><tr><td>Media type</td><td>application/pdf</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge none">none</span></td></tr><tr><td>This project</td><td><span class="badge adjacent">adjacent</span></td></tr></tbody></table><p class="meta">Ratings are the <code>applicability</code> map on <code>record.yaml</code>. A missing axis is not assessed — it is not <code>none</code>. The summary's Why column is not scraped; two summary dialects exist, and a blank template cell is not a judgement.</p>
+<h2>Tags</h2>
+<h3>Topic tags</h3><p><span class="badge">sdl</span> <span class="badge">vulnerability-disclosure</span> <span class="badge">coordinated-vulnerability-disclosure</span> <span class="badge">psirt</span> <span class="badge">advisory</span> <span class="badge">supply-chain</span></p><p class="meta">Subject vocabulary and free tags. These are what the topic view and the tag crosswalk use.</p><h3>Role tags</h3><p><span class="badge">normative</span></p><p class="meta">Why the record was kept (normative, prior-art, evidence, …). Not a subject.</p>
+<h2>Bears on</h2>
+<ul><li><code>R-036</code></li><li><code>R-040</code></li><li><code>R-041</code></li><li><code>R-042</code></li><li><code>R-043</code></li><li><code>R-044</code></li><li><code>DEC-009</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> The role vocabulary and verified/not-verified gate for vulnerability disclosure; field list for advisories; paired with 30111 it is the response phase of every SDL in MAP-0001. Full value needs a purchased copy (Clauses 6-9, Annex D).</p><p class="meta">Assessed 2026-10-02.</p>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> on this record only. Empty lists are omitted. These are not crosswalk edges and not a knowledge graph.</p><h3><code>see_also</code></h3><ul><li><a class="rec" data-id="iso-iec-30111-2019" href="../../iso/iso-iec-30111-2019/summary.html">ISO/IEC 30111</a></li><li><a class="rec" data-id="eu-cra-2024-2847" href="../../regulator/eu-cra-2024-2847/summary.html">Cyber Resilience Act (CRA)</a></li><li><a class="rec" data-id="iso-iec-27034-1" href="../../iso/iso-iec-27034-1/summary.html">ISO/IEC 27034-1</a></li><li><a class="rec" data-id="first-cvss" href="../../community/first-cvss/summary.html">FIRST, Common Vulnerability Scoring System (CVSS)</a></li><li><a class="rec" data-id="cve-json-5" href="../../other/cve-json-5/summary.html">CVE JSON Record Format v5</a></li></ul>
+<h2>Document cites</h2><p class="meta">From <code>cites</code>: what the document references. Fact about the source, not our crosswalk. Gaps stay gaps.</p><ul><li><a class="rec" data-id="iso-iec-30111-2019" href="../../iso/iso-iec-30111-2019/summary.html">ISO/IEC 30111</a></li><li><a class="rec" data-id="first-cvss" href="../../community/first-cvss/summary.html">FIRST, Common Vulnerability Scoring System (CVSS)</a></li><li><a class="rec" data-id="iso-iec-27034-1" href="../../iso/iso-iec-27034-1/summary.html">ISO/IEC 27034-1</a></li><li>Clause 2 ISO/IEC 27000, Information technology — Security techniques — Information security management systems — Overview and vocabulary <span class="meta">cited, no library record</span></li><li>[1] ISO/IEC 27002:2013, 12.6.1 (technical vulnerability management) <span class="meta">cited, no library record</span></li><li>[9] Common Vulnerabilities and Exposures (CVE) <span class="meta">cited, no library record</span></li><li>[11] Common Weakness Enumeration (CWE) <span class="meta">cited, no library record</span></li><li>[12][13] Common Vulnerability Reporting Format (CVRF) — predecessor of OASIS CSAF <span class="meta">cited, no library record</span></li><li>§5.3.4 ISO/IEC 27036-3, ICT supply chain security <span class="meta">cited, no library record</span></li><li>§5.3.5 ISO/IEC 27017, cloud services security controls <span class="meta">cited, no library record</span></li><li>§5.3.6 ISO/IEC 27035 series, information security incident management <span class="meta">cited, no library record</span></li></ul>
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited. The strip above is <code>record.yaml</code>. If they disagree, the record wins for type, tags, applicability ratings, and bears_on.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec (International Standard)</td></tr><tr><td><strong>Maturity</strong></td><td>standard — published 2018-10, Edition 2; confirmed 2024; marked &quot;to be revised&quot; (90.92) 2025-09-26</td></tr><tr><td><strong>Authors</strong></td><td>ISO/IEC JTC 1/SC 27</td></tr><tr><td><strong>Published</strong></td><td>2018-10</td></tr><tr><td><strong>Identifier</strong></td><td>ISO/IEC 29147:2018 (replaces ISO/IEC 29147:2014)</td></tr><tr><td><strong>Source</strong></td><td>https://www.iso.org/standard/72311.html (catalogue; paywalled) — read via the free preview https://cdn.standards.iteh.ai/samples/72311/06fe3b1905aa4f3f8d9c5824ebc3c396/ISO-IEC-29147-2018.pdf</td></tr><tr><td><strong>Digest</strong></td><td><code>e433e9e17bf3aafd52542d58c0ddbe51e115455030aff72fd148e22c7d42a8c1</code> (13-page preview PDF, not the standard)</td></tr></tbody></table>
+<h2>Overview</h2>
+<p>The international standard for <strong>coordinated vulnerability disclosure</strong>: how a vendor receives reports of potential vulnerabilities from outside (reporters, coordinators) and publishes advisories and remediations to users. It defines the role vocabulary used everywhere since — vulnerability, disclosure, coordination, vendor, reporter, coordinator, remediation, advisory — and it is one half of a pair: it &quot;shall be used in conjunction with&quot; ISO/IEC 30111 (§5.3.1), which owns the vendor-internal triage, verification and remediation. Its own Scope makes it opt-in (&quot;vendors who choose to practice vulnerability disclosure&quot;); regulation such as the EU CRA (Annex I Part II) is what turns a disclosure policy into an obligation, and CRA-related standardisation builds on this pair.</p>
+<h2>Version and access verified (2026-10-02)</h2>
+<ul><li><strong>Current edition:</strong> 2018 (Edition 2). Per the iso.org catalogue page (https://www.iso.org/standard/72311.html, read through search-engine snapshots because iso.org returned HTTP 403 / a Cloudflare challenge to both curl and WebFetch): confirmed at stage 90.93 on 2024-05-03, then stage <strong>90.92 &quot;to be revised&quot;</strong> on 2025-09-26. <strong>Edition 3 is an Approved Work Item:</strong> ISO/IEC AWI 29147 &quot;Cybersecurity — Vulnerability disclosure processes&quot;, https://www.iso.org/standard/92945.html, stage 20.00, registered 2025-10-08.</li><li><strong>Not free.</strong> The ISO/ITTF Publicly Available Standards site (https://standards.iso.org/ittf/PubliclyAvailableStandards/index.html) is closed (&quot;now available at no charge on the ISO and IEC webstores&quot;). Wayback CDX shows only the <strong>2014</strong> edition (<code>c045170_ISO_IEC_29147_2014.zip</code>) was ever on that list; there is no entry for the 2018 edition (<code>c072311</code>). ISO OBP is a JavaScript app behind the same Cloudflare block.</li><li><strong>What we read:</strong> the free sample distributed by iTeh Standards (the sales platform of SIST, the Slovenian national standards body; not the ISO OBP preview) (13 PDF pages: Contents, Foreword, Introduction, Clauses 1–5.3.2 with Figure 1), captured to <code>.cache/iso-iec-29147-2018.md</code> and corrected against rendered page images. The ANSI webstore preview URL returned 403.</li></ul>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td>core</td><td>the reference vocabulary and process for vulnerability disclosure; cited by NIST SSDF RV.1, IEC 62443-4-1 DM, ISO/SAE 21434 bibliography [14], EU CRA practice</td></tr><tr><td>Cryptography</td><td>none</td><td>only mentions OpenPGP / S/MIME / TLS for secure communications</td></tr><tr><td>This project</td><td>adjacent</td><td>the response phase of an SDL (R-041), the verified/unverified acceptance gate (ARCH-0001 §4, R-042), mitigation-as-remediation (R-040, DEC-009), advisories as governed views (R-043), crosswalk rows 17–18 of MAP-0001 (R-044), Party roles (R-036)</td></tr></tbody></table>
+<h2>Implementations</h2>
+<p>Searched 2026-10-02 (from knowledge of the ecosystem, not a product survey).</p>
+<table><thead><tr><th>Name</th><th>Kind</th><th>License</th><th>URL</th></tr></thead><tbody><tr><td>OASIS CSAF 2.0 / 2.1 (successor of CVRF, cited in §4)</td><td>advisory format standard</td><td>OASIS IPR (open)</td><td>https://docs.oasis-open.org/csaf/csaf/v2.0/csaf-v2.0.html</td></tr><tr><td>Secvisogram (CSAF editor)</td><td>open source tool</td><td>see repo</td><td>https://github.com/secvisogram/secvisogram</td></tr><tr><td>csaf_distribution (BSI)</td><td>open source CSAF provider/aggregator</td><td>see repo</td><td>https://github.com/gocsaf/csaf</td></tr><tr><td>RFC 9116 security.txt</td><td>machine-readable disclosure-policy contact</td><td>IETF</td><td>https://www.rfc-editor.org/rfc/rfc9116</td></tr><tr><td>FIRST PSIRT Services Framework</td><td>practice framework (cited by 30111 [4])</td><td>FIRST</td><td>https://www.first.org/standards/frameworks/psirts/</td></tr></tbody></table>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata; <code>distillation</code> lists every artifact and its coverage</td></tr><tr><td><code>distilled/README.md</code></td><td>index of artifacts, coverage and what was not produced</td></tr><tr><td><code>distilled/normative.md</code></td><td>terms, scope, the 3 visible normative statements, Figure 1 context</td></tr><tr><td><code>distilled/requirements.yaml</code></td><td>3 requirements (preview only) with counts and reconciliation</td></tr><tr><td><code>distilled/protocol.yaml</code>, <code>protocol.md</code></td><td>reporter / vendor / coordinator / user protocol from Figure 1 + headings; Mermaid</td></tr><tr><td><code>distilled/messages.yaml</code></td><td>advisory (16 elements), report, policy (9 elements) — names from headings</td></tr><tr><td><code>distilled/object-model.yaml</code>, <code>object-model.md</code></td><td>object-model pass (20 objects, 19 edges)</td></tr><tr><td><code>distilled/design-notes.md</code></td><td>bearing on ARCH-0001 / R-036 / R-040–R-044 / DEC-009</td></tr></tbody></table>
+<h2>Limits</h2>
+<ul><li><strong>Coverage is the free preview only.</strong> Clauses 6 (receiving reports), 7 (advisories), 8 (coordination), 9 (policy) and Annexes A–D — where nearly every provision on vendors lives — were not read. The requirement set has 3 entries; the standard&#x27;s Annex D summarises far more. The status is <code>summarized</code>, not <code>distilled</code>, on purpose.</li><li>Advisory and policy &quot;fields&quot; are clause headings; their obligation level is known only at the §9.2/§9.3/§9.4 tier (required / recommended / optional).</li><li>No timings: 29147 itself may or may not set acknowledgement or embargo deadlines — not visible. Do not confuse with the CRA&#x27;s 24 h / 72 h / 14-day reporting clocks to CSIRTs/ENISA.</li><li>Revision in progress (AWI, stage 20.00): clause numbers may change in Edition 3.</li><li>Scope says &quot;communications (Annex B)&quot; while Annex B is titled &quot;Information to request in a report&quot; and example advisories are Annex C — a minor source inconsistency, noted not corrected.</li></ul>
+
+<footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
+</main>
+</body>
+</html>

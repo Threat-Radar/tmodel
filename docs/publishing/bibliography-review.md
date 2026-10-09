@@ -116,9 +116,19 @@ mechanically, so a reviewer still has to look at their topics:
    that load from another origin. Hyperlinks to sources are what a
    bibliography is for.
 
+## Record pages moved to the library (third pass)
+
+10. **A per-record page is an extraction artifact, not a site page.** It is
+    now built in the library, beside the `record.yaml` and `summary.md` it
+    comes from (library `bin/render-html`, untracked `summary.html`). It is
+    published here as a copy, not re-rendered. Rules 1–6 and 9 above are
+    enforced in library `bin/_record_html.py`. This file still explains why.
+    The bibliography views, the topic choice (rule 7), and the crosswalk stay
+    here, because they are this site's categorization.
+
 ## Re-run
 
 `python3 docs/publishing/render_bibliography.py --sync` after a library pin
-bump, then `python3 docs/publishing/render_bibliography.py` from the repo root.
-Output under `docs/bibliography/` is generated. Do not hand-edit it.
+bump, then `bin/publish-site` from the repo root.
+Output under `docs/bibliography/` and `docs/library/` is generated. Do not hand-edit it.
 `docs/.nojekyll` stays; pages have no scripts and no trackers.

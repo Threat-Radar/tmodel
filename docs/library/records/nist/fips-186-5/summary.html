@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Digital Signature Standard (DSS)</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 24px 64px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.15; letter-spacing: -0.03em; margin: 28px 0 8px; }
+h2 { font-size: 1.25rem; margin: 1.6em 0 0.4em; }
+h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
+.kicker { margin: 22px 0 0; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.6em 0 1em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 8px 10px; font-size: 0.95rem; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../../../../index.html">tmodel</a><nav aria-label="Site"><a href="../../../../index.html">Home</a><a href="../../../../bibliography/index.html" aria-current="page">Bibliography</a><a href="../../../../reports/index.html">Reports</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">Library record · fips-186-5</p>
+<h1>Digital Signature Standard (DSS)</h1>
+<p class="lede">FIPS 186-5</p>
+<p>
+  <span class="badge">spec</span>
+  <span class="badge">nist</span>
+  <span class="badge">summarized</span>
+  <span class="badge">high</span>
+</p>
+<p class="meta">Topic: <strong>nist-cryptography</strong> (<code>record.yaml</code> topic). Status <code>summarized</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-5.pdf">https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-5.pdf</a></li><li>Identifier URL: <a href="https://csrc.nist.gov/pubs/fips/186-5/final">https://csrc.nist.gov/pubs/fips/186-5/final</a></li><li>SHA-256: <code>fbb9c7c2ba442f03c57b63b43c888311903c9d0f29f89b06efdebd9b619140c5</code></li></ul>
+<h2>Specification</h2>
+<table><tbody><tr><td>Authors</td><td>National Institute of Standards and Technology</td></tr><tr><td>Date</td><td>2023-02-03</td></tr><tr><td>Publisher</td><td>NIST</td></tr><tr><td>Version</td><td>186-5</td></tr><tr><td>Maturity</td><td>standard</td></tr><tr><td>doi</td><td><a href="https://doi.org/10.6028/NIST.FIPS.186-5">10.6028/NIST.FIPS.186-5</a></td></tr><tr><td>nist</td><td>FIPS 186-5</td></tr><tr><td>Media type</td><td>application/pdf</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge core">core</span></td></tr><tr><td>This project</td><td><span class="badge adjacent">adjacent</span></td></tr></tbody></table><p class="meta">Ratings are the <code>applicability</code> map on <code>record.yaml</code>. A missing axis is not assessed — it is not <code>none</code>. The summary's Why column is not scraped; two summary dialects exist, and a blank template cell is not a judgement.</p>
+<h2>Tags</h2>
+<h3>Topic tags</h3><p><span class="badge">signatures</span> <span class="badge">key-management</span></p><p class="meta">Subject vocabulary and free tags. These are what the topic view and the tag crosswalk use.</p><h3>Body tags</h3><p><span class="badge">nist</span></p><p class="meta">Issuing-body names. Shown here, excluded from the topic view so it is not a second copy of the body index.</p><h3>Role tags</h3><p><span class="badge">normative</span></p><p class="meta">Why the record was kept (normative, prior-art, evidence, …). Not a subject.</p>
+<h2>Bears on</h2>
+<ul><li><code>R-M-02</code></li><li><code>R-O-05</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> Defines the signature schemes a key-centric model will actually use; supplies publisher test vectors for PROC-0002 stage 8.</p><p class="meta">Assessed 2026-09-22.</p>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> on this record only. Empty lists are omitted. These are not crosswalk edges and not a knowledge graph.</p><h3><code>supersedes</code></h3><ul><li><a class="rec" data-id="fips-186-4" href="../../nist/fips-186-4/summary.html">Digital Signature Standard (DSS), FIPS 186-4</a></li></ul><h3><code>see_also</code></h3><ul><li><a class="rec" data-id="sp-800-186" href="../../nist/sp-800-186/summary.html">Recommendations for Discrete Logarithm-based Cryptography: Elliptic Curve Domain Parameters</a></li></ul>
+
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited. The strip above is <code>record.yaml</code>. If they disagree, the record wins for type, tags, applicability ratings, and bears_on.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec</td></tr><tr><td><strong>Maturity</strong></td><td><code>standard</code> — a US Federal Information Processing Standard, approved by the Secretary of Commerce</td></tr><tr><td><strong>Authors</strong></td><td>NIST</td></tr><tr><td><strong>Published</strong></td><td>2023-02-03</td></tr><tr><td><strong>Identifier</strong></td><td>FIPS 186-5 · DOI 10.6028/NIST.FIPS.186-5</td></tr><tr><td><strong>Source</strong></td><td>https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-5.pdf</td></tr><tr><td><strong>Digest</strong></td><td><code>sha256:fbb9c7c2ba442f03c57b63b43c888311903c9d0f29f89b06efdebd9b619140c5</code></td></tr></tbody></table>
+<h2>Overview</h2>
+<p>Specifies the three digital signature schemes approved for US federal use: <strong>RSA</strong>, <strong>ECDSA</strong>, and — new in this revision — <strong>EdDSA</strong> (Ed25519 and Ed448). It defines key generation, signature generation and signature verification for each, and delegates elliptic curve domain parameters to SP 800-186.</p>
+<p>The consequential change from 186-4 is the retirement of <strong>DSA</strong>: it is retained <strong>only to verify existing signatures</strong> and is no longer approved for generating new ones. EdDSA&#x27;s addition is the practical counterpart — it brings deterministic, misuse-resistant Edwards-curve signatures into federal scope for the first time.</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td><code>core</code></td><td>Defines the signature schemes any key-centric model actually runs on</td></tr><tr><td>Cryptography</td><td><code>core</code></td><td>Normative for the primitives; we implement none of them ourselves</td></tr><tr><td>This project</td><td><code>adjacent</code></td><td><strong>Bears on no open <code>DEC-*</code>.</strong> ARCH-0001 NG3 defers the algorithm suite</td></tr></tbody></table>
+<p><code>bears_on: R-M-02</code> — a principal may be identified solely by key or key digest, which requires a defined key encoding. <code>R-O-05</code> — sign the canonical bytes; the scheme determines what &quot;signing&quot; means at the bottom of that stack.</p>
+<p><strong>Read this as the sponsor&#x27;s rule in <code>docs/scope.md</code> §1:</strong> the &quot;bears on a decision&quot; test is a prompt for judgement, not a gate. We implement cryptography, so this is core even though it settles no open decision.</p>
+<h2>Implementations</h2>
+<p>Searched <strong>2026-09-22</strong>.</p>
+<table><thead><tr><th>Name</th><th>Kind</th><th>License</th><th>URL</th></tr></thead><tbody><tr><td>OpenSSL</td><td>open source</td><td>Apache-2.0</td><td>https://openssl.org</td></tr><tr><td>libsodium</td><td>open source</td><td>ISC</td><td>https://libsodium.org — Ed25519</td></tr><tr><td>python-cryptography</td><td>open source</td><td>Apache-2.0 / BSD</td><td>https://cryptography.io</td></tr><tr><td>acvp-assay</td><td>open source</td><td>—</td><td>https://github.com/Govardhan527/acvp-assay — runs ACVP vectors against an implementation you cannot link against</td></tr><tr><td>CAVP/CMVP-validated HSMs</td><td>commercial</td><td>—</td><td>Thales, Entrust, AWS CloudHSM</td></tr></tbody></table>
+<p><strong>We use a vetted library. We do not implement these.</strong> <code>CLAUDE.md</code>: no generated cryptographic primitives.</p>
+<h2>Test vectors — the PROC-0002 stage 8 hook</h2>
+<p>NIST&#x27;s <strong>ACVP</strong> server publishes validation vectors covering <code>ECDSA sigGen FIPS186-5</code>, <code>DetECDSA sigGen FIPS186-5</code>, <code>ECDSA sigVer FIPS186-5</code> and <code>EdDSA sigGen 1.0</code>, spanning domain-parameter generation, key generation, signature generation and verification.</p>
+<p>This is the <strong>publisher source</strong> that PROC-0002 stage 8 requires: vectors come from the source or its publisher and are <strong>never generated</strong>. A self-generated vector proves only that the code agrees with itself. If a stage 8 implementation of FIPS 186-5 ships without ACVP vectors, that is a <strong>stage 10 failure</strong>.</p>
+<ul><li><code>usnistgov/ACVP</code> — protocol specification</li><li><code>usnistgov/ACVP-Server</code> — the server and its releases</li></ul>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata</td></tr><tr><td><code>summary.md</code></td><td>this document</td></tr></tbody></table>
+<p>No <code>distilled.md</code>. One is warranted only if we extract requirements from it — we currently do not, because we conform to no clause here. See <code>docs/requirements.md</code> §5.1.</p>
+<h2>Limits</h2>
+<ul><li><strong>It settles nothing in our architecture.</strong> It tells us which signature schemes exist and are approved, not which we should use — ARCH-0001 NG3 explicitly defers that, and this record must not be cited as having decided it.</li><li><strong>Classical only.</strong> Post-quantum signatures are FIPS 204 (ML-DSA) and FIPS 205 (SLH-DSA), separate records. FIPS 186-5 predates them and does not reference them; <strong>treating it as &quot;the signature standard&quot; in 2026 would be wrong.</strong></li><li><strong>Curve parameters are elsewhere</strong> — SP 800-186. Reading 186-5 alone will not tell you which curves are approved.</li><li><strong>Approval is jurisdictional, not a security argument.</strong> &quot;FIPS-approved&quot; describes US federal procurement scope, not a claim that these are the best available schemes.</li></ul>
+
+<footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
+</main>
+</body>
+</html>
