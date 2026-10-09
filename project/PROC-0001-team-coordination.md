@@ -77,7 +77,7 @@ Some work cannot run in parallel:
 
 ## 5. Faculty and sponsor
 
-- **Sponsor** (Paul Lambert) owns `spec/**` review via `CODEOWNERS` and is the
+- **Sponsor** (@nymble) owns `spec/**` review via `CODEOWNERS` and is the
   decision-maker on `DEC-*` (accepted only by an ADR).
-- **Faculty** (Prof. Haskell) advises and grades; keep the public repo legible
+- **Faculty** (@phaskell) advises and grades; keep the public repo legible
   for that.

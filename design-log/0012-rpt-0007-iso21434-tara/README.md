@@ -12,7 +12,7 @@ record: DL-0012
 
 # DL-0012: RPT-0007, ISO/SAE 21434 and TARA
 
-AI-assisted research record for #11 (per `CLAUDE.md`). Student: Tyler Van Heerden, working with Claude Code. First written as DL-0011; renumbered 0012 on 2026-10-03 because `main` now has DL-0011 (the composite risk vector entry, #77), and 0008 to 0010 were already taken. Open pull request #76 also uses 0011.
+AI-assisted research record for #11 (per `CLAUDE.md`). Student: @Clovier, working with Claude Code. First written as DL-0011; renumbered 0012 on 2026-10-03 because `main` now has DL-0011 (the composite risk vector entry, #77), and 0008 to 0010 were already taken. Open pull request #76 also uses 0011.
 
 ## Question asked
 

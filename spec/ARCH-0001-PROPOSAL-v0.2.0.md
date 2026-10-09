@@ -13,16 +13,16 @@ date: "2026-09-30"
 updated: "2026-10-08"
 decision_makers:
   - role: sponsor
-    id: paul-lambert
+    id: nymble
 reviewers:
   - role: sponsor-review
-    id: paul-lambert
+    id: nymble
   - role: adversarial-critic
     id: agent-iteration-2
   - role: adversarial-critic
     id: agent-iteration-3
   - role: sponsor-review
-    id: paul-lambert
+    id: nymble
     round: display-redundancy
   - role: research-analysis
     id: agent-iteration-5-frameworks
@@ -33,15 +33,15 @@ reviewers:
   - role: adversarial-critic
     id: agent-iteration-6
   - role: sponsor-review
-    id: paul-lambert
+    id: nymble
     round: lifecycle-parties-tara-schema
   - role: adversarial-critic
     id: agent-iteration-7
   - role: sponsor-review
-    id: paul-lambert
+    id: nymble
     round: composite-risk-vector
   - role: sponsor-review
-    id: paul-lambert
+    id: nymble
     round: sdl-conformance
 needs_review: true
 reviewed: false
@@ -593,4 +593,4 @@ single machine-readable encoding of ARCH-0001 §3. Why LinkML:
   property. The *logical* model and the *machine* schema are meant to iterate together.
 - **Scope/relationship:** LinkML is the **IDL** (DEC-002's schema-language half). The *interchange/
   export* formats (Turtle/JSON-LD/GraphML/CSV) are derived per ADR-0004, and the OTM semantic
-  round-trip remains the DEC-002 interchange test (#9). First cut is lane **#64** (Mai Li).
+  round-trip remains the DEC-002 interchange test (#9). First cut is lane **#64** (@Maimcghee).

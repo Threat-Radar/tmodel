@@ -15,7 +15,7 @@ authors:
     id: agent-sdl-object-model-synthesis
 decision_makers:
   - role: sponsor
-    id: paul-lambert
+    id: nymble
 reviewers:
   - role: adversarial-critic
     id: agent-sdl-object-model-review-2026-10-03

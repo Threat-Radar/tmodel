@@ -6,3 +6,6 @@ __pycache__/
 *~
 # a published site, once bin/build-site exists (BACKLOG T-006)
 site/
+# optional local override holding REAL NAMES for the publish guard; never commit
+# names to this repo (publishing/identities.yaml is github-ids-only).
+publishing/identities.local.yaml

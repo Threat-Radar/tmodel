@@ -12,12 +12,12 @@ date: "2026-10-01"
 updated: "2026-10-03"
 authors:
   - role: sponsor
-    id: paul-lambert
+    id: nymble
   - role: research
     id: multi-agent
 decision_makers:
   - role: sponsor
-    id: paul-lambert
+    id: nymble
 reviewers: []
 needs_review: true
 reviewed: false

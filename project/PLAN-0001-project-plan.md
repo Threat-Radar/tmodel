@@ -13,10 +13,10 @@ date: "2026-09-23"
 updated: "2026-10-08"
 authors:
   - role: sponsor
-    id: paul-lambert
+    id: nymble
 decision_makers:
   - role: sponsor
-    id: paul-lambert
+    id: nymble
 reviewers: []
 needs_review: true
 reviewed: false
@@ -35,7 +35,7 @@ agent_notes: >
 
 # Project plan — CS 490 Fall 2026
 
-**Sponsor / SR:** Paul Lambert (Threat-Radar) · **Students:** four, repo `admin` (roster: BACKLOG T-004) · **Faculty:** Prof. Paul Haskell
+**Sponsor / SR:** @nymble (Threat-Radar) · **Students:** four, repo `admin` (roster: BACKLOG T-004) · **Faculty:** @phaskell
 **Plan date:** 2026-09-23 · **Demo:** early December 2026 (CS 490 demo day; exact date TBD) · **Weeks remaining:** ~10
 **Architecture source of truth:** `ARCH-0001` v0.1.0 (every `DEC-*` open)
 
