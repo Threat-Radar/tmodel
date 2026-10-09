@@ -7,9 +7,9 @@ description: "The DEC-* register: status, what blocks on each, and the evidence 
 type: process
 category: process
 status: active
-version: "0.1.6"
+version: "0.1.7"
 date: "2026-09-23"
-updated: "2026-10-01"
+updated: "2026-10-08"
 needs_review: false
 reviewed: true
 canonical_path: project/DECISIONS-0001.md
@@ -26,15 +26,15 @@ Status: `open` · `researching` · `proposed` (an ADR is drafted) · `accepted`.
 | id | question | status | blocks | evidence |
 |---|---|---|---|---|
 | **DEC-001** | The core object model — first-class types and typed relations | open | I2, the schema, the UI | RPT-0001 §schemas/object-models |
-| **DEC-002** | Encoding/serialization; which existing formats we import (and export) | open | schema, vectors, MAP-* | RPT-0001 §schemas |
-| **DEC-003** | Risk-metric scheme: CVSS / custom / ISO 21434 / Common Criteria / composite | open | I4 risk, R-011…R-013 | RPT-0001 §risk metrics |
-| **DEC-004** | KG substrate — **RDF vs LPG implementation of the local working store** (narrowed by ADR-0004; logical model is edge-rich either way) | open | I3, R-018…R-021 | ADR-0004; RPT-0001 §schemas, library design |
+| **DEC-002** | Encoding/serialization; which existing formats we import (and export) | **accepted → ADR-0007** | schema, vectors, MAP-* | ADR-0007 (LinkML IDL; import OTM/STIX 2.1; export JSON-LD/Turtle/GraphML/CSV); RPT-0015 |
+| **DEC-003** | Risk-metric scheme: CVSS / custom / ISO 21434 / Common Criteria / composite | **accepted → ADR-0006** | I4 risk, R-011…R-013 | ADR-0006 (composite vector; 21434 Table-1; CC display-only); proposed.10/DL-0011 |
+| **DEC-004** | KG substrate — **RDF vs LPG implementation of the local working store** (narrowed by ADR-0004; logical model is edge-rich either way) | **accepted → ADR-0008** | I3, R-018…R-021 | ADR-0008 (Oxigraph embedded RDF, behind the ADR-0004 façade); #50 |
 | **DEC-005** | MVP scope — what the early-Dec demo demonstrates | **accepted → ADR-0002** | everything downstream | ADR-0002 (Option A, multi-product/≥2-domain) |
 | **DEC-006** | UI stack and interaction model for the graphical threat model | **accepted → ADR-0003** | I3 | ADR-0003 (Path A); RPT-0012, APP-0001 |
 | **DEC-007** | Relationship to `tradar`: reuse / wrap / greenfield | **accepted → ADR-0001** | I2, I3 | ADR-0001 (radar/tmodel split) |
 | **DEC-008** | CWE/NVD integration: live vs cached mirror; automation | open | I2, I4, R-010 | RPT-0001 §CWE/NVD |
 | **DEC-009** | Generic-threat → product / product-family mapping; mitigation lifecycle | open | I4, R-020, R-021 | RPT-0001, ARCH-0001 §7 |
-| **DEC-010** | Implementation stack & language for the application (GUI + backend + CLI) | **accepted → ADR-0003** | I3 build | ADR-0003 (Path A); RPT-0012, APP-0001 |
+| **DEC-010** | Implementation stack & language for the application (GUI + backend + CLI) | **accepted → ADR-0003 (+ ADR-0009)** | I3 build | ADR-0003 (Path A) + ADR-0009 (engine language split: Python brain + Rust store/hot-paths); RPT-0012, APP-0001 |
 | **DEC-011** | Storage & edge model — file canonical SoT, edge-rich logical invariant, local embedded working store, derived export | **accepted → ADR-0004** | I-App build; narrows DEC-004 | ADR-0004; #50 |
 
 ## Priority
@@ -49,4 +49,10 @@ behind adapters so slice work can start without pre-empting them.
 
 **Storage/edges pinned (2026-10-01):** DEC-011 accepted → ADR-0004 (file canonical SoT +
 edge-rich logical model + local embedded working store + derived export). This **narrows**
-DEC-004 to the working-store engine pick, which stays open.
+DEC-004 to the working-store engine pick.
+
+**Decision sweep (2026-10-08):** DEC-002 → ADR-0007 (LinkML IDL + committed interchange),
+DEC-003 → ADR-0006 (composite risk vector), DEC-004 → ADR-0008 (Oxigraph/RDF working store);
+DEC-010 refined by ADR-0009 (engine language split). **Still open:** DEC-001 (object model —
+gated on #104 Stage 2/3), DEC-008 (CWE/NVD — leaning cached mirror per A-043), DEC-009
+(threat→product / mitigation-lifecycle — depends on DEC-001).

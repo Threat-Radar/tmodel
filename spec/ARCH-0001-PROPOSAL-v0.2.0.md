@@ -7,10 +7,10 @@ description: "Iteration 5 of the DEC-001 object-model synthesis (#15), with the 
 type: architecture
 category: security
 status: proposed
-version: "0.2.0-proposed.11"
+version: "0.2.0-proposed.12"
 version_policy: "iterate the -proposed.N suffix; folds into ARCH-0001 §3/§4 (and an ADR accepts DEC-001)"
 date: "2026-09-30"
-updated: "2026-10-01"
+updated: "2026-10-08"
 decision_makers:
   - role: sponsor
     id: paul-lambert
@@ -76,7 +76,7 @@ overloading ISO S/F/O/P by stakeholder, downgraded the LinkML claims, unified ac
 softened the lifecycle "state machine", and **pushed Party/lifecycle/stakeholder-impact to
 post-MVP**. **proposed.10 folds a sponsor round (DL-0011):** risk is a **composite vector**
 (feasibility + impact + **mitigation status** + derived Risk), feasibility method stays ISO 21434
-Table-1 with **CC-style display only** (the ADR-0005 idea folded; DEC-003 not accepted here).
+Table-1 with **CC-style display only** (the composite-vector idea — **now accepted via ADR-0006**).
 **proposed.11 (iteration 8; DL-0012) folds the SDL round (DL-0009):** `Mitigation.kind` (R-040,
 MVP-adjacent), the **SDL/SecurityProgram** object with ordered/dated gates (R-041), **conformance
 validation** (R-042), **governed document-views** (R-043), and a **Requirement** object + the
@@ -86,10 +86,13 @@ library records are being ingested in parallel (RPT-0013/#67).
 covered · ✅\* proposed direction (accepted only via the gating DEC's ADR) · ◐ still open. **These
 are *proposed* requirements — several (R-023…R-039) are not yet in ARCH-0001 §4** (L13).
 
-> **Dependency note.** DEC-006/DEC-010 (the stack) are now **accepted — ADR-0003 (Path A)** — and
-> DEC-011 storage/edges is **accepted — ADR-0004**; DEC-004 (RDF vs LPG) is narrowed to the
-> working-store engine and still open. This proposal's §4 substrate-neutrality stands on the logical
-> model regardless of the DEC-004 pick.
+> **Dependency note (updated 2026-10-08).** The stack and data decisions this proposal leaned on are
+> now accepted: DEC-006/DEC-010 → **ADR-0003 (Path A)** with the engine split in **ADR-0009** (Python
+> brain + Rust store); DEC-011 → **ADR-0004**; and in the 2026-10-08 sweep **DEC-002 → ADR-0007**
+> (LinkML IDL + interchange), **DEC-003 → ADR-0006** (the composite risk vector in §3), **DEC-004 →
+> ADR-0008** (Oxigraph/RDF working store). This proposal's own subject — **DEC-001, the object model —
+> remains *proposed*** (gated on #104 Stage 2/3); §4 substrate-neutrality stands regardless. Where §3
+> states the risk metric, it is now ratified by ADR-0006.
 
 ## 0. One-artifact rule (F1) — how the layers relate
 
