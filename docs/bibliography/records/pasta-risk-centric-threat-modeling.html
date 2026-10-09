@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Risk Centric Threat Modeling: Process for Attack Simulation and Threat Analysis</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 24px 64px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.15; letter-spacing: -0.03em; margin: 28px 0 8px; }
+h2 { font-size: 1.25rem; margin: 1.6em 0 0.4em; }
+h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
+.kicker { margin: 22px 0 0; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.6em 0 1em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 8px 10px; font-size: 0.95rem; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<header><div class="bar"><a class="mark" href="../index.html">Bibliography</a><nav><a href="../../index.html">tmodel</a><a href="../index.html">Index</a><a href="../by-topic.html">Topic</a><a href="../by-type.html">Type</a><a href="../by-body.html">Issuing body</a><a href="../crosswalk.html">Crosswalk</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">WAVE 1 draft · pasta-risk-centric-threat-modeling</p>
+<h1>Risk Centric Threat Modeling: Process for Attack Simulation and Threat Analysis</h1>
+<p class="lede">PASTA</p>
+<p>
+  <span class="badge">book</span>
+  <span class="badge">academic</span>
+  <span class="badge">queued</span>
+  <span class="badge">low</span>
+</p>
+<p class="meta">Publish topic: <strong>threat-modeling</strong> (a tag already on the record; there is no topic field). Status <code>queued</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://onlinelibrary.wiley.com/doi/book/10.1002/9781118988374">https://onlinelibrary.wiley.com/doi/book/10.1002/9781118988374</a></li><li>Identifier URL: <a href="https://www.wiley.com/en-us/Risk+Centric+Threat+Modeling:+Process+for+Attack+Simulation+and+Threat+Analysis-p-9780470500965">https://www.wiley.com/en-us/Risk+Centric+Threat+Modeling:+Process+for+Attack+Simulation+and+Threat+Analysis-p-9780470500965</a></li><li>SHA-256: <span class="meta">not recorded</span></li></ul>
+<h2>Book</h2>
+<table><tbody><tr><td>Authors</td><td>Tony UcedaVélez, Marco M. Morana</td></tr><tr><td>Date</td><td>2015-05</td></tr><tr><td>Publisher</td><td>John Wiley &amp; Sons</td></tr><tr><td>doi</td><td><a href="https://doi.org/10.1002/9781118988374">10.1002/9781118988374</a></td></tr><tr><td>isbn</td><td>978-0-470-50096-5</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge not-assessed">not assessed</span></td></tr><tr><td>Cryptography</td><td><span class="badge not-assessed">not assessed</span></td></tr><tr><td>This project</td><td><span class="badge not-assessed">not assessed</span></td></tr></tbody></table><p class="meta">Ratings are the <code>applicability</code> map on <code>record.yaml</code>. A missing axis is not assessed — it is not <code>none</code>. The summary's Why column is not scraped; two summary dialects exist, and a blank template cell is not a judgement.</p>
+<h2>Tags</h2>
+<h3>Topic tags</h3><p><span class="badge">threat-modeling</span> <span class="badge">pasta</span> <span class="badge">risk-assessment</span></p><p class="meta">Subject vocabulary and free tags. These are what the topic view and the tag crosswalk use.</p><h3>Role tags</h3><p><span class="badge">method</span></p><p class="meta">Why the record was kept (normative, prior-art, evidence, …). Not a subject.</p>
+<h2>Bears on</h2>
+<ul><li><code>DEC-001</code></li><li><code>DEC-003</code></li><li><code>DEC-005</code></li></ul>
+
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> on this record only. Empty lists are omitted. These are not crosswalk edges and not a knowledge graph.</p><h3><code>see_also</code></h3><ul><li><a href="ucedavelez-pasta-owasp-2012.html">Real World Threat Modeling Using the PASTA Methodology</a></li></ul>
+
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited. The strip above is <code>record.yaml</code>. If they disagree, the record wins for type, tags, applicability ratings, and bears_on.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>book</td></tr><tr><td><strong>Maturity</strong></td><td>_unset — do not guess_</td></tr><tr><td><strong>Authors</strong></td><td>Tony UcedaVélez, Marco M. Morana</td></tr><tr><td><strong>Published</strong></td><td>John Wiley &amp; Sons, May 2015</td></tr><tr><td><strong>Identifier</strong></td><td>ISBN 978-0-470-50096-5; DOI 10.1002/9781118988374</td></tr><tr><td><strong>Source</strong></td><td>https://onlinelibrary.wiley.com/doi/book/10.1002/9781118988374</td></tr><tr><td><strong>Digest</strong></td><td><code>not fetched</code> (paywalled book)</td></tr></tbody></table>
+<h2>Overview</h2>
+<p>The full reference for <strong>PASTA</strong>, a seven-stage, risk-centric threat-modeling method created by UcedaVélez (SEI dates it to 2012). <strong>This book has not been read for this record</strong> — the summary is based on the publisher&#x27;s description, the SEI survey (<code>sei-threat-modeling-methods-2018</code>) and the author&#x27;s own slides (<code>ucedavelez-pasta-owasp-2012</code>). Per those sources, the book presents PASTA as a way to apply countermeasures in proportion to the business impact of threats, combining business objectives, application decomposition, threat intelligence, vulnerability analysis and attack modeling in one process, aimed at developers, architects, security professionals and managers.</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td>core</td><td>The main reference for a major threat-modeling method.</td></tr><tr><td>Cryptography</td><td>none</td><td>Not about cryptography.</td></tr><tr><td>This project</td><td>core</td><td>Source for RPT-0002 §3; relevant to risk (&quot;how bad&quot;) and to linking threats, weaknesses and attacks.</td></tr></tbody></table>
+<p>Bears on <strong>DEC-001</strong>, <strong>DEC-003</strong> and <strong>DEC-005</strong>.</p>
+<h2>Implementations</h2>
+<p>See <code>ucedavelez-pasta-owasp-2012</code> — no open-source PASTA tool found; searched 2026-09-29.</p>
+<table><thead><tr><th>Name</th><th>Kind</th><th>License</th><th>URL</th></tr></thead><tbody></tbody></table>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata</td></tr><tr><td><code>summary.md</code></td><td>this summary</td></tr></tbody></table>
+<h2>Limits</h2>
+<ul><li><strong>Not read.</strong> Paywalled; this record summarises secondary and author-slide sources only. Anything the report needs from the book (exact stage outputs, scoring) must be checked in a copy (e.g. through the university library).</li><li>Everything in <code>ucedavelez-pasta-owasp-2012</code>&#x27;s limits likely applies: heavy process, informal risk formula, web-application focus.</li></ul>
+
+<footer><p>Generated from <code>docs/publishing/bibliography.yaml</code> by <code>docs/publishing/render_bibliography.py</code>. Do not hand-edit. Static HTML, no scripts, no trackers. See <a href="../../publishing/bibliography-review.md">bibliography-review.md</a>.</p></footer>
+</main>
+</body>
+</html>

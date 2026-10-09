@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>BSIMM16 — Building Security In Maturity Model (Report 2026)</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 24px 64px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.15; letter-spacing: -0.03em; margin: 28px 0 8px; }
+h2 { font-size: 1.25rem; margin: 1.6em 0 0.4em; }
+h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
+.kicker { margin: 22px 0 0; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.6em 0 1em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 8px 10px; font-size: 0.95rem; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<header><div class="bar"><a class="mark" href="../index.html">Bibliography</a><nav><a href="../../index.html">tmodel</a><a href="../index.html">Index</a><a href="../by-topic.html">Topic</a><a href="../by-type.html">Type</a><a href="../by-body.html">Issuing body</a><a href="../crosswalk.html">Crosswalk</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">WAVE 1 draft · bsimm-16</p>
+<h1>BSIMM16 — Building Security In Maturity Model (Report 2026)</h1>
+<p class="lede">BSIMM16</p>
+<p>
+  <span class="badge">spec</span>
+  <span class="badge">vendor</span>
+  <span class="badge">distilled</span>
+  <span class="badge">medium</span>
+</p>
+<p class="meta">Publish topic: <strong>sdl</strong> (record.yaml topic). Status <code>distilled</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://www.blackduck.com/content/dam/black-duck/en-us/reports/bsimm-report.pdf">https://www.blackduck.com/content/dam/black-duck/en-us/reports/bsimm-report.pdf</a></li><li>Identifier URL: <a href="https://www.blackduck.com/resources/analyst-reports/bsimm.html">https://www.blackduck.com/resources/analyst-reports/bsimm.html</a></li><li>SHA-256: <code>d34e341f9b5c01d43db0978a53a418b24ff56b2d0cc0371127bde9313fc14dc2</code></li></ul>
+<h2>Specification</h2>
+<table><tbody><tr><td>Authors</td><td>Black Duck Software, Inc. (BSIMM team; no individual authors named)</td></tr><tr><td>Date</td><td>2026-01</td></tr><tr><td>Publisher</td><td>Black Duck Software, Inc.</td></tr><tr><td>Version</td><td>16</td></tr><tr><td>Maturity</td><td>informational</td></tr><tr><td>Pages</td><td>96</td></tr><tr><td>Media type</td><td>application/pdf</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge none">none</span></td></tr><tr><td>This project</td><td><span class="badge core">core</span></td></tr></tbody></table><p class="meta">Ratings are the <code>applicability</code> map on <code>record.yaml</code>. A missing axis is not assessed — it is not <code>none</code>. The summary's Why column is not scraped; two summary dialects exist, and a blank template cell is not a judgement.</p>
+<h2>Tags</h2>
+<h3>Topic tags</h3><p><span class="badge">sdl</span> <span class="badge">maturity-model</span> <span class="badge">supply-chain</span></p><p class="meta">Subject vocabulary and free tags. These are what the topic view and the tag crosswalk use.</p><h3>Role tags</h3><p><span class="badge">prior-art</span> <span class="badge">evidence</span></p><p class="meta">Why the record was kept (normative, prior-art, evidence, …). Not a subject.</p>
+<h2>Bears on</h2>
+<ul><li><code>R-041</code></li><li><code>R-042</code></li><li><code>R-044</code></li><li><code>R-040</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> Observational catalogue of 128 SDL activities with counts over 111 firms; gives the most concrete published vocabulary for SDL gates (checkpoint, release condition, exception, sign-off) and edition lineage needed for R-044 crosswalk ids.</p><p class="meta">Assessed 2026-10-02.</p>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> on this record only. Empty lists are omitted. These are not crosswalk edges and not a knowledge graph.</p><h3><code>see_also</code></h3><ul><li><a href="owasp-samm-2.html">OWASP SAMM 2.2</a></li><li><a href="sp-800-218.html">SSDF 1.1</a></li><li><a href="microsoft-sdl.html">Microsoft SDL (10 practices)</a></li><li><a href="safecode-fpssd-3.html">SAFECode FPSSD 3rd ed.</a></li><li><a href="owasp-dsomm.html">OWASP DSOMM</a></li></ul>
+<h2>Document cites</h2><p class="meta">From <code>cites</code>: what the document references. Fact about the source, not our crosswalk. Gaps stay gaps.</p><ul><li><a href="sp-800-218.html">SSDF 1.1</a></li><li><a href="eo-14028.html">EO 14028</a></li><li><a href="microsoft-sdl.html">Microsoft SDL (10 practices)</a></li><li>p.17 Figure 3 BSAFSS (BSA Framework for Secure Software) <span class="meta">cited, no library record</span></li><li>p.17 Figure 3 IEC 62443 (series) <span class="meta">cited, no library record</span></li><li>p.17 Figure 3 NIST SP 800-181 (NICE Framework) <span class="meta">cited, no library record</span></li><li>p.17 Figure 3 NIST SP 800-53 <span class="meta">cited, no library record</span></li><li><a href="sp-800-161r1.html">SP 800-161r1</a></li><li>p.17 Figure 3 PCI Secure SLC Standard <span class="meta">cited, no library record</span></li><li><a href="owasp-samm-2.html">OWASP SAMM 2.2</a></li><li>p.17 Figure 3 SCSIC (Software Supply Chain Integrity Controls) <span class="meta">cited, no library record</span></li><li>Table 9 / prior editions BSIMM1 .. BSIMM15 (earlier editions; not held) <span class="meta">cited, no library record</span></li></ul>
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited. The strip above is <code>record.yaml</code>. If they disagree, the record wins for type, tags, applicability ratings, and bears_on.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec (descriptive maturity model + annual observational report)</td></tr><tr><td><strong>Maturity</strong></td><td>informational — the report describes itself as &quot;a descriptive model&quot; whose &quot;only goal ... is to observe and report&quot; (p.47)</td></tr><tr><td><strong>Authors</strong></td><td>not named; Black Duck Software, Inc. (©2026); acknowledgements list ~170 data gatherers (p.33)</td></tr><tr><td><strong>Published</strong></td><td>report PDF created 2026-01-27; release announced 2026-02-04</td></tr><tr><td><strong>Identifier</strong></td><td>BSIMM16</td></tr><tr><td><strong>Source</strong></td><td>https://www.blackduck.com/content/dam/black-duck/en-us/reports/bsimm-report.pdf</td></tr><tr><td><strong>Digest</strong></td><td><code>d34e341f9b5c01d43db0978a53a418b24ff56b2d0cc0371127bde9313fc14dc2</code> (96 pp.)</td></tr><tr><td><strong>Licence</strong></td><td>&quot;THIS WORK IS LICENSED UNDER THE CREATIVE COMMONS Attribution-Share Alike 3.0 License&quot; (p.33) — CC BY-SA <strong>3.0</strong>, not 4.0</td></tr></tbody></table>
+<p><strong>Version verified 2026-10-02.</strong> Black Duck press release &quot;Black Duck Releases BSIMM16 ...&quot; (news.blackduck.com, 2026-02-04) and the BSIMM landing page (blackduck.com/resources/analyst-reports/bsimm.html) name BSIMM16 as current; no BSIMM17 found by web search. The PDF was obtained from the direct, un-gated URL above (no registration). BSIMM16 itself states &quot;For the first time, there have been no changes to the BSIMM framework this year&quot; (p.50), so the 128 activities equal BSIMM15&#x27;s.</p>
+<h2>Overview</h2>
+<p>BSIMM records which software-security activities real organizations perform, from in-person assessments of 111 firms (BSIMM16 data pool). Its framework has 4 domains, 12 practices and 128 activities; each activity&#x27;s level (1-3) says how commonly it is observed, not how advanced it is. Organizations use it to build a scorecard of their own software security initiative (SSI) and compare it with the pool. It frames activities as controls and publishes yearly trends (2026: AI/ML and regulation, SBOM growth driven by US self-attestation).</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td>core</td><td>The largest observational dataset of SDL practice; activity catalogue widely cited (SSDF references BSIMM in 39 of 42 tasks per Figure 3)</td></tr><tr><td>Cryptography</td><td>none</td><td>No cryptographic content</td></tr><tr><td>This project</td><td>core</td><td>Gate vocabulary for R-041 ([SM1.4]/[SM1.7]/[SM2.6]), crosswalk ids for R-044 (with edition lineage), observation-as-assertion for R-042</td></tr></tbody></table>
+<p>Bears on <strong>R-041, R-042, R-044</strong>, and R-040 (control kinds).</p>
+<h2>Structure</h2>
+<ul><li>Governance (SM 13, CP 11, T 12), Intelligence (AM 11, SFD 7, SR 11), SSDL Touchpoints (AA 9, CR 11, ST 10), Deployment (PT 7, SE 13, CMVM 13) = 128.</li><li>Level 1/2/3 = 40/41/47 activities. Most observed: CMVM1.1 (106/111), SM1.4 (100/111).</li><li>Part 3 maps SSDF tasks to BSIMM16 labels (Tables 3-4); names six AI/ML key activities (SR3.5, AM1.5, AM3.4, SFD3.1, SM3.5, CR1.5); describes SSI states emerging / maturing / enabling.</li></ul>
+<h2>How it relates to the others</h2>
+<ul><li><strong>NIST SSDF (<code>sp-800-218</code>)</strong>: SSDF cites BSIMM12 labels; BSIMM16 Table 3 translates 22 references (16 tasks) to BSIMM16 labels.</li><li><strong>OWASP SAMM (<code>owasp-samm-2</code>)</strong>: OWASP maps SAMM streams to BSIMM<strong>14</strong> activities; BSIMM is descriptive and pool-relative, SAMM a self-assessment ladder.</li><li><strong>Microsoft SDL (<code>microsoft-sdl</code>)</strong>: [SM1.1] names &quot;the NIST SSDF, Microsoft SDL, or Black Duck Touchpoints&quot; as methodologies firms tailor.</li><li><strong>SAFECode (<code>safecode-fpssd-3</code>)</strong>: no published mapping.</li></ul>
+<h2>Implementations</h2>
+<p>Searched 2026-10-02. BSIMM assessments are performed by Black Duck (the report&#x27;s in-person assessments, p.45); no open-source BSIMM assessment tool found. OWASP SAMM&#x27;s mapping spreadsheet provides a free SAMM↔BSIMM14 crosswalk.</p>
+<table><thead><tr><th>Name</th><th>Kind</th><th>License</th><th>URL</th></tr></thead><tbody><tr><td>BSIMM assessment</td><td>commercial service</td><td>proprietary</td><td>https://www.blackduck.com/resources/analyst-reports/bsimm.html</td></tr></tbody></table>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata, relations, distillation block</td></tr><tr><td><code>distilled/README.md</code></td><td>artifact index</td></tr><tr><td><code>distilled/normative.md</code></td><td>domains, practices, 128 activities verbatim</td></tr><tr><td><code>distilled/requirements.yaml</code></td><td>144 entries with observations, lineage, maps_to</td></tr><tr><td><code>distilled/schema/</code></td><td>derived JSON Schema</td></tr><tr><td><code>distilled/state-machine.yaml</code></td><td>SSI states; activity lifecycle in the model</td></tr><tr><td><code>distilled/examples/</code></td><td>scorecards and report tables as data</td></tr><tr><td><code>distilled/design-notes.md</code></td><td>bearing on R-040…R-044; source defects</td></tr><tr><td><code>distilled/object-model.yaml</code>, <code>object-model.md</code></td><td>object-model pass</td></tr></tbody></table>
+<h2>Limits</h2>
+<ul><li>Descriptive only: no requirement, no pass criterion, no evidence standard.</li><li>Organization-level, interview-based; nothing about a product&#x27;s threats.</li><li>Percentages are inconsistent in places (Table 1 uses 121 as denominator; SR2.2 and SE1.4 headings disagree with Figure 18) — use counts.</li><li>Chart data (verticals, longitudinal) is image-only and not extracted.</li><li>Activity labels change across editions; any crosswalk must be edition-qualified.</li></ul>
+
+<footer><p>Generated from <code>docs/publishing/bibliography.yaml</code> by <code>docs/publishing/render_bibliography.py</code>. Do not hand-edit. Static HTML, no scripts, no trackers. See <a href="../../publishing/bibliography-review.md">bibliography-review.md</a>.</p></footer>
+</main>
+</body>
+</html>

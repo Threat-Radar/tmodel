@@ -1,33 +1,18 @@
-# Live manifest for the WAVE 1 bibliography subset. Not the whole library.
+# Live manifest for the WAVE 1 bibliography: every library record.
+# Add new library records: python3 docs/publishing/render_bibliography.py --sync
+# (appends only; existing entries, and the topic a reviewer chose, never change).
 # Playbook: docs/publishing/SKILL.md
 # Categorization rules: docs/publishing/bibliography-review.md
 # Regenerate: python3 docs/publishing/render_bibliography.py
 schema: tmodel.publishing/v0
 id: pub-bibliography-wave1
-title: WAVE 1 bibliography, first pass
+title: WAVE 1 bibliography
 kind: site-page
 status: draft
 template: docs/publishing/render_bibliography.py
 source:
   wave: 1
   bibliography_issue: 91
-  record_ids:
-    - capec
-    - cwe
-    - bron
-    - stix-2-1
-    - osv-schema
-    - cve-json-5
-    - guac
-    - ntia-sbom-minimum-elements
-    - cisa-framing-software-component-transparency
-    - cyclonedx-1-7
-    - rfc-8949
-    - draft-ietf-vcon-vcon-core-04
-    - iso-sae-21434-2021
-    - fips-140-3
-    - prov-o
-    - nsf-okn-launch
 records:
   - id: capec
     type: dataset
@@ -77,6 +62,1200 @@ records:
   - id: nsf-okn-launch
     type: web
     topic: knowledge-graph
+  - id: brickell-2004-daa
+    type: paper
+    topic: device-attestation
+  - id: chung-2018-must-staple
+    type: paper
+    topic: namespace-governance
+  - id: cscw-2023-provenance-trust
+    type: paper
+    topic: predicate-rendering
+  - id: deng-linddun-2011
+    type: paper
+    topic: threat-modeling
+  - id: dennis-vanhorn-1966
+    type: paper
+    topic: capability-delegation
+  - id: diffie-hellman-1976
+    type: paper
+    topic: signature-foundations
+  - id: elgamal-1985
+    type: paper
+    topic: signature-foundations
+  - id: ellison-schneier-2000-ten-risks
+    type: paper
+    topic: uptake-failure
+  - id: gittuf-2025
+    type: paper
+    topic: supply-chain-attestation
+  - id: gmr-1984-paradoxical
+    type: paper
+    topic: signature-foundations
+  - id: gmr-1988-adaptive
+    type: paper
+    topic: signature-foundations
+  - id: gmy-1983-strong-signatures
+    type: paper
+    topic: signature-foundations
+  - id: gutmann-2002-pki-not-dead
+    type: paper
+    topic: uptake-failure
+  - id: gvu-1998-webmaster-survey
+    type: dataset
+    topic: uptake-failure
+  - id: hardy-1988-confused-deputy
+    type: paper
+    topic: capability-delegation
+  - id: hogan-kg-survey
+    type: paper
+    topic: survey
+  - id: ide-2025-signals-of-provenance
+    type: paper
+    topic: predicate-rendering
+  - id: in-toto-2019
+    type: paper
+    topic: supply-chain-attestation
+  - id: kitchenham-charters-2007
+    type: paper
+    topic: library-construction
+  - id: lamport-1979-one-way
+    type: paper
+    topic: signature-foundations
+  - id: larisch-2017-crlite
+    type: paper
+    topic: namespace-governance
+  - id: linddun-org
+    type: web
+    topic: threat-modeling
+  - id: liu-2015-revocation
+    type: paper
+    topic: namespace-governance
+  - id: llm-programmatic-dual-use
+    type: paper
+    topic: sagai
+  - id: macaroons-2014
+    type: paper
+    topic: capability-delegation
+  - id: merkle-1979-thesis
+    type: paper
+    topic: signature-foundations
+  - id: merkle-1980-protocols
+    type: paper
+    topic: signature-foundations
+  - id: merkle-1989-certified
+    type: paper
+    topic: signature-foundations
+  - id: moruzzi-2025-content-authenticities
+    type: paper
+    topic: predicate-rendering
+  - id: mulval
+    type: paper
+    topic: mulval
+  - id: ohm-2020-backstabbers
+    type: paper
+    topic: supply-chain-attestation
+  - id: pasta-risk-centric-threat-modeling
+    type: book
+    topic: threat-modeling
+  - id: prakash-2026-aip
+    type: paper
+    topic: capability-delegation
+  - id: pretrained-encoders-secure-learning
+    type: paper
+    topic: sagai
+  - id: prisma-2020
+    type: paper
+    topic: library-construction
+  - id: psscrm-v1
+    type: paper
+    topic: uptake-failure
+  - id: rabin-1979-tr212
+    type: paper
+    topic: signature-foundations
+  - id: rsa-1978
+    type: paper
+    topic: signature-foundations
+  - id: sagai-workshop
+    type: hierarchy
+    topic: sagai
+  - id: schnorr-1989-smartcards
+    type: paper
+    topic: signature-foundations
+  - id: schnorr-1991-jcryptology
+    type: paper
+    topic: signature-foundations
+  - id: sdsi-1-1
+    type: spec
+    topic: namespace-governance
+  - id: securechain-okn
+    type: web
+    topic: supply-chain
+  - id: sei-octave-allegro-2007
+    type: paper
+    topic: threat-modeling
+  - id: sei-threat-modeling-methods-2018
+    type: paper
+    topic: threat-modeling
+  - id: sev-snp-primer-2026
+    type: paper
+    topic: device-attestation
+  - id: shor-1994
+    type: paper
+    topic: post-quantum-migration
+  - id: shor-1997
+    type: paper
+    topic: post-quantum-migration
+  - id: sigstore-2022
+    type: paper
+    topic: supply-chain-attestation
+  - id: spml-image-prompt-injection
+    type: paper
+    topic: sagai
+  - id: spotlighting-indirect-prompt-injection
+    type: paper
+    topic: sagai
+  - id: sudokn-okn
+    type: web
+    topic: supply-chain
+  - id: survey-2026-nameconstraints-measurement
+    type: dataset
+    topic: namespace-governance
+  - id: systems-security-agentic-computing
+    type: paper
+    topic: sagai
+  - id: tuf-2010
+    type: paper
+    topic: supply-chain-attestation
+  - id: ulrich-2011-openpgp-wot
+    type: paper
+    topic: uptake-failure
+  - id: unifying-llm-kg
+    type: paper
+    topic: llm
+  - id: veski-2026-capmas
+    type: paper
+    topic: capability-delegation
+  - id: vu-2020-typosquatting
+    type: paper
+    topic: supply-chain-attestation
+  - id: wang-2006-reducing-spki
+    type: paper
+    topic: uptake-failure
+  - id: wohlin-2014-snowballing
+    type: paper
+    topic: library-construction
+  - id: zhang-2014-heartbleed
+    type: paper
+    topic: namespace-governance
+  - id: c2pa-2-4
+    type: spec
+    topic: predicate-rendering
+  - id: c2pa-conformance-program
+    type: web
+    topic: predicate-rendering
+  - id: c2pa-ux-2-2
+    type: spec
+    topic: predicate-rendering
+  - id: biscuit-spec-3-3
+    type: spec
+    topic: capability-delegation
+  - id: cawg-identity-1-2
+    type: spec
+    topic: predicate-rendering
+  - id: cis-safecode-sbd-assessment-1-1
+    type: spec
+    topic: sdl
+  - id: cncf-supply-chain-best-practices-v2
+    type: paper
+    topic: sdl
+  - id: csa-maestro-2025
+    type: web
+    topic: threat-modeling
+  - id: cytoscape-js
+    type: repo
+    topic: rpt-0006-knowledge-graph-visualization
+  - id: d3-js
+    type: repo
+    topic: rpt-0006-knowledge-graph-visualization
+  - id: did-key-method
+    type: spec
+    topic: namespace-governance
+  - id: draft-mcnally-deterministic-cbor
+    type: draft
+    topic: canonical-encoding
+  - id: event-stream-issue-116
+    type: web
+    topic: supply-chain-attestation
+  - id: first-cvss
+    type: spec
+    topic: ~  # no topic tag on the record yet
+  - id: first-cvss-v3-1
+    type: spec
+    topic: cvss
+  - id: first-cvss-v4-0
+    type: spec
+    topic: cvss
+  - id: freund-2024-xz
+    type: web
+    topic: supply-chain-attestation
+  - id: gephi
+    type: repo
+    topic: rpt-0006-knowledge-graph-visualization
+  - id: ghsa-event-stream
+    type: web
+    topic: supply-chain-attestation
+  - id: gnupg-key-management
+    type: web
+    topic: namespace-governance
+  - id: in-toto-attestation-v1
+    type: spec
+    topic: artifact-statements
+  - id: in-toto-envelope-v1
+    type: spec
+    topic: post-quantum-migration
+  - id: keys-openpgp-org-faq
+    type: web
+    topic: uptake-failure
+  - id: kuzu
+    type: repo
+    topic: rpt-0006-knowledge-graph-visualization
+  - id: kuzu-explorer
+    type: repo
+    topic: rpt-0006-knowledge-graph-visualization
+  - id: linkml
+    type: repo
+    topic: linkml
+  - id: mcp-okn
+    type: repo
+    topic: okn
+  - id: owasp-asvs-5
+    type: spec
+    topic: sdl
+  - id: owasp-dsomm
+    type: spec
+    topic: sdl
+  - id: owasp-pytm
+    type: repo
+    topic: rpt-0003-threat-modeling-products
+  - id: owasp-samm-2
+    type: spec
+    topic: sdl
+  - id: owasp-threat-dragon
+    type: repo
+    topic: rpt-0003-threat-modeling-products
+  - id: owasp-threat-dragon-guide
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: owasp-threat-model-library
+    type: repo
+    topic: rpt-0003-threat-modeling-products
+  - id: pypi-trusted-publishers
+    type: web
+    topic: supply-chain-attestation
+  - id: safecode-fpssd-3
+    type: spec
+    topic: sdl
+  - id: secure-systems-lab-dsse
+    type: repo
+    topic: canonical-encoding
+  - id: sigma-js
+    type: repo
+    topic: rpt-0006-knowledge-graph-visualization
+  - id: sigstore-threat-model
+    type: web
+    topic: supply-chain-attestation
+  - id: slsa-2026-mini-shai-hulud
+    type: web
+    topic: supply-chain-attestation
+  - id: spdx-3-0-1
+    type: spec
+    topic: sbom
+  - id: threagile
+    type: repo
+    topic: rpt-0003-threat-modeling-products
+  - id: threat-dragon-tmf-format
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: trike-v1-2005
+    type: paper
+    topic: threat-modeling
+  - id: tuf-spec
+    type: spec
+    topic: supply-chain-attestation
+  - id: tuf-tap-21
+    type: spec
+    topic: post-quantum-migration
+  - id: tukaani-xz-backdoor
+    type: web
+    topic: supply-chain-attestation
+  - id: ucan-1-0
+    type: spec
+    topic: capability-delegation
+  - id: ucedavelez-pasta-owasp-2012
+    type: web
+    topic: threat-modeling
+  - id: zcap-ld
+    type: spec
+    topic: capability-delegation
+  - id: android-key-attestation
+    type: web
+    topic: device-attestation
+  - id: google-2016-wosign
+    type: web
+    topic: namespace-governance
+  - id: google-2017-symantec
+    type: web
+    topic: namespace-governance
+  - id: google-open-dice
+    type: spec
+    topic: device-attestation
+  - id: draft-asor-wimse-agent-delegation-chain
+    type: draft
+    topic: capability-delegation
+  - id: draft-ffm-rats-cca-token
+    type: draft
+    topic: device-attestation
+  - id: draft-hamr-oauth-agent-delegation
+    type: draft
+    topic: capability-delegation
+  - id: draft-ietf-cbor-cddl-modules
+    type: draft
+    topic: cbor-implementation
+  - id: draft-ietf-cbor-cde
+    type: draft
+    topic: canonical-encoding
+  - id: draft-ietf-cbor-edn-literals
+    type: draft
+    topic: cbor-implementation
+  - id: draft-ietf-cbor-packed
+    type: draft
+    topic: cbor-implementation
+  - id: draft-ietf-cbor-serialization
+    type: draft
+    topic: canonical-encoding
+  - id: draft-ietf-lamps-pq-composite-sigs
+    type: draft
+    topic: post-quantum-migration
+  - id: draft-ietf-rats-corim
+    type: draft
+    topic: device-attestation
+  - id: draft-ietf-scitt-scrapi
+    type: draft
+    topic: supply-chain-attestation
+  - id: draft-ietf-spki-cert-structure
+    type: draft
+    topic: namespace-governance
+  - id: draft-mih-scitt-agent-action-capsule
+    type: draft
+    topic: predicate-rendering
+  - id: draft-niyikiza-oauth-attenuating-agent-tokens
+    type: draft
+    topic: capability-delegation
+  - id: ietf-cbor-wg
+    type: consortium
+    topic: cbor-ecosystem
+  - id: ietf-cose-wg
+    type: consortium
+    topic: cbor-ecosystem
+  - id: ietf-spki-wg
+    type: web
+    topic: uptake-failure
+  - id: ietf-vcon-wg
+    type: web
+    topic: artifact-statements
+  - id: rfc-1422
+    type: rfc
+    topic: namespace-governance
+  - id: rfc-1952
+    type: rfc
+    topic: artifact-statements
+  - id: rfc-2692
+    type: rfc
+    topic: authorization-reduction
+  - id: rfc-2693
+    type: rfc
+    topic: authorization-reduction
+  - id: rfc-3280
+    type: rfc
+    topic: namespace-governance
+  - id: rfc-3339
+    type: rfc
+    topic: artifact-statements
+  - id: rfc-3820
+    type: rfc
+    topic: authorization-reduction
+  - id: rfc-3966
+    type: rfc
+    topic: artifact-statements
+  - id: rfc-4119
+    type: rfc
+    topic: artifact-statements
+  - id: rfc-4122
+    type: rfc
+    topic: artifact-statements
+  - id: rfc-4880
+    type: rfc
+    topic: namespace-governance
+  - id: rfc-5280
+    type: rfc
+    topic: namespace-governance
+  - id: rfc-5321
+    type: rfc
+    topic: artifact-statements
+  - id: rfc-5914
+    type: rfc
+    topic: namespace-governance
+  - id: rfc-5937
+    type: rfc
+    topic: namespace-governance
+  - id: rfc-6068
+    type: rfc
+    topic: artifact-statements
+  - id: rfc-6749
+    type: rfc
+    topic: capability-delegation
+  - id: rfc-6750
+    type: rfc
+    topic: capability-delegation
+  - id: rfc-6818
+    type: rfc
+    topic: namespace-governance
+  - id: rfc-6960
+    type: rfc
+    topic: namespace-governance
+  - id: rfc-6962
+    type: rfc
+    topic: namespace-governance
+  - id: rfc-7049
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-7515
+    type: rfc
+    topic: artifact-statements
+  - id: rfc-7516
+    type: rfc
+    topic: artifact-statements
+  - id: rfc-7633
+    type: rfc
+    topic: namespace-governance
+  - id: rfc-7800
+    type: rfc
+    topic: capability-delegation
+  - id: rfc-8032
+    type: rfc
+    topic: signature-foundations
+  - id: rfc-8152
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-8230
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-8259
+    type: rfc
+    topic: artifact-statements
+  - id: rfc-8391
+    type: rfc
+    topic: post-quantum-migration
+  - id: rfc-8392
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-8550
+    type: rfc
+    topic: namespace-governance
+  - id: rfc-8551
+    type: rfc
+    topic: namespace-governance
+  - id: rfc-8554
+    type: rfc
+    topic: post-quantum-migration
+  - id: rfc-8555
+    type: rfc
+    topic: uptake-failure
+  - id: rfc-8610
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-8620
+    type: rfc
+    topic: artifact-statements
+  - id: rfc-8742
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-8746
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-8747
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-8769
+    type: rfc
+    topic: cbor-ecosystem
+  - id: rfc-8778
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-8812
+    type: rfc
+    topic: cbor-ecosystem
+  - id: rfc-8943
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-9021
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-9052
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-9053
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-9054
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-9068
+    type: rfc
+    topic: capability-delegation
+  - id: rfc-9090
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-9110
+    type: rfc
+    topic: artifact-statements
+  - id: rfc-9162
+    type: rfc
+    topic: namespace-governance
+  - id: rfc-9164
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-9165
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-9254
+    type: rfc
+    topic: cbor-ecosystem
+  - id: rfc-9277
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-9334
+    type: rfc
+    topic: device-attestation
+  - id: rfc-9338
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-9360
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-9396
+    type: rfc
+    topic: capability-delegation
+  - id: rfc-9421
+    type: rfc
+    topic: capability-delegation
+  - id: rfc-9449
+    type: rfc
+    topic: capability-delegation
+  - id: rfc-9459
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-9528
+    type: rfc
+    topic: cbor-ecosystem
+  - id: rfc-9529
+    type: rfc
+    topic: cbor-ecosystem
+  - id: rfc-9549
+    type: rfc
+    topic: namespace-governance
+  - id: rfc-9580
+    type: rfc
+    topic: namespace-governance
+  - id: rfc-9581
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-9596
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-9597
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-9598
+    type: rfc
+    topic: namespace-governance
+  - id: rfc-9608
+    type: rfc
+    topic: namespace-governance
+  - id: rfc-9618
+    type: rfc
+    topic: namespace-governance
+  - id: rfc-9668
+    type: rfc
+    topic: cbor-ecosystem
+  - id: rfc-9679
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-9682
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-9711
+    type: rfc
+    topic: device-attestation
+  - id: rfc-9741
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-9781
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-9804
+    type: rfc
+    topic: canonical-encoding
+  - id: rfc-9864
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-9921
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-9942
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-9943
+    type: rfc
+    topic: artifact-statements
+  - id: rfc-9964
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-9995
+    type: rfc
+    topic: cbor-implementation
+  - id: rfc-9997
+    type: rfc
+    topic: cbor-ecosystem
+  - id: iana-cbor-simple-values
+    type: dataset
+    topic: cbor-ecosystem
+  - id: iana-cbor-tags
+    type: dataset
+    topic: cbor-ecosystem
+  - id: iana-cose-algorithms
+    type: dataset
+    topic: namespace-governance
+  - id: iec-62443-4-1-2018
+    type: spec
+    topic: sdl
+  - id: iec-81001-5-1-2021
+    type: spec
+    topic: sdl
+  - id: iso-24089-2023
+    type: spec
+    topic: automotive
+  - id: iso-26262-3-2018
+    type: spec
+    topic: ~  # no topic tag on the record yet
+  - id: iso-iec-11889-2015
+    type: spec
+    topic: device-attestation
+  - id: iso-iec-15408
+    type: spec
+    topic: ~  # no topic tag on the record yet
+  - id: iso-iec-18045
+    type: spec
+    topic: ~  # no topic tag on the record yet
+  - id: iso-iec-19790
+    type: spec
+    topic: ~  # no topic tag on the record yet
+  - id: iso-iec-24759
+    type: spec
+    topic: ~  # no topic tag on the record yet
+  - id: iso-iec-27034-1
+    type: spec
+    topic: sdl
+  - id: iso-iec-29100-2024
+    type: spec
+    topic: privacy
+  - id: iso-iec-29147-2018
+    type: spec
+    topic: sdl
+  - id: iso-iec-30111-2019
+    type: spec
+    topic: sdl
+  - id: iso-iec-5962
+    type: spec
+    topic: supply-chain-attestation
+  - id: iso-iec-5962-2021
+    type: spec
+    topic: sbom
+  - id: iso-pas-5112-2022
+    type: spec
+    topic: automotive
+  - id: iso-sae-pas-8475
+    type: spec
+    topic: automotive
+  - id: iso-sae-tr-8477
+    type: spec
+    topic: automotive
+  - id: itu-x509
+    type: spec
+    topic: namespace-governance
+  - id: itu-x509-1988
+    type: spec
+    topic: namespace-governance
+  - id: cve-2024-3094
+    type: dataset
+    topic: supply-chain-attestation
+  - id: fips-140-2
+    type: spec
+    topic: ~  # no topic tag on the record yet
+  - id: fips-180-4
+    type: spec
+    topic: nist-cryptography
+  - id: fips-186
+    type: spec
+    topic: signature-foundations
+  - id: fips-186-1
+    type: spec
+    topic: signature-foundations
+  - id: fips-186-2
+    type: spec
+    topic: signature-foundations
+  - id: fips-186-3
+    type: spec
+    topic: signature-foundations
+  - id: fips-186-4
+    type: spec
+    topic: nist-cryptography
+  - id: fips-186-5
+    type: spec
+    topic: nist-cryptography
+  - id: fips-202
+    type: spec
+    topic: nist-cryptography
+  - id: fips-203
+    type: spec
+    topic: nist-cryptography
+  - id: fips-204
+    type: spec
+    topic: post-quantum-migration
+  - id: fips-205
+    type: spec
+    topic: post-quantum-migration
+  - id: nist-sp-800-140
+    type: spec
+    topic: sp-800-140
+  - id: nist-sp-800-140a
+    type: spec
+    topic: sp-800-140
+  - id: nist-sp-800-140b
+    type: spec
+    topic: sp-800-140
+  - id: nist-sp-800-140c
+    type: spec
+    topic: sp-800-140
+  - id: nist-sp-800-140d
+    type: spec
+    topic: sp-800-140
+  - id: nist-sp-800-140e
+    type: spec
+    topic: sp-800-140
+  - id: nist-sp-800-140f
+    type: spec
+    topic: sp-800-140
+  - id: nist-sp-800-160
+    type: spec
+    topic: ~  # no topic tag on the record yet
+  - id: nistir-8547
+    type: spec
+    topic: post-quantum-migration
+  - id: nistir-8610
+    type: spec
+    topic: post-quantum-migration
+  - id: sp-1800-38
+    type: spec
+    topic: post-quantum-migration
+  - id: sp-800-161r1
+    type: spec
+    topic: sbom
+  - id: sp-800-186
+    type: spec
+    topic: nist-cryptography
+  - id: sp-800-204d
+    type: spec
+    topic: sdl
+  - id: sp-800-208
+    type: spec
+    topic: nist-cryptography
+  - id: sp-800-218
+    type: spec
+    topic: supply-chain-attestation
+  - id: sp-800-218a
+    type: spec
+    topic: sdl
+  - id: sp-800-218r1
+    type: spec
+    topic: sdl
+  - id: sp-800-53r5
+    type: spec
+    topic: sdl
+  - id: sp-800-57pt1r5
+    type: spec
+    topic: nist-cryptography
+  - id: openssf-concise-guide-secure-software
+    type: web
+    topic: sdl
+  - id: openssf-osps-baseline
+    type: spec
+    topic: sdl
+  - id: openssf-scorecard-checks
+    type: web
+    topic: sdl
+  - id: slsa-1-2
+    type: spec
+    topic: supply-chain-attestation
+  - id: cabforum-sc063
+    type: web
+    topic: namespace-governance
+  - id: cabforum-smime-br
+    type: spec
+    topic: namespace-governance
+  - id: cabforum-tls-br
+    type: spec
+    topic: namespace-governance
+  - id: ccadb
+    type: dataset
+    topic: namespace-governance
+  - id: cox-2024-xz-timeline
+    type: web
+    topic: supply-chain-attestation
+  - id: d3fend
+    type: spec
+    topic: d3fend
+  - id: ecma-424
+    type: spec
+    topic: supply-chain-attestation
+  - id: eff-2010-ssliverse
+    type: paper
+    topic: namespace-governance
+  - id: etsi-en-304-223
+    type: spec
+    topic: sagai
+  - id: etsi-ts-102-165-1
+    type: spec
+    topic: ~  # no topic tag on the record yet
+  - id: etsi-ts-104-219
+    type: spec
+    topic: sdl
+  - id: evita-d2-3
+    type: paper
+    topic: automotive
+  - id: foxit-2012-black-tulip
+    type: article
+    topic: namespace-governance
+  - id: frink-fabric
+    type: repo
+    topic: provenance
+  - id: go-nameconstraint-cves
+    type: dataset
+    topic: namespace-governance
+  - id: golang-61963
+    type: web
+    topic: namespace-governance
+  - id: graphrag-ms
+    type: repo
+    topic: graphrag
+  - id: langley-2011-revocation
+    type: web
+    topic: namespace-governance
+  - id: langley-2014-revchecking
+    type: web
+    topic: namespace-governance
+  - id: letsencrypt-ocsp-eol
+    type: web
+    topic: namespace-governance
+  - id: mitre-attack
+    type: dataset
+    topic: attack
+  - id: mitre-attack-design-philosophy
+    type: paper
+    topic: threat-modeling
+  - id: nsf-23-571
+    type: web
+    topic: provenance
+  - id: okn-roadmap-2022
+    type: web
+    topic: nsf
+  - id: openssl-2022-email-overflow
+    type: web
+    topic: namespace-governance
+  - id: pci-secure-slc-2
+    type: spec
+    topic: sdl
+  - id: sae-j3061
+    type: spec
+    topic: ~  # no topic tag on the record yet
+  - id: schneier-attack-trees-1999
+    type: article
+    topic: threat-modeling
+  - id: solarwinds-8k
+    type: web
+    topic: supply-chain-attestation
+  - id: tcg-dice-cert-profiles
+    type: spec
+    topic: device-attestation
+  - id: tcg-dice-hw-requirements
+    type: spec
+    topic: device-attestation
+  - id: tcg-dice-implicit-identity
+    type: spec
+    topic: device-attestation
+  - id: tcg-dice-layering
+    type: spec
+    topic: device-attestation
+  - id: tcg-dice-symmetric
+    type: spec
+    topic: device-attestation
+  - id: tcg-integrity-event-log
+    type: spec
+    topic: device-attestation
+  - id: tcg-pc-client-pfp
+    type: spec
+    topic: device-attestation
+  - id: tcg-pc-client-ptp
+    type: spec
+    topic: device-attestation
+  - id: tcg-tpm-1-2-main
+    type: spec
+    topic: device-attestation
+  - id: tcg-tpm-2-0-library-184
+    type: spec
+    topic: device-attestation
+  - id: tcg-tpm-2-0-library-185
+    type: spec
+    topic: post-quantum-migration
+  - id: tcg-tpm2-keys-device-identity
+    type: spec
+    topic: device-attestation
+  - id: zooko-2001-names
+    type: article
+    topic: namespace-governance
+  - id: bsi-tr-03183-1
+    type: spec
+    topic: sdl
+  - id: bsi-tr-03185
+    type: spec
+    topic: sdl
+  - id: ca-sb-942
+    type: spec
+    topic: uptake-failure
+  - id: cisa-2026-sbom-minimum
+    type: spec
+    topic: supply-chain-attestation
+  - id: cisa-ai-in-ot-principles
+    type: spec
+    topic: sagai
+  - id: cisa-ed-21-01
+    type: web
+    topic: supply-chain-attestation
+  - id: cisa-secure-by-demand-guide-2024
+    type: spec
+    topic: sdl
+  - id: cisa-secure-by-demand-ot-2025
+    type: spec
+    topic: sdl
+  - id: cisa-secure-by-design-2023
+    type: spec
+    topic: sdl
+  - id: cisa-secure-by-design-pledge-2024
+    type: spec
+    topic: sdl
+  - id: cisa-ssdf-attestation-form-2024
+    type: spec
+    topic: sdl
+  - id: cnsa-2-0
+    type: spec
+    topic: post-quantum-migration
+  - id: enisa-sbd-playbook-2026
+    type: spec
+    topic: sdl
+  - id: eo-14028
+    type: spec
+    topic: supply-chain-attestation
+  - id: eo-14144
+    type: spec
+    topic: supply-chain-attestation
+  - id: eo-14306
+    type: spec
+    topic: supply-chain-attestation
+  - id: esf-sscs-developers-2022
+    type: spec
+    topic: sdl
+  - id: eu-ai-act-art-50
+    type: spec
+    topic: uptake-failure
+  - id: eu-code-of-practice-marking
+    type: web
+    topic: uptake-failure
+  - id: eu-cra-2024-2847
+    type: spec
+    topic: supply-chain-attestation
+  - id: fda-premarket-cybersecurity-guidance
+    type: spec
+    topic: sdl
+  - id: nsa-2025-content-credentials
+    type: paper
+    topic: predicate-rendering
+  - id: ntia-2021-sbom-minimum
+    type: spec
+    topic: supply-chain-attestation
+  - id: omb-m-22-18
+    type: spec
+    topic: sdl
+  - id: omb-m-23-16
+    type: spec
+    topic: sdl
+  - id: omb-m-26-05
+    type: spec
+    topic: sdl
+  - id: uk-software-security-code-of-practice
+    type: spec
+    topic: sdl
+  - id: aclu-fahrenheit-451-2
+    type: web
+    topic: uptake-failure
+  - id: apple-app-attest
+    type: web
+    topic: device-attestation
+  - id: arm-cca-den0125
+    type: spec
+    topic: device-attestation
+  - id: aws-snp-attestation
+    type: web
+    topic: device-attestation
+  - id: aws-threat-composer
+    type: repo
+    topic: rpt-0003-threat-modeling-products
+  - id: bsimm-16
+    type: spec
+    topic: sdl
+  - id: crowdstrike-sunspot
+    type: web
+    topic: supply-chain-attestation
+  - id: cve-2019-13050
+    type: web
+    topic: uptake-failure
+  - id: devici-sd-elements-integration
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: fireeye-sunburst
+    type: web
+    topic: supply-chain-attestation
+  - id: intel-sgx-dcap-quotelib
+    type: spec
+    topic: device-attestation
+  - id: intel-tdx-dcap-quoting
+    type: spec
+    topic: device-attestation
+  - id: intel-tdx-whitepaper
+    type: spec
+    topic: device-attestation
+  - id: iriusrisk-creating-threat-model
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: lockheed-kill-chain-2011
+    type: paper
+    topic: threat-modeling
+  - id: memgraph-lab
+    type: web
+    topic: rpt-0006-knowledge-graph-visualization
+  - id: microsoft-sdl
+    type: spec
+    topic: sdl
+  - id: microsoft-sdl-5-2
+    type: spec
+    topic: sdl
+  - id: microsoft-sdl-simplified-2010
+    type: paper
+    topic: sdl
+  - id: microsoft-threat-modeling-tool-features
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: microsoft-threat-modeling-tool-overview
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: mozilla-2013-anssi
+    type: web
+    topic: namespace-governance
+  - id: mozilla-2013-turktrust
+    type: web
+    topic: namespace-governance
+  - id: mozilla-bug-856060
+    type: web
+    topic: namespace-governance
+  - id: neo4j-bloom
+    type: web
+    topic: rpt-0006-knowledge-graph-visualization
+  - id: npm-event-stream
+    type: web
+    topic: supply-chain-attestation
+  - id: open-threat-model
+    type: repo
+    topic: rpt-0003-threat-modeling-products
+  - id: ptacek-2024-macaroons
+    type: web
+    topic: capability-delegation
+  - id: sd-elements-threat-modeling-datasheet
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: threatmodeler-vast
+    type: web
+    topic: threat-modeling
+  - id: threattree-help
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: yfiles-html
+    type: web
+    topic: rpt-0006-knowledge-graph-visualization
+  - id: zoom-keybase-2020
+    type: web
+    topic: uptake-failure
+  - id: owl-2-primer
+    type: spec
+    topic: owl
+  - id: pics-1-1-labels
+    type: spec
+    topic: predicate-rendering
+  - id: pics-1-1-services
+    type: spec
+    topic: predicate-rendering
+  - id: pics-censorship-faq
+    type: web
+    topic: uptake-failure
+  - id: pics-dsig-1-0
+    type: spec
+    topic: predicate-rendering
+  - id: powder-description-resources
+    type: spec
+    topic: predicate-rendering
+  - id: rdf-1-1-concepts
+    type: spec
+    topic: rdf
+  - id: shacl
+    type: spec
+    topic: shacl
+  - id: sparql-1-1
+    type: spec
+    topic: sparql
+  - id: w3-org-pics
+    type: web
+    topic: predicate-rendering
+  - id: w3c-did-1-1
+    type: spec
+    topic: namespace-governance
+  - id: w3c-did-core
+    type: spec
+    topic: artifact-statements
+  - id: w3c-did-extensions-methods
+    type: spec
+    topic: namespace-governance
+  - id: w3c-tag-obsolete-powder
+    type: web
+    topic: uptake-failure
 outputs:
   - path: docs/bibliography/index.html
     format: html

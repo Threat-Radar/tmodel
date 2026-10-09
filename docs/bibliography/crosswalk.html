@@ -66,6 +66,10 @@ footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 
 .cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
 .cardlink:hover { background: transparent; }
 .cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
 </style>
 </head>
 <body>
@@ -85,34 +89,488 @@ footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 
 <li><a href="records/cve-json-5.html">CVE JSON Record Format v5</a> <span class="meta">(cve-json-5)</span></li>
 <li><a href="records/guac.html">GUAC — Graph for Understanding Artifact Composition (OpenSSF)</a> <span class="meta">(guac)</span></li>
 <li><a href="records/nsf-okn-launch.html">NSF OKN launch</a> <span class="meta">(nsf-okn-launch)</span></li>
+<li><a href="records/deng-linddun-2011.html">A privacy threat analysis framework: supporting the elicitation and fulfillment of privacy requirements</a> <span class="meta">(deng-linddun-2011)</span></li>
+<li><a href="records/hogan-kg-survey.html">Knowledge Graphs (Hogan et al., ACM Computing Surveys 54(4), 2021)</a> <span class="meta">(hogan-kg-survey)</span></li>
+<li><a href="records/linddun-org.html">LINDDUN privacy threat modeling framework (linddun.org)</a> <span class="meta">(linddun-org)</span></li>
+<li><a href="records/llm-programmatic-dual-use.html">LLM programmatic dual use</a> <span class="meta">(llm-programmatic-dual-use)</span></li>
+<li><a href="records/pasta-risk-centric-threat-modeling.html">PASTA</a> <span class="meta">(pasta-risk-centric-threat-modeling)</span></li>
+<li><a href="records/securechain-okn.html">SecureChain — Knowledge Graph for Resilient, Trustworthy, Secure Software Supply Chains (Purdue, Proto-OKN)</a> <span class="meta">(securechain-okn)</span></li>
+<li><a href="records/sei-octave-allegro-2007.html">Introducing OCTAVE Allegro: Improving the Information Security Risk Assessment Process</a> <span class="meta">(sei-octave-allegro-2007)</span></li>
+<li><a href="records/sei-threat-modeling-methods-2018.html">Threat Modeling: A Summary of Available Methods</a> <span class="meta">(sei-threat-modeling-methods-2018)</span></li>
+<li><a href="records/spml-image-prompt-injection.html">Image-based prompt attacks (SPML)</a> <span class="meta">(spml-image-prompt-injection)</span></li>
+<li><a href="records/spotlighting-indirect-prompt-injection.html">Spotlighting</a> <span class="meta">(spotlighting-indirect-prompt-injection)</span></li>
+<li><a href="records/systems-security-agentic-computing.html">Systems security for agents (SoK)</a> <span class="meta">(systems-security-agentic-computing)</span></li>
+<li><a href="records/csa-maestro-2025.html">Agentic AI Threat Modeling Framework: MAESTRO</a> <span class="meta">(csa-maestro-2025)</span></li>
+<li><a href="records/linkml.html">LinkML — Linked Data Modeling Language</a> <span class="meta">(linkml)</span></li>
+<li><a href="records/owasp-pytm.html">OWASP pytm</a> <span class="meta">(owasp-pytm)</span></li>
+<li><a href="records/owasp-threat-dragon.html">OWASP Threat Dragon</a> <span class="meta">(owasp-threat-dragon)</span></li>
+<li><a href="records/owasp-threat-dragon-guide.html">OWASP Developer Guide — Threat Dragon</a> <span class="meta">(owasp-threat-dragon-guide)</span></li>
+<li><a href="records/threagile.html">Threagile</a> <span class="meta">(threagile)</span></li>
+<li><a href="records/trike-v1-2005.html">Trike v.1 Methodology Document [Draft]</a> <span class="meta">(trike-v1-2005)</span></li>
+<li><a href="records/ucedavelez-pasta-owasp-2012.html">Real World Threat Modeling Using the PASTA Methodology</a> <span class="meta">(ucedavelez-pasta-owasp-2012)</span></li>
+<li><a href="records/d3fend.html">MITRE D3FEND — defensive countermeasures knowledge graph (OWL)</a> <span class="meta">(d3fend)</span></li>
+<li><a href="records/etsi-en-304-223.html">ETSI EN 304 223</a> <span class="meta">(etsi-en-304-223)</span></li>
+<li><a href="records/mitre-attack.html">MITRE ATT&amp;CK (knowledge base + STIX 2.1 data)</a> <span class="meta">(mitre-attack)</span></li>
+<li><a href="records/mitre-attack-design-philosophy.html">MITRE ATT&amp;CK: Design and Philosophy</a> <span class="meta">(mitre-attack-design-philosophy)</span></li>
+<li><a href="records/nsf-23-571.html">NSF 23-571 (Proto-OKN)</a> <span class="meta">(nsf-23-571)</span></li>
+<li><a href="records/schneier-attack-trees-1999.html">Attack Trees</a> <span class="meta">(schneier-attack-trees-1999)</span></li>
+<li><a href="records/cisa-ai-in-ot-principles.html">CISA AI in OT</a> <span class="meta">(cisa-ai-in-ot-principles)</span></li>
+<li><a href="records/aws-threat-composer.html">AWS Threat Composer</a> <span class="meta">(aws-threat-composer)</span></li>
+<li><a href="records/iriusrisk-creating-threat-model.html">IriusRisk — Creating a threat model</a> <span class="meta">(iriusrisk-creating-threat-model)</span></li>
+<li><a href="records/lockheed-kill-chain-2011.html">Intelligence-Driven Computer Network Defense Informed by Analysis of Adversary Campaigns and Intrusion Kill Chains</a> <span class="meta">(lockheed-kill-chain-2011)</span></li>
+<li><a href="records/microsoft-threat-modeling-tool-features.html">Microsoft Threat Modeling Tool feature overview</a> <span class="meta">(microsoft-threat-modeling-tool-features)</span></li>
+<li><a href="records/microsoft-threat-modeling-tool-overview.html">Microsoft Threat Modeling Tool overview</a> <span class="meta">(microsoft-threat-modeling-tool-overview)</span></li>
+<li><a href="records/open-threat-model.html">Open Threat Model specification and JSON Schema</a> <span class="meta">(open-threat-model)</span></li>
+<li><a href="records/threattree-help.html">ThreatTree Help Center</a> <span class="meta">(threattree-help)</span></li>
+<li><a href="records/owl-2-primer.html">OWL 2 Web Ontology Language Primer</a> <span class="meta">(owl-2-primer)</span></li>
 </ul>
 <h3 id="bears-DEC-002"><code>DEC-002</code></h3>
 <p class="meta">Named on each of these records. Not an edge we added.</p><ul>
 <li><a href="records/stix-2-1.html">STIX Version 2.1 (OASIS Standard)</a> <span class="meta">(stix-2-1)</span></li>
 <li><a href="records/rfc-8949.html">Concise Binary Object Representation (CBOR)</a> <span class="meta">(rfc-8949)</span></li>
+<li><a href="records/hogan-kg-survey.html">Knowledge Graphs (Hogan et al., ACM Computing Surveys 54(4), 2021)</a> <span class="meta">(hogan-kg-survey)</span></li>
+<li><a href="records/draft-mcnally-deterministic-cbor.html">dCBOR: Deterministic CBOR</a> <span class="meta">(draft-mcnally-deterministic-cbor)</span></li>
+<li><a href="records/linkml.html">LinkML — Linked Data Modeling Language</a> <span class="meta">(linkml)</span></li>
+<li><a href="records/owasp-threat-dragon.html">OWASP Threat Dragon</a> <span class="meta">(owasp-threat-dragon)</span></li>
+<li><a href="records/owasp-threat-model-library.html">OWASP Threat Model Library and TM-BOM</a> <span class="meta">(owasp-threat-model-library)</span></li>
+<li><a href="records/secure-systems-lab-dsse.html">Dead Simple Signing Envelope (DSSE)</a> <span class="meta">(secure-systems-lab-dsse)</span></li>
+<li><a href="records/spdx-3-0-1.html">SPDX 3.0.1</a> <span class="meta">(spdx-3-0-1)</span></li>
+<li><a href="records/threagile.html">Threagile</a> <span class="meta">(threagile)</span></li>
+<li><a href="records/threat-dragon-tmf-format.html">Threat Dragon Threat Model File format and TM-BOM direction</a> <span class="meta">(threat-dragon-tmf-format)</span></li>
+<li><a href="records/draft-ietf-cbor-cddl-modules.html">CDDL Module Structure</a> <span class="meta">(draft-ietf-cbor-cddl-modules)</span></li>
+<li><a href="records/draft-ietf-cbor-cde.html">CBOR Common Deterministic Encoding (CDE)</a> <span class="meta">(draft-ietf-cbor-cde)</span></li>
+<li><a href="records/draft-ietf-cbor-edn-literals.html">Concise Diagnostic Notation (CDN)</a> <span class="meta">(draft-ietf-cbor-edn-literals)</span></li>
+<li><a href="records/draft-ietf-cbor-serialization.html">CBOR Serialization and Determinism</a> <span class="meta">(draft-ietf-cbor-serialization)</span></li>
+<li><a href="records/ietf-cbor-wg.html">IETF Concise Binary Object Representation Maintenance and Extensions (CBOR) Working Group</a> <span class="meta">(ietf-cbor-wg)</span></li>
+<li><a href="records/rfc-7049.html">Concise Binary Object Representation (CBOR)</a> <span class="meta">(rfc-7049)</span></li>
+<li><a href="records/rfc-8610.html">Concise Data Definition Language (CDDL): A Notational Convention to Express Concise Binary Object Representation (CBOR) and JSON Data Structures</a> <span class="meta">(rfc-8610)</span></li>
+<li><a href="records/rfc-8742.html">Concise Binary Object Representation (CBOR) Sequences</a> <span class="meta">(rfc-8742)</span></li>
+<li><a href="records/rfc-8746.html">Concise Binary Object Representation (CBOR) Tags for Typed Arrays</a> <span class="meta">(rfc-8746)</span></li>
+<li><a href="records/rfc-8943.html">Concise Binary Object Representation (CBOR) Tags for Date</a> <span class="meta">(rfc-8943)</span></li>
+<li><a href="records/rfc-9052.html">CBOR Object Signing and Encryption (COSE): Structures and Process</a> <span class="meta">(rfc-9052)</span></li>
+<li><a href="records/rfc-9090.html">Concise Binary Object Representation (CBOR) Tags for Object Identifiers</a> <span class="meta">(rfc-9090)</span></li>
+<li><a href="records/rfc-9164.html">Concise Binary Object Representation (CBOR) Tags for IPv4 and IPv6 Addresses and Prefixes</a> <span class="meta">(rfc-9164)</span></li>
+<li><a href="records/rfc-9165.html">Additional Control Operators for the Concise Data Definition Language (CDDL)</a> <span class="meta">(rfc-9165)</span></li>
+<li><a href="records/rfc-9277.html">On Stable Storage for Items in Concise Binary Object Representation (CBOR)</a> <span class="meta">(rfc-9277)</span></li>
+<li><a href="records/rfc-9581.html">Concise Binary Object Representation (CBOR) Tags for Time, Duration, and Period</a> <span class="meta">(rfc-9581)</span></li>
+<li><a href="records/rfc-9682.html">Updates to the Concise Data Definition Language (CDDL) Grammar</a> <span class="meta">(rfc-9682)</span></li>
+<li><a href="records/rfc-9741.html">Concise Data Definition Language (CDDL): Additional Control Operators for the Conversion and Processing of Text</a> <span class="meta">(rfc-9741)</span></li>
+<li><a href="records/rfc-9804.html">Simple Public Key Infrastructure (SPKI) S-Expressions</a> <span class="meta">(rfc-9804)</span></li>
+<li><a href="records/rfc-9943.html">An Architecture for Trustworthy and Transparent Digital Supply Chains</a> <span class="meta">(rfc-9943)</span></li>
+<li><a href="records/iana-cbor-simple-values.html">IANA Concise Binary Object Representation (CBOR) Simple Values Registry</a> <span class="meta">(iana-cbor-simple-values)</span></li>
+<li><a href="records/iana-cbor-tags.html">IANA Concise Binary Object Representation (CBOR) Tags Registry</a> <span class="meta">(iana-cbor-tags)</span></li>
+<li><a href="records/aws-threat-composer.html">AWS Threat Composer</a> <span class="meta">(aws-threat-composer)</span></li>
+<li><a href="records/devici-sd-elements-integration.html">Devici–SD Elements integration generally available</a> <span class="meta">(devici-sd-elements-integration)</span></li>
+<li><a href="records/open-threat-model.html">Open Threat Model specification and JSON Schema</a> <span class="meta">(open-threat-model)</span></li>
+<li><a href="records/threattree-help.html">ThreatTree Help Center</a> <span class="meta">(threattree-help)</span></li>
+<li><a href="records/owl-2-primer.html">OWL 2 Web Ontology Language Primer</a> <span class="meta">(owl-2-primer)</span></li>
+<li><a href="records/rdf-1-1-concepts.html">RDF 1.1 Concepts and Abstract Syntax</a> <span class="meta">(rdf-1-1-concepts)</span></li>
+</ul>
+<h3 id="bears-DEC-003"><code>DEC-003</code></h3>
+<p class="meta">Named on each of these records. Not an edge we added.</p><ul>
+<li><a href="records/iso-sae-21434-2021.html">ISO/SAE 21434</a> <span class="meta">(iso-sae-21434-2021)</span></li>
+<li><a href="records/pasta-risk-centric-threat-modeling.html">PASTA</a> <span class="meta">(pasta-risk-centric-threat-modeling)</span></li>
+<li><a href="records/sei-octave-allegro-2007.html">Introducing OCTAVE Allegro: Improving the Information Security Risk Assessment Process</a> <span class="meta">(sei-octave-allegro-2007)</span></li>
+<li><a href="records/first-cvss.html">FIRST, Common Vulnerability Scoring System (CVSS)</a> <span class="meta">(first-cvss)</span></li>
+<li><a href="records/first-cvss-v3-1.html">FIRST, Common Vulnerability Scoring System v3.1: Specification Document</a> <span class="meta">(first-cvss-v3-1)</span></li>
+<li><a href="records/first-cvss-v4-0.html">FIRST, Common Vulnerability Scoring System v4.0: Specification Document</a> <span class="meta">(first-cvss-v4-0)</span></li>
+<li><a href="records/owasp-pytm.html">OWASP pytm</a> <span class="meta">(owasp-pytm)</span></li>
+<li><a href="records/owasp-threat-dragon.html">OWASP Threat Dragon</a> <span class="meta">(owasp-threat-dragon)</span></li>
+<li><a href="records/threagile.html">Threagile</a> <span class="meta">(threagile)</span></li>
+<li><a href="records/trike-v1-2005.html">Trike v.1 Methodology Document [Draft]</a> <span class="meta">(trike-v1-2005)</span></li>
+<li><a href="records/ucedavelez-pasta-owasp-2012.html">Real World Threat Modeling Using the PASTA Methodology</a> <span class="meta">(ucedavelez-pasta-owasp-2012)</span></li>
+<li><a href="records/rfc-8392.html">CBOR Web Token (CWT)</a> <span class="meta">(rfc-8392)</span></li>
+<li><a href="records/rfc-9360.html">CBOR Object Signing and Encryption (COSE): Header Parameters for Carrying and Referencing X.509 Certificates</a> <span class="meta">(rfc-9360)</span></li>
+<li><a href="records/rfc-9679.html">CBOR Object Signing and Encryption (COSE) Key Thumbprint</a> <span class="meta">(rfc-9679)</span></li>
+<li><a href="records/iec-62443-4-1-2018.html">IEC 62443-4-1</a> <span class="meta">(iec-62443-4-1-2018)</span></li>
+<li><a href="records/iso-26262-3-2018.html">ISO 26262-3:2018, Road vehicles — Functional safety — Part 3: Concept phase</a> <span class="meta">(iso-26262-3-2018)</span></li>
+<li><a href="records/iso-iec-15408.html">ISO/IEC 15408 (all parts), Evaluation criteria for IT security (Common Criteria)</a> <span class="meta">(iso-iec-15408)</span></li>
+<li><a href="records/iso-iec-18045.html">ISO/IEC 18045, Methodology for IT security evaluation (attack potential)</a> <span class="meta">(iso-iec-18045)</span></li>
+<li><a href="records/iso-iec-29100-2024.html">ISO/IEC 29100:2024, Information technology: Security techniques: Privacy framework</a> <span class="meta">(iso-iec-29100-2024)</span></li>
+<li><a href="records/iso-sae-pas-8475.html">ISO/SAE PAS 8475, Road vehicles: Cybersecurity Assurance Levels (CAL) and Targeted Attack Feasibility (TAF)</a> <span class="meta">(iso-sae-pas-8475)</span></li>
+<li><a href="records/etsi-ts-102-165-1.html">ETSI TS 102 165-1, CYBER; Methods and protocols; Part 1: Method and proforma for Threat, Vulnerability, Risk Analysis (TVRA)</a> <span class="meta">(etsi-ts-102-165-1)</span></li>
+<li><a href="records/evita-d2-3.html">EVITA Deliverable D2.3: Security requirements for automotive on-board networks based on dark-side scenarios</a> <span class="meta">(evita-d2-3)</span></li>
+<li><a href="records/bsi-tr-03183-1.html">BSI TR-03183-1</a> <span class="meta">(bsi-tr-03183-1)</span></li>
+<li><a href="records/aws-threat-composer.html">AWS Threat Composer</a> <span class="meta">(aws-threat-composer)</span></li>
+<li><a href="records/iriusrisk-creating-threat-model.html">IriusRisk — Creating a threat model</a> <span class="meta">(iriusrisk-creating-threat-model)</span></li>
+<li><a href="records/microsoft-threat-modeling-tool-features.html">Microsoft Threat Modeling Tool feature overview</a> <span class="meta">(microsoft-threat-modeling-tool-features)</span></li>
+<li><a href="records/microsoft-threat-modeling-tool-overview.html">Microsoft Threat Modeling Tool overview</a> <span class="meta">(microsoft-threat-modeling-tool-overview)</span></li>
+<li><a href="records/sd-elements-threat-modeling-datasheet.html">SD Elements Threat Modeling Datasheet</a> <span class="meta">(sd-elements-threat-modeling-datasheet)</span></li>
+<li><a href="records/threattree-help.html">ThreatTree Help Center</a> <span class="meta">(threattree-help)</span></li>
 </ul>
 <h3 id="bears-DEC-004"><code>DEC-004</code></h3>
 <p class="meta">Named on each of these records. Not an edge we added.</p><ul>
 <li><a href="records/guac.html">GUAC — Graph for Understanding Artifact Composition (OpenSSF)</a> <span class="meta">(guac)</span></li>
 <li><a href="records/prov-o.html">PROV-O: The PROV Ontology</a> <span class="meta">(prov-o)</span></li>
 <li><a href="records/nsf-okn-launch.html">NSF OKN launch</a> <span class="meta">(nsf-okn-launch)</span></li>
+<li><a href="records/securechain-okn.html">SecureChain — Knowledge Graph for Resilient, Trustworthy, Secure Software Supply Chains (Purdue, Proto-OKN)</a> <span class="meta">(securechain-okn)</span></li>
+<li><a href="records/sudokn-okn.html">SUDOKN — Supply and Demand Open Knowledge Network (Arizona State U., Proto-OKN)</a> <span class="meta">(sudokn-okn)</span></li>
+<li><a href="records/mcp-okn.html">mcp-okn — Model Context Protocol access to NSF OKN graphs</a> <span class="meta">(mcp-okn)</span></li>
+<li><a href="records/rfc-2693.html">SPKI Certificate Theory</a> <span class="meta">(rfc-2693)</span></li>
+<li><a href="records/d3fend.html">MITRE D3FEND — defensive countermeasures knowledge graph (OWL)</a> <span class="meta">(d3fend)</span></li>
+<li><a href="records/frink-fabric.html">FRINK — FabRic Integrating Networked Knowledge (RENCI, Proto-OKN Theme 2)</a> <span class="meta">(frink-fabric)</span></li>
+<li><a href="records/nsf-23-571.html">NSF 23-571 (Proto-OKN)</a> <span class="meta">(nsf-23-571)</span></li>
+<li><a href="records/okn-roadmap-2022.html">Open Knowledge Network Roadmap: Powering the Next Data Revolution (NSF/OSTP, 2022)</a> <span class="meta">(okn-roadmap-2022)</span></li>
+<li><a href="records/rdf-1-1-concepts.html">RDF 1.1 Concepts and Abstract Syntax</a> <span class="meta">(rdf-1-1-concepts)</span></li>
+<li><a href="records/shacl.html">Shapes Constraint Language (SHACL)</a> <span class="meta">(shacl)</span></li>
+<li><a href="records/sparql-1-1.html">SPARQL 1.1 Query Language</a> <span class="meta">(sparql-1-1)</span></li>
 </ul>
 <h3 id="bears-DEC-005"><code>DEC-005</code></h3>
 <p class="meta">Named on each of these records. Not an edge we added.</p><ul>
 <li><a href="records/draft-ietf-vcon-vcon-core-04.html">vCon core</a> <span class="meta">(draft-ietf-vcon-vcon-core-04)</span></li>
 <li><a href="records/iso-sae-21434-2021.html">ISO/SAE 21434</a> <span class="meta">(iso-sae-21434-2021)</span></li>
 <li><a href="records/fips-140-3.html">FIPS 140-3</a> <span class="meta">(fips-140-3)</span></li>
+<li><a href="records/deng-linddun-2011.html">A privacy threat analysis framework: supporting the elicitation and fulfillment of privacy requirements</a> <span class="meta">(deng-linddun-2011)</span></li>
+<li><a href="records/linddun-org.html">LINDDUN privacy threat modeling framework (linddun.org)</a> <span class="meta">(linddun-org)</span></li>
+<li><a href="records/mulval.html">MulVAL: A Logic-based Network Security Analyzer (Ou et al., USENIX Security 2005)</a> <span class="meta">(mulval)</span></li>
+<li><a href="records/pasta-risk-centric-threat-modeling.html">PASTA</a> <span class="meta">(pasta-risk-centric-threat-modeling)</span></li>
+<li><a href="records/sei-octave-allegro-2007.html">Introducing OCTAVE Allegro: Improving the Information Security Risk Assessment Process</a> <span class="meta">(sei-octave-allegro-2007)</span></li>
+<li><a href="records/sei-threat-modeling-methods-2018.html">Threat Modeling: A Summary of Available Methods</a> <span class="meta">(sei-threat-modeling-methods-2018)</span></li>
+<li><a href="records/csa-maestro-2025.html">Agentic AI Threat Modeling Framework: MAESTRO</a> <span class="meta">(csa-maestro-2025)</span></li>
+<li><a href="records/trike-v1-2005.html">Trike v.1 Methodology Document [Draft]</a> <span class="meta">(trike-v1-2005)</span></li>
+<li><a href="records/ucedavelez-pasta-owasp-2012.html">Real World Threat Modeling Using the PASTA Methodology</a> <span class="meta">(ucedavelez-pasta-owasp-2012)</span></li>
+<li><a href="records/ietf-cose-wg.html">IETF CBOR Object Signing and Encryption (COSE) Working Group</a> <span class="meta">(ietf-cose-wg)</span></li>
+<li><a href="records/rfc-8152.html">CBOR Object Signing and Encryption (COSE)</a> <span class="meta">(rfc-8152)</span></li>
+<li><a href="records/rfc-8392.html">CBOR Web Token (CWT)</a> <span class="meta">(rfc-8392)</span></li>
+<li><a href="records/rfc-9052.html">CBOR Object Signing and Encryption (COSE): Structures and Process</a> <span class="meta">(rfc-9052)</span></li>
+<li><a href="records/rfc-9053.html">CBOR Object Signing and Encryption (COSE): Initial Algorithms</a> <span class="meta">(rfc-9053)</span></li>
+<li><a href="records/rfc-9054.html">CBOR Object Signing and Encryption (COSE): Hash Algorithms</a> <span class="meta">(rfc-9054)</span></li>
+<li><a href="records/rfc-9338.html">CBOR Object Signing and Encryption (COSE): Countersignatures</a> <span class="meta">(rfc-9338)</span></li>
+<li><a href="records/rfc-9360.html">CBOR Object Signing and Encryption (COSE): Header Parameters for Carrying and Referencing X.509 Certificates</a> <span class="meta">(rfc-9360)</span></li>
+<li><a href="records/rfc-9596.html">CBOR Object Signing and Encryption (COSE) &quot;typ&quot; (type) Header Parameter</a> <span class="meta">(rfc-9596)</span></li>
+<li><a href="records/rfc-9597.html">CBOR Web Token (CWT) Claims in COSE Headers</a> <span class="meta">(rfc-9597)</span></li>
+<li><a href="records/rfc-9864.html">Fully-Specified Algorithms for JSON Object Signing and Encryption (JOSE) and CBOR Object Signing and Encryption (COSE)</a> <span class="meta">(rfc-9864)</span></li>
+<li><a href="records/rfc-9942.html">CBOR Object Signing and Encryption (COSE) Receipts</a> <span class="meta">(rfc-9942)</span></li>
+<li><a href="records/rfc-9995.html">CBOR Object Signing and Encryption (COSE) Hash Envelope</a> <span class="meta">(rfc-9995)</span></li>
+<li><a href="records/nist-sp-800-160.html">NIST SP 800-160, Systems Security Engineering (Ross et al., 2018)</a> <span class="meta">(nist-sp-800-160)</span></li>
+<li><a href="records/etsi-ts-102-165-1.html">ETSI TS 102 165-1, CYBER; Methods and protocols; Part 1: Method and proforma for Threat, Vulnerability, Risk Analysis (TVRA)</a> <span class="meta">(etsi-ts-102-165-1)</span></li>
+<li><a href="records/mitre-attack-design-philosophy.html">MITRE ATT&amp;CK: Design and Philosophy</a> <span class="meta">(mitre-attack-design-philosophy)</span></li>
+<li><a href="records/sae-j3061.html">SAE J3061, Cybersecurity Guidebook for Cyber-Physical Vehicle Systems (superseded by ISO/SAE 21434)</a> <span class="meta">(sae-j3061)</span></li>
+<li><a href="records/schneier-attack-trees-1999.html">Attack Trees</a> <span class="meta">(schneier-attack-trees-1999)</span></li>
+<li><a href="records/lockheed-kill-chain-2011.html">Intelligence-Driven Computer Network Defense Informed by Analysis of Adversary Campaigns and Intrusion Kill Chains</a> <span class="meta">(lockheed-kill-chain-2011)</span></li>
+<li><a href="records/threatmodeler-vast.html">VAST (Visual, Agile, and Simple Threat) modeling — ThreatModeler</a> <span class="meta">(threatmodeler-vast)</span></li>
+</ul>
+<h3 id="bears-DEC-006"><code>DEC-006</code></h3>
+<p class="meta">Named on each of these records. Not an edge we added.</p><ul>
+<li><a href="records/unifying-llm-kg.html">Unifying Large Language Models and Knowledge Graphs: A Roadmap (Pan et al., IEEE TKDE 2024)</a> <span class="meta">(unifying-llm-kg)</span></li>
+<li><a href="records/owasp-pytm.html">OWASP pytm</a> <span class="meta">(owasp-pytm)</span></li>
+<li><a href="records/owasp-threat-dragon.html">OWASP Threat Dragon</a> <span class="meta">(owasp-threat-dragon)</span></li>
+<li><a href="records/owasp-threat-dragon-guide.html">OWASP Developer Guide — Threat Dragon</a> <span class="meta">(owasp-threat-dragon-guide)</span></li>
+<li><a href="records/threagile.html">Threagile</a> <span class="meta">(threagile)</span></li>
+<li><a href="records/graphrag-ms.html">GraphRAG (Microsoft Research, 2024)</a> <span class="meta">(graphrag-ms)</span></li>
+<li><a href="records/aws-threat-composer.html">AWS Threat Composer</a> <span class="meta">(aws-threat-composer)</span></li>
+<li><a href="records/devici-sd-elements-integration.html">Devici–SD Elements integration generally available</a> <span class="meta">(devici-sd-elements-integration)</span></li>
+<li><a href="records/iriusrisk-creating-threat-model.html">IriusRisk — Creating a threat model</a> <span class="meta">(iriusrisk-creating-threat-model)</span></li>
+<li><a href="records/microsoft-threat-modeling-tool-features.html">Microsoft Threat Modeling Tool feature overview</a> <span class="meta">(microsoft-threat-modeling-tool-features)</span></li>
+<li><a href="records/microsoft-threat-modeling-tool-overview.html">Microsoft Threat Modeling Tool overview</a> <span class="meta">(microsoft-threat-modeling-tool-overview)</span></li>
+<li><a href="records/sd-elements-threat-modeling-datasheet.html">SD Elements Threat Modeling Datasheet</a> <span class="meta">(sd-elements-threat-modeling-datasheet)</span></li>
+<li><a href="records/threatmodeler-vast.html">VAST (Visual, Agile, and Simple Threat) modeling — ThreatModeler</a> <span class="meta">(threatmodeler-vast)</span></li>
+<li><a href="records/threattree-help.html">ThreatTree Help Center</a> <span class="meta">(threattree-help)</span></li>
+</ul>
+<h3 id="bears-DEC-007"><code>DEC-007</code></h3>
+<p class="meta">Named on each of these records. Not an edge we added.</p><ul>
+<li><a href="records/draft-mih-scitt-agent-action-capsule.html">Agent Action Capsule</a> <span class="meta">(draft-mih-scitt-agent-action-capsule)</span></li>
+<li><a href="records/rfc-9943.html">An Architecture for Trustworthy and Transparent Digital Supply Chains</a> <span class="meta">(rfc-9943)</span></li>
+<li><a href="records/w3-org-pics.html">W3C Platform for Internet Content Selection (PICS)</a> <span class="meta">(w3-org-pics)</span></li>
 </ul>
 <h3 id="bears-DEC-009"><code>DEC-009</code></h3>
 <p class="meta">Named on each of these records. Not an edge we added.</p><ul>
 <li><a href="records/iso-sae-21434-2021.html">ISO/SAE 21434</a> <span class="meta">(iso-sae-21434-2021)</span></li>
 <li><a href="records/fips-140-3.html">FIPS 140-3</a> <span class="meta">(fips-140-3)</span></li>
+<li><a href="records/sudokn-okn.html">SUDOKN — Supply and Demand Open Knowledge Network (Arizona State U., Proto-OKN)</a> <span class="meta">(sudokn-okn)</span></li>
+<li><a href="records/owasp-asvs-5.html">OWASP ASVS 5.0.0</a> <span class="meta">(owasp-asvs-5)</span></li>
+<li><a href="records/owasp-samm-2.html">OWASP SAMM 2.2</a> <span class="meta">(owasp-samm-2)</span></li>
+<li><a href="records/safecode-fpssd-3.html">SAFECode FPSSD 3rd ed.</a> <span class="meta">(safecode-fpssd-3)</span></li>
+<li><a href="records/iec-62443-4-1-2018.html">IEC 62443-4-1</a> <span class="meta">(iec-62443-4-1-2018)</span></li>
+<li><a href="records/iec-81001-5-1-2021.html">IEC 81001-5-1</a> <span class="meta">(iec-81001-5-1-2021)</span></li>
+<li><a href="records/iso-iec-19790.html">ISO/IEC 19790:2012, Security requirements for cryptographic modules</a> <span class="meta">(iso-iec-19790)</span></li>
+<li><a href="records/iso-iec-24759.html">ISO/IEC 24759:2017, Test requirements for cryptographic modules</a> <span class="meta">(iso-iec-24759)</span></li>
+<li><a href="records/iso-iec-27034-1.html">ISO/IEC 27034-1</a> <span class="meta">(iso-iec-27034-1)</span></li>
+<li><a href="records/iso-iec-29147-2018.html">ISO/IEC 29147</a> <span class="meta">(iso-iec-29147-2018)</span></li>
+<li><a href="records/iso-iec-30111-2019.html">ISO/IEC 30111</a> <span class="meta">(iso-iec-30111-2019)</span></li>
+<li><a href="records/fips-140-2.html">FIPS 140-2, Security Requirements for Cryptographic Modules (superseded by FIPS 140-3)</a> <span class="meta">(fips-140-2)</span></li>
+<li><a href="records/nist-sp-800-140.html">SP 800-140</a> <span class="meta">(nist-sp-800-140)</span></li>
+<li><a href="records/nist-sp-800-140a.html">SP 800-140A</a> <span class="meta">(nist-sp-800-140a)</span></li>
+<li><a href="records/nist-sp-800-140b.html">SP 800-140B</a> <span class="meta">(nist-sp-800-140b)</span></li>
+<li><a href="records/nist-sp-800-140c.html">SP 800-140C</a> <span class="meta">(nist-sp-800-140c)</span></li>
+<li><a href="records/nist-sp-800-140d.html">SP 800-140D</a> <span class="meta">(nist-sp-800-140d)</span></li>
+<li><a href="records/nist-sp-800-140e.html">SP 800-140E</a> <span class="meta">(nist-sp-800-140e)</span></li>
+<li><a href="records/nist-sp-800-140f.html">SP 800-140F</a> <span class="meta">(nist-sp-800-140f)</span></li>
+<li><a href="records/sp-800-204d.html">NIST SP 800-204D</a> <span class="meta">(sp-800-204d)</span></li>
+<li><a href="records/sp-800-218.html">SSDF 1.1</a> <span class="meta">(sp-800-218)</span></li>
+<li><a href="records/sp-800-218a.html">SP 800-218A (SSDF Community Profile for AI Model Development)</a> <span class="meta">(sp-800-218a)</span></li>
+<li><a href="records/sp-800-218r1.html">SSDF 1.2 (SP 800-218r1 ipd)</a> <span class="meta">(sp-800-218r1)</span></li>
+<li><a href="records/openssf-osps-baseline.html">OSPS Baseline</a> <span class="meta">(openssf-osps-baseline)</span></li>
+<li><a href="records/slsa-1-2.html">SLSA 1.2</a> <span class="meta">(slsa-1-2)</span></li>
+<li><a href="records/etsi-ts-104-219.html">ETSI TS 104 219 (SSDIF)</a> <span class="meta">(etsi-ts-104-219)</span></li>
+<li><a href="records/bsi-tr-03183-1.html">BSI TR-03183-1</a> <span class="meta">(bsi-tr-03183-1)</span></li>
+<li><a href="records/bsi-tr-03185.html">BSI TR-03185</a> <span class="meta">(bsi-tr-03185)</span></li>
+<li><a href="records/cisa-secure-by-design-2023.html">CISA Secure by Design (2023)</a> <span class="meta">(cisa-secure-by-design-2023)</span></li>
+<li><a href="records/cisa-secure-by-design-pledge-2024.html">CISA Secure by Design Pledge</a> <span class="meta">(cisa-secure-by-design-pledge-2024)</span></li>
+<li><a href="records/cisa-ssdf-attestation-form-2024.html">CISA Secure Software Development Attestation Form</a> <span class="meta">(cisa-ssdf-attestation-form-2024)</span></li>
+<li><a href="records/enisa-sbd-playbook-2026.html">ENISA SbD&amp;D Playbook v1.0</a> <span class="meta">(enisa-sbd-playbook-2026)</span></li>
+<li><a href="records/eo-14028.html">EO 14028</a> <span class="meta">(eo-14028)</span></li>
+<li><a href="records/esf-sscs-developers-2022.html">ESF Securing the Software Supply Chain — Developers</a> <span class="meta">(esf-sscs-developers-2022)</span></li>
+<li><a href="records/eu-cra-2024-2847.html">Cyber Resilience Act (CRA)</a> <span class="meta">(eu-cra-2024-2847)</span></li>
+<li><a href="records/fda-premarket-cybersecurity-guidance.html">FDA premarket cybersecurity guidance</a> <span class="meta">(fda-premarket-cybersecurity-guidance)</span></li>
+<li><a href="records/omb-m-22-18.html">OMB M-22-18</a> <span class="meta">(omb-m-22-18)</span></li>
+<li><a href="records/omb-m-23-16.html">OMB M-23-16</a> <span class="meta">(omb-m-23-16)</span></li>
+<li><a href="records/microsoft-sdl.html">Microsoft SDL (10 practices)</a> <span class="meta">(microsoft-sdl)</span></li>
+<li><a href="records/microsoft-sdl-5-2.html">Microsoft SDL 5.2</a> <span class="meta">(microsoft-sdl-5-2)</span></li>
+</ul>
+<h3 id="bears-R-011"><code>R-011</code></h3>
+<p class="meta">Named on each of these records. Not an edge we added.</p><ul>
+<li><a href="records/iso-sae-21434-2021.html">ISO/SAE 21434</a> <span class="meta">(iso-sae-21434-2021)</span></li>
+<li><a href="records/first-cvss.html">FIRST, Common Vulnerability Scoring System (CVSS)</a> <span class="meta">(first-cvss)</span></li>
+<li><a href="records/first-cvss-v3-1.html">FIRST, Common Vulnerability Scoring System v3.1: Specification Document</a> <span class="meta">(first-cvss-v3-1)</span></li>
+<li><a href="records/first-cvss-v4-0.html">FIRST, Common Vulnerability Scoring System v4.0: Specification Document</a> <span class="meta">(first-cvss-v4-0)</span></li>
+<li><a href="records/iso-iec-15408.html">ISO/IEC 15408 (all parts), Evaluation criteria for IT security (Common Criteria)</a> <span class="meta">(iso-iec-15408)</span></li>
+<li><a href="records/iso-iec-18045.html">ISO/IEC 18045, Methodology for IT security evaluation (attack potential)</a> <span class="meta">(iso-iec-18045)</span></li>
+</ul>
+<h3 id="bears-R-018"><code>R-018</code></h3>
+<p class="meta">Named on each of these records. Not an edge we added.</p><ul>
+<li><a href="records/prov-o.html">PROV-O: The PROV Ontology</a> <span class="meta">(prov-o)</span></li>
+<li><a href="records/owasp-threat-dragon.html">OWASP Threat Dragon</a> <span class="meta">(owasp-threat-dragon)</span></li>
+<li><a href="records/owasp-threat-dragon-guide.html">OWASP Developer Guide — Threat Dragon</a> <span class="meta">(owasp-threat-dragon-guide)</span></li>
+<li><a href="records/etsi-en-304-223.html">ETSI EN 304 223</a> <span class="meta">(etsi-en-304-223)</span></li>
+<li><a href="records/cisa-ai-in-ot-principles.html">CISA AI in OT</a> <span class="meta">(cisa-ai-in-ot-principles)</span></li>
+<li><a href="records/aws-threat-composer.html">AWS Threat Composer</a> <span class="meta">(aws-threat-composer)</span></li>
+<li><a href="records/iriusrisk-creating-threat-model.html">IriusRisk — Creating a threat model</a> <span class="meta">(iriusrisk-creating-threat-model)</span></li>
+<li><a href="records/microsoft-threat-modeling-tool-features.html">Microsoft Threat Modeling Tool feature overview</a> <span class="meta">(microsoft-threat-modeling-tool-features)</span></li>
+<li><a href="records/microsoft-threat-modeling-tool-overview.html">Microsoft Threat Modeling Tool overview</a> <span class="meta">(microsoft-threat-modeling-tool-overview)</span></li>
+<li><a href="records/sd-elements-threat-modeling-datasheet.html">SD Elements Threat Modeling Datasheet</a> <span class="meta">(sd-elements-threat-modeling-datasheet)</span></li>
+<li><a href="records/threattree-help.html">ThreatTree Help Center</a> <span class="meta">(threattree-help)</span></li>
+</ul>
+<h3 id="bears-R-021"><code>R-021</code></h3>
+<p class="meta">Named on each of these records. Not an edge we added.</p><ul>
+<li><a href="records/iso-sae-21434-2021.html">ISO/SAE 21434</a> <span class="meta">(iso-sae-21434-2021)</span></li>
+<li><a href="records/threagile.html">Threagile</a> <span class="meta">(threagile)</span></li>
+<li><a href="records/aws-threat-composer.html">AWS Threat Composer</a> <span class="meta">(aws-threat-composer)</span></li>
+<li><a href="records/devici-sd-elements-integration.html">Devici–SD Elements integration generally available</a> <span class="meta">(devici-sd-elements-integration)</span></li>
+<li><a href="records/sd-elements-threat-modeling-datasheet.html">SD Elements Threat Modeling Datasheet</a> <span class="meta">(sd-elements-threat-modeling-datasheet)</span></li>
+<li><a href="records/threattree-help.html">ThreatTree Help Center</a> <span class="meta">(threattree-help)</span></li>
+</ul>
+<h3 id="bears-R-036"><code>R-036</code></h3>
+<p class="meta">Named on each of these records. Not an edge we added.</p><ul>
+<li><a href="records/iso-iec-29147-2018.html">ISO/IEC 29147</a> <span class="meta">(iso-iec-29147-2018)</span></li>
+<li><a href="records/slsa-1-2.html">SLSA 1.2</a> <span class="meta">(slsa-1-2)</span></li>
+<li><a href="records/cisa-secure-by-design-2023.html">CISA Secure by Design (2023)</a> <span class="meta">(cisa-secure-by-design-2023)</span></li>
+</ul>
+<h3 id="bears-R-037"><code>R-037</code></h3>
+<p class="meta">Named on each of these records. Not an edge we added.</p><ul>
+<li><a href="records/cncf-supply-chain-best-practices-v2.html">CNCF SSCBP v2</a> <span class="meta">(cncf-supply-chain-best-practices-v2)</span></li>
+<li><a href="records/slsa-1-2.html">SLSA 1.2</a> <span class="meta">(slsa-1-2)</span></li>
+</ul>
+<h3 id="bears-R-040"><code>R-040</code></h3>
+<p class="meta">Named on each of these records. Not an edge we added.</p><ul>
+<li><a href="records/owasp-asvs-5.html">OWASP ASVS 5.0.0</a> <span class="meta">(owasp-asvs-5)</span></li>
+<li><a href="records/owasp-samm-2.html">OWASP SAMM 2.2</a> <span class="meta">(owasp-samm-2)</span></li>
+<li><a href="records/safecode-fpssd-3.html">SAFECode FPSSD 3rd ed.</a> <span class="meta">(safecode-fpssd-3)</span></li>
+<li><a href="records/iec-62443-4-1-2018.html">IEC 62443-4-1</a> <span class="meta">(iec-62443-4-1-2018)</span></li>
+<li><a href="records/iso-iec-27034-1.html">ISO/IEC 27034-1</a> <span class="meta">(iso-iec-27034-1)</span></li>
+<li><a href="records/iso-iec-29147-2018.html">ISO/IEC 29147</a> <span class="meta">(iso-iec-29147-2018)</span></li>
+<li><a href="records/iso-iec-30111-2019.html">ISO/IEC 30111</a> <span class="meta">(iso-iec-30111-2019)</span></li>
+<li><a href="records/sp-800-204d.html">NIST SP 800-204D</a> <span class="meta">(sp-800-204d)</span></li>
+<li><a href="records/sp-800-218.html">SSDF 1.1</a> <span class="meta">(sp-800-218)</span></li>
+<li><a href="records/sp-800-218a.html">SP 800-218A (SSDF Community Profile for AI Model Development)</a> <span class="meta">(sp-800-218a)</span></li>
+<li><a href="records/sp-800-218r1.html">SSDF 1.2 (SP 800-218r1 ipd)</a> <span class="meta">(sp-800-218r1)</span></li>
+<li><a href="records/sp-800-53r5.html">SP 800-53r5</a> <span class="meta">(sp-800-53r5)</span></li>
+<li><a href="records/openssf-concise-guide-secure-software.html">OpenSSF Concise Guide (developing)</a> <span class="meta">(openssf-concise-guide-secure-software)</span></li>
+<li><a href="records/openssf-osps-baseline.html">OSPS Baseline</a> <span class="meta">(openssf-osps-baseline)</span></li>
+<li><a href="records/openssf-scorecard-checks.html">OpenSSF Scorecard checks</a> <span class="meta">(openssf-scorecard-checks)</span></li>
+<li><a href="records/slsa-1-2.html">SLSA 1.2</a> <span class="meta">(slsa-1-2)</span></li>
+<li><a href="records/etsi-ts-104-219.html">ETSI TS 104 219 (SSDIF)</a> <span class="meta">(etsi-ts-104-219)</span></li>
+<li><a href="records/bsi-tr-03183-1.html">BSI TR-03183-1</a> <span class="meta">(bsi-tr-03183-1)</span></li>
+<li><a href="records/bsi-tr-03185.html">BSI TR-03185</a> <span class="meta">(bsi-tr-03185)</span></li>
+<li><a href="records/cisa-secure-by-demand-guide-2024.html">CISA/FBI Secure by Demand Guide</a> <span class="meta">(cisa-secure-by-demand-guide-2024)</span></li>
+<li><a href="records/cisa-secure-by-design-2023.html">CISA Secure by Design (2023)</a> <span class="meta">(cisa-secure-by-design-2023)</span></li>
+<li><a href="records/cisa-secure-by-design-pledge-2024.html">CISA Secure by Design Pledge</a> <span class="meta">(cisa-secure-by-design-pledge-2024)</span></li>
+<li><a href="records/enisa-sbd-playbook-2026.html">ENISA SbD&amp;D Playbook v1.0</a> <span class="meta">(enisa-sbd-playbook-2026)</span></li>
+<li><a href="records/esf-sscs-developers-2022.html">ESF Securing the Software Supply Chain — Developers</a> <span class="meta">(esf-sscs-developers-2022)</span></li>
+<li><a href="records/eu-cra-2024-2847.html">Cyber Resilience Act (CRA)</a> <span class="meta">(eu-cra-2024-2847)</span></li>
+<li><a href="records/fda-premarket-cybersecurity-guidance.html">FDA premarket cybersecurity guidance</a> <span class="meta">(fda-premarket-cybersecurity-guidance)</span></li>
+<li><a href="records/uk-software-security-code-of-practice.html">UK Software Security Code of Practice</a> <span class="meta">(uk-software-security-code-of-practice)</span></li>
+<li><a href="records/bsimm-16.html">BSIMM16</a> <span class="meta">(bsimm-16)</span></li>
+<li><a href="records/microsoft-sdl.html">Microsoft SDL (10 practices)</a> <span class="meta">(microsoft-sdl)</span></li>
+<li><a href="records/microsoft-sdl-5-2.html">Microsoft SDL 5.2</a> <span class="meta">(microsoft-sdl-5-2)</span></li>
+</ul>
+<h3 id="bears-R-041"><code>R-041</code></h3>
+<p class="meta">Named on each of these records. Not an edge we added.</p><ul>
+<li><a href="records/cncf-supply-chain-best-practices-v2.html">CNCF SSCBP v2</a> <span class="meta">(cncf-supply-chain-best-practices-v2)</span></li>
+<li><a href="records/owasp-asvs-5.html">OWASP ASVS 5.0.0</a> <span class="meta">(owasp-asvs-5)</span></li>
+<li><a href="records/owasp-dsomm.html">OWASP DSOMM</a> <span class="meta">(owasp-dsomm)</span></li>
+<li><a href="records/owasp-samm-2.html">OWASP SAMM 2.2</a> <span class="meta">(owasp-samm-2)</span></li>
+<li><a href="records/iec-62443-4-1-2018.html">IEC 62443-4-1</a> <span class="meta">(iec-62443-4-1-2018)</span></li>
+<li><a href="records/iec-81001-5-1-2021.html">IEC 81001-5-1</a> <span class="meta">(iec-81001-5-1-2021)</span></li>
+<li><a href="records/iso-iec-27034-1.html">ISO/IEC 27034-1</a> <span class="meta">(iso-iec-27034-1)</span></li>
+<li><a href="records/iso-iec-29147-2018.html">ISO/IEC 29147</a> <span class="meta">(iso-iec-29147-2018)</span></li>
+<li><a href="records/iso-iec-30111-2019.html">ISO/IEC 30111</a> <span class="meta">(iso-iec-30111-2019)</span></li>
+<li><a href="records/sp-800-204d.html">NIST SP 800-204D</a> <span class="meta">(sp-800-204d)</span></li>
+<li><a href="records/sp-800-218.html">SSDF 1.1</a> <span class="meta">(sp-800-218)</span></li>
+<li><a href="records/sp-800-218a.html">SP 800-218A (SSDF Community Profile for AI Model Development)</a> <span class="meta">(sp-800-218a)</span></li>
+<li><a href="records/sp-800-218r1.html">SSDF 1.2 (SP 800-218r1 ipd)</a> <span class="meta">(sp-800-218r1)</span></li>
+<li><a href="records/sp-800-53r5.html">SP 800-53r5</a> <span class="meta">(sp-800-53r5)</span></li>
+<li><a href="records/openssf-osps-baseline.html">OSPS Baseline</a> <span class="meta">(openssf-osps-baseline)</span></li>
+<li><a href="records/slsa-1-2.html">SLSA 1.2</a> <span class="meta">(slsa-1-2)</span></li>
+<li><a href="records/etsi-ts-104-219.html">ETSI TS 104 219 (SSDIF)</a> <span class="meta">(etsi-ts-104-219)</span></li>
+<li><a href="records/pci-secure-slc-2.html">PCI Secure SLC v2.0</a> <span class="meta">(pci-secure-slc-2)</span></li>
+<li><a href="records/bsi-tr-03185.html">BSI TR-03185</a> <span class="meta">(bsi-tr-03185)</span></li>
+<li><a href="records/cisa-secure-by-design-2023.html">CISA Secure by Design (2023)</a> <span class="meta">(cisa-secure-by-design-2023)</span></li>
+<li><a href="records/cisa-secure-by-design-pledge-2024.html">CISA Secure by Design Pledge</a> <span class="meta">(cisa-secure-by-design-pledge-2024)</span></li>
+<li><a href="records/cisa-ssdf-attestation-form-2024.html">CISA Secure Software Development Attestation Form</a> <span class="meta">(cisa-ssdf-attestation-form-2024)</span></li>
+<li><a href="records/enisa-sbd-playbook-2026.html">ENISA SbD&amp;D Playbook v1.0</a> <span class="meta">(enisa-sbd-playbook-2026)</span></li>
+<li><a href="records/eo-14028.html">EO 14028</a> <span class="meta">(eo-14028)</span></li>
+<li><a href="records/esf-sscs-developers-2022.html">ESF Securing the Software Supply Chain — Developers</a> <span class="meta">(esf-sscs-developers-2022)</span></li>
+<li><a href="records/eu-cra-2024-2847.html">Cyber Resilience Act (CRA)</a> <span class="meta">(eu-cra-2024-2847)</span></li>
+<li><a href="records/fda-premarket-cybersecurity-guidance.html">FDA premarket cybersecurity guidance</a> <span class="meta">(fda-premarket-cybersecurity-guidance)</span></li>
+<li><a href="records/omb-m-22-18.html">OMB M-22-18</a> <span class="meta">(omb-m-22-18)</span></li>
+<li><a href="records/omb-m-23-16.html">OMB M-23-16</a> <span class="meta">(omb-m-23-16)</span></li>
+<li><a href="records/uk-software-security-code-of-practice.html">UK Software Security Code of Practice</a> <span class="meta">(uk-software-security-code-of-practice)</span></li>
+<li><a href="records/bsimm-16.html">BSIMM16</a> <span class="meta">(bsimm-16)</span></li>
+<li><a href="records/microsoft-sdl.html">Microsoft SDL (10 practices)</a> <span class="meta">(microsoft-sdl)</span></li>
+<li><a href="records/microsoft-sdl-5-2.html">Microsoft SDL 5.2</a> <span class="meta">(microsoft-sdl-5-2)</span></li>
+<li><a href="records/microsoft-sdl-simplified-2010.html">Simplified SDL (2010)</a> <span class="meta">(microsoft-sdl-simplified-2010)</span></li>
+</ul>
+<h3 id="bears-R-042"><code>R-042</code></h3>
+<p class="meta">Named on each of these records. Not an edge we added.</p><ul>
+<li><a href="records/cis-safecode-sbd-assessment-1-1.html">CIS/SAFECode Secure by Design v1.1</a> <span class="meta">(cis-safecode-sbd-assessment-1-1)</span></li>
+<li><a href="records/cncf-supply-chain-best-practices-v2.html">CNCF SSCBP v2</a> <span class="meta">(cncf-supply-chain-best-practices-v2)</span></li>
+<li><a href="records/owasp-asvs-5.html">OWASP ASVS 5.0.0</a> <span class="meta">(owasp-asvs-5)</span></li>
+<li><a href="records/owasp-dsomm.html">OWASP DSOMM</a> <span class="meta">(owasp-dsomm)</span></li>
+<li><a href="records/owasp-samm-2.html">OWASP SAMM 2.2</a> <span class="meta">(owasp-samm-2)</span></li>
+<li><a href="records/safecode-fpssd-3.html">SAFECode FPSSD 3rd ed.</a> <span class="meta">(safecode-fpssd-3)</span></li>
+<li><a href="records/iec-62443-4-1-2018.html">IEC 62443-4-1</a> <span class="meta">(iec-62443-4-1-2018)</span></li>
+<li><a href="records/iec-81001-5-1-2021.html">IEC 81001-5-1</a> <span class="meta">(iec-81001-5-1-2021)</span></li>
+<li><a href="records/iso-iec-27034-1.html">ISO/IEC 27034-1</a> <span class="meta">(iso-iec-27034-1)</span></li>
+<li><a href="records/iso-iec-29147-2018.html">ISO/IEC 29147</a> <span class="meta">(iso-iec-29147-2018)</span></li>
+<li><a href="records/iso-iec-30111-2019.html">ISO/IEC 30111</a> <span class="meta">(iso-iec-30111-2019)</span></li>
+<li><a href="records/sp-800-204d.html">NIST SP 800-204D</a> <span class="meta">(sp-800-204d)</span></li>
+<li><a href="records/sp-800-218.html">SSDF 1.1</a> <span class="meta">(sp-800-218)</span></li>
+<li><a href="records/sp-800-218a.html">SP 800-218A (SSDF Community Profile for AI Model Development)</a> <span class="meta">(sp-800-218a)</span></li>
+<li><a href="records/sp-800-218r1.html">SSDF 1.2 (SP 800-218r1 ipd)</a> <span class="meta">(sp-800-218r1)</span></li>
+<li><a href="records/sp-800-53r5.html">SP 800-53r5</a> <span class="meta">(sp-800-53r5)</span></li>
+<li><a href="records/openssf-osps-baseline.html">OSPS Baseline</a> <span class="meta">(openssf-osps-baseline)</span></li>
+<li><a href="records/openssf-scorecard-checks.html">OpenSSF Scorecard checks</a> <span class="meta">(openssf-scorecard-checks)</span></li>
+<li><a href="records/slsa-1-2.html">SLSA 1.2</a> <span class="meta">(slsa-1-2)</span></li>
+<li><a href="records/etsi-ts-104-219.html">ETSI TS 104 219 (SSDIF)</a> <span class="meta">(etsi-ts-104-219)</span></li>
+<li><a href="records/pci-secure-slc-2.html">PCI Secure SLC v2.0</a> <span class="meta">(pci-secure-slc-2)</span></li>
+<li><a href="records/bsi-tr-03183-1.html">BSI TR-03183-1</a> <span class="meta">(bsi-tr-03183-1)</span></li>
+<li><a href="records/bsi-tr-03185.html">BSI TR-03185</a> <span class="meta">(bsi-tr-03185)</span></li>
+<li><a href="records/cisa-secure-by-demand-guide-2024.html">CISA/FBI Secure by Demand Guide</a> <span class="meta">(cisa-secure-by-demand-guide-2024)</span></li>
+<li><a href="records/cisa-secure-by-demand-ot-2025.html">Secure by Demand — OT priority considerations</a> <span class="meta">(cisa-secure-by-demand-ot-2025)</span></li>
+<li><a href="records/cisa-secure-by-design-2023.html">CISA Secure by Design (2023)</a> <span class="meta">(cisa-secure-by-design-2023)</span></li>
+<li><a href="records/cisa-secure-by-design-pledge-2024.html">CISA Secure by Design Pledge</a> <span class="meta">(cisa-secure-by-design-pledge-2024)</span></li>
+<li><a href="records/cisa-ssdf-attestation-form-2024.html">CISA Secure Software Development Attestation Form</a> <span class="meta">(cisa-ssdf-attestation-form-2024)</span></li>
+<li><a href="records/enisa-sbd-playbook-2026.html">ENISA SbD&amp;D Playbook v1.0</a> <span class="meta">(enisa-sbd-playbook-2026)</span></li>
+<li><a href="records/eo-14028.html">EO 14028</a> <span class="meta">(eo-14028)</span></li>
+<li><a href="records/eo-14144.html">EO 14144</a> <span class="meta">(eo-14144)</span></li>
+<li><a href="records/eo-14306.html">EO 14306</a> <span class="meta">(eo-14306)</span></li>
+<li><a href="records/esf-sscs-developers-2022.html">ESF Securing the Software Supply Chain — Developers</a> <span class="meta">(esf-sscs-developers-2022)</span></li>
+<li><a href="records/eu-cra-2024-2847.html">Cyber Resilience Act (CRA)</a> <span class="meta">(eu-cra-2024-2847)</span></li>
+<li><a href="records/fda-premarket-cybersecurity-guidance.html">FDA premarket cybersecurity guidance</a> <span class="meta">(fda-premarket-cybersecurity-guidance)</span></li>
+<li><a href="records/omb-m-22-18.html">OMB M-22-18</a> <span class="meta">(omb-m-22-18)</span></li>
+<li><a href="records/omb-m-23-16.html">OMB M-23-16</a> <span class="meta">(omb-m-23-16)</span></li>
+<li><a href="records/omb-m-26-05.html">OMB M-26-05</a> <span class="meta">(omb-m-26-05)</span></li>
+<li><a href="records/uk-software-security-code-of-practice.html">UK Software Security Code of Practice</a> <span class="meta">(uk-software-security-code-of-practice)</span></li>
+<li><a href="records/bsimm-16.html">BSIMM16</a> <span class="meta">(bsimm-16)</span></li>
+<li><a href="records/microsoft-sdl.html">Microsoft SDL (10 practices)</a> <span class="meta">(microsoft-sdl)</span></li>
+<li><a href="records/microsoft-sdl-5-2.html">Microsoft SDL 5.2</a> <span class="meta">(microsoft-sdl-5-2)</span></li>
+<li><a href="records/microsoft-sdl-simplified-2010.html">Simplified SDL (2010)</a> <span class="meta">(microsoft-sdl-simplified-2010)</span></li>
+</ul>
+<h3 id="bears-R-043"><code>R-043</code></h3>
+<p class="meta">Named on each of these records. Not an edge we added.</p><ul>
+<li><a href="records/owasp-asvs-5.html">OWASP ASVS 5.0.0</a> <span class="meta">(owasp-asvs-5)</span></li>
+<li><a href="records/safecode-fpssd-3.html">SAFECode FPSSD 3rd ed.</a> <span class="meta">(safecode-fpssd-3)</span></li>
+<li><a href="records/iso-iec-27034-1.html">ISO/IEC 27034-1</a> <span class="meta">(iso-iec-27034-1)</span></li>
+<li><a href="records/iso-iec-29147-2018.html">ISO/IEC 29147</a> <span class="meta">(iso-iec-29147-2018)</span></li>
+<li><a href="records/iso-iec-30111-2019.html">ISO/IEC 30111</a> <span class="meta">(iso-iec-30111-2019)</span></li>
+<li><a href="records/sp-800-218.html">SSDF 1.1</a> <span class="meta">(sp-800-218)</span></li>
+<li><a href="records/sp-800-218r1.html">SSDF 1.2 (SP 800-218r1 ipd)</a> <span class="meta">(sp-800-218r1)</span></li>
+<li><a href="records/openssf-osps-baseline.html">OSPS Baseline</a> <span class="meta">(openssf-osps-baseline)</span></li>
+<li><a href="records/etsi-ts-104-219.html">ETSI TS 104 219 (SSDIF)</a> <span class="meta">(etsi-ts-104-219)</span></li>
+<li><a href="records/bsi-tr-03183-1.html">BSI TR-03183-1</a> <span class="meta">(bsi-tr-03183-1)</span></li>
+<li><a href="records/bsi-tr-03185.html">BSI TR-03185</a> <span class="meta">(bsi-tr-03185)</span></li>
+<li><a href="records/cisa-secure-by-demand-guide-2024.html">CISA/FBI Secure by Demand Guide</a> <span class="meta">(cisa-secure-by-demand-guide-2024)</span></li>
+<li><a href="records/cisa-secure-by-demand-ot-2025.html">Secure by Demand — OT priority considerations</a> <span class="meta">(cisa-secure-by-demand-ot-2025)</span></li>
+<li><a href="records/cisa-secure-by-design-2023.html">CISA Secure by Design (2023)</a> <span class="meta">(cisa-secure-by-design-2023)</span></li>
+<li><a href="records/cisa-secure-by-design-pledge-2024.html">CISA Secure by Design Pledge</a> <span class="meta">(cisa-secure-by-design-pledge-2024)</span></li>
+<li><a href="records/cisa-ssdf-attestation-form-2024.html">CISA Secure Software Development Attestation Form</a> <span class="meta">(cisa-ssdf-attestation-form-2024)</span></li>
+<li><a href="records/enisa-sbd-playbook-2026.html">ENISA SbD&amp;D Playbook v1.0</a> <span class="meta">(enisa-sbd-playbook-2026)</span></li>
+<li><a href="records/eo-14028.html">EO 14028</a> <span class="meta">(eo-14028)</span></li>
+<li><a href="records/esf-sscs-developers-2022.html">ESF Securing the Software Supply Chain — Developers</a> <span class="meta">(esf-sscs-developers-2022)</span></li>
+<li><a href="records/eu-cra-2024-2847.html">Cyber Resilience Act (CRA)</a> <span class="meta">(eu-cra-2024-2847)</span></li>
+<li><a href="records/fda-premarket-cybersecurity-guidance.html">FDA premarket cybersecurity guidance</a> <span class="meta">(fda-premarket-cybersecurity-guidance)</span></li>
+<li><a href="records/omb-m-22-18.html">OMB M-22-18</a> <span class="meta">(omb-m-22-18)</span></li>
+<li><a href="records/omb-m-26-05.html">OMB M-26-05</a> <span class="meta">(omb-m-26-05)</span></li>
+<li><a href="records/uk-software-security-code-of-practice.html">UK Software Security Code of Practice</a> <span class="meta">(uk-software-security-code-of-practice)</span></li>
+<li><a href="records/microsoft-sdl-simplified-2010.html">Simplified SDL (2010)</a> <span class="meta">(microsoft-sdl-simplified-2010)</span></li>
+</ul>
+<h3 id="bears-R-044"><code>R-044</code></h3>
+<p class="meta">Named on each of these records. Not an edge we added.</p><ul>
+<li><a href="records/cis-safecode-sbd-assessment-1-1.html">CIS/SAFECode Secure by Design v1.1</a> <span class="meta">(cis-safecode-sbd-assessment-1-1)</span></li>
+<li><a href="records/cncf-supply-chain-best-practices-v2.html">CNCF SSCBP v2</a> <span class="meta">(cncf-supply-chain-best-practices-v2)</span></li>
+<li><a href="records/owasp-asvs-5.html">OWASP ASVS 5.0.0</a> <span class="meta">(owasp-asvs-5)</span></li>
+<li><a href="records/owasp-dsomm.html">OWASP DSOMM</a> <span class="meta">(owasp-dsomm)</span></li>
+<li><a href="records/owasp-samm-2.html">OWASP SAMM 2.2</a> <span class="meta">(owasp-samm-2)</span></li>
+<li><a href="records/safecode-fpssd-3.html">SAFECode FPSSD 3rd ed.</a> <span class="meta">(safecode-fpssd-3)</span></li>
+<li><a href="records/iec-62443-4-1-2018.html">IEC 62443-4-1</a> <span class="meta">(iec-62443-4-1-2018)</span></li>
+<li><a href="records/iec-81001-5-1-2021.html">IEC 81001-5-1</a> <span class="meta">(iec-81001-5-1-2021)</span></li>
+<li><a href="records/iso-iec-27034-1.html">ISO/IEC 27034-1</a> <span class="meta">(iso-iec-27034-1)</span></li>
+<li><a href="records/iso-iec-29147-2018.html">ISO/IEC 29147</a> <span class="meta">(iso-iec-29147-2018)</span></li>
+<li><a href="records/iso-iec-30111-2019.html">ISO/IEC 30111</a> <span class="meta">(iso-iec-30111-2019)</span></li>
+<li><a href="records/sp-800-204d.html">NIST SP 800-204D</a> <span class="meta">(sp-800-204d)</span></li>
+<li><a href="records/sp-800-218.html">SSDF 1.1</a> <span class="meta">(sp-800-218)</span></li>
+<li><a href="records/sp-800-218a.html">SP 800-218A (SSDF Community Profile for AI Model Development)</a> <span class="meta">(sp-800-218a)</span></li>
+<li><a href="records/sp-800-218r1.html">SSDF 1.2 (SP 800-218r1 ipd)</a> <span class="meta">(sp-800-218r1)</span></li>
+<li><a href="records/sp-800-53r5.html">SP 800-53r5</a> <span class="meta">(sp-800-53r5)</span></li>
+<li><a href="records/openssf-concise-guide-secure-software.html">OpenSSF Concise Guide (developing)</a> <span class="meta">(openssf-concise-guide-secure-software)</span></li>
+<li><a href="records/openssf-osps-baseline.html">OSPS Baseline</a> <span class="meta">(openssf-osps-baseline)</span></li>
+<li><a href="records/openssf-scorecard-checks.html">OpenSSF Scorecard checks</a> <span class="meta">(openssf-scorecard-checks)</span></li>
+<li><a href="records/slsa-1-2.html">SLSA 1.2</a> <span class="meta">(slsa-1-2)</span></li>
+<li><a href="records/etsi-ts-104-219.html">ETSI TS 104 219 (SSDIF)</a> <span class="meta">(etsi-ts-104-219)</span></li>
+<li><a href="records/bsi-tr-03183-1.html">BSI TR-03183-1</a> <span class="meta">(bsi-tr-03183-1)</span></li>
+<li><a href="records/bsi-tr-03185.html">BSI TR-03185</a> <span class="meta">(bsi-tr-03185)</span></li>
+<li><a href="records/cisa-secure-by-demand-guide-2024.html">CISA/FBI Secure by Demand Guide</a> <span class="meta">(cisa-secure-by-demand-guide-2024)</span></li>
+<li><a href="records/cisa-secure-by-demand-ot-2025.html">Secure by Demand — OT priority considerations</a> <span class="meta">(cisa-secure-by-demand-ot-2025)</span></li>
+<li><a href="records/cisa-secure-by-design-2023.html">CISA Secure by Design (2023)</a> <span class="meta">(cisa-secure-by-design-2023)</span></li>
+<li><a href="records/cisa-ssdf-attestation-form-2024.html">CISA Secure Software Development Attestation Form</a> <span class="meta">(cisa-ssdf-attestation-form-2024)</span></li>
+<li><a href="records/enisa-sbd-playbook-2026.html">ENISA SbD&amp;D Playbook v1.0</a> <span class="meta">(enisa-sbd-playbook-2026)</span></li>
+<li><a href="records/eo-14028.html">EO 14028</a> <span class="meta">(eo-14028)</span></li>
+<li><a href="records/eo-14144.html">EO 14144</a> <span class="meta">(eo-14144)</span></li>
+<li><a href="records/eo-14306.html">EO 14306</a> <span class="meta">(eo-14306)</span></li>
+<li><a href="records/esf-sscs-developers-2022.html">ESF Securing the Software Supply Chain — Developers</a> <span class="meta">(esf-sscs-developers-2022)</span></li>
+<li><a href="records/eu-cra-2024-2847.html">Cyber Resilience Act (CRA)</a> <span class="meta">(eu-cra-2024-2847)</span></li>
+<li><a href="records/fda-premarket-cybersecurity-guidance.html">FDA premarket cybersecurity guidance</a> <span class="meta">(fda-premarket-cybersecurity-guidance)</span></li>
+<li><a href="records/omb-m-22-18.html">OMB M-22-18</a> <span class="meta">(omb-m-22-18)</span></li>
+<li><a href="records/omb-m-23-16.html">OMB M-23-16</a> <span class="meta">(omb-m-23-16)</span></li>
+<li><a href="records/omb-m-26-05.html">OMB M-26-05</a> <span class="meta">(omb-m-26-05)</span></li>
+<li><a href="records/uk-software-security-code-of-practice.html">UK Software Security Code of Practice</a> <span class="meta">(uk-software-security-code-of-practice)</span></li>
+<li><a href="records/bsimm-16.html">BSIMM16</a> <span class="meta">(bsimm-16)</span></li>
+<li><a href="records/microsoft-sdl.html">Microsoft SDL (10 practices)</a> <span class="meta">(microsoft-sdl)</span></li>
+<li><a href="records/microsoft-sdl-5-2.html">Microsoft SDL 5.2</a> <span class="meta">(microsoft-sdl-5-2)</span></li>
+<li><a href="records/microsoft-sdl-simplified-2010.html">Simplified SDL (2010)</a> <span class="meta">(microsoft-sdl-simplified-2010)</span></li>
+</ul>
+<h3 id="bears-R-M-02"><code>R-M-02</code></h3>
+<p class="meta">Named on each of these records. Not an edge we added.</p><ul>
+<li><a href="records/fips-180-4.html">FIPS 180-4</a> <span class="meta">(fips-180-4)</span></li>
+<li><a href="records/fips-186-5.html">FIPS 186-5</a> <span class="meta">(fips-186-5)</span></li>
+<li><a href="records/fips-202.html">FIPS 202</a> <span class="meta">(fips-202)</span></li>
+<li><a href="records/sp-800-57pt1r5.html">SP 800-57 Part 1 Rev. 5</a> <span class="meta">(sp-800-57pt1r5)</span></li>
+</ul>
+<h3 id="bears-R-M-05"><code>R-M-05</code></h3>
+<p class="meta">Named on each of these records. Not an edge we added.</p><ul>
+<li><a href="records/rfc-2692.html">SPKI Requirements</a> <span class="meta">(rfc-2692)</span></li>
+<li><a href="records/rfc-2693.html">SPKI Certificate Theory</a> <span class="meta">(rfc-2693)</span></li>
 </ul>
 <h3 id="bears-R-M-07"><code>R-M-07</code></h3>
 <p class="meta">Named on each of these records. Not an edge we added.</p><ul>
 <li><a href="records/ntia-sbom-minimum-elements.html">NTIA Minimum Elements</a> <span class="meta">(ntia-sbom-minimum-elements)</span></li>
 <li><a href="records/cisa-framing-software-component-transparency.html">CISA Framing (3rd ed.)</a> <span class="meta">(cisa-framing-software-component-transparency)</span></li>
 <li><a href="records/cyclonedx-1-7.html">CycloneDX 1.7 / ECMA-424</a> <span class="meta">(cyclonedx-1-7)</span></li>
+<li><a href="records/spdx-3-0-1.html">SPDX 3.0.1</a> <span class="meta">(spdx-3-0-1)</span></li>
+<li><a href="records/rfc-9054.html">CBOR Object Signing and Encryption (COSE): Hash Algorithms</a> <span class="meta">(rfc-9054)</span></li>
+<li><a href="records/rfc-9995.html">CBOR Object Signing and Encryption (COSE) Hash Envelope</a> <span class="meta">(rfc-9995)</span></li>
+<li><a href="records/iso-iec-5962-2021.html">ISO/IEC 5962:2021</a> <span class="meta">(iso-iec-5962-2021)</span></li>
 </ul>
 <h3 id="bears-R-M-11"><code>R-M-11</code></h3>
 <p class="meta">Named on each of these records. Not an edge we added.</p><ul>
@@ -120,19 +578,213 @@ footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 
 <li><a href="records/cisa-framing-software-component-transparency.html">CISA Framing (3rd ed.)</a> <span class="meta">(cisa-framing-software-component-transparency)</span></li>
 <li><a href="records/cyclonedx-1-7.html">CycloneDX 1.7 / ECMA-424</a> <span class="meta">(cyclonedx-1-7)</span></li>
 <li><a href="records/draft-ietf-vcon-vcon-core-04.html">vCon core</a> <span class="meta">(draft-ietf-vcon-vcon-core-04)</span></li>
+<li><a href="records/in-toto-attestation-v1.html">in-toto Attestation Framework v1</a> <span class="meta">(in-toto-attestation-v1)</span></li>
+<li><a href="records/spdx-3-0-1.html">SPDX 3.0.1</a> <span class="meta">(spdx-3-0-1)</span></li>
+<li><a href="records/iso-iec-5962-2021.html">ISO/IEC 5962:2021</a> <span class="meta">(iso-iec-5962-2021)</span></li>
+</ul>
+<h3 id="bears-R-M-12"><code>R-M-12</code></h3>
+<p class="meta">Named on each of these records. Not an edge we added.</p><ul>
+<li><a href="records/rfc-8949.html">Concise Binary Object Representation (CBOR)</a> <span class="meta">(rfc-8949)</span></li>
+<li><a href="records/rfc-8746.html">Concise Binary Object Representation (CBOR) Tags for Typed Arrays</a> <span class="meta">(rfc-8746)</span></li>
+<li><a href="records/rfc-8943.html">Concise Binary Object Representation (CBOR) Tags for Date</a> <span class="meta">(rfc-8943)</span></li>
+<li><a href="records/rfc-9052.html">CBOR Object Signing and Encryption (COSE): Structures and Process</a> <span class="meta">(rfc-9052)</span></li>
+<li><a href="records/rfc-9090.html">Concise Binary Object Representation (CBOR) Tags for Object Identifiers</a> <span class="meta">(rfc-9090)</span></li>
+<li><a href="records/rfc-9164.html">Concise Binary Object Representation (CBOR) Tags for IPv4 and IPv6 Addresses and Prefixes</a> <span class="meta">(rfc-9164)</span></li>
+<li><a href="records/rfc-9581.html">Concise Binary Object Representation (CBOR) Tags for Time, Duration, and Period</a> <span class="meta">(rfc-9581)</span></li>
+<li><a href="records/rfc-9781.html">A Concise Binary Object Representation (CBOR) Tag for Unprotected CBOR Web Token Claims Sets (UCCS)</a> <span class="meta">(rfc-9781)</span></li>
+<li><a href="records/rfc-9942.html">CBOR Object Signing and Encryption (COSE) Receipts</a> <span class="meta">(rfc-9942)</span></li>
+<li><a href="records/rfc-9943.html">An Architecture for Trustworthy and Transparent Digital Supply Chains</a> <span class="meta">(rfc-9943)</span></li>
+<li><a href="records/iana-cbor-simple-values.html">IANA Concise Binary Object Representation (CBOR) Simple Values Registry</a> <span class="meta">(iana-cbor-simple-values)</span></li>
+<li><a href="records/iana-cbor-tags.html">IANA Concise Binary Object Representation (CBOR) Tags Registry</a> <span class="meta">(iana-cbor-tags)</span></li>
+<li><a href="records/iana-cose-algorithms.html">IANA COSE Algorithms registry</a> <span class="meta">(iana-cose-algorithms)</span></li>
+</ul>
+<h3 id="bears-R-O-05"><code>R-O-05</code></h3>
+<p class="meta">Named on each of these records. Not an edge we added.</p><ul>
+<li><a href="records/secure-systems-lab-dsse.html">Dead Simple Signing Envelope (DSSE)</a> <span class="meta">(secure-systems-lab-dsse)</span></li>
+<li><a href="records/fips-186-5.html">FIPS 186-5</a> <span class="meta">(fips-186-5)</span></li>
+<li><a href="records/sp-800-208.html">SP 800-208</a> <span class="meta">(sp-800-208)</span></li>
 </ul>
 <h2>Shared topic tags</h2>
+<h3 id="tag-ai-grounding">ai-grounding <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (knowledge-graph, provenance). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/nsf-okn-launch.html">NSF OKN launch</a> <span class="meta">(nsf-okn-launch)</span></li>
+<li><a href="records/nsf-23-571.html">NSF 23-571 (Proto-OKN)</a> <span class="meta">(nsf-23-571)</span></li>
+</ul>
+<h3 id="tag-ai-security">ai-security <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (sagai, sdl, threat-modeling). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/llm-programmatic-dual-use.html">LLM programmatic dual use</a> <span class="meta">(llm-programmatic-dual-use)</span></li>
+<li><a href="records/pretrained-encoders-secure-learning.html">Pre-trained encoders for secure learning</a> <span class="meta">(pretrained-encoders-secure-learning)</span></li>
+<li><a href="records/sagai-workshop.html">SAGAI workshops</a> <span class="meta">(sagai-workshop)</span></li>
+<li><a href="records/spml-image-prompt-injection.html">Image-based prompt attacks (SPML)</a> <span class="meta">(spml-image-prompt-injection)</span></li>
+<li><a href="records/spotlighting-indirect-prompt-injection.html">Spotlighting</a> <span class="meta">(spotlighting-indirect-prompt-injection)</span></li>
+<li><a href="records/systems-security-agentic-computing.html">Systems security for agents (SoK)</a> <span class="meta">(systems-security-agentic-computing)</span></li>
+<li><a href="records/csa-maestro-2025.html">Agentic AI Threat Modeling Framework: MAESTRO</a> <span class="meta">(csa-maestro-2025)</span></li>
+<li><a href="records/sp-800-218a.html">SP 800-218A (SSDF Community Profile for AI Model Development)</a> <span class="meta">(sp-800-218a)</span></li>
+<li><a href="records/etsi-en-304-223.html">ETSI EN 304 223</a> <span class="meta">(etsi-en-304-223)</span></li>
+<li><a href="records/cisa-ai-in-ot-principles.html">CISA AI in OT</a> <span class="meta">(cisa-ai-in-ot-principles)</span></li>
+</ul>
+<h3 id="tag-application-security">application-security</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/owasp-asvs-5.html">OWASP ASVS 5.0.0</a> <span class="meta">(owasp-asvs-5)</span></li>
+<li><a href="records/iso-iec-27034-1.html">ISO/IEC 27034-1</a> <span class="meta">(iso-iec-27034-1)</span></li>
+</ul>
+<h3 id="tag-archived">archived</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/kuzu.html">Kùzu graph database</a> <span class="meta">(kuzu)</span></li>
+<li><a href="records/kuzu-explorer.html">Kùzu Explorer</a> <span class="meta">(kuzu-explorer)</span></li>
+</ul>
+<h3 id="tag-assessment">assessment</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/cis-safecode-sbd-assessment-1-1.html">CIS/SAFECode Secure by Design v1.1</a> <span class="meta">(cis-safecode-sbd-assessment-1-1)</span></li>
+<li><a href="records/owasp-samm-2.html">OWASP SAMM 2.2</a> <span class="meta">(owasp-samm-2)</span></li>
+<li><a href="records/pci-secure-slc-2.html">PCI Secure SLC v2.0</a> <span class="meta">(pci-secure-slc-2)</span></li>
+</ul>
+<h3 id="tag-attack">attack <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (attack, threat-modeling). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/bron.html">BRON — Linking ATT&amp;CK, CAPEC, CWE, CVE, CPE (Hemberg et al., 2020)</a> <span class="meta">(bron)</span></li>
+<li><a href="records/mitre-attack.html">MITRE ATT&amp;CK (knowledge base + STIX 2.1 data)</a> <span class="meta">(mitre-attack)</span></li>
+<li><a href="records/mitre-attack-design-philosophy.html">MITRE ATT&amp;CK: Design and Philosophy</a> <span class="meta">(mitre-attack-design-philosophy)</span></li>
+</ul>
+<h3 id="tag-attestation">attestation <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (artifact-statements, cbor-implementation, predicate-rendering, sdl, supply-chain-attestation). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/draft-ietf-vcon-vcon-core-04.html">vCon core</a> <span class="meta">(draft-ietf-vcon-vcon-core-04)</span></li>
+<li><a href="records/cncf-supply-chain-best-practices-v2.html">CNCF SSCBP v2</a> <span class="meta">(cncf-supply-chain-best-practices-v2)</span></li>
+<li><a href="records/draft-mih-scitt-agent-action-capsule.html">Agent Action Capsule</a> <span class="meta">(draft-mih-scitt-agent-action-capsule)</span></li>
+<li><a href="records/ietf-vcon-wg.html">IETF vCon Working Group</a> <span class="meta">(ietf-vcon-wg)</span></li>
+<li><a href="records/rfc-8392.html">CBOR Web Token (CWT)</a> <span class="meta">(rfc-8392)</span></li>
+<li><a href="records/rfc-9052.html">CBOR Object Signing and Encryption (COSE): Structures and Process</a> <span class="meta">(rfc-9052)</span></li>
+<li><a href="records/rfc-9597.html">CBOR Web Token (CWT) Claims in COSE Headers</a> <span class="meta">(rfc-9597)</span></li>
+<li><a href="records/rfc-9781.html">A Concise Binary Object Representation (CBOR) Tag for Unprotected CBOR Web Token Claims Sets (UCCS)</a> <span class="meta">(rfc-9781)</span></li>
+<li><a href="records/rfc-9942.html">CBOR Object Signing and Encryption (COSE) Receipts</a> <span class="meta">(rfc-9942)</span></li>
+<li><a href="records/rfc-9943.html">An Architecture for Trustworthy and Transparent Digital Supply Chains</a> <span class="meta">(rfc-9943)</span></li>
+<li><a href="records/sp-800-204d.html">NIST SP 800-204D</a> <span class="meta">(sp-800-204d)</span></li>
+<li><a href="records/sp-800-218.html">SSDF 1.1</a> <span class="meta">(sp-800-218)</span></li>
+<li><a href="records/sp-800-218a.html">SP 800-218A (SSDF Community Profile for AI Model Development)</a> <span class="meta">(sp-800-218a)</span></li>
+<li><a href="records/slsa-1-2.html">SLSA 1.2</a> <span class="meta">(slsa-1-2)</span></li>
+<li><a href="records/cisa-ssdf-attestation-form-2024.html">CISA Secure Software Development Attestation Form</a> <span class="meta">(cisa-ssdf-attestation-form-2024)</span></li>
+<li><a href="records/enisa-sbd-playbook-2026.html">ENISA SbD&amp;D Playbook v1.0</a> <span class="meta">(enisa-sbd-playbook-2026)</span></li>
+<li><a href="records/eo-14028.html">EO 14028</a> <span class="meta">(eo-14028)</span></li>
+<li><a href="records/eo-14144.html">EO 14144</a> <span class="meta">(eo-14144)</span></li>
+<li><a href="records/eo-14306.html">EO 14306</a> <span class="meta">(eo-14306)</span></li>
+<li><a href="records/omb-m-22-18.html">OMB M-22-18</a> <span class="meta">(omb-m-22-18)</span></li>
+<li><a href="records/omb-m-23-16.html">OMB M-23-16</a> <span class="meta">(omb-m-23-16)</span></li>
+<li><a href="records/omb-m-26-05.html">OMB M-26-05</a> <span class="meta">(omb-m-26-05)</span></li>
+</ul>
+<h3 id="tag-audit">audit <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (automotive, provenance). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/prov-o.html">PROV-O: The PROV Ontology</a> <span class="meta">(prov-o)</span></li>
+<li><a href="records/iso-pas-5112-2022.html">ISO/PAS 5112:2022, Road vehicles: Guidelines for auditing cybersecurity engineering</a> <span class="meta">(iso-pas-5112-2022)</span></li>
+</ul>
+<h3 id="tag-automation">automation</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/threagile.html">Threagile</a> <span class="meta">(threagile)</span></li>
+<li><a href="records/aws-threat-composer.html">AWS Threat Composer</a> <span class="meta">(aws-threat-composer)</span></li>
+</ul>
+<h3 id="tag-automotive">automotive <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (automotive, threat-modeling). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/iso-sae-21434-2021.html">ISO/SAE 21434</a> <span class="meta">(iso-sae-21434-2021)</span></li>
+<li><a href="records/iso-24089-2023.html">ISO 24089:2023, Road vehicles: Software update engineering</a> <span class="meta">(iso-24089-2023)</span></li>
+<li><a href="records/iso-pas-5112-2022.html">ISO/PAS 5112:2022, Road vehicles: Guidelines for auditing cybersecurity engineering</a> <span class="meta">(iso-pas-5112-2022)</span></li>
+<li><a href="records/iso-sae-pas-8475.html">ISO/SAE PAS 8475, Road vehicles: Cybersecurity Assurance Levels (CAL) and Targeted Attack Feasibility (TAF)</a> <span class="meta">(iso-sae-pas-8475)</span></li>
+<li><a href="records/iso-sae-tr-8477.html">ISO/SAE TR 8477, Road vehicles: Cybersecurity verification and validation</a> <span class="meta">(iso-sae-tr-8477)</span></li>
+<li><a href="records/evita-d2-3.html">EVITA Deliverable D2.3: Security requirements for automotive on-board networks based on dark-side scenarios</a> <span class="meta">(evita-d2-3)</span></li>
+</ul>
+<h3 id="tag-bibliography-method">bibliography-method</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/kitchenham-charters-2007.html">Guidelines for performing Systematic Literature Reviews in Software Engineering</a> <span class="meta">(kitchenham-charters-2007)</span></li>
+<li><a href="records/prisma-2020.html">The PRISMA 2020 statement: an updated guideline for reporting systematic reviews</a> <span class="meta">(prisma-2020)</span></li>
+<li><a href="records/wohlin-2014-snowballing.html">Guidelines for snowballing in systematic literature studies and a replication in software engineering</a> <span class="meta">(wohlin-2014-snowballing)</span></li>
+</ul>
+<h3 id="tag-bsi">bsi</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/bsi-tr-03183-1.html">BSI TR-03183-1</a> <span class="meta">(bsi-tr-03183-1)</span></li>
+<li><a href="records/bsi-tr-03185.html">BSI TR-03185</a> <span class="meta">(bsi-tr-03185)</span></li>
+</ul>
+<h3 id="tag-canonicalization">canonicalization <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (canonical-encoding, cbor-implementation). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/rfc-8949.html">Concise Binary Object Representation (CBOR)</a> <span class="meta">(rfc-8949)</span></li>
+<li><a href="records/draft-mcnally-deterministic-cbor.html">dCBOR: Deterministic CBOR</a> <span class="meta">(draft-mcnally-deterministic-cbor)</span></li>
+<li><a href="records/draft-ietf-cbor-cde.html">CBOR Common Deterministic Encoding (CDE)</a> <span class="meta">(draft-ietf-cbor-cde)</span></li>
+<li><a href="records/draft-ietf-cbor-serialization.html">CBOR Serialization and Determinism</a> <span class="meta">(draft-ietf-cbor-serialization)</span></li>
+<li><a href="records/rfc-8610.html">Concise Data Definition Language (CDDL): A Notational Convention to Express Concise Binary Object Representation (CBOR) and JSON Data Structures</a> <span class="meta">(rfc-8610)</span></li>
+</ul>
 <h3 id="tag-capec">capec <span class="badge broad">broad</span></h3>
 <p class="meta">Broad: these records do not share one publish-topic (attack, attack-pattern). Co-membership only — not a reviewed synonym and not a citation.</p>
 <ul>
 <li><a href="records/capec.html">MITRE CAPEC — Common Attack Pattern Enumeration and Classification</a> <span class="meta">(capec)</span></li>
 <li><a href="records/bron.html">BRON — Linking ATT&amp;CK, CAPEC, CWE, CVE, CPE (Hemberg et al., 2020)</a> <span class="meta">(bron)</span></li>
 </ul>
+<h3 id="tag-cisa">cisa</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/cisa-secure-by-demand-guide-2024.html">CISA/FBI Secure by Demand Guide</a> <span class="meta">(cisa-secure-by-demand-guide-2024)</span></li>
+<li><a href="records/cisa-secure-by-demand-ot-2025.html">Secure by Demand — OT priority considerations</a> <span class="meta">(cisa-secure-by-demand-ot-2025)</span></li>
+<li><a href="records/cisa-secure-by-design-pledge-2024.html">CISA Secure by Design Pledge</a> <span class="meta">(cisa-secure-by-design-pledge-2024)</span></li>
+<li><a href="records/cisa-ssdf-attestation-form-2024.html">CISA Secure Software Development Attestation Form</a> <span class="meta">(cisa-ssdf-attestation-form-2024)</span></li>
+<li><a href="records/esf-sscs-developers-2022.html">ESF Securing the Software Supply Chain — Developers</a> <span class="meta">(esf-sscs-developers-2022)</span></li>
+</ul>
+<h3 id="tag-cmvp">cmvp</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/nist-sp-800-140.html">SP 800-140</a> <span class="meta">(nist-sp-800-140)</span></li>
+<li><a href="records/nist-sp-800-140a.html">SP 800-140A</a> <span class="meta">(nist-sp-800-140a)</span></li>
+<li><a href="records/nist-sp-800-140b.html">SP 800-140B</a> <span class="meta">(nist-sp-800-140b)</span></li>
+<li><a href="records/nist-sp-800-140c.html">SP 800-140C</a> <span class="meta">(nist-sp-800-140c)</span></li>
+<li><a href="records/nist-sp-800-140d.html">SP 800-140D</a> <span class="meta">(nist-sp-800-140d)</span></li>
+<li><a href="records/nist-sp-800-140e.html">SP 800-140E</a> <span class="meta">(nist-sp-800-140e)</span></li>
+<li><a href="records/nist-sp-800-140f.html">SP 800-140F</a> <span class="meta">(nist-sp-800-140f)</span></li>
+</ul>
 <h3 id="tag-compliance">compliance <span class="badge broad">broad</span></h3>
-<p class="meta">Broad: these records do not share one publish-topic (cryptography, threat-modeling). Co-membership only — not a reviewed synonym and not a citation.</p>
+<p class="meta">Broad: these records do not share one publish-topic (cryptography, sp-800-140, threat-modeling). Co-membership only — not a reviewed synonym and not a citation.</p>
 <ul>
 <li><a href="records/iso-sae-21434-2021.html">ISO/SAE 21434</a> <span class="meta">(iso-sae-21434-2021)</span></li>
 <li><a href="records/fips-140-3.html">FIPS 140-3</a> <span class="meta">(fips-140-3)</span></li>
+<li><a href="records/nist-sp-800-140.html">SP 800-140</a> <span class="meta">(nist-sp-800-140)</span></li>
+<li><a href="records/nist-sp-800-140a.html">SP 800-140A</a> <span class="meta">(nist-sp-800-140a)</span></li>
+<li><a href="records/nist-sp-800-140b.html">SP 800-140B</a> <span class="meta">(nist-sp-800-140b)</span></li>
+<li><a href="records/nist-sp-800-140c.html">SP 800-140C</a> <span class="meta">(nist-sp-800-140c)</span></li>
+<li><a href="records/nist-sp-800-140d.html">SP 800-140D</a> <span class="meta">(nist-sp-800-140d)</span></li>
+<li><a href="records/nist-sp-800-140e.html">SP 800-140E</a> <span class="meta">(nist-sp-800-140e)</span></li>
+<li><a href="records/nist-sp-800-140f.html">SP 800-140F</a> <span class="meta">(nist-sp-800-140f)</span></li>
+</ul>
+<h3 id="tag-conformance">conformance</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/owasp-asvs-5.html">OWASP ASVS 5.0.0</a> <span class="meta">(owasp-asvs-5)</span></li>
+<li><a href="records/openssf-osps-baseline.html">OSPS Baseline</a> <span class="meta">(openssf-osps-baseline)</span></li>
+<li><a href="records/openssf-scorecard-checks.html">OpenSSF Scorecard checks</a> <span class="meta">(openssf-scorecard-checks)</span></li>
+<li><a href="records/uk-software-security-code-of-practice.html">UK Software Security Code of Practice</a> <span class="meta">(uk-software-security-code-of-practice)</span></li>
+</ul>
+<h3 id="tag-cra">cra</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/bsi-tr-03183-1.html">BSI TR-03183-1</a> <span class="meta">(bsi-tr-03183-1)</span></li>
+<li><a href="records/enisa-sbd-playbook-2026.html">ENISA SbD&amp;D Playbook v1.0</a> <span class="meta">(enisa-sbd-playbook-2026)</span></li>
+</ul>
+<h3 id="tag-cryptography">cryptography <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (cryptography, sp-800-140). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/fips-140-3.html">FIPS 140-3</a> <span class="meta">(fips-140-3)</span></li>
+<li><a href="records/nist-sp-800-140.html">SP 800-140</a> <span class="meta">(nist-sp-800-140)</span></li>
+<li><a href="records/nist-sp-800-140a.html">SP 800-140A</a> <span class="meta">(nist-sp-800-140a)</span></li>
+<li><a href="records/nist-sp-800-140b.html">SP 800-140B</a> <span class="meta">(nist-sp-800-140b)</span></li>
+<li><a href="records/nist-sp-800-140c.html">SP 800-140C</a> <span class="meta">(nist-sp-800-140c)</span></li>
+<li><a href="records/nist-sp-800-140d.html">SP 800-140D</a> <span class="meta">(nist-sp-800-140d)</span></li>
+<li><a href="records/nist-sp-800-140e.html">SP 800-140E</a> <span class="meta">(nist-sp-800-140e)</span></li>
+<li><a href="records/nist-sp-800-140f.html">SP 800-140F</a> <span class="meta">(nist-sp-800-140f)</span></li>
 </ul>
 <h3 id="tag-cve">cve <span class="badge broad">broad</span></h3>
 <p class="meta">Broad: these records do not share one publish-topic (attack, vulnerability). Co-membership only — not a reviewed synonym and not a citation.</p>
@@ -140,66 +792,761 @@ footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 
 <li><a href="records/bron.html">BRON — Linking ATT&amp;CK, CAPEC, CWE, CVE, CPE (Hemberg et al., 2020)</a> <span class="meta">(bron)</span></li>
 <li><a href="records/cve-json-5.html">CVE JSON Record Format v5</a> <span class="meta">(cve-json-5)</span></li>
 </ul>
+<h3 id="tag-cvss">cvss</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/first-cvss-v3-1.html">FIRST, Common Vulnerability Scoring System v3.1: Specification Document</a> <span class="meta">(first-cvss-v3-1)</span></li>
+<li><a href="records/first-cvss-v4-0.html">FIRST, Common Vulnerability Scoring System v4.0: Specification Document</a> <span class="meta">(first-cvss-v4-0)</span></li>
+</ul>
 <h3 id="tag-cwe">cwe <span class="badge broad">broad</span></h3>
 <p class="meta">Broad: these records do not share one publish-topic (attack, weakness). Co-membership only — not a reviewed synonym and not a citation.</p>
 <ul>
 <li><a href="records/cwe.html">MITRE CWE — Common Weakness Enumeration</a> <span class="meta">(cwe)</span></li>
 <li><a href="records/bron.html">BRON — Linking ATT&amp;CK, CAPEC, CWE, CVE, CPE (Hemberg et al., 2020)</a> <span class="meta">(bron)</span></li>
 </ul>
+<h3 id="tag-cybersecurity">cybersecurity</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/iso-pas-5112-2022.html">ISO/PAS 5112:2022, Road vehicles: Guidelines for auditing cybersecurity engineering</a> <span class="meta">(iso-pas-5112-2022)</span></li>
+<li><a href="records/iso-sae-pas-8475.html">ISO/SAE PAS 8475, Road vehicles: Cybersecurity Assurance Levels (CAL) and Targeted Attack Feasibility (TAF)</a> <span class="meta">(iso-sae-pas-8475)</span></li>
+<li><a href="records/iso-sae-tr-8477.html">ISO/SAE TR 8477, Road vehicles: Cybersecurity verification and validation</a> <span class="meta">(iso-sae-tr-8477)</span></li>
+</ul>
+<h3 id="tag-dfd">dfd</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/owasp-threat-dragon.html">OWASP Threat Dragon</a> <span class="meta">(owasp-threat-dragon)</span></li>
+<li><a href="records/owasp-threat-dragon-guide.html">OWASP Developer Guide — Threat Dragon</a> <span class="meta">(owasp-threat-dragon-guide)</span></li>
+<li><a href="records/iriusrisk-creating-threat-model.html">IriusRisk — Creating a threat model</a> <span class="meta">(iriusrisk-creating-threat-model)</span></li>
+<li><a href="records/microsoft-threat-modeling-tool-overview.html">Microsoft Threat Modeling Tool overview</a> <span class="meta">(microsoft-threat-modeling-tool-overview)</span></li>
+<li><a href="records/threattree-help.html">ThreatTree Help Center</a> <span class="meta">(threattree-help)</span></li>
+</ul>
 <h3 id="tag-encoding">encoding <span class="badge broad">broad</span></h3>
-<p class="meta">Broad: these records do not share one publish-topic (artifact-statements, cbor-implementation). Co-membership only — not a reviewed synonym and not a citation.</p>
+<p class="meta">Broad: these records do not share one publish-topic (artifact-statements, canonical-encoding, cbor-ecosystem, cbor-implementation). Co-membership only — not a reviewed synonym and not a citation.</p>
 <ul>
 <li><a href="records/rfc-8949.html">Concise Binary Object Representation (CBOR)</a> <span class="meta">(rfc-8949)</span></li>
 <li><a href="records/draft-ietf-vcon-vcon-core-04.html">vCon core</a> <span class="meta">(draft-ietf-vcon-vcon-core-04)</span></li>
+<li><a href="records/draft-mcnally-deterministic-cbor.html">dCBOR: Deterministic CBOR</a> <span class="meta">(draft-mcnally-deterministic-cbor)</span></li>
+<li><a href="records/draft-ietf-cbor-cddl-modules.html">CDDL Module Structure</a> <span class="meta">(draft-ietf-cbor-cddl-modules)</span></li>
+<li><a href="records/draft-ietf-cbor-cde.html">CBOR Common Deterministic Encoding (CDE)</a> <span class="meta">(draft-ietf-cbor-cde)</span></li>
+<li><a href="records/draft-ietf-cbor-edn-literals.html">Concise Diagnostic Notation (CDN)</a> <span class="meta">(draft-ietf-cbor-edn-literals)</span></li>
+<li><a href="records/draft-ietf-cbor-packed.html">Packed CBOR</a> <span class="meta">(draft-ietf-cbor-packed)</span></li>
+<li><a href="records/draft-ietf-cbor-serialization.html">CBOR Serialization and Determinism</a> <span class="meta">(draft-ietf-cbor-serialization)</span></li>
+<li><a href="records/ietf-cbor-wg.html">IETF Concise Binary Object Representation Maintenance and Extensions (CBOR) Working Group</a> <span class="meta">(ietf-cbor-wg)</span></li>
+<li><a href="records/rfc-7049.html">Concise Binary Object Representation (CBOR)</a> <span class="meta">(rfc-7049)</span></li>
+<li><a href="records/rfc-8610.html">Concise Data Definition Language (CDDL): A Notational Convention to Express Concise Binary Object Representation (CBOR) and JSON Data Structures</a> <span class="meta">(rfc-8610)</span></li>
+<li><a href="records/rfc-8742.html">Concise Binary Object Representation (CBOR) Sequences</a> <span class="meta">(rfc-8742)</span></li>
+<li><a href="records/rfc-8746.html">Concise Binary Object Representation (CBOR) Tags for Typed Arrays</a> <span class="meta">(rfc-8746)</span></li>
+<li><a href="records/rfc-8769.html">Cryptographic Message Syntax (CMS) Content Types for Concise Binary Object Representation (CBOR)</a> <span class="meta">(rfc-8769)</span></li>
+<li><a href="records/rfc-8943.html">Concise Binary Object Representation (CBOR) Tags for Date</a> <span class="meta">(rfc-8943)</span></li>
+<li><a href="records/rfc-9090.html">Concise Binary Object Representation (CBOR) Tags for Object Identifiers</a> <span class="meta">(rfc-9090)</span></li>
+<li><a href="records/rfc-9164.html">Concise Binary Object Representation (CBOR) Tags for IPv4 and IPv6 Addresses and Prefixes</a> <span class="meta">(rfc-9164)</span></li>
+<li><a href="records/rfc-9165.html">Additional Control Operators for the Concise Data Definition Language (CDDL)</a> <span class="meta">(rfc-9165)</span></li>
+<li><a href="records/rfc-9254.html">Encoding of Data Modeled with YANG in the Concise Binary Object Representation (CBOR)</a> <span class="meta">(rfc-9254)</span></li>
+<li><a href="records/rfc-9277.html">On Stable Storage for Items in Concise Binary Object Representation (CBOR)</a> <span class="meta">(rfc-9277)</span></li>
+<li><a href="records/rfc-9581.html">Concise Binary Object Representation (CBOR) Tags for Time, Duration, and Period</a> <span class="meta">(rfc-9581)</span></li>
+<li><a href="records/rfc-9682.html">Updates to the Concise Data Definition Language (CDDL) Grammar</a> <span class="meta">(rfc-9682)</span></li>
+<li><a href="records/rfc-9741.html">Concise Data Definition Language (CDDL): Additional Control Operators for the Conversion and Processing of Text</a> <span class="meta">(rfc-9741)</span></li>
+<li><a href="records/rfc-9997.html">YANG-CBOR: Allocating SID Ranges for Private Enterprise Number (PEN) Holders</a> <span class="meta">(rfc-9997)</span></li>
+<li><a href="records/iana-cbor-simple-values.html">IANA Concise Binary Object Representation (CBOR) Simple Values Registry</a> <span class="meta">(iana-cbor-simple-values)</span></li>
+<li><a href="records/iana-cbor-tags.html">IANA Concise Binary Object Representation (CBOR) Tags Registry</a> <span class="meta">(iana-cbor-tags)</span></li>
+</ul>
+<h3 id="tag-federation">federation <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (knowledge-graph, provenance, sparql). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/nsf-okn-launch.html">NSF OKN launch</a> <span class="meta">(nsf-okn-launch)</span></li>
+<li><a href="records/frink-fabric.html">FRINK — FabRic Integrating Networked Knowledge (RENCI, Proto-OKN Theme 2)</a> <span class="meta">(frink-fabric)</span></li>
+<li><a href="records/nsf-23-571.html">NSF 23-571 (Proto-OKN)</a> <span class="meta">(nsf-23-571)</span></li>
+<li><a href="records/sparql-1-1.html">SPARQL 1.1 Query Language</a> <span class="meta">(sparql-1-1)</span></li>
+</ul>
+<h3 id="tag-fips-140-3">fips-140-3</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/nist-sp-800-140.html">SP 800-140</a> <span class="meta">(nist-sp-800-140)</span></li>
+<li><a href="records/nist-sp-800-140a.html">SP 800-140A</a> <span class="meta">(nist-sp-800-140a)</span></li>
+<li><a href="records/nist-sp-800-140b.html">SP 800-140B</a> <span class="meta">(nist-sp-800-140b)</span></li>
+<li><a href="records/nist-sp-800-140c.html">SP 800-140C</a> <span class="meta">(nist-sp-800-140c)</span></li>
+<li><a href="records/nist-sp-800-140d.html">SP 800-140D</a> <span class="meta">(nist-sp-800-140d)</span></li>
+<li><a href="records/nist-sp-800-140e.html">SP 800-140E</a> <span class="meta">(nist-sp-800-140e)</span></li>
+<li><a href="records/nist-sp-800-140f.html">SP 800-140F</a> <span class="meta">(nist-sp-800-140f)</span></li>
+</ul>
+<h3 id="tag-first">first</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/first-cvss-v3-1.html">FIRST, Common Vulnerability Scoring System v3.1: Specification Document</a> <span class="meta">(first-cvss-v3-1)</span></li>
+<li><a href="records/first-cvss-v4-0.html">FIRST, Common Vulnerability Scoring System v4.0: Specification Document</a> <span class="meta">(first-cvss-v4-0)</span></li>
+</ul>
+<h3 id="tag-germany">germany</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/bsi-tr-03183-1.html">BSI TR-03183-1</a> <span class="meta">(bsi-tr-03183-1)</span></li>
+<li><a href="records/bsi-tr-03185.html">BSI TR-03185</a> <span class="meta">(bsi-tr-03185)</span></li>
 </ul>
 <h3 id="tag-graph">graph <span class="badge broad">broad</span></h3>
-<p class="meta">Broad: these records do not share one publish-topic (attack-pattern, supply-chain, threat-intel, weakness). Co-membership only — not a reviewed synonym and not a citation.</p>
+<p class="meta">Broad: these records do not share one publish-topic (attack-pattern, rdf, supply-chain, threat-intel, weakness). Co-membership only — not a reviewed synonym and not a citation.</p>
 <ul>
 <li><a href="records/capec.html">MITRE CAPEC — Common Attack Pattern Enumeration and Classification</a> <span class="meta">(capec)</span></li>
 <li><a href="records/cwe.html">MITRE CWE — Common Weakness Enumeration</a> <span class="meta">(cwe)</span></li>
 <li><a href="records/stix-2-1.html">STIX Version 2.1 (OASIS Standard)</a> <span class="meta">(stix-2-1)</span></li>
 <li><a href="records/guac.html">GUAC — Graph for Understanding Artifact Composition (OpenSSF)</a> <span class="meta">(guac)</span></li>
+<li><a href="records/rdf-1-1-concepts.html">RDF 1.1 Concepts and Abstract Syntax</a> <span class="meta">(rdf-1-1-concepts)</span></li>
+</ul>
+<h3 id="tag-graph-visualization">graph-visualization</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/cytoscape-js.html">Cytoscape.js documentation and project</a> <span class="meta">(cytoscape-js)</span></li>
+<li><a href="records/d3-js.html">D3.js documentation and project</a> <span class="meta">(d3-js)</span></li>
+<li><a href="records/gephi.html">Gephi desktop documentation and project</a> <span class="meta">(gephi)</span></li>
+<li><a href="records/kuzu-explorer.html">Kùzu Explorer</a> <span class="meta">(kuzu-explorer)</span></li>
+<li><a href="records/sigma-js.html">Sigma.js documentation and project</a> <span class="meta">(sigma-js)</span></li>
+<li><a href="records/memgraph-lab.html">Memgraph Lab documentation</a> <span class="meta">(memgraph-lab)</span></li>
+<li><a href="records/neo4j-bloom.html">Neo4j Bloom user guide</a> <span class="meta">(neo4j-bloom)</span></li>
+<li><a href="records/yfiles-html.html">yFiles for HTML developer documentation</a> <span class="meta">(yfiles-html)</span></li>
+</ul>
+<h3 id="tag-grounding">grounding <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (graphrag, llm, okn). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/unifying-llm-kg.html">Unifying Large Language Models and Knowledge Graphs: A Roadmap (Pan et al., IEEE TKDE 2024)</a> <span class="meta">(unifying-llm-kg)</span></li>
+<li><a href="records/mcp-okn.html">mcp-okn — Model Context Protocol access to NSF OKN graphs</a> <span class="meta">(mcp-okn)</span></li>
+<li><a href="records/graphrag-ms.html">GraphRAG (Microsoft Research, 2024)</a> <span class="meta">(graphrag-ms)</span></li>
+</ul>
+<h3 id="tag-hashing">hashing</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/fips-180-4.html">FIPS 180-4</a> <span class="meta">(fips-180-4)</span></li>
+<li><a href="records/fips-202.html">FIPS 202</a> <span class="meta">(fips-202)</span></li>
+<li><a href="records/sp-800-208.html">SP 800-208</a> <span class="meta">(sp-800-208)</span></li>
+</ul>
+<h3 id="tag-historical">historical</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/omb-m-22-18.html">OMB M-22-18</a> <span class="meta">(omb-m-22-18)</span></li>
+<li><a href="records/omb-m-23-16.html">OMB M-23-16</a> <span class="meta">(omb-m-23-16)</span></li>
+</ul>
+<h3 id="tag-iec">iec</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/iec-62443-4-1-2018.html">IEC 62443-4-1</a> <span class="meta">(iec-62443-4-1-2018)</span></li>
+<li><a href="records/iec-81001-5-1-2021.html">IEC 81001-5-1</a> <span class="meta">(iec-81001-5-1-2021)</span></li>
+</ul>
+<h3 id="tag-interchange">interchange</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/owasp-threat-model-library.html">OWASP Threat Model Library and TM-BOM</a> <span class="meta">(owasp-threat-model-library)</span></li>
+<li><a href="records/threat-dragon-tmf-format.html">Threat Dragon Threat Model File format and TM-BOM direction</a> <span class="meta">(threat-dragon-tmf-format)</span></li>
+<li><a href="records/devici-sd-elements-integration.html">Devici–SD Elements integration generally available</a> <span class="meta">(devici-sd-elements-integration)</span></li>
+<li><a href="records/open-threat-model.html">Open Threat Model specification and JSON Schema</a> <span class="meta">(open-threat-model)</span></li>
+</ul>
+<h3 id="tag-key-management">key-management <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (cbor-ecosystem, cbor-implementation, nist-cryptography). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/rfc-8747.html">Proof-of-Possession Key Semantics for CBOR Web Tokens (CWTs)</a> <span class="meta">(rfc-8747)</span></li>
+<li><a href="records/rfc-9053.html">CBOR Object Signing and Encryption (COSE): Initial Algorithms</a> <span class="meta">(rfc-9053)</span></li>
+<li><a href="records/rfc-9528.html">Ephemeral Diffie-Hellman Over COSE (EDHOC)</a> <span class="meta">(rfc-9528)</span></li>
+<li><a href="records/rfc-9529.html">Traces of Ephemeral Diffie-Hellman Over COSE (EDHOC)</a> <span class="meta">(rfc-9529)</span></li>
+<li><a href="records/rfc-9668.html">Using Ephemeral Diffie-Hellman Over COSE (EDHOC) with the Constrained Application Protocol (CoAP) and Object Security for Constrained RESTful Environments (OSCORE)</a> <span class="meta">(rfc-9668)</span></li>
+<li><a href="records/rfc-9679.html">CBOR Object Signing and Encryption (COSE) Key Thumbprint</a> <span class="meta">(rfc-9679)</span></li>
+<li><a href="records/rfc-9864.html">Fully-Specified Algorithms for JSON Object Signing and Encryption (JOSE) and CBOR Object Signing and Encryption (COSE)</a> <span class="meta">(rfc-9864)</span></li>
+<li><a href="records/fips-180-4.html">FIPS 180-4</a> <span class="meta">(fips-180-4)</span></li>
+<li><a href="records/fips-186-5.html">FIPS 186-5</a> <span class="meta">(fips-186-5)</span></li>
+<li><a href="records/fips-202.html">FIPS 202</a> <span class="meta">(fips-202)</span></li>
+<li><a href="records/fips-203.html">FIPS 203</a> <span class="meta">(fips-203)</span></li>
+<li><a href="records/sp-800-57pt1r5.html">SP 800-57 Part 1 Rev. 5</a> <span class="meta">(sp-800-57pt1r5)</span></li>
+</ul>
+<h3 id="tag-knowledge-graph">knowledge-graph <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (knowledge-graph, llm, nsf, okn, provenance, supply-chain, survey). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/nsf-okn-launch.html">NSF OKN launch</a> <span class="meta">(nsf-okn-launch)</span></li>
+<li><a href="records/hogan-kg-survey.html">Knowledge Graphs (Hogan et al., ACM Computing Surveys 54(4), 2021)</a> <span class="meta">(hogan-kg-survey)</span></li>
+<li><a href="records/securechain-okn.html">SecureChain — Knowledge Graph for Resilient, Trustworthy, Secure Software Supply Chains (Purdue, Proto-OKN)</a> <span class="meta">(securechain-okn)</span></li>
+<li><a href="records/sudokn-okn.html">SUDOKN — Supply and Demand Open Knowledge Network (Arizona State U., Proto-OKN)</a> <span class="meta">(sudokn-okn)</span></li>
+<li><a href="records/unifying-llm-kg.html">Unifying Large Language Models and Knowledge Graphs: A Roadmap (Pan et al., IEEE TKDE 2024)</a> <span class="meta">(unifying-llm-kg)</span></li>
+<li><a href="records/mcp-okn.html">mcp-okn — Model Context Protocol access to NSF OKN graphs</a> <span class="meta">(mcp-okn)</span></li>
+<li><a href="records/nsf-23-571.html">NSF 23-571 (Proto-OKN)</a> <span class="meta">(nsf-23-571)</span></li>
+<li><a href="records/okn-roadmap-2022.html">Open Knowledge Network Roadmap: Powering the Next Data Revolution (NSF/OSTP, 2022)</a> <span class="meta">(okn-roadmap-2022)</span></li>
+</ul>
+<h3 id="tag-linddun">linddun</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/deng-linddun-2011.html">A privacy threat analysis framework: supporting the elicitation and fulfillment of privacy requirements</a> <span class="meta">(deng-linddun-2011)</span></li>
+<li><a href="records/linddun-org.html">LINDDUN privacy threat modeling framework (linddun.org)</a> <span class="meta">(linddun-org)</span></li>
+</ul>
+<h3 id="tag-llm">llm <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (graphrag, llm, okn). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/unifying-llm-kg.html">Unifying Large Language Models and Knowledge Graphs: A Roadmap (Pan et al., IEEE TKDE 2024)</a> <span class="meta">(unifying-llm-kg)</span></li>
+<li><a href="records/mcp-okn.html">mcp-okn — Model Context Protocol access to NSF OKN graphs</a> <span class="meta">(mcp-okn)</span></li>
+<li><a href="records/graphrag-ms.html">GraphRAG (Microsoft Research, 2024)</a> <span class="meta">(graphrag-ms)</span></li>
+</ul>
+<h3 id="tag-maturity-model">maturity-model</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/owasp-dsomm.html">OWASP DSOMM</a> <span class="meta">(owasp-dsomm)</span></li>
+<li><a href="records/owasp-samm-2.html">OWASP SAMM 2.2</a> <span class="meta">(owasp-samm-2)</span></li>
+<li><a href="records/bsimm-16.html">BSIMM16</a> <span class="meta">(bsimm-16)</span></li>
+</ul>
+<h3 id="tag-mcp">mcp <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (okn, rpt-0003-threat-modeling-products). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/mcp-okn.html">mcp-okn — Model Context Protocol access to NSF OKN graphs</a> <span class="meta">(mcp-okn)</span></li>
+<li><a href="records/aws-threat-composer.html">AWS Threat Composer</a> <span class="meta">(aws-threat-composer)</span></li>
+</ul>
+<h3 id="tag-medical-devices">medical-devices</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/iec-81001-5-1-2021.html">IEC 81001-5-1</a> <span class="meta">(iec-81001-5-1-2021)</span></li>
+<li><a href="records/fda-premarket-cybersecurity-guidance.html">FDA premarket cybersecurity guidance</a> <span class="meta">(fda-premarket-cybersecurity-guidance)</span></li>
 </ul>
 <h3 id="tag-mitre">mitre <span class="badge broad">broad</span></h3>
-<p class="meta">Broad: these records do not share one publish-topic (attack-pattern, weakness). Co-membership only — not a reviewed synonym and not a citation.</p>
+<p class="meta">Broad: these records do not share one publish-topic (attack, attack-pattern, d3fend, threat-modeling, weakness). Co-membership only — not a reviewed synonym and not a citation.</p>
 <ul>
 <li><a href="records/capec.html">MITRE CAPEC — Common Attack Pattern Enumeration and Classification</a> <span class="meta">(capec)</span></li>
 <li><a href="records/cwe.html">MITRE CWE — Common Weakness Enumeration</a> <span class="meta">(cwe)</span></li>
+<li><a href="records/d3fend.html">MITRE D3FEND — defensive countermeasures knowledge graph (OWL)</a> <span class="meta">(d3fend)</span></li>
+<li><a href="records/mitre-attack.html">MITRE ATT&amp;CK (knowledge base + STIX 2.1 data)</a> <span class="meta">(mitre-attack)</span></li>
+<li><a href="records/mitre-attack-design-philosophy.html">MITRE ATT&amp;CK: Design and Philosophy</a> <span class="meta">(mitre-attack-design-philosophy)</span></li>
+</ul>
+<h3 id="tag-model-as-code">model-as-code</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/owasp-pytm.html">OWASP pytm</a> <span class="meta">(owasp-pytm)</span></li>
+<li><a href="records/threagile.html">Threagile</a> <span class="meta">(threagile)</span></li>
+</ul>
+<h3 id="tag-naming">naming <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (cbor-ecosystem, cbor-implementation). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/rfc-9090.html">Concise Binary Object Representation (CBOR) Tags for Object Identifiers</a> <span class="meta">(rfc-9090)</span></li>
+<li><a href="records/rfc-9360.html">CBOR Object Signing and Encryption (COSE): Header Parameters for Carrying and Referencing X.509 Certificates</a> <span class="meta">(rfc-9360)</span></li>
+<li><a href="records/rfc-9679.html">CBOR Object Signing and Encryption (COSE) Key Thumbprint</a> <span class="meta">(rfc-9679)</span></li>
+<li><a href="records/iana-cbor-tags.html">IANA Concise Binary Object Representation (CBOR) Tags Registry</a> <span class="meta">(iana-cbor-tags)</span></li>
+</ul>
+<h3 id="tag-nsf">nsf <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (knowledge-graph, nsf, provenance). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/nsf-okn-launch.html">NSF OKN launch</a> <span class="meta">(nsf-okn-launch)</span></li>
+<li><a href="records/nsf-23-571.html">NSF 23-571 (Proto-OKN)</a> <span class="meta">(nsf-23-571)</span></li>
+<li><a href="records/okn-roadmap-2022.html">Open Knowledge Network Roadmap: Powering the Next Data Revolution (NSF/OSTP, 2022)</a> <span class="meta">(okn-roadmap-2022)</span></li>
+</ul>
+<h3 id="tag-okn">okn <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (knowledge-graph, linkml, nsf, okn, provenance, supply-chain). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/nsf-okn-launch.html">NSF OKN launch</a> <span class="meta">(nsf-okn-launch)</span></li>
+<li><a href="records/securechain-okn.html">SecureChain — Knowledge Graph for Resilient, Trustworthy, Secure Software Supply Chains (Purdue, Proto-OKN)</a> <span class="meta">(securechain-okn)</span></li>
+<li><a href="records/sudokn-okn.html">SUDOKN — Supply and Demand Open Knowledge Network (Arizona State U., Proto-OKN)</a> <span class="meta">(sudokn-okn)</span></li>
+<li><a href="records/linkml.html">LinkML — Linked Data Modeling Language</a> <span class="meta">(linkml)</span></li>
+<li><a href="records/mcp-okn.html">mcp-okn — Model Context Protocol access to NSF OKN graphs</a> <span class="meta">(mcp-okn)</span></li>
+<li><a href="records/frink-fabric.html">FRINK — FabRic Integrating Networked Knowledge (RENCI, Proto-OKN Theme 2)</a> <span class="meta">(frink-fabric)</span></li>
+<li><a href="records/nsf-23-571.html">NSF 23-571 (Proto-OKN)</a> <span class="meta">(nsf-23-571)</span></li>
+<li><a href="records/okn-roadmap-2022.html">Open Knowledge Network Roadmap: Powering the Next Data Revolution (NSF/OSTP, 2022)</a> <span class="meta">(okn-roadmap-2022)</span></li>
+</ul>
+<h3 id="tag-omb">omb</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/omb-m-22-18.html">OMB M-22-18</a> <span class="meta">(omb-m-22-18)</span></li>
+<li><a href="records/omb-m-23-16.html">OMB M-23-16</a> <span class="meta">(omb-m-23-16)</span></li>
+<li><a href="records/omb-m-26-05.html">OMB M-26-05</a> <span class="meta">(omb-m-26-05)</span></li>
+</ul>
+<h3 id="tag-ontology">ontology <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (d3fend, owl). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/d3fend.html">MITRE D3FEND — defensive countermeasures knowledge graph (OWL)</a> <span class="meta">(d3fend)</span></li>
+<li><a href="records/owl-2-primer.html">OWL 2 Web Ontology Language Primer</a> <span class="meta">(owl-2-primer)</span></li>
+</ul>
+<h3 id="tag-open-source">open-source</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/openssf-osps-baseline.html">OSPS Baseline</a> <span class="meta">(openssf-osps-baseline)</span></li>
+<li><a href="records/bsi-tr-03185.html">BSI TR-03185</a> <span class="meta">(bsi-tr-03185)</span></li>
+</ul>
+<h3 id="tag-oscal">oscal</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/sp-800-53r5.html">SP 800-53r5</a> <span class="meta">(sp-800-53r5)</span></li>
+<li><a href="records/bsi-tr-03183-1.html">BSI TR-03183-1</a> <span class="meta">(bsi-tr-03183-1)</span></li>
+</ul>
+<h3 id="tag-owasp">owasp <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (rpt-0003-threat-modeling-products, sdl). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/owasp-asvs-5.html">OWASP ASVS 5.0.0</a> <span class="meta">(owasp-asvs-5)</span></li>
+<li><a href="records/owasp-dsomm.html">OWASP DSOMM</a> <span class="meta">(owasp-dsomm)</span></li>
+<li><a href="records/owasp-pytm.html">OWASP pytm</a> <span class="meta">(owasp-pytm)</span></li>
+<li><a href="records/owasp-samm-2.html">OWASP SAMM 2.2</a> <span class="meta">(owasp-samm-2)</span></li>
+<li><a href="records/owasp-threat-dragon.html">OWASP Threat Dragon</a> <span class="meta">(owasp-threat-dragon)</span></li>
+<li><a href="records/owasp-threat-dragon-guide.html">OWASP Developer Guide — Threat Dragon</a> <span class="meta">(owasp-threat-dragon-guide)</span></li>
+<li><a href="records/owasp-threat-model-library.html">OWASP Threat Model Library and TM-BOM</a> <span class="meta">(owasp-threat-model-library)</span></li>
+</ul>
+<h3 id="tag-owl">owl <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (d3fend, owl, sbom). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/spdx-3-0-1.html">SPDX 3.0.1</a> <span class="meta">(spdx-3-0-1)</span></li>
+<li><a href="records/d3fend.html">MITRE D3FEND — defensive countermeasures knowledge graph (OWL)</a> <span class="meta">(d3fend)</span></li>
+<li><a href="records/owl-2-primer.html">OWL 2 Web Ontology Language Primer</a> <span class="meta">(owl-2-primer)</span></li>
+</ul>
+<h3 id="tag-pasta">pasta</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/pasta-risk-centric-threat-modeling.html">PASTA</a> <span class="meta">(pasta-risk-centric-threat-modeling)</span></li>
+<li><a href="records/ucedavelez-pasta-owasp-2012.html">Real World Threat Modeling Using the PASTA Methodology</a> <span class="meta">(ucedavelez-pasta-owasp-2012)</span></li>
+</ul>
+<h3 id="tag-post-quantum">post-quantum</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/fips-203.html">FIPS 203</a> <span class="meta">(fips-203)</span></li>
+<li><a href="records/sp-800-208.html">SP 800-208</a> <span class="meta">(sp-800-208)</span></li>
+</ul>
+<h3 id="tag-privacy">privacy <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (privacy, threat-modeling). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/deng-linddun-2011.html">A privacy threat analysis framework: supporting the elicitation and fulfillment of privacy requirements</a> <span class="meta">(deng-linddun-2011)</span></li>
+<li><a href="records/linddun-org.html">LINDDUN privacy threat modeling framework (linddun.org)</a> <span class="meta">(linddun-org)</span></li>
+<li><a href="records/iso-iec-29100-2024.html">ISO/IEC 29100:2024, Information technology: Security techniques: Privacy framework</a> <span class="meta">(iso-iec-29100-2024)</span></li>
+</ul>
+<h3 id="tag-procurement">procurement</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/cisa-secure-by-demand-guide-2024.html">CISA/FBI Secure by Demand Guide</a> <span class="meta">(cisa-secure-by-demand-guide-2024)</span></li>
+<li><a href="records/cisa-secure-by-demand-ot-2025.html">Secure by Demand — OT priority considerations</a> <span class="meta">(cisa-secure-by-demand-ot-2025)</span></li>
+</ul>
+<h3 id="tag-prompt-injection">prompt-injection</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/sagai-workshop.html">SAGAI workshops</a> <span class="meta">(sagai-workshop)</span></li>
+<li><a href="records/spml-image-prompt-injection.html">Image-based prompt attacks (SPML)</a> <span class="meta">(spml-image-prompt-injection)</span></li>
+<li><a href="records/spotlighting-indirect-prompt-injection.html">Spotlighting</a> <span class="meta">(spotlighting-indirect-prompt-injection)</span></li>
+<li><a href="records/systems-security-agentic-computing.html">Systems security for agents (SoK)</a> <span class="meta">(systems-security-agentic-computing)</span></li>
 </ul>
 <h3 id="tag-provenance">provenance <span class="badge broad">broad</span></h3>
-<p class="meta">Broad: these records do not share one publish-topic (knowledge-graph, provenance, sbom). Co-membership only — not a reviewed synonym and not a citation.</p>
+<p class="meta">Broad: these records do not share one publish-topic (knowledge-graph, provenance, sbom, sdl, supply-chain-attestation). Co-membership only — not a reviewed synonym and not a citation.</p>
 <ul>
 <li><a href="records/cyclonedx-1-7.html">CycloneDX 1.7 / ECMA-424</a> <span class="meta">(cyclonedx-1-7)</span></li>
 <li><a href="records/prov-o.html">PROV-O: The PROV Ontology</a> <span class="meta">(prov-o)</span></li>
 <li><a href="records/nsf-okn-launch.html">NSF OKN launch</a> <span class="meta">(nsf-okn-launch)</span></li>
+<li><a href="records/cncf-supply-chain-best-practices-v2.html">CNCF SSCBP v2</a> <span class="meta">(cncf-supply-chain-best-practices-v2)</span></li>
+<li><a href="records/spdx-3-0-1.html">SPDX 3.0.1</a> <span class="meta">(spdx-3-0-1)</span></li>
+<li><a href="records/sp-800-204d.html">NIST SP 800-204D</a> <span class="meta">(sp-800-204d)</span></li>
+<li><a href="records/sp-800-218.html">SSDF 1.1</a> <span class="meta">(sp-800-218)</span></li>
+<li><a href="records/sp-800-218a.html">SP 800-218A (SSDF Community Profile for AI Model Development)</a> <span class="meta">(sp-800-218a)</span></li>
+<li><a href="records/openssf-scorecard-checks.html">OpenSSF Scorecard checks</a> <span class="meta">(openssf-scorecard-checks)</span></li>
+<li><a href="records/slsa-1-2.html">SLSA 1.2</a> <span class="meta">(slsa-1-2)</span></li>
+<li><a href="records/frink-fabric.html">FRINK — FabRic Integrating Networked Knowledge (RENCI, Proto-OKN Theme 2)</a> <span class="meta">(frink-fabric)</span></li>
+<li><a href="records/nsf-23-571.html">NSF 23-571 (Proto-OKN)</a> <span class="meta">(nsf-23-571)</span></li>
+<li><a href="records/cisa-ssdf-attestation-form-2024.html">CISA Secure Software Development Attestation Form</a> <span class="meta">(cisa-ssdf-attestation-form-2024)</span></li>
+<li><a href="records/esf-sscs-developers-2022.html">ESF Securing the Software Supply Chain — Developers</a> <span class="meta">(esf-sscs-developers-2022)</span></li>
 </ul>
-<h3 id="tag-regulation">regulation</h3>
+<h3 id="tag-psirt">psirt</h3>
 <p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
 <ul>
+<li><a href="records/iso-iec-29147-2018.html">ISO/IEC 29147</a> <span class="meta">(iso-iec-29147-2018)</span></li>
+<li><a href="records/iso-iec-30111-2019.html">ISO/IEC 30111</a> <span class="meta">(iso-iec-30111-2019)</span></li>
+</ul>
+<h3 id="tag-rdf">rdf <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (rdf, sbom, survey). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/hogan-kg-survey.html">Knowledge Graphs (Hogan et al., ACM Computing Surveys 54(4), 2021)</a> <span class="meta">(hogan-kg-survey)</span></li>
+<li><a href="records/spdx-3-0-1.html">SPDX 3.0.1</a> <span class="meta">(spdx-3-0-1)</span></li>
+<li><a href="records/rdf-1-1-concepts.html">RDF 1.1 Concepts and Abstract Syntax</a> <span class="meta">(rdf-1-1-concepts)</span></li>
+</ul>
+<h3 id="tag-regulation">regulation <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (sagai, sbom, sdl, supply-chain-attestation). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
 <li><a href="records/ntia-sbom-minimum-elements.html">NTIA Minimum Elements</a> <span class="meta">(ntia-sbom-minimum-elements)</span></li>
 <li><a href="records/cisa-framing-software-component-transparency.html">CISA Framing (3rd ed.)</a> <span class="meta">(cisa-framing-software-component-transparency)</span></li>
+<li><a href="records/sp-800-218.html">SSDF 1.1</a> <span class="meta">(sp-800-218)</span></li>
+<li><a href="records/etsi-en-304-223.html">ETSI EN 304 223</a> <span class="meta">(etsi-en-304-223)</span></li>
+<li><a href="records/etsi-ts-104-219.html">ETSI TS 104 219 (SSDIF)</a> <span class="meta">(etsi-ts-104-219)</span></li>
+<li><a href="records/bsi-tr-03183-1.html">BSI TR-03183-1</a> <span class="meta">(bsi-tr-03183-1)</span></li>
+<li><a href="records/bsi-tr-03185.html">BSI TR-03185</a> <span class="meta">(bsi-tr-03185)</span></li>
+<li><a href="records/cisa-ai-in-ot-principles.html">CISA AI in OT</a> <span class="meta">(cisa-ai-in-ot-principles)</span></li>
+<li><a href="records/cisa-secure-by-design-2023.html">CISA Secure by Design (2023)</a> <span class="meta">(cisa-secure-by-design-2023)</span></li>
+<li><a href="records/cisa-secure-by-design-pledge-2024.html">CISA Secure by Design Pledge</a> <span class="meta">(cisa-secure-by-design-pledge-2024)</span></li>
+<li><a href="records/cisa-ssdf-attestation-form-2024.html">CISA Secure Software Development Attestation Form</a> <span class="meta">(cisa-ssdf-attestation-form-2024)</span></li>
+<li><a href="records/enisa-sbd-playbook-2026.html">ENISA SbD&amp;D Playbook v1.0</a> <span class="meta">(enisa-sbd-playbook-2026)</span></li>
+<li><a href="records/eo-14028.html">EO 14028</a> <span class="meta">(eo-14028)</span></li>
+<li><a href="records/eo-14144.html">EO 14144</a> <span class="meta">(eo-14144)</span></li>
+<li><a href="records/eo-14306.html">EO 14306</a> <span class="meta">(eo-14306)</span></li>
+<li><a href="records/eu-cra-2024-2847.html">Cyber Resilience Act (CRA)</a> <span class="meta">(eu-cra-2024-2847)</span></li>
+<li><a href="records/fda-premarket-cybersecurity-guidance.html">FDA premarket cybersecurity guidance</a> <span class="meta">(fda-premarket-cybersecurity-guidance)</span></li>
+<li><a href="records/omb-m-22-18.html">OMB M-22-18</a> <span class="meta">(omb-m-22-18)</span></li>
+<li><a href="records/omb-m-23-16.html">OMB M-23-16</a> <span class="meta">(omb-m-23-16)</span></li>
+<li><a href="records/omb-m-26-05.html">OMB M-26-05</a> <span class="meta">(omb-m-26-05)</span></li>
+<li><a href="records/uk-software-security-code-of-practice.html">UK Software Security Code of Practice</a> <span class="meta">(uk-software-security-code-of-practice)</span></li>
+</ul>
+<h3 id="tag-requirements">requirements <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (rpt-0003-threat-modeling-products, sdl). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/owasp-asvs-5.html">OWASP ASVS 5.0.0</a> <span class="meta">(owasp-asvs-5)</span></li>
+<li><a href="records/sd-elements-threat-modeling-datasheet.html">SD Elements Threat Modeling Datasheet</a> <span class="meta">(sd-elements-threat-modeling-datasheet)</span></li>
+</ul>
+<h3 id="tag-risk">risk</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/threagile.html">Threagile</a> <span class="meta">(threagile)</span></li>
+<li><a href="records/iriusrisk-creating-threat-model.html">IriusRisk — Creating a threat model</a> <span class="meta">(iriusrisk-creating-threat-model)</span></li>
+</ul>
+<h3 id="tag-risk-assessment">risk-assessment <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (sdl, threat-modeling). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/iso-sae-21434-2021.html">ISO/SAE 21434</a> <span class="meta">(iso-sae-21434-2021)</span></li>
+<li><a href="records/pasta-risk-centric-threat-modeling.html">PASTA</a> <span class="meta">(pasta-risk-centric-threat-modeling)</span></li>
+<li><a href="records/sei-octave-allegro-2007.html">Introducing OCTAVE Allegro: Improving the Information Security Risk Assessment Process</a> <span class="meta">(sei-octave-allegro-2007)</span></li>
+<li><a href="records/trike-v1-2005.html">Trike v.1 Methodology Document [Draft]</a> <span class="meta">(trike-v1-2005)</span></li>
+<li><a href="records/ucedavelez-pasta-owasp-2012.html">Real World Threat Modeling Using the PASTA Methodology</a> <span class="meta">(ucedavelez-pasta-owasp-2012)</span></li>
+<li><a href="records/bsi-tr-03183-1.html">BSI TR-03183-1</a> <span class="meta">(bsi-tr-03183-1)</span></li>
 </ul>
 <h3 id="tag-sbom">sbom <span class="badge broad">broad</span></h3>
-<p class="meta">Broad: these records do not share one publish-topic (sbom, supply-chain). Co-membership only — not a reviewed synonym and not a citation.</p>
+<p class="meta">Broad: these records do not share one publish-topic (sbom, sdl, supply-chain, supply-chain-attestation). Co-membership only — not a reviewed synonym and not a citation.</p>
 <ul>
 <li><a href="records/guac.html">GUAC — Graph for Understanding Artifact Composition (OpenSSF)</a> <span class="meta">(guac)</span></li>
 <li><a href="records/ntia-sbom-minimum-elements.html">NTIA Minimum Elements</a> <span class="meta">(ntia-sbom-minimum-elements)</span></li>
 <li><a href="records/cisa-framing-software-component-transparency.html">CISA Framing (3rd ed.)</a> <span class="meta">(cisa-framing-software-component-transparency)</span></li>
 <li><a href="records/cyclonedx-1-7.html">CycloneDX 1.7 / ECMA-424</a> <span class="meta">(cyclonedx-1-7)</span></li>
+<li><a href="records/securechain-okn.html">SecureChain — Knowledge Graph for Resilient, Trustworthy, Secure Software Supply Chains (Purdue, Proto-OKN)</a> <span class="meta">(securechain-okn)</span></li>
+<li><a href="records/cncf-supply-chain-best-practices-v2.html">CNCF SSCBP v2</a> <span class="meta">(cncf-supply-chain-best-practices-v2)</span></li>
+<li><a href="records/spdx-3-0-1.html">SPDX 3.0.1</a> <span class="meta">(spdx-3-0-1)</span></li>
+<li><a href="records/iso-iec-5962-2021.html">ISO/IEC 5962:2021</a> <span class="meta">(iso-iec-5962-2021)</span></li>
+<li><a href="records/sp-800-204d.html">NIST SP 800-204D</a> <span class="meta">(sp-800-204d)</span></li>
+<li><a href="records/sp-800-218.html">SSDF 1.1</a> <span class="meta">(sp-800-218)</span></li>
+<li><a href="records/bsi-tr-03185.html">BSI TR-03185</a> <span class="meta">(bsi-tr-03185)</span></li>
+<li><a href="records/cisa-secure-by-demand-guide-2024.html">CISA/FBI Secure by Demand Guide</a> <span class="meta">(cisa-secure-by-demand-guide-2024)</span></li>
+<li><a href="records/cisa-secure-by-design-2023.html">CISA Secure by Design (2023)</a> <span class="meta">(cisa-secure-by-design-2023)</span></li>
+<li><a href="records/enisa-sbd-playbook-2026.html">ENISA SbD&amp;D Playbook v1.0</a> <span class="meta">(enisa-sbd-playbook-2026)</span></li>
+<li><a href="records/eo-14028.html">EO 14028</a> <span class="meta">(eo-14028)</span></li>
+<li><a href="records/esf-sscs-developers-2022.html">ESF Securing the Software Supply Chain — Developers</a> <span class="meta">(esf-sscs-developers-2022)</span></li>
+<li><a href="records/eu-cra-2024-2847.html">Cyber Resilience Act (CRA)</a> <span class="meta">(eu-cra-2024-2847)</span></li>
+<li><a href="records/fda-premarket-cybersecurity-guidance.html">FDA premarket cybersecurity guidance</a> <span class="meta">(fda-premarket-cybersecurity-guidance)</span></li>
+<li><a href="records/omb-m-22-18.html">OMB M-22-18</a> <span class="meta">(omb-m-22-18)</span></li>
+<li><a href="records/omb-m-26-05.html">OMB M-26-05</a> <span class="meta">(omb-m-26-05)</span></li>
+</ul>
+<h3 id="tag-schema">schema <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (linkml, vulnerability). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/cve-json-5.html">CVE JSON Record Format v5</a> <span class="meta">(cve-json-5)</span></li>
+<li><a href="records/linkml.html">LinkML — Linked Data Modeling Language</a> <span class="meta">(linkml)</span></li>
+</ul>
+<h3 id="tag-sdl">sdl <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (sdl, supply-chain-attestation). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/cis-safecode-sbd-assessment-1-1.html">CIS/SAFECode Secure by Design v1.1</a> <span class="meta">(cis-safecode-sbd-assessment-1-1)</span></li>
+<li><a href="records/cncf-supply-chain-best-practices-v2.html">CNCF SSCBP v2</a> <span class="meta">(cncf-supply-chain-best-practices-v2)</span></li>
+<li><a href="records/owasp-asvs-5.html">OWASP ASVS 5.0.0</a> <span class="meta">(owasp-asvs-5)</span></li>
+<li><a href="records/owasp-dsomm.html">OWASP DSOMM</a> <span class="meta">(owasp-dsomm)</span></li>
+<li><a href="records/owasp-samm-2.html">OWASP SAMM 2.2</a> <span class="meta">(owasp-samm-2)</span></li>
+<li><a href="records/safecode-fpssd-3.html">SAFECode FPSSD 3rd ed.</a> <span class="meta">(safecode-fpssd-3)</span></li>
+<li><a href="records/iec-62443-4-1-2018.html">IEC 62443-4-1</a> <span class="meta">(iec-62443-4-1-2018)</span></li>
+<li><a href="records/iec-81001-5-1-2021.html">IEC 81001-5-1</a> <span class="meta">(iec-81001-5-1-2021)</span></li>
+<li><a href="records/iso-iec-27034-1.html">ISO/IEC 27034-1</a> <span class="meta">(iso-iec-27034-1)</span></li>
+<li><a href="records/iso-iec-29147-2018.html">ISO/IEC 29147</a> <span class="meta">(iso-iec-29147-2018)</span></li>
+<li><a href="records/iso-iec-30111-2019.html">ISO/IEC 30111</a> <span class="meta">(iso-iec-30111-2019)</span></li>
+<li><a href="records/sp-800-204d.html">NIST SP 800-204D</a> <span class="meta">(sp-800-204d)</span></li>
+<li><a href="records/sp-800-218.html">SSDF 1.1</a> <span class="meta">(sp-800-218)</span></li>
+<li><a href="records/sp-800-218a.html">SP 800-218A (SSDF Community Profile for AI Model Development)</a> <span class="meta">(sp-800-218a)</span></li>
+<li><a href="records/sp-800-218r1.html">SSDF 1.2 (SP 800-218r1 ipd)</a> <span class="meta">(sp-800-218r1)</span></li>
+<li><a href="records/sp-800-53r5.html">SP 800-53r5</a> <span class="meta">(sp-800-53r5)</span></li>
+<li><a href="records/openssf-concise-guide-secure-software.html">OpenSSF Concise Guide (developing)</a> <span class="meta">(openssf-concise-guide-secure-software)</span></li>
+<li><a href="records/openssf-osps-baseline.html">OSPS Baseline</a> <span class="meta">(openssf-osps-baseline)</span></li>
+<li><a href="records/openssf-scorecard-checks.html">OpenSSF Scorecard checks</a> <span class="meta">(openssf-scorecard-checks)</span></li>
+<li><a href="records/slsa-1-2.html">SLSA 1.2</a> <span class="meta">(slsa-1-2)</span></li>
+<li><a href="records/etsi-ts-104-219.html">ETSI TS 104 219 (SSDIF)</a> <span class="meta">(etsi-ts-104-219)</span></li>
+<li><a href="records/pci-secure-slc-2.html">PCI Secure SLC v2.0</a> <span class="meta">(pci-secure-slc-2)</span></li>
+<li><a href="records/bsi-tr-03183-1.html">BSI TR-03183-1</a> <span class="meta">(bsi-tr-03183-1)</span></li>
+<li><a href="records/bsi-tr-03185.html">BSI TR-03185</a> <span class="meta">(bsi-tr-03185)</span></li>
+<li><a href="records/cisa-secure-by-demand-guide-2024.html">CISA/FBI Secure by Demand Guide</a> <span class="meta">(cisa-secure-by-demand-guide-2024)</span></li>
+<li><a href="records/cisa-secure-by-demand-ot-2025.html">Secure by Demand — OT priority considerations</a> <span class="meta">(cisa-secure-by-demand-ot-2025)</span></li>
+<li><a href="records/cisa-secure-by-design-2023.html">CISA Secure by Design (2023)</a> <span class="meta">(cisa-secure-by-design-2023)</span></li>
+<li><a href="records/cisa-secure-by-design-pledge-2024.html">CISA Secure by Design Pledge</a> <span class="meta">(cisa-secure-by-design-pledge-2024)</span></li>
+<li><a href="records/cisa-ssdf-attestation-form-2024.html">CISA Secure Software Development Attestation Form</a> <span class="meta">(cisa-ssdf-attestation-form-2024)</span></li>
+<li><a href="records/enisa-sbd-playbook-2026.html">ENISA SbD&amp;D Playbook v1.0</a> <span class="meta">(enisa-sbd-playbook-2026)</span></li>
+<li><a href="records/eo-14028.html">EO 14028</a> <span class="meta">(eo-14028)</span></li>
+<li><a href="records/eo-14144.html">EO 14144</a> <span class="meta">(eo-14144)</span></li>
+<li><a href="records/eo-14306.html">EO 14306</a> <span class="meta">(eo-14306)</span></li>
+<li><a href="records/esf-sscs-developers-2022.html">ESF Securing the Software Supply Chain — Developers</a> <span class="meta">(esf-sscs-developers-2022)</span></li>
+<li><a href="records/eu-cra-2024-2847.html">Cyber Resilience Act (CRA)</a> <span class="meta">(eu-cra-2024-2847)</span></li>
+<li><a href="records/fda-premarket-cybersecurity-guidance.html">FDA premarket cybersecurity guidance</a> <span class="meta">(fda-premarket-cybersecurity-guidance)</span></li>
+<li><a href="records/omb-m-22-18.html">OMB M-22-18</a> <span class="meta">(omb-m-22-18)</span></li>
+<li><a href="records/omb-m-23-16.html">OMB M-23-16</a> <span class="meta">(omb-m-23-16)</span></li>
+<li><a href="records/omb-m-26-05.html">OMB M-26-05</a> <span class="meta">(omb-m-26-05)</span></li>
+<li><a href="records/uk-software-security-code-of-practice.html">UK Software Security Code of Practice</a> <span class="meta">(uk-software-security-code-of-practice)</span></li>
+<li><a href="records/bsimm-16.html">BSIMM16</a> <span class="meta">(bsimm-16)</span></li>
+<li><a href="records/microsoft-sdl.html">Microsoft SDL (10 practices)</a> <span class="meta">(microsoft-sdl)</span></li>
+<li><a href="records/microsoft-sdl-5-2.html">Microsoft SDL 5.2</a> <span class="meta">(microsoft-sdl-5-2)</span></li>
+<li><a href="records/microsoft-sdl-simplified-2010.html">Simplified SDL (2010)</a> <span class="meta">(microsoft-sdl-simplified-2010)</span></li>
+</ul>
+<h3 id="tag-secure-by-default">secure-by-default</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/cisa-secure-by-design-2023.html">CISA Secure by Design (2023)</a> <span class="meta">(cisa-secure-by-design-2023)</span></li>
+<li><a href="records/enisa-sbd-playbook-2026.html">ENISA SbD&amp;D Playbook v1.0</a> <span class="meta">(enisa-sbd-playbook-2026)</span></li>
+</ul>
+<h3 id="tag-secure-by-design">secure-by-design</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/cis-safecode-sbd-assessment-1-1.html">CIS/SAFECode Secure by Design v1.1</a> <span class="meta">(cis-safecode-sbd-assessment-1-1)</span></li>
+<li><a href="records/etsi-ts-104-219.html">ETSI TS 104 219 (SSDIF)</a> <span class="meta">(etsi-ts-104-219)</span></li>
+<li><a href="records/cisa-secure-by-demand-guide-2024.html">CISA/FBI Secure by Demand Guide</a> <span class="meta">(cisa-secure-by-demand-guide-2024)</span></li>
+<li><a href="records/cisa-secure-by-demand-ot-2025.html">Secure by Demand — OT priority considerations</a> <span class="meta">(cisa-secure-by-demand-ot-2025)</span></li>
+<li><a href="records/cisa-secure-by-design-2023.html">CISA Secure by Design (2023)</a> <span class="meta">(cisa-secure-by-design-2023)</span></li>
+<li><a href="records/cisa-secure-by-design-pledge-2024.html">CISA Secure by Design Pledge</a> <span class="meta">(cisa-secure-by-design-pledge-2024)</span></li>
+<li><a href="records/enisa-sbd-playbook-2026.html">ENISA SbD&amp;D Playbook v1.0</a> <span class="meta">(enisa-sbd-playbook-2026)</span></li>
+</ul>
+<h3 id="tag-secure-development">secure-development <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (sdl, supply-chain-attestation). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/sp-800-218.html">SSDF 1.1</a> <span class="meta">(sp-800-218)</span></li>
+<li><a href="records/sp-800-218r1.html">SSDF 1.2 (SP 800-218r1 ipd)</a> <span class="meta">(sp-800-218r1)</span></li>
+</ul>
+<h3 id="tag-shacl">shacl <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (sbom, shacl). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/spdx-3-0-1.html">SPDX 3.0.1</a> <span class="meta">(spdx-3-0-1)</span></li>
+<li><a href="records/shacl.html">Shapes Constraint Language (SHACL)</a> <span class="meta">(shacl)</span></li>
+</ul>
+<h3 id="tag-signatures">signatures <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (cbor-ecosystem, cbor-implementation, nist-cryptography, sdl). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/ietf-cose-wg.html">IETF CBOR Object Signing and Encryption (COSE) Working Group</a> <span class="meta">(ietf-cose-wg)</span></li>
+<li><a href="records/rfc-8152.html">CBOR Object Signing and Encryption (COSE)</a> <span class="meta">(rfc-8152)</span></li>
+<li><a href="records/rfc-8230.html">Using RSA Algorithms with CBOR Object Signing and Encryption (COSE) Messages</a> <span class="meta">(rfc-8230)</span></li>
+<li><a href="records/rfc-8392.html">CBOR Web Token (CWT)</a> <span class="meta">(rfc-8392)</span></li>
+<li><a href="records/rfc-8778.html">Use of the HSS/LMS Hash-Based Signature Algorithm with CBOR Object Signing and Encryption (COSE)</a> <span class="meta">(rfc-8778)</span></li>
+<li><a href="records/rfc-8812.html">CBOR Object Signing and Encryption (COSE) and JSON Object Signing and Encryption (JOSE) Registrations for Web Authentication (WebAuthn) Algorithms</a> <span class="meta">(rfc-8812)</span></li>
+<li><a href="records/rfc-9021.html">Use of the Walnut Digital Signature Algorithm with CBOR Object Signing and Encryption (COSE)</a> <span class="meta">(rfc-9021)</span></li>
+<li><a href="records/rfc-9052.html">CBOR Object Signing and Encryption (COSE): Structures and Process</a> <span class="meta">(rfc-9052)</span></li>
+<li><a href="records/rfc-9053.html">CBOR Object Signing and Encryption (COSE): Initial Algorithms</a> <span class="meta">(rfc-9053)</span></li>
+<li><a href="records/rfc-9054.html">CBOR Object Signing and Encryption (COSE): Hash Algorithms</a> <span class="meta">(rfc-9054)</span></li>
+<li><a href="records/rfc-9338.html">CBOR Object Signing and Encryption (COSE): Countersignatures</a> <span class="meta">(rfc-9338)</span></li>
+<li><a href="records/rfc-9360.html">CBOR Object Signing and Encryption (COSE): Header Parameters for Carrying and Referencing X.509 Certificates</a> <span class="meta">(rfc-9360)</span></li>
+<li><a href="records/rfc-9459.html">CBOR Object Signing and Encryption (COSE): AES-CTR and AES-CBC</a> <span class="meta">(rfc-9459)</span></li>
+<li><a href="records/rfc-9596.html">CBOR Object Signing and Encryption (COSE) &quot;typ&quot; (type) Header Parameter</a> <span class="meta">(rfc-9596)</span></li>
+<li><a href="records/rfc-9597.html">CBOR Web Token (CWT) Claims in COSE Headers</a> <span class="meta">(rfc-9597)</span></li>
+<li><a href="records/rfc-9679.html">CBOR Object Signing and Encryption (COSE) Key Thumbprint</a> <span class="meta">(rfc-9679)</span></li>
+<li><a href="records/rfc-9864.html">Fully-Specified Algorithms for JSON Object Signing and Encryption (JOSE) and CBOR Object Signing and Encryption (COSE)</a> <span class="meta">(rfc-9864)</span></li>
+<li><a href="records/rfc-9921.html">CBOR Object Signing and Encryption (COSE) Header Parameter for Timestamp Tokens as Defined in RFC 3161</a> <span class="meta">(rfc-9921)</span></li>
+<li><a href="records/rfc-9942.html">CBOR Object Signing and Encryption (COSE) Receipts</a> <span class="meta">(rfc-9942)</span></li>
+<li><a href="records/rfc-9964.html">ML-DSA for JSON Object Signing and Encryption (JOSE) and CBOR Object Signing and Encryption (COSE)</a> <span class="meta">(rfc-9964)</span></li>
+<li><a href="records/rfc-9995.html">CBOR Object Signing and Encryption (COSE) Hash Envelope</a> <span class="meta">(rfc-9995)</span></li>
+<li><a href="records/fips-186-4.html">Digital Signature Standard (DSS), FIPS 186-4</a> <span class="meta">(fips-186-4)</span></li>
+<li><a href="records/fips-186-5.html">FIPS 186-5</a> <span class="meta">(fips-186-5)</span></li>
+<li><a href="records/sp-800-186.html">Recommendations for Discrete Logarithm-based Cryptography: Elliptic Curve Domain Parameters</a> <span class="meta">(sp-800-186)</span></li>
+<li><a href="records/sp-800-204d.html">NIST SP 800-204D</a> <span class="meta">(sp-800-204d)</span></li>
+<li><a href="records/sp-800-208.html">SP 800-208</a> <span class="meta">(sp-800-208)</span></li>
+</ul>
+<h3 id="tag-sp-800-140">sp-800-140</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/nist-sp-800-140.html">SP 800-140</a> <span class="meta">(nist-sp-800-140)</span></li>
+<li><a href="records/nist-sp-800-140a.html">SP 800-140A</a> <span class="meta">(nist-sp-800-140a)</span></li>
+<li><a href="records/nist-sp-800-140b.html">SP 800-140B</a> <span class="meta">(nist-sp-800-140b)</span></li>
+<li><a href="records/nist-sp-800-140c.html">SP 800-140C</a> <span class="meta">(nist-sp-800-140c)</span></li>
+<li><a href="records/nist-sp-800-140d.html">SP 800-140D</a> <span class="meta">(nist-sp-800-140d)</span></li>
+<li><a href="records/nist-sp-800-140e.html">SP 800-140E</a> <span class="meta">(nist-sp-800-140e)</span></li>
+<li><a href="records/nist-sp-800-140f.html">SP 800-140F</a> <span class="meta">(nist-sp-800-140f)</span></li>
+</ul>
+<h3 id="tag-sparql">sparql <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (provenance, sparql). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/frink-fabric.html">FRINK — FabRic Integrating Networked Knowledge (RENCI, Proto-OKN Theme 2)</a> <span class="meta">(frink-fabric)</span></li>
+<li><a href="records/sparql-1-1.html">SPARQL 1.1 Query Language</a> <span class="meta">(sparql-1-1)</span></li>
+</ul>
+<h3 id="tag-ssdf">ssdf</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/cis-safecode-sbd-assessment-1-1.html">CIS/SAFECode Secure by Design v1.1</a> <span class="meta">(cis-safecode-sbd-assessment-1-1)</span></li>
+<li><a href="records/sp-800-218r1.html">SSDF 1.2 (SP 800-218r1 ipd)</a> <span class="meta">(sp-800-218r1)</span></li>
+<li><a href="records/etsi-ts-104-219.html">ETSI TS 104 219 (SSDIF)</a> <span class="meta">(etsi-ts-104-219)</span></li>
+</ul>
+<h3 id="tag-stix">stix <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (rpt-0003-threat-modeling-products, threat-intel). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/stix-2-1.html">STIX Version 2.1 (OASIS Standard)</a> <span class="meta">(stix-2-1)</span></li>
+<li><a href="records/threattree-help.html">ThreatTree Help Center</a> <span class="meta">(threattree-help)</span></li>
+</ul>
+<h3 id="tag-stride">stride</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/owasp-threat-dragon.html">OWASP Threat Dragon</a> <span class="meta">(owasp-threat-dragon)</span></li>
+<li><a href="records/owasp-threat-dragon-guide.html">OWASP Developer Guide — Threat Dragon</a> <span class="meta">(owasp-threat-dragon-guide)</span></li>
+<li><a href="records/microsoft-threat-modeling-tool-features.html">Microsoft Threat Modeling Tool feature overview</a> <span class="meta">(microsoft-threat-modeling-tool-features)</span></li>
+<li><a href="records/microsoft-threat-modeling-tool-overview.html">Microsoft Threat Modeling Tool overview</a> <span class="meta">(microsoft-threat-modeling-tool-overview)</span></li>
 </ul>
 <h3 id="tag-supply-chain">supply-chain <span class="badge broad">broad</span></h3>
-<p class="meta">Broad: these records do not share one publish-topic (sbom, supply-chain). Co-membership only — not a reviewed synonym and not a citation.</p>
+<p class="meta">Broad: these records do not share one publish-topic (artifact-statements, cbor-implementation, sbom, sdl, supply-chain, supply-chain-attestation). Co-membership only — not a reviewed synonym and not a citation.</p>
 <ul>
 <li><a href="records/guac.html">GUAC — Graph for Understanding Artifact Composition (OpenSSF)</a> <span class="meta">(guac)</span></li>
 <li><a href="records/ntia-sbom-minimum-elements.html">NTIA Minimum Elements</a> <span class="meta">(ntia-sbom-minimum-elements)</span></li>
 <li><a href="records/cisa-framing-software-component-transparency.html">CISA Framing (3rd ed.)</a> <span class="meta">(cisa-framing-software-component-transparency)</span></li>
 <li><a href="records/cyclonedx-1-7.html">CycloneDX 1.7 / ECMA-424</a> <span class="meta">(cyclonedx-1-7)</span></li>
+<li><a href="records/securechain-okn.html">SecureChain — Knowledge Graph for Resilient, Trustworthy, Secure Software Supply Chains (Purdue, Proto-OKN)</a> <span class="meta">(securechain-okn)</span></li>
+<li><a href="records/sudokn-okn.html">SUDOKN — Supply and Demand Open Knowledge Network (Arizona State U., Proto-OKN)</a> <span class="meta">(sudokn-okn)</span></li>
+<li><a href="records/cncf-supply-chain-best-practices-v2.html">CNCF SSCBP v2</a> <span class="meta">(cncf-supply-chain-best-practices-v2)</span></li>
+<li><a href="records/owasp-dsomm.html">OWASP DSOMM</a> <span class="meta">(owasp-dsomm)</span></li>
+<li><a href="records/owasp-samm-2.html">OWASP SAMM 2.2</a> <span class="meta">(owasp-samm-2)</span></li>
+<li><a href="records/safecode-fpssd-3.html">SAFECode FPSSD 3rd ed.</a> <span class="meta">(safecode-fpssd-3)</span></li>
+<li><a href="records/spdx-3-0-1.html">SPDX 3.0.1</a> <span class="meta">(spdx-3-0-1)</span></li>
+<li><a href="records/rfc-9943.html">An Architecture for Trustworthy and Transparent Digital Supply Chains</a> <span class="meta">(rfc-9943)</span></li>
+<li><a href="records/rfc-9995.html">CBOR Object Signing and Encryption (COSE) Hash Envelope</a> <span class="meta">(rfc-9995)</span></li>
+<li><a href="records/iec-62443-4-1-2018.html">IEC 62443-4-1</a> <span class="meta">(iec-62443-4-1-2018)</span></li>
+<li><a href="records/iso-iec-29147-2018.html">ISO/IEC 29147</a> <span class="meta">(iso-iec-29147-2018)</span></li>
+<li><a href="records/iso-iec-30111-2019.html">ISO/IEC 30111</a> <span class="meta">(iso-iec-30111-2019)</span></li>
+<li><a href="records/iso-iec-5962-2021.html">ISO/IEC 5962:2021</a> <span class="meta">(iso-iec-5962-2021)</span></li>
+<li><a href="records/sp-800-161r1.html">SP 800-161r1</a> <span class="meta">(sp-800-161r1)</span></li>
+<li><a href="records/sp-800-204d.html">NIST SP 800-204D</a> <span class="meta">(sp-800-204d)</span></li>
+<li><a href="records/sp-800-218.html">SSDF 1.1</a> <span class="meta">(sp-800-218)</span></li>
+<li><a href="records/sp-800-218a.html">SP 800-218A (SSDF Community Profile for AI Model Development)</a> <span class="meta">(sp-800-218a)</span></li>
+<li><a href="records/sp-800-218r1.html">SSDF 1.2 (SP 800-218r1 ipd)</a> <span class="meta">(sp-800-218r1)</span></li>
+<li><a href="records/sp-800-53r5.html">SP 800-53r5</a> <span class="meta">(sp-800-53r5)</span></li>
+<li><a href="records/openssf-concise-guide-secure-software.html">OpenSSF Concise Guide (developing)</a> <span class="meta">(openssf-concise-guide-secure-software)</span></li>
+<li><a href="records/openssf-osps-baseline.html">OSPS Baseline</a> <span class="meta">(openssf-osps-baseline)</span></li>
+<li><a href="records/openssf-scorecard-checks.html">OpenSSF Scorecard checks</a> <span class="meta">(openssf-scorecard-checks)</span></li>
+<li><a href="records/slsa-1-2.html">SLSA 1.2</a> <span class="meta">(slsa-1-2)</span></li>
+<li><a href="records/etsi-ts-104-219.html">ETSI TS 104 219 (SSDIF)</a> <span class="meta">(etsi-ts-104-219)</span></li>
+<li><a href="records/bsi-tr-03185.html">BSI TR-03185</a> <span class="meta">(bsi-tr-03185)</span></li>
+<li><a href="records/cisa-secure-by-demand-guide-2024.html">CISA/FBI Secure by Demand Guide</a> <span class="meta">(cisa-secure-by-demand-guide-2024)</span></li>
+<li><a href="records/cisa-secure-by-design-2023.html">CISA Secure by Design (2023)</a> <span class="meta">(cisa-secure-by-design-2023)</span></li>
+<li><a href="records/cisa-ssdf-attestation-form-2024.html">CISA Secure Software Development Attestation Form</a> <span class="meta">(cisa-ssdf-attestation-form-2024)</span></li>
+<li><a href="records/enisa-sbd-playbook-2026.html">ENISA SbD&amp;D Playbook v1.0</a> <span class="meta">(enisa-sbd-playbook-2026)</span></li>
+<li><a href="records/eo-14028.html">EO 14028</a> <span class="meta">(eo-14028)</span></li>
+<li><a href="records/eo-14144.html">EO 14144</a> <span class="meta">(eo-14144)</span></li>
+<li><a href="records/esf-sscs-developers-2022.html">ESF Securing the Software Supply Chain — Developers</a> <span class="meta">(esf-sscs-developers-2022)</span></li>
+<li><a href="records/eu-cra-2024-2847.html">Cyber Resilience Act (CRA)</a> <span class="meta">(eu-cra-2024-2847)</span></li>
+<li><a href="records/fda-premarket-cybersecurity-guidance.html">FDA premarket cybersecurity guidance</a> <span class="meta">(fda-premarket-cybersecurity-guidance)</span></li>
+<li><a href="records/omb-m-22-18.html">OMB M-22-18</a> <span class="meta">(omb-m-22-18)</span></li>
+<li><a href="records/omb-m-23-16.html">OMB M-23-16</a> <span class="meta">(omb-m-23-16)</span></li>
+<li><a href="records/omb-m-26-05.html">OMB M-26-05</a> <span class="meta">(omb-m-26-05)</span></li>
+<li><a href="records/uk-software-security-code-of-practice.html">UK Software Security Code of Practice</a> <span class="meta">(uk-software-security-code-of-practice)</span></li>
+<li><a href="records/bsimm-16.html">BSIMM16</a> <span class="meta">(bsimm-16)</span></li>
+<li><a href="records/microsoft-sdl.html">Microsoft SDL (10 practices)</a> <span class="meta">(microsoft-sdl)</span></li>
+</ul>
+<h3 id="tag-survey">survey <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (llm, survey, threat-modeling). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/hogan-kg-survey.html">Knowledge Graphs (Hogan et al., ACM Computing Surveys 54(4), 2021)</a> <span class="meta">(hogan-kg-survey)</span></li>
+<li><a href="records/sei-threat-modeling-methods-2018.html">Threat Modeling: A Summary of Available Methods</a> <span class="meta">(sei-threat-modeling-methods-2018)</span></li>
+<li><a href="records/unifying-llm-kg.html">Unifying Large Language Models and Knowledge Graphs: A Roadmap (Pan et al., IEEE TKDE 2024)</a> <span class="meta">(unifying-llm-kg)</span></li>
+</ul>
+<h3 id="tag-threat-modeling">threat-modeling <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (rpt-0003-threat-modeling-products, sdl, threat-modeling). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/iso-sae-21434-2021.html">ISO/SAE 21434</a> <span class="meta">(iso-sae-21434-2021)</span></li>
+<li><a href="records/deng-linddun-2011.html">A privacy threat analysis framework: supporting the elicitation and fulfillment of privacy requirements</a> <span class="meta">(deng-linddun-2011)</span></li>
+<li><a href="records/linddun-org.html">LINDDUN privacy threat modeling framework (linddun.org)</a> <span class="meta">(linddun-org)</span></li>
+<li><a href="records/pasta-risk-centric-threat-modeling.html">PASTA</a> <span class="meta">(pasta-risk-centric-threat-modeling)</span></li>
+<li><a href="records/sei-octave-allegro-2007.html">Introducing OCTAVE Allegro: Improving the Information Security Risk Assessment Process</a> <span class="meta">(sei-octave-allegro-2007)</span></li>
+<li><a href="records/sei-threat-modeling-methods-2018.html">Threat Modeling: A Summary of Available Methods</a> <span class="meta">(sei-threat-modeling-methods-2018)</span></li>
+<li><a href="records/csa-maestro-2025.html">Agentic AI Threat Modeling Framework: MAESTRO</a> <span class="meta">(csa-maestro-2025)</span></li>
+<li><a href="records/owasp-pytm.html">OWASP pytm</a> <span class="meta">(owasp-pytm)</span></li>
+<li><a href="records/owasp-threat-dragon.html">OWASP Threat Dragon</a> <span class="meta">(owasp-threat-dragon)</span></li>
+<li><a href="records/owasp-threat-dragon-guide.html">OWASP Developer Guide — Threat Dragon</a> <span class="meta">(owasp-threat-dragon-guide)</span></li>
+<li><a href="records/owasp-threat-model-library.html">OWASP Threat Model Library and TM-BOM</a> <span class="meta">(owasp-threat-model-library)</span></li>
+<li><a href="records/threagile.html">Threagile</a> <span class="meta">(threagile)</span></li>
+<li><a href="records/threat-dragon-tmf-format.html">Threat Dragon Threat Model File format and TM-BOM direction</a> <span class="meta">(threat-dragon-tmf-format)</span></li>
+<li><a href="records/trike-v1-2005.html">Trike v.1 Methodology Document [Draft]</a> <span class="meta">(trike-v1-2005)</span></li>
+<li><a href="records/ucedavelez-pasta-owasp-2012.html">Real World Threat Modeling Using the PASTA Methodology</a> <span class="meta">(ucedavelez-pasta-owasp-2012)</span></li>
+<li><a href="records/iec-62443-4-1-2018.html">IEC 62443-4-1</a> <span class="meta">(iec-62443-4-1-2018)</span></li>
+<li><a href="records/etsi-ts-104-219.html">ETSI TS 104 219 (SSDIF)</a> <span class="meta">(etsi-ts-104-219)</span></li>
+<li><a href="records/mitre-attack-design-philosophy.html">MITRE ATT&amp;CK: Design and Philosophy</a> <span class="meta">(mitre-attack-design-philosophy)</span></li>
+<li><a href="records/schneier-attack-trees-1999.html">Attack Trees</a> <span class="meta">(schneier-attack-trees-1999)</span></li>
+<li><a href="records/bsi-tr-03183-1.html">BSI TR-03183-1</a> <span class="meta">(bsi-tr-03183-1)</span></li>
+<li><a href="records/bsi-tr-03185.html">BSI TR-03185</a> <span class="meta">(bsi-tr-03185)</span></li>
+<li><a href="records/cisa-secure-by-demand-ot-2025.html">Secure by Demand — OT priority considerations</a> <span class="meta">(cisa-secure-by-demand-ot-2025)</span></li>
+<li><a href="records/enisa-sbd-playbook-2026.html">ENISA SbD&amp;D Playbook v1.0</a> <span class="meta">(enisa-sbd-playbook-2026)</span></li>
+<li><a href="records/esf-sscs-developers-2022.html">ESF Securing the Software Supply Chain — Developers</a> <span class="meta">(esf-sscs-developers-2022)</span></li>
+<li><a href="records/fda-premarket-cybersecurity-guidance.html">FDA premarket cybersecurity guidance</a> <span class="meta">(fda-premarket-cybersecurity-guidance)</span></li>
+<li><a href="records/aws-threat-composer.html">AWS Threat Composer</a> <span class="meta">(aws-threat-composer)</span></li>
+<li><a href="records/devici-sd-elements-integration.html">Devici–SD Elements integration generally available</a> <span class="meta">(devici-sd-elements-integration)</span></li>
+<li><a href="records/iriusrisk-creating-threat-model.html">IriusRisk — Creating a threat model</a> <span class="meta">(iriusrisk-creating-threat-model)</span></li>
+<li><a href="records/lockheed-kill-chain-2011.html">Intelligence-Driven Computer Network Defense Informed by Analysis of Adversary Campaigns and Intrusion Kill Chains</a> <span class="meta">(lockheed-kill-chain-2011)</span></li>
+<li><a href="records/microsoft-sdl.html">Microsoft SDL (10 practices)</a> <span class="meta">(microsoft-sdl)</span></li>
+<li><a href="records/microsoft-sdl-5-2.html">Microsoft SDL 5.2</a> <span class="meta">(microsoft-sdl-5-2)</span></li>
+<li><a href="records/microsoft-sdl-simplified-2010.html">Simplified SDL (2010)</a> <span class="meta">(microsoft-sdl-simplified-2010)</span></li>
+<li><a href="records/microsoft-threat-modeling-tool-features.html">Microsoft Threat Modeling Tool feature overview</a> <span class="meta">(microsoft-threat-modeling-tool-features)</span></li>
+<li><a href="records/microsoft-threat-modeling-tool-overview.html">Microsoft Threat Modeling Tool overview</a> <span class="meta">(microsoft-threat-modeling-tool-overview)</span></li>
+<li><a href="records/open-threat-model.html">Open Threat Model specification and JSON Schema</a> <span class="meta">(open-threat-model)</span></li>
+<li><a href="records/sd-elements-threat-modeling-datasheet.html">SD Elements Threat Modeling Datasheet</a> <span class="meta">(sd-elements-threat-modeling-datasheet)</span></li>
+<li><a href="records/threatmodeler-vast.html">VAST (Visual, Agile, and Simple Threat) modeling — ThreatModeler</a> <span class="meta">(threatmodeler-vast)</span></li>
+<li><a href="records/threattree-help.html">ThreatTree Help Center</a> <span class="meta">(threattree-help)</span></li>
+</ul>
+<h3 id="tag-tm-bom">tm-bom</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/owasp-threat-model-library.html">OWASP Threat Model Library and TM-BOM</a> <span class="meta">(owasp-threat-model-library)</span></li>
+<li><a href="records/threat-dragon-tmf-format.html">Threat Dragon Threat Model File format and TM-BOM direction</a> <span class="meta">(threat-dragon-tmf-format)</span></li>
+</ul>
+<h3 id="tag-transparency-log">transparency-log <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (artifact-statements, cbor-implementation, predicate-rendering). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/draft-mih-scitt-agent-action-capsule.html">Agent Action Capsule</a> <span class="meta">(draft-mih-scitt-agent-action-capsule)</span></li>
+<li><a href="records/rfc-9942.html">CBOR Object Signing and Encryption (COSE) Receipts</a> <span class="meta">(rfc-9942)</span></li>
+<li><a href="records/rfc-9943.html">An Architecture for Trustworthy and Transparent Digital Supply Chains</a> <span class="meta">(rfc-9943)</span></li>
+</ul>
+<h3 id="tag-trust-management">trust-management</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/iana-cbor-simple-values.html">IANA Concise Binary Object Representation (CBOR) Simple Values Registry</a> <span class="meta">(iana-cbor-simple-values)</span></li>
+<li><a href="records/iana-cbor-tags.html">IANA Concise Binary Object Representation (CBOR) Tags Registry</a> <span class="meta">(iana-cbor-tags)</span></li>
+</ul>
+<h3 id="tag-us-federal">us-federal <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (sdl, supply-chain-attestation). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/cisa-ssdf-attestation-form-2024.html">CISA Secure Software Development Attestation Form</a> <span class="meta">(cisa-ssdf-attestation-form-2024)</span></li>
+<li><a href="records/eo-14028.html">EO 14028</a> <span class="meta">(eo-14028)</span></li>
+<li><a href="records/eo-14144.html">EO 14144</a> <span class="meta">(eo-14144)</span></li>
+<li><a href="records/eo-14306.html">EO 14306</a> <span class="meta">(eo-14306)</span></li>
+<li><a href="records/omb-m-22-18.html">OMB M-22-18</a> <span class="meta">(omb-m-22-18)</span></li>
+<li><a href="records/omb-m-23-16.html">OMB M-23-16</a> <span class="meta">(omb-m-23-16)</span></li>
+<li><a href="records/omb-m-26-05.html">OMB M-26-05</a> <span class="meta">(omb-m-26-05)</span></li>
+</ul>
+<h3 id="tag-validation">validation <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (automotive, cryptography, shacl). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/fips-140-3.html">FIPS 140-3</a> <span class="meta">(fips-140-3)</span></li>
+<li><a href="records/iso-sae-tr-8477.html">ISO/SAE TR 8477, Road vehicles: Cybersecurity verification and validation</a> <span class="meta">(iso-sae-tr-8477)</span></li>
+<li><a href="records/shacl.html">Shapes Constraint Language (SHACL)</a> <span class="meta">(shacl)</span></li>
+</ul>
+<h3 id="tag-verification">verification <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (automotive, rpt-0003-threat-modeling-products, sdl). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/owasp-asvs-5.html">OWASP ASVS 5.0.0</a> <span class="meta">(owasp-asvs-5)</span></li>
+<li><a href="records/iso-sae-tr-8477.html">ISO/SAE TR 8477, Road vehicles: Cybersecurity verification and validation</a> <span class="meta">(iso-sae-tr-8477)</span></li>
+<li><a href="records/sd-elements-threat-modeling-datasheet.html">SD Elements Threat Modeling Datasheet</a> <span class="meta">(sd-elements-threat-modeling-datasheet)</span></li>
 </ul>
 <h3 id="tag-vulnerability">vulnerability</h3>
 <p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
 <ul>
 <li><a href="records/osv-schema.html">OSV Schema (OpenSSF)</a> <span class="meta">(osv-schema)</span></li>
 <li><a href="records/cve-json-5.html">CVE JSON Record Format v5</a> <span class="meta">(cve-json-5)</span></li>
+</ul>
+<h3 id="tag-vulnerability-disclosure">vulnerability-disclosure</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/iso-iec-29147-2018.html">ISO/IEC 29147</a> <span class="meta">(iso-iec-29147-2018)</span></li>
+<li><a href="records/cisa-secure-by-design-pledge-2024.html">CISA Secure by Design Pledge</a> <span class="meta">(cisa-secure-by-design-pledge-2024)</span></li>
+<li><a href="records/uk-software-security-code-of-practice.html">UK Software Security Code of Practice</a> <span class="meta">(uk-software-security-code-of-practice)</span></li>
+</ul>
+<h3 id="tag-vulnerability-handling">vulnerability-handling <span class="badge broad">broad</span></h3>
+<p class="meta">Broad: these records do not share one publish-topic (sdl, supply-chain-attestation). Co-membership only — not a reviewed synonym and not a citation.</p>
+<ul>
+<li><a href="records/iso-iec-30111-2019.html">ISO/IEC 30111</a> <span class="meta">(iso-iec-30111-2019)</span></li>
+<li><a href="records/eu-cra-2024-2847.html">Cyber Resilience Act (CRA)</a> <span class="meta">(eu-cra-2024-2847)</span></li>
+</ul>
+<h3 id="tag-vulnerability-management">vulnerability-management</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/iec-62443-4-1-2018.html">IEC 62443-4-1</a> <span class="meta">(iec-62443-4-1-2018)</span></li>
+<li><a href="records/sp-800-218r1.html">SSDF 1.2 (SP 800-218r1 ipd)</a> <span class="meta">(sp-800-218r1)</span></li>
+<li><a href="records/etsi-ts-104-219.html">ETSI TS 104 219 (SSDIF)</a> <span class="meta">(etsi-ts-104-219)</span></li>
+<li><a href="records/bsi-tr-03185.html">BSI TR-03185</a> <span class="meta">(bsi-tr-03185)</span></li>
+</ul>
+<h3 id="tag-vulnerability-scoring">vulnerability-scoring</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/first-cvss-v3-1.html">FIRST, Common Vulnerability Scoring System v3.1: Specification Document</a> <span class="meta">(first-cvss-v3-1)</span></li>
+<li><a href="records/first-cvss-v4-0.html">FIRST, Common Vulnerability Scoring System v4.0: Specification Document</a> <span class="meta">(first-cvss-v4-0)</span></li>
+</ul>
+<h3 id="tag-workflow">workflow</h3>
+<p class="meta">Same publish-topic. Still co-membership, not a typed relation.</p>
+<ul>
+<li><a href="records/devici-sd-elements-integration.html">Devici–SD Elements integration generally available</a> <span class="meta">(devici-sd-elements-integration)</span></li>
+<li><a href="records/iriusrisk-creating-threat-model.html">IriusRisk — Creating a threat model</a> <span class="meta">(iriusrisk-creating-threat-model)</span></li>
+<li><a href="records/threattree-help.html">ThreatTree Help Center</a> <span class="meta">(threattree-help)</span></li>
 </ul>
 <footer><p>Generated from <code>docs/publishing/bibliography.yaml</code> by <code>docs/publishing/render_bibliography.py</code>. Do not hand-edit. Static HTML, no scripts, no trackers. See <a href="../publishing/bibliography-review.md">bibliography-review.md</a>.</p></footer>
 </main>

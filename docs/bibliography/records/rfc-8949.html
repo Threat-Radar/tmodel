@@ -66,6 +66,10 @@ footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 
 .cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
 .cardlink:hover { background: transparent; }
 .cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
 </style>
 </head>
 <body>
@@ -78,10 +82,10 @@ footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 
 <p>
   <span class="badge">rfc</span>
   <span class="badge">ietf</span>
-  <span class="badge">read</span>
+  <span class="badge">distilled</span>
   <span class="badge">medium</span>
 </p>
-<p class="meta">Publish topic: <strong>cbor-implementation</strong> (record.yaml topic). Status <code>read</code> is how far review got, not a quality score.</p>
+<p class="meta">Publish topic: <strong>cbor-implementation</strong> (record.yaml topic). Status <code>distilled</code> is how far review got, not a quality score.</p>
 <h2>Bibliographic links</h2>
 <ul><li>Source: <a href="https://www.rfc-editor.org/rfc/rfc8949.txt">https://www.rfc-editor.org/rfc/rfc8949.txt</a></li><li>Identifier URL: <a href="https://www.rfc-editor.org/rfc/rfc8949.html">https://www.rfc-editor.org/rfc/rfc8949.html</a></li><li>SHA-256: <code>f1164a5b31a39350ad46abe29b83575eb933ca6c45366989c118b6b1058a214a</code></li></ul>
 <h2>RFC</h2>
@@ -95,7 +99,7 @@ footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 
 <h2>Bears on</h2>
 <ul><li><code>DEC-002</code></li><li><code>R-M-12</code></li></ul>
 <h2>Usefulness</h2><p><span class="badge">useful</span> STD 94. DEC-002 option 2 makes this the candidate native encoding, and Sec.4.2 is the deterministic-encoding text every signing profile starts from.</p><p class="meta">Assessed 2026-09-22.</p>
-<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> on this record only. Empty lists are omitted. These are not crosswalk edges and not a knowledge graph.</p><h3><code>supersedes</code></h3><ul><li><code>rfc-7049</code> <span class="meta">not in this subset</span></li></ul><h3><code>part_of</code></h3><ul><li><code>ietf-cbor-wg</code> <span class="meta">not in this subset</span></li></ul>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> on this record only. Empty lists are omitted. These are not crosswalk edges and not a knowledge graph.</p><h3><code>supersedes</code></h3><ul><li><a href="rfc-7049.html">Concise Binary Object Representation (CBOR)</a></li></ul><h3><code>part_of</code></h3><ul><li><a href="ietf-cbor-wg.html">IETF Concise Binary Object Representation Maintenance and Extensions (CBOR) Working Group</a></li></ul>
 
 <h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited. The strip above is <code>record.yaml</code>. If they disagree, the record wins for type, tags, applicability ratings, and bears_on.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>rfc</td></tr><tr><td><strong>Maturity</strong></td><td>standard — Internet Standard, <strong>STD 94</strong></td></tr><tr><td><strong>Authors</strong></td><td>C. Bormann, P. Hoffman</td></tr><tr><td><strong>Published</strong></td><td>December 2020</td></tr><tr><td><strong>Identifier</strong></td><td>RFC 8949 · DOI 10.17487/RFC8949 · STD 94</td></tr><tr><td><strong>Source</strong></td><td>https://www.rfc-editor.org/rfc/rfc8949.txt</td></tr><tr><td><strong>Digest</strong></td><td><code>f1164a5b31a3…</code> (sha-256 of the .txt, retrieved 2026-09-22)</td></tr></tbody></table>
 <h2>Overview</h2>

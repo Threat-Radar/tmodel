@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Recommendation for Stateful Hash-Based Signature Schemes</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 24px 64px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.15; letter-spacing: -0.03em; margin: 28px 0 8px; }
+h2 { font-size: 1.25rem; margin: 1.6em 0 0.4em; }
+h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
+.kicker { margin: 22px 0 0; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.6em 0 1em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 8px 10px; font-size: 0.95rem; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<header><div class="bar"><a class="mark" href="../index.html">Bibliography</a><nav><a href="../../index.html">tmodel</a><a href="../index.html">Index</a><a href="../by-topic.html">Topic</a><a href="../by-type.html">Type</a><a href="../by-body.html">Issuing body</a><a href="../crosswalk.html">Crosswalk</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">WAVE 1 draft · sp-800-208</p>
+<h1>Recommendation for Stateful Hash-Based Signature Schemes</h1>
+<p class="lede">SP 800-208</p>
+<p>
+  <span class="badge">spec</span>
+  <span class="badge">nist</span>
+  <span class="badge">summarized</span>
+  <span class="badge">high</span>
+</p>
+<p class="meta">Publish topic: <strong>nist-cryptography</strong> (record.yaml topic). Status <code>summarized</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-208.pdf">https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-208.pdf</a></li><li>Identifier URL: <a href="https://csrc.nist.gov/pubs/sp/800/208/final">https://csrc.nist.gov/pubs/sp/800/208/final</a></li><li>SHA-256: <code>9ac6bee3da878e883874847b40f80d2265d6268385d8201f866581437533465f</code></li></ul>
+<h2>Specification</h2>
+<table><tbody><tr><td>Authors</td><td>David Cooper, Daniel Apon, Quynh Dang, Michael Davidson, Morris Dworkin, Carl Miller</td></tr><tr><td>Date</td><td>2020-10</td></tr><tr><td>Publisher</td><td>NIST</td></tr><tr><td>Version</td><td>800-208</td></tr><tr><td>Maturity</td><td>best-practice</td></tr><tr><td>doi</td><td><a href="https://doi.org/10.6028/NIST.SP.800-208">10.6028/NIST.SP.800-208</a></td></tr><tr><td>nist</td><td>SP 800-208</td></tr><tr><td>Media type</td><td>application/pdf</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge core">core</span></td></tr><tr><td>This project</td><td><span class="badge adjacent">adjacent</span></td></tr></tbody></table><p class="meta">Ratings are the <code>applicability</code> map on <code>record.yaml</code>. A missing axis is not assessed — it is not <code>none</code>. The summary's Why column is not scraped; two summary dialects exist, and a blank template cell is not a judgement.</p>
+<h2>Tags</h2>
+<h3>Topic tags</h3><p><span class="badge">signatures</span> <span class="badge">hashing</span> <span class="badge">post-quantum</span></p><p class="meta">Subject vocabulary and free tags. These are what the topic view and the tag crosswalk use.</p><h3>Body tags</h3><p><span class="badge">nist</span></p><p class="meta">Issuing-body names. Shown here, excluded from the topic view so it is not a second copy of the body index.</p><h3>Role tags</h3><p><span class="badge">normative</span></p><p class="meta">Why the record was kept (normative, prior-art, evidence, …). Not a subject.</p>
+<h2>Bears on</h2>
+<ul><li><code>R-O-05</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> Approves LMS/HSS and XMSS/XMSS-MT - signature schemes whose security rests only on the hash function, and whose STATEFULNESS makes key reuse a correctness failure rather than a weakness. That constraint bears directly on signing canonical bytes.</p><p class="meta">Assessed 2026-09-25.</p>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> on this record only. Empty lists are omitted. These are not crosswalk edges and not a knowledge graph.</p><h3><code>see_also</code></h3><ul><li><a href="fips-186-5.html">FIPS 186-5</a></li><li><a href="fips-180-4.html">FIPS 180-4</a></li><li><a href="fips-202.html">FIPS 202</a></li></ul>
+
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited. The strip above is <code>record.yaml</code>. If they disagree, the record wins for type, tags, applicability ratings, and bears_on.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec</td></tr><tr><td><strong>Maturity</strong></td><td><code>best-practice</code> — a NIST Special Publication, mandatory guidance for federal systems but not a FIPS</td></tr><tr><td><strong>Authors</strong></td><td>David Cooper, Daniel Apon, Quynh Dang, Michael Davidson, Morris Dworkin, Carl Miller</td></tr><tr><td><strong>Published</strong></td><td>2020-10</td></tr><tr><td><strong>Identifier</strong></td><td>SP 800-208 · DOI 10.6028/NIST.SP.800-208</td></tr><tr><td><strong>Source</strong></td><td>https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-208.pdf</td></tr><tr><td><strong>Digest</strong></td><td><code>sha256:9ac6bee3da878e883874847b40f80d2265d6268385d8201f866581437533465f</code></td></tr></tbody></table>
+<h2>Overview</h2>
+<p>Supplements FIPS 186 with two <strong>stateful hash-based signature</strong> schemes — <strong>LMS</strong> (RFC 8554) and <strong>XMSS</strong> (RFC 8391), with their multi-tree variants <strong>HSS</strong> and <strong>XMSS^MT</strong>. It approves a <em>subset</em> of the parameter sets in those RFCs and defines some new ones, all using 192- or 256-bit output with SHA-256 or SHAKE256.</p>
+<p>The argument is a narrow one, and the document makes it honestly. Every signature scheme in FIPS 186 &quot;will be broken if large-scale quantum computers are ever built&quot;; the security of these schemes &quot;depends only on the security of the underlying hash functions,&quot; which is believed to survive. But statefulness makes them <strong>unsuitable for general use</strong> (§1.1), so they are aimed at a specific case: you must deploy now, the deployment will live for decades, and you will not be able to change the verifier afterwards. Firmware signing for constrained devices is the worked example.</p>
+<p>A stateful HBS private key is a large set of <strong>one-time</strong> signature keys. Sign twice under one OTS key and forgery becomes computationally feasible. The document therefore spends most of its normative weight not on the mathematics but on preventing that: §8.1 conformance requirements, and the hard constraint that <strong>key generation and signature generation must occur in hardware cryptographic modules that do not allow secret keying material to be exported, even in encrypted form</strong> (§1).</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td><code>core</code></td><td>An approved signature scheme, and the only quantum-resistant one we hold</td></tr><tr><td>Cryptography</td><td><code>core</code></td><td>Normative for the schemes; we implement none of them ourselves</td></tr><tr><td>This project</td><td><code>adjacent</code></td><td>Bears on <code>R-O-05</code>; settles no open <code>DEC-*</code></td></tr></tbody></table>
+<p><code>bears_on: R-O-05</code> — sign the canonical encoding verbatim. LMS and XMSS both apply <strong>randomized hashing</strong>: a random value is generated at signing time and prepended to the message before the digest is taken (§9.2). So what is hashed is not the canonical bytes alone, and the randomizer travels in the signature. R-O-05 says the signed payload is the canonical encoding verbatim with an authenticated type indicator; under these schemes the <em>scheme</em> inserts a prefix beneath that layer. That is compatible — the randomizer is part of the signature format, not the payload — but it is exactly the kind of detail that a naive &quot;we sign the canonical bytes&quot; reading gets wrong.</p>
+<h2>Implementations</h2>
+<p>Searched <strong>2026-09-26</strong>. Thin by comparison with the classical schemes, which is itself the finding — the hardware-module requirement excludes most of them from conformance regardless of correctness.</p>
+<table><thead><tr><th>Name</th><th>Kind</th><th>License</th><th>URL</th></tr></thead><tbody><tr><td><code>cisco/hash-sigs</code></td><td>open source</td><td>custom permissive</td><td>https://github.com/cisco/hash-sigs — LMS/HSS reference</td></tr><tr><td>XMSS reference code</td><td>open source</td><td>CC0</td><td>https://github.com/XMSS/xmss-reference</td></tr><tr><td>Bouncy Castle</td><td>open source</td><td>MIT</td><td>https://bouncycastle.org — LMS and XMSS in the Java/C# providers</td></tr><tr><td>liboqs</td><td>open source</td><td>MIT</td><td>https://openquantumsafe.org — includes stateful HBS</td></tr><tr><td>HSMs with stateful HBS firmware</td><td>commercial</td><td>—</td><td>Thales, Utimaco — availability varies by model and firmware</td></tr></tbody></table>
+<p><strong>We use a vetted library. We do not implement these.</strong> And note that a software library alone <strong>cannot</strong> produce a conforming signature under this recommendation: §1 requires a hardware module that will not export the private key.</p>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata</td></tr><tr><td><code>summary.md</code></td><td>this document</td></tr></tbody></table>
+<p>No <code>distilled.md</code>. If we ever adopted an HBS scheme, §8.1 would be the first requirement set worth extracting — it is unusually testable for a NIST SP.</p>
+<h2>Limits</h2>
+<ul><li><strong>The state is a correctness requirement, not a hardening measure.</strong> Reuse of one OTS key is not a weakening; it makes forgery feasible. §9.1 is blunt about how easily this happens in practice: writing the state update to a file is <em>not</em> sufficient, because the write is cached and a crash before it reaches non-volatile memory can resurrect a used key. The state must be committed <strong>before the signature is exported</strong>. Monotonic counters are suggested where hardware provides them.</li><li><strong>The hardware requirement rules this out for us as specified.</strong> A project whose principals are keys held by ordinary software has no conforming path here. Holding this record is about knowing what approval costs, not about a scheme we can adopt.</li><li><strong>The 192-bit parameter sets weaken the verifier, not the signer.</strong> §9.2: a collision in SHA-256/192 or SHAKE256/192 may be found near 2⁹⁶, which &quot;may be possible for a signer with access to an extremely large amount of computing resources.&quot; The formal security properties are untouched because only the signer can sign — but <strong>the verifier loses assurance that the signer cannot change the message after revealing the signature.</strong> For a statement model that is the wrong failure to accept: it makes a signed &quot;A says B has C&quot; equivocable by A. The 256-bit sets do not have this problem, and we should not use the 192-bit ones.</li><li><strong>Not all RFC parameter sets are approved.</strong> The sets in RFC 8391 using SHAKE128, SHAKE256 (as defined there) and SHA-512 are explicitly <em>not</em> approved (§6). &quot;We implement RFC 8391&quot; and &quot;we conform to SP 800-208&quot; are different claims.</li><li><strong>Stateless post-quantum signing is elsewhere.</strong> SLH-DSA (FIPS 205) is the stateless hash-based alternative and is <strong>not held</strong>. Anyone reaching for this record because they want post-quantum signatures probably wants that one.</li></ul>
+
+<footer><p>Generated from <code>docs/publishing/bibliography.yaml</code> by <code>docs/publishing/render_bibliography.py</code>. Do not hand-edit. Static HTML, no scripts, no trackers. See <a href="../../publishing/bibliography-review.md">bibliography-review.md</a>.</p></footer>
+</main>
+</body>
+</html>

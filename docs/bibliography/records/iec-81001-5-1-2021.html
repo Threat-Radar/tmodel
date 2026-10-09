@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Health software and health IT systems safety, effectiveness and security – Part 5-1: Security – Activities in the product life cycle</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 24px 64px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.15; letter-spacing: -0.03em; margin: 28px 0 8px; }
+h2 { font-size: 1.25rem; margin: 1.6em 0 0.4em; }
+h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
+.kicker { margin: 22px 0 0; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.6em 0 1em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 8px 10px; font-size: 0.95rem; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<header><div class="bar"><a class="mark" href="../index.html">Bibliography</a><nav><a href="../../index.html">tmodel</a><a href="../index.html">Index</a><a href="../by-topic.html">Topic</a><a href="../by-type.html">Type</a><a href="../by-body.html">Issuing body</a><a href="../crosswalk.html">Crosswalk</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">WAVE 1 draft · iec-81001-5-1-2021</p>
+<h1>Health software and health IT systems safety, effectiveness and security – Part 5-1: Security – Activities in the product life cycle</h1>
+<p class="lede">IEC 81001-5-1</p>
+<p>
+  <span class="badge">spec</span>
+  <span class="badge">iso</span>
+  <span class="badge">summarized</span>
+  <span class="badge">low</span>
+</p>
+<p class="meta">Publish topic: <strong>sdl</strong> (record.yaml topic). Status <code>summarized</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://webstore.iec.ch/en/publication/63293">https://webstore.iec.ch/en/publication/63293</a></li><li>SHA-256: <code>b4d73b515d0eb927b771f03b8f45acf5e2aba2332e18b84c50358cab7bc96a58</code></li></ul>
+<h2>Specification</h2>
+<table><tbody><tr><td>Authors</td><td>IEC SC 62A / ISO TC 215 Joint Working Group</td></tr><tr><td>Date</td><td>2021-12</td></tr><tr><td>Publisher</td><td>International Electrotechnical Commission (IEC) / International Organization for Standardization (ISO) — double logo</td></tr><tr><td>Version</td><td>Edition 1.0 (2021-12), corrected version 2025-12 incorporating IEC 81001-5-1:2021/ISH1:2025</td></tr><tr><td>Maturity</td><td>standard</td></tr><tr><td>en</td><td>EN IEC 81001-5-1:2022</td></tr><tr><td>fda_recognition</td><td>13-122</td></tr><tr><td>iec</td><td>IEC 81001-5-1:2021</td></tr><tr><td>ish</td><td>IEC 81001-5-1:2021/ISH1:2025</td></tr><tr><td>iso_url</td><td>https://www.iso.org/standard/76097.html</td></tr><tr><td>Pages</td><td>30</td></tr><tr><td>Media type</td><td>application/pdf</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge none">none</span></td></tr><tr><td>This project</td><td><span class="badge adjacent">adjacent</span></td></tr></tbody></table><p class="meta">Ratings are the <code>applicability</code> map on <code>record.yaml</code>. A missing axis is not assessed — it is not <code>none</code>. The summary's Why column is not scraped; two summary dialects exist, and a blank template cell is not a judgement.</p>
+<h2>Tags</h2>
+<h3>Topic tags</h3><p><span class="badge">sdl</span> <span class="badge">iec</span> <span class="badge">medical-devices</span></p><p class="meta">Subject vocabulary and free tags. These are what the topic view and the tag crosswalk use.</p><h3>Role tags</h3><p><span class="badge">normative</span></p><p class="meta">Why the record was kept (normative, prior-art, evidence, …). Not a subject.</p><h3>Standing tags</h3><p><span class="badge">standard</span></p><p class="meta">Maturity words such as standard or draft. Not a shared subject.</p>
+<h2>Bears on</h2>
+<ul><li><code>R-041</code></li><li><code>R-042</code></li><li><code>R-044</code></li><li><code>DEC-009</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> The medical-software derivative of 62443-4-1 (FDA-recognised, EN-adopted): contributes the 62304-ordered phase line, the two conformance routes, and ISH1&#x27;s software-item support classes / risk-transfer model; normative activities unread (paywalled).</p><p class="meta">Assessed 2026-10-02.</p>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> on this record only. Empty lists are omitted. These are not crosswalk edges and not a knowledge graph.</p><h3><code>see_also</code></h3><ul><li><a href="iec-62443-4-1-2018.html">IEC 62443-4-1</a></li><li><a href="fda-premarket-cybersecurity-guidance.html">FDA premarket cybersecurity guidance</a></li><li><a href="iso-iec-29147-2018.html">ISO/IEC 29147</a></li><li><a href="iso-iec-30111-2019.html">ISO/IEC 30111</a></li><li><a href="eu-cra-2024-2847.html">Cyber Resilience Act (CRA)</a></li></ul><h3><code>cited_by</code></h3><ul><li><a href="fda-premarket-cybersecurity-guidance.html">FDA premarket cybersecurity guidance</a></li></ul>
+<h2>Document cites</h2><p class="meta">From <code>cites</code>: what the document references. Fact about the source, not our crosswalk. Gaps stay gaps.</p><ul><li><a href="iec-62443-4-1-2018.html">IEC 62443-4-1</a></li><li><a href="iso-iec-29147-2018.html">ISO/IEC 29147</a></li><li><a href="iso-iec-30111-2019.html">ISO/IEC 30111</a></li><li>[1] ISO/IEC Guide 63:2019, Guide to the development and inclusion of aspects of safety in International Standards for medical devices <span class="meta">cited, no library record</span></li><li>[2] AAMI TIR 57:2016, Principles for medical device security – Risk management <span class="meta">cited, no library record</span></li><li>[3] AAMI TIR 97:2019, Principles for medical device security – Post-market risk management for device manufacturers <span class="meta">cited, no library record</span></li><li>[4] ANSI/NEMA HN1-2019, Manufacturer Disclosure Statement for Medical Device Security (MDS2) <span class="meta">cited, no library record</span></li><li>[5] ETSI TS 102 165-1 TVRA <span class="meta">cited, no library record</span></li><li>[6] EU MDCG 2019-16, Guidance on Cybersecurity for medical devices <span class="meta">cited, no library record</span></li><li>[7] IEC TR 60601-4-5, Safety-related technical security specifications <span class="meta">cited, no library record</span></li><li>[8] IEC 62304:2006 + AMD1:2015, Medical device software – Software life cycle processes <span class="meta">cited, no library record</span></li><li>[9] IEC 62443-3-2, Security risk assessment for system design <span class="meta">cited, no library record</span></li><li>[10] IEC 62443-3-3, System security requirements and security levels <span class="meta">cited, no library record</span></li><li>[12] IEC 62443-4-2:2019, Technical security requirements for IACS components <span class="meta">cited, no library record</span></li><li>[13] IEC 62740:2015, Root cause analysis (RCA) <span class="meta">cited, no library record</span></li><li>[14] IEC TR 80001-2-2, Disclosure and communication of medical device security needs, risks and controls <span class="meta">cited, no library record</span></li><li>[15] IEC TR 80001-2-8, Standards for establishing the security capabilities identified in IEC TR 80001-2-2 <span class="meta">cited, no library record</span></li><li>[16] ISO/IEC Guide 51:2014, Safety aspects <span class="meta">cited, no library record</span></li><li>[17] ISO 81001-1:2021, Health software and health IT systems safety, effectiveness and security – Part 1: Principles and concepts <span class="meta">cited, no library record</span></li><li>[18] IEC 82304-1:2016, Health software – Part 1: General requirements for product safety <span class="meta">cited, no library record</span></li><li>[19] ISO TS 14441, Security and privacy requirements of EHR systems for use in conformity assessment <span class="meta">cited, no library record</span></li><li>[20] ISO 14971:2019, Application of risk management to medical devices <span class="meta">cited, no library record</span></li><li>[21] ISO/IEC TR 20004:2012, Refining software vulnerability analysis under ISO/IEC 15408 and ISO/IEC 18045 <span class="meta">cited, no library record</span></li><li>[22] ISO TR 24971:2020, Guidance on the application of ISO 14971 <span class="meta">cited, no library record</span></li><li>[23] ISO/IEC 27000:2018, ISMS overview and vocabulary <span class="meta">cited, no library record</span></li><li>[24] ISO/IEC TR 24772-1:2019, Guidance to avoiding vulnerabilities in programming languages <span class="meta">cited, no library record</span></li><li>[25] ISO 27789, Audit trails for electronic health records <span class="meta">cited, no library record</span></li><li>[26] ISO 27799, Information security management in health using ISO/IEC 27002 <span class="meta">cited, no library record</span></li><li>[29] MISRA-C:2012 <span class="meta">cited, no library record</span></li><li>[30] MITRE, Rubric for Applying CVSS to Medical Devices <span class="meta">cited, no library record</span></li><li>[31] ISO 13485:2016, Medical devices – Quality management systems <span class="meta">cited, no library record</span></li><li>[32] ISO/IEC/IEEE 24765:2017, Systems and software engineering – Vocabulary <span class="meta">cited, no library record</span></li><li>[33] ISO/IEC 24767-1:2008, Home network security – Part 1 <span class="meta">cited, no library record</span></li><li>[34] ISO/IEC 27039:2015, Selection, deployment and operations of IDPS <span class="meta">cited, no library record</span></li><li>[35] ISO/IEC 14764:2006, Software life cycle processes – Maintenance <span class="meta">cited, no library record</span></li><li>[36] IEC 62366-1:2015, Application of usability engineering to medical devices <span class="meta">cited, no library record</span></li><li>[37] IEC TR 63069, Framework for functional safety and security <span class="meta">cited, no library record</span></li></ul>
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited. The strip above is <code>record.yaml</code>. If they disagree, the record wins for type, tags, applicability ratings, and bears_on.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec (International Standard, double logo IEC/ISO)</td></tr><tr><td><strong>Maturity</strong></td><td>standard</td></tr><tr><td><strong>Authors</strong></td><td>Joint Working Group of IEC SC 62A (TC 62) and ISO/TC 215</td></tr><tr><td><strong>Published</strong></td><td>Edition 1.0, 2021-12; <strong>corrected version 2025-12</strong> incorporating Interpretation Sheet 1 (IEC 81001-5-1:2021/ISH1:2025, 62A/1692/DISH, voting report 62A/1706/RVDISH)</td></tr><tr><td><strong>Identifier</strong></td><td>IEC 81001-5-1:2021; EN IEC 81001-5-1:2022; ISO page https://www.iso.org/standard/76097.html</td></tr><tr><td><strong>Source</strong></td><td>https://webstore.iec.ch/en/publication/63293 (paywalled, 56 pp). Read: the free bilingual preview, 30 pp</td></tr><tr><td><strong>Digest</strong></td><td>preview <code>b4d73b515d0eb927b771f03b8f45acf5e2aba2332e18b84c50358cab7bc96a58</code> (retrieved 2026-10-02)</td></tr></tbody></table>
+<h2>Overview</h2>
+<p>IEC 81001-5-1 is the health-software adaptation of IEC 62443-4-1. Its process requirements (Clauses 4-9) &quot;have been derived from the IEC 62443-4-1 PRODUCT LIFE CYCLE management&quot;. They are arranged in the ordering of IEC 62304 so that a medical-software manufacturer can extend its existing 62304 processes rather than build a second lifecycle (0.1).</p>
+<p>Conformance can be claimed two ways:</p>
+<ul><li>full conformance, by implementing Clauses 4-9;</li><li>for legacy (transitional) health software, by implementing Annex F only (0.3).</li></ul>
+<p>Interpretation Sheet 1 (2025) clarifies the <strong>risk transfer</strong> from manufacturer to operator through a nested classification of software items (MAINTAINED ⊂ SUPPORTED ⊂ REQUIRED). Only maintained items carry the manufacturer&#x27;s security-update delivery and integrity duties.</p>
+<h2>Version and currency (checked 2026-10-02)</h2>
+<ul><li><strong>IEC.</strong> Edition 1.0 remains current. The webstore offers a <strong>corrected version 2025-12</strong> containing ISH1:2025, and that version is what we read. No amendment has been published. <em>(Corrected in the verify pass.)</em> A second edition is under way: ISO open data (deliverables metadata, Last-Modified 2026-09-30) lists IEC 81001-5-1:2021 at stage 90.92 (to be revised) and <strong>IEC/AWI 81001-5-1, Edition 2</strong> (project 92904) at stage 10.99 (new project approved).</li><li><strong>FDA.</strong> Recognized consensus standard <strong>13-122</strong>, recognised 2022-12-19. This rests on a secondary source (MD101 Consulting blog); the FDA database page was not opened. FDA&#x27;s premarket guidance (Feb 2026) names it as a candidate SPDF (record <code>fda-premarket-cybersecurity-guidance</code>, §V, fn 48).</li><li><strong>EU.</strong></li><li>EN IEC 81001-5-1:2022 is the European adoption.</li><li>Commission Implementing Decision (EU) 2026/1231 of 11 June 2026, the latest amendment to the MDR harmonised-standards Decision 2021/1182, does <strong>not</strong> cite it (EUR-Lex, checked).</li><li>A secondary source gives a planned harmonisation date of 27 May 2028 under standardisation request M/575. This was not verified.</li></ul>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td>core</td><td>Secure-lifecycle process standard for all health software (SiMD, SaMD, health IT).</td></tr><tr><td>Cryptography</td><td>none</td><td>Nothing cryptographic is readable in the free material.</td></tr><tr><td>This project</td><td>adjacent</td><td>It bears on <strong>R-041</strong> (a 62304-ordered process-area line as the phase/gate sequence), <strong>R-042</strong> (two conformance routes), <strong>R-044</strong> (a partial-strength mapping to 62443-4-1) and <strong>DEC-009</strong> (software-item support classes and risk transfer). It is adjacent rather than core because the normative text is unread.</td></tr></tbody></table>
+<h2>Implementations</h2>
+<p>Searched 2026-10-02. There are no open-source implementations; it is a process standard. Certification and assessment services exist (e.g. IECEE CB scheme, notified-body and test-house services). None was evaluated.</p>
+<table><thead><tr><th>Name</th><th>Kind</th><th>License</th><th>URL</th></tr></thead><tbody></tbody></table>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata; distillation block (not FX-1, paywalled)</td></tr><tr><td><code>distilled/README.md</code></td><td>artifact index with honest coverage</td></tr><tr><td><code>distilled/normative.md</code></td><td>ISH1 complete, Introduction, Scope, Figure 2, title-only ToC</td></tr><tr><td><code>distilled/requirements.yaml</code></td><td>57 title-only activities + 7 ISH1 statements</td></tr><tr><td><code>distilled/state-machine.yaml</code></td><td>software-item category downgrade; conformance route</td></tr><tr><td><code>distilled/object-model.yaml</code>, <code>object-model.md</code></td><td>object-model pass (24 objects, 20 edges)</td></tr><tr><td><code>distilled/design-notes.md</code></td><td>adopt / adapt / reject, open questions</td></tr></tbody></table>
+<h2>Limits</h2>
+<ul><li><strong>Paywalled. Clause 3 (terms), Clauses 4-9 (all normative activities) and Annexes A-G were not read.</strong> No requirement text exists in this record beyond ToC titles and ISH1, and the true count of &quot;shall&quot; statements is unknown.</li><li>The mapping to 62443-4-1 in <code>requirements.yaml</code> is our inference from titles. The standard&#x27;s own Annex D mapping was not available.</li><li>Finishing this record needs the purchased standard, or a licensed copy of EN IEC 81001-5-1.</li></ul>
+
+<footer><p>Generated from <code>docs/publishing/bibliography.yaml</code> by <code>docs/publishing/render_bibliography.py</code>. Do not hand-edit. Static HTML, no scripts, no trackers. See <a href="../../publishing/bibliography-review.md">bibliography-review.md</a>.</p></footer>
+</main>
+</body>
+</html>

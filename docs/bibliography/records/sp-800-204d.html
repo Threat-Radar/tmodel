@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>SP 800-204D: Strategies for the Integration of Software Supply Chain Security in DevSecOps CI/CD Pipelines</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 24px 64px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.15; letter-spacing: -0.03em; margin: 28px 0 8px; }
+h2 { font-size: 1.25rem; margin: 1.6em 0 0.4em; }
+h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
+.kicker { margin: 22px 0 0; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.6em 0 1em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 8px 10px; font-size: 0.95rem; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<header><div class="bar"><a class="mark" href="../index.html">Bibliography</a><nav><a href="../../index.html">tmodel</a><a href="../index.html">Index</a><a href="../by-topic.html">Topic</a><a href="../by-type.html">Type</a><a href="../by-body.html">Issuing body</a><a href="../crosswalk.html">Crosswalk</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">WAVE 1 draft · sp-800-204d</p>
+<h1>SP 800-204D: Strategies for the Integration of Software Supply Chain Security in DevSecOps CI/CD Pipelines</h1>
+<p class="lede">NIST SP 800-204D</p>
+<p>
+  <span class="badge">spec</span>
+  <span class="badge">nist</span>
+  <span class="badge">distilled</span>
+  <span class="badge">medium</span>
+</p>
+<p class="meta">Publish topic: <strong>sdl</strong> (record.yaml topic). Status <code>distilled</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-204D.pdf">https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-204D.pdf</a></li><li>Identifier URL: <a href="https://csrc.nist.gov/pubs/sp/800/204/d/final">https://csrc.nist.gov/pubs/sp/800/204/d/final</a></li><li>SHA-256: <code>74e404d98c9dd74722b678246e5127ffeede71c4b80d0c631c995650128174e8</code></li></ul>
+<h2>Specification</h2>
+<table><tbody><tr><td>Authors</td><td>Ramaswamy Chandramouli, Frederick Kautz, Santiago Torres-Arias</td></tr><tr><td>Date</td><td>2024-02</td></tr><tr><td>Publisher</td><td>National Institute of Standards and Technology (NIST)</td></tr><tr><td>Version</td><td>Final (February 2024)</td></tr><tr><td>Maturity</td><td>best-practice</td></tr><tr><td>doi</td><td><a href="https://doi.org/10.6028/NIST.SP.800-204D">10.6028/NIST.SP.800-204D</a></td></tr><tr><td>nist</td><td>SP 800-204D</td></tr><tr><td>Pages</td><td>41</td></tr><tr><td>Media type</td><td>application/pdf</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge adjacent">adjacent</span></td></tr><tr><td>This project</td><td><span class="badge adjacent">adjacent</span></td></tr></tbody></table><p class="meta">Ratings are the <code>applicability</code> map on <code>record.yaml</code>. A missing axis is not assessed — it is not <code>none</code>. The summary's Why column is not scraped; two summary dialects exist, and a blank template cell is not a judgement.</p>
+<h2>Tags</h2>
+<h3>Topic tags</h3><p><span class="badge">sdl</span> <span class="badge">supply-chain</span> <span class="badge">provenance</span> <span class="badge">attestation</span> <span class="badge">sbom</span> <span class="badge">signatures</span> <span class="badge">devsecops</span> <span class="badge">ci-cd</span></p><p class="meta">Subject vocabulary and free tags. These are what the topic view and the tag crosswalk use.</p><h3>Body tags</h3><p><span class="badge">nist</span></p><p class="meta">Issuing-body names. Shown here, excluded from the topic view so it is not a second copy of the body index.</p><h3>Role tags</h3><p><span class="badge">normative</span></p><p class="meta">Why the record was kept (normative, prior-art, evidence, …). Not a subject.</p>
+<h2>Bears on</h2>
+<ul><li><code>R-041</code></li><li><code>R-042</code></li><li><code>R-044</code></li><li><code>R-040</code></li><li><code>DEC-009</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> Pipeline-level operationalisation of SSDF PO/PS/PW.5-9 with a source-published SSDF mapping; its signed-policy-over-typed-attestations admission pattern is the clearest template for an automatable SDL Gate / conformance check (R-041/R-042).</p><p class="meta">Assessed 2026-10-02.</p>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> on this record only. Empty lists are omitted. These are not crosswalk edges and not a knowledge graph.</p><h3><code>see_also</code></h3><ul><li><a href="sp-800-218.html">SSDF 1.1</a></li><li><a href="sp-800-218r1.html">SSDF 1.2 (SP 800-218r1 ipd)</a></li><li><a href="sp-800-161r1.html">SP 800-161r1</a></li><li><a href="sp-800-53r5.html">SP 800-53r5</a></li><li><a href="slsa-1-2.html">SLSA 1.2</a></li><li><a href="in-toto-attestation-v1.html">in-toto Attestation Framework v1</a></li><li><a href="tuf-spec.html">The Update Framework Specification v1.0.36</a></li><li><a href="openssf-scorecard-checks.html">OpenSSF Scorecard checks</a></li><li><a href="cncf-supply-chain-best-practices-v2.html">CNCF SSCBP v2</a></li><li><a href="eo-14028.html">EO 14028</a></li></ul>
+<h2>Document cites</h2><p class="meta">From <code>cites</code>: what the document references. Fact about the source, not our crosswalk. Gaps stay gaps.</p><ul><li>[1] Chandramouli R (2022) Implementation of DevSecOps for a Microservices-based Application with Service Mesh. NIST SP 800-204C. https://doi.org/10.6028/NIST.SP.800-204C <span class="meta">cited, no library record</span></li><li><a href="sp-800-218.html">SSDF 1.1</a></li><li><a href="eo-14028.html">EO 14028</a></li><li>[4] Goud N (2021) What is Solarigate. https://www.cybersecurity-insiders.com/what-is-solorigate/ <span class="meta">cited, no library record</span></li><li>[5] Berger A (2023) What is Log4Shell? (Dynatrace blog) <span class="meta">cited, no library record</span></li><li><a href="sp-800-53r5.html">SP 800-53r5</a></li><li>[7] Lorenc D (2021) Zero Trust Supply Chain Security. https://dlorenc.medium.com/zero-trust-supply-chain-security-e3fb8b6973b8 <span class="meta">cited, no library record</span></li><li>[8] Testify/Witness (2023) Witness – Secure Your Supply Chain. https://github.com/testifysec/witness/ <span class="meta">cited, no library record</span></li><li>[9] Kennedy C (2021) What is a Software Supply Chain Attestation – and Why do I need it? (TestifySec blog) <span class="meta">cited, no library record</span></li><li>[10] Gelb Y (2023) Mass Scanning of Popular GitHub Repos for CI Misconfiguration (Checkmarx) <span class="meta">cited, no library record</span></li><li><a href="tuf-spec.html">The Update Framework Specification v1.0.36</a></li><li>[12] Malik Z, Sulakian M (2023) Push Protection is generally available (GitHub blog) <span class="meta">cited, no library record</span></li><li>[13] GitHub Docs (2023) Enabling Security Features for Multiple Repositories <span class="meta">cited, no library record</span></li><li>[14] Cloud Build (2023) Securing Image Deployments to Cloud Run and GKE <span class="meta">cited, no library record</span></li><li>[15] GitHub Docs (2023) About dependency review <span class="meta">cited, no library record</span></li><li>[16] Williams A (2021) A Blueprint for Supply Chain Security. The New Stack <span class="meta">cited, no library record</span></li><li>[17] Crane D (2023) Five Stages for A Secure Software Supply Chain <span class="meta">cited, no library record</span></li><li>[18] CyRise (2023) Supply Chain Security with Ensignia <span class="meta">cited, no library record</span></li><li>[19] GitLab Docs (2023) Dependency Scanning <span class="meta">cited, no library record</span></li><li>[20] GitLab Docs (2023) Secret Detection <span class="meta">cited, no library record</span></li><li>[21] GitLab Docs (2023) Push Rules <span class="meta">cited, no library record</span></li></ul>
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited. The strip above is <code>record.yaml</code>. If they disagree, the record wins for type, tags, applicability ratings, and bears_on.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec (NIST Special Publication, guidance)</td></tr><tr><td><strong>Maturity</strong></td><td>best-practice (final NIST SP; checked on CSRC 2026-10-02)</td></tr><tr><td><strong>Authors</strong></td><td>Ramaswamy Chandramouli (NIST), Frederick Kautz (TestifySec), Santiago Torres-Arias (Purdue University)</td></tr><tr><td><strong>Published</strong></td><td>February 2024 (final 2024-02-12; draft 2023-08-30); approved by the NIST ERB 2024-01-31</td></tr><tr><td><strong>Identifier</strong></td><td>NIST SP 800-204D · DOI 10.6028/NIST.SP.800-204D</td></tr><tr><td><strong>Source</strong></td><td>https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-204D.pdf (41 pp.)</td></tr><tr><td><strong>Digest</strong></td><td><code>74e404d98c9dd74722b678246e5127ffeede71c4b80d0c631c995650128174e8</code></td></tr></tbody></table>
+<p><strong>Currency check (2026-10-02).</strong> The CSRC landing page https://csrc.nist.gov/pubs/sp/800/204/d/final lists only two events: &quot;08/30/23: SP 800-204D (Draft)&quot; and &quot;02/12/24: SP 800-204D (Final)&quot;. It shows no supersession, errata or planning note. The guessed revision URLs <code>/pubs/sp/800/204/d/r1/ipd</code> and <code>/pubs/sp/800/204/d/upd1/final</code> both return 404. <strong>The February 2024 final is current.</strong> Its SSDF mapping targets SSDF v1.1 (<code>sp-800-218</code>). SSDF v1.2 (<code>sp-800-218r1</code>) is still an initial public draft, so the mapping has not been redone.</p>
+<h2>Overview</h2>
+<p>SP 800-204D turns the SSDF&#x27;s supply-chain practices into concrete controls for <strong>CI/CD pipelines in cloud-native DevSecOps</strong>. Its model is simple: a software supply chain is a sequence of <em>steps</em>. Each step is <em>carried out</em> by an actor, human or machine, <em>uses</em> artifacts and resources, and <em>produces</em> artifacts.</p>
+<p>Its argument is that pipeline security comes from two things. The first is <strong>evidence generated while the build runs</strong>, by something more trusted than the build: environment, process, materials and artifacts attestations, signed and kept in tamper-proof storage. The second is <strong>signed policies</strong> that verifiers evaluate before an artifact is signed, merged or admitted to deployment.</p>
+<p>Around that core it sets out:</p>
+<ul><li>source-control hygiene: role-consistent access, no self-approved merges, and maintainer approval before CI runs on outside contributions;</li><li>commit-time controls: SAST/DAST, full transitive SCA, and secret push protection;</li><li>update-system key management in the TUF style;</li><li>GitOps release discipline.</li></ul>
+<p>Appendix A maps the tasks onto 12 SSDF v1.1 practices. Appendix B says why the design (PW.1–PW.4, PW.7) and vulnerability-response (RV) practices are left out.</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td>core</td><td>Build integrity, provenance, signing, admission control and secret handling for the pipeline that produces the software.</td></tr><tr><td>Cryptography</td><td>adjacent</td><td>Requires signatures on attestations and policies and threshold or offline keys, but defers all formats and algorithms.</td></tr><tr><td>This project</td><td>adjacent</td><td>Bears on R-041 (SDL Gate: deployment admission as an automatable gate) and R-042 (conformance: policy evaluated against typed, time-sensitive evidence). It is post-MVP per DL-0009. It is also a concrete source for MAP-0001 rows 13 and 16 and for SSDF crosswalk edges (R-044).</td></tr></tbody></table>
+<h2>Implementations</h2>
+<p>Drawn from the document&#x27;s own references and examples, plus the records we hold. This is not a market survey (checked 2026-10-02).</p>
+<table><thead><tr><th>Name</th><th>Kind</th><th>License</th><th>URL</th></tr></thead><tbody><tr><td>Witness (TestifySec) — attestation wrapper for CI commands (ref. [8])</td><td>open source</td><td>Apache-2.0</td><td>https://github.com/testifysec/witness</td></tr><tr><td>in-toto / in-toto attestation framework</td><td>open source</td><td>Apache-2.0</td><td>records <code>in-toto-2019</code>, <code>in-toto-attestation-v1</code></td></tr><tr><td>The Update Framework (TUF), ref. [11]</td><td>open source spec + implementations</td><td>Apache-2.0 / MIT</td><td>record <code>tuf-spec</code></td></tr><tr><td>OpenSSF Scorecard (footnote 4, SCM posture)</td><td>open source</td><td>Apache-2.0</td><td>record <code>openssf-scorecard-checks</code></td></tr><tr><td>Open Policy Agent (policy engine example, §5.1.2)</td><td>open source</td><td>Apache-2.0</td><td>https://www.openpolicyagent.org/</td></tr><tr><td>Argo CD, Flux (GitOps, §5.2.1)</td><td>open source</td><td>Apache-2.0</td><td>https://argoproj.github.io/cd/ · https://fluxcd.io/</td></tr><tr><td>GitHub push protection / dependency review (refs. [12], [13], [15])</td><td>commercial (SaaS)</td><td>proprietary</td><td>https://docs.github.com/</td></tr><tr><td>GitLab secret detection / dependency scanning / push rules (refs. [19]–[21])</td><td>commercial (open core)</td><td>MIT (CE) / proprietary (EE)</td><td>https://docs.gitlab.com/</td></tr><tr><td>Google Cloud Build / Binary Authorization for Cloud Run and GKE (ref. [14])</td><td>commercial</td><td>proprietary</td><td>https://cloud.google.com/build/docs/securing-builds/secure-deployments-to-run-gke</td></tr></tbody></table>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata, relations, cites, distillation block</td></tr><tr><td><code>distilled/README.md</code></td><td>index of the distilled artifacts with coverage</td></tr><tr><td><code>distilled/normative.md</code></td><td>every normative statement verbatim with locator and R-id; Tables 1–3; Fig. 1 transcription</td></tr><tr><td><code>distilled/requirements.yaml</code></td><td>126 typed requirements (library-requirements/v2), SSDF <code>maps_to</code> from Appendix A</td></tr><tr><td><code>distilled/protocol.yaml</code>, <code>distilled/protocol.md</code></td><td>4 derived interaction flows with Mermaid sequence diagrams</td></tr><tr><td><code>distilled/state-machine.yaml</code></td><td>artifact-admission, GitOps-drift and SSC-attack lifecycles</td></tr><tr><td><code>distilled/design-notes.md</code></td><td>adopt/adapt/reject against R-040–R-044, DEC-009, ARCH-0001, ADR-0001; source inconsistencies</td></tr><tr><td><code>distilled/object-model.yaml</code>, <code>distilled/object-model.md</code></td><td>object-model pass: 62 objects, 45 edges, gaps; Mermaid class diagram</td></tr></tbody></table>
+<h2>Limits</h2>
+<ul><li><strong>No formats.</strong> SBOM, attestation and signing formats are explicitly out of scope (§1.2, §6). So is artifact testing that produces tamper-proof test records (§5.1), and the emerging integrated &quot;DevSecOps platform&quot; (§6).</li><li><strong>Not a full SDL.</strong> It omits secure design and design review (SSDF PW.1–PW.4, PW.7) and vulnerability response (RV.1–RV.3); see Appendix B. It cannot stand in for SSDF conformance.</li><li><strong>Lowercase modals throughout,</strong> and the strength sometimes differs between §5 and Appendix A (for example online keys: &quot;should not&quot; vs &quot;must not&quot;). See design-notes.</li><li><strong>Weak sourcing.</strong> Many citations are vendor blogs and product documentation ([4], [5], [7], [9], [10], [12]–[21]) rather than standards.</li><li><strong>Coverage gaps in Appendix A.</strong> Its mapping leaves the process/materials/artifacts attestation and signing/storage, push-protection and most GitOps requirements without an SSDF practice, so a Table-2-only crosswalk undercounts the document&#x27;s coverage.</li></ul>
+
+<footer><p>Generated from <code>docs/publishing/bibliography.yaml</code> by <code>docs/publishing/render_bibliography.py</code>. Do not hand-edit. Static HTML, no scripts, no trackers. See <a href="../../publishing/bibliography-review.md">bibliography-review.md</a>.</p></footer>
+</main>
+</body>
+</html>

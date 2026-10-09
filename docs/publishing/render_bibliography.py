@@ -258,6 +258,10 @@ class YamlParser:
         content = _strip_comment(nxt).strip()
         if content.startswith("- "):
             return self.parse_list(ind)
+        if content[:1] in "[{":
+            # flow collection on its own line under the key (`bears_on:\n  []`)
+            self.i += 1
+            return _scalar(content)
         return self.parse_map(ind)
 
     def parse_list(self, indent: int) -> list:
@@ -579,6 +583,10 @@ footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 
 .cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
 .cardlink:hover { background: transparent; }
 .cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
 """
 
 
@@ -908,9 +916,11 @@ def record_page(rec: dict, published: dict[str, dict]) -> str:
         )
         if assessed:
             usefulness += f"<p class=\"meta\">Assessed {esc(assessed)}.</p>"
-    topic_line = esc(rec["publish_topic"])
+    topic_line = esc(topic_label(rec))
     if rec["record_topic"]:
         topic_src = "record.yaml topic"
+    elif not rec["publish_topic"]:
+        topic_src = "the record has no topic field and no subject tag; tag it in the library"
     else:
         topic_src = "a tag already on the record; there is no topic field"
     body = f"""
@@ -952,20 +962,95 @@ def record_line(rec: dict, depth: int) -> str:
     return (
         f'<a class="cardlink" href="{href}"><strong>{esc(rec["title"])}</strong>'
         f"<br><span class=\"meta\">{esc(rec['type'])} · {esc(rec['body'])} · "
-        f"topic {esc(rec['publish_topic'])} · {esc(rec['status'])} · {written}</span>"
+        f"topic {esc(topic_label(rec))} · {esc(rec['status'])} · {written}</span>"
         f"{reason}</a>"
     )
 
 
+UNTAGGED = "no topic tag yet"
+
+
+def topic_label(rec: dict) -> str:
+    return rec["publish_topic"] or UNTAGGED
+
+
+def _sort_key(rec: dict) -> str:
+    title = re.sub(r"^[\W_]+", "", str(rec["title"])).lower()
+    title = re.sub(r"^(?:the|a|an) ", "", title)
+    return f"{title}\x00{rec['id']}"
+
+
+def citation(rec: dict) -> str:
+    """One reference-list entry. Only fields the record has; nothing guessed."""
+    authors = rec["authors"]
+    if len(authors) > 3:
+        lead = f"{authors[0]} et al."
+    elif authors:
+        lead = ", ".join(authors)
+    else:
+        # Not `body`: that is the storage folder, and it is not an author.
+        lead = rec["publisher"]
+    parts = []
+    if lead:
+        parts.append(esc(lead.rstrip(".")) + ".")
+    parts.append(f'<a href="records/{esc(rec["id"])}.html"><cite>{esc(rec["title"])}</cite></a>.')
+    detail = [TYPE_HEADING.get(rec["type"], rec["type"])]
+    if rec["version"]:
+        detail.append(f"version {rec['version']}")
+    ident = rec["identifiers"]
+    for key, label in (("rfc", "RFC"), ("doi", "doi:"), ("arxiv", "arXiv:")):
+        val = ident.get(key)
+        if val and not isinstance(val, (dict, list)):
+            sep = " " if label == "RFC" else ""
+            detail.append(f"{label}{sep}{val}")
+    if rec["date"]:
+        detail.append(rec["date"])
+    elif rec["retrieved"]:
+        detail.append(f"retrieved {rec['retrieved']}")
+    parts.append(esc(", ".join(detail)) + ".")
+    if rec["url"]:
+        parts.append(f'<a class="meta" href="{esc(rec["url"])}" rel="noreferrer">source</a>')
+    if not rec["summary_written"]:
+        parts.append('<span class="badge not-assessed">summary not written</span>')
+    return f'<li id="{esc(rec["id"])}">' + " ".join(parts) + "</li>"
+
+
 def index_page(records: list[dict], library_count: int) -> str:
-    lines = "\n".join(record_line(r, 0) for r in records)
+    ordered = sorted(records, key=_sort_key)
+    by_letter: dict[str, list[dict]] = {}
+    for rec in ordered:
+        first = _sort_key(rec)[:1].upper()
+        by_letter.setdefault(first if first.isalpha() else "#", []).append(rec)
+    letters = sorted(by_letter, key=lambda c: (c == "#", c))
+    jump = " ".join(f'<a href="#letter-{esc(c)}">{esc(c)}</a>' for c in letters)
+    sections = []
+    for c in letters:
+        items = "\n".join(citation(r) for r in by_letter[c])
+        sections.append(f'<h2 id="letter-{esc(c)}">{esc(c)}</h2>\n<ol class="refs">\n{items}\n</ol>')
+    written = sum(1 for r in records if r["summary_written"])
+    untagged = sum(1 for r in records if not r["publish_topic"])
+    types: dict[str, int] = {}
+    for rec in records:
+        types[rec["type"]] = types.get(rec["type"], 0) + 1
+    type_bits = ", ".join(f"{n} {esc(t)}" for t, n in sorted(types.items(), key=lambda kv: (-kv[1], kv[0])))
+    coverage = (
+        "every library record" if len(records) == library_count
+        else f"{len(records)} of {library_count} library records"
+    )
     body = f"""
 <p class="kicker">WAVE 1 · issue 91</p>
-<h1>Bibliography, first pass</h1>
-<div class="banner"><strong>Draft subset, not the library.</strong>
-{len(records)} records are in this manifest. {library_count} <code>record.yaml</code> files are in <code>library/records</code>.
-The rest are unpublished. Re-render when references arrive; do not hand-edit these pages.</div>
-<p class="lede">Categorization used here, because the naive version fails:</p>
+<h1>Bibliography</h1>
+<p class="lede">{len(records)} sources the tmodel project cites or keeps for reference, rendered from {coverage}.
+Each entry links to a record page with its applicability table, tags, and summary.</p>
+<div class="banner"><strong>Draft, not reviewed.</strong>
+{written} of {len(records)} records have a written summary; the rest are labeled. {untagged} records have no topic tag yet.
+Ratings and topics come from the library records. Nothing here is a ranking or an accepted <code>DEC-*</code>.</div>
+<p class="meta">By type: {type_bits}.</p>
+<p class="meta">Other views: <a href="by-topic.html">topic</a>, <a href="by-type.html">document type</a>,
+<a href="by-body.html">issuing body</a>, <a href="crosswalk.html">crosswalk</a>.</p>
+<nav class="jump" aria-label="Jump to letter">{jump}</nav>
+{"".join(sections)}
+<h2>How this is categorized</h2>
 <ul class="clean">
 <li>Document type comes from <code>record.yaml</code>, never from summary front matter (<code>type: summary</code> on every summary).</li>
 <li>Topic, document type, and issuing body are three views. Body tags, role tags, and words like <code>standard</code> are not topics.</li>
@@ -973,8 +1058,6 @@ The rest are unpublished. Re-render when references arrive; do not hand-edit the
 <li>A template summary is labeled not written, not shown as prose.</li>
 <li>The crosswalk is shared tags and shared <code>bears_on</code> only. No invented relations.</li>
 </ul>
-<p>Manifest order below is the review order, not a ranking.</p>
-{lines}
 """
     return page("Bibliography — tmodel", body, "index.html", 0)
 
@@ -994,9 +1077,9 @@ def grouped_page(title: str, intro: str, groups: list[tuple[str, str, list[dict]
 def topic_page(records: list[dict]) -> str:
     by: dict[str, list[dict]] = {}
     for rec in records:
-        by.setdefault(rec["publish_topic"], []).append(rec)
+        by.setdefault(topic_label(rec), []).append(rec)
     primary = []
-    for topic in sorted(by):
+    for topic in sorted(by, key=lambda k: (k == UNTAGGED, k)):
         primary.append((topic, "Primary publish topic. One home per record.", by[topic]))
     # secondary tag index
     tag_map: dict[str, list[dict]] = {}
@@ -1142,6 +1225,11 @@ def build_record(entry: dict, role: set[str], body_tags: set[str]) -> dict:
             raise SystemExit(
                 f"{record_id}: record.topic is {record_topic!r}; manifest has {manifest_topic!r}."
             )
+    elif not manifest_topic:
+        if groups["topic"]:
+            raise SystemExit(
+                f"{record_id}: manifest topic is empty but the record has topic tags {groups['topic']}; pick one."
+            )
     elif manifest_topic not in tags:
         raise SystemExit(
             f"{record_id}: manifest topic {manifest_topic!r} is not record.topic and not one of the record's tags {tags}."
@@ -1272,11 +1360,55 @@ def _refuse_active(text: str, name: str):
         raise SystemExit(f"{name}: script refused")
     if "{{" in text or "{%" in text:
         raise SystemExit(f"{name}: template delimiter refused")
-    if re.search(r"https?://[^\"']+\.(?:js|css)", text):
+    # A citation may link to a repo named `foo.js`; only a loaded asset is refused.
+    if re.search(r"<(?:script|link|img|iframe)\b[^>]*(?:src|href)=[\"']?(?:https?:)?//", text, re.I):
         raise SystemExit(f"{name}: remote asset refused")
     for banned in ("google-analytics", "googletagmanager", "fonts.googleapis", "cdn.jsdelivr"):
         if banned in lower:
             raise SystemExit(f"{name}: tracker or remote font refused")
+
+
+def default_topic(data: dict, role: set[str], body_tags: set[str], subject: list[str]) -> str:
+    """Primary topic for a newly listed record: never a word the record lacks.
+
+    record.topic if set; else the first controlled subject tag the record
+    carries; else its first other topic tag; else empty (shown as untagged).
+    """
+    record_topic = str(data.get("topic") or "").strip()
+    if record_topic:
+        return record_topic
+    topic_tags = tag_groups([str(t) for t in as_list(data.get("tags"))], role, body_tags)["topic"]
+    for tag in topic_tags:
+        if tag in subject:
+            return tag
+    return topic_tags[0] if topic_tags else ""
+
+
+def sync_manifest(role: set[str], body_tags: set[str]) -> int:
+    """Append library records missing from the manifest. Existing entries are
+    never changed, so a reviewer's topic choice survives every sync."""
+    text = MANIFEST_PATH.read_text(encoding="utf-8")
+    listed = {e["id"] for e in as_list(load_yaml(MANIFEST_PATH).get("records"))}
+    subject = [str(s) for s in as_list(load_yaml(TAGS_PATH).get("subject"))]
+    lines = []
+    for path in sorted(RECORDS_ROOT.glob("*/*/record.yaml")):
+        data = load_yaml(path)
+        rid = data.get("id")
+        if rid in listed:
+            continue
+        topic = default_topic(data, role, body_tags, subject)
+        lines += [f"  - id: {rid}", f"    type: {data.get('type')}",
+                  f"    topic: {topic}" if topic else "    topic: ~  # no topic tag on the record yet"]
+    if not lines:
+        print("manifest already lists every library record")
+        return 0
+    marker = "\noutputs:"
+    if marker not in text:
+        raise SystemExit("manifest: cannot find the outputs: key that follows records:")
+    text = text.replace(marker, "\n" + "\n".join(lines) + marker, 1)
+    MANIFEST_PATH.write_text(text, encoding="utf-8")
+    print(f"appended {len(lines) // 3} records to {MANIFEST_PATH.relative_to(ROOT)}")
+    return 0
 
 
 def main() -> int:
@@ -1284,18 +1416,15 @@ def main() -> int:
     if manifest.get("schema") != "tmodel.publishing/v0":
         raise SystemExit("manifest schema must be tmodel.publishing/v0")
     check_security(manifest)
+    role, body_tags = load_controlled_tags()
+    if "--sync" in sys.argv[1:]:
+        return sync_manifest(role, body_tags)
     entries = manifest.get("records")
     if not isinstance(entries, list) or not entries:
         raise SystemExit("manifest records must be a non-empty list")
     ids = [e["id"] for e in entries]
     if len(ids) != len(set(ids)):
         raise SystemExit("duplicate ids in manifest")
-    source_ids = as_list((manifest.get("source") or {}).get("record_ids"))
-    if set(source_ids) != set(ids):
-        raise SystemExit("source.record_ids and records[].id differ")
-    if len(entries) > 40:
-        raise SystemExit("refusing a large manifest; this pass is a subset")
-    role, body_tags = load_controlled_tags()
     records = [build_record(e, role, body_tags) for e in entries]
     published = {r["id"]: r for r in records}
     library_count = len(list(RECORDS_ROOT.glob("*/*/record.yaml")))
@@ -1307,7 +1436,9 @@ def main() -> int:
     print("crosswalk tags:", ", ".join(sorted(tag_map)))
     print("crosswalk bears_on:", ", ".join(sorted(bear_map)))
     unwritten = [r["id"] for r in records if not r["summary_written"]]
-    print("summary not written:", ", ".join(unwritten) or "(none)")
+    print(f"summary not written: {len(unwritten)}")
+    untagged = [r["id"] for r in records if not r["publish_topic"]]
+    print(f"{UNTAGGED}: {', '.join(untagged) or '(none)'}")
     return 0
 
 

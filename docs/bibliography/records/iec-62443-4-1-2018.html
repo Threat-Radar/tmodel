@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Security for industrial automation and control systems – Part 4-1: Secure product development lifecycle requirements</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 24px 64px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.15; letter-spacing: -0.03em; margin: 28px 0 8px; }
+h2 { font-size: 1.25rem; margin: 1.6em 0 0.4em; }
+h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
+.kicker { margin: 22px 0 0; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.6em 0 1em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 8px 10px; font-size: 0.95rem; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<header><div class="bar"><a class="mark" href="../index.html">Bibliography</a><nav><a href="../../index.html">tmodel</a><a href="../index.html">Index</a><a href="../by-topic.html">Topic</a><a href="../by-type.html">Type</a><a href="../by-body.html">Issuing body</a><a href="../crosswalk.html">Crosswalk</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">WAVE 1 draft · iec-62443-4-1-2018</p>
+<h1>Security for industrial automation and control systems – Part 4-1: Secure product development lifecycle requirements</h1>
+<p class="lede">IEC 62443-4-1</p>
+<p>
+  <span class="badge">spec</span>
+  <span class="badge">iso</span>
+  <span class="badge">summarized</span>
+  <span class="badge">medium</span>
+</p>
+<p class="meta">Publish topic: <strong>sdl</strong> (record.yaml topic). Status <code>summarized</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://webstore.iec.ch/en/iec_catalog/product/preview/?id=L3B1Yi9wZGYvcHJldmlldy9pbmZvX2llYzYyNDQzLTQtMXtlZDEuMH1lbi5wZGY%3D">https://webstore.iec.ch/en/iec_catalog/product/preview/?id=L3B1Yi9wZGYvcHJldmlldy9pbmZvX2llYzYyNDQzLTQtMXtlZDEuMH1lbi5wZGY%3D</a></li><li>Identifier URL: <a href="https://webstore.iec.ch/en/publication/33615">https://webstore.iec.ch/en/publication/33615</a></li><li>SHA-256: <code>eb2f67981f03f944f8fe0044c6ac176b8f2422cb0473cc08c28d477cb3c52d03</code></li></ul>
+<h2>Specification</h2>
+<table><tbody><tr><td>Authors</td><td>IEC TC 65</td></tr><tr><td>Date</td><td>2018-01-15</td></tr><tr><td>Publisher</td><td>International Electrotechnical Commission (IEC) / ISA (ANSI/ISA-62443-4-1-2018)</td></tr><tr><td>Version</td><td>Edition 1.0 (2018)</td></tr><tr><td>Maturity</td><td>standard</td></tr><tr><td>ansi</td><td>ANSI/ISA-62443-4-1-2018</td></tr><tr><td>en</td><td>EN IEC 62443-4-1:2018</td></tr><tr><td>iec</td><td>IEC 62443-4-1:2018</td></tr><tr><td>isbn</td><td>978-2-8322-5239-0</td></tr><tr><td>Pages</td><td>11</td></tr><tr><td>Media type</td><td>application/pdf</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge adjacent">adjacent</span></td></tr><tr><td>This project</td><td><span class="badge core">core</span></td></tr></tbody></table><p class="meta">Ratings are the <code>applicability</code> map on <code>record.yaml</code>. A missing axis is not assessed — it is not <code>none</code>. The summary's Why column is not scraped; two summary dialects exist, and a blank template cell is not a judgement.</p>
+<h2>Tags</h2>
+<h3>Topic tags</h3><p><span class="badge">sdl</span> <span class="badge">iec</span> <span class="badge">threat-modeling</span> <span class="badge">ics</span> <span class="badge">supply-chain</span> <span class="badge">vulnerability-management</span></p><p class="meta">Subject vocabulary and free tags. These are what the topic view and the tag crosswalk use.</p><h3>Role tags</h3><p><span class="badge">normative</span></p><p class="meta">Why the record was kept (normative, prior-art, evidence, …). Not a subject.</p><h3>Standing tags</h3><p><span class="badge">standard</span></p><p class="meta">Maturity words such as standard or draft. Not a shared subject.</p>
+<h2>Bears on</h2>
+<ul><li><code>R-040</code></li><li><code>R-041</code></li><li><code>R-042</code></li><li><code>R-044</code></li><li><code>DEC-009</code></li><li><code>DEC-003</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> The most prescriptive SDL process standard: SR-2 is a DFD-shaped threat-model schema, SR-2 k)+SVV-2 define the threats-mitigated conformance check, SM-11/SM-12 define a release gate, and it is being harmonised for the EU CRA.</p><p class="meta">Assessed 2026-10-02.</p>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> on this record only. Empty lists are omitted. These are not crosswalk edges and not a knowledge graph.</p><h3><code>see_also</code></h3><ul><li><a href="iec-81001-5-1-2021.html">IEC 81001-5-1</a></li><li><a href="eu-cra-2024-2847.html">Cyber Resilience Act (CRA)</a></li><li><a href="sp-800-218.html">SSDF 1.1</a></li><li><a href="iso-sae-21434-2021.html">ISO/SAE 21434</a></li></ul><h3><code>cited_by</code></h3><ul><li><a href="iec-81001-5-1-2021.html">IEC 81001-5-1</a></li></ul>
+<h2>Document cites</h2><p class="meta">From <code>cites</code>: what the document references. Fact about the source, not our crosswalk. Gaps stay gaps.</p><ul><li>Clause 2 IEC 62443-2-4:2015 + AMD1:2017, Security program requirements for IACS service providers <span class="meta">cited, no library record</span></li><li>[26] ISCI, Secure Development Life-cycle Assessment (SDLA) Certification Requirements <span class="meta">cited, no library record</span></li><li>[18] ISO/IEC 15408-3 (Common Criteria) <span class="meta">cited, no library record</span></li><li>[36] OWASP Comprehensive, Lightweight Application Security Process (CLASP) <span class="meta">cited, no library record</span></li><li>[43] Howard and Lipner, The Security Development Lifecycle <span class="meta">cited, no library record</span></li><li>[24] IEC 61508, Functional safety of E/E/PE safety-related systems <span class="meta">cited, no library record</span></li><li>[28] RTCA DO-178B, Software Considerations in Airborne Systems and Equipment Certification <span class="meta">cited, no library record</span></li><li>[10] IEC 62443-3-3, System security requirements and security levels <span class="meta">cited, no library record</span></li><li>[13] ISO 9001 (cited in SM-1) <span class="meta">cited, no library record</span></li><li>[25] IEC 62740, Root cause analysis (cited in DM-3) <span class="meta">cited, no library record</span></li><li>3.1 IEC TR 62443-1-2, Master glossary of terms and abbreviations (under consideration) <span class="meta">cited, no library record</span></li></ul>
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited. The strip above is <code>record.yaml</code>. If they disagree, the record wins for type, tags, applicability ratings, and bears_on.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec (International Standard)</td></tr><tr><td><strong>Maturity</strong></td><td>standard</td></tr><tr><td><strong>Authors</strong></td><td>IEC TC 65 (text based on 65/685/FDIS, RVD 65/688/RVD); developed largely from ISCI SDLA certification requirements</td></tr><tr><td><strong>Published</strong></td><td>2018-01-15, Edition 1.0; identical ANSI/ISA-62443-4-1-2018; EN IEC 62443-4-1:2018</td></tr><tr><td><strong>Identifier</strong></td><td>IEC 62443-4-1:2018 (ISBN 978-2-8322-5239-0 on preview)</td></tr><tr><td><strong>Source</strong></td><td>https://webstore.iec.ch/en/publication/33615 (paywalled; 54 pp)</td></tr><tr><td><strong>Digest</strong></td><td><code>eb2f67981f03f944f8fe0044c6ac176b8f2422cb0473cc08c28d477cb3c52d03</code> — IEC webstore preview EN (11 pp), retrieved 2026-10-02</td></tr></tbody></table>
+<p><strong>Version check (2026-10-02).</strong> IEC webstore publication 33615: Edition 1.0, status <em>valid</em>, stability date 2027, no amendment listed. CEN-CENELEC webinar &quot;CRA Standards Unlocked: From EN IEC 62443 to CRA&quot; (2025-09-09, cencenelec.eu PDF, sha256 <code>7ccbe82337e35cbe509cf4e65423178d218a3661104878e2668f7866d8021b9d</code>) lists work item 81487 <strong>EN IEC 62443-4-1:2018/prAA</strong> (→ A11:2026) under CEN-CLC/JTC 13 WG 9 to add &quot;intended use&quot;/&quot;security context&quot; documentation and expected development artefacts, and states EN IEC 62443-4-1 &quot;Covers EU CRA Annex I Part I (1) and Part II Essential Cybersecurity Requirements&quot;. IEC Edition 2 (TC 65/WG 10) is in revision; a secondary report gives a 2027 CDV — not confirmed from an IEC page. ISASecure SDLA-102 v4.3 (July 2025) baselines SDLA-312 at v6.4 (editorial logo change vs the v6.3 used here).</p>
+<p><strong>CRA amendment, re-checked 2026-10-02.</strong> <strong>EN IEC 62443-4-1:2018/prAA:2026</strong> is the European amendment that adapts this standard for presumption of conformity under the CRA (Regulation (EU) 2024/2847, record <code>eu-cra-2024-2847</code>). The enquiry draft is dated 2026-03-13 and voting closed 2026-06-05 (stage 40.60). Committee CLC/TC 65X; the related legislation listed is 2024/2847. Sources: genorma.com and the national mirrors evs.ee and iss.rs (secondary catalogue pages, read 2026-10-02). It is <strong>not yet ratified and not cited in the OJ</strong>, and its text was not read. Once ratified, cited and readable, it will be a new record linked to this one by <code>updated_by</code>.</p>
+<h2>Overview</h2>
+<p>The product-supplier part of IEC 62443: a secure development lifecycle expressed as 47 numbered <strong>process</strong> requirements in eight practices — security management (SM-1..13), specification of security requirements (SR-1..5), secure by design (SD-1..4), secure implementation (SI-1..2), security verification and validation testing (SVV-1..5), management of security-related issues (DM-1..6), security update management (SUM-1..5) and security guidelines (SG-1..7) — with each practice graded on a four-level maturity model (Clause 4.2). It binds the developer and maintainer of a product, not the integrator or asset owner. It is the most prescriptive SDL standard on the threat model&#x27;s content (SR-2&#x27;s DFD-shaped list), tester independence (Table 3), release gating (SM-11/SM-12) and user-facing security documentation (Practice 8), and the EU is amending its EN to serve CRA Annex I.</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td>core</td><td>reference SDL process standard for OT/IACS; parent of IEC 81001-5-1; CRA harmonisation basis</td></tr><tr><td>Cryptography</td><td>adjacent</td><td>only code-signing key protection (SM-8), file integrity (SM-6), update authenticity (SUM-4)</td></tr><tr><td>This project</td><td>core</td><td>R-041 (SM-11/SM-12 release gate), R-042 (SR-2 k + SVV-2 = threats-mitigated check), R-044 (MAP-0001 column), R-040 (Practice 8 = documentation mitigations), DEC-009 (DM-4 dispositions), DEC-003 (CVSS severity, residual-risk threshold)</td></tr></tbody></table>
+<h2>Implementations</h2>
+<p>Searched 2026-10-02.</p>
+<table><thead><tr><th>Name</th><th>Kind</th><th>License</th><th>URL</th></tr></thead><tbody><tr><td>ISASecure SDLA (ISCI/ASCI)</td><td>certification scheme; SDLA-312 maps each requirement to validation activities</td><td>spec PDFs: non-commercial use</td><td>https://isasecure.org/certification/iec-62443-sdla-certification</td></tr><tr><td>IECEE scheme for IEC 62443-4-1</td><td>certification scheme</td><td>—</td><td>https://www.iecee.org/certification/iec-standards/iec-62443-4-12018</td></tr><tr><td>open-source 62443-4-1 conformance tooling</td><td>searched: none found 2026-10-02</td><td>—</td><td>—</td></tr></tbody></table>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata, every free source consulted with digest, relations</td></tr><tr><td><code>distilled/README.md</code></td><td>artifact index with coverage</td></tr><tr><td><code>distilled/normative.md</code></td><td>everything normative legitimately readable, with locators</td></tr><tr><td><code>distilled/requirements.yaml</code></td><td>8 practices; 84 statements covering all 47 requirement ids (library-requirements/v2)</td></tr><tr><td><code>distilled/state-machine.yaml</code></td><td>security-related-issue lifecycle, ML1–ML4, ISASecure SDLA certification</td></tr><tr><td><code>distilled/object-model.yaml</code>, <code>distilled/object-model.md</code></td><td>object-model pass: 54 objects, 38 edges, 10 gaps; Mermaid</td></tr><tr><td><code>distilled/design-notes.md</code></td><td>bearing on R-040..R-044 / DEC-003 / DEC-009; MAP-0001 corrections; open questions; licensing</td></tr></tbody></table>
+<h2>Limits</h2>
+<ul><li><strong>The IEC normative body was not read</strong> (paywalled). Requirement text is ISCI&#x27;s reproduction in SDLA-312 v6.3; SR-2 is restructured there, and SUM-1&#x27;s &quot;should&quot; sentence may be an ISCI addition. Not covered: rationale and supplemental guidance subclauses, Clause 4 (concepts, maturity model, Table 1), Table 2, Annex A (metrics), Annex B. ML1–ML4 labels come from secondary slide decks.</li><li>Process-only: it requires that a threat model, reviews and tests exist, not how good they are. Product technical requirements are in 62443-4-2 / 3-3 (not held).</li><li>Severity is delegated to &quot;a vulnerability scoring system (for example, CVSS)&quot;; no risk method of its own.</li><li>Operational incident response is outside its scope (integrator/asset owner, 62443-2-1/2-4).</li></ul>
+
+<footer><p>Generated from <code>docs/publishing/bibliography.yaml</code> by <code>docs/publishing/render_bibliography.py</code>. Do not hand-edit. Static HTML, no scripts, no trackers. See <a href="../../publishing/bibliography-review.md">bibliography-review.md</a>.</p></footer>
+</main>
+</body>
+</html>
