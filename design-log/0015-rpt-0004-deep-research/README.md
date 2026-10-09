@@ -4,7 +4,7 @@ id: DL-0015
 title: "RPT-0004 second pass: AI-assisted scoping, survey, extraction and mapping"
 type: process
 status: draft
-version: "0.3.0"
+version: "0.4.0"
 date: "2026-10-08"
 updated: "2026-10-08"
 record: DL-0015
@@ -117,10 +117,12 @@ Seven claims that bear most on the report were checked again against their prima
 - **The pilot's "Syft puts the platform manifest digest in `metadata.component.version`"** as a general rule. Qualified: it holds only when the image is named `latest` (re-check of agent 2's notes, confirmed above). `pilot.md` now says so, and `dimensions.md` question 6.1 asks whether the anchor depends on how the image was named.
 - The agents' own rejections are in section 9 of each notes file: 49 from agents 1, 3, 4 and 5 (14, 12, 11 and 12), and 20 from the re-check of agent 2's notes (3 rejected as stated, 17 qualified; agent 2's own rejections were lost).
 
-### Suggestions from the re-check, not applied (open to review)
+### Suggestions from the re-check, accepted by the student
 
-- A "Named by policy" column for Table 3 (CISA 2026 names CPE and purl). This changes the Phase 0 scope, so it is left for the student to decide.
-- More failure modes for Table 3: unregistered purl types (CERT-In's `pkg:supplier/...`), purl-shaped ids that are not purls (`pkg:<GUID>`), copies of one record that disagree (Ubuntu purls with versions in Canonical's files, without them on OSV.dev), all-zero SHA-1 placeholders, and inconsistent vendor names in NVD. These are cell content for Phase 5.
+On 2026-10-08 the student asked for both of the re-check's suggestions, and `dimensions.md` 0.4.0 carries them:
+
+- **A "Named by policy" column in Table 3.** Its example was checked against CISA 2026's own text: the Component Identifiers element "should use common software identifiers, such as" CPE and purl, and "may also include" UUIDs, organization-specific identifiers, commit hashes, OmniBOR and SWHID (IC3 copy, SHA-256 `1faeda1e…3873`). The column records how strongly each rule names a scheme, not only whether it does.
+- **Five more failure modes that Table 3 must cover:** unregistered purl types, purl-shaped strings that are not purls, copies of one record that disagree, placeholder hashes, and inconsistent vendor names in NVD. Each has evidence in `fanout-identity.md` §9 and §10 (the type registry and ECMA-427, Syft's source code, Canonical's and OSV.dev's copies of one record, and Anwar et al.).
 
 ### Corrections for other documents (to pass on; not made here)
 

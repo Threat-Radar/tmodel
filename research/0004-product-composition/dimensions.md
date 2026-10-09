@@ -4,7 +4,7 @@ id: RPT-0004-dimensions
 title: "RPT-0004 dimensions: the search axes"
 type: research
 status: draft
-version: "0.3.0"
+version: "0.4.0"
 date: "2026-09-28"
 updated: "2026-10-08"
 record: RPT-0004
@@ -81,6 +81,8 @@ One row per element of the pinned baseline. If CISA's 2026 Minimum Elements is f
 
 ### Table 3. Identifier schemes (§7)
 
+Version 0.4.0 added the "Named by policy" column and the five failure modes listed below, at the student's request, after Phase 1.
+
 | column | what goes in it |
 |---|---|
 | Scheme | name and the specification version pinned (for example purl, ECMA-427 first edition) |
@@ -91,8 +93,9 @@ One row per element of the pinned baseline. If CISA's 2026 Minimum Elements is f
 | Version-specific | whether one identifier pins one version |
 | Carried in | the CycloneDX field, the SPDX property, the SWID element |
 | Keyed on by | the databases and tools that match on it (NVD, OSV, GHSA, deps.dev, GUAC, Dependency-Track) |
-| Known failure modes | guessing, collisions, ambiguity, drift |
+| Known failure modes | guessing, collisions, ambiguity, drift. Phase 1 found five more that the table must cover (evidence in fanout-identity.md §9 and §10): purl types that are not registered (CERT-In's `pkg:supplier/...`); purl-shaped strings that are not purls (the firmware SBOM specification's `pkg:<GUID>`, which has no name part); copies of one record that disagree (Ubuntu's purls carry versions in Canonical's files but not in OSV.dev's copy); placeholder hashes (Syft's SPDX output gives an all-zero SHA-1 to files it has no digest for, such as symlinks); and inconsistent vendor names inside NVD (about 10% of about 19,000 vendors in a 2018 snapshot, Anwar et al.) |
 | Standard status | Ecma, ISO, IETF or NIST status |
+| Named by policy | which baselines and rules in §8 name the scheme, and how strongly: required, recommended ("should"), allowed ("may"), or only as an example. For example, CISA 2026 says the Component Identifiers field "should use common software identifiers, such as" CPE and purl, and "may also include" UUIDs, organization-specific identifiers, commit hashes, OmniBOR and SWHID |
 | Library record | id and status |
 
 ### Table 4. Hardware and firmware coverage (§2)
