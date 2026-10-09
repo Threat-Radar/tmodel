@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Defending Against Indirect Prompt Injection Attacks With Spotlighting</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 24px 64px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.15; letter-spacing: -0.03em; margin: 28px 0 8px; }
+h2 { font-size: 1.25rem; margin: 1.6em 0 0.4em; }
+h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
+.kicker { margin: 22px 0 0; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.6em 0 1em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 8px 10px; font-size: 0.95rem; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../../../../index.html">tmodel</a><nav aria-label="Site"><a href="../../../../index.html">Home</a><a href="../../../../bibliography/index.html" aria-current="page">Bibliography</a><a href="../../../../reports/index.html">Reports</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">Library record · spotlighting-indirect-prompt-injection</p>
+<h1>Defending Against Indirect Prompt Injection Attacks With Spotlighting</h1>
+<p class="lede">Spotlighting</p>
+<p>
+  <span class="badge">paper</span>
+  <span class="badge">academic</span>
+  <span class="badge">summarized</span>
+  <span class="badge">medium</span>
+</p>
+<p class="meta">Topic: <strong>sagai</strong> (<code>record.yaml</code> topic). Status <code>summarized</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://arxiv.org/pdf/2403.14720v1">https://arxiv.org/pdf/2403.14720v1</a></li><li>Identifier URL: <a href="https://arxiv.org/abs/2403.14720">https://arxiv.org/abs/2403.14720</a></li><li>SHA-256: <code>8c57c6da480eb46c0deaec1f34dfd98fc75810bd352d4391c6f423430774877d</code></li></ul>
+<h2>Paper</h2>
+<p class="meta">Authors and date are whatever the record states. This page does not add a venue.</p>
+<table><tbody><tr><td>Authors</td><td>Keegan Hines, Gary Lopez, Matthew Hall, Federico Zarfati, Yonatan Zunger, Emre Kıcıman</td></tr><tr><td>Date</td><td>2024-03-20</td></tr><tr><td>Publisher</td><td>Microsoft; accepted at SAGAI&#x27;24 (IEEE SPW 2024)</td></tr><tr><td>arxiv</td><td>2403.14720</td></tr><tr><td>Pages</td><td>8</td></tr><tr><td>Media type</td><td>application/pdf</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge none">none</span></td></tr><tr><td>This project</td><td><span class="badge adjacent">adjacent</span></td></tr></tbody></table><p class="meta">Ratings are the <code>applicability</code> map on <code>record.yaml</code>. A missing axis is not assessed — it is not <code>none</code>. The summary's Why column is not scraped; two summary dialects exist, and a blank template cell is not a judgement.</p>
+<h2>Tags</h2>
+<h3>Topic tags</h3><p><span class="badge">prompt-injection</span> <span class="badge">ai-security</span></p><p class="meta">Subject vocabulary and free tags. These are what the topic view and the tag crosswalk use.</p><h3>Role tags</h3><p><span class="badge">prior-art</span></p><p class="meta">Why the record was kept (normative, prior-art, evidence, …). Not a subject.</p>
+<h2>Bears on</h2>
+<ul><li><code>DEC-001</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> Defines indirect prompt injection and a cheap system-level defense; the threat applies to any AI feature that reads third-party text, tmodel&#x27;s included.</p><p class="meta">Assessed 2026-10-01.</p>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> on this record only. Empty lists are omitted. These are not crosswalk edges and not a knowledge graph.</p><h3><code>part_of</code></h3><ul><li><a class="rec" data-id="sagai-workshop" href="../../academic/sagai-workshop/summary.html">SAGAI workshops</a></li></ul>
+<h2>Document cites</h2><p class="meta">From <code>cites</code>: what the document references. Fact about the source, not our crosswalk. Gaps stay gaps.</p><ul><li><a href="https://arxiv.org/abs/2312.14197">Yi et al., Benchmarking and Defending Against Indirect Prompt Injection Attacks on Large Language Models</a> <span class="meta">cited, no library record</span></li><li><a href="https://arxiv.org/abs/2302.12173">Greshake et al., More than you&#x27;ve asked for: A Comprehensive Analysis of Novel Prompt Injection Threats to Application-Integrated Large Language Models</a> <span class="meta">cited, no library record</span></li></ul>
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited. The strip above is <code>record.yaml</code>. If they disagree, the record wins for type, tags, applicability ratings, and bears_on.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>paper</td></tr><tr><td><strong>Maturity</strong></td><td>_unset_ — workshop paper; standing not checked</td></tr><tr><td><strong>Authors</strong></td><td>Keegan Hines, Gary Lopez, Matthew Hall, Federico Zarfati, Yonatan Zunger, Emre Kıcıman (Microsoft)</td></tr><tr><td><strong>Published</strong></td><td>2024-03-20 (arXiv); accepted at SAGAI&#x27;24</td></tr><tr><td><strong>Identifier</strong></td><td>arXiv:2403.14720</td></tr><tr><td><strong>Source</strong></td><td>https://arxiv.org/pdf/2403.14720v1</td></tr><tr><td><strong>Digest</strong></td><td><code>sha256:8c57c6da480eb46c0deaec1f34dfd98fc75810bd352d4391c6f423430774877d</code></td></tr></tbody></table>
+<h2>Overview</h2>
+<p>An LLM receives its instructions and any outside data as one stream of text, so it cannot tell &quot;code&quot; from &quot;data&quot;. <strong>Indirect prompt injection</strong> exploits this: an attacker plants instructions in content the LLM later processes (a web page, an email, a document), and they run in the victim&#x27;s session (§1, §2.2). <strong>Spotlighting</strong> transforms the untrusted input so its origin stays visible to the model — <em>delimiting</em> (markers around it), <em>datamarking</em> (a token interleaved through it) or <em>encoding</em> (e.g. base64) — and tells the model in the system prompt never to follow instructions inside it (§3). On 2023 GPT models, attack success fell from over 50% to under 2% with little loss of task performance (abstract, §5).</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td><code>core</code></td><td>Defines and measures a defense for a core LLM attack class</td></tr><tr><td>Cryptography</td><td><code>none</code></td><td>Encoding is used as marking, not as cryptography</td></tr><tr><td>This project</td><td><code>adjacent</code></td><td>Indirect prompt injection is an AI threat type the object model must express (DEC-001); tmodel&#x27;s own AI features read third-party text too</td></tr></tbody></table>
+<p><code>bears_on: DEC-001</code>.</p>
+<h2>Implementations</h2>
+<p>Not searched. The technique is prompt engineering an application implements itself.</p>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata</td></tr><tr><td><code>summary.md</code></td><td>this document</td></tr></tbody></table>
+<h2>Limits</h2>
+<ul><li><strong>Not a guarantee.</strong> The authors do not know why it works and say it is not perfectly secure; a real fix would carry instructions and data in separate channels, which current models do not support (§6).</li><li><strong>Narrow evaluation.</strong> 2023 GPT models and a simple keyword-payload attack (§4).</li><li><strong>Delimiting is weak.</strong> An attacker who learns the delimiters can forge them; the authors recommend datamarking at least, encoding for high-capacity models, and randomizing the marking token per request (§5.3–5.4).</li></ul>
+
+<footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
+</main>
+</body>
+</html>

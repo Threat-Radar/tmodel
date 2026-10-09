@@ -18,3 +18,5 @@ jobs:
         run: python3 bin/validate-archdoc
       - name: Guard — no personal identity in published pages
         run: python3 docs/publishing/check_identities.py
+      - name: Guard — every relative link in docs/ resolves
+        run: python3 docs/publishing/check_links.py

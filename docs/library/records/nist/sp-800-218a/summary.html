@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Secure Software Development Practices for Generative AI and Dual-Use Foundation Models: An SSDF Community Profile</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 24px 64px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.15; letter-spacing: -0.03em; margin: 28px 0 8px; }
+h2 { font-size: 1.25rem; margin: 1.6em 0 0.4em; }
+h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
+.kicker { margin: 22px 0 0; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.6em 0 1em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 8px 10px; font-size: 0.95rem; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../../../../index.html">tmodel</a><nav aria-label="Site"><a href="../../../../index.html">Home</a><a href="../../../../bibliography/index.html" aria-current="page">Bibliography</a><a href="../../../../reports/index.html">Reports</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">Library record · sp-800-218a</p>
+<h1>Secure Software Development Practices for Generative AI and Dual-Use Foundation Models: An SSDF Community Profile</h1>
+<p class="lede">SP 800-218A (SSDF Community Profile for AI Model Development)</p>
+<p>
+  <span class="badge">spec</span>
+  <span class="badge">nist</span>
+  <span class="badge">distilled</span>
+  <span class="badge">medium</span>
+</p>
+<p class="meta">Topic: <strong>sdl</strong> (<code>record.yaml</code> topic). Status <code>distilled</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218A.pdf">https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218A.pdf</a></li><li>Identifier URL: <a href="https://csrc.nist.gov/pubs/sp/800/218/a/final">https://csrc.nist.gov/pubs/sp/800/218/a/final</a></li><li>SHA-256: <code>e088c8bc75716824dae7c36a987f408364638561d381ed001b5c12254a7b10d8</code></li></ul>
+<h2>Specification</h2>
+<table><tbody><tr><td>Authors</td><td>Harold Booth, Murugiah Souppaya, Apostol Vassilev, Michael Ogata, Martin Stanley, Karen Scarfone</td></tr><tr><td>Date</td><td>2024-07</td></tr><tr><td>Publisher</td><td>National Institute of Standards and Technology (NIST); co-author from CISA</td></tr><tr><td>Version</td><td>July 2024 (final)</td></tr><tr><td>Maturity</td><td>best-practice</td></tr><tr><td>doi</td><td><a href="https://doi.org/10.6028/NIST.SP.800-218A">10.6028/NIST.SP.800-218A</a></td></tr><tr><td>nist</td><td>NIST SP 800-218A</td></tr><tr><td>Pages</td><td>30</td></tr><tr><td>Media type</td><td>application/pdf</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge adjacent">adjacent</span></td></tr><tr><td>This project</td><td><span class="badge adjacent">adjacent</span></td></tr></tbody></table><p class="meta">Ratings are the <code>applicability</code> map on <code>record.yaml</code>. A missing axis is not assessed — it is not <code>none</code>. The summary's Why column is not scraped; two summary dialects exist, and a blank template cell is not a judgement.</p>
+<h2>Tags</h2>
+<h3>Topic tags</h3><p><span class="badge">sdl</span> <span class="badge">supply-chain</span> <span class="badge">provenance</span> <span class="badge">attestation</span> <span class="badge">ai-security</span> <span class="badge">community-profile</span></p><p class="meta">Subject vocabulary and free tags. These are what the topic view and the tag crosswalk use.</p><h3>Body tags</h3><p><span class="badge">nist</span></p><p class="meta">Issuing-body names. Shown here, excluded from the topic view so it is not a second copy of the body index.</p><h3>Role tags</h3><p><span class="badge">normative</span></p><p class="meta">Why the record was kept (normative, prior-art, evidence, …). Not a subject.</p>
+<h2>Bears on</h2>
+<ul><li><code>R-040</code></li><li><code>R-041</code></li><li><code>R-042</code></li><li><code>R-044</code></li><li><code>DEC-009</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> The only NIST SSDF Community Profile: it shows the overlay mechanism (priority + R/C/N additions + modified/new tasks over a base requirement set) that the R-044 crosswalk and R-042 conformance need, and it supplies the AI-specific threat types and artifacts (weights, datasets, training pipelines) that a threat model of an AI system has to cover.</p><p class="meta">Assessed 2026-10-02.</p>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> on this record only. Empty lists are omitted. These are not crosswalk edges and not a knowledge graph.</p><h3><code>see_also</code></h3><ul><li><a class="rec" data-id="sp-800-218" href="../../nist/sp-800-218/summary.html">SSDF 1.1</a></li><li><a class="rec" data-id="sp-800-218r1" href="../../nist/sp-800-218r1/summary.html">SSDF 1.2 (SP 800-218r1 ipd)</a></li><li><a class="rec" data-id="sp-800-161r1" href="../../nist/sp-800-161r1/summary.html">SP 800-161r1</a></li></ul>
+<h2>Document cites</h2><p class="meta">From <code>cites</code>: what the document references. Fact about the source, not our crosswalk. Gaps stay gaps.</p><ul><li>[1] Executive Order 14110 (2023) Safe, Secure, and Trustworthy Development and Use of Artificial Intelligence. DCPD-202300949 (revoked 2025-01-20 by EO 14148) <span class="meta">cited, no library record</span></li><li>[2] NIST AI 100-1 (2023) Artificial Intelligence Risk Management Framework (AI RMF 1.0). https://doi.org/10.6028/NIST.AI.100-1 <span class="meta">cited, no library record</span></li><li>[3] NIST AI 100-2e2023 (2024) Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations. https://doi.org/10.6028/NIST.AI.100-2e2023 <span class="meta">cited, no library record</span></li><li>[4] NIST SP 1270 (2022) Towards a Standard for Identifying and Managing Bias in Artificial Intelligence. https://doi.org/10.6028/NIST.SP.1270 <span class="meta">cited, no library record</span></li><li>[5] NIST (2024) Dioptra. https://pages.nist.gov/dioptra/ <span class="meta">cited, no library record</span></li><li><a class="rec" data-id="sp-800-218" href="../../nist/sp-800-218/summary.html">SSDF 1.1</a></li><li><a class="rec" data-id="eo-14028" href="../../regulator/eo-14028/summary.html">EO 14028</a></li><li>[8] NIST CSWP 29 (2024) The NIST Cybersecurity Framework (CSF) 2.0. https://doi.org/10.6028/NIST.CSWP.29 <span class="meta">cited, no library record</span></li><li><a class="rec" data-id="sp-800-53r5" href="../../nist/sp-800-53r5/summary.html">SP 800-53r5</a></li><li><a class="rec" data-id="sp-800-161r1" href="../../nist/sp-800-161r1/summary.html">SP 800-161r1</a></li><li>[11] NIST (2023) NIST AI RMF Playbook. https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook <span class="meta">cited, no library record</span></li><li>[12] NIST AI 600-1 (2024) Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile (cited as the ipd URL) <span class="meta">cited, no library record</span></li><li>[13] NIST CSWP 10 (2020) NIST Privacy Framework: A Tool for Improving Privacy Through Enterprise Risk Management, Version 1.0. https://doi.org/10.6028/NIST.CSWP.10 <span class="meta">cited, no library record</span></li><li>[14] NIST IR 8286 (2020) Integrating Cybersecurity and Enterprise Risk Management (ERM). https://doi.org/10.6028/NIST.IR.8286 <span class="meta">cited, no library record</span></li><li>[15] OWASP (2023) OWASP Top 10 for LLM Applications Version 1.1. https://llmtop10.com <span class="meta">cited, no library record</span></li><li>[16] NIST IR 7692 (2011) Specification for the Open Checklist Interactive Language (OCIL) Version 2.0. https://doi.org/10.6028/NIST.IR.7692 <span class="meta">cited, no library record</span></li><li>[17] NIST SP 800-160v1r1 (2022) Engineering Trustworthy Secure Systems. https://doi.org/10.6028/NIST.SP.800-160v1r1 (library holds nist-sp-800-160, an earlier revision) <span class="meta">cited, no library record</span></li><li>[18] NIST/SEMATECH (2012) What is EDA? Engineering Statistics Handbook §1.1.1 <span class="meta">cited, no library record</span></li><li>[19] Reznik L (2022) Intelligent Security Systems. Wiley-IEEE Press <span class="meta">cited, no library record</span></li></ul>
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited. The strip above is <code>record.yaml</code>. If they disagree, the record wins for type, tags, applicability ratings, and bears_on.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec (NIST Special Publication; guidance)</td></tr><tr><td><strong>Maturity</strong></td><td>best-practice (final NIST SP; checked on CSRC 2026-10-02)</td></tr><tr><td><strong>Authors</strong></td><td>H. Booth, M. Souppaya, A. Vassilev, M. Ogata (NIST); M. Stanley (CISA); K. Scarfone (Scarfone Cybersecurity)</td></tr><tr><td><strong>Published</strong></td><td>July 2024 (approved by the NIST ERB 2024-07-25)</td></tr><tr><td><strong>Identifier</strong></td><td>NIST SP 800-218A · doi:10.6028/NIST.SP.800-218A</td></tr><tr><td><strong>Source</strong></td><td>https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218A.pdf (30 pp.)</td></tr><tr><td><strong>Digest</strong></td><td><code>e088c8bc75716824dae7c36a987f408364638561d381ed001b5c12254a7b10d8</code> (retrieved 2026-10-02)</td></tr></tbody></table>
+<h2>Currency check (2026-10-02)</h2>
+<ul><li>https://csrc.nist.gov/pubs/sp/800/218/a/final lists <strong>SP 800-218A, July 2024</strong> as final. The page shows no withdrawal notice and no supplemental files.</li><li>https://csrc.nist.gov/pubs/sp/800/218/a/r1/ipd returns 404, so no revision draft exists.</li><li>The SSDF project page https://csrc.nist.gov/projects/ssdf (updated 2026-04-13) still lists 218A as the only NIST-provided Community Profile.</li><li>The SSDF 1.2 initial public draft (SP 800-218r1 ipd, 2025-12-17; https://csrc.nist.gov/pubs/sp/800/218/r1/ipd) is still a draft and does <strong>not</strong> mention 218A. The Profile remains pinned to SSDF <strong>1.1</strong>.</li><li><strong>Its mandate has been revoked.</strong> 218A was written for EO 14110 §4.1.a. EO 14148 (2025-01-20, 90 FR 8237; govinfo FR-2025-01-28 2025-01901, §2(ggg)) revoked EO 14110. The document is still published and usable on a voluntary basis, but the &quot;dual-use foundation model&quot; definition comes from a revoked order.</li><li><strong>Two of its references have newer editions.</strong> The Informative References point at OWASP Top 10 for LLM Applications <strong>v1.1</strong> and NIST AI 100-2 <strong>e2023</strong>. Both have since been revised: OWASP Top 10 for LLM 2025 (https://genai.owasp.org/llm-top-10/) and NIST AI 100-2 <strong>E2025</strong> (https://csrc.nist.gov/pubs/ai/100/2/e2025/final). The mappings in this record keep the cited versions.</li></ul>
+<h2>Overview</h2>
+<p>218A is an <strong>SSDF Community Profile</strong>, which §1 defines as &quot;a baseline of SSDF practices and tasks that have been enhanced to address a particular use case&quot;. This profile covers secure <em>AI model development</em>: data sourcing, design, training, fine-tuning, evaluation, and integrating models into other software. Deployment and operation are out of scope.</p>
+<p>The profile overlays SSDF 1.1&#x27;s 4 groups, 19 practices and 42 tasks with the following:</p>
+<ul><li>one new practice, <strong>PW.3</strong> (confirm the integrity of training, testing, fine-tuning and aligning data before use);</li><li>six new tasks: PO.5.3, PS.1.2, PS.1.3, PW.3.1, PW.3.2, PW.3.3;</li><li>three modified tasks (PO.1.3, PS.3.2 which now names SLSA, PW.2.1 which now requires both human <em>and</em> automated design review) and two modified practices (PO.5, PS.1);</li><li>a High / Medium / Low <strong>Priority</strong> on every task;</li><li>86 AI-specific <strong>Recommendations / Considerations / Notes</strong>, with ids of the form <code>PO.1.2.R1</code>;</li><li>Informative References to AI RMF 1.0, the OWASP LLM Top 10 v1.1 and NIST adversarial ML taxonomy.</li></ul>
+<p>Its argument is that AI blurs the code/data boundary. Weights, datasets and prompts form &quot;closed loops that can be manipulated&quot;, so code-style protection, provenance and testing have to extend to model weights, training data and model I/O. §2 also introduces a shared-responsibility model across AI model producers, AI system producers and AI system acquirers.</p>
+<h2>Why it matters for an SDL</h2>
+<ul><li><strong>It is the template for tailoring a requirement set.</strong> The overlay of base requirements plus per-profile priority, additions and change status is what the MAP-0001 crosswalk (R-044) and conformance (R-042) need in order to handle sector or company variants of SSDF without forking it.</li><li><strong>PW.1.1 with PW.1.1.R1 is the threat-model requirement.</strong> It names seven AI threat types that a threat model must cover (training-data poisoning, malicious I/O content, DoS from adversarial prompts, supply chain, information disclosure, weight theft, data-pipeline misconfiguration). A tmodel instance is the evidence for this task.</li><li><strong>It has the most explicit human-in-the-loop gates in the SSDF family.</strong> See PO.4.1.C1, PW.1.1.C2, PW.2.1 and RV.1.2.R2.</li><li><strong>It is the only SSDF document that distributes tasks across organizations</strong> (§2 agreement plus attestation).</li></ul>
+<h2>Relation to other records</h2>
+<ul><li><code>sp-800-218</code> (SSDF 1.1) is the base. 218A &quot;should not be used without&quot; it. The relation is recorded as <code>see_also</code> rather than <code>updates</code> or <code>supersedes</code>, because 218A changes nothing in SP 800-218 itself. It is an overlay, and its implementation examples and SSDF references are inherited from the base.</li><li><code>sp-800-218r1</code> (SSDF 1.2 IPD) is a sibling line that has not yet absorbed the Profile.</li><li><strong>Identifier trap.</strong> SSDF 1.1 <em>retired</em> PW.3, PW.3.1 and PW.3.2. 218A reuses them with new meaning, so a citation must always be record-qualified (<code>sp-800-218a#PW.3.1</code>).</li><li>218A cites <code>eo-14028</code>, <code>sp-800-53r5</code> and <code>sp-800-161r1</code>, which are all held. It also cites AI RMF, AI 100-2 and OWASP LLM Top 10, which are not held (see the frontier).</li></ul>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td>core</td><td>It is the NIST secure-development baseline for AI models: weights, data and pipeline protection, model scanning, and adversarial testing.</td></tr><tr><td>Cryptography</td><td>adjacent</td><td>It asks for hashes and signatures over models, components and changes (PS.2.1.R1/R2), and encryption, signatures, multi-party authorization and air-gapping for weights (PS.1.3.R4). It names mechanisms only, with no algorithms.</td></tr><tr><td>This project</td><td>adjacent</td><td>It bears on R-040, R-041, R-042, R-044 and DEC-009 (SDL modelling, which is post-MVP), and it supplies AI threat types and AI artifact classes for threat-modelling AI systems.</td></tr></tbody></table>
+<h2>Implementations</h2>
+<p>Searched 2026-10-02. These are tools that implement specific tasks; none claims 218A conformance as a whole.</p>
+<table><thead><tr><th>Name</th><th>Kind</th><th>License</th><th>URL</th></tr></thead><tbody><tr><td>NIST Dioptra (cited [5])</td><td>ML security test bed (PW.8 adversarial testing)</td><td>NIST / public domain</td><td>https://github.com/usnistgov/dioptra</td></tr><tr><td>ModelScan</td><td>model artifact scanner (PW.7.2.R1, PW.4.4.R2)</td><td>Apache-2.0</td><td>https://github.com/protectai/modelscan</td></tr><tr><td>safetensors</td><td>secure model serialization (PW.6.1.C1)</td><td>Apache-2.0</td><td>https://github.com/safetensors/safetensors</td></tr><tr><td>sigstore model-transparency (OpenSSF model signing)</td><td>model signing and verification (PS.2.1)</td><td>Apache-2.0</td><td>https://github.com/sigstore/model-transparency</td></tr></tbody></table>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>Metadata, relations, cites, and the distillation block (FX-1, profile full)</td></tr><tr><td><code>distilled/README.md</code></td><td>Index of the artifacts and the extraction method</td></tr><tr><td><code>distilled/normative.md</code></td><td>All of Table 1 verbatim, plus governing prose, column semantics and the glossary</td></tr><tr><td><code>distilled/requirements.yaml</code></td><td>168 typed entries (library-requirements/v2) with Priority, profile status and <code>maps_to</code></td></tr><tr><td><code>distilled/design-notes.md</code></td><td>What we adopt, adapt or reject against R-040..R-044 and DEC-009; source defects</td></tr><tr><td><code>distilled/object-model.yaml</code></td><td>Object-model pass: 62 objects, 52 edges, 9 gaps</td></tr><tr><td><code>distilled/object-model.md</code></td><td>Mermaid diagram and headline findings</td></tr></tbody></table>
+<h2>Limits</h2>
+<ul><li><strong>It gives no &quot;how&quot;.</strong> There is no Implementation Examples column; the source says one may come in a future version. Verification is left to the adopter.</li><li><strong>It is voluntary and risk-based.</strong> Organizations &quot;adapt, customize, and omit&quot;. No conformance criterion is defined, so any pass/fail check is ours, not NIST&#x27;s.</li><li><strong>Its scope ends at deployment.</strong> Operation of AI systems, and most of data governance, is out of scope, so runtime prompt-injection defence appears only as a development-time coding practice (PW.5.1.R2/R3).</li><li><strong>The mapping targets are outdated</strong> (OWASP v1.1, AI 100-2 e2023), and the mandate (EO 14110) has been revoked.</li><li><strong>It has internal inconsistencies:</strong> a reused retired id (PW.3), an untagged text change (PO.5.2) and an untagged editorial expansion (PO.1, &quot;SDLC&quot;). See <code>distilled/design-notes.md</code> §3.</li></ul>
+
+<footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
+</main>
+</body>
+</html>

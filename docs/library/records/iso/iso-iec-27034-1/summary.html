@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Information technology — Security techniques — Application security — Part 1: Overview and concepts</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 24px 64px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.15; letter-spacing: -0.03em; margin: 28px 0 8px; }
+h2 { font-size: 1.25rem; margin: 1.6em 0 0.4em; }
+h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
+.kicker { margin: 22px 0 0; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.6em 0 1em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 8px 10px; font-size: 0.95rem; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../../../../index.html">tmodel</a><nav aria-label="Site"><a href="../../../../index.html">Home</a><a href="../../../../bibliography/index.html" aria-current="page">Bibliography</a><a href="../../../../reports/index.html">Reports</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">Library record · iso-iec-27034-1</p>
+<h1>Information technology — Security techniques — Application security — Part 1: Overview and concepts</h1>
+<p class="lede">ISO/IEC 27034-1</p>
+<p>
+  <span class="badge">spec</span>
+  <span class="badge">iso</span>
+  <span class="badge">summarized</span>
+  <span class="badge">medium</span>
+</p>
+<p class="meta">Topic: <strong>sdl</strong> (<code>record.yaml</code> topic). Status <code>summarized</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://www.iso.org/standard/44378.html">https://www.iso.org/standard/44378.html</a></li><li>SHA-256: <code>8e3d0f99777061524aba23818e4ecedf773e7e5202a747cbb734474de23f0768</code></li></ul>
+<h2>Specification</h2>
+<table><tbody><tr><td>Authors</td><td>ISO/IEC JTC 1/SC 27</td></tr><tr><td>Date</td><td>2011-11-21</td></tr><tr><td>Publisher</td><td>ISO/IEC</td></tr><tr><td>Version</td><td>2011 (ed. 1) + Cor 1:2014</td></tr><tr><td>Maturity</td><td>standard</td></tr><tr><td>iso</td><td>ISO/IEC 27034-1:2011</td></tr><tr><td>iso_catalogue_id</td><td>44378</td></tr><tr><td>iso_corrigendum</td><td>ISO/IEC 27034-1:2011/Cor 1:2014</td></tr><tr><td>Pages</td><td>15</td></tr><tr><td>Media type</td><td>application/pdf</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge none">none</span></td></tr><tr><td>This project</td><td><span class="badge core">core</span></td></tr></tbody></table><p class="meta">Ratings are the <code>applicability</code> map on <code>record.yaml</code>. A missing axis is not assessed — it is not <code>none</code>. The summary's Why column is not scraped; two summary dialects exist, and a blank template cell is not a judgement.</p>
+<h2>Tags</h2>
+<h3>Topic tags</h3><p><span class="badge">sdl</span> <span class="badge">application-security</span> <span class="badge">paywalled</span> <span class="badge">object-model</span></p><p class="meta">Subject vocabulary and free tags. These are what the topic view and the tag crosswalk use.</p><h3>Body tags</h3><p><span class="badge">iso</span></p><p class="meta">Issuing-body names. Shown here, excluded from the topic view so it is not a second copy of the body index.</p><h3>Role tags</h3><p><span class="badge">normative</span></p><p class="meta">Why the record was kept (normative, prior-art, evidence, …). Not a subject.</p><h3>Standing tags</h3><p><span class="badge">standard</span></p><p class="meta">Maturity words such as standard or draft. Not a shared subject.</p>
+<h2>Bears on</h2>
+<ul><li><code>R-041</code></li><li><code>R-042</code></li><li><code>R-043</code></li><li><code>R-044</code></li><li><code>R-040</code></li><li><code>DEC-009</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> The most object-model-like SDL standard: ONF/ANF (catalogue vs per-application instantiation), the self-verifying ASC (activity + verification measurement + levels of trust, free official XSD), and Targeted vs Actual Level of Trust as the audit-gated &#x27;declared secure&#x27; rule — direct input to R-041/R-042/R-043. Only the preview of Part 1 could be read.</p><p class="meta">Assessed 2026-10-02.</p>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> on this record only. Empty lists are omitted. These are not crosswalk edges and not a knowledge graph.</p><h3><code>see_also</code></h3><ul><li><a class="rec" data-id="microsoft-sdl-5-2" href="../../vendor/microsoft-sdl-5-2/summary.html">Microsoft SDL 5.2</a></li><li><a class="rec" data-id="microsoft-sdl" href="../../vendor/microsoft-sdl/summary.html">Microsoft SDL (10 practices)</a></li><li><a class="rec" data-id="sp-800-53r5" href="../../nist/sp-800-53r5/summary.html">SP 800-53r5</a></li><li><a class="rec" data-id="sp-800-218" href="../../nist/sp-800-218/summary.html">SSDF 1.1</a></li><li><a class="rec" data-id="owasp-samm-2" href="../../community/owasp-samm-2/summary.html">OWASP SAMM 2.2</a></li><li><a class="rec" data-id="iso-sae-21434-2021" href="../../iso/iso-sae-21434-2021/summary.html">ISO/SAE 21434</a></li><li><a class="rec" data-id="iso-iec-15408" href="../../iso/iso-iec-15408/summary.html">ISO/IEC 15408 (all parts), Evaluation criteria for IT security (Common Criteria)</a></li><li><a class="rec" data-id="iso-iec-29147-2018" href="../../iso/iso-iec-29147-2018/summary.html">ISO/IEC 29147</a></li><li><a class="rec" data-id="iso-iec-30111-2019" href="../../iso/iso-iec-30111-2019/summary.html">ISO/IEC 30111</a></li></ul>
+<h2>Document cites</h2><p class="meta">From <code>cites</code>: what the document references. Fact about the source, not our crosswalk. Gaps stay gaps.</p><ul><li>Clause 2 ISO/IEC 27000:2009, Information technology — Security techniques — Information security management systems — Overview and vocabulary <span class="meta">cited, no library record</span></li><li>Clause 2 ISO/IEC 27001:2005, Information technology — Security techniques — Information security management systems — Requirements <span class="meta">cited, no library record</span></li><li>Clause 2 ISO/IEC 27002:2005, Information technology — Security techniques — Code of practice for information security management <span class="meta">cited, no library record</span></li><li>Clause 2 ISO/IEC 27005:2011, Information technology — Security techniques — Information security risk management <span class="meta">cited, no library record</span></li><li>§0.5.5 ISO/IEC 21827, Systems Security Engineering — Capability Maturity Model (SSE-CMM) <span class="meta">cited, no library record</span></li><li><a class="rec" data-id="iso-iec-15408" href="../../iso/iso-iec-15408/summary.html">ISO/IEC 15408 (all parts), Evaluation criteria for IT security (Common Criteria)</a></li><li>§0.5.7 ISO/IEC TR 15443-1 and TR 15443-3, A framework for IT security assurance <span class="meta">cited, no library record</span></li><li>§0.5.8 ISO/IEC 15026-2, Systems and software engineering — Systems and software assurance — Part 2: Assurance case <span class="meta">cited, no library record</span></li><li>§0.5.9 ISO/IEC 15288, System life cycle processes; ISO/IEC 12207, Software life cycle processes <span class="meta">cited, no library record</span></li><li>§0.5.10 ISO/IEC TR 29193, Secure system engineering principles and techniques (then under development) <span class="meta">cited, no library record</span></li><li>§0.4.1 ISO/IEC/IEEE 29148, Requirements engineering (then under development) <span class="meta">cited, no library record</span></li><li>§0.4.1 ISO/IEC 9126, Software engineering — Product quality <span class="meta">cited, no library record</span></li><li>Annex B (ToC) NIST SP 800-53 Rev. 3 (control AU-14) <span class="meta">cited, no library record</span></li></ul>
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited. The strip above is <code>record.yaml</code>. If they disagree, the record wins for type, tags, applicability ratings, and bears_on.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec (International Standard, ed. 1)</td></tr><tr><td><strong>Maturity</strong></td><td>standard. Published 2011-11-21, confirmed at systematic review (ISO stage 90.93). Corrigendum: ISO/IEC 27034-1:2011/Cor 1:2014 (2014-01-08, 2 pp.)</td></tr><tr><td><strong>Authors</strong></td><td>ISO/IEC JTC 1/SC 27 (IT Security techniques)</td></tr><tr><td><strong>Published</strong></td><td>2011-11-21 (ISO catalogue); title page says &quot;First edition 2011-11-15&quot;; 67 pp.</td></tr><tr><td><strong>Identifier</strong></td><td>ISO/IEC 27034-1:2011 (ISO catalogue id 44378)</td></tr><tr><td><strong>Source</strong></td><td>&lt;https://www.iso.org/standard/44378.html&gt; (paywalled)</td></tr><tr><td><strong>Digest</strong></td><td><code>8e3d0f99777061524aba23818e4ecedf773e7e5202a747cbb734474de23f0768</code>. This is the free 15-page <strong>preview</strong> (pp. i–xiv, p. 1), not the standard.</td></tr></tbody></table>
+<h2>Overview</h2>
+<p>ISO/IEC 27034 says application security is demonstrated, not asserted. Each organization keeps an approved, governed library, the <strong>Organization Normative Framework (ONF)</strong>, which holds <strong>Application Security Controls (ASCs)</strong> and processes. Each application is assigned a <strong>Targeted Level of Trust</strong>, which selects the ASCs it must implement. Every ASC pairs a security activity with a <strong>verification measurement</strong>, and the measurement produces evidence. An application &quot;cannot be declared secure unless the auditor agrees&quot; that this evidence shows the target was reached (§0.4.4). The result of that audit is the <strong>Actual Level of Trust</strong> (§3.2). The standard is deliberately <em>not</em> an SDLC (§0.2): an organization maps its existing life cycle (Annex A uses the Microsoft SDL) onto the 27034 <strong>Application Security Life Cycle Reference Model</strong>. Of all the SDL standards it is the most object-model-like, because it names its objects and, through TS 27034-5-1, gives the control a machine-readable schema.</p>
+<h2>What was read, and how (honest coverage)</h2>
+<ul><li><strong>Paywalled; not pirated.</strong> ISO&#x27;s Publicly Available Standards site (&lt;https://standards.iso.org/ittf/PubliclyAvailableStandards/&gt;) was checked on 2026-10-02. It is closed: &quot;The ISO/IEC Information Technology Task Force (ITTF) web site is now closed. The deliverables previously available on this site are now available at no charge on the ISO and IEC webstores&quot;. ISO/IEC 27034-1 is not among the free deliverables: every catalogue listing and reseller offers it for purchase only.</li><li><strong>iso.org was unreachable from this environment.</strong> The ISO Online Browsing Platform and the catalogue page both returned HTTP 403 to curl and to the fetch tool, so the OBP preview of Clause 3 could not be read. The preview used instead is the free sample distributed by iTeh Standards (watermarked &quot;STANDARD PREVIEW&quot;). Its scope is the same as ISO&#x27;s own preview: front matter, Clauses 1–2, and Clause 3 up to 3.2. Watermark overlays drop a few words. They were filled from a second distributor preview (normsplash; publisher status not verified, pp. i–x, sha256 <code>647b27f2…6c906</code>), and each fill is noted in <code>distilled/normative.md</code>.</li><li><strong>Read:</strong> Foreword, Introduction 0.1–0.5, Scope, Normative references, definitions 3.1 <em>actor</em> and 3.2 <em>Actual Level of Trust</em>, and the full ToC with figure and table titles.</li><li><strong>Not read:</strong> definitions 3.3 onward, Clauses 4–8 (including §8.1.2.6, the ASC concept, and Fig. 8, the ASLC Reference Model) and Annexes A–C. No requirement or object from those clauses is claimed here.</li><li><strong>Object model from the series.</strong> Free previews of 27034-2, -3, -5, TS 5-1, -7 and DIS 27034-4, plus ISO&#x27;s free XSD for TS 27034-5-1 (an official electronic insert), supply the ONF, ANF, ASC structure, ASLCRM grid and LoT data model. Every locator names its part.</li></ul>
+<h2>Series status</h2>
+<p>Verified 2026-10-02 against ISO&#x27;s official open-data catalogue (<code>iso_deliverables_metadata.jsonl</code> from isopublicstorageprod.blob.core.windows.net/opendata, Last-Modified 2026-09-30, sha256 <code>ba910b39…8177</code>).</p>
+<table><thead><tr><th>Part</th><th>Edition / date</th><th>ISO stage</th><th>Notes</th></tr></thead><tbody><tr><td>27034-1:2011 Overview and concepts</td><td>ed. 1, 2011-11-21, 67 pp.</td><td><strong>90.93</strong> confirmed</td><td>+ <strong>Cor 1:2014</strong> (2014-01-08, stage 60.60). Secondary source (iso27001security.com): Cor 1 makes &quot;three minor corrections plus a revised figure&quot;; standard confirmed in 2022.</td></tr><tr><td>27034-2:2015 Organization normative framework</td><td>ed. 1, 2015-07-28, 52 pp.</td><td><strong>90.60</strong></td><td>Under systematic review (close of review). The outcome was not public on 2026-10-02.</td></tr><tr><td>27034-3:2018 Application security management process</td><td>ed. 1, 2018-05-22, 47 pp.</td><td>90.93 confirmed</td><td>The ASMP&#x27;s 5 steps.</td></tr><tr><td>27034-4 Validation and verification</td><td><strong>never published</strong></td><td>NP 27034-4 at <strong>10.98</strong>; DIS 27034-4 at <strong>40.98</strong>; PWI 27034-4 at <strong>00.98</strong> (all cancelled)</td><td>A DIS circulated in 2020 (vote 2020-01-07 to 2020-03-31) and was then abandoned. Its preview is used here for audit vocabulary only.</td></tr><tr><td>27034-5:2017 Protocols and ASC data structure</td><td>ed. 1, 2017-10-09, 33 pp.</td><td>90.93 confirmed</td><td>ASC information requirements (M/O) and ASLCRM detail.</td></tr><tr><td>TS 27034-5-1:2018 XML schemas</td><td>ed. 1, 2018-05-07, 77 pp.</td><td><strong>90.60</strong></td><td>Under review. <strong>XSD free</strong> at &lt;https://standards.iso.org/iso-iec/ts/27034/5-1/ed-1/en/ISO27034-ASC_Structure_v1.0.0.xsd&gt; (sha256 <code>c9068e6d…2093</code>).</td></tr><tr><td>27034-6:2016 Case studies</td><td>ed. 1, 2016-10-05, 70 pp.</td><td>90.93 confirmed</td><td>Usage examples of ASCs.</td></tr><tr><td>27034-7:2018 Assurance prediction framework</td><td>ed. 1, 2018-05-22, 29 pp.</td><td>90.93 confirmed</td><td>Expected Level of Trust; PASR.</td></tr></tbody></table>
+<p><strong>Revision:</strong> iso27001security.com (secondary, not ISO) reports a project to revise the 27034 set that began in 2024, was stopped, and was restarted in 2025 at Preliminary Work Item stage, as a &quot;major redesign of the scope&quot;. ISO&#x27;s open-data catalogue (snapshot of 2026-09-30) lists an <strong>ISO/IEC PWI 27034</strong> (id 86925) at stage <strong>00.98</strong>, which means the preliminary work item was abandoned, and no other active 27034 project. <strong>As of 2026-10-02 the current text of every part is the edition above, and no successor is in active development in the ISO catalogue.</strong></p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td>core</td><td>International standard for application-security governance; the source of the control-with-verification and level-of-trust concepts.</td></tr><tr><td>Cryptography</td><td>none</td><td>Cryptography appears only as an example of technological context (§0.4.2).</td></tr><tr><td>This project</td><td>core</td><td>It is the closest existing standard to the SDL object model DL-0009 asks for (R-041 Gate exit = Targeted LoT; R-042 conformance = Actual LoT by audit of ASC evidence; R-043 the ONF as a governed, owned, iterated artefact; R-044 ASC <code>requirements-addressed/source</code>). Bears on DEC-009 through ONF→ANF, generic→product.</td></tr></tbody></table>
+<h2>How it relates to the other SDL references</h2>
+<ul><li><strong>Microsoft SDL</strong> (<code>microsoft-sdl-5-2</code>, <code>microsoft-sdl</code>): 27034-1 Annex A maps the SDL onto the ONF and the ASLCRM, and its example ASC library is grouped by SDL phase: Training, Requirements, Design, Implementation, Verification, Release (ToC A.9). 27034 is the framework and the SDL is one instantiation.</li><li><strong>NIST SP 800-53</strong> (<code>sp-800-53r5</code>): Annex B (ToC) renders an SP 800-53 Rev. 3 control (AU-14) in ASC format, which positions the ASC as an exchange shape for controls from other catalogues.</li><li><strong>ISO/IEC 27001/27002/27005</strong>: normative references. 27034 implements, for applications, the 27001 PDCA approach and 27005 risk management (Annex C maps 27005 onto the ASMP).</li><li><strong>ISO/IEC 15026-2</strong> (assurance case): the 27034 risk analysis supplies claims, and ASC verification measurements supply evidence (§0.5.8).</li><li><strong>ISO/IEC 15408-3</strong> (<code>iso-iec-15408</code>): its assurance components can be implemented as ASCs (§0.5.6).</li><li><strong>NIST SSDF</strong> (<code>sp-800-218</code>), <strong>OWASP SAMM</strong> (<code>owasp-samm-2</code>), <strong>IEC 62443-4-1</strong>: these define practices and activities. 27034 defines the container (ONF / ASC / LoT) in which such practices become verifiable controls. Unlike 62443-4-1 it has no maturity levels; levels of trust are per-application assurance targets, not organizational maturity.</li><li><strong>ISO/IEC 29147 / 30111</strong> (<code>iso-iec-29147-2018</code>, <code>iso-iec-30111-2019</code>): post-release vulnerability handling. 27034 covers it only as operation-stage activities (&quot;MANAGE INCIDENTS&quot;, &quot;MANAGE PROBLEMS&quot; in the XSD).</li></ul>
+<h2>Implementations</h2>
+<table><thead><tr><th>Name</th><th>Kind</th><th>License</th><th>URL</th></tr></thead><tbody><tr><td>ISO27034-ASC_Structure_v1.0.0.xsd</td><td>official XML Schema (TS 27034-5-1 electronic insert)</td><td>ISO Customer Licence (use unmodified)</td><td>https://standards.iso.org/iso-iec/ts/27034/5-1/ed-1/en/ISO27034-ASC_Structure_v1.0.0.xsd</td></tr></tbody></table>
+<p>Searched 2026-10-02 for open-source ONF/ASC tooling and ASC libraries: none found that implement the XSD. Several commercial GRC and AppSec platforms claim to &quot;map to ISO 27034&quot;, but none was verified to exchange <code>asc:asc-package</code> documents.</p>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata; distillation block with per-artifact coverage</td></tr><tr><td><code>distilled/README.md</code></td><td>index of the artifacts and their coverage</td></tr><tr><td><code>distilled/normative.md</code></td><td>verbatim readable text of the 27034-1 preview plus ToC locators for the unread body</td></tr><tr><td><code>distilled/requirements.yaml</code></td><td>15 recommendation and prohibition entries from the Introduction, with counts and reconciliation</td></tr><tr><td><code>distilled/object-model.yaml</code></td><td>object-model pass: 45 objects, 37 edges, 9 gaps</td></tr><tr><td><code>distilled/object-model.md</code></td><td>Mermaid class diagram and key findings</td></tr><tr><td><code>distilled/state-machine.yaml</code></td><td>ASC lifecycle (XSD) and application-assurance lifecycle (inferred)</td></tr><tr><td><code>distilled/schema/</code></td><td>official XSD pointer (URL, sha256, licence, source defects) and a derived outline</td></tr><tr><td><code>distilled/design-notes.md</code></td><td>adopt / adapt / reject for R-040..R-044, DEC-009; open questions</td></tr></tbody></table>
+<h2>Limits</h2>
+<ul><li>The normative body of 27034-1 was not read. The definitions of ASC, ONF, ANF, ASLCRM, level of trust and Targeted Level of Trust <em>in Part 1</em> are unknown here. The object model uses Parts 2, 3, 5 and 7 instead, and they may differ in wording.</li><li>27034 is guidance (&quot;provides guidance&quot;, §1). Its &quot;should&quot; sentences are recommendations. The one hard rule read (§0.4.4) sits in the informative Introduction.</li><li>No maturity model. Levels of trust are defined per organization in the ONF, and the series gives no standard set of levels. That makes cross-organization comparison impossible without an agreed ONF.</li><li>The 2011 text predates SBOM, supply-chain provenance and CI/CD-native verification. Supply chain appears only as acquisition and outsourcing.</li><li>A redesign was reported (secondary source), but its PWI is abandoned in ISO open data. The texts stand, and names may still change if SC 27 restarts the work.</li><li>The only status check that worked was ISO&#x27;s open-data catalogue. iso.org pages, including the OBP and the life-cycle page, returned 403. The 2022 confirmation date comes from a secondary source.</li></ul>
+
+<footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
+</main>
+</body>
+</html>

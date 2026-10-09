@@ -1,4 +1,4 @@
-# Bibliography render — adversarial review (first pass)
+# Bibliography render — adversarial review
 
 Status: notes for the WAVE 1 render (#91, content from #86). Not a `DEC-*`.
 The generator in `render_bibliography.py` is written to these notes. Do not
@@ -68,7 +68,10 @@ title/locator stay gaps. Nothing is added.
 
 **v1 (this render)**
 
-- Index — the manifest subset, status visible, not a ranking
+- Index — an A–Z reference list of every library record (alphabetized by title, ignoring a leading article).
+  An entry shows authors (more than three shortens to "et al."), or the publisher when there are no authors, then the title, the type,
+  any RFC/DOI/arXiv id, and the date or retrieval date. If none of these is recorded, the entry leaves it out. It never
+  falls back to `body`: that is the storage folder, not an author.
 - By topic/tag — one primary topic per record, plus other subject/free tags
 - By document type
 - By issuing body — separate from topic, on purpose
@@ -86,11 +89,46 @@ share one primary topic is marked **broad**.
 - Synonym folding, only from a reviewed alias list
 - Citation chasing from `cites` gaps (#86 expansion)
 - A relations graph — that is WAVE 2 / KG (#84), not this page
-- Search, PDF, the rest of the library (129 `record.yaml` files today; this
-  manifest is a subset)
+- Search, PDF
+- A per-record topic review of the auto-assigned topics (see below)
+
+## Full-library pass (second render)
+
+The manifest now lists every `library/records/*/*/record.yaml` (414 at pin
+`cd28d36`). Snapshots under `versions/` are not separate records. The first
+16 entries keep their reviewed topics. `--sync` appended the rest
+mechanically, so a reviewer still has to look at their topics:
+
+7. **An auto topic is a default, not a review.** For a record with no
+   `topic`, `--sync` takes the first *controlled* subject tag
+   (`library/schema/tags.yaml` `subject`) that the record carries, then
+   the first free subject tag. It never takes a body, role, or standing
+   word. Ten records have no subject tag at all. They get `topic: ~`, show as
+   "no topic tag yet", and the fix is tagging them in the library, not
+   inventing a topic here.
+8. **The renderer's YAML subset rejected half the library.** 206 records put a
+   flow value on its own line (`bears_on:` then `  []`). The parser now
+   accepts that form, and it was checked to give the same result as PyYAML
+   on all 414 records. The renderer stays stdlib-only.
+9. **The remote-asset guard fired on citations.** It refused any `https://…js`
+   string, so a link to the `cytoscape.js` repository counted as loading a
+   script. The guard now refuses only `script`/`link`/`img`/`iframe` elements
+   that load from another origin. Hyperlinks to sources are what a
+   bibliography is for.
+
+## Record pages moved to the library (third pass)
+
+10. **A per-record page is an extraction artifact, not a site page.** It is
+    now built in the library, beside the `record.yaml` and `summary.md` it
+    comes from (library `bin/render-html`, untracked `summary.html`). It is
+    published here as a copy, not re-rendered. Rules 1–6 and 9 above are
+    enforced in library `bin/_record_html.py`. This file still explains why.
+    The bibliography views, the topic choice (rule 7), and the crosswalk stay
+    here, because they are this site's categorization.
 
 ## Re-run
 
-`python3 docs/publishing/render_bibliography.py` from the repo root.
-Output under `docs/bibliography/` is generated. Do not hand-edit it.
+`python3 docs/publishing/render_bibliography.py --sync` after a library pin
+bump, then `bin/publish-site` from the repo root.
+Output under `docs/bibliography/` and `docs/library/` is generated. Do not hand-edit it.
 `docs/.nojekyll` stays; pages have no scripts and no trackers.

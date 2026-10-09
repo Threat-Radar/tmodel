@@ -20,9 +20,13 @@ and only after the WAVE 2 gate (#84).
 |---|---|
 | `docs/index.html` | First template. Landing page and distribution mock. |
 | `docs/publishing/manifest.example.yaml` | Example manifest. Copy it; do not treat the example as a live release. |
-| `docs/publishing/bibliography.yaml` | Live manifest for the WAVE 1 bibliography subset (#91). |
+| `docs/publishing/bibliography.yaml` | Live manifest for the WAVE 1 bibliography: every library record (#91). |
 | `docs/publishing/bibliography-review.md` | Adversarial notes the renderer is written to. Read this before changing categorization. |
-| `docs/publishing/render_bibliography.py` | Local generator. Stdlib only. Writes `docs/bibliography/`. |
+| `docs/publishing/render_bibliography.py` | Local generator. Stdlib only. Writes `docs/bibliography/` and copies library record pages to `docs/library/records/`. |
+| `docs/publishing/site.yaml` | Site map: top nav for every generated page, and which manifest builds which path under `docs/`. |
+| `docs/publishing/site_nav.py` | Shared site nav, read from `site.yaml`. |
+| `docs/publishing/check_links.py` | Fails if a relative link under `docs/` does not resolve. Runs in CI. |
+| `bin/publish-site` | Rebuilds every generated page, then runs the identity and link checks. |
 | `docs/publishing/reports.yaml` | Manifest of **report pages** (md → static HTML). |
 | `docs/publishing/render_report.py` | Renders archdoc markdown reports to `docs/reports/*.html` (revisioned). Stdlib only. |
 | `docs/publishing/check_identities.py` | **Privacy guard.** Fails if a protected personal identity appears in any published page. Run in CI. |
@@ -125,12 +129,27 @@ See [manifest.example.yaml](manifest.example.yaml).
 The landing page is still hand-authored. The bibliography is the first generated item; see below. Do not add a Pages deploy workflow in the same change.
 
 
-## Bibliography renderer (first pass)
+## Bibliography renderer
 
 WAVE 1 (#86, tracked for this render on #91). Not a knowledge graph (#84).
 
-1. Edit `bibliography.yaml` when a record should enter or leave the published subset. `records[].type` must match `record.yaml`. `records[].topic` must be `record.topic` if that field is set, otherwise a tag the record already has.
-2. Run `python3 docs/publishing/render_bibliography.py` from the repo root. Commit the manifest, the script, and the HTML together. A second run with no hand edits must be a no-op.
+**Where each page comes from.** The page for one record is an extraction
+artifact, so it lives with its source. The library's `bin/render-html` builds
+`records/<body>/<id>/summary.html` next to `record.yaml` and `summary.md`.
+That file is untracked, like the library's `index/`. This repo never
+re-templates it. `render_bibliography.py` renders it in the pinned submodule
+and copies it to `docs/library/records/<body>/<id>/summary.html`. It changes
+two things: it fills the page's `<!-- site-nav -->` slot with the site nav,
+and it turns links to records the manifest does not list into plain text. To
+change what a record page shows, change the library (`bin/_record_html.py`)
+and move the pin. Do not change it here.
+
+The bibliography itself belongs to this site: the A–Z index and the topic,
+type, body, and crosswalk views under `docs/bibliography/`. Those pages come
+from `bibliography.yaml`. Nav comes from `site.yaml`.
+
+1. When the `library` pin moves, run `python3 docs/publishing/render_bibliography.py --sync`. It appends each new library record with its `record.yaml` type and a default topic: `record.topic`, else the first controlled subject tag, else the first other subject tag, else `topic: ~` (shown as "no topic tag yet"). It never edits an existing entry, so a reviewer's topic choice stays. To change a topic, edit `bibliography.yaml`. `records[].type` must match `record.yaml`. `records[].topic` must be `record.topic` if that field is set, otherwise a tag the record already has.
+2. Run `bin/publish-site` from the repo root. Commit the manifest, the script, and the HTML together. A second run with no hand edits must be a no-op.
 3. Do not hand-edit `docs/bibliography/`. Categorization rules and the v1 vs later views are in [bibliography-review.md](bibliography-review.md).
 4. Output is self-contained HTML: CSS in the file, no `<script>`, no remote assets, relative links. `docs/.nojekyll` stays so Pages does not run Jekyll over the HTML.
 5. A human reviews the pages, then this skill and the review note are updated. Re-run as references arrive. The first render is not final.

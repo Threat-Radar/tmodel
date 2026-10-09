@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Trike v.1 Methodology Document [Draft]</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 24px 64px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.15; letter-spacing: -0.03em; margin: 28px 0 8px; }
+h2 { font-size: 1.25rem; margin: 1.6em 0 0.4em; }
+h3 { font-size: 1.05rem; margin: 1.2em 0 0.3em; }
+.kicker { margin: 22px 0 0; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.6em 0 1em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 8px 10px; font-size: 0.95rem; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../../../../index.html">tmodel</a><nav aria-label="Site"><a href="../../../../index.html">Home</a><a href="../../../../bibliography/index.html" aria-current="page">Bibliography</a><a href="../../../../reports/index.html">Reports</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">Library record · trike-v1-2005</p>
+<h1>Trike v.1 Methodology Document [Draft]</h1>
+<p class="lede"></p>
+<p>
+  <span class="badge">paper</span>
+  <span class="badge">community</span>
+  <span class="badge">summarized</span>
+  <span class="badge">low</span>
+</p>
+<p class="meta">No <code>topic</code> field; subject tags are below. Status <code>summarized</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="http://web.archive.org/web/20240117174652/https://www.octotrike.org/papers/Trike_v1_Methodology_Document-draft.pdf">http://web.archive.org/web/20240117174652/https://www.octotrike.org/papers/Trike_v1_Methodology_Document-draft.pdf</a></li><li>Identifier URL: <a href="https://www.octotrike.org/papers/Trike_v1_Methodology_Document-draft.pdf">https://www.octotrike.org/papers/Trike_v1_Methodology_Document-draft.pdf</a></li><li>SHA-256: <code>fc63685da1d0e257be91a4e78f36357364d60cf635796e44777505020fed33dd</code></li></ul>
+<h2>Paper</h2>
+<p class="meta">Authors and date are whatever the record states. This page does not add a venue.</p>
+<table><tbody><tr><td>Authors</td><td>Paul Saitta, Brenda Larcom, Michael Eddington</td></tr><tr><td>Date</td><td>2005-07-13</td></tr><tr><td>Publisher</td><td>OctoTrike</td></tr><tr><td>Version</td><td>v1 draft</td></tr><tr><td>archive</td><td>http://web.archive.org/web/20240117174652/https://www.octotrike.org/papers/Trike_v1_Methodology_Document-draft.pdf</td></tr><tr><td>git</td><td>https://github.com/octotrike/trike</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge not-assessed">not assessed</span></td></tr><tr><td>Cryptography</td><td><span class="badge not-assessed">not assessed</span></td></tr><tr><td>This project</td><td><span class="badge not-assessed">not assessed</span></td></tr></tbody></table><p class="meta">Ratings are the <code>applicability</code> map on <code>record.yaml</code>. A missing axis is not assessed — it is not <code>none</code>. The summary's Why column is not scraped; two summary dialects exist, and a blank template cell is not a judgement.</p>
+<h2>Tags</h2>
+<h3>Topic tags</h3><p><span class="badge">threat-modeling</span> <span class="badge">trike</span> <span class="badge">risk-assessment</span></p><p class="meta">Subject vocabulary and free tags. These are what the topic view and the tag crosswalk use.</p><h3>Role tags</h3><p><span class="badge">method</span></p><p class="meta">Why the record was kept (normative, prior-art, evidence, …). Not a subject.</p>
+<h2>Bears on</h2>
+<ul><li><code>DEC-001</code></li><li><code>DEC-003</code></li><li><code>DEC-005</code></li></ul>
+
+
+
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited. The strip above is <code>record.yaml</code>. If they disagree, the record wins for type, tags, applicability ratings, and bears_on.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>paper (methodology white paper, draft, 17 pp.)</td></tr><tr><td><strong>Maturity</strong></td><td>_unset — do not guess_</td></tr><tr><td><strong>Authors</strong></td><td>Paul Saitta, Brenda Larcom, Michael Eddington</td></tr><tr><td><strong>Published</strong></td><td>13 July 2005, OctoTrike project; MIT license (per the document)</td></tr><tr><td><strong>Identifier</strong></td><td>https://www.octotrike.org/papers/Trike_v1_Methodology_Document-draft.pdf</td></tr><tr><td><strong>Source</strong></td><td>Internet Archive copy (octotrike.org refuses automated access): http://web.archive.org/web/20240117174652/https://www.octotrike.org/papers/Trike_v1_Methodology_Document-draft.pdf</td></tr><tr><td><strong>Digest</strong></td><td><code>fc63685da1d0e257be91a4e78f36357364d60cf635796e44777505020fed33dd</code> (archived PDF, retrieved 2026-09-29)</td></tr></tbody></table>
+<h2>Overview</h2>
+<p>Defines <strong>Trike</strong>, a threat-modeling method for security auditing from a risk and <strong>defender&#x27;s</strong> perspective, distinguished by its formalism and high degree of automation. It builds a <strong>requirements model</strong> — actors, assets, intended actions (create/read/update/delete), and rules — summarised in an <strong>actor–asset–action matrix</strong>; then an <strong>implementation model</strong> (data-flow diagrams and &quot;use flows&quot;). Threats are generated <strong>deterministically</strong> from the matrix and fall into just two kinds: <strong>denial of service</strong> (an actor is prevented from an intended action) and <strong>elevation of privilege</strong> (an actor does something not allowed, or breaks an action&#x27;s rules, or uses the system against another system). It argues spoofing, tampering and information disclosure are really attacks or kinds of elevation of privilege. Each threat becomes the root of an <strong>attack tree</strong>, and the trees join into one <strong>attack graph</strong>; it then separates <strong>weaknesses</strong>, <strong>vulnerabilities</strong> and <strong>mitigations</strong>, keeps reusable <strong>attack libraries</strong>, and adds a risk model using asset values, actor risk ratings and probabilities.</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td>core</td><td>A formal, automatable threat-modeling method.</td></tr><tr><td>Cryptography</td><td>none</td><td>Mentions crypto only in passing.</td></tr><tr><td>This project</td><td>core</td><td>Its model — actor, asset, action, threat, attack, attack tree/graph, weakness, vulnerability, mitigation — is very close to tmodel&#x27;s object model (ARCH-0001 §3), and it shows threats generated by rule.</td></tr></tbody></table>
+<p>Bears on <strong>DEC-001</strong> (object model), <strong>DEC-003</strong> (risk model) and <strong>DEC-005</strong>.</p>
+<h2>Implementations</h2>
+<p>Searched 2026-09-29.</p>
+<table><thead><tr><th>Name</th><th>Kind</th><th>License</th><th>URL</th></tr></thead><tbody><tr><td>Trike tool (v2, Smalltalk)</td><td>open-source tool</td><td>MIT</td><td>https://github.com/octotrike/trike (last change 2019)</td></tr><tr><td>octotrike (Python port)</td><td>open-source tool</td><td>MIT</td><td>https://github.com/Dymaxion00/octotrike (last change 2015)</td></tr></tbody></table>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata</td></tr><tr><td><code>summary.md</code></td><td>this summary</td></tr></tbody></table>
+<h2>Limits</h2>
+<ul><li><strong>A draft.</strong> The document says parts are experimental and untested on real systems, and promises a worked example it does not include.</li><li><strong>Superseded but not replaced.</strong> The project site describes v1.5 (which drops threat trees) and a v2 that is &quot;yet-to-be-documented&quot;; the site repository was last changed in 2019, so the project looks dormant despite saying it is under active development.</li><li><strong>Vague scales.</strong> SEI (<code>sei-threat-modeling-methods-2018</code>) calls its five-point risk scales too vague for a formal method.</li><li><strong>Start date is inconsistent.</strong> The site says the project began in 2006, but this document is dated 2005 and copyrighted 2003–2005.</li><li><strong>Access.</strong> octotrike.org refuses automated access; the digest is of the Internet Archive copy.</li></ul>
+
+<footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
+</main>
+</body>
+</html>
