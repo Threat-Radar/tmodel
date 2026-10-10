@@ -7,10 +7,10 @@ description: "Iteration 5 of the DEC-001 object-model synthesis (#15), with the 
 type: architecture
 category: security
 status: proposed
-version: "0.2.0-proposed.12"
+version: "0.2.0-proposed.14"
 version_policy: "iterate the -proposed.N suffix; folds into ARCH-0001 §3/§4 (and an ADR accepts DEC-001)"
 date: "2026-09-30"
-updated: "2026-10-08"
+updated: "2026-10-09"
 decision_makers:
   - role: sponsor
     id: nymble
@@ -82,6 +82,17 @@ MVP-adjacent), the **SDL/SecurityProgram** object with ordered/dated gates (R-04
 validation** (R-042), **governed document-views** (R-043), and a **Requirement** object + the
 MAP-0001 crosswalk (R-044) — §3c, **all post-MVP except `Mitigation.kind`**. The SDL guideline
 library records are being ingested in parallel (RPT-0013/#67).
+**proposed.12** was a non-substantive identity scrub (github ids only); **proposed.13 (this; DL-0018)
+promotes R-041…R-044 from §3c prose to named first-class objects in the §13 LinkML draft** —
+`ThreatModel`, `SecurityProgram` + `Gate`/`Milestone`/`Checkpoint`, `Requirement`, and a governed
+`GovernedView` — as **versioned, human-reviewed, program-managed views over the KG-SoT**; still
+post-MVP, **DEC-001 still open**.
+**proposed.14 (this; DL-0019) dogfoods the §13 draft with worked example threat models** (two
+domains, software + hardware/firmware) under `spec/vectors/`, each validating under `linkml-validate`.
+The exercise forced ONE additive draft slot — opaque `identifiers` on `Product`/`ProductInstance`/
+`Component` for ADR-0002 per-type instance identity (CPE/purl/SBOM/firmware-hash), which only catalog
+classes' `catalog_ref` could otherwise approximate — and surfaced the rest as findings, not fixes.
+**DEC-001 still open.**
 **Legend:** ✅
 covered · ✅\* proposed direction (accepted only via the gating DEC's ADR) · ◐ still open. **These
 are *proposed* requirements — several (R-023…R-039) are not yet in ARCH-0001 §4** (L13).
@@ -308,6 +319,17 @@ research is **RPT-0013 + MAP-0001** (on main); the guideline **library records a
 now (T-033/T-029). **All of this is post-MVP except `Mitigation.kind`** (ADR-0002 scope guard +
 the iteration-7 critic's MVP-overload finding).
 
+**Promoted to named first-class objects in the §13 LinkML draft (proposed.13).** R-041…R-044 are no
+longer prose only: the draft object model (`spec/schema/tmodel-object-model.linkml.yaml`) now names
+**`ThreatModel`**, **`SecurityProgram`** with **`Gate`/`Milestone`/`Checkpoint`** program nodes,
+**`Requirement`**, and a governed, versioned **`GovernedView`** (complementing the transient `View`
+of §10) — each modeled as a **versioned, human-reviewed, program-managed view over the KG-SoT**:
+an `owner` (a `Party` role, §2b), a `revision`, approval through the existing `Review`/`Assertion`
+spine (§4) pinned to a reproducible `approval_digest`, a `governance_status`
+(draft/in-review/approved/superseded), and a `supersedes` link across review cycles. This remains a
+**proposal** — it is the DEC-001 proposal vehicle; **DEC-001 stays open and nothing here is accepted**
+(see §8/§12). The render is `spec/schema/OBJECT-MODEL.md`; the design-log entry is DL-0018.
+
 - **Mitigation kind (R-040) — MVP-adjacent.** `MitigationInstance.kind ∈ {technical, documentation,
   process}` — a mitigation may be a feature, a document, or a process step; each still carries
   effectiveness / evidence / owner / status (§5) and shows as the mitigation-status component of the
@@ -316,14 +338,20 @@ the iteration-7 critic's MVP-overload finding).
   composed of **ordered, named, dated `Gate`/`Checkpoint`/`Milestone`** nodes with entry/exit criteria,
   owner, approval, planned vs actual dates, and dependencies — **full program management as graph
   nodes**. Gates map onto the **`LifecyclePhase` axis** (§3b); **corporate gate-naming varies**, so a
-  gate has a canonical phase mapping + a local name (the MAP-0001 gate crosswalk).
+  gate has a canonical phase mapping + a local name (the MAP-0001 gate crosswalk). **§13 draft:**
+  `SecurityProgram` (`governs` a Product/ProductInstance/ProductFamily, `program_nodes`,
+  `incorporates` Requirements) with the abstract `ProgramNode` realized by `Gate`/`Milestone`/
+  `Checkpoint` (`order`, `planned_date`/`actual_date`, `gate_status`, `owner`, `at_phase`,
+  `gated_by`, `decided_by`, `depends_on_node`) — itself a governed/versioned view.
 - **Conformance validation (R-042) — post-MVP (minimal via the risk vector at MVP).** A `Requirement`
   (from a spec, via MAP-0001) is satisfied by `Mitigation`/`WorkProduct`/`Evidence` + an approving
   `Review`. A **threat-model instance is conformant** when every in-scope `ThreatInstance` has an
   **approved, evidenced** `MitigationInstance` — an **automatable** check a `Gate`'s exit criterion
   runs (RPT-0013 §4 design: schema + policy rules + signed evidence). **It proves linkage + approval,
   not adequacy** — the human cybersecurity-assessment role remains (CLAUDE.md). Connects to the
-  deferred audit model (#19).
+  deferred audit model (#19). **§13 draft:** `Requirement.satisfied_by` Mitigation(s) +
+  `Requirement.conformance_status` (`RequirementConformanceStatus`); a `Gate.validates_conformance_of`
+  edge points the exit-criterion check at a `ThreatModel`.
 - **Governed document-views (R-043) — post-MVP.** A threat-model report and an SDL plan are
   **materialized, approvable projections** over the KG (extends §10), with governance metadata —
   **owner, change tracking (§4 provenance), approval (`Review`), version**. Reconciling §10's "views
@@ -331,8 +359,16 @@ the iteration-7 critic's MVP-overload finding).
   view-spec + approval live in the KG and whose content derives from KG state at a point in time
   (approval attaches to a commit/digest so it is reproducible — SysML v2 View/Viewpoint, OMG SACM,
   OSCAL→Word as prior art). Both the TM and the SDL *iterate* — living views over the one SoT.
+  **§13 draft:** `GovernedView` (`is_a` the §10 `View`) adds `revision`, `owner`, `approved_by`
+  (Review), `approval_digest`, `governance_status`, `supersedes`, `renders`; `ThreatModel` and
+  `SecurityProgram` carry the same governance facet, so a threat-model report and an SDL plan are
+  owned/approved/versioned snapshots, not transient lenses.
 - **Requirement object + cross-spec crosswalk (R-044) — post-MVP.** A `Requirement` with `maps_to`
   edges across specs (the MAP-0001 overlap); `Gate` exit criteria and conformance (R-042) reference it.
+  **§13 draft:** `Requirement` carries `text`, `normativity` (`Normativity`), `maps_to` other
+  Requirements, and a `source_ref` that is an **opaque `uriorcurie`** into the Threat-Radar/library
+  requirement record — tmodel→library by reference only; **no import of or dependency on the library
+  schema.**
 
 **Guardrails (from the iteration-7 critic).** The SDL document-owner/approver is a **`Party` role**
 (§2b — one identity, many facets), not a new actor type. Custody provenance stays supply-chain /
@@ -406,10 +442,10 @@ flagged in the CHANGELOG as proposed). ✅\* = proposed direction, ADR-gated.
 | **R-039 (asset owner + stakeholder/business impact)** | `Asset.owned_by`; separate `business_impact` axis (S/F/O/P stays end-user); RiskScore reduction per RQ-15-16 (§3) | ◐ (new; post-MVP — MVP risk is single end-user) |
 | **R-045 (composite risk vector)** | risk = {feasibility, impact, **mitigation status**, derived Risk}; CC-style display, ISO 21434 Table-1 method (§3) | ✅\* (new; MVP — proposes DEC-003) |
 | **R-040 (mitigation kind)** | `MitigationInstance.kind ∈ {technical, documentation, process}` (§3c/§5) | ✅\* (new; MVP-adjacent) |
-| **R-041 (SDL / SecurityProgram)** | ordered/named/dated Gates/Checkpoints/Milestones + program mgmt, mapped to LifecyclePhase (§3c) | ◐ (new; post-MVP) |
-| **R-042 (conformance validation)** | Requirement↔Mitigation/Evidence+Review; automatable "threats-mitigated" gate check (§3c; RPT-0013 §4) | ◐ (new; post-MVP) |
-| **R-043 (governed document-views)** | TM & SDL as owned/approved/versioned snapshot-views over KG-SoT (§3c; extends §10/§4) | ◐ (new; post-MVP) |
-| **R-044 (Requirement + spec crosswalk)** | `Requirement` + `maps_to` edges (MAP-0001) (§3c) | ◐ (new; post-MVP) |
+| **R-041 (SDL / SecurityProgram)** | ordered/named/dated Gates/Checkpoints/Milestones + program mgmt, mapped to LifecyclePhase (§3c); **§13: `SecurityProgram`, `ProgramNode`→`Gate`/`Milestone`/`Checkpoint`** | ◐ (new; post-MVP) |
+| **R-042 (conformance validation)** | Requirement↔Mitigation/Evidence+Review; automatable "threats-mitigated" gate check (§3c; RPT-0013 §4); **§13: `Requirement.conformance_status`, `Gate.validates_conformance_of`** | ◐ (new; post-MVP) |
+| **R-043 (governed document-views)** | TM & SDL as owned/approved/versioned snapshot-views over KG-SoT (§3c; extends §10/§4); **§13: `GovernedView`, `ThreatModel`, `SecurityProgram` governance facet** | ◐ (new; post-MVP) |
+| **R-044 (Requirement + spec crosswalk)** | `Requirement` + `maps_to` edges (MAP-0001) (§3c); **§13: `Requirement` with opaque `source_ref` to library** | ◐ (new; post-MVP) |
 
 Iter-5+critic deltas: R-025/R-027b/R-031 → ✅\*; **R-023 moved to post-MVP** (was ✅\*, H3);
 STRIDE↔CWE/CAPEC remains unasserted (§2). Iter-6 adds R-036…R-039 (§2b/§3/§3b) and §13 schema.
@@ -534,6 +570,35 @@ views/layers and redundancy are post-MVP (§7).
   `Mitigation.kind`**. In parallel, the SDL guideline **library records are being ingested** (RPT-0013/
   #67): NIST SSDF (FX-1-grade), OWASP SAMM + SLSA (summarized, FX-1 verify pending), rest stubbed;
   paywalled (IEC 62443-4-1, ISO 27034/26262, BSIMM) flagged for the preview/ask path.
+- **proposed.12:** non-substantive — the repo-wide identity scrub (project people by github id only).
+- **proposed.13 (this; DL-0018):** fold the §3c SDL/governance objects into the **§13 LinkML draft** as
+  named first-class types, grounded in RPT-0013-OM: **`ThreatModel`** (governed scope snapshot),
+  **`SecurityProgram`** with abstract **`ProgramNode`** → **`Gate`/`Milestone`/`Checkpoint`**,
+  **`Requirement`** (opaque `source_ref` to a library record; `maps_to`; `satisfied_by`;
+  `conformance_status`), and **`GovernedView`** (`is_a` §10 `View`). The shared governed-view facet
+  (owner = `Party` role, `revision`, `approved_by` via the §4 `Review`/`Assertion` spine, reproducible
+  `approval_digest`, `governance_status`, `supersedes`, `created`/`updated`) makes the TM and the SDL
+  **versioned, human-reviewed, program-managed** views over the KG-SoT. Added enums `GateStatus`,
+  `ThreatModelStatus`, `ApprovalStatus`, `RequirementConformanceStatus`, `Normativity`. Honors the
+  iteration-7 guardrails (owner is a Party role; approval uses the existing Review spine; conformance
+  proves linkage + approval, not adequacy). **Still post-MVP; DEC-001 stays open — this is the DEC-001
+  proposal vehicle, nothing accepted.**
+- **proposed.14 (this; DL-0019):** **dogfood** the §13 draft with worked **example threat models** in
+  `spec/vectors/` — a *software* product (deep: components with CPE/purl, CVE→CWE propagation as a
+  reviewed Assertion, two AttackPaths with AND + OR gates, Mitigations with status, a composite-vector
+  RiskScore, a governed `ThreatModel` with a supersedes chain, and an SDL `SecurityProgram` whose
+  release Gate `validates_conformance_of` the ThreatModel and whose `Requirement` carries an opaque
+  `library:` `source_ref`) and a *hardware/firmware* product (breadth: firmware-hash + compute-core
+  identity, a physical/glitch AttackPath, LifecyclePhase + Environment). Each validates under
+  `linkml-validate` (0 failures) via a test-harness `ExampleModel` container that imports the model
+  (kept out of the domain schema and `OBJECT-MODEL.md`). The exercise **forced one additive draft
+  slot** — opaque, multivalued `identifiers` on `Product`/`ProductInstance`/`Component` for ADR-0002
+  per-type instance identity, since `catalog_ref` names a *generic* catalog entry, not the concrete
+  build/firmware artifact. Other gaps (no `Assertion` provenance-agent/`asserted_by` edge; `PartyKind`
+  has no software-agent value for an AI author facet; no structural slot on `AttackPath`/`AttackStep`
+  recording AI-vs-human origin — distinguished today only via the Assertion `proposed` status +
+  `confidence` + a Review, plus `ThreatInstance.source_method`) are recorded as **findings, not
+  fixes** (DL-0019). **DEC-001 stays open; nothing accepted; §8 untouched.**
 - **Next:** pin the 5 absent method records + get a human-reviewed ISO 21434 extraction + gather an
   RDF-star record; **author the LinkML schema in `spec/schema`** (§13; lane #64); fold #9 (schema
   crosswalk) to close R-024/lift §9 fully; **build the §8 MVP vectors**; then the ADRs (§12);
