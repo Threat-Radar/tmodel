@@ -12,7 +12,7 @@ record: DL-0006
 
 # DL-0006 — RPT-0009: SAGAI sources and summaries
 
-AI-assisted research record for #13 (per `CLAUDE.md`). Student: Mai Li McGhee, working
+AI-assisted research record for #13 (per `CLAUDE.md`). Student: @Maimcghee, working
 with Claude Code.
 
 ## Question asked

@@ -51,7 +51,7 @@ Size: `S` <½day · `M` ~1day · `L` ~3days. Increments are in `PLAN-0001` §8.
 |---|---|---|---|---|
 | T-001 | Create GitHub repo `Threat-Radar/tmodel` (public) | PL | S | done |
 | T-002 | Fork `m-of-n/library`; wire as submodule (absolute URL) | PL | S | done |
-| T-003 | Add 4 students + Prof. Haskell as repo admins | PL | S | done |
+| T-003 | Add 4 students + faculty as repo admins | PL | S | done |
 | T-004 | Confirm roster; student handles in `CODEOWNERS`; vault people files | PL | S | done |
 | T-005 | Port/author role skills into `tmodel/.claude/skills/` | all | M | todo |
 | T-006 | Publishing site (mkdocs or equivalent) | all | M | parked |
@@ -76,7 +76,7 @@ the umbrella landscape scaffold. Each report: sources → `library/` records
 | T-030 | RPT — Agentic Threats & Weaknesses | #12 · paria03 | L | todo |
 | T-031 | Extraction: SAGAI (Secure AI) & related specifications | #13 · Maimcghee | M | todo |
 | T-032 | RPT-0001 umbrella landscape — reconcile with the per-topic reports | — | M | todo |
-| T-033 | RPT-0013 — SDL & conformance (3-lane multi-agent first draft folded) | #67 | L | **review** (draft merged) |
+| T-033 | RPT-0013 — SDL & conformance (3-lane multi-agent first draft folded; 2026-10-03: 44 library records, MAP-0001 v0.2.0, consolidated object model) | #67 | L | **review** |
 | T-034 | MAP-0001 — SDL requirements crosswalk | #67 | M | **review** (first draft in; cells flagged approx; guidelines need ingestion) |
 | T-028 | Define target use cases; draft DEC-005 options with evidence | all | M | **doing** |
 
@@ -84,7 +84,7 @@ the umbrella landscape scaffold. Each report: sources → `library/` records
 
 | id | task | own | sz | status |
 |---|---|---|---|---|
-| T-029 | **FX-1 full extraction** of applicable spec records (not summaries): requirements, schemas, message/object formats, state machines, examples-as-fixtures, decision mapping. Multi-agent extract → adversarial verify → cross-check, **each pass at max effort**. First targets: the ~28 KG/OKN reference records (currently `summarized` → stub or FX-1), ISO 21434, FIPS 140 family. Follow `library/docs/extraction.md` + `extract` skill; `bin/extract-scaffold`. | nymble + all | L | **todo** |
+| T-029 | **FX-1 full extraction** of applicable spec records (not summaries): requirements, schemas, message/object formats, state machines, examples-as-fixtures, decision mapping. Multi-agent extract → adversarial verify → cross-check, **each pass at max effort**. First targets: the ~28 KG/OKN reference records (currently `summarized` → stub or FX-1), ISO 21434, FIPS 140 family. Follow `library/docs/extraction.md` + `extract` skill; `bin/extract-scaffold`. 2026-10-03: SDL lane done — 29 records FX-1 full (verify + cross-check), awaiting pass-4 human review. | nymble + all | L | **in progress** |
 
 ## I2 — Model · Oct 14–27
 

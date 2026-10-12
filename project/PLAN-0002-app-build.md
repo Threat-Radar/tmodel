@@ -7,9 +7,9 @@ description: "The concrete build plan for the tmodel desktop app (Path A, ADR-00
 type: plan
 category: application
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 date: "2026-10-01"
-updated: "2026-10-01"
+updated: "2026-10-08"
 needs_review: true
 reviewed: false
 canonical_path: project/PLAN-0002-app-build.md
@@ -27,7 +27,8 @@ agent_notes: >
 
 **What this is.** The concrete, ordered steps to build the tmodel desktop application. It is
 the HOW-to-build companion to **ADR-0003** (Path A stack: local-only macOS Tauri/TS + Python
-KG engine + CLI), scoped by **ADR-0002** (MVP) and using **APP-0001** as the requirements.
+KG engine + CLI — engine language split per **ADR-0009**: Python brain + Rust store/hot-paths),
+scoped by **ADR-0002** (MVP) and using **APP-0001** as the requirements.
 It refines the slice sketch in ADR-0003 into a buildable sequence.
 
 **Two principles.**
@@ -35,8 +36,9 @@ It refines the slice sketch in ADR-0003 into a buildable sequence.
    packaging, signing, and download work end-to-end *before* a single feature. You never
    debug the toolchain and a feature at the same time.
 2. **The edge-rich storage layer is separable** (ADR-0004 / Edge Rich KG #50). Tables and the
-   KG view talk to the engine **façade**; whether the working store is LPG or RDF (DEC-004) and
-   how edges are reified is behind that façade and does **not** gate the build or the UI.
+   KG view talk to the engine **façade**; the working store is **RDF/Oxigraph** (DEC-004 →
+   ADR-0008) and how edges are reified sits behind that façade and does **not** gate the build or
+   the UI — a substrate swap would be a re-load, not a re-identify (ADR-0004).
 
 ```
 Phase 0  Walking skeleton (dummy app) — pipeline green, downloadable
@@ -53,11 +55,12 @@ Phase 0  Walking skeleton (dummy app) — pipeline green, downloadable
 ```
 tmodel/                      (this repo)
   apps/desktop/              Tauri (Rust shell) + TypeScript frontend
-  engine/                    Python KG engine package (pyproject.toml)
+  engine/                    Python KG engine package (pyproject.toml) — the "brain" (ADR-0009)
     engine/api/              local API (loopback HTTP/WS or IPC)
     engine/cli.py            CLI entrypoint (same engine)
-    engine/store/            store façade + adapters (edge layer — ADR-0004)
-    engine/load/             library loader + importers (CWE, …)
+    engine/store/            store façade + adapters (edge layer — ADR-0004); wraps Oxigraph/RDF (ADR-0008)
+    engine/_native/          Rust hot-paths via PyO3 — added only on a measured need (ADR-0009)
+    engine/load/             library loader + importers (OTM/STIX 2.1, CWE, …) — ADR-0007
   .github/workflows/         CI (build + test, TS + Python; no cloud)
   CONTRIBUTING.md            app toolchain (current Node, Python ver, Tauri deps)
 ```

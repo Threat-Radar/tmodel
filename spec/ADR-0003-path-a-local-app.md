@@ -13,7 +13,7 @@ date: "2026-10-01"
 updated: "2026-10-01"
 decision_makers:
   - role: sponsor
-    id: paul-lambert
+    id: nymble
 reviewers: []
 needs_review: false
 reviewed: true

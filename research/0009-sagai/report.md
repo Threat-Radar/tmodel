@@ -17,7 +17,7 @@ authors:
     id: ai-assisted
 decision_makers:
   - role: sponsor
-    id: paul-lambert
+    id: nymble
 reviewers: []
 needs_review: true
 reviewed: false
@@ -205,7 +205,7 @@ Related, not a SAGAI paper: summarizes an Oct 2023 workshop by the same organize
 - **Snowball lead.** Cites the output of an earlier July 2023 workshop: Barrett et al.,
   *Identifying and Mitigating the Security Risks of Generative AI* (ref. [12]).
 
-**Takeaway** _(AI-assisted draft; accepted by Mai Li McGhee, 2026-10-01)_: across the SAGAI papers the consistent
+**Takeaway** _(AI-assisted draft; accepted by @Maimcghee, 2026-10-01)_: across the SAGAI papers the consistent
 message is that **model-level robustness is not enough**. The threat that recurs is
 injection through content the system processes (text, images, tool output), and the
 defenses that hold up are system-level: mark or separate untrusted input (§2.1), validate
@@ -250,7 +250,7 @@ recommendations ("should", "may") rather than requirements. Input to DEC-004.
   update threat models with AI-specific attack vectors (such as adversarial inputs or data
   poisoning)" (§4.1). Add AI failure states to safety and incident-response plans (§4.2).
 
-**Takeaway** _(AI-assisted draft; accepted by Mai Li McGhee, 2026-10-01)_: the recommendations most relevant to
+**Takeaway** _(AI-assisted draft; accepted by @Maimcghee, 2026-10-01)_: the recommendations most relevant to
 tmodel are the threat-modeling ones — ATLAS alongside ATT&CK (§3.2) and AI-specific attack
 vectors in threat models (§4.1) — and the oversight ones (human in the loop, audit trail of
 AI inputs and outputs, §4.1), which match ARCH-0001 §7 and R-018.

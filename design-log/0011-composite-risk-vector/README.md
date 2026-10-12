@@ -14,7 +14,7 @@ record: DL-0011
 
 AI-assisted design record for #15 (per `CLAUDE.md`). A **grok bot** authored
 `spec/ADR-0005-composite-risk-vector.md` on branch `doc/adr-0005-composite-risk-vector` (PR #70),
-self-marked `status: accepted` / `decision_makers: paul-lambert` / "Accept DEC-003". The sponsor
+self-marked `status: accepted` / `decision_makers: nymble` / "Accept DEC-003". The sponsor
 reviewed it and made two calls; this records them and the fold into proposed.10.
 
 ## What the bot's ADR-0005 proposed

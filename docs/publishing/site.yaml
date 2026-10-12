@@ -1,0 +1,31 @@
+# Site map for docs/ (GitHub Pages). The top navigation of every generated
+# page comes from `nav` here; the landing page (docs/index.html) is
+# hand-authored and carries the same links by hand.
+# Build everything: bin/publish-site
+schema: tmodel.publishing/v0
+id: pub-site
+title: tmodel
+nav:
+  - label: Home
+    href: index.html
+  - label: Bibliography
+    href: bibliography/index.html
+  - label: Reports
+    href: reports/index.html
+# Which manifest builds which part of docs/. Nothing under these paths is
+# hand-edited.
+sections:
+  - path: docs/bibliography/
+    manifest: docs/publishing/bibliography.yaml
+    builder: docs/publishing/render_bibliography.py
+    note: Bibliography index, topic, type, body, and crosswalk pages. Owned here.
+  - path: docs/library/records/
+    manifest: docs/publishing/bibliography.yaml
+    builder: docs/publishing/render_bibliography.py
+    note: >
+      Per-record pages. Built in the library beside their source
+      (library bin/render-html, records/<body>/<id>/summary.html) and copied
+      here unchanged, except that the site nav fills the page's site-nav slot.
+  - path: docs/reports/
+    manifest: docs/publishing/reports.yaml
+    builder: docs/publishing/render_report.py

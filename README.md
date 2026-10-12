@@ -7,8 +7,8 @@ that a human reviews and annotates; risk metrics that say *how bad* a threat is;
 and mappings from generic threats to specific products and product families,
 tracked over a product's design lifecycle.
 
-USF CS 490 Senior Team Project, Fall 2026. Sponsor: Paul Lambert (Threat-Radar).
-Faculty: Prof. Paul Haskell. Four students, one semester, an early-December MVP.
+A one-semester senior team project building best-in-class threat modeling, toward an
+early-December MVP.
 
 Extends the 2025 *Threat Radar* master's work (container / dependency composition
 analysis — [`Threat-Radar/tradar`](https://github.com/Threat-Radar/tradar)) and

@@ -28,9 +28,12 @@ a reference we did not need.
 | `RPT-0002` | [Threat model frameworks](0002-threat-model-frameworks/report.md) | draft (#6) |
 | `RPT-0003` | [Threat-modeling products](0003-threat-modeling-products/report.md) | draft (#7) |
 | `RPT-0004` | [Product composition](0004-product-composition/report.md) | draft (I1) |
+| `RPT-0006` | [Knowledge graph visualization & review console](0006-knowledge-graph-visualization/report.md) | issue (#10) |
 | `RPT-0007` | [ISO/SAE 21434 and TARA](0007-iso21434-tara/report.md) | draft (#11) |
+| `RPT-0005` | [Schema representations](0005-schema-representations/report.md) | scaffold (plan in dimensions.md; #39) |
 | `RPT-0009` | [SAGAI & AI-security specs](0009-sagai/report.md) | draft (#13) |
 | `RPT-0011` | [Knowledge Graphs and NSF OKN](0011-knowledge-graphs-nsf-okn/report.md) | draft (#25) |
 | `RPT-0012` | [GUI, platform & implementation stack](0012-gui-platform-stack/report.md) | scaffold (plan in dimensions.md) |
-| `RPT-0013` | [Secure Development Lifecycle & conformance](0013-sdl-conformance/report.md) | scaffold (plan in dimensions.md) |
+| `RPT-0013` | [Secure Development Lifecycle & conformance](0013-sdl-conformance/report.md) | draft (#67): 44 library records, MAP-0001 v0.2.0, [object model](0013-sdl-conformance/sdl-object-model.md) |
 | `RPT-0014` | [AI threat model: attacks, threat models, enumerations](0014-ai-threat-model/report.md) | in progress (#71) |
+| `RPT-0015` | [KG schema foundation (Stage 1)](0015-kg-schema-foundation/report.md) | draft (#104): schema language=LinkML, per-object standard + gap list |
