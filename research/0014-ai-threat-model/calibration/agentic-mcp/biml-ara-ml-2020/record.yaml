@@ -1,0 +1,50 @@
+schema: "library-record/v1"
+id: biml-ara-ml-2020
+body: community
+type: paper
+title: "An Architectural Risk Analysis of Machine Learning Systems: Toward More Secure Machine Learning"
+short_title: "BIML ARA (BIML-78)"
+authors:
+  - Gary McGraw
+  - Harold Figueroa
+  - Victor Shepardson
+  - Richie Bonett
+date: "2020-01-13"
+publisher: "Berryville Institute of Machine Learning"
+version: "1.0"
+identifiers:
+  url: https://berryvilleiml.com/results/ara.pdf
+content:
+  url: https://berryvilleiml.com/results/ara.pdf
+  sha256: "247d7f06d8c768cc734dc84ab7004c6e4d645e91911af61002fd1743807ef312"
+  retrieved: "2026-10-11"
+  local: false
+  media_type: application/pdf
+  pages: 42
+relations:
+  supersedes: []
+  superseded_by: []
+  see_also:
+    - nist-ai-100-2-e2025
+  cited_by: []
+  implements_concept: []
+bears_on:
+  - DEC-001
+applicability:
+  security: core
+  cryptography: none
+  this_project: core
+usefulness:
+  verdict: useful
+  reason: "A published component-based threat model of a generic ML system (9 components, 78 named risks, CC BY-SA); a ready decomposition for attaching AI risks to system components."
+  assessed: "2026-10-11"
+topic: ai-threat-model-agentic-mcp
+tags:
+  - prior-art
+  - method
+  - ai-threat-model
+  - data-poisoning
+  - evasion
+  - ai-supply-chain
+status: summarized
+confidence: high

@@ -1,0 +1,51 @@
+schema: "library-record/v1"
+id: greshake-2023-indirect-prompt-injection
+body: academic
+type: paper
+title: "Not what you've signed up for: Compromising Real-World LLM-Integrated Applications with Indirect Prompt Injection"
+authors:
+  - Kai Greshake
+  - Sahar Abdelnabi
+  - Shailesh Mishra
+  - Christoph Endres
+  - Thorsten Holz
+  - Mario Fritz
+date: "2023-05-05"
+version: "arXiv v2"
+identifiers:
+  arxiv: "2302.12173"
+  url: https://arxiv.org/abs/2302.12173
+content:
+  url: https://arxiv.org/pdf/2302.12173
+  sha256: "428e23e8c7e4f89310e113e38d082b3f65548a8b887188ebc536099061800e81"
+  retrieved: "2026-10-11"
+  local: false
+  media_type: application/pdf
+  pages: 33
+relations:
+  supersedes: []
+  superseded_by: []
+  see_also:
+    - nist-ai-100-2-e2025
+  cited_by: []
+  implements_concept: []
+bears_on:
+  - DEC-001
+  - R-010
+applicability:
+  security: core
+  cryptography: none
+  this_project: core
+usefulness:
+  verdict: useful
+  reason: "Founding paper for indirect prompt injection: the data/instruction confusion that makes agentic and RAG systems attackable; threat taxonomy plus working demonstrations against real systems."
+  assessed: "2026-10-11"
+topic: ai-threat-model-agentic-mcp
+tags:
+  - academic
+  - evidence
+  - prompt-injection
+  - agent-security
+  - rag-security
+status: summarized
+confidence: high
