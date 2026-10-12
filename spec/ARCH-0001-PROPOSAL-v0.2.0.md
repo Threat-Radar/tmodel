@@ -7,10 +7,10 @@ description: "Iteration 5 of the DEC-001 object-model synthesis (#15), with the 
 type: architecture
 category: security
 status: proposed
-version: "0.2.0-proposed.14"
+version: "0.2.0-proposed.15"
 version_policy: "iterate the -proposed.N suffix; folds into ARCH-0001 §3/§4 (and an ADR accepts DEC-001)"
 date: "2026-09-30"
-updated: "2026-10-09"
+updated: "2026-10-12"
 decision_makers:
   - role: sponsor
     id: nymble
@@ -92,7 +92,12 @@ domains, software + hardware/firmware) under `spec/vectors/`, each validating un
 The exercise forced ONE additive draft slot — opaque `identifiers` on `Product`/`ProductInstance`/
 `Component` for ADR-0002 per-type instance identity (CPE/purl/SBOM/firmware-hash), which only catalog
 classes' `catalog_ref` could otherwise approximate — and surfaced the rest as findings, not fixes.
-**DEC-001 still open.**
+**proposed.15 (this; DL-0020) folds a fresh adversarial critique of proposed.14 and records the
+outcome:** DEC-001 is **split** — the **core attack-path type system is ACCEPTED as DEC-001a via
+ADR-0010**; the **governed/program layer is held OPEN as DEC-001b** pending the critique's blockers
+(C1 conformance/approval mechanization, C2 approval-digest binding, M1 edge-integrity gate, M2
+GovernedArtifact mixin + renderer, M4 exercise-or-drop GovernedView/Checkpoint, M5 author/origin).
+**DEC-001b still open; DEC-001a accepted.**
 **Legend:** ✅
 covered · ✅\* proposed direction (accepted only via the gating DEC's ADR) · ◐ still open. **These
 are *proposed* requirements — several (R-023…R-039) are not yet in ARCH-0001 §4** (L13).

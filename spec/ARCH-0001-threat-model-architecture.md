@@ -7,10 +7,10 @@ description: "The source of truth for tmodel: the logical object model, requirem
 type: architecture
 category: security
 status: draft
-version: "0.1.7"
+version: "0.1.8"
 version_policy: "semver; PATCH = editorial; MINOR = additive; MAJOR = breaking. version and updated move together (§9.5)."
 date: "2026-09-23"
-updated: "2026-10-08"
+updated: "2026-10-12"
 authors:
   - role: sponsor
     id: nymble
@@ -34,8 +34,9 @@ agent_notes: >
 
 **Status: draft. Accepted so far:** DEC-005 (ADR-0002), DEC-006 + DEC-010 (ADR-0003, engine
 split amended by ADR-0009), DEC-007 (ADR-0001), DEC-011 (ADR-0004), **DEC-002 (ADR-0007),
-DEC-003 (ADR-0006), DEC-004 (ADR-0008)**. **Still open:** DEC-001 (object model), DEC-008
-(CWE/NVD), DEC-009 (threat→product / mitigation-lifecycle). An `ADR-NNNN` accepts a `DEC-*`;
+DEC-003 (ADR-0006), DEC-004 (ADR-0008), DEC-001a (ADR-0010 — core object-model type system)**.
+**Still open:** DEC-001b (governed/program layer — held pending the proposed.14 critique, DL-0020),
+DEC-008 (CWE/NVD), DEC-009 (threat→product / mitigation-lifecycle). An `ADR-NNNN` accepts a `DEC-*`;
 nothing else does (§9).
 
 This is a **skeleton set for week 1**. Requirements and final goals are ratified
@@ -80,7 +81,8 @@ current, **without removing the human from the loop**.
 
 ## 3. The object model (logical types)
 
-Encoding-neutral. Names are working labels; DEC-001 ratifies the model.
+Encoding-neutral. **DEC-001a (ADR-0010) ratifies the core type system** — its accepted class
+names supersede these working labels; the governed/program layer stays proposal-level under DEC-001b.
 
 | Type | What it is |
 |---|---|
@@ -168,7 +170,8 @@ All open. An `ADR-NNNN` accepts one; nothing else does (§9).
 
 | id | question |
 |---|---|
-| **DEC-001** | The core object model — the first-class types and typed relations (§3). |
+| **DEC-001a** | The **core** attack-path type system (Node, Product/Instance/Component, Party, Weakness/Vulnerability/AttackPattern, ThreatInstance/AttackStep/AttackPath, DamageScenario, Mitigation, RiskScore/ImpactVector, Review/Assertion, Deployment/Environment/LifecyclePhase, View, `identifiers`). **ACCEPTED → ADR-0010.** |
+| **DEC-001b** | The **governed / program** layer (ThreatModel, SecurityProgram/Gate/Milestone/Checkpoint, Requirement, GovernedView, RedundancyGroup). **Open** — held pending the proposed.14 critique fixes (DL-0020: conformance/approval mechanization, edge-integrity gate, author/origin). |
 | **DEC-002** | Encoding / serialization and import/export formats. **ACCEPTED → ADR-0007** (LinkML canonical IDL; generated JSON-Schema/SHACL; import OTM + STIX 2.1; export JSON-LD/Turtle/GraphML/CSV). |
 | **DEC-003** | Risk-metric scheme. **ACCEPTED → ADR-0006** (composite vector: feasibility [ISO 21434 Table-1] + impact [S/F/O/P] + mitigation-status + derived risk; Common Criteria display-only). |
 | **DEC-004** | KG working-store substrate (narrowed by ADR-0004). **ACCEPTED → ADR-0008** (Oxigraph — embedded RDF, SPARQL, RDF-star — behind the ADR-0004 façade). |
