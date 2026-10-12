@@ -4,9 +4,9 @@ id: DL-0016
 title: "Bibliography — full-library render and A–Z reference page (#91)"
 type: process
 status: draft
-version: "0.2.0"
+version: "0.3.0"
 date: "2026-10-08"
-updated: "2026-10-08"
+updated: "2026-10-12"
 record: DL-0016
 ---
 
@@ -93,12 +93,35 @@ Decisions (agent-side, pending review):
 - **Rejected: a link from the site into `library/` in the repo tree.** Pages
   does not serve submodule content.
 
+## Process note (2026-10-12)
+
+What this effort taught, now proposed as rules in PROC-0001 v0.2.0 (§2.1, §6, §7):
+
+- **Lane collision.** #113 merged while a follow-up was being pushed. The
+  re-pin and region fix were already on `main` via library #15 and tmodel
+  #115, built by another session. Main is pinned to library `b3786cd`.
+- **The downstream break showed up late.** The library chrome change was
+  caught by `check_links.py` (828 dead links) only at a manual re-pin.
+  tmodel CI does not rebuild `docs/`.
+- **Library `main` was red for four days.** The count gate grepped markdown,
+  and `bin/reindex` had added a section. Fixed in library #17.
+- **The forks drifted.** Both sides fixed the same count gate and the same
+  `_yaml.py` bug. The fold-back hit m-of-n's DCO and FX-1 gates, which the
+  fork never enforced.
+- **Agent slips.** A bare `gh pr view` resolved to the parent repo, and a
+  library commit had no sign-off.
+
+What worked:
+
+- Checking the parser against PyYAML on every record.
+- The link check.
+- Byte-identical rebuilds.
+- Contracts written into docs, so another agent could pick up the work.
+
 ## Awaiting human review
 
 - The 398 auto-assigned primary topics (default rule in
   `bibliography-review.md` §7). Correct them in `bibliography.yaml`.
   `--sync` will not overwrite the corrections.
-- The submodule is pinned to the library PR head `06640cc` until
-  Threat-Radar/library#14 merges; then re-pin to the merge commit.
 - 270 of 414 records have no written summary. That work belongs to #86, not
   this page.
