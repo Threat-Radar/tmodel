@@ -154,3 +154,58 @@ Contributions are under the **DCO**; `git commit -s` adds the `Signed-off-by`
 line. **Code is Apache-2.0; specifications and documents are CC-BY-4.0.** A
 `LICENSE` file is added when the sponsor confirms the public-license choice (an
 `agent_ask_first` item — see the vault `projects/tmodel.md`).
+
+---
+
+## 10. The desktop app and engine — toolchain
+
+The application (ADR-0003, ADR-0009; PLAN-0002) lives in two folders:
+
+```
+engine/          Python engine package `tmodel-engine` (local API + `tmodel` CLI)
+apps/desktop/    Tauri desktop app: Rust shell (src-tauri/) + TypeScript frontend (src/)
+```
+
+The window and the CLI both talk to the engine through its **local API** on
+`127.0.0.1:47811` (override with `TMODEL_ENGINE_PORT`). It never listens on a
+network address. The harness's Node v8 pin does **not** apply here; the app uses
+current Node.
+
+**Prerequisites (macOS)**
+
+| tool | version | install |
+|---|---|---|
+| Xcode command-line tools | current | `xcode-select --install` |
+| Python | 3.11 or newer | python.org or Homebrew |
+| Node.js | 22 LTS | nodejs.org or Homebrew |
+| Rust | stable | `brew install rustup && rustup default stable`, then add `$(brew --prefix rustup)/bin` to `PATH` (or use rustup.rs) |
+
+**First-time setup** (from the repo root):
+
+```sh
+python3 -m venv engine/.venv
+engine/.venv/bin/pip install -e "engine[dev]"     # installs the `tmodel` command
+(cd apps/desktop && npm ci)
+```
+
+**Run it** — two terminals:
+
+```sh
+engine/.venv/bin/tmodel serve                     # 1. the engine
+(cd apps/desktop && npm run tauri dev)            # 2. the window
+```
+
+The window should say **"connected to local engine · v0.1.0"**; stop the engine
+and it shows how to start it again. `tmodel health` and `tmodel version` query the
+same engine from the terminal (`--json` for scripts, `--in-process` without a server).
+
+**Before you open a PR that touches `engine/` or `apps/`** — the same checks CI
+runs in `.github/workflows/app.yml`:
+
+```sh
+(cd engine && .venv/bin/ruff check . && .venv/bin/ruff format --check . && .venv/bin/pytest -q)
+(cd apps/desktop && npm run typecheck && npm test && npm run build)
+(cd apps/desktop/src-tauri && cargo fmt --check && cargo clippy -- -D warnings)
+```
+
+Changes under `.github/` are routed to the sponsor for review (`CODEOWNERS`).
