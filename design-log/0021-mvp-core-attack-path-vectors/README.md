@@ -1,18 +1,18 @@
 ---
 schema: "archdoc/v1"
-id: DL-0020
+id: DL-0021
 title: "§8 MVP CORE attack-path vectors — acceptance evidence for DEC-001a (core object model)"
 type: process
 status: draft
 version: "0.1.0"
 date: "2026-10-12"
 updated: "2026-10-12"
-record: DL-0020
+record: DL-0021
 bears_on: [R-001, R-002, R-014, R-018, R-020, R-022, DEC-001, DEC-005]
 defers_to: ARCH-0001
 ---
 
-# DL-0020 — §8 MVP CORE attack-path vectors (DEC-001a evidence)
+# DL-0021 — §8 MVP CORE attack-path vectors (DEC-001a evidence)
 
 AI-assisted design record (per `CLAUDE.md`). Builds the `ARCH-0001-PROPOSAL` §8
 **MVP interop vector set — "vectors 1–6 + 18"** — as worked example threat models
@@ -138,7 +138,7 @@ linkml-validate -s spec/vectors/example-container-core.linkml.yaml -C ExampleMod
   spec/vectors/mvp-18-shared-vuln-vex-override.yaml    -> No issues found
 
 # Edge integrity (linkml-validate does NOT check inlined:false id-ref edges):
-python3 design-log/0020-mvp-core-attack-path-vectors/check-edges.py spec/vectors/mvp-*.yaml
+python3 design-log/0021-mvp-core-attack-path-vectors/check-edges.py spec/vectors/mvp-*.yaml
   -> 181 objects, 268 id-references, ALL REFERENCES RESOLVE
 
 python3 -c "import yaml; ..."  (parse)                 -> all 5 files OK

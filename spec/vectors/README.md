@@ -91,7 +91,7 @@ structure, types, enums, and cardinality; it does **not** enforce referential
 integrity between the id-reference edges (`inlined: false`). Resolving every
 cross-reference to a real object in the same file is a convention here, checked
 for the `mvp-NN` vectors by a standalone resolver (see
-`design-log/0020-mvp-core-attack-path-vectors/`): 268 id-references across the four
+`design-log/0021-mvp-core-attack-path-vectors/`): 268 id-references across the four
 files, all resolving.
 
 ## Findings (what dogfooding revealed)
