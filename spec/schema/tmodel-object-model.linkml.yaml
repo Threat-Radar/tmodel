@@ -1,7 +1,10 @@
 # Generated from ARCH-0001-PROPOSAL v0.2.0 §13 + §3c (proposed.13, file dated through the
 # governed-objects fold: ThreatModel / SecurityProgram+Gate/Milestone/Checkpoint /
 # Requirement / GovernedView — first-class, versioned, human-reviewed, program-managed
-# objects per §3c R-041…R-044). NOT normative until an ADR accepts DEC-001.
+# objects per §3c R-041…R-044). The CORE attack-path type system is ACCEPTED via ADR-0010
+# (DEC-001a); the governed/program layer (ThreatModel / SecurityProgram+Gate/Milestone/
+# Checkpoint / Requirement / GovernedView / RedundancyGroup) is NOT accepted — it still
+# proposes DEC-001b, held pending the proposed.14 critique fixes (DL-0020).
 # Federation / import of OTM, STIX, CAPEC-as-source, and other external models is a
 # separate mapping layer (DEC-002 / #9). This file is OUR model, not those schemas.
 # spec/schema/ in the tmodel repo is still a README stub on purpose; landing this
@@ -17,12 +20,13 @@ title: ThreatRadar tmodel object model (draft)
 description: >-
   First-cut LinkML IDL for the ThreatRadar tmodel object model.
   Source is ARCH-0001-PROPOSAL v0.2.0 §13 (classes) with edges named in §§2–4, §10 and §3c.
-  Draft proposal — DEC-001 is not accepted. ADR-0004 is the accepted storage/edges
+  Core type system ACCEPTED (DEC-001a, ADR-0010); governed/program layer proposes DEC-001b. ADR-0004 is the accepted storage/edges
   pin (files in git, stable IDs, typed edges); this schema does not close DEC-002 or DEC-004.
 version: 0.1.0
 status: draft
 annotations:
-  proposes: DEC-001
+  accepts: DEC-001a
+  proposes: DEC-001b
   source_proposal: ARCH-0001-PROPOSAL-v0.2.0
   source_sections: "§2, §2a, §2b, §3, §3b, §3c, §4, §5, §10, §13"
   normative: "false"

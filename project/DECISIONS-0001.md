@@ -7,9 +7,9 @@ description: "The DEC-* register: status, what blocks on each, and the evidence 
 type: process
 category: process
 status: active
-version: "0.1.7"
+version: "0.1.8"
 date: "2026-09-23"
-updated: "2026-10-08"
+updated: "2026-10-12"
 needs_review: false
 reviewed: true
 canonical_path: project/DECISIONS-0001.md
@@ -25,7 +25,8 @@ Status: `open` · `researching` · `proposed` (an ADR is drafted) · `accepted`.
 
 | id | question | status | blocks | evidence |
 |---|---|---|---|---|
-| **DEC-001** | The core object model — first-class types and typed relations | open | I2, the schema, the UI | RPT-0001 §schemas/object-models |
+| **DEC-001a** | Core attack-path type system (first-class types + typed relations) | **accepted → ADR-0010** | I2, the schema, the UI | ADR-0010; proposed.14 + example vectors (spec/vectors/) |
+| **DEC-001b** | Governed/program layer (ThreatModel, SecurityProgram/gates, Requirement, GovernedView, RedundancyGroup) | open | DEC-001b follow-up ADR; #19 audit, DEC-002 | DL-0020 critique (C1/C2/M1/M2/M4/M5 blockers) |
 | **DEC-002** | Encoding/serialization; which existing formats we import (and export) | **accepted → ADR-0007** | schema, vectors, MAP-* | ADR-0007 (LinkML IDL; import OTM/STIX 2.1; export JSON-LD/Turtle/GraphML/CSV); RPT-0015 |
 | **DEC-003** | Risk-metric scheme: CVSS / custom / ISO 21434 / Common Criteria / composite | **accepted → ADR-0006** | I4 risk, R-011…R-013 | ADR-0006 (composite vector; 21434 Table-1; CC display-only); proposed.10/DL-0011 |
 | **DEC-004** | KG substrate — **RDF vs LPG implementation of the local working store** (narrowed by ADR-0004; logical model is edge-rich either way) | **accepted → ADR-0008** | I3, R-018…R-021 | ADR-0008 (Oxigraph embedded RDF, behind the ADR-0004 façade); #50 |
@@ -56,3 +57,10 @@ DEC-003 → ADR-0006 (composite risk vector), DEC-004 → ADR-0008 (Oxigraph/RDF
 DEC-010 refined by ADR-0009 (engine language split). **Still open:** DEC-001 (object model —
 gated on #104 Stage 2/3), DEC-008 (CWE/NVD — leaning cached mirror per A-043), DEC-009
 (threat→product / mitigation-lifecycle — depends on DEC-001).
+
+**Object-model split (2026-10-12):** DEC-001 is split — **DEC-001a accepted → ADR-0010** (the core
+attack-path type system), **DEC-001b open** (the governed/program layer: ThreatModel, SecurityProgram
++ gates, Requirement, GovernedView, RedundancyGroup), held pending the proposed.14 adversarial
+critique (DL-0020: C1 conformance/approval mechanization, C2 approval-digest binding, M1 edge
+integrity, M2 GovernedArtifact mixin + renderer, M4 exercise-or-drop GovernedView/Checkpoint, M5
+author/origin). DEC-009 now depends on DEC-001b's Requirement.
