@@ -1,0 +1,351 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# §8 MVP CORE VECTOR 2 — automotive / embedded domain (ADR-0002 breadth product)
+#
+# Acceptance evidence for DEC-001a. A worked attack-path knowledge graph for an
+# automotive Telematics Control Unit (TCU), proving the CORE object model
+# generalizes to a SECOND domain (ADR-0002 "diverse-domain architecture; generic
+# model → diverse instance types"). The ISO 21434 TARA shape — asset / damage /
+# threat-scenario — binds onto the SAME DamageScenario / ThreatInstance / RiskScore
+# core classes and the same CWE/CVE/CAPEC backbone (§8 vector 2).
+#
+# CORE ONLY — no governance layer, no Environment/Deployment (§8: Environment is
+# post-MVP, H3). Hardware/firmware instance identity (firmware digest + HBOM) is
+# carried as opaque `identifiers` (ADR-0002 per-type instance identity).
+#
+# Exercises the §8 MVP capabilities: ingest (1), CVE→CWE propagation along
+# composition (2), interactive graph View (3), AND/OR ordered AttackPaths (4/V5),
+# composite-vector RiskScore with no Environment (5), human-reviewed vs AI-proposed
+# via the Assertion+Review round-trip (6/V6) — here the AI hypothesis is explicitly
+# REJECTED by a human (V6 "AI-proposed threat, human-rejected, with provenance").
+#
+# EXAMPLE / TEST DATA — NOT accepted truth. DEC-001 OPEN; draft proposal. People as
+# github ids / roles only. CVE/CWE/CAPEC ids illustrative. AI-proposed content is
+# never presented as reviewed.
+#
+# Validate:
+#   linkml-validate -s spec/vectors/example-container-core.linkml.yaml \
+#     -C ExampleModelCore spec/vectors/mvp-02-automotive-ecu.yaml
+# ─────────────────────────────────────────────────────────────────────────────
+
+parties:
+  - id: party:vehicle-oem
+    name: Vehicle OEM
+    description: Manufacturer of the vehicle integrating the TCU (role identity, §2b).
+    party_kind: organization
+    classifications: [manufacturer]
+  - id: party:tier1-supplier
+    name: Tier-1 TCU supplier
+    party_kind: organization
+    classifications: [supplier]
+  - id: party:fleet-operator
+    name: Fleet operator
+    description: Owns deployed vehicles; the stakeholder safety impact is reported for.
+    party_kind: organization
+    classifications: [asset-owner]
+  - id: party:cna-auto
+    name: Automotive CVE Numbering Authority
+    party_kind: organization
+    classifications: [cna]
+  - id: party:av-reviewer
+    name: "@av-reviewer"
+    description: Human vehicle-cybersecurity reviewer / ISO 21434 assessor (github id, role).
+    party_kind: person
+
+products:
+  - id: product:telematics-control-unit
+    name: Telematics Control Unit (TCU)
+    description: Cellular-connected telematics ECU bridging the mobile network and the in-vehicle CAN.
+    composed_of: [component:tcu-soc, component:cellular-modem, component:tcu-firmware]
+    manufactured_by: party:tier1-supplier
+    supplied_by: party:tier1-supplier
+    owned_by: party:fleet-operator
+    identifiers:
+      - "cpe:2.3:o:acme_auto:tcu:-:*:*:*:*:*:*:*"
+      - "oem-part:TCU-0071"
+
+product_instances:
+  - id: product-instance:tcu-unit-7f21
+    name: TCU unit 7F21
+    description: >-
+      A fielded unit. Hardware instance identity is the firmware image digest + a
+      hardware part/serial — the HBOM/firmware form of ADR-0002 instance identity,
+      carried as opaque `identifiers`.
+    of_product: product:telematics-control-unit
+    current_phase: lifecycle-phase:operation
+    valid_from: "2026-05-01T00:00:00Z"
+    owned_by: party:fleet-operator
+    identifiers:
+      - "swid:tcu-fw-5.2.0"
+      - "sha256:7f21c0a9b8d7e6f5a4b3c2d1e0f9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a"
+      - "hw-serial:TCU-7F21-2026W18"
+
+components:
+  - id: component:tcu-soc
+    name: TCU system-on-chip
+    description: Multi-core applications SoC hosting the telematics stack (§3 structural node).
+    composed_of: [component:core-app, component:core-comms]
+    identifiers:
+      - "cpe:2.3:h:chipco:soc_t500:-:*:*:*:*:*:*:*"
+  - id: component:core-app
+    name: Application core
+    description: General-purpose compute core running the telematics OS.
+    identifiers:
+      - "hw-core:soc_t500.app"
+  - id: component:core-comms
+    name: Communications core
+    description: Core handling the cellular / CAN gateway path.
+    identifiers:
+      - "hw-core:soc_t500.comms"
+  - id: component:cellular-modem
+    name: Cellular modem module
+    description: Remote attack surface; exposes a diagnostic service over the carrier network.
+    uses_component: [component:diag-service-lib]
+    identifiers:
+      - "cpe:2.3:h:modemco:lte_m9:-:*:*:*:*:*:*:*"
+  - id: component:diag-service-lib
+    name: diagnostic-service library (firmware module)
+    description: The remote diagnostic command handler along which the finding propagates (§5).
+    identifiers:
+      - "swid:tcu-diag-service@5.2.0"
+  - id: component:tcu-firmware
+    name: TCU firmware image
+    description: The signed firmware artifact; its digest is the instance identity above.
+    composed_of: [component:diag-service-lib]
+    identifiers:
+      - "swid:tcu-fw-5.2.0"
+      - "sha256:7f21c0a9b8d7e6f5a4b3c2d1e0f9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a"
+
+weaknesses:
+  - id: weakness:cwe-306
+    name: Missing Authentication for Critical Function
+    description: Generic weakness class (CWE, §1 layer 3) — the unauthenticated diagnostic command path.
+    catalog_ref: "CWE-306"
+
+vulnerabilities:
+  - id: vulnerability:cve-2026-41200
+    name: Unauthenticated remote diagnostic command on TCU modem (illustrative)
+    description: Finding affecting the product; propagation to components is a reviewed Assertion (§5).
+    catalog_ref: "CVE-2026-41200"
+    affects: [product:telematics-control-unit]
+    reported_by: party:av-reviewer
+    assigned_by: party:cna-auto
+
+attack_patterns:
+  - id: attack-pattern:capec-115
+    name: Authentication Bypass
+    description: Generic attack pattern (CAPEC = what, §2a). The CWE↔CAPEC link is a reviewed Assertion.
+    catalog_ref: "CAPEC-115"
+
+damage_scenarios:
+  - id: damage-scenario:unauthorized-can-actuation
+    name: Unauthorized CAN command → unsafe vehicle behavior
+    description: >-
+      ISO 21434 damage scenario; the safety/financial/operational/privacy impact
+      categories live on RiskScore (§3), not collapsed here.
+
+threat_instances:
+  - id: threat-instance:remote-diag-injection
+    name: Remote unauthenticated diagnostic command injection onto CAN
+    description: >-
+      Human-elicited ISO 21434 TARA threat scenario, STRIDE-tagged. The 21434
+      asset/damage/threat-scenario vocabulary binds onto the core classes (§8 V2).
+    realizes_damage: damage-scenario:unauthorized-can-actuation
+    method_facet: [stride]
+    source_method: "iso21434-TARA + stride (human-elicited, reviewed)"
+    violates_property: "S authentication / E authorization"
+    applies_in_phase: [lifecycle-phase:operation]
+  - id: threat-instance:infotainment-pivot
+    name: Lateral movement from infotainment domain into the safety CAN domain
+    description: >-
+      AI-PROPOSED hypothesis. Its realizing edge is a `proposed` Assertion and the
+      paired Review REJECTS it (CLAUDE.md: AI output is a hypothesis, never reviewed
+      truth). source_method records the proposing method.
+    realizes_damage: damage-scenario:unauthorized-can-actuation
+    method_facet: [stride]
+    source_method: "ai:llm-threat-proposer (hypothesis, unreviewed)"
+    violates_property: "E authorization"
+    applies_in_phase: [lifecycle-phase:operation]
+
+attack_steps:
+  # Path 1 — remote diagnostic injection; an AND gate at the injection step.
+  - id: attack-step:reach-modem-over-cellular
+    name: Reach the modem's diagnostic port over the carrier network
+    kill_chain_phase: delivery
+    precedes: [attack-step:inject-can-frame]
+  - id: attack-step:bypass-diag-auth
+    name: Bypass the missing/weak diagnostic authentication
+    precedes: [attack-step:inject-can-frame]
+  - id: attack-step:inject-can-frame
+    name: Inject a crafted CAN frame to a safety actuator
+    description: Requires BOTH reachability over cellular AND an auth bypass — an AND gate (§2a).
+    gate: and_gate
+    kill_chain_phase: exploitation
+  # Path 2 — foothold then pivot; an OR gate at the foothold step (AI-proposed).
+  - id: attack-step:compromise-companion-app
+    name: Compromise the paired companion mobile app
+    precedes: [attack-step:gain-infotainment-foothold]
+  - id: attack-step:malicious-ota
+    name: Deliver a malicious OTA update to the infotainment domain
+    precedes: [attack-step:gain-infotainment-foothold]
+  - id: attack-step:gain-infotainment-foothold
+    name: Gain a foothold in the infotainment domain
+    description: Either a compromised companion app OR a malicious OTA suffices — an OR gate (§2a).
+    gate: or_gate
+    precedes: [attack-step:pivot-to-can]
+  - id: attack-step:pivot-to-can
+    name: Pivot across the domain gateway onto the safety CAN bus
+    kill_chain_phase: lateral_movement
+
+attack_paths:
+  - id: attack-path:remote-diag-injection
+    name: Remote diagnostic-injection path
+    description: Human-reviewed path realizing the remote-injection threat; feasibility human-rated (§3).
+    steps:
+      - attack-step:reach-modem-over-cellular
+      - attack-step:bypass-diag-auth
+      - attack-step:inject-can-frame
+    realizes_threat: threat-instance:remote-diag-injection
+    attack_feasibility: medium
+  - id: attack-path:infotainment-pivot
+    name: Infotainment-to-CAN pivot path
+    description: The AI-PROPOSED path; realizing edge is a `proposed` Assertion, human-REJECTED.
+    steps:
+      - attack-step:compromise-companion-app
+      - attack-step:malicious-ota
+      - attack-step:gain-infotainment-foothold
+      - attack-step:pivot-to-can
+    realizes_threat: threat-instance:infotainment-pivot
+    attack_feasibility: very_low
+
+mitigations:
+  - id: mitigation:authenticate-diag-service
+    name: Require strong authentication on the diagnostic service
+    description: Control for the remote-injection threat (D3FEND-style catalog ref, §5).
+    catalog_ref: "D3FEND:D3-MFA"
+    mitigates: [threat-instance:remote-diag-injection]
+    applies_in_phase: [lifecycle-phase:design, lifecycle-phase:implementation]
+    implementation_owner: party:tier1-supplier
+    external_refs: ["JIRA-TCU-310"]
+    mitigation_status: complete
+  - id: mitigation:domain-gateway-firewall
+    name: Enforce a filtering gateway between infotainment and safety domains
+    description: Control reducing cross-domain pivot; still being rolled out.
+    catalog_ref: "D3FEND:D3-NTF"
+    mitigates: [threat-instance:remote-diag-injection, threat-instance:infotainment-pivot]
+    applies_in_phase: [lifecycle-phase:implementation, lifecycle-phase:production]
+    implementation_owner: party:vehicle-oem
+    external_refs: ["JIRA-TCU-355"]
+    mitigation_status: in_progress
+
+risk_scores:
+  - id: risk-score:remote-diag-injection
+    name: Risk — remote diagnostic injection
+    description: >-
+      Composite vector per ADR-0006/DEC-003: feasibility + S/F/O/P impact +
+      mitigation-status + derived risk, shown with its inputs. Safety-dominated.
+      Computed WITHOUT an Environment parameter (§8 MVP).
+    threat: threat-instance:remote-diag-injection
+    attack_paths: [attack-path:remote-diag-injection]
+    damage_scenario: damage-scenario:unauthorized-can-actuation
+    for_stakeholder: party:fleet-operator
+    feasibility: medium
+    impact:
+      safety: severe
+      financial: major
+      operational: major
+      privacy: moderate
+    mitigation_status: in_progress
+    risk: "safety 5 / operational 4 / financial 4 (worst-path, medium feasibility; 1–5 per 21434 M(I,F))"
+
+assertions:
+  - id: assertion:vuln-propagation
+    name: CVE propagates from the diagnostic lib to the product along uses_component/composed_of
+    description: Reviewed propagation edge (§5), reified so a Review can point at it.
+    subject: vulnerability:cve-2026-41200
+    predicate: propagates_to
+    object: component:tcu-firmware
+    confidence: high
+    assertion_status: accepted
+  - id: assertion:cwe-capec-map
+    name: CWE-306 is exploited by CAPEC-115
+    description: The human-reviewed CWE↔CAPEC mapping the schema calls out (§2).
+    subject: weakness:cwe-306
+    predicate: exploited_by
+    object: attack-pattern:capec-115
+    confidence: high
+    assertion_status: accepted
+  - id: assertion:remote-path-realizes
+    name: Human-reviewed — remote path realizes the injection threat
+    subject: attack-path:remote-diag-injection
+    predicate: realizes_threat
+    object: threat-instance:remote-diag-injection
+    confidence: high
+    assertion_status: accepted
+  - id: assertion:ai-pivot-realizes
+    name: AI-proposed — infotainment-pivot path realizes the pivot threat
+    description: >-
+      AI-PROPOSED edge. assertion_status `proposed` (NOT accepted); a hypothesis
+      until a human accepts it. The paired Review REJECTS it.
+    subject: attack-path:infotainment-pivot
+    predicate: realizes_threat
+    object: threat-instance:infotainment-pivot
+    confidence: low
+    assertion_status: proposed
+
+reviews:
+  - id: review:vuln-prop
+    name: Review — accept vuln propagation
+    reviews: assertion:vuln-propagation
+    reviewer: party:av-reviewer
+    review_status: accepted
+    priority: high
+    justification: Diagnostic lib is in the firmware image and reachable from the modem; propagation confirmed.
+  - id: review:cwe-capec
+    name: Review — accept CWE↔CAPEC mapping
+    reviews: assertion:cwe-capec-map
+    reviewer: party:av-reviewer
+    review_status: accepted
+    priority: medium
+    justification: Authentication-bypass pattern matches the missing-authentication weakness.
+  - id: review:remote-path
+    name: Review — accept remote-injection path
+    reviews: assertion:remote-path-realizes
+    reviewer: party:av-reviewer
+    review_status: accepted
+    priority: high
+    justification: Reproduced on the bench against firmware 5.2.0; path realizes the reviewed threat.
+  - id: review:ai-pivot-reject
+    name: Review — AI-proposed infotainment pivot (REJECTED)
+    description: Human triage of the AI hypothesis; it is REJECTED, not accepted (V6).
+    reviews: assertion:ai-pivot-realizes
+    reviewer: party:av-reviewer
+    review_status: rejected
+    priority: low
+    justification: >-
+      AI-proposed path. The domain gateway blocks the only claimed pivot and the
+      companion-app foothold is out of scope for this unit's configuration; rejected
+      as not realizable here. Retained as a rejected hypothesis for provenance, NOT
+      presented as a reviewed/accepted path.
+
+views:
+  - id: view:tcu-attack-graph
+    name: TCU attack-path graph
+    description: >-
+      Interactive-graph-able lens over this model (§10, R-014): projection `graph`,
+      opened from a bounded focus query. A derived core View, never written back.
+    projection: graph
+    focus_query: "product:telematics-control-unit -> threat_instances -> attack_paths -> attack_steps"
+
+lifecycle_phases:
+  - id: lifecycle-phase:design
+    name: Design
+    code: design
+  - id: lifecycle-phase:implementation
+    name: Implementation
+    code: implementation
+  - id: lifecycle-phase:production
+    name: Production / manufacturing
+    code: production
+  - id: lifecycle-phase:operation
+    name: Operation / use
+    code: operation

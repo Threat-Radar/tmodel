@@ -1,0 +1,403 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# §8 MVP CORE VECTOR 3 — hierarchical system domain (ADR-0002 "system" type)
+#
+# Acceptance evidence for DEC-001a. A worked attack-path knowledge graph for a
+# Connected-Vehicle System that is COMPOSED of subsystems (§8 vector 3:
+# "composed_of subsystems; threats roll up"). Demonstrates the third ADR-0002
+# instance type ("system = hierarchical composition of the above") and that the
+# CORE `composed_of` edge carries a 3-level composition tree:
+#   system  ->  in-vehicle platform + cloud backend  ->  leaf components (ECUs / services)
+# Threats elicited at two different subsystems roll up to one system-level
+# DamageScenario and a single system RiskScore reduced WORST-PATH (ADR-0006).
+#
+# CORE ONLY — no governance layer, no Environment/Deployment (§8: Environment is
+# post-MVP). System instance identity is an SBOM/manifest digest (ADR-0002), carried
+# as opaque `identifiers`.
+#
+# KNOWN LIMIT (reported, not fixed): the CORE RiskScore reduces worst-path across a
+# SET of attack_paths, but there is no first-class per-S/F/O/P cross-subsystem
+# aggregation with a human override (that was the historical vector-13 "rolls_up_to"
+# case) — roll-up/aggregation SEMANTICS are open (matches the §8 vector-3 caveat).
+#
+# Exercises the §8 MVP capabilities: ingest (1), CVE→CWE propagation (2), interactive
+# graph View (3), AND/OR ordered AttackPaths (4/V5), composite RiskScore no
+# Environment (5), human-reviewed vs AI-proposed Assertion+Review (6/V6).
+#
+# EXAMPLE / TEST DATA — NOT accepted truth. DEC-001 OPEN; draft. People as github ids
+# / roles only. CVE/CWE/CAPEC ids illustrative.
+#
+# Validate:
+#   linkml-validate -s spec/vectors/example-container-core.linkml.yaml \
+#     -C ExampleModelCore spec/vectors/mvp-03-hierarchical-system.yaml
+# ─────────────────────────────────────────────────────────────────────────────
+
+parties:
+  - id: party:system-integrator
+    name: System integrator
+    description: Assembles and manufactures the connected-vehicle system (role identity, §2b).
+    party_kind: organization
+    classifications: [manufacturer]
+  - id: party:fleet-owner
+    name: Fleet owner
+    description: Owns the deployed system; the stakeholder impact is reported for.
+    party_kind: organization
+    classifications: [asset-owner]
+  - id: party:cna-auto
+    name: Automotive CVE Numbering Authority
+    party_kind: organization
+    classifications: [cna]
+  - id: party:sys-reviewer
+    name: "@sys-reviewer"
+    description: Human system-security reviewer (github id, role identity).
+    party_kind: person
+
+products:
+  - id: product:connected-vehicle-system
+    name: Connected-Vehicle System
+    description: >-
+      A SYSTEM product (ADR-0002) that hierarchically composes an in-vehicle platform
+      subsystem and a cloud-backend subsystem. Recursive `composed_of` is the
+      structural layer (§3).
+    composed_of: [component:in-vehicle-platform, component:cloud-backend]
+    manufactured_by: party:system-integrator
+    owned_by: party:fleet-owner
+    identifiers:
+      - "pkg:generic/connected-vehicle-system@2026.3"
+
+product_instances:
+  - id: product-instance:cvs-release-2026-3
+    name: Connected-Vehicle System release 2026.3
+    description: >-
+      A released system configuration. System instance identity is an SBOM/manifest
+      digest over its subsystems (ADR-0002 "system" per-type identity), opaque.
+    of_product: product:connected-vehicle-system
+    current_phase: lifecycle-phase:operation
+    valid_from: "2026-08-01T00:00:00Z"
+    owned_by: party:fleet-owner
+    identifiers:
+      - "manifest:cvs@2026.3"
+      - "sha256:aa11bb22cc33dd44ee55ff6677889900aabbccddeeff00112233445566778899"
+
+components:
+  # Level 1 — the two subsystems.
+  - id: component:in-vehicle-platform
+    name: In-vehicle platform subsystem
+    description: The vehicle-side subsystem; composed of two ECUs (§3 recursive composition).
+    composed_of: [component:gateway-ecu, component:brake-ecu]
+    owned_by: party:fleet-owner
+    identifiers:
+      - "subsystem:in-vehicle-platform"
+  - id: component:cloud-backend
+    name: Cloud backend subsystem
+    description: The cloud-side subsystem; composed of the ingest API and the fleet datastore.
+    composed_of: [component:ingest-api, component:fleet-datastore]
+    owned_by: party:fleet-owner
+    identifiers:
+      - "subsystem:cloud-backend"
+  # Level 2 — leaf components of the in-vehicle platform.
+  - id: component:gateway-ecu
+    name: CAN gateway ECU
+    description: Routes between the telematics path and the safety CAN bus.
+    uses_component: [component:can-stack-lib]
+    identifiers:
+      - "cpe:2.3:o:acme_auto:gw_ecu:-:*:*:*:*:*:*:*"
+  - id: component:brake-ecu
+    name: Brake ECU
+    description: Safety-critical braking control unit on the in-vehicle CAN.
+    identifiers:
+      - "cpe:2.3:o:acme_auto:brake_ecu:-:*:*:*:*:*:*:*"
+  - id: component:can-stack-lib
+    name: CAN protocol-stack library
+    description: Shared firmware library along which a finding propagates (§5).
+    identifiers:
+      - "swid:can-stack@3.0.1"
+  # Level 2 — leaf components of the cloud backend.
+  - id: component:ingest-api
+    name: Telemetry ingest API
+    description: Cloud service receiving vehicle telemetry; software component.
+    uses_component: [component:jwt-lib]
+    identifiers:
+      - "pkg:oci/fleet/ingest-api@sha256:c0ffee11"
+  - id: component:fleet-datastore
+    name: Fleet datastore
+    description: Backend datastore holding fleet records.
+    identifiers:
+      - "pkg:oci/fleet/datastore@sha256:d0cada11"
+  - id: component:jwt-lib
+    name: jwt-verify library (transitive dependency)
+    description: Vulnerable OSS JWT dependency used by the ingest API.
+    identifiers:
+      - "pkg:npm/jwt-verify@2.1.0"
+      - "cpe:2.3:a:jwt_verify:jwt_verify:2.1.0:*:*:*:*:*:*:*"
+
+weaknesses:
+  - id: weakness:cwe-347
+    name: Improper Verification of Cryptographic Signature
+    description: Generic weakness class (CWE) — the cloud JWT verification flaw.
+    catalog_ref: "CWE-347"
+  - id: weakness:cwe-1188
+    name: Insecure Default Initialization of Resource
+    description: Generic weakness class (CWE) — the in-vehicle gateway default-credentials flaw.
+    catalog_ref: "CWE-1188"
+
+vulnerabilities:
+  - id: vulnerability:cve-2026-52001
+    name: JWT signature-verification bypass in jwt-verify (illustrative)
+    description: Cloud-subsystem finding; propagation to the ingest API is a reviewed Assertion (§5).
+    catalog_ref: "CVE-2026-52001"
+    affects: [product:connected-vehicle-system]
+    reported_by: party:sys-reviewer
+    assigned_by: party:cna-auto
+
+attack_patterns:
+  - id: attack-pattern:capec-115
+    name: Authentication Bypass
+    catalog_ref: "CAPEC-115"
+  - id: attack-pattern:capec-114
+    name: Authentication Abuse
+    catalog_ref: "CAPEC-114"
+
+damage_scenarios:
+  - id: damage-scenario:fleet-wide-compromise
+    name: Fleet-wide compromise — unsafe actuation and mass telemetry breach
+    description: >-
+      System-level damage the subsystem threats ROLL UP to (§8 V3). Impact categories
+      live on the system RiskScore (§3), reduced worst-path across subsystems.
+
+threat_instances:
+  - id: threat-instance:gateway-default-creds
+    name: In-vehicle — gateway default credentials allow CAN actuation
+    description: Human-elicited threat at the in-vehicle platform subsystem (rolls up).
+    realizes_damage: damage-scenario:fleet-wide-compromise
+    method_facet: [stride]
+    source_method: "stride + iso21434-TARA (human-elicited, reviewed)"
+    violates_property: "S authentication / E authorization"
+    applies_in_phase: [lifecycle-phase:operation]
+  - id: threat-instance:cloud-jwt-bypass
+    name: Cloud — JWT verification bypass grants fleet-wide API access
+    description: Human-elicited threat at the cloud-backend subsystem (rolls up).
+    realizes_damage: damage-scenario:fleet-wide-compromise
+    method_facet: [stride]
+    source_method: "stride-dfd (human-elicited, reviewed)"
+    violates_property: "S authentication / I confidentiality"
+    applies_in_phase: [lifecycle-phase:operation]
+  - id: threat-instance:cross-subsystem-chain
+    name: AI-proposed — chain the cloud bypass into in-vehicle actuation
+    description: >-
+      AI-PROPOSED hypothesis that the cloud foothold chains down into the in-vehicle
+      subsystem. `proposed` Assertion + a Review that requests changes; not accepted.
+    realizes_damage: damage-scenario:fleet-wide-compromise
+    method_facet: [stride]
+    source_method: "ai:llm-threat-proposer (hypothesis, unreviewed)"
+    violates_property: "E authorization"
+    applies_in_phase: [lifecycle-phase:operation]
+
+attack_steps:
+  # In-vehicle path — AND gate.
+  - id: attack-step:reach-gateway-service
+    name: Reach the gateway management service
+    kill_chain_phase: delivery
+    precedes: [attack-step:actuate-via-can]
+  - id: attack-step:use-default-creds
+    name: Authenticate with unchanged default credentials
+    precedes: [attack-step:actuate-via-can]
+  - id: attack-step:actuate-via-can
+    name: Send an actuation command onto the safety CAN bus
+    description: Requires BOTH reachability AND default creds — an AND gate (§2a).
+    gate: and_gate
+    kill_chain_phase: exploitation
+  # Cloud path — OR gate at the token step.
+  - id: attack-step:forge-jwt-none-alg
+    name: Forge a JWT using the alg=none bypass
+    precedes: [attack-step:call-fleet-api]
+  - id: attack-step:forge-jwt-weak-key
+    name: Forge a JWT using a leaked weak signing key
+    precedes: [attack-step:call-fleet-api]
+  - id: attack-step:call-fleet-api
+    name: Call the fleet API with a forged token
+    description: Either the alg=none bypass OR a weak-key forgery suffices — an OR gate (§2a).
+    gate: or_gate
+    kill_chain_phase: exploitation
+    precedes: [attack-step:chain-to-in-vehicle]
+  # AI-proposed cross-subsystem chain step.
+  - id: attack-step:chain-to-in-vehicle
+    name: Use fleet API access to push a command to a target vehicle
+    kill_chain_phase: lateral_movement
+
+attack_paths:
+  - id: attack-path:in-vehicle-actuation
+    name: In-vehicle default-credential actuation path
+    description: Human-reviewed subsystem path; feasibility human-rated (§3).
+    steps:
+      - attack-step:reach-gateway-service
+      - attack-step:use-default-creds
+      - attack-step:actuate-via-can
+    realizes_threat: threat-instance:gateway-default-creds
+    attack_feasibility: medium
+  - id: attack-path:cloud-jwt-forgery
+    name: Cloud JWT-forgery path
+    description: Human-reviewed subsystem path; feasibility human-rated (§3).
+    steps:
+      - attack-step:forge-jwt-none-alg
+      - attack-step:forge-jwt-weak-key
+      - attack-step:call-fleet-api
+    realizes_threat: threat-instance:cloud-jwt-bypass
+    attack_feasibility: high
+  - id: attack-path:cross-subsystem-chain
+    name: Cloud-to-in-vehicle cross-subsystem chain (AI-proposed)
+    description: >-
+      AI-PROPOSED path pivoting from the cloud path into the in-vehicle path.
+      `pivots_to` the in-vehicle path; realizing edge is a `proposed` Assertion.
+    steps:
+      - attack-step:call-fleet-api
+      - attack-step:chain-to-in-vehicle
+    realizes_threat: threat-instance:cross-subsystem-chain
+    attack_feasibility: low
+    pivots_to: [attack-path:in-vehicle-actuation]
+
+mitigations:
+  - id: mitigation:enforce-unique-creds
+    name: Enforce unique provisioned credentials; disable defaults
+    description: Control for the in-vehicle default-credential threat (§5).
+    catalog_ref: "D3FEND:D3-SPP"
+    mitigates: [threat-instance:gateway-default-creds]
+    applies_in_phase: [lifecycle-phase:production, lifecycle-phase:deployment]
+    implementation_owner: party:system-integrator
+    mitigation_status: complete
+  - id: mitigation:pin-jwt-alg-and-rotate
+    name: Pin JWT algorithm; verify signatures; rotate keys
+    description: Control for the cloud JWT-bypass threat; still being rolled out.
+    catalog_ref: "D3FEND:D3-CH"
+    mitigates: [threat-instance:cloud-jwt-bypass]
+    applies_in_phase: [lifecycle-phase:implementation]
+    implementation_owner: party:system-integrator
+    external_refs: ["JIRA-CVS-77"]
+    mitigation_status: in_progress
+
+risk_scores:
+  - id: risk-score:fleet-wide-system
+    name: Risk — fleet-wide system compromise (rolled up)
+    description: >-
+      SYSTEM-level composite vector (ADR-0006). Reduces WORST-PATH across the two
+      reviewed subsystem attack paths (in-vehicle + cloud). This is the §8 vector-3
+      roll-up; per-S/F/O/P cross-subsystem aggregation with a human override is NOT a
+      core class (reported limit). No Environment parameter (§8 MVP).
+    threat: threat-instance:cloud-jwt-bypass
+    attack_paths: [attack-path:in-vehicle-actuation, attack-path:cloud-jwt-forgery]
+    damage_scenario: damage-scenario:fleet-wide-compromise
+    for_stakeholder: party:fleet-owner
+    feasibility: high
+    impact:
+      safety: severe
+      financial: severe
+      operational: severe
+      privacy: major
+    mitigation_status: in_progress
+    risk: "safety 5 / financial 5 / operational 5 / privacy 4 (worst-path over subsystems, high feasibility; 1–5 per 21434 M(I,F))"
+
+assertions:
+  - id: assertion:vuln-propagation
+    name: CVE propagates to the ingest API along uses_component
+    description: Reviewed propagation edge (§5), reified so a Review can point at it.
+    subject: vulnerability:cve-2026-52001
+    predicate: propagates_to
+    object: component:ingest-api
+    confidence: high
+    assertion_status: accepted
+  - id: assertion:cwe-capec-map
+    name: CWE-347 is exploited by CAPEC-114
+    description: Human-reviewed CWE↔CAPEC mapping (§2).
+    subject: weakness:cwe-347
+    predicate: exploited_by
+    object: attack-pattern:capec-114
+    confidence: high
+    assertion_status: accepted
+  - id: assertion:rollup-in-vehicle
+    name: In-vehicle threat rolls up to the system damage scenario
+    description: Reviewed roll-up edge from a subsystem threat to the system-level damage (§8 V3).
+    subject: threat-instance:gateway-default-creds
+    predicate: rolls_up_to
+    object: damage-scenario:fleet-wide-compromise
+    confidence: high
+    assertion_status: accepted
+  - id: assertion:rollup-cloud
+    name: Cloud threat rolls up to the system damage scenario
+    subject: threat-instance:cloud-jwt-bypass
+    predicate: rolls_up_to
+    object: damage-scenario:fleet-wide-compromise
+    confidence: high
+    assertion_status: accepted
+  - id: assertion:ai-cross-subsystem
+    name: AI-proposed — cloud access chains into in-vehicle actuation
+    description: >-
+      AI-PROPOSED edge. assertion_status `proposed` (NOT accepted); a hypothesis
+      until a human accepts it. The paired Review requests changes.
+    subject: attack-path:cross-subsystem-chain
+    predicate: realizes_threat
+    object: threat-instance:cross-subsystem-chain
+    confidence: low
+    assertion_status: proposed
+
+reviews:
+  - id: review:vuln-prop
+    name: Review — accept vuln propagation
+    reviews: assertion:vuln-propagation
+    reviewer: party:sys-reviewer
+    review_status: accepted
+    priority: high
+    justification: jwt-lib is a dependency of the ingest API; signature bypass reachable.
+  - id: review:cwe-capec
+    name: Review — accept CWE↔CAPEC mapping
+    reviews: assertion:cwe-capec-map
+    reviewer: party:sys-reviewer
+    review_status: accepted
+    priority: medium
+    justification: Authentication-abuse pattern matches the signature-verification weakness.
+  - id: review:rollup-in-vehicle
+    name: Review — accept in-vehicle roll-up
+    reviews: assertion:rollup-in-vehicle
+    reviewer: party:sys-reviewer
+    review_status: accepted
+    priority: high
+    justification: Subsystem threat contributes to the fleet-wide system damage; roll-up confirmed.
+  - id: review:rollup-cloud
+    name: Review — accept cloud roll-up
+    reviews: assertion:rollup-cloud
+    reviewer: party:sys-reviewer
+    review_status: accepted
+    priority: high
+    justification: Cloud subsystem threat contributes to the fleet-wide system damage; roll-up confirmed.
+  - id: review:ai-cross-subsystem
+    name: Review — AI-proposed cross-subsystem chain (changes requested)
+    description: Human triage of the AI hypothesis; NOT accepted.
+    reviews: assertion:ai-cross-subsystem
+    reviewer: party:sys-reviewer
+    review_status: changes_requested
+    priority: medium
+    justification: >-
+      AI-proposed chain. The push-to-vehicle step assumes a command path the fleet
+      API does not expose; needs evidence before acceptance. Keep as a flagged
+      hypothesis, do not treat as reviewed.
+
+views:
+  - id: view:cvs-system-graph
+    name: Connected-Vehicle System attack-path graph
+    description: >-
+      Interactive-graph-able lens over the system KG (§10, R-014): projection
+      `graph`, opened from a bounded focus query spanning both subsystems. Core View.
+    projection: graph
+    focus_query: "product:connected-vehicle-system -> composed_of* -> threat_instances -> attack_paths"
+
+lifecycle_phases:
+  - id: lifecycle-phase:implementation
+    name: Implementation
+    code: implementation
+  - id: lifecycle-phase:production
+    name: Production / manufacturing
+    code: production
+  - id: lifecycle-phase:deployment
+    name: Deployment / commissioning
+    code: deployment
+  - id: lifecycle-phase:operation
+    name: Operation / use
+    code: operation
