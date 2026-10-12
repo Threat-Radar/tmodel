@@ -1,0 +1,390 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# §8 MVP CORE VECTOR 18 — shared vuln propagation + per-product VEX override
+#
+# Acceptance evidence for DEC-001a. The §8 vector-18 case: "a vuln carries through
+# core → chip → server but is VEX not_affected in product X — propagation + override."
+# One low-level crypto IP CORE carries a finding that PROPAGATES up the composition
+# chain (core → SoC chip → server appliance) in product A, while a SECOND product
+# that embeds the SAME chip is VEX `not_affected`. Both the propagation and the
+# per-product override are expressed through the CORE Assertion + Review spine — the
+# schema says the VEX override is "Assertions plus Reviews (§5), not extra classes."
+# This also shows the §8 vector-4 flavour (same generic weakness, DIVERGENT per-
+# product disposition) without a ProductFamily/MitigationInstance class.
+#
+# CORE ONLY — no governance layer, no Environment/Deployment (§8: Environment is
+# post-MVP). Instance identity (firmware/HBOM/SBOM digests) is opaque `identifiers`.
+#
+# Exercises the §8 MVP capabilities: ingest (1), finding propagation along
+# composition + the VEX override (2/V18), interactive graph View (3), AND/OR ordered
+# AttackPaths (4/V5), composite RiskScore no Environment (5), human-reviewed vs
+# AI-proposed Assertion+Review (6/V6).
+#
+# EXAMPLE / TEST DATA — NOT accepted truth. DEC-001 OPEN; draft. People as github ids
+# / roles only. CVE/CWE/CAPEC ids illustrative.
+#
+# Validate:
+#   linkml-validate -s spec/vectors/example-container-core.linkml.yaml \
+#     -C ExampleModelCore spec/vectors/mvp-18-shared-vuln-vex-override.yaml
+# ─────────────────────────────────────────────────────────────────────────────
+
+parties:
+  - id: party:chip-vendor
+    name: Chip vendor
+    description: Manufactures the crypto IP core and the SoC (role identity, §2b).
+    party_kind: organization
+    classifications: [manufacturer]
+  - id: party:appliance-vendor
+    name: Appliance vendor
+    description: Manufactures the server appliance (product A, affected).
+    party_kind: organization
+    classifications: [manufacturer]
+  - id: party:sensor-vendor
+    name: Sensor vendor
+    description: Manufactures the edge sensor (product X, VEX not_affected).
+    party_kind: organization
+    classifications: [manufacturer]
+  - id: party:operator
+    name: Appliance operator
+    description: Owns the deployed server appliance; the stakeholder impact is reported for.
+    party_kind: organization
+    classifications: [asset-owner]
+  - id: party:cna-mitre
+    name: CVE Numbering Authority
+    party_kind: organization
+    classifications: [cna]
+  - id: party:psirt-reviewer
+    name: "@psirt-reviewer"
+    description: Human PSIRT reviewer who rules on propagation and the VEX status (github id, role).
+    party_kind: person
+
+products:
+  - id: product:server-appliance
+    name: Crypto Server Appliance
+    description: Product A — a TLS-terminating server appliance that embeds the SoC. AFFECTED.
+    composed_of: [component:appliance-firmware, component:soc-chip]
+    manufactured_by: party:appliance-vendor
+    supplied_by: party:appliance-vendor
+    owned_by: party:operator
+    identifiers:
+      - "cpe:2.3:o:applianceco:crypto_server:4.0:*:*:*:*:*:*:*"
+  - id: product:edge-sensor
+    name: Edge Sensor
+    description: >-
+      Product X — an edge sensor that embeds the SAME SoC/IP core, but is VEX
+      NOT_AFFECTED: the vulnerable RNG path is not on its execute path.
+    composed_of: [component:sensor-firmware, component:soc-chip]
+    manufactured_by: party:sensor-vendor
+    supplied_by: party:sensor-vendor
+    owned_by: party:operator
+    identifiers:
+      - "cpe:2.3:o:sensorco:edge_sensor:1.2:*:*:*:*:*:*:*"
+
+product_instances:
+  - id: product-instance:server-appliance-4-0
+    name: Crypto Server Appliance 4.0
+    description: Fielded affected unit; instance identity is a firmware digest (ADR-0002), opaque.
+    of_product: product:server-appliance
+    current_phase: lifecycle-phase:operation
+    valid_from: "2026-07-01T00:00:00Z"
+    owned_by: party:operator
+    identifiers:
+      - "swid:crypto-server-fw-4.0"
+      - "sha256:11223344556677889900aabbccddeeff00112233445566778899aabbccddeeff"
+  - id: product-instance:edge-sensor-1-2
+    name: Edge Sensor 1.2
+    description: Fielded not_affected unit embedding the same chip; opaque instance identity.
+    of_product: product:edge-sensor
+    current_phase: lifecycle-phase:operation
+    valid_from: "2026-07-01T00:00:00Z"
+    owned_by: party:operator
+    identifiers:
+      - "swid:edge-sensor-fw-1.2"
+      - "sha256:99887766554433221100ffeeddccbbaa99887766554433221100ffeeddccbbaa"
+
+components:
+  # Shared low-level IP core (the "core" in core → chip → server).
+  - id: component:crypto-ip-core
+    name: Crypto IP core (hardware RNG block)
+    description: >-
+      The low-level hardware IP core carrying the finding; shared across both
+      products (§5). Component has no `manufactured_by` slot (that is a Product-only
+      role edge), so the chip-vendor supply relationship reifies as an Assertion (§4).
+    identifiers:
+      - "hw-core:cryptoip_r3"
+      - "cpe:2.3:h:chipco:cryptoip:r3:*:*:*:*:*:*:*"
+  # The chip (the "chip" in the chain) composes the IP core.
+  - id: component:soc-chip
+    name: SoC (embeds the crypto IP core)
+    description: System-on-chip embedding the crypto IP core; used by both products (§3 composition).
+    composed_of: [component:crypto-ip-core]
+    identifiers:
+      - "cpe:2.3:h:chipco:soc_s900:-:*:*:*:*:*:*:*"
+  # Product A's server service (the "server" in the chain) uses the chip's RNG.
+  - id: component:appliance-firmware
+    name: Appliance firmware / TLS service
+    description: Product A firmware whose TLS stack draws key material from the chip RNG (§5 use edge).
+    uses_component: [component:soc-chip]
+    identifiers:
+      - "swid:crypto-server-fw-4.0"
+  # Product X's firmware embeds the chip but does not use the vulnerable RNG path.
+  - id: component:sensor-firmware
+    name: Sensor firmware
+    description: Product X firmware; embeds the chip but uses a different entropy source (not_affected).
+    uses_component: [component:soc-chip]
+    identifiers:
+      - "swid:edge-sensor-fw-1.2"
+
+weaknesses:
+  - id: weakness:cwe-1240
+    name: Use of a Cryptographic Primitive with a Risky Implementation
+    description: Generic weakness class (CWE) — the weak hardware RNG primitive.
+    catalog_ref: "CWE-1240"
+
+vulnerabilities:
+  - id: vulnerability:cve-2026-60333
+    name: Predictable RNG output in crypto IP core (illustrative)
+    description: >-
+      Finding in the shared IP core. It `affects` product A; for product X a reviewed
+      VEX `not_affected` Assertion records that the vulnerable path is unreachable (§5).
+    catalog_ref: "CVE-2026-60333"
+    affects: [product:server-appliance]
+    reported_by: party:psirt-reviewer
+    assigned_by: party:cna-mitre
+
+attack_patterns:
+  - id: attack-pattern:capec-97
+    name: Cryptanalysis
+    catalog_ref: "CAPEC-97"
+
+damage_scenarios:
+  - id: damage-scenario:tls-session-compromise
+    name: Predictable session keys → TLS interception on the appliance
+    description: Damage on product A; impact categories live on RiskScore (§3).
+
+threat_instances:
+  - id: threat-instance:weak-rng-key-recovery
+    name: Session-key recovery via predictable chip RNG
+    description: Human-elicited threat on product A's TLS stack.
+    realizes_damage: damage-scenario:tls-session-compromise
+    method_facet: [stride]
+    source_method: "stride + crypto-review (human-elicited, reviewed)"
+    violates_property: "I confidentiality"
+    applies_in_phase: [lifecycle-phase:operation]
+  - id: threat-instance:side-channel-seed-leak
+    name: AI-proposed — recover RNG seed via a power side channel
+    description: >-
+      AI-PROPOSED hypothesis. `proposed` Assertion + a Review that requests changes;
+      not accepted (CLAUDE.md: AI output is a hypothesis).
+    realizes_damage: damage-scenario:tls-session-compromise
+    method_facet: [stride]
+    source_method: "ai:llm-threat-proposer (hypothesis, unreviewed)"
+    violates_property: "I confidentiality"
+    applies_in_phase: [lifecycle-phase:operation]
+
+attack_steps:
+  # Reviewed path — AND gate at key derivation.
+  - id: attack-step:observe-rng-outputs
+    name: Observe RNG outputs exposed by the appliance
+    kill_chain_phase: reconnaissance
+    precedes: [attack-step:derive-session-key]
+  - id: attack-step:capture-tls-handshake
+    name: Capture a target TLS handshake
+    precedes: [attack-step:derive-session-key]
+  - id: attack-step:derive-session-key
+    name: Derive the session key from predicted RNG state
+    description: Requires BOTH observed RNG bias AND a captured handshake — an AND gate (§2a).
+    gate: and_gate
+    kill_chain_phase: exploitation
+  # AI-proposed path — OR gate at seed recovery.
+  - id: attack-step:power-side-channel
+    name: Collect a power side-channel trace during seeding
+    precedes: [attack-step:recover-seed]
+  - id: attack-step:emi-side-channel
+    name: Collect an EM side-channel trace during seeding
+    precedes: [attack-step:recover-seed]
+  - id: attack-step:recover-seed
+    name: Recover the RNG seed from a side-channel trace
+    description: Either a power OR an EM trace suffices — an OR gate (§2a).
+    gate: or_gate
+    kill_chain_phase: exploitation
+
+attack_paths:
+  - id: attack-path:weak-rng-key-recovery
+    name: Weak-RNG session-key recovery path
+    description: Human-reviewed path on product A; feasibility human-rated (§3).
+    steps:
+      - attack-step:observe-rng-outputs
+      - attack-step:capture-tls-handshake
+      - attack-step:derive-session-key
+    realizes_threat: threat-instance:weak-rng-key-recovery
+    attack_feasibility: medium
+  - id: attack-path:side-channel-seed
+    name: Side-channel seed-recovery path (AI-proposed)
+    description: The AI-PROPOSED path; realizing edge is a `proposed` Assertion.
+    steps:
+      - attack-step:power-side-channel
+      - attack-step:emi-side-channel
+      - attack-step:recover-seed
+    realizes_threat: threat-instance:side-channel-seed-leak
+    attack_feasibility: low
+
+mitigations:
+  - id: mitigation:firmware-rng-reseed
+    name: Reseed from a vetted entropy source in firmware
+    description: Control for the weak-RNG threat on product A (§5).
+    catalog_ref: "D3FEND:D3-CH"
+    mitigates: [threat-instance:weak-rng-key-recovery]
+    applies_in_phase: [lifecycle-phase:implementation, lifecycle-phase:maintenance]
+    implementation_owner: party:appliance-vendor
+    external_refs: ["JIRA-APP-21"]
+    mitigation_status: in_progress
+
+risk_scores:
+  - id: risk-score:weak-rng
+    name: Risk — weak-RNG key recovery (product A)
+    description: >-
+      Composite vector per ADR-0006 for product A. No Environment parameter (§8 MVP).
+      Product X is not_affected (see the VEX Assertion), so it carries no comparable
+      risk from this finding.
+    threat: threat-instance:weak-rng-key-recovery
+    attack_paths: [attack-path:weak-rng-key-recovery]
+    damage_scenario: damage-scenario:tls-session-compromise
+    for_stakeholder: party:operator
+    feasibility: medium
+    impact:
+      safety: negligible
+      financial: major
+      operational: moderate
+      privacy: severe
+    mitigation_status: in_progress
+    risk: "privacy 4 / financial 3 / operational 2 (worst-path, medium feasibility; 1–5 per 21434 M(I,F))"
+
+assertions:
+  # Propagation up the chain core → chip → server (product A), each reviewed-accepted.
+  - id: assertion:propagate-core-to-chip
+    name: Finding propagates from the IP core to the SoC chip
+    description: Reviewed propagation edge along composed_of (§5).
+    subject: vulnerability:cve-2026-60333
+    predicate: propagates_to
+    object: component:soc-chip
+    confidence: high
+    assertion_status: accepted
+  - id: assertion:propagate-chip-to-server
+    name: Finding propagates from the SoC chip to the appliance TLS service
+    description: Reviewed propagation edge along uses_component (§5) — completes core → chip → server.
+    subject: vulnerability:cve-2026-60333
+    predicate: propagates_to
+    object: component:appliance-firmware
+    confidence: high
+    assertion_status: accepted
+  # The per-product VEX override: product X is not_affected.
+  - id: assertion:vex-not-affected-product-x
+    name: VEX — product X (edge sensor) is not_affected
+    description: >-
+      Per-product VEX override (§5), reified as an Assertion so a Review can own the
+      determination. Product X embeds the same chip but the vulnerable RNG path is not
+      on its execute path. predicate/object carry the VEX status; justification is on
+      the Review.
+    subject: vulnerability:cve-2026-60333
+    predicate: vex_not_affected
+    object: product:edge-sensor
+    confidence: high
+    assertion_status: accepted
+  - id: assertion:chip-vendor-makes-core
+    name: Chip vendor manufactures the crypto IP core
+    description: >-
+      `manufactured_by` is a Product-only role edge; for a Component the supply
+      relationship reifies here as an Assertion (§4), keeping the IDs stable (ADR-0004).
+    subject: component:crypto-ip-core
+    predicate: manufactured_by
+    object: party:chip-vendor
+    confidence: high
+    assertion_status: accepted
+  - id: assertion:cwe-capec-map
+    name: CWE-1240 is exploited by CAPEC-97
+    description: Human-reviewed CWE↔CAPEC mapping (§2).
+    subject: weakness:cwe-1240
+    predicate: exploited_by
+    object: attack-pattern:capec-97
+    confidence: medium
+    assertion_status: accepted
+  - id: assertion:ai-side-channel-realizes
+    name: AI-proposed — side-channel path realizes the seed-leak threat
+    description: >-
+      AI-PROPOSED edge. assertion_status `proposed` (NOT accepted); a hypothesis until
+      a human accepts it. The paired Review requests changes.
+    subject: attack-path:side-channel-seed
+    predicate: realizes_threat
+    object: threat-instance:side-channel-seed-leak
+    confidence: low
+    assertion_status: proposed
+
+reviews:
+  - id: review:propagate-core-to-chip
+    name: Review — accept core→chip propagation
+    reviews: assertion:propagate-core-to-chip
+    reviewer: party:psirt-reviewer
+    review_status: accepted
+    priority: high
+    justification: The IP core is composed into the SoC; the RNG block ships in the chip.
+  - id: review:propagate-chip-to-server
+    name: Review — accept chip→server propagation
+    reviews: assertion:propagate-chip-to-server
+    reviewer: party:psirt-reviewer
+    review_status: accepted
+    priority: high
+    justification: The appliance TLS stack draws key material from the chip RNG; exploitable on product A.
+  - id: review:vex-not-affected-product-x
+    name: Review — accept product X not_affected (VEX)
+    reviews: assertion:vex-not-affected-product-x
+    reviewer: party:psirt-reviewer
+    review_status: accepted
+    priority: high
+    justification: >-
+      VEX justification vulnerable_code_not_in_execute_path: the sensor firmware seeds
+      from a separate vetted entropy source and never invokes the chip RNG block, so
+      product X is not_affected despite embedding the same chip.
+  - id: review:chip-vendor-makes-core
+    name: Review — accept chip-vendor supply relationship
+    reviews: assertion:chip-vendor-makes-core
+    reviewer: party:psirt-reviewer
+    review_status: accepted
+    priority: low
+    justification: HBOM confirms the crypto IP core is the chip vendor's block.
+  - id: review:cwe-capec
+    name: Review — accept CWE↔CAPEC mapping
+    reviews: assertion:cwe-capec-map
+    reviewer: party:psirt-reviewer
+    review_status: accepted
+    priority: medium
+    justification: Cryptanalysis pattern matches the risky-crypto-primitive weakness.
+  - id: review:ai-side-channel
+    name: Review — AI-proposed side-channel path (changes requested)
+    description: Human triage of the AI hypothesis; NOT accepted.
+    reviews: assertion:ai-side-channel-realizes
+    reviewer: party:psirt-reviewer
+    review_status: changes_requested
+    priority: low
+    justification: >-
+      AI-proposed path. Side-channel feasibility against this packaging is unconfirmed;
+      keep as a flagged hypothesis, do not present as reviewed.
+
+views:
+  - id: view:shared-vuln-graph
+    name: Shared-vuln propagation graph
+    description: >-
+      Interactive-graph-able lens (§10, R-014): projection `graph`, focused on the
+      finding and its propagation across both products including the VEX override.
+    projection: graph
+    focus_query: "vulnerability:cve-2026-60333 -> propagates_to* ; products with vex status"
+
+lifecycle_phases:
+  - id: lifecycle-phase:implementation
+    name: Implementation
+    code: implementation
+  - id: lifecycle-phase:maintenance
+    name: Maintenance / update
+    code: maintenance
+  - id: lifecycle-phase:operation
+    name: Operation / use
+    code: operation

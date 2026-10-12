@@ -1,0 +1,328 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# §8 MVP CORE VECTOR 1 — software domain (the ADR-0002 DEEP product)
+#
+# Acceptance evidence for DEC-001a (the CORE object model). A worked attack-path
+# knowledge graph for an OSS document-processing service, using ONLY the core
+# classes — NO governance layer (no ThreatModel / SecurityProgram / Gate /
+# Requirement / GovernedView) and NO Environment/Deployment (ARCH-0001-PROPOSAL §8:
+# "no Environment parameter — post-MVP, H3"). Validated against ExampleModelCore.
+#
+# Exercises the §8 MVP capabilities ("vectors 1–6 + 18"):
+#   1 ingest  — Product + ProductInstance + Components with CPE/purl via `identifiers`
+#   2 propagate — a CVE→CWE finding propagating along composition (reviewed Assertion)
+#   3 graph   — an interactive-graph-able model (a core `View`, projection: graph)
+#   4 attack path — two ordered AttackPaths with an AND gate and an OR gate,
+#                   each realizing a ThreatInstance
+#   5 risk    — a composite-vector RiskScore (ADR-0006: feasibility + S/F/O/P +
+#               mitigation-status + derived risk), no Environment parameter
+#   6/18 review — human-reviewed vs AI-proposed via the Assertion + Review round-trip
+#
+# EXAMPLE / TEST DATA — NOT accepted truth. DEC-001 is OPEN; the object model is a
+# draft proposal. People appear as github ids / roles only (CLAUDE.md). AI-proposed
+# content is marked `proposed` on its Assertion and is never presented as reviewed.
+# CVE/CWE/CAPEC ids are illustrative, chosen to be plausible, not asserted factual.
+#
+# Validate:
+#   linkml-validate -s spec/vectors/example-container-core.linkml.yaml \
+#     -C ExampleModelCore spec/vectors/mvp-01-software-doc-service.yaml
+# ─────────────────────────────────────────────────────────────────────────────
+
+parties:
+  - id: party:papermill-oss
+    name: Papermill OSS project
+    description: Upstream maintainer / manufacturer of the document service (role identity, §2b).
+    party_kind: organization
+    classifications: [oss-maintainer]
+  - id: party:saas-operator
+    name: SaaS operator
+    description: Deploys and owns a running instance; the stakeholder impact is reported for.
+    party_kind: organization
+    classifications: [asset-owner]
+  - id: party:cna-mitre
+    name: CVE Numbering Authority
+    party_kind: organization
+    classifications: [cna]
+  - id: party:reporter-01
+    name: "@reporter-01"
+    description: Independent reporter of the vulnerability (github id only, §2b).
+    party_kind: person
+  - id: party:sec-reviewer
+    name: "@sec-reviewer"
+    description: Human security reviewer (github id, role identity).
+    party_kind: person
+
+products:
+  - id: product:papermill-doc-service
+    name: Papermill Document Service
+    description: OSS document-ingest & rendering microservice.
+    composed_of: [component:papermill-api]
+    manufactured_by: party:papermill-oss
+    supplied_by: party:papermill-oss
+    owned_by: party:saas-operator
+    identifiers:
+      - "pkg:github/papermill/doc-service"
+      - "cpe:2.3:a:papermill:doc_service:3.1.0:*:*:*:*:*:*:*"
+
+product_instances:
+  - id: product-instance:papermill-3-1-0
+    name: doc-service build 3.1.0
+    description: The reviewed build; software instance identity is a build/commit/SBOM hash (ADR-0002).
+    of_product: product:papermill-doc-service
+    current_phase: lifecycle-phase:operation
+    valid_from: "2026-09-10T00:00:00Z"
+    owned_by: party:saas-operator
+    identifiers:
+      - "build:papermill-doc-service@3.1.0+git.3b9e1d2"
+      - "sha256:3b9e1d2a4c6e8f0a1b2c3d4e5f60718293a4b5c6d7e8f90112233445566778899"
+
+components:
+  - id: component:papermill-api
+    name: papermill-api (service container)
+    description: The deployed service artifact (§0 authoritative component, not a DFD node).
+    composed_of: [component:render-worker]
+    uses_component: [component:libxml-parse]
+    owned_by: party:saas-operator
+    identifiers:
+      - "pkg:oci/papermill/doc-service@sha256:3b9e1d2a"
+  - id: component:render-worker
+    name: document render worker
+    description: Parses and renders uploaded documents.
+    uses_component: [component:libxml-parse]
+    identifiers:
+      - "pkg:github/papermill/doc-service@3.1.0#render"
+  - id: component:libxml-parse
+    name: libxml-parse (transitive dependency)
+    description: Vulnerable OSS XML-parsing dependency along which the finding propagates (§5).
+    identifiers:
+      - "pkg:pypi/libxml-parse@1.8.2"
+      - "cpe:2.3:a:libxml_parse:libxml_parse:1.8.2:*:*:*:*:*:*:*"
+
+weaknesses:
+  - id: weakness:cwe-611
+    name: Improper Restriction of XML External Entity Reference
+    description: Generic weakness class (CWE, §1 layer 3).
+    catalog_ref: "CWE-611"
+
+vulnerabilities:
+  - id: vulnerability:cve-2026-30111
+    name: XXE in libxml-parse document loader (illustrative)
+    description: Finding affecting the product; propagation to components is a reviewed Assertion (§5).
+    catalog_ref: "CVE-2026-30111"
+    affects: [product:papermill-doc-service]
+    reported_by: party:reporter-01
+    assigned_by: party:cna-mitre
+
+attack_patterns:
+  - id: attack-pattern:capec-221
+    name: Data Serialization External Entities Blowup
+    description: Generic attack pattern (CAPEC = what, §2a). The CWE↔CAPEC link is a reviewed Assertion.
+    catalog_ref: "CAPEC-221"
+
+damage_scenarios:
+  - id: damage-scenario:tenant-data-exfil
+    name: XXE file read → internal credential disclosure → cross-tenant data breach
+    description: The damage the XXE threat realizes; impact categories live on RiskScore (§3).
+
+threat_instances:
+  - id: threat-instance:xxe-file-read
+    name: XXE via uploaded document → internal file read
+    description: Human-elicited STRIDE threat on the document-upload flow.
+    realizes_damage: damage-scenario:tenant-data-exfil
+    method_facet: [stride]
+    source_method: "stride-dfd (human-elicited, reviewed)"
+    violates_property: "I confidentiality"
+    applies_in_phase: [lifecycle-phase:operation]
+  - id: threat-instance:imds-pivot
+    name: SSRF pivot from XXE to cloud instance-metadata credentials
+    description: >-
+      AI-PROPOSED hypothesis (not reviewed/accepted). source_method records the
+      proposing method; its realizing edge is an Assertion in `proposed` state with
+      a Review that has NOT accepted it (CLAUDE.md: AI output is a hypothesis).
+    realizes_damage: damage-scenario:tenant-data-exfil
+    method_facet: [stride]
+    source_method: "ai:llm-threat-proposer (hypothesis, unreviewed)"
+    violates_property: "I confidentiality / E authorization"
+    applies_in_phase: [lifecycle-phase:operation]
+
+attack_steps:
+  # Path 1 — XXE file read; an AND gate at the disclosure step.
+  - id: attack-step:upload-crafted-doc
+    name: Upload a document with a crafted external-entity reference
+    kill_chain_phase: delivery
+    precedes: [attack-step:parser-resolves-entity]
+  - id: attack-step:parser-resolves-entity
+    name: Render worker resolves the external entity
+    description: Requires the vulnerable parser to resolve external entities.
+    precedes: [attack-step:read-internal-file]
+  - id: attack-step:coerce-file-uri
+    name: Point the entity at an internal file:// URI
+    precedes: [attack-step:read-internal-file]
+  - id: attack-step:read-internal-file
+    name: Read an internal file and exfiltrate it in the rendered output
+    description: Requires BOTH the parser resolving the entity AND a reachable file URI — an AND gate (§2a).
+    gate: and_gate
+    kill_chain_phase: exploitation
+  # Path 2 — SSRF pivot to cloud metadata; an OR gate at the fetch step (AI-proposed).
+  - id: attack-step:point-entity-at-metadata
+    name: Point the entity at the cloud metadata endpoint
+    precedes: [attack-step:fetch-instance-credentials]
+  - id: attack-step:dns-rebind-to-metadata
+    name: Use DNS rebinding to reach the metadata endpoint
+    precedes: [attack-step:fetch-instance-credentials]
+  - id: attack-step:fetch-instance-credentials
+    name: Fetch instance-role credentials from the metadata service
+    description: Either a direct metadata URI OR DNS rebinding suffices — an OR gate (§2a).
+    gate: or_gate
+    kill_chain_phase: exploitation
+
+attack_paths:
+  - id: attack-path:xxe-file-read
+    name: XXE file-read path
+    description: Human-reviewed path realizing the XXE threat; feasibility human-rated (§3).
+    steps:
+      - attack-step:upload-crafted-doc
+      - attack-step:parser-resolves-entity
+      - attack-step:coerce-file-uri
+      - attack-step:read-internal-file
+    realizes_threat: threat-instance:xxe-file-read
+    attack_feasibility: medium
+  - id: attack-path:imds-pivot
+    name: XXE → cloud-metadata SSRF pivot path
+    description: The AI-PROPOSED path; realizing edge is a `proposed` Assertion, not yet accepted.
+    steps:
+      - attack-step:point-entity-at-metadata
+      - attack-step:dns-rebind-to-metadata
+      - attack-step:fetch-instance-credentials
+    realizes_threat: threat-instance:imds-pivot
+    attack_feasibility: low
+    pivots_to: [attack-path:xxe-file-read]
+
+mitigations:
+  - id: mitigation:disable-external-entities
+    name: Disable external-entity resolution in the XML parser
+    description: Control for the XXE threat (D3FEND-style catalog ref, §5).
+    catalog_ref: "D3FEND:D3-IOPM"
+    mitigates: [threat-instance:xxe-file-read]
+    applies_in_phase: [lifecycle-phase:design, lifecycle-phase:implementation]
+    implementation_owner: party:papermill-oss
+    external_refs: ["JIRA-PM-842"]
+    mitigation_status: complete
+  - id: mitigation:egress-and-imdsv2
+    name: Egress filtering + require IMDSv2 hop-limit
+    description: Control for the AI-proposed metadata-pivot path; still being rolled out.
+    catalog_ref: "D3FEND:D3-OTF"
+    mitigates: [threat-instance:imds-pivot]
+    applies_in_phase: [lifecycle-phase:implementation, lifecycle-phase:operation]
+    implementation_owner: party:saas-operator
+    external_refs: ["JIRA-PM-915"]
+    mitigation_status: in_progress
+
+risk_scores:
+  - id: risk-score:xxe-file-read
+    name: Risk — XXE file read
+    description: >-
+      Composite vector per ADR-0006/DEC-003: feasibility + S/F/O/P impact +
+      mitigation-status + derived risk, shown with its inputs — never one number.
+      Computed WITHOUT an Environment parameter (§8 MVP: Environment is post-MVP).
+    threat: threat-instance:xxe-file-read
+    attack_paths: [attack-path:xxe-file-read, attack-path:imds-pivot]
+    damage_scenario: damage-scenario:tenant-data-exfil
+    for_stakeholder: party:saas-operator
+    feasibility: medium
+    impact:
+      safety: negligible
+      financial: major
+      operational: moderate
+      privacy: severe
+    mitigation_status: in_progress
+    risk: "privacy 4 / financial 3 / operational 2 (worst-path, medium feasibility; 1–5 per 21434 M(I,F))"
+
+assertions:
+  - id: assertion:vuln-propagation
+    name: CVE propagates to the service along uses_component
+    description: Reviewed propagation edge (§5) — not a facet property; reified so a Review can point at it.
+    subject: vulnerability:cve-2026-30111
+    predicate: propagates_to
+    object: component:papermill-api
+    confidence: high
+    assertion_status: accepted
+  - id: assertion:cwe-capec-map
+    name: CWE-611 is exploited by CAPEC-221
+    description: The human-reviewed CWE↔CAPEC mapping the schema calls out (§2).
+    subject: weakness:cwe-611
+    predicate: exploited_by
+    object: attack-pattern:capec-221
+    confidence: high
+    assertion_status: accepted
+  - id: assertion:xxe-path-realizes
+    name: Human-reviewed — XXE path realizes the XXE threat
+    description: Reviewed realizing edge; accepted by a human reviewer.
+    subject: attack-path:xxe-file-read
+    predicate: realizes_threat
+    object: threat-instance:xxe-file-read
+    confidence: high
+    assertion_status: accepted
+  - id: assertion:ai-imds-pivot-realizes
+    name: AI-proposed — metadata-pivot path realizes the pivot threat
+    description: >-
+      AI-PROPOSED edge. assertion_status is `proposed` (NOT accepted); it is a
+      hypothesis until a human accepts it. The paired Review requests changes.
+    subject: attack-path:imds-pivot
+    predicate: realizes_threat
+    object: threat-instance:imds-pivot
+    confidence: low
+    assertion_status: proposed
+
+reviews:
+  - id: review:vuln-prop
+    name: Review — accept vuln propagation
+    reviews: assertion:vuln-propagation
+    reviewer: party:sec-reviewer
+    review_status: accepted
+    priority: high
+    justification: Reachable from the document-upload flow via libxml-parse; propagation confirmed.
+  - id: review:cwe-capec
+    name: Review — accept CWE↔CAPEC mapping
+    reviews: assertion:cwe-capec-map
+    reviewer: party:sec-reviewer
+    review_status: accepted
+    priority: medium
+    justification: External-entity attack pattern matches the XXE weakness class.
+  - id: review:xxe-path
+    name: Review — accept XXE path
+    reviews: assertion:xxe-path-realizes
+    reviewer: party:sec-reviewer
+    review_status: accepted
+    priority: high
+    justification: Steps reproduce in a test harness; path realizes the reviewed threat.
+  - id: review:ai-triage
+    name: Review — AI-proposed metadata-pivot path (changes requested)
+    description: Human triage of the AI hypothesis; it is NOT accepted.
+    reviews: assertion:ai-imds-pivot-realizes
+    reviewer: party:sec-reviewer
+    review_status: changes_requested
+    priority: medium
+    justification: >-
+      AI-proposed path. Metadata reachability depends on deployment specifics not yet
+      confirmed; keep as a flagged hypothesis, do not treat as reviewed.
+
+views:
+  - id: view:papermill-attack-graph
+    name: Papermill attack-path graph
+    description: >-
+      Interactive-graph-able lens over this model (§10, R-014): projection `graph`,
+      opened from a bounded focus query. A derived View, never written back to domain
+      nodes; this is the core (non-governed) View class.
+    projection: graph
+    focus_query: "product:papermill-doc-service -> threat_instances -> attack_paths -> attack_steps"
+
+lifecycle_phases:
+  - id: lifecycle-phase:design
+    name: Design
+    code: design
+  - id: lifecycle-phase:implementation
+    name: Implementation
+    code: implementation
+  - id: lifecycle-phase:operation
+    name: Operation / use
+    code: operation
