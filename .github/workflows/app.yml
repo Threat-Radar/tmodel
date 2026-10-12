@@ -1,0 +1,106 @@
+name: app
+# CI for the desktop app and engine (PLAN-0002 §2 step 5, T-211).
+# Lint + test + build for Python and TypeScript, plus a macOS build of the
+# Tauri shell. GitHub runners only — no cloud services (APP-0001 A-043).
+# Docs-only changes are checked by ci.yml (archdoc), not here.
+
+on:
+  pull_request:
+    paths:
+      - "engine/**"
+      - "apps/**"
+      - ".github/workflows/app.yml"
+  push:
+    branches: [main]
+    paths:
+      - "engine/**"
+      - "apps/**"
+      - ".github/workflows/app.yml"
+
+concurrency:
+  group: app-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  engine:
+    name: engine (Python ${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12"]
+    defaults:
+      run:
+        working-directory: engine
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install
+        run: python -m pip install -e ".[dev]"
+      - name: Lint
+        run: |
+          ruff check .
+          ruff format --check .
+      - name: Test
+        run: pytest -q
+      - name: CLI smoke test
+        run: tmodel health --in-process
+
+  frontend:
+    name: frontend (TypeScript)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/desktop
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/desktop/package-lock.json
+      - name: Install
+        run: npm ci
+      - name: Type-check
+        run: npm run typecheck
+      - name: Test
+        run: npm test
+      - name: Build
+        run: npm run build
+
+  desktop:
+    name: desktop (Tauri, macOS)
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: apps/desktop
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/desktop/package-lock.json
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: apps/desktop/src-tauri
+      - name: Install
+        run: npm ci
+      - name: Build frontend
+        run: npm run build
+      - name: Rust format
+        working-directory: apps/desktop/src-tauri
+        run: cargo fmt --check
+      - name: Rust lint
+        working-directory: apps/desktop/src-tauri
+        run: cargo clippy -- -D warnings
+      - name: Build app (debug, unbundled)
+        run: npx tauri build --debug --no-bundle
