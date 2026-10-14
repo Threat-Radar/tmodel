@@ -7,9 +7,9 @@ description: "How the field encodes weaknesses, vulnerabilities, scores, applica
 type: research
 category: security
 status: draft
-version: "0.3.0"
+version: "0.3.1"
 date: "2026-10-05"
-updated: "2026-10-13"
+updated: "2026-10-14"
 authors:
   - role: student
     id: Maimcghee
@@ -600,7 +600,7 @@ What the field has or lacks, against tmodel, with the decision each finding is e
 | G10 | Requirement/Control and Verification evidence are first-class in OSCAL and SysML v2 but absent from ARCH-0001 §3. | §7; crosswalk part 2 | DEC-001b (`Requirement` held open), #19 |
 | G11 | CPE and purl are the shared identity for Product and Component. | §9 | ADR-0010 `identifiers` slot (accepted; consistent with this evidence), DEC-009 |
 | G12 | OTM is the only threat-model interchange used across vendors, but it is a vendor-controlled 0.x schema without review or attack data; TM-BOM may supersede it. | §6, §8 | ADR-0007 (OTM import committed): OTM mapping and round-trip vector |
-| G13 | **The committed OTM import has no target for three of OTM's core entity types.** OTM is built on `assets`, `trustZones` and `dataflows`, but the accepted schema has no Asset, TrustBoundary or DataFlow class. Unless they are mapped onto accepted classes or added, an OTM import drops them, and the round-trip vector ADR-0007 requires cannot pass. | §6; crosswalk part 1 and DataFlow; ADR-0010 class list | ADR-0007 OTM mapping, DEC-001a follow-up, #64 |
+| G13 | **The committed OTM import has no target for three of OTM's core entity types.** OTM is built on `assets`, `trustZones` and `dataflows`, but the accepted schema has no Asset, TrustBoundary or DataFlow class. Unless they are mapped onto accepted classes or added, an OTM import drops them, and the round-trip vector ADR-0007 requires cannot pass. **Sponsor direction (2026-10-14):** add them, shaped by iterative example models of published automotive attacks (car theft, theft of owners' private data). Accepting the added classes still needs an ADR amending ADR-0010. | §6; crosswalk part 1 and DataFlow; ADR-0010 class list | ADR-0007 OTM mapping, ADR-0010 amendment, #64 |
 | G14 | **The committed STIX import carries no weakness, attack path, risk or product applicability**, and ATT&CK, the main STIX producer, uses STIX's deprecated custom-property route rather than extension definitions. A STIX import yields attack patterns, mitigations, parties and provenance, not a threat model. | §5 | ADR-0007 STIX mapping |
 
 ## 12. Method, coverage and limits

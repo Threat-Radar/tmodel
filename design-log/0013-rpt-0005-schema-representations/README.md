@@ -4,9 +4,9 @@ id: DL-0013
 title: "RPT-0005 schema representations: AI-assisted scoping, survey and crosswalk"
 type: process
 status: draft
-version: "0.7.0"
+version: "0.8.0"
 date: "2026-10-05"
-updated: "2026-10-13"
+updated: "2026-10-14"
 record: DL-0013
 ---
 
@@ -252,4 +252,30 @@ Bring the report up to date with tmodel PR #111, which accepted DEC-001a (ADR-00
 ### What was rejected, and why
 
 - **An early reading that Paul's name-removal sweep had covered the report.** Checking showed the author id still used a personal name, so it was changed. The same personal id remains in another report on `main` (to be fixed separately).
+
+## Sponsor direction on G13 (2026-10-14)
+
+### Question asked
+
+The student asked @nymble, by text message, whether to add the classes that G13 finds missing (Asset, TrustBoundary, DataFlow), given that ADR-0007 commits tmodel to importing OTM.
+
+### The answer, as the student relayed it
+
+> "Do add … suggest iterative example building … have it make models … based on literature or such in a relatively narrow set of attacks … perhaps automotive … cyber attacks … ability to steal car … user private info etc"
+
+As read: add the three classes, and shape them by building small example threat models iteratively, from published automotive attacks (stealing a car; stealing owners' private data), rather than designing the classes in the abstract.
+
+### What this does and does not do
+
+- It is sponsor direction to start the work, not acceptance. ADR-0010 accepted the core type system without these classes, so adding them needs an ADR that amends it (`CLAUDE.md`: only an ADR accepts a decision).
+- The work belongs to the schema lane (#64, owned by the student). The existing automotive examples (`spec/vectors/mvp-02-automotive-ecu.yaml`, `tv-hardware-brake-ecu.yaml`) and RPT-0007 (ISO/SAE 21434) are the starting points.
+- Planned loop: choose two or three well-documented attacks from verified sources; write each as an example model; validate it against the schema; add or adjust the classes; repeat.
+
+### What a human accepted
+
+- The sponsor's direction above. The student is sending a short confirmation of this reading; the reply is pending.
+
+### What was rejected, and why
+
+Nothing yet.
 
