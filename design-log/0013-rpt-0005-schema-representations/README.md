@@ -4,7 +4,7 @@ id: DL-0013
 title: "RPT-0005 schema representations: AI-assisted scoping, survey and crosswalk"
 type: process
 status: draft
-version: "0.6.0"
+version: "0.7.0"
 date: "2026-10-05"
 updated: "2026-10-13"
 record: DL-0013
@@ -225,4 +225,31 @@ Four statements in the agent's template, each caught by checking against the sou
 - "OSCAL is the strongest format on four of the five axes": it is rated 3 on all five.
 - "15 of 42 threagile risk categories link to CWE ids CWE says not to use": the source says 15 of the 42 CWE links are to Prohibited ids.
 - "3 rejected claims in the pilot": this log records 4.
+
+## Report 0.3.0: update for decisions accepted on 2026-10-09 (2026-10-13)
+
+### Question asked
+
+Bring the report up to date with tmodel PR #111, which accepted DEC-001a (ADR-0010), DEC-002 (ADR-0007), DEC-003 (ADR-0006) and DEC-004 (ADR-0008) after the survey was scoped. ADR-0007 commits tmodel to importing OTM and STIX 2.1 and names this crosswalk as the work that "refines and may extend import coverage".
+
+### What was produced
+
+- The branch was merged with `main` (58 commits; no conflicts). The merge carried the sponsor's repo-wide removal of personal names; the report's author id was changed to the GitHub id to match.
+- `report.md` 0.3.0: a table of the accepted decisions and what each means for the report; a mapping of the crosswalk's rows onto ADR-0010's classes, read from `spec/schema/tmodel-object-model.linkml.yaml` on `main`; the gap analysis re-routed to accepted ADRs or still-open decisions; and two new findings, G13 and G14.
+- `crosswalk.md` 0.1.1: a pointer to that mapping.
+
+### Choices the agent made, open to review
+
+- **G13:** the committed OTM import has no target class for OTM's `assets`, `trustZones` and `dataflows`. The accepted schema has no Asset, TrustBoundary or DataFlow class, and notes "Asset is not a §13 class". This is reported as a risk to ADR-0007's round-trip vector, not as a proposal to add classes.
+- **G14:** the committed STIX import yields attack patterns, mitigations, parties and provenance, but no weakness, path, risk or applicability (from the fan-out's STIX findings).
+- **Threat → `ThreatInstance`**, with the generic level as `AttackPattern`, based on the two classes' descriptions in the schema.
+- **The crosswalk is not re-keyed** to ADR-0010's names. The mapping table is the bridge; re-keying is left to the clarity pass.
+
+### What a human accepted
+
+- The student asked for the update to be done in parallel with the OTM FX-1 run (2026-10-13). Review is pending.
+
+### What was rejected, and why
+
+- **An early reading that Paul's name-removal sweep had covered the report.** Checking showed the author id still used a personal name, so it was changed. The same personal id remains in another report on `main` (to be fixed separately).
 

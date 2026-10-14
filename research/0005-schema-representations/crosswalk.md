@@ -4,15 +4,17 @@ id: RPT-0005-crosswalk
 title: "RPT-0005 crosswalk: 24 formats onto ARCH-0001's types and edges"
 type: research
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 date: "2026-10-08"
-updated: "2026-10-08"
+updated: "2026-10-13"
 record: RPT-0005
 ---
 
 # RPT-0005: crosswalk and local extension (dimension 8)
 
 This file assembles Tables 2, 3 and 6 of [dimensions.md](dimensions.md) from the four Phase 1 files: [pilot.md](pilot.md), [fanout-vuln-data.md](fanout-vuln-data.md), [fanout-attack-composition.md](fanout-attack-composition.md) and [fanout-models-requirements.md](fanout-models-requirements.md). It answers the four questions of dimension 8. It is evidence for DEC-001, DEC-002, DEC-008 and DEC-009 and for #16 and #17; it accepts nothing.
+
+**Since assembly:** on 2026-10-09 ADR-0010 accepted the core object model (DEC-001a), whose class names supersede the ARCH-0001 §3 working labels used as rows here, and ADR-0007 committed tmodel to importing OTM and STIX 2.1 (DEC-002). The row-to-class mapping and the re-routed findings are in [report.md](report.md) (Overview and §11).
 
 **How it was built.** Each matrix cell is the fidelity mark taken by script from the matching cell of the source file. The source cell names the format's own element (field path or class) and its qualifiers; look there before relying on a mark. No mark was changed by hand. A cell shows `∅` where the source did not assess that concept, and `?` where the source could not verify it.
 

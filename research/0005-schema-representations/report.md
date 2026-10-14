@@ -7,12 +7,12 @@ description: "How the field encodes weaknesses, vulnerabilities, scores, applica
 type: research
 category: security
 status: draft
-version: "0.2.0"
+version: "0.3.0"
 date: "2026-10-05"
 updated: "2026-10-13"
 authors:
   - role: student
-    id: mai-li-mcghee
+    id: Maimcghee
   - role: research
     id: ai-assisted
 decision_makers:
@@ -23,14 +23,14 @@ needs_review: true
 reviewed: false
 canonical_path: research/0005-schema-representations/report.md
 library_commit: "pending Phase 2 (record cwe extracted on Threat-Radar/library#21, unmerged)"
-informs: [DEC-001, DEC-002, DEC-008, DEC-009]
-open_decisions: [DEC-001, DEC-002, DEC-008, DEC-009]
+informs: [DEC-001a, DEC-001b, DEC-002, DEC-008, DEC-009]
+open_decisions: [DEC-001b, DEC-008, DEC-009]
 issue: 39
 ---
 
 # RPT-0005: Schema representations of cybersecurity information
 
-**Status: draft 0.2.0.** Survey, crosswalk and gap analysis are written. Not yet done: library extraction (Phase 2, one record of about twenty), the adversarial review (Phase 4) and the clarity pass (Phase 6). Nothing here is accepted; every recommendation routes to an open `DEC-*` or issue.
+**Status: draft 0.3.0.** Survey, crosswalk and gap analysis are written, and updated for the decisions accepted on 2026-10-09 (below). Not yet done: library extraction (Phase 2), the adversarial review (Phase 4) and the clarity pass (Phase 6). This report accepts nothing; each recommendation routes to an open `DEC-*`, to the follow-up work of an accepted ADR, or to an issue.
 
 ## Overview
 
@@ -38,11 +38,42 @@ tmodel will import security data from formats it does not control, and may expor
 
 Three findings matter most for the object model:
 
-1. **No surveyed format encodes ARCH-0001's Review exactly**, and none encodes an ordered attack path. These are the elements that most distinguish tmodel; they must be modelled natively and carried into other formats by extension.
-2. **Attributed, multi-source statements are established practice.** CVE records, NVD, STIX, SPDX 3 and CycloneDX all keep several parties' claims side by side with who made them and when. This is evidence for the Assertion pattern in the unaccepted LinkML draft.
+1. **No surveyed format encodes ARCH-0001's Review exactly**, and none encodes an ordered attack path. These are the elements that most distinguish tmodel. ADR-0010 now models both natively; the open work is carrying them through other formats' extension points.
+2. **Attributed, multi-source statements are established practice.** CVE records, NVD, STIX, SPDX 3 and CycloneDX all keep several parties' claims side by side with who made them and when. ADR-0010 has since accepted `Assertion` as a core type, consistent with this evidence.
 3. **Edges need properties.** Relations in every family carry a scope, order, fit grade, logic or justification that a bare typed edge loses (ADR-0004).
 
 One external change bears directly on DEC-008: since April 2026, NIST's National Vulnerability Database enriches only a minority of CVEs, so CWE and product applicability must come mainly from the CVE record itself.
+
+### Decisions accepted since this survey was scoped
+
+On 2026-10-09 (tmodel PR #111) the sponsor accepted four decisions this report bears on. Only DEC-001b, DEC-008 and DEC-009 remain open.
+
+| Decision | Accepted as | What it means for this report |
+|---|---|---|
+| DEC-001a, core object model | ADR-0010 | Its class names supersede ARCH-0001 §3's working labels, which the crosswalk's rows use (mapping below). Assertion, Party, AttackPattern, DamageScenario and an `identifiers` slot for purl and CPE are now core, as this survey's evidence suggested. |
+| DEC-001b, governed layer | held open | `Requirement` is proposal-level; G10 routes here. |
+| DEC-002, encoding and interchange | ADR-0007 | LinkML is the canonical schema language; tmodel **imports OTM and STIX 2.1** and exports JSON-LD, Turtle, GraphML and CSV, each proven by a round-trip vector. ADR-0007 says this crosswalk "refines and may extend import coverage". §5 and §6 are therefore direct input to the OTM and STIX mappings. |
+| DEC-003, risk metric | ADR-0006 | A composite vector (feasibility, impact, mitigation status, derived risk). CVSS, EPSS and SSVC (§3) are inputs to it, not the metric. |
+| DEC-004, working store | ADR-0008 | Oxigraph (embedded RDF with RDF-star) behind the ADR-0004 façade. The edge qualifiers in G5 have a native carrier in RDF-star. |
+
+**Crosswalk rows mapped onto ADR-0010's classes.** The crosswalk was assembled against ARCH-0001 §3's working labels; this is how its rows correspond to the accepted classes in `spec/schema/tmodel-object-model.linkml.yaml` (main, 2026-10-13):
+
+| Crosswalk row | Accepted class | Note |
+|---|---|---|
+| Asset | none | the schema notes "Asset is not a §13 class"; see G13 |
+| Component | `Component` | |
+| TrustBoundary | none | see G13 |
+| Weakness, Vulnerability | `Weakness`, `Vulnerability` | |
+| Threat | `ThreatInstance` | "a threat in a model, not the generic catalog entry"; the generic level is `AttackPattern` (CAPEC, ATT&CK) |
+| AttackStep, AttackPath | `AttackStep`, `AttackPath` | |
+| Mitigation | `Mitigation` | |
+| RiskScore | `RiskScore`, `ImpactVector` | composite (ADR-0006) |
+| Review | `Review` (+ `Assertion`) | |
+| Product / ProductFamily | `Product`, `ProductInstance` | |
+| Party, DamageScenario, Assertion (part 2) | `Party`, `DamageScenario`, `Assertion` | now core |
+| Software identifier (identity sub-row) | `identifiers` slot | purl, CPE, SBOM refs, firmware digest |
+| Requirement/Control (part 2) | `Requirement` | DEC-001b, open |
+| DataFlow (part 2) | none | see G13 |
 
 The method is in §12. The questions and table columns were fixed in [dimensions.md](dimensions.md) before the search; the evidence behind every cell is in [pilot.md](pilot.md) and the three `fanout-*.md` files; the crosswalk is assembled in [crosswalk.md](crosswalk.md).
 
@@ -557,22 +588,26 @@ What the field has or lacks, against tmodel, with the decision each finding is e
 
 | # | Finding | Evidence | Routes to |
 |---|---|---|---|
-| G1 | No format encodes Review (verdict, assigned impact, rationale, reviewer, date) exactly. OSCAL and threagile come closest, and neither has assigned impact. | Table 5; crosswalk Review column (0 of 24 `=`) | ARCH-0001 §7, R-018, #17 |
-| G2 | No released format has an ordered attack path. CAPEC's execution flow is the nearest; CycloneDX 2.0 TM-BOM is a draft candidate. | crosswalk AttackStep and AttackPath (0 of 24 `=`); §8 | DEC-001, DEC-002, #17 |
-| G3 | Attributed, multi-source assertions are common practice (5 exact, 8 close). | crosswalk part 2; §2, §4, §8 | DEC-001, #16 (Assertion) |
-| G4 | ARCH-0001 has no specialization edge, but CWE, CAPEC and ATT&CK all use one. Mapping it to `part_of` would be wrong. | crosswalk, edges ARCH-0001 lacks | DEC-001 |
-| G5 | Edges carry qualifiers in every family: scope, order, fit, logic, justification, version pin. | crosswalk, edge qualifiers | ADR-0004 edge façade (#52, #65), #16 |
+| G1 | No format encodes Review (verdict, assigned impact, rationale, reviewer, date) exactly. OSCAL and threagile come closest, and neither has assigned impact. Every import and export loses Review unless it is carried by extension. | Table 5; crosswalk Review column (0 of 24 `=`) | ADR-0010 `Review` (export mapping), DEC-001b C1, R-018, #17 |
+| G2 | No released format has an ordered attack path. CAPEC's execution flow is the nearest; CycloneDX 2.0 TM-BOM is a draft candidate. | crosswalk AttackStep and AttackPath (0 of 24 `=`); §8 | ADR-0010 `AttackPath` (export mapping), ADR-0007, #17 |
+| G3 | Attributed, multi-source assertions are common practice (5 exact, 8 close). | crosswalk part 2; §2, §4, §8 | ADR-0010 `Assertion` (accepted; consistent with this evidence), #16 |
+| G4 | ARCH-0001 has no specialization edge, but CWE, CAPEC and ATT&CK all use one. Mapping it to `part_of` would be wrong. | crosswalk, edges ARCH-0001 lacks | ADR-0010 relations follow-up, #64 |
+| G5 | Edges carry qualifiers in every family: scope, order, fit, logic, justification, version pin. | crosswalk, edge qualifiers | ADR-0010 `Assertion` (reified edge), ADR-0004 edge façade (#52, #65), #16 |
 | G6 | Applicability with a reason, per product version, is standardized as VEX, but the four encodings' justification codes differ (9 versus 5). | §4 | #17 ("is CVE X applicable to product Y"), DEC-009 |
 | G7 | NVD no longer enriches most CVEs; CNA and ADP data in the CVE record is the main source of CWE and applicability. | §2 | DEC-008 |
 | G8 | Catalog references need a validity gate (CWE `Usage`) and a version pin (ATT&CK ids change meaning; CAPEC is frozen at ATT&CK 12.0). | §2, §5; threagile's 15 of 42 | DEC-008, #16 |
-| G9 | Closed catalogs (CWE, CAPEC) cannot be extended in place; local entries need a separate namespace with a fit-graded link. | §2; crosswalk Table 6 | DEC-001, DEC-002, DEC-008 |
-| G10 | Requirement/Control and Verification evidence are first-class in OSCAL and SysML v2 but absent from ARCH-0001 §3. | §7; crosswalk part 2 | DEC-001, #19 |
-| G11 | CPE and purl are the shared identity for Product and Component. | §9 | DEC-002, DEC-009 |
-| G12 | OTM is the only threat-model interchange used across vendors, but it is a vendor-controlled 0.x schema without review or attack data; TM-BOM may supersede it. | §6, §8 | DEC-002 (R-005 import target) |
+| G9 | Closed catalogs (CWE, CAPEC) cannot be extended in place; local entries need a separate namespace with a fit-graded link. | §2; crosswalk Table 6 | DEC-008, #64 |
+| G10 | Requirement/Control and Verification evidence are first-class in OSCAL and SysML v2 but absent from ARCH-0001 §3. | §7; crosswalk part 2 | DEC-001b (`Requirement` held open), #19 |
+| G11 | CPE and purl are the shared identity for Product and Component. | §9 | ADR-0010 `identifiers` slot (accepted; consistent with this evidence), DEC-009 |
+| G12 | OTM is the only threat-model interchange used across vendors, but it is a vendor-controlled 0.x schema without review or attack data; TM-BOM may supersede it. | §6, §8 | ADR-0007 (OTM import committed): OTM mapping and round-trip vector |
+| G13 | **The committed OTM import has no target for three of OTM's core entity types.** OTM is built on `assets`, `trustZones` and `dataflows`, but the accepted schema has no Asset, TrustBoundary or DataFlow class. Unless they are mapped onto accepted classes or added, an OTM import drops them, and the round-trip vector ADR-0007 requires cannot pass. | §6; crosswalk part 1 and DataFlow; ADR-0010 class list | ADR-0007 OTM mapping, DEC-001a follow-up, #64 |
+| G14 | **The committed STIX import carries no weakness, attack path, risk or product applicability**, and ATT&CK, the main STIX producer, uses STIX's deprecated custom-property route rather than extension definitions. A STIX import yields attack patterns, mitigations, parties and provenance, not a threat model. | §5 | ADR-0007 STIX mapping |
 
 ## 12. Method, coverage and limits
 
 **Method.** The #39 playbook, phases 0 to 1, with a cost cap of three parallel agents. Phase 0 fixed the questions and table columns ([dimensions.md](dimensions.md)). A pilot on CWE, CVE, NVD and OTM in the main session tested the tables and changed five things in them ([pilot.md](pilot.md)). Three research agents then covered the other formats. Facts were taken from the artifacts (schema files, real example documents, live APIs), each with its SHA-256, not from summaries. The main session re-derived ten of the agents' facts from the artifacts, and all matched. The crosswalk marks were assembled by script without re-judgment. Every query is in [searches.md](searches.md) and every source in [sources.md](sources.md). The design log, DL-0013, records each phase and what was rejected: 4 claims in the pilot, 36 in the fan-out and 3 in the crosswalk draft.
+
+**Decisions taken during the survey.** DEC-001a, DEC-002, DEC-003 and DEC-004 were accepted on 2026-10-09 (Overview); version 0.3.0 re-routes the gap analysis accordingly. The crosswalk itself still uses ARCH-0001 §3's working labels, with the mapping in the Overview.
 
 **Scope decisions.** OpenC2 is out of scope (a command language, not threat knowledge). CPE, purl and KEV are not formats. ATLAS is covered by RPT-0014. All three were decided by the sponsor. Still open: whether CycloneDX 2.0 TM-BOM gets full coverage as a pinned draft, and whether SSVC is a format.
 
