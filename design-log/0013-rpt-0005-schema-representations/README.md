@@ -4,9 +4,9 @@ id: DL-0013
 title: "RPT-0005 schema representations: AI-assisted scoping, survey and crosswalk"
 type: process
 status: draft
-version: "0.5.0"
+version: "0.6.0"
 date: "2026-10-05"
-updated: "2026-10-08"
+updated: "2026-10-13"
 record: DL-0013
 ---
 
@@ -174,4 +174,55 @@ Three statements in the agent's first draft of the prose, each caught by checkin
 - "Prose-only successors in CWE, CAPEC and one VEX encoding": the third is pytm's `DEPRECATED` marker, not a VEX encoding.
 - "Threat Dragon draws a boundary as a line": its boundaries are a drawn curve or box with geometric membership.
 - "Every vulnerability-data and composition format can name the vulnerable thing": too vague to check, so removed.
+
+## Phase 2 test run: CWE extracted to FX-1 (2026-10-08 to 2026-10-13)
+
+### Question asked
+
+Size Phase 2 by extracting one record, `cwe`, to FX-1 in the library repository, in a separate Claude Code session opened there (the `extract` skill loads only from the library root).
+
+### What was produced
+
+Threat-Radar/library#21 (draft): `records/other/cwe/` pinned to CWE List 4.20 and schema 7.3, with the full `distilled/` set (198 requirements, 60 structures, 20 fixtures, design notes mapped to tmodel decisions, and a verification record). The extraction found 16 places where the schema's documentation contradicts its structure. Before upload, the main session added the missing `Signed-off-by` and rebased the branch onto library `main` (22 commits behind). The library's checks passed: `bin/validate`, `bin/check-pr-extraction`, and CI (`validate`, `dco`).
+
+### Cost
+
+The two extraction agents took 32 and 47 minutes, one using about 388k tokens, before an independent checker ran. One record costs over an hour and several hundred thousand tokens, so about twenty would exceed what one student account can carry.
+
+### What a human accepted
+
+- The student reviewed the record's `summary.md`, `design-notes.md` and `verification.md` for clarity (2026-10-13). Technical review is pending; the proposed reviewer is @Clovier, whose #61 imports CWE.
+- The student decided not to ask the sponsor to reduce Phase 2 scope. Instead, the plan is to share overlapping records: CycloneDX and SPDX with RPT-0004 (@Clovier), and pytm and Threat Dragon with RPT-0003 (@kriishnaa-18). The messages are drafted but not yet sent.
+
+### What was rejected, and why
+
+The checker's residual issues are listed in `verification.md`. One of them, that the CVE `replacedBy` claim could not be checked, is answered by this log's pilot entry, which verified `replacedBy` against the CVE 5.2.0 schema.
+
+## Report draft 0.2.0 (2026-10-13)
+
+### Question asked
+
+Write `report.md` from the Phase 1 material and the crosswalk, ahead of Phase 2 and Phase 4, so that the adversarial review has a draft to attack and the sponsor sees results early. The playbook places synthesis after review; this draft is reviewed in Phase 4 and revised.
+
+### What was produced
+
+`report.md` 0.2.0: overview; Table 1 (24 formats plus one ATLAS row) and Table 5 (ratings), merged by script from the four source files with the sponsor's scope applied; a section per family with each format's findings, paraphrased from the sources' "Findings that bear on tmodel"; the crosswalk's main matrix; Table 4 (38 adoption rows); a synthesis and a gap analysis of twelve findings, each routed to a `DEC-*` or issue; and method, scope and limits.
+
+### Choices the agent made, open to review
+
+- **Tables are merged, not rewritten.** Rows are copied verbatim from the source files. The CycloneDX and SPDX VEX rows from agent 1 are folded into agent 2's rows, and CPE, purl and KEV are left out per the sponsor.
+- **The format sections paraphrase the sources' findings** and add no new claims, except where the pilot or the main session verified a fact (for example the NVD sample).
+- **Gap analysis rows are evidence, routed, not proposals.** No `DEC-*` is accepted.
+
+### What a human accepted
+
+- The student chose to draft the report while teammates are asked about sharing Phase 2 (2026-10-13). Review is pending.
+
+### What was rejected, and why
+
+Four statements in the agent's template, each caught by checking against the sources before generating the file:
+- "In CVE-2021-44228 the CNA and CISA give different CWE and severity data": CISA's container adds a CVSS score and SSVC, not a CWE; the differing CWE comes from NVD.
+- "OSCAL is the strongest format on four of the five axes": it is rated 3 on all five.
+- "15 of 42 threagile risk categories link to CWE ids CWE says not to use": the source says 15 of the 42 CWE links are to Prohibited ids.
+- "3 rejected claims in the pilot": this log records 4.
 
