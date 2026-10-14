@@ -4,9 +4,9 @@ id: RPT-0006-sources
 title: "RPT-0006 source log"
 type: research
 status: draft
-version: "0.1.0"
+version: "0.2.0"
 date: "2026-10-02"
-updated: "2026-10-05"
+updated: "2026-10-13"
 record: RPT-0006
 ---
 
@@ -55,4 +55,16 @@ library record for bibliographic detail.
 | yFiles Graph Editor demo | https://www.yfiles.com/demos/view/grapheditor/index.html | official interactive demo | 3.1-era public demo | 2026-10-05 | official documentation / limited access check | Confirms a public editing demo exists; dimensions 1, 2, and 8 | Not exercised with the common fixture |
 | yFiles evaluation signup | https://my.yworks.com/signup?product=YFILES_HTML_EVAL | official evaluation portal | accessed 2026-10-05 | 2026-10-05 | official access/licensing evidence | Local evaluation requires customer-center signup and licensed package download; dimension 8 | No account was created |
 | yFiles evaluation setup | https://docs.yworks.com/yfiles-html/dguide/getting_started-ide/ | official documentation | 3.1 | 2026-10-05 | official documentation | Evaluation package contains local tgz and license file; dimension 8 | Explains why no equivalent local common-fixture run was made |
+| OASIS STIX Visualizer | https://oasis-open.github.io/cti-stix-visualization/ | official project application | current deployment | 2026-10-13 | official interactive documentation | STIX input, graph, type legend, object details and timeline; dimensions 2, 6 and 7 | Security-graph prior art, not a review-console SDK |
+| OASIS STIX visualization guide | https://oasis-open.github.io/cti-documentation/stix/gettingstarted.html | official OASIS Open CTI documentation | STIX 2.1 guide | 2026-10-13 | official documentation | STIX Domain Objects as nodes, Relationship Objects as edges, interactive inspection and input methods | Supports the visualizer mapping claim |
+| Graphology attributes | https://graphology.github.io/attributes.html | official documentation | current | 2026-10-13 | official documentation | Arbitrary node/edge attributes including type and weight; graphical/domain object-model boundary | Graphology data model, not Sigma rendering behavior |
+| Graphology operators | https://graphology.github.io/standard-library/operators.html | official documentation | current | 2026-10-13 | official documentation | Derived subgraphs and graph operators; multiple-view/subgraph evidence | Subgraph creation is distinct from view filtering |
+| Graphology metrics | https://graphology.github.io/standard-library/metrics.html | official documentation | current | 2026-10-13 | official documentation | Weighted degree, centrality and layout-quality metrics; ranking/weighting evidence | Metrics are not automatically domain risk or importance |
+| React Flow accessibility | https://reactflow.dev/learn/advanced-use/accessibility | official documentation | current | 2026-10-13 | official documentation | Keyboard focus/operation, ARIA labels and live updates; accessibility coverage check | Primitives do not prove an accessible tmodel application |
+| React Flow save and restore | https://reactflow.dev/examples/interaction/save-and-restore | official example | current | 2026-10-13 | official example | Persistence of nodes, edges and viewport; saved-view coverage | Example, not a shared canonical-view protocol |
+| React Flow subflows | https://reactflow.dev/learn/layouting/sub-flows | official documentation | current | 2026-10-13 | official documentation | Parent/child grouping and relative positioning; graphical object-model coverage | Follow-up candidate only |
+| vis-network node options | https://visjs.github.io/vis-network/docs/network/nodes.html | official documentation | current | 2026-10-13 | official documentation | Node mass and value-based visual scaling; weighting/gravity coverage | Mass affects physics and must not be confused with semantic importance |
+| vis-network physics | https://visjs.github.io/vis-network/docs/network/physics.html | official documentation | current | 2026-10-13 | official documentation | Central gravity, repulsion, spring strength and ForceAtlas2-based mechanics | Coverage evidence, not a new fixed candidate |
+| AntV G6 layouts and combos | https://g6.antv.antgroup.com/en/manual/graph/extensions | official documentation | 5.1.1 | 2026-10-13 | official documentation | Built-in layouts, combos, states and interactions; candidate coverage | Broad SDK alternative; not added to fixed comparison |
+| Ogma accessibility example | https://doc.linkurious.com/ogma/latest/examples/accessibility.html | official SDK example | current | 2026-10-13 | official example | Keyboard graph traversal and visual focus; accessibility/commercial-SDK coverage | Example uses custom application code; no tmodel test |
 | RPT-0006 common-fixture prototype scan | n/a — observations retained in `report.md` Section 9 and `searches.md` | temporary repository research activity | run 2026-10-05; Cytoscape.js 3.34.0, Sigma.js 3.0.3, Graphology 0.26.0 | 2026-10-05 | reproducible hands-on observation | Cytoscape.js and Sigma.js checks across dimensions 1–8 | Not benchmark evidence; temporary harness, JSON, and generated artifacts removed after material observations were captured |
