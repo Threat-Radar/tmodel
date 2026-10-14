@@ -15,7 +15,7 @@ authors:
     id: cs490-fall-2026
 decision_makers:
   - role: sponsor
-    id: paul-lambert
+    id: nymble
 reviewers: []
 needs_review: true
 reviewed: false

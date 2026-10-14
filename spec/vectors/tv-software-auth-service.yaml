@@ -1,0 +1,462 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# TEST VECTOR — software domain (the DEEP product, ADR-0002)
+#
+# A worked example threat model for an OSS authentication microservice, plus the
+# governed ThreatModel snapshot over it and the SDL SecurityProgram that governs
+# the product. Exercises: components with CPE/purl identity, a CWE/CVE propagating
+# along composition (as a reviewed Assertion), two AttackPaths of ordered
+# AttackSteps with AND and OR gates, Mitigations with status, a composite-vector
+# RiskScore (ADR-0006), Party roles, and the human-reviewed vs AI-proposed
+# distinction via the Review/Assertion spine.
+#
+# EXAMPLE / TEST DATA — NOT accepted truth. DEC-001 is OPEN; the object model is a
+# draft proposal. People appear as github ids / roles only (CLAUDE.md). AI-proposed
+# content is never presented as reviewed.
+#
+# Validate:
+#   linkml-validate -s spec/vectors/example-container.linkml.yaml \
+#     -C ExampleModel spec/vectors/tv-software-auth-service.yaml
+# ─────────────────────────────────────────────────────────────────────────────
+
+parties:
+  - id: party:acme-oss-foundation
+    name: Acme OSS Foundation
+    description: Upstream maintainer/manufacturer of the auth service (role identity, §2b).
+    party_kind: organization
+    classifications: [oss-maintainer]
+  - id: party:downstream-saas
+    name: Downstream SaaS operator
+    description: Deploys and owns a running instance; the stakeholder impact is reported for.
+    party_kind: organization
+    classifications: [asset-owner]
+  - id: party:cna-mitre
+    name: CVE Numbering Authority
+    party_kind: organization
+    classifications: [cna]
+  - id: party:researcher-01
+    name: "@researcher-01"
+    description: Independent reporter of the vulnerability (github id only, §2b).
+    party_kind: person
+  - id: party:sec-lead
+    name: "@sec-lead"
+    description: Human security reviewer / threat-model owner (github id, role identity).
+    party_kind: person
+  - id: party:sdl-owner
+    name: "@sdl-owner"
+    description: SDL program owner / gate approver (github id, role identity).
+    party_kind: person
+
+products:
+  - id: product:acme-auth-service
+    name: Acme Auth Service
+    description: OSS authentication & token-refresh microservice.
+    composed_of: [component:auth-service-svc]
+    manufactured_by: party:acme-oss-foundation
+    supplied_by: party:acme-oss-foundation
+    owned_by: party:downstream-saas
+    identifiers:
+      - "pkg:github/acme/auth-service"
+      - "cpe:2.3:a:acme:auth_service:2.4.1:*:*:*:*:*:*:*"
+
+product_instances:
+  - id: product-instance:auth-service-2-4-1
+    name: auth-service build 2.4.1
+    description: The reviewed build; software instance identity is a build/commit/SBOM hash (ADR-0002).
+    of_product: product:acme-auth-service
+    current_phase: lifecycle-phase:operation
+    valid_from: "2026-09-01T00:00:00Z"
+    owned_by: party:downstream-saas
+    identifiers:
+      - "build:acme-auth@2.4.1+git.8f2c1a7"
+      - "sha256:8f2c1a7e4d6b9c0f1a2b3c4d5e6f70819a2b3c4d5e6f7081a2b3c4d5e6f70819"
+
+components:
+  - id: component:auth-service-svc
+    name: auth-service (service container)
+    description: The deployed service artifact (§0 authoritative component, not a DFD node).
+    composed_of: [component:token-module]
+    uses_component: [component:log4j-core]
+    owned_by: party:downstream-saas
+    identifiers:
+      - "pkg:oci/acme/auth-service@sha256:8f2c1a7e"
+  - id: component:token-module
+    name: token-refresh module
+    uses_component: [component:log4j-core]
+    identifiers:
+      - "pkg:github/acme/auth-service@2.4.1#token"
+  - id: component:log4j-core
+    name: log4j-core (transitive dependency)
+    description: Vulnerable OSS logging dependency along which the finding propagates (§5).
+    identifiers:
+      - "pkg:maven/org.apache.logging.log4j/log4j-core@2.14.1"
+      - "cpe:2.3:a:apache:log4j:2.14.1:*:*:*:*:*:*:*"
+
+weaknesses:
+  - id: weakness:cwe-502
+    name: Deserialization of Untrusted Data
+    description: Generic weakness class (CWE, §1 layer 3).
+    catalog_ref: "CWE-502"
+
+vulnerabilities:
+  - id: vulnerability:cve-2021-44832
+    name: log4j-core RCE via JDBC Appender (illustrative)
+    description: Finding affecting the product; propagation to components is a reviewed Assertion (§5).
+    catalog_ref: "CVE-2021-44832"
+    affects: [product:acme-auth-service]
+    reported_by: party:researcher-01
+    assigned_by: party:cna-mitre
+
+attack_patterns:
+  - id: attack-pattern:capec-586
+    name: Object Injection
+    description: Generic attack pattern (CAPEC = what, §2a). The CWE↔CAPEC link is a reviewed Assertion.
+    catalog_ref: "CAPEC-586"
+
+damage_scenarios:
+  - id: damage-scenario:token-forgery
+    name: Forged auth tokens → cross-tenant data breach
+    description: The damage the RCE threat realizes; impact categories live on RiskScore (§3).
+
+threat_instances:
+  - id: threat-instance:rce-via-deser
+    name: RCE via unsafe deserialization in logging dependency
+    description: Human-elicited STRIDE threat on the token-refresh flow.
+    realizes_damage: damage-scenario:token-forgery
+    method_facet: [stride]
+    source_method: "stride-dfd (human-elicited, reviewed)"
+    violates_property: "E authorization / T integrity"
+    applies_in_phase: [lifecycle-phase:operation]
+  - id: threat-instance:supply-chain-rce
+    name: RCE via compromised upstream dependency release
+    description: >-
+      AI-PROPOSED hypothesis (not reviewed/accepted). source_method records the
+      proposing method; its realizing edge is an Assertion in `proposed` state with
+      a Review that has NOT accepted it (CLAUDE.md: AI output is a hypothesis).
+    realizes_damage: damage-scenario:token-forgery
+    method_facet: [stride]
+    source_method: "ai:maestro-agent (hypothesis, unreviewed)"
+    violates_property: "T integrity"
+    applies_in_phase: [lifecycle-phase:distribution]
+
+attack_steps:
+  # Path 1 — deserialization RCE; an AND gate at the trigger step.
+  - id: attack-step:enumerate-refresh-endpoint
+    name: Enumerate the token-refresh endpoint
+    kill_chain_phase: reconnaissance
+    precedes: [attack-step:craft-serialized-payload]
+  - id: attack-step:craft-serialized-payload
+    name: Craft a malicious serialized payload
+    precedes: [attack-step:trigger-gadget-chain]
+  - id: attack-step:deliver-via-refresh
+    name: Deliver payload via the refresh endpoint
+    precedes: [attack-step:trigger-gadget-chain]
+  - id: attack-step:trigger-gadget-chain
+    name: Trigger the deserialization gadget chain → RCE
+    description: Requires BOTH a crafted payload AND a reachable gadget — an AND gate (§2a).
+    gate: and_gate
+    kill_chain_phase: exploitation
+  # Path 2 — upstream supply-chain compromise; an OR gate at the publish step.
+  - id: attack-step:compromise-maintainer-account
+    name: Compromise an upstream maintainer account
+    precedes: [attack-step:publish-malicious-release]
+  - id: attack-step:typosquat-dependency
+    name: Publish a typosquatted dependency
+    precedes: [attack-step:publish-malicious-release]
+  - id: attack-step:publish-malicious-release
+    name: Publish a malicious release downstream pulls
+    description: Either account compromise OR typosquat suffices — an OR gate (§2a).
+    gate: or_gate
+    precedes: [attack-step:downstream-pulls-update]
+  - id: attack-step:downstream-pulls-update
+    name: Downstream build pulls the malicious update
+    kill_chain_phase: delivery
+
+attack_paths:
+  - id: attack-path:deser-rce
+    name: Deserialization RCE path
+    description: Human-reviewed path realizing the deserialization threat; feasibility human-rated (§3).
+    steps:
+      - attack-step:enumerate-refresh-endpoint
+      - attack-step:craft-serialized-payload
+      - attack-step:deliver-via-refresh
+      - attack-step:trigger-gadget-chain
+    realizes_threat: threat-instance:rce-via-deser
+    attack_feasibility: medium
+  - id: attack-path:supply-chain-swap
+    name: Upstream supply-chain compromise path
+    description: The AI-PROPOSED path; realizing edge is a `proposed` Assertion, not yet accepted.
+    steps:
+      - attack-step:compromise-maintainer-account
+      - attack-step:typosquat-dependency
+      - attack-step:publish-malicious-release
+      - attack-step:downstream-pulls-update
+    realizes_threat: threat-instance:supply-chain-rce
+    attack_feasibility: low
+
+mitigations:
+  - id: mitigation:disable-native-deser
+    name: Disable native deserialization / use allow-listed codecs
+    description: Control for the deserialization threat (D3FEND-style catalog ref, §5).
+    catalog_ref: "D3FEND:D3-HBPI"
+    mitigates: [threat-instance:rce-via-deser]
+    applies_in_phase: [lifecycle-phase:design, lifecycle-phase:implementation]
+    implementation_owner: party:acme-oss-foundation
+    external_refs: ["JIRA-AUTH-1234"]
+    mitigation_status: complete
+  - id: mitigation:pin-and-verify-deps
+    name: Pin and verify dependencies with provenance
+    description: Control for the supply-chain path; still being rolled out.
+    catalog_ref: "D3FEND:D3-SCA"
+    mitigates: [threat-instance:supply-chain-rce]
+    applies_in_phase: [lifecycle-phase:implementation, lifecycle-phase:distribution]
+    implementation_owner: party:acme-oss-foundation
+    external_refs: ["SLSA-provenance", "JIRA-AUTH-1300"]
+    mitigation_status: in_progress
+  - id: mitigation:security-requirements-baseline
+    name: Maintain a security-requirements baseline
+    description: Process control discharging the SSDF "define security requirements" practice.
+    mitigates: [threat-instance:rce-via-deser]
+    implementation_owner: party:sdl-owner
+    mitigation_status: complete
+
+risk_scores:
+  - id: risk-score:rce-via-deser
+    name: Risk — RCE via deserialization
+    description: >-
+      Composite vector per ADR-0006/DEC-003: feasibility + S/F/O/P impact +
+      mitigation-status + derived risk, shown with its inputs — never one number.
+    threat: threat-instance:rce-via-deser
+    attack_paths: [attack-path:deser-rce, attack-path:supply-chain-swap]
+    damage_scenario: damage-scenario:token-forgery
+    for_stakeholder: party:downstream-saas
+    feasibility: medium
+    impact:
+      safety: negligible
+      financial: major
+      operational: major
+      privacy: severe
+    mitigation_status: in_progress
+    risk: "privacy 4 / operational 3 / financial 3 (worst-path, medium feasibility; 1–5 per 21434 M(I,F))"
+
+assertions:
+  - id: assertion:vuln-propagation
+    name: CVE propagates to the service along uses_component
+    description: Reviewed propagation edge (§5) — not a facet property; reified so a Review can point at it.
+    subject: vulnerability:cve-2021-44832
+    predicate: propagates_to
+    object: component:auth-service-svc
+    confidence: high
+    assertion_status: accepted
+  - id: assertion:cwe-capec-map
+    name: CWE-502 is exploited by CAPEC-586
+    description: The human-reviewed CWE↔CAPEC mapping the schema calls out (§2).
+    subject: weakness:cwe-502
+    predicate: exploited_by
+    object: attack-pattern:capec-586
+    confidence: medium
+    assertion_status: accepted
+  - id: assertion:ai-supply-chain-realizes
+    name: AI-proposed — supply-chain path realizes the supply-chain threat
+    description: >-
+      AI-PROPOSED edge. assertion_status is `proposed` (NOT accepted); it is a
+      hypothesis until a human accepts it. The paired Review requests changes.
+    subject: attack-path:supply-chain-swap
+    predicate: realizes_threat
+    object: threat-instance:supply-chain-rce
+    confidence: low
+    assertion_status: proposed
+  - id: assertion:tm-scope
+    name: ThreatModel v3 scope is complete for the product
+    subject: threat-model:auth-service-v3
+    predicate: scope_approved
+    object: product:acme-auth-service
+    confidence: high
+    assertion_status: accepted
+  - id: assertion:sdl-approved
+    name: SDL program approved for the product
+    subject: security-program:acme-sdl
+    predicate: program_approved
+    object: product:acme-auth-service
+    confidence: high
+    assertion_status: accepted
+  - id: assertion:design-gate-pass
+    name: Design-review gate passed
+    subject: gate:design-review
+    predicate: passed
+    object: product:acme-auth-service
+    confidence: high
+    assertion_status: accepted
+
+reviews:
+  - id: review:vuln-prop
+    name: Review — accept vuln propagation
+    reviews: assertion:vuln-propagation
+    reviewer: party:sec-lead
+    review_status: accepted
+    priority: high
+    justification: Reachable from the token-refresh flow via log4j-core; propagation confirmed.
+  - id: review:cwe-capec
+    name: Review — accept CWE↔CAPEC mapping
+    reviews: assertion:cwe-capec-map
+    reviewer: party:sec-lead
+    review_status: accepted
+    priority: medium
+    justification: Object-injection pattern matches the deserialization weakness.
+  - id: review:ai-triage
+    name: Review — AI-proposed supply-chain path (changes requested)
+    description: Human triage of the AI hypothesis; it is NOT accepted.
+    reviews: assertion:ai-supply-chain-realizes
+    reviewer: party:sec-lead
+    review_status: changes_requested
+    priority: medium
+    justification: >-
+      AI-proposed path. Maintainer-account-compromise step needs scoping evidence
+      before acceptance; keep as a flagged hypothesis, do not treat as reviewed.
+  - id: review:tm-approval
+    name: Review — approve ThreatModel v3
+    reviews: assertion:tm-scope
+    reviewer: party:sec-lead
+    review_status: accepted
+    priority: high
+    justification: >-
+      All in-scope reviewed threats have an approved or in-progress mitigation; the
+      AI-proposed supply-chain path remains flagged (changes_requested), not accepted.
+  - id: review:sdl-approval
+    name: Review — approve SDL program
+    reviews: assertion:sdl-approved
+    reviewer: party:sdl-owner
+    review_status: accepted
+    priority: high
+    justification: Program nodes, requirements, and gate linkage reviewed and signed off.
+  - id: review:design-gate
+    name: Review — design-review gate decision
+    reviews: assertion:design-gate-pass
+    reviewer: party:sdl-owner
+    review_status: accepted
+    priority: high
+    justification: Security-requirements baseline present; design review cleared.
+
+lifecycle_phases:
+  - id: lifecycle-phase:design
+    name: Design
+    code: design
+  - id: lifecycle-phase:implementation
+    name: Implementation
+    code: implementation
+  - id: lifecycle-phase:verification
+    name: Verification & validation
+    code: verification_validation
+  - id: lifecycle-phase:distribution
+    name: Distribution
+    code: distribution
+  - id: lifecycle-phase:operation
+    name: Operation / use
+    code: operation
+
+requirements:
+  - id: requirement:ssdf-po-1-1
+    name: SSDF PO.1.1 — Define security requirements
+    text: Define security requirements for software development and maintain them over time.
+    normativity: mandatory
+    source_ref: "library:nist-sp-800-218#PO.1.1"
+    satisfied_by: [mitigation:security-requirements-baseline]
+    conformance_status: conformant
+  - id: requirement:ssdf-pw-4-1
+    name: SSDF PW.4.1 — Acquire well-secured components
+    text: Acquire and maintain well-secured software components (e.g., pin and verify dependencies).
+    normativity: recommended
+    source_ref: "library:nist-sp-800-218#PW.4.1"
+    maps_to: [requirement:ssdf-po-1-1]
+    satisfied_by: [mitigation:pin-and-verify-deps]
+    conformance_status: partial
+
+threat_models:
+  - id: threat-model:auth-service-v2
+    name: Auth Service threat model (rev 2, superseded)
+    description: Prior revision, kept to demonstrate the supersedes chain.
+    owner: party:sec-lead
+    revision: "2"
+    governance_status: superseded
+    created: "2026-08-01T00:00:00Z"
+    updated: "2026-08-20T00:00:00Z"
+  - id: threat-model:auth-service-v3
+    name: Auth Service threat model (rev 3)
+    description: >-
+      GOVERNED, VERSIONED snapshot (§3c R-043): a reviewed LENS over the KG, not
+      domain truth re-stated. Membership explicit; approval via the Review spine,
+      pinned to a reproducible approval_digest.
+    scope_query: "product:acme-auth-service AND phase in {operation, distribution}"
+    members:
+      - threat-instance:rce-via-deser
+      - threat-instance:supply-chain-rce
+      - attack-path:deser-rce
+      - attack-path:supply-chain-swap
+      - component:auth-service-svc
+      - component:log4j-core
+      - product:acme-auth-service
+    owner: party:sec-lead
+    revision: "3"
+    approved_by: [review:tm-approval]
+    approval_digest: "sha256:PLACEHOLDER-tm-auth-v3-pinned-to-kg-commit"
+    approval_status: approved
+    governance_status: approved
+    supersedes: threat-model:auth-service-v2
+    created: "2026-09-02T00:00:00Z"
+    updated: "2026-10-09T00:00:00Z"
+
+security_programs:
+  - id: security-program:acme-sdl
+    name: Acme SDL program (rev 1)
+    description: >-
+      The SDL as a first-class governed, versioned object (§3c R-041): ordered
+      dated program nodes, the Requirements it incorporates, and a release gate that
+      validates conformance of the ThreatModel.
+    governs: product:acme-auth-service
+    program_nodes: [gate:design-review, milestone:threat-model-complete, gate:release-gate]
+    incorporates: [requirement:ssdf-po-1-1, requirement:ssdf-pw-4-1]
+    owner: party:sdl-owner
+    revision: "1"
+    approved_by: [review:sdl-approval]
+    approval_digest: "sha256:PLACEHOLDER-acme-sdl-rev1-pinned"
+    approval_status: approved
+    governance_status: approved
+    created: "2026-09-10T00:00:00Z"
+    updated: "2026-10-09T00:00:00Z"
+
+gates:
+  - id: gate:design-review
+    name: Design review gate
+    description: Decision point at design; gated by the security-requirements practice.
+    order: 1
+    planned_date: "2026-10-20"
+    actual_date: "2026-10-22"
+    gate_status: passed
+    owner: party:sdl-owner
+    at_phase: lifecycle-phase:design
+    gated_by: [requirement:ssdf-po-1-1]
+    decided_by: [review:design-gate]
+  - id: gate:release-gate
+    name: Release gate
+    description: >-
+      Exit criterion runs the conformance check (R-042): validates_conformance_of
+      the ThreatModel — proves linkage + approval, NOT adequacy.
+    order: 3
+    planned_date: "2026-12-01"
+    gate_status: planned
+    owner: party:sdl-owner
+    at_phase: lifecycle-phase:verification
+    gated_by: [requirement:ssdf-pw-4-1]
+    depends_on_node: [milestone:threat-model-complete]
+    validates_conformance_of: threat-model:auth-service-v3
+
+milestones:
+  - id: milestone:threat-model-complete
+    name: Threat model complete
+    description: Dated deliverable, dated relative to the design-review gate.
+    order: 2
+    planned_date: "2026-11-05"
+    gate_status: in_progress
+    owner: party:sec-lead
+    at_phase: lifecycle-phase:implementation
+    depends_on_node: [gate:design-review]
+    offset_from: gate:design-review

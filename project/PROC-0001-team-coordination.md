@@ -7,10 +7,10 @@ description: "How four students plus a sponsor split work across tmodel and its 
 type: process
 category: process
 status: draft
-version: "0.1.0"
+version: "0.2.0"
 version_policy: "semver; MINOR = additive process rules"
 date: "2026-09-23"
-updated: "2026-09-23"
+updated: "2026-10-12"
 needs_review: true
 reviewed: false
 canonical_path: project/PROC-0001-team-coordination.md
@@ -57,6 +57,23 @@ repository.
 - Research lanes are sized by dimension (one section of RPT-0001 each), so two
   students do not touch the same file.
 
+### 2.1 Claim before you start; re-check before you push
+
+Agents run several sessions at once, often in the same lane. On 2026-10-09 a
+follow-up commit was pushed to tmodel #113 after it had merged, so it landed on
+a dead branch. By then another session had already shipped the same fix
+(library #15, tmodel #115). DL-0016 has the details.
+
+- **Claim the lane.** Before any code, assign yourself to the issue or comment
+  on it ("taking this: <branch>"). Do not start on an issue someone else has
+  already claimed.
+- **Look in both repos.** Check `gh pr list` and the last day's merges in
+  `tmodel` *and* `library` for the same lane. If the fix is already on `main`,
+  verify `main`. Do not cherry-pick a duplicate.
+- **Re-check state before every follow-up push.** Run
+  `gh pr view <n> --json state,headRefOid`. If the PR has merged, open a new
+  branch from `main`.
+
 ## 3. Serialization points
 
 Some work cannot run in parallel:
@@ -64,7 +81,8 @@ Some work cannot run in parallel:
 - **ARCH-0001.** One architecture change at a time (ARCH-0001 §9.4). Two parallel
   model branches produce divergent designs. Serialize.
 - **The submodule pin.** Only one PR at a time should bump `library/`'s commit;
-  otherwise the pin conflicts. Coordinate at the weekly Zoom.
+  otherwise the pin conflicts. Coordinate at the weekly Zoom. A pin bump runs
+  `bin/publish-site`, and the PR must pass `check_links.py` (§6).
 
 ## 4. The weekly rhythm
 
@@ -77,7 +95,54 @@ Some work cannot run in parallel:
 
 ## 5. Faculty and sponsor
 
-- **Sponsor** (Paul Lambert) owns `spec/**` review via `CODEOWNERS` and is the
+- **Sponsor** (@nymble) owns `spec/**` review via `CODEOWNERS` and is the
   decision-maker on `DEC-*` (accepted only by an ADR).
-- **Faculty** (Prof. Haskell) advises and grades; keep the public repo legible
+- **Faculty** (@phaskell) advises and grades; keep the public repo legible
   for that.
+
+## 6. Cross-repo gates
+
+The library is consumed: tmodel copies its record pages and reads its records.
+A gate that runs only in the repo that changed cannot see what the change
+breaks downstream. In DL-0016, a library chrome change put 828 dead links into
+tmodel's pages. A gate that grepped generated markdown also kept library
+`main` red for four days without anyone noticing. Rules:
+
+1. **Rebuild in CI, then diff.** tmodel CI checks out submodules, runs
+   `bin/publish-site`, and fails on `git diff --exit-code docs/`. That catches
+   stale pages and contract breaks on the PR that causes them, not at the next
+   manual re-pin. *(Not yet wired.)*
+2. **Publisher contract test in the library.** Library CI asserts that every
+   `summary.html` has the `<!-- site-nav -->` … `<!-- /site-nav -->` region
+   and that no repo-relative link sits outside it. Those two hooks are the
+   whole contract with publishers (library `docs/generated-views.md`).
+   *(Not yet wired.)*
+3. **Gate on data, not on a rendering.** `bin/reindex` writes the record count
+   and the bibliography count as data, and CI compares those values. CI does
+   not grep `index/bibliography.md`, whose layout changes whenever someone
+   adds a view. *(Not yet wired.)*
+4. **One YAML reader.** The library keeps a single reader. `test_yaml.py`
+   includes a PyYAML comparison across every record whenever PyYAML is
+   installed. That comparison is how DL-0016 found a parser that silently
+   rejected half the library.
+5. **Red `main` is an incident.** Whoever sees `main` failing in either repo
+   files an issue that day. A PR that fails only because it inherited a red
+   `main` is not ready, and is not blamed.
+
+## 7. The library fork
+
+`Threat-Radar/library` is a GitHub fork of `m-of-n/library`. The two are kept
+in step **both ways, by PR, with merge commits** (not squash), so they share
+one history. The first fold-back was Threat-Radar #18 and m-of-n #62.
+
+- **Sync small and often.** Open a sync PR in each direction whenever either
+  `main` moves materially, at least once per increment. In DL-0016, both sides
+  had fixed the same two bugs independently.
+- **Same CI on both sides.** Run the same gates in both repos, and change them
+  in both repos in the same week. The fork's looser gates let in 19 records
+  that m-of-n's FX-1 gate rejects.
+- **Sign-off.** Use `git commit -s` in either repo. The DCO check does not
+  apply to merge commits that GitHub creates.
+- **Agents pass `--repo`.** In a fork checkout, a bare `gh pr view N` resolves
+  to the parent repo. Always name `--repo Threat-Radar/library` or
+  `--repo m-of-n/library`.

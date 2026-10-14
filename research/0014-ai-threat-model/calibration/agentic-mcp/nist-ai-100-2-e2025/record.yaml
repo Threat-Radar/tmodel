@@ -1,0 +1,61 @@
+schema: "library-record/v1"
+id: nist-ai-100-2-e2025
+body: nist
+type: spec
+title: "Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations"
+short_title: "NIST AI 100-2 E2025"
+authors:
+  - Apostol Vassilev
+  - Alina Oprea
+  - Alie Fordyce
+  - Hyrum Anderson
+  - Xander Davies
+  - Maia Hamin
+date: "2025-03"
+publisher: "National Institute of Standards and Technology"
+version: "E2025"
+identifiers:
+  nist: "NIST AI 100-2e2025"
+  doi: "10.6028/NIST.AI.100-2e2025"
+  url: https://doi.org/10.6028/NIST.AI.100-2e2025
+content:
+  url: https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-2e2025.pdf
+  sha256: "4811fb6ad73f9c9121843ab77e029b5adc6f2c86d33c2fc5b2099ef133847646"
+  retrieved: "2026-10-11"
+  local: false
+  media_type: application/pdf
+  pages: 127
+relations:
+  supersedes: []
+  superseded_by: []
+  see_also:
+    - greshake-2023-indirect-prompt-injection
+    - biml-ara-ml-2020
+  cited_by: []
+  implements_concept: []
+bears_on:
+  - DEC-001
+  - R-010
+applicability:
+  security: core
+  cryptography: none
+  this_project: core
+usefulness:
+  verdict: useful
+  reason: "Authoritative shared vocabulary and attack-class ids (NISTAML.*) for AI attacks across predictive and generative AI; the obvious normalizing axis for tmodel's AI attack and weakness records."
+  assessed: "2026-10-11"
+topic: ai-threat-model-agentic-mcp
+tags:
+  - nist
+  - normative
+  - ai-weakness-catalog
+  - ai-threat-model
+  - prompt-injection
+  - data-poisoning
+  - evasion
+  - model-extraction
+  - membership-inference
+  - agent-security
+  - ai-supply-chain
+status: summarized
+confidence: high

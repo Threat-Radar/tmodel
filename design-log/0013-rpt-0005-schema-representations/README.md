@@ -12,7 +12,7 @@ record: DL-0013
 
 # DL-0013: RPT-0005, schema representations
 
-AI-assisted research record for #39 part A (which replaces #9), per `CLAUDE.md`. Student: Mai Li McGhee, working with Claude Code. This entry is extended at each phase of the #39 playbook.
+AI-assisted research record for #39 part A (which replaces #9), per `CLAUDE.md`. Student: @Maimcghee, working with Claude Code. This entry is extended at each phase of the #39 playbook.
 
 ## Phase 0: scope (2026-10-05)
 

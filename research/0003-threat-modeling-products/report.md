@@ -15,7 +15,7 @@ authors:
     id: kriishnaa-18
 decision_makers:
   - role: sponsor
-    id: paul-lambert
+    id: nymble
 reviewers: []
 needs_review: true
 reviewed: false

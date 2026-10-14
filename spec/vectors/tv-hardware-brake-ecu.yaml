@@ -1,0 +1,285 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# TEST VECTOR — hardware / firmware domain (the breadth product, ADR-0002)
+#
+# A worked example threat model for an automotive brake ECU: firmware-image hash
+# and dual compute cores as instance/structural identity, a physical/glitch
+# AttackPath distinct from the software one, a lifecycle phase + Environment, and a
+# governed ThreatModel snapshot. Demonstrates the object model generalizing to a
+# second domain (ADR-0002 "diverse-domain architecture; generic model → diverse
+# instance types").
+#
+# EXAMPLE / TEST DATA — NOT accepted truth. DEC-001 OPEN; draft proposal. People as
+# github ids / roles only. AI-proposed content is distinguished from reviewed.
+#
+# Validate:
+#   linkml-validate -s spec/vectors/example-container.linkml.yaml \
+#     -C ExampleModel spec/vectors/tv-hardware-brake-ecu.yaml
+# ─────────────────────────────────────────────────────────────────────────────
+
+parties:
+  - id: party:ecu-oem
+    name: Vehicle OEM
+    party_kind: organization
+    classifications: [manufacturer]
+  - id: party:tier1-supplier
+    name: Tier-1 ECU supplier
+    party_kind: organization
+    classifications: [supplier]
+  - id: party:fleet-operator
+    name: Fleet operator
+    description: Owns deployed units; the stakeholder safety impact is reported for.
+    party_kind: organization
+    classifications: [asset-owner]
+  - id: party:hw-lead
+    name: "@hw-lead"
+    description: Human hardware-security reviewer / threat-model owner (github id, role).
+    party_kind: person
+
+products:
+  - id: product:brake-ecu
+    name: Brake ECU
+    description: Safety-critical braking electronic control unit.
+    composed_of: [component:ecu-soc, component:ecu-firmware]
+    manufactured_by: party:tier1-supplier
+    supplied_by: party:tier1-supplier
+    owned_by: party:fleet-operator
+    identifiers:
+      - "cpe:2.3:o:acme_auto:brake_ecu:-:*:*:*:*:*:*:*"
+      - "oem-part:ECU-BRK-0042"
+
+product_instances:
+  - id: product-instance:brake-ecu-unit-00a3
+    name: Brake ECU unit 00A3
+    description: >-
+      A fielded unit. Hardware instance identity is the firmware image digest +
+      a hardware part/serial — the HBOM/firmware form of ADR-0002 instance identity,
+      carried as opaque `identifiers`.
+    of_product: product:brake-ecu
+    current_phase: lifecycle-phase:operation
+    valid_from: "2026-06-15T00:00:00Z"
+    owned_by: party:fleet-operator
+    identifiers:
+      - "swid:brake-ecu-fw-2.4.1"
+      - "sha256:9f2c1a7e4d6b9c0f1a2b3c4d5e6f70819a2b3c4d5e6f7081a2b3c4d5e6f70819"
+      - "hw-serial:BRK-00A3-2026W24"
+
+components:
+  - id: component:ecu-soc
+    name: ECU system-on-chip
+    description: Dual-core SoC; compute cores are structural sub-components (§3).
+    composed_of: [component:core-application, component:core-safety]
+    identifiers:
+      - "cpe:2.3:h:chipco:soc_x200:-:*:*:*:*:*:*:*"
+  - id: component:core-application
+    name: Application core
+    description: General-purpose compute core.
+    identifiers:
+      - "hw-core:soc_x200.app"
+  - id: component:core-safety
+    name: Lockstep safety core
+    description: Redundant lockstep core for ASIL-rated functions.
+    identifiers:
+      - "hw-core:soc_x200.safety"
+  - id: component:ecu-firmware
+    name: ECU firmware image
+    description: The signed firmware artifact; its digest is the instance identity above.
+    identifiers:
+      - "swid:brake-ecu-fw-2.4.1"
+      - "sha256:9f2c1a7e4d6b9c0f1a2b3c4d5e6f70819a2b3c4d5e6f7081a2b3c4d5e6f70819"
+
+weaknesses:
+  - id: weakness:cwe-1191
+    name: On-Chip Debug and Test Interface With Improper Access Control
+    catalog_ref: "CWE-1191"
+
+attack_patterns:
+  - id: attack-pattern:capec-401
+    name: Physically Hacking Hardware
+    catalog_ref: "CAPEC-401"
+
+damage_scenarios:
+  - id: damage-scenario:unsafe-braking
+    name: Malicious firmware disables ABS → unsafe braking
+    description: Safety-relevant damage; S/F/O/P impact lives on RiskScore.
+
+threat_instances:
+  - id: threat-instance:fw-tamper
+    name: Unauthenticated firmware replacement via exposed debug interface
+    description: Human-reviewed STRIDE + hardware-TARA threat.
+    realizes_damage: damage-scenario:unsafe-braking
+    method_facet: [stride]
+    source_method: "stride + hw-TARA (human-elicited, reviewed)"
+    violates_property: "S authentication / T integrity"
+    applies_in_phase: [lifecycle-phase:maintenance, lifecycle-phase:operation]
+
+attack_steps:
+  - id: attack-step:gain-physical-access
+    name: Gain physical access to the ECU
+    kill_chain_phase: access
+    precedes: [attack-step:connect-debug-probe]
+  - id: attack-step:connect-debug-probe
+    name: Connect a debug/JTAG probe
+    precedes: [attack-step:bypass-readout-protection, attack-step:inject-voltage-glitch]
+  - id: attack-step:bypass-readout-protection
+    name: Bypass firmware readout protection
+    precedes: [attack-step:extract-and-modify-firmware]
+  - id: attack-step:inject-voltage-glitch
+    name: Inject a voltage glitch to defeat the secure-boot check
+    precedes: [attack-step:extract-and-modify-firmware]
+  - id: attack-step:extract-and-modify-firmware
+    name: Extract and modify the firmware image
+    description: Requires BOTH readout bypass AND a successful glitch — an AND gate (§2a).
+    gate: and_gate
+    precedes: [attack-step:reflash-unit]
+  - id: attack-step:reflash-unit
+    name: Reflash the unit with malicious firmware
+    kill_chain_phase: installation
+
+attack_paths:
+  - id: attack-path:fw-tamper-physical
+    name: Physical firmware-tamper path
+    description: A different, physical/glitch path (vs the software deserialization path).
+    steps:
+      - attack-step:gain-physical-access
+      - attack-step:connect-debug-probe
+      - attack-step:bypass-readout-protection
+      - attack-step:inject-voltage-glitch
+      - attack-step:extract-and-modify-firmware
+      - attack-step:reflash-unit
+    realizes_threat: threat-instance:fw-tamper
+    attack_feasibility: low
+
+mitigations:
+  - id: mitigation:secure-boot
+    name: Verified secure boot
+    description: Reject unsigned firmware at boot.
+    catalog_ref: "D3FEND:D3-BA"
+    mitigates: [threat-instance:fw-tamper]
+    applies_in_phase: [lifecycle-phase:design, lifecycle-phase:implementation]
+    implementation_owner: party:tier1-supplier
+    mitigation_status: complete
+  - id: mitigation:disable-jtag-production
+    name: Disable/lock JTAG in production
+    catalog_ref: "D3FEND:D3-DI"
+    mitigates: [threat-instance:fw-tamper]
+    applies_in_phase: [lifecycle-phase:production]
+    implementation_owner: party:tier1-supplier
+    external_refs: ["JIRA-ECU-77"]
+    mitigation_status: in_progress
+
+risk_scores:
+  - id: risk-score:fw-tamper
+    name: Risk — firmware tamper
+    description: Composite vector (ADR-0006); safety-dominated, low feasibility.
+    threat: threat-instance:fw-tamper
+    attack_paths: [attack-path:fw-tamper-physical]
+    damage_scenario: damage-scenario:unsafe-braking
+    for_stakeholder: party:fleet-operator
+    feasibility: low
+    impact:
+      safety: severe
+      financial: moderate
+      operational: major
+      privacy: negligible
+    mitigation_status: in_progress
+    risk: "safety 4 (severe impact, low feasibility; 1–5 per 21434 M(I,F)); shown with its inputs"
+
+assertions:
+  - id: assertion:fw-weakness-map
+    name: CWE-1191 is exploited by CAPEC-401
+    subject: weakness:cwe-1191
+    predicate: exploited_by
+    object: attack-pattern:capec-401
+    confidence: high
+    assertion_status: accepted
+  - id: assertion:ai-glitch-step
+    name: AI-proposed — voltage-glitch step belongs to the tamper path
+    description: >-
+      AI-PROPOSED edge. assertion_status `proposed`; a hypothesis until a human
+      confirms it in the lab. The paired Review requests changes, not acceptance.
+    subject: attack-step:inject-voltage-glitch
+    predicate: contributes_to
+    object: attack-path:fw-tamper-physical
+    confidence: low
+    assertion_status: proposed
+  - id: assertion:tm-hw-scope
+    name: Brake-ECU threat model scope approved
+    subject: threat-model:brake-ecu-v1
+    predicate: scope_approved
+    object: product:brake-ecu
+    confidence: high
+    assertion_status: accepted
+
+reviews:
+  - id: review:hw-map
+    name: Review — accept CWE↔CAPEC mapping
+    reviews: assertion:fw-weakness-map
+    reviewer: party:hw-lead
+    review_status: accepted
+    priority: high
+    justification: Debug-interface weakness maps to the physical-hardware attack pattern.
+  - id: review:ai-glitch
+    name: Review — AI-proposed glitch step (changes requested)
+    reviews: assertion:ai-glitch-step
+    reviewer: party:hw-lead
+    review_status: changes_requested
+    priority: medium
+    justification: >-
+      AI-proposed step; glitch feasibility against this SoC revision is unconfirmed.
+      Keep as a flagged hypothesis — do NOT present as reviewed.
+  - id: review:tm-hw-approval
+    name: Review — approve Brake-ECU threat model v1
+    reviews: assertion:tm-hw-scope
+    reviewer: party:hw-lead
+    review_status: accepted
+    priority: high
+    justification: Scope reviewed; secure-boot complete, JTAG-lockdown in progress and tracked.
+
+environments:
+  - id: environment:vehicle-field
+    name: In-field vehicle
+    physical_security: "owner-accessible when parked; OBD-II reachable"
+    connectivity: "CAN bus + OBD-II; no direct internet"
+    operational_context: "safety-critical in-field operation"
+
+deployments:
+  - id: deployment:brake-ecu-field
+    name: Brake ECU field deployment
+    product_instance: product-instance:brake-ecu-unit-00a3
+    environment: environment:vehicle-field
+
+lifecycle_phases:
+  - id: lifecycle-phase:design
+    name: Design
+    code: design
+  - id: lifecycle-phase:implementation
+    name: Implementation
+    code: implementation
+  - id: lifecycle-phase:production
+    name: Production / manufacturing
+    code: production
+  - id: lifecycle-phase:operation
+    name: Operation / use
+    code: operation
+  - id: lifecycle-phase:maintenance
+    name: Maintenance / update
+    code: maintenance
+
+threat_models:
+  - id: threat-model:brake-ecu-v1
+    name: Brake ECU threat model (rev 1)
+    description: Governed, versioned snapshot over the hardware KG scope (§3c R-043).
+    members:
+      - threat-instance:fw-tamper
+      - attack-path:fw-tamper-physical
+      - component:ecu-soc
+      - component:ecu-firmware
+      - product:brake-ecu
+    owner: party:hw-lead
+    revision: "1"
+    approved_by: [review:tm-hw-approval]
+    approval_digest: "sha256:PLACEHOLDER-brake-ecu-v1-pinned-to-kg-commit"
+    approval_status: approved
+    governance_status: approved
+    created: "2026-07-01T00:00:00Z"
+    updated: "2026-10-09T00:00:00Z"

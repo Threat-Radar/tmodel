@@ -1,0 +1,69 @@
+# Test-harness container for the spec/vectors/ example threat models.
+#
+# NOT part of the domain object model and NOT rendered into OBJECT-MODEL.md. It
+# exists only so `linkml-validate` can check a whole worked example (many objects
+# of many types + their cross-references by stable id) as a single tree-rooted
+# file, instead of one invocation per object. It `imports` the real object model
+# and adds ONE class, `ExampleModel`, whose slots are flat typed collections — one
+# inlined list per concrete §13 class. Cross-object edges stay id references
+# (ADR-0004 stable ids), exactly as the domain schema declares them.
+#
+# Keeping the container here (not in tmodel-object-model.linkml.yaml) keeps the
+# domain model pure: no test-only collection class leaks into the proposed object
+# model or its rendered view. DEC-001 is unaffected by this file.
+id: https://threat-radar.github.io/tmodel/schema/vectors/example-container
+name: TmodelExampleContainer
+title: tmodel example-vector container (test harness)
+description: >-
+  Validation-only wrapper around the tmodel object model so a complete worked
+  threat model validates as one file. Not normative; not a domain class.
+version: 0.1.0
+status: draft
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+  tmodel: https://threat-radar.github.io/tmodel/schema/object-model/
+default_prefix: tmodel
+default_range: string
+
+imports:
+  - linkml:types
+  - ../schema/tmodel-object-model.linkml
+
+classes:
+  ExampleModel:
+    tree_root: true
+    description: >-
+      A test-vector bundle: flat collections of object instances that together
+      form one worked example threat model. Each object appears once in its type's
+      list; edges between objects are id references (inlined: false in the domain
+      schema). Referential integrity across the lists is a dogfooding convention
+      here, not enforced by linkml-validate.
+    attributes:
+      parties: { range: Party, multivalued: true, inlined: true, inlined_as_list: true }
+      products: { range: Product, multivalued: true, inlined: true, inlined_as_list: true }
+      product_instances: { range: ProductInstance, multivalued: true, inlined: true, inlined_as_list: true }
+      components: { range: Component, multivalued: true, inlined: true, inlined_as_list: true }
+      weaknesses: { range: Weakness, multivalued: true, inlined: true, inlined_as_list: true }
+      vulnerabilities: { range: Vulnerability, multivalued: true, inlined: true, inlined_as_list: true }
+      attack_patterns: { range: AttackPattern, multivalued: true, inlined: true, inlined_as_list: true }
+      threat_instances: { range: ThreatInstance, multivalued: true, inlined: true, inlined_as_list: true }
+      attack_steps: { range: AttackStep, multivalued: true, inlined: true, inlined_as_list: true }
+      attack_paths: { range: AttackPath, multivalued: true, inlined: true, inlined_as_list: true }
+      damage_scenarios: { range: DamageScenario, multivalued: true, inlined: true, inlined_as_list: true }
+      mitigations: { range: Mitigation, multivalued: true, inlined: true, inlined_as_list: true }
+      risk_scores: { range: RiskScore, multivalued: true, inlined: true, inlined_as_list: true }
+      reviews: { range: Review, multivalued: true, inlined: true, inlined_as_list: true }
+      assertions: { range: Assertion, multivalued: true, inlined: true, inlined_as_list: true }
+      deployments: { range: Deployment, multivalued: true, inlined: true, inlined_as_list: true }
+      environments: { range: Environment, multivalued: true, inlined: true, inlined_as_list: true }
+      lifecycle_phases: { range: LifecyclePhase, multivalued: true, inlined: true, inlined_as_list: true }
+      redundancy_groups: { range: RedundancyGroup, multivalued: true, inlined: true, inlined_as_list: true }
+      views: { range: View, multivalued: true, inlined: true, inlined_as_list: true }
+      threat_models: { range: ThreatModel, multivalued: true, inlined: true, inlined_as_list: true }
+      security_programs: { range: SecurityProgram, multivalued: true, inlined: true, inlined_as_list: true }
+      gates: { range: Gate, multivalued: true, inlined: true, inlined_as_list: true }
+      milestones: { range: Milestone, multivalued: true, inlined: true, inlined_as_list: true }
+      checkpoints: { range: Checkpoint, multivalued: true, inlined: true, inlined_as_list: true }
+      requirements: { range: Requirement, multivalued: true, inlined: true, inlined_as_list: true }
+      governed_views: { range: GovernedView, multivalued: true, inlined: true, inlined_as_list: true }

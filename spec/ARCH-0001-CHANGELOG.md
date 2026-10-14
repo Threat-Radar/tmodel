@@ -6,10 +6,10 @@ description: "Every change to ARCH-0001, newest first. §9.5 requires an entry p
 type: process
 category: security
 status: active
-version: "0.1.6"
+version: "0.1.8"
 version_policy: "tracks ARCH-0001; one entry per version bump"
 date: "2026-09-23"
-updated: "2026-10-01"
+updated: "2026-10-12"
 needs_review: false
 reviewed: true
 canonical_path: spec/ARCH-0001-CHANGELOG.md
@@ -19,6 +19,31 @@ defers_to: ARCH-0001
 # ARCH-0001 changelog
 
 Newest first. Every ARCH-0001 version bump appends a line here (§9.5).
+
+## 0.1.8 — 2026-10-12
+
+**DEC-001 split; DEC-001a accepted** via ADR-0010. The core attack-path type system (Node,
+Product/Instance/Component, Party, Weakness/Vulnerability/AttackPattern, ThreatInstance/AttackStep/
+AttackPath, DamageScenario, Mitigation, RiskScore/ImpactVector, Review/Assertion, Deployment/
+Environment/LifecyclePhase, View, `identifiers`, core enums) is accepted as the logical object
+model (§3/§8). The **governed/program layer** (ThreatModel, SecurityProgram/Gate/Milestone/
+Checkpoint, Requirement, GovernedView, RedundancyGroup) is held **open as DEC-001b** pending the
+proposed.14 adversarial-critique fixes (DL-0020: C1 conformance/approval mechanization, C2
+approval-digest binding, M1 edge-integrity gate, M2 GovernedArtifact mixin + renderer, M4
+exercise-or-drop GovernedView/Checkpoint, M5 author/origin). Encoding stays ADR-0007; substrate ADR-0008.
+
+## 0.1.7 — 2026-10-08
+
+**Decision sweep (three accepts + one amendment).** Updated §5, §6, §8 and the status banner:
+- **DEC-002 accepted** via ADR-0007 — LinkML canonical schema IDL; generated JSON-Schema/SHACL;
+  committed interchange (import OTM + STIX 2.1; export JSON-LD/Turtle/GraphML/CSV).
+- **DEC-003 accepted** via ADR-0006 — composite risk vector (feasibility [ISO 21434 Table-1] +
+  impact [S/F/O/P] + mitigation-status + derived risk; Common Criteria display-only). Supersedes
+  the withdrawn ADR-0005 draft.
+- **DEC-004 accepted** via ADR-0008 — Oxigraph (embedded RDF, SPARQL, RDF-star) as the working
+  store, behind the ADR-0004 façade.
+- **DEC-010 refined** via ADR-0009 — engine language split: Python brain + Rust store/hot-paths.
+Still open: DEC-001 (object model), DEC-008 (CWE/NVD), DEC-009 (threat→product / mitigation-lifecycle).
 
 ## 0.1.6 — 2026-10-01
 
