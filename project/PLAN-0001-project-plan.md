@@ -7,10 +7,10 @@ description: "Execution plan for the CS 490 Fall 2026 senior project. Subordinat
 type: plan
 category: process
 status: draft
-version: "0.1.3"
+version: "0.1.4"
 version_policy: "semver; MINOR = additive; version and updated move together (§9.5)"
 date: "2026-09-23"
-updated: "2026-10-08"
+updated: "2026-10-15"
 authors:
   - role: sponsor
     id: nymble
@@ -143,7 +143,7 @@ Week-0 gate — starting a week early buys buffer before the early-December demo
 | inc | window | outcome |
 |---|---|---|
 | **I0 Harness** | Sep 23–29 | Repos, roster as admins, library fork + submodule, CI, backlog, Week-0 gate. **Done.** (Research reading begins in parallel.) |
-| **I1 Research** | Sep 25–Oct 8 | The research reports (issues #6–#13) drafted; references filed via the fixed ingestion pipeline (#5); target use cases; DEC-005/DEC-003 evidence. |
+| **I1 Research** | Sep 25–Oct 8 (core); reports run through **Oct 13**, overlapping I2 (reconciled with BACKLOG-0001, SOW-0001) | The research reports (issues #6–#13) drafted; references filed via the fixed ingestion pipeline (#5); target use cases; DEC-005/DEC-003 evidence. |
 | **I2 Model** | Oct 9–Oct 22 | `spec/schema/` object model in LinkML (schema IDL + interchange **accepted, DEC-002 → ADR-0007**) importing OTM; CWE/NVD design (DEC-008); risk metric **accepted, DEC-003 → ADR-0006** (composite vector); working store **accepted, DEC-004 → ADR-0008** (Oxigraph). The remaining model decision is **DEC-001** (object model), gated on #104 Stage 2/3. |
 | **I3 MVP core** *(demo floor)* | Oct 23–Nov 5 | Interactive graphical threat model + threat-chain view over the chosen dimension (DEC-005/DEC-006), with the human review/annotation model wired (R-018…R-021). End-to-end on one worked example. |
 | **I4 Risk & mitigation** | Nov 6–Nov 19 | Risk metric implemented per **ADR-0006** (composite vector; 21434 Table-1; CC display-only), mitigation mappings, generic→product & product-family mapping, mitigation-lifecycle tracking, NVD automation. |
@@ -178,6 +178,6 @@ format (round-trip proven by a vector).
 ## 11. Milestones
 
 - **Week 1** — requirements + final goals finalized (Week-0 gate); research begins in parallel.
-- **Oct 8** — research reports complete enough to take DEC-005/DEC-003.
+- **Oct 8** — research reports complete enough to take DEC-005/DEC-003; remaining report work runs through **Oct 13** in parallel with I2 (BACKLOG-0001).
 - **Nov 5** — MVP core demoable (floor).
 - **early Dec** — MVP demo.
