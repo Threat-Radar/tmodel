@@ -25,10 +25,10 @@ defers_to: PLAN-0001
 
 > **This file supersedes the Google Doc draft** ("Statement of Work — tmodel",
 > doc `10X-ydkvu9QVkhTOrjt9AKrhJW7ekI0UJ013Idtiwj7Y`). Edit here, by PR. Per PR #112,
-> people are referred to by role, lane or GitHub id (see `identities.yaml`).
+> people are referred to by GitHub handle only (no real names) (see `identities.yaml`).
 
-**Course:** CS 490 Senior Team Project, Fall 2026 · **Team:** four students (lanes below) ·
-**Sponsor:** Threat-Radar (@nymble) · **Faculty advisor:** course advisor ·
+**Course:** CS 490 Senior Team Project, Fall 2026 · **Team:** @paria03 · @kriishnaa-18 · @Clovier · @Maimcghee ·
+**Sponsor:** @nymble (Threat-Radar) · **Faculty advisor:** @paul-haskell ·
 **Repository:** https://github.com/Threat-Radar/tmodel (shared reference library https://github.com/Threat-Radar/library)
 
 ## 1. What project are we working on?
@@ -106,12 +106,13 @@ Per PLAN-0001 §10–11 (week 1 = Sep 21–27). Nov 5 is the **demo floor**; lat
 | M4 | **Risk and multi-domain** | ADR-0006 risk vector computed; generic threats mapped onto ≥2 domains | Nov 19 |
 | M5 | **Integrate and demo** | `.dmg` on GitHub Releases (signing caveat above); docs; vectors green; MVP demo | Dec 5 (early Dec) |
 
-## 4. Responsibilities (by lane)
+## 4. Responsibilities (by GitHub handle, lane and issue)
 
-| Role | Build lanes | Research lanes |
-|---|---|---|
-| Engine (@paria03) | Walking skeleton, attack paths + risk #63, packaging #124 | Methods & agentic/MCP threats #36, #78 |
-| UI (@kriishnaa-18) | Table views #58, graph view #59 | Products & graph viz (#37), AI risk/assets #81 |
-| Data (@Clovier) | Library loader #60, CWE import #61 | Composition/SBOM & ISO 21434 #38, AI supply chain #80 |
-| Schema & storage (@Maimcghee) | LinkML schema #64, store façade/export #65 | Formats & AI-security specs #39, AI catalogs #79 |
-| Sponsor (@nymble) | Architecture, decisions (ADRs), review, integration | AI integration lane #82 (unassigned) |
+| Handle | Lane | Build issues | Research issues |
+|---|---|---|---|
+| @paria03 | Engine | Walking skeleton (PR #98, merged), attack paths + risk #63, packaging #124 | Methods & agentic threats #36; AI lane agentic-mcp #78 |
+| @kriishnaa-18 | GUI | Table views #58, graph view #59 | Products & graph viz #37; AI lane ml-risk-assets #81 |
+| @Clovier | Data | Library loader #60, CWE import #61 | Composition/SBOM & ISO 21434 #38; AI lane supply-chain-infra #80 |
+| @Maimcghee | Schema & Storage | LinkML schema #64, store façade/export #65 | Formats & AI-security specs #39; AI lane catalogs-schema #79 |
+| @nymble (sponsor) | Architecture | Decisions/ADRs (DECISIONS-0001), review, integration; epic #47 | AI lane integration #82 (owner TBD) |
+| @paul-haskell (faculty advisor) | — | Course oversight and grading | — |
