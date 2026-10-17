@@ -7,9 +7,9 @@ description: "How the field encodes weaknesses, vulnerabilities, scores, applica
 type: research
 category: security
 status: draft
-version: "0.3.1"
+version: "0.3.2"
 date: "2026-10-05"
-updated: "2026-10-14"
+updated: "2026-10-16"
 authors:
   - role: student
     id: Maimcghee
@@ -153,7 +153,7 @@ Read across the columns:
 **CWE 4.20** (MITRE; record `cwe`, FX-1 on library#21). A catalog of 969 weakness types in a closed XML schema.
 - Every entry says whether it may be used to map a real vulnerability (`Mapping_Notes/Usage`: Allowed, Allowed-with-Review, Discouraged, Prohibited), so a tmodel import can check its own mappings.
 - Relations are scoped to a view: `ChildOf` in one view can differ from `ChildOf` in another, and `ChildOf` means "is a kind of", not "is part of".
-- A deprecated entry names its successor only in prose, and provenance is recorded per entry, not per relation.
+- A deprecated entry usually names its successor only in prose: just 2 of the 25 deprecated weaknesses in 4.20 carry a machine-readable suggestion (FX-1 extraction, library#21). Provenance is recorded per entry, not per relation.
 - There is no extension point, so a local weakness needs its own namespace, linked to CWE by a fit-graded mapping.
 - The FX-1 extraction found 16 places where the schema's documentation contradicts its own structure.
 
@@ -212,7 +212,7 @@ VEX is one concept, "is this product affected by this vulnerability, and why", i
 - Frozen since 2023-01-24, with its ATT&CK mappings pinned to ATT&CK 12.0.
 - The CAPEC-to-CWE link is the one maintained on both sides.
 - Its execution flow (`Attack_Step`) is the nearest thing to an AttackStep in any released format.
-- Deprecation names its successor only in prose, as in CWE.
+- Deprecation names its successor only in prose, as most of CWE's deprecated entries do.
 
 **D3FEND 1.6.0** (record `d3fend`).
 - Defence-to-offence links are not stated in the ontology. They are inferred through shared digital artifacts and published separately.

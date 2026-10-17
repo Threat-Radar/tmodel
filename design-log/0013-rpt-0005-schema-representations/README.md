@@ -4,9 +4,9 @@ id: DL-0013
 title: "RPT-0005 schema representations: AI-assisted scoping, survey and crosswalk"
 type: process
 status: draft
-version: "0.8.0"
+version: "0.9.0"
 date: "2026-10-05"
-updated: "2026-10-14"
+updated: "2026-10-16"
 record: DL-0013
 ---
 
@@ -273,9 +273,21 @@ As read: add the three classes, and shape them by building small example threat 
 
 ### What a human accepted
 
-- The sponsor's direction above. The student is sending a short confirmation of this reading; the reply is pending.
+- The sponsor's direction above. The student considers this reading confirmed (2026-10-14).
 
 ### What was rejected, and why
 
 Nothing yet.
+
+## CWE FX-1 run: final numbers and a correction (2026-10-16)
+
+The library session's final report on the CWE run, read on 2026-10-16:
+
+- **Cost:** about 1 h 40 min of active time and about 1.65M tokens, possibly up to about 2M (setup and notes ~180k; extraction agents 388k and 507k; checker 577k, interrupted by the usage limit and resumed). One full extraction of a format this size uses most of a session's limit.
+- **Scope rule:** the library's CI enforces FX-1 only on `rfc`, `draft`, `spec` and `ietf` records; a `dataset` record such as `cwe` may stay a stub or summary. The session suggested full extraction only for the formats tmodel imports. Since ADR-0007, those are OTM and STIX 2.1, possibly with CVE for R-010; the others would be honest stubs.
+- **Third-party files:** the record commits MITRE's XSD verbatim and 13 catalog entries (about 167 KB). FX-1 requires the source schema verbatim, MITRE's licence allows copies that keep its header (kept), and `CLAUDE.md`'s ban covers PDFs, spreadsheets, ebooks and vendor reports. Flagged for the sponsor's review on library#21.
+
+### What was rejected, and why
+
+- **The pilot's "a deprecated CWE entry names its successor only in prose".** The FX-1 extraction found that 2 of the 25 deprecated weaknesses in 4.20 carry a machine-readable suggestion (`Mapping_Notes/Suggestions`). `report.md` 0.3.2 now says "usually". `pilot.md` is left as the record of what the pilot found.
 
