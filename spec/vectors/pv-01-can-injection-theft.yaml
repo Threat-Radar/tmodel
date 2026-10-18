@@ -1,0 +1,280 @@
+# PROPOSAL VECTOR 1 (DL-0024): keyless car theft by CAN injection
+#
+# One of the example models the sponsor asked for on 2026-10-14 to shape the Asset,
+# TrustBoundary and DataFlow classes (RPT-0005 G13; DL-0013): a published automotive
+# attack, modeled from its primary write-up.
+#
+# Source: K. Tindell (Canis Automotive Labs), "CAN Injection: keyless car theft",
+# 2023-04-03, https://kentindell.github.io/2023/04/03/can-injection/ (fetched
+# 2026-10-18, SHA-256 01443d42a7bf95d58e75a21f8f5e6f6774acd7379b20bbe800ab2d1b102da214),
+# and CVE-2023-29389 (cveawg.mitre.org API, fetched 2026-10-18, SHA-256
+# 44becbed84f4d19887ac7ea6d4607df4d5ba553c399de09176d167426fc6df06). The write-up's
+# CAN wiring is "a very simplified diagram"; so is this model.
+#
+# AI-DRAFTED, NOT REVIEWED. Every Assertion is `proposed` and no Review is recorded:
+# a human must accept the model before anything in it counts as reviewed (CLAUDE.md,
+# R-018). Feasibility and impact are human inputs and are left unset.
+#
+# Validate:
+#   linkml-validate -s spec/vectors/example-container-proposed.linkml.yaml \
+#     -C ExampleModelProposed spec/vectors/pv-01-can-injection-theft.yaml
+
+parties:
+  - id: party:toyota
+    name: Toyota
+    description: Manufacturer of the vehicle model in CVE-2023-29389.
+    party_kind: organization
+    classifications: [manufacturer]
+  - id: party:mitre-cna
+    name: MITRE (CNA)
+    description: Assigned CVE-2023-29389; its CNA container gives no CWE ("n/a").
+    party_kind: organization
+    classifications: [cna]
+  - id: party:cisa-adp
+    name: CISA ADP Vulnrichment
+    description: Authorized Data Publisher (orgId 134c704f-9b21-4f2e-91b3-4a467353bcc0) that added CWE-74 to the CVE record.
+    party_kind: organization
+    classifications: [adp]
+  - id: party:vehicle-owner
+    name: Vehicle owner
+    description: The stakeholder who loses the vehicle (role, not a person).
+    party_kind: person
+
+products:
+  - id: product:rav4-2021
+    name: Toyota RAV4 (2021)
+    description: The vehicle model CVE-2023-29389 names.
+    composed_of:
+      - component:headlight-ecu
+      - component:smart-key-ecu
+      - component:door-ecu
+      - component:gateway-ecu
+      - component:engine-ecu
+      - component:control-can
+      - component:powertrain-can
+    manufactured_by: party:toyota
+
+product_instances:
+  - id: product-instance:parked-rav4
+    name: A RAV4 parked on the street
+    description: The instance the attack runs against; no build identity is published for it.
+    of_product: product:rav4-2021
+    current_phase: lifecycle-phase:operation
+    owned_by: party:vehicle-owner
+
+components:
+  - id: component:headlight-ecu
+    name: Light-control ECU
+    description: Controls the headlights; its connector, behind the bumper, is the easiest reach into the control CAN bus.
+    component_kind: device
+    in_trust_zone: trust-boundary:control-domain
+  - id: component:smart-key-ecu
+    name: Smart-key receiver ECU
+    description: Talks to the key by radio and announces on the control CAN bus when the key is validated.
+    component_kind: device
+    in_trust_zone: trust-boundary:control-domain
+  - id: component:door-ecu
+    name: Door ECU
+    description: Unlocks the doors on a valid key message.
+    component_kind: device
+    in_trust_zone: trust-boundary:control-domain
+  - id: component:gateway-ecu
+    name: Gateway ECU
+    description: Copies certain CAN messages between the control and powertrain buses.
+    component_kind: device
+    in_trust_zone: trust-boundary:vehicle-perimeter
+  - id: component:engine-ecu
+    name: Engine control ECU
+    description: Deactivates the immobilizer when it sees a key-validated message.
+    component_kind: device
+    in_trust_zone: trust-boundary:powertrain-domain
+  - id: component:control-can
+    name: Control CAN bus
+    description: Joins the headlight, door, telematics and smart-key ECUs.
+    component_kind: interconnect
+    in_trust_zone: trust-boundary:control-domain
+  - id: component:powertrain-can
+    name: Powertrain CAN bus
+    description: Joins engine, hybrid battery and motor control.
+    component_kind: interconnect
+    in_trust_zone: trust-boundary:powertrain-domain
+
+assets:
+  - id: asset:vehicle
+    name: The vehicle
+    description: The asset the theft takes from its owner.
+    security_properties: [availability]
+    owned_by: party:vehicle-owner
+  - id: asset:key-validated-message
+    name: The "key validated" signal
+    description: >-
+      The CAN message that tells the immobilizer and doors a genuine key is present.
+      The receivers trust it without proof of origin, which is the weakness the attack uses.
+    security_properties: [authenticity, integrity]
+    processed_by: [component:smart-key-ecu, component:gateway-ecu, component:engine-ecu, component:door-ecu]
+
+trust_boundaries:
+  - id: trust-boundary:vehicle-perimeter
+    name: Vehicle body (physical access)
+    description: >-
+      The outer zone: the gateway sits in it directly, the rest through the two nested domains. Anything reachable
+      from the edge of the car is exposed to a thief at the kerb, and the control CAN bus
+      reaches the edge at the headlight connector. No slot can say that yet (DL-0024,
+      finding P1), so the exposure is only described here.
+  - id: trust-boundary:control-domain
+    name: Control CAN domain
+    description: ECUs on the control bus, including the light-control ECU whose wiring is reachable from outside.
+    within_boundary: trust-boundary:vehicle-perimeter
+  - id: trust-boundary:powertrain-domain
+    name: Powertrain CAN domain
+    description: Engine and drive ECUs behind the gateway.
+    within_boundary: trust-boundary:vehicle-perimeter
+
+data_flows:
+  - id: data-flow:key-validated-to-gateway
+    name: Smart-key ECU announces "key validated" on the control bus
+    flow_from: component:smart-key-ecu
+    flow_to: component:gateway-ecu
+    carries: [asset:key-validated-message]
+    protocol: CAN (control bus)
+  - id: data-flow:key-validated-to-engine
+    name: Gateway forwards "key validated" to the engine ECU
+    flow_from: component:gateway-ecu
+    flow_to: component:engine-ecu
+    carries: [asset:key-validated-message]
+    protocol: CAN (powertrain bus)
+    crosses_boundary: [trust-boundary:control-domain, trust-boundary:powertrain-domain]
+  - id: data-flow:unlock-to-door
+    name: Key-valid unlock request to the door ECU
+    flow_from: component:smart-key-ecu
+    flow_to: component:door-ecu
+    carries: [asset:key-validated-message]
+    protocol: CAN (control bus)
+
+weaknesses:
+  - id: weakness:cwe-74
+    name: Improper Neutralization of Special Elements in Output Used by a Downstream Component ('Injection')
+    description: The CWE CISA-ADP assigned to CVE-2023-29389 (the CNA gave none).
+    catalog_ref: "CWE-74"
+
+vulnerabilities:
+  - id: vulnerability:cve-2023-29389
+    name: RAV4 2021 ECUs trust forged "Key is validated" CAN messages
+    description: >-
+      CVE record, paraphrased: Toyota RAV4 2021 vehicles trust messages from other ECUs
+      on a CAN bus, so a physically present attacker who reaches the control CAN bus at
+      the headlight connector can send forged "Key is validated" messages and drive away.
+    catalog_ref: "CVE-2023-29389"
+    affects: [product:rav4-2021]
+    assigned_by: party:mitre-cna
+    instance_of: [weakness:cwe-74]
+
+damage_scenarios:
+  - id: damage-scenario:vehicle-stolen
+    name: The vehicle is driven away without its key
+    description: The owner loses the vehicle (ISO/SAE 21434 damage scenario; impact rating is a human input).
+    damages_asset: [asset:vehicle]
+    compromised_property: [availability]
+
+threat_instances:
+  - id: threat-instance:spoofed-key-validated
+    name: Spoofed "key validated" frames injected on the control CAN bus
+    description: >-
+      A device on the control bus impersonates the smart-key ECU; the gateway forwards
+      its frames and the engine ECU deactivates the immobilizer.
+    realizes_damage: damage-scenario:vehicle-stolen
+    method_facet: [stride]
+    source_method: "published attack, modeled from the cited write-up (AI-drafted, unreviewed)"
+    violates_property: "S authentication (of the key-validated message)"
+    applies_in_phase: [lifecycle-phase:operation]
+    targets_element: [data-flow:key-validated-to-gateway, data-flow:unlock-to-door, asset:key-validated-message]
+
+attack_steps:
+  - id: attack-step:reach-control-can
+    name: Pull the bumper away and reach the control CAN bus at the headlight connector
+    kill_chain_phase: delivery
+    precedes: [attack-step:inject-key-validated]
+  - id: attack-step:inject-key-validated
+    name: Send forged "key validated" frames while blocking the bus's other transmitters
+    description: The write-up's device also suppresses the real ECUs' frames so the forgeries are not contradicted.
+    kill_chain_phase: exploitation
+    precedes: [attack-step:immobilizer-off, attack-step:doors-unlocked]
+  - id: attack-step:immobilizer-off
+    name: Gateway forwards the forgery; the engine ECU deactivates the immobilizer
+    precedes: [attack-step:drive-away]
+  - id: attack-step:doors-unlocked
+    name: A second forged message unlocks the doors
+    precedes: [attack-step:drive-away]
+  - id: attack-step:drive-away
+    name: Enter and drive the vehicle away
+    description: Needs both the immobilizer off AND the doors open, an AND gate.
+    gate: and_gate
+    kill_chain_phase: actions_on_objectives
+
+attack_paths:
+  - id: attack-path:headlight-can-injection
+    name: Headlight CAN-injection theft path
+    description: Feasibility is left for a human to rate (ISO/SAE 21434 Table 1).
+    steps:
+      - attack-step:reach-control-can
+      - attack-step:inject-key-validated
+      - attack-step:immobilizer-off
+      - attack-step:doors-unlocked
+      - attack-step:drive-away
+    realizes_threat: threat-instance:spoofed-key-validated
+
+mitigations:
+  - id: mitigation:authenticate-key-message
+    name: Cryptographically authenticate the key-validated message
+    description: >-
+      The write-up's permanent fix: receivers stop trusting the message without proof
+      of origin (message authentication codes, per-vehicle keys, an HSM or its software
+      emulation). Status in the field is not published.
+    mitigates: [threat-instance:spoofed-key-validated]
+    applies_in_phase: [lifecycle-phase:design, lifecycle-phase:maintenance]
+    implementation_owner: party:toyota
+    mitigation_status: planned
+  - id: mitigation:gateway-error-check
+    name: Gateway forwards the key message only after a clean recent bus history
+    description: >-
+      The write-up's stop-gap: refuse to forward if the bus has recently shown the rare
+      error pattern the injection device causes. It notes this can be worked around.
+    mitigates: [threat-instance:spoofed-key-validated]
+    applies_in_phase: [lifecycle-phase:maintenance]
+    implementation_owner: party:toyota
+    mitigation_status: planned
+
+assertions:
+  - id: assertion:cve-cwe-instance
+    name: CVE-2023-29389 is an instance of CWE-74
+    description: As the CVE record states it, in CISA-ADP's container; the CNA's container gives no CWE.
+    subject: vulnerability:cve-2023-29389
+    predicate: instance_of
+    object: weakness:cwe-74
+    confidence: medium
+    assertion_status: proposed
+    asserted_by: party:cisa-adp
+    asserted_at: "2025-02-12T16:12:07Z"
+    generated_by: "CVE record CVE-2023-29389, ADP container CISA-ADP (dateUpdated 2025-02-12)"
+    evidence: ["https://cveawg.mitre.org/api/cve/CVE-2023-29389"]
+  - id: assertion:path-realizes-threat
+    name: The headlight path realizes the spoofed-message threat
+    description: AI-drafted from the write-up; awaits a human Review.
+    subject: attack-path:headlight-can-injection
+    predicate: realizes_threat
+    object: threat-instance:spoofed-key-validated
+    confidence: medium
+    assertion_status: proposed
+    generated_by: "AI-drafted from the cited write-up (DL-0024)"
+    evidence: ["https://kentindell.github.io/2023/04/03/can-injection/"]
+
+lifecycle_phases:
+  - id: lifecycle-phase:design
+    name: Design
+    code: design
+  - id: lifecycle-phase:operation
+    name: Operation / use
+    code: operation
+  - id: lifecycle-phase:maintenance
+    name: Maintenance (software update)
+    code: maintenance

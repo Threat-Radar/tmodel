@@ -1,0 +1,60 @@
+# Test-harness container for the PROPOSAL vectors (pv-NN-*.yaml, DL-0024).
+#
+# NOT part of the domain object model. It is the CORE container plus collections for the
+# three classes DL-0024 proposes (Asset, TrustBoundary, DataFlow; RPT-0005 G13). A pv
+# vector validates here only because the proposed classes are in the schema file; none
+# of them is accepted until an ADR amends ADR-0010. Governance and Environment stay out,
+# as in the core container.
+id: https://threat-radar.github.io/tmodel/schema/vectors/example-container-proposed
+name: TmodelExampleContainerProposed
+title: tmodel PROPOSAL example-vector container (test harness, core plus DL-0024)
+description: >-
+  Validation-only wrapper so a PROPOSAL vector (core classes plus the Asset,
+  TrustBoundary and DataFlow classes DL-0024 proposes) validates as one file.
+  Not normative; not a domain class.
+version: 0.1.0
+status: draft
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+  tmodel: https://threat-radar.github.io/tmodel/schema/object-model/
+default_prefix: tmodel
+default_range: string
+
+imports:
+  - linkml:types
+  - ../schema/tmodel-object-model.linkml
+
+classes:
+  ExampleModelProposed:
+    tree_root: true
+    description: >-
+      A PROPOSAL test-vector bundle (core plus DL-0024's Asset, TrustBoundary and
+      DataFlow collections): flat collections of object instances that together
+      form one worked attack-path knowledge graph using only the DEC-001a core
+      classes. Each object appears once in its type's list; edges between objects are
+      id references (inlined: false in the domain schema). Referential integrity
+      across the lists is a dogfooding convention here, not enforced by
+      linkml-validate. No governed-layer collections and no Environment/Deployment
+      collections exist on purpose (ARCH-0001-PROPOSAL §8 MVP scope).
+    attributes:
+      parties: { range: Party, multivalued: true, inlined: true, inlined_as_list: true }
+      products: { range: Product, multivalued: true, inlined: true, inlined_as_list: true }
+      product_instances: { range: ProductInstance, multivalued: true, inlined: true, inlined_as_list: true }
+      components: { range: Component, multivalued: true, inlined: true, inlined_as_list: true }
+      weaknesses: { range: Weakness, multivalued: true, inlined: true, inlined_as_list: true }
+      vulnerabilities: { range: Vulnerability, multivalued: true, inlined: true, inlined_as_list: true }
+      attack_patterns: { range: AttackPattern, multivalued: true, inlined: true, inlined_as_list: true }
+      threat_instances: { range: ThreatInstance, multivalued: true, inlined: true, inlined_as_list: true }
+      attack_steps: { range: AttackStep, multivalued: true, inlined: true, inlined_as_list: true }
+      attack_paths: { range: AttackPath, multivalued: true, inlined: true, inlined_as_list: true }
+      damage_scenarios: { range: DamageScenario, multivalued: true, inlined: true, inlined_as_list: true }
+      mitigations: { range: Mitigation, multivalued: true, inlined: true, inlined_as_list: true }
+      risk_scores: { range: RiskScore, multivalued: true, inlined: true, inlined_as_list: true }
+      reviews: { range: Review, multivalued: true, inlined: true, inlined_as_list: true }
+      assertions: { range: Assertion, multivalued: true, inlined: true, inlined_as_list: true }
+      lifecycle_phases: { range: LifecyclePhase, multivalued: true, inlined: true, inlined_as_list: true }
+      views: { range: View, multivalued: true, inlined: true, inlined_as_list: true }
+      assets: { range: Asset, multivalued: true, inlined: true, inlined_as_list: true }
+      trust_boundaries: { range: TrustBoundary, multivalued: true, inlined: true, inlined_as_list: true }
+      data_flows: { range: DataFlow, multivalued: true, inlined: true, inlined_as_list: true }
