@@ -1,0 +1,59 @@
+name: schema
+# The LinkML object model and its example vectors (#64; ADR-0007, ADR-0010).
+# 1. The generated JSON Schema, SHACL and Python types match the LinkML file.
+# 2. Every example vector validates against its container.
+# 3. Every id-reference in the MVP core vectors resolves (linkml-validate does
+#    not check references between objects; DL-0021).
+# GitHub runners only, no cloud services (APP-0001 A-043).
+
+on:
+  pull_request:
+    paths:
+      - "spec/schema/**"
+      - "spec/vectors/**"
+      - "bin/gen-schema"
+      - "design-log/0021-mvp-core-attack-path-vectors/check-edges.py"
+      - ".github/workflows/schema.yml"
+  push:
+    branches: [main]
+    paths:
+      - "spec/schema/**"
+      - "spec/vectors/**"
+      - "bin/gen-schema"
+      - "design-log/0021-mvp-core-attack-path-vectors/check-edges.py"
+      - ".github/workflows/schema.yml"
+
+concurrency:
+  group: schema-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  schema:
+    name: LinkML schema and vectors
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install pinned tools
+        run: python -m pip install -r spec/schema/requirements.txt
+      - name: Generated files are up to date
+        run: bin/gen-schema --check
+      - name: MVP core vectors validate (core container)
+        run: |
+          for v in spec/vectors/mvp-*.yaml; do
+            echo "== $v"
+            linkml-validate -s spec/vectors/example-container-core.linkml.yaml -C ExampleModelCore "$v"
+          done
+      - name: Governance vectors validate (full container)
+        run: |
+          for v in spec/vectors/tv-*.yaml; do
+            echo "== $v"
+            linkml-validate -s spec/vectors/example-container.linkml.yaml -C ExampleModel "$v"
+          done
+      - name: MVP core vectors, references resolve
+        run: python3 design-log/0021-mvp-core-attack-path-vectors/check-edges.py spec/vectors/mvp-*.yaml
