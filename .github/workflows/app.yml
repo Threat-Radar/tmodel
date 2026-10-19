@@ -9,12 +9,14 @@ on:
     paths:
       - "engine/**"
       - "apps/**"
+      - "bin/build-engine"
       - ".github/workflows/app.yml"
   push:
     branches: [main]
     paths:
       - "engine/**"
       - "apps/**"
+      - "bin/build-engine"
       - ".github/workflows/app.yml"
 
 concurrency:
@@ -92,6 +94,12 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           workspaces: apps/desktop/src-tauri
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Build the engine sidecar (#124)
+        working-directory: .
+        run: bin/build-engine
       - name: Install
         run: npm ci
       - name: Build frontend
@@ -101,6 +109,9 @@ jobs:
         run: cargo fmt --check
       - name: Rust lint
         working-directory: apps/desktop/src-tauri
-        run: cargo clippy -- -D warnings
+        run: cargo clippy --all-targets -- -D warnings
+      - name: Rust tests
+        working-directory: apps/desktop/src-tauri
+        run: cargo test
       - name: Build app (debug, unbundled)
         run: npx tauri build --debug --no-bundle
