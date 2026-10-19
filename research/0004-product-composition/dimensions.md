@@ -4,7 +4,7 @@ id: RPT-0004-dimensions
 title: "RPT-0004 dimensions: the search axes"
 type: research
 status: draft
-version: "0.6.0"
+version: "0.7.0"
 date: "2026-09-28"
 updated: "2026-10-18"
 record: RPT-0004
@@ -179,6 +179,8 @@ Every kept source is rated 0 to 3 on the five axes #38 sets. The rubric is RPT-0
 | Notes | owner, upstream copy, duplicates |
 
 **Which status each record gets.** #38 says a spec record left at `summarized` is rejected: it is either an honest stub or FX-1 complete. So a spec whose fields the report relies on is extracted to FX-1 (candidates: `cyclonedx-1-7`, `spdx-3-0-1`, purl, CoSWID, CPE naming, `osv-schema`); a spec cited only for its status or for one definition stays a stub, with the reason written down; and sources that are not specifications (tools, guides, data) reach the summary bar. Phase 2 confirms the list with the student before extracting, because each FX-1 extraction is a multi-agent job (the CycloneDX 1.7 PDF alone is 566 pages).
+
+*Status 2026-10-18: every cited source now has a library record, or a reason for having none written in DL-0015. 86 honest stubs are in Threat-Radar/library#27; `cyclonedx-1-7` and `spdx-3-0-1` became honest stubs in Threat-Radar/library#26; purl (`ecma-427`) is FX-1 complete in the draft Threat-Radar/library#24. Tools that only implement a spec the library holds are `implementations` entries on that spec's record (the library's docs/scope.md §3), so they have no record of their own. Whether the other FX-1 candidates above still need a full extraction is sponsor question 1 below.*
 
 ## Dimensions
 
@@ -357,6 +359,6 @@ Rules for every agent: fetch every URL and read it from its own text, not from a
 ## Open questions for the sponsor
 
 1. **Which FX-1 rule applies?** The fork's `docs/extraction.md` says that touching a spec record triggers FX-1. Upstream changed this in m-of-n/library PR #42 (merged 2026-10-05): only the intent to extract triggers it, and a pull request that only summarizes is allowed. #38 says a spec record left `summarized` is rejected. Should the fork take the upstream change, and does #38's rule still hold for this topic? *Status 2026-10-15: half answered. The fork took the upstream change when it synced with upstream (Threat-Radar/library#18, 2026-10-09). Whether #38's rule still holds was asked on #38 on 2026-10-15.*
-2. **Upstream owner.** `cyclonedx-1-7` and `spdx-3-0-1` have an upstream owner (`owner: Ndewedo-Newbury`, the `sbom` lane), and both were still `queued` upstream on 2026-10-08. Should we extract them in the fork and offer the work upstream, or coordinate first? *Status 2026-10-15: asked on #38.*
+2. **Upstream owner.** `cyclonedx-1-7` and `spdx-3-0-1` have an upstream owner (`owner: Ndewedo-Newbury`, the `sbom` lane), and both were still `queued` upstream on 2026-10-08. Should we extract them in the fork and offer the work upstream, or coordinate first? *Status 2026-10-15: asked on #38. Status 2026-10-18: at RPT-0005's request (#39), both are now honest stubs owned by RPT-0004 (Threat-Radar/library#26), which tells the sponsor the owner change is a two-line revert; whether to extract them is still open.*
 3. **Duplicate records.** `ntia-2021-sbom-minimum` (stub) and `ntia-sbom-minimum-elements` (summarized) describe the same NTIA report; `iso-iec-5962` (stub) and `iso-iec-5962-2021` (queued) both describe ISO/IEC 5962:2021. Ids are never reused, so how should a duplicate be retired? *Status 2026-10-15: answered by the library's own rule, so not asked: a mistaken duplicate becomes a stub with `duplicate_of: <id>`, never a deletion (`.claude/skills/ingest-reference`), and `bin/validate` requires the duplicate to stay a stub. Phase 2 applies it.*
 4. **Paywalled standards.** Can the project get ISO/IEC 19770-2:2015 (SWID) and ISO/IEC 19770-6:2024 (hardware identification tags), as it did ISO/SAE 21434? If not, both stay stubs, and the report keeps relying on NIST IR 8060, RFC 9393 and ISO's catalog data. *Status 2026-10-15: asked on #38.*

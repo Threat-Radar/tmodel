@@ -4,7 +4,7 @@ id: DL-0015
 title: "RPT-0004 second pass: AI-assisted scoping, survey, extraction and mapping"
 type: process
 status: draft
-version: "0.6.0"
+version: "0.7.0"
 date: "2026-10-08"
 updated: "2026-10-18"
 record: DL-0015
@@ -261,3 +261,89 @@ mapping.md §3 lists them. The ones a reviewer should see first:
 
 - The student asked for Table 6.
 - Pending: the student's review of mapping.md and the commit.
+
+## Phase 2: honest stubs for the remaining sources (2026-10-18)
+
+### Question asked
+
+The student asked whether #38 was finished. The agent answered that Phase 2 was furthest behind: of the roughly 110 records RPT-0004 needs, about 92 did not exist. Asked how long Phase 2 would take with five subagents, the agent estimated 2 to 3 hours for honest stubs and days for full extractions. The student chose the stub route at maximum effort, which #38's definition of done allows ("FX-1 complete or an honest stub").
+
+Earlier the same day, at RPT-0005's request (#39), the student took over `cyclonedx-1-7` and `spdx-3-0-1` from the upstream `sbom` lane and made both honest stubs (Threat-Radar/library#26).
+
+### What was produced
+
+- Threat-Radar/library#27: 86 stub records. By type: 38 spec, 13 dataset, 13 paper, 8 repo, 5 rfc, 4 web, 2 article, 1 book, 1 draft and 1 note. Each has `status: stub`, `owner: Clovier`, `topic: product-composition`, the pinned version, a SHA-256 where one can be taken, and a summary whose Limits section says what was checked.
+- Implementations entries instead of records, under the library's rule (docs/scope.md §3):
+  - cosign and actions/attest under `sigstore-bundle-v0-3`;
+  - python-uswid and coreboot under `rfc-9393`;
+  - PACCOR and HIRS under `tcg-platform-certificate-profile-2-1`;
+  - spdx3-validate, spdx/tools-golang and the OpenEmbedded-Core SPDX 3.0 classes under `spdx-3-0-1` (Threat-Radar/library#26).
+- `dimensions.md` 0.7.0: a status line under Table 9 and on sponsor question 2.
+
+### Method
+
+- **Merging.** The agent merged the 219 source rows of `sources.md` into 160 sources, matching them by URL and record id. It set aside the 17 that already have a record and the sources that need none, and split the remaining 86 into five batches: formats and policy; identity and build; vulnerability data and version ordering; hardware and firmware; tools and papers.
+- **Research.** Five research agents, at maximum effort, took one batch each. They gathered metadata only and edited no repository. Each returned JSON for its sources:
+  - title, version, publisher and date;
+  - maturity, only where the source states its standing;
+  - identifiers and licence;
+  - the SHA-256 of the bytes it fetched;
+  - a one- or two-sentence overview.
+- **Independent check.** The main session re-fetched every source with its own script and recomputed each digest. TCG and CISA block scripted downloads, so those digests were confirmed against Internet Archive copies.
+- **Building.** It created each record with `bin/ingest --stub`, filled it from the checked data, and ran every library CI step locally.
+
+### Choices the agent made, open to review
+
+- **Tools.** Tools that implement a spec the library holds became implementations entries, not records (scope §3). Syft, Grype, Trivy, Dependency-Track, OSV-Scanner and tradar got records anyway, because RPT-0004 studies their own behaviour, which no specification defines.
+- **No new record** for:
+  - sources already held: FIPS 203 and 204, SLSA 1.2, the OSV schema and in-toto;
+  - sources in open pull requests: `ecma-427` and `nvd-cve-api-2-0`;
+  - the CycloneDX HBOM capability page, a secondary summary (scope §2);
+  - unreleased drafts: CycloneDX 2.0-dev and SPDX 3.1-RC1;
+  - the team's own scan outputs and test inputs.
+- **Folded into another record:**
+  - the CISA HBOM fact sheet and the UEFI 2024 Plugfest deck, mentioned in their records' Limits;
+  - the IANA gitoid registration, an identifier on `omnibor-spec`;
+  - ISO/IEC 18670:2025, an identifier on `swhid-spec-1-2`.
+- **Shared ids.** Three ids are RPT-0014's canonical ids (`cert-in-2025-aibom-guidelines`, `lf-2024-spdx3-aibom` and `nocera-2025-aibom-mlr`), so the two reports share one record each.
+- **Zephyr.** Its `west spdx` is recorded nowhere: v4.4.2 writes only SPDX 2.2 and 2.3, and the library has no SPDX 2.3 record.
+
+### What was rejected, and why
+
+- **Agent output the main session changed:**
+  - The PCIe registry id became `tcg-pcie-component-class-registry-1-0-r18`, matching its sibling `tcg-component-class-registry-1-0-r14` and the cover's "Version 1.0".
+  - The two IANA registries moved to the `iso` shelf, where the library's other IANA records sit.
+  - Maturity `best-practice` on the five NIST IRs was dropped, matching `nistir-8547` and `nistir-8610`.
+  - Identifier keys that are not identifiers were removed: archive copies, TLP markings, extra page URLs and the draft name on RFC records. Archive copies moved to the Limits text.
+  - Licences that GitHub reports as NOASSERTION were replaced by what the projects' own licence files say.
+  - The HIRS entry was reworded. HIRS v3.2.0 implements Platform Certificate profile 1.1 r15, with 2.0 in development; it does not claim 2.1.
+  - The Debian tracker's date was cleared, because a live feed has no publication date.
+- **The agent's own errors:**
+  - The keyword patterns that attached `sources.md` rows to records also matched numbers inside SHA-256 values ("7698", "9124"). One agent caught it and left those rows' decision ids out. An audit with digests stripped found no other case.
+  - Rebuilding the record folders inside the file-synced Desktop folder left 17 duplicate files (`record 2.yaml`, `summary 2.md`) in the first commit. A second commit removes them.
+
+### Findings for the report (Phase 5) and for tmodel
+
+- **report.md:**
+  - ISO now lists SPDX 3.0 as ISO/IEC PRF 5962 at stage 50.00; §1 and §7 still say DIS at 40.99.
+  - ISO Guide 69:1999 was withdrawn in 2014. §1.3 can cite ISO's stage-codes page instead; the meaning of 90.60 has not changed.
+  - ISO/IEC 19770-2:2015 was confirmed in 2021, and a second review closed on 2026-06-05 with its outcome pending.
+  - The CycloneDX bom-examples VEX cases behind the comparison table are CycloneDX 1.4 files, not 1.7.
+  - The Commission's CRA guidance, C(2026) 5252, is formally still a draft.
+- **sources.md and the Phase 1 notes:**
+  - Shortened digests with wrong endings: L106 to L108 (NIST IR 7695, 7696 and 7697), L110 (RFC 9393), and two in `fanout-bridge.md` §1.11.
+  - The BSI URL at L92 returns HTML unless `?__blob=publicationFile` is added.
+  - Row L164 (trivy-db) belongs with Trivy, not the GitHub Advisory Database.
+  - The Red Hat VEX counts in `fanout-bridge.md` §1.9 are stale: the file was regenerated on 2026-10-15 with different content.
+- **Facts for Phase 5:**
+  - CISA Vulnrichment stopped adding CPE strings on 2024-12-10.
+  - The osv.dev FAQ itself says it computes purls on import; Phase 1 had marked this as our reading.
+  - The SUIT manifest draft is waiting on five unpublished SUIT drafts it cites.
+  - uSWID is a header defined by python-uswid and required by OSFW §4.6, not a standard.
+  - Yocto 5.1 emits SPDX 3.0.0, and 5.2 onward 3.0.1. tools-golang's SPDX 3.0.1 support is not yet in a release.
+  - The semver.org page differs from the 2013 v2.0.0 tag on build metadata: it says MUST be ignored where the tag said SHOULD.
+
+### What a human accepted
+
+- The student chose the stub route, five subagents and maximum effort.
+- Pending: review of the 86 records in Threat-Radar/library#27, and the sponsor's answers to sponsor questions 1 and 2 on #38.
