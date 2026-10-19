@@ -7,7 +7,7 @@ description: "Survey of software and hardware bills of materials: formats, stand
 type: research
 category: security
 status: draft
-version: "0.1.1"
+version: "0.1.2"
 date: "2026-09-28"
 updated: "2026-10-18"
 authors:
@@ -30,6 +30,8 @@ open_decisions: [DEC-001, DEC-002, DEC-008]
 > **This report does not select a design.** It is evidence for the open decisions listed above. DEC-007, which it also informs, has since been accepted in ADR-0001 (radar / tmodel split).
 
 > **Corrections in 0.1.1 (2026-10-18).** The second pass on this report (#38) found errors and dated results in 0.1.0; they are fixed in place below, and the evidence is in the Phase 1 notes (`fanout-*.md`, section 9) and DL-0015. (1) Syft does write SPDX 3.0.1 (`-o spdx-json@3.0`, since Syft 1.46.0; checked with 1.52.0), so §3, its takeaway and §7 were wrong to say it cannot. (2) The ISO stages in §1 had moved by 2026-10-07. (3) Dependency-Track's current release is 5.2.0. (4) §1.2's "three things" holds for SPDX's model text, not its SHACL shapes or JSON Schema. (5) Scan results in §3 and §5 now carry their database date: on 2026-10-08 the same Alpine image gave 30 matches for 15 CVEs, one of them from Alpine's own feed ([pilot.md](pilot.md)). For #15 and #17, Table 6 ([mapping.md](mapping.md)) supersedes this report's notes on the input contract.
+
+> **Corrections in 0.1.2 (2026-10-18).** The checks behind the Phase 2 library records (#38, DL-0015) found three more. (1) ISO now lists SPDX 3.0 as ISO/IEC PRF 5962 at stage 50.00, past the draft stage, not as DIS 5962 at 40.99 (§1, §7). (2) ISO Guide 69:1999, which §1.3 cited for stage names, was withdrawn on 2014-06-18; §1.3 now cites ISO's stage-codes page, which gives 90.60 the same meaning. (3) The CycloneDX VEX examples behind the comparison table are CycloneDX 1.4 files; the four states they use are all still in 1.7.
 
 Search log: [`searches.md`](searches.md). Source log: [`sources.md`](sources.md). 
 Axes: [`dimensions.md`](dimensions.md).
@@ -66,7 +68,7 @@ Axes: [`dimensions.md`](dimensions.md).
 | CWE | `cwes` (integers) | external reference of type `cwe` | none |
 | VEX | `analysis` inside each vulnerability | relationship classes | none |
 
-**VEX statuses.** CISA's four VEX statuses are the reference (CISA, Minimum Requirements for VEX, §2.7.1; see `sources.md`). Each SPDX class states which VEX status it represents, and SPDX's five justifications are CISA's five. CycloneDX publishes no normative mapping to these statuses (neither CISA's document nor CycloneDX's VEX page gives one), but CycloneDX's own examples for CISA's VEX use cases, which CISA's document links to, use `exploitable` for affected, `resolved` for fixed, `not_affected` for not affected and `in_triage` for under investigation (CycloneDX bom-examples, `VEX/CISA-Use-Cases/Case-1`). The CycloneDX column follows those examples; the Match column is our rating of how closely the written definitions agree. CycloneDX's nine justifications are cut differently and are not mapped.
+**VEX statuses.** CISA's four VEX statuses are the reference (CISA, Minimum Requirements for VEX, §2.7.1; see `sources.md`). Each SPDX class states which VEX status it represents, and SPDX's five justifications are CISA's five. CycloneDX publishes no normative mapping to these statuses (neither CISA's document nor CycloneDX's VEX page gives one), but CycloneDX's own examples for CISA's VEX use cases, which CISA's document links to, use `exploitable` for affected, `resolved` for fixed, `not_affected` for not affected and `in_triage` for under investigation (CycloneDX bom-examples, `VEX/CISA-Use-Cases/Case-1`; the example files are CycloneDX 1.4, unchanged since 2022-03-23, and all four states are still in CycloneDX 1.7). The CycloneDX column follows those examples; the Match column is our rating of how closely the written definitions agree. CycloneDX's nine justifications are cut differently and are not mapped.
 
 | CISA status | SPDX 3.0.1 | CycloneDX 1.7 (per its CISA examples) | Match |
 |---|---|---|---|
@@ -80,7 +82,7 @@ Axes: [`dimensions.md`](dimensions.md).
 
 Input to DEC-002.
 
-**Where each format stands as a standard.** CycloneDX 1.7 is Ecma standard ECMA-424, 2nd edition (`cyclonedx-1-7`), and CycloneDX is also moving through ISO as ISO/IEC DIS 27055, "CycloneDX Bill of Materials (BOM) specification", a draft international standard at stage 40.00 ("DIS registered"). SPDX's current ISO standard, ISO/IEC 5962:2021, covers SPDX 2.2.1 and is under revision (stage 90.92); ISO lists its replacement as ISO/IEC DIS 5962, "SPDX® Specification V3.0", a draft international standard at stage 40.99 ("Full report circulated: DIS approved for registration as FDIS"). SWID is ISO/IEC 19770-2:2015 (1.3). Two identifiers used below are standards too: SWHID is ISO/IEC 18670:2025 ("SWHID Specification V1.2"), and purl, already ECMA-427, is ISO/IEC DIS 27056, also at stage 40.00 (ISO Open Data, `iso_deliverables_metadata`, checked 2026-10-07; 0.1.0, checked 2026-09-30, had CycloneDX and purl as committee drafts at 30.99 and DIS 5962 at 40.60; stage names from ISO's stage-codes page).
+**Where each format stands as a standard.** CycloneDX 1.7 is Ecma standard ECMA-424, 2nd edition (`cyclonedx-1-7`), and CycloneDX is also moving through ISO as ISO/IEC DIS 27055, "CycloneDX Bill of Materials (BOM) specification", a draft international standard at stage 40.00 ("DIS registered"). SPDX's current ISO standard, ISO/IEC 5962:2021, covers SPDX 2.2.1 and is under revision (stage 90.92); ISO lists its replacement as ISO/IEC PRF 5962, "SPDX® Specification V3.0", now past the draft stage at stage 50.00 ("Final text received or FDIS registered for formal approval"). SWID is ISO/IEC 19770-2:2015 (1.3). Two identifiers used below are standards too: SWHID is ISO/IEC 18670:2025 ("SWHID Specification V1.2"), and purl, already ECMA-427, is ISO/IEC DIS 27056, also at stage 40.00 (ISO Open Data, `iso_deliverables_metadata`, file of 2026-10-14, checked 2026-10-18; on 2026-10-07 SPDX 3.0 was DIS 5962 at 40.99, and 0.1.0, checked 2026-09-30, had CycloneDX and purl as committee drafts at 30.99 and DIS 5962 at 40.60; stage names from ISO's stage-codes page).
 
 ### 1.1 CycloneDX 1.7 (`cyclonedx-1-7`)
 
@@ -188,7 +190,7 @@ Three things stand out. First, SPDX supports CWEs but has no dedicated CWE field
 
 ### 1.3 SWID (ISO/IEC 19770-2)
 
-The SWID standard itself, ISO/IEC 19770-2:2015, is paywalled and was not read for this report. ISO's own metadata lists this second edition, published 2015-09-30, as current: nothing replaces it, and its stage code 90.60 marks the close of a review whose outcome the metadata does not show (ISO Open Data, `iso_deliverables_metadata`, checked 2026-09-30; stage codes per ISO Guide 69). This section relies on two public sources: NIST IR 8060, NIST's guidelines for creating interoperable SWID tags, which reports the standard's requirements for each tag element, and RFC 9393, which defines Concise SWID (CoSWID) tags as a CBOR-based "more concise representation of SWID information" whose data definition "is aligned with" the standard's XML schema. Where only CoSWID is described, the text says so.
+The SWID standard itself, ISO/IEC 19770-2:2015, is paywalled and was not read for this report. ISO's own metadata lists this second edition, published 2015-09-30, as current: nothing replaces it, and its stage code 90.60 marks the close of a review whose outcome the metadata does not show (ISO Open Data, `iso_deliverables_metadata`, checked 2026-09-30 and again 2026-10-18; stage names from ISO's stage-codes page. 0.1.0 cited ISO Guide 69:1999 here, which ISO withdrew on 2014-06-18). This section relies on two public sources: NIST IR 8060, NIST's guidelines for creating interoperable SWID tags, which reports the standard's requirements for each tag element, and RFC 9393, which defines Concise SWID (CoSWID) tags as a CBOR-based "more concise representation of SWID information" whose data definition "is aligned with" the standard's XML schema. Where only CoSWID is described, the text says so.
 
 SWID also has a different shape from the other two formats. A tag describes one piece of software, and a primary tag "is intended to be installed on an endpoint along with the corresponding software component" (RFC 9393 §1.1), so an inventory is a collection of tags rather than one document. There are four tag types: primary, patch, corpus (software before installation) and supplemental (extra information about another tag).
 
@@ -297,7 +299,7 @@ This section gathers the evidence above by decision: the three that are still op
 - *VEX.* Exploitability statements link a vulnerability to a product; SPDX's statuses follow CISA's, while CycloneDX's line up only partly (comparison table).
 
 **DEC-002 (formats to import and export).**
-- CycloneDX 1.7 is what our tools wrote and what Dependency-Track reads. SPDX 3.0.1 is the more graph-like model; Syft writes it (with SPDX 2.3's feature set only), but Dependency-Track and GUAC cannot read it yet. SWID is an identification tag, not a composition format (1.2, 1.3, section 3). Both main formats are on their way to ISO: SPDX 3.0 as ISO/IEC DIS 5962 and CycloneDX as ISO/IEC DIS 27055 (section 1).
+- CycloneDX 1.7 is what our tools wrote and what Dependency-Track reads. SPDX 3.0.1 is the more graph-like model; Syft writes it (with SPDX 2.3's feature set only), but Dependency-Track and GUAC cannot read it yet. SWID is an identification tag, not a composition format (1.2, 1.3, section 3). Both main formats are on their way to ISO: SPDX 3.0 as ISO/IEC PRF 5962 (stage 50.00, approval) and CycloneDX as ISO/IEC DIS 27055 (stage 40.00, enquiry) (section 1).
 - The same scan carries different data depending on the output format (Syft's CPEs, section 3), and converting between formats can lose a hash's algorithm name and VEX distinctions (1.2, comparison table).
 
 **DEC-007 (accepted in ADR-0001, radar / tmodel split).** Under ADR-0001, tmodel consumes radar's (tradar's) output, and "the interface is the composition→model-input mapping surveyed in RPT-0004 (#8)". Today radar's graph keeps only the name, version and ecosystem of vulnerable packages; purl, CPE, dependency links and CWEs are dropped on the way, although the Syft and Grype outputs it already uses contain them (section 4).

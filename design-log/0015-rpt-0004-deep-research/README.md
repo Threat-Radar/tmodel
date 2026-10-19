@@ -4,7 +4,7 @@ id: DL-0015
 title: "RPT-0004 second pass: AI-assisted scoping, survey, extraction and mapping"
 type: process
 status: draft
-version: "0.7.1"
+version: "0.7.2"
 date: "2026-10-08"
 updated: "2026-10-18"
 record: DL-0015
@@ -351,3 +351,36 @@ Earlier the same day, at RPT-0005's request (#39), the student took over `cyclon
 
 - The student chose the stub route, five subagents and maximum effort.
 - Pending: review of the 86 records in Threat-Radar/library#27, and the sponsor's answers to sponsor questions 1 and 2 on #38.
+- Later the same day the student merged Threat-Radar/library#26 and #27.
+
+## Library pin, Table 9 and report 0.1.2 (2026-10-18)
+
+### Question asked
+
+With Threat-Radar/library#26 and #27 merged, the student asked for one tmodel change that points tmodel at the merged records, updates the record ids in `sources.md`, and fixes the three report errors the Phase 2 agents found.
+
+### What was produced
+
+- **The library pin** moves from `b3786cd` to `a28a013`, which adds 25 library commits, including library#26 and #27. `bin/validate` passes at `a28a013`: 550 records, 0 errors.
+- **`sources.md` 0.3.0** adds Table 9: each cited source with the record it became and that record's status before and after Phase 2, or why it has none. It also updates the two rows that still said `queued`.
+- **`report.md` 0.1.2** applies the three corrections, with a note at the top.
+- **`dimensions.md` 0.7.1** points the Table 9 status line at `sources.md`.
+
+### Method
+
+Each correction was re-checked against its primary source on 2026-10-18:
+- **The SPDX 3.0 stage:** ISO Open Data's deliverables file of 2026-10-14 lists ISO/IEC PRF 5962 at stage 50.00. Stage names come from ISO's stage-codes page.
+- **ISO Guide 69:1999:** its ISO catalog page shows stage 95.99, withdrawn on 2014-06-18.
+- **The CycloneDX VEX examples:** all four `Case-1` files in CycloneDX bom-examples declare `specVersion` 1.4 and were last changed on 2022-03-23. All four states they use are in the CycloneDX 1.7 schema's `impactAnalysisState` list.
+
+Table 9's statuses were read from the library at `a28a013`.
+
+### Choices the agent made, open to review
+
+- **Layout.** The earlier rows of `sources.md` stay as the log of what each pass found. Table 9 is added at the end rather than rewriting about 220 rows, and the top of the file points to it.
+- **Records that don't meet #38's rule.** Mapping every source showed that eight cited records owned by others sit at a status #38 rejects for specs (`summarized` or `queued`): `cisa-framing-software-component-transparency`, `ntia-sbom-minimum-elements`, `iso-iec-5962-2021`, `osv-schema`, `cve-json-5`, `in-toto-attestation-v1`, `fips-203` and `fips-204`. Table 9 lists them as they are. The sponsor's answer to RPT-0005's question on #39 (do spec summaries need to become stubs?) settles them.
+
+### What a human accepted
+
+- The student asked for this change.
+- Pending: review.

@@ -4,7 +4,7 @@ id: RPT-0004-dimensions
 title: "RPT-0004 dimensions: the search axes"
 type: research
 status: draft
-version: "0.7.0"
+version: "0.7.1"
 date: "2026-09-28"
 updated: "2026-10-18"
 record: RPT-0004
@@ -180,7 +180,7 @@ Every kept source is rated 0 to 3 on the five axes #38 sets. The rubric is RPT-0
 
 **Which status each record gets.** #38 says a spec record left at `summarized` is rejected: it is either an honest stub or FX-1 complete. So a spec whose fields the report relies on is extracted to FX-1 (candidates: `cyclonedx-1-7`, `spdx-3-0-1`, purl, CoSWID, CPE naming, `osv-schema`); a spec cited only for its status or for one definition stays a stub, with the reason written down; and sources that are not specifications (tools, guides, data) reach the summary bar. Phase 2 confirms the list with the student before extracting, because each FX-1 extraction is a multi-agent job (the CycloneDX 1.7 PDF alone is 566 pages).
 
-*Status 2026-10-18: every cited source now has a library record, or a reason for having none written in DL-0015. 86 honest stubs are in Threat-Radar/library#27; `cyclonedx-1-7` and `spdx-3-0-1` became honest stubs in Threat-Radar/library#26; purl (`ecma-427`) is FX-1 complete in the draft Threat-Radar/library#24. Tools that only implement a spec the library holds are `implementations` entries on that spec's record (the library's docs/scope.md §3), so they have no record of their own. Whether the other FX-1 candidates above still need a full extraction is sponsor question 1 below.*
+*Status 2026-10-18: every cited source now has a library record, or a reason for having none; Table 9 itself is in [sources.md](sources.md). The 86 honest stubs (Threat-Radar/library#27) and `cyclonedx-1-7` and `spdx-3-0-1` as honest stubs (Threat-Radar/library#26) are merged, and tmodel pins the library at `a28a013`, which has them; purl (`ecma-427`) is FX-1 complete in Threat-Radar/library#24, still open for review. Tools that only implement a spec the library holds are `implementations` entries on that spec's record (the library's docs/scope.md §3), so they have no record of their own. Whether the other FX-1 candidates above still need a full extraction is sponsor question 1 below.*
 
 ## Dimensions
 

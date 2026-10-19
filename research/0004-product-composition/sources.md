@@ -4,23 +4,23 @@ id: RPT-0004-sources
 title: "RPT-0004 source log"
 type: research
 status: draft
-version: "0.2.0"
+version: "0.3.0"
 date: "2026-09-28"
-updated: "2026-10-08"
+updated: "2026-10-18"
 record: RPT-0004
 ---
 
 # RPT-0004: source log
 
-Every source found, and the `library/` record it became.
+Every source found, and the `library/` record it became. The tables below are the log as each pass found the sources; the record ids they propose were settled in Phase 2, and [Table 9](#table-9-library-records-after-phase-2-2026-10-18) at the end lists the record each source became, or why it has none.
 
 | source | type | dimension | library record id | bears_on |
 |---|---|---|---|---|
-| CycloneDX 1.7 (ECMA-424, 2nd ed.) | spec | 1, 2, 5 | `cyclonedx-1-7` (in fork via Threat-Radar/library#5; `queued`, summary has header metadata only) | DEC-002 |
+| CycloneDX 1.7 (ECMA-424, 2nd ed.) | spec | 1, 2, 5 | `cyclonedx-1-7` (in fork via Threat-Radar/library#5; `queued` until Phase 2 made it an honest stub owned by RPT-0004, Threat-Radar/library#26) | DEC-002 |
 | CycloneDX 1.7 JSON reference (cyclonedx.org/docs/1.7/json/) | spec (web view) | 1, 2, 5 | same spec as `cyclonedx-1-7`; source of the quoted field descriptions | DEC-002 |
 | CycloneDX 1.7 JSON schema file (CycloneDX/specification, tag `1.7`, `schema/bom-1.7.schema.json`) | spec (machine-readable) | 1 | same spec as `cyclonedx-1-7`; used for the checks in Tool runs | DEC-002 |
 | CycloneDX property taxonomy, `cdx:device` namespace (github.com/CycloneDX/cyclonedx-property-taxonomy) | spec (side list) | 1, 2 | not yet a record | DEC-001, DEC-002 |
-| SPDX 3.0.1 | spec | 1 | `spdx-3-0-1` (in fork via Threat-Radar/library#5; `queued`, summary has header metadata only) | DEC-002 |
+| SPDX 3.0.1 | spec | 1 | `spdx-3-0-1` (in fork via Threat-Radar/library#5; `queued` until Phase 2 made it an honest stub owned by RPT-0004, Threat-Radar/library#26) | DEC-002 |
 | SPDX 3.0.1 model file (spdx.org/rdf/3.0.1/spdx-model.ttl) | spec (machine-readable) | 1 | same spec as `spdx-3-0-1`; used for the checks in Tool runs | DEC-002 |
 | ISO/IEC 19770-2:2015, Software identification tag (SWID) | spec | 1 | not yet a record; paywalled, not read; listed in `ntia-sbom-minimum-elements`'s references | DEC-002 |
 | ISO/IEC 19770-6:2024, Hardware identification tag | spec | 2 | not yet a record; paywalled, not read; described from ISO Open Data metadata | DEC-001 |
@@ -63,7 +63,7 @@ Every source found, and the `library/` record it became.
 
 ## Sources found in the second pass (Phase 1, 2026-10-08)
 
-From section 8 of each fan-out file, with the agent's number added. Some sources appear under more than one agent, and some rows above (from 0.1.0) are repeated here with newer versions or record ids. Phase 2 merges them into one library record each and fills Table 9 of [dimensions.md](dimensions.md). A record id marked "new" is a proposal; it does not exist yet.
+From section 8 of each fan-out file, with the agent's number added. Some sources appear under more than one agent, and some rows above (from 0.1.0) are repeated here with newer versions or record ids. Phase 2 merged them into one library record each; Table 9 at the end of this file lists the result (its columns are defined in [dimensions.md](dimensions.md)). A record id marked "new" or "proposed" below is the proposal as Phase 1 made it; where Phase 2 chose a different id, Table 9 gives the one that exists.
 
 | agent | source | type | dimension | library record id | bears_on |
 |---|---|---|---|---|---|
@@ -242,3 +242,150 @@ From section 8 of each fan-out file, with the agent's number added. Some sources
 | 5 | log4j-core 2.14.1 jar, <https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-core/2.14.1/log4j-core-2.14.1.jar> (`ade7402a70667a727635d5c4c29495f4ff96f061f12539763f6f123973b465b0`) and `.sha1`, `.md5` | test input | 3 | none (test input, not a source) | DEC-008 |
 | 5 | Container images `alpine:latest` (index `sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6`, arm64 manifest `sha256:260479a1cfaf304c4c20da7f8405d3ce313513dcd534bb743257bdd2fe0f3e2d`) and `debian:12-slim` (index `sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587`, arm64 manifest `sha256:a1b86db52ce3daef089e45aabe36dfec4091f82464c25c1fdcf03de197cbe82a`) | test input | 3 | none | DEC-001 |
 | 5 | tradar repository at `26d9c76`, <https://github.com/Threat-Radar/tradar> (`main` API response `94c0e8de066bdbc69a1a1fd954d565cd0b6673d006b6b645a31f11a71b19c69f`) | code | 3, 4 | new: `threat-radar-tradar` | DEC-007 |
+
+## Table 9: library records after Phase 2 (2026-10-18)
+
+The record each source became, at the library commit this report pins (`a28a013`), or why it has none. Columns are the ones [dimensions.md](dimensions.md) fixes for Table 9. "Stub" means an honest keep-for-later: not read in full, not extracted. DL-0015 (Phase 2) records how each was checked. The `source` column names the document; its rows above give the locators.
+
+### Records RPT-0004 relies on field by field
+
+| source | record id | type | status before → after | FX-1 artifacts | notes |
+|---|---|---|---|---|---|
+| Package-URL (purl), ECMA-427 1st edition | `ecma-427` | spec | none → distilled | full set (`distillation.profile: full`) | Threat-Radar/library#24, open; awaits a human review of the extraction |
+| CycloneDX 1.7 (ECMA-424, 2nd edition) | `cyclonedx-1-7` | spec | queued → stub | none | Threat-Radar/library#26; owner changed from the upstream `sbom` lane to RPT-0004 at RPT-0005's request (#39); FX-1 is sponsor question 1 |
+| SPDX 3.0.1 | `spdx-3-0-1` | spec | queued → stub | none | Threat-Radar/library#26, as above; lists the SPDX 3 implementations RPT-0004 cites (spdx3-validate, spdx/tools-golang, OpenEmbedded-Core) |
+
+### Existing records, cited as they are (other owners)
+
+| source | record id | type | status | FX-1 artifacts | notes |
+|---|---|---|---|---|---|
+| Framing Software Component Transparency (CISA, 3rd edition) | `cisa-framing-software-component-transparency` | spec | summarized | none | upstream `sbom` lane; a spec left `summarized` is what #38 rejects, so it waits on the same sponsor answer as RPT-0005's question on #39 |
+| The Minimum Elements for an SBOM (NTIA) | `ntia-sbom-minimum-elements` | spec | summarized | none | upstream `sbom` lane; as above |
+| CISA 2026 SBOM Minimum Elements | `cisa-2026-sbom-minimum` | spec | stub | none | metadata still empty (DL-0015, Phase 1) |
+| ISO/IEC 5962:2021 (SPDX 2.2.1) | `iso-iec-5962-2021` | spec | queued | none | cited for its ISO status only; upstream `sbom` lane |
+| OSV schema | `osv-schema` | spec | summarized | none | as for the CISA framing record |
+| CVE JSON Record Format v5 | `cve-json-5` | spec | summarized | none | RPT-0005's record; its owner plans FX-1 or a stub (#39) |
+| GUAC | `guac` | repo | summarized | n/a (repo) |  |
+| in-toto Attestation Framework v1 | `in-toto-attestation-v1` | spec | queued | none | as for the CISA framing record |
+| SLSA 1.2 | `slsa-1-2` | spec | distilled | full set |  |
+| EU Cyber Resilience Act, Regulation (EU) 2024/2847 | `eu-cra-2024-2847` | spec | distilled | full set |  |
+| FDA premarket cybersecurity guidance | `fda-premarket-cybersecurity-guidance` | spec | distilled | full set |  |
+| OMB M-26-05 | `omb-m-26-05` | spec | distilled | full set |  |
+| NIST FIPS 203 (ML-KEM) and FIPS 204 (ML-DSA) | `fips-203`, `fips-204` | spec | summarized | none | cited for one fact (they are not hash functions); as for the CISA framing record |
+| Concise Reference Integrity Manifest (CoRIM), IETF draft | `draft-ietf-rats-corim` | draft | stub | none |  |
+| RFC 9334 (RATS architecture), RFC 9711 (EAT) | `rfc-9334`, `rfc-9711` | rfc | stub | none |  |
+| ISO 24089:2023 | `iso-24089-2023` | spec | stub | none | RPT-0007's record |
+| NVD CVE API 2.0 | `nvd-cve-api-2-0` | dataset | none → stub | none | RPT-0005's record, Threat-Radar/library#25, open; also covers the NVD API docs, weakness list and per-CVE responses RPT-0004 read |
+
+### New honest stubs (Threat-Radar/library#27)
+
+All 86 went from no record to `stub`, owner Clovier, topic `product-composition`, no FX-1 artifacts.
+
+| source | record id | type | notes |
+|---|---|---|---|
+| Cleaning the NVD | `anwar-2020-cleaning-nvd` | paper |  |
+| SBOM generators and Python vulnerability assessment | `benedetti-2024-sbom-python` | paper |  |
+| Vexed by VEX tools | `churakova-2025-vexed-by-vex` | paper |  |
+| Challenges for OSS vulnerability scanners | `dann-2022-oss-scanners` | paper |  |
+| Inconsistencies in public vulnerability reports (VIEM) | `dong-2019-viem` | paper |  |
+| Vulnerability reporting by SCA tools | `imtiaz-2021-sca-comparison` | paper |  |
+| Quality of container vulnerability detection tools | `javed-2021-container-scanners` | paper |  |
+| Nocera et al. 2025, AIBOM multivocal review | `nocera-2025-aibom-mlr` | paper |  |
+| Impacts of SBOM generation on vulnerability detection | `odonoghue-2024-sbom-generation` | paper |  |
+| SVS-TEST | `rosso-2026-svs-test` | paper |  |
+| SBOMproof | `sbomproof-2025` | paper |  |
+| Alpine secdb | `alpine-secdb` | dataset |  |
+| apk-package(5) | `apk-package-5` | spec |  |
+| BuildKit attestation storage (v0.34.0) | `buildkit-attestations` | spec |  |
+| CycloneDX bom-examples | `cyclonedx-bom-examples` | repo |  |
+| CycloneDX property taxonomy | `cyclonedx-property-taxonomy` | repo |  |
+| Debian Policy 4.7.4.1, ch. 5 | `debian-policy-version` | spec |  |
+| Debian security tracker | `debian-security-tracker` | dataset |  |
+| Dependency-Track | `dependencytrack-dependency-track` | repo |  |
+| LF AI BOM with SPDX 3.0 | `lf-2024-spdx3-aibom` | paper |  |
+| LVFS docs | `lvfs` | web |  |
+| Maven version order | `maven-version-order` | spec |  |
+| OCI Distribution Spec v1.1.1 | `oci-distribution-spec-1-1-1` | spec |  |
+| OCI Image Spec v1.1.1 | `oci-image-spec-1-1-1` | spec |  |
+| OmniBOR v0.1 | `omnibor-spec` | spec |  |
+| OSFW Firmware Embedded SBOM 0.10 | `osfw-firmware-embedded-sbom-0-10` | spec |  |
+| OWASP CycloneDX Authoritative Guide to SBOM | `owasp-cyclonedx-sbom-guide` | book |  |
+| PyPA version specifiers | `pypa-version-specifiers` | spec |  |
+| Reproducible Builds definition | `reproducible-builds-definition` | web |  |
+| rpm-version(7) | `rpm-version-7` | spec |  |
+| SemVer 2.0.0 | `semver-2-0-0` | spec |  |
+| SWHID v1.2 (ISO/IEC 18670:2025) | `swhid-spec-1-2` | spec |  |
+| VERS 1.2.1 | `vers-spec` | spec |  |
+| deps.dev API v3 | `docs-deps-dev-api-v3` | web |  |
+| deps.dev BigQuery v1 | `docs-deps-dev-bigquery-v1` | web |  |
+| SUIT manifest (-37) | `draft-ietf-suit-manifest` | draft |  |
+| RFC 6149 | `rfc-6149` | rfc |  |
+| RFC 6150 | `rfc-6150` | rfc |  |
+| RFC 9019 (SUIT architecture) | `rfc-9019` | rfc |  |
+| RFC 9124 (SUIT information model) | `rfc-9124` | rfc |  |
+| RFC 9393 | `rfc-9393` | rfc | implementations: python-uswid 0.6.0; coreboot 26.09 SBOM support, src/sbom |
+| IANA Hash Function Textual Names | `iana-hash-function-text-names` | dataset |  |
+| IANA URI Schemes registry | `iana-uri-schemes` | dataset |  |
+| ISO Guide 69:1999 | `iso-guide-69-1999` | spec |  |
+| ISO/IEC 19770-2:2015 | `iso-iec-19770-2-2015` | spec |  |
+| ISO/IEC 19770-6:2024 | `iso-iec-19770-6-2024` | spec |  |
+| ISO Open Data iso_deliverables_metadata | `iso-open-data-deliverables` | dataset |  |
+| NIST IR 7695 (CPE Naming 2.3) | `nistir-7695` | spec |  |
+| NIST IR 7696 (CPE Name Matching 2.3) | `nistir-7696` | spec |  |
+| NIST IR 7697 (CPE Dictionary 2.3) | `nistir-7697` | spec |  |
+| NIST IR 7698 (CPE Applicability Language 2.3) | `nistir-7698` | spec |  |
+| NIST IR 8060 | `nistir-8060` | spec |  |
+| NVD CPE APIs 2.0 | `nvd-cpe-apis` | dataset |  |
+| OSV-Scanner | `google-osv-scanner` | repo |  |
+| OSV.dev | `osv-dev` | dataset |  |
+| Sigstore bundle v0.3 | `sigstore-bundle-v0-3` | spec | implementations: cosign v3.1.3; actions/attest v4.2.2; actions/attest-sbom v4.1.0 |
+| Auto-ISAC SBOM IR v3.0 | `auto-isac-sbom-ir-v3` | paper |  |
+| cvelistV5 | `cvelistv5` | dataset |  |
+| DMTF SPDM 1.4.1 (DSP0274) | `dmtf-dsp0274-1-4-1` | spec |  |
+| DMTF Redfish DSP8010 2026.2 | `dmtf-redfish-schema-2026-2` | spec |  |
+| ITU-T SG17 C548 (X.hbomsec proposal) | `itu-t-sg17-c548-2026` | note |  |
+| TCG Component Class Registry 1.0 r14 | `tcg-component-class-registry-1-0-r14` | spec |  |
+| TCG DICE Attestation Architecture 1.2 | `tcg-dice-attestation-architecture-1-2` | spec |  |
+| TCG PCIe-based Component Class Registry r18 | `tcg-pcie-component-class-registry-1-0-r18` | spec |  |
+| TCG Platform Certificate Profile 2.1 | `tcg-platform-certificate-profile-2-1` | spec | implementations: NSA PACCOR v2.0r16; NSA HIRS v3.2.0, implementing Platform Certificate profile 1.1 r15 with 2.0 in development, not 2.1 |
+| TCG SMBIOS-based Component Class Registry r01 | `tcg-smbios-component-class-registry-1-r01` | spec |  |
+| tradar | `threat-radar-tradar` | repo |  |
+| UEFI Firmware SBOM Proposal | `uefi-firmware-sbom-proposal-2023` | article |  |
+| BSI TR-03183-2 | `bsi-tr-03183-2` | spec |  |
+| CERT-In BOM Guidelines v2.0 | `cert-in-2025-aibom-guidelines` | spec |  |
+| CISA SBOM Types | `cisa-2023-sbom-types` | spec |  |
+| CISA VEX Minimum Requirements | `cisa-2023-vex-minimum-requirements` | spec |  |
+| CISA HBOM Framework | `cisa-hbom-framework-2023` | spec |  |
+| Vulnrichment | `cisa-vulnrichment` | dataset |  |
+| Commission CRA guidance C(2026) 5252 | `eu-cra-guidance-c-2026-5252` | spec |  |
+| G7 SBOM for AI Minimum Elements | `g7-sbom-for-ai-2026` | spec |  |
+| UN R155 (cyber security, CSMS) | `unece-r155` | spec |  |
+| UN R156 (software update, SUMS) | `unece-r156` | spec |  |
+| Grype | `anchore-grype` | repo |  |
+| Anchore NVD data overrides | `anchore-nvd-data-overrides` | dataset |  |
+| Syft | `anchore-syft` | repo |  |
+| Trivy | `aquasecurity-trivy` | repo |  |
+| GitHub Advisory Database | `github-advisory-database` | dataset |  |
+| Matching OVAL data to installed RPMs | `redhat-2021-oval-rpm-matching` | article |  |
+| Red Hat CSAF VEX | `redhat-csaf-vex` | dataset |  |
+| Ubuntu security notices | `ubuntu-security-notices` | dataset |  |
+
+### Sources with no record of their own, and why
+
+| source | where it is recorded instead | why |
+|---|---|---|
+| cosign; GitHub actions/attest and actions/attest-sbom | `implementations` of `sigstore-bundle-v0-3` | implementations of a spec the library holds (library docs/scope.md §3) |
+| python-uswid; coreboot SBOM support | `implementations` of `rfc-9393` | as above |
+| NSA PACCOR; NSA HIRS | `implementations` of `tcg-platform-certificate-profile-2-1` | as above; HIRS v3.2.0 implements profile 1.1 r15, not 2.1 |
+| spdx3-validate; spdx/tools-golang; Yocto Project and OpenEmbedded-Core SPDX classes | `implementations` of `spdx-3-0-1` | as above |
+| Zephyr `west spdx` | nowhere yet | v4.4.2 writes only SPDX 2.2 and 2.3, and the library has no SPDX 2.3 record |
+| CycloneDX HBOM capability page | `cyclonedx-1-7` | a secondary summary of a record the library holds (library docs/scope.md §2) |
+| CISA HBOM framework fact sheet | `cisa-hbom-framework-2023` | folded into the framework record |
+| UEFI 2024 Plugfest deck | `uefi-firmware-sbom-proposal-2023` | folded; noted in that record's Limits |
+| IANA `gitoid` URI scheme registration | `omnibor-spec` (identifiers) and `iana-uri-schemes` | an identifier, not a document |
+| ISO/IEC 18670:2025 (SWHID V1.2) | `swhid-spec-1-2` (identifiers) | the same specification under ISO's number |
+| ISO/IEC DIS 5962, PRF 5962, DIS 27055, DIS 27056 status rows | `iso-open-data-deliverables` | status facts read from ISO Open Data, not documents read |
+| GitHub REST API OpenAPI description; GHSA advisories | `github-advisory-database` | folded |
+| CycloneDX 2.0-dev schemas; SPDX 3.1-RC1 | none until released | unreleased drafts |
+| Pilot and Table 6 tool outputs; Docker Hub responses | none | the team's own observations, digests in `searches.md` and mapping.md §11 |
+| log4j-core 2.14.1 jar; `alpine` container images | none | test inputs, not sources |
