@@ -4,7 +4,7 @@ id: DL-0015
 title: "RPT-0004 second pass: AI-assisted scoping, survey, extraction and mapping"
 type: process
 status: draft
-version: "0.7.0"
+version: "0.7.1"
 date: "2026-10-08"
 updated: "2026-10-18"
 record: DL-0015
@@ -261,6 +261,10 @@ mapping.md §3 lists them. The ones a reviewer should see first:
 
 - The student asked for Table 6.
 - Pending: the student's review of mapping.md and the commit.
+- A teammate (@paria03) reviewed #127 on 2026-10-18 and found three problems, all fixed in mapping.md 0.1.1:
+  - Finding 11 said 29 of the 30 matches "have one", meaning an empty `fix.versions`; it now says so. Table 6d's "3 empty" meant an empty `state`, not empty versions, so the two read as a contradiction. The cell now gives each state and says `versions` is empty on all 29.
+  - §8 cited Syft 1.54.1's 71 catalogers, a Phase 1 figure, though these runs used Syft 1.52.0. Syft 1.52.0 was listed too (69 catalogers, none for hardware or firmware; `searches.md` 0.3.1), and §8 now cites both.
+  - The pull request's description still named DL-0015 0.6.0; it now gives the current versions.
 
 ## Phase 2: honest stubs for the remaining sources (2026-10-18)
 

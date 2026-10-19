@@ -4,7 +4,7 @@ id: RPT-0004-searches
 title: "RPT-0004 search log"
 type: research
 status: draft
-version: "0.3.0"
+version: "0.3.1"
 date: "2026-09-28"
 updated: "2026-10-18"
 record: RPT-0004
@@ -371,3 +371,4 @@ Runs in the main session for [mapping.md](mapping.md), on macOS arm64 (times UTC
 | 2026-10-18 | `curl` CycloneDX `bom-1.7.schema.json` at tag 1.7.2; SPDX 3.0.1 `spdx-model.ttl`, `spdx-json-schema.json`, `spdx-context.jsonld` | cyclonedx/specification, spdx.org | all four digests equal those Phase 1 and RPT-0005 recorded |
 | 2026-10-18 | `python3` field counts on the seven outputs; field and enum look-ups in the four reference files | the files above | every count and every format field named in mapping.md Tables 6a to 6d |
 | 2026-10-18 | `grep`, `awk` and `python3` on `spec/schema/tmodel-object-model.linkml.yaml`, `spec/vectors/*.yaml`, ADR-0002, ADR-0007, ADR-0010, ARCH-0001, `project/DECISIONS-0001.md` (`main` 9f56628) | tmodel | slot lists per class; `depends_on` 0 and `uses_component` 9 uses in the six vectors; ten identifier prefixes in the `mvp-*` files; no Vulnerability-to-Weakness link in any `mvp-*` file; ADR-0007 imports OTM and STIX 2.1 only |
+| 2026-10-19 | `syft cataloger list -o json` (Syft 1.52.0, with `SYFT_CHECK_FOR_APP_UPDATE=false`), after a teammate's review of mapping.md | none | 69 cataloger names, none for hardware or firmware; Phase 1 counted 71 in Syft 1.54.1 (fanout-tools.md §1.1). mapping.md §8 now cites both |
