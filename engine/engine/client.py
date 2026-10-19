@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import os
 import urllib.error
+import urllib.parse
 import urllib.request
 from typing import Any
 
@@ -15,15 +16,32 @@ class EngineUnreachable(Exception):
     """The local engine is not running or did not answer."""
 
 
+class EngineError(Exception):
+    """The engine answered with an error (bad file, unknown goal, ...)."""
+
+
 def default_url() -> str:
     port = os.environ.get("TMODEL_ENGINE_PORT", DEFAULT_PORT)
     return f"http://{DEFAULT_HOST}:{port}"
 
 
-def get(path: str, base_url: str | None = None, timeout: float = 3.0) -> dict[str, Any]:
+def get(
+    path: str,
+    base_url: str | None = None,
+    timeout: float = 3.0,
+    params: dict[str, str] | None = None,
+) -> dict[str, Any]:
     url = (base_url or default_url()).rstrip("/") + path
+    if params:
+        url += "?" + urllib.parse.urlencode(params)
     try:
         with urllib.request.urlopen(url, timeout=timeout) as resp:
             return json.loads(resp.read())
+    except urllib.error.HTTPError as exc:  # before URLError: it is a subclass
+        try:
+            message = json.loads(exc.read()).get("error", exc.reason)
+        except ValueError:
+            message = exc.reason
+        raise EngineError(message) from exc
     except (urllib.error.URLError, TimeoutError, ConnectionError) as exc:
         raise EngineUnreachable(f"no tmodel engine at {url} ({exc})") from exc

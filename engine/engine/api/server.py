@@ -15,6 +15,7 @@ import os
 from collections.abc import Callable
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any
+from urllib.parse import parse_qs, urlsplit
 
 from engine import core
 
@@ -32,9 +33,18 @@ ALLOWED_ORIGINS = frozenset(
     }
 )
 
-ROUTES: dict[str, Callable[[], dict[str, Any]]] = {
-    "/health": core.health,
-    "/version": core.version,
+
+def _attack_paths(query: dict[str, str]) -> dict[str, Any]:
+    if "file" not in query:
+        raise ValueError("missing query parameter: file")
+    return core.attack_paths(query["file"], query.get("goal"))
+
+
+# Each route takes the query parameters; a ValueError becomes a 400 with its message.
+ROUTES: dict[str, Callable[[dict[str, str]], dict[str, Any]]] = {
+    "/health": lambda _q: core.health(),
+    "/version": lambda _q: core.version(),
+    "/attack-paths": _attack_paths,
 }
 
 
@@ -63,11 +73,18 @@ class EngineHandler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_GET(self) -> None:  # noqa: N802 (http.server naming)
-        route = ROUTES.get(self.path.split("?", 1)[0])
+        url = urlsplit(self.path)
+        route = ROUTES.get(url.path)
         if route is None:
             self._send_json(404, {"error": "not found", "path": self.path})
             return
-        self._send_json(200, route())
+        query = {k: v[-1] for k, v in parse_qs(url.query).items()}
+        try:
+            payload = route(query)
+        except ValueError as exc:
+            self._send_json(400, {"error": str(exc)})
+            return
+        self._send_json(200, payload)
 
     def log_message(self, format: str, *args: Any) -> None:  # noqa: A002
         pass  # quiet by default; the GUI polls /health

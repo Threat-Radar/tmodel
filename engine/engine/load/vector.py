@@ -12,11 +12,17 @@ import yaml
 
 from engine.graph import AttackGraph, GraphError
 
+MODEL_SUFFIXES = (".yaml", ".yml")
+
 
 def load_vector(path: str | Path) -> AttackGraph:
     path = Path(path)
+    if path.suffix not in MODEL_SUFFIXES:
+        raise GraphError(f"{path}: expected a .yaml or .yml model file")
     try:
         doc = yaml.safe_load(path.read_text(encoding="utf-8"))
+    except OSError as exc:
+        raise GraphError(f"{path}: cannot read ({exc.strerror or exc})") from exc
     except yaml.YAMLError as exc:
         raise GraphError(f"{path}: not valid YAML ({exc})") from exc
     if not isinstance(doc, dict):
