@@ -7,12 +7,12 @@ description: "Extraction of ISO/SAE 21434:2021 and its threat analysis and risk 
 type: research
 category: security
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 date: "2026-10-01"
-updated: "2026-10-03"
+updated: "2026-10-18"
 authors:
     - role: student
-      id: ty-van-heerden
+      id: Clovier
 decision_makers:
     - role: sponsor
       id: nymble
