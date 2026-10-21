@@ -4,9 +4,9 @@ id: DL-0015
 title: "RPT-0004 second pass: AI-assisted scoping, survey, extraction and mapping"
 type: process
 status: draft
-version: "0.8.0"
+version: "0.8.1"
 date: "2026-10-08"
-updated: "2026-10-19"
+updated: "2026-10-20"
 record: DL-0015
 ---
 
@@ -407,10 +407,14 @@ After Threat-Radar/library#28 and #29 were submitted for review, the student ask
 ### Choices the agent made, open to review
 
 - **The conventions** stated above Table 7 in `sources.md`: how papers, regulations, guides, combined rows, signatures and paywalled texts are rated.
-- **The calls listed under "For a human reviewer"** in `sources.md`, among them that rows 1 and 68 lean on the open FX-1 extractions in Threat-Radar/library#24 and #29.
+- **The calls listed under "For a human reviewer"** in `sources.md`, among them that row 1's AI-grounding leans on the open FX-1 extraction in Threat-Radar/library#24. Rows 8 and 68 also cite the open extractions in #28 and #29, but their values do not depend on them.
 - **Placement.** Table 7 sits just before Table 9 in `sources.md`, where `dimensions.md` puts it ("Table 7 in sources.md"), and follows Table 9's row order, so each rating traces to its record.
 
 ### What a human accepted
 
 - The student asked for this work.
 - Pending: review.
+- A teammate (@Maimcghee) reviewed #133 on 2026-10-19. She checked the row numbering against Table 9, the counts by axis, the RPT-0005 ratings that Table 7 cites, and the front matter, but not the ratings against their sources. Her three notes, none blocking, are fixed in `sources.md` 0.4.1 and `dimensions.md` 0.7.3, and no rating changed:
+  - `sources.md` and `dimensions.md` said the report's §11 "summarizes" the ratings in 0.2.0, but `report.md` is still 0.1.2 and ends at §7. Both now say it will.
+  - Row 68 was described two ways. The conventions said its values do not depend on the open extraction in Threat-Radar/library#29, while "For a human reviewer" and this entry said row 68 leans on it, and its AI-grounding cell gave the FX-1 requirement ids as the reason. The conventions were right: row 68's AI-grounding 3 is fanout-identity's rating, made before the extraction existed, and its Object model 2 is RPT-0005's. Row 68's cells, "For a human reviewer" and this entry now say so.
+  - Row 3 said RPT-0005 rated the SPDX Security profile 1 on Human review. RPT-0005's `report.md` Table 5 gives 2, the value Table 7 chose; the 1 is in its fan-out notes (`fanout-vuln-data.md` §6). Row 3's `basis` cell and its entry under "Disagreements settled" now name that file.

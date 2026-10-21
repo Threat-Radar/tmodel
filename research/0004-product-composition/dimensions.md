@@ -4,9 +4,9 @@ id: RPT-0004-dimensions
 title: "RPT-0004 dimensions: the search axes"
 type: research
 status: draft
-version: "0.7.2"
+version: "0.7.3"
 date: "2026-09-28"
-updated: "2026-10-19"
+updated: "2026-10-20"
 record: RPT-0004
 ---
 
@@ -158,7 +158,7 @@ Every kept source is rated 0 to 3 on the five axes #38 sets. The rubric is RPT-0
 
 0 = absent, 1 = mentioned or weak, 2 = partial (needs extension), 3 = strong. Every rating cites the field or section that justifies it. Ratings are within the source's own scope: a scanner is not marked down on Object model for lacking threat types.
 
-*Status 2026-10-19: filled in [sources.md](sources.md#table-7-applicability-ratings-2026-10-19): 121 rows, one per Table 9 row, rated by five agents from the fan-outs' section 4 ratings and from the sources themselves; AI-produced and not yet reviewed by a human. The report's §11 summarizes it in 0.2.0.*
+*Status 2026-10-19: filled in [sources.md](sources.md#table-7-applicability-ratings-2026-10-19): 121 rows, one per Table 9 row, rated by five agents from the fan-outs' section 4 ratings and from the sources themselves; AI-produced and not yet reviewed by a human. The report's §11 will summarize it in 0.2.0.*
 
 ### Table 8. Gap analysis (§11)
 
