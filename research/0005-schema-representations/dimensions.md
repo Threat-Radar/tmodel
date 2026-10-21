@@ -4,9 +4,9 @@ id: RPT-0005-dimensions
 title: "RPT-0005 dimensions: the search axes"
 type: research
 status: draft
-version: "0.3.0"
+version: "0.3.1"
 date: "2026-10-05"
-updated: "2026-10-08"
+updated: "2026-10-21"
 record: RPT-0005
 ---
 
@@ -34,7 +34,7 @@ Every table below must be filled for every in-scope format before the report lea
 | Licence | licence of the specification and of the data |
 | Library record | record id and status (`stub` or `FX-1`) |
 
-### Table 2. Concept crosswalk (report §8, the key artifact)
+### Table 2. Concept crosswalk (report §9, the key artifact)
 
 Rows are concepts. Columns are formats. A cell holds the format's element (path or class name) and a fidelity mark:
 
@@ -55,11 +55,11 @@ Rows are concepts. Columns are formats. A cell holds the format's element (path 
 
 **Columns.** One per format. CVE and NVD are separate columns: they differ in steward, provenance model and applicability logic (pilot).
 
-### Table 3. Relation crosswalk (report §8)
+### Table 3. Relation crosswalk (report §9)
 
 Same marks as Table 2. Rows are the typed edges of ARCH-0001 §3 (`exploits`, `mitigated_by`, `part_of`, `step_of`, `instance_of`, `reviewed_by`, `applies_to_product`, `supersedes`) plus edges the formats have that we lack (for example CWE `ChildOf`/`CanPrecede`, STIX `uses`/`mitigates`/`detects`, VEX `not_affected` with justification). ADR-0004 made the logical model edge-rich, so this table matters as much as Table 2. A cell also names the qualifiers the edge carries (scope, order, fit grade), because the pilot found that relations in CWE and NVD are not meaningful without them.
 
-### Table 4. Adoption (report §9)
+### Table 4. Adoption (report §10)
 
 | column | what goes in it |
 |---|---|
@@ -88,7 +88,7 @@ Each format is rated on the five axes #39 sets, 0 to 3:
 
 Ratings are within the format's own scope: a catalog such as CWE is not marked down on Object model for lacking Asset, and for a catalog the Provenance and Human review axes rate the editorial history of its entries (pilot).
 
-### Table 6. Local extension needs (report §8)
+### Table 6. Local extension needs (report §9)
 
 | column | what goes in it |
 |---|---|
@@ -209,6 +209,6 @@ The four open scope questions were answered on #39 (<https://github.com/Threat-R
 1. **OpenC2: coverage check only.** It is a command-and-response language for actuating defences, not a representation of threat knowledge: noted and cited, no crosswalk column. If a "mitigation as an executable action" dimension is added later, it pairs with D3FEND on `Mitigation`.
 2. **CPE, purl and CISA KEV are not formats in their own right.** CPE and purl are identifier schemes: they go in an identity sub-row of Table 2 (how `Product` and `Component` are named), not in their own columns. KEV is a curated annotation on a CVE (the exploited-in-the-wild flag): an attribute or assertion on the Vulnerability and Exploitation-evidence rows, not its own schema. The fan-out's light records for them stay as background.
 3. **MITRE ATLAS: cite RPT-0014, at most one row.** One row noting that ATLAS reuses ATT&CK's structure, with a pointer to RPT-0014, the source of truth for AI-threat coverage.
-4. **The FX-1 tooling is on library `main`** (`bin/ingest`, `bin/extract-scaffold`, `bin/validate`, `bin/reindex`, `docs/extraction.md`, the `extract` skill). Phase 2 is not blocked.
+4. **The FX-1 tooling is on library `main`** (`bin/ingest`, `bin/extract-scaffold`, `bin/validate`, `bin/reindex`, `docs/extraction.md`; the agent also found the `extract` skill there). Phase 2 is not blocked.
 
 Still open: whether TM-BOM (CycloneDX 2.0, unreleased) is covered as a full format, pinned to a commit, or only as a coverage row; and SSVC's place (it is already inside CVE ADP containers and the NVD API).

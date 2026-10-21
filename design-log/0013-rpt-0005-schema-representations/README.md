@@ -4,9 +4,9 @@ id: DL-0013
 title: "RPT-0005 schema representations: AI-assisted scoping, survey and crosswalk"
 type: process
 status: draft
-version: "0.9.0"
+version: "0.10.0"
 date: "2026-10-05"
-updated: "2026-10-16"
+updated: "2026-10-21"
 record: DL-0013
 ---
 
@@ -76,7 +76,7 @@ Facts were taken from the artifacts, not from summaries: the CWE XSD and XML, th
 - **CWE 4.20 release date "November 19, 2024"**, from the web-fetch summarizer of the CWE downloads page. Rejected: the downloaded catalog's header says `Version="4.20" Date="2026-04-30"`.
 - **"The Apache CNA asserts CVSS 3.1 for CVE-2021-44228"**, in the agent's first draft of `pilot.md`. Rejected on checking the record: the CNA container has only `other` ("critical"); the CVSS 3.1 vector and SSVC decision come from the CISA-ADP container.
 - **"A rejected CVE names its replacement only in prose"**, in the same draft. Rejected on checking the schema: `cnaRejectedContainer.replacedBy` lists the CVE ids it was rejected in favor of. The `supersedes` cell for CVE was changed from `txt` to `=`.
-- **Press reports that NVD "will drop the 'Deferred' status"** are not used as fact: the live API still returned `Deferred` on 2026-10-05, and `pilot.md` records what was observed.
+- **Press reports that NVD "will drop the 'Deferred' status"** are not used as fact: the live API still returned `Deferred` on 2026-10-05, NVD's own status table lists the web status "Not Scheduled" as API status `Deferred`, and `pilot.md` records what was observed.
 
 ## Phase 1 fan-out: three research agents (2026-10-05 to 2026-10-06)
 
@@ -226,11 +226,11 @@ Four statements in the agent's template, each caught by checking against the sou
 - "15 of 42 threagile risk categories link to CWE ids CWE says not to use": the source says 15 of the 42 CWE links are to Prohibited ids.
 - "3 rejected claims in the pilot": this log records 4.
 
-## Report 0.3.0: update for decisions accepted on 2026-10-09 (2026-10-13)
+## Report 0.3.0: update for decisions accepted on 2026-10-08 and 2026-10-12 (2026-10-13)
 
 ### Question asked
 
-Bring the report up to date with tmodel PR #111, which accepted DEC-001a (ADR-0010), DEC-002 (ADR-0007), DEC-003 (ADR-0006) and DEC-004 (ADR-0008) after the survey was scoped. ADR-0007 commits tmodel to importing OTM and STIX 2.1 and names this crosswalk as the work that "refines and may extend import coverage".
+Bring the report up to date with tmodel PR #111, which accepted DEC-002 (ADR-0007), DEC-003 (ADR-0006) and DEC-004 (ADR-0008) on 2026-10-08, and PR #119, which accepted DEC-001a (ADR-0010) on 2026-10-12, after the survey was scoped. ADR-0007 commits tmodel to importing OTM and STIX 2.1 and names this crosswalk as the work that "refines and may extend import coverage".
 
 ### What was produced
 
@@ -251,7 +251,7 @@ Bring the report up to date with tmodel PR #111, which accepted DEC-001a (ADR-00
 
 ### What was rejected, and why
 
-- **An early reading that Paul's name-removal sweep had covered the report.** Checking showed the author id still used a personal name, so it was changed. The same personal id remains in another report on `main` (to be fixed separately).
+- **An early reading that the sponsor's name-removal sweep (PR #112) had covered the report.** Checking showed the author id still used a personal name, so it was changed. The same personal id remains in another report on `main` (to be fixed separately).
 
 ## Sponsor direction on G13 (2026-10-14)
 
@@ -290,4 +290,66 @@ The library session's final report on the CWE run, read on 2026-10-16:
 ### What was rejected, and why
 
 - **The pilot's "a deprecated CWE entry names its successor only in prose".** The FX-1 extraction found that 2 of the 25 deprecated weaknesses in 4.20 carry a machine-readable suggestion (`Mapping_Notes/Suggestions`). `report.md` 0.3.2 now says "usually". `pilot.md` is left as the record of what the pilot found.
+- **Corrections passed on by RPT-0004 (DL-0015, "Corrections for other documents"):** NVD's web status "Not Scheduled" is the API status "Deferred"; `dataVersion` 5.0 occurs only on rejected CVE records; CycloneDX 1.7.2 is a GitHub release (2026-09-17), so the rejection in `fanout-vuln-data.md` no longer holds; `fanout-attack-composition.md` §1.6 shortens the `spdx-model.ttl` SHA-256 as `…a5c404c593`, where its §10 (and the file) ends `…d5f404c593`.
 
+## Technical review by @Clovier, applied (2026-10-21)
+
+### Question asked
+
+@Clovier reviewed tmodel#126 on 2026-10-19, as comments only: 47 one-click suggestions, 4 comments, and 15 fixes for files outside the diff. On 2026-10-21 the student asked for the fixes to be applied.
+
+### What was produced
+
+- **All 47 suggestions, applied as written**, in `report.md`, `crosswalk.md`, `dimensions.md` and this log.
+- **Two crosswalk marks**, from the comments:
+  - CVE 5.2.0 Exploitation evidence goes from `txt` to `≈`, for CISA-ADP's `ssvc` and `kev` entries. Its source cell in `pilot.md` was corrected, so the script reproduces the mark.
+  - SPDX 3.0.1 Req./control goes from `⊂` to `—`, because `hasRequirement` is a lifecycle-scoped dependency. This one was changed by hand, as `crosswalk.md` now says.
+  - Neither change alters a "formats with `=`" total or any count in the text.
+- **Fixes outside the diff:**
+  - `pilot.md`: (a), (b), (c) and the CVE cell, with a corrections note at the top.
+  - `sources.md` lines 172 and 173: the CycloneDX schema rows at tags 1.7.2 and 1.7.
+  - Line 79 of this log.
+  - `dimensions.md`: section numbers (§8 → §9, §9 → §10).
+  - The report's Table 1, whose library-record column now gives each record's status (library#20, #21, #25, #26, #28), and the record notes on the per-format paragraphs.
+
+### Checks before applying
+
+- **Against `main`:**
+  - ADR-0006, ADR-0007 and ADR-0008 say "accepted (2026-10-08)", and ADR-0010 says "accepted (2026-10-12)". PR #111 merged at 2026-10-09 UTC, which the old date followed; #119 merged on 2026-10-12.
+  - The schema's "Asset is not a §13 class" and "not an OTM diagram node" sentences, ADR-0007's "STIX post-MVP ok", ADR-0010's C1, and RPT-0003's pytm licence correction to MIT.
+- **Against this report's own files:** `fanout-attack-composition.md` documents only the ATT&CK → CAPEC removal (§1.1, mitre/cti #221), not a CWE one. The full SPDX digests end `…d5f404c593` and `…649234b1`.
+- **Against the source:** NIST's notice of 2026-04-15 (fetched 2026-10-21) says CVEs outside its criteria are "lowest priority" and "will not be immediately enriched", and that users can request enrichment.
+- **Taken on @Clovier's evidence, not re-run:**
+  - the cvelistV5 counts of 2026-10-18: 14,058 records at `dataVersion` 5.0, `replacedBy` on 239 of 18,506 rejected records, and `ssvc` on 204,455 and `kev` on 1,747 of 390,784 published records;
+  - CycloneDX 1.7.2's release, CVE 5.2.0's `cpeApplicability`, OSV's `Red Hat` CPE suffix and NVD's pass-through since 2026-06-17.
+- `bin/validate-archdoc`: 0 errors.
+
+### Choices the agent made, open to review
+
+- **The fan-out notes stay as the agents wrote them.** Their header says later corrections go to this log, so @Clovier's fixes to `fanout-vuln-data.md` (lines 166, 200, 569, 570, 629, 661) and `fanout-attack-composition.md` (lines 136, 158, 230) are recorded here instead:
+  - CycloneDX 1.7.2 is a GitHub release (2026-09-17), so the "1.7.2" rejection in `fanout-vuln-data.md` no longer holds.
+  - Its JSON Schema equals the one at tag 1.7.1 and on `master`. It differs from the tag 1.7 file in six description or `$comment` strings, one of which adds "Consumers SHOULD consider ratings in prioritization decisions". So the "earlier download" is the schema at tag 1.7, and "the JSON changes are editorial" undersells one change.
+  - Line 136 of `fanout-attack-composition.md` shortens both SPDX digests wrongly.
+  - `assessedElement`'s class is Software `SoftwareArtifact`, not Core.
+  - SPDX `hasRequirement` is not a requirement (the mark above).
+- **`pilot.md` is corrected in place**, as 0.1.1 was, with each change listed at its top. Its CWE "only in prose" sentence stays as the pilot found it (entry of 2026-10-16) and is noted there.
+- **The optional fix (c) was taken.**
+
+### What a human accepted
+
+- The student asked for @Clovier's fixes to be applied. The student did not judge them technically: the technical review is @Clovier's, and the sponsor's sign-off is pending.
+
+### What was rejected, and why
+
+- **The decision dates in 0.3.0 to 0.3.2** (2026-10-09 for all four). They followed PR #111's merge time, but the ADRs date DEC-002, DEC-003 and DEC-004 to 2026-10-08, and DEC-001a came separately (2026-10-12, PR #119).
+- **Line 254 of this log named the sponsor**, against `CLAUDE.md`. It now gives the role.
+- **"ATT&CK → CAPEC and CWE (dropped in ATT&CK 13)."** ATT&CK never carried CWE links; only the CAPEC links were dropped.
+- **"NVD enriches only KEV, federal and critical-software CVEs."** NIST says it prioritizes them; the others are not immediately enriched, and users can request enrichment.
+- **"ADR-0010 models both natively"** (Review, AttackPath). The accepted `Review` has no date or impact slot and reviews only an `Assertion`.
+- **NVD among the five exact Assertion formats.** NVD is `≈`; STIX is the fifth.
+- **The two crosswalk marks** above.
+- None of @Clovier's suggestions was declined.
+
+### Not fixable in this PR
+
+- Six earlier commits on this branch carry a personal name and a university email in their author and `Signed-off-by:` lines, and commit fedc13d's message repeats the old dates. A squash merge with a clean message and a GitHub-id sign-off fixes both on `main`. That is the sponsor's call at merge.

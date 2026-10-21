@@ -4,9 +4,9 @@ id: RPT-0005-crosswalk
 title: "RPT-0005 crosswalk: 24 formats onto ARCH-0001's types and edges"
 type: research
 status: draft
-version: "0.1.1"
+version: "0.1.2"
 date: "2026-10-08"
-updated: "2026-10-13"
+updated: "2026-10-21"
 record: RPT-0005
 ---
 
@@ -14,9 +14,9 @@ record: RPT-0005
 
 This file assembles Tables 2, 3 and 6 of [dimensions.md](dimensions.md) from the four Phase 1 files: [pilot.md](pilot.md), [fanout-vuln-data.md](fanout-vuln-data.md), [fanout-attack-composition.md](fanout-attack-composition.md) and [fanout-models-requirements.md](fanout-models-requirements.md). It answers the four questions of dimension 8. It is evidence for DEC-001, DEC-002, DEC-008 and DEC-009 and for #16 and #17; it accepts nothing.
 
-**Since assembly:** on 2026-10-09 ADR-0010 accepted the core object model (DEC-001a), whose class names supersede the ARCH-0001 §3 working labels used as rows here, and ADR-0007 committed tmodel to importing OTM and STIX 2.1 (DEC-002). The row-to-class mapping and the re-routed findings are in [report.md](report.md) (Overview and §11).
+**Since assembly:** on 2026-10-12 ADR-0010 accepted the core object model (DEC-001a), whose class names supersede the ARCH-0001 §3 working labels used as rows here, and on 2026-10-08 ADR-0007 committed tmodel to importing OTM and STIX 2.1 (DEC-002). The row-to-class mapping and the re-routed findings are in [report.md](report.md) (Overview and §11).
 
-**How it was built.** Each matrix cell is the fidelity mark taken by script from the matching cell of the source file. The source cell names the format's own element (field path or class) and its qualifiers; look there before relying on a mark. No mark was changed by hand. A cell shows `∅` where the source did not assess that concept, and `?` where the source could not verify it.
+**How it was built.** Each matrix cell is the fidelity mark taken by script from the matching cell of the source file. Where a source cell lists several elements with different marks, the matrix shows the first one (for example CycloneDX Mitigation is `txt`, although its source cell also gives `claims[].mitigationStrategies` `≈`). The SPDX 3.0.1 and CycloneDX 1.7 rows take their cells from fanout-attack-composition.md; where fanout-vuln-data.md's VEX-only cells differ (for example SPDX `instance_of`, `ext` there), they are not used. The source cell names the format's own element (field path or class) and its qualifiers; look there before relying on a mark. One mark was changed by hand after review: SPDX 3.0.1 Req./control is `⊂` in its source cell (fanout-attack-composition.md, kept as the agent wrote it) and `—` here, because `hasRequirement` is a lifecycle-scoped dependency, not a security requirement (DL-0013). A cell shows `∅` where the source did not assess that concept, and `?` where the source could not verify it.
 
 **Scope.** The sponsor's answers on #39 (2026-10-08) apply. CPE, purl and SWID are identifier schemes, not columns; they appear in the identity sub-row below. CISA KEV is an annotation on a CVE and appears under exploitation evidence. MITRE ATLAS gets no column: it reuses ATT&CK's structure, and RPT-0014 covers it. OpenC2 is out of scope. SSVC stays as a row until its scope is settled. The VEX profiles of CycloneDX and SPDX 3 are folded into those formats' rows; the side-by-side VEX comparison is §8 of fanout-vuln-data.md.
 
@@ -77,7 +77,7 @@ Candidates for the gap analysis, not proposals to add types. Assumption and Veri
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | **Weakness and vulnerability** | | | | | | | | | | | |
 | CWE 4.20 | — | — | — | ∅ | — | ≈ | ∅ | — | ≈ | ∅ | ∅ |
-| CVE 5.2.0 | — | — | ≈ | ∅ | txt | = | ∅ | = | — | ∅ | ∅ |
+| CVE 5.2.0 | — | — | ≈ | ∅ | ≈ | = | ∅ | = | — | ∅ | ∅ |
 | NVD API 2.0 | — | — | ≈ | ∅ | = | ≈ | ∅ | ≈ | — | ∅ | ∅ |
 | OSV 1.9.1 | — | — | ≈ | ≈ | — | ≈ | — | ≈ | txt | ∅ | ∅ |
 | **Scores and signals** | | | | | | | | | | | |
@@ -104,11 +104,11 @@ Candidates for the gap analysis, not proposals to add types. Assumption and Veri
 | SysML v2.0 | = | = | — | — | — | ≈ | — | — | — | ≈ | = |
 | OMG SACM 2.3 | — | ⊃ | ≈ | — | — | ≈ | — | ≈ | — | ≈ | = |
 | **Composition (security part)** | | | | | | | | | | | |
-| SPDX 3.0.1 | — | ⊂ | = | ⊂ | = | = | ⊂ | = | — | ∅ | ∅ |
+| SPDX 3.0.1 | — | — | = | ⊂ | = | = | ⊂ | = | — | ∅ | ∅ |
 | CycloneDX 1.7 | = | = | = | ≈ | txt | ≈ | ⊂ | = | — | ∅ | ∅ |
 | **formats with `=`** | **6** | **3** | **4** | **2** | **3** | **6** | **0** | **5** | **2** | **1** | **3** |
 
-- **Assertion is common.** Five formats carry multi-source, attributed statements exactly (CVE's CNA and ADP containers, OpenVEX statements, STIX objects with `created_by_ref`, SPDX 3 assessment relationships, CycloneDX citations), and eight more come close. This is evidence for the Assertion-plus-Review pattern in the unaccepted LinkML draft.
+- **Assertion is common.** Five formats carry multi-source, attributed statements exactly (CVE's CNA and ADP containers, OpenVEX statements, STIX objects with `created_by_ref`, SPDX 3 assessment relationships, CycloneDX citations), and eight more come close. This is consistent with the Assertion-plus-Review pattern that ADR-0010 accepted as core.
 - **Data flow and Requirement/Control are well represented** where they belong: data flow in all four threat-model formats, SysML v2 and CycloneDX; requirement or control in OSCAL, SysML v2 and CycloneDX.
 - **Applicability with a reason** is exact in the VEX-carrying formats (OpenVEX, CSAF, SPDX 3, CycloneDX); their justification codes do not fully agree (CycloneDX has 9, the others 5).
 - **DamageScenario has no exact match**; this matters for ISO/SAE 21434 (RPT-0007).
@@ -119,7 +119,7 @@ Per the sponsor's answer, identifier schemes are a property of Product and Compo
 
 | Format | Identifier schemes it uses for the affected or described thing |
 |---|---|
-| CVE 5.2.0 | CPE (`cpes`); purl (`packageURL`, which must not include a version) |
+| CVE 5.2.0 | CPE (`cpes`, and `cpeApplicability` with AND/OR and `negate`, copied from the NVD API); purl (`packageURL`, which must not include a version) |
 | NVD API 2.0 | CPE 2.3 (`criteria`), with version-range bounds |
 | OSV 1.9.1 | purl (`package.purl`); ecosystem + package name |
 | OpenVEX 0.2.0 | purl, CPE 2.2 and 2.3 (`identifiers`); `hashes` |
@@ -132,7 +132,7 @@ Per the sponsor's answer, identifier schemes are a property of Product and Compo
 | threagile, pytm | technology classes or OS strings, not product identifiers |
 | all others | none |
 
-purl and CPE are the only schemes shared across vulnerability data, VEX and composition formats. CVE stores purl without a version; the version lives in the version ranges. A tmodel import that keeps both CPE and purl when present, and versions the purl only for an instance, loses nothing (fanout-vuln-data.md, Table 6).
+purl and CPE are the only schemes shared across vulnerability data, VEX and composition formats. CVE stores purl without a version; the version lives in the version ranges. A tmodel import that keeps both CPE and purl when present, and versions the purl only for an instance, loses no CPE or purl information (fanout-vuln-data.md, Table 6); the other schemes in the table above (hashes, SWID, OmniBOR, SWHID, CSAF serial, model and SKU numbers) still need a place, such as ADR-0010's opaque `identifiers` slot.
 
 ## Table 3: ARCH-0001's typed edges
 
@@ -174,7 +174,7 @@ purl and CPE are the only schemes shared across vulnerability data, VEX and comp
 - **`reviewed_by` and `exploits` have no exact match** anywhere, mirroring the Review and attack-side gaps above.
 - **`step_of` has one** (CAPEC's execution-flow steps); 21 formats lack it.
 - **`applies_to_product` is the best-covered edge** (7 exact), always with qualifiers ARCH-0001's single edge cannot hold: version ranges, AND/OR platform logic (NVD), status and justification (VEX).
-- **`supersedes` is exact in three formats** (CVE `replacedBy`, ATT&CK `revoked-by`, OSCAL withdrawn-control links) and prose-only in three (CWE, CAPEC and pytm's `DEPRECATED` marker), where an importer must parse text.
+- **`supersedes` is exact in three formats** (CVE `replacedBy`, ATT&CK `revoked-by`, OSCAL withdrawn-control links) and mostly prose in three (CWE, where 2 of 25 deprecated weaknesses name a successor in `Mapping_Notes/Suggestions`; CAPEC; and pytm's `DEPRECATED` marker), where an importer must parse text.
 
 ### Edges the formats have and ARCH-0001 lacks
 
@@ -205,8 +205,8 @@ Grouped from the four sources. Each group is a gap-analysis input.
 
 | Key | Stability, from the sources | Use as a cross-format key |
 |---|---|---|
-| CVE id | unique, never reassigned; a rejected id names its replacement in `replacedBy` | yes |
-| CWE id, CAPEC id | integers never reused; deprecated entries kept, successor named only in prose | yes, with successor parsing |
+| CVE id | unique, never reassigned; a rejected id may name its replacement in `replacedBy` (optional; 239 of 18,506 rejected records do, 2026-10-18) | yes |
+| CWE id, CAPEC id | integers never reused; deprecated entries kept, successor usually named only in prose (in CWE 4.20, 2 of 25 deprecated weaknesses carry `Mapping_Notes/Suggestions`) | yes, with successor parsing |
 | ATT&CK id (`T1059.001`, `TA0005`, `M1031`) | never reused, but revoked objects point on with `revoked-by` and at least one id has changed meaning (`TA0005`) | yes, if every use pins the ATT&CK collection version |
 | STIX id (`type--UUID`) | globally unique; a version is the id plus `modified` | yes within STIX exchange |
 | D3FEND IRI and `d3fend-id` | IRIs renamed between releases without tombstones; 27 `D3A-` ids collide | key by IRI plus version; `d3fend-id` as an alias only |
@@ -231,7 +231,7 @@ The loss profile columns of Table 2 part 1 give the count per format. Across all
 
 1. **Review state is lost or flattened** in every format, because none carries ARCH-0001's Review exactly.
 2. **Edge qualifiers are lost** whenever an edge with scope, order, fit, logic or justification is imported as a bare typed edge.
-3. **Successor links become prose** for CWE, CAPEC and pytm, so `supersedes` must be parsed from text and flagged as such.
+3. **Successor links are mostly prose** for CWE (2 of 25 deprecated weaknesses carry `Mapping_Notes/Suggestions`), CAPEC and pytm, so `supersedes` must usually be parsed from text and flagged as such.
 
 Per-format losses are listed in each source file's "Findings that bear on tmodel". These counts are the input to #16's round-trip test.
 
@@ -243,10 +243,10 @@ Table 6, consolidated from the four sources. Each row is evidence for the decisi
 |---|---|---|---|
 | Review on any element (verdict, impact, rationale, reviewer, date) | OTM, threagile, pytm, Threat Dragon, STIX, SPDX 3, CycloneDX, SACM, VEX statements | OTM `attributes`; STIX `opinion` extension; SPDX `Annotation` + extension; CycloneDX properties; SACM `Activity` + `Participant`; for threagile, keep Review outside the YAML, keyed by `synthetic_id` | ARCH-0001 §7, R-018, #16, #17 |
 | Ordered attack steps and paths | ATT&CK, STIX, OTM and the other threat-model formats | none fits; keep tmodel-native, export to CycloneDX 2.0 when it is released | DEC-001, #17 |
-| Fit-graded, version-pinned mappings between catalogs | CAPEC → ATT&CK (pinned to ATT&CK 12.0); ATT&CK → CAPEC and CWE (dropped in ATT&CK 13); D3FEND inferred pairs; CWE references in threat-model formats | a mapping edge carrying fit grade (CWE `Mapping_Fit` as model), both catalog versions, and provenance "derived" where inferred | #16, #17, DEC-001, DEC-008, DEC-009 |
+| Fit-graded, version-pinned mappings between catalogs | CAPEC → ATT&CK (pinned to ATT&CK 12.0); ATT&CK → CAPEC (dropped in ATT&CK 13); D3FEND inferred pairs; CWE references in threat-model formats | a mapping edge carrying fit grade (CWE `Mapping_Fit` as model), both catalog versions, and provenance "derived" where inferred | #16, #17, DEC-001, DEC-008, DEC-009 |
 | Local entries a closed catalog lacks | CWE (closed XSD), ATT&CK, CAPEC | a separate local namespace linked to the nearest catalog entry by a fit-graded edge; SARIF custom taxonomies and ATT&CK Workbench namespaces are the nearest practice found | DEC-001, DEC-002, DEC-008 |
 | Machine-readable supersession | CWE, CAPEC (prose), OpenVEX (time order), CSAF 2.0 (revisions) | a `supersedes` edge filled at import, flagged when text-derived | ARCH-0001 §3, #16 |
-| Statement identity and provenance | OpenVEX (`@id` optional), CycloneDX VEX (no statement id or author) | mint statement ids; require a citation (`attributedTo`, `timestamp`); one Assertion kind (source, signal, value, date) for exploitation evidence such as EPSS, KEV and SSVC | #16, DEC-001 |
+| Statement identity and provenance | OpenVEX (`@id` optional), CycloneDX VEX (`bom-ref` optional, no author on `analysis`) | mint statement ids; require a citation (`attributedTo`, `timestamp`); one Assertion kind (source, signal, value, date) for exploitation evidence such as EPSS, KEV and SSVC | #16, DEC-001 |
 | Applicability with a justification, per instance | OSV (no not-affected), CVE `affected[]`, VEX justification codes (9 in CycloneDX vs 5 elsewhere) | a VEX-style status + justification beside each range; a many-to-one justification map with a lossy flag | #17, DEC-002, DEC-009 |
 | Trust boundary and system model | CycloneDX (boundary on a service, not a flow), OSCAL (no boundary or data flow) | keep tmodel-native; derive from differing `trustZone` at a flow's ends; link by component UUID | DEC-001 |
 | Security vocabulary in general-purpose models | ReqIF, SysML v2, OSCAL | a published tmodel ReqIF profile; a small SysML v2 library (Threat, Mitigation, Review); a tmodel namespace for OSCAL `props` | DEC-002, MAP-0001 |
