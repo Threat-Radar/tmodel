@@ -18,14 +18,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from collections.abc import Callable
-from pathlib import Path
 from typing import Any
 
 from engine import core
 from engine.api import server
-from engine.client import EngineError, EngineUnreachable, get
+from engine.client import EngineError, EngineTimeout, EngineUnreachable, get
 from engine.graph import GraphError
 
 LOCAL: dict[str, Callable[[], dict[str, Any]]] = {"health": core.health, "version": core.version}
@@ -41,11 +41,27 @@ def _print(payload: dict[str, Any], as_json: bool) -> None:
         print(f"{payload['engine']} v{payload['version']} (python {payload['python']})")
 
 
-def _query(args: argparse.Namespace) -> int:
+PATHS_TIMEOUT_S = 60.0  # enumeration can take longer than /health
+
+
+def _call(fetch: Callable[[], dict[str, Any]]) -> dict[str, Any] | None:
+    """Run a request; on failure print one error line (no traceback) and return None."""
     try:
-        payload = LOCAL[args.command]() if args.in_process else get(f"/{args.command}", args.url)
+        return fetch()
+    except EngineTimeout as exc:
+        print(f"error: {exc}; it may still be working (try --in-process)", file=sys.stderr)
     except EngineUnreachable as exc:
         print(f"error: {exc}\nstart it with: tmodel serve", file=sys.stderr)
+    except (EngineError, GraphError) as exc:
+        print(f"error: {exc}", file=sys.stderr)
+    return None
+
+
+def _query(args: argparse.Namespace) -> int:
+    payload = _call(
+        lambda: LOCAL[args.command]() if args.in_process else get(f"/{args.command}", args.url)
+    )
+    if payload is None:
         return 1
     _print(payload, args.json)
     return 0 if payload.get("status", "ok") == "ok" else 1
@@ -55,31 +71,40 @@ def _short(step_id: str) -> str:
     return step_id.split(":", 1)[-1]
 
 
+def _review_note(review: dict[str, Any]) -> str:
+    """Empty for a reviewed path; otherwise says why it is not (R-018)."""
+    if review.get("reviewed"):
+        return ""
+    recorded = review.get("review_status") or review.get("assertion_status")
+    return f"  [not reviewed: {recorded}]" if recorded else "  [not reviewed]"
+
+
 def _print_paths(payload: dict[str, Any]) -> None:
     if "goal" not in payload:
+        reviewed = set(payload.get("reviewed_threats", []))
         print(f"{payload['file']}: {payload['steps']} steps; threats:")
         for threat in payload["threats"]:
-            print(f"  {threat}")
+            print(f"  {threat}" + ("" if threat in reviewed else "  [not reviewed]"))
         return
     paths = payload["paths"]
     print(f"{payload['goal']}: {len(paths)} path{'s' if len(paths) != 1 else ''}")
     for i, path in enumerate(paths, 1):
-        print(f"  {i}. " + " -> ".join(_short(s) for s in path["steps"]))
+        steps = " -> ".join(_short(s) for s in path["steps"])
+        print(f"  {i}. {steps}{_review_note(path.get('review', {}))}")
 
 
 def _paths(args: argparse.Namespace) -> int:
-    file = str(Path(args.file).resolve())  # the server may run from another directory
-    try:
-        if args.in_process:
-            payload = core.attack_paths(file, args.goal)
-        else:
-            params = {"file": file, **({"goal": args.goal} if args.goal else {})}
-            payload = get("/attack-paths", args.url, params=params)
-    except EngineUnreachable as exc:
-        print(f"error: {exc}\nstart it with: tmodel serve", file=sys.stderr)
-        return 1
-    except (EngineError, GraphError) as exc:
-        print(f"error: {exc}", file=sys.stderr)
+    # absolute, without following symlinks: the server may run from another directory
+    file = os.path.abspath(args.file)
+    params = {"file": file, **({"goal": args.goal} if args.goal is not None else {})}
+    payload = _call(
+        lambda: (
+            core.attack_paths(file, args.goal)
+            if args.in_process
+            else get("/attack-paths", args.url, timeout=PATHS_TIMEOUT_S, params=params)
+        )
+    )
+    if payload is None:
         return 1
     if args.json:
         print(json.dumps(payload))

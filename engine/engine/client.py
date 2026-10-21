@@ -16,8 +16,16 @@ class EngineUnreachable(Exception):
     """The local engine is not running or did not answer."""
 
 
+class EngineTimeout(EngineUnreachable):
+    """The engine accepted the request but did not answer in time (busy, not gone)."""
+
+
 class EngineError(Exception):
     """The engine answered with an error (bad file, unknown goal, ...)."""
+
+
+# Loopback only: never route the engine's traffic (model paths, goals) via a proxy.
+_OPENER = urllib.request.build_opener(urllib.request.ProxyHandler({}))
 
 
 def default_url() -> str:
@@ -35,13 +43,18 @@ def get(
     if params:
         url += "?" + urllib.parse.urlencode(params)
     try:
-        with urllib.request.urlopen(url, timeout=timeout) as resp:
+        with _OPENER.open(url, timeout=timeout) as resp:
             return json.loads(resp.read())
     except urllib.error.HTTPError as exc:  # before URLError: it is a subclass
         try:
-            message = json.loads(exc.read()).get("error", exc.reason)
+            body = json.loads(exc.read())
         except ValueError:
-            message = exc.reason
-        raise EngineError(message) from exc
-    except (urllib.error.URLError, TimeoutError, ConnectionError) as exc:
+            body = None
+        message = body.get("error") if isinstance(body, dict) else None
+        raise EngineError(message or f"HTTP {exc.code} {exc.reason}") from exc
+    except TimeoutError as exc:
+        raise EngineTimeout(f"the engine at {url} did not answer within {timeout:g} s") from exc
+    except (urllib.error.URLError, ConnectionError) as exc:
+        if isinstance(exc.args[0] if exc.args else None, TimeoutError):
+            raise EngineTimeout(f"the engine at {url} did not answer within {timeout:g} s") from exc
         raise EngineUnreachable(f"no tmodel engine at {url} ({exc})") from exc

@@ -117,6 +117,7 @@ def test_threat_goal_uses_authored_paths_final_steps():
         "steps": ["a", "goal"],
         "goal_step": "goal",
         "authored_path": "p1",
+        "review": {"reviewed": False, "assertion_status": None, "review_status": None},
     }
 
 
@@ -133,7 +134,11 @@ def test_threat_goal_searches_the_whole_graph():
 
 def test_step_goal_has_no_authored_path():
     g = graph(("a", None, []))
-    assert enumerate_paths(g, "a")[0].to_dict() == {"steps": ["a"], "goal_step": "a"}
+    assert enumerate_paths(g, "a")[0].to_dict() == {
+        "steps": ["a"],
+        "goal_step": "a",
+        "review": {"reviewed": False, "assertion_status": None, "review_status": None},
+    }
 
 
 def test_unknown_goal_is_rejected():
@@ -164,3 +169,76 @@ def test_path_limit_is_enforced():
     assert len(found(g, "goal")) == 8
     with pytest.raises(GraphError, match="more than 4 attack paths"):
         enumerate_paths(g, "goal", limit=4)
+
+
+# --- fixes from review on #132 ------------------------------------------------
+
+
+def test_and_limit_counts_real_paths_not_raw_combinations():
+    # a 2-way OR feeding a 10-way AND has 2 real paths (the raw product is 2**10)
+    steps = [("a", None, ["s"]), ("b", None, ["s"]), ("s", "or_gate", [f"x{i}" for i in range(10)])]
+    steps += [(f"x{i}", None, ["g"]) for i in range(10)] + [("g", "and_gate", [])]
+    assert len(found(graph(*steps), "g", limit=10)) == 2
+
+
+def test_authored_path_that_skips_a_step_has_one_final_step():
+    g = graph(
+        ("a", None, ["b"]),
+        ("b", None, ["c"]),
+        ("c", None, []),
+        paths=[{"id": "p", "steps": ["a", "c"], "realizes_threat": "t"}],
+    )
+    assert found(g, "t") == [("a", "b", "c")]
+
+
+def test_authored_path_forming_a_cycle_is_rejected():
+    g = graph(
+        ("a", None, ["b"]),
+        ("b", None, ["a"]),
+        paths=[{"id": "p", "steps": ["a", "b"], "realizes_threat": "t"}],
+    )
+    with pytest.raises(GraphError, match="p: no final step"):
+        enumerate_paths(g, "t")
+
+
+def test_each_result_is_credited_to_its_own_authored_path():
+    g = graph(
+        ("a", None, ["x"]),
+        ("b", None, ["x"]),
+        ("x", "or_gate", []),
+        paths=[
+            {"id": "p1", "steps": ["a", "x"], "realizes_threat": "t"},
+            {"id": "p2", "steps": ["b", "x"], "realizes_threat": "t"},
+        ],
+    )
+    assert [(p.steps, p.authored_path) for p in enumerate_paths(g, "t")] == [
+        (("a", "x"), "p1"),
+        (("b", "x"), "p2"),
+    ]
+
+
+def test_limit_caps_the_total_across_goal_steps():
+    # two authored paths whose final steps have 4 paths each: 8 in total
+    steps, paths = [], []
+    for k in range(2):
+        steps += [(f"a{k}{i}", None, [f"A{k}"]) for i in range(2)]
+        steps += [(f"b{k}{i}", None, [f"B{k}"]) for i in range(2)]
+        steps += [(f"A{k}", "or_gate", [f"X{k}"]), (f"B{k}", "or_gate", [f"X{k}"])]
+        steps += [(f"X{k}", "and_gate", [])]
+        paths.append({"id": f"p{k}", "steps": [f"X{k}"], "realizes_threat": "t"})
+    g = graph(*steps, paths=paths)
+    assert len(found(g, "t")) == 8
+    with pytest.raises(GraphError, match="t: more than 6 attack paths"):
+        enumerate_paths(g, "t", limit=6)
+
+
+def test_cycle_message_follows_the_edges():
+    g = graph(("a", None, ["b"]), ("b", None, ["c"]), ("c", None, ["a"]))
+    with pytest.raises(GraphError, match="cycle in precedes: a -> b -> c -> a"):
+        enumerate_paths(g, "a")
+
+
+def test_very_deep_chain_is_an_error_not_a_crash():
+    steps = [(f"s{i}", None, [f"s{i + 1}"]) for i in range(5000)] + [("s5000", None, [])]
+    with pytest.raises(GraphError, match="too deep"):
+        enumerate_paths(graph(*steps), "s5000")

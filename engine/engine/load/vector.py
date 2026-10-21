@@ -23,8 +23,13 @@ def load_vector(path: str | Path) -> AttackGraph:
         doc = yaml.safe_load(path.read_text(encoding="utf-8"))
     except OSError as exc:
         raise GraphError(f"{path}: cannot read ({exc.strerror or exc})") from exc
-    except yaml.YAMLError as exc:
+    except UnicodeDecodeError as exc:
+        raise GraphError(f"{path}: not UTF-8 text") from exc
+    except (yaml.YAMLError, ValueError) as exc:  # PyYAML raises ValueError for e.g. 2026-02-30
         raise GraphError(f"{path}: not valid YAML ({exc})") from exc
     if not isinstance(doc, dict):
         raise GraphError(f"{path}: expected a mapping at the top level")
-    return AttackGraph.from_dict(doc)
+    try:
+        return AttackGraph.from_dict(doc)
+    except GraphError as exc:
+        raise GraphError(f"{path}: {exc}") from exc

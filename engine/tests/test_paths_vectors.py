@@ -128,7 +128,7 @@ def test_every_computed_path_respects_gates_and_order(path):
                 inside = [p for p in preds if p in position]
                 gate = graph.steps[sid].gate
                 if gate == "or_gate" and len(preds) > 1:
-                    assert len(inside) == 1, (threat, sid)
+                    assert inside, (threat, sid)  # at least one alternative
                 else:
                     assert inside == preds, (threat, sid)
                 assert all(position[p] < position[sid] for p in inside), (threat, sid)
