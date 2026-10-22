@@ -4,9 +4,9 @@ id: RPT-0004-searches
 title: "RPT-0004 search log"
 type: research
 status: draft
-version: "0.3.1"
+version: "0.3.2"
 date: "2026-09-28"
-updated: "2026-10-18"
+updated: "2026-10-22"
 record: RPT-0004
 ---
 
@@ -372,3 +372,15 @@ Runs in the main session for [mapping.md](mapping.md), on macOS arm64 (times UTC
 | 2026-10-18 | `python3` field counts on the seven outputs; field and enum look-ups in the four reference files | the files above | every count and every format field named in mapping.md Tables 6a to 6d |
 | 2026-10-18 | `grep`, `awk` and `python3` on `spec/schema/tmodel-object-model.linkml.yaml`, `spec/vectors/*.yaml`, ADR-0002, ADR-0007, ADR-0010, ARCH-0001, `project/DECISIONS-0001.md` (`main` 9f56628) | tmodel | slot lists per class; `depends_on` 0 and `uses_component` 9 uses in the six vectors; ten identifier prefixes in the `mvp-*` files; no Vulnerability-to-Weakness link in any `mvp-*` file; ADR-0007 imports OTM and STIX 2.1 only |
 | 2026-10-19 | `syft cataloger list -o json` (Syft 1.52.0, with `SYFT_CHECK_FOR_APP_UPDATE=false`), after a teammate's review of mapping.md | none | 69 cataloger names, none for hardware or firmware; Phase 1 counted 71 in Syft 1.54.1 (fanout-tools.md §1.1). mapping.md §8 now cites both |
+
+## Report 0.2.0 (2026-10-22)
+
+Runs in the main session for `report.md` 0.2.0 (#147: Tables 1 and 2, §1.4 to §1.6), on macOS arm64 (times UTC). The fact-check agent's own runs are summarized in DL-0015.
+
+| date | command | input | result |
+|---|---|---|---|
+| 2026-10-22 | `gh api repos/CycloneDX/specification/releases`; `gh api 'repos/CycloneDX/specification/milestones?state=all'`; `gh pr view 652` | CycloneDX/specification | latest release still 1.7.2 (2026-09-17); milestone 2.0 open, due 2026-08-31, 87 open and 96 closed (issues and pull requests together); milestone 2.1 open, due 2027-04-16; no 1.8 milestone; pull request #652 still a draft |
+| 2026-10-22 | `gh api repos/spdx/spdx-spec/releases`; `gh api 'repos/spdx/spdx-3-model/milestones?state=all'` | spdx/spdx-spec, spdx/spdx-3-model | latest release still 3.0.1 (2024-12-17), and v3.1-RC1 (2026-01-24) still a pre-release; milestone 3.1-rc2 open, due 2026-09-27, 27 open and 83 closed (issues and pull requests together); 3.0.2 open, due 2026-04-30, 2 open and 6 closed; 3.1-rc3 and 3.1 open |
+| 2026-10-22 | `grep` of `status:` and `duplicate_of:` in each `record.yaml` | the 22 library records Tables 1 and 2 cite, at `a28a013` | all 22 exist; `cyclonedx-1-7`, `spdx-3-0-1`, `iso-iec-19770-2-2015`, `rfc-9393` and `nistir-8060` are stubs; `ecma-424` and `iso-iec-5962` are stubs marked `duplicate_of` `cyclonedx-1-7` and `iso-iec-5962-2021` |
+| 2026-10-22 | `python3` on the ISO Open Data deliverables CSV (`Last-Modified` 2026-10-21), as downloaded by the fact-check agent | ISO Open Data | ISO/IEC PRF 5962 at stage 50.20 (it was 50.00 in the file of 2026-10-14); DIS 27055 and DIS 27056 at 40.00; 5962:2021 at 90.92; 19770-2:2015 at 90.60; 19770-6:2024 at 60.60 |
+| 2026-10-22 | `python3` walk of the CycloneDX JSON Schema at tag 1.7.2 (`73308ede…`), as downloaded by the fact-check agent | CycloneDX/specification | 13 objects with a `signature` property; 47 arrays with `uniqueItems`; 10 references to the BOM-Link types, one of them inside the `bomLink` definition itself, so 9 places accept a BOM-Link |

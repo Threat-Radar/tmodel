@@ -4,9 +4,9 @@ id: DL-0015
 title: "RPT-0004 second pass: AI-assisted scoping, survey, extraction and mapping"
 type: process
 status: draft
-version: "0.8.1"
+version: "0.9.0"
 date: "2026-10-08"
-updated: "2026-10-20"
+updated: "2026-10-22"
 record: DL-0015
 ---
 
@@ -418,3 +418,62 @@ After Threat-Radar/library#28 and #29 were submitted for review, the student ask
   - `sources.md` and `dimensions.md` said the report's §11 "summarizes" the ratings in 0.2.0, but `report.md` is still 0.1.2 and ends at §7. Both now say it will.
   - Row 68 was described two ways. The conventions said its values do not depend on the open extraction in Threat-Radar/library#29, while "For a human reviewer" and this entry said row 68 leans on it, and its AI-grounding cell gave the FX-1 requirement ids as the reason. The conventions were right: row 68's AI-grounding 3 is fanout-identity's rating, made before the extraction existed, and its Object model 2 is RPT-0005's. Row 68's cells, "For a human reviewer" and this entry now say so.
   - Row 3 said RPT-0005 rated the SPDX Security profile 1 on Human review. RPT-0005's `report.md` Table 5 gives 2, the value Table 7 chose; the 1 is in its fan-out notes (`fanout-vuln-data.md` §6). Row 3's `basis` cell and its entry under "Disagreements settled" now name that file.
+
+## Report 0.2.0: Tables 1 and 2, §1.4 to §1.6 (#147, 2026-10-22)
+
+### Question asked
+
+With #131 and #133 merged, the student asked to continue #38 with `report.md` 0.2.0, starting with sub-issue #147: Table 1 (formats at a glance) and Table 2 (minimum-element crosswalk) at the front of the report, and §1's new questions 6 to 8. The student chose one branch and one draft pull request for all of 0.2.0 (`topic/rpt-0004-report-0.2.0`), a stop for review after each sub-issue, and one fact-check agent per sub-issue.
+
+### What was produced
+
+- **`report.md` 0.2.0, in progress:** a status note at the top; "Comparison tables" with Table 1 and Table 2, which replace 0.1.2's table of CISA's 2024 attributes and its "five questions" table; the VEX status table, unchanged because RPT-0005 cites it; and three new sections: §1.4 (the SPDX 3 RDF model), §1.5 (validation in every format) and §1.6 (what changed, and what comes next).
+- **`dimensions.md` 0.7.4:** a Validation row in Table 1's plan, and a status line under Table 2.
+- **`searches.md` 0.3.2:** the release, milestone and record checks of 2026-10-22.
+
+### Method
+
+- The text is condensed from Phase 1's notes (`fanout-formats-baselines.md`, sections 2 and 3), with every correction this log has recorded since then applied: Syft writes SPDX 3.0.1 (`-o spdx-json@3.0`); the ISO stages from the file of 2026-10-14; and the record statuses at `a28a013`, where both format records are now stubs.
+- Release and milestone status was re-checked on GitHub on 2026-10-22, and every cited record id was looked up in the library at `a28a013` (`searches.md`).
+- One fact-check agent (Claude Code) checked every new claim against its primary source; see "Fact-check" below.
+
+### Choices the agent made, open to review
+
+- **Table 1 adds a Validation row** beyond the plan's list, as Phase 1 suggested; it points at §1.5.
+- **No extra columns in Table 1.** SPDX 2.3, CycloneDX 2.0 and SPDX 3.1 are discussed under the table and in §1.6 instead.
+- **Table 2 replaces 0.1.2's CISA 2024 table.** Its "Required by" column keeps the CISA 2024 levels, and its notes keep CISA 2024's official mappings.
+- **§1.5 shows all 31 sampled rules** (X7 and X8 share a row), so the argument is in the report and not only in the notes.
+- **Version 0.2.0 is set at the first sub-issue,** with a note at the top saying what is done so far; the pull request stays a draft until #151.
+
+### Fact-check
+
+- **The agent.** One fact-check agent (Claude Code; about 476,000 tokens, 189 tool calls, 33 minutes) checked the new text against primary sources it fetched itself: the CycloneDX schemas at 1.6.2 and 1.7.2, ECMA-424, the SPDX 3.0.1 model, context, JSON Schema and examples, the SPDX annex, RFC 9393, NIST IR 8060, the SWID XSD, the CISA 2026, NTIA 2021 and CISA 2024 documents, BSI TR-03183-2, CERT-In 2.0, the FDA guidance, the CRA (from the EU Publications Office, because EUR-Lex refused scripts), OMB M-26-05, the IANA registry and ISO Open Data. It re-ran Syft 1.52.0 on the pilot's image and plain pySHACL and spdx3-validate on the examples. Every source digest matched the notes except the IANA CSV, which has a new hash and the same nine rows. It sent no email or other personal data, and it did not use Crossref.
+- **What it confirmed.** 30 of Table 1's 39 cells exactly; all 23 of Table 2's CISA 2026 change labels and every other baseline level except those below; all of Syft's counts but one (below); and the §1.4 to §1.6 claims except those below, including every quoted rule in §1.5.
+- **Its 21 findings, all applied.**
+  - **Errors:**
+    - FDA was missing from six Table 2 rows its baseline covers.
+    - CISA 2024, CERT-In and BSI entries were missing from three practice rows.
+    - CERT-In does recommend signing (§5.4).
+    - The counts were off: 9 BOM-Link places, not 10; 13 objects with a signature, not 16; 11 CDDL group sockets plus 5 enumeration sockets, not 7.
+    - Syft leaves out 83 dependency entries, not 5.
+    - SPDX 3.0's ISO stage moved to 50.20 on 2026-10-21.
+    - "Versions must be SemVer" was too broad.
+    - #1158's summary fitted AI packages only.
+    - The milestone counts mix issues and pull requests.
+    - SPDX's hardware purposes include `deviceDriver`.
+    - "What Table 2 shows" listed only three of Syft's six misses.
+  - **Precision and citations:** a paraphrase shown as a quote (CycloneDX's licence choice); a top-level `@vocab`, not none; spdx3-validate is used by the SPDX specification repository but is not SPDX's own; test ids; and eleven smaller wordings.
+- **Applied differently.**
+  - The keyword counts in §1.5 now say "more than 700" and "more than 50", because the exact numbers depend on whether "shall not" and "must not" are counted.
+  - The forward reference to §8 now says it is to be written for #150.
+  - The extraction question now points at sponsor questions 1 and 2, since both bear on it.
+- **Main-session spot checks** of four findings against the agent's downloads (13 signature objects, 47 unique-item arrays, 9 BOM-Link places, PRF 5962 at 50.20) agreed; see `searches.md`.
+- **Not checked:**
+  - PyLD (T4), the SWID `xmllint` tests (T13), and the single mutations other than M9 and M11 were not re-run.
+  - The cryptographic-asset fields added in 1.7 were not itemized.
+  - The RFC 3339 and RFC 9557 reading stays "our reading".
+
+### What a human accepted
+
+- The student asked for this work and made the three choices above.
+- Pending: review.

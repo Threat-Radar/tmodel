@@ -4,9 +4,9 @@ id: RPT-0004-dimensions
 title: "RPT-0004 dimensions: the search axes"
 type: research
 status: draft
-version: "0.7.3"
+version: "0.7.4"
 date: "2026-09-28"
-updated: "2026-10-20"
+updated: "2026-10-22"
 record: RPT-0004
 ---
 
@@ -62,6 +62,7 @@ Columns: CycloneDX 1.7, SPDX 3.0.1, SWID (ISO/IEC 19770-2) with CoSWID (RFC 9393
 | Vulnerability link | where a vulnerability or a CWE attaches (detail in RPT-0005, dimension 7) |
 | Build record | a record of how the product was built (SPDX `Build`, CycloneDX `formulation`), or `none` |
 | Extension mechanism | how a producer adds fields |
+| Validation | what the schema (and, for SPDX, the SHACL shapes) checks, and which rules stay text only (§1.5); added in 0.2.0 at Phase 1's suggestion |
 | Licence | of the specification and of its schema files |
 | Library record | id and status (`stub` or FX-1) |
 
@@ -78,6 +79,8 @@ One row per element of the pinned baseline. If CISA's 2026 Minimum Elements is f
 | SWID / CoSWID | element |
 | Filled in practice | whether Syft's output filled it in our tool runs |
 | Notes | "our reading" flags, where a cell is our closest match and not an official mapping |
+
+*Status 2026-10-22: Tables 1 and 2 are filled in `report.md` 0.2.0 (#147). Table 1 keeps three columns; SPDX 2.3, CycloneDX 2.0 and SPDX 3.1 are discussed under it and in §1.6. Table 2's rows are CISA 2026's elements, which are final.*
 
 ### Table 3. Identifier schemes (§7)
 
