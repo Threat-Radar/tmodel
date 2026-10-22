@@ -239,3 +239,4 @@ numbers and §11 items 1–7 (G1–G6) are unchanged.
 | proposed | by | outcome | why |
 |---|---|---|---|
 | tmodel described as "the project's threat-modeling knowledge graph" | editing agent | corrected | tmodel is a threat-modeling tool built on a knowledge graph |
+| British spelling, chosen by the editing agent as the report's majority form | editing agent | changed | @paria03 chose American spelling throughout, matching "modeling" in the project's name; quotations, titles, record ids and links were left as written |
