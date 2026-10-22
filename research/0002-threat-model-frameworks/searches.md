@@ -45,6 +45,10 @@ was ingested twice.
 | 2026-09-29 | Trike — tooling | `trike threat modeling` | GitHub | `octotrike/trike`, `octotrike/octotrike.github.io`, `Dymaxion00/octotrike` (MIT; dormant) |
 | 2026-09-29 | VAST | `VAST threat modeling Agarwal ThreatModeler "Visual, Agile, and Simple Threat" application threat model operational threat model process flow diagram` | web search | vendor page → `threatmodeler-vast`; detailed vendor blog post now 404 |
 | 2026-09-29 | other (MAESTRO) | `Cloud Security Alliance MAESTRO agentic AI threat modeling framework Ken Huang 2025 seven layers` | web search | CSA blog → `csa-maestro-2025` |
+| 2026-10-22 | Attack Flow | `center-for-threat-informed-defense/attack-flow`: repository metadata and releases (GitHub API) | GitHub | Apache-2.0; tools v4.1.0 and v4.0.0 (2026-10-14), v3.0.0 (2025-07-07) |
+| 2026-10-22 | Attack Flow | `docs/language.rst`, `docs/introduction.rst`, `docs/changelog.rst` at tag v4.1.0 | direct (raw.githubusercontent.com) | `mitre-attack-flow` — language spec (digest of `language.rst`); dependency, not order; v4 changes |
+| 2026-10-22 | Attack Flow | `stix/attack-flow-schema-2.0.0.json`, `stix/attack-flow-extension-2.0.0.json` at tag v4.1.0 | direct (raw.githubusercontent.com) | object types and properties; `operator` enum `AND`/`OR`; `scope` includes `attack-tree`; extension created 2022-08-02 |
+| 2026-10-22 | Attack Flow | language page and `ctid.io/flow` short link | direct | both resolve; the short link opens the Builder (`/attack-flow/ui/`) |
 
 **Coverage notes.**
 - Frameworks came from the #6 scope list plus the SEI survey's twelve methods,

@@ -32,3 +32,4 @@ A source is not "in the report" until it is a `library/` record.
 | LINDDUN official site (KU Leuven DistriNet) | web | LINDDUN | `linddun-org` | DEC-001, DEC-005 |
 | Real World Threat Modeling Using the PASTA Methodology (UcedaVélez, OWASP AppSec EU 2012) | slides | PASTA | `ucedavelez-pasta-owasp-2012` | DEC-001, DEC-003, DEC-005 |
 | Risk Centric Threat Modeling (UcedaVélez & Morana, Wiley 2015) — not read, paywalled | book | PASTA | `pasta-risk-centric-threat-modeling` (existing stub, completed) | DEC-001, DEC-003, DEC-005 |
+| Attack Flow — Language, STIX 2.1 extension 2.0.0 (MITRE Center for Threat-Informed Defense; docs at release v4.1.0, 2026) | spec | MITRE Attack Flow | `mitre-attack-flow` | DEC-001, DEC-005 |
