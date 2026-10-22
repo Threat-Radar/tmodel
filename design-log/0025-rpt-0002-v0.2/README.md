@@ -209,3 +209,33 @@ step-level mitigation, attacker capability and catalog versioning; a domain-fit
 axis; sources for the adoption claims; a coverage table against SEI's 12 and Tuma's
 26 techniques; EMB3D and a "not covered, and where" list; a Tooling paragraph in
 §9.1.
+
+## Phase 6: clarity pass (2026-10-22)
+
+### Question asked
+
+#36: a separate clarity pass — an overview, a conclusion, defined acronyms, a lead-in
+for every table — so the report reads top to bottom without other context.
+
+### Method
+
+A fresh editing agent at maximum effort edited a copy of the report, with rules
+not to change any fact, number, quotation, record id, identifier, URL, section
+number or the front matter, and not to add or remove findings. A script then
+compared the protected items (numbers, quotations, backticked ids, identifiers,
+URLs, headings) in the original and the edit: none was removed; the additions are
+in the new sections. The assistant read the new Overview, abbreviations section,
+Conclusion and the restructured §2 against §11 and §2 before applying the edit.
+
+### What was produced
+
+An Overview; an "Abbreviations and identifiers" section before §1; a Conclusion
+after §11; lead-ins for all tables; acronyms defined at first use; tightened prose;
+§2's history in its own paragraph; "Sources." lines added to §9.1 and §9.2. Section
+numbers and §11 items 1–7 (G1–G6) are unchanged.
+
+### What was rejected, and why
+
+| proposed | by | outcome | why |
+|---|---|---|---|
+| tmodel described as "the project's threat-modeling knowledge graph" | editing agent | corrected | tmodel is a threat-modeling tool built on a knowledge graph |
