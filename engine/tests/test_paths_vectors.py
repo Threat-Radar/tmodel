@@ -13,7 +13,11 @@ from engine.load.vector import load_vector
 from engine.paths import enumerate_paths
 
 VECTORS = Path(__file__).resolve().parents[2] / "spec" / "vectors"
-EXAMPLE_MODELS = sorted(p for p in VECTORS.glob("*.yaml") if ".linkml." not in p.name)
+# pv-* files are proposal examples (DL-0024): their attack paths are AI-proposed and not yet
+# reviewed, so they join this test only once the proposal is accepted.
+EXAMPLE_MODELS = sorted(
+    p for p in VECTORS.glob("*.yaml") if ".linkml." not in p.name and not p.name.startswith("pv-")
+)
 
 # file -> threat -> expected paths (step ids without the "attack-step:" prefix)
 EXPECTED = {

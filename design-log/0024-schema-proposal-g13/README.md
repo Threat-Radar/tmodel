@@ -4,9 +4,9 @@ id: DL-0024
 title: "Schema proposal: composition slots (RPT-0004 Table 6) and Asset, TrustBoundary, DataFlow (RPT-0005 G13)"
 type: process
 status: draft
-version: "0.1.0"
+version: "0.2.0"
 date: "2026-10-18"
-updated: "2026-10-18"
+updated: "2026-10-22"
 record: DL-0024
 bears_on: [R-002, R-010, R-018, R-022, DEC-001, DEC-002, DEC-008, DEC-009]
 defers_to: ARCH-0001
@@ -117,6 +117,22 @@ bin/validate-archdoc                                                            
 
 This branch is based on `main`, which does not have #129's generated files yet. If #129 merges first, run `bin/gen-schema` here and commit the result.
 
+## After review (2026-10-22)
+
+**Question asked.** Two pull requests merged after this one opened (#129 and #132), and the lane owner reviewed it: what has to change? The student chose the changes below.
+
+**What changed.**
+
+- `main` was merged in, bringing the generated schema files and the `schema` CI job (#129) and the attack-path tests (#132).
+- `bin/gen-schema` regenerated `spec/schema/generated/` from this proposal's schema, and `render_object_model.py` regenerated `OBJECT-MODEL.md`. Before that, `bin/gen-schema --check` reported all three generated files out of date, which is what the `schema` job would have failed on.
+- Review note 1 (@Maimcghee): `within_boundary` now accepts a Component as well as a TrustBoundary (`any_of`, the pattern `targets_element` already uses), because an OTM trust zone's `parent` may point at a component. Before, such a zone had no target, and an OTM round trip lost it.
+- Review note 2: a `zone_type` string slot on TrustBoundary, beside `trust_level`, for OTM's `trustZones[].type` and threagile's typed boundaries.
+- `engine/tests/test_paths_vectors.py` (from #132) requires an `EXPECTED` entry for every example model in `spec/vectors/`. It now skips `pv-*` files, because their attack paths are AI-proposed and unreviewed, and listing them as expected results would present them as checked (CLAUDE.md). They join the test once the proposal is accepted and a human has checked their paths. The engine tests do not run on a pull request that changes only `spec/`, so without this change the failure would have shown up on the next pull request that touches `engine/`.
+
+**Checks run** locally, with the pinned tools from `spec/schema/requirements.txt`: `bin/gen-schema --check` passes; the `schema` job's three vector steps pass (4 MVP core vectors, 2 governance vectors, all references resolve); both `pv-*` vectors validate against `example-container-proposed.linkml.yaml`, and `check-refs.py` resolves all 147 references; in `engine/` (Python 3.12), `ruff check`, `ruff format --check`, `pytest` (102 passed) and the CLI smoke test pass.
+
+**A side effect.** `render_object_model.py` reads only a slot's `range`, so `OBJECT-MODEL.md` now shows `within_boundary` as `string`, and its diagram loses the `TrustBoundary` to `TrustBoundary` edge, as already happens for `targets_element`. The generated JSON Schema and Python types still treat the slot as a reference by id. Teaching the renderer about `any_of` is left to whoever owns it.
+
 ## What was rejected, and why
 
 - **Listing members on the zone** (`encloses`): it contradicted nesting in pv-01, and the proposal already names the edge from the other side (`in_trust_zone`).
@@ -124,8 +140,11 @@ This branch is based on `main`, which does not have #129's generated files yet. 
 - **A multivalued `realizes_damage`:** see above.
 - **Rating feasibility and impact in the example models:** both are human inputs (CLAUDE.md; ADR-0006), so they are left unset.
 - **Reviews in the example models:** none is recorded, so nothing AI-drafted appears as reviewed. Every Assertion is `proposed`.
+- **`EXPECTED` entries for `pv-01` and `pv-02`** (2026-10-22): they would freeze AI-proposed attack paths as expected results before a human checks them, so the test skips the files instead.
+- **Review notes 3 and 4** (2026-10-22: the Component description's "not an OTM diagram node", which Decision 2 runs into, and a mapping for Threat Dragon's drawn boundaries): not applied in this change; the student chose notes 1 and 2.
 
 ## What a human accepted
 
 - The student chose to take this piece of #64 and asked for it to be done as a pull request.
-- Pending: review by @Maimcghee (the lane owner) and decisions by @nymble (`spec/` under CODEOWNERS).
+- 2026-10-22: @Maimcghee reviewed it as the lane owner (four notes, none blocking). The student chose to merge `main`, regenerate, apply notes 1 and 2, and skip `pv-*` in the attack-path test.
+- Pending: decisions by @nymble (`spec/` under CODEOWNERS), who commented on the pull request on 2026-10-22 without deciding them. The pull request stays a draft.

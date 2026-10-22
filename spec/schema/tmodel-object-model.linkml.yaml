@@ -342,14 +342,17 @@ classes:
     description: >-
       PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). Where control or assumptions change (ARCH-0001 §3), modeled as a zone, as
       the proposal's §1 does: a Component is `in_trust_zone` a TrustBoundary (§1, F12),
-      and zones nest through `within_boundary`. A DataFlow whose ends sit in different
+      and zones nest through `within_boundary`, which can also name the Component a zone
+      sits inside, because an OTM trust zone's `parent` may be a component. A DataFlow whose ends sit in different
       zones crosses the boundary between them; `crosses_boundary` states it explicitly
       where membership is unknown. Maps OTM `trustZones` and pytm boundaries;
       threagile's member lists and CycloneDX's per-service `trustZone` import onto the
-      same zone (RPT-0005 crosswalk, "four shapes").
+      same zone (RPT-0005 crosswalk, "four shapes"). `zone_type` and `trust_level` keep
+      the source's own labels.
     slots:
       - within_boundary
       - trust_level
+      - zone_type
 
   DataFlow:
     is_a: Node
@@ -1181,14 +1184,23 @@ slots:
       PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). The trust zone a Component sits in (the proposal's §1 name, F12). One zone per
       Component, as in OTM; outer zones follow from `within_boundary`.
   within_boundary:
-    range: TrustBoundary
+    any_of:
+      - range: TrustBoundary
+      - range: Component
     inlined: false
-    description: "PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). The enclosing trust zone, for nesting (pytm boundaries nest)."
+    description: >-
+      PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). What encloses the zone: another trust zone, for nesting (pytm boundaries
+      nest), or a Component, since an OTM trust zone's `parent` may point at a component as well as at a zone.
   trust_level:
     range: string
     description: >-
       PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). The zone's trust rating as the source gives it (OTM `trustRating`); not
       normalized here.
+  zone_type:
+    range: string
+    description: >-
+      PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). The zone's type as the source gives it (OTM `trustZones[].type`;
+      threagile's trust boundaries are typed too); not normalized here.
   flow_from:
     range: Component
     required: false
