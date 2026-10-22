@@ -7,9 +7,9 @@ description: "Task backlog. Each task becomes a GitHub issue; this file is the d
 type: backlog
 category: process
 status: draft
-version: "0.2.7"
+version: "0.2.8"
 date: "2026-09-23"
-updated: "2026-10-01"
+updated: "2026-10-15"
 needs_review: true
 reviewed: false
 canonical_path: project/BACKLOG-0001.md
@@ -58,7 +58,7 @@ Size: `S` <½day · `M` ~1day · `L` ~3days. Increments are in `PLAN-0001` §8.
 | T-007 | Branch protection on `main` (PR-only, 1 review) | PL | S | done |
 | T-008 | **Week-0 gate:** R-set + DEC-005 (ADR-0002) + DEC-007 (ADR-0001) ratified | all | L | **done** |
 
-## I1 — Research · Sep 30–Oct 13 · underway
+## I1 — Research · Sep 25–Oct 13 (core Oct 8 per PLAN-0001; report work through Oct 13, overlapping I2) · underway
 
 Research reports are now per-topic GitHub issues (#6–#13, #25); RPT-0001 remains
 the umbrella landscape scaffold. Each report: sources → `library/` records
@@ -86,7 +86,7 @@ the umbrella landscape scaffold. Each report: sources → `library/` records
 |---|---|---|---|---|
 | T-029 | **FX-1 full extraction** of applicable spec records (not summaries): requirements, schemas, message/object formats, state machines, examples-as-fixtures, decision mapping. Multi-agent extract → adversarial verify → cross-check, **each pass at max effort**. First targets: the ~28 KG/OKN reference records (currently `summarized` → stub or FX-1), ISO 21434, FIPS 140 family. Follow `library/docs/extraction.md` + `extract` skill; `bin/extract-scaffold`. 2026-10-03: SDL lane done — 29 records FX-1 full (verify + cross-check), awaiting pass-4 human review. | nymble + all | L | **in progress** |
 
-## I2 — Model · Oct 14–27
+## I2 — Model · Oct 9–22
 
 | id | task | issue | sz | status |
 |---|---|---|---|---|
@@ -99,7 +99,7 @@ the umbrella landscape scaffold. Each report: sources → `library/` records
 | T-046 | RPT-0012 — GUI, platform & implementation stack | #10 | L | **review** (direction decided → Path A; residual = A-044 viz comparison) |
 | T-047 | DEC-006 + DEC-010 — stack & language | #18 | M | **done** (ADR-0003, Path A) |
 
-## I3 — MVP core (demo floor Nov 5) · Oct 28–Nov 5
+## I3 — MVP core (demo floor Nov 5) · Oct 23–Nov 5
 
 | id | task | issue | sz | status |
 |---|---|---|---|---|
