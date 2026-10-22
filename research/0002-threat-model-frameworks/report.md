@@ -7,9 +7,9 @@ description: "Survey of threat-modeling frameworks/methodologies (STRIDE, PASTA,
 type: research
 category: security
 status: draft
-version: "0.1.0"
+version: "0.2.0"
 date: "2026-09-28"
-updated: "2026-09-28"
+updated: "2026-10-22"
 authors:
   - role: student
     id: paria03

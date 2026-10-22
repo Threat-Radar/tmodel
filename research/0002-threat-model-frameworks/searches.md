@@ -4,9 +4,9 @@ id: RPT-0002-searches
 title: "RPT-0002 search log"
 type: research
 status: draft
-version: "0.1.0"
+version: "0.2.0"
 date: "2026-09-28"
-updated: "2026-09-30"
+updated: "2026-10-22"
 record: RPT-0002
 ---
 
