@@ -47,7 +47,7 @@ Axes: [`dimensions.md`](dimensions.md). References live in `library/`.
 | VAST | enterprise-scale threat modeling: separate application and operational (infrastructure) models | process-flow diagrams (application) and data-flow diagrams (operational) | not documented publicly | high, via the ThreatModeler platform | ThreatModeler (commercial) only | vendor method; little public documentation | `threatmodeler-vast`, `sei-threat-modeling-methods-2018` |
 | Cyber Kill Chain | an intrusion as seven ordered phases, each a point where defenders can act | linear phase list + courses-of-action matrix | ordered but coarse — phases, not concrete actions; one broken phase stops the attack | manual analysis; phases used as labels in threat-intelligence tooling | no dedicated tooling; used alongside ATT&CK | mature (Lockheed Martin, 2011); very widely known | `lockheed-kill-chain-2011` |
 | MITRE ATT&CK | observed adversary behaviour: tactics (why), techniques and sub-techniques (how), procedures, groups, software, mitigations | matrix (tactics × techniques); STIX 2.1 JSON data | concrete steps, but **unordered** — tactics are tags; sequences need Attack Flow | high — machine-readable catalog; mapping a system's threats to techniques still needs people | ATT&CK Navigator, Attack Flow (Apache-2.0); used by many security products | mature (MITRE, 2013–); de-facto industry vocabulary | `mitre-attack`, `mitre-attack-design-philosophy` |
-| MITRE Attack Flow | how adversary actions combine into an attack: actions (one technique each) linked by the effects they produce, plus conditions, AND/OR operators and assets | STIX 2.1 extension (JSON, schema 2.0.0) drawn as a graph in Attack Flow Builder | **explicit**: an arrow is a dependency on an effect (not a time order); AND/OR operators join paths; conditions branch on true/false; `scope` can be `attack-tree` | high for the format (machine-readable, validated by a JSON schema); flows are authored by people, v4 adds AI-assisted drafting from incident reports | Attack Flow Builder, example-flow corpus (Apache-2.0) | maintained MITRE CTID project; language 2.0.0 (2022), tools v4.1 (October 2026) | `mitre-attack-flow` |
+| MITRE Attack Flow | how adversary actions combine into an attack: actions (at most one technique each) linked by dependency, plus conditions, AND/OR operators and assets; observed or hypothetical | STIX 2.1 extension (JSON, schema labelled 2.0.0) drawn as a graph in Attack Flow Builder | **explicit**: an arrow means the next action needs the previous one to succeed (a partial order); AND/OR operators join paths; conditions branch on true/false; shared steps | high for the format (machine-readable, JSON schema); flows are authored by people, v4 adds AI-assisted drafting from incident reports | Attack Flow Builder, example-flow corpus (Apache-2.0) | maintained MITRE CTID project; language 2.0.0 (2022), tools v4.1 (October 2026) | `mitre-attack-flow` |
 | ISO/SAE 21434 TARA | see #11 | | | | | | `iso-sae-21434-2021` |
 
 ## 2. STRIDE
@@ -550,8 +550,9 @@ commercial product; the vendor's performance claims come without evidence.
 ## 9. Cyber Kill Chain, MITRE ATT&CK and Attack Flow
 
 Unlike STRIDE and attack trees, which are used to analyse a system being
-*designed*, these three describe how *real attackers behave*. All came from
-defenders studying real intrusions; Attack Flow builds on ATT&CK.
+*designed*, these three describe how *attackers behave*. All came from defenders
+studying real intrusions; Attack Flow builds on ATT&CK and can also describe
+hypothetical attacks.
 
 ### 9.1 Cyber Kill Chain
 
@@ -660,60 +661,87 @@ release.
 adversary actions combine into an attack. It is maintained by MITRE's Center for
 Threat-Informed Defense and defined as an extension to STIX 2.1, so flows can
 reference other STIX content (threat actors, identities, ATT&CK objects) and be
-referenced from it. The language is version 2.0.0 (extension defined August
-2022); the tools reached v4.1 in October 2026.
+referenced from it. The extension is labelled 2.0.0 (defined August 2022, released
+with the tools' v2.0 in October 2022); the tools reached v4.1 in October 2026.
 
 **What it models.** A flow document holds exactly one `attack-flow` object (name,
-description, the starting points, and a `scope`: incident, campaign, threat actor,
-malware, emulation plan, `attack-tree` or other) and four building blocks:
-- **actions** (`attack-action`) — one execution of a technique, usually an ATT&CK
-  technique and tactic, with the assets it touches;
+description, the starting points, and a `scope`) and four building blocks:
+- **actions** (`attack-action`) — one execution of a behaviour, usually an ATT&CK
+  technique and tactic, with optional start and end times (`execution_start`,
+  `execution_end`) and the assets it touches;
 - **conditions** (`attack-condition`) — a state or outcome after an action, which
   can branch the flow on success or failure (`on_true_refs`, `on_false_refs`);
-- **operators** (`attack-operator`) — `AND` or `OR`, joining several paths;
+- **operators** (`attack-operator`) — `AND` (all incoming paths must succeed) or
+  `OR` (any one is enough);
 - **assets** (`attack-asset`) — the subject or target of an action, technical or
   not (a machine, data, a person).
 
-It also carries ATT&CK detection strategies and mitigations as custom objects, and
-a fixed verbal scale for STIX's 0–100 `confidence`.
+`scope` labels what a flow describes: an incident, a campaign, a threat actor,
+malware, an emulation plan, an attack tree, or other. The last two of those were
+added to the JSON schema in place (`attack-tree` in 2024, `emulation-plan` in
+2025) while it kept the 2.0.0 label; the prose language page still lists five
+values. Confidence uses a documented verbal scale over STIX's 0–100, from
+"Speculation" (0, "the author imagines a what-if scenario") to "Certainty" (100).
 
 **Notation.** JSON (STIX 2.1 objects validated by a JSON schema), drawn and edited
 as a graph in Attack Flow Builder.
 
 **Attack paths / steps.** **Explicit, and closest to tmodel's model of any method
 here.** Actions are concrete steps; operators give AND/OR; conditions give
-branches. The link between two actions is a **dependency**: the second needs the
-effect the first produced (access, knowledge, a changed state). The documentation
-stresses this is not the same as saying one action happened before the other, so a
-flow does not encode time order. Techniques usually come from ATT&CK, but custom
-collections (e.g. VERIS) and ad-hoc actions are allowed.
+decision branches; a node can have several incoming arrows, so steps are shared.
+An arrow between two actions is a **dependency**: "the second action cannot be
+executed until the first action completes successfully" (introduction). The
+documentation calls this "a more powerful concept" than one action merely
+happening before another: it records that the first creates the precondition for
+the second. So the graph gives a **partial order** — actions on independent
+branches stay unordered — and wall-clock time is optional on each action.
+Techniques usually come from ATT&CK, but custom collections (e.g. built in ATT&CK
+Workbench), other knowledge bases (e.g. VERIS) and ad-hoc actions are allowed; an
+action needs only a name.
+
+Attack trees are expressed with these same blocks, not with a separate construct:
+the published example with `scope: attack-tree` models goals and sub-goals as
+actions without techniques, joined bottom-up through AND/OR operators to one root
+goal. There are no cost or probability attributes as in Schneier's trees (§4).
 
 **Manual vs automatable.** The format is fully machine-readable. Writing a flow is
 analyst work, usually from an incident report; v4 adds AI-assisted drafting of a
-starting flow from a PDF, URL or text report, and technique recommendations.
+starting flow from a PDF, URL or text report, and technique recommendations. Flows
+need not record a real event: emulation plans, attack trees and "what-if"
+scenarios are supported, so hypothetical paths — what tmodel produces — fit the
+language.
 
 **Tooling.**
 
 | tool | what it does | license |
 |---|---|---|
-| [Attack Flow Builder](https://center-for-threat-informed-defense.github.io/attack-flow/ui/) | browser editor; exports STIX JSON and visualisations (presentation, timeline, matrix, tactic and IOC tables) | Apache-2.0 |
-| [Attack Flow repository](https://github.com/center-for-threat-informed-defense/attack-flow) | language schema, Python tooling, corpus of example flows | Apache-2.0 |
+| [Attack Flow Builder](https://center-for-threat-informed-defense.github.io/attack-flow/ui/) | browser editor (native `.afb` files; publishes STIX JSON; imports STIX since v3.0); views include presentation, treemap, tactic table, timeline, matrix and IOC table | Apache-2.0 |
+| [Attack Flow repository](https://github.com/center-for-threat-informed-defense/attack-flow) | language schema, Python tooling (`af` CLI), corpus of example flows | Apache-2.0 (bundled ATT&CK content under the ATT&CK Terms of Use) |
 
-**Maturity and adoption.** An actively maintained MITRE project with a stable
-language schema (2.0.0 since 2022) and a corpus of public example flows. Version
-4.0 added the ATLAS, D3FEND and Fight Fraud frameworks alongside ATT&CK.
+**Maturity and adoption.** An actively maintained MITRE project with a public
+corpus of example flows. ATLAS, D3FEND and Fight Fraud joined ATT&CK in the
+Builder in v3.1 (April 2026); v4.0 added AI-assisted drafting, technique
+recommendations and tags; v4.1 added D3FEND countermeasures and red-team tests.
 
 **Strengths.** Joins ATT&CK's shared vocabulary with attack-tree structure (AND/OR,
-branches) in one machine-readable graph; models dependency between steps
-explicitly; interoperates through STIX 2.1, which tmodel already plans to import
-(ADR-0007); open licence.
+shared steps) and an order derived from dependency, in one machine-readable graph;
+supports hypothetical as well as observed attacks; interoperates through STIX 2.1,
+which tmodel already plans to import (ADR-0007); open licence.
 
-**Limits.** Describes attacks, not the system under design: no data-flow model,
-components or trust boundaries, and no risk scoring. A flow usually records one
-observed incident or campaign rather than every possible path. Dependency is not
-time order, so a tool must not read one into it. The v4 features (AI generation,
-tags, extra frameworks) are Builder features; how they are stored in the 2.0.0
-schema was not checked.
+**Limits.**
+- Describes attacks, not the system under design: no data-flow model, components or
+  trust boundaries, and no risk scoring.
+- The 2.0.0 schema changed in place, so a validator holding an older copy rejects
+  newer flows; the schema's published URL currently returns 404.
+- The Builder stores detections, mitigations, countermeasures and red-team tests as
+  custom `x-` objects linked by generic `related-to` relationships, and adds a
+  `ttp_frameworks` property — none defined in the 2.0.0 schema. A STIX importer
+  (ADR-0007) must accept custom objects, read `related-to` edges as well as
+  `effect_refs`, and cannot learn the ATT&CK version from a flow.
+- The Builder's confidence scale differs from the documented one: it adds "AI
+  Generated" at 0, the same value as the documented "Speculation", so exported STIX
+  cannot tell AI-drafted content from a human's what-if — a distinction tmodel must
+  keep (ADR-0010 Review/Assertion).
 
 **Sources.** `mitre-attack-flow`.
 
@@ -721,12 +749,15 @@ schema was not checked.
 
 Together they cover what neither the Kill Chain nor ATT&CK has alone: the Kill
 Chain gives **order** (coarse), ATT&CK gives **concrete steps** (unordered), and
-Attack Flow combines ATT&CK's steps with AND/OR structure, linked by
-**dependency** rather than by time. tmodel's `AttackStep` already has AND/OR
-gates and an explicit `precedes` order (ARCH-0001-PROPOSAL §2a); Attack Flow's
-effects raise the question of whether `precedes` means order or dependency, and
-its STIX form is a candidate interchange under ADR-0007. This is input to #15 and
-DEC-001; **no decision is taken here.**
+Attack Flow combines ATT&CK's steps with AND/OR structure and an order derived
+from **dependency**. tmodel's accepted core (ADR-0010; `AttackStep` with `gate`
+and `precedes` in the LinkML schema) already defines its AND/OR gate over a step's
+predecessors, so a gated `precedes` already reads as "these must succeed first".
+Attack Flow raises one question for it: should `precedes` always assert enablement
+(the earlier step creates the later one's precondition), or only order? Changing
+that would amend ADR-0010 (DEC-001a), not the open DEC-001. Attack Flow's STIX form
+is also a candidate interchange under ADR-0007, with the import caveats above.
+**No decision is taken here.**
 
 **Sources.** `lockheed-kill-chain-2011`; `mitre-attack-design-philosophy`;
 `mitre-attack`; `mitre-attack-flow`.
@@ -789,18 +820,18 @@ The hybrid methods make this explicit: Quantitative TMM = attack trees + STRIDE
 attack trees inside its stages. A tool that supports only one method would
 cover only part of the job.
 
-**2. Attack paths need three properties, and no single method has all three.**
+**2. Attack paths need three properties; the classic methods each cover part, and only Attack Flow combines all three.**
 ARCH-0001 §3 defines an `AttackPath` as an *ordered* set of `AttackStep`s.
 
 | property | where it comes from | gap |
 |---|---|---|
-| **order** | Cyber Kill Chain (seven ordered phases) | phases are coarse, not concrete steps |
-| **concrete, shared vocabulary for steps** | MITRE ATT&CK techniques (stable IDs, machine-readable) | tactics are tags; no order |
-| **structure — alternatives (OR) and requirements (AND), shared steps** | attack trees; Trike's attack graph | plain trees have no order and duplicate shared steps |
+| **order** | Cyber Kill Chain (seven ordered phases); Attack Flow (dependency orders actions) | Kill Chain phases are coarse, not concrete steps |
+| **concrete, shared vocabulary for steps** | MITRE ATT&CK techniques (stable IDs, machine-readable), also used by Attack Flow | tactics are tags; no order |
+| **structure — alternatives (OR) and requirements (AND), shared steps** | attack trees; Trike's attack graph; Attack Flow (AND/OR operators, shared nodes) | plain trees have no order and duplicate shared steps |
 
-Existing work already combines them: MITRE's **Attack Flow** links ATT&CK
-techniques by dependency, with AND/OR operators (§9.3); sequential-AND attack trees add order to trees; Trike merges trees
-into a graph. A graph model — which tmodel is — can hold all three.
+Existing work already combines them: MITRE's **Attack Flow** has all three in
+one STIX graph (§9.3); sequential-AND attack trees add order to trees; Trike merges
+trees into a graph. A graph model — which tmodel is — can hold all three.
 
 **3. Existing object models are close to ARCH-0001 §3.** Trike v1 defines actor,
 asset, action, rule, threat, attack, attack tree/graph, weakness, vulnerability,
