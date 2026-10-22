@@ -50,15 +50,34 @@ Axes: [`dimensions.md`](dimensions.md). References live in `library/`.
 | MITRE Attack Flow | how adversary actions combine into an attack: actions (at most one technique each) linked by dependency, plus conditions, AND/OR operators and assets; observed or hypothetical | STIX 2.1 extension (JSON, schema labelled 2.0.0) drawn as a graph in Attack Flow Builder | **explicit**: an arrow means the next action needs the previous one to succeed (a partial order); AND/OR operators join paths; conditions branch on true/false; shared steps | high for the format (machine-readable, JSON schema); flows are authored by people, v4 adds AI-assisted drafting from incident reports | Attack Flow Builder, example-flow corpus (Apache-2.0) | maintained MITRE CTID project; language 2.0.0 (2022), tools v4.1 (October 2026) | `mitre-attack-flow` |
 | ISO/SAE 21434 TARA | see #11 | | | | | | `iso-sae-21434-2021` |
 
+**Surveys behind this comparison.** SEI's *Threat Modeling: A Summary of Available
+Methods* (2018, a technical report) describes twelve methods. A peer-reviewed
+systematic review by Tuma, Calikli and Scandariato (2018) compares 26
+threat-analysis techniques from 38 studies on their applicability, input, analysis
+procedure, outcomes and ease of adoption, and finds that procedures are not
+precisely defined, outcomes have no quality assurance, and tool support and
+validation are limited: 9 of the 26 techniques have no tool at all. Xiong and
+Lagerström's broader systematic review (2019, read in abstract only) likewise
+observes that "most threat modeling work remains to be done manually". Both
+findings feed the gap analysis in §11.
+
+**Sources.** `sei-threat-modeling-methods-2018`; `tuma-2018-threat-analysis-slr`;
+`xiong-2019-threat-modeling-slr` (paywalled: abstract only).
+
 ## 2. STRIDE
 
 **What it is.** A threat-discovery framework: a mnemonic for six categories of
 threat, each the violation of one security property. It helps find possible
 threats against components, data flows, users, services, and trust boundaries.
-Invented in 1999 by Loren Kohnfelder and Praerit Garg (*The Threats to Our
-Products*), adopted by Microsoft in 2002, and popularised by Shostack's *Threat
-Modeling: Designing for Security* (2014). SEI calls it the most mature
-threat-modeling method.
+Introduced in an internal Microsoft article of April 1999 by Loren Kohnfelder and
+Praerit Garg (*The threats to our products*), which recommended it to all
+Microsoft product teams; Microsoft published the article in 2009. Microsoft's
+Security Development Lifecycle applies it to each element of a data-flow diagram
+("STRIDE per element", Shostack 2008), and Shostack's book *Threat Modeling:
+Designing for Security* (2014) popularised it. SEI calls it the most mature
+threat-modeling method and dates its adoption by Microsoft to 2002; we found no
+primary source for that year. The original article expands the "R" as
+"Repudiability" rather than "Repudiation".
 
 | threat | violates |
 |---|---|
@@ -120,7 +139,7 @@ quality; can miss domain-specific threats; not suited on its own to privacy
 (→ LINDDUN, §5), safety, hardware, automotive (→ TARA, #11), or agentic AI
 (→ MAESTRO, #12).
 
-**Sources.** `sei-threat-modeling-methods-2018`; `shostack-threat-modeling-2014`
+**Sources.** `kohnfelder-garg-1999-threats-to-our-products`; `shostack-2008-experiences-threat-modeling-microsoft`; `sei-threat-modeling-methods-2018`; `shostack-threat-modeling-2014` (book, not read: metadata only)
 (to ingest).
 
 ## 3. PASTA

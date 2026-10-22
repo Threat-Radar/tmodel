@@ -33,3 +33,8 @@ A source is not "in the report" until it is a `library/` record.
 | Real World Threat Modeling Using the PASTA Methodology (UcedaVélez, OWASP AppSec EU 2012) | slides | PASTA | `ucedavelez-pasta-owasp-2012` | DEC-001, DEC-003, DEC-005 |
 | Risk Centric Threat Modeling (UcedaVélez & Morana, Wiley 2015) — not read, paywalled | book | PASTA | `pasta-risk-centric-threat-modeling` (existing stub, completed) | DEC-001, DEC-003, DEC-005 |
 | Attack Flow — Language, STIX 2.1 extension 2.0.0 (MITRE Center for Threat-Informed Defense; docs at release v4.1.0, 2026) | spec | MITRE Attack Flow | `mitre-attack-flow` | DEC-001, DEC-005 |
+| Threat analysis of software systems: A systematic literature review (Tuma, Calikli & Scandariato, Journal of Systems and Software 144, 2018) — read via the first author's 2021 thesis | paper | all (survey of 26) | `tuma-2018-threat-analysis-slr` | DEC-001 |
+| Threat modeling – A systematic literature review (Xiong & Lagerström, Computers & Security 84, 2019) — paywalled, abstract only | paper | all (survey) | `xiong-2019-threat-modeling-slr` (stub) | DEC-001 |
+| The threats to our products (Kohnfelder & Garg, Microsoft, 1999; published by Microsoft 2009) | article | STRIDE | `kohnfelder-garg-1999-threats-to-our-products` | DEC-001 |
+| Experiences Threat Modeling at Microsoft (Shostack, MODSEC08, CEUR-WS Vol-413, 2008) | paper | STRIDE | `shostack-2008-experiences-threat-modeling-microsoft` | DEC-001 |
+| Threat Modeling: Designing for Security (Shostack, Wiley 2014) — paid book, not read | book | STRIDE | `shostack-threat-modeling-2014` (stub) | DEC-001 |
