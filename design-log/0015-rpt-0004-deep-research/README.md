@@ -4,7 +4,7 @@ id: DL-0015
 title: "RPT-0004 second pass: AI-assisted scoping, survey, extraction and mapping"
 type: process
 status: draft
-version: "0.9.0"
+version: "0.10.0"
 date: "2026-10-08"
 updated: "2026-10-22"
 record: DL-0015
@@ -476,4 +476,97 @@ With #131 and #133 merged, the student asked to continue #38 with `report.md` 0.
 ### What a human accepted
 
 - The student asked for this work and made the three choices above.
+- Pending: review.
+
+## Report 0.2.0: §2 to §4, Tables 4 and 5 (#148, 2026-10-22)
+
+### Question asked
+
+After #147, the student said to continue #38; the next sub-issue is #148: §2 with Table 4 (hardware and firmware coverage) from `fanout-hardware.md`, §3 with Table 5 (tools) from `fanout-tools.md`, and §4 re-checked against tradar's `main`. The student's earlier choices hold: one branch and one draft pull request, a stop for review after each sub-issue, and one fact-check agent per sub-issue. #147 was committed at the student's word ("commit #147") before this work began.
+
+### What was produced
+
+- **`report.md`, §2:** the 0.1.2 text kept where it still holds, with CISA's 2023 mapping counts set beside our reading of the current schemas; Table 4 in two parts (4a bills and guidance, 4b identity and attestation standards); and new paragraphs for questions 3 to 9: how firmware is tied to a device, buses and cores, firmware bills in practice, attestation as a measured bill, ISO/IEC 19770-6 (from public metadata and its preview only), hierarchical systems and vehicles, and guidance beyond CISA.
+- **`report.md`, §3:** the second round of tool runs (2026-10-08: four inputs, Syft 1.54.1, Grype 0.120.1, Trivy 0.75.0) beside the first; Table 5; the SPDX 3 support table; and new or rewritten paragraphs on Dependency-Track 5, GUAC's graph model and deps.dev.
+- **`report.md`, §4:** re-checked against tradar's `main` (still `26d9c76`), with Phase 1's three nuances and its new facts on what reaches the graph.
+- **`dimensions.md` 0.7.5** and **`searches.md` 0.3.3:** status lines and the checks of 2026-10-22.
+
+### Method
+
+- The text is condensed from Phase 1's notes, with this log's later corrections applied: uSWID is a header defined by python-uswid and required by the firmware SBOM specification, not a standard; Yocto 5.1 writes SPDX 3.0.0 and 5.2 onward 3.0.1; the SUIT manifest waits on five unpublished drafts; spdx/tools-golang still has no final release with SPDX 3.0.1; and the qualified tradar claims (`manifestDigest`, the GHSA ids named `cve:`).
+- On 2026-10-22: the latest tool releases and their notes, the two SPDX 3 issues, tradar's `main`, and every cited record id at `a28a013` (`searches.md`). The tools were not run again: the newer releases change no format support.
+- One fact-check agent (Claude Code) checked the new text against primary sources; see "Fact-check" below.
+
+### Choices the agent made, open to review
+
+- **Table 4 keeps the plan's rows** and does not split the last row ("measured identity") into device evidence and supplier references, which Phase 1 suggested; the intro and the cells say which each is.
+- **Table 4 has no ISO/IEC 19770-6 column,** as the plan allows when no copy can be read.
+- **Two draft columns** (the CycloneDX 2.0 and SPDX 3.1 development branches) are in Table 4a, marked unreleased, because they are where hardware support is moving.
+- **The 47-field crosswalk** stays in `fanout-hardware.md` §3.3; the report gives its counts.
+- **Table 5 pins the versions run on 2026-10-08,** and the text names the newer releases instead of re-running them.
+
+### Fact-check
+
+- **The agent.** One fact-check agent (Claude Code; about 606,000 tokens, 318 tool calls, 57 minutes) checked the #148 part of the version note, §2 with Tables 4a and 4b, §3 with Table 5 and its three smaller tables, and §4. It used primary sources it fetched itself:
+  - the CISA HBOM framework (from the Wayback Machine, because cisa.gov refuses scripts; the digest matched), NTIA, CERT-In 2.0, Auto-ISAC, UN R155 and R156, ITU-T C548, ISO Open Data and the BSI preview of ISO/IEC 19770-6;
+  - the CycloneDX 1.7.2 schema and property taxonomy, the CycloneDX 2.0 and SPDX 3.1 development branches, and SPDX 3.0.1;
+  - the TCG, DMTF and IETF documents of Table 4b;
+  - the firmware SBOM specification 0.10, python-uswid, coreboot, the UEFI material, Yocto and Zephyr;
+  - the source of Syft, Grype, Trivy, GUAC and Dependency-Track at the pinned tags, with their documentation;
+  - deps.dev, where it repeated 3 of the 15 live calls.
+
+  It re-ran Syft 1.54.1 on the pinned image digests after checking the release checksum. It also re-ran Grype 0.120.1 and Trivy 0.75.0 with the exact databases of 2026-10-08, which can still be downloaded and whose digests matched the notes. It read tradar at `26d9c76` without running it. It sent no email or other personal data, and it did not use Crossref.
+- **What it confirmed.**
+  - Every count in the composition and matching tables, including Trivy's 0.1.0 tradar figures, re-run with the database of 2026-09-30.
+  - Table 5's Syft cells; all four SPDX 3 files are valid against the 3.0.1 JSON Schema.
+  - The release dates, and that the newer releases change no formats.
+  - CISA's 47 fields, its 37 and 36 unmapped fields, our 24 = 9 + 15, 19 = 7 + 12, 40 and 38, and all 13 CISA quotes.
+  - Table 4b's standards and versions.
+  - Every code locator in §4 at `26d9c76`.
+  - All 33 cited record ids at `a28a013`.
+- **Its 17 findings, all applied.**
+  - **Errors:**
+    - GUAC's deps.dev certifier adds dependencies, source links and Scorecard results, not vulnerabilities (Table 5 and §3).
+    - Three Dependency-Track quotes came from its version 4 documentation, not version 5's.
+    - GUAC v1.1.0 pins tools-golang v0.5.5; only its `main` pins v0.5.7.
+    - The log4j SBOM has no dependency links.
+    - Trivy reads the Python and Java packages in Syft's SPDX 2.3 files (tradar 15, log4j 7); only the two images give nothing.
+    - SPDX 3.1's `Hardware` requires `partNumber` and `productAgent`; `category` is optional.
+    - On Alpine, Grype adds 14 CVEs that Trivy lacks, not 13; the 14th is busybox's CVE-2025-60876.
+  - **Overstatements and citations:**
+    - "No digest" in the CISA framework is our reading, because its hash fields are described as identifiers.
+    - Not every source names firmware.
+    - LVFS's export is now cited to the firmware SBOM specification §7.6, and CBFS to coreboot's documentation.
+    - "HIRS at version 1.1 r15" had no source for "r15".
+    - Two interpretations now say "our reading".
+    - 4 of GUAC's 86 edges have no reverse.
+    - tradar's converter is also called from tests.
+    - tradar can also ask Syft for Syft JSON, table or text.
+    - Syft's suppliers come from package metadata, not only maintainer fields.
+  - **Minor:**
+    - Grype also reads a CPE file, and Syft also writes SPDX 2.1 tag-value.
+    - CISA §1.3 is now quoted in full.
+    - R156's register is kept per RXSWIN.
+    - Table 4's marks are adapted from RPT-0005, which marks absence with a dash.
+    - "Hardware support beyond a purpose label".
+    - GUAC's documentation lives in a separate repository.
+    - tradar's helpers also read Syft's own properties.
+- **Applied differently.**
+  - Dependency-Track's hardware advice is kept, labelled as version 4's, beside version 5's statement that NVD is "the broadest source for non-package software (operating systems, firmware, network equipment)". The agent suggested dropping it or labelling it.
+  - The PACCOR and HIRS sentence is rewritten from their READMEs and HIRS's documentation: PACCOR supports 2.1 but writes 1.1 by default, and HIRS validates 1.1, with 2.0 in development.
+  - "It cannot read SPDX 3 at all" is said of the format, not of each file. Trivy's format detection (`pkg/sbom/sbom.go:105-117`) does not recognize SPDX 3, and only Alpine's SPDX 3 file was run.
+- **Corrected in our own log.** `searches.md` said §2 to §4 cite 28 records. They cite 33: 31 stubs, plus `guac` and `ntia-sbom-minimum-elements`, which are summarized.
+- **For the library repository.** The `tcg-platform-certificate-profile-2-1` stub carries the same unsupported "1.1 r15" for HIRS, in `record.yaml` and `summary.md`. It needs fixing there, not from this checkout.
+- **Main-session spot checks** agreed with the agent; see `searches.md`. They covered 12 findings (F1 to F3, F5, F6, F8, F10, F11 and F13 to F16) and four minor fixes, against the agent's downloads and runs and three read-only GitHub API calls (the HIRS README and v3.2.0 notes, and the PACCOR README).
+- **Not checked:**
+  - The 0.1.0 Grype figures and the 0.1.0 Trivy Alpine "0". The Grype databases of 2026-09-28 and 09-30 were never recorded, and the Trivy database of 09-28 was not fetched.
+  - "CISA has not updated the framework since" rests on the Wayback copy.
+  - The remaining 12 of the 15 deps.dev calls.
+  - "Syft's documentation lists no dictionary lookups for Alpine" was checked in Syft's source only.
+  - Some details were checked at term level only: CoRIM's triple semantics, EAT's measurement contents, Redfish's cable and `Port` details, and Yocto and Zephyr naming hardware only as a build input.
+  - PACCOR has since released v2.0r17 (2026-10-13). The report keeps v2.0r16, the release Phase 1 recorded.
+
+### What a human accepted
+
+- The student asked for this work.
 - Pending: review.

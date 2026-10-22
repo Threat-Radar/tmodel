@@ -4,7 +4,7 @@ id: RPT-0004-searches
 title: "RPT-0004 search log"
 type: research
 status: draft
-version: "0.3.2"
+version: "0.3.3"
 date: "2026-09-28"
 updated: "2026-10-22"
 record: RPT-0004
@@ -375,7 +375,7 @@ Runs in the main session for [mapping.md](mapping.md), on macOS arm64 (times UTC
 
 ## Report 0.2.0 (2026-10-22)
 
-Runs in the main session for `report.md` 0.2.0 (#147: Tables 1 and 2, §1.4 to §1.6), on macOS arm64 (times UTC). The fact-check agent's own runs are summarized in DL-0015.
+Runs in the main session for `report.md` 0.2.0 (#147: Tables 1 and 2, §1.4 to §1.6; #148: §2 to §4), on macOS arm64 (times UTC). The fact-check agent's own runs are summarized in DL-0015.
 
 | date | command | input | result |
 |---|---|---|---|
@@ -384,3 +384,14 @@ Runs in the main session for `report.md` 0.2.0 (#147: Tables 1 and 2, §1.4 to �
 | 2026-10-22 | `grep` of `status:` and `duplicate_of:` in each `record.yaml` | the 22 library records Tables 1 and 2 cite, at `a28a013` | all 22 exist; `cyclonedx-1-7`, `spdx-3-0-1`, `iso-iec-19770-2-2015`, `rfc-9393` and `nistir-8060` are stubs; `ecma-424` and `iso-iec-5962` are stubs marked `duplicate_of` `cyclonedx-1-7` and `iso-iec-5962-2021` |
 | 2026-10-22 | `python3` on the ISO Open Data deliverables CSV (`Last-Modified` 2026-10-21), as downloaded by the fact-check agent | ISO Open Data | ISO/IEC PRF 5962 at stage 50.20 (it was 50.00 in the file of 2026-10-14); DIS 27055 and DIS 27056 at 40.00; 5962:2021 at 90.92; 19770-2:2015 at 90.60; 19770-6:2024 at 60.60 |
 | 2026-10-22 | `python3` walk of the CycloneDX JSON Schema at tag 1.7.2 (`73308ede…`), as downloaded by the fact-check agent | CycloneDX/specification | 13 objects with a `signature` property; 47 arrays with `uniqueItems`; 10 references to the BOM-Link types, one of them inside the `bomLink` definition itself, so 9 places accept a BOM-Link |
+| 2026-10-22 | `gh api repos/{anchore/syft, anchore/grype, aquasecurity/trivy, guacsec/guac, DependencyTrack/dependency-track, spdx/tools-golang}/releases/latest`; tools-golang tags | GitHub | Syft v1.55.0 (2026-10-19), Grype v0.121.0 (2026-10-19), Trivy v0.76.1 (2026-10-21), GUAC v1.1.0 (2026-03-13), Dependency-Track 5.2.0 (2026-10-08); tools-golang's latest final release still v0.5.7 (2026-01-12), newest tag `v0.6.0-rc4` |
+| 2026-10-22 | release notes of Syft v1.55.0 and Grype v0.121.0; Trivy's CHANGELOG for 0.76.0 and the v0.76.1 notes | GitHub | no change to input or output formats: Syft adds IPK packages to its Debian archive cataloger; Grype changes end-of-life warnings and fix dates; Trivy 0.76.0 fixes a crash on CSAF advisories without a CVE, and 0.76.1 is a build fix |
+| 2026-10-22 | `gh issue view` guacsec/guac #1850 and DependencyTrack/dependency-track #1746 | GitHub | both open; #1746 still labelled `on hold` |
+| 2026-10-22 | `gh api repos/Threat-Radar/tradar/commits/main` | tradar | still `26d9c76` (committed 2026-09-11T00:52:41Z) |
+| 2026-10-22 | `find` and `grep` of `status:` for the 33 records §2 to §4 cite (corrected from 28 after the fact-check, which counted 33) | library at `a28a013` | all 33 exist; 31 are stubs, and `guac` and `ntia-sbom-minimum-elements` are summarized. The `tcg-platform-certificate-profile-2-1` record says HIRS implements profile "1.1 r15"; no HIRS source found says "r15" (below) |
+| 2026-10-22 | `grep` and `sed` on the #148 fact-check agent's downloads | GUAC v1.1.0 source; Trivy v0.75.0 `go.mod`; Dependency-Track docs at tag 4.14.5 and the v5 docs repository (`079d46d` and `main`); SPDX 3.1 model at `4eaf6a4`; CISA HBOM framework text; UN R156 text; OSFW specification 0.10; coreboot SBOM page; HIRS docs page | as the agent reported: GUAC's deps.dev parser emits only `IsDependency`, `HasSourceAt` and `CertifyScorecard`; GUAC v1.1.0 pins tools-golang v0.5.5 and Trivy v0.5.7; the three Dependency-Track quotes are in the 4.14.5 docs only, and the v5 docs say "Uses both CPE and PURL matching", "skips components that lack a valid CPE when evaluating NVD data" and "A component with neither a CPE nor a PURL is not evaluated"; SPDX 3.1 `Hardware` has `partNumber` and `productAgent` at minCount 1 and `category` optional, with no subclass restricting it; CISA C.3.1 and C.5.8 describe `FGA_HASH` and `COMP_HASH` as "An intrinsic identifier" with a UUID example; R156 §7.1.2.3 asks for a register "For every RXSWIN"; LVFS's SPDX, SWID and CycloneDX links are in OSFW §7.6; CBFS is in coreboot's page, not the OSFW specification; HIRS docs: "the current ACA is not compatible with Platform Certificate v2.0" |
+| 2026-10-22 | `python3 -I` on the agent's Trivy 0.75.0 results for Syft's four SPDX 2.3 files (2026-10-08 databases) | fact-check runs | Alpine and Debian: `Detected OS family="none"`, `Unsupported os`, 0 results; tradar: 15 findings over 67 Python packages; log4j: 7 |
+| 2026-10-22 | `python3 -I` on `enum Edge` in GUAC v1.1.0 `pkg/assembler/graphql/schema/path.graphql` | GUAC source | 86 values; all but 4 have a reverse (`HAS_SBOM_INCLUDED_SOFTWARE`, `HAS_SBOM_INCLUDED_DEPENDENCIES`, `HAS_SBOM_INCLUDED_OCCURRENCES`, `HAS_SLSA_MATERIALS`), counting `ARTIFACT_HAS_SLSA` with `HAS_SLSA_SUBJECT` and `BUILDER_HAS_SLSA` with `HAS_SLSA_BUILT_BY` |
+| 2026-10-22 | `python3 -I` on Syft 1.54.1's SPDX 2.3 files for tradar and log4j; Syft source `originator_supplier.go` | fact-check runs; Syft at `v1.54.1` | tradar suppliers: 9 (`GitHub` 6, `anthropics` 2, `softprops` 1, the Action owners); log4j: 1 ("The Apache Software Foundation"), which Syft takes from the jar manifest's `Specification-Vendor` or `Implementation-Vendor` |
+| 2026-10-22 | `grep` and `sed` in tradar at `26d9c76` | tradar | `convert_sbom_to_packages` is called from `tests/test_sbom_cve_integration.py` and from `analyze_container_with_sbom`, which has no caller; `_parse_format` (`core/sbom_operations.py`) also offers `syft-json` and `table`, and `SBOMFormat` adds `text`; `extract_component_metadata` (`utils/sbom_utils.py:353`) reads `syft:package:*` and `syft:location:*:path` properties |
+| 2026-10-22 | `gh api repos/nsacyber/HIRS/readme`; `gh api repos/nsacyber/HIRS/releases/tags/v3.2.0`; `gh api repos/nsacyber/paccor/readme` | GitHub | HIRS README: "Updates for the Platform Certificate Version 2.0 are in the current development cycle"; no "r15" in the README or the v3.2.0 notes; PACCOR README: supports "v2.1, v1.1, and v1.0 workflows", and by default generates a v1.1 certificate |

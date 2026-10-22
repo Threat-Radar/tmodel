@@ -4,7 +4,7 @@ id: RPT-0004-dimensions
 title: "RPT-0004 dimensions: the search axes"
 type: research
 status: draft
-version: "0.7.4"
+version: "0.7.5"
 date: "2026-09-28"
 updated: "2026-10-22"
 record: RPT-0004
@@ -126,6 +126,8 @@ Rows: Syft, Grype, Trivy, Dependency-Track, GUAC, deps.dev, and any tool the cov
 | Evidence | run by us (input and date) or documentation (URL and date) |
 | Licence | |
 
+*Status 2026-10-22: Tables 4 and 5 are filled in `report.md` 0.2.0 (#148). Table 4 is split into 4a (bills and guidance) and 4b (identity and attestation); it has no ISO/IEC 19770-6 column, because no copy could be read, and its last row keeps device-reported evidence and supplier-signed references together, with the cells saying which. Table 5 pins the versions run on 2026-10-08; the releases since then change no format support.*
+
 ### Table 6. Composition → model-input mapping (§10, the deliverable for #15 and #17)
 
 *Status 2026-10-18: filled in [mapping.md](mapping.md) 0.1.0, against the core object model ADR-0010 accepted on 2026-10-12 (DEC-001a) rather than the draft named below; Phase 5 moves it into `report.md` as §10.*
@@ -236,7 +238,7 @@ New in this pass:
 
 ### 4. How radar (tradar) uses these today
 
-Which formats and fields tradar reads, and what it keeps or drops on the way to its graph. tradar's `main` has not changed since `26d9c76` (checked on GitHub, 2026-10-08), so 0.1.0's findings stand. This pass re-checks them and adds to them only if the code changes.
+Which formats and fields tradar reads, and what it keeps or drops on the way to its graph. tradar's `main` has not changed since `26d9c76` (checked on GitHub, 2026-10-08 and 2026-10-22), so 0.1.0's findings stand. This pass re-checks them and adds to them only if the code changes.
 
 ### 5. The bridge: components to CVEs and CWEs
 
