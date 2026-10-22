@@ -13,23 +13,30 @@ updated: "2026-09-28"
 authors:
   - role: student
     id: paria03
+  - role: research
+    id: ai-assisted
 decision_makers:
   - role: sponsor
     id: nymble
-reviewers: []
+reviewers:
+  - role: adversarial-review
+    id: ai-assisted
 needs_review: true
 reviewed: false
 canonical_path: research/0002-threat-model-frameworks/report.md
 library_commit: "see library/ submodule pointer at time of merge"
-issue: "Threat-Radar/tmodel#6"
-informs: [DEC-001, DEC-005]
-open_decisions: [DEC-001, DEC-005]
+issue: "Threat-Radar/tmodel#6 (v0.1); Threat-Radar/tmodel#36 (v0.2)"
+informs: [DEC-001a, DEC-002, DEC-003, DEC-005]
+open_decisions: []
 ---
 
 # Threat model frameworks
 
 > **This report does not select a design.** It is evidence for the modeling
-> requirements (#15). Every `DEC-*` it informs stays open.
+> requirements (#15). It takes no decision and amends no ADR. The decisions it
+> informs are already accepted — DEC-001a (ADR-0010), DEC-002 (ADR-0007),
+> DEC-003 (ADR-0006) and DEC-005 (ADR-0002) — so where a finding would change
+> one of them, it routes to a new ADR that amends it.
 
 Search log: [`searches.md`](searches.md). Source log: [`sources.md`](sources.md).
 Axes: [`dimensions.md`](dimensions.md). References live in `library/`.
@@ -38,24 +45,24 @@ Axes: [`dimensions.md`](dimensions.md). References live in `library/`.
 
 | framework | what it models | notation | attack path / steps | manual vs automatable | tooling | maturity / adoption | library record |
 |---|---|---|---|---|---|---|---|
-| STRIDE | six threat categories, each the violation of one security property, applied to system elements | data-flow diagram (DFD) + threat table | weak — finds individual threats per element; chains must be built by hand (or with attack trees) | medium — per-element rules generate candidate threats; realism, impact, mitigation and priority are human | MS Threat Modeling Tool, OWASP Threat Dragon, pytm, IriusRisk, ThreatModeler (see RPT-0003) | most mature method (1999; Microsoft 2002); high adoption in software security | `sei-threat-modeling-methods-2018`, `shostack-threat-modeling-2014` (to ingest) |
+| STRIDE | six threat categories, each the violation of one security property, applied to system elements | data-flow diagram (DFD) + threat table | weak to moderate — finds individual threats per element; chains must be built by hand (or with attack trees) | medium — per-element rules generate candidate threats; realism, impact, mitigation and priority are human | MS Threat Modeling Tool, OWASP Threat Dragon, pytm, IriusRisk, ThreatModeler (see RPT-0003) | most mature method per SEI (1999; Microsoft-published 2001); widely used in software security | `kohnfelder-garg-1999-threats-to-our-products`, `shostack-2008-experiences-threat-modeling-microsoft`, `sei-threat-modeling-methods-2018`, `shostack-threat-modeling-2014` (to ingest) |
 | PASTA | business risk: threats to an application ranked by business impact, across seven stages | a process; uses DFDs, attack trees, use/abuse cases, CWE/CVSS inside stages | strong — stage 6 builds attack trees and links attacks to vulnerabilities and exploits | low — a heavy, multi-role process; individual stages use automatable inputs (threat intel, scanners, CWE) | no open-source tool found; supported by some commercial platforms (see RPT-0003) | mature (2012; book 2015); moderate adoption, mainly in risk-focused organisations | `ucedavelez-pasta-owasp-2012`, `pasta-risk-centric-threat-modeling`, `sei-threat-modeling-methods-2018` |
 | Attack trees | an attacker goal decomposed into alternative (OR) and required (AND) sub-goals | tree diagram with AND/OR nodes; one tree per goal | strong — leaves are concrete steps; an attack is a set of leaves that satisfies the root. Basic trees do not order steps (sequential-AND extensions do) | medium — scoring and cheapest-path analysis are computable once values are assigned; building a realistic tree is expert work | SecurITree (commercial); ADTool, SeaMonster (academic, unmaintained); mostly general diagram tools (see §4) | mature concept (Schneier, 1999); tooling maturity mixed | `sei-threat-modeling-methods-2018`; `schneier-attack-trees-1999` |
 | LINDDUN | privacy threats: seven categories mapped onto data-flow-diagram elements | DFD + threat-to-element mapping table + privacy threat trees; GO variant uses cards | moderate — privacy threat trees detail how a threat is realised; no ordered steps | medium — the element mapping is a rule a tool can apply (as for STRIDE); judging privacy impact is human | OWASP Threat Dragon (LINDDUN threats); LINDDUN GO cards | mature (KU Leuven, 2011; actively maintained, renamed categories) | `deng-linddun-2011`, `linddun-org`, `sei-threat-modeling-methods-2018` |
 | OCTAVE | organisational risk to critical (information) assets, not a system design | process with worksheets and questionnaires; threat trees classify threat sources | weak — threat trees list actor, means and outcome, not multi-step attacks | low — workshop or worksheet driven; Allegro can be done by one person | worksheets in the SEI reports; no open-source tool found | mature (SEI/CERT: 1999; OCTAVE-S 2005; Allegro 2007) | `sei-octave-allegro-2007`, `sei-threat-modeling-methods-2018` |
 | Trike | who may do what to which asset (actor–asset–action matrix); threats are violations of that | matrix + DFDs; attack trees joined into an attack graph | strong — attack trees per threat, merged into one attack graph that can share nodes | high (by design) — threats generated deterministically from the matrix; judging attacks and risk is human | Trike tools (MIT, dormant since 2019) | niche; v1 (2005) documented, v2 never documented; dormant | `trike-v1-2005`, `sei-threat-modeling-methods-2018` |
-| VAST | enterprise-scale threat modeling: separate application and operational (infrastructure) models | process-flow diagrams (application) and data-flow diagrams (operational) | not documented publicly | high, via the ThreatModeler platform | ThreatModeler (commercial) only | vendor method; little public documentation | `threatmodeler-vast`, `sei-threat-modeling-methods-2018` |
+| VAST | enterprise-scale threat modeling: separate application and operational (infrastructure) models | process-flow diagrams (application) and data-flow diagrams (operational) | not documented publicly | high by vendor claim, without public evidence (§8) | ThreatModeler (commercial) only | vendor method; little public documentation | `threatmodeler-vast`, `sei-threat-modeling-methods-2018` |
 | Cyber Kill Chain | an intrusion as seven ordered phases, each a point where defenders can act | linear phase list + courses-of-action matrix | ordered but coarse — phases, not concrete actions; one broken phase stops the attack | manual analysis; phases used as labels in threat-intelligence tooling | no dedicated tooling; used alongside ATT&CK | mature (Lockheed Martin, 2011); very widely known | `lockheed-kill-chain-2011` |
 | MITRE ATT&CK | observed adversary behaviour: tactics (why), techniques and sub-techniques (how), procedures, groups, software, mitigations | matrix (tactics × techniques); STIX 2.1 JSON data | concrete steps, but **unordered** — tactics are tags; sequences need Attack Flow | high — machine-readable catalog; mapping a system's threats to techniques still needs people | ATT&CK Navigator, Attack Flow (Apache-2.0); used by many security products | mature (MITRE, 2013–); de-facto industry vocabulary | `mitre-attack`, `mitre-attack-design-philosophy` |
 | MITRE Attack Flow | how adversary actions combine into an attack: actions (at most one technique each) linked by dependency, plus conditions, AND/OR operators and assets; observed or hypothetical | STIX 2.1 extension (JSON, schema labelled 2.0.0) drawn as a graph in Attack Flow Builder | **explicit**: an arrow means the next action needs the previous one to succeed (a partial order); AND/OR operators join paths; conditions branch on true/false; shared steps | high for the format (machine-readable, JSON schema); flows are authored by people, v4 adds AI-assisted drafting from incident reports | Attack Flow Builder, example-flow corpus (Apache-2.0) | maintained MITRE CTID project; language 2.0.0 (2022), tools v4.1 (October 2026) | `mitre-attack-flow` |
-| ISO/SAE 21434 TARA | see #11 | | | | | | `iso-sae-21434-2021` |
+| ISO/SAE 21434 TARA | risk to road users from threat scenarios against a vehicle item's assets: damage scenarios rated for impact in four categories (safety, financial, operational, privacy), attack paths and their feasibility, a risk value of 1–5 per threat scenario (RPT-0007) | a process standard with required work products; no data format | **explicit**: an attack path is the set of deliberate actions that realizes a threat scenario (3.1.4), analysed top-down (attack trees or graphs) or bottom-up from vulnerabilities; feasibility is rated per path (High, Medium, Low, Very low) | the standard says which activities and work products are required and leaves methods and tools to the user | none prescribed (see RPT-0007) | international standard (2021); tmodel's risk metric adopts its feasibility rating, impact categories and risk matrix (ADR-0006) | `iso-sae-21434-2021` |
 
 **Surveys behind this comparison.** SEI's *Threat Modeling: A Summary of Available
 Methods* (2018, a technical report) describes twelve methods. A peer-reviewed
 systematic review by Tuma, Calikli and Scandariato (2018) compares 26
 threat-analysis techniques from 38 studies on their applicability, input, analysis
 procedure, outcomes and ease of adoption, and finds that procedures are not
-precisely defined, outcomes have no quality assurance, and tool support and
+precisely defined, outcomes lack quality assurance, and tool support and
 validation are limited: 9 of the 26 techniques have no tool at all. Xiong and
 Lagerström's broader systematic review (2019, read in abstract only) likewise
 observes that "most threat modeling work remains to be done manually". Both
@@ -74,9 +81,14 @@ Praerit Garg (*The threats to our products*), which recommended it to all
 Microsoft product teams; Microsoft published the article in 2009. Microsoft's
 Security Development Lifecycle applies it to each element of a data-flow diagram
 ("STRIDE per element", Shostack 2008), and Shostack's book *Threat Modeling:
-Designing for Security* (2014) popularised it. SEI calls it the most mature
+Designing for Security* (2014; not read here) is its standard textbook. SEI calls it the most mature
 threat-modeling method and dates its adoption by Microsoft to 2002; we found no
-primary source for that year. The original article expands the "R" as
+primary source for that year, though Microsoft published the method in *Writing
+Secure Code* (Howard and LeBlanc, 2001; second edition 2002, as listed by Shostack
+2008). The first 1999 document is also disputed: Shostack (2008) names it *Threats
+to our software*, by Jason Garms, Praerit Garg and Michael Howard, while the
+document Microsoft released in 2009 is Kohnfelder and Garg's. Whether these are one
+document or two is unresolved. The original article expands the "R" as
 "Repudiability" rather than "Repudiation".
 
 | threat | violates |
@@ -90,7 +102,9 @@ primary source for that year. The original article expands the "R" as
 
 **Notation.** Not a strict graph language — diagrams plus tables. The system is
 drawn as a data-flow diagram (external entities, processes, data stores, data
-flows, trust boundaries); threats are recorded in a threat table per element.
+flows, trust boundaries); threats are recorded in a threat table per element. The
+Open Threat Model format (`open-threat-model`) carries the same ideas as assets,
+trust zones and data flows (RPT-0005).
 
 **How it is applied.** *STRIDE-per-element* checks only the categories that
 apply to each element type (e.g. a data store: tampering, information
@@ -115,13 +129,13 @@ trees (§4) — as the hybrid Quantitative Threat Modeling Method does (§10).
 | tool | STRIDE role | license | model format |
 |---|---|---|---|
 | [Microsoft Threat Modeling Tool](https://learn.microsoft.com/en-us/azure/security/develop/threat-modeling-tool) | generates STRIDE threats from a DFD | free, proprietary | own template/model files |
-| [OWASP Threat Dragon](https://github.com/OWASP/threat-dragon) | STRIDE (also LINDDUN, CIA) threats on diagrams | Apache-2.0 | JSON |
+| [OWASP Threat Dragon](https://github.com/OWASP/threat-dragon) | STRIDE, LINDDUN, CIA, DIE and PLOT4ai threats on diagrams | Apache-2.0 | JSON |
 | [OWASP pytm](https://github.com/OWASP/pytm) | threats generated from a system described in Python code | MIT (its threat catalog reuses CAPEC material under MITRE's terms) | Python code |
 | IriusRisk, ThreatModeler | commercial; STRIDE among supported methods | commercial | see RPT-0003 |
 
 **Maturity and adoption.** Mature and widely taught, documented and tool-supported.
-Microsoft no longer maintains STRIDE itself, but it is still used in the
-Microsoft Security Development Lifecycle through the Threat Modeling Tool.
+SEI notes that Microsoft no longer maintains STRIDE itself, but it is still used
+in the Microsoft Security Development Lifecycle through the Threat Modeling Tool.
 High adoption in software security: web and cloud application design,
 enterprise architecture reviews, secure-SDLC programs, developer training.
 
@@ -130,17 +144,17 @@ works well with DFDs; finds common software threats; supported by many tools;
 useful early in design; maps directly onto basic security properties.
 
 **Limits.** The number of threats grows quickly as the system gets more
-complex, which makes it time-consuming. An empirical study of Microsoft's
-technique (Scandariato et al., cited by SEI) found a moderately low
-false-positive rate but a moderately high false-negative rate — it misses real
-threats more often than it invents fake ones. Does not model attack chains; no built-in risk scoring, likelihood,
+complex, which makes it time-consuming. In a descriptive study with 57 final-year
+master's students (Scandariato et al. 2015), 19–24% of the threats produced were
+incorrect, and 64–69% of the threats in the study's baseline (a threat-tree
+catalog) were overlooked — it misses real threats far more often than it invents
+fake ones. Does not model attack chains; no built-in risk scoring, likelihood,
 or business impact; can produce many generic threats; depends heavily on diagram
 quality; can miss domain-specific threats; not suited on its own to privacy
 (→ LINDDUN, §5), safety, hardware, automotive (→ TARA, #11), or agentic AI
 (→ MAESTRO, #12).
 
-**Sources.** `kohnfelder-garg-1999-threats-to-our-products`; `shostack-2008-experiences-threat-modeling-microsoft`; `sei-threat-modeling-methods-2018`; `shostack-threat-modeling-2014` (book, not read: metadata only)
-(to ingest).
+**Sources.** `kohnfelder-garg-1999-threats-to-our-products`; `shostack-2008-experiences-threat-modeling-microsoft`; `scandariato-2015-stride-descriptive-study`; `sei-threat-modeling-methods-2018`; `shostack-threat-modeling-2014` (book, not read: metadata only).
 
 ## 3. PASTA
 
@@ -183,7 +197,7 @@ business impact is human work.
 **Risk.** PASTA's distinguishing feature. It ends in business impact and
 residual risk, and the author argues risk should include a **probability** term
 informed by attack simulation, not only threat × vulnerability × impact — though
-the slides do not define how to compute it. Relevant to DEC-003 and #14.
+the slides do not define how to compute it. Relevant to ADR-0006 (DEC-003) and #14.
 
 **Tooling.** No open-source PASTA tool found (searched 2026-09-29). Consulting and
 tooling are offered by VerSprite (the author's firm), and some commercial
@@ -212,7 +226,7 @@ this section rests on the author's 2012 slides and the SEI survey.
 
 **What it is.** A method that represents an attacker's **goal** as a tree of the
 possible ways to achieve it. If STRIDE is a checklist of what can go wrong,
-an attack tree is a map of attacker strategy. Introduced by Bruce Schneier in
+an attack tree is a map of attacker strategy. Popularised by Bruce Schneier in
 1999 (*Dr. Dobb's Journal*); SEI calls it one of the oldest and most widely
 applied techniques, used on cyber-only, cyber-physical and physical systems.
 Originally a method on its own, it is now often combined with STRIDE, CVSS and
@@ -255,8 +269,9 @@ tmodel:
   is needed, so "compromise the database" is the three leaves together.
 - **Basic AND nodes are unordered.** A classic attack tree says *which* steps are
   needed, not *in what order*. Ordered steps need an extension such as
-  sequential-AND (SAND) attack trees. ARCH-0001 §3 defines an `AttackPath` as an
-  *ordered* set of `AttackStep`s, so this difference has to be handled.
+  sequential-AND (SAND) attack trees (no library record yet). tmodel's schema
+  (ADR-0010) defines an `AttackPath` as an ordered set of `AttackStep`s, so this
+  difference has to be handled.
 
 **Manual vs automatable.** Medium; building is manual, analysis is automatable.
 - *Manual:* choosing the goal; decomposing it into realistic sub-goals; choosing
@@ -427,7 +442,7 @@ impact criteria are defined by the organisation itself.
 
 **Risk.** Its strength. Impact criteria are set per organisation (reputation,
 financial, productivity, safety, legal…), producing a **relative risk score**;
-probability is optional because it is hard to quantify. Relevant to DEC-003 and
+probability is optional because it is hard to quantify. Relevant to ADR-0006 (DEC-003) and
 #14.
 
 **Tooling.** Worksheets, questionnaires and guidance in the SEI reports; no
@@ -481,8 +496,9 @@ treats every deviation from that as a threat.
 **Notation.** The actor–asset–action matrix, data-flow diagrams, and attack
 trees/graph.
 
-**Attack paths / steps.** Strong. Trike is the only framework in this report
-whose v1 explicitly merges attack trees into an **attack graph**, where one attack
+**Attack paths / steps.** Strong. Trike is the first framework in this report
+whose v1 explicitly merges attack trees into an **attack graph** (Attack Flow,
+§9.3, later reached a graph by another route), where one attack
 step can serve several threats — the limitation of plain trees noted in §4. Its
 separation of **threat** (a business-rule event, never technology-specific) from
 **attack** (a technology-specific step) is also a precise distinction.
@@ -696,8 +712,8 @@ description, the starting points, and a `scope`) and four building blocks:
   not (a machine, data, a person).
 
 `scope` labels what a flow describes: an incident, a campaign, a threat actor,
-malware, an emulation plan, an attack tree, or other. The last two of those were
-added to the JSON schema in place (`attack-tree` in 2024, `emulation-plan` in
+malware, an emulation plan, an attack tree, or other. The emulation plan and attack
+tree values were added to the JSON schema in place (`attack-tree` in 2024, `emulation-plan` in
 2025) while it kept the 2.0.0 label; the prose language page still lists five
 values. Confidence uses a documented verbal scale over STIX's 0–100, from
 "Speculation" (0, "the author imagines a what-if scenario") to "Certainty" (100).
@@ -712,8 +728,9 @@ An arrow between two actions is a **dependency**: "the second action cannot be
 executed until the first action completes successfully" (introduction). The
 documentation calls this "a more powerful concept" than one action merely
 happening before another: it records that the first creates the precondition for
-the second. So the graph gives a **partial order** — actions on independent
-branches stay unordered — and wall-clock time is optional on each action.
+the second. So an acyclic flow gives a **partial order** — actions on independent
+branches stay unordered — and wall-clock time is optional on each action. Neither
+the documentation nor the Builder checks that a flow is acyclic.
 Techniques usually come from ATT&CK, but custom collections (e.g. built in ATT&CK
 Workbench), other knowledge bases (e.g. VERIS) and ad-hoc actions are allowed; an
 action needs only a name.
@@ -754,13 +771,17 @@ which tmodel already plans to import (ADR-0007); open licence.
   newer flows; the schema's published URL currently returns 404.
 - The Builder stores detections, mitigations, countermeasures and red-team tests as
   custom `x-` objects linked by generic `related-to` relationships, and adds a
-  `ttp_frameworks` property — none defined in the 2.0.0 schema. A STIX importer
+  `ttp_frameworks` property. None of these is in the 2.0.0 JSON schema; the
+  language page documents `x-detection` and `x-mitigation` only. A STIX importer
   (ADR-0007) must accept custom objects, read `related-to` edges as well as
   `effect_refs`, and cannot learn the ATT&CK version from a flow.
-- The Builder's confidence scale differs from the documented one: it adds "AI
-  Generated" at 0, the same value as the documented "Speculation", so exported STIX
-  cannot tell AI-drafted content from a human's what-if — a distinction tmodel must
-  keep (ADR-0010 Review/Assertion).
+- The Builder's confidence scale (v4) differs from the documented one: it adds "AI
+  Generated" at 0 and moves "Speculative" to 10 and "Very Doubtful" to 20, while
+  the documented scale has "Speculation" at 0 and "Very Doubtful" at 10. A reader
+  using the documented scale misreads Builder values, and nothing in a flow says
+  which scale it used. The generation guide also has analysts "validate" AI
+  drafts by editing confidence, so confidence carries review state. An importer
+  must not derive tmodel's review status (ADR-0010 Review/Assertion) from it.
 
 **Sources.** `mitre-attack-flow`.
 
@@ -769,12 +790,14 @@ which tmodel already plans to import (ADR-0007); open licence.
 Together they cover what neither the Kill Chain nor ATT&CK has alone: the Kill
 Chain gives **order** (coarse), ATT&CK gives **concrete steps** (unordered), and
 Attack Flow combines ATT&CK's steps with AND/OR structure and an order derived
-from **dependency**. tmodel's accepted core (ADR-0010; `AttackStep` with `gate`
-and `precedes` in the LinkML schema) already defines its AND/OR gate over a step's
-predecessors, so a gated `precedes` already reads as "these must succeed first".
-Attack Flow raises one question for it: should `precedes` always assert enablement
-(the earlier step creates the later one's precondition), or only order? Changing
-that would amend ADR-0010 (DEC-001a), not the open DEC-001. Attack Flow's STIX form
+from **dependency**. tmodel's accepted core (ADR-0010) defines `precedes` as an
+"explicit ordering edge" and puts its AND/OR `gate` on a step's predecessors. Two
+readings follow. Read as order, `precedes` says only which step comes first. Read
+together with the gate, it can also be taken to mean that the earlier steps must
+succeed first, which is Attack Flow's dependency. The schema does not say which
+reading holds, and the proposal behind ADR-0010 planned pre- and postconditions on
+steps that the accepted core left out (G3). Settling it would amend ADR-0010
+(DEC-001a). Attack Flow's STIX form
 is also a candidate interchange under ADR-0007, with the import caveats above.
 **No decision is taken here.**
 
@@ -794,10 +817,10 @@ papers it cites are listed for later ingestion.
 | Security Cards | a 42-card brainstorming deck in four dimensions: human impact, adversary motivations, adversary resources, adversary methods | none | good for unusual threats; many false positives; rarely used (SEI) |
 | hTMM | SEI's Hybrid Threat Modeling Method (2018): SQUARE security-requirements engineering + Security Cards + PnG, then a formal risk assessment | none | targets no false positives, no missed threats and consistent results; applied to one cyber-physical scenario (SEI) |
 | Quantitative TMM | attack trees built for STRIDE categories per component, then scored with CVSS; "attack ports" pass risk between connected components | yes — component attack trees | Potteiger, Martins & Koutsoukos, 2016; used on a railway network (SEI) |
-| CVSS | a severity **score** for vulnerabilities (base, temporal, environmental metrics), maintained by FIRST — not a threat-modeling method | none | covered by #14 (metrics); library record `first-cvss` |
-| DREAD | Microsoft's risk-rating mnemonic (Damage potential, Reproducibility, Exploitability, Affected users, Discoverability), each rated 0/5/10 and averaged | none | a rating scheme, not a method; SEI cites a Microsoft engineer's critique of it (LeBlanc, *DREADful*, 2007) — see #14 |
+| CVSS | a severity **score** for vulnerabilities, maintained by FIRST — not a threat-modeling method; v3.x has base, temporal and environmental metric groups, v4.0 (2023) base, threat, environmental and supplemental | none | covered by #14 (metrics); library record `first-cvss` (queued, not yet read) |
+| DREAD | Microsoft's risk-rating mnemonic (Damage potential, Reproducibility, Exploitability, Affected users, Discoverability); per SEI, the first four are rated 0, 5 or 10 and Discoverability 0, 5, 9 or 10, then averaged | none | a rating scheme, not a method; SEI cites a Microsoft engineer's critique of it (LeBlanc, *DREADful*, 2007) — see #14 |
 | ISO/SAE 21434 TARA | the automotive threat analysis and risk assessment method (asset → threat scenario → attack path → attack feasibility → risk) | yes — attack paths with feasibility ratings | covered by #11; library record `iso-sae-21434-2021` |
-| MAESTRO (Cloud Security Alliance, 2025) | threat modeling for **agentic AI**: a seven-layer reference architecture (foundation models → agent ecosystem) with layer-specific and **cross-layer** threats | cross-layer threats, no path notation | extends STRIDE for AI agents; central to #12; library record `csa-maestro-2025`. Not the same as LINDDUN MAESTRO (§5) |
+| MAESTRO (Cloud Security Alliance, 2025) | threat modeling for **agentic AI**: a seven-layer reference architecture (foundation models → agent ecosystem) with layer-specific and **cross-layer** threats | cross-layer threats, no path notation | extends rather than replaces frameworks like STRIDE, for AI agents; central to #12; library record `csa-maestro-2025`. Not the same as LINDDUN MAESTRO (§5) |
 
 **Observations.**
 - **PnG and Security Cards** are brainstorming aids about *who* attacks and
@@ -830,8 +853,8 @@ method answers a different part of the job:
 | job | methods that do it well |
 |---|---|
 | find threats systematically | STRIDE (security), LINDDUN (privacy), Trike (from access rules) |
-| show how an attack unfolds | attack trees, Trike's attack graph, Kill Chain, ATT&CK, Attack Flow |
-| judge how bad it is | PASTA, OCTAVE, Trike's risk model; CVSS as a score (#14) |
+| show how an attack unfolds | attack trees, Trike's attack graph, Kill Chain, Attack Flow, TARA's attack paths (ATT&CK supplies the steps, unordered) |
+| judge how bad it is | PASTA, OCTAVE, Trike's risk model, ISO/SAE 21434 TARA; CVSS as a score (#14) |
 | widen the attacker view | Persona non Grata, Security Cards |
 
 The hybrid methods make this explicit: Quantitative TMM = attack trees + STRIDE
@@ -839,20 +862,28 @@ The hybrid methods make this explicit: Quantitative TMM = attack trees + STRIDE
 attack trees inside its stages. A tool that supports only one method would
 cover only part of the job.
 
-**2. Attack paths need three properties; the classic methods each cover part, and only Attack Flow combines all three.**
-ARCH-0001 §3 defines an `AttackPath` as an *ordered* set of `AttackStep`s.
+**2. Attack paths need three properties; the classic methods each cover part, and Attack Flow combines all three in a published format.**
+tmodel's accepted schema (ADR-0010) defines an `AttackPath` as "an ordered set of
+AttackSteps".
 
 | property | where it comes from | gap |
 |---|---|---|
 | **order** | Cyber Kill Chain (seven ordered phases); Attack Flow (dependency orders actions) | Kill Chain phases are coarse, not concrete steps |
-| **concrete, shared vocabulary for steps** | MITRE ATT&CK techniques (stable IDs, machine-readable), also used by Attack Flow | tactics are tags; no order |
+| **concrete, shared vocabulary for steps** | MITRE ATT&CK techniques (stable IDs, machine-readable), also used by Attack Flow; CAPEC attack patterns, which tmodel's own example models use (all 7 `AttackPattern`s in `spec/vectors/` are CAPEC ids) | ATT&CK tactics are tags; no order. CAPEC's execution flow and its `CanPrecede`/`CanFollow` relations are the nearest released analogue of ordered steps (RPT-0005), but CAPEC is not described in this report (`capec`) |
 | **structure — alternatives (OR) and requirements (AND), shared steps** | attack trees; Trike's attack graph; Attack Flow (AND/OR operators, shared nodes) | plain trees have no order and duplicate shared steps |
 
-Existing work already combines them: MITRE's **Attack Flow** has all three in
-one STIX graph (§9.3); sequential-AND attack trees add order to trees; Trike merges
-trees into a graph. A graph model — which tmodel is — can hold all three.
+Existing work already combines them: MITRE's **Attack Flow** has all three in one
+STIX graph (§9.3); sequential-AND attack trees add order to trees (no source is
+recorded for them yet); Trike merges trees into a graph; logical attack graphs
+such as MulVAL (`mulval`, §4) combine order and AND/OR structure over
+vulnerability-level steps. A graph model — which tmodel is — can hold all three.
+This qualifies RPT-0005's G2 ("no released format has an ordered attack path"),
+which did not consider Attack Flow.
 
-**3. Existing object models are close to ARCH-0001 §3.** Trike v1 defines actor,
+**3. Existing object models overlap tmodel's accepted core (ADR-0010), with gaps.**
+The working labels of ARCH-0001 §3 are superseded by ADR-0010's class names, and the
+accepted core has no asset class, no actor–action pair and no use or abuse case (G1,
+G5). Trike v1 defines actor,
 asset, action, rule, threat, attack, attack tree/graph, weakness, vulnerability,
 mitigation and attack library; PASTA's author defines an attack tree as the
 relationship among asset, actor, use case, abuse case, vulnerability, exploit
@@ -862,51 +893,92 @@ technology-specific step.
 
 **4. Threats can be generated by rule; judgement stays human.** STRIDE-per-element,
 LINDDUN's mapping table and Trike's actor–asset–action matrix all generate
-candidate threats mechanically from a model. Every method leaves realism,
-impact, prioritisation and mitigation choice to people — consistent with
-tmodel's position that machine-proposed threats are hypotheses until a human
-reviews them (ARCH-0001 §2, §7).
+candidate threats mechanically from a model. Language models are a second route:
+STRIDE GPT (`stride-gpt`, MIT) generates STRIDE threats and attack trees, and
+Attack Flow v4 drafts flows from incident reports (§9.3); rules and models can also
+be combined. Every method still leaves realism, impact and mitigation choice to
+people — consistent with tmodel's position that machine-proposed threats are
+hypotheses until a human reviews them (ARCH-0001 §2, §7).
 
 **5. Risk is where the methods differ most.** PASTA and OCTAVE tie risk to
 business impact set by the organisation; Trike uses five-point scales; CVSS
 scores vulnerabilities, not threats; ISO/SAE 21434 rates attack feasibility
-(#11). Input to #14 and DEC-003.
+(#11). Input to #14 and to ADR-0006 (DEC-003, accepted).
 
 **6. Gaps.**
-- **AI agents:** only MAESTRO (2025) targets them; every other method predates
-  agentic AI → tmodel #12.
-- **Interchange:** of the methods here, only Attack Flow defines a standard,
-  machine-readable format (a STIX 2.1 extension, §9.3); the others' formats are
-  tool-specific (see RPT-0003 and #9).
-- **Documentation and tools:** Trike is dormant, VAST is vendor-only, and most
-  attack-tree tools are unmaintained, so several methods cannot be reused
-  directly.
+- **AI agents:** of the methods surveyed here, only MAESTRO (2025) targets them.
+  RPT-0014 covers the wider field (OWASP's agentic threats and mitigations guide,
+  MITRE ATLAS, NIST AI 100-2, CoSAI's risk map) → #71.
+- **Interchange:** the methods themselves define no file format; their tools use
+  their own. Openly published formats sit beside them: Attack Flow's STIX 2.1
+  extension (§9.3); OTM (`open-threat-model`), which ADR-0007 commits tmodel to
+  import; and CycloneDX 2.0's threat-model modules (TM-BOM: threats, attack trees,
+  ordered attack paths), merged but unreleased. RPT-0005 surveys these formats
+  (its G2, G12–G14) and finds no released format with an ordered attack path; it
+  did not consider Attack Flow, whose arrows do order actions (§9.3), so its G2
+  should be read together with this report.
+- **Documentation and tools:** Trike is dormant, VAST is vendor-only, and several
+  attack-tree tools are unmaintained (SeaMonster since 2016, §4), so several methods
+  cannot be reused directly. RPT-0003 finds the closest maintained tools to
+  reviewable attack paths in ThreatTree and STRIDE GPT's generated attack trees.
 - **Evidence:** SEI's comparison (2018) is qualitative and contains factual
   errors (OCTAVE's date, §6; the unsupported "adopted in 2002" for STRIDE, §2).
   Peer-reviewed evidence is thin but exists: a systematic review (Tuma et al.
   2018), a descriptive study of STRIDE (Scandariato et al. 2015), a replicated
   controlled experiment on STRIDE's variants (Mbaka & Tuma 2024), and controlled
   comparisons of attack trees with misuse cases (Karpati et al. 2014) and of
-  attack graphs with fault trees (Lallie et al. 2018), the last two read in
-  abstract only. Item 7 uses them.
+  attack graphs with fault trees (Lallie et al. 2018). Lallie et al. (abstract;
+  63 participants) found an adapted attack graph aided the perception of an attack
+  better than a fault tree. Karpati et al. is recorded but not read (no abstract
+  available). In practice, interviews in seven large Dutch organizations (Verreydt
+  et al. 2024) found that none reassess threat models when the system changes,
+  "mostly due to the lack of tool support". Item 7 uses Scandariato, Mbaka & Tuma
+  and Verreydt.
+
+**Sources (items 6–7).** `tuma-2018-threat-analysis-slr`;
+`xiong-2019-threat-modeling-slr`; `scandariato-2015-stride-descriptive-study`;
+`mbaka-tuma-2024-stride-replication`; `verreydt-2024-threat-modeling-practice`;
+`lallie-2018-attack-graphs-fault-trees` (abstract); `karpati-2014-attack-trees-misuse-cases`
+(not read); `open-threat-model`; `stride-gpt`; RPT-0003; RPT-0005; RPT-0007; RPT-0014.
 
 **7. Gap analysis: what the field has that tmodel lacks.** Measured against
 tmodel's accepted core (ADR-0010; `spec/schema/tmodel-object-model.linkml.yaml` on
 `main` at `e1ae8c3`, 2026-10-22). Proposals that are not accepted (#130) count as
-gaps. Each row only routes the question; **no decision is taken here.**
+gaps. The "options" column gives the author's suggestion first; the decision rests
+with the owner the row routes to. **No decision is taken here**, and a row that
+would change an accepted decision routes to a new ADR amending it.
 
-| # | the field has | where (this report) | tmodel today | gap | recommendation | routes to |
+| # | the field has | where (this report) | tmodel today | gap | options (suggestion first) | routes to |
 |---|---|---|---|---|---|---|
-| G1 | **a system model to analyse**: DFD elements (process, data store, data flow, external entity) and trust boundaries, which STRIDE per element and LINDDUN work over | §2, §5; Shostack 2008 | `Product`, `Component`, `Deployment`; `ThreatInstance.method_facet` (`stride`, `linddun`, `maestro`) and `violates_property`. No DFD elements or trust boundaries; `Asset`, `TrustBoundary` and `DataFlow` are only proposed (#130) | rule-based threat generation (item 4) has no model to run over | decide where the DFD layer lives (joined to `Component`, or a separate DFD layer realised by components; #130 point 2) | #130, #64, #15; amends ADR-0010 |
-| G2 | **steps tied to a catalog**: each Attack Flow action names an ATT&CK technique; attack libraries in Trike and PASTA | §7, §9.2, §9.3 | `AttackStep` has `gate`, `precedes`, `kill_chain_phase`; `AttackPattern` (`catalog_ref`) and `Weakness` exist, but no step links to either (#130 lists an AttackStep-to-Weakness slot as gap P4) | a path cannot be traced to CAPEC/ATT&CK, or from a CWE to the steps it enables | link `AttackStep` to `AttackPattern` (the technique) and to `Weakness` (P4) | #130 (P4), #63, #61; amends ADR-0010 |
-| G3 | **dependency and branching**: Attack Flow's arrow means "needs the previous step to succeed"; conditions branch on success or failure | §9.3 | `precedes` is an order; the AND/OR gate is over a step's predecessors; no conditions | it is unstated whether `precedes` also asserts enablement; "if this fails, try that" cannot be expressed | state the meaning of `precedes` in the schema; treat conditions as post-MVP | #63, #15; ADR-0010 |
-| G4 | **ratings on each step or alternative**: cost or probability on attack-tree leaves (§4); confidence on each Attack Flow action | §4, §9.3 | feasibility is rated per `AttackPath` (ADR-0006, human-rated at MVP); `confidence` sits on `Assertion` | when the engine splits an authored path's OR alternatives, they share one rating, so "worst path" cannot tell them apart | decide per-alternative rating before #63 Part 2 (raised on #63) | #63, ADR-0006 |
-| G5 | **asset value and organisational impact**: PASTA's business impact, OCTAVE's critical assets, Trike's actor–asset–action matrix | §3, §6, §7 | impact as an S/F/O/P vector per damage scenario (ADR-0006); no `Asset` class | prioritising threats by the asset they endanger needs an asset | settle `Asset` (#130 part B) with G1 | #130, #14 |
-| G6 | **a standard format for attack paths**: Attack Flow's STIX 2.1 extension | §9.3 | ADR-0007 commits STIX 2.1 import; no crosswalk for Attack Flow | Attack Flow flows cannot be imported yet; its custom objects, `related-to` edges and "AI Generated" confidence (equal to "Speculation") need handling | a `MAP-NNNN` crosswalk and a vector, importing every element as `proposed` | ADR-0007, #64, R-018 |
-| G7 | **evidence that manual analysis misses most threats**: 64–69% overlooked with STRIDE (Scandariato et al. 2015); low precision in both STRIDE variants (Mbaka & Tuma 2024); most threat modeling is still manual (Xiong & Lagerström 2019; Tuma et al. 2018) | §1 (surveys), item 6 | the engine computes paths from authored steps (#63); machine proposals are `Assertion`s that stay `proposed` until a human `Review` (ADR-0010) | candidate threats are not yet generated from the model | generate candidates by rule once G1 exists, and keep them `proposed` until reviewed | #15, R-018, #63 |
-| G8 | **keeping the model current**: practitioners want reassessment when a change may add threats, but do not do it, "mostly due to the lack of tool support" (Verreydt et al. 2024) | item 6 | files are the source of truth and the engine recomputes on request (ADR-0004, #63); local CLI | nothing triggers a recomputation when the model or product changes | a CLI check that recomputes and reports changed paths, usable in CI | #47, PLAN-0002 |
+| G1 | **a system model to analyse**: DFD elements (process, data store, data flow, external entity) and trust boundaries, which STRIDE per element and LINDDUN work over; OTM, which tmodel must import, is built on assets, trust zones and data flows | §2, §5, item 6; Shostack 2008 | `Product`, `Component`, `Deployment`; `ThreatInstance.method_facet` (`stride`, `linddun`, `maestro`) and `violates_property`; the `View` projection list already includes `dfd`, with nothing to project. No DFD elements or trust boundaries: `Asset`, `TrustBoundary` and `DataFlow` are proposed (#130) after the sponsor's direction to add them (DL-0013), not accepted | rule-based threat generation (item 4) has no model to run over, and the committed OTM import (ADR-0007) has no target for OTM's assets, trust zones and data flows (RPT-0005 G13) | join DFD elements directly to `Component` (OTM's shape); or a separate DFD layer realised by components (#130 point 2) | #130, #64, #15, ADR-0007, RPT-0005 G13; amends ADR-0010 |
+| G2 | **steps tied to a catalog**: an Attack Flow action may name one ATT&CK technique; CAPEC's attack patterns, which tmodel's example models use; attack libraries in Trike and PASTA | §7, §9.2, §9.3, item 2 | `AttackStep` has `gate`, `precedes`, `kill_chain_phase`; `AttackPattern` (`catalog_ref`, CAPEC in every example model) and `Weakness` exist, but no step links to either (#130 lists an AttackStep-to-Weakness slot as gap P4) | a path cannot be traced to CAPEC or ATT&CK, or from a CWE to the steps it enables; which catalog a step should name is not analysed | link `AttackStep` to `AttackPattern`; or to `Weakness` (P4); or both | #130 (P4), #63, #61; amends ADR-0010 |
+| G3 | **dependency and branching**: Attack Flow's arrow means "needs the previous step to succeed"; conditions branch on success or failure; logical attack graphs give steps pre- and postconditions | §4, §9.3, §9.4 | `precedes` is an "explicit ordering edge"; the AND/OR gate is over a step's predecessors; no conditions; the pre- and postconditions planned in the proposal behind ADR-0010 were left out | whether `precedes` also asserts enablement is unstated (§9.4); "if this fails, try that" cannot be expressed | state the meaning of `precedes` in the schema; whether conditions belong in the MVP is a scope question | #63, #15; ADR-0010; ADR-0002 (scope) |
+| G4 | **ratings on each step or alternative**: cost or probability on attack-tree leaves (§4); confidence on each Attack Flow action | §4, §9.3 | feasibility is rated per `AttackPath` (ADR-0006, human-rated at MVP); `confidence` sits on `Assertion` | when the engine splits an authored path's OR alternatives, they share one rating, so "worst path" cannot tell them apart | author one path per alternative, each rated; or rate an authored path by its easiest alternative (raised on #63) | #63, ADR-0006 |
+| G5 | **asset value and organisational impact**: PASTA's business impact, OCTAVE's critical assets, Trike's actor–asset–action matrix | §3, §6, §7 | impact as an S/F/O/P vector per damage scenario (ADR-0006), where `business_impact` is a post-MVP axis that "intentionally has no slot"; `owned_by` on products and components is the schema's stand-in for an asset; no `Asset` class, so the engine cannot take an asset as a goal (#63) | prioritising threats by the asset they endanger needs an asset | settle `Asset` (#130 part B) together with G1; business impact needs a sponsor decision amending ADR-0006 | #130, #63; amends ADR-0006 |
+| G6 | **an openly published format for attack paths**: Attack Flow's STIX 2.1 extension | §9.3 | ADR-0007 commits STIX 2.1 import; no crosswalk for Attack Flow | Attack Flow flows cannot be imported yet; its custom objects, `related-to` edges and a Builder confidence scale that differs from the documented one need handling | a `MAP-NNNN` crosswalk and a vector, importing every element as `proposed` and never reading confidence as review status | ADR-0007, #64, R-018 |
 
-What tmodel already has that the methods lack: one graph holding order, catalog
-vocabulary and AND/OR structure (item 2), machine proposals kept apart from human
-review (item 4), and a risk vector instead of a single score (ADR-0006).
+**Evidence bearing on these gaps.** Two findings are evidence rather than
+capabilities, so they sit outside the table.
+- **Manual elicitation misses much.** With STRIDE, 64–69% of the threats in a
+  threat-tree baseline were overlooked (Scandariato et al. 2015), while 19–24% of
+  the threats produced were incorrect; in the STRIDE replication, precision was
+  only 0.40–0.43 (Mbaka & Tuma 2024). The two studies measure precision
+  differently and both used students, and Scandariato's baseline is itself a
+  catalog, which is roughly what a rule engine would enumerate — so "generate
+  candidates by rule" is not proven by them. Generation also multiplies candidates,
+  each of which R-018 requires a human to review. Options: rule-based generation
+  over G1's model; language-model generation (item 4); or both, with every
+  candidate kept `proposed` until reviewed. Routes to #15, R-018, #63.
+- **Models go stale.** None of seven large Dutch organizations reassesses threat
+  models when the system changes, "mostly due to the lack of tool support"
+  (Verreydt et al. 2024). tmodel keeps files as the source of truth and recomputes
+  on request (ADR-0004, #63), but nothing triggers a recomputation when the model or
+  product changes. Option: a CLI check that recomputes and reports changed paths,
+  usable in CI. Routes to #47, PLAN-0002.
 
+**What the accepted core already holds.** Order, AND/OR structure and shared steps
+in one graph (G2 still needs the catalog link that Attack Flow has); machine
+proposals kept apart from human review through `Assertion` and `Review`
+(ADR-0010), where Attack Flow v4 marks AI-drafted content only through its
+confidence value; and a risk vector, which follows ISO/SAE 21434's method
+(ADR-0006).
