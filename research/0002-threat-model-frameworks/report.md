@@ -830,7 +830,7 @@ method answers a different part of the job:
 | job | methods that do it well |
 |---|---|
 | find threats systematically | STRIDE (security), LINDDUN (privacy), Trike (from access rules) |
-| show how an attack unfolds | attack trees, Trike's attack graph, Kill Chain, ATT&CK |
+| show how an attack unfolds | attack trees, Trike's attack graph, Kill Chain, ATT&CK, Attack Flow |
 | judge how bad it is | PASTA, OCTAVE, Trike's risk model; CVSS as a score (#14) |
 | widen the attacker view | Persona non Grata, Security Cards |
 
@@ -875,11 +875,38 @@ scores vulnerabilities, not threats; ISO/SAE 21434 rates attack feasibility
 **6. Gaps.**
 - **AI agents:** only MAESTRO (2025) targets them; every other method predates
   agentic AI → tmodel #12.
-- **Interchange:** none of the methods defines a standard file format; formats
-  are tool-specific (see RPT-0003 and #9).
+- **Interchange:** of the methods here, only Attack Flow defines a standard,
+  machine-readable format (a STIX 2.1 extension, §9.3); the others' formats are
+  tool-specific (see RPT-0003 and #9).
 - **Documentation and tools:** Trike is dormant, VAST is vendor-only, and most
   attack-tree tools are unmaintained, so several methods cannot be reused
   directly.
-- **Evidence:** the only cross-method comparison found (SEI, 2018) is
-  qualitative and dated; it also contains factual errors (OCTAVE's date, §6; see
-  also the limits in `sei-threat-modeling-methods-2018`).
+- **Evidence:** SEI's comparison (2018) is qualitative and contains factual
+  errors (OCTAVE's date, §6; the unsupported "adopted in 2002" for STRIDE, §2).
+  Peer-reviewed evidence is thin but exists: a systematic review (Tuma et al.
+  2018), a descriptive study of STRIDE (Scandariato et al. 2015), a replicated
+  controlled experiment on STRIDE's variants (Mbaka & Tuma 2024), and controlled
+  comparisons of attack trees with misuse cases (Karpati et al. 2014) and of
+  attack graphs with fault trees (Lallie et al. 2018), the last two read in
+  abstract only. Item 7 uses them.
+
+**7. Gap analysis: what the field has that tmodel lacks.** Measured against
+tmodel's accepted core (ADR-0010; `spec/schema/tmodel-object-model.linkml.yaml` on
+`main` at `e1ae8c3`, 2026-10-22). Proposals that are not accepted (#130) count as
+gaps. Each row only routes the question; **no decision is taken here.**
+
+| # | the field has | where (this report) | tmodel today | gap | recommendation | routes to |
+|---|---|---|---|---|---|---|
+| G1 | **a system model to analyse**: DFD elements (process, data store, data flow, external entity) and trust boundaries, which STRIDE per element and LINDDUN work over | §2, §5; Shostack 2008 | `Product`, `Component`, `Deployment`; `ThreatInstance.method_facet` (`stride`, `linddun`, `maestro`) and `violates_property`. No DFD elements or trust boundaries; `Asset`, `TrustBoundary` and `DataFlow` are only proposed (#130) | rule-based threat generation (item 4) has no model to run over | decide where the DFD layer lives (joined to `Component`, or a separate DFD layer realised by components; #130 point 2) | #130, #64, #15; amends ADR-0010 |
+| G2 | **steps tied to a catalog**: each Attack Flow action names an ATT&CK technique; attack libraries in Trike and PASTA | §7, §9.2, §9.3 | `AttackStep` has `gate`, `precedes`, `kill_chain_phase`; `AttackPattern` (`catalog_ref`) and `Weakness` exist, but no step links to either (#130 lists an AttackStep-to-Weakness slot as gap P4) | a path cannot be traced to CAPEC/ATT&CK, or from a CWE to the steps it enables | link `AttackStep` to `AttackPattern` (the technique) and to `Weakness` (P4) | #130 (P4), #63, #61; amends ADR-0010 |
+| G3 | **dependency and branching**: Attack Flow's arrow means "needs the previous step to succeed"; conditions branch on success or failure | §9.3 | `precedes` is an order; the AND/OR gate is over a step's predecessors; no conditions | it is unstated whether `precedes` also asserts enablement; "if this fails, try that" cannot be expressed | state the meaning of `precedes` in the schema; treat conditions as post-MVP | #63, #15; ADR-0010 |
+| G4 | **ratings on each step or alternative**: cost or probability on attack-tree leaves (§4); confidence on each Attack Flow action | §4, §9.3 | feasibility is rated per `AttackPath` (ADR-0006, human-rated at MVP); `confidence` sits on `Assertion` | when the engine splits an authored path's OR alternatives, they share one rating, so "worst path" cannot tell them apart | decide per-alternative rating before #63 Part 2 (raised on #63) | #63, ADR-0006 |
+| G5 | **asset value and organisational impact**: PASTA's business impact, OCTAVE's critical assets, Trike's actor–asset–action matrix | §3, §6, §7 | impact as an S/F/O/P vector per damage scenario (ADR-0006); no `Asset` class | prioritising threats by the asset they endanger needs an asset | settle `Asset` (#130 part B) with G1 | #130, #14 |
+| G6 | **a standard format for attack paths**: Attack Flow's STIX 2.1 extension | §9.3 | ADR-0007 commits STIX 2.1 import; no crosswalk for Attack Flow | Attack Flow flows cannot be imported yet; its custom objects, `related-to` edges and "AI Generated" confidence (equal to "Speculation") need handling | a `MAP-NNNN` crosswalk and a vector, importing every element as `proposed` | ADR-0007, #64, R-018 |
+| G7 | **evidence that manual analysis misses most threats**: 64–69% overlooked with STRIDE (Scandariato et al. 2015); low precision in both STRIDE variants (Mbaka & Tuma 2024); most threat modeling is still manual (Xiong & Lagerström 2019; Tuma et al. 2018) | §1 (surveys), item 6 | the engine computes paths from authored steps (#63); machine proposals are `Assertion`s that stay `proposed` until a human `Review` (ADR-0010) | candidate threats are not yet generated from the model | generate candidates by rule once G1 exists, and keep them `proposed` until reviewed | #15, R-018, #63 |
+| G8 | **keeping the model current**: practitioners want reassessment when a change may add threats, but do not do it, "mostly due to the lack of tool support" (Verreydt et al. 2024) | item 6 | files are the source of truth and the engine recomputes on request (ADR-0004, #63); local CLI | nothing triggers a recomputation when the model or product changes | a CLI check that recomputes and reports changed paths, usable in CI | #47, PLAN-0002 |
+
+What tmodel already has that the methods lack: one graph holding order, catalog
+vocabulary and AND/OR structure (item 2), machine proposals kept apart from human
+review (item 4), and a risk vector instead of a single score (ADR-0006).
+
