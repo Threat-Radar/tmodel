@@ -4,9 +4,9 @@ id: RPT-0005-dimensions
 title: "RPT-0005 dimensions: the search axes"
 type: research
 status: draft
-version: "0.2.0"
+version: "0.3.1"
 date: "2026-10-05"
-updated: "2026-10-05"
+updated: "2026-10-21"
 record: RPT-0005
 ---
 
@@ -34,7 +34,7 @@ Every table below must be filled for every in-scope format before the report lea
 | Licence | licence of the specification and of the data |
 | Library record | record id and status (`stub` or `FX-1`) |
 
-### Table 2. Concept crosswalk (report §8, the key artifact)
+### Table 2. Concept crosswalk (report §9, the key artifact)
 
 Rows are concepts. Columns are formats. A cell holds the format's element (path or class name) and a fidelity mark:
 
@@ -49,17 +49,17 @@ Rows are concepts. Columns are formats. A cell holds the format's element (path 
 
 **Rows, part 1: ARCH-0001 §3 types.** Asset, Component, TrustBoundary, Weakness, Vulnerability, Threat, AttackStep, AttackPath/ThreatChain, Mitigation, RiskScore, Review, Product/ProductFamily.
 
-**Rows, part 2: concepts the formats carry that ARCH-0001 §3 does not.** Candidates to confirm or drop during the survey: DataFlow, Requirement/Control, Applicability statement (VEX status and justification), Advisory/Remediation, Exploitation evidence (EPSS probability, known-exploited flag), Party (CNA, vendor, threat actor), DamageScenario and Assertion (both in the unaccepted LinkML draft), Software identifier (CPE, purl, SWID), Detection/Indicator. A row kept here is a gap-analysis input, not a proposal to add the type.
+**Rows, part 2: concepts the formats carry that ARCH-0001 §3 does not.** Candidates to confirm or drop during the survey: DataFlow, Requirement/Control, Applicability statement (VEX status and justification), Advisory/Remediation, Exploitation evidence (EPSS probability, known-exploited flag), Party (CNA, vendor, threat actor), DamageScenario and Assertion (both in the unaccepted LinkML draft), Detection/Indicator. **Identity sub-row** under Product/Component: the identifier schemes that name them (CPE, purl, SWID, hashes), per the sponsor's answer below; these are not columns. A row kept here is a gap-analysis input, not a proposal to add the type.
 
 **Rows, part 3: cross-cutting fields.** Identifier, version/revision, status and deprecation, provenance (who asserted it, when), references, human review or approval state, edge qualifiers (properties a relation carries, such as CWE's `View_ID` or NVD's AND/OR and `negate`).
 
 **Columns.** One per format. CVE and NVD are separate columns: they differ in steward, provenance model and applicability logic (pilot).
 
-### Table 3. Relation crosswalk (report §8)
+### Table 3. Relation crosswalk (report §9)
 
 Same marks as Table 2. Rows are the typed edges of ARCH-0001 §3 (`exploits`, `mitigated_by`, `part_of`, `step_of`, `instance_of`, `reviewed_by`, `applies_to_product`, `supersedes`) plus edges the formats have that we lack (for example CWE `ChildOf`/`CanPrecede`, STIX `uses`/`mitigates`/`detects`, VEX `not_affected` with justification). ADR-0004 made the logical model edge-rich, so this table matters as much as Table 2. A cell also names the qualifiers the edge carries (scope, order, fit grade), because the pilot found that relations in CWE and NVD are not meaningful without them.
 
-### Table 4. Adoption (report §9)
+### Table 4. Adoption (report §10)
 
 | column | what goes in it |
 |---|---|
@@ -88,7 +88,7 @@ Each format is rated on the five axes #39 sets, 0 to 3:
 
 Ratings are within the format's own scope: a catalog such as CWE is not marked down on Object model for lacking Asset, and for a catalog the Provenance and Human review axes rate the editorial history of its entries (pilot).
 
-### Table 6. Local extension needs (report §8)
+### Table 6. Local extension needs (report §9)
 
 | column | what goes in it |
 |---|---|
@@ -167,7 +167,7 @@ Table 4. For each format, which products and services produce and consume it, wi
 
 ### 10. Adversarial coverage review (Phase 4)
 A fresh agent that did not write the draft checks:
-1. **Coverage.** Against an independent list of formats, did we miss one that matters? Candidates to test against: CISA KEV, CPE, purl, SWID, OpenC2 (in #9, not in #39), MITRE ATLAS (covered by RPT-0014), CACAO, OCSF, MAEC, SARIF, OVAL/SCAP, VERIS, SSVC (already inside CVE ADP containers and the NVD API, found in the pilot), TM-BOM (emerging threat-model interchange, named in RPT-0003).
+1. **Coverage.** Against an independent list of formats, did we miss one that matters? Candidates to test against: SWID, OpenC2 (coverage only, sponsor 2026-10-08), MITRE ATLAS (one row, pointing to RPT-0014), CACAO, OCSF, MAEC, SARIF, OVAL/SCAP, VERIS, SSVC (already inside CVE ADP containers and the NVD API, found in the pilot), TM-BOM (emerging threat-model interchange, named in RPT-0003).
 2. **Citations.** Is every claim traceable to a verified source?
 3. **Extraction.** For each specification: count the normative statements first, then check that the library record extracted the same number.
 4. **Crosswalk accuracy.** Spot-check a sample of cells against the specification text.
@@ -202,9 +202,13 @@ Every query goes in `searches.md` and every source in `sources.md`. URLs are ver
 | RPT-0013 SDL conformance | OSCAL, SysML v2, OMG SACM |
 | RPT-0014 AI threat model | CWE AI entries, CAPEC, ATLAS and their crosswalks |
 
-## Open scope questions (for @nymble)
+## Scope answers (from @nymble, 2026-10-08)
 
-1. OpenC2 was in #9 but is not in #39. Treat it as a coverage check only?
-2. Should CPE, purl and CISA KEV be formats in their own right? They appear inside NVD, OSV and EPSS-adjacent data either way.
-3. MITRE ATLAS: a column in the crosswalk, or cite RPT-0014 only?
-4. Phase 2 needs the library's FX-1 tooling (`docs/extraction.md`, the `extract` skill, `bin/extract-scaffold`). It is on library branch `feat/sdl-references`, not on `main`. When will it merge, or should records be extracted against that branch?
+The four open scope questions were answered on #39 (<https://github.com/Threat-Radar/tmodel/issues/39#issuecomment-6049323428>). Questions 2 and 3 are the sponsor's scope calls.
+
+1. **OpenC2: coverage check only.** It is a command-and-response language for actuating defences, not a representation of threat knowledge: noted and cited, no crosswalk column. If a "mitigation as an executable action" dimension is added later, it pairs with D3FEND on `Mitigation`.
+2. **CPE, purl and CISA KEV are not formats in their own right.** CPE and purl are identifier schemes: they go in an identity sub-row of Table 2 (how `Product` and `Component` are named), not in their own columns. KEV is a curated annotation on a CVE (the exploited-in-the-wild flag): an attribute or assertion on the Vulnerability and Exploitation-evidence rows, not its own schema. The fan-out's light records for them stay as background.
+3. **MITRE ATLAS: cite RPT-0014, at most one row.** One row noting that ATLAS reuses ATT&CK's structure, with a pointer to RPT-0014, the source of truth for AI-threat coverage.
+4. **The FX-1 tooling is on library `main`** (`bin/ingest`, `bin/extract-scaffold`, `bin/validate`, `bin/reindex`, `docs/extraction.md`; the agent also found the `extract` skill there). Phase 2 is not blocked.
+
+Still open: whether TM-BOM (CycloneDX 2.0, unreleased) is covered as a full format, pinned to a commit, or only as a coverage row; and SSVC's place (it is already inside CVE ADP containers and the NVD API).

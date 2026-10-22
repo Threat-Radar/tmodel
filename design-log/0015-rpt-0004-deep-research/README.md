@@ -4,15 +4,15 @@ id: DL-0015
 title: "RPT-0004 second pass: AI-assisted scoping, survey, extraction and mapping"
 type: process
 status: draft
-version: "0.4.0"
+version: "0.8.1"
 date: "2026-10-08"
-updated: "2026-10-08"
+updated: "2026-10-20"
 record: DL-0015
 ---
 
 # DL-0015: RPT-0004 second pass, product composition
 
-AI-assisted research record for #38 part A (Product Composition, the second pass on RPT-0004), per `CLAUDE.md`. Student: Tyler Van Heerden, working with Claude Code. This entry is extended at each phase of the #38 playbook.
+AI-assisted research record for #38 part A (Product Composition, the second pass on RPT-0004), per `CLAUDE.md`. Student: @Clovier, working with Claude Code. This entry is extended at each phase of the #38 playbook.
 
 ## Phase 0: scope (2026-10-08)
 
@@ -134,3 +134,287 @@ On 2026-10-08 the student asked for both of the re-check's suggestions, and `dim
 ### What a human accepted
 
 - Pending: the student's review of the five notes files, the merged logs, and the corrections above.
+- On 2026-10-12 the sponsor merged PR #110 (Phases 0 and 1) without review comments.
+
+## Phase 2: library records, a first FX-1 test run (2026-10-15)
+
+### Question asked
+
+The student asked the agent to continue #38. Because PR #110 had merged, the agent asked first and the student chose: create new branches (PROC-0001 §2.1: never push to a merged pull request); extract one record first as a test run, with purl (ECMA-427) chosen over CoSWID (RFC 9393), the CISA 2026 Minimum Elements, or all of Phase 1's roughly 20 FX-1 candidates; and show the sponsor note before posting it.
+
+### What changed since Phase 1
+
+- The library fork was synced with upstream on 2026-10-09 (Threat-Radar/library#18), so it now follows the upstream FX-1 trigger: only the intent to extract a record triggers FX-1, and a summary-only pull request is allowed. This answers half of sponsor question 1 in `dimensions.md`; whether #38's stricter rule ("a spec record left at `summarized` is rejected") still holds was asked on #38.
+- RPT-0005's author ran the same kind of one-record test run (CWE, Threat-Radar/library#21), so this pass follows that precedent.
+- Upstream m-of-n/library adopted on 2026-10-13 a rule this fork has not synced yet: every file in `distilled/schema/` that the library wrote carries `.derived.` in its name. The extraction follows it.
+
+### What was produced
+
+Threat-Radar/library#24 (draft; branch `topic/rpt-0004-records`; CI green):
+
+- A new topic, `product-composition` (owner: the student), for RPT-0004.
+- A new record, `ecma-427` (ECMA-427 Package-URL specification, 1st edition, December 2025), FX-1 complete: 291 normative statements; 168 requirements; the Annex A JSON Schema verbatim plus a derived ABNF grammar for the purl string; 13 message structures with 65 fields; 54 example fixtures with expected and actual results; design notes mapped to tmodel decisions; and a verification log. Protocol and state machine are declared not applicable, with reasons.
+
+### Method
+
+- The PDF was fetched with `bin/ingest --fetch`; its SHA-256 (`037180df…3825`) matches the digest Phase 1 recorded on 2026-10-08. Text came from `pdftotext -layout`, and rendered page images were used wherever the text layer was ambiguous (tables, hyphenated line breaks, quote marks).
+- Pass 1: five agents in parallel (normative text, requirements, schema and messages, examples, design notes), each reading the source and never a summary or another agent's output. Pass 2: an independent agent that did not extract. Pass 3: a cross-check agent. All at maximum effort, as `docs/extraction.md` and #38 require.
+- ECMA-427 writes its provisions in lowercase ("shall", "should", "may"), so `bin/bcp14-count` finds only 2 keywords, both in licence text. The requirements file reconciles against the document's own baseline instead: all 108 lowercase occurrences are accounted for by line, as the library's ISO records already do.
+- Local runs of every CI step: `bin/validate`, `bin/check-requirements`, `bin/check-artifacts`, `bin/export` and `bin/reindex`, the bibliography count, `bin/check-pr-extraction` and the sign-off check.
+
+### Choices the agent made, open to review
+
+- The record is the 1st edition, the adopted standard. The 2nd edition text (purl-spec v1.1.0, approved by TC54 on 2026-10-07 for the December 2026 General Assembly) will need its own record that supersedes this one.
+- The schema file is taken from purl-spec tag v1.0.0, because the link Annex A prints for the electronic copy returns 404; the file was shown equal to the printed annex token for token.
+- `bears_on` is DEC-001, DEC-002 and DEC-009, since the design notes route most adapt items to DEC-009 (generic to product mapping).
+- The derived grammar makes five readings the text does not settle (R1 to R5 in `distilled/schema/README.md`), for example that a percent-encoded letter or colon is invalid rather than merely non-canonical.
+
+### What was rejected, and why
+
+The verify pass found 7 material defects in pass 1's output, all fixed: two "may look like a host" sentences filed as permissions, though they state a possibility; a claim that §5.6.6 (an empty qualifier value counts as absent) conflicts with Clause 2's rejection rule, withdrawn because the sentence itself says the pair is treated as absent; two entries that called inputs unspecified when a "shall" rule rejects them; a false claim that a type containing a period can never have a valid `$id`; a false claim that the text is silent on raw spaces (§5.4 requires `%20`); a 2nd-edition schema claim that holds for the repository file but not for the 2nd edition's own Annex A; and a design-notes sentence that called parsing fully defined. Pass 3 found no wrong requirement labels and fixed one contradiction between files. Details are in `distilled/verification.md` in the record.
+
+### Findings for the report (Phase 5) and for tmodel
+
+- The 1st edition requires one canonical form for equivalent purls (Clause 2) but never fixes the order of qualifiers and never states the "equivalence rules" it names.
+- packageurl-python 0.17.6, the package-url project's own Python library, accepts and rewrites several inputs the standard says to reject.
+- Between purl-spec tags v1.0.0 and v1.1.0, the npm and golang type definitions changed `case_sensitive` from false to true, so the same two strings stopped naming one package.
+- In tmodel's own vectors, four `oci` purls use a namespace that the `oci` type definition prohibits (for #15 and #17; not changed here).
+
+### Sponsor questions posted
+
+On 2026-10-15, at the student's request, the agent posted four questions on #38: the FX-1 bar for RPT-0004's other specs; who extracts CycloneDX 1.7 and SPDX 3.0.1 (both owned by the upstream `sbom` lane); access to ISO/IEC 19770-2 and 19770-6; and Part B's licensed-text choice (hold 1 from #69). It also asked whether part A continues through I2, since the open SOW (#125) ends report work on October 13.
+
+### What a human accepted
+
+- The student chose purl as the first record, approved committing and pushing the extraction to the draft pull request, and approved posting the sponsor questions.
+- Pending: human review of the extracted artifacts (`reviewed_by` is empty on every one).
+
+## Table 6: composition to model-input mapping (2026-10-18)
+
+### Question asked
+
+The student asked what #38 contributes to the app build. The agent answered that Table 6 is the input contract for bringing radar output (an SBOM and a vulnerability scan) into the engine, and the student asked it to "complete table 6".
+
+### What was produced
+
+- `research/0004-product-composition/mapping.md` 0.1.0: Table 6 in six parts (6a product, instance and SBOM; 6b components; 6c structure and parties; 6d vulnerabilities and weaknesses; 6e hardware and firmware; 6f the core classes composition does not feed), 11 findings, a summary for an importer of radar output, and 20 candidate rules with ids.
+- `dimensions.md` 0.6.0: a status line under Table 6 pointing to mapping.md.
+- `searches.md` 0.3.0: the runs behind mapping.md.
+- `report.md` 0.1.1: the corrections this log listed in Phase 1 for Phase 5 ("Corrections for other documents"), applied now instead, because RPT-0005 cites §3 and §5 and Table 6 is going to reviewers: Syft writes SPDX 3; the ISO stages; Dependency-Track 5.2.0 and its Snyk analyzer; §1.2's qualifier; and database dates on the §3 and §5 scan results. A note at the top lists them. The input-contract notes now defer to mapping.md.
+- In the same change, real names were replaced by GitHub ids: `dimensions.md` (Phase 6 row), this file's header, and the `authors` id in RPT-0004 and RPT-0007 (both now 0.1.1), as `CLAUDE.md` requires.
+
+### Method
+
+- Targets re-pointed from the pilot's draft schema to the core type system ADR-0010 accepted (DEC-001a), at `main` 9f56628. Slot lists, vector edges and identifier prefixes were read from the files, not from summaries.
+- Syft 1.52.0 and Grype 0.119.0 (the pilot's versions) re-run on the pilot's image, named by its platform manifest digest, in four SBOM formats including SPDX 3.0.1; Grype with the 2026-10-17 database. Every count in the tables was computed with `python3` from these outputs.
+- The CycloneDX 1.7.2 schema and the three SPDX 3.0.1 files re-fetched; all four digests equal those already recorded. Every format field, enum value and class named in the tables was looked up in them.
+- Three fact-check agents in parallel, each told to report only: format cells, tool and tradar cells, and claims about tmodel's own documents. The main session re-verified each material finding against the source before fixing it.
+
+### Choices the agent made, open to review
+
+- Table 6 lives in its own file until Phase 5, so `report.md` 0.1.0 stays as merged.
+- The image was named by digest, so the input bytes equal the pilot's. The cost: the index digest appears in no output (finding recorded in Table 6a and R-ID-1).
+- "Routes to" names deciders only; requirements appear as "bound by".
+- Rules keep agent 2's ids (R-ID-1 to R-ID-5, R-MERGE-1 and 2, R-BUILD-1) and add new ones in the same style.
+- Table 6e (hardware) is not backed by a tool run, because no surveyed tool produces a hardware bill.
+
+### What was rejected, and why
+
+The checkers reported 46 findings, 45 of them distinct. All were accepted; none was rejected. The material ones, which were the agent's own errors:
+
+- **Model and decisions (20).**
+  - R-MATCH-1 said the vectors derive Product-level `affects` by propagation; they set `affects` by hand.
+  - The importer summary called per-build composition and component suppliers lost, though the tables carry both as Assertions, and it left out seven lost items.
+  - The Scores row had no "Lost" entry, though Vulnerability has no slot for a score.
+  - The introduction called the table the specification for "the scanner half of the library loader (#60)". #60 loads library records; the table now points at an importer under `engine/load/`, which no issue owns.
+  - `instance_of` was attributed to ARCH-0001 §3, which lists the edge without its ends; PLAN-0002 §5 is the document that names it as the CVE-to-CWE link.
+  - The proposal's §8 was misquoted.
+  - "A change to a core class is a change to ADR-0010" was wrong: an accepted ADR changes only to record that it is superseded.
+  - Four readings were stated as facts (finding 8, R-EDGE-3, R-ID-4's post-MVP scoping, the capture-stage row).
+  - Routes listed requirements as deciders, sent two rows to DEC-008 outside its question, left out DEC-009's mitigation-lifecycle half, and left ADR-0001 off the platform-changes row.
+  - Six smaller precision fixes.
+- **Tools and tradar (11).**
+  - "Syft JSON labels all three digests" held for the pilot's scan by tag, not for this scan by digest.
+  - tradar does add `CONTAINS` edges through `env build-graph --merge-scan`.
+  - Its saved scan files drop data source and namespace. Its raw-JSON path reads `fix.versions[0]`, which fails on an empty list. This became mapping.md finding 11.
+  - Eight smaller precision fixes.
+- **Formats (15, one shared with the tools checker).**
+  - `metadata.manufacturer` is the organization that created the BOM, not the product's maker.
+  - R-COMP-1 claimed CycloneDX's schema is silent on a missing `dependencies` entry. The `dependency` definition answers it ("may have unknown dependencies"). The agent's own check had read the wrong description.
+  - `usesTool` is not limited to build and test time.
+  - The OS survives in SPDX as a purl qualifier.
+  - CycloneDX file components are not linked to their packages.
+  - Two hardware marks were too strong.
+  - Several SPDX names lacked their JSON-LD prefixes.
+  - Five rows lacked marks.
+  - Four smaller precision fixes.
+
+### Findings for #15, #17 and the importer
+
+mapping.md §3 lists them. The ones a reviewer should see first:
+- the CVE-to-CWE link is missing from every MVP vector, though their README says it is there (finding 7);
+- SBOM and scan formats are not on ADR-0007's import list (finding 8);
+- the vectors use ten unregistered identifier prefixes (finding 9);
+- the pilot's findings 1, 2, 4 and 5 still stand against the accepted core.
+
+### What a human accepted
+
+- The student asked for Table 6.
+- Pending: the student's review of mapping.md and the commit.
+- A teammate (@paria03) reviewed #127 on 2026-10-18 and found three problems, all fixed in mapping.md 0.1.1:
+  - Finding 11 said 29 of the 30 matches "have one", meaning an empty `fix.versions`; it now says so. Table 6d's "3 empty" meant an empty `state`, not empty versions, so the two read as a contradiction. The cell now gives each state and says `versions` is empty on all 29.
+  - §8 cited Syft 1.54.1's 71 catalogers, a Phase 1 figure, though these runs used Syft 1.52.0. Syft 1.52.0 was listed too (69 catalogers, none for hardware or firmware; `searches.md` 0.3.1), and §8 now cites both.
+  - The pull request's description still named DL-0015 0.6.0; it now gives the current versions.
+
+## Phase 2: honest stubs for the remaining sources (2026-10-18)
+
+### Question asked
+
+The student asked whether #38 was finished. The agent answered that Phase 2 was furthest behind: of the roughly 110 records RPT-0004 needs, about 92 did not exist. Asked how long Phase 2 would take with five subagents, the agent estimated 2 to 3 hours for honest stubs and days for full extractions. The student chose the stub route at maximum effort, which #38's definition of done allows ("FX-1 complete or an honest stub").
+
+Earlier the same day, at RPT-0005's request (#39), the student took over `cyclonedx-1-7` and `spdx-3-0-1` from the upstream `sbom` lane and made both honest stubs (Threat-Radar/library#26).
+
+### What was produced
+
+- Threat-Radar/library#27: 86 stub records. By type: 38 spec, 13 dataset, 13 paper, 8 repo, 5 rfc, 4 web, 2 article, 1 book, 1 draft and 1 note. Each has `status: stub`, `owner: Clovier`, `topic: product-composition`, the pinned version, a SHA-256 where one can be taken, and a summary whose Limits section says what was checked.
+- Implementations entries instead of records, under the library's rule (docs/scope.md §3):
+  - cosign and actions/attest under `sigstore-bundle-v0-3`;
+  - python-uswid and coreboot under `rfc-9393`;
+  - PACCOR and HIRS under `tcg-platform-certificate-profile-2-1`;
+  - spdx3-validate, spdx/tools-golang and the OpenEmbedded-Core SPDX 3.0 classes under `spdx-3-0-1` (Threat-Radar/library#26).
+- `dimensions.md` 0.7.0: a status line under Table 9 and on sponsor question 2.
+
+### Method
+
+- **Merging.** The agent merged the 219 source rows of `sources.md` into 160 sources, matching them by URL and record id. It set aside the 17 that already have a record and the sources that need none, and split the remaining 86 into five batches: formats and policy; identity and build; vulnerability data and version ordering; hardware and firmware; tools and papers.
+- **Research.** Five research agents, at maximum effort, took one batch each. They gathered metadata only and edited no repository. Each returned JSON for its sources:
+  - title, version, publisher and date;
+  - maturity, only where the source states its standing;
+  - identifiers and licence;
+  - the SHA-256 of the bytes it fetched;
+  - a one- or two-sentence overview.
+- **Independent check.** The main session re-fetched every source with its own script and recomputed each digest. TCG and CISA block scripted downloads, so those digests were confirmed against Internet Archive copies.
+- **Building.** It created each record with `bin/ingest --stub`, filled it from the checked data, and ran every library CI step locally.
+
+### Choices the agent made, open to review
+
+- **Tools.** Tools that implement a spec the library holds became implementations entries, not records (scope §3). Syft, Grype, Trivy, Dependency-Track, OSV-Scanner and tradar got records anyway, because RPT-0004 studies their own behaviour, which no specification defines.
+- **No new record** for:
+  - sources already held: FIPS 203 and 204, SLSA 1.2, the OSV schema and in-toto;
+  - sources in open pull requests: `ecma-427` and `nvd-cve-api-2-0`;
+  - the CycloneDX HBOM capability page, a secondary summary (scope §2);
+  - unreleased drafts: CycloneDX 2.0-dev and SPDX 3.1-RC1;
+  - the team's own scan outputs and test inputs.
+- **Folded into another record:**
+  - the CISA HBOM fact sheet and the UEFI 2024 Plugfest deck, mentioned in their records' Limits;
+  - the IANA gitoid registration, an identifier on `omnibor-spec`;
+  - ISO/IEC 18670:2025, an identifier on `swhid-spec-1-2`.
+- **Shared ids.** Three ids are RPT-0014's canonical ids (`cert-in-2025-aibom-guidelines`, `lf-2024-spdx3-aibom` and `nocera-2025-aibom-mlr`), so the two reports share one record each.
+- **Zephyr.** Its `west spdx` is recorded nowhere: v4.4.2 writes only SPDX 2.2 and 2.3, and the library has no SPDX 2.3 record.
+
+### What was rejected, and why
+
+- **Agent output the main session changed:**
+  - The PCIe registry id became `tcg-pcie-component-class-registry-1-0-r18`, matching its sibling `tcg-component-class-registry-1-0-r14` and the cover's "Version 1.0".
+  - The two IANA registries moved to the `iso` shelf, where the library's other IANA records sit.
+  - Maturity `best-practice` on the five NIST IRs was dropped, matching `nistir-8547` and `nistir-8610`.
+  - Identifier keys that are not identifiers were removed: archive copies, TLP markings, extra page URLs and the draft name on RFC records. Archive copies moved to the Limits text.
+  - Licences that GitHub reports as NOASSERTION were replaced by what the projects' own licence files say.
+  - The HIRS entry was reworded. HIRS v3.2.0 implements Platform Certificate profile 1.1 r15, with 2.0 in development; it does not claim 2.1.
+  - The Debian tracker's date was cleared, because a live feed has no publication date.
+- **The agent's own errors:**
+  - The keyword patterns that attached `sources.md` rows to records also matched numbers inside SHA-256 values ("7698", "9124"). One agent caught it and left those rows' decision ids out. An audit with digests stripped found no other case.
+  - Rebuilding the record folders inside the file-synced Desktop folder left 17 duplicate files (`record 2.yaml`, `summary 2.md`) in the first commit. A second commit removes them.
+
+### Findings for the report (Phase 5) and for tmodel
+
+- **report.md:**
+  - ISO now lists SPDX 3.0 as ISO/IEC PRF 5962 at stage 50.00; §1 and §7 still say DIS at 40.99.
+  - ISO Guide 69:1999 was withdrawn in 2014. §1.3 can cite ISO's stage-codes page instead; the meaning of 90.60 has not changed.
+  - ISO/IEC 19770-2:2015 was confirmed in 2021, and a second review closed on 2026-06-05 with its outcome pending.
+  - The CycloneDX bom-examples VEX cases behind the comparison table are CycloneDX 1.4 files, not 1.7.
+  - The Commission's CRA guidance, C(2026) 5252, is formally still a draft.
+- **sources.md and the Phase 1 notes:**
+  - Shortened digests with wrong endings: L106 to L108 (NIST IR 7695, 7696 and 7697), L110 (RFC 9393), and two in `fanout-bridge.md` §1.11.
+  - The BSI URL at L92 returns HTML unless `?__blob=publicationFile` is added.
+  - Row L164 (trivy-db) belongs with Trivy, not the GitHub Advisory Database.
+  - The Red Hat VEX counts in `fanout-bridge.md` §1.9 are stale: the file was regenerated on 2026-10-15 with different content.
+- **Facts for Phase 5:**
+  - CISA Vulnrichment stopped adding CPE strings on 2024-12-10.
+  - The osv.dev FAQ itself says it computes purls on import; Phase 1 had marked this as our reading.
+  - The SUIT manifest draft is waiting on five unpublished SUIT drafts it cites.
+  - uSWID is a header defined by python-uswid and required by OSFW §4.6, not a standard.
+  - Yocto 5.1 emits SPDX 3.0.0, and 5.2 onward 3.0.1. tools-golang's SPDX 3.0.1 support is not yet in a release.
+  - The semver.org page differs from the 2013 v2.0.0 tag on build metadata: it says MUST be ignored where the tag said SHOULD.
+
+### What a human accepted
+
+- The student chose the stub route, five subagents and maximum effort.
+- Pending: review of the 86 records in Threat-Radar/library#27, and the sponsor's answers to sponsor questions 1 and 2 on #38.
+- Later the same day the student merged Threat-Radar/library#26 and #27.
+
+## Library pin, Table 9 and report 0.1.2 (2026-10-18)
+
+### Question asked
+
+With Threat-Radar/library#26 and #27 merged, the student asked for one tmodel change that points tmodel at the merged records, updates the record ids in `sources.md`, and fixes the three report errors the Phase 2 agents found.
+
+### What was produced
+
+- **The library pin** moves from `b3786cd` to `a28a013`, which adds 25 library commits, including library#26 and #27. `bin/validate` passes at `a28a013`: 550 records, 0 errors.
+- **`sources.md` 0.3.0** adds Table 9: each cited source with the record it became and that record's status before and after Phase 2, or why it has none. It also updates the two rows that still said `queued`.
+- **`report.md` 0.1.2** applies the three corrections, with a note at the top.
+- **`dimensions.md` 0.7.1** points the Table 9 status line at `sources.md`.
+
+### Method
+
+Each correction was re-checked against its primary source on 2026-10-18:
+- **The SPDX 3.0 stage:** ISO Open Data's deliverables file of 2026-10-14 lists ISO/IEC PRF 5962 at stage 50.00. Stage names come from ISO's stage-codes page.
+- **ISO Guide 69:1999:** its ISO catalog page shows stage 95.99, withdrawn on 2014-06-18.
+- **The CycloneDX VEX examples:** all four `Case-1` files in CycloneDX bom-examples declare `specVersion` 1.4 and were last changed on 2022-03-23. All four states they use are in the CycloneDX 1.7 schema's `impactAnalysisState` list.
+
+Table 9's statuses were read from the library at `a28a013`.
+
+### Choices the agent made, open to review
+
+- **Layout.** The earlier rows of `sources.md` stay as the log of what each pass found. Table 9 is added at the end rather than rewriting about 220 rows, and the top of the file points to it.
+- **Records that don't meet #38's rule.** Mapping every source showed that eight cited records owned by others sit at a status #38 rejects for specs (`summarized` or `queued`): `cisa-framing-software-component-transparency`, `ntia-sbom-minimum-elements`, `iso-iec-5962-2021`, `osv-schema`, `cve-json-5`, `in-toto-attestation-v1`, `fips-203` and `fips-204`. Table 9 lists them as they are. The sponsor's answer to RPT-0005's question on #39 (do spec summaries need to become stubs?) settles them.
+
+### What a human accepted
+
+- The student asked for this change.
+- Pending: review.
+
+## Table 7 ratings (2026-10-19)
+
+### Question asked
+
+After Threat-Radar/library#28 and #29 were submitted for review, the student asked to start the Table 7 ratings: the five-axis applicability rating that `dimensions.md` requires for every kept source (step 3 of the #38 playbook, "Distill and rate").
+
+### What was produced
+
+- **`sources.md` 0.4.0** adds Table 7 just before Table 9. It has 121 rows, one per Table 9 row, each rated 0 to 3 on Object model, Provenance/attribution, Human review/audit, Federation and AI-grounding. Every cell gives the field or section behind its rating and a locator, and a `basis` column says where the rating comes from. The section also has the conventions used, a summary by axis, every disagreement settled, and the calls a human reviewer should check.
+- **`dimensions.md` 0.7.2** adds a status line under Table 7.
+
+### Method
+
+- **Inventory.** A script listed Table 9's 121 rows and the 92 rating rows in the five fan-outs' section 4 tables, and matched them by name. The match was crude (it placed 70 of the 92), so it was only a starting list for the agents.
+- **Five rating agents** (Claude Code), one per batch: identity and naming (25 rows), formats and baselines (27), hardware and firmware (27), the bridge to vulnerability data (24), and tools and studies (18). A shared brief gave them the rubric; where every earlier rating is (the five fan-outs, the pilot, and RPT-0005's Table 5 ratings); how to carry over, reconcile or newly rate a source; and the hard rules: cite a field or section for every rating and never invent one, mark what cannot be read with `?`, send no personal data, and write nothing in tmodel or the library.
+- **Result.** 56 rows carry one earlier rating, checked against the fan-out's evidence (a few values changed, each with its reason). In 21 rows earlier ratings disagreed and one value was chosen on each axis. 40 sources were rated for the first time from their own text, and 4 rows are `n/a`.
+- **Sources read again.** The agents fetched about 130 public files: arXiv papers, RFCs, NIST, IANA and ISO pages, UN documents, GitHub files at pinned commits, and Internet Archive copies of cisa.gov files that refuse scripted downloads. Each download was compared with the library record's digest where one exists. All matched except two dynamic web pages, a Red Hat blog post and the UEFI blog post, whose HTML has changed; the Red Hat post's text still holds the passages Phase 1 quoted. No request carried an email address or other personal data.
+- **Merge.** The coordinating session merged the five tables in Table 9's order. It applied one convention to rows that cover more than one document (the higher value on each axis, which changed row 107's Federation from 2 to 3), and removed notes that referred to the agents' own working files.
+
+### Choices the agent made, open to review
+
+- **The conventions** stated above Table 7 in `sources.md`: how papers, regulations, guides, combined rows, signatures and paywalled texts are rated.
+- **The calls listed under "For a human reviewer"** in `sources.md`, among them that row 1's AI-grounding leans on the open FX-1 extraction in Threat-Radar/library#24. Rows 8 and 68 also cite the open extractions in #28 and #29, but their values do not depend on them.
+- **Placement.** Table 7 sits just before Table 9 in `sources.md`, where `dimensions.md` puts it ("Table 7 in sources.md"), and follows Table 9's row order, so each rating traces to its record.
+
+### What a human accepted
+
+- The student asked for this work.
+- Pending: review.
+- A teammate (@Maimcghee) reviewed #133 on 2026-10-19. She checked the row numbering against Table 9, the counts by axis, the RPT-0005 ratings that Table 7 cites, and the front matter, but not the ratings against their sources. Her three notes, none blocking, are fixed in `sources.md` 0.4.1 and `dimensions.md` 0.7.3, and no rating changed:
+  - `sources.md` and `dimensions.md` said the report's §11 "summarizes" the ratings in 0.2.0, but `report.md` is still 0.1.2 and ends at §7. Both now say it will.
+  - Row 68 was described two ways. The conventions said its values do not depend on the open extraction in Threat-Radar/library#29, while "For a human reviewer" and this entry said row 68 leans on it, and its AI-grounding cell gave the FX-1 requirement ids as the reason. The conventions were right: row 68's AI-grounding 3 is fanout-identity's rating, made before the extraction existed, and its Object model 2 is RPT-0005's. Row 68's cells, "For a human reviewer" and this entry now say so.
+  - Row 3 said RPT-0005 rated the SPDX Security profile 1 on Human review. RPT-0005's `report.md` Table 5 gives 2, the value Table 7 chose; the 1 is in its fan-out notes (`fanout-vuln-data.md` §6). Row 3's `basis` cell and its entry under "Disagreements settled" now name that file.

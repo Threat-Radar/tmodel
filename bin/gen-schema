@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# gen-schema: generate JSON Schema, SHACL and Python (pydantic) types from the
+# LinkML object model. ADR-0007: these files are generated, never hand-authored.
+#
+#   bin/gen-schema           regenerate spec/schema/generated/
+#   bin/gen-schema --check   exit 1 if the committed files are out of date
+#
+# Needs the pinned tools:  python -m pip install -r spec/schema/requirements.txt
+# Runs from the repo root with a relative source path, because gen-pydantic
+# records the path it was given in the generated file.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+SRC="spec/schema/tmodel-object-model.linkml.yaml"
+OUT="spec/schema/generated"
+FILES=(tmodel-object-model.schema.json tmodel-object-model.shacl.ttl tmodel_object_model.py)
+
+generate() {  # $1 = output directory
+  mkdir -p "$1"
+  gen-json-schema "$SRC" > "$1/${FILES[0]}"
+  gen-shacl       "$SRC" > "$1/${FILES[1]}"
+  gen-pydantic    "$SRC" > "$1/${FILES[2]}"
+}
+
+case "${1:-}" in
+  --check)
+    tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
+    generate "$tmp"
+    status=0
+    for f in "${FILES[@]}"; do
+      if ! cmp -s "$tmp/$f" "$OUT/$f"; then
+        echo "out of date: $OUT/$f (run bin/gen-schema and commit the result)"
+        status=1
+      fi
+    done
+    if [ "$status" -eq 0 ]; then echo "generated files are up to date"; fi
+    exit "$status"
+    ;;
+  "")
+    generate "$OUT"
+    echo "wrote $OUT/: ${FILES[*]}"
+    ;;
+  *)
+    echo "usage: bin/gen-schema [--check]" >&2
+    exit 2
+    ;;
+esac

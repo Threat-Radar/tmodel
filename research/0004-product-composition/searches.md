@@ -4,9 +4,9 @@ id: RPT-0004-searches
 title: "RPT-0004 search log"
 type: research
 status: draft
-version: "0.2.0"
+version: "0.3.1"
 date: "2026-09-28"
-updated: "2026-10-08"
+updated: "2026-10-18"
 record: RPT-0004
 ---
 
@@ -356,3 +356,19 @@ The pilot's runs ([pilot.md](pilot.md)), one check run in the main session, and 
 | 5 | 2026-10-08 | `grep` and `python3` keyword searches in tradar (`cwe`, quoted SBOM keys, `manifestDigest`, `EdgeType.*`) | tradar `threat_radar/`, `tests/`, docs | results in 1.7 |
 | 2 (re-check) | 2026-10-08 | `syft` 1.52.0, six runs on `alpine` pulled from the registry (fanout-identity.md §9) | `alpine:latest` and other references | Syft JSON byte-identical to the pilot's; root `version` depends on how the image was named |
 | main | 2026-10-08 | `syft registry:<ref> -o cyclonedx-json` (Syft 1.52.0), three references | `alpine:latest`; `alpine:3.24.2`; `alpine@sha256:294b683c…` | root `version`: the platform manifest digest; `3.24.2`; the index digest `sha256:294b683c…` |
+
+## Table 6 (2026-10-18)
+
+Runs in the main session for [mapping.md](mapping.md), on macOS arm64 (times UTC). Outputs were not committed; their SHA-256 digests are in mapping.md §11.
+
+| date | command | input | result |
+|---|---|---|---|
+| 2026-10-18 | `gh api repos/Threat-Radar/tradar/commits` | tradar | latest commit still `26d9c76` (2026-09-11), so fanout-tools.md §1.7's code reading stands |
+| 2026-10-18 | `syft scan alpine@sha256:260479a1…3e2d --platform linux/arm64` (Syft 1.52.0) | the pilot's platform manifest | no output after more than 5 minutes; stopped. Cause: `~/.docker/config.json` names the credential helper `desktop`, which blocks while Docker Desktop is not running |
+| 2026-10-18 | `syft scan registry:alpine@sha256:260479a1…3e2d --platform linux/arm64 -o syft-json -o cyclonedx-json -o spdx-json@3.0 -o spdx-json`, with `DOCKER_CONFIG` pointing at an empty config | same | finished in 4 seconds. CycloneDX 1.7: 16 `library`, 1 `operating-system`, 78 `file` components. SPDX 3.0.1: 17 packages, 78 files, 235 relationships, `completeness` unset on all |
+| 2026-10-18 | `grype db update`; `grype sbom:alpine.cdx.json -o json -o cyclonedx-json` (Grype 0.119.0) | Syft CycloneDX above | database v6.1.10 built 2026-10-17T06:27:09Z; 30 matches, 15 CVEs, 6 packages, the same counts as the pilot's 2026-10-08 run; CycloneDX output has 0 `cwes` |
+| 2026-10-18 | `grype sbom:alpine.spdx3.json -o json` (Grype 0.119.0) | Syft SPDX 3 above | the same 30 (CVE, package) pairs |
+| 2026-10-18 | `curl` CycloneDX `bom-1.7.schema.json` at tag 1.7.2; SPDX 3.0.1 `spdx-model.ttl`, `spdx-json-schema.json`, `spdx-context.jsonld` | cyclonedx/specification, spdx.org | all four digests equal those Phase 1 and RPT-0005 recorded |
+| 2026-10-18 | `python3` field counts on the seven outputs; field and enum look-ups in the four reference files | the files above | every count and every format field named in mapping.md Tables 6a to 6d |
+| 2026-10-18 | `grep`, `awk` and `python3` on `spec/schema/tmodel-object-model.linkml.yaml`, `spec/vectors/*.yaml`, ADR-0002, ADR-0007, ADR-0010, ARCH-0001, `project/DECISIONS-0001.md` (`main` 9f56628) | tmodel | slot lists per class; `depends_on` 0 and `uses_component` 9 uses in the six vectors; ten identifier prefixes in the `mvp-*` files; no Vulnerability-to-Weakness link in any `mvp-*` file; ADR-0007 imports OTM and STIX 2.1 only |
+| 2026-10-19 | `syft cataloger list -o json` (Syft 1.52.0, with `SYFT_CHECK_FOR_APP_UPDATE=false`), after a teammate's review of mapping.md | none | 69 cataloger names, none for hardware or firmware; Phase 1 counted 71 in Syft 1.54.1 (fanout-tools.md §1.1). mapping.md §8 now cites both |
