@@ -38,3 +38,8 @@ A source is not "in the report" until it is a `library/` record.
 | The threats to our products (Kohnfelder & Garg, Microsoft, 1999; published by Microsoft 2009) | article | STRIDE | `kohnfelder-garg-1999-threats-to-our-products` | DEC-001 |
 | Experiences Threat Modeling at Microsoft (Shostack, MODSEC08, CEUR-WS Vol-413, 2008) | paper | STRIDE | `shostack-2008-experiences-threat-modeling-microsoft` | DEC-001 |
 | Threat Modeling: Designing for Security (Shostack, Wiley 2014) — paid book, not read | book | STRIDE | `shostack-threat-modeling-2014` (stub) | DEC-001 |
+| A descriptive study of Microsoft's threat modeling technique (Scandariato, Wuyts & Joosen, Requirements Engineering 20, 2015) | paper | STRIDE (evaluation) | `scandariato-2015-stride-descriptive-study` | DEC-001 |
+| Threat modeling state of practice in Dutch organizations (Verreydt, Yskout, Sion & Joosen, SOUPS 2024) | paper | practice | `verreydt-2024-threat-modeling-practice` | DEC-001 |
+| On the Measures of Success in Replication of Controlled Experiments with STRIDE (Mbaka & Tuma, IJSEKE 34, 2024) — read via the arXiv preprint | paper | STRIDE (evaluation) | `mbaka-tuma-2024-stride-replication` | DEC-001 |
+| Comparing attack trees and misuse cases in an industrial setting (Karpati, Redda, Opdahl & Sindre, IST 56, 2014) — paywalled, abstract only | paper | attack trees (evaluation) | `karpati-2014-attack-trees-misuse-cases` (stub) | DEC-001 |
+| An Empirical Evaluation of the Effectiveness of Attack Graphs and Fault Trees in Cyber-Attack Perception (Lallie, Debattista & Bal, IEEE TIFS 13, 2018) — paywalled, abstract only | paper | attack graphs (evaluation) | `lallie-2018-attack-graphs-fault-trees` (stub) | DEC-001 |
