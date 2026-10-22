@@ -7,12 +7,12 @@ description: "Requirements and recommendations for securing GenAI systems, from 
 type: research
 category: security
 status: draft
-version: "0.2.0"
+version: "0.2.1"
 date: "2026-09-28"
-updated: "2026-10-01"
+updated: "2026-10-21"
 authors:
   - role: student
-    id: mai-li-mcghee
+    id: Maimcghee
   - role: research
     id: ai-assisted
 decision_makers:
