@@ -1,0 +1,484 @@
+# EXAMPLE MODEL 1 (RPT-0009): EchoLeak, zero-click prompt injection in Microsoft 365 Copilot
+#
+# The first AI-specific example model, built the way the sponsor directed on 2026-10-14 for
+# the car-attack models (DL-0013; tmodel#130): a published attack, modeled from its primary
+# sources, to show what the schema needs. This one tests the AI side: a weakness, a CVE,
+# MITRE ATLAS techniques, a threat and a damage scenario in one chain.
+#
+# It is written against the PROPOSAL schema in tmodel#130 (Asset, TrustBoundary, DataFlow and
+# the other DL-0024 slots), which is not accepted. Gaps it found are in README.md.
+#
+# Sources (fetched 2026-10-21; SHA-256 of the bytes as fetched):
+# - P. Reddy and A. S. Gujral, "EchoLeak: The First Real-World Zero-Click Prompt Injection
+#   Exploit in a Production LLM System", arXiv:2509.10540v1, 2025-09-06, CC BY 4.0.
+#   https://arxiv.org/abs/2509.10540 (34574691f342a7a2f6a862ce9adc88f4592a03f75c63af304a256699ed220b51)
+#   https://arxiv.org/html/2509.10540v1 (c972c5620d2eadb40efd62bb692fc401351dad6cef66be6e6d6fdd4ae4a3cce5)
+#   Its sections "Overview and Timeline", "Threat Model and System Overview" and
+#   "Vulnerability Analysis" (Steps 1 to 4) are the basis for the components and steps.
+# - CVE-2025-32711, https://cveawg.mitre.org/api/cve/CVE-2025-32711
+#   (614e8f679afa73b88ce1a1d20e2925baad7db607b9f7048e5a005537214bdd9b; dateUpdated 2026-02-26)
+# - MITRE ATLAS 2026.09 (format 6.0.0), case study AML.CS0059, "EchoLeak: Zero-Click Prompt
+#   Injection Targeting M365 Copilot for Data Exfiltration":
+#   https://raw.githubusercontent.com/mitre-atlas/atlas-data/v2026.09/dist/v6/ATLAS-2026.09.yaml
+#   (935efa93e28294432d3e2f537eb94991ef8d1f8c58341cd360ea3321ddb66688). Its twelve
+#   procedure steps (S00 to S11) and their technique ids are the attack steps below.
+# - CWE 4.20 pages for CWE-74 and CWE-1427 (https://cwe.mitre.org/data/definitions/74.html,
+#   9c1978f01ca1e8c8acc53f953568bf5c125d0e7150e657e083baf2a07b0a288f;
+#   .../1427.html, 54fc002a2642dc94cd4ac31681fbc2aff962809cbb9f544b2bf7a90c4084ff60).
+#
+# AI-DRAFTED, NOT REVIEWED. Every Assertion is `proposed` and no Review is recorded
+# (CLAUDE.md, R-018). Feasibility and impact are human inputs and are left unset.
+#
+# Validate (with tmodel#130's files in place):
+#   linkml-validate -s spec/vectors/example-container-proposed.linkml.yaml \
+#     -C ExampleModelProposed research/0009-sagai/example-models/em-01-echoleak-m365-copilot.yaml
+
+parties:
+  - id: party:microsoft
+    name: Microsoft
+    description: Vendor of Microsoft 365 Copilot, and the CNA that published CVE-2025-32711.
+    party_kind: organization
+    classifications: [vendor, cna]
+  - id: party:cisa-adp
+    name: CISA ADP Vulnrichment
+    description: >-
+      Authorized Data Publisher (orgId 134c704f-9b21-4f2e-91b3-4a467353bcc0). Its container in
+      the CVE record gives an SSVC decision: Exploitation none, Automatable yes, Technical
+      Impact total. The schema has no place for that value (README.md, gap AI-5).
+    party_kind: organization
+    classifications: [adp]
+  - id: party:aim-labs
+    name: Aim Labs (Aim Security)
+    description: The researchers who found EchoLeak and reported it to Microsoft in January 2025 (the paper's timeline).
+    party_kind: organization
+    classifications: [researcher]
+  - id: party:mitre-atlas
+    name: MITRE ATLAS
+    description: Publishes case study AML.CS0059, whose steps map EchoLeak to ATLAS techniques.
+    party_kind: organization
+    classifications: [catalog]
+  - id: party:customer-org
+    name: Customer organization
+    description: A Microsoft 365 tenant with Copilot enabled (a role, not a real organization).
+    party_kind: organization
+  - id: party:employee
+    name: Copilot user
+    description: An employee who asks Copilot ordinary questions (a role, not a person).
+    party_kind: person
+  - id: party:ai-drafter
+    name: AI model drafter
+    description: The AI agent that drafted this file and proposed its CWE-1427 mapping.
+    party_kind: software_agent
+
+products:
+  - id: product:m365-copilot
+    name: Microsoft 365 Copilot (before the May 2025 fix)
+    description: >-
+      The assistant inside Outlook and Teams that answers a user's questions from the user's
+      own Microsoft 365 data (retrieval-augmented generation). The CVE record names
+      "Microsoft 365 Copilot" as the affected product.
+    composed_of:
+      - component:copilot-retrieval
+      - component:copilot-llm
+      - component:xpia-classifier
+      - component:output-link-filter
+      - component:copilot-chat-client
+    manufactured_by: party:microsoft
+
+components:
+  - id: component:exchange-mailbox
+    name: The user's mailbox (Exchange Online)
+    description: Receives external email, including the attacker's.
+    component_kind: service
+    in_trust_zone: trust-boundary:tenant-data
+  - id: component:m365-content
+    name: The user's files in Microsoft 365
+    description: The paper's "files that the victim can access", which Copilot can read too.
+    component_kind: service
+    in_trust_zone: trust-boundary:tenant-data
+  - id: component:copilot-retrieval
+    name: Copilot retrieval (RAG)
+    description: Pulls emails and documents relevant to the user's question into the model's context.
+    component_kind: service
+    in_trust_zone: trust-boundary:microsoft-365
+  - id: component:copilot-llm
+    name: Copilot language model
+    description: >-
+      Writes the answer from the user's question plus whatever retrieval returned. It cannot
+      tell the attacker's email apart from the user's own data (the "LLM scope violation").
+    component_kind: machine_learning_model
+    in_trust_zone: trust-boundary:microsoft-365
+  - id: component:xpia-classifier
+    name: XPIA classifier
+    description: Microsoft's cross-prompt-injection classifier, meant to flag injected instructions. Step S00's phrasing got past it (README.md, gap AI-7).
+    component_kind: machine_learning_model
+    in_trust_zone: trust-boundary:microsoft-365
+  - id: component:output-link-filter
+    name: Output link redaction
+    description: Removed inline Markdown links ([text](url)) from answers, but not reference-style links or images, which step S08 used (README.md, gap AI-7).
+    component_kind: service
+    in_trust_zone: trust-boundary:microsoft-365
+  - id: component:copilot-chat-client
+    name: Copilot chat interface (Outlook, Teams)
+    description: >-
+      Renders the answer as Markdown and fetches images automatically. Its Content Security
+      Policy (CSP) blocks image loads from domains not on an allowlist.
+    component_kind: application
+    in_trust_zone: trust-boundary:client
+  - id: component:teams-url-preview
+    name: Teams asynchronous URL preview service
+    description: >-
+      A Microsoft service on the CSP allowlist that fetches any URL passed to it as a
+      parameter (the paper names asyncgw.teams.microsoft.com/urlp).
+    component_kind: service
+    in_trust_zone: trust-boundary:microsoft-365
+  - id: component:attacker-mail-sender
+    name: Attacker's email sender
+    description: Not part of the product (README.md, gap P2 of DL-0024).
+    component_kind: service
+    in_trust_zone: trust-boundary:internet
+  - id: component:attacker-server
+    name: Attacker-controlled web endpoint
+    description: Receives requests whose URL carries the stolen data. Not part of the product.
+    component_kind: service
+    in_trust_zone: trust-boundary:internet
+
+assets:
+  - id: asset:org-confidential-data
+    name: Confidential data in the user's Copilot scope
+    description: The emails, files and project details the user can access (the paper's threat model; ATLAS AML.CS0059 step S07).
+    security_properties: [confidentiality]
+    stored_in: [component:exchange-mailbox, component:m365-content]
+    processed_by: [component:copilot-retrieval, component:copilot-llm]
+    owned_by: party:customer-org
+  - id: asset:copilot-context
+    name: Copilot's prompt context for one answer
+    description: >-
+      The user's question plus the retrieved emails and files. The injected email lands here,
+      beside the confidential data; that mix is what the attack exploits.
+    security_properties: [integrity]
+    processed_by: [component:copilot-llm]
+  - id: asset:copilot-answer
+    name: Copilot's rendered answer
+    description: Its links and images are what the client fetches.
+    security_properties: [integrity]
+    processed_by: [component:output-link-filter, component:copilot-chat-client]
+
+trust_boundaries:
+  - id: trust-boundary:internet
+    name: The internet (untrusted senders and servers)
+  - id: trust-boundary:microsoft-365
+    name: Microsoft 365 services
+  - id: trust-boundary:tenant-data
+    name: The organization's data, as the user can access it
+    description: >-
+      Copilot reads everything here on the user's behalf. Aim Labs' "LLM scope violation"
+      is untrusted content from outside making the model emit data from this scope.
+    within_boundary: trust-boundary:microsoft-365
+  - id: trust-boundary:client
+    name: The user's Outlook or Teams client
+
+data_flows:
+  - id: data-flow:attacker-email
+    name: The attacker's email arrives in the user's mailbox
+    description: >-
+      Carries the hidden instructions. They are not an Asset, so `carries` cannot name them
+      (README.md, gap AI-3).
+    flow_from: component:attacker-mail-sender
+    flow_to: component:exchange-mailbox
+    protocol: SMTP
+    crosses_boundary: [trust-boundary:internet, trust-boundary:tenant-data]
+  - id: data-flow:retrieve-mail
+    name: Retrieval reads emails relevant to the question
+    flow_from: component:exchange-mailbox
+    flow_to: component:copilot-retrieval
+    carries: [asset:org-confidential-data]
+  - id: data-flow:retrieve-files
+    name: Retrieval reads files and messages relevant to the question
+    flow_from: component:m365-content
+    flow_to: component:copilot-retrieval
+    carries: [asset:org-confidential-data]
+  - id: data-flow:context-to-llm
+    name: Retrieved content goes into the model's context
+    description: The injected email and the confidential data arrive in one context, with no trust label on either.
+    flow_from: component:copilot-retrieval
+    flow_to: component:copilot-llm
+    carries: [asset:copilot-context, asset:org-confidential-data]
+  - id: data-flow:answer-to-filter
+    name: The model's answer goes through link redaction
+    flow_from: component:copilot-llm
+    flow_to: component:output-link-filter
+    carries: [asset:copilot-answer]
+  - id: data-flow:answer-to-client
+    name: The filtered answer is rendered in the client
+    flow_from: component:output-link-filter
+    flow_to: component:copilot-chat-client
+    carries: [asset:copilot-answer]
+    crosses_boundary: [trust-boundary:microsoft-365, trust-boundary:client]
+  - id: data-flow:image-fetch
+    name: The client fetches the answer's image through the Teams preview URL
+    description: The confidential data is encoded in the image URL.
+    flow_from: component:copilot-chat-client
+    flow_to: component:teams-url-preview
+    carries: [asset:org-confidential-data]
+    protocol: HTTPS
+    crosses_boundary: [trust-boundary:client, trust-boundary:microsoft-365]
+  - id: data-flow:proxy-fetch
+    name: The preview service fetches the attacker's URL
+    flow_from: component:teams-url-preview
+    flow_to: component:attacker-server
+    carries: [asset:org-confidential-data]
+    protocol: HTTPS
+    crosses_boundary: [trust-boundary:microsoft-365, trust-boundary:internet]
+
+weaknesses:
+  - id: weakness:cwe-74
+    name: "Improper Neutralization of Special Elements in Output Used by a Downstream Component ('Injection')"
+    description: >-
+      The CWE the CNA gave. CWE 4.20 marks CWE-74 a Class with mapping usage DISCOURAGED
+      ("Examine the children and descendants of this entry to find a more specific mapping").
+    catalog_ref: "CWE-74"
+  - id: weakness:cwe-1427
+    name: Improper Neutralization of Input Used for LLM Prompting
+    description: >-
+      A Base entry with mapping usage ALLOWED in CWE 4.20: the product builds LLM prompts from
+      external data in a way that keeps the model from telling user input apart from system
+      directives. AI-proposed as the better fit; see assertion:cve-cwe-1427.
+    catalog_ref: "CWE-1427"
+
+vulnerabilities:
+  - id: vulnerability:cve-2025-32711
+    name: M365 Copilot Information Disclosure Vulnerability
+    description: >-
+      CVE record: "Ai command injection in M365 Copilot allows an unauthorized attacker to
+      disclose information over a network." CNA CVSS 3.1 base score 9.3
+      (AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:L/A:N). Published 2025-06-11, after Microsoft's
+      server-side fix in May 2025.
+    catalog_ref: "CVE-2025-32711"
+    affects: [product:m365-copilot]
+    reported_by: party:aim-labs
+    assigned_by: party:microsoft
+    instance_of: [weakness:cwe-74]
+
+attack_patterns:
+  - {id: "attack-pattern:aml-t0065", name: LLM Prompt Crafting, catalog_ref: "AML.T0065"}
+  - {id: "attack-pattern:aml-t0066", name: Retrieval Content Crafting, catalog_ref: "AML.T0066"}
+  - {id: "attack-pattern:aml-t0079", name: Stage Capabilities, catalog_ref: "AML.T0079"}
+  - {id: "attack-pattern:aml-t0093", name: Prompt Infiltration via Public-Facing Application, catalog_ref: "AML.T0093"}
+  - {id: "attack-pattern:aml-t0068", name: LLM Prompt Obfuscation, catalog_ref: "AML.T0068"}
+  - {id: "attack-pattern:aml-t0070", name: RAG Poisoning, catalog_ref: "AML.T0070"}
+  - {id: "attack-pattern:aml-t0051-002", name: "LLM Prompt Injection: Triggered", catalog_ref: "AML.T0051.002"}
+  - {id: "attack-pattern:aml-t0085-000", name: "Data from AI Services: RAG Databases", catalog_ref: "AML.T0085.000"}
+  - {id: "attack-pattern:aml-t0067", name: LLM Trusted Output Components Manipulation, catalog_ref: "AML.T0067"}
+  - {id: "attack-pattern:aml-t0077", name: LLM Response Rendering, catalog_ref: "AML.T0077"}
+  - {id: "attack-pattern:aml-t0025", name: Exfiltration via Cyber Means, catalog_ref: "AML.T0025"}
+  - {id: "attack-pattern:aml-t0048", name: External Harms, catalog_ref: "AML.T0048"}
+
+damage_scenarios:
+  - id: damage-scenario:org-data-disclosed
+    name: The organization's confidential data reaches an outside attacker
+    description: The paper reports no evidence of exploitation in the wild, and CISA's SSVC says Exploitation none; this is the harm the attack makes possible.
+    damages_asset: [asset:org-confidential-data]
+    compromised_property: [confidentiality]
+
+threat_instances:
+  - id: threat-instance:zero-click-exfiltration
+    name: An external email makes Copilot leak data from the user's scope, with no click
+    realizes_damage: damage-scenario:org-data-disclosed
+    method_facet: [stride]
+    source_method: "published attack, modeled from the cited sources (AI-drafted, unreviewed)"
+    violates_property: "I confidentiality; E authorization (the model acts on the attacker's instructions with the user's access)"
+    applies_in_phase: [lifecycle-phase:operation]
+    targets_element: [component:copilot-llm, data-flow:context-to-llm, asset:copilot-context]
+
+attack_steps:
+  # ATLAS AML.CS0059 steps S00 to S11, in its order; each step's tactic is kill_chain_phase.
+  - id: attack-step:s00-craft-prompt
+    name: Craft instructions that evade the XPIA classifier and hide their source
+    kill_chain_phase: "AI Attack Adaptation (AML.TA0001)"
+    precedes: [attack-step:s01-craft-retrievable-email]
+  - id: attack-step:s01-craft-retrievable-email
+    name: Hide the instructions in business-like email likely to be retrieved later
+    kill_chain_phase: "AI Attack Adaptation (AML.TA0001)"
+    precedes: [attack-step:s02-stage-endpoint]
+  - id: attack-step:s02-stage-endpoint
+    name: Stage a web endpoint to receive the encoded data
+    kill_chain_phase: "Resource Development (AML.TA0003)"
+    precedes: [attack-step:s03-send-email]
+  - id: attack-step:s03-send-email
+    name: Send the email to a user's inbox
+    kill_chain_phase: "Initial Access (AML.TA0004)"
+    precedes: [attack-step:s04-obfuscate]
+  - id: attack-step:s04-obfuscate
+    name: Phrase the prompt as ordinary business text
+    kill_chain_phase: "Defense Evasion (AML.TA0007)"
+    precedes: [attack-step:s05-rag-ingest]
+  - id: attack-step:s05-rag-ingest
+    name: The email is indexed where Copilot's retrieval can find it
+    kill_chain_phase: "Persistence (AML.TA0006)"
+    precedes: [attack-step:s06-triggered-injection]
+  - id: attack-step:s06-triggered-injection
+    name: The user asks Copilot something; retrieval pulls in the email and the injection runs
+    kill_chain_phase: "Execution (AML.TA0005)"
+    precedes: [attack-step:s07-collect-data]
+  - id: attack-step:s07-collect-data
+    name: Copilot gathers sensitive data from the user's emails and files
+    kill_chain_phase: "Collection (AML.TA0009)"
+    precedes: [attack-step:s08-evade-redaction]
+  - id: attack-step:s08-evade-redaction
+    name: Put the data in a reference-style link or image that link redaction misses
+    kill_chain_phase: "Defense Evasion (AML.TA0007)"
+    precedes: [attack-step:s09-render-image, attack-step:user-clicks-link]
+  - id: attack-step:s09-render-image
+    name: The client renders the image and fetches its URL automatically
+    kill_chain_phase: "Exfiltration (AML.TA0010)"
+    precedes: [attack-step:s10-csp-proxy]
+  - id: attack-step:s10-csp-proxy
+    name: Route the fetch through the allow-listed Teams preview service to the attacker
+    kill_chain_phase: "Exfiltration (AML.TA0010)"
+    precedes: [attack-step:s11-harm]
+  - id: attack-step:user-clicks-link
+    name: The user clicks the reference-style link (the one-click variant)
+    description: In the paper's Figure 2, not in ATLAS's procedure; it needs no CSP bypass.
+    kill_chain_phase: "Exfiltration (AML.TA0010)"
+    precedes: [attack-step:s11-harm]
+  - id: attack-step:s11-harm
+    name: Confidential data reaches the attacker
+    description: Reached by either variant, an OR gate.
+    gate: or_gate
+    kill_chain_phase: "Impact (AML.TA0011)"
+
+attack_paths:
+  - id: attack-path:zero-click
+    name: Email to exfiltration, zero-click
+    steps:
+      - attack-step:s00-craft-prompt
+      - attack-step:s01-craft-retrievable-email
+      - attack-step:s02-stage-endpoint
+      - attack-step:s03-send-email
+      - attack-step:s04-obfuscate
+      - attack-step:s05-rag-ingest
+      - attack-step:s06-triggered-injection
+      - attack-step:s07-collect-data
+      - attack-step:s08-evade-redaction
+      - attack-step:s09-render-image
+      - attack-step:s10-csp-proxy
+      - attack-step:s11-harm
+    realizes_threat: threat-instance:zero-click-exfiltration
+  - id: attack-path:one-click
+    name: Email to exfiltration, one click
+    description: Shares its first nine steps with the zero-click path.
+    steps:
+      - attack-step:s00-craft-prompt
+      - attack-step:s01-craft-retrievable-email
+      - attack-step:s02-stage-endpoint
+      - attack-step:s03-send-email
+      - attack-step:s04-obfuscate
+      - attack-step:s05-rag-ingest
+      - attack-step:s06-triggered-injection
+      - attack-step:s07-collect-data
+      - attack-step:s08-evade-redaction
+      - attack-step:user-clicks-link
+      - attack-step:s11-harm
+    realizes_threat: threat-instance:zero-click-exfiltration
+
+mitigations:
+  - id: mitigation:microsoft-server-side-fix
+    name: Microsoft's server-side fix (May 2025)
+    description: The sources say a fix was deployed and no customer action was needed, but not what it changed.
+    mitigates: [threat-instance:zero-click-exfiltration]
+    applies_in_phase: [lifecycle-phase:operation]
+    implementation_owner: party:microsoft
+    mitigation_status: complete
+  - id: mitigation:output-validation
+    name: Strip or rewrite every external link and image in answers, reference-style included
+    description: The paper's "Output Handling and Validation"; a model suggestion, status not published.
+    catalog_ref: "AML.M0033"
+    mitigates: [threat-instance:zero-click-exfiltration]
+    applies_in_phase: [lifecycle-phase:design, lifecycle-phase:operation]
+    implementation_owner: party:microsoft
+    mitigation_status: planned
+  - id: mitigation:prompt-partitioning
+    name: Keep retrieved content apart from instructions in the prompt
+    description: The paper's "Strict Prompt Partitioning"; a model suggestion, status not published.
+    mitigates: [threat-instance:zero-click-exfiltration]
+    applies_in_phase: [lifecycle-phase:design]
+    implementation_owner: party:microsoft
+    mitigation_status: planned
+  - id: mitigation:least-privilege-scope
+    name: Limit what Copilot may read and emit for an answer that involves external content
+    description: The paper's least privilege and provenance-based access control; a model suggestion.
+    catalog_ref: "AML.M0026"
+    mitigates: [threat-instance:zero-click-exfiltration]
+    applies_in_phase: [lifecycle-phase:design]
+    implementation_owner: party:microsoft
+    mitigation_status: planned
+  - id: mitigation:strict-csp
+    name: Keep open URL-fetching services off the client's CSP allowlist
+    description: The paper's "Content Security Policies (CSPs)"; a model suggestion, status not published.
+    mitigates: [threat-instance:zero-click-exfiltration]
+    applies_in_phase: [lifecycle-phase:design, lifecycle-phase:operation]
+    implementation_owner: party:microsoft
+    mitigation_status: planned
+
+assertions:
+  - id: assertion:cve-cwe-74
+    name: CVE-2025-32711 is an instance of CWE-74 (the CNA's mapping)
+    subject: vulnerability:cve-2025-32711
+    predicate: instance_of
+    object: weakness:cwe-74
+    confidence: medium
+    assertion_status: proposed
+    asserted_by: party:microsoft
+    asserted_at: "2026-02-20T16:01:21Z"
+    generated_by: "CVE record CVE-2025-32711, CNA container (dateUpdated 2026-02-20)"
+    evidence: ["https://cveawg.mitre.org/api/cve/CVE-2025-32711"]
+  - id: assertion:cve-cwe-1427
+    name: CVE-2025-32711 is more specifically an instance of CWE-1427 (AI-proposed)
+    description: >-
+      CWE-74 is DISCOURAGED for mapping in CWE 4.20 and points to its descendants; CWE-1427 is
+      a Base entry, ALLOWED, and describes this flaw. No source makes this mapping; it is the
+      AI drafter's hypothesis and needs a human Review. There is no slot for the fit grade
+      (README.md, gap AI-4).
+    subject: vulnerability:cve-2025-32711
+    predicate: instance_of
+    object: weakness:cwe-1427
+    confidence: medium
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-10-21T00:00:00Z"
+    generated_by: "AI-drafted from the CWE 4.20 pages for CWE-74 and CWE-1427"
+    evidence: ["https://cwe.mitre.org/data/definitions/74.html", "https://cwe.mitre.org/data/definitions/1427.html"]
+  # ATLAS's own step-to-technique mapping (AML.CS0059). The schema has no AttackStep-to-
+  # AttackPattern slot, so each link is an Assertion (README.md, gap AI-1).
+  - {id: "assertion:s00-uses", name: "S00 uses AML.T0065", subject: "attack-step:s00-craft-prompt", predicate: uses_technique, object: "attack-pattern:aml-t0065", confidence: high, assertion_status: proposed, asserted_by: "party:mitre-atlas", generated_by: "ATLAS 2026.09, AML.CS0059 step S00", evidence: ["https://raw.githubusercontent.com/mitre-atlas/atlas-data/v2026.09/dist/v6/ATLAS-2026.09.yaml#AML.CS0059"]}
+  - {id: "assertion:s01-uses", name: "S01 uses AML.T0066", subject: "attack-step:s01-craft-retrievable-email", predicate: uses_technique, object: "attack-pattern:aml-t0066", confidence: high, assertion_status: proposed, asserted_by: "party:mitre-atlas", generated_by: "ATLAS 2026.09, AML.CS0059 step S01", evidence: ["https://raw.githubusercontent.com/mitre-atlas/atlas-data/v2026.09/dist/v6/ATLAS-2026.09.yaml#AML.CS0059"]}
+  - {id: "assertion:s02-uses", name: "S02 uses AML.T0079", subject: "attack-step:s02-stage-endpoint", predicate: uses_technique, object: "attack-pattern:aml-t0079", confidence: high, assertion_status: proposed, asserted_by: "party:mitre-atlas", generated_by: "ATLAS 2026.09, AML.CS0059 step S02", evidence: ["https://raw.githubusercontent.com/mitre-atlas/atlas-data/v2026.09/dist/v6/ATLAS-2026.09.yaml#AML.CS0059"]}
+  - {id: "assertion:s03-uses", name: "S03 uses AML.T0093", subject: "attack-step:s03-send-email", predicate: uses_technique, object: "attack-pattern:aml-t0093", confidence: high, assertion_status: proposed, asserted_by: "party:mitre-atlas", generated_by: "ATLAS 2026.09, AML.CS0059 step S03", evidence: ["https://raw.githubusercontent.com/mitre-atlas/atlas-data/v2026.09/dist/v6/ATLAS-2026.09.yaml#AML.CS0059"]}
+  - {id: "assertion:s04-uses", name: "S04 uses AML.T0068", subject: "attack-step:s04-obfuscate", predicate: uses_technique, object: "attack-pattern:aml-t0068", confidence: high, assertion_status: proposed, asserted_by: "party:mitre-atlas", generated_by: "ATLAS 2026.09, AML.CS0059 step S04", evidence: ["https://raw.githubusercontent.com/mitre-atlas/atlas-data/v2026.09/dist/v6/ATLAS-2026.09.yaml#AML.CS0059"]}
+  - {id: "assertion:s05-uses", name: "S05 uses AML.T0070", subject: "attack-step:s05-rag-ingest", predicate: uses_technique, object: "attack-pattern:aml-t0070", confidence: high, assertion_status: proposed, asserted_by: "party:mitre-atlas", generated_by: "ATLAS 2026.09, AML.CS0059 step S05", evidence: ["https://raw.githubusercontent.com/mitre-atlas/atlas-data/v2026.09/dist/v6/ATLAS-2026.09.yaml#AML.CS0059"]}
+  - {id: "assertion:s06-uses", name: "S06 uses AML.T0051.002", subject: "attack-step:s06-triggered-injection", predicate: uses_technique, object: "attack-pattern:aml-t0051-002", confidence: high, assertion_status: proposed, asserted_by: "party:mitre-atlas", generated_by: "ATLAS 2026.09, AML.CS0059 step S06", evidence: ["https://raw.githubusercontent.com/mitre-atlas/atlas-data/v2026.09/dist/v6/ATLAS-2026.09.yaml#AML.CS0059"]}
+  - {id: "assertion:s07-uses", name: "S07 uses AML.T0085.000", subject: "attack-step:s07-collect-data", predicate: uses_technique, object: "attack-pattern:aml-t0085-000", confidence: high, assertion_status: proposed, asserted_by: "party:mitre-atlas", generated_by: "ATLAS 2026.09, AML.CS0059 step S07", evidence: ["https://raw.githubusercontent.com/mitre-atlas/atlas-data/v2026.09/dist/v6/ATLAS-2026.09.yaml#AML.CS0059"]}
+  - {id: "assertion:s08-uses", name: "S08 uses AML.T0067", subject: "attack-step:s08-evade-redaction", predicate: uses_technique, object: "attack-pattern:aml-t0067", confidence: high, assertion_status: proposed, asserted_by: "party:mitre-atlas", generated_by: "ATLAS 2026.09, AML.CS0059 step S08", evidence: ["https://raw.githubusercontent.com/mitre-atlas/atlas-data/v2026.09/dist/v6/ATLAS-2026.09.yaml#AML.CS0059"]}
+  - {id: "assertion:s09-uses", name: "S09 uses AML.T0077", subject: "attack-step:s09-render-image", predicate: uses_technique, object: "attack-pattern:aml-t0077", confidence: high, assertion_status: proposed, asserted_by: "party:mitre-atlas", generated_by: "ATLAS 2026.09, AML.CS0059 step S09", evidence: ["https://raw.githubusercontent.com/mitre-atlas/atlas-data/v2026.09/dist/v6/ATLAS-2026.09.yaml#AML.CS0059"]}
+  - {id: "assertion:s10-uses", name: "S10 uses AML.T0025", subject: "attack-step:s10-csp-proxy", predicate: uses_technique, object: "attack-pattern:aml-t0025", confidence: high, assertion_status: proposed, asserted_by: "party:mitre-atlas", generated_by: "ATLAS 2026.09, AML.CS0059 step S10", evidence: ["https://raw.githubusercontent.com/mitre-atlas/atlas-data/v2026.09/dist/v6/ATLAS-2026.09.yaml#AML.CS0059"]}
+  - {id: "assertion:s11-uses", name: "S11 uses AML.T0048", subject: "attack-step:s11-harm", predicate: uses_technique, object: "attack-pattern:aml-t0048", confidence: high, assertion_status: proposed, asserted_by: "party:mitre-atlas", generated_by: "ATLAS 2026.09, AML.CS0059 step S11", evidence: ["https://raw.githubusercontent.com/mitre-atlas/atlas-data/v2026.09/dist/v6/ATLAS-2026.09.yaml#AML.CS0059"]}
+  - id: assertion:path-realizes-threat
+    name: The zero-click path realizes the exfiltration threat
+    description: AI-drafted from the cited sources; awaits a human Review.
+    subject: attack-path:zero-click
+    predicate: realizes_threat
+    object: threat-instance:zero-click-exfiltration
+    confidence: medium
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    generated_by: "AI-drafted from arXiv:2509.10540 and ATLAS AML.CS0059"
+    evidence: ["https://arxiv.org/abs/2509.10540"]
+
+lifecycle_phases:
+  - id: lifecycle-phase:design
+    name: Design
+    code: design
+  - id: lifecycle-phase:operation
+    name: Operation / use
+    code: operation
