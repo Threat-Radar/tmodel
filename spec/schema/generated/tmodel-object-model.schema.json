@@ -16,6 +16,21 @@
             "additionalProperties": false,
             "description": "Reified edge (\u00a74): subject / predicate / object, so a Review, confidence, and provenance can point at the statement. Substrate-neutral logical node; RDF-star, named graphs, and LPG edge-properties are storage lowerings (ADR-0004) and are not chosen here. Promoting a reviewed edge to this node narrows DEC-004 (no pure edge-property-only form for reviewed assertions). The acceptance gate (provenance + review before status=accepted) is a hand-written constraint, not something gen-shacl emits (\u00a713).",
             "properties": {
+                "asserted_at": {
+                    "description": "Accepted via ADR-0011 (DL-0024). When the statement was made or captured (PROV-O generatedAtTime).",
+                    "format": "date-time",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "asserted_by": {
+                    "description": "Accepted via ADR-0011 (DL-0024). Who made the statement: a person, an organization (a CNA, a scanner vendor's feed) or a software agent (PartyKind `software_agent`). PROV-O wasAttributedTo (proposal \u00a74; DL-0021 finding 4).",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
                 "assertion_status": {
                     "description": "Proposal status of the Assertion (\u00a74). Must not be `accepted` until provenance and a review are present. That gate is not encoded as a LinkML cardinality rule (\u00a713).",
                     "type": [
@@ -32,6 +47,23 @@
                 },
                 "description": {
                     "description": "Short prose description.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "evidence": {
+                    "description": "Accepted via ADR-0011 (DL-0024). Opaque references to what the statement rests on: an SBOM digest, an advisory or CVE record URL, a write-up.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "generated_by": {
+                    "description": "Accepted via ADR-0011 (DL-0024). The activity that produced the statement, as text: a tool and version, a database build time, a method (PROV-O wasGeneratedBy). Without it the same SBOM gives different answers on different days (RPT-0004 pilot.md \u00a73).",
                     "type": [
                         "string",
                         "null"
@@ -68,6 +100,72 @@
                 "id"
             ],
             "title": "Assertion",
+            "type": "object"
+        },
+        "Asset": {
+            "additionalProperties": false,
+            "description": "Accepted via ADR-0011 (DL-0024). Something worth protecting: the thing damage happens to (ARCH-0001 \u00a73). In ISO/SAE 21434 terms (3.1.2, as paraphrased in RPT-0007), it has value and one or more cybersecurity properties whose compromise can lead to a damage scenario. Maps OTM `assets` and threagile data assets. Data, functions and the vehicle itself can all be assets; where an asset lives is `stored_in` / `processed_by`.",
+            "properties": {
+                "description": {
+                    "description": "Short prose description.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "Stable object id (ADR-0004). Adapters must not renumber it.",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Human-readable name.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "owned_by": {
+                    "description": "Proposal attaches owned_by to Asset (\u00a72b, \u00a73). Asset is not a \u00a713 class; the slot is on Product, ProductInstance, and Component as the structural stand-in. It selects whose business_impact would apply. The business_impact axis itself is post-MVP and has no slot.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "processed_by": {
+                    "description": "Accepted via ADR-0011 (DL-0024). Components that process the Asset (OTM component `assets.processed`).",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "security_properties": {
+                    "description": "Accepted via ADR-0011 (DL-0024). The cybersecurity properties worth protecting for this Asset.",
+                    "items": {
+                        "$ref": "#/$defs/SecurityProperty"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "stored_in": {
+                    "description": "Accepted via ADR-0011 (DL-0024). Components that store the Asset (OTM component `assets.stored`).",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id"
+            ],
+            "title": "Asset",
             "type": "object"
         },
         "AttackGate": {
@@ -348,8 +446,19 @@
         },
         "Component": {
             "additionalProperties": false,
-            "description": "Authoritative deployed artifact (service, container, dependency, chip, core) \u2014 not an OTM diagram node (\u00a70). `uses_component` / `composed_of` are the propagation paths for vulnerabilities (\u00a75).",
+            "description": "Authoritative deployed artifact (service, container, dependency, chip, core). Since ADR-0011 it is also the end of a DataFlow and a member of a trust zone, as an OTM component is; the field-level OTM crosswalk stays with #9 (\u00a70). `uses_component` / `composed_of` are the propagation paths for vulnerabilities (\u00a75).",
             "properties": {
+                "component_kind": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/ComponentKind"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Accepted via ADR-0011 (DL-0024). What kind of thing a Component is (RPT-0004 Table 6b, 6e; R-022)."
+                },
                 "composed_of": {
                     "description": "Recursive structural composition (\u00a73). Inlined as references, not as nested trees.",
                     "items": {
@@ -399,6 +508,20 @@
                         "null"
                     ]
                 },
+                "in_trust_zone": {
+                    "description": "Accepted via ADR-0011 (DL-0024). The trust zone a Component sits in (the proposal's \u00a71 name, F12). One zone per Component, as in OTM; outer zones follow from `within_boundary`.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "manufactured_by": {
+                    "description": "Relational role edge (\u00a72b), not a classification on Party.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
                 "name": {
                     "description": "Human-readable name.",
                     "type": [
@@ -413,6 +536,13 @@
                         "null"
                     ]
                 },
+                "supplied_by": {
+                    "description": "Relational role edge (\u00a72b). The same Party may supply one product and consume another.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
                 "uses_component": {
                     "description": "Use edge along which vuln/finding propagation is sound (\u00a75).",
                     "items": {
@@ -420,6 +550,13 @@
                     },
                     "type": [
                         "array",
+                        "null"
+                    ]
+                },
+                "version": {
+                    "description": "Accepted via ADR-0011 (DL-0024). The version string as the source wrote it (RPT-0004 Table 6b). Until now only the purl inside `identifiers` carried it.",
+                    "type": [
+                        "string",
                         "null"
                     ]
                 }
@@ -430,10 +567,52 @@
             "title": "Component",
             "type": "object"
         },
+        "ComponentKind": {
+            "description": "Accepted via ADR-0011 (DL-0024). CycloneDX 1.7's thirteen component types, written with underscores, plus `service` (CycloneDX `services[]`) and `interconnect` (a bus or network segment, which the proposal's \u00a71 calls Interconnect and the schema does not model).",
+            "enum": [
+                "application",
+                "framework",
+                "library",
+                "container",
+                "platform",
+                "operating_system",
+                "device",
+                "device_driver",
+                "firmware",
+                "file",
+                "machine_learning_model",
+                "data",
+                "cryptographic_asset",
+                "service",
+                "interconnect"
+            ],
+            "title": "ComponentKind",
+            "type": "string"
+        },
         "DamageScenario": {
             "additionalProperties": false,
             "description": "The damage a ThreatInstance realizes (\u00a71). Impact categories are recorded on RiskScore, not collapsed here (\u00a73).",
             "properties": {
+                "compromised_property": {
+                    "description": "Accepted via ADR-0011 (DL-0024). Which cybersecurity property of the damaged Asset is compromised (ISO/SAE 21434 3.1.20, 3.1.33).",
+                    "items": {
+                        "$ref": "#/$defs/SecurityProperty"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "damages_asset": {
+                    "description": "Accepted via ADR-0011 (DL-0024). The Asset(s) a DamageScenario harms (ISO/SAE 21434 damage scenario; RPT-0007 \u00a71).",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
                 "description": {
                     "description": "Short prose description.",
                     "type": [
@@ -457,6 +636,83 @@
                 "id"
             ],
             "title": "DamageScenario",
+            "type": "object"
+        },
+        "DataFlow": {
+            "additionalProperties": false,
+            "description": "Accepted via ADR-0011 (DL-0024). A directed flow of data or commands from one Component to another (OTM `dataflows`, threagile communication links, CycloneDX service `data` flows), carrying Assets. ADR-0011 joins Components directly, which is OTM's shape and needs no DFD classes. The proposal's \u00a71 puts DataFlow in a behavioral DFD layer, between Process, DataStore and ExternalEntity elements `realized_by` Components; a later ADR that adds that layer would widen `flow_from` and `flow_to`. Threats on a flow (spoofing, tampering, disclosure) point at it through ThreatInstance.targets_element.",
+            "properties": {
+                "bidirectional": {
+                    "description": "Accepted via ADR-0011 (DL-0024). True when the flow runs both ways (OTM `bidirectional`).",
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "carries": {
+                    "description": "Accepted via ADR-0011 (DL-0024). Assets the DataFlow carries (threagile data assets sent and received).",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "crosses_boundary": {
+                    "description": "Accepted via ADR-0011 (DL-0024). Trust zones the DataFlow crosses, stated explicitly when zone membership is incomplete.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "description": {
+                    "description": "Short prose description.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "flow_from": {
+                    "description": "Accepted via ADR-0011 (DL-0024). Where the DataFlow starts.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "flow_to": {
+                    "description": "Accepted via ADR-0011 (DL-0024). Where the DataFlow ends.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "Stable object id (ADR-0004). Adapters must not renumber it.",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Human-readable name.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "protocol": {
+                    "description": "Accepted via ADR-0011 (DL-0024). The protocol or bus, as text (for example CAN, HTTPS).",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id"
+            ],
+            "title": "DataFlow",
             "type": "object"
         },
         "Deployment": {
@@ -1256,7 +1512,8 @@
             "description": "Party is an organization or a person (\u00a72b).",
             "enum": [
                 "organization",
-                "person"
+                "person",
+                "software_agent"
             ],
             "title": "PartyKind",
             "type": "string"
@@ -1343,6 +1600,16 @@
             "additionalProperties": false,
             "description": "A versioned, identity-bearing instance of a Product (\u00a71, \u00a73b). Lifecycle *state* sits here (with valid_from/valid_to), not on Product or Component. A refurbished unit can share a firmware hash and still carry a new phase, Deployment, and owner. The firmware image digest / build hash is an opaque `identifiers` string (ADR-0002 per-type instance identity), not a pinned slot.",
             "properties": {
+                "build_composed_of": {
+                    "description": "Accepted via ADR-0011 (DL-0024). The Components one build contains, as an SBOM lists them (RPT-0004 Table 6c, pilot finding 1). `composed_of` stays the design-level composition on Product and Component; this is the per-build list, which differs between builds of one Product.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
                 "current_phase": {
                     "description": "Lifecycle state of this ProductInstance at valid_from/valid_to (\u00a73b).",
                     "type": [
@@ -1408,6 +1675,13 @@
                 "valid_to": {
                     "description": "End of the (ProductInstance, time) state interval (\u00a73b). Open-ended if absent.",
                     "format": "date-time",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "version": {
+                    "description": "Accepted via ADR-0011 (DL-0024). The version string as the source wrote it (RPT-0004 Table 6b). Until now only the purl inside `identifiers` carried it.",
                     "type": [
                         "string",
                         "null"
@@ -1976,6 +2250,19 @@
             "title": "SecurityProgram",
             "type": "object"
         },
+        "SecurityProperty": {
+            "description": "Accepted via ADR-0011 (DL-0024). Cybersecurity properties (ISO/SAE 21434 3.1.20 names confidentiality, integrity and availability as examples). The other three follow the STRIDE sketch `violates_property` already uses (authentication, authorization, non-repudiation), with authenticity as the property of data that authentication protects.",
+            "enum": [
+                "confidentiality",
+                "integrity",
+                "availability",
+                "authenticity",
+                "authorization",
+                "non_repudiation"
+            ],
+            "title": "SecurityProperty",
+            "type": "string"
+        },
         "ThreatInstance": {
             "additionalProperties": false,
             "description": "A threat in a model, not the generic catalog entry (\u00a71). Carries the method facet (STRIDE and, post-MVP, LINDDUN/MAESTRO) and `realizes` a DamageScenario. Phase scope is `applies_in_phase` (\u00a73b), distinct from Environment.",
@@ -2029,6 +2316,20 @@
                     "description": "Which method proposed this ThreatInstance (\u00a72).",
                     "type": [
                         "string",
+                        "null"
+                    ]
+                },
+                "targets_element": {
+                    "description": "Accepted via ADR-0011 (DL-0024). The element a ThreatInstance acts on: a Component, a DataFlow, an Asset or a TrustBoundary, as OTM attaches threats to components and data flows and STRIDE classifies per DFD element (RPT-0015 \u00a74 notes ThreatInstance has no `targets` or `on_element` edge).",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "type": [
+                        "array",
                         "null"
                     ]
                 },
@@ -2179,6 +2480,60 @@
             "title": "ThreatModelStatus",
             "type": "string"
         },
+        "TrustBoundary": {
+            "additionalProperties": false,
+            "description": "Accepted via ADR-0011 (DL-0024). Where control or assumptions change (ARCH-0001 \u00a73), modeled as a zone, as the proposal's \u00a71 does: a Component is `in_trust_zone` a TrustBoundary (\u00a71, F12), and zones nest through `within_boundary`, which can also name the Component a zone sits inside, because an OTM trust zone's `parent` may be a component. A DataFlow whose ends sit in different zones crosses the boundary between them; `crosses_boundary` states it explicitly where membership is unknown. Maps OTM `trustZones` and pytm boundaries; threagile's member lists and CycloneDX's per-service `trustZone` import onto the same zone (RPT-0005 crosswalk, \"four shapes\"). `zone_type` and `trust_level` keep the source's own labels.",
+            "properties": {
+                "description": {
+                    "description": "Short prose description.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "Stable object id (ADR-0004). Adapters must not renumber it.",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Human-readable name.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "trust_level": {
+                    "description": "Accepted via ADR-0011 (DL-0024). The zone's trust rating as the source gives it (OTM `trustRating`); not normalized here.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "within_boundary": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Accepted via ADR-0011 (DL-0024). What encloses the zone: another trust zone, for nesting (pytm boundaries nest), or a Component, since an OTM trust zone's `parent` may point at a component as well as at a zone."
+                },
+                "zone_type": {
+                    "description": "Accepted via ADR-0011 (DL-0024). The zone's type as the source gives it (OTM `trustZones[].type`; threagile's trust boundaries are typed too); not normalized here.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id"
+            ],
+            "title": "TrustBoundary",
+            "type": "object"
+        },
         "View": {
             "additionalProperties": false,
             "description": "Derived presentation lens (\u00a710): query/filter + projection. Not domain truth and never written back onto domain nodes. Saved views may be persisted; rendered geometry is transient and out of this schema. One graph projection is MVP; other projections are post-MVP.",
@@ -2254,6 +2609,16 @@
                         "null"
                     ]
                 },
+                "alias_ids": {
+                    "description": "Accepted via ADR-0011 (DL-0024). Other ids of the same Vulnerability (GHSA, OSV, distribution advisories); `catalog_ref` keeps the primary id (RPT-0004 Table 6d).",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
                 "assigned_by": {
                     "description": "Assigning CNA (\u00a72b). Party.classifications should include cna when this is set; not enforced here.",
                     "type": [
@@ -2278,6 +2643,16 @@
                 "id": {
                     "description": "Stable object id (ADR-0004). Adapters must not renumber it.",
                     "type": "string"
+                },
+                "instance_of": {
+                    "description": "Accepted via ADR-0011 (DL-0024). The Weakness (CWE) a Vulnerability is an instance of (ARCH-0001 \u00a73 `instance_of`; PLAN-0002 \u00a75). Who assigned it (CNA, ADP, NVD) is not a property of this edge: keep it on an Assertion with `asserted_by` (RPT-0004 rule R-CWE-1).",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
                 },
                 "name": {
                     "description": "Human-readable name.",

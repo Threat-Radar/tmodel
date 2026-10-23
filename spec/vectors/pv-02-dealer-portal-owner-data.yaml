@@ -1,0 +1,258 @@
+# PROPOSAL VECTOR 2 (DL-0024): theft of owners' private data through a dealer portal
+#
+# The second example model the sponsor asked for on 2026-10-14 (theft of owners'
+# private data; RPT-0005 G13; DL-0013), modeled from its primary write-up.
+#
+# Source: S. Curry et al., "Hacking Kia: Remotely Controlling Cars With Just a License
+# Plate", dated 2024-09-20, disclosed 2024-09-26 per its timeline,
+# https://samcurry.net/hacking-kia (fetched 2026-10-18, SHA-256
+# e67a3a45093bf99613f63038b7871686f4337d9c6d256dda19b37ac8b0ab1315). The write-up
+# reports the issues fixed (Kia, 2024-08-14) and, per Kia, never exploited maliciously.
+# No CVE is recorded for it, so the Weakness enters through an AI-proposed Assertion.
+#
+# AI-DRAFTED, NOT REVIEWED. Every Assertion is `proposed` and no Review is recorded
+# (CLAUDE.md, R-018). Feasibility and impact are human inputs and are left unset.
+#
+# Validate:
+#   linkml-validate -s spec/vectors/example-container-proposed.linkml.yaml \
+#     -C ExampleModelProposed spec/vectors/pv-02-dealer-portal-owner-data.yaml
+
+parties:
+  - id: party:kia
+    name: Kia
+    description: Vehicle manufacturer; operates the owner and dealer web services.
+    party_kind: organization
+    classifications: [manufacturer]
+  - id: party:vehicle-owner
+    name: Vehicle owner
+    description: Whose personal data and vehicle access the attack takes (role, not a person).
+    party_kind: person
+  - id: party:ai-drafter
+    name: AI model drafter
+    description: The AI agent that drafted this file and proposed its CWE mapping (DL-0024).
+    party_kind: software_agent
+
+products:
+  - id: product:kia-connected-vehicle
+    name: Kia vehicle with remote services
+    description: >-
+      A Kia vehicle with the telematics hardware, and the web services that control it
+      (the write-up's table lists affected models from 2014 to 2025).
+    composed_of:
+      - component:owners-portal
+      - component:dealer-portal
+      - component:dealer-api
+      - component:telematics-backend
+      - component:vehicle-telematics-unit
+    manufactured_by: party:kia
+
+components:
+  - id: component:owners-portal
+    name: Owners website (owners.kia.com)
+    component_kind: service
+    in_trust_zone: trust-boundary:manufacturer-cloud
+  - id: component:dealer-portal
+    name: Dealer website (kiaconnect.kdealer.com)
+    description: Where dealers enroll a sold vehicle to its owner's account.
+    component_kind: service
+    in_trust_zone: trust-boundary:manufacturer-cloud
+  - id: component:dealer-api
+    name: Dealer API gateway
+    description: Backend calls for dealer functions (vehicle and account lookup, enroll, unenroll).
+    component_kind: service
+    in_trust_zone: trust-boundary:dealer-functions
+  - id: component:telematics-backend
+    name: Remote-service backend
+    description: Relays owner commands to the vehicle and its location back.
+    component_kind: service
+    in_trust_zone: trust-boundary:manufacturer-cloud
+  - id: component:vehicle-telematics-unit
+    name: Vehicle telematics unit
+    component_kind: device
+    in_trust_zone: trust-boundary:vehicle
+  - id: component:plate-to-vin-service
+    name: Third-party licence-plate-to-VIN lookup
+    description: Not part of the product; the attack's first step uses it.
+    component_kind: service
+
+assets:
+  - id: asset:owner-personal-data
+    name: Owner's name, phone number, e-mail and physical address
+    security_properties: [confidentiality]
+    stored_in: [component:telematics-backend]
+    processed_by: [component:dealer-api]
+    owned_by: party:vehicle-owner
+  - id: asset:vehicle-location
+    name: Vehicle location
+    security_properties: [confidentiality]
+    processed_by: [component:telematics-backend, component:vehicle-telematics-unit]
+    owned_by: party:vehicle-owner
+  - id: asset:account-roles
+    name: Who is the vehicle's primary account holder
+    description: Decides who may send remote commands.
+    security_properties: [integrity, authorization]
+    stored_in: [component:telematics-backend]
+  - id: asset:remote-commands
+    name: Remote lock, unlock, start, stop, horn and lights
+    security_properties: [authorization, integrity]
+    processed_by: [component:telematics-backend, component:vehicle-telematics-unit]
+
+trust_boundaries:
+  - id: trust-boundary:manufacturer-cloud
+    name: Manufacturer web services
+  - id: trust-boundary:dealer-functions
+    name: Dealer-only functions
+    description: >-
+      Meant for dealership staff only. The flaw: the dealer website accepted the
+      owners-site registration request, so anyone could get a dealer access token.
+    within_boundary: trust-boundary:manufacturer-cloud
+  - id: trust-boundary:vehicle
+    name: The vehicle
+
+data_flows:
+  - id: data-flow:owner-lookup
+    name: Dealer API returns the owner's record for a VIN
+    flow_from: component:dealer-api
+    flow_to: component:dealer-portal
+    carries: [asset:owner-personal-data]
+    protocol: HTTPS
+  - id: data-flow:account-change
+    name: Dealer portal changes the vehicle's account holders
+    flow_from: component:dealer-portal
+    flow_to: component:dealer-api
+    carries: [asset:account-roles]
+    protocol: HTTPS
+  - id: data-flow:remote-command
+    name: Backend sends a remote command to the vehicle
+    flow_from: component:telematics-backend
+    flow_to: component:vehicle-telematics-unit
+    carries: [asset:remote-commands]
+    crosses_boundary: [trust-boundary:manufacturer-cloud, trust-boundary:vehicle]
+  - id: data-flow:location-report
+    name: Vehicle reports its location
+    flow_from: component:vehicle-telematics-unit
+    flow_to: component:telematics-backend
+    carries: [asset:vehicle-location]
+    crosses_boundary: [trust-boundary:vehicle, trust-boundary:manufacturer-cloud]
+
+weaknesses:
+  - id: weakness:cwe-862
+    name: Missing Authorization
+    description: AI-proposed mapping (the write-up names no CWE); see assertion:token-step-exploits.
+    catalog_ref: "CWE-862"
+
+damage_scenarios:
+  - id: damage-scenario:owner-data-disclosed
+    name: A stranger learns the owner's identity and contact details from a licence plate
+    damages_asset: [asset:owner-personal-data]
+    compromised_property: [confidentiality]
+  - id: damage-scenario:silent-takeover
+    name: A stranger silently tracks and controls the vehicle
+    description: The owner gets no notice that account roles changed.
+    damages_asset: [asset:vehicle-location, asset:account-roles, asset:remote-commands]
+    compromised_property: [confidentiality, integrity, authorization]
+
+threat_instances:
+  - id: threat-instance:owner-data-harvest
+    name: Harvest owner personal data through the dealer API
+    realizes_damage: damage-scenario:owner-data-disclosed
+    method_facet: [stride]
+    source_method: "published attack, modeled from the cited write-up (AI-drafted, unreviewed)"
+    violates_property: "E authorization; I confidentiality"
+    applies_in_phase: [lifecycle-phase:operation]
+    targets_element: [component:dealer-api, data-flow:owner-lookup]
+  - id: threat-instance:silent-account-takeover
+    name: Demote the owner and add the attacker as primary account holder
+    realizes_damage: damage-scenario:silent-takeover
+    method_facet: [stride]
+    source_method: "published attack, modeled from the cited write-up (AI-drafted, unreviewed)"
+    violates_property: "E authorization; T integrity"
+    applies_in_phase: [lifecycle-phase:operation]
+    targets_element: [component:dealer-api, data-flow:account-change, asset:account-roles]
+
+attack_steps:
+  - id: attack-step:plate-to-vin
+    name: Resolve the licence plate to a VIN with a third-party service
+    kill_chain_phase: reconnaissance
+    precedes: [attack-step:owner-lookup]
+  - id: attack-step:dealer-token
+    name: Register on the dealer website and obtain a dealer access token
+    precedes: [attack-step:owner-lookup]
+  - id: attack-step:owner-lookup
+    name: Look up the vehicle by VIN through the dealer API
+    description: Needs the VIN AND a dealer token, an AND gate; returns the owner's contact details.
+    gate: and_gate
+    precedes: [attack-step:demote-owner]
+  - id: attack-step:demote-owner
+    name: Demote the owner using the e-mail address just obtained
+    precedes: [attack-step:add-attacker]
+  - id: attack-step:add-attacker
+    name: Add the attacker's account as primary holder
+    precedes: [attack-step:command-vehicle]
+  - id: attack-step:command-vehicle
+    name: Locate the vehicle and send remote commands
+    kill_chain_phase: actions_on_objectives
+
+attack_paths:
+  - id: attack-path:owner-data
+    name: Plate to owner data
+    steps: [attack-step:plate-to-vin, attack-step:dealer-token, attack-step:owner-lookup]
+    realizes_threat: threat-instance:owner-data-harvest
+  - id: attack-path:takeover
+    name: Plate to silent takeover
+    description: Shares its first three steps with the owner-data path.
+    steps:
+      - attack-step:plate-to-vin
+      - attack-step:dealer-token
+      - attack-step:owner-lookup
+      - attack-step:demote-owner
+      - attack-step:add-attacker
+      - attack-step:command-vehicle
+    realizes_threat: threat-instance:silent-account-takeover
+
+mitigations:
+  - id: mitigation:dealer-role-check
+    name: Only provisioned dealer accounts reach dealer functions
+    description: >-
+      The control the attack shows was missing. The write-up reports Kia remediated the
+      issue (2024-08-14) without saying how; this names the needed control, not Kia's fix.
+    mitigates: [threat-instance:owner-data-harvest, threat-instance:silent-account-takeover]
+    applies_in_phase: [lifecycle-phase:operation]
+    implementation_owner: party:kia
+    mitigation_status: complete
+  - id: mitigation:notify-role-change
+    name: Notify the owner when account holders change
+    description: The write-up notes the victim got no notification; a model suggestion, status not published.
+    mitigates: [threat-instance:silent-account-takeover]
+    applies_in_phase: [lifecycle-phase:operation]
+    implementation_owner: party:kia
+    mitigation_status: planned
+
+assertions:
+  - id: assertion:token-step-exploits
+    name: The dealer-token step exploits CWE-862 (AI-proposed)
+    description: No source names a CWE; this mapping is the AI drafter's hypothesis.
+    subject: attack-step:dealer-token
+    predicate: exploits
+    object: weakness:cwe-862
+    confidence: low
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-10-18T00:00:00Z"
+    generated_by: "AI-drafted from the cited write-up (DL-0024)"
+    evidence: ["https://samcurry.net/hacking-kia"]
+  - id: assertion:takeover-realizes
+    name: The takeover path realizes the silent-takeover threat
+    subject: attack-path:takeover
+    predicate: realizes_threat
+    object: threat-instance:silent-account-takeover
+    confidence: medium
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    generated_by: "AI-drafted from the cited write-up (DL-0024)"
+    evidence: ["https://samcurry.net/hacking-kia"]
+
+lifecycle_phases:
+  - id: lifecycle-phase:operation
+    name: Operation / use
+    code: operation

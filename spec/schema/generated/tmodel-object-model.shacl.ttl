@@ -6,2059 +6,2415 @@
 tmodel:Assertion a sh:NodeShape ;
 	rdfs:comment "Reified edge (§4): subject / predicate / object, so a Review, confidence, and provenance can point at the statement. Substrate-neutral logical node; RDF-star, named graphs, and LPG edge-properties are storage lowerings (ADR-0004) and are not chosen here. Promoting a reviewed edge to this node narrows DEC-004 (no pure edge-property-only form for reviewed assertions). The acceptance gate (provenance + review before status=accepted) is a hand-written constraint, not something gen-shacl emits (§13)." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n101 ;
-	sh:property _:c14n144 , _:c14n212 , _:c14n302 , _:c14n309 , _:c14n318 , _:c14n326 , _:c14n336 , _:c14n84 ;
+	sh:ignoredProperties _:c14n120 ;
+	sh:property _:c14n100 , _:c14n174 , _:c14n240 , _:c14n25 , _:c14n255 , _:c14n318 , _:c14n336 , _:c14n374 , _:c14n399 , _:c14n452 , _:c14n74 , _:c14n83 ;
 	sh:targetClass tmodel:Assertion .
+tmodel:Asset a sh:NodeShape ;
+	rdfs:comment "Accepted via ADR-0011 (DL-0024). Something worth protecting: the thing damage happens to (ARCH-0001 §3). In ISO/SAE 21434 terms (3.1.2, as paraphrased in RPT-0007), it has value and one or more cybersecurity properties whose compromise can lead to a damage scenario. Maps OTM `assets` and threagile data assets. Data, functions and the vehicle itself can all be assets; where an asset lives is `stored_in` / `processed_by`." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n456 ;
+	sh:property _:c14n134 , _:c14n147 , _:c14n233 , _:c14n247 , _:c14n301 , _:c14n325 , _:c14n358 ;
+	sh:targetClass tmodel:Asset .
 tmodel:AttackPath a sh:NodeShape ;
 	rdfs:comment "An ordered set of AttackSteps realising a ThreatInstance (§2a, §3). Feasibility is rated here, at path level (human-rated at MVP). Feasibility METHOD is ISO/SAE 21434 Table-1 (§3, DL-0011), human-rated at MVP; Common Criteria is display-only (numbers + label). No per-step aggregation at MVP. DEC-003 is open; ADR-0005 was dropped, not accepted." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n218 ;
-	sh:property _:c14n167 , _:c14n229 , _:c14n277 , _:c14n283 , _:c14n286 , _:c14n363 , _:c14n59 ;
+	sh:ignoredProperties _:c14n264 ;
+	sh:property _:c14n200 , _:c14n277 , _:c14n333 , _:c14n340 , _:c14n342 , _:c14n443 , _:c14n73 ;
 	sh:targetClass tmodel:AttackPath .
 tmodel:AttackPattern a sh:NodeShape ;
 	rdfs:comment "Generic attack pattern (CAPEC / ATT&CK technique = *what*, §1, §2a). STRIDE is not a property of this class (§2). Kill-chain phase is on AttackStep, not here." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n36 ;
-	sh:property _:c14n138 , _:c14n314 , _:c14n34 , _:c14n80 ;
+	sh:ignoredProperties _:c14n46 ;
+	sh:property _:c14n168 , _:c14n382 , _:c14n44 , _:c14n96 ;
 	sh:targetClass tmodel:AttackPattern .
 tmodel:AttackStep a sh:NodeShape ;
 	rdfs:comment "A step in an attack graph (§2a): AND/OR `gate`, explicit `precedes` order, shareable across paths. Optional kill-chain phase is coarse order, not the ATT&CK technique. Pre/postconditions are not given a schema shape in §2a." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n319 ;
-	sh:property _:c14n18 , _:c14n185 , _:c14n205 , _:c14n209 , _:c14n251 , _:c14n259 ;
+	sh:ignoredProperties _:c14n389 ;
+	sh:property _:c14n222 , _:c14n245 , _:c14n250 , _:c14n28 , _:c14n300 , _:c14n312 ;
 	sh:targetClass tmodel:AttackStep .
 tmodel:Checkpoint a sh:NodeShape ;
 	rdfs:comment "A lighter, recurring review point on a SecurityProgram (§3c R-041) — a ProgramNode with no extra shape; it reuses `gated_by` / `decided_by` / `at_phase`. Corporate SDLs name these variously (checkpoint, review, stage)." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n382 ;
-	sh:property _:c14n1 , _:c14n107 , _:c14n112 , _:c14n145 , _:c14n189 , _:c14n192 , _:c14n317 , _:c14n339 , _:c14n349 , _:c14n72 , _:c14n74 , _:c14n99 ;
+	sh:ignoredProperties _:c14n466 ;
+	sh:property _:c14n118 , _:c14n127 , _:c14n133 , _:c14n175 , _:c14n2 , _:c14n227 , _:c14n231 , _:c14n387 , _:c14n417 , _:c14n427 , _:c14n88 , _:c14n90 ;
 	sh:targetClass tmodel:Checkpoint .
 tmodel:Component a sh:NodeShape ;
-	rdfs:comment "Authoritative deployed artifact (service, container, dependency, chip, core) — not an OTM diagram node (§0). `uses_component` / `composed_of` are the propagation paths for vulnerabilities (§5)." ;
+	rdfs:comment "Authoritative deployed artifact (service, container, dependency, chip, core). Since ADR-0011 it is also the end of a DataFlow and a member of a trust zone, as an OTM component is; the field-level OTM crosswalk stays with #9 (§0). `uses_component` / `composed_of` are the propagation paths for vulnerabilities (§5)." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n71 ;
-	sh:property _:c14n157 , _:c14n206 , _:c14n255 , _:c14n273 , _:c14n322 , _:c14n342 , _:c14n351 , _:c14n39 ;
+	sh:ignoredProperties _:c14n87 ;
+	sh:property _:c14n164 , _:c14n177 , _:c14n246 , _:c14n306 , _:c14n388 , _:c14n392 , _:c14n401 , _:c14n425 , _:c14n429 , _:c14n50 , _:c14n65 , _:c14n7 , _:c14n8 ;
 	sh:targetClass tmodel:Component .
 tmodel:DamageScenario a sh:NodeShape ;
 	rdfs:comment "The damage a ThreatInstance realizes (§1). Impact categories are recorded on RiskScore, not collapsed here (§3)." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n123 ;
-	sh:property _:c14n158 , _:c14n270 , _:c14n285 ;
+	sh:ignoredProperties _:c14n148 ;
+	sh:property _:c14n116 , _:c14n144 , _:c14n170 , _:c14n230 , _:c14n276 ;
 	sh:targetClass tmodel:DamageScenario .
+tmodel:DataFlow a sh:NodeShape ;
+	rdfs:comment "Accepted via ADR-0011 (DL-0024). A directed flow of data or commands from one Component to another (OTM `dataflows`, threagile communication links, CycloneDX service `data` flows), carrying Assets. ADR-0011 joins Components directly, which is OTM's shape and needs no DFD classes. The proposal's §1 puts DataFlow in a behavioral DFD layer, between Process, DataStore and ExternalEntity elements `realized_by` Components; a later ADR that adds that layer would widen `flow_from` and `flow_to`. Threats on a flow (spoofing, tampering, disclosure) point at it through ThreatInstance.targets_element." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n314 ;
+	sh:property _:c14n0 , _:c14n192 , _:c14n263 , _:c14n361 , _:c14n369 , _:c14n407 , _:c14n451 , _:c14n56 , _:c14n6 ;
+	sh:targetClass tmodel:DataFlow .
 tmodel:Deployment a sh:NodeShape ;
 	rdfs:comment "A placement of one ProductInstance (§3). Many Deployments per instance; each points at one Environment. Single deployment is the MVP assumption; deployment-relative risk (R-023) is post-MVP." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n242 ;
-	sh:property _:c14n117 , _:c14n180 , _:c14n243 , _:c14n327 , _:c14n333 ;
+	sh:ignoredProperties _:c14n291 ;
+	sh:property _:c14n139 , _:c14n216 , _:c14n292 , _:c14n400 , _:c14n410 ;
 	sh:targetClass tmodel:Deployment .
 tmodel:Environment a sh:NodeShape ;
 	rdfs:comment "Reusable operational exposure of a running deployment (§3, F9): physical security, connectivity, operational context. Parameterises feasibility's exploitability side only — never impact CIA (F5). Distinct from LifecyclePhase (§3b). The MVP metric runs without requiring this node." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n372 ;
-	sh:property _:c14n135 , _:c14n19 , _:c14n263 , _:c14n346 , _:c14n73 , _:c14n82 ;
+	sh:ignoredProperties _:c14n454 ;
+	sh:property _:c14n165 , _:c14n29 , _:c14n317 , _:c14n423 , _:c14n89 , _:c14n98 ;
 	sh:targetClass tmodel:Environment .
 tmodel:Gate a sh:NodeShape ;
 	rdfs:comment "A named, ordered, dated DECISION point with exit criteria and an approving Review (§3c R-041). Its exit criterion runs the conformance check (`validates_conformance_of` a ThreatModel): a model is conformant when every in-scope ThreatInstance has an approved, evidenced Mitigation (R-042). The check PROVES linkage + approval, NOT adequacy — the human cybersecurity-assessment judgement stays a human input (CLAUDE.md)." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n329 ;
-	sh:property _:c14n10 , _:c14n104 , _:c14n122 , _:c14n148 , _:c14n149 , _:c14n172 , _:c14n184 , _:c14n221 , _:c14n29 , _:c14n352 , _:c14n357 , _:c14n8 , _:c14n81 ;
+	sh:ignoredProperties _:c14n404 ;
+	sh:property _:c14n122 , _:c14n14 , _:c14n146 , _:c14n16 , _:c14n179 , _:c14n180 , _:c14n207 , _:c14n221 , _:c14n267 , _:c14n39 , _:c14n430 , _:c14n437 , _:c14n97 ;
 	sh:targetClass tmodel:Gate .
 tmodel:GovernedView a sh:NodeShape ;
 	rdfs:comment "The governed, persisted subtype of View (§3c R-043). The existing `View` stays the TRANSIENT lens (query/projection, never written back); a GovernedView is the TRACKED artifact — an owned / approved / reproducible snapshot. It keeps View's `projection`/`focus_query` and adds governance: `owner` (Party ROLE, §2b), `revision` (the saved view's version), approval via the Review spine (`approved_by`) pinned to an `approval_digest` so the sign-off is reproducible against KG state at a point in time (SysML v2 View/Viewpoint, OMG SACM, OSCAL→Word prior art), `governance_status`, and `supersedes`. `renders` the KG scope it materializes (e.g. a ThreatModel or SecurityProgram). Post-MVP." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n150 ;
-	sh:property _:c14n11 , _:c14n131 , _:c14n234 , _:c14n271 , _:c14n284 , _:c14n291 , _:c14n294 , _:c14n297 , _:c14n306 , _:c14n380 , _:c14n49 , _:c14n58 , _:c14n65 , _:c14n79 , _:c14n86 ;
+	sh:ignoredProperties _:c14n181 ;
+	sh:property _:c14n102 , _:c14n157 , _:c14n17 , _:c14n282 , _:c14n327 , _:c14n341 , _:c14n350 , _:c14n354 , _:c14n359 , _:c14n368 , _:c14n464 , _:c14n62 , _:c14n72 , _:c14n79 , _:c14n95 ;
 	sh:targetClass tmodel:GovernedView .
 tmodel:ImpactVector a sh:NodeShape ;
 	rdfs:comment "Inlined value object for RiskScore.impact (§3). ISO 21434 safety / financial / operational / privacy, each severe|major|moderate|negligible. Keeping the four categories is the method; collapsing to one number is display-only. Not a §13 domain class. business_impact is a different post-MVP axis and is not a field here." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n178 ;
-	sh:property _:c14n111 , _:c14n240 , _:c14n290 , _:c14n366 ;
+	sh:ignoredProperties _:c14n214 ;
+	sh:property _:c14n132 , _:c14n288 , _:c14n349 , _:c14n446 ;
 	sh:targetClass tmodel:ImpactVector .
 tmodel:LifecyclePhase a sh:NodeShape ;
 	rdfs:comment "Coarse lifecycle stage (§3b). The vocabulary is LifecyclePhaseCode (concept through decommission/disposal, ISO 21434 + ISO 26262 aligned). Reverse-logistics transitions and custody provenance are post-MVP and are not modeled. `name` is the human label; `code` is the enum." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n246 ;
-	sh:property _:c14n261 , _:c14n262 , _:c14n276 , _:c14n69 ;
+	sh:ignoredProperties _:c14n295 ;
+	sh:property _:c14n315 , _:c14n316 , _:c14n332 , _:c14n84 ;
 	sh:targetClass tmodel:LifecyclePhase .
 tmodel:Milestone a sh:NodeShape ;
 	rdfs:comment "A dated, owned deliverable point on a SecurityProgram (§3c R-041), optionally dated relative to another node (`offset_from`). May serve as a gate entry condition via another node's `depends_on_node`." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n106 ;
-	sh:property _:c14n113 , _:c14n133 , _:c14n159 , _:c14n169 , _:c14n2 , _:c14n202 , _:c14n248 , _:c14n268 , _:c14n31 , _:c14n361 , _:c14n37 , _:c14n76 , _:c14n85 ;
+	sh:ignoredProperties _:c14n126 ;
+	sh:property _:c14n101 , _:c14n135 , _:c14n159 , _:c14n190 , _:c14n202 , _:c14n242 , _:c14n297 , _:c14n3 , _:c14n323 , _:c14n41 , _:c14n441 , _:c14n47 , _:c14n92 ;
 	sh:targetClass tmodel:Milestone .
 tmodel:Mitigation a sh:NodeShape ;
 	rdfs:comment "A mitigation/control (catalog example D3FEND, §1). §5 instance fields (implementation owner, external work-item refs, status) are on this class until a separate MitigationInstance class is accepted. Status is also surfaced as RiskScore.mitigation_status (R-045) — a peer of the derived risk, not an input to it." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n57 ;
-	sh:property _:c14n116 , _:c14n14 , _:c14n160 , _:c14n200 , _:c14n219 , _:c14n252 , _:c14n278 , _:c14n48 , _:c14n88 ;
+	sh:ignoredProperties _:c14n71 ;
+	sh:property _:c14n105 , _:c14n137 , _:c14n193 , _:c14n20 , _:c14n241 , _:c14n265 , _:c14n302 , _:c14n334 , _:c14n61 ;
 	sh:targetClass tmodel:Mitigation .
 tmodel:Node a sh:NodeShape ;
 	rdfs:comment "Shared identity for every §13 class. `id` is the stable object id ADR-0004 requires across file, LPG, and RDF encodings. Not itself a §13 class." ;
 	sh:closed false ;
-	sh:ignoredProperties _:c14n253 ;
-	sh:property _:c14n124 , _:c14n296 , _:c14n324 ;
+	sh:ignoredProperties _:c14n304 ;
+	sh:property _:c14n149 , _:c14n357 , _:c14n396 ;
 	sh:targetClass tmodel:Node .
 tmodel:Party a sh:NodeShape ;
 	rdfs:comment "One reusable identity for an organization or a person (§2b). ThreatActor and PROV Agent are facets of this identity, not separate §13 classes. Only intrinsic classifications live on the node; supplier/owner/vendor-of are edges." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n295 ;
-	sh:property _:c14n207 , _:c14n279 , _:c14n330 , _:c14n345 , _:c14n374 ;
+	sh:ignoredProperties _:c14n356 ;
+	sh:property _:c14n248 , _:c14n335 , _:c14n406 , _:c14n422 , _:c14n459 ;
 	sh:targetClass tmodel:Party .
 tmodel:Product a sh:NodeShape ;
 	rdfs:comment "A product design (structural layer, §1). Recursive composition is `composed_of` Components (§3). Relational party roles are edges (§2b)." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n280 ;
-	sh:property _:c14n120 , _:c14n15 , _:c14n177 , _:c14n182 , _:c14n231 , _:c14n249 , _:c14n303 , _:c14n68 ;
+	sh:ignoredProperties _:c14n337 ;
+	sh:property _:c14n143 , _:c14n21 , _:c14n212 , _:c14n218 , _:c14n279 , _:c14n298 , _:c14n364 , _:c14n82 ;
 	sh:targetClass tmodel:Product .
 tmodel:ProductInstance a sh:NodeShape ;
 	rdfs:comment "A versioned, identity-bearing instance of a Product (§1, §3b). Lifecycle *state* sits here (with valid_from/valid_to), not on Product or Component. A refurbished unit can share a firmware hash and still carry a new phase, Deployment, and owner. The firmware image digest / build hash is an opaque `identifiers` string (ADR-0002 per-type instance identity), not a pinned slot." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n161 ;
-	sh:property _:c14n103 , _:c14n118 , _:c14n156 , _:c14n170 , _:c14n323 , _:c14n359 , _:c14n376 , _:c14n38 , _:c14n9 ;
+	sh:ignoredProperties _:c14n194 ;
+	sh:property _:c14n141 , _:c14n15 , _:c14n189 , _:c14n203 , _:c14n311 , _:c14n344 , _:c14n371 , _:c14n377 , _:c14n393 , _:c14n405 , _:c14n48 ;
 	sh:targetClass tmodel:ProductInstance .
 tmodel:ProgramNode a sh:NodeShape ;
 	rdfs:comment "Shared shape for an SDL program node (§3c R-041): a named, `order`-ed, dated governance point on a SecurityProgram, mapped onto the LifecyclePhase axis (§3b, `at_phase`). Carries program-management fields — `order`, `planned_date` vs `actual_date`, `gate_status`, `owner` (Party ROLE, §2b), the Requirements that gate passage (`gated_by`), the Reviews that decide it (`decided_by` — the §4 human-review spine, not a parallel mechanism), and node dependencies / entry criteria (`depends_on_node`). Corporate gate-naming varies, so `name` is the local label and `at_phase` the canonical mapping (MAP-0001 gate crosswalk). Not instantiated directly; use Gate / Milestone / Checkpoint." ;
 	sh:closed false ;
-	sh:ignoredProperties _:c14n186 ;
-	sh:property _:c14n203 , _:c14n215 , _:c14n220 , _:c14n236 , _:c14n272 , _:c14n28 , _:c14n3 , _:c14n310 , _:c14n321 , _:c14n368 , _:c14n56 , _:c14n98 ;
+	sh:ignoredProperties _:c14n223 ;
+	sh:property _:c14n117 , _:c14n243 , _:c14n258 , _:c14n266 , _:c14n284 , _:c14n328 , _:c14n376 , _:c14n38 , _:c14n391 , _:c14n448 , _:c14n5 , _:c14n70 ;
 	sh:targetClass tmodel:ProgramNode .
 tmodel:RedundancyGroup a sh:NodeShape ;
 	rdfs:comment "Marks Deployments (or whole build/review systems) as replicas (§3, §10): `replica_of` / `redundant_with`. Supports common-mode risk and per-replica mitigation divergence. Post-MVP (R-034)." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n47 ;
-	sh:property _:c14n174 , _:c14n181 , _:c14n315 , _:c14n350 , _:c14n379 ;
+	sh:ignoredProperties _:c14n59 ;
+	sh:property _:c14n209 , _:c14n217 , _:c14n383 , _:c14n428 , _:c14n463 ;
 	sh:targetClass tmodel:RedundancyGroup .
 tmodel:Requirement a sh:NodeShape ;
 	rdfs:comment "A normative statement from a spec, satisfied through the SDL (§3c R-044). Its `text` is the normative statement and `normativity` says how binding it is. `source_ref` is an OPAQUE uriorcurie into the library requirement record (Threat-Radar/library) — tmodel aligns by reference ONLY; it does not import or depend on the library schema. `maps_to` carries the MAP-0001 cross-spec crosswalk (how SSDF ↔ MS SDL ↔ SAMM ↔ 21434 … overlap; reviewed mappings reify as Assertions, §4). `satisfied_by` links the Mitigation(s) that discharge it; `conformance_status` is the automatable R-042 verdict — it proves linkage + approval, NOT adequacy. ARCH lists audit (Requirement/WorkProduct) as post-MVP (#19); not yet a §13 class. Post-MVP." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n152 ;
-	sh:property _:c14n151 , _:c14n16 , _:c14n175 , _:c14n190 , _:c14n239 , _:c14n331 , _:c14n343 , _:c14n373 , _:c14n97 ;
+	sh:ignoredProperties _:c14n184 ;
+	sh:property _:c14n115 , _:c14n182 , _:c14n210 , _:c14n228 , _:c14n24 , _:c14n287 , _:c14n408 , _:c14n420 , _:c14n457 ;
 	sh:targetClass tmodel:Requirement .
 tmodel:Review a sh:NodeShape ;
 	rdfs:comment "Human verdict on an Assertion (§4, §5). Kept separate from the proposal. Carries status, priority, and justification. STIX Opinion/Note is a future mapping (DEC-002 / #9), not a parent class." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n53 ;
-	sh:property _:c14n132 , _:c14n147 , _:c14n164 , _:c14n176 , _:c14n204 , _:c14n325 , _:c14n348 , _:c14n87 ;
+	sh:ignoredProperties _:c14n67 ;
+	sh:property _:c14n104 , _:c14n158 , _:c14n178 , _:c14n197 , _:c14n211 , _:c14n244 , _:c14n397 , _:c14n426 ;
 	sh:targetClass tmodel:Review .
 tmodel:RiskScore a sh:NodeShape ;
 	rdfs:comment "Composite risk vector (sponsor round, proposed.10 / DL-0011; DEC-003 OPEN — ADR-0005 was dropped, not accepted). Peer slots: feasibility (ISO 21434 Table-1 method; Common Criteria display-only — numbers, label, and a colored indicator in table views), impact (from attack damage; 21434 S/F/O/P), mitigation_status, and derived risk. Shown alongside its inputs, never instead of them. Not a single CVSS score. More components only with a further sponsor decision. MVP: one stakeholder; business_impact is post-MVP and intentionally has no slot." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n4 ;
-	sh:property _:c14n125 , _:c14n129 , _:c14n183 , _:c14n211 , _:c14n217 , _:c14n24 , _:c14n245 , _:c14n293 , _:c14n30 , _:c14n313 , _:c14n332 ;
+	sh:ignoredProperties _:c14n9 ;
+	sh:property _:c14n150 , _:c14n155 , _:c14n220 , _:c14n254 , _:c14n262 , _:c14n294 , _:c14n33 , _:c14n353 , _:c14n380 , _:c14n40 , _:c14n409 ;
 	sh:targetClass tmodel:RiskScore .
 tmodel:SecurityProgram a sh:NodeShape ;
 	rdfs:comment "The SDL as a first-class, GOVERNED, VERSIONED object (§3c R-041). An ordered, named, dated program `governs` a Product / ProductInstance / ProductFamily and is composed of `program_nodes` (Gate / Milestone / Checkpoint) mapped onto the LifecyclePhase axis (§3b, each node's `at_phase`). It `incorporates` the Requirements it enforces; its gates run the conformance check (R-042). Full program management lives on the program nodes (owner, planned/actual dates, status per node). It is itself a governed view (owner / revision / approved_by + approval_digest / governance_status / supersedes), reconciling §10 \"views are transient\": the SDL plan is a named, versioned, signed-off snapshot over the one SoT, iterating across review cycles. Post-MVP." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n213 ;
-	sh:property _:c14n102 , _:c14n109 , _:c14n134 , _:c14n223 , _:c14n226 , _:c14n241 , _:c14n275 , _:c14n281 , _:c14n299 , _:c14n307 , _:c14n367 , _:c14n381 , _:c14n45 , _:c14n51 , _:c14n66 ;
+	sh:ignoredProperties _:c14n256 ;
+	sh:property _:c14n121 , _:c14n130 , _:c14n162 , _:c14n269 , _:c14n273 , _:c14n289 , _:c14n330 , _:c14n338 , _:c14n362 , _:c14n370 , _:c14n447 , _:c14n465 , _:c14n57 , _:c14n64 , _:c14n80 ;
 	sh:targetClass tmodel:SecurityProgram .
 tmodel:ThreatInstance a sh:NodeShape ;
 	rdfs:comment "A threat in a model, not the generic catalog entry (§1). Carries the method facet (STRIDE and, post-MVP, LINDDUN/MAESTRO) and `realizes` a DamageScenario. Phase scope is `applies_in_phase` (§3b), distinct from Environment." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n370 ;
-	sh:property _:c14n114 , _:c14n136 , _:c14n20 , _:c14n238 , _:c14n32 , _:c14n358 , _:c14n375 , _:c14n52 ;
+	sh:ignoredProperties _:c14n450 ;
+	sh:property _:c14n11 , _:c14n166 , _:c14n286 , _:c14n326 , _:c14n373 , _:c14n394 , _:c14n42 , _:c14n438 , _:c14n66 ;
 	sh:targetClass tmodel:ThreatInstance .
 tmodel:ThreatModel a sh:NodeShape ;
 	rdfs:comment "A GOVERNED, VERSIONED view/snapshot over the KG-as-SoT (§3c R-043). NOT domain truth re-stated: a reviewed LENS whose membership and verdicts are tracked across review cycles. Scope is either a bounded `scope_query` or an explicit `members` set (in-scope ThreatInstances / AttackPaths / Components / Products). Governance is the shared governed-view facet: `owner` (a Party ROLE, §2b — not a new actor type), `revision`, approval through the existing Review spine (`approved_by`) pinned to an `approval_digest` so sign-off is REPRODUCIBLE against KG state at a point in time, `governance_status` (draft/in-review/approved/superseded), and `supersedes` the prior revision. ARCH-0001 has no ThreatModel class; this is the scope node for \"the threat model itself\" (RPT-0013-OM §2). Post-MVP as an SDL object (the threat content it scopes is MVP)." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n360 ;
-	sh:property _:c14n121 , _:c14n130 , _:c14n140 , _:c14n141 , _:c14n146 , _:c14n247 , _:c14n267 , _:c14n287 , _:c14n347 , _:c14n371 , _:c14n378 , _:c14n44 , _:c14n46 , _:c14n7 ;
+	sh:ignoredProperties _:c14n440 ;
+	sh:property _:c14n13 , _:c14n145 , _:c14n156 , _:c14n171 , _:c14n172 , _:c14n176 , _:c14n296 , _:c14n322 , _:c14n345 , _:c14n424 , _:c14n453 , _:c14n462 , _:c14n55 , _:c14n58 ;
 	sh:targetClass tmodel:ThreatModel .
+tmodel:TrustBoundary a sh:NodeShape ;
+	rdfs:comment "Accepted via ADR-0011 (DL-0024). Where control or assumptions change (ARCH-0001 §3), modeled as a zone, as the proposal's §1 does: a Component is `in_trust_zone` a TrustBoundary (§1, F12), and zones nest through `within_boundary`, which can also name the Component a zone sits inside, because an OTM trust zone's `parent` may be a component. A DataFlow whose ends sit in different zones crosses the boundary between them; `crosses_boundary` states it explicitly where membership is unknown. Maps OTM `trustZones` and pytm boundaries; threagile's member lists and CycloneDX's per-service `trustZone` import onto the same zone (RPT-0005 crosswalk, \"four shapes\"). `zone_type` and `trust_level` keep the source's own labels." ;
+	sh:closed true ;
+	sh:ignoredProperties _:c14n455 ;
+	sh:property _:c14n113 , _:c14n124 , _:c14n226 , _:c14n346 , _:c14n35 , _:c14n435 ;
+	sh:targetClass tmodel:TrustBoundary .
 tmodel:View a sh:NodeShape ;
 	rdfs:comment "Derived presentation lens (§10): query/filter + projection. Not domain truth and never written back onto domain nodes. Saved views may be persisted; rendered geometry is transient and out of this schema. One graph projection is MVP; other projections are post-MVP." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n137 ;
-	sh:property _:c14n230 , _:c14n232 , _:c14n308 , _:c14n335 , _:c14n77 ;
+	sh:ignoredProperties _:c14n167 ;
+	sh:property _:c14n278 , _:c14n280 , _:c14n372 , _:c14n413 , _:c14n93 ;
 	sh:targetClass tmodel:View .
 tmodel:Vulnerability a sh:NodeShape ;
 	rdfs:comment "A finding/vulnerability (CVE/NVD-shaped) that `affects` a Product (§2b). Propagation along uses_component/composed_of and the per-instance VEX override are Assertions plus Reviews (§5), not extra classes." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n265 ;
-	sh:property _:c14n115 , _:c14n201 , _:c14n288 , _:c14n298 , _:c14n300 , _:c14n61 , _:c14n90 ;
+	sh:ignoredProperties _:c14n319 ;
+	sh:property _:c14n107 , _:c14n136 , _:c14n160 , _:c14n261 , _:c14n303 , _:c14n321 , _:c14n347 , _:c14n360 , _:c14n385 ;
 	sh:targetClass tmodel:Vulnerability .
 tmodel:Weakness a sh:NodeShape ;
 	rdfs:comment "Generic weakness, catalogued as CWE (§1 layer 3). The CWE↔CAPEC link is a human-reviewed mapping (an Assertion), not a facet property (§2) — no hard edge to AttackPattern in this cut." ;
 	sh:closed true ;
-	sh:ignoredProperties _:c14n142 ;
-	sh:property _:c14n119 , _:c14n196 , _:c14n60 , _:c14n89 ;
+	sh:ignoredProperties _:c14n173 ;
+	sh:property _:c14n106 , _:c14n142 , _:c14n236 , _:c14n75 ;
 	sh:targetClass tmodel:Weakness .
-_:c14n0 rdf:first tmodel:priority ;
-	rdf:rest _:c14n22 .
-_:c14n1 sh:class tmodel:Party ;
-	sh:description "Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 4 ;
-	sh:path tmodel:owner .
-_:c14n10 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 12 ;
-	sh:path tmodel:description .
-_:c14n100 rdf:first tmodel:mitigation_status ;
-	rdf:rest _:c14n55 .
-_:c14n101 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n102 sh:datatype xsd:string ;
-	sh:description "Monotonic revision/version of a governed snapshot (§3c R-043). This is the saved view's \"version\"; ThreatModel and SecurityProgram name the same field `revision`. Tracked across review cycles via `supersedes`." ;
+_:c14n0 sh:datatype xsd:boolean ;
+	sh:description "Accepted via ADR-0011 (DL-0024). True when the flow runs both ways (OTM `bidirectional`)." ;
 	sh:maxCount 1 ;
 	sh:nodeKind sh:Literal ;
 	sh:order 4 ;
-	sh:path tmodel:revision .
-_:c14n103 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 7 ;
-	sh:path tmodel:name .
-_:c14n104 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 10 ;
-	sh:path tmodel:id .
-_:c14n105 rdf:first tmodel:environment ;
-	rdf:rest _:c14n91 .
-_:c14n106 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n107 sh:class tmodel:ProgramNode ;
-	sh:description "Entry-criteria / dependency edges between program nodes (§3c R-041)." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 8 ;
-	sh:path tmodel:depends_on_node .
-_:c14n108 rdf:first "maestro" ;
-	rdf:rest rdf:nil .
-_:c14n109 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 12 ;
-	sh:path tmodel:id .
-_:c14n11 sh:class tmodel:Party ;
-	sh:description "Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 1 ;
-	sh:path tmodel:owner .
-_:c14n110 rdf:first "informative" ;
-	rdf:rest _:c14n199 .
-_:c14n111 sh:description "Safety impact; ISO 26262-informed (§3, RQ-15-06)." ;
-	sh:in _:c14n479 ;
-	sh:maxCount 1 ;
-	sh:order 0 ;
-	sh:path tmodel:safety .
-_:c14n112 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 9 ;
-	sh:path tmodel:id .
-_:c14n113 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 12 ;
-	sh:path tmodel:description .
-_:c14n114 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 5 ;
-	sh:path tmodel:id .
-_:c14n115 sh:class tmodel:Party ;
-	sh:description "Reporter (§2b)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 2 ;
-	sh:path tmodel:reported_by .
-_:c14n116 sh:class tmodel:LifecyclePhase ;
-	sh:description "Coarse lifecycle stage a threat or mitigation belongs to (§3b). Not a substitute for Environment. One threat uses the axis that fits." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 2 ;
-	sh:path tmodel:applies_in_phase .
-_:c14n117 sh:class tmodel:ProductInstance ;
-	sh:description "The instance this Deployment places (§3)." ;
-	sh:maxCount 1 ;
-	sh:minCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 0 ;
-	sh:path tmodel:product_instance .
-_:c14n118 sh:datatype xsd:dateTime ;
-	sh:description "End of the (ProductInstance, time) state interval (§3b). Open-ended if absent." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 3 ;
-	sh:path tmodel:valid_to .
-_:c14n119 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 1 ;
-	sh:path tmodel:id .
-_:c14n12 rdf:first tmodel:redundancy_relation ;
-	rdf:rest _:c14n447 .
-_:c14n120 sh:class tmodel:Party ;
-	sh:description "Relational role edge (§2b). The same Party may supply one product and consume another." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 2 ;
-	sh:path tmodel:supplied_by .
-_:c14n121 sh:description "Standing of the current sign-off, read from the approving Review(s) (§4 spine). Distinct from `governance_status` (where the snapshot is in its life): this tracks the verdict of its review cycle. Denormalized convenience — the authoritative verdict is the Review, not this field." ;
-	sh:in _:c14n462 ;
-	sh:maxCount 1 ;
-	sh:order 6 ;
-	sh:path tmodel:approval_status .
-_:c14n122 sh:datatype xsd:date ;
-	sh:description "Actual date a program node occurred (§3c R-041). Open if not yet reached." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 3 ;
-	sh:path tmodel:actual_date .
-_:c14n123 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n124 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 1 ;
-	sh:path tmodel:name .
-_:c14n125 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 10 ;
-	sh:path tmodel:description .
-_:c14n126 rdf:first tmodel:assigned_by ;
-	rdf:rest _:c14n173 .
-_:c14n127 rdf:first "implementation" ;
-	rdf:rest _:c14n364 .
-_:c14n128 rdf:first "partial" ;
-	rdf:rest _:c14n225 .
-_:c14n129 sh:datatype xsd:string ;
-	sh:description "Derived Risk = M(Impact, Feasibility) (§3). ISO 21434 wants one value 1–5 per (threat-scenario, impact-category), and per stakeholder when owners differ. Stored as text because the aggregation function is not fixed until a DEC-003 ADR. Not a CVSS base score. Display may add a colour and a feasibility label; that styling is not a slot." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 7 ;
-	sh:path tmodel:risk .
-_:c14n13 rdf:first tmodel:subject ;
-	rdf:rest _:c14n435 .
-_:c14n130 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 12 ;
-	sh:path tmodel:name .
-_:c14n131 sh:description "Which derived projection this View spec names (§10)." ;
-	sh:in _:c14n426 ;
-	sh:maxCount 1 ;
-	sh:order 10 ;
-	sh:path tmodel:projection .
-_:c14n132 sh:class tmodel:Assertion ;
-	sh:description "The Assertion this Review judges (§4)." ;
-	sh:maxCount 1 ;
-	sh:minCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 0 ;
-	sh:path tmodel:reviews .
-_:c14n133 sh:datatype xsd:date ;
-	sh:description "Actual date a program node occurred (§3c R-041). Open if not yet reached." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 3 ;
-	sh:path tmodel:actual_date .
-_:c14n134 sh:class tmodel:Review ;
-	sh:description "Approving Review(s) of a governed artifact (§3c R-043). Approval runs through the existing Review + Assertion spine (§4) — NOT a parallel provenance mechanism (iteration-7 guardrail, DL-0010)." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 5 ;
-	sh:path tmodel:approved_by .
-_:c14n135 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 4 ;
-	sh:path tmodel:name .
-_:c14n136 sh:description "Which method classified this threat (§2). STRIDE is a facet, not an AttackPattern property. Facets beyond STRIDE are post-MVP." ;
-	sh:in _:c14n289 ;
-	sh:order 1 ;
-	sh:path tmodel:method_facet .
-_:c14n137 rdf:first rdf:type ;
-	rdf:rest _:c14n417 .
-_:c14n138 sh:datatype xsd:string ;
-	sh:description "External catalog identifier when the proposal names one (CWE, CAPEC, ATT&CK, CVE, D3FEND). The identifier scheme is not pinned in §13." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 0 ;
-	sh:path tmodel:catalog_ref .
-_:c14n139 rdf:first tmodel:code ;
-	rdf:rest _:c14n316 .
-_:c14n14 sh:datatype xsd:string ;
-	sh:description "External catalog identifier when the proposal names one (CWE, CAPEC, ATT&CK, CVE, D3FEND). The identifier scheme is not pinned in §13." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 0 ;
-	sh:path tmodel:catalog_ref .
-_:c14n140 sh:datatype xsd:dateTime ;
-	sh:description "When the governed artifact was last updated (§3c R-043 change tracking)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 10 ;
-	sh:path tmodel:updated .
-_:c14n141 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 13 ;
-	sh:path tmodel:description .
-_:c14n142 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n143 rdf:first tmodel:violates_property ;
-	rdf:rest rdf:nil .
-_:c14n144 sh:datatype xsd:string ;
-	sh:description "Confidence attached to the Assertion (§4). Scale is not fixed in the proposal." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 3 ;
-	sh:path tmodel:confidence .
-_:c14n145 sh:class tmodel:Review ;
-	sh:description "Reviews that decide a program node's passage (§3c R-041). The §4 human-review spine — not a parallel approval mechanism." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 7 ;
-	sh:path tmodel:decided_by .
-_:c14n146 sh:datatype xsd:string ;
-	sh:description "Bounded query/filter defining a ThreatModel snapshot's membership (§3c R-043). Opaque to this schema (DEC-004 open), like View.focus_query. Use `members` for an explicit set instead." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 0 ;
-	sh:path tmodel:scope_query .
-_:c14n147 sh:datatype xsd:string ;
-	sh:description "Review priority (§5). Scale not specified in the proposal." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 3 ;
-	sh:path tmodel:priority .
-_:c14n148 sh:class tmodel:Requirement ;
-	sh:description "Requirements whose conformance gates passage of this program node (§3c R-041/R-042)." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 7 ;
-	sh:path tmodel:gated_by .
-_:c14n149 sh:class tmodel:ProgramNode ;
-	sh:description "Entry-criteria / dependency edges between program nodes (§3c R-041)." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 9 ;
-	sh:path tmodel:depends_on_node .
-_:c14n15 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 7 ;
-	sh:path tmodel:description .
-_:c14n150 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n151 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 6 ;
-	sh:path tmodel:id .
-_:c14n152 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n153 rdf:first tmodel:source_ref ;
-	rdf:rest _:c14n269 .
-_:c14n154 rdf:first "replica_of" ;
-	rdf:rest _:c14n334 .
-_:c14n155 rdf:first tmodel:reviews ;
-	rdf:rest _:c14n408 .
-_:c14n156 sh:class tmodel:LifecyclePhase ;
-	sh:description "Lifecycle state of this ProductInstance at valid_from/valid_to (§3b)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 1 ;
-	sh:path tmodel:current_phase .
-_:c14n157 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 7 ;
-	sh:path tmodel:description .
-_:c14n158 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 0 ;
-	sh:path tmodel:id .
-_:c14n159 sh:class tmodel:Review ;
-	sh:description "Reviews that decide a program node's passage (§3c R-041). The §4 human-review spine — not a parallel approval mechanism." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 8 ;
-	sh:path tmodel:decided_by .
-_:c14n16 sh:datatype xsd:string ;
-	sh:description "The normative statement of a Requirement (§3c R-044). Distinct from `description`." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 0 ;
-	sh:path tmodel:text .
-_:c14n160 sh:datatype xsd:string ;
-	sh:description "Linked work items, e.g. a Jira key (§5). Opaque strings; no tracker schema." ;
-	sh:nodeKind sh:Literal ;
-	sh:order 4 ;
-	sh:path tmodel:external_refs .
-_:c14n161 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n162 rdf:first tmodel:incorporates ;
-	rdf:rest _:c14n50 .
-_:c14n163 rdf:first tmodel:source_method ;
-	rdf:rest _:c14n153 .
-_:c14n164 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 6 ;
-	sh:path tmodel:name .
-_:c14n165 rdf:first tmodel:catalog_ref ;
-	rdf:rest _:c14n166 .
-_:c14n166 rdf:first tmodel:classifications ;
-	rdf:rest _:c14n139 .
-_:c14n167 sh:class tmodel:AttackStep ;
-	sh:description "AttackSteps in this path (§2a). Order is the `precedes` edges, not list position." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 0 ;
-	sh:path tmodel:steps .
-_:c14n168 rdf:first "organization" ;
-	rdf:rest _:c14n264 .
-_:c14n169 sh:class tmodel:Party ;
-	sh:description "Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 5 ;
-	sh:path tmodel:owner .
-_:c14n17 rdf:first tmodel:applies_in_phase ;
-	rdf:rest _:c14n434 .
-_:c14n170 sh:datatype xsd:dateTime ;
-	sh:description "Start of the (ProductInstance, time) state interval (§3b). Temporal axis was flagged as still-missing; included here because §3b says to add it with lifecycle state." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 2 ;
-	sh:path tmodel:valid_from .
-_:c14n171 rdf:first tmodel:members ;
-	rdf:rest _:c14n365 .
-_:c14n172 sh:class tmodel:Review ;
-	sh:description "Reviews that decide a program node's passage (§3c R-041). The §4 human-review spine — not a parallel approval mechanism." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 8 ;
-	sh:path tmodel:decided_by .
-_:c14n173 rdf:first tmodel:at_phase ;
-	rdf:rest _:c14n6 .
-_:c14n174 sh:class tmodel:Deployment ;
-	sh:description "Deployments in this redundancy group (§3, §10)." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 0 ;
-	sh:path tmodel:replicas .
-_:c14n175 sh:class tmodel:Mitigation ;
-	sh:description "Mitigation(s) that discharge this Requirement (§3c R-042)." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 4 ;
-	sh:path tmodel:satisfied_by .
-_:c14n176 sh:datatype xsd:string ;
-	sh:description "Why the verdict was reached (§5). Separate from the Assertion text." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 4 ;
-	sh:path tmodel:justification .
-_:c14n177 sh:datatype xsd:string ;
-	sh:description "Opaque external / instance-identity strings for a structural node — Product, ProductInstance, or Component (§1). This is ADR-0002's per-type instance identity (\"software = a build/commit/hash/SBOM; hardware = firmware + buses + cores (HBOM)\") and the generic↔instance half of DEC-009, which the §13 classes otherwise could not carry: `catalog_ref` names a GENERIC catalog entry (CWE/CVE/CAPEC), not the concrete artifact. Scheme-prefixed and OPAQUE, like `catalog_ref` / `external_refs` — a CPE, a package URL (purl), a SWID/SBOM ref, a build/commit hash, or a firmware-image digest. The scheme is NOT pinned and no CPE/SBOM schema is imported (ADR-0004 substrate-neutrality). Additive DRAFT slot (DEC-001 open); not a new §13 class." ;
-	sh:nodeKind sh:Literal ;
-	sh:order 4 ;
-	sh:path tmodel:identifiers .
-_:c14n178 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n179 rdf:first tmodel:confidence ;
-	rdf:rest _:c14n194 .
-_:c14n18 sh:description "AND/OR combination of this step with its predecessors (§2a, R-031)." ;
-	sh:in _:c14n256 ;
-	sh:maxCount 1 ;
-	sh:order 0 ;
-	sh:path tmodel:gate .
-_:c14n180 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 3 ;
-	sh:path tmodel:name .
-_:c14n181 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 4 ;
-	sh:path tmodel:description .
-_:c14n182 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 5 ;
-	sh:path tmodel:id .
-_:c14n183 sh:description "Lifecycle of the mitigation (§3 R-045, §5): planned / in-progress / complete / accepted-risk / n-a. Vocabulary may be refined by DEC-009. On RiskScore this is a peer column of feasibility and impact, not folded into `risk`." ;
-	sh:in _:c14n441 ;
-	sh:maxCount 1 ;
-	sh:order 6 ;
-	sh:path tmodel:mitigation_status .
-_:c14n184 sh:class tmodel:LifecyclePhase ;
-	sh:description "Canonical LifecyclePhase a program node maps onto (§3b/§3c R-041). Gates are the governance points between phases; `name` is the local corporate label (MAP-0001 gate crosswalk)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 6 ;
-	sh:path tmodel:at_phase .
-_:c14n185 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 4 ;
-	sh:path tmodel:name .
-_:c14n186 rdf:first rdf:type ;
-	rdf:rest _:c14n493 .
-_:c14n187 rdf:first tmodel:mitigates ;
-	rdf:rest _:c14n100 .
-_:c14n188 rdf:first tmodel:identifiers ;
-	rdf:rest _:c14n35 .
-_:c14n189 sh:datatype xsd:date ;
-	sh:description "Planned date of a program node (§3c R-041 program management)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 1 ;
-	sh:path tmodel:planned_date .
-_:c14n19 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 3 ;
-	sh:path tmodel:id .
-_:c14n190 sh:description "How binding a Requirement is (§3c R-044): mandatory / recommended / optional / informative / conditional. MAP-0001 shows a cell means different things per framework (hard requirement vs maturity activity vs recommendation)." ;
-	sh:in _:c14n75 ;
-	sh:maxCount 1 ;
-	sh:order 1 ;
-	sh:path tmodel:normativity .
-_:c14n191 rdf:first tmodel:gate ;
-	rdf:rest _:c14n25 .
-_:c14n192 sh:class tmodel:LifecyclePhase ;
-	sh:description "Canonical LifecyclePhase a program node maps onto (§3b/§3c R-041). Gates are the governance points between phases; `name` is the local corporate label (MAP-0001 gate crosswalk)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 5 ;
-	sh:path tmodel:at_phase .
-_:c14n193 rdf:first tmodel:for_stakeholder ;
-	rdf:rest _:c14n191 .
-_:c14n194 rdf:first tmodel:conformance_status ;
-	rdf:rest _:c14n377 .
-_:c14n195 rdf:first "end_of_support" ;
-	rdf:rest _:c14n328 .
-_:c14n196 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 2 ;
-	sh:path tmodel:name .
-_:c14n197 rdf:first tmodel:precedes ;
-	rdf:rest _:c14n274 .
-_:c14n198 rdf:first tmodel:actual_date ;
-	rdf:rest _:c14n266 .
-_:c14n199 rdf:first "conditional" ;
-	rdf:rest rdf:nil .
-_:c14n2 sh:class tmodel:LifecyclePhase ;
-	sh:description "Canonical LifecyclePhase a program node maps onto (§3b/§3c R-041). Gates are the governance points between phases; `name` is the local corporate label (MAP-0001 gate crosswalk)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 6 ;
-	sh:path tmodel:at_phase .
-_:c14n20 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 7 ;
-	sh:path tmodel:description .
-_:c14n200 sh:class tmodel:ThreatInstance ;
-	sh:description "Threats this mitigation addresses (§5). Phase binding is applies_in_phase." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 1 ;
-	sh:path tmodel:mitigates .
-_:c14n201 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 5 ;
-	sh:path tmodel:name .
-_:c14n202 sh:description "Passage status of a program node (§3c R-041): planned / in-progress / passed / failed / waived / blocked." ;
-	sh:in _:c14n399 ;
-	sh:maxCount 1 ;
-	sh:order 4 ;
-	sh:path tmodel:gate_status .
-_:c14n203 sh:class tmodel:ProgramNode ;
-	sh:description "Entry-criteria / dependency edges between program nodes (§3c R-041)." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 8 ;
-	sh:path tmodel:depends_on_node .
-_:c14n204 sh:class tmodel:Party ;
-	sh:description "Human (or, later, an agent facet of a Party) who issued the verdict (§4)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 1 ;
-	sh:path tmodel:reviewer .
-_:c14n205 sh:datatype xsd:string ;
-	sh:description "Optional coarse order tag (§2a). Distinct from the ATT&CK technique. The Lockheed kill-chain record is not pinned; do not rely on a fixed vocabulary." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 2 ;
-	sh:path tmodel:kill_chain_phase .
-_:c14n206 sh:class tmodel:Component ;
-	sh:description "Use edge along which vuln/finding propagation is sound (§5)." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 2 ;
-	sh:path tmodel:uses_component .
-_:c14n207 sh:datatype xsd:string ;
-	sh:description "Intrinsic classifications only, e.g. standards-body, cna (§2b)." ;
-	sh:nodeKind sh:Literal ;
-	sh:order 1 ;
-	sh:path tmodel:classifications .
-_:c14n208 rdf:first "nonconformant" ;
-	rdf:rest _:c14n128 .
-_:c14n209 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 5 ;
-	sh:path tmodel:description .
-_:c14n21 rdf:first tmodel:depends_on_node ;
-	rdf:rest _:c14n105 .
-_:c14n210 rdf:first tmodel:updated ;
-	rdf:rest _:c14n64 .
-_:c14n211 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 9 ;
-	sh:path tmodel:name .
-_:c14n212 sh:class tmodel:Node ;
-	sh:description "Subject of the reified statement (§4)." ;
-	sh:maxCount 1 ;
-	sh:minCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 0 ;
-	sh:path tmodel:subject .
-_:c14n213 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n214 rdf:first tmodel:replicas ;
-	rdf:rest _:c14n383 .
-_:c14n215 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 10 ;
-	sh:path tmodel:name .
-_:c14n216 rdf:first "deployment" ;
-	rdf:rest _:c14n40 .
-_:c14n217 sh:class tmodel:DamageScenario ;
-	sh:description "Damage scenario whose impact feeds M(I, F) (§3)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 2 ;
-	sh:path tmodel:damage_scenario .
-_:c14n218 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n219 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 7 ;
-	sh:path tmodel:name .
-_:c14n22 rdf:first tmodel:product_instance ;
-	rdf:rest _:c14n63 .
-_:c14n220 sh:class tmodel:Party ;
-	sh:description "Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 4 ;
-	sh:path tmodel:owner .
-_:c14n221 sh:datatype xsd:integer ;
-	sh:description "Position of a program node within its SecurityProgram (§3c R-041)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 1 ;
-	sh:path tmodel:order .
-_:c14n222 rdf:first tmodel:governs ;
-	rdf:rest _:c14n188 .
-_:c14n223 sh:class tmodel:SecurityProgram ;
-	sh:description "The prior revision of this SDL program it replaces (§3c R-041/R-043)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 9 ;
-	sh:path tmodel:supersedes .
-_:c14n224 rdf:first "recommended" ;
-	rdf:rest _:c14n353 .
-_:c14n225 rdf:first "not_applicable" ;
-	rdf:rest _:c14n83 .
-_:c14n226 sh:class tmodel:ProgramNode ;
-	sh:description "Ordered Gate / Milestone / Checkpoint nodes of a SecurityProgram (§3c R-041). Order is each node's `order`, not list position." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 1 ;
-	sh:path tmodel:program_nodes .
-_:c14n227 rdf:first tmodel:realizes_damage ;
-	rdf:rest _:c14n95 .
-_:c14n228 rdf:first tmodel:decided_by ;
-	rdf:rest _:c14n341 .
-_:c14n229 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 5 ;
-	sh:path tmodel:name .
-_:c14n23 rdf:first "distribution" ;
-	rdf:rest _:c14n216 .
-_:c14n230 sh:datatype xsd:string ;
-	sh:description "Bounded query / filter that defines the view (§10, R-033). Opaque to this schema (not a committed query language — DEC-004 is open)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 1 ;
-	sh:path tmodel:focus_query .
-_:c14n231 sh:class tmodel:Party ;
-	sh:description "Proposal attaches owned_by to Asset (§2b, §3). Asset is not a §13 class; the slot is on Product, ProductInstance, and Component as the structural stand-in. It selects whose business_impact would apply. The business_impact axis itself is post-MVP and has no slot." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 3 ;
-	sh:path tmodel:owned_by .
-_:c14n232 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 4 ;
-	sh:path tmodel:description .
-_:c14n233 rdf:first "concept" ;
-	rdf:rest _:c14n369 .
-_:c14n234 sh:datatype xsd:string ;
-	sh:description "Monotonic revision/version of a governed snapshot (§3c R-043). This is the saved view's \"version\"; ThreatModel and SecurityProgram name the same field `revision`. Tracked across review cycles via `supersedes`." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 2 ;
-	sh:path tmodel:revision .
-_:c14n235 rdf:first "conformant" ;
-	rdf:rest _:c14n208 .
-_:c14n236 sh:description "Passage status of a program node (§3c R-041): planned / in-progress / passed / failed / waived / blocked." ;
-	sh:in _:c14n405 ;
-	sh:maxCount 1 ;
-	sh:order 3 ;
-	sh:path tmodel:gate_status .
-_:c14n237 rdf:first tmodel:validates_conformance_of ;
-	rdf:rest _:c14n143 .
-_:c14n238 sh:class tmodel:DamageScenario ;
-	sh:description "ThreatInstance realizes a DamageScenario (§1)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 0 ;
-	sh:path tmodel:realizes_damage .
-_:c14n239 sh:class tmodel:Requirement ;
-	sh:description "Cross-spec crosswalk edges (§3c R-044) = the MAP-0001 overlap. Reviewed mappings reify as Assertions (§4) so they can carry provenance + a Review." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 3 ;
-	sh:path tmodel:maps_to .
-_:c14n24 sh:class tmodel:ThreatInstance ;
-	sh:description "Threat scenario this score is about (§3, RQ-15-15/16)." ;
-	sh:maxCount 1 ;
-	sh:minCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 0 ;
-	sh:path tmodel:threat .
-_:c14n240 sh:description "Privacy impact (§3). Not re-indexed by asset owner." ;
-	sh:in _:c14n483 ;
-	sh:maxCount 1 ;
-	sh:order 3 ;
-	sh:path tmodel:privacy .
-_:c14n241 sh:description "Lifecycle of a governed snapshot (§3c R-043): draft → in-review → approved → superseded. The shared governed-view lifecycle (named for the ThreatModel case; reused by SecurityProgram and GovernedView)." ;
-	sh:in _:c14n471 ;
-	sh:maxCount 1 ;
-	sh:order 8 ;
-	sh:path tmodel:governance_status .
-_:c14n242 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n243 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 4 ;
-	sh:path tmodel:description .
-_:c14n244 rdf:first tmodel:valid_from ;
-	rdf:rest _:c14n355 .
-_:c14n245 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 8 ;
-	sh:path tmodel:id .
-_:c14n246 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n247 sh:class tmodel:Node ;
-	sh:description "Explicit in-scope members of a ThreatModel snapshot (§3c R-043): ThreatInstances, AttackPaths, Components, Products. References, not copies — membership is a reviewed lens over the KG, never domain truth re-stated." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 1 ;
-	sh:path tmodel:members .
-_:c14n248 sh:class tmodel:Requirement ;
-	sh:description "Requirements whose conformance gates passage of this program node (§3c R-041/R-042)." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 7 ;
-	sh:path tmodel:gated_by .
-_:c14n249 sh:class tmodel:Component ;
-	sh:description "Recursive structural composition (§3). Inlined as references, not as nested trees." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 0 ;
-	sh:path tmodel:composed_of .
-_:c14n25 rdf:first tmodel:gate_status ;
-	rdf:rest _:c14n250 .
-_:c14n250 rdf:first tmodel:gated_by ;
-	rdf:rest _:c14n463 .
-_:c14n251 sh:class tmodel:AttackStep ;
-	sh:description "Explicit ordering edge (§2a). Steps may be shared across paths." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 1 ;
-	sh:path tmodel:precedes .
-_:c14n252 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 6 ;
-	sh:path tmodel:id .
-_:c14n253 rdf:first rdf:type ;
-	rdf:rest _:c14n198 .
-_:c14n254 rdf:first tmodel:current_phase ;
-	rdf:rest _:c14n92 .
-_:c14n255 sh:class tmodel:Component ;
-	sh:description "Dependency edge, including DNS/service-style depends_on (§3)." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 1 ;
-	sh:path tmodel:depends_on .
-_:c14n256 rdf:first "and_gate" ;
-	rdf:rest _:c14n67 .
-_:c14n257 rdf:first tmodel:attack_paths ;
-	rdf:rest _:c14n165 .
-_:c14n258 rdf:first tmodel:owned_by ;
-	rdf:rest _:c14n436 .
-_:c14n259 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 3 ;
-	sh:path tmodel:id .
-_:c14n26 rdf:first tmodel:threat ;
-	rdf:rest _:c14n210 .
-_:c14n260 rdf:first tmodel:object ;
-	rdf:rest _:c14n312 .
-_:c14n261 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 3 ;
-	sh:path tmodel:description .
-_:c14n262 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 1 ;
-	sh:path tmodel:id .
-_:c14n263 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 5 ;
-	sh:path tmodel:description .
-_:c14n264 rdf:first "person" ;
-	rdf:rest rdf:nil .
-_:c14n265 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n266 rdf:first tmodel:affects ;
-	rdf:rest _:c14n17 .
-_:c14n267 sh:class tmodel:ThreatModel ;
-	sh:description "The prior revision of this threat-model snapshot it replaces (§3c R-043)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 8 ;
-	sh:path tmodel:supersedes .
-_:c14n268 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 10 ;
-	sh:path tmodel:id .
-_:c14n269 rdf:first tmodel:steps ;
-	rdf:rest _:c14n13 .
-_:c14n27 rdf:first tmodel:review_status ;
-	rdf:rest _:c14n70 .
-_:c14n270 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 1 ;
-	sh:path tmodel:name .
-_:c14n271 sh:datatype xsd:string ;
-	sh:description "Commit/content digest the approval is pinned to, so the sign-off is REPRODUCIBLE against KG state at a point in time (§3c R-043; SysML v2 View/Viewpoint, OMG SACM, OSCAL→Word prior art). Opaque string; digest scheme not pinned here." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 4 ;
-	sh:path tmodel:approval_digest .
-_:c14n272 sh:class tmodel:LifecyclePhase ;
-	sh:description "Canonical LifecyclePhase a program node maps onto (§3b/§3c R-041). Gates are the governance points between phases; `name` is the local corporate label (MAP-0001 gate crosswalk)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 5 ;
-	sh:path tmodel:at_phase .
-_:c14n273 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 5 ;
-	sh:path tmodel:id .
-_:c14n274 rdf:first tmodel:predicate ;
-	rdf:rest _:c14n0 .
-_:c14n275 sh:description "Standing of the current sign-off, read from the approving Review(s) (§4 spine). Distinct from `governance_status` (where the snapshot is in its life): this tracks the verdict of its review cycle. Denormalized convenience — the authoritative verdict is the Review, not this field." ;
-	sh:in _:c14n457 ;
-	sh:maxCount 1 ;
-	sh:order 7 ;
-	sh:path tmodel:approval_status .
-_:c14n276 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 2 ;
-	sh:path tmodel:name .
-_:c14n277 sh:description "Path-level feasibility, ISO 21434 4-point scale, human-rated at MVP (§3, Table 1 / RQ-15-10). Not CVSS. Not per-step min/max (that is post-MVP)." ;
-	sh:in _:c14n494 ;
-	sh:maxCount 1 ;
-	sh:order 2 ;
-	sh:path tmodel:attack_feasibility .
-_:c14n278 sh:class tmodel:Party ;
-	sh:description "Who implements the mitigation (§5)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 3 ;
-	sh:path tmodel:implementation_owner .
-_:c14n279 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 4 ;
-	sh:path tmodel:description .
-_:c14n28 sh:datatype xsd:date ;
-	sh:description "Actual date a program node occurred (§3c R-041). Open if not yet reached." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 2 ;
-	sh:path tmodel:actual_date .
-_:c14n280 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n281 sh:class tmodel:Requirement ;
-	sh:description "Requirements a SecurityProgram enforces (§3c R-041/R-044)." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 2 ;
-	sh:path tmodel:incorporates .
-_:c14n282 rdf:first "linddun" ;
-	rdf:rest _:c14n108 .
-_:c14n283 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 4 ;
-	sh:path tmodel:id .
-_:c14n284 sh:class tmodel:Review ;
-	sh:description "Approving Review(s) of a governed artifact (§3c R-043). Approval runs through the existing Review + Assertion spine (§4) — NOT a parallel provenance mechanism (iteration-7 guardrail, DL-0010)." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 3 ;
-	sh:path tmodel:approved_by .
-_:c14n285 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 2 ;
-	sh:path tmodel:description .
-_:c14n286 sh:class tmodel:AttackPath ;
-	sh:description "Path-level pivot across a reachability substrate (§1). Reachability's other two levels (connected_via, step preconditions) are not classes in §13." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 3 ;
-	sh:path tmodel:pivots_to .
-_:c14n287 sh:datatype xsd:string ;
-	sh:description "Monotonic revision/version of a governed snapshot (§3c R-043). This is the saved view's \"version\"; ThreatModel and SecurityProgram name the same field `revision`. Tracked across review cycles via `supersedes`." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 3 ;
-	sh:path tmodel:revision .
-_:c14n288 sh:datatype xsd:string ;
-	sh:description "External catalog identifier when the proposal names one (CWE, CAPEC, ATT&CK, CVE, D3FEND). The identifier scheme is not pinned in §13." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 0 ;
-	sh:path tmodel:catalog_ref .
-_:c14n289 rdf:first "stride" ;
-	rdf:rest _:c14n282 .
-_:c14n29 sh:class tmodel:Party ;
-	sh:description "Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 5 ;
-	sh:path tmodel:owner .
-_:c14n290 sh:description "Operational impact (§3)." ;
-	sh:in _:c14n487 ;
-	sh:maxCount 1 ;
-	sh:order 2 ;
-	sh:path tmodel:operational .
-_:c14n291 sh:datatype xsd:dateTime ;
-	sh:description "When the governed artifact was created (§3c R-043 change tracking)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 8 ;
-	sh:path tmodel:created .
-_:c14n292 rdf:first tmodel:projection ;
-	rdf:rest _:c14n227 .
-_:c14n293 sh:class tmodel:Party ;
-	sh:description "Owner this score is reported for, when a path crosses assets with different owners (§3). MVP assumes one stakeholder; omit unless needed." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 3 ;
-	sh:path tmodel:for_stakeholder .
-_:c14n294 sh:class tmodel:Node ;
-	sh:description "The KG scope a GovernedView materializes (§3c R-043) — e.g. a ThreatModel or SecurityProgram. Content derives from KG state; never written back." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 0 ;
-	sh:path tmodel:renders .
-_:c14n295 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n296 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 0 ;
-	sh:path tmodel:id .
-_:c14n297 sh:class tmodel:GovernedView ;
-	sh:description "The prior revision of this governed snapshot it replaces (§3c R-043)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 7 ;
-	sh:path tmodel:supersedes .
-_:c14n298 sh:class tmodel:Party ;
-	sh:description "Assigning CNA (§2b). Party.classifications should include cna when this is set; not enforced here." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 3 ;
-	sh:path tmodel:assigned_by .
-_:c14n299 sh:datatype xsd:dateTime ;
-	sh:description "When the governed artifact was created (§3c R-043 change tracking)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 10 ;
-	sh:path tmodel:created .
-_:c14n3 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 9 ;
-	sh:path tmodel:id .
-_:c14n30 sh:description "Vector component (§3, DL-0011). Copied or reduced from AttackPath.attack_feasibility (worst path). Method is ISO 21434 Table-1, not Common Criteria." ;
-	sh:in _:c14n498 ;
-	sh:maxCount 1 ;
-	sh:order 4 ;
-	sh:path tmodel:feasibility .
-_:c14n300 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 6 ;
-	sh:path tmodel:description .
-_:c14n301 rdf:first tmodel:risk ;
-	rdf:rest _:c14n356 .
-_:c14n302 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 5 ;
-	sh:path tmodel:id .
-_:c14n303 sh:class tmodel:Party ;
-	sh:description "Relational role edge (§2b), not a classification on Party." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 1 ;
-	sh:path tmodel:manufactured_by .
-_:c14n304 rdf:first tmodel:updated ;
-	rdf:rest rdf:nil .
-_:c14n305 rdf:first "production" ;
-	rdf:rest _:c14n23 .
-_:c14n306 sh:datatype xsd:string ;
-	sh:description "Bounded query / filter that defines the view (§10, R-033). Opaque to this schema (not a committed query language — DEC-004 is open)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 11 ;
-	sh:path tmodel:focus_query .
-_:c14n307 sh:class tmodel:Party ;
-	sh:description "Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 3 ;
-	sh:path tmodel:owner .
-_:c14n308 sh:description "Which derived projection this View spec names (§10)." ;
-	sh:in _:c14n419 ;
-	sh:maxCount 1 ;
-	sh:order 0 ;
-	sh:path tmodel:projection .
-_:c14n309 sh:datatype xsd:string ;
-	sh:description "Edge type name (§4), e.g. composed_of, affects, realizes, owned_by. Not a closed enum: reviewed edges that are not first-class slots still reify here (including the human-reviewed CWE↔CAPEC mapping, §2)." ;
-	sh:maxCount 1 ;
-	sh:minCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 1 ;
-	sh:path tmodel:predicate .
-_:c14n31 sh:class tmodel:ProgramNode ;
-	sh:description "Entry-criteria / dependency edges between program nodes (§3c R-041)." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 9 ;
-	sh:path tmodel:depends_on_node .
-_:c14n310 sh:class tmodel:Requirement ;
-	sh:description "Requirements whose conformance gates passage of this program node (§3c R-041/R-042)." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 6 ;
-	sh:path tmodel:gated_by .
-_:c14n311 rdf:first tmodel:implementation_owner ;
-	rdf:rest _:c14n162 .
-_:c14n312 rdf:first tmodel:of_product ;
-	rdf:rest _:c14n492 .
-_:c14n313 sh:class tmodel:AttackPath ;
-	sh:description "Paths whose feasibilities feed this score. Reduction across paths is worst-path (§3); this schema stores the set, not the fold function." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 1 ;
-	sh:path tmodel:attack_paths .
-_:c14n314 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 2 ;
-	sh:path tmodel:name .
-_:c14n315 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 3 ;
-	sh:path tmodel:name .
-_:c14n316 rdf:first tmodel:composed_of ;
-	rdf:rest _:c14n179 .
-_:c14n317 sh:class tmodel:Requirement ;
-	sh:description "Requirements whose conformance gates passage of this program node (§3c R-041/R-042)." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 6 ;
-	sh:path tmodel:gated_by .
-_:c14n318 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 6 ;
-	sh:path tmodel:name .
-_:c14n319 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n32 sh:datatype xsd:string ;
-	sh:description "Security property the facet says is violated (§2). STRIDE sketch, not a closed enum: S authentication, T integrity, R non-repudiation, I confidentiality, D availability, E authorization." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 3 ;
-	sh:path tmodel:violates_property .
-_:c14n320 rdf:first tmodel:planned_date ;
-	rdf:rest _:c14n197 .
-_:c14n321 sh:datatype xsd:integer ;
-	sh:description "Position of a program node within its SecurityProgram (§3c R-041)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 0 ;
-	sh:path tmodel:order .
-_:c14n322 sh:datatype xsd:string ;
-	sh:description "Opaque external / instance-identity strings for a structural node — Product, ProductInstance, or Component (§1). This is ADR-0002's per-type instance identity (\"software = a build/commit/hash/SBOM; hardware = firmware + buses + cores (HBOM)\") and the generic↔instance half of DEC-009, which the §13 classes otherwise could not carry: `catalog_ref` names a GENERIC catalog entry (CWE/CVE/CAPEC), not the concrete artifact. Scheme-prefixed and OPAQUE, like `catalog_ref` / `external_refs` — a CPE, a package URL (purl), a SWID/SBOM ref, a build/commit hash, or a firmware-image digest. The scheme is NOT pinned and no CPE/SBOM schema is imported (ADR-0004 substrate-neutrality). Additive DRAFT slot (DEC-001 open); not a new §13 class." ;
-	sh:nodeKind sh:Literal ;
-	sh:order 4 ;
-	sh:path tmodel:identifiers .
-_:c14n323 sh:class tmodel:Party ;
-	sh:description "Proposal attaches owned_by to Asset (§2b, §3). Asset is not a §13 class; the slot is on Product, ProductInstance, and Component as the structural stand-in. It selects whose business_impact would apply. The business_impact axis itself is post-MVP and has no slot." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 4 ;
-	sh:path tmodel:owned_by .
-_:c14n324 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 2 ;
-	sh:path tmodel:description .
-_:c14n325 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 7 ;
-	sh:path tmodel:description .
-_:c14n326 sh:datatype xsd:string ;
-	sh:description "Proposal status of the Assertion (§4). Must not be `accepted` until provenance and a review are present. That gate is not encoded as a LinkML cardinality rule (§13)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 4 ;
-	sh:path tmodel:assertion_status .
-_:c14n327 sh:class tmodel:Environment ;
-	sh:description "The one Environment for this Deployment (§3)." ;
-	sh:maxCount 1 ;
-	sh:minCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 1 ;
-	sh:path tmodel:environment .
-_:c14n328 rdf:first "decommission" ;
-	rdf:rest rdf:nil .
-_:c14n329 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n33 rdf:first tmodel:assertion_status ;
-	rdf:rest _:c14n126 .
-_:c14n330 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 2 ;
-	sh:path tmodel:id .
-_:c14n331 sh:description "OPAQUE reference to a library requirement record (Threat-Radar/library), by uriorcurie id only (§3c R-044, §2b). tmodel aligns by reference — it does NOT import or depend on the library schema." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 2 ;
-	sh:path tmodel:source_ref .
-_:c14n332 sh:class tmodel:ImpactVector ;
-	sh:description "Per-category S/F/O/P vector (§3). Human-supplied. Do not replace this object with a single severity." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:BlankNodeOrIRI ;
-	sh:order 5 ;
-	sh:path tmodel:impact .
-_:c14n333 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 2 ;
-	sh:path tmodel:id .
-_:c14n334 rdf:first "redundant_with" ;
-	rdf:rest rdf:nil .
-_:c14n335 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 3 ;
-	sh:path tmodel:name .
-_:c14n336 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 7 ;
-	sh:path tmodel:description .
-_:c14n337 rdf:first tmodel:manufactured_by ;
-	rdf:rest _:c14n62 .
-_:c14n338 rdf:first tmodel:order ;
-	rdf:rest _:c14n258 .
-_:c14n339 sh:description "Passage status of a program node (§3c R-041): planned / in-progress / passed / failed / waived / blocked." ;
-	sh:in _:c14n387 ;
-	sh:maxCount 1 ;
-	sh:order 3 ;
-	sh:path tmodel:gate_status .
-_:c14n34 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 3 ;
-	sh:path tmodel:description .
-_:c14n340 rdf:first tmodel:scope_query ;
-	rdf:rest _:c14n163 .
-_:c14n341 rdf:first tmodel:depends_on ;
-	rdf:rest _:c14n21 .
-_:c14n342 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 6 ;
-	sh:path tmodel:name .
-_:c14n343 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 7 ;
-	sh:path tmodel:name .
-_:c14n344 rdf:first tmodel:party_kind ;
-	rdf:rest _:c14n54 .
-_:c14n345 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 3 ;
-	sh:path tmodel:name .
-_:c14n346 sh:datatype xsd:string ;
-	sh:description "Environment facet (§3)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 2 ;
-	sh:path tmodel:operational_context .
-_:c14n347 sh:class tmodel:Party ;
-	sh:description "Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 2 ;
-	sh:path tmodel:owner .
-_:c14n348 sh:datatype xsd:string ;
-	sh:description "Verdict status (§5). Kept open: proposal does not enumerate the values." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 2 ;
-	sh:path tmodel:review_status .
-_:c14n349 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 11 ;
-	sh:path tmodel:description .
-_:c14n35 rdf:first tmodel:impact ;
-	rdf:rest _:c14n311 .
-_:c14n350 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 2 ;
-	sh:path tmodel:id .
-_:c14n351 sh:class tmodel:Party ;
-	sh:description "Proposal attaches owned_by to Asset (§2b, §3). Asset is not a §13 class; the slot is on Product, ProductInstance, and Component as the structural stand-in. It selects whose business_impact would apply. The business_impact axis itself is post-MVP and has no slot." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 3 ;
-	sh:path tmodel:owned_by .
-_:c14n352 sh:datatype xsd:date ;
-	sh:description "Planned date of a program node (§3c R-041 program management)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 2 ;
-	sh:path tmodel:planned_date .
-_:c14n353 rdf:first "optional" ;
-	rdf:rest _:c14n110 .
-_:c14n354 rdf:first tmodel:validates_conformance_of ;
-	rdf:rest rdf:nil .
-_:c14n355 rdf:first tmodel:valid_to ;
-	rdf:rest _:c14n237 .
-_:c14n356 rdf:first tmodel:satisfied_by ;
-	rdf:rest _:c14n340 .
-_:c14n357 sh:class tmodel:ThreatModel ;
-	sh:description "The ThreatModel whose conformance this Gate's exit criterion checks (§3c R-042): every in-scope ThreatInstance has an approved, evidenced Mitigation. Proves linkage + approval, NOT adequacy (CLAUDE.md human-judgement rule)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 0 ;
-	sh:path tmodel:validates_conformance_of .
-_:c14n358 sh:datatype xsd:string ;
-	sh:description "Which method proposed this ThreatInstance (§2)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 2 ;
-	sh:path tmodel:source_method .
-_:c14n359 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 6 ;
-	sh:path tmodel:id .
-_:c14n36 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n360 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n361 sh:class tmodel:ProgramNode ;
-	sh:description "Another program node this Milestone is dated relative to (§3c R-041)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 0 ;
-	sh:path tmodel:offset_from .
-_:c14n362 rdf:first tmodel:supplied_by ;
-	rdf:rest _:c14n43 .
-_:c14n363 sh:class tmodel:ThreatInstance ;
-	sh:description "This path realises the threat scenario (§3)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 1 ;
-	sh:path tmodel:realizes_threat .
-_:c14n364 rdf:first "verification_validation" ;
-	rdf:rest _:c14n305 .
-_:c14n365 rdf:first tmodel:method_facet ;
-	rdf:rest _:c14n187 .
-_:c14n366 sh:description "Financial impact on the end-beneficiary, not the owner's P&L (§3)." ;
-	sh:in _:c14n491 ;
-	sh:maxCount 1 ;
-	sh:order 1 ;
-	sh:path tmodel:financial .
-_:c14n367 sh:datatype xsd:dateTime ;
-	sh:description "When the governed artifact was last updated (§3c R-043 change tracking)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 11 ;
-	sh:path tmodel:updated .
-_:c14n368 sh:datatype xsd:date ;
-	sh:description "Planned date of a program node (§3c R-041 program management)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 1 ;
-	sh:path tmodel:planned_date .
-_:c14n369 rdf:first "architecture" ;
-	rdf:rest _:c14n78 .
-_:c14n37 sh:datatype xsd:integer ;
-	sh:description "Position of a program node within its SecurityProgram (§3c R-041)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 1 ;
-	sh:path tmodel:order .
-_:c14n370 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n371 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 11 ;
-	sh:path tmodel:id .
-_:c14n372 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n373 sh:description "Automatable R-042 conformance verdict for a Requirement: whether it has an approved, evidenced mitigation. Proves linkage + approval, NOT adequacy." ;
-	sh:in _:c14n235 ;
-	sh:maxCount 1 ;
-	sh:order 5 ;
-	sh:path tmodel:conformance_status .
-_:c14n374 sh:description "Organization or person (§2b)." ;
-	sh:in _:c14n168 ;
-	sh:maxCount 1 ;
-	sh:order 0 ;
-	sh:path tmodel:party_kind .
-_:c14n375 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 6 ;
-	sh:path tmodel:name .
-_:c14n376 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 8 ;
-	sh:path tmodel:description .
-_:c14n377 rdf:first tmodel:connectivity ;
-	rdf:rest _:c14n502 .
-_:c14n378 sh:class tmodel:Review ;
-	sh:description "Approving Review(s) of a governed artifact (§3c R-043). Approval runs through the existing Review + Assertion spine (§4) — NOT a parallel provenance mechanism (iteration-7 guardrail, DL-0010)." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 4 ;
-	sh:path tmodel:approved_by .
-_:c14n379 sh:description "replica_of or redundant_with (§3)." ;
-	sh:in _:c14n154 ;
-	sh:maxCount 1 ;
-	sh:order 1 ;
-	sh:path tmodel:redundancy_relation .
-_:c14n38 sh:datatype xsd:string ;
-	sh:description "Opaque external / instance-identity strings for a structural node — Product, ProductInstance, or Component (§1). This is ADR-0002's per-type instance identity (\"software = a build/commit/hash/SBOM; hardware = firmware + buses + cores (HBOM)\") and the generic↔instance half of DEC-009, which the §13 classes otherwise could not carry: `catalog_ref` names a GENERIC catalog entry (CWE/CVE/CAPEC), not the concrete artifact. Scheme-prefixed and OPAQUE, like `catalog_ref` / `external_refs` — a CPE, a package URL (purl), a SWID/SBOM ref, a build/commit hash, or a firmware-image digest. The scheme is NOT pinned and no CPE/SBOM schema is imported (ADR-0004 substrate-neutrality). Additive DRAFT slot (DEC-001 open); not a new §13 class." ;
-	sh:nodeKind sh:Literal ;
-	sh:order 5 ;
-	sh:path tmodel:identifiers .
-_:c14n380 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 14 ;
-	sh:path tmodel:description .
-_:c14n381 sh:datatype xsd:string ;
-	sh:description "Commit/content digest the approval is pinned to, so the sign-off is REPRODUCIBLE against KG state at a point in time (§3c R-043; SysML v2 View/Viewpoint, OMG SACM, OSCAL→Word prior art). Opaque string; digest scheme not pinned here." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 6 ;
-	sh:path tmodel:approval_digest .
-_:c14n382 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n383 rdf:first tmodel:reported_by ;
-	rdf:rest _:c14n27 .
-_:c14n384 rdf:first "failed" ;
-	rdf:rest _:c14n388 .
-_:c14n385 rdf:first "passed" ;
-	rdf:rest _:c14n384 .
-_:c14n386 rdf:first "in_progress" ;
-	rdf:rest _:c14n385 .
-_:c14n387 rdf:first "planned" ;
-	rdf:rest _:c14n386 .
-_:c14n388 rdf:first "waived" ;
-	rdf:rest _:c14n389 .
-_:c14n389 rdf:first "blocked" ;
-	rdf:rest rdf:nil .
-_:c14n39 sh:class tmodel:Component ;
-	sh:description "Recursive structural composition (§3). Inlined as references, not as nested trees." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 0 ;
-	sh:path tmodel:composed_of .
-_:c14n390 rdf:first "failed" ;
-	rdf:rest _:c14n394 .
-_:c14n391 rdf:first "passed" ;
-	rdf:rest _:c14n390 .
-_:c14n392 rdf:first "in_progress" ;
-	rdf:rest _:c14n391 .
-_:c14n393 rdf:first "planned" ;
-	rdf:rest _:c14n392 .
-_:c14n394 rdf:first "waived" ;
-	rdf:rest _:c14n395 .
-_:c14n395 rdf:first "blocked" ;
-	rdf:rest rdf:nil .
-_:c14n396 rdf:first "failed" ;
-	rdf:rest _:c14n400 .
-_:c14n397 rdf:first "passed" ;
-	rdf:rest _:c14n396 .
-_:c14n398 rdf:first "in_progress" ;
-	rdf:rest _:c14n397 .
-_:c14n399 rdf:first "planned" ;
-	rdf:rest _:c14n398 .
-_:c14n4 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n40 rdf:first "operation" ;
-	rdf:rest _:c14n5 .
-_:c14n400 rdf:first "waived" ;
-	rdf:rest _:c14n401 .
-_:c14n401 rdf:first "blocked" ;
-	rdf:rest rdf:nil .
-_:c14n402 rdf:first "failed" ;
-	rdf:rest _:c14n406 .
-_:c14n403 rdf:first "passed" ;
-	rdf:rest _:c14n402 .
-_:c14n404 rdf:first "in_progress" ;
-	rdf:rest _:c14n403 .
-_:c14n405 rdf:first "planned" ;
-	rdf:rest _:c14n404 .
-_:c14n406 rdf:first "waived" ;
-	rdf:rest _:c14n407 .
-_:c14n407 rdf:first "blocked" ;
-	rdf:rest rdf:nil .
-_:c14n408 rdf:first tmodel:revision ;
-	rdf:rest _:c14n301 .
-_:c14n409 rdf:first tmodel:revision ;
-	rdf:rest _:c14n410 .
-_:c14n41 rdf:first tmodel:focus_query ;
-	rdf:rest _:c14n193 .
-_:c14n410 rdf:first tmodel:supersedes ;
-	rdf:rest _:c14n304 .
-_:c14n411 rdf:first tmodel:renders ;
-	rdf:rest _:c14n409 .
-_:c14n412 rdf:first tmodel:owner ;
-	rdf:rest _:c14n411 .
-_:c14n413 rdf:first tmodel:governance_status ;
-	rdf:rest _:c14n412 .
-_:c14n414 rdf:first tmodel:created ;
-	rdf:rest _:c14n413 .
-_:c14n415 rdf:first tmodel:approved_by ;
-	rdf:rest _:c14n414 .
-_:c14n416 rdf:first tmodel:approval_status ;
-	rdf:rest _:c14n415 .
-_:c14n417 rdf:first tmodel:approval_digest ;
-	rdf:rest _:c14n416 .
-_:c14n418 rdf:first "threat_mitigation_matrix" ;
-	rdf:rest _:c14n420 .
-_:c14n419 rdf:first "graph" ;
-	rdf:rest _:c14n418 .
-_:c14n42 rdf:first tmodel:feasibility ;
-	rdf:rest _:c14n41 .
-_:c14n420 rdf:first "attack_path" ;
-	rdf:rest _:c14n421 .
-_:c14n421 rdf:first "dfd" ;
-	rdf:rest _:c14n422 .
-_:c14n422 rdf:first "timeline" ;
-	rdf:rest _:c14n423 .
-_:c14n423 rdf:first "provenance" ;
-	rdf:rest _:c14n424 .
-_:c14n424 rdf:first "compare" ;
-	rdf:rest rdf:nil .
-_:c14n425 rdf:first "threat_mitigation_matrix" ;
-	rdf:rest _:c14n427 .
-_:c14n426 rdf:first "graph" ;
-	rdf:rest _:c14n425 .
-_:c14n427 rdf:first "attack_path" ;
-	rdf:rest _:c14n428 .
-_:c14n428 rdf:first "dfd" ;
-	rdf:rest _:c14n429 .
-_:c14n429 rdf:first "timeline" ;
-	rdf:rest _:c14n430 .
-_:c14n43 rdf:first tmodel:text ;
-	rdf:rest _:c14n26 .
-_:c14n430 rdf:first "provenance" ;
-	rdf:rest _:c14n431 .
-_:c14n431 rdf:first "compare" ;
-	rdf:rest rdf:nil .
-_:c14n432 rdf:first tmodel:approved_by ;
-	rdf:rest _:c14n33 .
-_:c14n433 rdf:first tmodel:approval_status ;
-	rdf:rest _:c14n432 .
-_:c14n434 rdf:first tmodel:approval_digest ;
-	rdf:rest _:c14n433 .
-_:c14n435 rdf:first tmodel:supersedes ;
-	rdf:rest _:c14n362 .
-_:c14n436 rdf:first tmodel:owner ;
-	rdf:rest _:c14n344 .
-_:c14n437 rdf:first "accepted_risk" ;
-	rdf:rest _:c14n438 .
-_:c14n438 rdf:first "not_applicable" ;
-	rdf:rest rdf:nil .
-_:c14n439 rdf:first "complete" ;
-	rdf:rest _:c14n437 .
-_:c14n44 sh:description "Lifecycle of a governed snapshot (§3c R-043): draft → in-review → approved → superseded. The shared governed-view lifecycle (named for the ThreatModel case; reused by SecurityProgram and GovernedView)." ;
-	sh:in _:c14n467 ;
-	sh:maxCount 1 ;
-	sh:order 7 ;
-	sh:path tmodel:governance_status .
-_:c14n440 rdf:first "in_progress" ;
-	rdf:rest _:c14n439 .
-_:c14n441 rdf:first "planned" ;
-	rdf:rest _:c14n440 .
-_:c14n442 rdf:first "accepted_risk" ;
-	rdf:rest _:c14n443 .
-_:c14n443 rdf:first "not_applicable" ;
-	rdf:rest rdf:nil .
-_:c14n444 rdf:first "complete" ;
-	rdf:rest _:c14n442 .
-_:c14n445 rdf:first "in_progress" ;
-	rdf:rest _:c14n444 .
-_:c14n446 rdf:first "planned" ;
-	rdf:rest _:c14n445 .
-_:c14n447 rdf:first tmodel:renders ;
-	rdf:rest _:c14n214 .
-_:c14n448 rdf:first "rejected" ;
-	rdf:rest _:c14n449 .
-_:c14n449 rdf:first "withdrawn" ;
-	rdf:rest rdf:nil .
-_:c14n45 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 14 ;
-	sh:path tmodel:description .
-_:c14n450 rdf:first "changes_requested" ;
-	rdf:rest _:c14n448 .
-_:c14n451 rdf:first "approved" ;
-	rdf:rest _:c14n450 .
-_:c14n452 rdf:first "pending" ;
-	rdf:rest _:c14n451 .
-_:c14n453 rdf:first "rejected" ;
-	rdf:rest _:c14n454 .
-_:c14n454 rdf:first "withdrawn" ;
-	rdf:rest rdf:nil .
-_:c14n455 rdf:first "changes_requested" ;
-	rdf:rest _:c14n453 .
-_:c14n456 rdf:first "approved" ;
-	rdf:rest _:c14n455 .
-_:c14n457 rdf:first "pending" ;
-	rdf:rest _:c14n456 .
-_:c14n458 rdf:first "rejected" ;
-	rdf:rest _:c14n459 .
-_:c14n459 rdf:first "withdrawn" ;
-	rdf:rest rdf:nil .
-_:c14n46 sh:datatype xsd:string ;
-	sh:description "Commit/content digest the approval is pinned to, so the sign-off is REPRODUCIBLE against KG state at a point in time (§3c R-043; SysML v2 View/Viewpoint, OMG SACM, OSCAL→Word prior art). Opaque string; digest scheme not pinned here." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 5 ;
-	sh:path tmodel:approval_digest .
-_:c14n460 rdf:first "changes_requested" ;
-	rdf:rest _:c14n458 .
-_:c14n461 rdf:first "approved" ;
-	rdf:rest _:c14n460 .
-_:c14n462 rdf:first "pending" ;
-	rdf:rest _:c14n461 .
-_:c14n463 rdf:first tmodel:governance_status ;
-	rdf:rest _:c14n222 .
-_:c14n464 rdf:first "superseded" ;
-	rdf:rest rdf:nil .
-_:c14n465 rdf:first "approved" ;
-	rdf:rest _:c14n464 .
-_:c14n466 rdf:first "in_review" ;
-	rdf:rest _:c14n465 .
-_:c14n467 rdf:first "draft" ;
-	rdf:rest _:c14n466 .
-_:c14n468 rdf:first "superseded" ;
-	rdf:rest rdf:nil .
-_:c14n469 rdf:first "approved" ;
-	rdf:rest _:c14n468 .
-_:c14n47 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n470 rdf:first "in_review" ;
-	rdf:rest _:c14n469 .
-_:c14n471 rdf:first "draft" ;
-	rdf:rest _:c14n470 .
-_:c14n472 rdf:first "superseded" ;
-	rdf:rest rdf:nil .
-_:c14n473 rdf:first "approved" ;
-	rdf:rest _:c14n472 .
-_:c14n474 rdf:first "in_review" ;
-	rdf:rest _:c14n473 .
-_:c14n475 rdf:first "draft" ;
-	rdf:rest _:c14n474 .
-_:c14n476 rdf:first "negligible" ;
-	rdf:rest rdf:nil .
-_:c14n477 rdf:first "moderate" ;
-	rdf:rest _:c14n476 .
-_:c14n478 rdf:first "major" ;
-	rdf:rest _:c14n477 .
-_:c14n479 rdf:first "severe" ;
-	rdf:rest _:c14n478 .
-_:c14n48 sh:description "Lifecycle of the mitigation (§3 R-045, §5): planned / in-progress / complete / accepted-risk / n-a. Vocabulary may be refined by DEC-009. On RiskScore this is a peer column of feasibility and impact, not folded into `risk`." ;
-	sh:in _:c14n446 ;
-	sh:maxCount 1 ;
-	sh:order 5 ;
-	sh:path tmodel:mitigation_status .
-_:c14n480 rdf:first "negligible" ;
-	rdf:rest rdf:nil .
-_:c14n481 rdf:first "moderate" ;
-	rdf:rest _:c14n480 .
-_:c14n482 rdf:first "major" ;
-	rdf:rest _:c14n481 .
-_:c14n483 rdf:first "severe" ;
-	rdf:rest _:c14n482 .
-_:c14n484 rdf:first "negligible" ;
-	rdf:rest rdf:nil .
-_:c14n485 rdf:first "moderate" ;
-	rdf:rest _:c14n484 .
-_:c14n486 rdf:first "major" ;
-	rdf:rest _:c14n485 .
-_:c14n487 rdf:first "severe" ;
-	rdf:rest _:c14n486 .
-_:c14n488 rdf:first "negligible" ;
-	rdf:rest rdf:nil .
-_:c14n489 rdf:first "moderate" ;
-	rdf:rest _:c14n488 .
-_:c14n49 sh:datatype xsd:dateTime ;
-	sh:description "When the governed artifact was last updated (§3c R-043 change tracking)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 9 ;
-	sh:path tmodel:updated .
-_:c14n490 rdf:first "major" ;
-	rdf:rest _:c14n489 .
-_:c14n491 rdf:first "severe" ;
-	rdf:rest _:c14n490 .
-_:c14n492 rdf:first tmodel:offset_from ;
-	rdf:rest _:c14n94 .
-_:c14n493 rdf:first tmodel:offset_from ;
-	rdf:rest _:c14n354 .
-_:c14n494 rdf:first "high" ;
-	rdf:rest _:c14n495 .
-_:c14n495 rdf:first "medium" ;
-	rdf:rest _:c14n496 .
-_:c14n496 rdf:first "low" ;
-	rdf:rest _:c14n497 .
-_:c14n497 rdf:first "very_low" ;
-	rdf:rest rdf:nil .
-_:c14n498 rdf:first "high" ;
-	rdf:rest _:c14n499 .
-_:c14n499 rdf:first "medium" ;
-	rdf:rest _:c14n500 .
-_:c14n5 rdf:first "maintenance" ;
-	rdf:rest _:c14n195 .
-_:c14n50 rdf:first tmodel:justification ;
-	rdf:rest _:c14n96 .
-_:c14n500 rdf:first "low" ;
-	rdf:rest _:c14n501 .
-_:c14n501 rdf:first "very_low" ;
-	rdf:rest rdf:nil .
-_:c14n502 rdf:first tmodel:created ;
-	rdf:rest _:c14n254 .
-_:c14n51 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 13 ;
-	sh:path tmodel:name .
-_:c14n52 sh:class tmodel:LifecyclePhase ;
-	sh:description "Coarse lifecycle stage a threat or mitigation belongs to (§3b). Not a substitute for Environment. One threat uses the axis that fits." ;
-	sh:nodeKind sh:IRI ;
-	sh:order 4 ;
-	sh:path tmodel:applies_in_phase .
-_:c14n53 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n54 rdf:first tmodel:physical_security ;
-	rdf:rest _:c14n93 .
-_:c14n55 rdf:first tmodel:normativity ;
-	rdf:rest _:c14n260 .
-_:c14n56 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 11 ;
-	sh:path tmodel:description .
-_:c14n57 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n58 sh:description "Lifecycle of a governed snapshot (§3c R-043): draft → in-review → approved → superseded. The shared governed-view lifecycle (named for the ThreatModel case; reused by SecurityProgram and GovernedView)." ;
-	sh:in _:c14n475 ;
-	sh:maxCount 1 ;
-	sh:order 6 ;
-	sh:path tmodel:governance_status .
-_:c14n59 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 6 ;
-	sh:path tmodel:description .
-_:c14n6 rdf:first tmodel:attack_feasibility ;
-	rdf:rest _:c14n257 .
-_:c14n60 sh:datatype xsd:string ;
-	sh:description "Short prose description." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 3 ;
-	sh:path tmodel:description .
-_:c14n61 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 4 ;
-	sh:path tmodel:id .
-_:c14n62 rdf:first tmodel:maps_to ;
-	rdf:rest _:c14n171 .
-_:c14n63 rdf:first tmodel:program_nodes ;
-	rdf:rest _:c14n292 .
-_:c14n64 rdf:first tmodel:uses_component ;
-	rdf:rest _:c14n244 .
-_:c14n65 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 12 ;
-	sh:path tmodel:id .
-_:c14n66 sh:class tmodel:Node ;
-	sh:description "The Product / ProductInstance / ProductFamily a SecurityProgram is attached to (§3c R-041). Range Node: ProductFamily is not a §13 class." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 0 ;
-	sh:path tmodel:governs .
-_:c14n67 rdf:first "or_gate" ;
-	rdf:rest rdf:nil .
-_:c14n68 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 6 ;
-	sh:path tmodel:name .
-_:c14n69 sh:description "Controlled phase code (§3b)." ;
-	sh:in _:c14n233 ;
-	sh:maxCount 1 ;
-	sh:minCount 1 ;
-	sh:order 0 ;
-	sh:path tmodel:code .
-_:c14n7 sh:datatype xsd:dateTime ;
-	sh:description "When the governed artifact was created (§3c R-043 change tracking)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 9 ;
-	sh:path tmodel:created .
-_:c14n70 rdf:first tmodel:reviewer ;
-	rdf:rest _:c14n155 .
-_:c14n71 rdf:first rdf:type ;
-	rdf:rest rdf:nil .
-_:c14n72 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 10 ;
-	sh:path tmodel:name .
-_:c14n73 sh:datatype xsd:string ;
-	sh:description "Environment facet (§3). Feeds feasibility exploitability only, post-MVP." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 0 ;
-	sh:path tmodel:physical_security .
-_:c14n74 sh:datatype xsd:date ;
-	sh:description "Actual date a program node occurred (§3c R-041). Open if not yet reached." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 2 ;
-	sh:path tmodel:actual_date .
-_:c14n75 rdf:first "mandatory" ;
-	rdf:rest _:c14n224 .
-_:c14n76 sh:datatype xsd:date ;
-	sh:description "Planned date of a program node (§3c R-041 program management)." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 2 ;
-	sh:path tmodel:planned_date .
-_:c14n77 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 2 ;
-	sh:path tmodel:id .
-_:c14n78 rdf:first "design" ;
-	rdf:rest _:c14n127 .
-_:c14n79 sh:description "Standing of the current sign-off, read from the approving Review(s) (§4 spine). Distinct from `governance_status` (where the snapshot is in its life): this tracks the verdict of its review cycle. Denormalized convenience — the authoritative verdict is the Review, not this field." ;
-	sh:in _:c14n452 ;
-	sh:maxCount 1 ;
-	sh:order 5 ;
-	sh:path tmodel:approval_status .
-_:c14n8 sh:datatype xsd:string ;
-	sh:description "Human-readable name." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 11 ;
-	sh:path tmodel:name .
-_:c14n80 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:IRI ;
-	sh:order 1 ;
-	sh:path tmodel:id .
-_:c14n81 sh:description "Passage status of a program node (§3c R-041): planned / in-progress / passed / failed / waived / blocked." ;
-	sh:in _:c14n393 ;
-	sh:maxCount 1 ;
-	sh:order 4 ;
-	sh:path tmodel:gate_status .
-_:c14n82 sh:datatype xsd:string ;
-	sh:description "Environment facet (§3). Feeds attack vector / reachability / window, not impact." ;
-	sh:maxCount 1 ;
-	sh:nodeKind sh:Literal ;
-	sh:order 1 ;
-	sh:path tmodel:connectivity .
-_:c14n83 rdf:first "not_assessed" ;
-	rdf:rest rdf:nil .
-_:c14n84 sh:class tmodel:Node ;
+	sh:path tmodel:bidirectional .
+_:c14n1 rdf:first tmodel:priority ;
+	rdf:rest _:c14n123 .
+_:c14n10 rdf:first "maintenance" ;
+	rdf:rest _:c14n235 .
+_:c14n100 sh:class tmodel:Node ;
 	sh:description "Object of the reified statement (§4)." ;
 	sh:maxCount 1 ;
 	sh:minCount 1 ;
 	sh:nodeKind sh:IRI ;
 	sh:order 2 ;
 	sh:path tmodel:object .
-_:c14n85 sh:datatype xsd:string ;
+_:c14n101 sh:datatype xsd:string ;
 	sh:description "Human-readable name." ;
 	sh:maxCount 1 ;
 	sh:nodeKind sh:Literal ;
 	sh:order 11 ;
 	sh:path tmodel:name .
-_:c14n86 sh:datatype xsd:string ;
+_:c14n102 sh:datatype xsd:string ;
 	sh:description "Human-readable name." ;
 	sh:maxCount 1 ;
 	sh:nodeKind sh:Literal ;
 	sh:order 13 ;
 	sh:path tmodel:name .
-_:c14n87 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+_:c14n103 rdf:first tmodel:in_trust_zone ;
+	rdf:rest _:c14n195 .
+_:c14n104 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
 	sh:maxCount 1 ;
 	sh:nodeKind sh:IRI ;
 	sh:order 5 ;
 	sh:path tmodel:id .
-_:c14n88 sh:datatype xsd:string ;
+_:c14n105 sh:datatype xsd:string ;
 	sh:description "Short prose description." ;
 	sh:maxCount 1 ;
 	sh:nodeKind sh:Literal ;
 	sh:order 8 ;
 	sh:path tmodel:description .
-_:c14n89 sh:datatype xsd:string ;
+_:c14n106 sh:datatype xsd:string ;
 	sh:description "External catalog identifier when the proposal names one (CWE, CAPEC, ATT&CK, CVE, D3FEND). The identifier scheme is not pinned in §13." ;
 	sh:maxCount 1 ;
 	sh:nodeKind sh:Literal ;
 	sh:order 0 ;
 	sh:path tmodel:catalog_ref .
-_:c14n9 sh:class tmodel:Product ;
+_:c14n107 sh:class tmodel:Product ;
+	sh:description "Vulnerability/Finding affects a vendor Product (§2b)." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 1 ;
+	sh:path tmodel:affects .
+_:c14n108 rdf:first tmodel:external_refs ;
+	rdf:rest _:c14n53 .
+_:c14n109 rdf:first tmodel:damage_scenario ;
+	rdf:rest _:c14n161 .
+_:c14n11 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 6 ;
+	sh:path tmodel:id .
+_:c14n110 rdf:first tmodel:pivots_to ;
+	rdf:rest _:c14n390 .
+_:c14n111 rdf:first tmodel:operational_context ;
+	rdf:rest _:c14n416 .
+_:c14n112 rdf:first tmodel:realizes_threat ;
+	rdf:rest _:c14n18 .
+_:c14n113 sh:description "Accepted via ADR-0011 (DL-0024). What encloses the zone: another trust zone, for nesting (pytm boundaries nest), or a Component, since an OTM trust zone's `parent` may point at a component as well as at a zone." ;
+	sh:maxCount 1 ;
+	sh:or _:c14n574 ;
+	sh:order 0 ;
+	sh:path tmodel:within_boundary .
+_:c14n114 rdf:first tmodel:kill_chain_phase ;
+	rdf:rest _:c14n414 .
+_:c14n115 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 8 ;
+	sh:path tmodel:description .
+_:c14n116 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path tmodel:name .
+_:c14n117 sh:class tmodel:Review ;
+	sh:description "Reviews that decide a program node's passage (§3c R-041). The §4 human-review spine — not a parallel approval mechanism." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 7 ;
+	sh:path tmodel:decided_by .
+_:c14n118 sh:datatype xsd:integer ;
+	sh:description "Position of a program node within its SecurityProgram (§3c R-041)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path tmodel:order .
+_:c14n119 rdf:first tmodel:mitigation_status ;
+	rdf:rest _:c14n69 .
+_:c14n12 rdf:first tmodel:attack_feasibility ;
+	rdf:rest _:c14n309 .
+_:c14n120 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n121 sh:datatype xsd:string ;
+	sh:description "Monotonic revision/version of a governed snapshot (§3c R-043). This is the saved view's \"version\"; ThreatModel and SecurityProgram name the same field `revision`. Tracked across review cycles via `supersedes`." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path tmodel:revision .
+_:c14n122 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 10 ;
+	sh:path tmodel:id .
+_:c14n123 rdf:first tmodel:processed_by ;
+	rdf:rest _:c14n31 .
+_:c14n124 sh:datatype xsd:string ;
+	sh:description "Accepted via ADR-0011 (DL-0024). The zone's type as the source gives it (OTM `trustZones[].type`; threagile's trust boundaries are typed too); not normalized here." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path tmodel:zone_type .
+_:c14n125 rdf:first tmodel:environment ;
+	rdf:rest _:c14n352 .
+_:c14n126 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n127 sh:class tmodel:ProgramNode ;
+	sh:description "Entry-criteria / dependency edges between program nodes (§3c R-041)." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 8 ;
+	sh:path tmodel:depends_on_node .
+_:c14n128 rdf:first "maestro" ;
+	rdf:rest rdf:nil .
+_:c14n129 rdf:first tmodel:crosses_boundary ;
+	rdf:rest _:c14n305 .
+_:c14n13 sh:datatype xsd:dateTime ;
+	sh:description "When the governed artifact was created (§3c R-043 change tracking)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 9 ;
+	sh:path tmodel:created .
+_:c14n130 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 12 ;
+	sh:path tmodel:id .
+_:c14n131 rdf:first "informative" ;
+	rdf:rest _:c14n239 .
+_:c14n132 sh:description "Safety impact; ISO 26262-informed (§3, RQ-15-06)." ;
+	sh:in _:c14n589 ;
+	sh:maxCount 1 ;
+	sh:order 0 ;
+	sh:path tmodel:safety .
+_:c14n133 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 9 ;
+	sh:path tmodel:id .
+_:c14n134 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 6 ;
+	sh:path tmodel:description .
+_:c14n135 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 12 ;
+	sh:path tmodel:description .
+_:c14n136 sh:class tmodel:Party ;
+	sh:description "Reporter (§2b)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 2 ;
+	sh:path tmodel:reported_by .
+_:c14n137 sh:class tmodel:LifecyclePhase ;
+	sh:description "Coarse lifecycle stage a threat or mitigation belongs to (§3b). Not a substitute for Environment. One threat uses the axis that fits." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 2 ;
+	sh:path tmodel:applies_in_phase .
+_:c14n138 rdf:first tmodel:flow_from ;
+	rdf:rest _:c14n154 .
+_:c14n139 sh:class tmodel:ProductInstance ;
+	sh:description "The instance this Deployment places (§3)." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 0 ;
+	sh:path tmodel:product_instance .
+_:c14n14 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 11 ;
+	sh:path tmodel:name .
+_:c14n140 rdf:first tmodel:bidirectional ;
+	rdf:rest _:c14n205 .
+_:c14n141 sh:datatype xsd:dateTime ;
+	sh:description "End of the (ProductInstance, time) state interval (§3b). Open-ended if absent." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path tmodel:valid_to .
+_:c14n142 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 1 ;
+	sh:path tmodel:id .
+_:c14n143 sh:class tmodel:Party ;
+	sh:description "Relational role edge (§2b). The same Party may supply one product and consume another." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 2 ;
+	sh:path tmodel:supplied_by .
+_:c14n144 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 2 ;
+	sh:path tmodel:id .
+_:c14n145 sh:description "Standing of the current sign-off, read from the approving Review(s) (§4 spine). Distinct from `governance_status` (where the snapshot is in its life): this tracks the verdict of its review cycle. Denormalized convenience — the authoritative verdict is the Review, not this field." ;
+	sh:in _:c14n553 ;
+	sh:maxCount 1 ;
+	sh:order 6 ;
+	sh:path tmodel:approval_status .
+_:c14n146 sh:datatype xsd:date ;
+	sh:description "Actual date a program node occurred (§3c R-041). Open if not yet reached." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path tmodel:actual_date .
+_:c14n147 sh:description "Accepted via ADR-0011 (DL-0024). The cybersecurity properties worth protecting for this Asset." ;
+	sh:in _:c14n521 ;
+	sh:order 0 ;
+	sh:path tmodel:security_properties .
+_:c14n148 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n149 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path tmodel:name .
+_:c14n15 sh:class tmodel:Product ;
 	sh:description "The Product this ProductInstance instantiates (§1)." ;
 	sh:maxCount 1 ;
 	sh:minCount 1 ;
 	sh:nodeKind sh:IRI ;
 	sh:order 0 ;
 	sh:path tmodel:of_product .
-_:c14n90 sh:class tmodel:Product ;
-	sh:description "Vulnerability/Finding affects a vendor Product (§2b)." ;
+_:c14n150 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 10 ;
+	sh:path tmodel:description .
+_:c14n151 rdf:first tmodel:assigned_by ;
+	rdf:rest _:c14n208 .
+_:c14n152 rdf:first "implementation" ;
+	rdf:rest _:c14n444 .
+_:c14n153 rdf:first "partial" ;
+	rdf:rest _:c14n272 .
+_:c14n154 rdf:first tmodel:flow_to ;
+	rdf:rest _:c14n52 .
+_:c14n155 sh:datatype xsd:string ;
+	sh:description "Derived Risk = M(Impact, Feasibility) (§3). ISO 21434 wants one value 1–5 per (threat-scenario, impact-category), and per stakeholder when owners differ. Stored as text because the aggregation function is not fixed until a DEC-003 ADR. Not a CVSS base score. Display may add a colour and a feasibility label; that styling is not a slot." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 7 ;
+	sh:path tmodel:risk .
+_:c14n156 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 12 ;
+	sh:path tmodel:name .
+_:c14n157 sh:description "Which derived projection this View spec names (§10)." ;
+	sh:in _:c14n510 ;
+	sh:maxCount 1 ;
+	sh:order 10 ;
+	sh:path tmodel:projection .
+_:c14n158 sh:class tmodel:Assertion ;
+	sh:description "The Assertion this Review judges (§4)." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
 	sh:nodeKind sh:IRI ;
-	sh:order 1 ;
-	sh:path tmodel:affects .
-_:c14n91 rdf:first tmodel:external_refs ;
-	rdf:rest _:c14n42 .
-_:c14n92 rdf:first tmodel:damage_scenario ;
-	rdf:rest _:c14n228 .
-_:c14n93 rdf:first tmodel:pivots_to ;
-	rdf:rest _:c14n320 .
-_:c14n94 rdf:first tmodel:operational_context ;
-	rdf:rest _:c14n338 .
-_:c14n95 rdf:first tmodel:realizes_threat ;
-	rdf:rest _:c14n12 .
-_:c14n96 rdf:first tmodel:kill_chain_phase ;
-	rdf:rest _:c14n337 .
-_:c14n97 sh:datatype xsd:string ;
+	sh:order 0 ;
+	sh:path tmodel:reviews .
+_:c14n159 sh:datatype xsd:date ;
+	sh:description "Actual date a program node occurred (§3c R-041). Open if not yet reached." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path tmodel:actual_date .
+_:c14n16 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 12 ;
+	sh:path tmodel:description .
+_:c14n160 sh:datatype xsd:string ;
 	sh:description "Short prose description." ;
 	sh:maxCount 1 ;
 	sh:nodeKind sh:Literal ;
 	sh:order 8 ;
 	sh:path tmodel:description .
-_:c14n98 sh:class tmodel:Review ;
+_:c14n161 rdf:first tmodel:damages_asset ;
+	rdf:rest _:c14n275 .
+_:c14n162 sh:class tmodel:Review ;
+	sh:description "Approving Review(s) of a governed artifact (§3c R-043). Approval runs through the existing Review + Assertion spine (§4) — NOT a parallel provenance mechanism (iteration-7 guardrail, DL-0010)." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 5 ;
+	sh:path tmodel:approved_by .
+_:c14n163 rdf:first tmodel:security_properties ;
+	rdf:rest _:c14n196 .
+_:c14n164 sh:class tmodel:Party ;
+	sh:description "Relational role edge (§2b), not a classification on Party." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 8 ;
+	sh:path tmodel:manufactured_by .
+_:c14n165 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path tmodel:name .
+_:c14n166 sh:description "Which method classified this threat (§2). STRIDE is a facet, not an AttackPattern property. Facets beyond STRIDE are post-MVP." ;
+	sh:in _:c14n348 ;
+	sh:order 1 ;
+	sh:path tmodel:method_facet .
+_:c14n167 rdf:first rdf:type ;
+	rdf:rest _:c14n500 .
+_:c14n168 sh:datatype xsd:string ;
+	sh:description "External catalog identifier when the proposal names one (CWE, CAPEC, ATT&CK, CVE, D3FEND). The identifier scheme is not pinned in §13." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path tmodel:catalog_ref .
+_:c14n169 rdf:first tmodel:code ;
+	rdf:rest _:c14n439 .
+_:c14n17 sh:class tmodel:Party ;
+	sh:description "Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 1 ;
+	sh:path tmodel:owner .
+_:c14n170 sh:description "Accepted via ADR-0011 (DL-0024). Which cybersecurity property of the damaged Asset is compromised (ISO/SAE 21434 3.1.20, 3.1.33)." ;
+	sh:in _:c14n527 ;
+	sh:order 1 ;
+	sh:path tmodel:compromised_property .
+_:c14n171 sh:datatype xsd:dateTime ;
+	sh:description "When the governed artifact was last updated (§3c R-043 change tracking)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 10 ;
+	sh:path tmodel:updated .
+_:c14n172 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 13 ;
+	sh:path tmodel:description .
+_:c14n173 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n174 sh:datatype xsd:string ;
+	sh:description "Confidence attached to the Assertion (§4). Scale is not fixed in the proposal." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path tmodel:confidence .
+_:c14n175 sh:class tmodel:Review ;
 	sh:description "Reviews that decide a program node's passage (§3c R-041). The §4 human-review spine — not a parallel approval mechanism." ;
 	sh:nodeKind sh:IRI ;
 	sh:order 7 ;
 	sh:path tmodel:decided_by .
-_:c14n99 sh:datatype xsd:integer ;
+_:c14n176 sh:datatype xsd:string ;
+	sh:description "Bounded query/filter defining a ThreatModel snapshot's membership (§3c R-043). Opaque to this schema (DEC-004 open), like View.focus_query. Use `members` for an explicit set instead." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path tmodel:scope_query .
+_:c14n177 sh:class tmodel:TrustBoundary ;
+	sh:description "Accepted via ADR-0011 (DL-0024). The trust zone a Component sits in (the proposal's §1 name, F12). One zone per Component, as in OTM; outer zones follow from `within_boundary`." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 9 ;
+	sh:path tmodel:in_trust_zone .
+_:c14n178 sh:datatype xsd:string ;
+	sh:description "Review priority (§5). Scale not specified in the proposal." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path tmodel:priority .
+_:c14n179 sh:class tmodel:Requirement ;
+	sh:description "Requirements whose conformance gates passage of this program node (§3c R-041/R-042)." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 7 ;
+	sh:path tmodel:gated_by .
+_:c14n18 rdf:first tmodel:redundancy_relation ;
+	rdf:rest _:c14n543 .
+_:c14n180 sh:class tmodel:ProgramNode ;
+	sh:description "Entry-criteria / dependency edges between program nodes (§3c R-041)." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 9 ;
+	sh:path tmodel:depends_on_node .
+_:c14n181 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n182 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 6 ;
+	sh:path tmodel:id .
+_:c14n183 rdf:first "interconnect" ;
+	rdf:rest rdf:nil .
+_:c14n184 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n185 rdf:first tmodel:protocol ;
+	rdf:rest _:c14n274 .
+_:c14n186 rdf:first tmodel:source_ref ;
+	rdf:rest _:c14n324 .
+_:c14n187 rdf:first "replica_of" ;
+	rdf:rest _:c14n411 .
+_:c14n188 rdf:first tmodel:reviews ;
+	rdf:rest _:c14n501 .
+_:c14n189 sh:class tmodel:LifecyclePhase ;
+	sh:description "Lifecycle state of this ProductInstance at valid_from/valid_to (§3b)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 1 ;
+	sh:path tmodel:current_phase .
+_:c14n19 rdf:first tmodel:subject ;
+	rdf:rest _:c14n519 .
+_:c14n190 sh:class tmodel:Review ;
+	sh:description "Reviews that decide a program node's passage (§3c R-041). The §4 human-review spine — not a parallel approval mechanism." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 8 ;
+	sh:path tmodel:decided_by .
+_:c14n191 rdf:first "operating_system" ;
+	rdf:rest _:c14n343 .
+_:c14n192 sh:class tmodel:Component ;
+	sh:description "Accepted via ADR-0011 (DL-0024). Where the DataFlow ends." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 1 ;
+	sh:path tmodel:flow_to .
+_:c14n193 sh:datatype xsd:string ;
+	sh:description "Linked work items, e.g. a Jira key (§5). Opaque strings; no tracker schema." ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path tmodel:external_refs .
+_:c14n194 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n195 rdf:first tmodel:incorporates ;
+	rdf:rest _:c14n365 .
+_:c14n196 rdf:first tmodel:source_method ;
+	rdf:rest _:c14n186 .
+_:c14n197 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 6 ;
+	sh:path tmodel:name .
+_:c14n198 rdf:first tmodel:catalog_ref ;
+	rdf:rest _:c14n199 .
+_:c14n199 rdf:first tmodel:classifications ;
+	rdf:rest _:c14n169 .
+_:c14n2 sh:class tmodel:Party ;
+	sh:description "Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 4 ;
+	sh:path tmodel:owner .
+_:c14n20 sh:datatype xsd:string ;
+	sh:description "External catalog identifier when the proposal names one (CWE, CAPEC, ATT&CK, CVE, D3FEND). The identifier scheme is not pinned in §13." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path tmodel:catalog_ref .
+_:c14n200 sh:class tmodel:AttackStep ;
+	sh:description "AttackSteps in this path (§2a). Order is the `precedes` edges, not list position." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 0 ;
+	sh:path tmodel:steps .
+_:c14n201 rdf:first "organization" ;
+	rdf:rest _:c14n398 .
+_:c14n202 sh:class tmodel:Party ;
+	sh:description "Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 5 ;
+	sh:path tmodel:owner .
+_:c14n203 sh:datatype xsd:dateTime ;
+	sh:description "Start of the (ProductInstance, time) state interval (§3b). Temporal axis was flagged as still-missing; included here because §3b says to add it with lifecycle state." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path tmodel:valid_from .
+_:c14n204 rdf:first tmodel:members ;
+	rdf:rest _:c14n445 .
+_:c14n205 rdf:first tmodel:build_composed_of ;
+	rdf:rest _:c14n290 .
+_:c14n206 rdf:first "container" ;
+	rdf:rest _:c14n60 .
+_:c14n207 sh:class tmodel:Review ;
+	sh:description "Reviews that decide a program node's passage (§3c R-041). The §4 human-review spine — not a parallel approval mechanism." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 8 ;
+	sh:path tmodel:decided_by .
+_:c14n208 rdf:first tmodel:at_phase ;
+	rdf:rest _:c14n12 .
+_:c14n209 sh:class tmodel:Deployment ;
+	sh:description "Deployments in this redundancy group (§3, §10)." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 0 ;
+	sh:path tmodel:replicas .
+_:c14n21 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 7 ;
+	sh:path tmodel:description .
+_:c14n210 sh:class tmodel:Mitigation ;
+	sh:description "Mitigation(s) that discharge this Requirement (§3c R-042)." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 4 ;
+	sh:path tmodel:satisfied_by .
+_:c14n211 sh:datatype xsd:string ;
+	sh:description "Why the verdict was reached (§5). Separate from the Assertion text." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path tmodel:justification .
+_:c14n212 sh:datatype xsd:string ;
+	sh:description "Opaque external / instance-identity strings for a structural node — Product, ProductInstance, or Component (§1). This is ADR-0002's per-type instance identity (\"software = a build/commit/hash/SBOM; hardware = firmware + buses + cores (HBOM)\") and the generic↔instance half of DEC-009, which the §13 classes otherwise could not carry: `catalog_ref` names a GENERIC catalog entry (CWE/CVE/CAPEC), not the concrete artifact. Scheme-prefixed and OPAQUE, like `catalog_ref` / `external_refs` — a CPE, a package URL (purl), a SWID/SBOM ref, a build/commit hash, or a firmware-image digest. The scheme is NOT pinned and no CPE/SBOM schema is imported (ADR-0004 substrate-neutrality). Additive DRAFT slot (DEC-001 open); not a new §13 class." ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path tmodel:identifiers .
+_:c14n213 rdf:first "machine_learning_model" ;
+	rdf:rest _:c14n49 .
+_:c14n214 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n215 rdf:first tmodel:confidence ;
+	rdf:rest _:c14n234 .
+_:c14n216 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path tmodel:name .
+_:c14n217 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path tmodel:description .
+_:c14n218 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 5 ;
+	sh:path tmodel:id .
+_:c14n219 rdf:first tmodel:stored_in ;
+	rdf:rest _:c14n19 .
+_:c14n22 rdf:first tmodel:zone_type ;
+	rdf:rest rdf:nil .
+_:c14n220 sh:description "Lifecycle of the mitigation (§3 R-045, §5): planned / in-progress / complete / accepted-risk / n-a. Vocabulary may be refined by DEC-009. On RiskScore this is a peer column of feasibility and impact, not folded into `risk`." ;
+	sh:in _:c14n542 ;
+	sh:maxCount 1 ;
+	sh:order 6 ;
+	sh:path tmodel:mitigation_status .
+_:c14n221 sh:class tmodel:LifecyclePhase ;
+	sh:description "Canonical LifecyclePhase a program node maps onto (§3b/§3c R-041). Gates are the governance points between phases; `name` is the local corporate label (MAP-0001 gate crosswalk)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 6 ;
+	sh:path tmodel:at_phase .
+_:c14n222 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path tmodel:name .
+_:c14n223 rdf:first rdf:type ;
+	rdf:rest _:c14n598 .
+_:c14n224 rdf:first tmodel:mitigates ;
+	rdf:rest _:c14n119 .
+_:c14n225 rdf:first tmodel:identifiers ;
+	rdf:rest _:c14n45 .
+_:c14n226 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path tmodel:name .
+_:c14n227 sh:datatype xsd:date ;
+	sh:description "Planned date of a program node (§3c R-041 program management)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path tmodel:planned_date .
+_:c14n228 sh:description "How binding a Requirement is (§3c R-044): mandatory / recommended / optional / informative / conditional. MAP-0001 shows a cell means different things per framework (hard requirement vs maturity activity vs recommendation)." ;
+	sh:in _:c14n91 ;
+	sh:maxCount 1 ;
+	sh:order 1 ;
+	sh:path tmodel:normativity .
+_:c14n229 rdf:first tmodel:gate ;
+	rdf:rest _:c14n34 .
+_:c14n23 rdf:first tmodel:generated_by ;
+	rdf:rest _:c14n559 .
+_:c14n230 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path tmodel:description .
+_:c14n231 sh:class tmodel:LifecyclePhase ;
+	sh:description "Canonical LifecyclePhase a program node maps onto (§3b/§3c R-041). Gates are the governance points between phases; `name` is the local corporate label (MAP-0001 gate crosswalk)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 5 ;
+	sh:path tmodel:at_phase .
+_:c14n232 rdf:first tmodel:for_stakeholder ;
+	rdf:rest _:c14n229 .
+_:c14n233 sh:class tmodel:Party ;
+	sh:description "Proposal attaches owned_by to Asset (§2b, §3). Asset is not a §13 class; the slot is on Product, ProductInstance, and Component as the structural stand-in. It selects whose business_impact would apply. The business_impact axis itself is post-MVP and has no slot." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 3 ;
+	sh:path tmodel:owned_by .
+_:c14n234 rdf:first tmodel:conformance_status ;
+	rdf:rest _:c14n461 .
+_:c14n235 rdf:first "end_of_support" ;
+	rdf:rest _:c14n402 .
+_:c14n236 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path tmodel:name .
+_:c14n237 rdf:first tmodel:precedes ;
+	rdf:rest _:c14n329 .
+_:c14n238 rdf:first tmodel:actual_date ;
+	rdf:rest _:c14n320 .
+_:c14n239 rdf:first "conditional" ;
+	rdf:rest rdf:nil .
+_:c14n24 sh:datatype xsd:string ;
+	sh:description "The normative statement of a Requirement (§3c R-044). Distinct from `description`." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path tmodel:text .
+_:c14n240 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 10 ;
+	sh:path tmodel:name .
+_:c14n241 sh:class tmodel:ThreatInstance ;
+	sh:description "Threats this mitigation addresses (§5). Phase binding is applies_in_phase." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 1 ;
+	sh:path tmodel:mitigates .
+_:c14n242 sh:description "Passage status of a program node (§3c R-041): planned / in-progress / passed / failed / waived / blocked." ;
+	sh:in _:c14n477 ;
+	sh:maxCount 1 ;
+	sh:order 4 ;
+	sh:path tmodel:gate_status .
+_:c14n243 sh:class tmodel:ProgramNode ;
+	sh:description "Entry-criteria / dependency edges between program nodes (§3c R-041)." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 8 ;
+	sh:path tmodel:depends_on_node .
+_:c14n244 sh:class tmodel:Party ;
+	sh:description "Human (or, later, an agent facet of a Party) who issued the verdict (§4)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 1 ;
+	sh:path tmodel:reviewer .
+_:c14n245 sh:datatype xsd:string ;
+	sh:description "Optional coarse order tag (§2a). Distinct from the ATT&CK technique. The Lockheed kill-chain record is not pinned; do not rely on a fixed vocabulary." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path tmodel:kill_chain_phase .
+_:c14n246 sh:class tmodel:Component ;
+	sh:description "Use edge along which vuln/finding propagation is sound (§5)." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 2 ;
+	sh:path tmodel:uses_component .
+_:c14n247 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 5 ;
+	sh:path tmodel:name .
+_:c14n248 sh:datatype xsd:string ;
+	sh:description "Intrinsic classifications only, e.g. standards-body, cna (§2b)." ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path tmodel:classifications .
+_:c14n249 rdf:first "nonconformant" ;
+	rdf:rest _:c14n153 .
+_:c14n25 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 11 ;
+	sh:path tmodel:description .
+_:c14n250 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 5 ;
+	sh:path tmodel:description .
+_:c14n251 rdf:first tmodel:compromised_property ;
+	rdf:rest _:c14n215 .
+_:c14n252 rdf:first tmodel:updated ;
+	rdf:rest _:c14n78 .
+_:c14n253 rdf:first "software_agent" ;
+	rdf:rest rdf:nil .
+_:c14n254 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 9 ;
+	sh:path tmodel:name .
+_:c14n255 sh:class tmodel:Node ;
+	sh:description "Subject of the reified statement (§4)." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 0 ;
+	sh:path tmodel:subject .
+_:c14n256 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n257 rdf:first tmodel:replicas ;
+	rdf:rest _:c14n467 .
+_:c14n258 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 10 ;
+	sh:path tmodel:name .
+_:c14n259 rdf:first "deployment" ;
+	rdf:rest _:c14n51 .
+_:c14n26 rdf:first tmodel:violates_property ;
+	rdf:rest _:c14n355 .
+_:c14n260 rdf:first tmodel:version ;
+	rdf:rest _:c14n26 .
+_:c14n261 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 6 ;
+	sh:path tmodel:id .
+_:c14n262 sh:class tmodel:DamageScenario ;
+	sh:description "Damage scenario whose impact feeds M(I, F) (§3)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 2 ;
+	sh:path tmodel:damage_scenario .
+_:c14n263 sh:class tmodel:TrustBoundary ;
+	sh:description "Accepted via ADR-0011 (DL-0024). Trust zones the DataFlow crosses, stated explicitly when zone membership is incomplete." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 5 ;
+	sh:path tmodel:crosses_boundary .
+_:c14n264 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n265 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 7 ;
+	sh:path tmodel:name .
+_:c14n266 sh:class tmodel:Party ;
+	sh:description "Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 4 ;
+	sh:path tmodel:owner .
+_:c14n267 sh:datatype xsd:integer ;
+	sh:description "Position of a program node within its SecurityProgram (§3c R-041)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path tmodel:order .
+_:c14n268 rdf:first tmodel:governs ;
+	rdf:rest _:c14n225 .
+_:c14n269 sh:class tmodel:SecurityProgram ;
+	sh:description "The prior revision of this SDL program it replaces (§3c R-041/R-043)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 9 ;
+	sh:path tmodel:supersedes .
+_:c14n27 rdf:first tmodel:applies_in_phase ;
+	rdf:rest _:c14n518 .
+_:c14n270 rdf:first "recommended" ;
+	rdf:rest _:c14n431 .
+_:c14n271 rdf:first tmodel:alias_ids ;
+	rdf:rest _:c14n27 .
+_:c14n272 rdf:first "not_applicable" ;
+	rdf:rest _:c14n99 .
+_:c14n273 sh:class tmodel:ProgramNode ;
+	sh:description "Ordered Gate / Milestone / Checkpoint nodes of a SecurityProgram (§3c R-041). Order is each node's `order`, not list position." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 1 ;
+	sh:path tmodel:program_nodes .
+_:c14n274 rdf:first tmodel:realizes_damage ;
+	rdf:rest _:c14n112 .
+_:c14n275 rdf:first tmodel:decided_by ;
+	rdf:rest _:c14n419 .
+_:c14n276 sh:class tmodel:Asset ;
+	sh:description "Accepted via ADR-0011 (DL-0024). The Asset(s) a DamageScenario harms (ISO/SAE 21434 damage scenario; RPT-0007 §1)." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 0 ;
+	sh:path tmodel:damages_asset .
+_:c14n277 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 5 ;
+	sh:path tmodel:name .
+_:c14n278 sh:datatype xsd:string ;
+	sh:description "Bounded query / filter that defines the view (§10, R-033). Opaque to this schema (not a committed query language — DEC-004 is open)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path tmodel:focus_query .
+_:c14n279 sh:class tmodel:Party ;
+	sh:description "Proposal attaches owned_by to Asset (§2b, §3). Asset is not a §13 class; the slot is on Product, ProductInstance, and Component as the structural stand-in. It selects whose business_impact would apply. The business_impact axis itself is post-MVP and has no slot." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 3 ;
+	sh:path tmodel:owned_by .
+_:c14n28 sh:description "AND/OR combination of this step with its predecessors (§2a, R-031)." ;
+	sh:in _:c14n308 ;
+	sh:maxCount 1 ;
+	sh:order 0 ;
+	sh:path tmodel:gate .
+_:c14n280 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path tmodel:description .
+_:c14n281 rdf:first "concept" ;
+	rdf:rest _:c14n449 .
+_:c14n282 sh:datatype xsd:string ;
+	sh:description "Monotonic revision/version of a governed snapshot (§3c R-043). This is the saved view's \"version\"; ThreatModel and SecurityProgram name the same field `revision`. Tracked across review cycles via `supersedes`." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path tmodel:revision .
+_:c14n283 rdf:first "conformant" ;
+	rdf:rest _:c14n249 .
+_:c14n284 sh:description "Passage status of a program node (§3c R-041): planned / in-progress / passed / failed / waived / blocked." ;
+	sh:in _:c14n471 ;
+	sh:maxCount 1 ;
+	sh:order 3 ;
+	sh:path tmodel:gate_status .
+_:c14n285 rdf:first tmodel:validates_conformance_of ;
+	rdf:rest _:c14n260 .
+_:c14n286 sh:class tmodel:DamageScenario ;
+	sh:description "ThreatInstance realizes a DamageScenario (§1)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 0 ;
+	sh:path tmodel:realizes_damage .
+_:c14n287 sh:class tmodel:Requirement ;
+	sh:description "Cross-spec crosswalk edges (§3c R-044) = the MAP-0001 overlap. Reviewed mappings reify as Assertions (§4) so they can carry provenance + a Review." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 3 ;
+	sh:path tmodel:maps_to .
+_:c14n288 sh:description "Privacy impact (§3). Not re-indexed by asset owner." ;
+	sh:in _:c14n593 ;
+	sh:maxCount 1 ;
+	sh:order 3 ;
+	sh:path tmodel:privacy .
+_:c14n289 sh:description "Lifecycle of a governed snapshot (§3c R-043): draft → in-review → approved → superseded. The shared governed-view lifecycle (named for the ThreatModel case; reused by SecurityProgram and GovernedView)." ;
+	sh:in _:c14n567 ;
+	sh:maxCount 1 ;
+	sh:order 8 ;
+	sh:path tmodel:governance_status .
+_:c14n29 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 3 ;
+	sh:path tmodel:id .
+_:c14n290 rdf:first tmodel:carries ;
+	rdf:rest _:c14n198 .
+_:c14n291 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n292 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path tmodel:description .
+_:c14n293 rdf:first tmodel:valid_from ;
+	rdf:rest _:c14n433 .
+_:c14n294 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 8 ;
+	sh:path tmodel:id .
+_:c14n295 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n296 sh:class tmodel:Node ;
+	sh:description "Explicit in-scope members of a ThreatModel snapshot (§3c R-043): ThreatInstances, AttackPaths, Components, Products. References, not copies — membership is a reviewed lens over the KG, never domain truth re-stated." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 1 ;
+	sh:path tmodel:members .
+_:c14n297 sh:class tmodel:Requirement ;
+	sh:description "Requirements whose conformance gates passage of this program node (§3c R-041/R-042)." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 7 ;
+	sh:path tmodel:gated_by .
+_:c14n298 sh:class tmodel:Component ;
+	sh:description "Recursive structural composition (§3). Inlined as references, not as nested trees." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 0 ;
+	sh:path tmodel:composed_of .
+_:c14n299 rdf:first tmodel:gated_by ;
+	rdf:rest _:c14n23 .
+_:c14n3 sh:class tmodel:LifecyclePhase ;
+	sh:description "Canonical LifecyclePhase a program node maps onto (§3b/§3c R-041). Gates are the governance points between phases; `name` is the local corporate label (MAP-0001 gate crosswalk)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 6 ;
+	sh:path tmodel:at_phase .
+_:c14n30 rdf:first tmodel:depends_on_node ;
+	rdf:rest _:c14n125 .
+_:c14n300 sh:class tmodel:AttackStep ;
+	sh:description "Explicit ordering edge (§2a). Steps may be shared across paths." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 1 ;
+	sh:path tmodel:precedes .
+_:c14n301 sh:class tmodel:Component ;
+	sh:description "Accepted via ADR-0011 (DL-0024). Components that store the Asset (OTM component `assets.stored`)." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 1 ;
+	sh:path tmodel:stored_in .
+_:c14n302 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 6 ;
+	sh:path tmodel:id .
+_:c14n303 sh:class tmodel:Weakness ;
+	sh:description "Accepted via ADR-0011 (DL-0024). The Weakness (CWE) a Vulnerability is an instance of (ARCH-0001 §3 `instance_of`; PLAN-0002 §5). Who assigned it (CNA, ADP, NVD) is not a property of this edge: keep it on an Assertion with `asserted_by` (RPT-0004 rule R-CWE-1)." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 4 ;
+	sh:path tmodel:instance_of .
+_:c14n304 rdf:first rdf:type ;
+	rdf:rest _:c14n238 .
+_:c14n305 rdf:first tmodel:current_phase ;
+	rdf:rest _:c14n109 .
+_:c14n306 sh:class tmodel:Component ;
+	sh:description "Dependency edge, including DNS/service-style depends_on (§3)." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 1 ;
+	sh:path tmodel:depends_on .
+_:c14n307 rdf:first "application" ;
+	rdf:rest _:c14n375 .
+_:c14n308 rdf:first "and_gate" ;
+	rdf:rest _:c14n81 .
+_:c14n309 rdf:first tmodel:attack_paths ;
+	rdf:rest _:c14n140 .
+_:c14n31 rdf:first tmodel:product_instance ;
+	rdf:rest _:c14n77 .
+_:c14n310 rdf:first tmodel:owned_by ;
+	rdf:rest _:c14n520 .
+_:c14n311 sh:class tmodel:Component ;
+	sh:description "Accepted via ADR-0011 (DL-0024). The Components one build contains, as an SBOM lists them (RPT-0004 Table 6c, pilot finding 1). `composed_of` stays the design-level composition on Product and Component; this is the per-build list, which differs between builds of one Product." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 7 ;
+	sh:path tmodel:build_composed_of .
+_:c14n312 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 3 ;
+	sh:path tmodel:id .
+_:c14n313 rdf:first tmodel:object ;
+	rdf:rest _:c14n379 .
+_:c14n314 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n315 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path tmodel:description .
+_:c14n316 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 1 ;
+	sh:path tmodel:id .
+_:c14n317 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 5 ;
+	sh:path tmodel:description .
+_:c14n318 sh:datatype xsd:dateTime ;
+	sh:description "Accepted via ADR-0011 (DL-0024). When the statement was made or captured (PROV-O generatedAtTime)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 6 ;
+	sh:path tmodel:asserted_at .
+_:c14n319 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n32 rdf:first "distribution" ;
+	rdf:rest _:c14n259 .
+_:c14n320 rdf:first tmodel:affects ;
+	rdf:rest _:c14n271 .
+_:c14n321 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 7 ;
+	sh:path tmodel:name .
+_:c14n322 sh:class tmodel:ThreatModel ;
+	sh:description "The prior revision of this threat-model snapshot it replaces (§3c R-043)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 8 ;
+	sh:path tmodel:supersedes .
+_:c14n323 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 10 ;
+	sh:path tmodel:id .
+_:c14n324 rdf:first tmodel:steps ;
+	rdf:rest _:c14n219 .
+_:c14n325 sh:class tmodel:Component ;
+	sh:description "Accepted via ADR-0011 (DL-0024). Components that process the Asset (OTM component `assets.processed`)." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 2 ;
+	sh:path tmodel:processed_by .
+_:c14n326 sh:description "Accepted via ADR-0011 (DL-0024). The element a ThreatInstance acts on: a Component, a DataFlow, an Asset or a TrustBoundary, as OTM attaches threats to components and data flows and STRIDE classifies per DFD element (RPT-0015 §4 notes ThreatInstance has no `targets` or `on_element` edge)." ;
+	sh:or _:c14n577 ;
+	sh:order 5 ;
+	sh:path tmodel:targets_element .
+_:c14n327 sh:datatype xsd:string ;
+	sh:description "Commit/content digest the approval is pinned to, so the sign-off is REPRODUCIBLE against KG state at a point in time (§3c R-043; SysML v2 View/Viewpoint, OMG SACM, OSCAL→Word prior art). Opaque string; digest scheme not pinned here." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path tmodel:approval_digest .
+_:c14n328 sh:class tmodel:LifecyclePhase ;
+	sh:description "Canonical LifecyclePhase a program node maps onto (§3b/§3c R-041). Gates are the governance points between phases; `name` is the local corporate label (MAP-0001 gate crosswalk)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 5 ;
+	sh:path tmodel:at_phase .
+_:c14n329 rdf:first tmodel:predicate ;
+	rdf:rest _:c14n1 .
+_:c14n33 sh:class tmodel:ThreatInstance ;
+	sh:description "Threat scenario this score is about (§3, RQ-15-15/16)." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 0 ;
+	sh:path tmodel:threat .
+_:c14n330 sh:description "Standing of the current sign-off, read from the approving Review(s) (§4 spine). Distinct from `governance_status` (where the snapshot is in its life): this tracks the verdict of its review cycle. Denormalized convenience — the authoritative verdict is the Review, not this field." ;
+	sh:in _:c14n558 ;
+	sh:maxCount 1 ;
+	sh:order 7 ;
+	sh:path tmodel:approval_status .
+_:c14n331 rdf:first tmodel:trust_level ;
+	rdf:rest _:c14n252 .
+_:c14n332 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path tmodel:name .
+_:c14n333 sh:description "Path-level feasibility, ISO 21434 4-point scale, human-rated at MVP (§3, Table 1 / RQ-15-10). Not CVSS. Not per-step min/max (that is post-MVP)." ;
+	sh:in _:c14n600 ;
+	sh:maxCount 1 ;
+	sh:order 2 ;
+	sh:path tmodel:attack_feasibility .
+_:c14n334 sh:class tmodel:Party ;
+	sh:description "Who implements the mitigation (§5)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 3 ;
+	sh:path tmodel:implementation_owner .
+_:c14n335 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path tmodel:description .
+_:c14n336 sh:datatype xsd:string ;
+	sh:description "Accepted via ADR-0011 (DL-0024). The activity that produced the statement, as text: a tool and version, a database build time, a method (PROV-O wasGeneratedBy). Without it the same SBOM gives different answers on different days (RPT-0004 pilot.md §3)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 7 ;
+	sh:path tmodel:generated_by .
+_:c14n337 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n338 sh:class tmodel:Requirement ;
+	sh:description "Requirements a SecurityProgram enforces (§3c R-041/R-044)." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 2 ;
+	sh:path tmodel:incorporates .
+_:c14n339 rdf:first "linddun" ;
+	rdf:rest _:c14n128 .
+_:c14n34 rdf:first tmodel:gate_status ;
+	rdf:rest _:c14n299 .
+_:c14n340 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 4 ;
+	sh:path tmodel:id .
+_:c14n341 sh:class tmodel:Review ;
+	sh:description "Approving Review(s) of a governed artifact (§3c R-043). Approval runs through the existing Review + Assertion spine (§4) — NOT a parallel provenance mechanism (iteration-7 guardrail, DL-0010)." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 3 ;
+	sh:path tmodel:approved_by .
+_:c14n342 sh:class tmodel:AttackPath ;
+	sh:description "Path-level pivot across a reachability substrate (§1). Reachability's other two levels (connected_via, step preconditions) are not classes in §13." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 3 ;
+	sh:path tmodel:pivots_to .
+_:c14n343 rdf:first "device" ;
+	rdf:rest _:c14n403 .
+_:c14n344 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 8 ;
+	sh:path tmodel:id .
+_:c14n345 sh:datatype xsd:string ;
+	sh:description "Monotonic revision/version of a governed snapshot (§3c R-043). This is the saved view's \"version\"; ThreatModel and SecurityProgram name the same field `revision`. Tracked across review cycles via `supersedes`." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path tmodel:revision .
+_:c14n346 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 3 ;
+	sh:path tmodel:id .
+_:c14n347 sh:datatype xsd:string ;
+	sh:description "External catalog identifier when the proposal names one (CWE, CAPEC, ATT&CK, CVE, D3FEND). The identifier scheme is not pinned in §13." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path tmodel:catalog_ref .
+_:c14n348 rdf:first "stride" ;
+	rdf:rest _:c14n339 .
+_:c14n349 sh:description "Operational impact (§3)." ;
+	sh:in _:c14n597 ;
+	sh:maxCount 1 ;
+	sh:order 2 ;
+	sh:path tmodel:operational .
+_:c14n35 sh:datatype xsd:string ;
+	sh:description "Accepted via ADR-0011 (DL-0024). The zone's trust rating as the source gives it (OTM `trustRating`); not normalized here." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path tmodel:trust_level .
+_:c14n350 sh:datatype xsd:dateTime ;
+	sh:description "When the governed artifact was created (§3c R-043 change tracking)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 8 ;
+	sh:path tmodel:created .
+_:c14n351 rdf:first tmodel:projection ;
+	rdf:rest _:c14n185 .
+_:c14n352 rdf:first tmodel:evidence ;
+	rdf:rest _:c14n108 .
+_:c14n353 sh:class tmodel:Party ;
+	sh:description "Owner this score is reported for, when a path crosses assets with different owners (§3). MVP assumes one stakeholder; omit unless needed." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 3 ;
+	sh:path tmodel:for_stakeholder .
+_:c14n354 sh:class tmodel:Node ;
+	sh:description "The KG scope a GovernedView materializes (§3c R-043) — e.g. a ThreatModel or SecurityProgram. Content derives from KG state; never written back." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 0 ;
+	sh:path tmodel:renders .
+_:c14n355 rdf:first tmodel:within_boundary ;
+	rdf:rest _:c14n22 .
+_:c14n356 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n357 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 0 ;
+	sh:path tmodel:id .
+_:c14n358 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 4 ;
+	sh:path tmodel:id .
+_:c14n359 sh:class tmodel:GovernedView ;
+	sh:description "The prior revision of this governed snapshot it replaces (§3c R-043)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 7 ;
+	sh:path tmodel:supersedes .
+_:c14n36 rdf:first tmodel:threat ;
+	rdf:rest _:c14n331 .
+_:c14n360 sh:class tmodel:Party ;
+	sh:description "Assigning CNA (§2b). Party.classifications should include cna when this is set; not enforced here." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 3 ;
+	sh:path tmodel:assigned_by .
+_:c14n361 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 7 ;
+	sh:path tmodel:name .
+_:c14n362 sh:datatype xsd:dateTime ;
+	sh:description "When the governed artifact was created (§3c R-043 change tracking)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 10 ;
+	sh:path tmodel:created .
+_:c14n363 rdf:first tmodel:risk ;
+	rdf:rest _:c14n436 .
+_:c14n364 sh:class tmodel:Party ;
+	sh:description "Relational role edge (§2b), not a classification on Party." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 1 ;
+	sh:path tmodel:manufactured_by .
+_:c14n365 rdf:first tmodel:instance_of ;
+	rdf:rest _:c14n63 .
+_:c14n366 rdf:first tmodel:updated ;
+	rdf:rest rdf:nil .
+_:c14n367 rdf:first "production" ;
+	rdf:rest _:c14n32 .
+_:c14n368 sh:datatype xsd:string ;
+	sh:description "Bounded query / filter that defines the view (§10, R-033). Opaque to this schema (not a committed query language — DEC-004 is open)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 11 ;
+	sh:path tmodel:focus_query .
+_:c14n369 sh:class tmodel:Asset ;
+	sh:description "Accepted via ADR-0011 (DL-0024). Assets the DataFlow carries (threagile data assets sent and received)." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 2 ;
+	sh:path tmodel:carries .
+_:c14n37 rdf:first tmodel:review_status ;
+	rdf:rest _:c14n85 .
+_:c14n370 sh:class tmodel:Party ;
+	sh:description "Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 3 ;
+	sh:path tmodel:owner .
+_:c14n371 sh:datatype xsd:string ;
+	sh:description "Accepted via ADR-0011 (DL-0024). The version string as the source wrote it (RPT-0004 Table 6b). Until now only the purl inside `identifiers` carried it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 6 ;
+	sh:path tmodel:version .
+_:c14n372 sh:description "Which derived projection this View spec names (§10)." ;
+	sh:in _:c14n503 ;
+	sh:maxCount 1 ;
+	sh:order 0 ;
+	sh:path tmodel:projection .
+_:c14n373 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 8 ;
+	sh:path tmodel:description .
+_:c14n374 sh:datatype xsd:string ;
+	sh:description "Edge type name (§4), e.g. composed_of, affects, realizes, owned_by. Not a closed enum: reviewed edges that are not first-class slots still reify here (including the human-reviewed CWE↔CAPEC mapping, §2)." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path tmodel:predicate .
+_:c14n375 rdf:first "framework" ;
+	rdf:rest _:c14n381 .
+_:c14n376 sh:class tmodel:Requirement ;
+	sh:description "Requirements whose conformance gates passage of this program node (§3c R-041/R-042)." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 6 ;
+	sh:path tmodel:gated_by .
+_:c14n377 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 10 ;
+	sh:path tmodel:description .
+_:c14n378 rdf:first tmodel:implementation_owner ;
+	rdf:rest _:c14n103 .
+_:c14n379 rdf:first tmodel:of_product ;
+	rdf:rest _:c14n599 .
+_:c14n38 sh:datatype xsd:date ;
+	sh:description "Actual date a program node occurred (§3c R-041). Open if not yet reached." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path tmodel:actual_date .
+_:c14n380 sh:class tmodel:AttackPath ;
+	sh:description "Paths whose feasibilities feed this score. Reduction across paths is worst-path (§3); this schema stores the set, not the fold function." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 1 ;
+	sh:path tmodel:attack_paths .
+_:c14n381 rdf:first "library" ;
+	rdf:rest _:c14n206 .
+_:c14n382 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path tmodel:name .
+_:c14n383 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path tmodel:name .
+_:c14n384 rdf:first tmodel:asserted_by ;
+	rdf:rest _:c14n43 .
+_:c14n385 sh:datatype xsd:string ;
+	sh:description "Accepted via ADR-0011 (DL-0024). Other ids of the same Vulnerability (GHSA, OSV, distribution advisories); `catalog_ref` keeps the primary id (RPT-0004 Table 6d)." ;
+	sh:nodeKind sh:Literal ;
+	sh:order 5 ;
+	sh:path tmodel:alias_ids .
+_:c14n386 rdf:first tmodel:composed_of ;
+	rdf:rest _:c14n251 .
+_:c14n387 sh:class tmodel:Requirement ;
+	sh:description "Requirements whose conformance gates passage of this program node (§3c R-041/R-042)." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 6 ;
+	sh:path tmodel:gated_by .
+_:c14n388 sh:description "Accepted via ADR-0011 (DL-0024). What kind of thing a Component is (RPT-0004 Table 6b, 6e; R-022)." ;
+	sh:in _:c14n307 ;
+	sh:maxCount 1 ;
+	sh:order 6 ;
+	sh:path tmodel:component_kind .
+_:c14n389 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n39 sh:class tmodel:Party ;
+	sh:description "Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 5 ;
+	sh:path tmodel:owner .
+_:c14n390 rdf:first tmodel:planned_date ;
+	rdf:rest _:c14n237 .
+_:c14n391 sh:datatype xsd:integer ;
 	sh:description "Position of a program node within its SecurityProgram (§3c R-041)." ;
 	sh:maxCount 1 ;
 	sh:nodeKind sh:Literal ;
 	sh:order 0 ;
 	sh:path tmodel:order .
+_:c14n392 sh:datatype xsd:string ;
+	sh:description "Opaque external / instance-identity strings for a structural node — Product, ProductInstance, or Component (§1). This is ADR-0002's per-type instance identity (\"software = a build/commit/hash/SBOM; hardware = firmware + buses + cores (HBOM)\") and the generic↔instance half of DEC-009, which the §13 classes otherwise could not carry: `catalog_ref` names a GENERIC catalog entry (CWE/CVE/CAPEC), not the concrete artifact. Scheme-prefixed and OPAQUE, like `catalog_ref` / `external_refs` — a CPE, a package URL (purl), a SWID/SBOM ref, a build/commit hash, or a firmware-image digest. The scheme is NOT pinned and no CPE/SBOM schema is imported (ADR-0004 substrate-neutrality). Additive DRAFT slot (DEC-001 open); not a new §13 class." ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path tmodel:identifiers .
+_:c14n393 sh:class tmodel:Party ;
+	sh:description "Proposal attaches owned_by to Asset (§2b, §3). Asset is not a §13 class; the slot is on Product, ProductInstance, and Component as the structural stand-in. It selects whose business_impact would apply. The business_impact axis itself is post-MVP and has no slot." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 4 ;
+	sh:path tmodel:owned_by .
+_:c14n394 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 7 ;
+	sh:path tmodel:name .
+_:c14n395 rdf:first "file" ;
+	rdf:rest _:c14n213 .
+_:c14n396 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path tmodel:description .
+_:c14n397 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 7 ;
+	sh:path tmodel:description .
+_:c14n398 rdf:first "person" ;
+	rdf:rest _:c14n253 .
+_:c14n399 sh:datatype xsd:string ;
+	sh:description "Proposal status of the Assertion (§4). Must not be `accepted` until provenance and a review are present. That gate is not encoded as a LinkML cardinality rule (§13)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 4 ;
+	sh:path tmodel:assertion_status .
+_:c14n4 rdf:first tmodel:targets_element ;
+	rdf:rest _:c14n54 .
+_:c14n40 sh:description "Vector component (§3, DL-0011). Copied or reduced from AttackPath.attack_feasibility (worst path). Method is ISO 21434 Table-1, not Common Criteria." ;
+	sh:in _:c14n604 ;
+	sh:maxCount 1 ;
+	sh:order 4 ;
+	sh:path tmodel:feasibility .
+_:c14n400 sh:class tmodel:Environment ;
+	sh:description "The one Environment for this Deployment (§3)." ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 1 ;
+	sh:path tmodel:environment .
+_:c14n401 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 12 ;
+	sh:path tmodel:description .
+_:c14n402 rdf:first "decommission" ;
+	rdf:rest rdf:nil .
+_:c14n403 rdf:first "device_driver" ;
+	rdf:rest _:c14n434 .
+_:c14n404 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n405 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 9 ;
+	sh:path tmodel:name .
+_:c14n406 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 2 ;
+	sh:path tmodel:id .
+_:c14n407 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 6 ;
+	sh:path tmodel:id .
+_:c14n408 sh:description "OPAQUE reference to a library requirement record (Threat-Radar/library), by uriorcurie id only (§3c R-044, §2b). tmodel aligns by reference — it does NOT import or depend on the library schema." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 2 ;
+	sh:path tmodel:source_ref .
+_:c14n409 sh:class tmodel:ImpactVector ;
+	sh:description "Per-category S/F/O/P vector (§3). Human-supplied. Do not replace this object with a single severity." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:BlankNodeOrIRI ;
+	sh:order 5 ;
+	sh:path tmodel:impact .
+_:c14n41 sh:class tmodel:ProgramNode ;
+	sh:description "Entry-criteria / dependency edges between program nodes (§3c R-041)." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 9 ;
+	sh:path tmodel:depends_on_node .
+_:c14n410 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 2 ;
+	sh:path tmodel:id .
+_:c14n411 rdf:first "redundant_with" ;
+	rdf:rest rdf:nil .
+_:c14n412 sh:class tmodel:Asset .
+_:c14n413 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path tmodel:name .
+_:c14n414 rdf:first tmodel:manufactured_by ;
+	rdf:rest _:c14n76 .
+_:c14n415 sh:class tmodel:DataFlow .
+_:c14n416 rdf:first tmodel:order ;
+	rdf:rest _:c14n310 .
+_:c14n417 sh:description "Passage status of a program node (§3c R-041): planned / in-progress / passed / failed / waived / blocked." ;
+	sh:in _:c14n483 ;
+	sh:maxCount 1 ;
+	sh:order 3 ;
+	sh:path tmodel:gate_status .
+_:c14n418 rdf:first tmodel:scope_query ;
+	rdf:rest _:c14n163 .
+_:c14n419 rdf:first tmodel:depends_on ;
+	rdf:rest _:c14n30 .
+_:c14n42 sh:datatype xsd:string ;
+	sh:description "Security property the facet says is violated (§2). STRIDE sketch, not a closed enum: S authentication, T integrity, R non-repudiation, I confidentiality, D availability, E authorization." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path tmodel:violates_property .
+_:c14n420 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 7 ;
+	sh:path tmodel:name .
+_:c14n421 rdf:first tmodel:party_kind ;
+	rdf:rest _:c14n68 .
+_:c14n422 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path tmodel:name .
+_:c14n423 sh:datatype xsd:string ;
+	sh:description "Environment facet (§3)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path tmodel:operational_context .
+_:c14n424 sh:class tmodel:Party ;
+	sh:description "Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 2 ;
+	sh:path tmodel:owner .
+_:c14n425 sh:datatype xsd:string ;
+	sh:description "Accepted via ADR-0011 (DL-0024). The version string as the source wrote it (RPT-0004 Table 6b). Until now only the purl inside `identifiers` carried it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 5 ;
+	sh:path tmodel:version .
+_:c14n426 sh:datatype xsd:string ;
+	sh:description "Verdict status (§5). Kept open: proposal does not enumerate the values." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path tmodel:review_status .
+_:c14n427 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 11 ;
+	sh:path tmodel:description .
+_:c14n428 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 2 ;
+	sh:path tmodel:id .
+_:c14n429 sh:class tmodel:Party ;
+	sh:description "Proposal attaches owned_by to Asset (§2b, §3). Asset is not a §13 class; the slot is on Product, ProductInstance, and Component as the structural stand-in. It selects whose business_impact would apply. The business_impact axis itself is post-MVP and has no slot." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 3 ;
+	sh:path tmodel:owned_by .
+_:c14n43 rdf:first tmodel:assertion_status ;
+	rdf:rest _:c14n151 .
+_:c14n430 sh:datatype xsd:date ;
+	sh:description "Planned date of a program node (§3c R-041 program management)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path tmodel:planned_date .
+_:c14n431 rdf:first "optional" ;
+	rdf:rest _:c14n131 .
+_:c14n432 rdf:first tmodel:validates_conformance_of ;
+	rdf:rest rdf:nil .
+_:c14n433 rdf:first tmodel:valid_to ;
+	rdf:rest _:c14n285 .
+_:c14n434 rdf:first "firmware" ;
+	rdf:rest _:c14n395 .
+_:c14n435 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 5 ;
+	sh:path tmodel:description .
+_:c14n436 rdf:first tmodel:satisfied_by ;
+	rdf:rest _:c14n418 .
+_:c14n437 sh:class tmodel:ThreatModel ;
+	sh:description "The ThreatModel whose conformance this Gate's exit criterion checks (§3c R-042): every in-scope ThreatInstance has an approved, evidenced Mitigation. Proves linkage + approval, NOT adequacy (CLAUDE.md human-judgement rule)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 0 ;
+	sh:path tmodel:validates_conformance_of .
+_:c14n438 sh:datatype xsd:string ;
+	sh:description "Which method proposed this ThreatInstance (§2)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path tmodel:source_method .
+_:c14n439 rdf:first tmodel:component_kind ;
+	rdf:rest _:c14n386 .
+_:c14n44 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path tmodel:description .
+_:c14n440 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n441 sh:class tmodel:ProgramNode ;
+	sh:description "Another program node this Milestone is dated relative to (§3c R-041)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 0 ;
+	sh:path tmodel:offset_from .
+_:c14n442 rdf:first tmodel:supplied_by ;
+	rdf:rest _:c14n4 .
+_:c14n443 sh:class tmodel:ThreatInstance ;
+	sh:description "This path realises the threat scenario (§3)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 1 ;
+	sh:path tmodel:realizes_threat .
+_:c14n444 rdf:first "verification_validation" ;
+	rdf:rest _:c14n367 .
+_:c14n445 rdf:first tmodel:method_facet ;
+	rdf:rest _:c14n224 .
+_:c14n446 sh:description "Financial impact on the end-beneficiary, not the owner's P&L (§3)." ;
+	sh:in _:c14n585 ;
+	sh:maxCount 1 ;
+	sh:order 1 ;
+	sh:path tmodel:financial .
+_:c14n447 sh:datatype xsd:dateTime ;
+	sh:description "When the governed artifact was last updated (§3c R-043 change tracking)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 11 ;
+	sh:path tmodel:updated .
+_:c14n448 sh:datatype xsd:date ;
+	sh:description "Planned date of a program node (§3c R-041 program management)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path tmodel:planned_date .
+_:c14n449 rdf:first "architecture" ;
+	rdf:rest _:c14n94 .
+_:c14n45 rdf:first tmodel:impact ;
+	rdf:rest _:c14n378 .
+_:c14n450 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n451 sh:datatype xsd:string ;
+	sh:description "Accepted via ADR-0011 (DL-0024). The protocol or bus, as text (for example CAN, HTTPS)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path tmodel:protocol .
+_:c14n452 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 9 ;
+	sh:path tmodel:id .
+_:c14n453 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 11 ;
+	sh:path tmodel:id .
+_:c14n454 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n455 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n456 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n457 sh:description "Automatable R-042 conformance verdict for a Requirement: whether it has an approved, evidenced mitigation. Proves linkage + approval, NOT adequacy." ;
+	sh:in _:c14n283 ;
+	sh:maxCount 1 ;
+	sh:order 5 ;
+	sh:path tmodel:conformance_status .
+_:c14n458 rdf:first "cryptographic_asset" ;
+	rdf:rest _:c14n460 .
+_:c14n459 sh:description "Organization or person (§2b)." ;
+	sh:in _:c14n201 ;
+	sh:maxCount 1 ;
+	sh:order 0 ;
+	sh:path tmodel:party_kind .
+_:c14n46 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n460 rdf:first "service" ;
+	rdf:rest _:c14n183 .
+_:c14n461 rdf:first tmodel:connectivity ;
+	rdf:rest _:c14n608 .
+_:c14n462 sh:class tmodel:Review ;
+	sh:description "Approving Review(s) of a governed artifact (§3c R-043). Approval runs through the existing Review + Assertion spine (§4) — NOT a parallel provenance mechanism (iteration-7 guardrail, DL-0010)." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 4 ;
+	sh:path tmodel:approved_by .
+_:c14n463 sh:description "replica_of or redundant_with (§3)." ;
+	sh:in _:c14n187 ;
+	sh:maxCount 1 ;
+	sh:order 1 ;
+	sh:path tmodel:redundancy_relation .
+_:c14n464 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 14 ;
+	sh:path tmodel:description .
+_:c14n465 sh:datatype xsd:string ;
+	sh:description "Commit/content digest the approval is pinned to, so the sign-off is REPRODUCIBLE against KG state at a point in time (§3c R-043; SysML v2 View/Viewpoint, OMG SACM, OSCAL→Word prior art). Opaque string; digest scheme not pinned here." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 6 ;
+	sh:path tmodel:approval_digest .
+_:c14n466 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n467 rdf:first tmodel:reported_by ;
+	rdf:rest _:c14n37 .
+_:c14n468 rdf:first "failed" ;
+	rdf:rest _:c14n472 .
+_:c14n469 rdf:first "passed" ;
+	rdf:rest _:c14n468 .
+_:c14n47 sh:datatype xsd:integer ;
+	sh:description "Position of a program node within its SecurityProgram (§3c R-041)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path tmodel:order .
+_:c14n470 rdf:first "in_progress" ;
+	rdf:rest _:c14n469 .
+_:c14n471 rdf:first "planned" ;
+	rdf:rest _:c14n470 .
+_:c14n472 rdf:first "waived" ;
+	rdf:rest _:c14n473 .
+_:c14n473 rdf:first "blocked" ;
+	rdf:rest rdf:nil .
+_:c14n474 rdf:first "failed" ;
+	rdf:rest _:c14n478 .
+_:c14n475 rdf:first "passed" ;
+	rdf:rest _:c14n474 .
+_:c14n476 rdf:first "in_progress" ;
+	rdf:rest _:c14n475 .
+_:c14n477 rdf:first "planned" ;
+	rdf:rest _:c14n476 .
+_:c14n478 rdf:first "waived" ;
+	rdf:rest _:c14n479 .
+_:c14n479 rdf:first "blocked" ;
+	rdf:rest rdf:nil .
+_:c14n48 sh:datatype xsd:string ;
+	sh:description "Opaque external / instance-identity strings for a structural node — Product, ProductInstance, or Component (§1). This is ADR-0002's per-type instance identity (\"software = a build/commit/hash/SBOM; hardware = firmware + buses + cores (HBOM)\") and the generic↔instance half of DEC-009, which the §13 classes otherwise could not carry: `catalog_ref` names a GENERIC catalog entry (CWE/CVE/CAPEC), not the concrete artifact. Scheme-prefixed and OPAQUE, like `catalog_ref` / `external_refs` — a CPE, a package URL (purl), a SWID/SBOM ref, a build/commit hash, or a firmware-image digest. The scheme is NOT pinned and no CPE/SBOM schema is imported (ADR-0004 substrate-neutrality). Additive DRAFT slot (DEC-001 open); not a new §13 class." ;
+	sh:nodeKind sh:Literal ;
+	sh:order 5 ;
+	sh:path tmodel:identifiers .
+_:c14n480 rdf:first "failed" ;
+	rdf:rest _:c14n484 .
+_:c14n481 rdf:first "passed" ;
+	rdf:rest _:c14n480 .
+_:c14n482 rdf:first "in_progress" ;
+	rdf:rest _:c14n481 .
+_:c14n483 rdf:first "planned" ;
+	rdf:rest _:c14n482 .
+_:c14n484 rdf:first "waived" ;
+	rdf:rest _:c14n485 .
+_:c14n485 rdf:first "blocked" ;
+	rdf:rest rdf:nil .
+_:c14n486 rdf:first "failed" ;
+	rdf:rest _:c14n490 .
+_:c14n487 rdf:first "passed" ;
+	rdf:rest _:c14n486 .
+_:c14n488 rdf:first "in_progress" ;
+	rdf:rest _:c14n487 .
+_:c14n489 rdf:first "planned" ;
+	rdf:rest _:c14n488 .
+_:c14n49 rdf:first "data" ;
+	rdf:rest _:c14n458 .
+_:c14n490 rdf:first "waived" ;
+	rdf:rest _:c14n491 .
+_:c14n491 rdf:first "blocked" ;
+	rdf:rest rdf:nil .
+_:c14n492 rdf:first tmodel:revision ;
+	rdf:rest _:c14n493 .
+_:c14n493 rdf:first tmodel:supersedes ;
+	rdf:rest _:c14n366 .
+_:c14n494 rdf:first tmodel:renders ;
+	rdf:rest _:c14n492 .
+_:c14n495 rdf:first tmodel:owner ;
+	rdf:rest _:c14n494 .
+_:c14n496 rdf:first tmodel:governance_status ;
+	rdf:rest _:c14n495 .
+_:c14n497 rdf:first tmodel:created ;
+	rdf:rest _:c14n496 .
+_:c14n498 rdf:first tmodel:approved_by ;
+	rdf:rest _:c14n497 .
+_:c14n499 rdf:first tmodel:approval_status ;
+	rdf:rest _:c14n498 .
+_:c14n5 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 9 ;
+	sh:path tmodel:id .
+_:c14n50 sh:class tmodel:Component ;
+	sh:description "Recursive structural composition (§3). Inlined as references, not as nested trees." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 0 ;
+	sh:path tmodel:composed_of .
+_:c14n500 rdf:first tmodel:approval_digest ;
+	rdf:rest _:c14n499 .
+_:c14n501 rdf:first tmodel:revision ;
+	rdf:rest _:c14n363 .
+_:c14n502 rdf:first "threat_mitigation_matrix" ;
+	rdf:rest _:c14n504 .
+_:c14n503 rdf:first "graph" ;
+	rdf:rest _:c14n502 .
+_:c14n504 rdf:first "attack_path" ;
+	rdf:rest _:c14n505 .
+_:c14n505 rdf:first "dfd" ;
+	rdf:rest _:c14n506 .
+_:c14n506 rdf:first "timeline" ;
+	rdf:rest _:c14n507 .
+_:c14n507 rdf:first "provenance" ;
+	rdf:rest _:c14n508 .
+_:c14n508 rdf:first "compare" ;
+	rdf:rest rdf:nil .
+_:c14n509 rdf:first "threat_mitigation_matrix" ;
+	rdf:rest _:c14n511 .
+_:c14n51 rdf:first "operation" ;
+	rdf:rest _:c14n10 .
+_:c14n510 rdf:first "graph" ;
+	rdf:rest _:c14n509 .
+_:c14n511 rdf:first "attack_path" ;
+	rdf:rest _:c14n512 .
+_:c14n512 rdf:first "dfd" ;
+	rdf:rest _:c14n513 .
+_:c14n513 rdf:first "timeline" ;
+	rdf:rest _:c14n514 .
+_:c14n514 rdf:first "provenance" ;
+	rdf:rest _:c14n515 .
+_:c14n515 rdf:first "compare" ;
+	rdf:rest rdf:nil .
+_:c14n516 rdf:first tmodel:approved_by ;
+	rdf:rest _:c14n86 .
+_:c14n517 rdf:first tmodel:approval_status ;
+	rdf:rest _:c14n516 .
+_:c14n518 rdf:first tmodel:approval_digest ;
+	rdf:rest _:c14n517 .
+_:c14n519 rdf:first tmodel:supersedes ;
+	rdf:rest _:c14n442 .
+_:c14n52 rdf:first tmodel:focus_query ;
+	rdf:rest _:c14n232 .
+_:c14n520 rdf:first tmodel:owner ;
+	rdf:rest _:c14n421 .
+_:c14n521 rdf:first "confidentiality" ;
+	rdf:rest _:c14n522 .
+_:c14n522 rdf:first "integrity" ;
+	rdf:rest _:c14n523 .
+_:c14n523 rdf:first "availability" ;
+	rdf:rest _:c14n524 .
+_:c14n524 rdf:first "authenticity" ;
+	rdf:rest _:c14n525 .
+_:c14n525 rdf:first "authorization" ;
+	rdf:rest _:c14n526 .
+_:c14n526 rdf:first "non_repudiation" ;
+	rdf:rest rdf:nil .
+_:c14n527 rdf:first "confidentiality" ;
+	rdf:rest _:c14n528 .
+_:c14n528 rdf:first "integrity" ;
+	rdf:rest _:c14n529 .
+_:c14n529 rdf:first "availability" ;
+	rdf:rest _:c14n530 .
+_:c14n53 rdf:first tmodel:feasibility ;
+	rdf:rest _:c14n138 .
+_:c14n530 rdf:first "authenticity" ;
+	rdf:rest _:c14n531 .
+_:c14n531 rdf:first "authorization" ;
+	rdf:rest _:c14n532 .
+_:c14n532 rdf:first "non_repudiation" ;
+	rdf:rest rdf:nil .
+_:c14n533 rdf:first "accepted_risk" ;
+	rdf:rest _:c14n534 .
+_:c14n534 rdf:first "not_applicable" ;
+	rdf:rest rdf:nil .
+_:c14n535 rdf:first "complete" ;
+	rdf:rest _:c14n533 .
+_:c14n536 rdf:first "in_progress" ;
+	rdf:rest _:c14n535 .
+_:c14n537 rdf:first "planned" ;
+	rdf:rest _:c14n536 .
+_:c14n538 rdf:first "accepted_risk" ;
+	rdf:rest _:c14n539 .
+_:c14n539 rdf:first "not_applicable" ;
+	rdf:rest rdf:nil .
+_:c14n54 rdf:first tmodel:text ;
+	rdf:rest _:c14n36 .
+_:c14n540 rdf:first "complete" ;
+	rdf:rest _:c14n538 .
+_:c14n541 rdf:first "in_progress" ;
+	rdf:rest _:c14n540 .
+_:c14n542 rdf:first "planned" ;
+	rdf:rest _:c14n541 .
+_:c14n543 rdf:first tmodel:renders ;
+	rdf:rest _:c14n257 .
+_:c14n544 rdf:first "rejected" ;
+	rdf:rest _:c14n545 .
+_:c14n545 rdf:first "withdrawn" ;
+	rdf:rest rdf:nil .
+_:c14n546 rdf:first "changes_requested" ;
+	rdf:rest _:c14n544 .
+_:c14n547 rdf:first "approved" ;
+	rdf:rest _:c14n546 .
+_:c14n548 rdf:first "pending" ;
+	rdf:rest _:c14n547 .
+_:c14n549 rdf:first "rejected" ;
+	rdf:rest _:c14n550 .
+_:c14n55 sh:description "Lifecycle of a governed snapshot (§3c R-043): draft → in-review → approved → superseded. The shared governed-view lifecycle (named for the ThreatModel case; reused by SecurityProgram and GovernedView)." ;
+	sh:in _:c14n571 ;
+	sh:maxCount 1 ;
+	sh:order 7 ;
+	sh:path tmodel:governance_status .
+_:c14n550 rdf:first "withdrawn" ;
+	rdf:rest rdf:nil .
+_:c14n551 rdf:first "changes_requested" ;
+	rdf:rest _:c14n549 .
+_:c14n552 rdf:first "approved" ;
+	rdf:rest _:c14n551 .
+_:c14n553 rdf:first "pending" ;
+	rdf:rest _:c14n552 .
+_:c14n554 rdf:first "rejected" ;
+	rdf:rest _:c14n555 .
+_:c14n555 rdf:first "withdrawn" ;
+	rdf:rest rdf:nil .
+_:c14n556 rdf:first "changes_requested" ;
+	rdf:rest _:c14n554 .
+_:c14n557 rdf:first "approved" ;
+	rdf:rest _:c14n556 .
+_:c14n558 rdf:first "pending" ;
+	rdf:rest _:c14n557 .
+_:c14n559 rdf:first tmodel:governance_status ;
+	rdf:rest _:c14n268 .
+_:c14n56 sh:class tmodel:Component ;
+	sh:description "Accepted via ADR-0011 (DL-0024). Where the DataFlow starts." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 0 ;
+	sh:path tmodel:flow_from .
+_:c14n560 rdf:first "superseded" ;
+	rdf:rest rdf:nil .
+_:c14n561 rdf:first "approved" ;
+	rdf:rest _:c14n560 .
+_:c14n562 rdf:first "in_review" ;
+	rdf:rest _:c14n561 .
+_:c14n563 rdf:first "draft" ;
+	rdf:rest _:c14n562 .
+_:c14n564 rdf:first "superseded" ;
+	rdf:rest rdf:nil .
+_:c14n565 rdf:first "approved" ;
+	rdf:rest _:c14n564 .
+_:c14n566 rdf:first "in_review" ;
+	rdf:rest _:c14n565 .
+_:c14n567 rdf:first "draft" ;
+	rdf:rest _:c14n566 .
+_:c14n568 rdf:first "superseded" ;
+	rdf:rest rdf:nil .
+_:c14n569 rdf:first "approved" ;
+	rdf:rest _:c14n568 .
+_:c14n57 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 14 ;
+	sh:path tmodel:description .
+_:c14n570 rdf:first "in_review" ;
+	rdf:rest _:c14n569 .
+_:c14n571 rdf:first "draft" ;
+	rdf:rest _:c14n570 .
+_:c14n572 sh:class tmodel:Component .
+_:c14n573 rdf:first _:c14n572 ;
+	rdf:rest rdf:nil .
+_:c14n574 rdf:first _:c14n575 ;
+	rdf:rest _:c14n573 .
+_:c14n575 sh:class tmodel:TrustBoundary .
+_:c14n576 sh:class tmodel:Component .
+_:c14n577 rdf:first _:c14n576 ;
+	rdf:rest _:c14n578 .
+_:c14n578 rdf:first _:c14n415 ;
+	rdf:rest _:c14n579 .
+_:c14n579 rdf:first _:c14n412 ;
+	rdf:rest _:c14n580 .
+_:c14n58 sh:datatype xsd:string ;
+	sh:description "Commit/content digest the approval is pinned to, so the sign-off is REPRODUCIBLE against KG state at a point in time (§3c R-043; SysML v2 View/Viewpoint, OMG SACM, OSCAL→Word prior art). Opaque string; digest scheme not pinned here." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 5 ;
+	sh:path tmodel:approval_digest .
+_:c14n580 rdf:first _:c14n581 ;
+	rdf:rest rdf:nil .
+_:c14n581 sh:class tmodel:TrustBoundary .
+_:c14n582 rdf:first "negligible" ;
+	rdf:rest rdf:nil .
+_:c14n583 rdf:first "moderate" ;
+	rdf:rest _:c14n582 .
+_:c14n584 rdf:first "major" ;
+	rdf:rest _:c14n583 .
+_:c14n585 rdf:first "severe" ;
+	rdf:rest _:c14n584 .
+_:c14n586 rdf:first "negligible" ;
+	rdf:rest rdf:nil .
+_:c14n587 rdf:first "moderate" ;
+	rdf:rest _:c14n586 .
+_:c14n588 rdf:first "major" ;
+	rdf:rest _:c14n587 .
+_:c14n589 rdf:first "severe" ;
+	rdf:rest _:c14n588 .
+_:c14n59 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n590 rdf:first "negligible" ;
+	rdf:rest rdf:nil .
+_:c14n591 rdf:first "moderate" ;
+	rdf:rest _:c14n590 .
+_:c14n592 rdf:first "major" ;
+	rdf:rest _:c14n591 .
+_:c14n593 rdf:first "severe" ;
+	rdf:rest _:c14n592 .
+_:c14n594 rdf:first "negligible" ;
+	rdf:rest rdf:nil .
+_:c14n595 rdf:first "moderate" ;
+	rdf:rest _:c14n594 .
+_:c14n596 rdf:first "major" ;
+	rdf:rest _:c14n595 .
+_:c14n597 rdf:first "severe" ;
+	rdf:rest _:c14n596 .
+_:c14n598 rdf:first tmodel:offset_from ;
+	rdf:rest _:c14n432 .
+_:c14n599 rdf:first tmodel:offset_from ;
+	rdf:rest _:c14n111 .
+_:c14n6 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 8 ;
+	sh:path tmodel:description .
+_:c14n60 rdf:first "platform" ;
+	rdf:rest _:c14n191 .
+_:c14n600 rdf:first "high" ;
+	rdf:rest _:c14n601 .
+_:c14n601 rdf:first "medium" ;
+	rdf:rest _:c14n602 .
+_:c14n602 rdf:first "low" ;
+	rdf:rest _:c14n603 .
+_:c14n603 rdf:first "very_low" ;
+	rdf:rest rdf:nil .
+_:c14n604 rdf:first "high" ;
+	rdf:rest _:c14n605 .
+_:c14n605 rdf:first "medium" ;
+	rdf:rest _:c14n606 .
+_:c14n606 rdf:first "low" ;
+	rdf:rest _:c14n607 .
+_:c14n607 rdf:first "very_low" ;
+	rdf:rest rdf:nil .
+_:c14n608 rdf:first tmodel:created ;
+	rdf:rest _:c14n129 .
+_:c14n61 sh:description "Lifecycle of the mitigation (§3 R-045, §5): planned / in-progress / complete / accepted-risk / n-a. Vocabulary may be refined by DEC-009. On RiskScore this is a peer column of feasibility and impact, not folded into `risk`." ;
+	sh:in _:c14n537 ;
+	sh:maxCount 1 ;
+	sh:order 5 ;
+	sh:path tmodel:mitigation_status .
+_:c14n62 sh:datatype xsd:dateTime ;
+	sh:description "When the governed artifact was last updated (§3c R-043 change tracking)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 9 ;
+	sh:path tmodel:updated .
+_:c14n63 rdf:first tmodel:justification ;
+	rdf:rest _:c14n114 .
+_:c14n64 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 13 ;
+	sh:path tmodel:name .
+_:c14n65 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 11 ;
+	sh:path tmodel:name .
+_:c14n66 sh:class tmodel:LifecyclePhase ;
+	sh:description "Coarse lifecycle stage a threat or mitigation belongs to (§3b). Not a substitute for Environment. One threat uses the axis that fits." ;
+	sh:nodeKind sh:IRI ;
+	sh:order 4 ;
+	sh:path tmodel:applies_in_phase .
+_:c14n67 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n68 rdf:first tmodel:physical_security ;
+	rdf:rest _:c14n110 .
+_:c14n69 rdf:first tmodel:normativity ;
+	rdf:rest _:c14n313 .
+_:c14n7 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 10 ;
+	sh:path tmodel:id .
+_:c14n70 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 11 ;
+	sh:path tmodel:description .
+_:c14n71 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n72 sh:description "Lifecycle of a governed snapshot (§3c R-043): draft → in-review → approved → superseded. The shared governed-view lifecycle (named for the ThreatModel case; reused by SecurityProgram and GovernedView)." ;
+	sh:in _:c14n563 ;
+	sh:maxCount 1 ;
+	sh:order 6 ;
+	sh:path tmodel:governance_status .
+_:c14n73 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 6 ;
+	sh:path tmodel:description .
+_:c14n74 sh:class tmodel:Party ;
+	sh:description "Accepted via ADR-0011 (DL-0024). Who made the statement: a person, an organization (a CNA, a scanner vendor's feed) or a software agent (PartyKind `software_agent`). PROV-O wasAttributedTo (proposal §4; DL-0021 finding 4)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 5 ;
+	sh:path tmodel:asserted_by .
+_:c14n75 sh:datatype xsd:string ;
+	sh:description "Short prose description." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 3 ;
+	sh:path tmodel:description .
+_:c14n76 rdf:first tmodel:maps_to ;
+	rdf:rest _:c14n204 .
+_:c14n77 rdf:first tmodel:program_nodes ;
+	rdf:rest _:c14n351 .
+_:c14n78 rdf:first tmodel:uses_component ;
+	rdf:rest _:c14n293 .
+_:c14n79 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 12 ;
+	sh:path tmodel:id .
+_:c14n8 sh:class tmodel:Party ;
+	sh:description "Relational role edge (§2b). The same Party may supply one product and consume another." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 7 ;
+	sh:path tmodel:supplied_by .
+_:c14n80 sh:class tmodel:Node ;
+	sh:description "The Product / ProductInstance / ProductFamily a SecurityProgram is attached to (§3c R-041). Range Node: ProductFamily is not a §13 class." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 0 ;
+	sh:path tmodel:governs .
+_:c14n81 rdf:first "or_gate" ;
+	rdf:rest rdf:nil .
+_:c14n82 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 6 ;
+	sh:path tmodel:name .
+_:c14n83 sh:datatype xsd:string ;
+	sh:description "Accepted via ADR-0011 (DL-0024). Opaque references to what the statement rests on: an SBOM digest, an advisory or CVE record URL, a write-up." ;
+	sh:nodeKind sh:Literal ;
+	sh:order 8 ;
+	sh:path tmodel:evidence .
+_:c14n84 sh:description "Controlled phase code (§3b)." ;
+	sh:in _:c14n281 ;
+	sh:maxCount 1 ;
+	sh:minCount 1 ;
+	sh:order 0 ;
+	sh:path tmodel:code .
+_:c14n85 rdf:first tmodel:reviewer ;
+	rdf:rest _:c14n188 .
+_:c14n86 rdf:first tmodel:asserted_at ;
+	rdf:rest _:c14n384 .
+_:c14n87 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n88 sh:datatype xsd:string ;
+	sh:description "Human-readable name." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 10 ;
+	sh:path tmodel:name .
+_:c14n89 sh:datatype xsd:string ;
+	sh:description "Environment facet (§3). Feeds feasibility exploitability only, post-MVP." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 0 ;
+	sh:path tmodel:physical_security .
+_:c14n9 rdf:first rdf:type ;
+	rdf:rest rdf:nil .
+_:c14n90 sh:datatype xsd:date ;
+	sh:description "Actual date a program node occurred (§3c R-041). Open if not yet reached." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path tmodel:actual_date .
+_:c14n91 rdf:first "mandatory" ;
+	rdf:rest _:c14n270 .
+_:c14n92 sh:datatype xsd:date ;
+	sh:description "Planned date of a program node (§3c R-041 program management)." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 2 ;
+	sh:path tmodel:planned_date .
+_:c14n93 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 2 ;
+	sh:path tmodel:id .
+_:c14n94 rdf:first "design" ;
+	rdf:rest _:c14n152 .
+_:c14n95 sh:description "Standing of the current sign-off, read from the approving Review(s) (§4 spine). Distinct from `governance_status` (where the snapshot is in its life): this tracks the verdict of its review cycle. Denormalized convenience — the authoritative verdict is the Review, not this field." ;
+	sh:in _:c14n548 ;
+	sh:maxCount 1 ;
+	sh:order 5 ;
+	sh:path tmodel:approval_status .
+_:c14n96 sh:description "Stable object id (ADR-0004). Adapters must not renumber it." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:IRI ;
+	sh:order 1 ;
+	sh:path tmodel:id .
+_:c14n97 sh:description "Passage status of a program node (§3c R-041): planned / in-progress / passed / failed / waived / blocked." ;
+	sh:in _:c14n489 ;
+	sh:maxCount 1 ;
+	sh:order 4 ;
+	sh:path tmodel:gate_status .
+_:c14n98 sh:datatype xsd:string ;
+	sh:description "Environment facet (§3). Feeds attack vector / reachability / window, not impact." ;
+	sh:maxCount 1 ;
+	sh:nodeKind sh:Literal ;
+	sh:order 1 ;
+	sh:path tmodel:connectivity .
+_:c14n99 rdf:first "not_assessed" ;
+	rdf:rest rdf:nil .
 
