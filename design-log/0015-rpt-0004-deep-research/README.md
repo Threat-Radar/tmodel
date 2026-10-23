@@ -4,9 +4,9 @@ id: DL-0015
 title: "RPT-0004 second pass: AI-assisted scoping, survey, extraction and mapping"
 type: process
 status: draft
-version: "0.7.1"
+version: "0.8.1"
 date: "2026-10-08"
-updated: "2026-10-18"
+updated: "2026-10-20"
 record: DL-0015
 ---
 
@@ -351,3 +351,70 @@ Earlier the same day, at RPT-0005's request (#39), the student took over `cyclon
 
 - The student chose the stub route, five subagents and maximum effort.
 - Pending: review of the 86 records in Threat-Radar/library#27, and the sponsor's answers to sponsor questions 1 and 2 on #38.
+- Later the same day the student merged Threat-Radar/library#26 and #27.
+
+## Library pin, Table 9 and report 0.1.2 (2026-10-18)
+
+### Question asked
+
+With Threat-Radar/library#26 and #27 merged, the student asked for one tmodel change that points tmodel at the merged records, updates the record ids in `sources.md`, and fixes the three report errors the Phase 2 agents found.
+
+### What was produced
+
+- **The library pin** moves from `b3786cd` to `a28a013`, which adds 25 library commits, including library#26 and #27. `bin/validate` passes at `a28a013`: 550 records, 0 errors.
+- **`sources.md` 0.3.0** adds Table 9: each cited source with the record it became and that record's status before and after Phase 2, or why it has none. It also updates the two rows that still said `queued`.
+- **`report.md` 0.1.2** applies the three corrections, with a note at the top.
+- **`dimensions.md` 0.7.1** points the Table 9 status line at `sources.md`.
+
+### Method
+
+Each correction was re-checked against its primary source on 2026-10-18:
+- **The SPDX 3.0 stage:** ISO Open Data's deliverables file of 2026-10-14 lists ISO/IEC PRF 5962 at stage 50.00. Stage names come from ISO's stage-codes page.
+- **ISO Guide 69:1999:** its ISO catalog page shows stage 95.99, withdrawn on 2014-06-18.
+- **The CycloneDX VEX examples:** all four `Case-1` files in CycloneDX bom-examples declare `specVersion` 1.4 and were last changed on 2022-03-23. All four states they use are in the CycloneDX 1.7 schema's `impactAnalysisState` list.
+
+Table 9's statuses were read from the library at `a28a013`.
+
+### Choices the agent made, open to review
+
+- **Layout.** The earlier rows of `sources.md` stay as the log of what each pass found. Table 9 is added at the end rather than rewriting about 220 rows, and the top of the file points to it.
+- **Records that don't meet #38's rule.** Mapping every source showed that eight cited records owned by others sit at a status #38 rejects for specs (`summarized` or `queued`): `cisa-framing-software-component-transparency`, `ntia-sbom-minimum-elements`, `iso-iec-5962-2021`, `osv-schema`, `cve-json-5`, `in-toto-attestation-v1`, `fips-203` and `fips-204`. Table 9 lists them as they are. The sponsor's answer to RPT-0005's question on #39 (do spec summaries need to become stubs?) settles them.
+
+### What a human accepted
+
+- The student asked for this change.
+- Pending: review.
+
+## Table 7 ratings (2026-10-19)
+
+### Question asked
+
+After Threat-Radar/library#28 and #29 were submitted for review, the student asked to start the Table 7 ratings: the five-axis applicability rating that `dimensions.md` requires for every kept source (step 3 of the #38 playbook, "Distill and rate").
+
+### What was produced
+
+- **`sources.md` 0.4.0** adds Table 7 just before Table 9. It has 121 rows, one per Table 9 row, each rated 0 to 3 on Object model, Provenance/attribution, Human review/audit, Federation and AI-grounding. Every cell gives the field or section behind its rating and a locator, and a `basis` column says where the rating comes from. The section also has the conventions used, a summary by axis, every disagreement settled, and the calls a human reviewer should check.
+- **`dimensions.md` 0.7.2** adds a status line under Table 7.
+
+### Method
+
+- **Inventory.** A script listed Table 9's 121 rows and the 92 rating rows in the five fan-outs' section 4 tables, and matched them by name. The match was crude (it placed 70 of the 92), so it was only a starting list for the agents.
+- **Five rating agents** (Claude Code), one per batch: identity and naming (25 rows), formats and baselines (27), hardware and firmware (27), the bridge to vulnerability data (24), and tools and studies (18). A shared brief gave them the rubric; where every earlier rating is (the five fan-outs, the pilot, and RPT-0005's Table 5 ratings); how to carry over, reconcile or newly rate a source; and the hard rules: cite a field or section for every rating and never invent one, mark what cannot be read with `?`, send no personal data, and write nothing in tmodel or the library.
+- **Result.** 56 rows carry one earlier rating, checked against the fan-out's evidence (a few values changed, each with its reason). In 21 rows earlier ratings disagreed and one value was chosen on each axis. 40 sources were rated for the first time from their own text, and 4 rows are `n/a`.
+- **Sources read again.** The agents fetched about 130 public files: arXiv papers, RFCs, NIST, IANA and ISO pages, UN documents, GitHub files at pinned commits, and Internet Archive copies of cisa.gov files that refuse scripted downloads. Each download was compared with the library record's digest where one exists. All matched except two dynamic web pages, a Red Hat blog post and the UEFI blog post, whose HTML has changed; the Red Hat post's text still holds the passages Phase 1 quoted. No request carried an email address or other personal data.
+- **Merge.** The coordinating session merged the five tables in Table 9's order. It applied one convention to rows that cover more than one document (the higher value on each axis, which changed row 107's Federation from 2 to 3), and removed notes that referred to the agents' own working files.
+
+### Choices the agent made, open to review
+
+- **The conventions** stated above Table 7 in `sources.md`: how papers, regulations, guides, combined rows, signatures and paywalled texts are rated.
+- **The calls listed under "For a human reviewer"** in `sources.md`, among them that row 1's AI-grounding leans on the open FX-1 extraction in Threat-Radar/library#24. Rows 8 and 68 also cite the open extractions in #28 and #29, but their values do not depend on them.
+- **Placement.** Table 7 sits just before Table 9 in `sources.md`, where `dimensions.md` puts it ("Table 7 in sources.md"), and follows Table 9's row order, so each rating traces to its record.
+
+### What a human accepted
+
+- The student asked for this work.
+- Pending: review.
+- A teammate (@Maimcghee) reviewed #133 on 2026-10-19. She checked the row numbering against Table 9, the counts by axis, the RPT-0005 ratings that Table 7 cites, and the front matter, but not the ratings against their sources. Her three notes, none blocking, are fixed in `sources.md` 0.4.1 and `dimensions.md` 0.7.3, and no rating changed:
+  - `sources.md` and `dimensions.md` said the report's §11 "summarizes" the ratings in 0.2.0, but `report.md` is still 0.1.2 and ends at §7. Both now say it will.
+  - Row 68 was described two ways. The conventions said its values do not depend on the open extraction in Threat-Radar/library#29, while "For a human reviewer" and this entry said row 68 leans on it, and its AI-grounding cell gave the FX-1 requirement ids as the reason. The conventions were right: row 68's AI-grounding 3 is fanout-identity's rating, made before the extraction existed, and its Object model 2 is RPT-0005's. Row 68's cells, "For a human reviewer" and this entry now say so.
+  - Row 3 said RPT-0005 rated the SPDX Security profile 1 on Human review. RPT-0005's `report.md` Table 5 gives 2, the value Table 7 chose; the 1 is in its fan-out notes (`fanout-vuln-data.md` §6). Row 3's `basis` cell and its entry under "Disagreements settled" now name that file.
