@@ -65,13 +65,14 @@ validate against the full `ExampleModel` container.
 
 ## Proposal vectors (`pv-NN-*.yaml`, DL-0024)
 
-Example models built to shape the classes DL-0024 proposes (Asset, TrustBoundary,
+Example models built to shape the classes DL-0024 proposed and ADR-0011 accepted (Asset, TrustBoundary,
 DataFlow; RPT-0005 G13), as the sponsor directed on 2026-10-14: published automotive
 attacks, modeled from their primary write-ups. They validate against
 `example-container-proposed.linkml.yaml` (class `ExampleModelProposed`), the core
 container plus collections for the proposed classes. **AI-drafted and unreviewed:**
 every Assertion is `proposed`, no Review is recorded, and feasibility and impact are
-left for a human.
+left for a human. They stay so until @paria03 reviews their attack paths (ADR-0011,
+decision 4); @Maimcghee has checked their sources.
 
 | File | Attack | Source | Exercises |
 |---|---|---|---|

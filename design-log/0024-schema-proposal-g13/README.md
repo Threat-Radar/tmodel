@@ -4,7 +4,7 @@ id: DL-0024
 title: "Schema proposal: composition slots (RPT-0004 Table 6) and Asset, TrustBoundary, DataFlow (RPT-0005 G13)"
 type: process
 status: draft
-version: "0.2.0"
+version: "0.3.0"
 date: "2026-10-18"
 updated: "2026-10-22"
 record: DL-0024
@@ -14,7 +14,7 @@ defers_to: ARCH-0001
 
 # DL-0024: schema proposal, composition slots and the G13 classes
 
-AI-assisted design record (per `CLAUDE.md`). Student: @Clovier, working with Claude Code, taking this piece of #64 off @Maimcghee's plate (announced on #64). **It proposes; it accepts nothing.** Every new element's description starts "PROPOSED (DL-0024 ...)", and none is accepted until an ADR amends ADR-0010 (DEC-001a).
+AI-assisted design record (per `CLAUDE.md`). Student: @Clovier, working with Claude Code, taking this piece of #64 off @Maimcghee's plate (announced on #64). **It proposed; ADR-0011 accepted it** on 2026-10-22 (see "Decisions (2026-10-22)" below). Every new element's description now starts "Accepted via ADR-0011 (DL-0024)".
 
 ## Question asked
 
@@ -133,8 +133,28 @@ This branch is based on `main`, which does not have #129's generated files yet. 
 
 **A side effect.** `render_object_model.py` reads only a slot's `range`, so `OBJECT-MODEL.md` now shows `within_boundary` as `string`, and its diagram loses the `TrustBoundary` to `TrustBoundary` edge, as already happens for `targets_element`. The generated JSON Schema and Python types still treat the slot as a reference by id. Teaching the renderer about `any_of` is left to whoever owns it.
 
+## Decisions (2026-10-22)
+
+**Question asked.** The sponsor (@nymble) delegated the four decisions above to the student (@Clovier) on 2026-10-22. The student asked for them to be made as recommended, without further sponsor approval and without pull-request comments, and will give the sponsor a summary.
+
+**What was decided** (ADR-0011):
+
+1. A1 to A7 and B1 to B5 are accepted, in one ADR that amends ADR-0010.
+2. DataFlow joins Components directly; the DFD layer is not adopted now. Component's "not an OTM diagram node" is amended in the same change (review note 3).
+3. All five names stay.
+4. pv-01 and pv-02 stay unreviewed: @Maimcghee has checked their sources, and @paria03 reviews their attack paths, including pv-02's CWE-862.
+
+**What changed.**
+
+- `spec/ADR-0011-object-model-core-amendment-1.md`, new.
+- ARCH-0001 0.1.9 (banner, §3, §8) and its changelog.
+- The schema: its 34 "PROPOSED" prefixes now say "Accepted via ADR-0011 (DL-0024)"; its header and top description name ADR-0011; the Component and DataFlow descriptions record decision 2.
+- `spec/schema/generated/` and `OBJECT-MODEL.md`, regenerated.
+- For decision 4: the proposal vectors' README section, the proposal container's comment and the attack-path test's comment.
+
 ## What was rejected, and why
 
+- **The DFD layer for DataFlow** (decision 2, 2026-10-22): not adopted now. OTM's shape needs no DFD classes, and adding them later only widens `flow_from` and `flow_to`.
 - **Listing members on the zone** (`encloses`): it contradicted nesting in pv-01, and the proposal already names the edge from the other side (`in_trust_zone`).
 - **Aliases through `identifiers`:** that slot's description limits it to structural nodes, so Vulnerability gets `alias_ids`.
 - **A multivalued `realizes_damage`:** see above.
@@ -147,4 +167,4 @@ This branch is based on `main`, which does not have #129's generated files yet. 
 
 - The student chose to take this piece of #64 and asked for it to be done as a pull request.
 - 2026-10-22: @Maimcghee reviewed it as the lane owner (four notes, none blocking). The student chose to merge `main`, regenerate, apply notes 1 and 2, and skip `pv-*` in the attack-path test.
-- Pending: decisions by @nymble (`spec/` under CODEOWNERS), who commented on the pull request on 2026-10-22 without deciding them. The pull request stays a draft.
+- 2026-10-22: the sponsor (@nymble) delegated the four decisions to the student. The student (@Clovier) made them as recommended (ADR-0011): A1 to A7 and B1 to B5 accepted; DataFlow joins Components directly; the names kept; pv-01 and pv-02 left for @paria03 to review.

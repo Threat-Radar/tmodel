@@ -1,9 +1,9 @@
 # Test-harness container for the PROPOSAL vectors (pv-NN-*.yaml, DL-0024).
 #
 # NOT part of the domain object model. It is the CORE container plus collections for the
-# three classes DL-0024 proposes (Asset, TrustBoundary, DataFlow; RPT-0005 G13). A pv
-# vector validates here only because the proposed classes are in the schema file; none
-# of them is accepted until an ADR amends ADR-0010. Governance and Environment stay out,
+# three classes DL-0024 proposed (Asset, TrustBoundary, DataFlow; RPT-0005 G13). ADR-0011
+# accepted the classes on 2026-10-22; the pv vectors stay unreviewed proposals until a
+# human reviews their attack paths (decision 4). Governance and Environment stay out,
 # as in the core container.
 id: https://threat-radar.github.io/tmodel/schema/vectors/example-container-proposed
 name: TmodelExampleContainerProposed

@@ -136,21 +136,21 @@ Reified edge (§4): subject / predicate / object, so a Review, confidence, and p
 | `object` | → `Node` | ✓ |  | Object of the reified statement (§4). |
 | `confidence` | `string` |  |  | Confidence attached to the Assertion (§4). Scale is not fixed in the proposal. |
 | `assertion_status` | `string` |  |  | Proposal status of the Assertion (§4). Must not be `accepted` until provenance and a review are present. That gate is not encoded as a Li… |
-| `asserted_by` | → `Party` |  |  | PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). Who made the statement: a person, an organization (a CNA, a scanner vendor… |
-| `asserted_at` | `datetime` |  |  | PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). When the statement was made or captured (PROV-O generatedAtTime). |
-| `generated_by` | `string` |  |  | PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). The activity that produced the statement, as text: a tool and version, a d… |
-| `evidence` | `string` |  | ✓ | PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). Opaque references to what the statement rests on: an SBOM digest, an advis… |
+| `asserted_by` | → `Party` |  |  | Accepted via ADR-0011 (DL-0024). Who made the statement: a person, an organization (a CNA, a scanner vendor's feed) or a software agent (… |
+| `asserted_at` | `datetime` |  |  | Accepted via ADR-0011 (DL-0024). When the statement was made or captured (PROV-O generatedAtTime). |
+| `generated_by` | `string` |  |  | Accepted via ADR-0011 (DL-0024). The activity that produced the statement, as text: a tool and version, a database build time, a method (… |
+| `evidence` | `string` |  | ✓ | Accepted via ADR-0011 (DL-0024). Opaque references to what the statement rests on: an SBOM digest, an advisory or CVE record URL, a write… |
 
 ### Asset — `is_a: Node`
 
-PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). Something worth protecting: the thing damage happens to (ARCH-0001 §3). In ISO/SAE 21434 terms (3.1.2, as paraphrased in RPT-0007), it has value and one or more cybersecurity properties whose compromise can lead to a damage scenario. Maps OTM `assets` and threagile data assets. Data, functions and the vehicle itself can all be assets; where an asset lives is `stored_in` / `processed_by`.
+Accepted via ADR-0011 (DL-0024). Something worth protecting: the thing damage happens to (ARCH-0001 §3). In ISO/SAE 21434 terms (3.1.2, as paraphrased in RPT-0007), it has value and one or more cybersecurity properties whose compromise can lead to a damage scenario. Maps OTM `assets` and threagile data assets. Data, functions and the vehicle itself can all be assets; where an asset lives is `stored_in` / `processed_by`.
 
 
 | slot | type | req | multi | notes |
 |---|---|---|---|---|
-| `security_properties` | enum `SecurityProperty` |  | ✓ | PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). The cybersecurity properties worth protecting for this Asset. |
-| `stored_in` | → `Component` |  | ✓ | PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). Components that store the Asset (OTM component `assets.stored`). |
-| `processed_by` | → `Component` |  | ✓ | PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). Components that process the Asset (OTM component `assets.processed`). |
+| `security_properties` | enum `SecurityProperty` |  | ✓ | Accepted via ADR-0011 (DL-0024). The cybersecurity properties worth protecting for this Asset. |
+| `stored_in` | → `Component` |  | ✓ | Accepted via ADR-0011 (DL-0024). Components that store the Asset (OTM component `assets.stored`). |
+| `processed_by` | → `Component` |  | ✓ | Accepted via ADR-0011 (DL-0024). Components that process the Asset (OTM component `assets.processed`). |
 | `owned_by` | → `Party` |  |  | Proposal attaches owned_by to Asset (§2b, §3). Asset is not a §13 class; the slot is on Product, ProductInstance, and Component as the st… |
 
 ### AttackPath — `is_a: Node`
@@ -194,7 +194,7 @@ _(no own slots — see gap list in RPT-0015 §4)_
 
 ### Component — `is_a: Node`
 
-Authoritative deployed artifact (service, container, dependency, chip, core) — not an OTM diagram node (§0). `uses_component` / `composed_of` are the propagation paths for vulnerabilities (§5).
+Authoritative deployed artifact (service, container, dependency, chip, core). Since ADR-0011 it is also the end of a DataFlow and a member of a trust zone, as an OTM component is; the field-level OTM crosswalk stays with #9 (§0). `uses_component` / `composed_of` are the propagation paths for vulnerabilities (§5).
 
 
 | slot | type | req | multi | notes |
@@ -204,11 +204,11 @@ Authoritative deployed artifact (service, container, dependency, chip, core) —
 | `uses_component` | → `Component` |  | ✓ | Use edge along which vuln/finding propagation is sound (§5). |
 | `owned_by` | → `Party` |  |  | Proposal attaches owned_by to Asset (§2b, §3). Asset is not a §13 class; the slot is on Product, ProductInstance, and Component as the st… |
 | `identifiers` | `string` |  | ✓ | Opaque external / instance-identity strings for a structural node — Product, ProductInstance, or Component (§1). This is ADR-0002's per-t… |
-| `version` | `string` |  |  | PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). The version string as the source wrote it (RPT-0004 Table 6b). Until now o… |
-| `component_kind` | enum `ComponentKind` |  |  | PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). What kind of thing a Component is (RPT-0004 Table 6b, 6e; R-022). |
+| `version` | `string` |  |  | Accepted via ADR-0011 (DL-0024). The version string as the source wrote it (RPT-0004 Table 6b). Until now only the purl inside `identifie… |
+| `component_kind` | enum `ComponentKind` |  |  | Accepted via ADR-0011 (DL-0024). What kind of thing a Component is (RPT-0004 Table 6b, 6e; R-022). |
 | `supplied_by` | → `Party` |  |  | Relational role edge (§2b). The same Party may supply one product and consume another. |
 | `manufactured_by` | → `Party` |  |  | Relational role edge (§2b), not a classification on Party. |
-| `in_trust_zone` | → `TrustBoundary` |  |  | PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). The trust zone a Component sits in (the proposal's §1 name, F12). One zone… |
+| `in_trust_zone` | → `TrustBoundary` |  |  | Accepted via ADR-0011 (DL-0024). The trust zone a Component sits in (the proposal's §1 name, F12). One zone per Component, as in OTM; out… |
 
 ### DamageScenario — `is_a: Node`
 
@@ -217,22 +217,22 @@ The damage a ThreatInstance realizes (§1). Impact categories are recorded on Ri
 
 | slot | type | req | multi | notes |
 |---|---|---|---|---|
-| `damages_asset` | → `Asset` |  | ✓ | PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). The Asset(s) a DamageScenario harms (ISO/SAE 21434 damage scenario; RPT-00… |
-| `compromised_property` | enum `SecurityProperty` |  | ✓ | PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). Which cybersecurity property of the damaged Asset is compromised (ISO/SAE … |
+| `damages_asset` | → `Asset` |  | ✓ | Accepted via ADR-0011 (DL-0024). The Asset(s) a DamageScenario harms (ISO/SAE 21434 damage scenario; RPT-0007 §1). |
+| `compromised_property` | enum `SecurityProperty` |  | ✓ | Accepted via ADR-0011 (DL-0024). Which cybersecurity property of the damaged Asset is compromised (ISO/SAE 21434 3.1.20, 3.1.33). |
 
 ### DataFlow — `is_a: Node`
 
-PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). A directed flow of data or commands from one Component to another (OTM `dataflows`, threagile communication links, CycloneDX service `data` flows), carrying Assets. Open choice for the sponsor: the proposal's §1 puts DataFlow in a behavioral DFD layer, between Process, DataStore and ExternalEntity elements `realized_by` Components; this draft joins Components directly, which is OTM's shape and needs no DFD classes yet (DL-0024). Threats on a flow (spoofing, tampering, disclosure) point at it through ThreatInstance.targets_element.
+Accepted via ADR-0011 (DL-0024). A directed flow of data or commands from one Component to another (OTM `dataflows`, threagile communication links, CycloneDX service `data` flows), carrying Assets. ADR-0011 joins Components directly, which is OTM's shape and needs no DFD classes. The proposal's §1 puts DataFlow in a behavioral DFD layer, between Process, DataStore and ExternalEntity elements `realized_by` Components; a later ADR that adds that layer would widen `flow_from` and `flow_to`. Threats on a flow (spoofing, tampering, disclosure) point at it through ThreatInstance.targets_element.
 
 
 | slot | type | req | multi | notes |
 |---|---|---|---|---|
-| `flow_from` | → `Component` |  |  | PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). Where the DataFlow starts. |
-| `flow_to` | → `Component` |  |  | PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). Where the DataFlow ends. |
-| `carries` | → `Asset` |  | ✓ | PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). Assets the DataFlow carries (threagile data assets sent and received). |
-| `protocol` | `string` |  |  | PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). The protocol or bus, as text (for example CAN, HTTPS). |
-| `bidirectional` | `boolean` |  |  | PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). True when the flow runs both ways (OTM `bidirectional`). |
-| `crosses_boundary` | → `TrustBoundary` |  | ✓ | PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). Trust zones the DataFlow crosses, stated explicitly when zone membership i… |
+| `flow_from` | → `Component` |  |  | Accepted via ADR-0011 (DL-0024). Where the DataFlow starts. |
+| `flow_to` | → `Component` |  |  | Accepted via ADR-0011 (DL-0024). Where the DataFlow ends. |
+| `carries` | → `Asset` |  | ✓ | Accepted via ADR-0011 (DL-0024). Assets the DataFlow carries (threagile data assets sent and received). |
+| `protocol` | `string` |  |  | Accepted via ADR-0011 (DL-0024). The protocol or bus, as text (for example CAN, HTTPS). |
+| `bidirectional` | `boolean` |  |  | Accepted via ADR-0011 (DL-0024). True when the flow runs both ways (OTM `bidirectional`). |
+| `crosses_boundary` | → `TrustBoundary` |  | ✓ | Accepted via ADR-0011 (DL-0024). Trust zones the DataFlow crosses, stated explicitly when zone membership is incomplete. |
 
 ### Deployment — `is_a: Node`
 
@@ -373,8 +373,8 @@ A versioned, identity-bearing instance of a Product (§1, §3b). Lifecycle *stat
 | `valid_to` | `datetime` |  |  | End of the (ProductInstance, time) state interval (§3b). Open-ended if absent. |
 | `owned_by` | → `Party` |  |  | Proposal attaches owned_by to Asset (§2b, §3). Asset is not a §13 class; the slot is on Product, ProductInstance, and Component as the st… |
 | `identifiers` | `string` |  | ✓ | Opaque external / instance-identity strings for a structural node — Product, ProductInstance, or Component (§1). This is ADR-0002's per-t… |
-| `version` | `string` |  |  | PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). The version string as the source wrote it (RPT-0004 Table 6b). Until now o… |
-| `build_composed_of` | → `Component` |  | ✓ | PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). The Components one build contains, as an SBOM lists them (RPT-0004 Table 6… |
+| `version` | `string` |  |  | Accepted via ADR-0011 (DL-0024). The version string as the source wrote it (RPT-0004 Table 6b). Until now only the purl inside `identifie… |
+| `build_composed_of` | → `Component` |  | ✓ | Accepted via ADR-0011 (DL-0024). The Components one build contains, as an SBOM lists them (RPT-0004 Table 6c, pilot finding 1). `composed… |
 
 ### ProgramNode — `is_a: Node`, **abstract**
 
@@ -478,7 +478,7 @@ A threat in a model, not the generic catalog entry (§1). Carries the method fac
 | `source_method` | `string` |  |  | Which method proposed this ThreatInstance (§2). |
 | `violates_property` | `string` |  |  | Security property the facet says is violated (§2). STRIDE sketch, not a closed enum: S authentication, T integrity, R non-repudiation, I … |
 | `applies_in_phase` | → `LifecyclePhase` |  | ✓ | Coarse lifecycle stage a threat or mitigation belongs to (§3b). Not a substitute for Environment. One threat uses the axis that fits. |
-| `targets_element` | `string` |  | ✓ | PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). The element a ThreatInstance acts on: a Component, a DataFlow, an Asset or… |
+| `targets_element` | `string` |  | ✓ | Accepted via ADR-0011 (DL-0024). The element a ThreatInstance acts on: a Component, a DataFlow, an Asset or a TrustBoundary, as OTM attac… |
 
 ### ThreatModel — `is_a: Node`
 
@@ -501,14 +501,14 @@ A GOVERNED, VERSIONED view/snapshot over the KG-as-SoT (§3c R-043). NOT domain 
 
 ### TrustBoundary — `is_a: Node`
 
-PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). Where control or assumptions change (ARCH-0001 §3), modeled as a zone, as the proposal's §1 does: a Component is `in_trust_zone` a TrustBoundary (§1, F12), and zones nest through `within_boundary`, which can also name the Component a zone sits inside, because an OTM trust zone's `parent` may be a component. A DataFlow whose ends sit in different zones crosses the boundary between them; `crosses_boundary` states it explicitly where membership is unknown. Maps OTM `trustZones` and pytm boundaries; threagile's member lists and CycloneDX's per-service `trustZone` import onto the same zone (RPT-0005 crosswalk, "four shapes"). `zone_type` and `trust_level` keep the source's own labels.
+Accepted via ADR-0011 (DL-0024). Where control or assumptions change (ARCH-0001 §3), modeled as a zone, as the proposal's §1 does: a Component is `in_trust_zone` a TrustBoundary (§1, F12), and zones nest through `within_boundary`, which can also name the Component a zone sits inside, because an OTM trust zone's `parent` may be a component. A DataFlow whose ends sit in different zones crosses the boundary between them; `crosses_boundary` states it explicitly where membership is unknown. Maps OTM `trustZones` and pytm boundaries; threagile's member lists and CycloneDX's per-service `trustZone` import onto the same zone (RPT-0005 crosswalk, "four shapes"). `zone_type` and `trust_level` keep the source's own labels.
 
 
 | slot | type | req | multi | notes |
 |---|---|---|---|---|
-| `within_boundary` | `string` |  |  | PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). What encloses the zone: another trust zone, for nesting (pytm boundaries n… |
-| `trust_level` | `string` |  |  | PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). The zone's trust rating as the source gives it (OTM `trustRating`); not no… |
-| `zone_type` | `string` |  |  | PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). The zone's type as the source gives it (OTM `trustZones[].type`; threagile… |
+| `within_boundary` | `string` |  |  | Accepted via ADR-0011 (DL-0024). What encloses the zone: another trust zone, for nesting (pytm boundaries nest), or a Component, since an… |
+| `trust_level` | `string` |  |  | Accepted via ADR-0011 (DL-0024). The zone's trust rating as the source gives it (OTM `trustRating`); not normalized here. |
+| `zone_type` | `string` |  |  | Accepted via ADR-0011 (DL-0024). The zone's type as the source gives it (OTM `trustZones[].type`; threagile's trust boundaries are typed … |
 
 ### View — `is_a: Node`
 
@@ -531,8 +531,8 @@ A finding/vulnerability (CVE/NVD-shaped) that `affects` a Product (§2b). Propag
 | `affects` | → `Product` |  | ✓ | Vulnerability/Finding affects a vendor Product (§2b). |
 | `reported_by` | → `Party` |  |  | Reporter (§2b). |
 | `assigned_by` | → `Party` |  |  | Assigning CNA (§2b). Party.classifications should include cna when this is set; not enforced here. |
-| `instance_of` | → `Weakness` |  | ✓ | PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). The Weakness (CWE) a Vulnerability is an instance of (ARCH-0001 §3 `instan… |
-| `alias_ids` | `string` |  | ✓ | PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). Other ids of the same Vulnerability (GHSA, OSV, distribution advisories); … |
+| `instance_of` | → `Weakness` |  | ✓ | Accepted via ADR-0011 (DL-0024). The Weakness (CWE) a Vulnerability is an instance of (ARCH-0001 §3 `instance_of`; PLAN-0002 §5). Who ass… |
+| `alias_ids` | `string` |  | ✓ | Accepted via ADR-0011 (DL-0024). Other ids of the same Vulnerability (GHSA, OSV, distribution advisories); `catalog_ref` keeps the primar… |
 
 ### Weakness — `is_a: Node`
 
@@ -547,7 +547,7 @@ Generic weakness, catalogued as CWE (§1 layer 3). The CWE↔CAPEC link is a hum
 
 - **ApprovalStatus** — Standing of a governed artifact's sign-off, read from its approving Review(s) (§4 spine). Distinct from ThreatModelStatus (the content lifecycle).: `pending`, `approved`, `changes_requested`, `rejected`, `withdrawn`
 - **AttackGate** — How an AttackStep combines (§2a).: `and_gate`, `or_gate`
-- **ComponentKind** — PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). CycloneDX 1.7's thirteen component types, written with underscores, plus `service` (CycloneDX `services[]`) and `interconnect` (a bus or network segment, which the proposal's §1 calls Interconnect and the schema does not model).: `application`, `framework`, `library`, `container`, `platform`, `operating_system`, `device`, `device_driver`, `firmware`, `file`, `machine_learning_model`, `data`, `cryptographic_asset`, `service`, `interconnect`
+- **ComponentKind** — Accepted via ADR-0011 (DL-0024). CycloneDX 1.7's thirteen component types, written with underscores, plus `service` (CycloneDX `services[]`) and `interconnect` (a bus or network segment, which the proposal's §1 calls Interconnect and the schema does not model).: `application`, `framework`, `library`, `container`, `platform`, `operating_system`, `device`, `device_driver`, `firmware`, `file`, `machine_learning_model`, `data`, `cryptographic_asset`, `service`, `interconnect`
 - **FeasibilityLevel** — ISO/SAE 21434 path-level 4-point scale (§3, Table 1). Human-rated at MVP. Not a Common Criteria score and not a CVSS exploitability number.: `high`, `medium`, `low`, `very_low`
 - **GateStatus** — Passage status of an SDL program node — Gate / Milestone / Checkpoint (§3c R-041).: `planned`, `in_progress`, `passed`, `failed`, `waived`, `blocked`
 - **ImpactSeverity** — ISO 21434 impact ordinal per S/F/O/P category (§3, RQ-15-04/05).: `severe`, `major`, `moderate`, `negligible`
@@ -558,6 +558,6 @@ Generic weakness, catalogued as CWE (§1 layer 3). The CWE↔CAPEC link is a hum
 - **PartyKind** — Party is an organization or a person (§2b).: `organization`, `person`, `software_agent`
 - **RedundancyRelation** — Edge names inside a RedundancyGroup (§3).: `replica_of`, `redundant_with`
 - **RequirementConformanceStatus** — Automatable R-042 conformance verdict for a Requirement — linkage + approval, NOT adequacy (the human cybersecurity-assessment role remains, CLAUDE.md).: `conformant`, `nonconformant`, `partial`, `not_applicable`, `not_assessed`
-- **SecurityProperty** — PROPOSED (DL-0024; not accepted until an ADR amends ADR-0010). Cybersecurity properties (ISO/SAE 21434 3.1.20 names confidentiality, integrity and availability as examples). The other three follow the STRIDE sketch `violates_property` already uses (authentication, authorization, non-repudiation), with authenticity as the property of data that authentication protects.: `confidentiality`, `integrity`, `availability`, `authenticity`, `authorization`, `non_repudiation`
+- **SecurityProperty** — Accepted via ADR-0011 (DL-0024). Cybersecurity properties (ISO/SAE 21434 3.1.20 names confidentiality, integrity and availability as examples). The other three follow the STRIDE sketch `violates_property` already uses (authentication, authorization, non-repudiation), with authenticity as the property of data that authentication protects.: `confidentiality`, `integrity`, `availability`, `authenticity`, `authorization`, `non_repudiation`
 - **ThreatModelStatus** — Lifecycle of a governed snapshot (§3c R-043). Named for the ThreatModel case; the same lifecycle is reused by SecurityProgram and GovernedView.: `draft`, `in_review`, `approved`, `superseded`
 - **ViewProjection** — Named projections over one graph (§10). Matrix, compare, saved views are post-MVP.: `graph`, `threat_mitigation_matrix`, `attack_path`, `dfd`, `timeline`, `provenance`, `compare`
