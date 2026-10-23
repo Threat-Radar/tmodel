@@ -4,7 +4,7 @@ id: RPT-0004-dimensions
 title: "RPT-0004 dimensions: the search axes"
 type: research
 status: draft
-version: "0.7.7"
+version: "0.7.8"
 date: "2026-09-28"
 updated: "2026-10-22"
 record: RPT-0004
@@ -169,6 +169,8 @@ Every kept source is rated 0 to 3 on the five axes #38 sets. The rubric is RPT-0
 
 *Status 2026-10-19: filled in [sources.md](sources.md#table-7-applicability-ratings-2026-10-19): 121 rows, one per Table 9 row, rated by five agents from the fan-outs' section 4 ratings and from the sources themselves; AI-produced and not yet reviewed by a human. The report's §11 will summarize it in 0.2.0.*
 
+*Status 2026-10-22: summarized in `report.md` 0.2.0 §11 (#151): the counts per axis over the 117 rated rows, and four observations. A teammate's review of #133 recounted the rows and counts but not the ratings, so they are still not checked against their sources by a human.*
+
 ### Table 8. Gap analysis (§11)
 
 | column | what goes in it |
@@ -177,6 +179,8 @@ Every kept source is rated 0 to 3 on the five axes #38 sets. The rubric is RPT-0
 | Evidence | the section and the source |
 | Recommendation | the smallest change that would close it, as evidence only |
 | Routes to | the `DEC-*` or issue that decides it |
+
+*Status 2026-10-22: filled in `report.md` 0.2.0 §11 (#151): 29 rows, each routed to an open decision (DEC-008, DEC-009) or an open issue; Table 6's last column routes the smaller mapping gaps.*
 
 ### Table 9. Library records (sources.md)
 
@@ -304,6 +308,8 @@ Assembled in the main session from sections 1 to 9, as Table 6.
 ### 11. Synthesis and gap analysis
 
 The evidence by decision (DEC-001, DEC-002, DEC-004, DEC-008, DEC-009), then Table 8 (gaps routed to `DEC-*` and issues) and a summary of the Table 7 ratings. Replaces 0.1.0's §7.
+
+*Status 2026-10-22: written in `report.md` 0.2.0 (#151). It also covers DEC-007, because ADR-0001's input contract is where the gaps become fields radar emits.*
 
 ### 12. Method, adversarial review and limits (Phase 4)
 

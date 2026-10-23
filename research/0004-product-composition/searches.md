@@ -4,7 +4,7 @@ id: RPT-0004-searches
 title: "RPT-0004 search log"
 type: research
 status: draft
-version: "0.3.5"
+version: "0.3.6"
 date: "2026-09-28"
 updated: "2026-10-22"
 record: RPT-0004
@@ -408,3 +408,11 @@ Runs in the main session for `report.md` 0.2.0 (#147: Tables 1 and 2, §1.4 to �
 | 2026-10-22 | `ls` and `grep` of `status:` in `library/records/*/*` at `a28a013`, for the records §8 and §9 cite | library | all exist: `ntia-sbom-minimum-elements`, `cisa-framing-software-component-transparency` (summarized); `cisa-2026-sbom-minimum`, `bsi-tr-03183-2`, `cert-in-2025-aibom-guidelines`, `g7-sbom-for-ai-2026`, `lf-2024-spdx3-aibom` (stubs); `eu-cra-2024-2847`, `fda-premarket-cybersecurity-guidance`, `omb-m-26-05` (distilled). `g7-sbom-for-ai-2026`'s summary: seven element clusters; its element tables not read |
 | 2026-10-22 | `gh pr view 130` | GitHub | #130 (DL-0024, ADR-0011) a draft, not merged, so §10's tables keep the core ADR-0010 accepted |
 | 2026-10-22 | `git merge-base --is-ancestor f9a9a54 HEAD`; `grep` of `assertion:cve-cwe-instance` in `spec/vectors/mvp-*.yaml`; `gh pr view 128` | tmodel and GitHub | #128 (merged 2026-10-22T00:18:50Z) is on this branch; all four `mvp-*` vectors have the CVE-to-CWE Assertion, so Table 6's finding 7 was updated |
+| 2026-10-22 | `git show origin/main:` `project/DECISIONS-0001.md` and `spec/ARCH-0001-threat-model-architecture.md` | tmodel | accepted, among others: DEC-001a (ADR-0010), DEC-002 (ADR-0007), DEC-004 (ADR-0008), DEC-007 (ADR-0001); open: DEC-001b, DEC-008, DEC-009; ARCH-0001 0.1.8, whose §9 says a `DEC-*` "is accepted only by an `ADR-NNNN` file" |
+| 2026-10-22 | `gh issue view` of #14, #15, #17, #38, #39, #52, #61, #64, #65, #71 and #144; `gh pr view 130` | GitHub | all 11 issues open; #130 a draft, not merged |
+| 2026-10-22 | `gh issue view 38` (comments) | GitHub | the sponsor questions of 2026-10-15, repeated on 2026-10-19: 1 the FX-1 bar, 2 the ownership of the CycloneDX and SPDX records, 3 copies of the paywalled ISO/IEC 19770-2 and 19770-6, 4 Part B's licensed text; no reply on #38 by 2026-10-22 |
+| 2026-10-22 | `gh pr view 133` (reviews) | GitHub | @Maimcghee's review (prepared with Claude Code) recounted Table 7's rows and summary counts; "Not checked: whether each of the ratings is right against its source" |
+| 2026-10-22 | `grep` of Table 7's summary in `sources.md` | sources.md | the counts per axis over the 117 rated rows (the four `n/a` rows left out), copied into §11 |
+| 2026-10-22 | `gh issue view 61` and `gh issue view 144` | GitHub | #61: "CVEs link to CWE via BRON"; #144 imports each CWE entry "keyed by CWE-ID", so it covers neither a CVE's CWE source nor alias ids (Table 8's row was rerouted) |
+| 2026-10-22 | `git show origin/main:spec/ADR-0007-schema-idl-and-interchange.md` | tmodel | lines 56 to 57: "The #39 schema-representations crosswalk ... may extend import coverage (pytm, threagile, Threat Dragon) via further `MAP-NNNN` docs", threat-model formats, not SBOMs |
+| 2026-10-22 | `grep` of `27036` and `18974` in `report.md` at 040865b, d0a1e73, df287e9, f7131d2 and 7761614 | tmodel | one line in each, the old synthesis's limits ("were not reviewed"); the first §11 draft had dropped it, so §11's limits name both again |

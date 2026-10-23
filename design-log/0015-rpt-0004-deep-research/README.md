@@ -4,7 +4,7 @@ id: DL-0015
 title: "RPT-0004 second pass: AI-assisted scoping, survey, extraction and mapping"
 type: process
 status: draft
-version: "0.12.0"
+version: "0.13.0"
 date: "2026-10-08"
 updated: "2026-10-22"
 record: DL-0015
@@ -755,4 +755,100 @@ After #149 was committed and pushed at the student's word, the student said "con
 ### What a human accepted
 
 - The student asked for this work, and for it to be committed and pushed once the fact-check's fixes were in.
+- Pending: review.
+
+## Report 0.2.0: §11, Tables 7 and 8 (#151, 2026-10-22)
+
+### Question asked
+
+The student asked that, once #150's fact-check was done, #150 be committed and pushed and the next task started ("once fact checking is done, commit and push then start the next task"). The next task is #151: §11, the synthesis and gap analysis. #151's definition of done: Table 8 filled, with every gap routed to an open DEC or issue; Table 7 summarized; version 0.2.0, with `updated` moved.
+
+### What was produced
+
+- **`report.md`, §11**, replacing the synthesis 0.1.2 had as §7:
+  - the evidence of §1 to §10 by decision: DEC-001 (DEC-001a accepted, DEC-001b open), DEC-002, DEC-004 and DEC-007 (accepted), and DEC-008 and DEC-009 (open);
+  - Table 7 in short: the counts per axis from `sources.md`, and four observations;
+  - Table 8: 29 gaps, each with its evidence, a recommendation offered as evidence only, and the open decision or issue it routes to; Table 6's last column routes the smaller mapping gaps;
+  - a takeaway, and a short list of limits that §12 (#152) will expand.
+- **`report.md`, elsewhere:**
+  - the front matter: `informs` lists the decisions §11 covers, and `open_decisions` only the two still open. This settles the point the #150 fact-check deferred: DEC-002, accepted by ADR-0007, was listed as open.
+  - the note under the title says which of those decisions are accepted, and by which ADR;
+  - the status note lists #151 and what is still to come;
+  - §9's reference to the Linux Foundation guide's Table 8 now says "the guide's Table 8", so it is not read as the report's new Table 8.
+  - §1.1's reference to the closed #9 now names RPT-0005 (#39).
+- **`dimensions.md` 0.7.8:** status lines under Table 7, Table 8 and the plan for §11.
+- **`searches.md` 0.3.6:** the checks for #151.
+
+### Method
+
+- §11 was written from §1 to §10 as they stand after #150's fixes. It cites sections, findings and rule ids rather than sources.
+- Its new facts were checked in this session (`searches.md`): the decision states on `main`, the state of every issue Table 8 routes to, the sponsor-question numbers in #38, and #133's review.
+- The Table 7 counts are copied from `sources.md`'s summary.
+- A script counts Table 8's rows, the rows routed to #15 or #17 and the rows naming #130, so that the takeaway's numbers match the table: 21, 16 and 7 in the draft; 29, 22 and 8 after the fact-check.
+- The checks found a numbering slip in the draft. Table 8 gave the paywalled standards "sponsor question 4", their number in `dimensions.md`, but on #38 question 4 is Part B's licensed text and the access question is 3. The draft was changed to 3 before the fact-check; after it, the row gives both numbers and says the question names only ISO/IEC 19770-2 and 19770-6.
+- One fact-check agent (Claude Code) checks the new text; see "Fact-check" below.
+
+### Choices the agent made, open to review
+
+- **§11 covers DEC-007 too, with its input contract.** The plan lists only DEC-001, DEC-002, DEC-004, DEC-008 and DEC-009, but ADR-0001's contract is where the gaps become fields radar emits.
+- **`open_decisions` lists DEC-008 and DEC-009, not DEC-001b** (RPT-0005 lists all three), because this report has no evidence for the governed layer.
+- **Where #130 would close a gap, Table 8 names its slot,** because #130 is not merged. Two rows also say what the accepted core can do until then: per-build composition, and a component's supplier or maker.
+- **Table 7's summary sits before Table 8,** although the plan names them the other way round, so that Table 8 and the takeaway end the section.
+- **Table 8's Evidence column cites sections, findings and rule ids, not sources,** although `dimensions.md` asks for the section and the source; the sections cite the sources.
+- **Table 8 lists the main gaps, and Table 6's last column routes the smaller mapping gaps row by row,** rather than Table 8 repeating every Table 6 row.
+- **§11's limits are a short list;** the full list waits for §12 (#152).
+
+### Fact-check
+
+- **The agent.** One fact-check agent (Claude Code; about 367,000 tokens, 75 tool calls, 20 minutes) checked §11, the front matter and notes, §9's change and the logs. It worked from:
+  - the report's own sections and `sources.md`;
+  - tmodel's `main`, #130's branch, and GitHub's issues and pull requests;
+  - earlier fact-checkers' downloads, reused as data.
+
+  It sent no email or other personal data, and it contacted GitHub only.
+- **What it confirmed.**
+  - The decision states on `main`, the state of every routed issue, ADR-0011's contents on #130's branch, #38's question numbers and #133's review.
+  - Table 7's counts, recounted from all 121 rows, and the four observations.
+  - Every finding and rule §11 cites, apart from the points below.
+  - No row was routed to a closed issue or an accepted decision.
+- **Its 21 findings, all applied, the first in a different form.**
+  - **Missing.** §11 said it routed every gap, but at least seven gaps from §6 to §10 had no row. Table 8 now has 29 rows:
+    - five come from the agent's drafts: a component's producer, the home of `dependsOn` and edge subtypes, the upstream package, the build record, and the firmware binding;
+    - three are drafted in the main session from the agent's list: the Product key, loading SPDX into RDF, and evidence that is closed or does not exist yet;
+    - its drafts for the match predicate and for the `oci` purls were merged into the existing rows on matches and on the instance key;
+    - the unowned importer and the checks the format schemas leave to the text went into the radar row.
+
+    The smaller mapping gaps it listed stay in Table 6, whose last column routes them, and §11's introduction now says so.
+  - **Overstated:** the DEC-009 bullet stated the draft proposal's (ProductInstance, time) design as fact; it now attributes it to the proposal.
+  - **Counts:** the takeaway's "seven of them" did not match the table; it is recounted for 29 rows.
+  - **Routes:**
+    - Row 14 sent each CWE's source and alias ids to #144, which imports the CWE catalog; it now goes to #61, and to #64 via #130.
+    - The format-crosswalk row went to #64, the schema-authoring lane, though finding 8 leaves the question to #15 and #17; it now goes there.
+  - **Sponsor questions:** the paywalled-standards question is 4 in `dimensions.md` and 3 on #38; the row now gives both.
+  - **Imprecise:**
+    - which digests Syft's SBOMs keep, and how identifiers are stored;
+    - VEX overrides, which have a home (an Assertion with a Review, as in mvp-18);
+    - the contract's fields, interconnects and cores, and the other-bills row;
+    - "64 rows" rather than sources, and SPDX 3.0.1's `creationInfo`;
+    - deps.dev's 15 live calls;
+    - the 4-then-30 matches, which came from the same image and tool versions, not the same SBOM file;
+    - R-MATCH-1 beside R-PROV-2;
+    - completeness, and the takeaway's "everything else as Assertions".
+  - **Our reading:** two interpretations are now marked.
+  - **Logs:** the stopgap wording under "Choices", a new choice on the Evidence column, and "among others" in `searches.md`.
+  - **Status note:** §12 and the clarity pass now come "after 0.2.0".
+- **Outside §11.**
+  - §1.1 still sent VEX to #9, which is closed; it now names RPT-0005 (#39).
+  - The old synthesis named ISO/IEC 27036-3 and ISO/IEC 18974 as not reviewed. The new §11 had dropped them, and its limits list names them again.
+- **Main-session spot checks** agreed with the agent (`searches.md`):
+  - #61's "CVEs link to CWE via BRON", and #144's scope (the CWE catalog);
+  - ADR-0007's crosswalk lane, #39, which covers threat-model formats;
+  - the question lists in `dimensions.md` and on #38;
+  - `pilot.md`'s wording of the 4-then-30 matches;
+  - the old limits line at 7761614.
+- **Not checked:** the student's words quoted under "Question asked"; Table 7's ratings against their sources; facts from §1 to §10 that §11 does not restate.
+
+### What a human accepted
+
+- The student asked for this work.
 - Pending: review.

@@ -21,19 +21,19 @@ needs_review: true
 reviewed: false
 canonical_path: research/0004-product-composition/report.md
 library_commit: "see library/ submodule pointer at time of merge"
-informs: [DEC-001, DEC-002, DEC-007, DEC-008]
-open_decisions: [DEC-001, DEC-002, DEC-008]
+informs: [DEC-001a, DEC-002, DEC-004, DEC-007, DEC-008, DEC-009]
+open_decisions: [DEC-008, DEC-009]
 ---
 
 # Product composition
 
-> **This report does not select a design.** It is evidence for the open decisions listed above. DEC-007, which it also informs, has since been accepted in ADR-0001 (radar / tmodel split).
+> **This report does not select a design.** It is evidence for the decisions listed above. Two are open, DEC-008 and DEC-009. The others have since been accepted, DEC-001a in ADR-0010, DEC-002 in ADR-0007, DEC-004 in ADR-0008 and DEC-007 in ADR-0001 (radar / tmodel split), so for them it is evidence for later changes (§11).
 
 > **Corrections in 0.1.1 (2026-10-18).** The second pass on this report (#38) found errors and dated results in 0.1.0; they are fixed in place below, and the evidence is in the Phase 1 notes (`fanout-*.md`, section 9) and DL-0015. (1) Syft does write SPDX 3.0.1 (`-o spdx-json@3.0`, since Syft 1.46.0; checked with 1.52.0), so §3, its takeaway and §7 were wrong to say it cannot. (2) The ISO stages in §1 had moved by 2026-10-07. (3) Dependency-Track's current release is 5.2.0. (4) §1.2's "three things" holds for SPDX's model text, not its SHACL shapes or JSON Schema. (5) Scan results in §3 and §5 now carry their database date: on 2026-10-08 the same Alpine image gave 30 matches for 15 CVEs, one of them from Alpine's own feed ([pilot.md](pilot.md)). For #15 and #17, Table 6 (built in [mapping.md](mapping.md); §10 from 0.2.0) supersedes this report's notes on the input contract.
 
 > **Corrections in 0.1.2 (2026-10-18).** The checks behind the Phase 2 library records (#38, DL-0015) found three more. (1) ISO now lists SPDX 3.0 as ISO/IEC PRF 5962 at stage 50.00, past the draft stage, not as DIS 5962 at 40.99 (§1, §7). (2) ISO Guide 69:1999, which §1.3 cited for stage names, was withdrawn on 2014-06-18; §1.3 now cites ISO's stage-codes page, which gives 90.60 the same meaning. (3) The CycloneDX VEX examples behind the comparison table are CycloneDX 1.4 files; the four states they use are all still in 1.7.
 
-> **Version 0.2.0, in progress (#38).** This version is being written one sub-issue at a time (#147 to #151). Done so far: for #147, the comparison tables at the front (Table 1, formats at a glance, and Table 2, the minimum-element crosswalk, which replace 0.1.2's table of CISA's 2024 attributes and its "five questions" table) and §1.4 to §1.6; for #148, §2 to §4, with Table 4 (hardware and firmware coverage) and Table 5 (tools); for #149, §5 to §7, with Table 3 (identifier schemes); for #150, §8 to §10, with Table 6 (the composition → model-input mapping) moved in from `mapping.md`. The synthesis, moved from §7 to §11, still reads as 0.1.2, and #151 rewrites it; §1.1 to §1.3 and the VEX status table also keep 0.1.2's text (the VEX table because RPT-0005 cites it). Library records are cited by id, at the library commit this report pins (`a28a013`).
+> **Version 0.2.0, in progress (#38).** This version is being written one sub-issue at a time (#147 to #151). Done so far: for #147, the comparison tables at the front (Table 1, formats at a glance, and Table 2, the minimum-element crosswalk, which replace 0.1.2's table of CISA's 2024 attributes and its "five questions" table) and §1.4 to §1.6; for #148, §2 to §4, with Table 4 (hardware and firmware coverage) and Table 5 (tools); for #149, §5 to §7, with Table 3 (identifier schemes); for #150, §8 to §10, with Table 6 (the composition → model-input mapping) moved in from `mapping.md`; and for #151, §11 (synthesis and gap analysis), with a summary of Table 7 and with Table 8 (gap analysis). §1.1 to §1.3 and the VEX status table keep 0.1.2's text (the VEX table because RPT-0005 cites it). Still to come, after 0.2.0: §12 (method, adversarial review and limits; #152) and a clarity pass, with an overview and a conclusion (#153). Library records are cited by id, at the library commit this report pins (`a28a013`).
 
 Search log: [`searches.md`](searches.md). Source log: [`sources.md`](sources.md). 
 Axes: [`dimensions.md`](dimensions.md).
@@ -171,7 +171,7 @@ Three details matter for anyone reading the graph. First, a missing entry should
 
 Two things stand out. First, CycloneDX splits CISA's Unknown in two: `unknown` usually signals a best-effort attempt that was inconclusive, while `not_specified` means no one said anything, and leaving `compositions` out entirely makes no completeness claim at all. Second, both standards limit the claim to direct relationships: CycloneDX references "do not cascade to transitive dependencies", matching CISA's rule that a "Known" component can have upstream components that are only "Partial" or "Unknown". So an SBOM can be complete at the top and still have gaps further down, and while it can state that a list is complete, it cannot prove that a component is absent (library topic `sbom`). This matters for DEC-001: a model that reads an SBOM as a full list will draw wrong conclusions whenever completeness is unknown or unstated.
 
-**Vulnerabilities and weaknesses.** A top-level `vulnerabilities` list records "vulnerabilities identified in components or services" (`cyclonedx-1-7`). Each entry points at what it hits through `affects`, lists the weakness types behind it in `cwes`, and can carry an `analysis`: the author's answer to "does this actually affect us?", known as VEX (VEX itself is in scope for #9). The analysis has a `state` (for example `exploitable`, `not_affected` or `false_positive`), a `justification` (for example `code_not_reachable` or `protected_by_mitigating_control`), a `response` (for example `update` or `will_not_fix`), a free-text `detail`, and timestamps for when it was first issued and last updated.
+**Vulnerabilities and weaknesses.** A top-level `vulnerabilities` list records "vulnerabilities identified in components or services" (`cyclonedx-1-7`). Each entry points at what it hits through `affects`, lists the weakness types behind it in `cwes`, and can carry an `analysis`: the author's answer to "does this actually affect us?", known as VEX (VEX itself is in scope for RPT-0005, #39). The analysis has a `state` (for example `exploitable`, `not_affected` or `false_positive`), a `justification` (for example `code_not_reachable` or `protected_by_mitigating_control`), a `response` (for example `update` or `will_not_fix`), a free-text `detail`, and timestamps for when it was first issued and last updated.
 
 Three things stand out. First, `cwes` is the only CWE field, so a component links to a weakness only through a vulnerability entry, and each CWE is a bare integer ("For example 399") rather than a string like "CWE-399". Second, unlike `dependsOn`, `affects` accepts a BOM-Link, so a vulnerability report can live in a separate file and still point into a product's SBOM. Third, the analysis is again a claim: `not_affected` "should" come with a justification, but the schema does not require one. Several justifications (`code_not_reachable`, `requires_configuration`, `protected_at_perimeter`, `protected_by_mitigating_control`) are threat-model conclusions in their own right, which makes this a direct link between an SBOM and tmodel's model (DEC-001) and its CWE/NVD integration (DEC-008).
 
@@ -795,7 +795,7 @@ Input to DEC-001. This section covers the other bills CycloneDX and SPDX 3 descr
 #130's `ComponentKind` (CycloneDX 1.7's 13 component types, plus `service` and `interconnect`) would let a Component say which of these it is.
 
 **Two cautions about the AI-BOM sources.**
-- *The Linux Foundation guide disagrees with the model.* Its guide to SPDX 3.0's AI profile lists `buildTime` (1..1), `downloadLocation` (1..*) and `suppliedBy` (1..*) as mandatory for an AIPackage (`lf-2024-spdx3-aibom`, Table 8). The 3.0.1 model names the property `builtTime` and requires it only for a DatasetPackage; it does require `downloadLocation` and `suppliedBy` for an AIPackage, but allows at most one of each (`spdx-3-0-1`). RPT-0014's summary of the guide repeats the error, and SPDX 3.1's release candidate relaxes the AI and Dataset rules further (§1.6).
+- *The Linux Foundation guide disagrees with the model.* Its guide to SPDX 3.0's AI profile lists `buildTime` (1..1), `downloadLocation` (1..*) and `suppliedBy` (1..*) as mandatory for an AIPackage (`lf-2024-spdx3-aibom`, the guide's Table 8). The 3.0.1 model names the property `builtTime` and requires it only for a DatasetPackage; it does require `downloadLocation` and `suppliedBy` for an AIPackage, but allows at most one of each (`spdx-3-0-1`). RPT-0014's summary of the guide repeats the error, and SPDX 3.1's release candidate relaxes the AI and Dataset rules further (§1.6).
 - *The G7 guidance is unread.* The G7's *Software Bill of Materials for AI: Minimum Elements* (2026-05-12; `g7-sbom-for-ai-2026`) says its elements are "in addition to the general SBOM minimum elements" (§1). It groups its elements in seven clusters: metadata, system-level properties, models, datasets, infrastructure, security properties and key performance indicators. Its element tables were not read.
 
 **Takeaway:** The other bills add five kinds of thing: services, models and datasets, cryptographic assets, builds or running environments, and (in CERT-In's bills) quantum and compute hardware. Only services, models and that hardware are components in tmodel's sense (our reading). Datasets and keys are closer to Assets, algorithms to capabilities a component provides, and builds to activities. For DEC-001, importing these bills needs a component kind and the Asset, TrustBoundary and DataFlow classes, which #130 adds, plus two edges the core lacks: training lineage and "provides" (our reading).
@@ -999,31 +999,97 @@ Evidence only. Each rule names its source in the fan-out notes, which hold the f
 
 **Takeaway:** An importer of radar output can fill Product, ProductInstance and Component, with their identifiers, today. It can also carry per-package matches, CVE-to-CWE links and per-build composition as Assertions. Much is lost on the way: the match method and its provenance, the CWE's source, fix information, version ranges, scores, alias ids, completeness, the SBOM document and the build record have no slots, and the version survives only inside a purl. Five choices come first: the instance key (R-ID-1), where an SBOM's `dependsOn` goes (R-EDGE-3), the predicate name for a match (for CVE to CWE the vectors have used `instance_of` since #128), the `confidence` scale, and an identifier prefix list. If #130 merges, it closes several of the gaps: version, kind, per-build composition, the CVE-to-CWE edge, provenance, aliases and component suppliers (our reading).
 
-## 11. Synthesis: implications for tmodel
+## 11. Synthesis and gap analysis
 
-*Still 0.1.2's text, renumbered from §7 to match the plan; #151 rewrites it.*
+Input to every decision this report bears on. This section gathers the evidence of §1 to §10 by decision, summarizes Table 7, and routes each gap the report found to an open decision or issue: the main ones in Table 8, and the smaller mapping gaps row by row in Table 6's last column. It accepts nothing: only an ADR accepts a `DEC-*` (ARCH-0001 §9). On `main` (ARCH-0001 0.1.8), DEC-001a (ADR-0010), DEC-002 (ADR-0007), DEC-004 (ADR-0008) and DEC-007 (ADR-0001) are among the accepted decisions, and DEC-001b, DEC-008 and DEC-009 are the open ones. Pull request #130 adds ADR-0011, which amends ADR-0010 (DEC-001a) and is marked accepted on its branch; the pull request is not merged, so this section treats its changes as proposed.
 
-This section gathers the evidence above by decision: the three that are still open, and DEC-007, which ADR-0001 has since accepted. It does not select a design.
+**DEC-001, the object model** (DEC-001a accepted by ADR-0010; DEC-001b, the governed layer, open). A change to the accepted core takes a new ADR, worked out in #15 and #17.
+- *Identity.* A component carries several identifiers at once, assigned (purl, CPE, SWID tag ids) or computed (hashes, OCI digests, gitoids, SWHIDs), and each database keys on a different one (§7, Table 3). The core stores them as opaque, scheme-prefixed strings, with no pinned list of schemes and no scheme version or source (§6, §7). Table 6's candidate rules key a Component on its normalized purl and keep the rest beside it (R-ID-3, R-ID-4).
+- *Instances.* One container image has at least five digests, and Syft's SBOMs keep at most two of them, unlabelled (a CycloneDX file of an image named by a tag other than `latest` keeps none); the candidate instance key is the platform manifest digest, with the others labelled (§6; R-ID-1). A firmware digest names a build that many units run, and a serial number names one unit (R-HW-1).
+- *Composition.* Composition for one build has no slot (finding 1). The dependency edge an SBOM gives has two possible homes, `depends_on` and `uses_component` (R-EDGE-3). "None", "unknown" and "withheld" are different claims (§1, §8; R-COMP-1).
+- *Matches and weaknesses.* A match is a claim with a method, a source and a date, and a CWE has its own source (§5). The core can hold both as Assertions, as the MVP vectors have done for CVE to CWE since #128, but not their provenance (finding 5).
+- *Hardware.* An HBOM is mostly supply-chain data; no SBOM format, current or draft, has a bus relation or a compute core; and attestation standards record what a device reports about itself (§2).
+- *Other bills.* Services and models fit Component; datasets and keys are closer to Assets, and builds are activities (§9; our reading).
+- *#130.* If it merges, ADR-0011 adds a version, a component kind, per-build composition, the CVE-to-CWE edge, Assertion provenance, alias ids, component suppliers and makers, and the Asset, TrustBoundary and DataFlow classes (§10).
 
-**DEC-001 (core object model).**
-- *Identity.* A component can carry several identifiers at once, and only some can be checked against its bytes (`hashes`, OmniBOR, SWHID; 1.1, 1.2, comparison table). Names such as CPEs can be guesses (section 3).
-- *Relationships.* CycloneDX separates depends-on, contains and provides, with a component's history in `pedigree`; SPDX has 59 relationship types across all its profiles; the two formats' "scope" qualifiers mean different things (1.1, 1.2).
-- *Completeness.* "None" and "unknown" are different claims, and an SBOM can assert completeness but cannot prove that a component is absent (1.1, 1.2).
-- *Hardware.* An HBOM is mostly supply-chain data, and most of CISA's HBOM fields have no home in the SBOM formats; firmware is where hardware meets software (section 2).
-- *Build identity.* A content digest pins bytes, a version string names a release, and an SBOM serial number identifies the document, not the build (section 6).
-- *VEX.* Exploitability statements link a vulnerability to a product; SPDX's statuses follow CISA's, while CycloneDX's line up only partly (comparison table).
+**DEC-002, encoding and interchange** (accepted by ADR-0007). ADR-0007 commits the OTM and STIX 2.1 imports. SBOM and scanner formats are not on its list, and additions "arrive as MAP-NNNN + a vector" (finding 8). The evidence for such a crosswalk:
+- *What tools write and read.* CycloneDX 1.7 is what our tools write and what Dependency-Track reads. SPDX 3.0.1 is the more graph-like model. Syft writes it, with SPDX 2.3's feature set; Grype reads it through Syft; Trivy, GUAC and Dependency-Track cannot read it (§3).
+- *Both formats are changing.* SPDX 3.0 is at ISO stage 50.20 and CycloneDX at 40.00. Both have unreleased next versions, CycloneDX 2.0 and SPDX 3.1 (§1.6).
+- *What a file carries depends on its format.* The same scan carries different data in different formats (§3), and each format's schema enforces only part of its own rules (§1.5).
 
-**DEC-002 (formats to import and export).**
-- CycloneDX 1.7 is what our tools wrote and what Dependency-Track reads. SPDX 3.0.1 is the more graph-like model; Syft writes it (with SPDX 2.3's feature set only), but Dependency-Track and GUAC cannot read it yet. SWID is an identification tag, not a composition format (1.2, 1.3, section 3). Both main formats are on their way to ISO: SPDX 3.0 as ISO/IEC PRF 5962 (stage 50.00, approval) and CycloneDX as ISO/IEC DIS 27055 (stage 40.00, enquiry) (section 1).
-- The same scan carries different data depending on the output format (Syft's CPEs, section 3), and converting between formats can lose a hash's algorithm name and VEX distinctions (1.2, comparison table).
+**DEC-004, the working store** (accepted by ADR-0008). An SPDX 3.0.1 document loads into an RDF store as it is, with four caveats (§1.4). GUAC shows a composition graph that merges documents' keys while keeping each document's claims apart (§3). Both bear on the edge façade (#52, #65), not on the choice of store (our reading).
 
-**DEC-007 (accepted in ADR-0001, radar / tmodel split).** Under ADR-0001, tmodel consumes radar's (tradar's) output, and "the interface is the composition→model-input mapping surveyed in RPT-0004 (#8)". Today radar's graph keeps only the name, version and ecosystem of vulnerable packages; purl, CPE, dependency links and CWEs are dropped on the way, although the Syft and Grype outputs it already uses contain them (section 4).
+**DEC-007, the radar and tmodel split** (accepted by ADR-0001), **and its input contract.** radar's graph keeps only the name, version and ecosystem of vulnerable packages, and it cannot carry an SBOM scan (§4; finding 11). For tmodel to fill Table 6, the contract would have to ask for labelled digests, each component's identifiers raw and parsed, the relationships, who made each claim and when (the SBOM's author included), a hash of each delivered component, and a completeness statement (§6, §8).
 
-**DEC-008 (CWE/NVD integration).** NVD is one source among several: its CPE configurations can be missing for CVEs awaiting analysis, CWEs come from Primary and Secondary sources that can differ, and NVD uses placeholder values that some formats cannot store. In our runs most reported matches came from GitHub advisory data, and in the 2026-09-28 run all Alpine matches came from NVD CPE data, since the Alpine feed then listed neither CVE (section 5); by 2026-10-08 one of them came from the Alpine feed.
+**DEC-008, CWE and NVD integration** (open). The evidence (§5):
+- NVD now prioritizes only some CVEs for enrichment, and where a CNA and NVD both give CPE data, they seldom agree exactly.
+- Scanners match on the day's data: the same image, scanned with the same Syft and Grype versions, gave 4 matches, then 30 ten days later.
+- CWEs come from several sources that can disagree, and NVD's placeholders fit no integer field.
 
-**Limits of this report.**
-- Paywalled standards not read: ISO/IEC 19770-2:2015 (SWID) and ISO/IEC 19770-6:2024 (hardware identification tags). Related supply-chain standards in ISO's catalog, such as ISO/IEC 27036-3:2023 (guidelines for hardware, software, and services supply chain security) and ISO/IEC 18974:2023 (OpenChain security assurance), were not reviewed.
-- Dependency-Track and GUAC are described from their documentation, not run.
-- The tool runs cover two inputs; other ecosystems (for example a Debian-based image or a Java project) would exercise other matchers.
-- The `cyclonedx-1-7` and `spdx-3-0-1` library summaries have header metadata only; their Overview and Applicability sections are still unfilled. Most sources in `sources.md` are not yet library records.
-- Overlap: VEX and CSAF in depth belong to #9.
+Our reading: whichever way DEC-008 goes, live lookup or cached mirror, the evidence favours recording each source's claim with its date and the database snapshot behind it (R-CWE-1, R-PROV-2).
+
+**DEC-009, generic threat to product, and the mitigation lifecycle** (open).
+- *Per-package matches.* Scanners match packages, while the core's `affects` points only at a Product (finding 2). The candidate rule records each match as an Assertion and derives the Product's `affects` by propagation (R-MATCH-1).
+- *State over time.* The ARCH-0001 proposal, still a draft, carries state by a (ProductInstance, time) pair, with an identity-by-hash ProductInstance; which digest would key it is still open (§6; R-ID-1).
+- *Fixes and VEX.* Fix information has no slot yet. A VEX override goes in an Assertion with a Review, as mvp-18 does, and VEX statuses map across the formats only partly (the VEX table at the front; Table 6d).
+
+**Table 7, in short.** `sources.md` rates every kept source on the five axes #38 sets, with RPT-0005's rubric, from 0 (absent) to 3 (strong), within the source's own scope. Five Claude Code agents produced the ratings on 2026-10-19. A teammate's review of its pull request (@Maimcghee, #133; prepared with Claude Code) checked the table's numbering and counts, and said it had not checked the ratings against their sources; no human has yet. Counts over the 117 rated rows (the four `n/a` rows are left out):
+
+| axis | 0 | 1 | 2 | 3 | not read |
+|---|---|---|---|---|---|
+| Object model | 20 | 42 | 49 | 5 | 1 |
+| Provenance/attribution | 29 | 35 | 36 | 16 | 1 |
+| Human review/audit | 64 | 37 | 13 | 1 | 2 |
+| Federation | 13 | 27 | 51 | 25 | 1 |
+| AI-grounding | 0 | 30 | 57 | 30 | 0 |
+
+- **Human review is the weakest axis.** 64 rows score 0, and only Dependency-Track scores 3: it keeps an audit history of who decided what, but in one deployment's database, not an exchange format. So the human verdicts tmodel needs, its own Review, have to be created in tmodel; no source supplies them (our reading).
+- **Object model is mostly partial.** Only CycloneDX 1.7, SPDX 3.0.1, ISO/IEC 5962:2021, Redfish and Red Hat's CSAF files score 3.
+- **Provenance is strongest where a format signs or stamps each statement.** 16 rows score 3, among them SPDX 3.0.1's `creationInfo`, CVE's `providerMetadata`, SLSA provenance, Sigstore bundles and the TCG certificates.
+- **Federation and AI-grounding are the strongest axes.** 25 and 30 rows score 3, and no row scores 0 on AI-grounding.
+
+### Table 8. Gap analysis
+
+Each row is a gap the sections above found. "Recommendation" is evidence for a decision, not a decision, and "Routes to" names the open decision or issue that settles it ("#64, via #130" means the schema lane, through pull request #130).
+
+| Gap | Evidence | Recommendation (evidence only) | Routes to |
+|---|---|---|---|
+| A Component has no version or kind slot; the version lives only inside the purl | Table 6b; §9 | `version` and `component_kind`, as #130 proposes (A2, A3) | #64, via #130; #15, #17 |
+| A Component's producer, supplier or maker has no slot: `supplied_by` and `manufactured_by` sit on Product only | §8; Table 6c, 6e | `supplied_by` and `manufactured_by` on Component (#130, A7); until then, an Assertion, as mvp-18 does | #64, via #130; #15, #17 |
+| Composition for one build has no home: `composed_of` belongs to Product and Component | finding 1; §6 | `ProductInstance.build_composed_of` (#130, A4); until then, Assertions (R-MERGE-1) | #64, via #130; #15 |
+| An SBOM's `dependsOn` has two possible homes, and an edge's subtype (SPDX's finer relationship types, CycloneDX's `scope`) has none | finding 6; Table 6c | choose `depends_on` or `uses_component` (R-EDGE-3); keep the subtype as an edge qualifier once the schema has them (R-EDGE-1) | #15, #17 |
+| The upstream (source) package has no home | Table 6b | a "built from" edge to a source Component (R-ID-3), so that one upstream CVE can be traced to each binary package it lands on | #15, #17 |
+| No slot links a CVE to its CWE; since #128 the MVP vectors carry the link as an `instance_of` Assertion | finding 7; §5 | `instance_of` (#130, A1), with one Assertion per CVE, CWE and source (R-CWE-1) | #64, via #130; #61; DEC-008 |
+| An Assertion records no provenance: who made it, when, by which method, from which data | finding 5; §5 | provenance slots (#130, A5), plus the method, the search key and the database snapshot (R-MATCH-1, R-PROV-2) | #64, via #130; #15 |
+| `affects` points only at a Product, while scanners match packages; the predicate name for a match and the `confidence` scale are open | finding 2; §5; Table 6d | per-package match Assertions, with Product-level `affects` derived by propagation, and `confidence` set from the match type at first (R-MATCH-1) | DEC-009; #15, #17 |
+| Version ranges and their scheme have no home | §5; Table 6d | keep each range as written, with its scheme (R-RANGE-1) | DEC-008; #17 |
+| Completeness has no home, so "none", "unknown" and "withheld" cannot be told apart | §1, §8; Table 6c | completeness defaults to "unknown" (R-COMP-1), with a way to say "withheld" | #15, #17 |
+| The SBOM document (format, creator, time, its own digest) has no home | Table 6a; §6 | the SBOM as evidence for Assertions, never as a key (R-PROV-1) | #15, #17 |
+| The build record, and any attestation found for an image's digest, have no home | §6; Table 6a | after the MVP, attach build provenance to an instance only by subject digest (R-BUILD-1) | DEC-009; #15, #17 (ADR-0001's contract) |
+| Nothing says what keys a Product, and both formats merge the product and one build into one root object | Table 6a | key the Product on the versionless repository purl, never on a tag (R-ID-2) | #15, #17; DEC-009 |
+| The instance key is undecided, a bare `sha256:` does not say which digest it is, and four `oci` purls in the vectors use a namespace the `oci` type prohibits | §6; finding 9 | the platform manifest digest as the key, the other digests labelled (R-ID-1); an identifier prefix list; corrected `oci` purls | #15, #17; DEC-009 |
+| Identifiers carry no scheme version, source, or note of what was hashed | §7, Table 3 | each identifier stored with its scheme, version, source and producer, and Components keyed on the normalized purl (R-ID-3, R-ID-4) | #17, #64 |
+| No rule for merging two SBOMs, or two components, of one build | §6, §7; Table 6c | equivalence Assertions with a reason, and a Review for heuristic matches (R-MERGE-1, R-MERGE-2) | #15, #17 |
+| Build identity and unit identity are merged in one vector (mvp-02) | finding 10; §2, §6 | separate keys for a build and for one unit (R-HW-1) | #15; DEC-009 |
+| No interconnect edge, and no SBOM format names a bus or a compute core (only Redfish does; cores import as `composed_of`, as mvp-02 does); supply-chain origin, lots and measured identity have no home | §2; Table 6e | an interconnect edge; origin attributes; a device's signed measurement as its own Assertion (R-HW-2); meanwhile `component_kind: interconnect` (#130) | #15, #17 |
+| A firmware-to-device binding has no edge, and how the binding is known is lost | §2; Table 6e | `composed_of` from the device to its firmware, or a `runs_on` edge, keeping whether the binding is declared, embedded or measured | #15, #17 |
+| Alias ids (GHSA, OSV, distribution ids) and each CWE's source are lost | §5; Table 6d | `alias_ids` (#130, A6); each CWE kept with its source and type, and NVD's placeholders read as "no CWE given" (R-CWE-1) | DEC-008; #61; #64, via #130 |
+| Fix information and scores (CVSS, EPSS) have no slot | Table 6d | attributes of the match Assertion; a fix is a remediation option, not a Mitigation (our reading) | #15, #14; DEC-009 |
+| SBOM and scanner formats are not on ADR-0007's import list | finding 8; §3 | if #15 and #17 choose ADR-0007's form, a `MAP-NNNN` crosswalk for CycloneDX 1.7 and SPDX 3.0.1, with a vector, built from Table 6 | #15, #17 |
+| An SPDX 3.0.1 document needs care to load into RDF | §1.4 | run the JSON Schema before JSON-LD expansion, pin the context and model by hash, and handle `ExternalMap` as spdx3-validate does (our reading) | #52, #65 |
+| radar keeps only vulnerable packages' name, version and ecosystem, and cannot carry an SBOM scan; no issue owns an importer of radar output yet | §4, §10; finding 11 | a contract that asks for the fields in §6 and §8, and an importer that reads Grype's JSON itself and checks what the format schemas leave to the text (§1.5) | #15, #17 (ADR-0001's contract) |
+| Other bills need datasets and keys as Assets, and two edges the core lacks: model lineage, and "provides" | §9 | lineage and capability edges; datasets and keys as Assets (#130, B1) | #15; #71 |
+| Paywalled standards are unread: ISO/IEC 19770-2 and 19770-6, ISO/IEC 18670 and ISO 24089 | §1.3, §2, §6, §7 | copies, if the project can get them | #38 (sponsor question 4 in `dimensions.md`, asked on #38 as question 3; it names only ISO/IEC 19770-2 and 19770-6) |
+| `cyclonedx-1-7` and `spdx-3-0-1` are honest stubs, not extracted | Table 9 | the sponsor's answers on the extraction rule and on ownership | #38 (sponsor questions 1 and 2, numbered the same in `dimensions.md`); #39 |
+| Some evidence is closed or does not exist yet: ITU-T X.hbomsec's text is restricted; no implementing act on the CRA's SBOM content (searched 2026-10-08) and no public vehicle HBOM guidance were found; and no study gives a ground-truth rate for CPE matching against ecosystem matching | §2, §5, §8 | look again before the next version; a ground-truth study would need new runs | #38 |
+| The G7 AI-BOM guidance is unread, and RPT-0014's summary of the Linux Foundation guide repeats its error | §9 | read the G7 element tables; correct RPT-0014's summary | #71 |
+
+**Takeaway:** The accepted core can already hold a product's composition and its vulnerability matches: identity as opaque strings, design-level structure in slots, and per-build composition and per-package matches as Assertions. What it cannot hold is the context that makes those claims checkable: which digest names an instance; which scheme, version and source stand behind an identifier; who made a claim, when and from which data; and what is unknown. Most gaps route to #15 and #17 (22 of the 29 rows). Eight rows name #130, which would close or narrow those gaps if it merges. The other seven go to DEC-008 and the CWE import (#61), two rows that also name #130; to the sponsor's questions and later passes of this research (#38, with #39); to RPT-0014 (#71); and to the edge façade (#52, #65). The radar contract (ADR-0001) is where these gaps become fields radar emits (our reading).
+
+**Limits** (§12, which #152 writes, will hold the full list):
+- Paywalled standards were read only from public material (Table 8).
+- Related supply-chain standards in ISO's catalog, such as ISO/IEC 27036-3:2023 (guidelines for hardware, software and services supply chain security) and ISO/IEC 18974:2023 (OpenChain security assurance), were not reviewed.
+- Dependency-Track, GUAC and deps.dev were not run: they are described from their documentation, release notes and source code, and deps.dev also from 15 live API calls (§3). tradar was read, not run (§4).
+- The tool runs cover four inputs, so their counts describe those runs, not the tools in general (§3).
+- Table 7's ratings are AI-produced and not yet checked against their sources by a human, and most library records are honest stubs, not extractions (Table 9).
+- VEX and CSAF in depth belong to RPT-0005 (#39).
