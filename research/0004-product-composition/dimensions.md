@@ -4,7 +4,7 @@ id: RPT-0004-dimensions
 title: "RPT-0004 dimensions: the search axes"
 type: research
 status: draft
-version: "0.7.8"
+version: "0.7.9"
 date: "2026-09-28"
 updated: "2026-10-22"
 record: RPT-0004
@@ -31,7 +31,14 @@ Sections 1 to 6 keep their 0.1.0 numbers, because RPT-0005 cites them (§1.1, §
 
 ## What complete means: the tables
 
-Every table below must be filled before the report leaves draft. In a cell, `none` means the source has no such thing, and `?` means it has not been found yet; a `?` blocks done. Wide tables may be split or turned on their side in the report; the columns below are what must be filled.
+Every table below must be filled before the report leaves draft. In a cell, `none` means the source has no such thing, and `?` means it has not been found yet; a `?` blocks done, except the five Table 7 cells listed below. Wide tables may be split or turned on their side in the report; the columns below are what must be filled.
+
+*Status 2026-10-22 (#152): Table 7 (`sources.md`) has five `?` cells. They mark texts the project cannot read, not facts still to be found, and the student decided on 2026-10-22 that they count as exceptions: they do not block done.*
+
+| Table 7 row | source | what it is | cells that are `?` | why it cannot be read |
+|---|---|---|---|---|
+| 66 | ISO/IEC 19770-6:2024 | the ISO/IEC standard for hardware identification (HWID) tags, the hardware counterpart of SWID tags | Human review/audit | paywalled: sold by ISO, and only its metadata and contents list are public; sponsor question 4 asks for access |
+| 81 | ITU-T SG17 Contribution 548 | Korea's proposal (2026-05-19) for a new ITU-T work item, X.hbomsec: guidelines for minimum hardware bill of materials requirements | Object model, Provenance/attribution, Human review/audit, Federation | not for sale: restricted to ITU's TIES users, and only its metadata page is public |
 
 Tables 4 and 6 use RPT-0005's fidelity marks, so the two reports can be read together:
 
@@ -321,6 +328,8 @@ A fresh agent that did not write the draft checks:
 4. **Mapping.** Spot-check Table 6 cells against the format texts and the draft schema.
 
 Findings go back through dimensions 1 to 10. Rejected findings and the reasons go in the design log (DL-0015).
+
+*Status 2026-10-22: run once (#152), by one fresh agent: two material findings (dimensions 3 and 6) and eleven minor ones. Both material findings and ten minor ones were applied, and one was rejected, with the reasons in DL-0015; §12 is written in `report.md`. A second round has not been run.*
 
 ## Per-source record
 

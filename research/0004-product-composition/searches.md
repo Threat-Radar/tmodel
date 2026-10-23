@@ -4,7 +4,7 @@ id: RPT-0004-searches
 title: "RPT-0004 search log"
 type: research
 status: draft
-version: "0.3.6"
+version: "0.3.7"
 date: "2026-09-28"
 updated: "2026-10-22"
 record: RPT-0004
@@ -416,3 +416,19 @@ Runs in the main session for `report.md` 0.2.0 (#147: Tables 1 and 2, §1.4 to �
 | 2026-10-22 | `gh issue view 61` and `gh issue view 144` | GitHub | #61: "CVEs link to CWE via BRON"; #144 imports each CWE entry "keyed by CWE-ID", so it covers neither a CVE's CWE source nor alias ids (Table 8's row was rerouted) |
 | 2026-10-22 | `git show origin/main:spec/ADR-0007-schema-idl-and-interchange.md` | tmodel | lines 56 to 57: "The #39 schema-representations crosswalk ... may extend import coverage (pytm, threagile, Threat Dragon) via further `MAP-NNNN` docs", threat-model formats, not SBOMs |
 | 2026-10-22 | `grep` of `27036` and `18974` in `report.md` at 040865b, d0a1e73, df287e9, f7131d2 and 7761614 | tmodel | one line in each, the old synthesis's limits ("were not reviewed"); the first §11 draft had dropped it, so §11's limits name both again |
+| 2026-10-22 | `gh api` of microsoft/sbom-tool: releases v4.0.2 and latest, README, an SPDX 3 parser test file | GitHub | v4.0.2 (2025-05-12): "This release enables SPDX 3.0 support in generation and validation (not yet in redaction)"; latest v4.1.5 (2025-12-15); README: SPDX 2.2 by default, SPDX 3.0 with `-mi SPDX:3.0`; the test document uses the 3.0.1 context |
+| 2026-10-22 | `gh api` of CycloneDX/cdxgen: releases, v12.3.0's notes, README at 388f434 | GitHub | v12.3.0 (2026-04-29): "SPDX support for the first time", `cdx-convert` from CycloneDX 1.6 and 1.7; README (2026-09-30): "supports SPDX 3.0.1 JSON-LD export", and `--spec-version` accepts "1.6, 1.7, and 2.0"; current releases 13.4.0 (2026-10-14) and 12.9.0 (2026-10-22) |
+| 2026-10-22 | `gh api` of openembedded/openembedded-core at `walnascar` (bba638620f) and `master` (ae5cafacec): `meta/lib/oe/sbom30.py`, `spdx30_tasks.py`, `create-spdx-3.0.bbclass` | GitHub | `build_Build` with `build_buildType`, `hasInput` and `hasOutput`; `software_SbomType.build`; VEX Affected, NotAffected and Fixed relationships; `SPDX_INCLUDE_VEX ??= "current"`; `SPDX_INCLUDE_TIMESTAMPS ?= "0"` |
+| 2026-10-22 | `gh api` of protobom: README and latest release | GitHub | v0.6.2 (2026-09-21); SPDX 3.0 and 3.1 JSON "planned" for reading and writing; CycloneDX 1.7 "supported" |
+| 2026-10-22 | `curl` of `https://www.rfc-editor.org/rfc/rfc9472.txt` | RFC Editor | HTTP 200; sha256 64a6b305…, the same as the #152 agent's copy; Standards Track, October 2023; abstract: "to provide the locations of software bills of materials (SBOMs) and vulnerability information"; §2: "/.well-known/sbom" retrieves an SBOM |
+| 2026-10-22 | `gh api` of CycloneDX/transparency-exchange-api: README and releases | GitHub | "being worked on within the ECMA TC54 tg 1"; discovery by a Transparency Exchange Identifier (TEI); only release 0.1.0-beta.1 (2025-05-22, a pre-release) |
+| 2026-10-22 | `python3 -I` reads of the #152 agent's copies of the CRA, BSI's TR and web page, O'Donoghue et al. 2024 and arXiv 2511.20313 and 2604.21111 | the agent's downloads | CRA Art. 71(2): "However, Article 14 shall apply from 11 September 2026"; "binding" absent from the TR's text, and "not binding or mandatory" on BSI's page; "only 12% of SBOMs in CycloneDX 1.5"; "only 9 true positives" of 113; Mandl et al. compare against "an OSV-derived ground truth" |
+| 2026-10-22 | `gh api` of library#24's `record.yaml`; `git show` of the `nistir-7695` and `osv-schema` records at `a28a013` | GitHub; library | the ecma-427 record is the "1st edition"; `nistir-7695` is a stub and `osv-schema` summarized at `a28a013` |
+| 2026-10-22 | `gh issue view 38` (body) | GitHub | the playbook has seven phases, 0 to 6 (§12) |
+| 2026-10-22 | `curl` of `https://www.rfc-editor.org/rfc/rfc8520.txt` | RFC Editor | HTTP 200; sha256 71b16320…; "Manufacturer Usage Description Specification", Standards Track, March 2019 (named in §6 for RFC 9472's MUD file) |
+| 2026-10-22 | `curl` of the arXiv API for 2511.20313 and 2604.21111 | arXiv | HTTP 429 (rate limit); not used |
+| 2026-10-22 | `curl` of `https://arxiv.org/abs/2511.20313` and `https://arxiv.org/abs/2604.21111` | arXiv | Zhou, Dacier and Konstantinou, v2 of 2026-04-17, DOI 10.1145/3800506.3803490; Mandl, Mandl, Häusl and Auch, v1 of 2026-04-22, "23 pages with appendix" (for library#33) |
+| 2026-10-22 | `curl` of `https://arxiv.org/pdf/2511.20313v2` and `https://arxiv.org/pdf/2604.21111v1` | arXiv | sha256 b18cbc4f… (14 pages) and a0c93a1c… (23 pages), the same as the #152 agent's copies; the first names CODASPY '26, and its 113 vulnerabilities are "the union of findings from both Grype and Trivy" |
+| 2026-10-22 | `curl` of `https://www.rfc-editor.org/rfc/rfc9472.json` and `rfc8520.json` | RFC Editor | both Proposed Standard; neither updates, nor is updated by, another RFC; 18 and 60 pages; RFC 8520 has errata (for library#33) |
+| 2026-10-22 | `gh api` of the microsoft/sbom-tool, CycloneDX/cdxgen and protobom/protobom repositories, and of cdxgen's v13.4.0 release | GitHub | licences MIT, Apache-2.0 and Apache-2.0; cdxgen's repository is now cdxgen/cdxgen; v13.4.0 published 2026-10-14 (for library#33) |
+| 2026-10-22 | Table 7's `?` cells counted with `python3 -I` | `sources.md` | five: row 66 (Human review/audit) and row 81 (four axes), as the summary by axis counts; not six |

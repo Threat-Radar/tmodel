@@ -4,7 +4,7 @@ id: DL-0015
 title: "RPT-0004 second pass: AI-assisted scoping, survey, extraction and mapping"
 type: process
 status: draft
-version: "0.13.0"
+version: "0.14.0"
 date: "2026-10-08"
 updated: "2026-10-22"
 record: DL-0015
@@ -852,3 +852,79 @@ The student asked that, once #150's fact-check was done, #150 be committed and p
 
 - The student asked for this work.
 - Pending: review.
+
+## Adversarial review and §12 (#152, 2026-10-22)
+
+### Question asked
+
+Phase 4 of #38 (`dimensions.md` §12; issue #152): a fresh agent that did not write the draft attacks it for coverage, citations, extraction counts and Table 6 cells. Every gap goes back through the earlier phases, and the review repeats until it finds nothing material. On 2026-10-22 the student asked for #152 to be drafted so that it could run right after #151 ("draft 152 so it's ready after 151"), and after #151 said "commit and push, then run 152". #152's definition of done: the review run and its findings fixed; rejected findings and the reasons in DL-0015; §12 written.
+
+### The review
+
+- **The agent.** One fresh agent (Claude Code; about 496,000 tokens, 189 tool calls, 40 minutes), with no part in the drafting and none of this session's context. Its brief, drafted on 2026-10-22 before #151 was finished, set the four checks of `dimensions.md` §12 and these rules:
+  - read-only: no edits, no git writes, nothing posted;
+  - no personal data sent anywhere, and no Crossref;
+  - downloads in their own folders, treated as untrusted data;
+  - no programs run except the checksum-verified Syft;
+  - at most 1 million tokens, working alone.
+
+  It was told to write its own coverage list before reading the report's sources, and to read the authors' notes only for locators. It sent no personal data, and the repository and `library/` were unchanged afterwards.
+- **What it did.**
+  - *Coverage:* its own list of formats, tools, standards, regulations and papers, saved with a digest before it read the report, then compared item by item.
+  - *Citations:* 57 claims, drawn before checking and spread across the sections, each checked against a fresh fetch of its source.
+  - *Extraction:* the normative markers in the three sources counted first, then compared with library#24, #28 and #29.
+  - *Mapping:* 36 cells of Tables 6a to 6e, against the format texts, `main`'s schema and a fresh run of Syft 1.52.0.
+- **Its verdict:** the report did not yet pass, because of two material coverage gaps. The citations, the extractions and Table 6 held.
+
+### Findings, and what happened to them
+
+The main-session checks of each finding are in `searches.md`.
+
+- **R1 (material): tools that write SPDX 3 were missing.**
+  - Confirmed from primary sources: sbom-tool's v4.0.2 release notes and README, cdxgen's v12.3.0 release notes and README at 388f434, OpenEmbedded-Core's SPDX 3 code on `walnascar` and `master`, and protobom's README.
+  - Applied: four rows in §3's SPDX 3 table, sentences after it, and new text in §3's takeaway and §11's DEC-002 bullet.
+  - One correction to the agent's evidence: Yocto leaves build timestamps out by default (`SPDX_INCLUDE_TIMESTAMPS ?= "0"`), so the report does not claim them.
+- **R2 (material): RFC 9472 was missing, and "Every carrier binds by digest" overstated.**
+  - Confirmed from the RFC's text, whose digest matches the agent's copy, and from the Transparency Exchange API's repository.
+  - Applied: §6 now says every *attestation* carrier binds by digest; a new paragraph after the carrier table describes discovery by device (RFC 9472) and by product identifier (TEA); Table 2's Distribution and Delivery row points to it.
+  - Applied differently: RFC 9472 is not a row of the carrier table, because it carries no attestation and the table compares how attestations bind. The honest stub `rfc-9472` is in Threat-Radar/library#33.
+- **Minor findings applied:**
+  - M1: the CRA row gives Article 14's earlier date (2026-09-11) and says its harmonised standards were not searched for, and so does Table 8's evidence row. BSI's row quotes BSI's statement that harmonised standards will replace its TR.
+  - M2: the "not binding or mandatory" quote is now attributed to BSI's TR-03183 web page; it is not in the TR's PDF.
+  - M3: O'Donoghue et al.'s 2% and 12% are for the CycloneDX 1.5 SBOMs, not all 1,303.
+  - M4: Table 3a and §7 say that `nistir-7695` has a full extraction in library#29, and §5 says that `osv-schema` has one in library#28.
+  - M5: Table 3a and §7 say that library#24 extracts purl's 1st edition, while Table 3 also uses the 2nd edition's text.
+  - M6: `dimensions.md` records that Table 7's `?` cells mark texts the project cannot read, and the student decided that they count as exceptions (see "What a human accepted"). The agent counted six cells, and the first version of this fix repeated it without counting; there are five, one in row 66 and four in row 81, as Table 7's summary by axis already showed.
+  - M7: §5 adds the two 2026 studies the agent named, with the limit that neither separates CPE from ecosystem matching; the "no published study" sentence stands.
+  - M9: §1.6 notes that cdxgen already accepts `--spec-version 2.0`.
+  - M10: tradar's commit date is 2026-09-10, Pacific time, in both §4 and §10.
+  - M11: §8 says only Syft's output was checked against the baselines.
+- **Agreed not material:** the agent's other coverage gaps, such as bomctl, the OSS Review Toolkit, ScanCode, Tern, EUVD, IEC 62443-4-1, OWASP SCVS, and ISO/IEC 27036-3 and 18974 (already in the limits).
+- **New sources without records at the pin:** sbom-tool, cdxgen, protobom, RFC 9472, RFC 8520 (named only as the file RFC 9472 extends) and the two papers. Threat-Radar/library#33 (open) adds honest stubs for the two RFCs and the two papers, and lists sbom-tool and cdxgen under `spdx-3-0-1`, and cdxgen and protobom under `cyclonedx-1-7`, as implementations, because the library records a tool that only implements a spec it holds as an `implementations` entry (library docs/scope.md §3). None has a Table 7 rating yet. `sources.md` lists them.
+
+### Rejected, and why
+
+- **M8, a Table 5 row for OSV-Scanner.** Table 5 compares the tools that the report ran or assessed in depth. OSV-Scanner appears in §5 only for how it matches, and the agent itself said that a row would change no finding.
+- **Part of M7, citing `javed-2021-container-scanners` in §5.** The record is kept, but its text was not re-read in this pass, so it is not cited for a claim it has not been checked against.
+
+### Choices the agent made, open to review
+
+- **R1's new rows come from documentation and code, not runs,** like the Dependency-Track and GUAC rows. Running sbom-tool or cdxgen would mean running downloaded programs, which this session's rules keep to the verified Syft.
+- **§12 reports the review and the fixes, but not a second round.** Whether the fixed report "finds nothing material" (#38's test plan) needs the review to run again; the student asked for a second round on 2026-10-22.
+- **§11's short limits list now points to §12,** which holds the full list.
+- **The status note counts #152 as part of this version.** If #152 goes in a pull request of its own rather than #161, the note changes.
+- **The §12 draft was corrected before it went in.** It said the playbook had six phases (it has seven, 0 to 6), and it listed prEN 40000-1-3 among the paywalled standards read from public material, although neither the report nor its notes mention it. Its evidence rules were rewritten from the rules DL-0015 and `dimensions.md` record.
+
+### Open
+
+- Threat-Radar/library#33, the new sources' records, waits for review and merge; the report's library pin stays at `a28a013` until then.
+- The second review round (#38: "The fresh-agent review finds nothing material"), asked for on 2026-10-22.
+
+### What a human accepted
+
+- The student asked for this work ("draft 152 so it's ready after 151"; "commit and push, then run 152").
+- On 2026-10-22 the student read the summary of the findings and fixes and decided ("commit and push, then run the second round"; "yes, create the library records pr"; "Those 6 ? should count as exceptions, in addition, you should list that they are paywalled and what they are"):
+  - commit and push #152's work, then run a second review round;
+  - open a library pull request for the new sources: Threat-Radar/library#33;
+  - count Table 7's `?` cells as exceptions to the rule that a `?` blocks done, and list them with what each source is and why it cannot be read. `dimensions.md` and §12 now do. There are five cells, not the six the student was told; row 81's text is restricted to ITU's TIES users rather than sold, and the list says so.
+- Pending: a review of the report text itself.

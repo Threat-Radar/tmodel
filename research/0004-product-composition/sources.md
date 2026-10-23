@@ -4,7 +4,7 @@ id: RPT-0004-sources
 title: "RPT-0004 source log"
 type: research
 status: draft
-version: "0.4.2"
+version: "0.4.3"
 date: "2026-09-28"
 updated: "2026-10-22"
 record: RPT-0004
@@ -460,7 +460,7 @@ The calls most worth checking:
 - Rows 19 and 66 (ISO 24089 and ISO/IEC 19770-6) are lower bounds from public contents lists.
 - Rows 62 and 63 (IANA registries) take Human review 1 for their stated registration rules, while the TCG registries (rows 82, 84 and 86) state none and take 0.
 
-`?` cells: row 66 (Human review; paywalled, and no review topic in the public contents list) and row 81 (four axes; the ITU-T contribution is restricted to TIES users). `n/a` rows: 113 (a fact sheet summarizing row 93), 117 (status rows read from ISO Open Data, row 67), 118 (the GitHub API view of row 103) and 121 (test inputs).
+`?` cells: row 66 (Human review; paywalled, and no review topic in the public contents list) and row 81 (four axes; the ITU-T contribution is restricted to TIES users). These five cells count as exceptions to the rule that a `?` blocks done, because they mark texts the project cannot read (the student's decision, 2026-10-22; `dimensions.md`). `n/a` rows: 113 (a fact sheet summarizing row 93), 117 (status rows read from ISO Open Data, row 67), 118 (the GitHub API view of row 103) and 121 (test inputs).
 
 ## Table 9: library records after Phase 2 (2026-10-18)
 
@@ -608,3 +608,10 @@ All 86 went from no record to `stub`, owner Clovier, topic `product-composition`
 | CycloneDX 2.0-dev schemas; SPDX 3.1-RC1 | none until released | unreleased drafts |
 | Pilot and Table 6 tool outputs; Docker Hub responses | none | the team's own observations, digests in `searches.md` and mapping.md §11 |
 | log4j-core 2.14.1 jar; `alpine` container images | none | test inputs, not sources |
+| Microsoft sbom-tool (4.0.2 to 4.1.5), cdxgen (12.3.0 to 13.4.0), protobom 0.6.2 | `implementations` of `spdx-3-0-1` (sbom-tool, cdxgen) and of `cyclonedx-1-7` (cdxgen, protobom), in Threat-Radar/library#33 (open) | implementations of specs the library holds (library docs/scope.md §3); added after the adversarial review (#152), from release notes, READMEs and test files read on 2026-10-22, not run; no Table 7 ratings yet |
+| OpenEmbedded-Core's SPDX 3 code (`walnascar` and `master`, 2026-10-22) | under `spdx-3-0-1`, which lists Yocto as an implementation | as for cosign above |
+| RFC 9472 | `rfc-9472`, an honest stub in Threat-Radar/library#33 (open) | added after #152; not at the pinned `a28a013`; no Table 7 rating yet |
+| RFC 8520 | `rfc-8520`, an honest stub in Threat-Radar/library#33 (open) | named in §6 only as the MUD file that RFC 9472 extends |
+| Transparency Exchange API 0.1.0-beta.1 | none | a beta, not a release |
+| Zhou et al. 2026 (arXiv 2511.20313); Mandl et al. 2026 (arXiv 2604.21111) | `zhou-2025-sbom-reality-check` and `mandl-2026-ground-truth-vuln-detection`, honest stubs in Threat-Radar/library#33 (open) | added after #152; not at the pinned `a28a013`; no Table 7 ratings yet |
+| BSI's TR-03183 web page (English, fetched 2026-10-22) | beside `bsi-tr-03183-2` | the TR's own page, cited for two statements that are not in the TR |
