@@ -7,9 +7,9 @@ description: "Research report comparing interactive knowledge-graph visualizatio
 type: research
 category: knowledge-graph
 status: draft
-version: "0.1.0"
+version: "0.2.0"
 date: "2026-10-02"
-updated: "2026-10-05"
+updated: "2026-10-13"
 authors:
   - role: student
     id: kriishnaa-18
@@ -29,8 +29,8 @@ issue: 10
 
 > **Research report — evidence, not a decision.** This report does not select a
 > visualization library, application architecture, graph substrate, or interaction
-> model, and it does not accept or reopen any `DEC-*`. Findings remain provisional until
-> the research, prototype scan, and human review are complete.
+> model, and it does not accept or reopen any `DEC-*`. Findings are bounded by the
+> documented sources, prototype scan, and outstanding evidence gaps below.
 
 Research plan: [`dimensions.md`](dimensions.md). Search log:
 [`searches.md`](searches.md). Source log: [`sources.md`](sources.md).
@@ -39,12 +39,28 @@ Research plan: [`dimensions.md`](dimensions.md). Search log:
 
 This report evaluates knowledge-graph visualization and review approaches for Issue #10. The goal is to identify capabilities and tradeoffs that could support a tmodel review console where a human can explore threat-model relationships, inspect provenance and evidence, follow attack paths, distinguish proposed from accepted state, and review AI-assisted changes. The report compares visualization libraries, graph-analysis applications, and database-oriented graph tools using the same research dimensions and a limited prototype scan. It provides evidence for later design work but does not select a visualization library, application architecture, graph database, or accepted requirement. Related knowledge-graph, application-stack, schema, and implementation issues are outside this report except where existing repository work directly clarifies Issue #10.
 
+The accepted architecture already constrains this comparison. `ADR-0003` accepts
+`DEC-006` and prefers open WebGL candidates—Sigma.js, AntV G6, and Cytoscape.js—while
+leaving the concrete visualization-library choice open under `APP-0001` A-044.
+`APP-0001` also supplies the licensing, scale, layout, and review-state constraints,
+including A-044's exclusion of blocking copyleft or per-seat lock-in. Gephi therefore
+remains a reference precedent rather than an unrestricted implementation candidate.
+
+The central questions are whether one canonical graph can support task-specific views,
+whether the graphical layer needs a presentation model distinct from domain objects, and
+how “gravity” or importance can affect layout and attention without silently changing
+facts. Here, artificial intelligence (AI), software development kit (SDK), graphics
+processing unit (GPU), Web Graphics Library (WebGL), Graph Data Science (GDS), Graph
+Style Script (GSS), Structured Threat Information Expression (STIX), and cyber-threat
+intelligence (CTI) are defined on first use for the dense comparisons below.
+
 ## 2. Comparison table
 
 First-pass comparison from official documentation, repositories, release pages, and
 license pages. “Custom” means the capability could be built around the library; it does
 not mean tmodel has implemented or validated it. Scale statements are documented claims,
-not results of a tmodel prototype.
+not results of a tmodel prototype. The main table retains the original eight candidates;
+Section 2.1 additionally includes the OASIS STIX Visualizer as security-graph prior art.
 
 | Approach | Type / delivery | Interaction & editing | Layout / focus | Threat-path visualization | Performance / scale | Multiple views / presentation model | Human-review support | License | tmodel fit |
 |---|---|---|---|---|---|---|---|---|---|
@@ -57,12 +73,58 @@ not results of a tmodel prototype.
 | Kùzu Explorer (archived) | Browser UI for Kùzu, Vue/G6, Docker | Query and visualize; read-write queries can mutate DB | G6-based; detailed layout/focus evidence still incomplete | Query results may show paths; dedicated support unknown | No primary scale evidence found | Query editor + graph results; coordinated review views unknown | No native proposal/review evidence | MIT | Useful local precedent, but both Explorer and Kùzu are archived |
 | Memgraph Lab 3.x | Browser graph database workbench | Query, inspect, expand/collapse; direct edits via Cypher | Orb visualization; GSS maps properties to visual weight/style | Query + GSS can emphasize paths; dedicated workflow not found | Render limits configurable; no primary practical size benchmark found | Split-screen graph/query/GraphChat views | GraphChat has feedback, but graph-change acceptance workflow not documented | Separate Lab user license; DB/OEM/Enterprise terms vary | Relevant product/AI precedent; database and license coupling need review |
 
+### 2.1 Issue #37 design-question comparison
+
+The table below separates capabilities that are easy to conflate. “Multiple views” asks
+whether views can coordinate over stable objects, not merely whether several panels exist.
+“Graphical object model” asks how presentation objects and reserved fields relate to the
+domain graph. “Weight / gravity” distinguishes stored meaning from layout mechanics,
+visual emphasis, and ranking or filtering.
+
+| Approach | Multiple views over shared data | Graphical object model | Weight / “gravity” mechanisms |
+|---|---|---|---|
+| Cytoscape.js | One graph instance can be filtered or restyled and coordinated with application-owned tables/details; saved views and cross-view synchronization are custom | Native nodes, edges, compounds, classes, scratch/view state and data-driven style; application must keep canonical semantics separate | Domain scores can map to style; layouts expose algorithm-specific weights/forces; algorithms and selectors can rank/filter; no single gravity concept |
+| D3 | Shared application state can drive graph, table, matrix or timeline presentations; D3 supplies primitives, not saved views | DOM/Canvas marks and bound data are fully application-defined; groups, badges, overlays and semantics are custom | Force link strength/distance and many-body forces affect layout; scales affect prominence; ranking/filtering is application code |
+| Sigma.js + Graphology | Graphology can be shared with Sigma and other application views; subgraphs/filters and persistence require surrounding code | Graphology stores arbitrary attributes; Sigma reducers and render programs supply visual state. Sigma’s reserved visual `type` collided with the fixture’s semantic `type`, requiring `domainType` plus visual `type` | Graphology metrics include weighted degree and centralities; ForceAtlas2 supplies layout forces; reducers map scores to size/color or hide elements |
+| yFiles for HTML | SDK primitives support filtering, alternate components and persistence, but tmodel would define coordinated task views and ownership | Rich graph, group, port, label, style, tag and overlay concepts; domain-to-presentation mapping remains application design | Layouts and graph algorithms accept tool-specific weights/constraints; styles can expose importance; filtering/folding controls focus |
+| Neo4j Bloom | Scenes, Card list and Perspectives are saved Neo4j-bound views; GDS results can remain Scene-local or be written to database properties | Categories, rules, icons and Scene state form a presentation layer over Neo4j nodes/relationships | GDS scores can drive rule-based node size/edge thickness; search, filters and Perspectives rank or restrict attention; physics settings are product-managed |
+| Gephi | Overview, Data Laboratory, Preview, filters and timeline share a workspace; this is analyst state rather than a tmodel view contract | Graph attributes, appearance mappings, filters and workspace/layout state are distinct but stored in Gephi’s project model | Edge weights and centrality metrics can drive layouts, ranking and size/color; ForceAtlas2 gravity is a layout parameter, not semantic importance |
+| Kùzu Explorer | Query editor and graph results share database results; saved/coordinated review views were not established | G6-backed rendering is documented at stack level, but Explorer’s exposed style/group/view model is insufficiently documented | Cypher can calculate/filter scores; primary evidence did not establish user-facing layout weights or gravity controls |
+| Memgraph Lab | Query, graph and GraphChat can share a split workspace; durable saved-view semantics remain product-specific | GSS maps database properties to labels, sizes, widths, colors and images; graph facts remain in Memgraph unless Cypher mutates them | Stored scores can map to GSS prominence; Cypher ranks/filters; Orb layout mechanics are not documented as a semantic weighting model |
+| OASIS STIX Visualizer | Graph, legend, selected/linked-object details and optional timeline operate over one loaded STIX bundle | STIX Domain Objects become nodes and STIX Relationship Objects become edges; the viewer adds layout, selection, legend and timeline state | Type toggles and the timeline filter attention; no semantic importance or review weighting model is documented |
+
+**Multiple views.** The same canonical tmodel graph can feasibly support graph, table,
+matrix, timeline, detail and diff views if each view uses stable domain identifiers and
+view actions are classified as presentation-only or domain-changing. Libraries enable
+this architecture but do not supply it; Bloom, Gephi, Memgraph Lab and the STIX viewer
+are useful product precedents whose saved state is coupled to their own data/workspace
+models. Filtering a view, deriving a subgraph and saving a view must remain distinct.
+
+**Graphical object model.** The evidence strongly supports separating presentation state
+from canonical domain data. Presentation state may contain positions, viewport, visual
+node/edge type, groups, labels, badges, overlays, selection, filters and review emphasis
+while referencing canonical objects by stable ID.
+The Sigma prototype is the clearest failure case: passing semantic `type: "asset"`
+directly into the renderer selected a nonexistent render program. An adapter preserving
+`domainType: "asset"` while assigning visual `type: "circle"` fixed the integration
+without changing domain facts. Other tools use different reserved fields and abstractions,
+so the boundary must be explicit rather than inferred from a library schema.
+
+**Weighting / gravity.** “Gravity” is not one portable feature. Tmodel can store a named,
+evidenced semantic score; derive centrality or risk rankings; map either to visual size,
+width, opacity, labels or filtering; and pass a deliberately chosen derivative into a
+layout algorithm. Node mass, repulsion, edge strength, desired length and central gravity
+are algorithm-specific presentation inputs and must not be written back as semantic
+importance. The feasible cross-tool contract is therefore named domain measures plus
+separate view/layout mappings, not a universal `gravity` property.
+
 ## 3. Per-approach / tool sections
 
-The eight candidates below are the set named or implied by Issue #10. No additional
-candidate was added in this pass. Fit statements synthesize documented capability and,
-for Cytoscape.js and Sigma.js, the bounded hands-on scan. They are assessments for later
-review, not recommendations.
+The eight original candidates below are the set named or implied by Issue #10. Version
+0.2.0 additionally adds the OASIS STIX Visualizer as relevant security-graph prior art,
+not as a general implementation candidate. Fit statements synthesize documented
+capability and, for Cytoscape.js and Sigma.js, the bounded hands-on scan. They are
+assessments for later review, not recommendations.
 
 ### Cytoscape.js
 
@@ -326,6 +388,20 @@ in this pass with documented LLM-assisted querying and feedback. That does not e
 AI-proposed graph editing. Database coupling, licensing, and review-state integration need
 further evidence or a hands-on check.
 
+### OASIS STIX Visualizer — security-graph prior art
+
+The OASIS Open CTI project’s browser visualizer loads STIX 2.x JSON from pasted content
+or a URL, maps STIX Domain Objects to nodes and STIX Relationship Objects to edges, and
+coordinates the graph with a type legend, selected/linked-object details and optional
+timeline filtering. It is relevant prior art because it keeps canonical security-object
+semantics in the input while adding selection, layout, visibility and time-window state
+for inspection.
+
+The visualizer is not evidence for general-purpose editing, saved collaborative views,
+semantic importance, proposal verdicts or audit workflow. Its useful lesson for tmodel is
+narrower: a security graph can expose type filters, temporal focus and object details over
+the same loaded bundle without making those presentation controls domain facts.
+
 ## 4. Console requirements
 
 The following are provisional, evidence-backed needs for an Issue #10 review console.
@@ -516,48 +592,90 @@ These paths are options for later evaluation, not a ranking or architecture deci
 | Commercial SDK (yFiles for HTML) | Very broad documented editing, layout, analysis, styling, accessibility-related, and persistence primitives may reduce custom graph work | Still requires tmodel domain/presentation boundaries and review workflow; procurement, package access, deployment, and vendor dependency add constraints | Commercial development and deployment terms require scenario-specific legal/procurement review | Common-fixture hands-on evaluation, price/distribution fit, accessible review behavior, and comparison of implementation effort |
 | Product/reference-only (Bloom, Gephi, Kùzu Explorer, Memgraph Lab) | Concrete precedents for exploration, graph/table or query split views, saved perspectives, filtering, styling, and analyst workflows | These are not interchangeable embedded SDKs: Bloom/Memgraph are database-coupled, Gephi is desktop-oriented, and Kùzu tooling is archived | Product, database, OEM, desktop, and open-source terms differ; reuse cannot be inferred from UI precedent | Validate which interaction patterns users value; clarify licenses only if embedding/integration is proposed; do not treat product features as library APIs |
 
-## 11. Gaps / limitations
+## 11. Adversarial completeness review
 
-- Accessibility evidence is incomplete. Keyboard, focus order, screen readers, non-color
-  cues, reduced motion, and accessible coordinated views were not tested.
-- No candidate supplies the complete AI proposal, human verdict, audit, conflict, and
-  rollback workflow natively; the proposed workflow remains an application-level model.
-- Commercial hands-on access was limited. yFiles required a customer-center evaluation
-  package, and Bloom/Memgraph deployment and redistribution terms remain scenario-specific.
-- The 300-node/600-edge runs were qualitative sanity checks, not formal performance,
-  memory, layout-quality, or interaction-latency benchmarks.
-- Kùzu Explorer and the Kùzu repository are archived, while the available primary evidence
-  for Explorer's interaction details is thin.
-- Bloom and Memgraph Lab are coupled to their graph-database products; their interfaces are
-  useful precedents but do not establish fit as tmodel visualization components.
-- Multi-view synchronization, saved-view ownership, matrix usefulness, temporal behavior,
-  diff semantics, persistence, and round trips between views remain unanswered.
-- D3, yFiles, Bloom, Gephi, Kùzu Explorer, and Memgraph Lab were not exercised with the
-  common fixture. Live updates, incremental loading, compounds/groups, collaboration,
-  undo/redo, concurrent review, and representative tmodel data were not tested.
-- Source records have not yet been added to the repository library, and vendor scale claims
-  have not been independently verified.
+The completeness pass compared the fixed set with independent current tool families and
+challenged claims that could be mistaken for verified behavior. The OASIS STIX Visualizer
+was identified as useful security-graph prior art and was added to the comparison. The
+pass did not find evidence that another candidate would overturn the development paths
+above.
 
-## 12. Next review gates
+| Considered approach | Why it matters | Disposition |
+|---|---|---|
+| React Flow | Strong node-editor interaction, subflows, save/restore examples and documented keyboard/screen-reader support | Record as a serious follow-up for an editing-first React console. Not added to the fixed comparison because its value is UI/editor composition, not graph analytics or an existing review workflow. |
+| vis-network | Mature browser network renderer with clustering, node mass/value scaling and explicit physics “gravity” controls | Coverage evidence for why gravity must be decomposed. Not added because it does not materially change the library-versus-application conclusion. |
+| Graphology ecosystem | Supplies Sigma’s graph model, subgraph operators, weighted metrics, centralities, layouts and paths | Incorporated into the Sigma assessment rather than treated as a separate renderer candidate. |
+| AntV G6 | Broad graph SDK with combos, states, layouts and configurable force parameters | One of ADR-0003's preferred open WebGL candidates alongside Sigma.js and Cytoscape.js. Retained for the open A-044 library choice rather than added to this fixed comparison; its evidence does not change the current architectural findings. |
+| Ogma / Linkurious | Commercial WebGL SDK and investigation product with rich styling, layouts and an accessibility example | Commercial comparator worth procurement-led follow-up. Not added because no common-fixture or licensing comparison was performed and the current report already has commercial SDK and product precedents. |
+| OASIS STIX Visualizer | Direct security-object graph, legend, details and timeline over STIX 2.x | Added as relevant security-graph prior art; not presented as a general editor or review-console SDK. |
 
-1. **Source completeness:** verify every material capability, scale, lifecycle, version,
-   and license statement against current primary evidence; resolve the Kùzu/Memgraph gaps
-   or mark them permanently unknown.
-2. **Library-record completion:** create or update the required `library/` records, verify
-   canonical URLs and revisions, and replace the pending `library_commit` value when this
-   report is prepared for review.
-3. **Adversarial fact-check:** have a reviewer challenge vendor claims, capability-to-fit
-   inferences, prototype scope, negative claims, and the distinction between a library that
-   enables a behavior and a product that supplies it.
-4. **Requirements realism check:** validate the candidate console needs and workflow against
-   representative Issue #10 review tasks, user expectations, accessibility needs, and an
-   agreed data/response scale. Identify which needs are truly required versus desirable.
-5. **Targeted evidence closure:** decide whether remaining questions justify small follow-up
-   checks for accessibility, multi-view synchronization, production editing, commercial
-   SDK access, or representative-scale behavior. Do not broaden this into other issues.
-6. **Sponsor/human review:** review the comparison, candidate paths, unresolved risks, and
-   evidence quality; record requested corrections and whether the research deliverable is
-   complete.
+The pass found no basis for upgrading vendor scale claims into benchmarks. Gephi’s
+100,000-node/1,000,000-edge statement remains a project claim; Bloom’s 10-million-element
+note remains a Perspective scan warning, not display capacity; Sigma’s “thousands” remains
+project scope. The 300-node/600-edge checks remain single-run responsiveness observations.
 
-Passing these gates may make the research ready to inform later work. It does not select a
-candidate, accept an architecture, or accept any `DEC-*`.
+Review and accessibility claims are also deliberately narrow. Direct database editing,
+GraphChat feedback, renderer selection events and undo stacks do not constitute a human
+proposal-verdict workflow. React Flow documents keyboard and screen-reader primitives;
+yFiles documents keyboard input; Ogma publishes an accessibility example. None of that
+establishes an accessible tmodel console without end-to-end testing. Commercial SDKs and
+database products are compared as capability precedents, not scored as if they had the
+same delivery model as open-source rendering libraries.
+
+## 12. Gap analysis and routing
+
+These gaps are evidence inputs for existing requirements and implementation issues.
+`DEC-006` remains accepted through `ADR-0003`; routing a finding does not reopen it or
+create an architecture requirement.
+
+| Finding / gap | Evidence | Implication for tmodel | Routed constraint / requirement / issue |
+|---|---|---|---|
+| Multiple views need a shared identity and state contract | Libraries permit coordinated application views; Bloom Scenes/Perspectives, Gephi workspaces, Memgraph split views and the STIX viewer are product-specific precedents | Define how graph, table, matrix, timeline, detail and diff views share selection and edits while keeping per-user/session state separate | APP-0001 A-009–A-011, A-025; R-014; Issue #59 (T-202–T-204) |
+| Presentation objects must not overwrite domain semantics | Cytoscape/Sigma prototype kept positions and filters outside the fixture; Sigma semantic `type` collided with visual `type` | Define an adapter/presentation model for visual type, position, viewport, grouping, labels, overlays, badges and saved-view metadata keyed by stable domain IDs | ADR-0003 visualization-adapter boundary; APP-0001 A-025; R-014; Issue #59 (T-204) |
+| “Gravity” has four distinct meanings | D3/ForceAtlas-style forces, Graphology metrics, Gephi weights, Bloom GDS styling and GSS mappings affect different layers | Name semantic measures explicitly and keep layout force, visual prominence and ranking/filtering as derived mappings | APP-0001 A-020, A-024, A-026; R-014; Issue #59 (T-204) |
+| No candidate supplies AI proposal review end to end | Libraries expose events/mutation; Bloom edits DB state; GraphChat feedback is not graph-change acceptance | Specify proposed-versus-accepted state, diff, verdicts, evidence, validation, audit and rollback outside the renderer | APP-0001 A-007, A-045; R-018; Issue #59 (T-202–T-204) |
+| Accessibility evidence is incomplete | Only partial official primitives/examples were found; no candidate passed an end-to-end tmodel accessibility test | Require keyboard, focus, non-color state, screen-reader alternative and reduced-motion validation in any prototype | Issue #59 (T-204 validation) |
+| Performance evidence does not establish a target | Vendor/project claims are not comparable; local 300/600 runs are not benchmarks | Establish representative graph shapes and measurable interaction, layout and loading budgets before selection | APP-0001 A-023, A-027, A-041; Issue #59 (T-204) |
+| Commercial and product precedents have integration boundaries | yFiles/Ogma require commercial review; Bloom/Memgraph are database-coupled; Gephi is desktop; Kùzu is archived | Evaluate delivery, procurement, embedding and maintenance separately from feature breadth | ADR-0003; APP-0001 A-044; Issue #59 (T-204) |
+| Matrix, timeline and diff behavior remain weakly tested | STIX and Gephi provide timeline precedents; no common fixture exercised coordinated non-graph views | Prototype only if these views are required by concrete review tasks; do not infer synchronization from panel availability | APP-0001 A-009, A-010, A-025; R-014; Issue #59 (T-202–T-204) |
+| Library provenance is incomplete | Source records are prepared in library PR #23 but are not yet on library `main` | Merge library PR #23 before citing a durable `library@<commit>` | Issue #37 library/FX-1 workflow; library PR #23 |
+
+## 13. Outstanding evidence gaps
+
+- Accessibility has not been tested end to end.
+- Coordinated graph, table, matrix, timeline, detail, and diff views have not been prototyped together.
+- The 300-node/600-edge runs are sanity checks, not performance benchmarks.
+- D3, Neo4j Bloom, Gephi, Kùzu Explorer, and Memgraph Lab were not run against the
+  common fixture; yFiles remains documentation-only because a local evaluation package
+  was not used.
+- The RPT-0006 research prototype did not validate live updates, incremental loading,
+  compound/group behavior, collaboration, undo/redo, or concurrent review; this is a
+  research-evidence boundary, not a claim about later implementation work.
+- Kùzu Explorer interaction evidence and Memgraph Lab practical graph-size evidence remain limited.
+- Commercial licensing and deployment terms require scenario-specific review if those candidates advance.
+- Standalone library ingestion remains separate from this report and awaits library PR #23.
+
+## 14. Conclusion
+
+The evidence supports a console built around one canonical graph with several coordinated
+task views, but it does not select a toolkit or storage architecture. Graph libraries such
+as Cytoscape.js and Sigma/Graphology provide strong rendering and analysis primitives;
+D3 offers maximum presentation freedom at higher implementation cost; yFiles offers broad
+commercial SDK capability; and Bloom, Gephi, Kùzu Explorer, Memgraph Lab and the OASIS
+STIX Visualizer are useful workflow precedents rather than interchangeable components.
+
+Three conclusions answer Issue #37 directly. First, multiple graph, table, matrix,
+timeline, detail and diff views are feasible when they share stable domain identifiers
+and explicitly separate view actions from domain edits. Second, the graphical layer needs
+its own presentation model; the Sigma `type` collision demonstrates the cost of passing
+domain fields directly into a renderer. Third, “gravity” must be decomposed into semantic
+importance, layout force, visual prominence, and ranking/filtering. Tmodel can support all
+four through named measures and derived mappings, but no candidate provides a portable,
+semantically safe gravity feature.
+
+The decisive remaining work is not another broad tool survey. It is validation against
+representative review tasks: coordinated views, accessible proposal diffs and verdicts,
+stable layout under change, and measurable performance at an agreed graph size. Those
+questions are routed to the applicable `APP-0001` requirements, R-014/R-018, and Issue
+#59 (T-202–T-204). `DEC-006` remains accepted through `ADR-0003`; this report neither
+reopens it nor makes a new architecture decision.
