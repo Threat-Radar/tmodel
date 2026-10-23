@@ -4,9 +4,9 @@ id: DL-0006
 title: "RPT-0009 SAGAI — AI-assisted source gathering and paper summaries"
 type: process
 status: draft
-version: "0.2.0"
+version: "0.3.0"
 date: "2026-10-01"
-updated: "2026-10-21"
+updated: "2026-10-22"
 record: DL-0006
 ---
 
@@ -92,3 +92,47 @@ After a meeting with the sponsor on 2026-10-21, the student relayed the directio
 - **"Chat logs, OneDrive files, SharePoint content, Teams messages"** as the exposed data. A search-engine summary of secondary articles gave this list, not the paper. The model uses the paper's "emails and files" and ATLAS's "emails, files, or project details".
 - **`https://atlas.mitre.org/studies/AML.CS0059` as evidence.** It returns HTTP 404 to a direct request. The model cites the pinned ATLAS data file instead.
 - **RPT-0005 G2 as an absolute.** G2 says no released format has an ordered attack path, but ATLAS case studies order their steps (`leads-to`). ATLAS was outside RPT-0005's scope, so this is passed to RPT-0005 as an exception (gap AI-2) rather than counted as an error there.
+
+## Report 0.3.0: requirements mapped to AI threats (2026-10-22)
+
+### Question asked
+
+With library#32 holding the FX-1 extractions of ETSI EN 304 223 and CISA AI-in-OT, the student asked for the RPT-0009 rewrite: build the report around which AI attack each requirement defends against (the sponsor's direction, previous entry), and test it on the EchoLeak model.
+
+### What was produced
+
+`report.md` 0.3.0, with `dimensions.md` 0.2.0 (new dimensions 7 and 8), `sources.md` 0.3.0 and `example-models/README.md` 0.1.1.
+- **The front:** an abstract, Table 1 (the documents compared) and Table 2 (entries per NIST AI 100-2 E2025 class, with how many each document states itself).
+- **§1 and §2:** a takeaway for §1, and a class-per-paper table for §2. §2's paper summaries are unchanged.
+- **§3 (ETSI) and §4 (CISA) rewritten from the library records:**
+  - phases, stakeholders, testability and the threats each names;
+  - the provisions closest to prompt injection;
+  - the output-side controls CISA adds.
+  - §4's principle summaries and its 0.2.0 takeaway are kept, with a line on what is new.
+- **§5, a worked example.** Table 3 places each EchoLeak stage against the nearest provisions and says how far each reaches.
+- **§6 to §10:** related guidance, a synthesis, a gap analysis (G1 to G12, routed), the open questions for the sponsor, and method and limits.
+- **`sources.md`:** record ids for the five SAGAI papers, the workshop, ETSI and CISA, which had all said "not yet a record". NIST AI 100-2 E2025 and ATLAS 2026.09 are now pinned with digests, and the EchoLeak sources are added.
+
+### How it was checked
+
+- Every count in Tables 1 and 2 and in §3 and §4 was computed from the library#32 records. Table 2's entry counts match the extraction session's own table.
+- The claim that neither document mentions retrieval, rendering, links or images, content security policies or exfiltration was checked by searching both source PDFs. Each names prompt injection exactly once: ETSI in its Introduction (p. 5), CISA in Table 2.
+- Every provision quoted in §3 to §5 was read in `requirements.yaml`.
+- `bin/validate-archdoc`: this change's files pass. The one error is `main`'s `project/SOW-0001`.
+
+### Choices the agent made, open to review
+
+- **Table 3's "how far it reaches" column** is the agent's reading, made by matching ids at ATLAS's parent-technique level and then reading the provision text.
+- **§2's paper summaries are kept as accepted on 2026-10-01**, with only a class table added.
+- **§4's takeaway is kept and marked as accepted in 0.2.0**, with one new sentence.
+
+### What a human accepted
+
+- The student asked for the rewrite. The student's review is for clarity; a technical review is pending (@Clovier, the AI-lane review partner, is requested).
+
+### What was rejected, and why
+
+- **"4 principles in 12 subsections"** (0.2.0, §4). The record shows 13 numbered subsections, 1.1 to 4.2.
+- **"None of the 15 entries mapped to either prompt-injection class"** (draft). It counted entries mapped to both classes twice; there are 10 distinct entries.
+- **"ETSI names indirect prompt injection … (§1)"** (draft). The record locates it in the Introduction, p. 5.
+- **"Those are the four bypasses EchoLeak chained"** (draft). Only three of the four are on the output channel; the fourth, the injection classifier, is input-side.

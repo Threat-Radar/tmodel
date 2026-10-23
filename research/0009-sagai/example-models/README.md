@@ -4,9 +4,9 @@ id: RPT-0009-example-models
 title: "RPT-0009 example models: AI attacks against the proposed schema"
 type: research
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 date: "2026-10-21"
-updated: "2026-10-21"
+updated: "2026-10-22"
 record: RPT-0009
 ---
 
@@ -49,4 +49,4 @@ What worked without change: ATLAS mitigations fit `Mitigation.catalog_ref` (AML.
 ## Next
 
 - A second model from a different attack class, such as poisoning or model theft, so that AI-1 to AI-7 are tested on more than one attack.
-- The mapping from the ETSI EN 304 223 and CISA AI-in-OT requirements to these threats (RPT-0009), which will cite the mitigations here.
+- RPT-0009 §5 now places each stage of em-01 against the ETSI EN 304 223 and CISA AI-in-OT provisions, and §8 routes these gaps as G1 to G7.
