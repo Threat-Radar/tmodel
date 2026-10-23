@@ -4,7 +4,7 @@ id: RPT-0004-searches
 title: "RPT-0004 search log"
 type: research
 status: draft
-version: "0.3.4"
+version: "0.3.5"
 date: "2026-09-28"
 updated: "2026-10-22"
 record: RPT-0004
@@ -375,7 +375,7 @@ Runs in the main session for [mapping.md](mapping.md), on macOS arm64 (times UTC
 
 ## Report 0.2.0 (2026-10-22)
 
-Runs in the main session for `report.md` 0.2.0 (#147: Tables 1 and 2, §1.4 to §1.6; #148: §2 to §4; #149: §5 to §7), on macOS arm64 (times UTC). The fact-check agent's own runs are summarized in DL-0015.
+Runs in the main session for `report.md` 0.2.0 (#147: Tables 1 and 2, §1.4 to §1.6; #148: §2 to §4; #149: §5 to §7; #150: §8 to §10), on macOS arm64 (times UTC). The fact-check agent's own runs are summarized in DL-0015.
 
 | date | command | input | result |
 |---|---|---|---|
@@ -405,3 +405,6 @@ Runs in the main session for `report.md` 0.2.0 (#147: Tables 1 and 2, §1.4 to �
 | 2026-10-22 | `gh pr view 25` and `gh pr view 24` in Threat-Radar/library | GitHub | #25 (`nvd-cve-api-2-0`) merged 2026-10-21 (`1516366e`), after the report's pin; #24 (`ecma-427`) still open |
 | 2026-10-22 | `python3 -I` on the #149 fact-check agent's Syft 1.52.0 outputs for `alpine:3.24.2` and `alpine@sha256:294b683c…` | fact-check runs | CycloneDX root `version`: `3.24.2`, with no image digest in the file (a layer digest appears in file locations), or the index digest when named by it; SPDX 2.3 root: `versionInfo` the name given, and the platform manifest digest (`260479a1…`) as checksum and in the `pkg:oci` purl in both runs; Syft JSON: `manifestDigest` `260479a1…`, `repoDigests` the index digest, `tags` empty |
 | 2026-10-22 | `curl` of Docker Hub's registry API (anonymous pull token) for the digests of four `library/alpine` tags | Docker Hub | `latest`, `3.24` and `3` now name `sha256:71e9b7ba…`; `3.24.2` still names `sha256:294b683c…` (all four named `294b683c…` on 2026-10-08) |
+| 2026-10-22 | `ls` and `grep` of `status:` in `library/records/*/*` at `a28a013`, for the records §8 and §9 cite | library | all exist: `ntia-sbom-minimum-elements`, `cisa-framing-software-component-transparency` (summarized); `cisa-2026-sbom-minimum`, `bsi-tr-03183-2`, `cert-in-2025-aibom-guidelines`, `g7-sbom-for-ai-2026`, `lf-2024-spdx3-aibom` (stubs); `eu-cra-2024-2847`, `fda-premarket-cybersecurity-guidance`, `omb-m-26-05` (distilled). `g7-sbom-for-ai-2026`'s summary: seven element clusters; its element tables not read |
+| 2026-10-22 | `gh pr view 130` | GitHub | #130 (DL-0024, ADR-0011) a draft, not merged, so §10's tables keep the core ADR-0010 accepted |
+| 2026-10-22 | `git merge-base --is-ancestor f9a9a54 HEAD`; `grep` of `assertion:cve-cwe-instance` in `spec/vectors/mvp-*.yaml`; `gh pr view 128` | tmodel and GitHub | #128 (merged 2026-10-22T00:18:50Z) is on this branch; all four `mvp-*` vectors have the CVE-to-CWE Assertion, so Table 6's finding 7 was updated |

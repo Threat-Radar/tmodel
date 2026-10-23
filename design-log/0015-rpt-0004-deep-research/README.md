@@ -4,7 +4,7 @@ id: DL-0015
 title: "RPT-0004 second pass: AI-assisted scoping, survey, extraction and mapping"
 type: process
 status: draft
-version: "0.11.0"
+version: "0.12.0"
 date: "2026-10-08"
 updated: "2026-10-22"
 record: DL-0015
@@ -666,4 +666,93 @@ After #148 was committed and pushed at the student's word ("go ahead and commit 
 ### What a human accepted
 
 - The student asked for this work, and for the two corrections.
+- Pending: review.
+
+## Report 0.2.0: §8 to §10, Table 6 (#150, 2026-10-22)
+
+### Question asked
+
+After #149 was committed and pushed at the student's word, the student said "continue with #150": §8 (minimum elements and policy baselines) and §9 (other bill types) from `fanout-formats-baselines.md`, and §10, which moves Table 6 in from `mapping.md`. #150's definition of done: §8 to §10 written, with Table 6 in the report; claims cite library record ids; sections fact-checked.
+
+### What was produced
+
+- **`report.md`, §8:**
+  - a table of the eight baselines: what each asks for, how binding it is, and which formats it names;
+  - what changed from NTIA 2021 to CISA 2026;
+  - a table of hash, producer, depth and completeness requirements;
+  - how our tools' output compares (pointing to Table 2 for the details).
+- **`report.md`, §9:**
+  - a table of what each other bill type adds (CycloneDX's SaaSBOM, CBOM, ML-BOM, OBOM and MBOM; SPDX's AI, Dataset, Build and Lite profiles; CERT-In's other bills);
+  - whether tmodel's Component covers each kind;
+  - two cautions about the AI-BOM sources.
+- **`report.md`, §10:**
+  - Table 6 (6a to 6f), its findings and its candidate rules, copied word for word from `mapping.md`, apart from the one correction the #149 fact-check found (Syft's `tags` and `repoDigests`);
+  - a new introduction, and a short table of what pull request #130 (DL-0024, ADR-0011, not merged) would change in Table 6;
+  - a takeaway.
+- **`report.md`, elsewhere:**
+  - the status note lists #150;
+  - the §11 note no longer says §8 to §10 are to come;
+  - thirteen references that pointed at `mapping.md`, or at §8 and §10 "to be written", now point at §8 and §10.
+- **`mapping.md` 0.1.2:** a note that Table 6 is now maintained in the report, and the correction marked where it occurs.
+- **`dimensions.md` 0.7.7:** a status line under Table 6.
+- **`searches.md` 0.3.5:** the checks for #150.
+
+### Method
+
+- §8 and §9 are condensed from Phase 1's notes, with this log's earlier corrections applied (for example, Syft does write SPDX 3.0.1, so BSI's format rule is within its reach).
+- Their quotes were checked against the baseline texts the #147 fact-check agent downloaded.
+- Every cited record id was checked at `a28a013` (`searches.md`).
+- §10 was assembled by a script from `mapping.md` (sections 1 to 10), so its tables, findings and rules are unchanged apart from the marked correction. Only these were adapted: headings, internal section references, and "this version" wording.
+- One fact-check agent (Claude Code) checks the new text against primary sources; see "Fact-check" below.
+
+### Choices the agent made, open to review
+
+- **Table 6 is copied into §10, not cut from `mapping.md`.** `mapping.md` stays as the record of how Table 6 was made (its §11: runs, reference files, the three-agent fact-check), with a note that the report's copy is the maintained one.
+- **§10 maps to the core ADR-0010 accepted, not to #130's additions,** because #130 is not merged; a separate table lists what #130 would change. If #130 merges before 0.2.0 is final, Table 6's gap rows need updating.
+- **§8 does not repeat Table 2's element-by-element crosswalk;** it compares the baselines and points to Table 2.
+- **§9 adds a CERT-In row** (QBOM, CBOM, AIBOM) and keeps the G7 AI guidance, whose element tables were not read, as unread.
+
+### Fact-check
+
+- **The agent.** One fact-check agent (Claude Code; about 502,000 tokens, 169 tool calls, 29 minutes) checked the #150 parts of the status note, §8 and §9 with their tables, §10's new text, the copy of Table 6 against `mapping.md`, the 13 repointed cross-references, and the notes in `mapping.md` and `dimensions.md`. It worked from primary sources:
+  - the baseline PDFs, with digests matching the notes, and the CRA from the EU Publications Office;
+  - the CycloneDX 1.7.2 schema and 2.0 draft, the SPDX 3.0.1 model, and the CycloneDX capability pages;
+  - the G7 document (BSI's copy, the record's digest), CISA's bulletin and the Linux Foundation guide;
+  - #130's branch, tmodel's `main` and tradar's `main`.
+
+  It sent no email or other personal data, and it did not use Crossref.
+- **Copy check.** The diff of §10 against `mapping.md` found only the intended differences: headings, internal section references, the "This version" wording, the one correction, and the new introduction, lead-in, table and takeaway.
+- **What it confirmed.**
+  - Every §8 date, status and quote; every §9 row; and every row of "What #130 would change".
+  - The 13 cross-references.
+  - The Table 6 counts, reproduced from the #148 runs.
+  - The 12 cited record ids at `a28a013`.
+- **Its 15 findings: all applied, except one point of the last, deferred to #151.**
+  - **Errors:**
+    - Finding 7 and Table 6d's Weakness row were stale at `main`: #128, merged on 2026-10-21, added a reviewed CVE-to-CWE Assertion to all four `mvp-*` vectors. Finding 7 now says what was true at 9f56628 and what #128 changed.
+    - The status note said §11 was the only part still reading as 0.1.2, but §1.1 to §1.3 and the VEX table keep 0.1.2's text too.
+  - **Citations:**
+    - §9's G7 quote came from CISA's bulletin, not the G7 document it cites; it now quotes the document (§1).
+    - §9 said the proposal models builds as PROV-O Activities, which the proposal does not say; it is now our reading, with the proposal's actual words.
+  - **Imprecise or overstated:**
+    - FDA's depth, now quoted, which Table 2's Coverage row also gains.
+    - The Linux Foundation guide's actual error, which is in the cardinalities.
+    - §8's "converge" and "BSI asks the most", both now marked as our reading and narrowed to what the texts say.
+    - #130's status (ADR-0011 is marked accepted on its branch, but not merged).
+    - CISA 2026's Appendix B locator, and SWID's removal being part of a change CISA calls major.
+    - The CISA 2024 maturity levels.
+    - What #130 leaves open.
+    - The bills' fifth kind (CERT-In's hardware).
+  - **Minor:** an ambiguous "It re-ran"; the plan's "word for word"; the 0.1.1 note's pointer to Table 6.
+  - **Deferred to #151:** the report's front matter still lists DEC-002 among its open decisions, although ADR-0007 accepted it. #151 rewrites the decisions part, so it fixes this there.
+- **Main-session spot checks** agreed with the agent; see `searches.md`. They covered #128's merge, and its Assertion in all four vectors.
+- **Not checked:**
+  - The 2026-10-18 re-run outputs, which were not kept.
+  - Whether a CRA implementing act appeared after 2026-10-08.
+  - The G7 element tables.
+  - Table 6e's format cells beyond type names.
+
+### What a human accepted
+
+- The student asked for this work, and for it to be committed and pushed once the fact-check's fixes were in.
 - Pending: review.

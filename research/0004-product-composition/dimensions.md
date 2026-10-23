@@ -4,7 +4,7 @@ id: RPT-0004-dimensions
 title: "RPT-0004 dimensions: the search axes"
 type: research
 status: draft
-version: "0.7.6"
+version: "0.7.7"
 date: "2026-09-28"
 updated: "2026-10-22"
 record: RPT-0004
@@ -131,6 +131,8 @@ Rows: Syft, Grype, Trivy, Dependency-Track, GUAC, deps.dev, and any tool the cov
 *Status 2026-10-22: Tables 4 and 5 are filled in `report.md` 0.2.0 (#148). Table 4 is split into 4a (bills and guidance) and 4b (identity and attestation); it has no ISO/IEC 19770-6 column, because no copy could be read, and its last row keeps device-reported evidence and supplier-signed references together, with the cells saying which. Table 5 pins the versions run on 2026-10-08; the releases since then change no format support.*
 
 ### Table 6. Composition → model-input mapping (§10, the deliverable for #15 and #17)
+
+*Status 2026-10-22: Table 6 moved into `report.md` 0.2.0 §10 (#150), word for word apart from headings, internal section references and one correction (Syft's `tags` and `repoDigests`), with a new introduction and takeaway and a short table of what pull request #130 (DL-0024, with ADR-0011 marked accepted on its branch; not merged) would change. `mapping.md` keeps how it was made. §8 and §9 are written in the same change.*
 
 *Status 2026-10-18: filled in [mapping.md](mapping.md) 0.1.0, against the core object model ADR-0010 accepted on 2026-10-12 (DEC-001a) rather than the draft named below; Phase 5 moves it into `report.md` as §10.*
 
