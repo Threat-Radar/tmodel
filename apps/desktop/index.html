@@ -8,13 +8,35 @@
     <script type="module" src="/src/main.ts" defer></script>
   </head>
   <body>
-    <main class="container">
-      <h1>tmodel</h1>
-      <p class="subtitle">threat modeling — walking skeleton</p>
-      <div id="engine-status" class="status status-pending" role="status" aria-live="polite">
-        checking local engine…
-      </div>
-      <p id="engine-hint" class="hint"></p>
+    <main class="app-shell">
+      <header class="app-header">
+        <div class="app-header-copy">
+          <p class="eyebrow">Threat Radar</p>
+          <h1>Knowledge graph</h1>
+          <p class="subtitle">Explore model objects and their directed relationships.</p>
+          <div id="data-source-notice" class="data-source-notice" role="note"></div>
+        </div>
+        <div class="engine-panel"><div id="engine-status" class="status status-pending" role="status" aria-live="polite">checking local engine…</div><p id="engine-hint" class="hint"></p></div>
+      </header>
+      <section class="graph-workspace" aria-label="Knowledge graph workspace">
+        <aside class="panel node-panel">
+          <div class="panel-heading"><div><p class="eyebrow">Loaded objects</p><h2>Nodes</h2></div><span id="node-count" class="count-badge">0</span></div>
+          <ul id="node-list" class="node-list"></ul>
+        </aside>
+        <section class="graph-panel" aria-label="Interactive graph">
+          <div class="graph-toolbar"><div><p class="eyebrow">Interactive projection</p><h2>Model neighborhood</h2></div><div class="graph-toolbar-status"><span id="graph-loading" class="graph-loading" role="status" aria-live="polite" hidden></span><p>Scroll to zoom · drag background to pan · drag nodes to position</p></div></div>
+          <div class="path-toolbar"><label for="attack-path-select">Highlight attack path</label><select id="attack-path-select"><option value="">Choose an attack path…</option></select><button id="clear-attack-path" type="button" disabled>Clear highlight</button><span id="attack-path-status" class="path-status" role="status" aria-live="polite"></span></div>
+          <div id="graph-canvas" class="graph-canvas"></div>
+          <ul id="type-legend" class="type-legend" aria-label="Node type legend"></ul>
+        </section>
+        <aside class="panel inspector-panel">
+          <p class="eyebrow">Selected object</p><h2 id="inspector-label">Select a node</h2>
+          <span id="inspector-type" class="type-chip"></span><code id="inspector-id" class="stable-id"></code>
+          <button id="expand-node" class="expand-button" type="button" disabled>Expand neighborhood</button>
+          <section class="inspector-section"><h3>Properties</h3><dl id="property-list" class="property-list"></dl></section>
+          <section class="inspector-section"><h3>Connected relationships</h3><p class="direction-help">→ outgoing · ← incoming</p><ul id="relationship-list" class="relationship-list"></ul></section>
+        </aside>
+      </section>
     </main>
   </body>
 </html>
