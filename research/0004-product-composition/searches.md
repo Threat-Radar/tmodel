@@ -4,7 +4,7 @@ id: RPT-0004-searches
 title: "RPT-0004 search log"
 type: research
 status: draft
-version: "0.3.3"
+version: "0.3.4"
 date: "2026-09-28"
 updated: "2026-10-22"
 record: RPT-0004
@@ -375,7 +375,7 @@ Runs in the main session for [mapping.md](mapping.md), on macOS arm64 (times UTC
 
 ## Report 0.2.0 (2026-10-22)
 
-Runs in the main session for `report.md` 0.2.0 (#147: Tables 1 and 2, §1.4 to §1.6; #148: §2 to §4), on macOS arm64 (times UTC). The fact-check agent's own runs are summarized in DL-0015.
+Runs in the main session for `report.md` 0.2.0 (#147: Tables 1 and 2, §1.4 to §1.6; #148: §2 to §4; #149: §5 to §7), on macOS arm64 (times UTC). The fact-check agent's own runs are summarized in DL-0015.
 
 | date | command | input | result |
 |---|---|---|---|
@@ -395,3 +395,13 @@ Runs in the main session for `report.md` 0.2.0 (#147: Tables 1 and 2, §1.4 to �
 | 2026-10-22 | `python3 -I` on Syft 1.54.1's SPDX 2.3 files for tradar and log4j; Syft source `originator_supplier.go` | fact-check runs; Syft at `v1.54.1` | tradar suppliers: 9 (`GitHub` 6, `anthropics` 2, `softprops` 1, the Action owners); log4j: 1 ("The Apache Software Foundation"), which Syft takes from the jar manifest's `Specification-Vendor` or `Implementation-Vendor` |
 | 2026-10-22 | `grep` and `sed` in tradar at `26d9c76` | tradar | `convert_sbom_to_packages` is called from `tests/test_sbom_cve_integration.py` and from `analyze_container_with_sbom`, which has no caller; `_parse_format` (`core/sbom_operations.py`) also offers `syft-json` and `table`, and `SBOMFormat` adds `text`; `extract_component_metadata` (`utils/sbom_utils.py:353`) reads `syft:package:*` and `syft:location:*:path` properties |
 | 2026-10-22 | `gh api repos/nsacyber/HIRS/readme`; `gh api repos/nsacyber/HIRS/releases/tags/v3.2.0`; `gh api repos/nsacyber/paccor/readme` | GitHub | HIRS README: "Updates for the Platform Certificate Version 2.0 are in the current development cycle"; no "r15" in the README or the v3.2.0 notes; PACCOR README: supports "v2.1, v1.1, and v1.0 workflows", and by default generates a v1.1 certificate |
+| 2026-10-22 | `gh api repos/<repo>/releases/latest` for package-url/purl-spec, package-url/vers-spec, in-toto/attestation, moby/buildkit, sigstore/cosign, actions/attest, opencontainers/image-spec, opencontainers/distribution-spec, CVEProject/cve-schema, ossf/osv-schema, google/osv-scanner, anchore/vunnel and DependencyTrack/dependency-track; tags of sigstore/protobuf-specs, swhid/specification and omnibor/spec; `main` of the last two | GitHub | unchanged since 2026-10-08: purl-spec v1.1.0, vers-spec v1.2.1, in-toto attestation v1.2.0, image-spec v1.1.1, distribution-spec v1.1.1, CVE schema v5.2.0, actions/attest v4.2.2, Dependency-Track 5.2.0, protobuf-specs v0.5.2, SWHID v1.2 (`main` `e1c6c7b4`, 2026-09-19), OmniBOR v0.1 (`main` `daf090f6`, 2025-11-17). Newer: BuildKit v0.34.1 and cosign v3.1.4 (both 2026-10-20), OSV schema v1.9.2 (2026-10-13), OSV-Scanner v2.7.0 (2026-10-12), vunnel v0.65.1 (2026-10-21) |
+| 2026-10-22 | release notes of OSV schema v1.9.2, OSV-Scanner v2.7.0, BuildKit v0.34.1, cosign v3.1.4 and vunnel v0.65.1 | GitHub | OSV schema: documentation only (guidance on ids); OSV-Scanner: purls in its JSON output "when available", and purl namespaces compared case-insensitively; BuildKit: "no functional changes"; cosign: fixes and a new `bundle create-from-container` command; vunnel: a dependency fix |
+| 2026-10-22 | `curl` of the IETF datatracker API for draft-ietf-suit-manifest; `curl -L` of nvd.nist.gov/general/news | IETF; NVD | SUIT manifest still revision 37 (2026-09-30), not an RFC; NVD's latest news item still 2026-08-26 |
+| 2026-10-22 | `python3 -I` search of the extracted texts of NTIA 2021, NTIA's 2021 framing, CISA 2024, CISA 2026, BSI TR-03183-2, CERT-In 2.0, FDA and the CRA, as downloaded by the #147 fact-check agent, for identifier schemes | the baselines of Table 2 | Table 3b's "Named by policy": NTIA 2021 gives CPE, SWID and PURL as examples; the 2021 framing CPE, PURL, UUID and SWHID; CISA 2024 CPE, PURL, SWID, UUID, SWHID and OmniBOR; CISA 2026 "should use ... such as" CPE and PURL and "may also include" UUIDs, organization-specific ids, commit hashes, OmniBOR (citing v0.1) and SWHID (citing v1.2); BSI "such as" CPE or purl; CERT-In a `pkg:supplier/...` syntax; FDA and the CRA none of their own |
+| 2026-10-22 | `grep` of `identifiers` in `spec/schema/tmodel-object-model.linkml.yaml`; of "identity-by-hash" and build provenance in the ARCH-0001 proposal; of the contract sentence in ADR-0001 | tmodel `main` `040865b` | `identifiers` on Product, ProductInstance and Component, an "Additive DRAFT slot", scheme not pinned; the proposal (`0.2.0-proposed.15`) keeps "identity-by-hash" (§3b) and puts build provenance post-MVP (§7) |
+| 2026-10-22 | `grep` of the firmware SBOM specification's text, as downloaded by the #148 fact-check agent | OSFW specification 0.10 | §6.1.1 uses `pkg:dca533ab-…` and `pkg:dca533ab-…@15.35.2039` as VEX product ids |
+| 2026-10-22 | `ls` and `grep` of `status:` in `library/records/*/*` at `a28a013`, for the ids §5 to §7 cite | library | 56 records exist (50 stubs, 4 summarized, `in-toto-attestation-v1` queued, `slsa-1-2` distilled); `ecma-427` (Threat-Radar/library#24) and `nvd-cve-api-2-0` (Threat-Radar/library#25) are not at the pin |
+| 2026-10-22 | `gh pr view 25` and `gh pr view 24` in Threat-Radar/library | GitHub | #25 (`nvd-cve-api-2-0`) merged 2026-10-21 (`1516366e`), after the report's pin; #24 (`ecma-427`) still open |
+| 2026-10-22 | `python3 -I` on the #149 fact-check agent's Syft 1.52.0 outputs for `alpine:3.24.2` and `alpine@sha256:294b683c…` | fact-check runs | CycloneDX root `version`: `3.24.2`, with no image digest in the file (a layer digest appears in file locations), or the index digest when named by it; SPDX 2.3 root: `versionInfo` the name given, and the platform manifest digest (`260479a1…`) as checksum and in the `pkg:oci` purl in both runs; Syft JSON: `manifestDigest` `260479a1…`, `repoDigests` the index digest, `tags` empty |
+| 2026-10-22 | `curl` of Docker Hub's registry API (anonymous pull token) for the digests of four `library/alpine` tags | Docker Hub | `latest`, `3.24` and `3` now name `sha256:71e9b7ba…`; `3.24.2` still names `sha256:294b683c…` (all four named `294b683c…` on 2026-10-08) |

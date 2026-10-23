@@ -4,7 +4,7 @@ id: DL-0015
 title: "RPT-0004 second pass: AI-assisted scoping, survey, extraction and mapping"
 type: process
 status: draft
-version: "0.10.0"
+version: "0.11.0"
 date: "2026-10-08"
 updated: "2026-10-22"
 record: DL-0015
@@ -569,4 +569,101 @@ After #147, the student said to continue #38; the next sub-issue is #148: §2 wi
 ### What a human accepted
 
 - The student asked for this work.
+- Pending: review.
+
+## Report 0.2.0: §5 to §7, Table 3 (#149, 2026-10-22)
+
+### Question asked
+
+After #148 was committed and pushed at the student's word ("go ahead and commit + push"), the student said "continue with #149": §5 (the bridge) from `fanout-bridge.md`, and §6 (build identity and the radar → tmodel input contract) and §7 with Table 3 (identifier schemes) from `fanout-identity.md`. #149's definition of done: Table 3 filled, including the five failure modes `dimensions.md` lists; claims cite library record ids; sections fact-checked. During the work the student also asked for two corrections offered after #148 ("sure apply these fix"): a correction note in `fanout-tools.md` for its two GUAC errors, and a fix for the unsupported "1.1 r15" for HIRS.
+
+### What was produced
+
+- **`report.md`, §5:**
+  - what each vulnerability source needs from an SBOM (a table of nine sources);
+  - NVD's narrowed enrichment, and how seldom its CPE data agrees with the CNA's;
+  - each scanner's route, and our runs explained (including the Anchore override behind 0.1.2's open point);
+  - what each scanner records about a match;
+  - version ranges and ordering, published evidence on disagreement, and where CWEs come from.
+- **`report.md`, §6:**
+  - retitled to the plan's "Build identity and the radar → tmodel input contract";
+  - kept and updated from 0.1.2: the document versus the product, what pins the product, and records of the build;
+  - new: one image's five digests, and how the way an image is named changes which digest an SBOM keeps;
+  - new: candidate keys per model type, against the `identifiers` slot, and six options for "the same instance";
+  - new: a table of attestation carriers, and what the contract would have to ask radar for;
+  - new: firmware and vehicles, including the RXSWIN, which §2 deferred to here.
+- **`report.md`, §7 and Table 3:** new. Table 3 is split into 3a (what each scheme names, who mints it) and 3b (where it is carried, who keys on it, what policy says, how it fails), with the five failure modes in bold. Prose follows on assigned and computed ids, who keys on each, the failure patterns, and a stable key for a shared graph.
+- **`report.md`, elsewhere:** the 0.1.2 synthesis renumbered from §7 to §11, with a note; the status note lists #149; §2's forward reference to §6 updated.
+- **`dimensions.md` 0.7.6:** a status line under Table 3.
+- **`searches.md` 0.3.4:** the checks of 2026-10-22 for #149.
+- **`fanout-tools.md` 0.1.1** (the student's request): correction notes for the two GUAC errors the #148 fact-check found, marked where they occur, with the original text kept.
+- **`sources.md` 0.4.2** (the student's request): the two Table 9 notes that said HIRS implements profile "1.1 r15" now say it validates version 1.1 certificates, with 2.0 in development and not 2.1. The same wording in this log's Phase 2 entry ("The HIRS entry was reworded", 2026-10-18) is superseded. The library record `tcg-platform-certificate-profile-2-1` needs the same fix in its own repository; it is waiting for a branch there.
+
+### Method
+
+- The text is condensed from Phase 1's notes, applying the second agent's re-check of `fanout-identity.md` (its section 9: 3 claims rejected as stated, 17 qualified), and re-pointed at the accepted core through `mapping.md`.
+- Table 3b's "Named by policy" was read from the baseline texts the #147 fact-check agent downloaded.
+- Checked on 2026-10-22, as logged in `searches.md`:
+  - the releases of the specifications and tools §5 to §7 pin;
+  - the SUIT draft's state and NVD's news page;
+  - the schema's `identifiers` slot, and the proposal's §3b and §7;
+  - every cited record id at `a28a013`.
+- One fact-check agent (Claude Code) checks the new text against primary sources; see "Fact-check" below.
+
+### Choices the agent made, open to review
+
+- **Table 3 is split in two** (3a and 3b), as Table 4 is, because its 12 columns do not fit one table.
+- **vers is a companion row,** marked as a range syntax, not an identifier, because dimension 7 asks about purl ranges. **UUIDs have no row,** because they appear only as SWID tag ids and in policy text.
+- **§6 states `mapping.md`'s rules (R-ID-1, R-MERGE-1, R-HW-1 and others) as candidates,** with their ids, rather than restating Table 6, which §10 brings in for #150.
+- **The 0.1.2 synthesis moved to §11 now,** with its old text, so that section numbers match the plan; §8 to §10 are still to come (#150).
+- **`ecma-427` and `nvd-cve-api-2-0` are cited although their records are not at `a28a013`** (Threat-Radar/library#24, open, and #25, merged on 2026-10-21, after the pin); the text says so where it cites them.
+- **Newer patch releases** (BuildKit 0.34.1, cosign 3.1.4, OSV schema 1.9.2, OSV-Scanner 2.7.0) are named from their release notes, not re-read in full; none contradicts a claim in §5 to §7.
+
+### Fact-check
+
+- **The agent.** One fact-check agent (Claude Code; about 618,000 tokens, 259 tool calls, 77 minutes) checked the #149 part of the status note, §5 to §7 with Tables 3a and 3b, the §11 note, the changed §2 sentence, and the two corrections in `fanout-tools.md` and `sources.md`. Its primary sources, fetched itself:
+  - the CVE List of 2026-10-08 (digests matching the notes) and the CVE schema; NVD's API (re-run on 2026-10-22) and documentation;
+  - the source and documentation of Grype, Trivy, Dependency-Track 5, OSV-Scanner and osv.dev; the GitHub advisory, Alpine, Debian, Ubuntu and Red Hat data; the version-ordering specifications;
+  - the eight papers (digests matching); Docker Hub; the in-toto, SLSA, Sigstore, OCI, BuildKit, cosign and GitHub attest texts; UN R156 and the SUIT draft;
+  - the purl, vers, CPE, RFC 9393, OmniBOR and SWHID texts; the baselines; and the tmodel files the report quotes.
+
+  It ran Syft 1.52.0 (release checksum verified) on the alpine image named by tag and by index digest. It sent no email or other personal data, and it did not use Crossref.
+- **What it confirmed.**
+  - Every CVE List count but one (below), and the eight papers' numbers.
+  - The R156 and SUIT quotes and paragraph numbers.
+  - The five image digests, the pilot's attestations, Syft's naming behaviour and the attestation carriers.
+  - The version-ordering rules.
+  - All 56 cited record ids at `a28a013`, all five failure modes, and every "Named by policy" cell but one (below).
+  - Both corrections in `fanout-tools.md` and `sources.md`.
+  - Its NVD re-run of 2026-10-22 (31.1% with configurations, 393 of 1,620 identical, 27 placeholders), which fits the notes' 2026-10-08 figures.
+- **Its 20 findings: 19 applied in the report, 1 recorded for #150.**
+  - **Errors:**
+    - Threat-Radar/library#25 (`nvd-cve-api-2-0`) merged on 2026-10-21; the report and this entry said it was open.
+    - CISA's ADP adds a CWE where the CNA gave none, but 1,320 records carry both, so "only" was wrong.
+    - §6 said the SBOMs keep one digest and carry the index digest when an image is named by tag. Syft 1.52.0 runs show otherwise: named by tag, the CycloneDX file holds no image digest and the SPDX file the platform manifest digest; the index digest reaches either only when the image is named by it.
+  - **Imprecise or overstated:**
+    - 26.8% counts only CPE applicability statements (35.7% with the older `cpes` list), and 144,340, not 144,341.
+    - BSI's §8.2 mapping and NTIA's 2021 framing do name SWID tag ids, and the framing also names SWHID.
+    - NVD "prioritizes" these CVEs; it does not "enrich only" them.
+    - The RXSWIN "only when" is our reading.
+    - Grype also keeps CPE matching on for its `jvm` matcher.
+    - CVE-2025-60876 also has a Siemens supplier container.
+    - The SWHID defect's dates were imprecise.
+    - The quoted in-toto sentence is the SPDX 2 predicate's.
+    - OCI says SHA-256 "SHOULD" be used and "MUST" be supported.
+  - **Wording:** a source for the `NVD-CWE-noinfo` quote; "We found no published study"; "(our reading)" on "most records give an SBOM nothing to match"; the firmware specification means its GUID as the component name; NVD passes on the ADPs' `affected` data too.
+- **Recorded for #150, not applied here.** `mapping.md` (Table 6a and rule R-ID-1) says Syft's `tags` and `repoDigests` hold the index digest and the tags only when an image is named by tag. In every run `tags` was empty, and `repoDigests` also holds the index digest when the image is named by it. §10 brings `mapping.md` into the report in #150, so it is corrected there.
+- **Added from a main-session check:** by 2026-10-22, `latest`, `3.24` and `3` named a newer image index (`71e9b7ba…`), which §6 now uses as its example of tags moving.
+- **Main-session spot checks** agreed with the agent; see `searches.md`. They covered library #25's state, the agent's Syft outputs for the tag and digest names, and the live tags on Docker Hub.
+- **Not checked:**
+  - The exact 2026-10-08 NVD figures (NVD's data has changed since) and the 2026-09-28 Grype run (its database was never recorded).
+  - The 2026-10-18 CWE source counts in `mapping.md` (Grype was not re-run).
+  - Whether re-attesting an image changes its index digest (marked as our reading).
+  - cosign's default storage, beyond its release notes.
+  - The paywalled ISO texts.
+  - The digest of NTIA's 2021 framing, which the notes do not record.
+
+### What a human accepted
+
+- The student asked for this work, and for the two corrections.
 - Pending: review.

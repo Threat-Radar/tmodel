@@ -4,7 +4,7 @@ id: RPT-0004-dimensions
 title: "RPT-0004 dimensions: the search axes"
 type: research
 status: draft
-version: "0.7.5"
+version: "0.7.6"
 date: "2026-09-28"
 updated: "2026-10-22"
 record: RPT-0004
@@ -100,6 +100,8 @@ Version 0.4.0 added the "Named by policy" column and the five failure modes list
 | Standard status | Ecma, ISO, IETF or NIST status |
 | Named by policy | which baselines and rules in §8 name the scheme, and how strongly: required, recommended ("should"), allowed ("may"), or only as an example. For example, CISA 2026 says the Component Identifiers field "should use common software identifiers, such as" CPE and purl, and "may also include" UUIDs, organization-specific identifiers, commit hashes, OmniBOR and SWHID |
 | Library record | id and status |
+
+*Status 2026-10-22: Table 3 is filled in `report.md` 0.2.0 (#149), split into 3a (what each scheme names, who mints it) and 3b (where it is carried, who keys on it, what policy says, how it fails). The five failure modes above are in bold in 3b. vers is a companion row, marked as a range syntax; UUIDs have no row. The 0.1.2 synthesis moved from §7 to §11 in the same change.*
 
 ### Table 4. Hardware and firmware coverage (§2)
 
