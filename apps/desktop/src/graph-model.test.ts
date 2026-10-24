@@ -5,9 +5,10 @@ import {
   mergeGraph,
   relationshipsForNode,
   selectNode,
+  toCytoscapeEdgeElement,
   toCytoscapeElements,
 } from "./graph-model";
-import type { GraphResponse } from "./graph-types";
+import type { GraphEdge, GraphResponse } from "./graph-types";
 
 const response: GraphResponse = {
   source: "development-fixture",
@@ -145,5 +146,77 @@ describe("development fixture provider", () => {
       attack_feasibility: "medium",
       derived_review_state: expect.any(String),
     });
+  });
+});
+
+describe("relationship review metadata", () => {
+  function assertedEdge(properties: GraphEdge["properties"]): GraphEdge {
+    return {
+      id: "relationship:attack-path:imds-pivot|realizes_threat|threat-instance:imds-pivot",
+      source: "attack-path:imds-pivot",
+      target: "threat-instance:imds-pivot",
+      relationshipType: "realizes_threat",
+      properties,
+    };
+  }
+
+  it.each([
+    ["accepted", "accepted", "accepted", "realizes_threat"],
+    ["proposed", null, "proposed", "realizes_threat · proposed"],
+    ["proposed", "changes_requested", "changes_requested", "realizes_threat · changes requested"],
+    ["proposed", "rejected", "rejected", "realizes_threat · rejected"],
+    ["accepted", "rejected", "rejected", "realizes_threat · rejected"],
+    ["triaged", null, "unknown", "realizes_threat · unknown status"],
+  ] as const)(
+    "carries assertion %s / review %s into Cytoscape edge data as %s",
+    (assertionStatus, reviewStatus, reviewState, label) => {
+      const properties = {
+        assertion_ids: ["assertion:a"],
+        assertion_status: assertionStatus,
+        ...(reviewStatus ? { review_ids: ["review:a"], review_status: reviewStatus } : {}),
+      };
+      const element = toCytoscapeEdgeElement(assertedEdge(properties));
+      expect(element.data).toMatchObject({
+        id: "relationship:attack-path:imds-pivot|realizes_threat|threat-instance:imds-pivot",
+        source: "attack-path:imds-pivot",
+        target: "threat-instance:imds-pivot",
+        relationshipType: "realizes_threat",
+        reviewState,
+        assertionStatus,
+        reviewStatus: reviewStatus ?? null,
+        label,
+      });
+    },
+  );
+
+  it("keeps structural relationships free of review styling data", () => {
+    const element = toCytoscapeEdgeElement(response.edges[0]);
+    expect(element.data).toEqual({
+      id: "edge:a-b",
+      source: "component:a",
+      target: "component:b",
+      relationshipType: "uses_component",
+      label: "uses_component",
+    });
+  });
+
+  it("exposes each relationship's own properties to the inspector", () => {
+    const properties = {
+      assertion_ids: ["assertion:ai-imds-pivot-realizes"],
+      assertion_status: "proposed",
+      review_ids: ["review:ai-triage"],
+      review_status: "changes_requested",
+    };
+    const state = createGraphState({
+      source: "engine",
+      nodes: [
+        { id: "attack-path:imds-pivot", domainType: "AttackPath", label: "Path", properties: {} },
+        { id: "threat-instance:imds-pivot", domainType: "ThreatInstance", label: "Threat", properties: {} },
+      ],
+      edges: [assertedEdge(properties)],
+    });
+
+    expect(relationshipsForNode(state, "attack-path:imds-pivot")[0].properties).toEqual(properties);
+    expect(relationshipsForNode(state, "threat-instance:imds-pivot")[0].properties).toEqual(properties);
   });
 });

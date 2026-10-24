@@ -171,7 +171,9 @@ def project_model_graph(doc: Mapping[str, Any]) -> ModelGraph:
     edges: dict[tuple[str, str, str], ModelEdge] = {}
     for _domain_type, raw in records:
         source = raw["id"]
-        for slot in RELATIONSHIP_SLOTS:
+        # A frozenset iterates in hash order, which changes per process; sort it
+        # so the `/graph` edge order is the same on every engine start.
+        for slot in sorted(RELATIONSHIP_SLOTS):
             if slot not in raw:
                 continue
             for target in _references(source, slot, raw[slot]):

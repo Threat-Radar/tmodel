@@ -14,7 +14,7 @@
           <p class="eyebrow">Threat Radar</p>
           <h1>Knowledge graph</h1>
           <p class="subtitle">Explore model objects and their directed relationships.</p>
-          <div id="data-source-notice" class="data-source-notice" role="note"></div>
+          <div class="source-row"><div id="data-source-notice" class="data-source-notice" role="note"></div><button id="graph-retry" class="retry-button" type="button" hidden>Retry graph</button></div>
         </div>
         <div class="engine-panel"><div id="engine-status" class="status status-pending" role="status" aria-live="polite">checking local engine…</div><p id="engine-hint" class="hint"></p></div>
       </header>
@@ -27,7 +27,7 @@
           <div class="graph-toolbar"><div><p class="eyebrow">Interactive projection</p><h2>Model neighborhood</h2></div><div class="graph-toolbar-status"><span id="graph-loading" class="graph-loading" role="status" aria-live="polite" hidden></span><p>Scroll to zoom · drag background to pan · drag nodes to position</p></div></div>
           <div class="path-toolbar"><label for="attack-path-select">Highlight attack path</label><select id="attack-path-select"><option value="">Choose an attack path…</option></select><button id="clear-attack-path" type="button" disabled>Clear highlight</button><span id="attack-path-status" class="path-status" role="status" aria-live="polite"></span></div>
           <div id="graph-canvas" class="graph-canvas"></div>
-          <ul id="type-legend" class="type-legend" aria-label="Node type legend"></ul>
+          <div class="graph-legend"><ul id="type-legend" class="type-legend" aria-label="Node type legend"></ul><ul id="relationship-legend" class="type-legend relationship-legend" aria-label="Relationship review-status legend"></ul></div>
         </section>
         <aside class="panel inspector-panel">
           <p class="eyebrow">Selected object</p><h2 id="inspector-label">Select a node</h2>

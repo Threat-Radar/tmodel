@@ -1,5 +1,6 @@
 import type { GraphState } from "./graph-model";
 import type { AttackPathResponse, AttackPathResult } from "./graph-types";
+import { reviewStatePresentation, type ReviewStatePresentation } from "./review-status";
 
 export interface AttackPathOption {
   id: string;
@@ -38,15 +39,15 @@ function attackPathOptionLabel(
   index: number,
 ): string {
   const goal = titleCaseIdentifier(shortId(response.goal));
-  const assertion = path.review.assertion_status
-    ? titleCaseIdentifier(path.review.assertion_status)
-    : "Not Reviewed";
+  const status = attackPathReviewState(path.review);
   if (response.paths.length > 1) {
-    return `${goal} — Alternative ${index + 1} (${assertion})`;
+    return `${goal} — Alternative ${index + 1} (${status.label})`;
   }
-  return path.review.reviewed
-    ? `${goal} — Reviewed (${assertion})`
-    : `${goal} — ${assertion}`;
+  // "Reviewed" is reserved for an accepted path. The engine's `reviewed` flag
+  // follows the Assertion alone, so a negative Review must not inherit it.
+  return status.kind === "accepted"
+    ? `${goal} — Reviewed (${status.label})`
+    : `${goal} — ${status.label}`;
 }
 
 export function attackPathOptionsForResponses(
@@ -86,8 +87,13 @@ export function attackPathPresentation(
   };
 }
 
+/** The shared review presentation for one path's PR #132 `review` record. */
+export function attackPathReviewState(review: AttackPathResult["review"]): ReviewStatePresentation {
+  return reviewStatePresentation(review.assertion_status, review.review_status);
+}
+
 export function attackPathReviewLabel(review: AttackPathResult["review"]): string {
-  const parts = [review.reviewed ? "reviewed" : "not reviewed"];
+  const parts = [attackPathReviewState(review).description];
   if (review.assertion_status) parts.push(`assertion: ${humanizeStatus(review.assertion_status)}`);
   if (review.review_status) parts.push(`review: ${humanizeStatus(review.review_status)}`);
   return parts.join(" · ");

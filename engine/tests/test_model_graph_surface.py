@@ -1,6 +1,9 @@
 """Read-only general graph surface for Issue #59."""
 
 import json
+import os
+import subprocess
+import sys
 import threading
 import urllib.error
 import urllib.parse
@@ -79,6 +82,57 @@ def test_reviewed_assertion_is_projected_as_semantic_edge():
         "review_ids": ["review:cve-cwe"],
         "review_status": "accepted",
     }
+
+
+def test_proposed_assertion_keeps_its_review_verdict_on_the_edge():
+    result = core.model_graph(MVP01.name)
+    edge_id = "relationship:attack-path:imds-pivot|realizes_threat|threat-instance:imds-pivot"
+    edge = next(edge for edge in result["edges"] if edge["id"] == edge_id)
+    assert edge["properties"] == {
+        "assertion_ids": ["assertion:ai-imds-pivot-realizes"],
+        "assertion_status": "proposed",
+        "confidence": "low",
+        "review_ids": ["review:ai-triage"],
+        "review_status": "changes_requested",
+    }
+
+
+def test_relationship_slots_are_projected_in_sorted_order():
+    graph = core.project_model_graph(
+        {
+            "components": [
+                {"id": "component:a", "uses_component": "component:c", "depends_on": "component:b"},
+                {"id": "component:b"},
+                {"id": "component:c", "composed_of": ["component:b"], "affects": "component:a"},
+            ]
+        }
+    )
+    assert [edge.id for edge in graph.edges] == [
+        "relationship:component:a|depends_on|component:b",
+        "relationship:component:a|uses_component|component:c",
+        "relationship:component:c|affects|component:a",
+        "relationship:component:c|composed_of|component:b",
+    ]
+
+
+def test_graph_edge_order_does_not_depend_on_string_hash_seed():
+    script = (
+        "import json; from engine import core; "
+        f"print(json.dumps([edge['id'] for edge in core.model_graph({MVP01.name!r})['edges']]))"
+    )
+    engine_root = Path(__file__).resolve().parents[1]
+    orders = set()
+    for seed in ("1", "2", "3"):
+        output = subprocess.run(
+            [sys.executable, "-c", script],
+            cwd=engine_root,
+            env={**os.environ, "PYTHONHASHSEED": seed},
+            capture_output=True,
+            check=True,
+            text=True,
+        ).stdout
+        orders.add(output)
+    assert len(orders) == 1
 
 
 def test_api_accepts_basename_and_approved_absolute_path(engine_url):

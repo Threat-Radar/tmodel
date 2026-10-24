@@ -84,7 +84,16 @@ export class EngineGraphDataProvider implements GraphDataProvider {
   }
 
   private fullGraph(): Promise<EngineGraphResponse> {
-    this.graphPromise ??= this.request<EngineGraphResponse>("/graph", { file: this.modelFile });
+    // Concurrent callers share one in-flight request. Only a successful
+    // response stays cached: a failed one is evicted so a later call can
+    // retry once the engine is reachable.
+    if (!this.graphPromise) {
+      const pending = this.request<EngineGraphResponse>("/graph", { file: this.modelFile });
+      this.graphPromise = pending;
+      pending.catch(() => {
+        if (this.graphPromise === pending) this.graphPromise = undefined;
+      });
+    }
     return this.graphPromise;
   }
 

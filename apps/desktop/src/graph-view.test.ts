@@ -1,5 +1,7 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import type { AttackPathOption } from "./attack-path";
+import { EngineGraphDataProvider, type EngineGraphResponse } from "./engine-graph-provider";
+import { MAX_GRAPH_START_ATTEMPTS, connectGraphStartup } from "./graph-startup";
 import {
   ProgressiveGraphLoader,
   type GraphLoadBatch,
@@ -336,6 +338,77 @@ describe("knowledge-graph incremental layout", () => {
     expect(layoutCalls).toBe(0);
   });
 
+  it("places expanded nodes clear of every loaded node and label without moving them", async () => {
+    const added = ["component:a1", "component:a2", "component:a3", "component:a4"];
+    const view = createView(async () => ({
+      source: "engine",
+      focusId: "component:old",
+      nodes: added.map(node),
+      edges: added.map((id) => ({
+        id: `relationship:old-${id}`,
+        source: "component:old",
+        target: id,
+        relationshipType: "composed_of",
+        properties: {},
+      })),
+    }));
+    const { cy, positions, viewport } = installIncrementalLayoutHarness(view);
+    view.loadGraphResponse = async (graph) => {
+      // New elements arrive stacked on the existing ones, as Cytoscape adds them.
+      addGraphResponseToHarness(view, cy, graph, { x: 20, y: 40 });
+      return { ...EMPTY_RESULT, insertedNodes: graph.nodes.length, insertedEdges: graph.edges.length };
+    };
+
+    await view.expandSelection();
+
+    expect(previousPositions(cy, view.initialNodeIds)).toEqual(positions);
+    expect({ pan: cy.pan(), zoom: cy.zoom() }).toEqual(viewport);
+    const boxes = cy.nodes().items.map((item) => ({ id: item.id(), box: item.boundingBox() }));
+    for (const id of added) {
+      const own = boxes.find((entry) => entry.id === id)?.box;
+      if (!own) throw new Error(`Missing ${id}`);
+      const overlapping = boxes.filter((entry) => entry.id !== id && boxesOverlap(own, entry.box));
+      expect(overlapping.map((entry) => entry.id)).toEqual([]);
+    }
+  });
+
+  it("keeps every position fixed across repeated path switching and clearing", async () => {
+    const stepId = "attack-step:added";
+    const view = createView(async () => ({
+      source: "engine",
+      focusId: stepId,
+      nodes: [node(stepId)],
+      edges: [{
+        id: "relationship:old-step",
+        source: "component:old",
+        target: stepId,
+        relationshipType: "steps",
+        properties: {},
+      }],
+    }));
+    const { cy } = installIncrementalLayoutHarness(view);
+    const first = pathOption("first", stepId);
+    const second = pathOption("second", "attack-step:fast");
+    view.availableAttackPaths = [first, second];
+    view.loadGraphResponse = async (graph) => {
+      const before = cy.nodes().length;
+      addGraphResponseToHarness(view, cy, graph);
+      return { ...EMPTY_RESULT, insertedNodes: cy.nodes().length - before };
+    };
+
+    await view.selectAttackPath(first.id);
+    const settled = previousPositions(cy, new Set(view.state.nodes.map((item) => item.id)));
+    const settledViewport = { pan: cy.pan(), zoom: cy.zoom() };
+    for (let round = 0; round < 3; round += 1) {
+      await view.selectAttackPath(second.id);
+      await view.selectAttackPath(first.id);
+    }
+    view.clearAttackPath();
+
+    expect(previousPositions(cy, new Set(Object.keys(settled)))).toEqual(settled);
+    expect({ pan: cy.pan(), zoom: cy.zoom() }).toEqual(settledViewport);
+  });
+
   it("restores temporary locks after completion without unlocking intentional locks", () => {
     const view = createView(async (nodeId) => response(nodeId));
     const { cy } = installIncrementalLayoutHarness(view, true);
@@ -387,6 +460,262 @@ describe("knowledge-graph incremental layout", () => {
     expect({ pan: cy.pan(), zoom: cy.zoom() }).toEqual(viewport);
   });
 });
+
+describe("knowledge-graph startup and recovery", () => {
+  it("does not recreate Cytoscape or listeners when start is retried", async () => {
+    let initialCalls = 0;
+    const { view, document } = createDomView({
+      getInitialGraph: async () => {
+        initialCalls += 1;
+        if (initialCalls === 1) throw new Error("Engine request failed: HTTP 503");
+        return startupGraph();
+      },
+    });
+
+    await expect(view.start()).rejects.toThrow("HTTP 503");
+    expect(view.renderGraphCalls).toBe(0);
+    document.byId("data-source-notice").classList.add("is-error");
+
+    await view.start();
+    await view.start();
+
+    expect(view.renderGraphCalls).toBe(1);
+    expect(view.state.nodes.map((item) => item.id)).toEqual([
+      "attack-path:imds-pivot",
+      "threat-instance:imds-pivot",
+    ]);
+    expect(document.byId("data-source-notice").classList.contains("is-error")).toBe(false);
+    expect(document.byId("data-source-notice").textContent).toBe("Engine model data");
+  });
+
+  it("keeps the loaded graph usable when attack-path discovery fails", async () => {
+    const { view, document } = createDomView({
+      getAttackPaths: async () => {
+        throw new Error("Engine request failed: cannot read model");
+      },
+    });
+
+    await expect(view.start()).resolves.toBeUndefined();
+
+    expect(view.state.selectedNodeId).toBe("attack-path:imds-pivot");
+    expect(document.byId("inspector-label").textContent).toBe("IMDS pivot path");
+    expect(document.byId("expand-node").disabled).toBe(false);
+    const status = document.byId("attack-path-status");
+    expect(status.textContent).toBe("Unable to load attack paths: Engine request failed: cannot read model");
+    expect(status.classList.contains("is-error")).toBe(true);
+    expect(document.byId("attack-path-select").disabled).toBe(true);
+    expect(document.byId("data-source-notice").classList.contains("is-error")).toBe(false);
+
+    view.handleSelection("threat-instance:imds-pivot");
+    expect(document.byId("inspector-label").textContent).toBe("IMDS pivot threat");
+  });
+
+  it("shows assertion and review status for a relationship in the inspector", async () => {
+    const { view, document } = createDomView();
+    await view.start();
+
+    const item = document.byId("relationship-list").children[0];
+    expect(item.classList.contains("review-changes_requested")).toBe(true);
+    expect(item.textContent).toContain("→ realizes_threat");
+    expect(item.textContent).toContain("Changes Requested");
+    expect(item.textContent).toContain(
+      "assertion_status: proposed · review_status: changes_requested",
+    );
+    expect(item.textContent).toContain("assertion:ai-imds-pivot-realizes · review:ai-triage");
+  });
+
+  it("leaves structural relationships in the inspector without review badges", async () => {
+    const { view, document } = createDomView({
+      getInitialGraph: async () => ({
+        ...startupGraph(),
+        edges: [{ ...startupGraph().edges[0], relationshipType: "steps", properties: {} }],
+      }),
+    });
+    await view.start();
+
+    const item = document.byId("relationship-list").children[0];
+    expect(item.textContent).toBe("→ stepsIMDS pivot threat");
+    expect(item.className).toBe("relationship-item");
+  });
+
+  it("renders an Other node-type entry and every relationship review state in the legends", async () => {
+    const { view, document } = createDomView();
+    view.renderLegend();
+
+    expect(document.byId("type-legend").textContent).toContain("Other types");
+    const relationshipLegend = document.byId("relationship-legend");
+    expect(relationshipLegend.textContent).toBe(
+      "StructuralAcceptedProposedChanges RequestedRejectedUnknown Status",
+    );
+    // A divider, not a heading, separates the groups; every state keeps a
+    // line marker and a tooltip naming it as a relationship review status.
+    const [divider, ...states] = relationshipLegend.children;
+    expect(divider.className).toBe("legend-divider");
+    expect(divider.attributes.get("aria-hidden")).toBe("true");
+    expect(states.map((item) => item.children[0].tagName)).toEqual(Array(6).fill("svg"));
+    expect(states.slice(1).map((item) => (item as unknown as { title: string }).title)).toEqual([
+      "Relationship review status: Accepted",
+      "Relationship review status: Proposed",
+      "Relationship review status: Changes Requested",
+      "Relationship review status: Rejected",
+      "Relationship review status: Unknown Status",
+    ]);
+  });
+
+  it("never gives a rejected or changes-requested path the reviewed banner style", async () => {
+    const { view, document } = createDomView();
+    const status = document.byId("attack-path-status");
+    const option = (assertion: string, review: string | null, reviewed: boolean): AttackPathOption => ({
+      ...pathOption("p", "attack-step:a"),
+      result: {
+        steps: ["attack-step:a"],
+        goal_step: "attack-step:a",
+        review: { reviewed, assertion_status: assertion, review_status: review },
+      },
+    });
+
+    view.renderAttackPathStatus(option("accepted", "rejected", true));
+    expect(status.classList.contains("is-reviewed")).toBe(false);
+    expect(status.classList.contains("is-negative")).toBe(true);
+    expect(status.textContent).toContain("rejected, not accepted");
+
+    view.renderAttackPathStatus(option("proposed", "changes_requested", false));
+    expect(status.classList.contains("is-negative")).toBe(true);
+    expect(status.textContent).toContain("changes requested, not accepted");
+
+    view.renderAttackPathStatus(option("accepted", "accepted", true));
+    expect(status.classList.contains("is-reviewed")).toBe(true);
+    expect(status.classList.contains("is-negative")).toBe(false);
+  });
+});
+
+describe("manual graph retry after automatic attempts are used up", () => {
+  const CONNECTED = {
+    kind: "connected",
+    health: { status: "ok", engine: "tmodel-engine", version: "0.1.0" },
+  } as const;
+  const ENGINE_GRAPH: EngineGraphResponse = {
+    file: "/repo/spec/vectors/model.yaml",
+    nodes: [
+      { id: "component:a", domain_type: "Component", label: "A", properties: {} },
+      { id: "component:b", domain_type: "Component", label: "B", properties: {} },
+    ],
+    edges: [{
+      id: "relationship:component:a|uses_component|component:b",
+      source: "component:a",
+      target: "component:b",
+      relationship_type: "uses_component",
+      properties: {},
+    }],
+  };
+
+  function recoveryHarness() {
+    let graphResponses: Array<() => Response> = [];
+    const graphRequests = vi.fn();
+    const fetchMock = vi.fn<typeof fetch>(async (input) => {
+      const url = new URL(String(input));
+      if (url.pathname === "/attack-paths") {
+        return jsonResponse({ file: ENGINE_GRAPH.file, threats: [], reviewed_threats: [], steps: 0 });
+      }
+      graphRequests();
+      const next = graphResponses.shift();
+      return next ? next() : jsonResponse(ENGINE_GRAPH);
+    });
+    const provider = new EngineGraphDataProvider("model.yaml", "http://engine.test", fetchMock);
+    const { view, document } = createDomView({
+      getInitialGraph: () => provider.getInitialGraph(),
+      getNeighborhood: (id) => provider.getNeighborhood(id),
+      getAttackPaths: () => provider.getAttackPaths(),
+    });
+    const notice = document.byId("data-source-notice");
+    const retryButton = document.createElement("button");
+    retryButton.hidden = true;
+    const startup = connectGraphStartup(
+      () => view.start(),
+      true,
+      {
+        notice: notice as unknown as HTMLElement,
+        retryButton: retryButton as unknown as HTMLButtonElement,
+      },
+      () => undefined,
+    );
+    const failGraph = (count: number) => {
+      graphResponses = Array.from({ length: count }, () => () => jsonResponse(
+        { error: "cannot read model" },
+        400,
+      ));
+    };
+    const click = () => (retryButton.onclick as () => void)();
+    return { view, notice, retryButton, startup, graphRequests, failGraph, click };
+  }
+
+  it("recovers on Retry graph without a reload, once, and cleans up the error state", async () => {
+    const { view, notice, retryButton, startup, graphRequests, failGraph, click } = recoveryHarness();
+    failGraph(MAX_GRAPH_START_ATTEMPTS);
+
+    for (let poll = 0; poll < MAX_GRAPH_START_ATTEMPTS + 5; poll += 1) {
+      await startup.engineStateChanged(CONNECTED);
+    }
+    expect(graphRequests).toHaveBeenCalledTimes(MAX_GRAPH_START_ATTEMPTS);
+    expect(view.renderGraphCalls).toBe(0);
+    expect(notice.classList.contains("is-error")).toBe(true);
+    expect(notice.textContent).toBe(
+      "Unable to load the knowledge graph: Engine request failed: cannot read model. Use Retry graph to try again.",
+    );
+    expect(retryButton).toMatchObject({ hidden: false, disabled: false });
+
+    // The /graph problem is fixed while the engine stays healthy.
+    click();
+    expect(retryButton).toMatchObject({ hidden: true, disabled: true });
+    click();
+    await startup.retryNow();
+
+    expect(graphRequests).toHaveBeenCalledTimes(MAX_GRAPH_START_ATTEMPTS + 1);
+    expect(startup.started).toBe(true);
+    expect(view.renderGraphCalls).toBe(1);
+    expect(view.state.nodes.map((item) => item.id)).toEqual(["component:a", "component:b"]);
+    expect(view.state.edges).toHaveLength(1);
+    expect(notice.classList.contains("is-error")).toBe(false);
+    expect(notice.textContent).toBe("Engine model data from model.yaml");
+    expect(retryButton).toMatchObject({ hidden: true, disabled: true });
+
+    for (let poll = 0; poll < 3; poll += 1) await startup.engineStateChanged(CONNECTED);
+    await startup.retryNow();
+    expect(graphRequests).toHaveBeenCalledTimes(MAX_GRAPH_START_ATTEMPTS + 1);
+    expect(view.renderGraphCalls).toBe(1);
+    expect(view.state.nodes).toHaveLength(2);
+  });
+
+  it("reports a failed manual retry and lets the user try again", async () => {
+    const { view, notice, retryButton, startup, graphRequests, failGraph, click } = recoveryHarness();
+    failGraph(MAX_GRAPH_START_ATTEMPTS + 1);
+    for (let poll = 0; poll < MAX_GRAPH_START_ATTEMPTS; poll += 1) {
+      await startup.engineStateChanged(CONNECTED);
+    }
+
+    click();
+    expect(notice.textContent).toBe("Retrying the knowledge graph…");
+    await startup.retryNow();
+    expect(startup.started).toBe(false);
+    expect(notice.classList.contains("is-error")).toBe(true);
+    expect(notice.textContent).toContain("cannot read model. Use Retry graph to try again.");
+    expect(retryButton).toMatchObject({ hidden: false, disabled: false });
+
+    click();
+    await startup.retryNow();
+    expect(startup.started).toBe(true);
+    expect(graphRequests).toHaveBeenCalledTimes(MAX_GRAPH_START_ATTEMPTS + 2);
+    expect(view.renderGraphCalls).toBe(1);
+    expect(retryButton.hidden).toBe(true);
+  });
+});
+
+function jsonResponse(body: unknown, status = 200): Response {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { "Content-Type": "application/json" },
+  });
+}
 
 interface ViewHarness {
   state: GraphState;
@@ -480,11 +809,12 @@ function addGraphResponseToHarness(
   view: ViewHarness,
   cy: FakeLayoutCore,
   graph: GraphResponse,
+  at = { x: 0, y: 0 },
 ): void {
   for (const item of graph.nodes) {
     if (!view.state.nodes.some((existing) => existing.id === item.id)) {
       view.state = { ...view.state, nodes: [...view.state.nodes, item] };
-      cy.addNode(item.id, { x: 0, y: 0 });
+      cy.addNode(item.id, at);
     }
   }
   view.state = { ...view.state, edges: [...view.state.edges, ...graph.edges] };
@@ -515,10 +845,23 @@ class FakeLayoutNode {
   locked(): boolean { return this.isLocked; }
   lock(): this { this.isLocked = true; return this; }
   unlock(): this { this.isLocked = false; return this; }
+  width(): number { return 28; }
+  // A 28px node with a wrapped label below it, as drawn by the real style.
+  boundingBox(): { x1: number; y1: number; x2: number; y2: number; w: number; h: number } {
+    const { x, y } = this.coordinates;
+    return { x1: x - 38, y1: y - 15, x2: x + 38, y2: y + 45, w: 76, h: 60 };
+  }
+}
+
+function boxesOverlap(
+  a: { x1: number; y1: number; x2: number; y2: number },
+  b: { x1: number; y1: number; x2: number; y2: number },
+): boolean {
+  return Math.min(a.x2, b.x2) > Math.max(a.x1, b.x1) && Math.min(a.y2, b.y2) > Math.max(a.y1, b.y1);
 }
 
 class FakeLayoutNodeCollection {
-  constructor(private readonly items: FakeLayoutNode[]) {}
+  constructor(readonly items: FakeLayoutNode[]) {}
 
   get length(): number { return this.items.length; }
   filter(predicate: (node: FakeLayoutNode) => boolean): FakeLayoutNodeCollection {
@@ -569,7 +912,9 @@ class FakeLayoutCore {
   extent(): { x1: number; y1: number; x2: number; y2: number } {
     return { x1: -500, y1: -500, x2: 500, y2: 500 };
   }
-  getElementById(id: string): FakeLayoutNode { return this.node(id); }
+  getElementById(id: string): FakeLayoutNode | { length: 0 } {
+    return this.nodeMap.get(id) ?? { length: 0 };
+  }
   pan(next?: { x: number; y: number }): { x: number; y: number } {
     if (next) this.panValue = { ...next };
     return { ...this.panValue };
@@ -734,4 +1079,156 @@ async function waitFor(predicate: () => boolean): Promise<void> {
     await Promise.resolve();
   }
   if (!predicate()) throw new Error("Timed out waiting for graph-view test state");
+}
+
+interface DomViewHarness {
+  state: GraphState;
+  renderGraphCalls: number;
+  start(): Promise<void>;
+  handleSelection(nodeId: string): void;
+  renderLegend(): void;
+  renderAttackPathStatus(option?: AttackPathOption): void;
+}
+
+function startupGraph(): GraphResponse {
+  return {
+    source: "engine",
+    notice: "Engine model data",
+    focusId: "attack-path:imds-pivot",
+    nodes: [
+      { id: "attack-path:imds-pivot", domainType: "AttackPath", label: "IMDS pivot path", properties: {}, expandable: true },
+      { id: "threat-instance:imds-pivot", domainType: "ThreatInstance", label: "IMDS pivot threat", properties: {} },
+    ],
+    edges: [{
+      id: "relationship:attack-path:imds-pivot|realizes_threat|threat-instance:imds-pivot",
+      source: "attack-path:imds-pivot",
+      target: "threat-instance:imds-pivot",
+      relationshipType: "realizes_threat",
+      properties: {
+        assertion_ids: ["assertion:ai-imds-pivot-realizes"],
+        assertion_status: "proposed",
+        confidence: "low",
+        review_ids: ["review:ai-triage"],
+        review_status: "changes_requested",
+      },
+    }],
+  };
+}
+
+function createDomView(overrides: Partial<GraphDataProvider> = {}) {
+  const document = new FakeDocument([
+    "data-source-notice", "type-legend", "relationship-legend", "graph-canvas", "node-list",
+    "node-count", "graph-loading", "attack-path-select", "clear-attack-path", "attack-path-status",
+    "inspector-label", "inspector-type", "inspector-id", "expand-node", "property-list",
+    "relationship-list",
+  ]);
+  const provider: GraphDataProvider = {
+    metadata: { source: "engine", label: "Engine model data", notice: "Engine model data" },
+    getInitialGraph: async () => startupGraph(),
+    getNeighborhood: async (nodeId) => response(nodeId),
+    getAttackPaths: async () => [],
+    ...overrides,
+  };
+  const view = new KnowledgeGraphView(provider, document as unknown as Document) as unknown as
+    DomViewHarness & {
+      cy?: unknown;
+      renderGraph(): void;
+      loadGraphResponse(graph: GraphResponse): Promise<GraphLoadResult>;
+    };
+  view.renderGraphCalls = 0;
+  view.renderGraph = () => {
+    view.renderGraphCalls += 1;
+    view.cy = {
+      getElementById: () => ({ select: () => undefined, unselect: () => undefined }),
+      elements: () => ({ removeClass: () => undefined }),
+    };
+  };
+  view.loadGraphResponse = async (graph) => {
+    const known = new Set(view.state.nodes.map((item) => item.id));
+    const knownEdges = new Set(view.state.edges.map((item) => item.id));
+    view.state = {
+      ...view.state,
+      nodes: [...view.state.nodes, ...graph.nodes.filter((item) => !known.has(item.id))],
+      edges: [...view.state.edges, ...graph.edges.filter((item) => !knownEdges.has(item.id))],
+    };
+    return EMPTY_RESULT;
+  };
+  return { view, document };
+}
+
+class FakeClassList {
+  constructor(private readonly owner: FakeDomElement) {}
+
+  private get names(): Set<string> {
+    return new Set(this.owner.className.split(/\s+/).filter(Boolean));
+  }
+  private set names(next: Set<string>) {
+    this.owner.className = [...next].join(" ");
+  }
+  add(...names: string[]): void { this.names = new Set([...this.names, ...names]); }
+  remove(...names: string[]): void {
+    const next = this.names;
+    names.forEach((name) => next.delete(name));
+    this.names = next;
+  }
+  toggle(name: string, force?: boolean): void {
+    if (force ?? !this.contains(name)) this.add(name);
+    else this.remove(name);
+  }
+  contains(name: string): boolean { return this.names.has(name); }
+}
+
+class FakeDomElement {
+  className = "";
+  children: FakeDomElement[] = [];
+  readonly classList = new FakeClassList(this);
+  readonly style: Record<string, string> = {};
+  readonly dataset: Record<string, string> = {};
+  readonly attributes = new Map<string, string>();
+  disabled = false;
+  hidden = false;
+  value = "";
+  type = "";
+  onclick: unknown = null;
+  onchange: unknown = null;
+  private text = "";
+
+  constructor(readonly tagName: string) {}
+
+  get textContent(): string {
+    return this.text + this.children.map((child) => child.textContent).join("");
+  }
+  set textContent(value: string) {
+    this.text = value;
+    this.children = [];
+  }
+  append(...nodes: FakeDomElement[]): void { this.children.push(...nodes); }
+  prepend(...nodes: FakeDomElement[]): void { this.children.unshift(...nodes); }
+  replaceChildren(...nodes: FakeDomElement[]): void {
+    this.text = "";
+    this.children = [...nodes];
+  }
+  setAttribute(name: string, value: string): void { this.attributes.set(name, value); }
+  addEventListener(): void {}
+}
+
+class FakeDocument {
+  private readonly elements = new Map<string, FakeDomElement>();
+
+  constructor(ids: readonly string[]) {
+    for (const id of ids) this.elements.set(id, new FakeDomElement("div"));
+  }
+  getElementById(id: string): FakeDomElement | null { return this.elements.get(id) ?? null; }
+  byId(id: string): FakeDomElement {
+    const element = this.elements.get(id);
+    if (!element) throw new Error(`Missing fake element ${id}`);
+    return element;
+  }
+  createElement(tag: string): FakeDomElement { return new FakeDomElement(tag); }
+  createElementNS(_namespace: string, tag: string): FakeDomElement { return new FakeDomElement(tag); }
+  createTextNode(text: string): FakeDomElement {
+    const node = new FakeDomElement("#text");
+    node.textContent = text;
+    return node;
+  }
 }

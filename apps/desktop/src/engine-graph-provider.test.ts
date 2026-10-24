@@ -132,6 +132,79 @@ describe("engine graph provider", () => {
       "Engine request failed: outside approved model directory",
     );
   });
+
+  it("evicts a failed /graph request so a later call can recover", async () => {
+    const fetchMock = vi.fn<typeof fetch>()
+      .mockRejectedValueOnce(new TypeError("Failed to fetch"))
+      .mockResolvedValueOnce(jsonResponse({ error: "engine starting" }, 503))
+      .mockResolvedValue(jsonResponse(ENGINE_GRAPH));
+    const provider = new EngineGraphDataProvider("model.yaml", "http://engine.test", fetchMock);
+
+    await expect(provider.getInitialGraph()).rejects.toThrow("Failed to fetch");
+    await expect(provider.getNeighborhood("component:a")).rejects.toThrow(
+      "Engine request failed: engine starting",
+    );
+    await expect(provider.getInitialGraph()).resolves.toMatchObject({ focusId: "component:a" });
+    await expect(provider.getNeighborhood("attack-step:one")).resolves.toMatchObject({
+      focusId: "attack-step:one",
+    });
+
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+  });
+
+  it("shares one in-flight /graph request between concurrent callers", async () => {
+    let respond!: (response: Response) => void;
+    const fetchMock = vi.fn<typeof fetch>(() => new Promise<Response>((resolve) => {
+      respond = resolve;
+    }));
+    const provider = new EngineGraphDataProvider("model.yaml", "http://engine.test", fetchMock);
+
+    const initial = provider.getInitialGraph();
+    const neighborhood = provider.getNeighborhood("component:b");
+    respond(jsonResponse(ENGINE_GRAPH));
+    await Promise.all([initial, neighborhood]);
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("shares one failed in-flight request without caching the failure", async () => {
+    let fail!: (error: Error) => void;
+    const fetchMock = vi.fn<typeof fetch>()
+      .mockImplementationOnce(() => new Promise<Response>((_resolve, reject) => { fail = reject; }))
+      .mockResolvedValue(jsonResponse(ENGINE_GRAPH));
+    const provider = new EngineGraphDataProvider("model.yaml", "http://engine.test", fetchMock);
+
+    const first = provider.getInitialGraph();
+    const second = provider.getInitialGraph();
+    fail(new TypeError("Failed to fetch"));
+    await expect(first).rejects.toThrow("Failed to fetch");
+    await expect(second).rejects.toThrow("Failed to fetch");
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+
+    await expect(provider.getInitialGraph()).resolves.toMatchObject({ source: "engine" });
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("passes Assertion and Review metadata through to frontend edges unchanged", () => {
+    const graph: EngineGraphResponse = {
+      ...ENGINE_GRAPH,
+      edges: [{
+        id: "relationship:attack-path:imds-pivot|realizes_threat|threat-instance:imds-pivot",
+        source: "component:a",
+        target: "component:b",
+        relationship_type: "realizes_threat",
+        properties: {
+          assertion_ids: ["assertion:ai-imds-pivot-realizes"],
+          assertion_status: "proposed",
+          confidence: "low",
+          review_ids: ["review:ai-triage"],
+          review_status: "changes_requested",
+        },
+      }],
+    };
+
+    expect(mapEngineGraphResponse(graph).edges[0].properties).toEqual(graph.edges[0].properties);
+  });
 });
 
 function jsonResponse(body: unknown, status = 200): Response {

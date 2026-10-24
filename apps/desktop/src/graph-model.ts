@@ -4,6 +4,7 @@ import type {
   GraphRelationship,
   GraphResponse,
 } from "./graph-types";
+import { relationshipReviewState, type ReviewStateKind } from "./review-status";
 
 export interface GraphState {
   nodes: GraphNode[];
@@ -24,6 +25,11 @@ export interface CytoscapeEdgeElement {
     target: string;
     relationshipType: string;
     label: string;
+    // Present only for relationships backed by an Assertion. The raw values
+    // are kept as recorded; `reviewState` only selects the edge style.
+    reviewState?: ReviewStateKind;
+    assertionStatus?: string | null;
+    reviewStatus?: string | null;
   };
 }
 
@@ -67,6 +73,7 @@ export function relationshipsForNode(
         relationshipType: edge.relationshipType,
         connectedNodeId: edge.target,
         connectedNode: nodes.get(edge.target),
+        properties: edge.properties,
       });
     } else if (edge.target === nodeId) {
       relationships.push({
@@ -75,6 +82,7 @@ export function relationshipsForNode(
         relationshipType: edge.relationshipType,
         connectedNodeId: edge.source,
         connectedNode: nodes.get(edge.source),
+        properties: edge.properties,
       });
     }
   }
@@ -100,16 +108,22 @@ export function toCytoscapeNodeElement(node: GraphNode): CytoscapeNodeElement {
 }
 
 export function toCytoscapeEdgeElement(edge: GraphEdge): CytoscapeEdgeElement {
-  return {
-    group: "edges",
-    data: {
-      id: edge.id,
-      source: edge.source,
-      target: edge.target,
-      relationshipType: edge.relationshipType,
-      label: edge.relationshipType,
-    },
+  const data: CytoscapeEdgeElement["data"] = {
+    id: edge.id,
+    source: edge.source,
+    target: edge.target,
+    relationshipType: edge.relationshipType,
+    label: edge.relationshipType,
   };
+  const review = relationshipReviewState(edge.properties);
+  if (review) {
+    data.reviewState = review.kind;
+    data.assertionStatus = review.assertionStatus;
+    data.reviewStatus = review.reviewStatus;
+    // The label carries the state as text too, so it never rests on color.
+    if (review.kind !== "accepted") data.label = `${edge.relationshipType} · ${review.label.toLowerCase()}`;
+  }
+  return { group: "edges", data };
 }
 
 function cloneNode(node: GraphNode): GraphNode {

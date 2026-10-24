@@ -24,6 +24,10 @@ h3 { margin-bottom: 10px; font-size: 0.84rem; text-transform: uppercase; letter-
 .data-source-notice { width: fit-content; max-width: 100%; margin-top: 8px; padding: 6px 10px; border: 1px solid #f3c969; border-radius: 7px; background: #fffbeb; color: #854d0e; font-size: 0.72rem; font-weight: 700; }
 .data-source-notice.is-error { border-color: #fca5a5; background: #fef2f2; color: #991b1b; }
 .data-source-notice::before { content: "Source · "; text-transform: uppercase; letter-spacing: 0.08em; }
+/* The retry button sits beside the notice, so showing it never adds a row. */
+.source-row { display: flex; align-items: flex-end; gap: 8px; min-width: 0; }
+.retry-button { flex: none; padding: 5px 10px; border: 1px solid #991b1b; border-radius: 7px; background: white; color: #991b1b; font-size: 0.72rem; font-weight: 700; cursor: pointer; }
+.retry-button:disabled { cursor: default; opacity: 0.5; }
 .graph-workspace { display: grid; width: 100%; min-height: 460px; max-width: 1600px; flex: 1; grid-template-columns: minmax(215px, 0.75fr) minmax(520px, 2.4fr) minmax(270px, 0.95fr); margin: 0 auto; overflow: hidden; border: 1px solid #d8dee9; border-radius: 12px; background: white; box-shadow: 0 12px 32px rgba(31, 41, 55, 0.08); }
 .panel { min-width: 0; padding: 18px; background: #fbfcfe; }
 .node-panel { display: flex; min-height: 0; flex-direction: column; border-right: 1px solid #e2e8f0; }
@@ -51,11 +55,17 @@ h3 { margin-bottom: 10px; font-size: 0.84rem; text-transform: uppercase; letter-
 .path-status { grid-column: 2 / -1; color: #9a6700; font-size: 0.65rem; font-weight: 650; }
 .path-status.is-reviewed { color: #166534; }
 .path-status.is-unreviewed { color: #9a3412; }
+.path-status.is-negative { color: #b91c1c; }
 .path-status.is-error { color: #991b1b; }
 .graph-canvas { min-height: 0; background-color: #f8fafc; background-image: radial-gradient(#d8dee9 0.75px, transparent 0.75px); background-size: 18px 18px; }
 .type-legend { display: flex; flex-wrap: wrap; gap: 8px 14px; margin: 0; padding: 11px 16px; border-top: 1px solid #e2e8f0; }
-.type-legend li { display: flex; align-items: center; gap: 5px; color: #526078; font-size: 0.66rem; font-weight: 650; }
-.legend-swatch { width: 9px; height: 9px; border-radius: 50%; }
+.type-legend li { display: flex; align-items: center; gap: 4px; color: #526078; font-size: 0.62rem; font-weight: 650; line-height: 1.25; white-space: nowrap; }
+.legend-swatch { width: 8px; height: 8px; flex: none; border-radius: 50%; }
+/* Both legends share one compact wrapping row so the canvas keeps its height. */
+.graph-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 3px 10px; padding: 6px 14px; border-top: 1px solid #e2e8f0; }
+.graph-legend .type-legend { display: contents; }
+.legend-divider { width: 1px; height: 10px; background: #cbd5e1; }
+.legend-line { width: 20px; height: 6px; flex: none; }
 .stable-id { display: block; margin: 8px 0 14px; overflow-wrap: anywhere; color: #596579; font-size: 0.69rem; }
 .expand-button { width: 100%; padding: 8px 10px; border: 1px solid #4f46e5; border-radius: 7px; background: #4f46e5; color: white; font-size: 0.75rem; font-weight: 750; cursor: pointer; }
 .expand-button:disabled { border-color: #cbd5e1; background: #e2e8f0; color: #64748b; cursor: default; }
@@ -70,6 +80,14 @@ h3 { margin-bottom: 10px; font-size: 0.84rem; text-transform: uppercase; letter-
 .relationship-item span { display: block; margin-bottom: 3px; color: #635b9f; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.65rem; }
 .relationship-item button { padding: 0; border: 0; background: transparent; color: #1d4ed8; font-size: 0.73rem; text-align: left; cursor: pointer; }
 .relationship-item button:disabled { color: #697386; cursor: default; }
+.relationship-item .review-badge { display: flex; align-items: center; gap: 5px; margin: 6px 0 2px; font-family: inherit; font-size: 0.66rem; font-weight: 750; }
+.relationship-item .review-raw { margin: 2px 0 0; overflow-wrap: anywhere; color: #697386; font-size: 0.6rem; }
+.relationship-item.review-accepted .review-badge { color: #166534; }
+.relationship-item.review-proposed .review-badge { color: #92400e; }
+.relationship-item.review-changes_requested .review-badge { color: #9a3412; }
+.relationship-item.review-rejected .review-badge { color: #991b1b; }
+.relationship-item.review-unknown .review-badge { color: #475569; }
+.relationship-item.review-proposed, .relationship-item.review-changes_requested, .relationship-item.review-rejected, .relationship-item.review-unknown { border-style: dashed; }
 .empty-state { color: #718096; font-size: 0.73rem; font-style: italic; }
 @media (max-width: 1100px) {
   .app-shell { padding: 12px; }
@@ -85,7 +103,7 @@ h3 { margin-bottom: 10px; font-size: 0.84rem; text-transform: uppercase; letter-
   .path-toolbar { grid-template-columns: minmax(0, 1fr) auto; padding: 0 12px 7px; }
   .path-toolbar label, .path-status { grid-column: 1 / -1; }
   .path-toolbar select { width: 225px; max-width: 100%; }
-  .type-legend { gap: 6px 10px; padding: 8px 12px; }
+  .graph-legend { gap: 2px 8px; padding: 5px 12px; }
   .inspector-section { margin-top: 14px; }
 }
 @media (max-width: 720px) {
@@ -102,7 +120,9 @@ h3 { margin-bottom: 10px; font-size: 0.84rem; text-transform: uppercase; letter-
   :root { color: #e5e7eb; background: #0f172a; }
   .graph-workspace, .graph-panel { background: #111827; border-color: #334155; }
   .panel { background: #172033; }
-  .node-panel, .inspector-panel, .type-legend, .detail-row { border-color: #334155; }
+  .node-panel, .inspector-panel, .graph-legend, .detail-row { border-color: #334155; }
+  .legend-divider { background: #475569; }
+  .type-legend li { color: #a3b0c2; }
   .graph-canvas { background-color: #111827; background-image: radial-gradient(#334155 0.75px, transparent 0.75px); }
   .node-list-button:hover { background: #243147; }
   .node-list-button.is-selected { border-color: #818cf8; background: #252b54; }
@@ -110,4 +130,5 @@ h3 { margin-bottom: 10px; font-size: 0.84rem; text-transform: uppercase; letter-
   .relationship-item button { color: #93c5fd; }
   .data-source-notice { background: #3b2f12; border-color: #8a671b; color: #fde68a; }
   .data-source-notice.is-error { background: #3f1818; border-color: #991b1b; color: #fecaca; }
+  .retry-button { background: #3f1818; border-color: #f87171; color: #fecaca; }
 }

@@ -8,10 +8,21 @@ import {
   attackPathOptionsForResponses,
   attackPathPresentation,
   attackPathReviewLabel,
+  attackPathReviewState,
   type AttackPathOption,
 } from "./attack-path";
 import { DevelopmentFixtureProvider } from "./graph-fixture";
 import { graphLayoutForSize, incrementalGraphLayoutForSize } from "./graph-layout";
+import {
+  PLACEMENT_OPTIONS,
+  findPlacement,
+  isClearPlacement,
+  type Box,
+  type PlacementRequest,
+  type PlacementScene,
+  type SceneEdge,
+  type SceneNode,
+} from "./graph-placement";
 import {
   DEFAULT_GRAPH_BATCH_SIZE,
   ProgressiveGraphLoader,
@@ -27,11 +38,18 @@ import {
 } from "./graph-model";
 import type {
   GraphDataProvider,
+  GraphEdge,
   GraphNode,
   GraphPropertyValue,
   GraphResponse,
 } from "./graph-types";
 import { LatestRequestGuard } from "./request-guard";
+import {
+  REVIEW_STATE_KINDS,
+  REVIEW_STATE_LABELS,
+  relationshipReviewState,
+  type ReviewStateKind,
+} from "./review-status";
 
 const TYPE_COLORS: Readonly<Record<string, string>> = {
   Product: "#2563eb",
@@ -42,6 +60,26 @@ const TYPE_COLORS: Readonly<Record<string, string>> = {
   ThreatInstance: "#be123c",
   AttackPath: "#4f46e5",
   AttackStep: "#7c3aed",
+};
+// Node types outside TYPE_COLORS are drawn with this color and share one
+// "Other types" legend entry.
+const OTHER_TYPE_COLOR = "#64748b";
+// Placement time per batch before the remaining nodes use a short search, so
+// expanding a dense large graph cannot freeze the window.
+const PLACEMENT_BUDGET_MS = 250;
+
+// Relationships backed by an Assertion are styled by their review state with
+// both a color and a line pattern. Structural relationships keep the neutral
+// default edge style.
+const REVIEW_STATE_EDGE_STYLES: Readonly<Record<ReviewStateKind, {
+  color: string;
+  dashPattern?: number[];
+}>> = {
+  accepted: { color: "#15803d" },
+  proposed: { color: "#b45309", dashPattern: [7, 4] },
+  changes_requested: { color: "#c2410c", dashPattern: [10, 3, 2, 3] },
+  rejected: { color: "#b91c1c", dashPattern: [2, 3] },
+  unknown: { color: "#6b7280", dashPattern: [14, 4, 2, 4, 2, 4] },
 };
 
 export class KnowledgeGraphView {
@@ -64,14 +102,33 @@ export class KnowledgeGraphView {
 
   async start(): Promise<void> {
     const graph = await this.provider.getInitialGraph();
-    this.requiredElement("data-source-notice").textContent = graph.notice ?? this.provider.metadata.notice;
-    this.renderLegend();
-    this.renderGraph();
+    const notice = this.requiredElement("data-source-notice");
+    notice.textContent = graph.notice ?? this.provider.metadata.notice;
+    notice.classList.remove("is-error");
+    // A retried start reuses the existing Cytoscape instance and listeners.
+    if (!this.cy) {
+      this.renderLegend();
+      this.renderGraph();
+    }
     await this.loadGraphResponse(graph);
-    this.renderAttackPathOptions(await this.provider.getAttackPaths());
-    this.renderAttackPathStatus();
-    const initialSelection = graph.focusId ?? this.state.nodes[0]?.id;
+    const initialSelection = this.state.selectedNodeId ?? graph.focusId ?? this.state.nodes[0]?.id;
     if (initialSelection) this.handleSelection(initialSelection);
+    await this.loadAttackPaths();
+  }
+
+  /** Attack-path discovery failures stay in the path toolbar; the graph remains usable. */
+  private async loadAttackPaths(): Promise<void> {
+    try {
+      this.renderAttackPathOptions(await this.provider.getAttackPaths());
+      this.renderAttackPathStatus();
+    } catch (error) {
+      console.error("Unable to load attack paths", error);
+      this.renderAttackPathOptions([]);
+      this.requiredElement<HTMLSelectElement>("attack-path-select").disabled = true;
+      const status = this.requiredElement("attack-path-status");
+      status.className = "path-status is-error";
+      status.textContent = `Unable to load attack paths: ${errorMessage(error)}`;
+    }
   }
 
   private renderGraph(): void {
@@ -85,7 +142,7 @@ export class KnowledgeGraphView {
         {
           selector: "node",
           style: {
-            "background-color": (element) => TYPE_COLORS[element.data("domainType")] ?? "#64748b",
+            "background-color": (element) => TYPE_COLORS[element.data("domainType")] ?? OTHER_TYPE_COLOR,
             label: "data(label)", color: "#172033", "font-size": 7, "font-weight": 600,
             "text-wrap": "wrap", "text-max-width": "76px", "text-valign": "bottom",
             "text-margin-y": 10, "text-background-color": "#f8fafc",
@@ -105,6 +162,18 @@ export class KnowledgeGraphView {
             "text-margin-y": -7,
           },
         },
+        ...REVIEW_STATE_KINDS.map((kind) => {
+          const { color, dashPattern } = REVIEW_STATE_EDGE_STYLES[kind];
+          return {
+            selector: `edge[reviewState = "${kind}"]`,
+            style: {
+              "line-color": color, "target-arrow-color": color, color,
+              ...(dashPattern
+                ? { "line-style": "dashed" as const, "line-dash-pattern": dashPattern }
+                : { width: 2.4 }),
+            },
+          };
+        }),
         {
           selector: "node:selected",
           style: {
@@ -202,6 +271,7 @@ export class KnowledgeGraphView {
     placeholder.value = "";
     placeholder.textContent = "Choose an attack path…";
     select.replaceChildren(placeholder);
+    select.disabled = false;
     for (const option of this.availableAttackPaths) {
       const element = this.documentRoot.createElement("option");
       element.value = option.id;
@@ -268,8 +338,12 @@ export class KnowledgeGraphView {
       return;
     }
     const reviewLabel = attackPathReviewLabel(option.result.review);
+    const reviewState = attackPathReviewState(option.result.review).kind;
     status.textContent = `${this.provider.metadata.label} path for ${shortId(option.goalId)} from ${fileName(option.sourceFile)} · ${reviewLabel}`;
-    status.classList.add(option.result.review.reviewed ? "is-reviewed" : "is-unreviewed");
+    status.classList.add(reviewState === "accepted" ? "is-reviewed" : "is-unreviewed");
+    if (reviewState === "rejected" || reviewState === "changes_requested") {
+      status.classList.add("is-negative");
+    }
   }
 
   private renderAttackPathError(error: unknown): void {
@@ -403,7 +477,12 @@ export class KnowledgeGraphView {
       cleaned = true;
       temporarilyLocked.unlock();
       try {
-        this.keepNodesInViewport(newNodes, visibleExtent);
+        // CoSE does not see edges, arrowheads or edge labels, so move only
+        // the new nodes it left overlapping something or out of view.
+        this.positionNewNodes(newNodes, previousNodeIds, fallbackAnchorId, {
+          keepClearPositions: true,
+          visibleExtent,
+        });
       } finally {
         try {
           this.cy?.zoom(viewport.zoom);
@@ -429,75 +508,130 @@ export class KnowledgeGraphView {
     }
   }
 
+  /**
+   * Places new nodes one at a time in free space near the nodes they connect
+   * to, treating every already placed node, label, edge, arrowhead and edge
+   * label as an obstacle. Previously loaded nodes are never moved.
+   */
   private positionNewNodes(
     newNodes: NodeCollection,
     previousNodeIds: ReadonlySet<string>,
     fallbackAnchorId?: string,
+    { keepClearPositions = false, visibleExtent }: {
+      keepClearPositions?: boolean;
+      visibleExtent?: Box;
+    } = {},
   ): void {
-    if (!this.cy) return;
-    const slotsByAnchor = new Map<string, number>();
-    const extent = this.cy.extent();
+    const cy = this.cy;
+    if (!cy) return;
+    const extent = visibleExtent ?? cy.extent();
     const viewportCenter = { x: (extent.x1 + extent.x2) / 2, y: (extent.y1 + extent.y2) / 2 };
-    newNodes.forEach((node) => {
-      const anchorId = this.connectedPreviousNodeId(node.id(), previousNodeIds)
-        ?? (fallbackAnchorId && previousNodeIds.has(fallbackAnchorId) ? fallbackAnchorId : undefined);
-      const anchor = anchorId ? this.cy?.getElementById(anchorId) : undefined;
-      const anchorPosition = anchor?.length ? anchor.position() : viewportCenter;
-      const slotKey = anchorId ?? "__graph-origin__";
-      const slot = slotsByAnchor.get(slotKey) ?? 0;
-      slotsByAnchor.set(slotKey, slot + 1);
-      const ring = Math.floor(slot / 8);
-      const centerAngle = Math.atan2(
-        viewportCenter.y - anchorPosition.y,
-        viewportCenter.x - anchorPosition.x,
-      );
-      const fanStep = slot === 0 ? 0 : Math.ceil(slot / 2) * (Math.PI / 4) * (slot % 2 ? 1 : -1);
-      const angle = centerAngle + fanStep;
-      const radius = 120 + ring * 80;
-      node.position({
-        x: anchorPosition.x + Math.cos(angle) * radius,
-        y: anchorPosition.y + Math.sin(angle) * radius,
-      });
-    });
-  }
-
-  private keepNodesInViewport(
-    nodes: NodeCollection,
-    extent: { x1: number; y1: number; x2: number; y2: number },
-  ): void {
-    const padding = 48;
-    const bounds = nodes.boundingBox({ includeLabels: true });
-    const availableWidth = extent.x2 - extent.x1 - padding * 2;
-    const availableHeight = extent.y2 - extent.y1 - padding * 2;
-    const shiftForAxis = (
-      lower: number,
-      upper: number,
-      extentLower: number,
-      extentUpper: number,
-      available: number,
-    ) => {
-      if (upper - lower > available) {
-        return (extentLower + extentUpper - lower - upper) / 2;
-      }
-      if (lower < extentLower + padding) return extentLower + padding - lower;
-      if (upper > extentUpper - padding) return extentUpper - padding - upper;
-      return 0;
-    };
-    nodes.shift({
-      x: shiftForAxis(bounds.x1, bounds.x2, extent.x1, extent.x2, availableWidth),
-      y: shiftForAxis(bounds.y1, bounds.y2, extent.y1, extent.y2, availableHeight),
-    });
-  }
-
-  private connectedPreviousNodeId(
-    nodeId: string,
-    previousNodeIds: ReadonlySet<string>,
-  ): string | undefined {
+    const edgesByNode = new Map<string, GraphEdge[]>();
     for (const edge of this.state.edges) {
-      if (edge.source === nodeId && previousNodeIds.has(edge.target)) return edge.target;
-      if (edge.target === nodeId && previousNodeIds.has(edge.source)) return edge.source;
+      for (const id of [edge.source, edge.target]) edgesByNode.set(id, [...(edgesByNode.get(id) ?? []), edge]);
     }
-    return undefined;
+    const settled = new Set([...previousNodeIds].filter((id) => cy.getElementById(id).length > 0));
+    const scene: PlacementScene = { nodes: [], edges: [], bounds: insetBox(extent, 12) };
+    for (const id of settled) this.addToPlacementScene(scene, id, settled, edgesByNode, false);
+    const neighborsOf = (id: string) => [...new Set(
+      (edgesByNode.get(id) ?? []).map((edge) => (edge.source === id ? edge.target : edge.source)),
+    )].filter((neighbor) => neighbor !== id && settled.has(neighbor));
+
+    const pending: NodeCollection[number][] = [];
+    newNodes.forEach((node) => { pending.push(node); });
+    let unresolved = 0;
+    const started = performance.now();
+    while (pending.length > 0) {
+      // Place nodes next to already settled neighbors first, so chains of new
+      // nodes grow outward from the existing graph. A group with no link to
+      // it starts from its best-connected node, so the rest gather around it.
+      const attached = pending.findIndex((node) => neighborsOf(node.id()).length > 0);
+      const next = attached >= 0 ? attached : pending.reduce((best, node, index) => (
+        (edgesByNode.get(node.id())?.length ?? 0) > (edgesByNode.get(pending[best].id())?.length ?? 0)
+          ? index
+          : best
+      ), 0);
+      const [node] = pending.splice(next, 1);
+      const neighborIds = neighborsOf(node.id());
+      const anchorIds = neighborIds.length > 0
+        ? neighborIds
+        : fallbackAnchorId && settled.has(fallbackAnchorId) ? [fallbackAnchorId] : [];
+      const position = { ...node.position() };
+      const request: PlacementRequest = {
+        footprint: footprintOf(node.boundingBox({ includeLabels: true, includeOverlays: false }), position),
+        anchors: anchorIds.map((id) => ({
+          id,
+          position: { ...cy.getElementById(id).position() },
+          edgeLabel: edgeLabelSize(edgesByNode.get(node.id())?.find((edge) => (
+            edge.source === id || edge.target === id
+          ))),
+        })),
+        fallbackCenter: viewportCenter,
+      };
+      if (!keepClearPositions || !isClearPlacement(position, request, scene)) {
+        const overBudget = performance.now() - started > PLACEMENT_BUDGET_MS;
+        const result = findPlacement(request, scene, overBudget
+          ? { maxRadius: PLACEMENT_OPTIONS.firstRing + PLACEMENT_OPTIONS.ringStep }
+          : {});
+        node.position(result.position);
+        if (result.collisions > 0) unresolved += 1;
+      }
+      settled.add(node.id());
+      this.addToPlacementScene(scene, node.id(), settled, edgesByNode, true);
+    }
+    if (unresolved > 0 && keepClearPositions) {
+      console.warn(`Placed ${unresolved} new graph node(s) with unavoidable overlap; nearby space is full.`);
+    }
+  }
+
+  /** Adds a settled node and its relationships to other settled nodes. */
+  private addToPlacementScene(
+    scene: PlacementScene,
+    nodeId: string,
+    settled: ReadonlySet<string>,
+    edgesByNode: ReadonlyMap<string, readonly GraphEdge[]>,
+    includeEdgesToSettled: boolean,
+  ): void {
+    const node = this.sceneNode(nodeId);
+    if (node) scene.nodes.push(node);
+    for (const edge of edgesByNode.get(nodeId) ?? []) {
+      const otherId = edge.source === nodeId ? edge.target : edge.source;
+      if (!settled.has(otherId)) continue;
+      // Without `includeEdgesToSettled`, each edge is added once, from its
+      // source, while building the initial scene.
+      if (!includeEdgesToSettled && edge.source !== nodeId) continue;
+      const sceneEdge = this.sceneEdge(edge);
+      if (sceneEdge) scene.edges.push(sceneEdge);
+    }
+  }
+
+  private sceneNode(id: string): SceneNode | undefined {
+    const node = this.cy?.getElementById(id);
+    if (!node?.length) return undefined;
+    return {
+      id,
+      position: { ...node.position() },
+      box: plainBox(node.boundingBox({ includeLabels: true, includeOverlays: false })),
+    };
+  }
+
+  private sceneEdge(edge: GraphEdge): SceneEdge | undefined {
+    const source = this.cy?.getElementById(edge.source);
+    const target = this.cy?.getElementById(edge.target);
+    if (!source?.length || !target?.length) return undefined;
+    const element = this.cy?.getElementById(edge.id);
+    const label = element?.length
+      ? element.boundingBox({ includeNodes: false, includeEdges: false, includeLabels: true, includeOverlays: false })
+      : undefined;
+    return {
+      id: edge.id,
+      sourceId: edge.source,
+      targetId: edge.target,
+      source: { ...source.position() },
+      target: { ...target.position() },
+      targetRadius: target.width() / 2,
+      labelBox: label && label.w > 0 && label.h > 0 ? plainBox(label) : undefined,
+    };
   }
 
   private stopIncrementalLayout(): void {
@@ -594,14 +728,36 @@ export class KnowledgeGraphView {
       button.disabled = !relationship.connectedNode;
       button.addEventListener("click", () => this.handleSelection(relationship.connectedNodeId));
       item.append(button);
+      this.appendRelationshipReview(item, relationship.properties);
       list.append(item);
     }
+  }
+
+  /** Shows the recorded Assertion/Review state of one relationship, if any. */
+  private appendRelationshipReview(item: HTMLElement, properties: GraphNode["properties"]): void {
+    const review = relationshipReviewState(properties);
+    if (!review) return;
+    item.classList.add(`review-${review.kind}`);
+    const badge = this.textElement("span", review.label, "review-badge");
+    badge.prepend(this.lineSwatch(review.kind));
+    item.append(badge);
+    const raw = [
+      `assertion_status: ${review.assertionStatus ?? "not recorded"}`,
+      `review_status: ${review.reviewStatus ?? "not recorded"}`,
+    ];
+    item.append(this.textElement("span", raw.join(" · "), "review-raw"));
+    const sources = [properties.assertion_ids, properties.review_ids]
+      .filter((value) => value !== undefined && value !== null)
+      .map(formatValue)
+      .join(" · ");
+    if (sources) item.append(this.textElement("span", sources, "review-raw"));
   }
 
   private renderLegend(): void {
     const legend = this.requiredElement("type-legend");
     legend.replaceChildren();
-    for (const [type, color] of Object.entries(TYPE_COLORS)) {
+    const types: [string, string][] = [...Object.entries(TYPE_COLORS), ["Other types", OTHER_TYPE_COLOR]];
+    for (const [type, color] of types) {
       const item = this.documentRoot.createElement("li");
       const swatch = this.documentRoot.createElement("span");
       swatch.className = "legend-swatch";
@@ -609,6 +765,43 @@ export class KnowledgeGraphView {
       item.append(swatch, this.documentRoot.createTextNode(type));
       legend.append(item);
     }
+    // Relationship states follow a divider; their line markers (not dots)
+    // and the list's accessible name identify them without a heading.
+    const relationshipLegend = this.requiredElement("relationship-legend");
+    const divider = this.documentRoot.createElement("li");
+    divider.className = "legend-divider";
+    divider.setAttribute("aria-hidden", "true");
+    const structural = this.documentRoot.createElement("li");
+    structural.title = "Relationship with no Assertion or Review record";
+    structural.append(this.lineSwatch(), this.documentRoot.createTextNode("Structural"));
+    relationshipLegend.replaceChildren(divider, structural);
+    for (const kind of REVIEW_STATE_KINDS) {
+      const item = this.documentRoot.createElement("li");
+      item.title = `Relationship review status: ${REVIEW_STATE_LABELS[kind]}`;
+      item.append(this.lineSwatch(kind), this.documentRoot.createTextNode(REVIEW_STATE_LABELS[kind]));
+      relationshipLegend.append(item);
+    }
+  }
+
+  /** A short line drawn with the same color and dash pattern as the graph edge. */
+  private lineSwatch(kind?: ReviewStateKind): SVGSVGElement {
+    const namespace = "http://www.w3.org/2000/svg";
+    const svg = this.documentRoot.createElementNS(namespace, "svg");
+    svg.setAttribute("class", "legend-line");
+    // Drawn at 1:1 so the dash patterns match the graph edges.
+    svg.setAttribute("viewBox", "0 0 20 6");
+    svg.setAttribute("aria-hidden", "true");
+    const line = this.documentRoot.createElementNS(namespace, "line");
+    line.setAttribute("x1", "0");
+    line.setAttribute("y1", "3");
+    line.setAttribute("x2", "20");
+    line.setAttribute("y2", "3");
+    const style = kind ? REVIEW_STATE_EDGE_STYLES[kind] : undefined;
+    line.setAttribute("stroke", style?.color ?? "#94a3b8");
+    line.setAttribute("stroke-width", kind === "accepted" ? "2.4" : "1.7");
+    if (style?.dashPattern) line.setAttribute("stroke-dasharray", style.dashPattern.join(" "));
+    svg.append(line);
+    return svg;
   }
 
   private textElement(tag: string, text: string, className?: string): HTMLElement {
@@ -644,6 +837,31 @@ function fileName(path: string): string {
 
 function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : "unexpected error";
+}
+
+// Edge labels use a 5px font with 3px padding (see the edge style above);
+// this estimate is close enough to keep new labels off existing nodes.
+function edgeLabelSize(edge?: GraphEdge): { width: number; height: number } | undefined {
+  if (!edge) return undefined;
+  const text = toCytoscapeEdgeElement(edge).data.label;
+  return { width: text.length * 3 + 6, height: 12 };
+}
+
+function plainBox(box: { x1: number; y1: number; x2: number; y2: number }): Box {
+  return { x1: box.x1, y1: box.y1, x2: box.x2, y2: box.y2 };
+}
+
+function insetBox(box: Box, amount: number): Box {
+  return { x1: box.x1 + amount, y1: box.y1 + amount, x2: box.x2 - amount, y2: box.y2 - amount };
+}
+
+function footprintOf(box: Box, position: { x: number; y: number }) {
+  return {
+    left: position.x - box.x1,
+    right: box.x2 - position.x,
+    top: position.y - box.y1,
+    bottom: box.y2 - position.y,
+  };
 }
 
 function shortId(id: string): string {

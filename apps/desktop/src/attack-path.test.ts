@@ -4,6 +4,7 @@ import {
   attackPathOptionsForResponses,
   attackPathPresentation,
   attackPathReviewLabel,
+  attackPathReviewState,
 } from "./attack-path";
 import { DevelopmentFixtureProvider } from "./graph-fixture";
 import { createGraphState, mergeGraph, selectNode } from "./graph-model";
@@ -46,6 +47,34 @@ const IMDS_RESPONSE: AttackPathResponse = {
   ],
 };
 
+// mvp-02: assertion:ai-pivot-realizes is proposed and its Review rejected it.
+const INFOTAINMENT_RESPONSE: AttackPathResponse = {
+  file: "/models/mvp-02-automotive-ecu.yaml",
+  goal: "threat-instance:infotainment-pivot",
+  paths: [
+    {
+      steps: [
+        "attack-step:compromise-companion-app",
+        "attack-step:gain-infotainment-foothold",
+        "attack-step:pivot-to-can",
+      ],
+      goal_step: "attack-step:pivot-to-can",
+      authored_path: "attack-path:infotainment-pivot",
+      review: { reviewed: false, assertion_status: "proposed", review_status: "rejected" },
+    },
+    {
+      steps: [
+        "attack-step:malicious-ota",
+        "attack-step:gain-infotainment-foothold",
+        "attack-step:pivot-to-can",
+      ],
+      goal_step: "attack-step:pivot-to-can",
+      authored_path: "attack-path:infotainment-pivot",
+      review: { reviewed: false, assertion_status: "proposed", review_status: "rejected" },
+    },
+  ],
+};
+
 const graph: GraphResponse = {
   source: "engine",
   nodes: [
@@ -75,8 +104,8 @@ describe("attack-path presentation", () => {
     expect(options[0].sourceFile).toBe(IMDS_RESPONSE.file);
     expect(options[0].goalId).toBe(IMDS_RESPONSE.goal);
     expect(options[0].result).toEqual(IMDS_RESPONSE.paths[0]);
-    expect(options[0].label).toBe("IMDS Pivot — Alternative 1 (Proposed)");
-    expect(options[1].label).toBe("IMDS Pivot — Alternative 2 (Proposed)");
+    expect(options[0].label).toBe("IMDS Pivot — Alternative 1 (Changes Requested)");
+    expect(options[1].label).toBe("IMDS Pivot — Alternative 2 (Changes Requested)");
     expect(attackPathOptions(XXE_RESPONSE)[0].label).toBe(
       "XXE File Read — Reviewed (Accepted)",
     );
@@ -93,9 +122,41 @@ describe("attack-path presentation", () => {
     expect(options.every((option) => option.sourceFile === XXE_RESPONSE.file)).toBe(true);
     expect(options.map((option) => option.label)).toEqual([
       "XXE File Read — Reviewed (Accepted)",
-      "IMDS Pivot — Alternative 1 (Proposed)",
-      "IMDS Pivot — Alternative 2 (Proposed)",
+      "IMDS Pivot — Alternative 1 (Changes Requested)",
+      "IMDS Pivot — Alternative 2 (Changes Requested)",
     ]);
+  });
+
+  it("labels a human-rejected path Rejected rather than Proposed (mvp-02 infotainment pivot)", () => {
+    const options = attackPathOptions(INFOTAINMENT_RESPONSE);
+    expect(options.map((option) => option.label)).toEqual([
+      "Infotainment Pivot — Alternative 1 (Rejected)",
+      "Infotainment Pivot — Alternative 2 (Rejected)",
+    ]);
+    expect(options[0].result.review).toEqual(INFOTAINMENT_RESPONSE.paths[0].review);
+    expect(attackPathReviewState(options[0].result.review).kind).toBe("rejected");
+    expect(attackPathOptions({ ...INFOTAINMENT_RESPONSE, paths: [INFOTAINMENT_RESPONSE.paths[0]] })[0]
+      .label).toBe("Infotainment Pivot — Rejected");
+  });
+
+  it("never labels a path Reviewed when its Review is negative, even if the engine flag is set", () => {
+    const contradictory = (reviewStatus: string): AttackPathResponse => ({
+      ...XXE_RESPONSE,
+      paths: [{
+        ...XXE_RESPONSE.paths[0],
+        review: { reviewed: true, assertion_status: "accepted", review_status: reviewStatus },
+      }],
+    });
+    const rejected = attackPathOptions(contradictory("rejected"))[0];
+    const changes = attackPathOptions(contradictory("changes_requested"))[0];
+    expect(rejected.label).toBe("XXE File Read — Rejected");
+    expect(changes.label).toBe("XXE File Read — Changes Requested");
+    expect(rejected.label).not.toContain("Reviewed");
+    expect(attackPathReviewLabel(rejected.result.review)).toBe(
+      "rejected, not accepted · assertion: accepted · review: rejected",
+    );
+    // The engine's own record is preserved unchanged.
+    expect(rejected.result.review.reviewed).toBe(true);
   });
 
   it("highlights every directed precedes edge in the actual XXE AND path", () => {
@@ -121,13 +182,19 @@ describe("attack-path presentation", () => {
 
   it("describes reviewed, proposed, and unrecorded review states clearly", () => {
     expect(attackPathReviewLabel(XXE_RESPONSE.paths[0].review)).toBe(
-      "reviewed · assertion: accepted · review: accepted",
+      "reviewed and accepted · assertion: accepted · review: accepted",
     );
     expect(attackPathReviewLabel(IMDS_RESPONSE.paths[0].review)).toBe(
-      "not reviewed · assertion: proposed · review: changes requested",
+      "changes requested, not accepted · assertion: proposed · review: changes requested",
     );
+    expect(attackPathReviewLabel({ reviewed: false, assertion_status: "proposed", review_status: null }))
+      .toBe("proposed, not accepted · assertion: proposed");
     expect(attackPathReviewLabel({ reviewed: false, assertion_status: null, review_status: null }))
-      .toBe("not reviewed");
+      .toBe("not reviewed, no status recorded");
+    expect(attackPathOptions({
+      ...XXE_RESPONSE,
+      paths: [{ ...XXE_RESPONSE.paths[0], review: { reviewed: false, assertion_status: null, review_status: null } }],
+    })[0].label).toBe("XXE File Read — Not Reviewed");
   });
 
   it("allows only the latest asynchronous path selection to publish results", () => {

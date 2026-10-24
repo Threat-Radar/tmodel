@@ -24,6 +24,8 @@ export interface GraphRelationship {
   relationshipType: string;
   connectedNodeId: string;
   connectedNode?: GraphNode;
+  // The edge's own properties, including any Assertion and Review metadata.
+  properties: GraphProperties;
 }
 
 export interface GraphResponse {
