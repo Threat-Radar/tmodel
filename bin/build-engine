@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# build-engine: build the Python engine as one standalone executable (PyInstaller)
+# and put it where Tauri bundles sidecars (#124). The app then needs no Python.
+#
+#   bin/build-engine            build for this machine
+#
+# Output: apps/desktop/src-tauri/binaries/tmodel-engine-<target triple>
+# (Tauri's externalBin naming). Needs python3 (3.11+) and rustc (for the triple);
+# PYTHON overrides the interpreter, TARGET_TRIPLE the triple.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+PY="${PYTHON:-python3}"
+TRIPLE="${TARGET_TRIPLE:-$(rustc -vV | sed -n 's/^host: //p')}"
+BUILD="engine/build/sidecar"
+OUT="apps/desktop/src-tauri/binaries"
+NAME="tmodel-engine-$TRIPLE"
+
+rm -rf "$BUILD"
+"$PY" -m venv "$BUILD/venv"
+VPY="$BUILD/venv/bin/python"
+"$VPY" -m pip install --quiet --upgrade pip
+"$VPY" -m pip install --quiet ./engine -r engine/packaging/requirements.txt
+
+"$VPY" -m PyInstaller --onefile --clean --noconfirm --log-level WARN \
+  --name "$NAME" \
+  --distpath "$OUT" --workpath "$BUILD/work" --specpath "$BUILD" \
+  engine/packaging/tmodel_engine.py
+
+# Smoke test: the executable runs the engine with no Python on the path.
+env -i HOME="$HOME" "$OUT/$NAME" version --in-process --json
+echo "built $OUT/$NAME"
