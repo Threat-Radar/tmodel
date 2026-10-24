@@ -7,9 +7,9 @@ description: "Research report comparing interactive knowledge-graph visualizatio
 type: research
 category: knowledge-graph
 status: draft
-version: "0.2.0"
+version: "0.2.1"
 date: "2026-10-02"
-updated: "2026-10-13"
+updated: "2026-10-23"
 authors:
   - role: student
     id: kriishnaa-18
@@ -20,7 +20,6 @@ reviewers: []
 needs_review: true
 reviewed: false
 canonical_path: research/0006-knowledge-graph-visualization/report.md
-library_commit: "pending; see library/ submodule pointer at time of merge"
 informs: [DEC-006, R-014, R-018]
 issue: 10
 ---
@@ -34,6 +33,8 @@ issue: 10
 
 Research plan: [`dimensions.md`](dimensions.md). Search log:
 [`searches.md`](searches.md). Source log: [`sources.md`](sources.md).
+The corresponding library records were merged through Threat-Radar/library PR #23 in
+merge commit `5b60646a60912dafe26c456f3e8b2ce9f467b7eb`.
 
 ## 1. Why this report / scope
 
@@ -638,7 +639,6 @@ create an architecture requirement.
 | Performance evidence does not establish a target | Vendor/project claims are not comparable; local 300/600 runs are not benchmarks | Establish representative graph shapes and measurable interaction, layout and loading budgets before selection | APP-0001 A-023, A-027, A-041; Issue #59 (T-204) |
 | Commercial and product precedents have integration boundaries | yFiles/Ogma require commercial review; Bloom/Memgraph are database-coupled; Gephi is desktop; Kùzu is archived | Evaluate delivery, procurement, embedding and maintenance separately from feature breadth | ADR-0003; APP-0001 A-044; Issue #59 (T-204) |
 | Matrix, timeline and diff behavior remain weakly tested | STIX and Gephi provide timeline precedents; no common fixture exercised coordinated non-graph views | Prototype only if these views are required by concrete review tasks; do not infer synchronization from panel availability | APP-0001 A-009, A-010, A-025; R-014; Issue #59 (T-202–T-204) |
-| Library provenance is incomplete | Source records are prepared in library PR #23 but are not yet on library `main` | Merge library PR #23 before citing a durable `library@<commit>` | Issue #37 library/FX-1 workflow; library PR #23 |
 
 ## 13. Outstanding evidence gaps
 
@@ -653,7 +653,6 @@ create an architecture requirement.
   research-evidence boundary, not a claim about later implementation work.
 - Kùzu Explorer interaction evidence and Memgraph Lab practical graph-size evidence remain limited.
 - Commercial licensing and deployment terms require scenario-specific review if those candidates advance.
-- Standalone library ingestion remains separate from this report and awaits library PR #23.
 
 ## 14. Conclusion
 
