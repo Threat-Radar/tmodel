@@ -7,10 +7,10 @@ description: "Course statement of work: project, capabilities C1–C10, technica
 type: plan
 category: process
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 version_policy: "semver; MINOR = additive; version and updated move together (ARCH-0001 §9.5)"
 date: "2026-10-15"
-updated: "2026-10-15"
+updated: "2026-10-26"
 decision_makers:
   - role: sponsor
     id: nymble
@@ -56,7 +56,7 @@ two domains**, one modeled in depth.
 | # | Capability | What it does |
 |---|---|---|
 | C1 | **Reference library** | Curated, citable library of standards and research (CWE, CVE, ATT&CK, ISO/SAE 21434, NIST, methods, AI-security), each with summary and relevance. *(Record count: unverified — see Threat-Radar/library.)* |
-| C2 | **Object model and schema** | LinkML definition of asset, component, weakness, vulnerability, threat, attack step/path, mitigation, review, product and their links. Core accepted (DEC-001a → ADR-0010); governed layer open (DEC-001b). |
+| C2 | **Object model and schema** | LinkML definition of asset, component, weakness, vulnerability, threat, attack step/path, mitigation, review, product and their links. Core accepted (DEC-001a → ADR-0010; Requirement added to the core by ADR-0012); rest of the governed layer open (DEC-001b). |
 | C3 | **Knowledge-graph engine** | Local engine loading library and product data into the working store (Oxigraph, ADR-0008) with a CLI for scripts and AI agents. |
 | C4 | **Data import** | radar output, SBOMs, catalogs such as CWE (live vs cached mirror: DEC-008, open); import OTM and STIX 2.1 (ADR-0007). |
 | C5 | **Attack paths** | Attack steps with AND/OR logic and explicit order; the engine finds paths reaching an asset. |
@@ -101,7 +101,7 @@ Per PLAN-0001 §10–11 (week 1 = Sep 21–27). Nov 5 is the **demo floor**; lat
 | # | Milestone | Done when | Date |
 |---|---|---|---|
 | M1 | **Research** | Core reports drafted by Oct 8 (enough for DEC-005/DEC-003); report work runs **through Oct 13**, overlapping M2 (BACKLOG-0001) | Oct 8 / Oct 13 |
-| M2 | **Model and app foundation** | **Already accepted:** DEC-001a (ADR-0010), DEC-002 (ADR-0007), DEC-003 (ADR-0006), DEC-004 (ADR-0008), DEC-010 (ADR-0003 + ADR-0009); walking skeleton with CI merged (PR #98). **Open:** DEC-001b (governed layer), DEC-008 (CWE/NVD), DEC-009 (threat→product / mitigation lifecycle) | Oct 22 |
+| M2 | **Model and app foundation** | **Already accepted:** DEC-001a (ADR-0010), DEC-002 (ADR-0007), DEC-003 (ADR-0006), DEC-004 (ADR-0008), DEC-010 (ADR-0003 + ADR-0009); walking skeleton with CI merged (PR #98). **Open:** DEC-001b (governed layer; Requirement moved to the core by ADR-0012), DEC-008 (CWE/NVD), DEC-009 (threat→product / mitigation lifecycle) | Oct 22 |
 | M3 | **MVP core — demo floor** | Library in engine; table views; interactive attack-path graph with review/annotation end to end on one worked example | Nov 5 |
 | M4 | **Risk and multi-domain** | ADR-0006 risk vector computed; generic threats mapped onto ≥2 domains | Nov 19 |
 | M5 | **Integrate and demo** | `.dmg` on GitHub Releases (signing caveat above); docs; vectors green; MVP demo | Dec 5 (early Dec) |
