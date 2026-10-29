@@ -4,7 +4,7 @@ id: RPT-0004-searches
 title: "RPT-0004 search log"
 type: research
 status: draft
-version: "0.3.7"
+version: "0.3.8"
 date: "2026-09-28"
 updated: "2026-10-22"
 record: RPT-0004
@@ -432,3 +432,15 @@ Runs in the main session for `report.md` 0.2.0 (#147: Tables 1 and 2, §1.4 to �
 | 2026-10-22 | `curl` of `https://www.rfc-editor.org/rfc/rfc9472.json` and `rfc8520.json` | RFC Editor | both Proposed Standard; neither updates, nor is updated by, another RFC; 18 and 60 pages; RFC 8520 has errata (for library#33) |
 | 2026-10-22 | `gh api` of the microsoft/sbom-tool, CycloneDX/cdxgen and protobom/protobom repositories, and of cdxgen's v13.4.0 release | GitHub | licences MIT, Apache-2.0 and Apache-2.0; cdxgen's repository is now cdxgen/cdxgen; v13.4.0 published 2026-10-14 (for library#33) |
 | 2026-10-22 | Table 7's `?` cells counted with `python3 -I` | `sources.md` | five: row 66 (Human review/audit) and row 81 (four axes), as the summary by axis counts; not six |
+| 2026-10-22 | `gh api` of cdxgen/cdxgen: `docs/HBOM.md` and `docs/LESSON13.md` at 388f434, the v12.4.0 release notes, and the release dates of v13.0.0 to v13.4.0 | GitHub | sha256 564e7940… and 21ef82ff…; "HBOM generation currently targets **CycloneDX 1.7**"; targets `darwin/arm64`, `linux/amd64`, `linux/arm64`; components of `type: "device"` with `cdx:hbom:*` properties; serial numbers and MAC addresses redacted by default; v12.4.0 (2026-05-15) lists hbom pull requests #4006, #4039, #4040, #4042; v13.0.0 2026-08-13, so 388f434 (2026-09-30) is on the 13.x line (second review round, S1) |
+| 2026-10-22 | `gh api` of CycloneDX/cyclonedx-property-taxonomy at 0d6feaa: file tree and `cdx.md` | GitHub | `cdx:device` registered ("Namespace for properties specific to hardware devices"); no `cdx:hbom` file or entry (S1) |
+| 2026-10-22 | `python3 -I` reads of cdxgen's README at 388f434 (from #152) | the earlier download | inputs: source, images, binaries, git URLs, purls; CycloneDX 1.6, 1.7 and 2.0, downgrade to 1.4 or 1.5; SPDX only as an output; VDR "with OWASP depscan"; no CPE or VEX mentions; Apache-2.0 (Table 5, N3) |
+| 2026-10-22 | `gh api` of protobom's `api/sbom.proto` at v0.6.2 | GitHub | sha256 7751acaf…; identifier types PURL, CPE22, CPE23, GITOID; 17 hash algorithms; node types PACKAGE and FILE; purposes include DEVICE, DEVICE_DRIVER, FIRMWARE; 44 edge types; vulnerability documents only as external-reference types (Table 5) |
+| 2026-10-22 | `python3 -I` reads of sbom-tool's README and SPDX 3 test file (from #152) | the earlier downloads | inputs: a drop folder (files hashed) and a source folder scanned by Component Detection; SPDX 2.2 default, 3.0 with `-mi SPDX:3.0`; redaction for SPDX 2.2 only; the test document carries purls, sha1 and sha256, and a PackageVerificationCode (Table 5) |
+| 2026-10-22 | `gh api` of openembedded/openembedded-core `master`: `meta/lib/oe/spdx30_tasks.py` (last changed e519068936, 2026-10-19) | GitHub | sha256 21fd777b…; purls from `SPDX_PACKAGE_URLS` and for git sources; none in `walnascar`'s copy, which sets CPE from `CVE_PRODUCT` and `CVE_VERSION`, SHA-256 hashes, and VEX `affects`, `fixedIn`, `doesNotAffect` (Table 5) |
+| 2026-10-22 | `curl` of `https://www.rfc-editor.org/rfc/rfc9943.txt` and `rfc9943.json` | RFC Editor | sha256 204aea02…, the same as `rfc-9943` at `a28a013`; Proposed Standard, June 2026, 35 pages; Subject: "an identifier, defined by the Issuer"; "digest" occurs 0 times (S2) |
+| 2026-10-22 | `grep` of `fanout-formats-baselines.md` §1.14 and of this file's Phase 1 rows | repository | the 2026-10-08 search found prEN 40000-1-3 (DIN draft, edition 2026-09, paywalled, not read) and C(2026) 5252 with no SBOM text; the first round's "not searched for" was wrong (S3) |
+| 2026-10-22 | `python3 -I` read of the #152 agent's copy of the CRA | the agent's download | Art. 71(2): "Chapter IV (Articles 35 to 51) shall apply from 11 June 2026"; Chapter IV is "Notification of conformity assessment bodies" (N1) |
+| 2026-10-22 | `python3 -I` read of the CycloneDX 1.7.2 JSON schema (both review agents' copies, sha256 73308ede…) | the agents' downloads | `externalReference.type` includes `attestation` (N2) |
+| 2026-10-22 | `gh api` of spdx/tools-golang: tags, branches, compares and `main`'s history | GitHub | v0.6.0-rc2 (2026-01-15) and v0.6.0-rc4 (2026-06-18) are on the `spdx3` branch (rc4 is 8 commits behind it and diverged from `main`); "feat: SPDX 3.0.1 (#301)" on `main` 2026-09-30 (N4) |
+| 2026-10-22 | `gh pr view` of tmodel #110, #127, #131 and #133 | GitHub | #110 and #133 merged by the sponsor's account (#133 into #131's branch, 2026-10-22), without reviews of their own; #127 approved and merged by a teammate; #131 merged by the student after a teammate's comment (N5) |

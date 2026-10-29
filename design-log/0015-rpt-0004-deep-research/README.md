@@ -4,7 +4,7 @@ id: DL-0015
 title: "RPT-0004 second pass: AI-assisted scoping, survey, extraction and mapping"
 type: process
 status: draft
-version: "0.14.0"
+version: "0.15.0"
 date: "2026-10-08"
 updated: "2026-10-22"
 record: DL-0015
@@ -889,7 +889,7 @@ The main-session checks of each finding are in `searches.md`.
   - Applied: §6 now says every *attestation* carrier binds by digest; a new paragraph after the carrier table describes discovery by device (RFC 9472) and by product identifier (TEA); Table 2's Distribution and Delivery row points to it.
   - Applied differently: RFC 9472 is not a row of the carrier table, because it carries no attestation and the table compares how attestations bind. The honest stub `rfc-9472` is in Threat-Radar/library#33.
 - **Minor findings applied:**
-  - M1: the CRA row gives Article 14's earlier date (2026-09-11) and says its harmonised standards were not searched for, and so does Table 8's evidence row. BSI's row quotes BSI's statement that harmonised standards will replace its TR.
+  - M1: the CRA row gives Article 14's earlier date (2026-09-11) and says its harmonised standards were not searched for, and so does Table 8's evidence row. BSI's row quotes BSI's statement that harmonised standards will replace its TR. (The second round found the "not searched for" part wrong; see the next entry, S3.)
   - M2: the "not binding or mandatory" quote is now attributed to BSI's TR-03183 web page; it is not in the TR's PDF.
   - M3: O'Donoghue et al.'s 2% and 12% are for the CycloneDX 1.5 SBOMs, not all 1,303.
   - M4: Table 3a and §7 say that `nistir-7695` has a full extraction in library#29, and §5 says that `osv-schema` has one in library#28.
@@ -913,7 +913,7 @@ The main-session checks of each finding are in `searches.md`.
 - **§12 reports the review and the fixes, but not a second round.** Whether the fixed report "finds nothing material" (#38's test plan) needs the review to run again; the student asked for a second round on 2026-10-22.
 - **§11's short limits list now points to §12,** which holds the full list.
 - **The status note counts #152 as part of this version.** If #152 goes in a pull request of its own rather than #161, the note changes.
-- **The §12 draft was corrected before it went in.** It said the playbook had six phases (it has seven, 0 to 6), and it listed prEN 40000-1-3 among the paywalled standards read from public material, although neither the report nor its notes mention it. Its evidence rules were rewritten from the rules DL-0015 and `dimensions.md` record.
+- **The §12 draft was corrected before it went in.** It said the playbook had six phases (it has seven, 0 to 6), and it listed prEN 40000-1-3 among the paywalled standards read from public material. That item was removed in the belief that neither the report nor its notes mention it, which was wrong: `fanout-formats-baselines.md` §1.14 does, and the second round restored it (next entry, S3). Its evidence rules were rewritten from the rules DL-0015 and `dimensions.md` record.
 
 ### Open
 
@@ -928,3 +928,72 @@ The main-session checks of each finding are in `searches.md`.
   - open a library pull request for the new sources: Threat-Radar/library#33;
   - count Table 7's `?` cells as exceptions to the rule that a `?` blocks done, and list them with what each source is and why it cannot be read. `dimensions.md` and §12 now do. There are five cells, not the six the student was told; row 81's text is restricted to ITU's TIES users rather than sold, and the list says so.
 - Pending: a review of the report text itself.
+
+## Second review round (#152, 2026-10-22)
+
+### Question asked
+
+#38's test plan says "The fresh-agent review finds nothing material", and nobody had reviewed the first round's fixes or §12. After the first part of #152 was committed (`bd159f1`), the student asked for a second round ("commit and push, then run the second round").
+
+### The review
+
+- **The agent.** A second fresh agent (Claude Code; about 456,000 tokens, 158 tool calls, 31 minutes), with no part in the drafting or in the first round. Its brief kept the first round's rules and checks, and added:
+  - save its own coverage list before reading §12, this log or the notes, since they describe the first round's findings;
+  - check every change the first round made, §12's claims about the project's own process, the records in Threat-Radar/library#33, and numbers that appear in more than one place;
+  - aim for about 500,000 tokens, at most 700,000.
+
+  It sent no personal data, used no Crossref, and left the repository, `library/` and the library worktree unchanged.
+- **What it did.**
+  - *Coverage:* its own list, saved with its digest before it read the report, compared item by item.
+  - *Citations:* 57 claims, 37 of them in text changed since the first round, each checked against a fresh fetch, the repository record or `gh`.
+  - *Extraction:* all three counts again: ECMA-427 101 of 101; the OSV schema 74, of which 68 extracted and 6 excluded for reasons it agreed with; NIST IR 7695 108, of which 106 extracted and 2 in a change-log line.
+  - *Mapping:* 38 cells of Tables 6a to 6e, against `main`'s schema, the CycloneDX 1.7.2 schema, the SPDX 3.0.1 model and a fresh Syft 1.52.0 run.
+- **Its verdict:** not yet a pass, because of three material findings. Everything else it checked held, including §12's counts and the counts of Tables 7 and 8.
+
+### Findings, and what happened to them
+
+The main-session checks of each finding are in `searches.md` (2026-10-22).
+
+- **S1 (material): cdxgen writes hardware bills.**
+  - Confirmed: cdxgen's README and `docs/HBOM.md` at 388f434 document an `hbom` command that writes a CycloneDX 1.7 bill of the live host, with `device` components and `cdx:hbom:*` properties; the CycloneDX property taxonomy registers `cdx:device` and no `cdx:hbom`.
+  - Applied: Table 6e's lead-in now says that no tool in radar's chain produces a hardware bill, and names cdxgen's `hbom` outside it; §2 has a "Hardware bills in practice" paragraph, and its takeaway says that property names differ by producer.
+  - Applied more widely than the agent asked: Table 5 has rows for all four tools the first round added (cdxgen, sbom-tool, protobom and Yocto's SPDX classes), not only cdxgen, because `dimensions.md` asks for a row for each tool the coverage review adds.
+- **S2 (material): SCITT binds statements to an issuer-defined subject.**
+  - Confirmed: RFC 9943 (Proposed Standard, June 2026) defines the Subject as "an identifier, defined by the Issuer", and its text never mentions a digest. Its digest matches the library record `rfc-9943` at `a28a013`.
+  - Applied: §6 narrows "Every attestation carrier binds by digest" to the carriers in its table and adds a paragraph on transparency services; the takeaway and rule R-BUILD-1 say what happens to a statement whose subject is not a digest.
+  - Applied differently: the agent proposed a new honest stub, but `rfc-9943` is already a summarized record at the pin, so the report cites it.
+- **S3 (material): the first round's CRA fix was wrong.**
+  - Confirmed: `fanout-formats-baselines.md` §1.14 and this report's Phase 1 search rows (2026-10-08) record the search that found prEN 40000-1-3, a DIN draft of edition 2026-09, paywalled and not read, and the Commission's guidance C(2026) 5252, which does not mention SBOMs. The first round's M1 said that the harmonised standards "were not searched for", and the main-session check repeated it without reading those notes.
+  - Applied: §8's CRA row, Table 8's evidence row (the paywalled draft now routes to sponsor question 4) and §12's limits; prEN 40000-1-3 is back in §12's list of paywalled standards.
+- **Minor findings applied in the report:**
+  - N1: the CRA row adds the date of Chapter IV (notification of conformity assessment bodies), 2026-06-11, from Article 71(2).
+  - N2: Table 6e's measured-identity cell gives CycloneDX's `externalReferences` type `attestation`, a link only, as Table 4a does.
+  - N3: cdxgen's "reads SPDX 3" cell says its README describes SPDX only as an output, instead of "not checked".
+  - N4: tools-golang's pre-release tags were cut from its `spdx3` branch; SPDX 3.0.1 reached `main` on 2026-09-30, after the last tag.
+  - N5: §12 lists the sponsor's merge of #133 into #131's branch.
+  - N9: §12 says why its phase table runs 0, 1, 2, 3, 5, 4, 6.
+- **Library changes, waiting for the student:**
+  - N6: `cisa-2026-sbom-minimum` is an empty template at `a28a013` (no date, version or digest), although Table 2 and §8 rest on its document. Table 9 already says so; filling it is a library change.
+  - N7: library#33's cdxgen entry on `cyclonedx-1-7` should mention `hbom`.
+- **Agreed not material:** N8 (firmware binary-analysis tools such as cve-bin-tool and EMBA, and support and end-of-life data such as OASIS OpenEoX) and the other gaps in its coverage table.
+
+### Rejected, and why
+
+None. The first round's rejection of a Table 5 row for OSV-Scanner (M8) stands, for a reason S1 makes clearer: `dimensions.md` asks for rows for the six named tools and for the tools the coverage review adds, and OSV-Scanner, cited in §5 since Phase 1, is neither.
+
+### Choices made here, open to review
+
+- **Table 5's new rows rest on documentation and code,** like the Dependency-Track and GUAC rows; none of the four tools was run. Where the documentation does not settle a cell, the cell says so ("not described") rather than `?`.
+- **`mapping.md` is not edited.** Its note says that it is not updated further, apart from the #149 correction, so §10's introduction lists the second round's three corrections instead.
+- **R-BUILD-1 gains one sentence:** a statement whose subject is not a digest is attached only after it is resolved to one, or is kept as an unbound claim. It stays a candidate rule.
+
+### Open
+
+- N6 and N7, if the student wants them: N7 in library#33, N6 in a library pull request.
+- A third review round, for #38's test.
+- The second round's fixes are not committed until the student says so.
+
+### What a human accepted
+
+- The student asked for the second round ("commit and push, then run the second round").
+- Pending: a review of these fixes.

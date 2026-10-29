@@ -4,7 +4,7 @@ id: RPT-0004-dimensions
 title: "RPT-0004 dimensions: the search axes"
 type: research
 status: draft
-version: "0.7.9"
+version: "0.7.10"
 date: "2026-09-28"
 updated: "2026-10-22"
 record: RPT-0004
@@ -329,7 +329,7 @@ A fresh agent that did not write the draft checks:
 
 Findings go back through dimensions 1 to 10. Rejected findings and the reasons go in the design log (DL-0015).
 
-*Status 2026-10-22: run once (#152), by one fresh agent: two material findings (dimensions 3 and 6) and eleven minor ones. Both material findings and ten minor ones were applied, and one was rejected, with the reasons in DL-0015; §12 is written in `report.md`. A second round has not been run.*
+*Status 2026-10-22: run twice (#152), each time by a fresh agent. The first round found two material findings (dimensions 3 and 6) and eleven minor ones: both material findings and ten minor ones were applied, and one was rejected. The second round found three material findings (dimensions 2 and 3, 6, and 8) and nine minor ones: all three material findings and six minor ones were applied, two minor ones are library changes that wait for the student, and one was agreed not to be material. DL-0015 gives the reasons, and §12 of `report.md` reports both rounds. A third round has not been run.*
 
 ## Per-source record
 

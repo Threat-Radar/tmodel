@@ -4,7 +4,7 @@ id: RPT-0004-sources
 title: "RPT-0004 source log"
 type: research
 status: draft
-version: "0.4.3"
+version: "0.4.4"
 date: "2026-09-28"
 updated: "2026-10-22"
 record: RPT-0004
@@ -608,10 +608,12 @@ All 86 went from no record to `stub`, owner Clovier, topic `product-composition`
 | CycloneDX 2.0-dev schemas; SPDX 3.1-RC1 | none until released | unreleased drafts |
 | Pilot and Table 6 tool outputs; Docker Hub responses | none | the team's own observations, digests in `searches.md` and mapping.md §11 |
 | log4j-core 2.14.1 jar; `alpine` container images | none | test inputs, not sources |
-| Microsoft sbom-tool (4.0.2 to 4.1.5), cdxgen (12.3.0 to 13.4.0), protobom 0.6.2 | `implementations` of `spdx-3-0-1` (sbom-tool, cdxgen) and of `cyclonedx-1-7` (cdxgen, protobom), in Threat-Radar/library#33 (open) | implementations of specs the library holds (library docs/scope.md §3); added after the adversarial review (#152), from release notes, READMEs and test files read on 2026-10-22, not run; no Table 7 ratings yet |
-| OpenEmbedded-Core's SPDX 3 code (`walnascar` and `master`, 2026-10-22) | under `spdx-3-0-1`, which lists Yocto as an implementation | as for cosign above |
+| Microsoft sbom-tool (4.0.2 to 4.1.5), cdxgen (12.3.0 to 13.4.0), protobom 0.6.2 | `implementations` of `spdx-3-0-1` (sbom-tool, cdxgen) and of `cyclonedx-1-7` (cdxgen, protobom), in Threat-Radar/library#33 (open) | implementations of specs the library holds (library docs/scope.md §3); added after the adversarial review (#152), from release notes, READMEs and test files read on 2026-10-22, not run; its second round also read cdxgen's `docs/HBOM.md` and `docs/LESSON13.md` (at 388f434) and protobom's `api/sbom.proto` (v0.6.2), for Table 5; no Table 7 ratings yet |
+| OpenEmbedded-Core's SPDX 3 code (`walnascar`, and `master`'s `sbom30.py` and `spdx30_tasks.py`, 2026-10-22) | under `spdx-3-0-1`, which lists Yocto as an implementation | as for cosign above |
 | RFC 9472 | `rfc-9472`, an honest stub in Threat-Radar/library#33 (open) | added after #152; not at the pinned `a28a013`; no Table 7 rating yet |
 | RFC 8520 | `rfc-8520`, an honest stub in Threat-Radar/library#33 (open) | named in §6 only as the MUD file that RFC 9472 extends |
 | Transparency Exchange API 0.1.0-beta.1 | none | a beta, not a release |
 | Zhou et al. 2026 (arXiv 2511.20313); Mandl et al. 2026 (arXiv 2604.21111) | `zhou-2025-sbom-reality-check` and `mandl-2026-ground-truth-vuln-detection`, honest stubs in Threat-Radar/library#33 (open) | added after #152; not at the pinned `a28a013`; no Table 7 ratings yet |
 | BSI's TR-03183 web page (English, fetched 2026-10-22) | beside `bsi-tr-03183-2` | the TR's own page, cited for two statements that are not in the TR |
+
+**Cited after Phase 2, with a record of its own.** `rfc-9943` (RFC 9943, the SCITT architecture; summarized at `a28a013`, a record of another lane's topic) is cited in the report's §6 since the second round of the adversarial review (#152). It has no Table 7 row yet.
