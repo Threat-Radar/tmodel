@@ -1,0 +1,5 @@
+# Pinned tools for bin/build-engine (the engine as a standalone executable, #124).
+# PyInstaller is GPL-2.0 with a bootloader exception: the executables it builds
+# may be distributed under any licence (https://pyinstaller.org/en/stable/license.html).
+pyinstaller==6.22.3
+pyinstaller-hooks-contrib==2026.8

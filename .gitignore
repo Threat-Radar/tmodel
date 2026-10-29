@@ -9,3 +9,6 @@ site/
 # optional local override holding REAL NAMES for the publish guard; never commit
 # names to this repo (publishing/identities.yaml is github-ids-only).
 publishing/identities.local.yaml
+# bin/build-engine outputs (#124): the PyInstaller work dir and the sidecar binary
+engine/build/
+apps/desktop/src-tauri/binaries/

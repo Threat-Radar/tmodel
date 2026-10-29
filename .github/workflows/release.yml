@@ -1,0 +1,126 @@
+name: release
+# Build the macOS app (.dmg, Apple Silicon) and attach it to a DRAFT GitHub
+# Release when a version tag is pushed (#124; PLAN-0002 §2 steps 6-7, T-212).
+# A maintainer reviews the draft and publishes it by hand.
+#
+# Signing: without the Apple secrets below the app is ad-hoc signed (users open
+# it once via System Settings > Privacy & Security > Open Anyway). With them,
+# `tauri build` signs with the Developer ID and notarizes. Secrets, all optional:
+#   APPLE_CERTIFICATE           base64 of the Developer ID Application .p12
+#   APPLE_CERTIFICATE_PASSWORD  password of that .p12
+#   APPLE_SIGNING_IDENTITY      e.g. "Developer ID Application: Name (TEAMID)"
+#   APPLE_ID, APPLE_PASSWORD, APPLE_TEAM_ID   notarization (app-specific password)
+# GitHub runners only, no cloud services (APP-0001 A-043).
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch: # manual run: builds and uploads the .dmg as a workflow artifact only
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write # create the draft release
+
+jobs:
+  macos:
+    name: build .dmg (macOS, Apple Silicon)
+    runs-on: macos-latest
+    env:
+      HAS_APPLE_CERT: ${{ secrets.APPLE_CERTIFICATE != '' }}
+      HAS_NOTARIZATION: ${{ secrets.APPLE_ID != '' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Tag matches the app version
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          app=$(python3 -c 'import json; print(json.load(open("apps/desktop/src-tauri/tauri.conf.json"))["version"])')
+          if [ "${GITHUB_REF_NAME#v}" != "$app" ] && [[ "${GITHUB_REF_NAME#v}" != "$app"-* ]]; then
+            echo "::error::tag $GITHUB_REF_NAME does not match the app version $app (tauri.conf.json)"
+            exit 1
+          fi
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/desktop/package-lock.json
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: apps/desktop/src-tauri
+
+      - name: Build the engine sidecar
+        run: bin/build-engine
+
+      - name: Install frontend dependencies
+        working-directory: apps/desktop
+        run: npm ci
+
+      # Signing credentials are scoped to this step, after dependency installs.
+      - name: Build the app and .dmg
+        working-directory: apps/desktop
+        env:
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          # An empty override must not replace the ad-hoc identity in tauri.conf.json.
+          if [ "$HAS_APPLE_CERT" != "true" ]; then
+            unset APPLE_CERTIFICATE APPLE_CERTIFICATE_PASSWORD APPLE_SIGNING_IDENTITY
+          fi
+          if [ "$HAS_APPLE_CERT" != "true" ] || [ "$HAS_NOTARIZATION" != "true" ]; then
+            unset APPLE_ID APPLE_PASSWORD APPLE_TEAM_ID
+          fi
+          CI=true npx tauri build
+
+      - name: Check the bundle
+        run: |
+          app=apps/desktop/src-tauri/target/release/bundle/macos/tmodel.app
+          codesign --verify --deep --strict "$app"
+          "$app/Contents/MacOS/tmodel-engine" version --in-process
+          dmg=$(ls apps/desktop/src-tauri/target/release/bundle/dmg/*.dmg)
+          shasum -a 256 "$dmg" | sed 's|  .*/|  |' > "$dmg.sha256"
+          echo "DMG=$dmg" >> "$GITHUB_ENV"
+          echo "SIGNED=$HAS_APPLE_CERT" >> "$GITHUB_ENV"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tmodel-macos-aarch64
+          path: |
+            ${{ env.DMG }}
+            ${{ env.DMG }}.sha256
+          if-no-files-found: error
+
+      - name: Attach to a draft release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "$SIGNED" = "true" ]; then
+            note="Signed with a Developer ID."
+          else
+            note="Not signed with a Developer ID yet. On first launch macOS blocks it: open System Settings > Privacy & Security and click Open Anyway (see CONTRIBUTING §10)."
+          fi
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" "$DMG" "$DMG.sha256" --clobber
+          else
+            prerelease=()
+            if [[ "$GITHUB_REF_NAME" == *-* ]]; then
+              prerelease=(--prerelease)
+            fi
+            gh release create "$GITHUB_REF_NAME" "$DMG" "$DMG.sha256" --draft "${prerelease[@]}" \
+              --title "tmodel $GITHUB_REF_NAME" \
+              --notes "macOS (Apple Silicon). $note"
+          fi

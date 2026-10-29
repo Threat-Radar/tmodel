@@ -41,3 +41,48 @@ suite("describe", () => {
     expect(describe({ kind: "unreachable", error: "x" }).hint).toContain("tmodel serve");
   });
 });
+
+suite("describe, with the bundled engine's process state (#124)", () => {
+  const down = { kind: "unreachable", error: "Failed to fetch" } as const;
+
+  it("shows starting, not an error, while the sidecar boots", () => {
+    expect(describe(down, { kind: "started" })).toEqual({
+      text: "starting local engine…",
+      hint: "",
+      tone: "pending",
+    });
+  });
+
+  it("explains a port held by another program", () => {
+    const d = describe(down, { kind: "port_busy", port: 47811 });
+    expect(d.text).toBe("port 47811 is in use by another program");
+    expect(d.hint).toContain("Quit the program using it");
+    expect(d.tone).toBe("unreachable");
+  });
+
+  it("shows the exit code and the engine's last error line", () => {
+    const d = describe(down, {
+      kind: "exited",
+      code: 1,
+      stderr: "Traceback...\nerror: [Errno 48] Address already in use",
+    });
+    expect(d.text).toBe("local engine stopped (exit code 1)");
+    expect(d.hint).toBe("error: [Errno 48] Address already in use — reopen tmodel to restart it.");
+  });
+
+  it("reports a sidecar that could not start", () => {
+    const d = describe(down, { kind: "spawn_failed", error: "No such file" });
+    expect(d.text).toBe("could not start the local engine");
+    expect(d.hint).toBe("No such file");
+  });
+
+  it("explains an external engine that went away", () => {
+    expect(describe(down, { kind: "external" }).hint).toContain("tmodel serve");
+  });
+
+  it("ignores the process state when the engine answers", () => {
+    expect(describe({ kind: "connected", health: okHealth }, { kind: "started" }).tone).toBe(
+      "connected",
+    );
+  });
+});
