@@ -123,7 +123,7 @@ def _add_transport(cmd: argparse.ArgumentParser) -> None:
 
 def _serve(args: argparse.Namespace) -> int:
     try:
-        server.serve(port=args.port)
+        server.serve(port=args.port, exit_with_parent=args.exit_with_parent)
     except (ValueError, OSError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
@@ -136,6 +136,11 @@ def build_parser() -> argparse.ArgumentParser:
 
     serve = sub.add_parser("serve", help="start the local engine (127.0.0.1 only)")
     serve.add_argument("--port", type=int, default=None, help="port (default 47811; 0 = any)")
+    serve.add_argument(
+        "--exit-with-parent",
+        action="store_true",
+        help="stop when stdin closes (the desktop app starts the engine this way)",
+    )
     serve.set_defaults(func=_serve)
 
     for name, text in (("health", "engine health"), ("version", "engine version")):

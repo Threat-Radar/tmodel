@@ -10,9 +10,16 @@ security:
   trackers: false
   links: relative
 reports:
-  - src: research/0013-sdl-conformance/report.md
+  - src: research/0013-sdl-conformance/sdl-report.md
     out: docs/reports/sdl.html
-    title: "Secure Development Lifecycle & conformance"
+    title: "Secure Development Lifecycle"
     links:
       - { text: "SDL bibliography", href: "../bibliography/" }
+      - { text: "Requirements crosswalk (MAP-0001)", href: "../bibliography/crosswalk.html" }
+      - { text: "SDL object model", href: "sdl-object-model.html" }
+  - src: research/0013-sdl-conformance/sdl-object-model.md
+    out: docs/reports/sdl-object-model.html
+    title: "SDL object model (consolidated, RPT-0013-OM)"
+    links:
+      - { text: "Secure Development Lifecycle report", href: "sdl.html" }
       - { text: "Requirements crosswalk (MAP-0001)", href: "../bibliography/crosswalk.html" }

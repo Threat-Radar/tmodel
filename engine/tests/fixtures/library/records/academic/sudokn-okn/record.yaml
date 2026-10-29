@@ -1,0 +1,38 @@
+schema: "library-record/v1"
+id: sudokn-okn
+body: academic
+type: web
+maturity: implementation
+title: "SUDOKN — Supply and Demand Open Knowledge Network (Arizona State U., Proto-OKN)"
+identifiers:
+  url: https://www.proto-okn.net/theme-1-projects/
+content:
+  url: https://www.proto-okn.net/theme-1-projects/
+  sha256: ""
+  retrieved: "2026-09-26"
+  local: false
+relations:
+  supersedes: []
+  superseded_by: []
+  cited_by: []
+  see_also: []
+  implements_concept: []
+bears_on:
+  - DEC-004
+  - DEC-009
+applicability:
+  security: core
+  cryptography: none
+  this_project: adjacent
+usefulness:
+  verdict: useful
+  reason: "Demonstrates cross-domain linking (products↔companies↔risk) at scale — the supply-chain-security use case tmodel aligns with."
+  assessed: "2026-09-26"
+topic: ""
+tags:
+  - okn
+  - supply-chain
+  - manufacturing
+  - knowledge-graph
+status: summarized
+confidence: medium

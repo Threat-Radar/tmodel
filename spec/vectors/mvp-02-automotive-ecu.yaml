@@ -18,6 +18,14 @@
 # via the Assertion+Review round-trip (6/V6) — here the AI hypothesis is explicitly
 # REJECTED by a human (V6 "AI-proposed threat, human-rejected, with provenance").
 #
+# REQUIREMENTS (ADR-0012, Requirement in the core). Three ISO/SAE 21434 provisions
+# (PARAPHRASED, clause ids only — the standard is licensed), one process / one
+# audit / one documentation-producing. A GENERIC mitigation for the `connected-ecu`
+# product family is `stated_as` a family Requirement (derived from 21434 RQ-09-09),
+# which the TCU's own mitigation `satisfied_by`-discharges; a TCU requirement
+# `refines` it. One AI-proposed requirement link stays a `proposed` Assertion with
+# no Review (ingesting is not reviewing).
+#
 # EXAMPLE / TEST DATA — NOT accepted truth. DEC-001 OPEN; draft proposal. People as
 # github ids / roles only. CVE/CWE/CAPEC ids illustrative. AI-proposed content is
 # never presented as reviewed.
@@ -62,6 +70,7 @@ products:
     identifiers:
       - "cpe:2.3:o:acme_auto:tcu:-:*:*:*:*:*:*:*"
       - "oem-part:TCU-0071"
+    classifications: ["family:connected-ecu"]
 
 product_instances:
   - id: product-instance:tcu-unit-7f21
@@ -236,6 +245,16 @@ mitigations:
     implementation_owner: party:vehicle-oem
     external_refs: ["JIRA-TCU-355"]
     mitigation_status: in_progress
+  - id: mitigation:family-authenticated-diagnostics
+    name: Authenticate every remote diagnostic session (connected-ECU family)
+    description: >-
+      GENERIC mitigation for the whole `connected-ecu` product family, not for one
+      product. It is stated as a Requirement (stated_as) so each family member can be
+      checked against it; the TCU discharges it with its own mitigation
+      (mitigation:authenticate-diag-service). No threat or status of its own.
+    catalog_ref: "D3FEND:D3-MFA"
+    implementation_owner: party:vehicle-oem
+    stated_as: [requirement:family-authenticated-diagnostics]
 
 risk_scores:
   - id: risk-score:remote-diag-injection
@@ -303,6 +322,17 @@ assertions:
     object: threat-instance:infotainment-pivot
     confidence: low
     assertion_status: proposed
+  - id: assertion:ai-req-addresses-pivot
+    name: AI-proposed — the family diagnostics requirement addresses the infotainment pivot
+    description: >-
+      AI-PROPOSED requirement link (ADR-0012). It is NOT written into the
+      requirement's `addresses` slot; it stays a `proposed` Assertion with no Review
+      until a human decides. Ingesting is not reviewing.
+    subject: requirement:family-authenticated-diagnostics
+    predicate: addresses
+    object: threat-instance:infotainment-pivot
+    confidence: low
+    assertion_status: proposed
 
 reviews:
   - id: review:vuln-prop
@@ -345,6 +375,69 @@ reviews:
       companion-app foothold is out of scope for this unit's configuration; rejected
       as not realizable here. Retained as a rejected hypothesis for provenance, NOT
       presented as a reviewed/accepted path.
+
+requirements:
+  - id: requirement:iso21434-rq-09-09
+    name: ISO/SAE 21434 RQ-09-09 — define the item's cybersecurity requirements
+    text: >-
+      For each cybersecurity goal, specify the cybersecurity requirements on the item
+      and any requirements on its operational environment.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: mandatory
+    source_ref: "library:iso-sae-21434-2021#RQ-09-09"
+    source_locator: "RQ-09-09 (§9.5.2)"
+    applies_to_family: ["family:connected-ecu"]
+  - id: requirement:iso21434-rq-08-07
+    name: ISO/SAE 21434 RQ-08-07 — manage each vulnerability
+    text: >-
+      Handle every identified vulnerability either by assessing and treating its
+      risk (per clause 15.9) so no unreasonable risk remains, or by eliminating it.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: mandatory
+    source_ref: "library:iso-sae-21434-2021#RQ-08-07"
+    source_locator: "RQ-08-07 (§8.6.2)"
+    applies_to: [product:telematics-control-unit]
+  - id: requirement:iso21434-rq-05-17
+    name: ISO/SAE 21434 RQ-05-17 — independent cybersecurity audit
+    text: >-
+      Have the organization's cybersecurity processes audited independently against
+      the standard's objectives.
+    text_origin: paraphrase
+    requirement_kind: audit
+    normativity: mandatory
+    source_ref: "library:iso-sae-21434-2021#RQ-05-17"
+    source_locator: "RQ-05-17 (§5.4.7)"
+    applies_to_family: ["family:connected-ecu"]
+  - id: requirement:family-authenticated-diagnostics
+    name: Connected-ECU family — authenticate remote diagnostics
+    description: >-
+      The generic family mitigation restated as a requirement (Mitigation.stated_as).
+      Derived from the 21434 obligation to specify cybersecurity requirements.
+    text: >-
+      A connected ECU shall authenticate the requester before executing any
+      diagnostic command received over a remote interface.
+    text_origin: authored
+    requirement_kind: technical
+    normativity: mandatory
+    derived_from: [requirement:iso21434-rq-09-09]
+    addresses: [weakness:cwe-306, attack-pattern:capec-115]
+    applies_to_family: ["family:connected-ecu"]
+    satisfied_by: [mitigation:authenticate-diag-service]
+  - id: requirement:tcu-diag-authentication
+    name: TCU — authenticate the modem diagnostic service
+    description: The family requirement made specific to the TCU's cellular diagnostic path.
+    text: >-
+      The TCU diagnostic-service library shall reject any diagnostic command arriving
+      over the cellular modem unless the session is authenticated.
+    text_origin: authored
+    requirement_kind: technical
+    normativity: mandatory
+    refines: [requirement:family-authenticated-diagnostics]
+    addresses: [threat-instance:remote-diag-injection]
+    applies_to: [product:telematics-control-unit, component:diag-service-lib]
+    satisfied_by: [mitigation:authenticate-diag-service]
 
 views:
   - id: view:tcu-attack-graph

@@ -185,19 +185,68 @@ current Node.
 ```sh
 python3 -m venv engine/.venv
 engine/.venv/bin/pip install -e "engine[dev]"     # installs the `tmodel` command
+bin/build-engine                                  # the engine as one executable (the app bundles it)
 (cd apps/desktop && npm ci)
 ```
 
-**Run it** — two terminals:
+`bin/build-engine` (PyInstaller, pinned in `engine/packaging/requirements.txt`)
+writes `apps/desktop/src-tauri/binaries/tmodel-engine-<target>`, which the Tauri
+build requires. Re-run it after changing the engine if you want the app's own
+copy to pick the change up.
+
+**Run it:**
 
 ```sh
-engine/.venv/bin/tmodel serve                     # 1. the engine
-(cd apps/desktop && npm run tauri dev)            # 2. the window
+(cd apps/desktop && npm run tauri dev)
 ```
 
-The window should say **"connected to local engine · v0.1.0"**; stop the engine
-and it shows how to start it again. `tmodel health` and `tmodel version` query the
-same engine from the terminal (`--json` for scripts, `--in-process` without a server).
+The app starts its bundled engine and stops it gracefully when you quit; the window says
+**"starting local engine…"** for a few seconds, then **"connected to local engine ·
+v0.1.0"**. If a tmodel engine is already answering on the port, the app uses it
+instead, so while you work on the engine, run it from source in a second terminal
+first: `engine/.venv/bin/tmodel serve`. If another program holds the port, the
+window says so. `tmodel health` and `tmodel version` query the same engine from
+the terminal (`--json` for scripts, `--in-process` without a server).
+
+**Build the installer** (`.app` and `.dmg`, Apple Silicon):
+
+```sh
+bin/build-engine
+(cd apps/desktop && CI=true npx tauri build)
+# -> apps/desktop/src-tauri/target/release/bundle/dmg/tmodel_<version>_aarch64.dmg
+```
+
+`CI=true` skips the step that asks Finder to lay out the `.dmg` window, which fails
+when the terminal may not control Finder. Without an Apple certificate the app is
+ad-hoc signed (`signingIdentity: "-"` in `tauri.conf.json`); `Entitlements.plist`
+lets the one-file engine load the Python it unpacks at launch under the hardened
+runtime.
+
+**Releases.** Pushing a tag `vX.Y.Z` (matching `version` in `tauri.conf.json`;
+`vX.Y.Z-rc.N` for a test) runs `.github/workflows/release.yml`: it builds the
+`.dmg` on a macOS runner, checks it, and attaches it with a SHA-256 file to a
+**draft** GitHub Release that a maintainer publishes. Release-candidate tags (`vX.Y.Z-rc.N`) create draft prereleases.
+With the `APPLE_*` secrets
+listed in that workflow it also signs with a Developer ID and notarizes; without
+them the app stays ad-hoc signed. Dependency installation runs before signing
+credentials are exposed; credentials are scoped to the app build step.
+
+**Packaging acceptance (#124).** Keep the issue open after the implementation
+merges until a test version tag has produced the draft release and a downloaded
+installer has been checked on a clean Mac or fresh user account. On normal quit,
+stdin closes so the engine and its PyInstaller launcher can exit and remove the
+unpacked runtime. The app waits up to ten seconds for termination. Check three
+launch/quit cycles for new `_MEI*` leftovers, confirm the engine port is released,
+and check startup with the port already occupied. `bin/build-engine` also reads
+an example model with the bundled engine in an empty environment, exercising
+PyYAML and attack-path computation without a system Python.
+
+**Opening a build that is not signed with a Developer ID.** macOS refuses to open
+it on first launch and says it cannot verify the app. Close that dialog, then open **System
+Settings → Privacy & Security**, scroll to **Security**, click **Open Anyway** next
+to tmodel and confirm. The button appears only for a while after the blocked
+attempt. On macOS 14 and earlier, Control-click the app and choose **Open**
+instead; macOS 15 removed that shortcut. This is needed once per download.
 
 **Before you open a PR that touches `engine/` or `apps/`** — the same checks CI
 runs in `.github/workflows/app.yml`:
@@ -205,7 +254,7 @@ runs in `.github/workflows/app.yml`:
 ```sh
 (cd engine && .venv/bin/ruff check . && .venv/bin/ruff format --check . && .venv/bin/pytest -q)
 (cd apps/desktop && npm run typecheck && npm test && npm run build)
-(cd apps/desktop/src-tauri && cargo fmt --check && cargo clippy -- -D warnings)
+(cd apps/desktop/src-tauri && cargo fmt --check && cargo clippy --all-targets -- -D warnings && cargo test)
 ```
 
 Changes under `.github/` are routed to the sponsor for review (`CODEOWNERS`).

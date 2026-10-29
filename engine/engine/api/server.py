@@ -12,6 +12,8 @@ from __future__ import annotations
 import ipaddress
 import json
 import os
+import sys
+import threading
 from collections.abc import Callable
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any
@@ -114,7 +116,27 @@ def make_server(host: str = DEFAULT_HOST, port: int = DEFAULT_PORT) -> Threading
     return ThreadingHTTPServer((host, port), EngineHandler)
 
 
-def serve(host: str = DEFAULT_HOST, port: int | None = None) -> None:
+def _shutdown_when_stdin_closes(httpd: ThreadingHTTPServer) -> None:
+    """Stop the server once stdin reaches end-of-file.
+
+    The desktop app holds the write end of the engine's stdin, so the pipe
+    closes whenever the app exits, even if it crashes or is killed (#124).
+    """
+
+    def watch() -> None:
+        try:
+            while sys.stdin.buffer.read(4096):
+                pass
+        except (OSError, ValueError):
+            pass
+        httpd.shutdown()
+
+    threading.Thread(target=watch, name="stdin-watch", daemon=True).start()
+
+
+def serve(
+    host: str = DEFAULT_HOST, port: int | None = None, exit_with_parent: bool = False
+) -> None:
     if port is None:
         port = int(os.environ.get("TMODEL_ENGINE_PORT", DEFAULT_PORT))
     httpd = make_server(host, port)
@@ -123,6 +145,8 @@ def serve(host: str = DEFAULT_HOST, port: int | None = None) -> None:
         f"tmodel-engine {core.version()['version']} listening on http://{bound_host}:{bound_port}",
         flush=True,
     )
+    if exit_with_parent:
+        _shutdown_when_stdin_closes(httpd)
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:

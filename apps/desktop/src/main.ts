@@ -1,4 +1,4 @@
-import { checkEngine, describe, type EngineState } from "./engine";
+import { checkEngine, describe, engineProcess, type EngineState } from "./engine";
 import { EngineGraphDataProvider } from "./engine-graph-provider";
 import { DevelopmentFixtureProvider } from "./graph-fixture";
 import { connectGraphStartup, type GraphStartup } from "./graph-startup";
@@ -8,12 +8,13 @@ const POLL_MS = 2000;
 
 async function refresh(): Promise<EngineState> {
   const state = await checkEngine();
-  const { text, hint } = describe(state);
+  const process = state.kind === "unreachable" ? await engineProcess() : null;
+  const { text, hint, tone } = describe(state, process);
   const statusEl = document.querySelector<HTMLElement>("#engine-status");
   const hintEl = document.querySelector<HTMLElement>("#engine-hint");
   if (statusEl) {
     statusEl.textContent = text;
-    statusEl.className = `status status-${state.kind}`;
+    statusEl.className = `status status-${tone}`;
   }
   if (hintEl) hintEl.textContent = hint;
   return state;

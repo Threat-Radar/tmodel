@@ -1,0 +1,97 @@
+schema: "library-record/v1"
+id: rfc-8785
+body: ietf
+type: rfc
+maturity: informational
+title: "JSON Canonicalization Scheme (JCS)"
+authors:
+  - "A. Rundgren"
+  - "B. Jordan"
+  - "S. Erdtman"
+date: "2020-06"
+publisher: "RFC Editor (Independent Submission stream — not IETF consensus)"
+identifiers:
+  rfc: 8785
+  doi: 10.17487/RFC8785
+  url: https://www.rfc-editor.org/rfc/rfc8785.html
+content:
+  url: https://www.rfc-editor.org/rfc/rfc8785.txt
+  sha256: "63d52294eb0e3f0014174288186d388b4ddbf2c67d1ce8af1d9726eb0c3ab240"
+  retrieved: "2026-10-03"
+  local: false
+relations:
+  supersedes: []
+  superseded_by: []
+  see_also:
+    - rfc-8259
+    - rfc-8949
+    - rfc-9804
+  cited_by: []
+  implements_concept: []
+bears_on:
+  - DEC-002
+  - R-O-03
+  - R-O-05
+applicability:
+  security: core
+  cryptography: adjacent
+  this_project: core
+topic: canonical-encoding
+tags:
+  - canonicalization
+  - encoding
+  - prior-art
+distillation:
+  profile: full
+  artifacts:
+    - kind: normative
+      path: distilled/normative.md
+      coverage: "91 verbatim statements and blocks across §2-§6.1 and Appendices A-I in source order, 36 flagged lowercase/implied (statements 35-37, the §3.2.3 measures, were added in pass 3 to match their extraction as R-0026/27/28 with verb none); includes Appendix A in full and Appendix B Table 1 with all 26 rows, 24 of which carry a serialization; excludes §1, §6.2, Acknowledgements and Authors' Addresses, none of which carry a normative or testable statement"
+      reviewed_by: ""
+    - kind: requirements
+      path: distilled/requirements.yaml
+      coverage: "41 entries R-0001 to R-0041 in source order; 32 carry a BCP 14 verb and match the source count exactly, 9 are lowercase obligations with verb none, 1 (R-0036) is kind inferred and declared non-verbatim; reconciliation empty because the counts agree"
+      reviewed_by: ""
+    - kind: schema
+      path: distilled/schema
+      coverage: "1 verbatim (Appendix A canonicalizer, byte-identical, region sha256 c4c656fd...a909) and 3 derived (output ABNF, I-JSON input JSON Schema, sorting algorithm); the source ships no CDDL, ABNF or JSON Schema of its own and schema/README.md argues that absence is structural; 13 constraints recorded as not expressible, 4 of which admit non-conforming data cleanly. Pass 3 found the ABNF was not valid RFC 5234 as written - rules named char and DIGIT ARE the core rules, since §2.1 makes rule names case-insensitive, so a conforming tool rejects the grammar outright - and renamed them to jcs-char and digit0-9, leaving the language defined unchanged"
+      reviewed_by: ""
+    - kind: messages
+      path: distilled/messages.yaml
+      coverage: "16 structures, 61 fields, including the complete §3.2.2.2 escaping table; applicability is partial and stated in-file, since the source defines no wire messages, headers or envelopes; constrained_by wired in pass 3 across all 61 fields, 105 links to requirement ids, none left empty"
+      reviewed_by: ""
+    - kind: protocol
+      path: distilled/protocol.md
+      coverage: "3 flows and 5 error paths; the §5 three-step procedure (the only procedural content carrying a BCP 14 keyword) and both Appendix F six-step procedures (which carry none); partial applicability stated in-file"
+      generated_from: "distilled/normative.md"
+      reviewed_by: ""
+    - kind: examples
+      path: distilled/examples/vectors.yaml
+      coverage: "44 entries, 43 executable vectors and 1 recorded absence; all 26 Appendix B rows (24 of which carry a serialization), the §3.2.3 seven-key sorting vector, the §3.2.4 byte dump, Appendix D and E cases; 7 error vectors carry violates.rule verbatim plus violates.locator; 4 derived outputs carry in_source false"
+      reviewed_by: ""
+    - kind: design-notes
+      path: distilled/design-notes.md
+      coverage: "6 adopt, 6 adapt, 8 reject against ARCH-0001, ARCH-0002 P1/P4/P5, ADR-0001 and DEC-002 option 5; 12 open questions and 8 source defects numbered 13-20; concludes DEC-002 option 3 should be withdrawn rather than out-scored, while recording that option 3 wins namespace governance outright"
+      reviewed_by: ""
+  not_applicable:
+    - kind: state-machine
+      reason: "RFC 8785 defines no lifecycle, no persistent state and no transitions. Its only procedural content is the §5 three-step check and the two Appendix F six-step schemes, all straight-line sequences with no states or guards, held in distilled/protocol.md. The scaffold stub was removed rather than left as a file of TODOs."
+  passes:
+    - pass: extract
+      by: "claude-opus-5 (6 parallel agents, one per artifact kind)"
+      effort: max
+      date: "2026-10-03"
+      note: "each agent read .cache/rfc-8785.txt directly and never a summary or another agent's output"
+    - pass: verify
+      by: "claude-opus-5 (independent agent, did not extract)"
+      effort: max
+      date: "2026-10-03"
+      note: "adversarial re-derivation from source. 10 defects found, 10 fixed. The material one: schema/sorting.md carried the Hebrew property name decomposed as U+05D3 U+05BC instead of precomposed U+FB33, giving wrong bytes, wrong UTF-16 length and a wrong sort position - signature-breaking, and the exact hazard this record documents. Also confirmed the Appendix B row count is 26 not 24, and confirmed both halves of the design-notes array-order claim (RFC 8785 prohibits reordering, RFC 8949 is silent)."
+    - pass: cross-check
+      by: "claude-opus-5 (resumed across two sessions after a session limit)"
+      effort: max
+      date: "2026-10-04"
+      note: "ran to the end of its checklist across two sessions. Landed: constrained_by wired across all 61 messages.yaml fields (104 links, none empty); the ABNF made valid RFC 5234 by renaming char and DIGIT, which ARE the core rules under §2.1 case-insensitivity, to jcs-char and digit0-9 with the language unchanged; normative.md flags reconciled 33 to 36; the R-0006/R-0039 cross-reference written into reconciliation. On resumption: i-json-input.schema.json validated against the JSON Schema 2020-12 metaschema (jsonschema 4.26.0, 0 errors, nothing changed); all 44 vectors validated as a set with a real YAML parser, 0 mismatches, including the 24 Appendix B rows re-derived through a real ECMAScript engine, 24 of 24 exact; protocol.yaml cross-checked against messages.yaml with nothing undefined. The four gaps that were the stated reason profile: full was withheld are all closed. Five items remain open and none blocks the profile: two are library#44 publication decisions, one is the library#43 bin/_yaml.py limitation that makes CI checks over vectors.yaml values vacuous, one is a protocol.yaml wiring improvement, and one is the lowercase/implied flag-breadth question, which the record states no verdict depends on."
+status: distilled
+confidence: medium
+owner: S1

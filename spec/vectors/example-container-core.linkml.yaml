@@ -3,9 +3,11 @@
 # NOT part of the domain object model and NOT rendered into OBJECT-MODEL.md. It is
 # the CORE-ONLY sibling of example-container.linkml.yaml: it `imports` the same real
 # object model but its tree-root bundle exposes collections for the DEC-001a CORE
-# classes ONLY — no ThreatModel / SecurityProgram / Gate / Milestone / Checkpoint /
-# Requirement / GovernedView collections, and (per ARCH-0001-PROPOSAL §8 "no
-# Environment parameter — post-MVP, H3") no Environment / Deployment collections.
+# classes ONLY (Requirement joined the core via ADR-0012) — no ThreatModel /
+# SecurityProgram / Gate / Milestone / Checkpoint / GovernedView collections, and (per
+# ARCH-0001-PROPOSAL §8 "no Environment parameter — post-MVP, H3") no Environment /
+# Deployment collections. Requirement.conformance_status is still DEC-001b; the
+# reference checker (DL-0021 check-edges.py) fails a core vector that sets it.
 #
 # Because the governed + Environment classes have no slot on the tree root, a CORE
 # MVP vector that accidentally referenced one would have nowhere to put it: the
@@ -61,3 +63,4 @@ classes:
       assertions: { range: Assertion, multivalued: true, inlined: true, inlined_as_list: true }
       lifecycle_phases: { range: LifecyclePhase, multivalued: true, inlined: true, inlined_as_list: true }
       views: { range: View, multivalued: true, inlined: true, inlined_as_list: true }
+      requirements: { range: Requirement, multivalued: true, inlined: true, inlined_as_list: true }

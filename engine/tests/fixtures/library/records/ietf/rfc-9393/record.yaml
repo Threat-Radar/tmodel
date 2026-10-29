@@ -1,0 +1,54 @@
+schema: "library-record/v1"
+id: rfc-9393
+body: ietf
+type: rfc
+maturity: standard
+title: "Concise Software Identification Tags"
+short_title: "RFC 9393"
+authors:
+  - "H. Birkholz"
+  - "J. Fitzgerald-McKay"
+  - "C. Schmidt"
+  - "D. Waltermire"
+date: "2023-06"
+publisher: "IETF"
+identifiers:
+  url: https://www.rfc-editor.org/rfc/rfc9393.html
+  doi: 10.17487/RFC9393
+  rfc: 9393
+content:
+  url: https://www.rfc-editor.org/rfc/rfc9393.txt
+  sha256: "6708be37258615edb39de76e32b11439967885d6792f4e2f0ee02de1a0864ebc"
+  retrieved: "2026-10-18"
+  local: false
+  media_type: text/plain
+relations:
+  supersedes: []
+  superseded_by: []
+  see_also:
+    - iso-iec-19770-2-2015
+    - nistir-8060
+    - draft-ietf-rats-corim
+    - rfc-9711
+    - osfw-firmware-embedded-sbom-0-10
+  cited_by: []
+  implements_concept: []
+bears_on:
+  - DEC-001
+  - DEC-002
+topic: product-composition
+tags:
+  - sbom
+  - naming
+  - encoding
+  - prior-art
+implementations:
+  open_source:
+    - "python-uswid 0.6.0 (BSD-2-Clause-Patent): https://github.com/hughsie/python-uswid/tree/0.6.0"
+    - "coreboot 26.09 SBOM support, src/sbom (GPL-2.0-only): https://doc.coreboot.org/sbom/sbom.html"
+  commercial: []
+  searched: ""
+# stub: honest keep-for-later (tmodel#38). Not read in full, not extracted.
+status: stub
+confidence: low
+owner: Clovier

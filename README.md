@@ -14,6 +14,8 @@ Extends the 2025 *Threat Radar* master's work (container / dependency compositio
 analysis — [`Threat-Radar/tradar`](https://github.com/Threat-Radar/tradar)) and
 reuses the [`library`](https://github.com/Threat-Radar/library) knowledge graph.
 
+**Project site:** [threat-radar.github.io/tmodel](https://threat-radar.github.io/tmodel/) · [bibliography](https://threat-radar.github.io/tmodel/bibliography/)
+
 > **A threat model proves nothing on its own.** An AI-generated attack path is a
 > hypothesis until a human with domain knowledge accepts it. Human review,
 > annotation, and impact judgement are first-class here, not an afterthought.
