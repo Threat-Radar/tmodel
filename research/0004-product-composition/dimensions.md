@@ -4,9 +4,9 @@ id: RPT-0004-dimensions
 title: "RPT-0004 dimensions: the search axes"
 type: research
 status: draft
-version: "0.7.10"
+version: "0.7.11"
 date: "2026-09-28"
-updated: "2026-10-22"
+updated: "2026-10-29"
 record: RPT-0004
 ---
 
@@ -359,6 +359,8 @@ Rules for every agent: fetch every URL and read it from its own text, not from a
 | 4. Adversarial review | a fresh agent (dimension 12); every gap goes back through phases 1 to 3 until it finds nothing material | a findings list; rejections in the design log |
 | 5. Report | `report.md` 0.2.0: comparison tables first, sections 1 to 10, synthesis and gap analysis (§11), method and limits (§12); citations by library record id | `report.md` |
 | 6. Clarity pass | a separate editing pass: an overview and a conclusion, acronyms defined, a lead-in for every table, a diagram where it earns its place (candidate: the radar → tmodel data flow), consistent citations. Readers: the faculty advisor (@phaskell) and the sponsor | `report.md` |
+
+*Status 2026-10-29: Phase 6 is written in `report.md` 0.2.0 (#153): a status line, an abstract, an overview with seven main findings and Figure 1 (the radar → tmodel data flow, in Mermaid), a conclusion (§13), a list of terms before Table 1, acronyms expanded on first use with Appendix A listing them, a lead-in for each of the thirteen tables that had none, and section and file citations in one style. The 0.1.1 and 0.1.2 correction notes moved to Appendix B. No finding, mark or count changed. #153's last check, that a teammate can state the main findings from the overview and conclusion alone, is still to do.*
 
 ## Definition of done (from #38)
 

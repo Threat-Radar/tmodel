@@ -4,9 +4,9 @@ id: RPT-0004-searches
 title: "RPT-0004 search log"
 type: research
 status: draft
-version: "0.3.8"
+version: "0.3.9"
 date: "2026-09-28"
-updated: "2026-10-22"
+updated: "2026-10-29"
 record: RPT-0004
 ---
 
@@ -444,3 +444,17 @@ Runs in the main session for `report.md` 0.2.0 (#147: Tables 1 and 2, §1.4 to �
 | 2026-10-22 | `python3 -I` read of the CycloneDX 1.7.2 JSON schema (both review agents' copies, sha256 73308ede…) | the agents' downloads | `externalReference.type` includes `attestation` (N2) |
 | 2026-10-22 | `gh api` of spdx/tools-golang: tags, branches, compares and `main`'s history | GitHub | v0.6.0-rc2 (2026-01-15) and v0.6.0-rc4 (2026-06-18) are on the `spdx3` branch (rc4 is 8 commits behind it and diverged from `main`); "feat: SPDX 3.0.1 (#301)" on `main` 2026-09-30 (N4) |
 | 2026-10-22 | `gh pr view` of tmodel #110, #127, #131 and #133 | GitHub | #110 and #133 merged by the sponsor's account (#133 into #131's branch, 2026-10-22), without reviews of their own; #127 approved and merged by a teammate; #131 merged by the student after a teammate's comment (N5) |
+
+## Clarity pass (2026-10-29)
+
+Lookups in the main session for #153, to expand acronyms that the project's notes and library records did not already expand. Nothing was downloaded. Expansions taken from the library's own records (for example DICE, SPDM, EAT, CoRIM, SUIT, RATS, SLSA, DSSE and UEID) are not listed.
+
+| date | command | input | result |
+|---|---|---|---|
+| 2026-10-29 | WebSearch for NVD's CVMAP; WebFetch of the NVD announcement on the NIST `nvd-news` list | `groups.google.com/a/list.nist.gov/g/nvd-news/c/J_rNp-YZbDA` | "Collaborative Vulnerability Metadata Acceptance Process (CVMAP)", posted 2020-06-30; the `nvd.nist.gov/vuln/cvmap` pages returned only their title to a scripted fetch (§5) |
+| 2026-10-29 | WebSearch and WebFetch for SWHID | `committee.iso.org/standard/89985.html` | ISO/IEC 18670:2025 is titled "SoftWare Hash IDentifier (SWHID) Specification V1.2" (§1) |
+| 2026-10-29 | WebSearch and WebFetch for HIRS | `github.com/nsacyber/HIRS` | the README expands it as "Host Integrity at Runtime and Start-up (HIRS)" (§2) |
+| 2026-10-29 | WebSearch and WebFetch for PACCOR | `github.com/nsacyber/paccor` | the README does not expand the name; the repository's About text reads "The Platform Attribute Certificate Creator can gather component details." (§2) |
+| 2026-10-29 | WebSearch for OmniBOR | search results only | an expansion appears only in a vendor blog, so the report does not expand the name and describes OmniBOR ids as gitoids (§1.1) |
+| 2026-10-29 | WebSearch for ISO's PRF stage | search results only | listings give PRF as the proof of a new International Standard, which matches the stage name the report already quotes from ISO's stage-codes page for 50.20 ("Proof sent to secretariat or FDIS ballot initiated") |
+

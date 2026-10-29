@@ -4,9 +4,9 @@ id: DL-0015
 title: "RPT-0004 second pass: AI-assisted scoping, survey, extraction and mapping"
 type: process
 status: draft
-version: "0.15.0"
+version: "0.16.0"
 date: "2026-10-08"
-updated: "2026-10-22"
+updated: "2026-10-29"
 record: DL-0015
 ---
 
@@ -997,3 +997,50 @@ None. The first round's rejection of a Table 5 row for OSV-Scanner (M8) stands, 
 
 - The student asked for the second round ("commit and push, then run the second round").
 - Pending: a review of these fixes.
+
+## Clarity pass (#153, 2026-10-29)
+
+### Question asked
+
+#153 is Phase 6 of #38: "an overview and a conclusion, acronyms defined, a lead-in for every table, consistent citations, and a diagram where it earns its place (candidate: the radar to tmodel data flow)". Its readers are the faculty advisor and the sponsor (`dimensions.md`). Its definition of done: the overview and conclusion are written; every acronym is defined on first use and every table introduced; and a teammate can state the main findings from the overview and conclusion alone. On 2026-10-29 the student asked to start on the issues whose sprint ended that day, which on the team board include #153.
+
+### What was done
+
+The pass followed RPT-0005's clarity pass (#158) so the two reports read alike: a status line, an abstract, an overview with a figure, a conclusion and an appendix of acronyms.
+
+- **Front.** A status line; the abstract; an overview with seven main findings and a reading guide; and Figure 1, in Mermaid, which follows composition data from a product through radar (Syft and Grype) to the accepted core, with dashed arrows for what the radar → tmodel contract would have to carry. The 0.1.1 and 0.1.2 correction notes moved word for word to Appendix B, with the 0.2.0 build note, which now ends with #153.
+- **§13, a conclusion.** What the evidence shows, in five points, and where each result goes next, from Table 8.
+- **Acronyms.** A list of the terms Tables 1 and 2 use, placed before Table 1, where most of them first appear; expansions at first use in about 90 places in the body; and Appendix A, with 172 entries.
+- **Lead-ins.** One sentence for each of the thirteen tables that had none: Table 1, Tables 3a and 3b, 4a and 4b, 6a to 6d, the second-round matching and SPDX 3 support tables in §3, and §10's two findings tables.
+- **Citations.** Report sections are cited as "§N" throughout (19 rewrites of "section N" and of bare numbers such as "(1.3)"), file names are in code font (21), and links to files show the name in code font (6). Appendix B's notes keep their original wording.
+- **`dimensions.md`** 0.7.11 records the status, and **`searches.md`** 0.3.9 logs the lookups below.
+
+### Method and checks
+
+- **First use.** A script found each acronym's first appearance after the title, outside code, and checked that its expansion sits next to it. Four flags were accepted: HBOM and RFC are defined in their plural form first, GUAC is expanded in the first line under the heading that names it, and "US" is left as is.
+- **Nothing else changed.** A word diff against the #152 text lists every removed word. Each removal is a citation reformatted, a note moved to Appendix B, or a phrase rewritten around a new expansion; no finding, mark, count or date in a table changed. The report still has no em dashes.
+- **Expansions checked at their sources** where the project's notes did not already give them (`searches.md`, 2026-10-29): CVMAP (NVD's announcement on the NIST `nvd-news` list), SWHID (ISO's catalogue page for ISO/IEC 18670:2025), HIRS (its repository's README) and PACCOR (its repository's About text). An expansion of OmniBOR appears only in a vendor blog, so the report describes OmniBOR ids as gitoids instead.
+- **The new summaries were checked against the sections they summarize,** in the main session: each of the seven findings and each point of §13 restates a takeaway of §1 to §11, with that section cited. No fact-check agent ran, because the pass adds no new evidence.
+
+### Choices made here, open to review
+
+- **The conclusion is §13, after the method,** instead of §12 as in RPT-0005. Making it §12 would renumber the method section, which this log, `dimensions.md` and pull request #161 cite.
+- **The old notes moved to an appendix** instead of being deleted, so the corrections stay visible to a reader who looks for them.
+- **A terms list before the tables,** instead of expansions inside the cells of Tables 1 and 2, which would have doubled their width.
+- **Bus names and processor types** (USB, SATA, SAS; CPU, GPU, DSP, DPU, SoC) are glossed in their table cells and expanded in Appendix A, rather than spelled out in full inline.
+- **One figure.** The radar → tmodel data flow is the candidate the plan names, and the overview's findings point to it. Other candidates, such as the firmware-to-device bindings of §2, already have a table.
+
+### Rejected, and why
+
+None yet. This waits on review.
+
+### Open
+
+- **#153's last check:** a teammate reads only the overview and §13 and states the main findings.
+- **Figure 1 has not been rendered here.** GitHub renders Mermaid on the pull request page, which is the place to check it.
+- **A third adversarial round** (#38's test) would now also cover the new text.
+
+### What a human accepted
+
+- The student asked to start on the Sprint 2 issues, which include #153 (2026-10-29).
+- Pending: a review of this pass.
