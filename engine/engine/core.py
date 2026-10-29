@@ -7,15 +7,22 @@ always run the same engine code (APP-0001 A-030 boundary, A-060 CLI parity).
 from __future__ import annotations
 
 import platform
+from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
 
 from engine import __version__
 from engine.graph import GraphError
+from engine.load.library import LibraryError, cached_library, configured_root
 from engine.load.vector import load_vector
 from engine.paths import enumerate_paths
 
 ENGINE_NAME = "tmodel-engine"
+LIBRARY_FILTERS = ("type", "topic", "status")
+
+
+class Unavailable(RuntimeError):
+    """Something the engine needs is missing, such as the library (the API answers 503)."""
 
 
 def version() -> dict[str, Any]:
@@ -30,6 +37,44 @@ def version() -> dict[str, Any]:
 def health() -> dict[str, Any]:
     """Liveness check. Grows real checks (store reachable, library loaded) later."""
     return {"status": "ok", **version()}
+
+
+def library_records(filters: Mapping[str, str] | None = None) -> dict[str, Any]:
+    """The library's records, optionally filtered by type, topic and status (#140).
+
+    A filter keeps the records whose field equals its value; several filters must
+    all match. The library is the one `configured_root()` names. Records that fail
+    to load are left out and listed under `library.problems`, so a screen can still
+    open. Raises ValueError for an unknown or empty filter, and Unavailable when
+    there is no library to read.
+    """
+    wanted: dict[str, str] = {}
+    for name, value in (filters or {}).items():
+        if name not in LIBRARY_FILTERS:
+            raise ValueError(f"unknown filter {name!r}: use type, topic or status")
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError(f"filter {name!r} needs a value")
+        wanted[name] = value.strip()
+    root = configured_root()
+    try:
+        library = cached_library(root)
+    except LibraryError as exc:
+        raise Unavailable(
+            f"no library at {root}: check out the submodule "
+            "(git submodule update --init library) or set TMODEL_LIBRARY to a library checkout"
+        ) from exc
+    records = [r for r in library if all(getattr(r, k) == v for k, v in wanted.items())]
+    return {
+        "library": {
+            "root": library.root,
+            "digest": library.digest,
+            "count": len(library),
+            "problems": list(library.problems),
+        },
+        "filters": wanted,
+        "count": len(records),
+        "records": [r.to_dict() for r in records],
+    }
 
 
 def attack_paths(file: str, goal: str | None = None) -> dict[str, Any]:

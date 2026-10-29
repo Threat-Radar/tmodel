@@ -171,6 +171,11 @@ The window and the CLI both talk to the engine through its **local API** on
 network address. The harness's Node v8 pin does **not** apply here; the app uses
 current Node.
 
+The engine serves the library's records from the pinned `library/` submodule, so
+check it out first (`git submodule update --init library`), or set
+`TMODEL_LIBRARY` to another library checkout. `tmodel library` lists the records,
+and `--type`, `--topic` and `--status` filter them (#140).
+
 **Prerequisites (macOS)**
 
 | tool | version | install |

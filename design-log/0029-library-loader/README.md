@@ -1,10 +1,10 @@
 ---
 schema: "archdoc/v1"
 id: DL-0029
-title: "Library loader: read the pinned library's records into typed objects (#60, #138, #139)"
+title: "Library loader: read the pinned library's records into typed objects, and serve them (#60, #138, #139, #140)"
 type: process
 status: draft
-version: "0.1.1"
+version: "0.2.0"
 date: "2026-10-29"
 updated: "2026-10-29"
 record: DL-0029
@@ -112,4 +112,45 @@ Nothing yet.
 ## What a human accepted
 
 - @paria03 reviewed pull request #186 on 2026-10-29: the loader is well scoped, and the pinned library loads. One finding to fix before approval: two expected failures escaped the per-record error handling and stopped the whole load. One is a page count written with a non-ASCII digit, since "²" passes `str.isdigit()` but `int()` rejects it. The other is a `versions/` folder the loader cannot read. Both now fail only their own record, with its file named, and regression tests cover each in strict and partial mode. Other exceptions still propagate, as the review asked.
-- Pending: approval.
+- @nymble merged pull request #186 on 2026-10-29.
+
+## #140: the records through core, the API and the CLI
+
+### Question asked
+
+#140 asks for "the same façade pattern as the engine skeleton and #132: a core function, a local API route and a `tmodel` CLI command over the loaded records". It is done when core, the API and the CLI return the same results (parity tests), bad input gets a 400 with a clear message and never a dropped connection, and records can be filtered by type, topic and status. The student asked to start it on 2026-10-29, while #139 was in review in pull request #186, so this branch starts from #139's.
+
+### What was produced
+
+- `core.library_records(filters)`: the records whose `type`, `topic` and `status` equal the given values, with the library's root, digest, record count and the files that failed to load.
+- `GET /library` on the local API, with the filters as query parameters. An unknown or empty filter gets a 400 with a message. No library gets a 503 (`core.Unavailable`) with a message that says how to provide one.
+- `tmodel library`, with `--type`, `--topic`, `--status`, `--json`, `--in-process` and `--url`: a table of id, type, status and title, or the API's JSON.
+- In `engine/engine/load/library.py`: `configured_root()`, which is `$TMODEL_LIBRARY` or else the pinned submodule, and `cached_library()`.
+- `engine/tests/test_library_surface.py`: 39 tests.
+- `CONTRIBUTING.md` §10: one paragraph on the library the engine serves.
+
+### Method and checks
+
+- On the pinned library, the API lists 99 RFCs. The first request takes about 0.65 seconds and a repeated one about 0.03 seconds. All 550 records come to about 890 KB of JSON.
+- Engine suite: 169 passed, the 130 from #139's branch and 39 new. `ruff check` and `ruff format --check` are clean. Without the submodule, as CI runs, 67 library tests pass and the 2 that need the pinned library skip.
+
+### Choices made, open to review
+
+- **One loaded copy, checked on every request.** Each call compares the size and modification time of every file the loader reads, which takes a few milliseconds, and reloads only if one was added, removed or edited. A pulled or edited library shows up on the next request without restarting the engine.
+- **Broken records do not stop the screen.** The API answers 200 with the records that loaded and lists the failures under `library.problems`. The CLI prints them and exits 1 with a warning. A missing library is different: a 503, because the caller cannot fix it.
+- **503 instead of 400 for a missing library.** The server turns every ValueError into a 400, and `LibraryError` is a ValueError, so core raises `Unavailable` instead, and the server answers 503.
+- **Filters match exactly and take one value each.** The server keeps the last value of a repeated parameter, as it does for `/attack-paths`, so `?type=rfc&type=draft` filters on `draft`. Several values per filter, or matching that ignores case, can come with #141 if the table views need them.
+- **Every match comes back whole.** The response carries each record's full `to_dict()`. Shaping rows for the tables, with fewer fields, counts for filter menus or paging, is #141's job, once @kriishnaa-18 answers on #58.
+- **Placed to merge cleanly.** The core function sits after `health()` and the CLI command after `paths`, away from the lines that #162 and #155 change in the same files.
+- **The CLI catches ValueError,** which includes `GraphError`, so `--type ""` prints one error line instead of a traceback.
+
+### Open
+
+- How the packaged app finds a library (#124; asked on #60).
+- Whether the API should page the records (asked on #58).
+- This branch is built on #139's. Its pull request opens after #186 merges, with the branch moved onto `main` first, so that no pull request is stacked on another.
+
+### What a human accepted
+
+- The student asked to start #140 (2026-10-29).
+- Pending: review.

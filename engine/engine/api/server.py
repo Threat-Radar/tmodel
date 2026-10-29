@@ -42,11 +42,13 @@ def _attack_paths(query: dict[str, str]) -> dict[str, Any]:
     return core.attack_paths(query["file"], query.get("goal"))
 
 
-# Each route takes the query parameters; a ValueError becomes a 400 with its message.
+# Each route takes the query parameters; a ValueError becomes a 400 with its message,
+# and core.Unavailable a 503 with its message.
 ROUTES: dict[str, Callable[[dict[str, str]], dict[str, Any]]] = {
     "/health": lambda _q: core.health(),
     "/version": lambda _q: core.version(),
     "/attack-paths": _attack_paths,
+    "/library": core.library_records,  # filters: type, topic, status (#140)
 }
 
 
@@ -92,6 +94,8 @@ class EngineHandler(BaseHTTPRequestHandler):
             status, payload = 200, route(query)
         except ValueError as exc:
             status, payload = 400, {"error": str(exc)}
+        except core.Unavailable as exc:
+            status, payload = 503, {"error": str(exc)}
         except Exception as exc:  # never drop the connection: the CLI would say "not running"
             status, payload = 500, {"error": f"internal error: {type(exc).__name__}"}
         self._send_json(status, payload)

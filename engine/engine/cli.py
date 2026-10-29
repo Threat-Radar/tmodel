@@ -6,6 +6,9 @@
   tmodel paths FILE [--goal G] [--json]
                                attack paths to a step or threat in a model file;
                                without --goal, list the file's threats
+  tmodel library [--type T] [--topic T] [--status S] [--json]
+                               the library's records, optionally filtered; the
+                               library is $TMODEL_LIBRARY or the pinned submodule
 
 By default these go through the local API, exactly like the desktop app
 (APP-0001 A-030, A-060). `--in-process` calls the engine code directly
@@ -26,7 +29,6 @@ from typing import Any
 from engine import core
 from engine.api import server
 from engine.client import EngineError, EngineTimeout, EngineUnreachable, get
-from engine.graph import GraphError
 
 LOCAL: dict[str, Callable[[], dict[str, Any]]] = {"health": core.health, "version": core.version}
 
@@ -52,7 +54,7 @@ def _call(fetch: Callable[[], dict[str, Any]]) -> dict[str, Any] | None:
         print(f"error: {exc}; it may still be working (try --in-process)", file=sys.stderr)
     except EngineUnreachable as exc:
         print(f"error: {exc}\nstart it with: tmodel serve", file=sys.stderr)
-    except (EngineError, GraphError) as exc:
+    except (EngineError, ValueError, core.Unavailable) as exc:  # ValueError covers GraphError
         print(f"error: {exc}", file=sys.stderr)
     return None
 
@@ -113,6 +115,46 @@ def _paths(args: argparse.Namespace) -> int:
     return 0
 
 
+LIBRARY_TIMEOUT_S = 60.0  # the engine's first request loads every record
+
+
+def _print_library(payload: dict[str, Any]) -> None:
+    records, library = payload["records"], payload["library"]
+    print(f"{payload['count']} of {library['count']} records in {library['root']}")
+    columns = ("id", "type", "status")
+    width = {c: max((len(r[c]) for r in records), default=0) for c in columns}
+    for r in records:
+        cells = "  ".join(f"{r[c]:<{width[c]}}" for c in columns)
+        print(f"  {cells}  {r['title']}")
+
+
+def _library(args: argparse.Namespace) -> int:
+    filters = {name: getattr(args, name) for name in core.LIBRARY_FILTERS}
+    filters = {name: value for name, value in filters.items() if value is not None}
+    payload = _call(
+        lambda: (
+            core.library_records(filters)
+            if args.in_process
+            else get("/library", args.url, timeout=LIBRARY_TIMEOUT_S, params=filters)
+        )
+    )
+    if payload is None:
+        return 1
+    if args.json:
+        print(json.dumps(payload))
+    else:
+        _print_library(payload)
+    problems = payload["library"]["problems"]
+    if problems:  # the records that loaded are printed; say what is missing
+        noun = "record" if len(problems) == 1 else "records"
+        print(
+            f"warning: {len(problems)} library {noun} failed to load; --json lists them",
+            file=sys.stderr,
+        )
+        return 1
+    return 0
+
+
 def _add_transport(cmd: argparse.ArgumentParser) -> None:
     cmd.add_argument("--json", action="store_true", help="print JSON")
     cmd.add_argument("--url", default=None, help="engine URL (default http://127.0.0.1:47811)")
@@ -155,6 +197,12 @@ def build_parser() -> argparse.ArgumentParser:
     paths.add_argument("--goal", default=None, help="step or threat id; omit to list threats")
     _add_transport(paths)
     paths.set_defaults(func=_paths)
+
+    library = sub.add_parser("library", help="the library's records (#140)")
+    for name in core.LIBRARY_FILTERS:
+        library.add_argument(f"--{name}", default=None, help=f"only records with this {name}")
+    _add_transport(library)
+    library.set_defaults(func=_library)
     return parser
 
 
