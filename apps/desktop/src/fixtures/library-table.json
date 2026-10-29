@@ -1,0 +1,301 @@
+{
+  "library": {
+    "digest": "e4a45f868c8edf564f21391091047986a7bcacc7a28870e58b034d912d29b11e",
+    "count": 12,
+    "problems": []
+  },
+  "query": {
+    "filters": {},
+    "search": null,
+    "sort": "id",
+    "order": "asc",
+    "limit": null,
+    "offset": 0
+  },
+  "total": 12,
+  "count": 12,
+  "rows": [
+    {
+      "id": "benedetti-2024-sbom-python",
+      "title": "The Impact of SBOM Generators on Vulnerability Assessment in Python: A Comparison and a Novel Approach",
+      "short_title": "SBOM generators and Python vulnerability assessment",
+      "type": "paper",
+      "shelf": "academic",
+      "status": "stub",
+      "maturity": null,
+      "date": "2024-09-10",
+      "publisher": "arXiv; Springer (LNCS version)",
+      "topic": "product-composition",
+      "tags": [
+        "sbom",
+        "supply-chain",
+        "evidence"
+      ],
+      "url": "https://arxiv.org/pdf/2409.06390v1",
+      "artifacts": 0,
+      "reviewed_artifacts": 0,
+      "profile": null
+    },
+    {
+      "id": "cwe",
+      "title": "MITRE CWE — Common Weakness Enumeration",
+      "short_title": null,
+      "type": "dataset",
+      "shelf": "other",
+      "status": "summarized",
+      "maturity": "best-practice",
+      "date": null,
+      "publisher": null,
+      "topic": null,
+      "tags": [
+        "cwe",
+        "weakness",
+        "mitre",
+        "graph"
+      ],
+      "url": "https://cwe.mitre.org/",
+      "artifacts": 0,
+      "reviewed_artifacts": 0,
+      "profile": null
+    },
+    {
+      "id": "draft-mih-scitt-agent-action-capsule",
+      "title": "An Agent Action Capsule Profile for SCITT",
+      "short_title": "Agent Action Capsule",
+      "type": "draft",
+      "shelf": "ietf",
+      "status": "fetched",
+      "maturity": "draft",
+      "date": "2026-09-26",
+      "publisher": "IETF",
+      "topic": "predicate-rendering",
+      "tags": [
+        "agent-identity",
+        "attestation",
+        "transparency-log",
+        "ietf",
+        "prior-art"
+      ],
+      "url": "https://www.ietf.org/archive/id/draft-mih-scitt-agent-action-capsule-05.txt",
+      "artifacts": 0,
+      "reviewed_artifacts": 0,
+      "profile": null
+    },
+    {
+      "id": "ecma-424",
+      "title": "ECMA-424 CycloneDX Bill of Materials Specification, 2nd Edition",
+      "short_title": null,
+      "type": "spec",
+      "shelf": "other",
+      "status": "stub",
+      "maturity": null,
+      "date": null,
+      "publisher": null,
+      "topic": "supply-chain-attestation",
+      "tags": [],
+      "url": "https://ecma-international.org/publications-and-standards/standards/ecma-424/",
+      "artifacts": 0,
+      "reviewed_artifacts": 0,
+      "profile": null
+    },
+    {
+      "id": "eo-14306",
+      "title": "Executive Order 14306: Sustaining Select Efforts To Strengthen the Nation's Cybersecurity and Amending Executive Order 13694 and Executive Order 14144",
+      "short_title": "EO 14306",
+      "type": "spec",
+      "shelf": "regulator",
+      "status": "summarized",
+      "maturity": null,
+      "date": "2025-06-06",
+      "publisher": "Executive Office of the President; published in the Federal Register (90 FR 24723, 2025-06-11)",
+      "topic": "supply-chain-attestation",
+      "tags": [
+        "sdl",
+        "regulation",
+        "attestation",
+        "us-federal"
+      ],
+      "url": "https://www.govinfo.gov/content/pkg/FR-2025-06-11/pdf/2025-10804.pdf",
+      "artifacts": 0,
+      "reviewed_artifacts": 0,
+      "profile": null
+    },
+    {
+      "id": "gram",
+      "title": "Gram",
+      "short_title": null,
+      "type": "repo",
+      "shelf": "community",
+      "status": "summarized",
+      "maturity": null,
+      "date": null,
+      "publisher": "Klarna",
+      "topic": "rpt-0003-threat-modeling-products",
+      "tags": [
+        "threat-modeling",
+        "data-flow-diagram",
+        "collaboration"
+      ],
+      "url": "https://github.com/klarna-incubator/gram",
+      "artifacts": 0,
+      "reviewed_artifacts": 0,
+      "profile": null
+    },
+    {
+      "id": "rfc-8152",
+      "title": "CBOR Object Signing and Encryption (COSE)",
+      "short_title": null,
+      "type": "rfc",
+      "shelf": "ietf",
+      "status": "fetched",
+      "maturity": "standard",
+      "date": "2017-07",
+      "publisher": "IETF",
+      "topic": "cbor-implementation",
+      "tags": [
+        "signatures",
+        "ietf",
+        "background"
+      ],
+      "url": "https://www.rfc-editor.org/rfc/rfc8152.txt",
+      "artifacts": 0,
+      "reviewed_artifacts": 0,
+      "profile": null
+    },
+    {
+      "id": "rfc-8785",
+      "title": "JSON Canonicalization Scheme (JCS)",
+      "short_title": null,
+      "type": "rfc",
+      "shelf": "ietf",
+      "status": "distilled",
+      "maturity": "informational",
+      "date": "2020-06",
+      "publisher": "RFC Editor (Independent Submission stream — not IETF consensus)",
+      "topic": "canonical-encoding",
+      "tags": [
+        "canonicalization",
+        "encoding",
+        "prior-art"
+      ],
+      "url": "https://www.rfc-editor.org/rfc/rfc8785.txt",
+      "artifacts": 7,
+      "reviewed_artifacts": 0,
+      "profile": "full"
+    },
+    {
+      "id": "rfc-9393",
+      "title": "Concise Software Identification Tags",
+      "short_title": "RFC 9393",
+      "type": "rfc",
+      "shelf": "ietf",
+      "status": "stub",
+      "maturity": "standard",
+      "date": "2023-06",
+      "publisher": "IETF",
+      "topic": "product-composition",
+      "tags": [
+        "sbom",
+        "naming",
+        "encoding",
+        "prior-art"
+      ],
+      "url": "https://www.rfc-editor.org/rfc/rfc9393.txt",
+      "artifacts": 0,
+      "reviewed_artifacts": 0,
+      "profile": null
+    },
+    {
+      "id": "sbomproof-2025",
+      "title": "SBOMproof: Beyond Alleged SBOM Compliance for Supply Chain Security of Container Images",
+      "short_title": "SBOMproof",
+      "type": "paper",
+      "shelf": "academic",
+      "status": "stub",
+      "maturity": null,
+      "date": "2025-10-07",
+      "publisher": "arXiv (preprint)",
+      "topic": "product-composition",
+      "tags": [
+        "sbom",
+        "naming",
+        "evidence"
+      ],
+      "url": "https://arxiv.org/pdf/2510.05798v1",
+      "artifacts": 0,
+      "reviewed_artifacts": 0,
+      "profile": null
+    },
+    {
+      "id": "sudokn-okn",
+      "title": "SUDOKN — Supply and Demand Open Knowledge Network (Arizona State U., Proto-OKN)",
+      "short_title": null,
+      "type": "web",
+      "shelf": "academic",
+      "status": "summarized",
+      "maturity": "implementation",
+      "date": null,
+      "publisher": null,
+      "topic": null,
+      "tags": [
+        "okn",
+        "supply-chain",
+        "manufacturing",
+        "knowledge-graph"
+      ],
+      "url": "https://www.proto-okn.net/theme-1-projects/",
+      "artifacts": 0,
+      "reviewed_artifacts": 0,
+      "profile": null
+    },
+    {
+      "id": "threattree-help",
+      "title": "ThreatTree Help Center",
+      "short_title": null,
+      "type": "web",
+      "shelf": "vendor",
+      "status": "summarized",
+      "maturity": "implementation",
+      "date": null,
+      "publisher": null,
+      "topic": "rpt-0003-threat-modeling-products",
+      "tags": [
+        "threat-modeling",
+        "attack-tree",
+        "dfd",
+        "stix",
+        "risk-register",
+        "workflow"
+      ],
+      "url": "https://threattree.com/app/help",
+      "artifacts": 0,
+      "reviewed_artifacts": 0,
+      "profile": null
+    }
+  ],
+  "facets": {
+    "type": {
+      "dataset": 1,
+      "draft": 1,
+      "paper": 2,
+      "repo": 1,
+      "rfc": 3,
+      "spec": 2,
+      "web": 2
+    },
+    "status": {
+      "distilled": 1,
+      "fetched": 2,
+      "stub": 4,
+      "summarized": 5
+    },
+    "topic": {
+      "canonical-encoding": 1,
+      "cbor-implementation": 1,
+      "predicate-rendering": 1,
+      "product-composition": 3,
+      "rpt-0003-threat-modeling-products": 2,
+      "supply-chain-attestation": 2
+    }
+  }
+}

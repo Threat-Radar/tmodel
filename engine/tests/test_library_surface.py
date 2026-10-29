@@ -106,7 +106,7 @@ def test_core_records_are_the_loaders_records():
 @pytest.mark.parametrize(
     "filters, message",
     [
-        ({"kind": "rfc"}, "unknown filter 'kind': use type, topic or status"),
+        ({"kind": "rfc"}, "unknown filter 'kind': use id, type, topic or status"),
         ({"type": ""}, "filter 'type' needs a value"),
         ({"status": "   "}, "filter 'status' needs a value"),
     ],

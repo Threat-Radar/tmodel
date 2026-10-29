@@ -6,7 +6,7 @@
   tmodel paths FILE [--goal G] [--json]
                                attack paths to a step or threat in a model file;
                                without --goal, list the file's threats
-  tmodel library [--type T] [--topic T] [--status S] [--json]
+  tmodel library [--id I] [--type T] [--topic T] [--status S] [--json]
                                the library's records, optionally filtered; the
                                library is $TMODEL_LIBRARY or the pinned submodule
 

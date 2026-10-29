@@ -1,10 +1,10 @@
 ---
 schema: "archdoc/v1"
 id: DL-0029
-title: "Library loader: read the pinned library's records into typed objects, and serve them (#60, #138, #139, #140)"
+title: "Library loader: read the pinned library's records into typed objects, and serve them (#60, #138, #139, #140, #141)"
 type: process
 status: draft
-version: "0.2.0"
+version: "0.3.0"
 date: "2026-10-29"
 updated: "2026-10-29"
 record: DL-0029
@@ -148,9 +148,49 @@ Nothing yet.
 
 - How the packaged app finds a library (#124; asked on #60).
 - Whether the API should page the records (asked on #58).
-- This branch is built on #139's. Its pull request opens after #186 merges, with the branch moved onto `main` first, so that no pull request is stacked on another.
 
 ### What a human accepted
 
 - The student asked to start #140 (2026-10-29).
 - Pending: review.
+
+## #141: the data feed for the table views
+
+### Question asked
+
+#141 asks to "agree the JSON shape and the sort and filter parameters that the table views need (#58, PLAN-0002 B2, T-201), and provide a sample fixture the GUI can start from". It is done when the shape is agreed on #58, a sample fixture is committed, and the API supports the agreed parameters. @kriishnaa-18 had not yet answered the questions posted on #58, so this builds a concrete proposal to agree on. The student asked to start it on 2026-10-29.
+
+### What was produced
+
+- `core.library_table(query)` and `GET /library/table`: one row per record, with `type`, `topic`, `status` and `id` filters, `search`, `sort`, `order`, `limit` and `offset`. Each row has id, title, short title, type, shelf, status, maturity, date, publisher, topic, tags, url, artifact counts and the extraction profile. `facets` counts each type, status and topic in the whole library, for filter menus.
+- An `id` filter on `/library` (#140), so a details view can fetch one record in full.
+- `apps/desktop/src/fixtures/library-table.json`, the engine's answer over the 12 fixture records, with a README.
+- `engine/tests/test_library_table.py`: 39 tests, including one that fails when the fixture no longer matches the engine's answer.
+
+### Method and checks
+
+- Each expected order in the tests was checked against the fixture records' fields by hand: blanks sort last in both orders, ties keep id order, titles sort without regard to case.
+- On the fixture library, the whole answer is about 8 KB. On the pinned library, the 550 rows come to about 240 KB, against about 890 KB from `/library`, because rows leave out each record's longer fields.
+- Engine suite: 208 passed, 39 of them new; `ruff check` and `ruff format --check` are clean.
+- After #186 merged, the branch was moved onto `main`, which brings in the loader fix from @paria03's review. There the engine suite has 214 passed and 3 skipped (the packaged-engine tests, which need a built engine), and `ruff` is clean.
+
+### Choices made, open to review
+
+- **A separate route for rows.** `/library` keeps returning whole records (#140), and `/library/table` returns what a table shows. The table can change for the GUI without changing what the CLI and other callers get.
+- **The engine sorts, filters, searches and pages.** #58 asks for no business logic in the WebView (APP-0001 A-030), so the table sends parameters and shows the rows it gets back.
+- **Facets count the whole library, not the current match.** A filter menu then lists every value with a stable count. Counting within the current match is easy to add if #58 wants it.
+- **No local path in the answer.** The table leaves out the library's root folder, so the fixture is the same on every machine and can be compared exactly.
+- **No new CLI command.** APP-0001 makes the CLI optional (A-060), and `tmodel library` already lists and filters the records; the table shape is for the GUI.
+- **One generated fixture,** checked by a test, instead of hand-written sample data that could drift from the engine.
+- **Parameter errors are 400s with a message,** and `limit` and `offset` accept ASCII digits only, the same rule the loader now applies to page counts after @paria03's review of #186.
+
+### Open
+
+- **The shape is a proposal until @kriishnaa-18 agrees on #58.** That is #141's first done item.
+- Paging is supported but off by default, since 550 rows are small enough to send at once.
+
+### What a human accepted
+
+- The student asked to start #141 (2026-10-29).
+- Pending: agreement on #58, and review.
+
