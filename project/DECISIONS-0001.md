@@ -7,9 +7,9 @@ description: "The DEC-* register: status, what blocks on each, and the evidence 
 type: process
 category: process
 status: active
-version: "0.1.8"
+version: "0.1.9"
 date: "2026-09-23"
-updated: "2026-10-12"
+updated: "2026-10-26"
 needs_review: false
 reviewed: true
 canonical_path: project/DECISIONS-0001.md
@@ -25,8 +25,8 @@ Status: `open` · `researching` · `proposed` (an ADR is drafted) · `accepted`.
 
 | id | question | status | blocks | evidence |
 |---|---|---|---|---|
-| **DEC-001a** | Core attack-path type system (first-class types + typed relations) | **accepted → ADR-0010** | I2, the schema, the UI | ADR-0010; proposed.14 + example vectors (spec/vectors/) |
-| **DEC-001b** | Governed/program layer (ThreatModel, SecurityProgram/gates, Requirement, GovernedView, RedundancyGroup) | open | DEC-001b follow-up ADR; #19 audit, DEC-002 | DL-0020 critique (C1/C2/M1/M2/M4/M5 blockers) |
+| **DEC-001a** | Core attack-path type system (first-class types + typed relations) | **accepted → ADR-0010; amended by ADR-0012** (Requirement in the core) | I2, the schema, the UI | ADR-0010; ADR-0012 + DL-0025 (mvp-02 requirements); proposed.14 + example vectors (spec/vectors/) |
+| **DEC-001b** | Governed/program layer (ThreatModel, SecurityProgram/gates, GovernedView, RedundancyGroup, `Requirement.conformance_status`). Requirement itself moved to the core by ADR-0012 | open | DEC-001b follow-up ADR; #19 audit, DEC-002 | DL-0020 critique (C1/C2/M1/M2/M4/M5 blockers) |
 | **DEC-002** | Encoding/serialization; which existing formats we import (and export) | **accepted → ADR-0007** | schema, vectors, MAP-* | ADR-0007 (LinkML IDL; import OTM/STIX 2.1; export JSON-LD/Turtle/GraphML/CSV); RPT-0015 |
 | **DEC-003** | Risk-metric scheme: CVSS / custom / ISO 21434 / Common Criteria / composite | **accepted → ADR-0006** | I4 risk, R-011…R-013 | ADR-0006 (composite vector; 21434 Table-1; CC display-only); proposed.10/DL-0011 |
 | **DEC-004** | KG substrate — **RDF vs LPG implementation of the local working store** (narrowed by ADR-0004; logical model is edge-rich either way) | **accepted → ADR-0008** | I3, R-018…R-021 | ADR-0008 (Oxigraph embedded RDF, behind the ADR-0004 façade); #50 |
@@ -34,7 +34,7 @@ Status: `open` · `researching` · `proposed` (an ADR is drafted) · `accepted`.
 | **DEC-006** | UI stack and interaction model for the graphical threat model | **accepted → ADR-0003** | I3 | ADR-0003 (Path A); RPT-0012, APP-0001 |
 | **DEC-007** | Relationship to `tradar`: reuse / wrap / greenfield | **accepted → ADR-0001** | I2, I3 | ADR-0001 (radar/tmodel split) |
 | **DEC-008** | CWE/NVD integration: live vs cached mirror; automation | open | I2, I4, R-010 | RPT-0001 §CWE/NVD |
-| **DEC-009** | Generic-threat → product / product-family mapping; mitigation lifecycle | open | I4, R-020, R-021 | RPT-0001, ARCH-0001 §7 |
+| **DEC-009** | Generic-threat → product / product-family mapping; mitigation lifecycle | open | I4, R-020, R-021 | RPT-0001, ARCH-0001 §7; ADR-0012 gives a core Requirement + `applies_to_family` / `Mitigation.stated_as` hook (no ProductFamily class yet) |
 | **DEC-010** | Implementation stack & language for the application (GUI + backend + CLI) | **accepted → ADR-0003 (+ ADR-0009)** | I3 build | ADR-0003 (Path A) + ADR-0009 (engine language split: Python brain + Rust store/hot-paths); RPT-0012, APP-0001 |
 | **DEC-011** | Storage & edge model — file canonical SoT, edge-rich logical invariant, local embedded working store, derived export | **accepted → ADR-0004** | I-App build; narrows DEC-004 | ADR-0004; #50 |
 
@@ -64,3 +64,10 @@ attack-path type system), **DEC-001b open** (the governed/program layer: ThreatM
 critique (DL-0020: C1 conformance/approval mechanization, C2 approval-digest binding, M1 edge
 integrity, M2 GovernedArtifact mixin + renderer, M4 exercise-or-drop GovernedView/Checkpoint, M5
 author/origin). DEC-009 now depends on DEC-001b's Requirement.
+
+**Requirement moved to the core (2026-10-26):** sponsor decision → **ADR-0012** amends DEC-001a.
+`Requirement` (kind, text origin, source clause, refines / derived_from / conflicts_with /
+maps_to, addresses, satisfied_by, applies_to / applies_to_family) and `Mitigation.stated_as`
+are core; a generic family mitigation is stated as a requirement. DEC-001b keeps the rest of
+the governed layer and `Requirement.conformance_status`. DEC-009 now builds on the core
+Requirement rather than DEC-001b's.
