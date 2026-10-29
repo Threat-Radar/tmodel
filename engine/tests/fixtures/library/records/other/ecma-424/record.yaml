@@ -1,0 +1,32 @@
+# Spec: version is load-bearing. New version = new record, linked by supersedes.
+# Base template. Every adapter is this shape; types differ only in defaults
+# and in which fields they leave for a human. Placeholders: {{...}}
+schema: "library-record/v1"
+id: ecma-424
+body: other
+type: spec
+title: "ECMA-424 CycloneDX Bill of Materials Specification, 2nd Edition"
+authors: []
+date: ""
+identifiers:
+  url: https://ecma-international.org/publications-and-standards/standards/ecma-424/
+content:
+  url: https://ecma-international.org/publications-and-standards/standards/ecma-424/
+  sha256: ""
+  retrieved: ""
+  local: false
+relations:
+  supersedes: []
+  superseded_by: []
+  see_also: [cyclonedx-1-7]
+  cited_by: []
+  implements_concept: []
+bears_on:
+  []
+topic: supply-chain-attestation
+publisher: ""
+version: ""
+tags: []
+duplicate_of: cyclonedx-1-7
+status: stub
+confidence: low

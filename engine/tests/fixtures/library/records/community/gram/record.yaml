@@ -1,0 +1,38 @@
+# Repo: pin the commit. An unpinned repo is not a citable source.
+# Base template. Every adapter is this shape; types differ only in defaults
+# and in which fields they leave for a human. Placeholders: {{...}}
+schema: "library-record/v1"
+id: gram
+body: community
+type: repo
+title: "Gram"
+authors:
+  - Klarna
+date: ""
+identifiers:
+  git: https://github.com/klarna-incubator/gram
+publisher: "Klarna"
+content:
+  url: https://github.com/klarna-incubator/gram
+  sha256: ""
+  retrieved: "2026-10-13"
+  local: false
+relations:
+  supersedes: []
+  superseded_by: []
+  see_also: []
+  cited_by: []
+  implements_concept: []
+bears_on:
+  - DEC-006
+  - DEC-009
+  - R-021
+topic: rpt-0003-threat-modeling-products
+commit: "e6a6239383269f7da8c1e560ac8c7cb2ede42553"
+license: "Apache-2.0"
+tags:
+  - threat-modeling
+  - data-flow-diagram
+  - collaboration
+status: summarized
+confidence: high
