@@ -1,0 +1,42 @@
+# Draft: one record per document LINE, tracking the CURRENT revision
+# (scope §5). A superseded revision folds into versions/<rev>/ — it does NOT
+# get a supersedes edge. Re-ingesting a new rev as a sibling record is wrong.
+schema: "library-record/v1"
+id: draft-mih-scitt-agent-action-capsule
+body: ietf
+type: draft
+maturity: draft
+version: "-05"
+title: "An Agent Action Capsule Profile for SCITT"
+short_title: "Agent Action Capsule"
+authors:
+  - "S. Mih"
+date: "2026-09-26"
+identifiers:
+  draft: draft-mih-scitt-agent-action-capsule-05
+  url: https://datatracker.ietf.org/doc/draft-mih-scitt-agent-action-capsule/05/
+content:
+  url: https://www.ietf.org/archive/id/draft-mih-scitt-agent-action-capsule-05.txt
+  sha256: "c2a498fa561e6ee226fbdfca00415dfb7dfc108715ce345adaf21ba2a50c008e"
+  retrieved: "2026-09-27"
+  local: false
+relations:
+  supersedes: []
+  superseded_by: []
+  see_also:
+    - rfc-9943
+  cited_by: []
+  implements_concept: []
+bears_on:
+  - DEC-007
+topic: predicate-rendering
+publisher: IETF
+tags:
+  - agent-identity
+  - attestation
+  - transparency-log
+  - ietf
+  - prior-art
+status: fetched
+confidence: low
+owner: davidhsiaotw
