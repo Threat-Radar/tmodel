@@ -200,7 +200,7 @@ copy to pick the change up.
 (cd apps/desktop && npm run tauri dev)
 ```
 
-The app starts its bundled engine and stops it when you quit; the window says
+The app starts its bundled engine and stops it gracefully when you quit; the window says
 **"starting local engine…"** for a few seconds, then **"connected to local engine ·
 v0.1.0"**. If a tmodel engine is already answering on the port, the app uses it
 instead, so while you work on the engine, run it from source in a second terminal
@@ -225,9 +225,21 @@ runtime.
 **Releases.** Pushing a tag `vX.Y.Z` (matching `version` in `tauri.conf.json`;
 `vX.Y.Z-rc.N` for a test) runs `.github/workflows/release.yml`: it builds the
 `.dmg` on a macOS runner, checks it, and attaches it with a SHA-256 file to a
-**draft** GitHub Release that a maintainer publishes. With the `APPLE_*` secrets
+**draft** GitHub Release that a maintainer publishes. Release-candidate tags (`vX.Y.Z-rc.N`) create draft prereleases.
+With the `APPLE_*` secrets
 listed in that workflow it also signs with a Developer ID and notarizes; without
-them the app stays ad-hoc signed.
+them the app stays ad-hoc signed. Dependency installation runs before signing
+credentials are exposed; credentials are scoped to the app build step.
+
+**Packaging acceptance (#124).** Keep the issue open after the implementation
+merges until a test version tag has produced the draft release and a downloaded
+installer has been checked on a clean Mac or fresh user account. On normal quit,
+stdin closes so the engine and its PyInstaller launcher can exit and remove the
+unpacked runtime. The app waits up to ten seconds for termination. Check three
+launch/quit cycles for new `_MEI*` leftovers, confirm the engine port is released,
+and check startup with the port already occupied. `bin/build-engine` also reads
+an example model with the bundled engine in an empty environment, exercising
+PyYAML and attack-path computation without a system Python.
 
 **Opening a build that is not signed with a Developer ID.** macOS refuses to open
 it on first launch and says it cannot verify the app. Close that dialog, then open **System

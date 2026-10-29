@@ -4,7 +4,7 @@
 
 use std::io::{Read, Write};
 use std::net::{Ipv4Addr, SocketAddr, TcpListener, TcpStream};
-use std::sync::Mutex;
+use std::sync::{Condvar, Mutex};
 use std::time::Duration;
 
 use serde::Serialize;
@@ -37,11 +37,13 @@ pub struct EngineState {
     process: Mutex<Option<EngineProcess>>,
     child: Mutex<Option<CommandChild>>,
     stderr: Mutex<Vec<String>>,
+    exited: Condvar,
 }
 
 impl EngineState {
     fn set(&self, p: EngineProcess) {
         *self.process.lock().unwrap() = Some(p);
+        self.exited.notify_all();
     }
 }
 
@@ -83,8 +85,8 @@ pub fn start(app: &AppHandle) {
     }
 
     // The one-file engine runs as a launcher plus the Python process. A process
-    // group lets `stop` kill both; --exit-with-parent makes the engine stop on
-    // its own when our end of its stdin closes (app crash or forced quit).
+    // group permits killing both if needed. --exit-with-parent stops the engine
+    // when stdin closes, on normal quit as well as app crash or forced quit.
     let spawned = app.shell().sidecar(SIDECAR).and_then(|cmd| {
         cmd.args([
             "serve",
@@ -132,10 +134,22 @@ pub fn start(app: &AppHandle) {
     });
 }
 
-/// Stop the sidecar if we started it (on quit): kills its whole process group.
+/// Close stdin so the engine exits normally and PyInstaller removes its unpacked
+/// runtime. SIGKILL would stop both processes but leave an _MEI directory behind.
 pub fn stop(app: &AppHandle) {
-    if let Some(child) = app.state::<EngineState>().child.lock().unwrap().take() {
-        let _ = child.kill();
+    let state = app.state::<EngineState>();
+    let child = state.child.lock().unwrap().take();
+    if let Some(child) = child {
+        drop(child);
+        // Let the event reader observe termination before the app exits. This
+        // also avoids immediately reopening against the old engine. Bound the
+        // wait so a broken sidecar cannot hang the desktop app indefinitely.
+        let process = state.process.lock().unwrap();
+        let _ = state
+            .exited
+            .wait_timeout_while(process, Duration::from_secs(10), |p| {
+                matches!(p, Some(EngineProcess::Started))
+            });
     }
 }
 

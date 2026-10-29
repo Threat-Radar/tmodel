@@ -29,4 +29,7 @@ VPY="$BUILD/venv/bin/python"
 
 # Smoke test: the executable runs the engine with no Python on the path.
 env -i HOME="$HOME" "$OUT/$NAME" version --in-process --json
+env -i HOME="$HOME" "$OUT/$NAME" paths \
+  "$PWD/spec/vectors/mvp-01-software-doc-service.yaml" \
+  --goal threat-instance:imds-pivot --in-process --json
 echo "built $OUT/$NAME"
