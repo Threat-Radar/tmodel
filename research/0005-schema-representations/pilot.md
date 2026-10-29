@@ -4,9 +4,9 @@ id: RPT-0005-pilot
 title: "RPT-0005 Phase 1 pilot: CWE, CVE, NVD and OTM"
 type: research
 status: draft
-version: "0.1.1"
+version: "0.1.2"
 date: "2026-10-05"
-updated: "2026-10-06"
+updated: "2026-10-21"
 record: RPT-0005
 ---
 
@@ -15,6 +15,8 @@ record: RPT-0005
 The pilot planned in [dimensions.md](dimensions.md): one catalog (CWE), one record format with its enrichment service (CVE and NVD), and one threat-model format (OTM), filled into the per-format record and the tables before the three-agent fan-out. It has two jobs: produce the first rows of the report, and test whether the columns and marks work. What it changed in `dimensions.md` is in the last section.
 
 Every fact below was checked against the schema file or live data on 2026-10-05, not taken from a summary. Schema files were downloaded and their SHA-256 recorded so the reading can be repeated. Sources are in [sources.md](sources.md); queries in [searches.md](searches.md). These rows feed the report; they are not yet the report.
+
+> **Corrections in 0.1.2 (2026-10-21)**, from @Clovier's technical review of tmodel#126 (DL-0013): NVD's web status "Not Scheduled" is the API status `Deferred`, not a different one; `dataVersion` 5.0 survives only on rejected CVE records; an orgId explanation for CISA-ADP is added; and the CVE exploitation-evidence cell now leads with CISA-ADP's structured `ssvc` and `kev` entries (`≈`). Noted only: the CWE point that a deprecated entry names its successor "only in prose" stays as the pilot found it, but 2 of CWE 4.20's 25 deprecated weaknesses do name one in `Mapping_Notes/Suggestions` (DL-0013, 2026-10-16).
 
 ## Per-format records
 
@@ -45,7 +47,7 @@ Findings that bear on tmodel:
 
 | field | value |
 |---|---|
-| Version pinned | CVE Record Format 5.2.0 (released 2025-10-29), `CVE_Record_Format.json` (JSON Schema draft-07), SHA-256 `33f75174…3ddfde67`. Records in the wild carry `dataVersion` 5.0, 5.1 or 5.2. |
+| Version pinned | CVE Record Format 5.2.0 (released 2025-10-29), `CVE_Record_Format.json` (JSON Schema draft-07), SHA-256 `33f75174…3ddfde67`. Records in `cvelistV5` carry `dataVersion` 5.1 or 5.2; 5.0 remains only on rejected records (all 14,058 records at 5.0 are `REJECTED` in the 2026-10-18 snapshot). |
 | Steward | The CVE Program: the CVE Board, with MITRE as secretariat and CISA as sponsor. The program's single federal sponsor drew concern in April 2025, when a CVE Foundation was announced as a possible alternative home. Program news (Board minutes, new members, new CNAs) continued through 2026; the latest item checked is dated 2026-09-24. |
 | Core entities | One record per CVE id, with `cveMetadata` (state PUBLISHED or REJECTED, assigner, dates) and `containers`: exactly one `cna` container from the assigning CNA, and any number of `adp` containers from Authorized Data Publishers. Each container holds `affected[]` (products and versions), `problemTypes` (CWE), `metrics` (CVSS v2.0 to v4.0, or `other`), `references`, `solutions`, `workarounds`, `exploits`, `timeline`, `credits`, `taxonomyMappings`, `tags`. |
 | Identifier scheme | `CVE-YYYY-NNNN…` (4 to 19 digits), unique and never reassigned; organizations by UUID (`orgId`). |
@@ -78,10 +80,10 @@ Findings that bear on tmodel:
 
 Findings that bear on tmodel:
 
-- **Each weakness and score has a source and a role.** Entries in `weaknesses[]` and in each `cvssMetric*` list carry `source` (an email or an orgId) and `type` (Primary or Secondary). For CVE-2021-44228, NVD's own CWE assignment (CWE-917, from `nvd@nist.gov`) differs from the CNA's (CWE-502, CWE-400, CWE-20). A tmodel import keeps both, attributed, and does not choose silently.
+- **Each weakness and score has a source and a role.** Entries in `weaknesses[]` and in each `cvssMetric*` list carry `source` (an email or an orgId) and `type` (Primary or Secondary). For CVE-2021-44228, NVD's own CWE assignment (CWE-917, from `nvd@nist.gov`) differs from the CNA's (CWE-502, CWE-400, CWE-20). An orgId is a bare CVE Program UUID: in CVE-2021-44228 the CVSS 3.1 entry and `ssvcV203` carry `134c704f-9b21-4f2e-91b3-4a467353bcc0`, which is CISA-ADP ("CISA ADP Vulnrichment"). A tmodel import keeps both, attributed, and does not choose silently.
 - **Applicability is boolean CPE logic.** `configurations[].nodes[]` combine `cpeMatch[]` entries with `operator` (AND/OR) and `negate`; each match has `vulnerable`, `criteria` (a CPE 2.3 string) and `versionStart/End` `Including/Excluding`. `vulnerable: false` marks the platform the vulnerable part must run on (in CVE-2021-44228, Siemens firmware AND its hardware). This is richer than ARCH-0001's single `applies_to_product` edge.
 - **KEV status is carried inline.** The `cisaExploitAdd` and related fields give the date a CVE entered CISA's Known Exploited Vulnerabilities catalog, the due date and the required action.
-- **NVD enrichment is now the exception (DEC-008).** On 2026-04-15 NIST announced that NVD will enrich only CVEs in CISA KEV, CVEs for software used in the federal government, and critical software under Executive Order 14028; it "will no longer routinely provide a separate severity score" for other CVEs, and backlogged CVEs published before 2026-03-01 move to "Not Scheduled". Live data agrees: of the 102 CVEs published on 2026-09-20, 96 are `Deferred`, 4 `Awaiting Analysis` and 2 `Analyzed`; 2 have NVD `configurations` and none has an NVD-sourced CWE, while all 102 have the CNA's `affected` and `weaknesses`. The API still says `Deferred`, not the announced "Not Scheduled". For tmodel, the CNA's `affected[]` (with purl since 5.2.0) and ADP data are now the main applicability and CWE source; NVD CPE configurations are a bonus for a minority of CVEs.
+- **NVD enrichment is now the exception (DEC-008).** On 2026-04-15 NIST announced that NVD will enrich only CVEs in CISA KEV, CVEs for software used in the federal government, and critical software under Executive Order 14028; it "will no longer routinely provide a separate severity score" for other CVEs, and backlogged CVEs published before 2026-03-01 move to "Not Scheduled". Live data agrees: of the 102 CVEs published on 2026-09-20, 96 are `Deferred`, 4 `Awaiting Analysis` and 2 `Analyzed`; 2 have NVD `configurations` and none has an NVD-sourced CWE, while all 102 have the CNA's `affected` and `weaknesses`. `Deferred` is the API name of the announced status: NVD's status table maps the web status "Not Scheduled" to the API status `Deferred` (and "Awaiting Enrichment" to `Awaiting Analysis`, "Enriched" to `Analyzed`). For tmodel, the CNA's `affected[]` (with purl since 5.2.0) and ADP data are now the main applicability and CWE source; NVD CPE configurations are a bonus for a minority of CVEs.
 
 ### OTM (Open Threat Model) 0.2.0
 
@@ -143,7 +145,7 @@ Part 2: candidate concepts.
 |---|---|---|---|---|---|
 | DataFlow | — | — | — | `dataflows[]` = | keep |
 | Applicability statement | — | `versions[].status` ≈ (no justification) | `cpeMatch.vulnerable` ≈ | — | keep; VEX adds justification (dimension 3) |
-| Exploitation evidence | — | `exploits[]` txt; CISA-ADP SSVC `Exploitation` | `cisaExploitAdd` = | — | keep |
+| Exploitation evidence | — | CISA-ADP `metrics[].other` type `ssvc` (`Exploitation`) and type `kev` (`dateAdded`) ≈; `exploits[]` txt | `cisaExploitAdd` = | — | keep |
 | Party | `Content_History` names and orgs ≈ | `orgId`, `assignerShortName`, `credits` = | `source` ≈ | `project.owner` ⊂ | keep |
 | Software identifier | — | `cpes`, `packageURL` = | CPE 2.3 `criteria` = | — | keep; CPE and purl decide scope question 2 |
 | Assertion (multi-source) | — | CNA + ADP containers = | Primary/Secondary `source` ≈ | — | keep; confirmed in live data |

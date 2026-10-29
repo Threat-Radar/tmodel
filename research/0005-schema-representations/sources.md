@@ -4,9 +4,9 @@ id: RPT-0005-sources
 title: "RPT-0005 source log"
 type: research
 status: draft
-version: "0.3.0"
+version: "0.3.1"
 date: "2026-10-05"
-updated: "2026-10-06"
+updated: "2026-10-21"
 record: RPT-0005
 ---
 
@@ -169,8 +169,8 @@ NVD (API 2.0 and CPE data), EPSS, OpenVEX, CSAF 2.x (and its VEX profile), TAXII
 | CSAF TC repository README (prev) — https://github.com/oasis-tcs/csaf — SHA-256 `8a68565657d109f24cb10007b448ef12a6a80c9f862d5d9ffca67d66c0e7abf7` (`csaf-repo-README.md`) | doc | 3 | new, Phase 2 | governance |
 | CISA Minimum Requirements for VEX (2023) — https://www.cisa.gov/sites/default/files/2023-04/minimum-requirements-for-vex-508c.pdf — SHA-256 `1e73325c674aa55c5665e3d2b647201acc46ee1fa9c8ee8bf88e4ff044f975c8` (`cisa-minimum-requirements-for-vex-508c.pdf`) | spec | 3 | new, Phase 2 | DEC-002 |
 | CISA VEX Status Justifications (June 2022) — https://www.cisa.gov/sites/default/files/publications/VEX_Status_Justification_Jun22.pdf — SHA-256 `9a4027c68674a99678bfd18d0897cdb213a2db59b568054b2b86439ff0cf513f` (`cisa-vex-status-justifications-508c.pdf`) | spec | 3 | new, Phase 2 | DEC-002 |
-| CycloneDX 1.7 JSON Schema (specification repo, master) — https://raw.githubusercontent.com/CycloneDX/specification/master/schema/bom-1.7.schema.json — SHA-256 `73308edec3ab2d38bfffd993e96a042b594314143b6971a6e9ed98bbb6bd76ce` (`cyclonedx-bom-1.7.2.schema.json`) | schema | 3 | cyclonedx-1-7 | DEC-002 |
-| CycloneDX 1.7 JSON Schema, earlier download (typo-level differences; source URL not recovered: ?) — SHA-256 `df472ef4aaf593904c479293723a1a5c191d6672715c93b3c0b5c318f3914221` (`cyclonedx-bom-1.7.schema.json`) | schema | 3 | cyclonedx-1-7 | DEC-002 |
+| CycloneDX 1.7 JSON Schema at tag 1.7.2 (GitHub release 1.7.2, 2026-09-17; same bytes at tag 1.7.1 and on `master`): https://raw.githubusercontent.com/CycloneDX/specification/1.7.2/schema/bom-1.7.schema.json, SHA-256 `73308edec3ab2d38bfffd993e96a042b594314143b6971a6e9ed98bbb6bd76ce` (`cyclonedx-bom-1.7.2.schema.json`) | schema | 3 | cyclonedx-1-7 | DEC-002 |
+| CycloneDX 1.7 JSON Schema at tag 1.7 (GitHub release 1.7, 2025-10-21): https://raw.githubusercontent.com/CycloneDX/specification/1.7/schema/bom-1.7.schema.json, SHA-256 `df472ef4aaf593904c479293723a1a5c191d6672715c93b3c0b5c318f3914221` (`cyclonedx-bom-1.7.schema.json`) | schema | 3 | cyclonedx-1-7 | DEC-002 |
 | CycloneDX bom-examples VEX example vex.json — https://raw.githubusercontent.com/CycloneDX/bom-examples/master/VEX/vex.json — SHA-256 `45594a106740d33c13ceca5a91168327b3aec7842587526506221dacce025900` (`cdx-vex-example-vex.json`) | example | 3 | cyclonedx-1-7 | DEC-002 |
 | CycloneDX bom-examples CISA use case 1 (not_affected) — https://raw.githubusercontent.com/CycloneDX/bom-examples/master/VEX/CISA-Use-Cases/Case-1/vex-not_affected.json — SHA-256 `e237c1ad4961d811912e79c676bdd66248ec686b036a5271b4828cb5ac922595` (`cdx-vex-cisa-case1-vex-not_affected.json`) | example | 3 | cyclonedx-1-7 | DEC-002 |
 | CycloneDX bom-examples CISA use cases README — https://raw.githubusercontent.com/CycloneDX/bom-examples/master/VEX/CISA-Use-Cases/README.md — SHA-256 `c8bd18b8d46af5593daa66aff7f3df43b2e24360f370462282ed5f584fa1f227` (`cdx-vex-cisa-README.md`) | doc | 3 | cyclonedx-1-7 | DEC-002 |

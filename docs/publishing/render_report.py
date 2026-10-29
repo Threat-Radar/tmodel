@@ -11,7 +11,7 @@ only when the source changes.
     python3 docs/publishing/render_report.py
 """
 from __future__ import annotations
-import html, re, sys
+import html, os, re, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -33,8 +33,23 @@ def front_matter(text: str) -> tuple[dict, str]:
     return fm, m.group(2)
 
 
+# Set per report by render(): images are written relative to the source markdown
+# (so they work on GitHub) and rewritten relative to the output page.
+CUR = {"src_dir": ROOT, "out_dir": ROOT}
+
+
+def _img(m: re.Match) -> str:
+    alt, ref = m.group(1), m.group(2)
+    if re.match(r"^[a-z]+:", ref):
+        return ""          # remote images are not allowed (security: no remote content)
+    target = (CUR["src_dir"] / html.unescape(ref)).resolve()
+    rel = os.path.relpath(target, CUR["out_dir"])
+    return f'<img src="{html.escape(rel)}" alt="{alt}" style="max-width:100%;height:auto">'
+
+
 def inline(s: str) -> str:
     s = html.escape(s)
+    s = re.sub(r"!\[([^\]]*)\]\(([^)]+)\)", _img, s)
     s = re.sub(r"`([^`]+)`", r"<code>\1</code>", s)
     s = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", s)
     s = re.sub(r"(?<!\*)\*([^*]+)\*(?!\*)", r"<em>\1</em>", s)
@@ -80,9 +95,10 @@ def md_to_html(md: str) -> str:
             out.append(f"<{tag}>" + "".join(f"<li>{it}</li>" for it in items) + f"</{tag}>"); continue
         buf = []
         while i < len(lines) and lines[i].strip() and not re.match(r"^(#{1,6}\s|```|>|\s*([-*]|\d+\.)\s|\s*\|)", lines[i]) and not re.match(r"^(---+|\*\*\*+)\s*$", lines[i]):
-            buf.append(inline(lines[i])); i += 1
+            buf.append(lines[i].strip()); i += 1
         if buf:
-            out.append("<p>" + "<br>".join(buf) + "</p>")
+            # Soft line breaks are spaces (CommonMark), so emphasis may span lines.
+            out.append("<p>" + inline(" ".join(buf)) + "</p>")
     return "\n".join(out)
 
 
@@ -98,6 +114,7 @@ th{background:#fafafa} blockquote{border-left:4px solid #ddd;margin:1rem 0;paddi
 
 def render(rep: dict) -> None:
     src = ROOT / rep["src"]
+    CUR["src_dir"], CUR["out_dir"] = src.parent, (ROOT / rep["out"]).parent
     fm, body = front_matter(src.read_text())
     title = rep.get("title") or fm.get("title") or fm.get("short_title") or src.stem
     rev = fm.get("version", "—"); updated = fm.get("updated", "—")

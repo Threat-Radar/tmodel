@@ -266,6 +266,18 @@ assertions:
     object: component:tcu-firmware
     confidence: high
     assertion_status: accepted
+  - id: assertion:cve-cwe-instance
+    name: CVE-2026-41200 is an instance of CWE-306
+    description: >-
+      The CVE-to-CWE step of the ADR-0002 backbone (CVE, CWE, CAPEC, ATT&CK). Vulnerability
+      has no Weakness slot, so the link is reified, with the predicate ARCH-0001 §3 and
+      PLAN-0002 §5 name (RPT-0004 mapping.md, finding 7). In a real import the CWE comes
+      from the CVE record and stays proposed until a human reviews it (R-018).
+    subject: vulnerability:cve-2026-41200
+    predicate: instance_of
+    object: weakness:cwe-306
+    confidence: high
+    assertion_status: accepted
   - id: assertion:cwe-capec-map
     name: CWE-306 is exploited by CAPEC-115
     description: The human-reviewed CWE↔CAPEC mapping the schema calls out (§2).
@@ -300,6 +312,13 @@ reviews:
     review_status: accepted
     priority: high
     justification: Diagnostic lib is in the firmware image and reachable from the modem; propagation confirmed.
+  - id: review:cve-cwe
+    name: Review, accept the CVE-to-CWE link
+    reviews: assertion:cve-cwe-instance
+    reviewer: party:av-reviewer
+    review_status: accepted
+    priority: medium
+    justification: The CWE in the CVE record (illustrative) matches the root cause; the diagnostic command runs without authenticating the caller.
   - id: review:cwe-capec
     name: Review — accept CWE↔CAPEC mapping
     reviews: assertion:cwe-capec-map

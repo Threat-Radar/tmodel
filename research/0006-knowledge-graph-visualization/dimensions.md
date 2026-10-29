@@ -4,9 +4,9 @@ id: RPT-0006-dimensions
 title: "RPT-0006 dimensions — the search axes"
 type: research
 status: draft
-version: "0.1.0"
+version: "0.2.0"
 date: "2026-10-02"
-updated: "2026-10-05"
+updated: "2026-10-13"
 record: RPT-0006
 ---
 
@@ -42,6 +42,12 @@ requirements or architecture decisions.
   semantic zoom without conflating importance, confidence, risk, and reviewer attention?
 - Does changing a visual weight affect domain data, view state, or neither?
 
+Record four meanings separately rather than treating “gravity” as one feature:
+(a) semantic importance or risk stored as domain data; (b) layout inputs such as node mass,
+link strength or desired distance; (c) visual prominence such as size, width, opacity or
+label priority; and (d) ranking, filtering or clustering used to select what enters a view.
+Note when a tool couples any of these meanings.
+
 ## 4. Styling and threat-path visualization
 
 - Can shapes, sizes, colors, icons, labels, badges, lines, arrows, and state be mapped
@@ -73,6 +79,11 @@ requirements or architecture decisions.
 - Can presentation changes round-trip without polluting or silently rewriting the domain
   model?
 
+For each candidate, distinguish filtering the canonical graph, materializing a subgraph,
+and saving presentation state. Record whether alternate views share stable domain
+identifiers and whether a “saved view” is portable application state, database-specific
+state, a workspace, or only an example that tmodel would have to implement.
+
 ## 7. AI proposals and human review
 
 - Can AI-proposed changes remain distinct from accepted state and appear as inspectable
@@ -94,6 +105,19 @@ requirements or architecture decisions.
   indicate?
 - What needs hands-on validation, and what is the smallest fair prototype for threat
   models, attack paths, bibliography/KG material, provenance, and human review?
+
+## 9. Graphical object model
+
+- Which node, edge, group, port, label, overlay, badge and state concepts belong to the
+  renderer or toolkit, and which are arbitrary domain attributes supplied by the caller?
+- Can styling be derived from domain data without overwriting semantic fields? Identify
+  reserved attribute names, implicit conversions and serialization boundaries.
+- How are compound nodes, nested groups, parallel edges, labels, icons, review states and
+  temporary overlays represented? Which capabilities are native and which require custom
+  renderers?
+- Can presentation metadata be persisted or exchanged separately from canonical graph
+  facts? Record adapter requirements, including the observed Sigma visual `type` versus
+  semantic `type` collision.
 
 ## Cross-cutting evidence rubric
 

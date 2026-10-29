@@ -17,6 +17,7 @@ import threading
 from collections.abc import Callable
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any
+from urllib.parse import parse_qs, urlsplit
 
 from engine import core
 
@@ -34,9 +35,18 @@ ALLOWED_ORIGINS = frozenset(
     }
 )
 
-ROUTES: dict[str, Callable[[], dict[str, Any]]] = {
-    "/health": core.health,
-    "/version": core.version,
+
+def _attack_paths(query: dict[str, str]) -> dict[str, Any]:
+    if "file" not in query:
+        raise ValueError("missing query parameter: file")
+    return core.attack_paths(query["file"], query.get("goal"))
+
+
+# Each route takes the query parameters; a ValueError becomes a 400 with its message.
+ROUTES: dict[str, Callable[[dict[str, str]], dict[str, Any]]] = {
+    "/health": lambda _q: core.health(),
+    "/version": lambda _q: core.version(),
+    "/attack-paths": _attack_paths,
 }
 
 
@@ -53,7 +63,10 @@ class EngineHandler(BaseHTTPRequestHandler):
     server_version = "tmodel-engine"
 
     def _send_json(self, status: int, payload: dict[str, Any]) -> None:
-        body = json.dumps(payload).encode("utf-8")
+        try:
+            body = json.dumps(payload).encode("utf-8")
+        except (TypeError, ValueError):
+            status, body = 500, b'{"error": "internal error: response not serialisable"}'
         self.send_response(status)
         self.send_header("Content-Type", "application/json")
         self.send_header("Content-Length", str(len(body)))
@@ -65,11 +78,23 @@ class EngineHandler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_GET(self) -> None:  # noqa: N802 (http.server naming)
-        route = ROUTES.get(self.path.split("?", 1)[0])
-        if route is None:
-            self._send_json(404, {"error": "not found", "path": self.path})
+        host = (self.headers.get("Host") or "").rsplit(":", 1)[0].strip("[]")
+        if not is_loopback(host):  # DNS rebinding: a foreign Host is not this app
+            self._send_json(403, {"error": "forbidden host"})
             return
-        self._send_json(200, route())
+        try:
+            url = urlsplit(self.path)
+            route = ROUTES.get(url.path)
+            if route is None:
+                self._send_json(404, {"error": "not found", "path": self.path})
+                return
+            query = {k: v[-1] for k, v in parse_qs(url.query, keep_blank_values=True).items()}
+            status, payload = 200, route(query)
+        except ValueError as exc:
+            status, payload = 400, {"error": str(exc)}
+        except Exception as exc:  # never drop the connection: the CLI would say "not running"
+            status, payload = 500, {"error": f"internal error: {type(exc).__name__}"}
+        self._send_json(status, payload)
 
     def log_message(self, format: str, *args: Any) -> None:  # noqa: A002
         pass  # quiet by default; the GUI polls /health

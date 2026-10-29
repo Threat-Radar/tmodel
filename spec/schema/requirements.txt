@@ -1,0 +1,6 @@
+# Pinned tools for bin/gen-schema and the `schema` CI job. The generated files
+# depend on these versions, so bump them together and regenerate.
+linkml==1.12.1
+linkml-runtime==1.12.1
+pydantic==2.14.1
+rdflib==7.6.0
