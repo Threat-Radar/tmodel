@@ -39,6 +39,7 @@ import yaml
 # Mirrors the library's bin/validate: the keys every record must have.
 REQUIRED = ("schema", "id", "body", "type", "title", "content", "tags", "status")
 RECORD_ID = re.compile(r"[a-z0-9][a-z0-9-]*")
+WHOLE_NUMBER = re.compile(r"[0-9]+")  # ASCII digits only, so int() always accepts it
 RECORD_GLOB = "records/*/*/record.yaml"
 
 
@@ -310,7 +311,6 @@ def _record(root: Path, path: Path, rel: str, data: bytes) -> LibraryRecord:
         raise _BadRecord(f"body '{body}' does not match its folder '{shelf}'")
 
     distillation = _mapping(doc, "distillation")
-    summary = path.parent / "summary.md"
     return LibraryRecord(
         id=record_id,
         body=body,
@@ -339,17 +339,34 @@ def _record(root: Path, path: Path, rel: str, data: bytes) -> LibraryRecord:
         implementations=_implementations(doc),
         artifacts=_artifacts(distillation),
         profile=_text(distillation, "profile", "distillation.profile"),
-        summary=summary.relative_to(root).as_posix() if summary.is_file() else None,
+        summary=_summary(path.parent, root),
         versions=_versions(path.parent / "versions"),
         raw=_freeze(doc),
     )
 
 
+# The record's folder is read too. A folder the loader cannot read makes that record
+# fail with its file named, like a malformed field, instead of stopping the whole load.
+
+
+def _summary(folder: Path, root: Path) -> str | None:
+    """The record's summary.md, relative to the library root, if there is one."""
+    summary = folder / "summary.md"
+    try:
+        present = summary.is_file()
+    except OSError as exc:  # some Python versions raise here instead of returning False
+        raise _BadRecord(f"cannot check summary.md ({exc.strerror or exc})") from exc
+    return summary.relative_to(root).as_posix() if present else None
+
+
 def _versions(folder: Path) -> tuple[str, ...]:
     """Names of the superseded versions kept under a record's versions/ folder."""
-    if not folder.is_dir():
-        return ()
-    return tuple(sorted(v.name for v in folder.iterdir() if (v / "record.yaml").is_file()))
+    try:
+        if not folder.is_dir():
+            return ()
+        return tuple(sorted(v.name for v in folder.iterdir() if (v / "record.yaml").is_file()))
+    except OSError as exc:
+        raise _BadRecord(f"cannot read versions/ ({exc.strerror or exc})") from exc
 
 
 # --- field readers: each names the field it rejects -----------------------------
@@ -424,7 +441,7 @@ def _content(doc: Mapping[str, Any]) -> Content:
     if local not in (None, "true", "false"):
         raise _BadRecord(f"'content.local' should be true or false, found '{local}'")
     pages = _text(raw, "pages", "content.pages")
-    if pages is not None and not pages.isdigit():
+    if pages is not None and not WHOLE_NUMBER.fullmatch(pages):  # not isdigit(): "²" passes it
         raise _BadRecord(f"'content.pages' should be a whole number, found '{pages}'")
     return Content(
         url=_text(raw, "url", "content.url"),

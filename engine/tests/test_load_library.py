@@ -276,6 +276,10 @@ BROKEN = {
         record_text("bad-pages").replace("local: false", "local: false\n  pages: twelve"),
         "'content.pages' should be a whole number",
     ),
+    "records/ietf/unicode-pages/record.yaml": (  # "²".isdigit() is True, int("²") fails
+        record_text("unicode-pages").replace("local: false", "local: false\n  pages: ²"),
+        "'content.pages' should be a whole number, found '²'",
+    ),
     "records/ietf/blank-title/record.yaml": (
         record_text("blank-title").replace('title: "Title of blank-title"', 'title: ""'),
         "'title' is empty",
@@ -310,6 +314,45 @@ def test_every_broken_file_is_named_and_the_rest_load(tmp_path):
     partial = load_library(tmp_path, strict=False)
     assert [r.id for r in partial] == ["good"]
     assert partial.problems == caught.value.problems
+
+
+@pytest.mark.parametrize("strict", [True, False])
+def test_unicode_page_count_fails_only_its_record(tmp_path, strict):
+    shutil.copytree(FIXTURES, tmp_path / "lib")
+    rel = "records/academic/benedetti-2024-sbom-python/record.yaml"
+    path = tmp_path / "lib" / rel
+    path.write_text(
+        path.read_text(encoding="utf-8").replace("pages: 23", "pages: ²"), encoding="utf-8"
+    )
+    expected = f"{rel}: 'content.pages' should be a whole number, found '²'"
+    if strict:
+        with pytest.raises(LibraryError) as caught:
+            load_library(tmp_path / "lib")
+        assert caught.value.problems == (expected,)
+    else:
+        lib = load_library(tmp_path / "lib", strict=False)
+        assert len(lib) == 11 and lib.problems == (expected,)
+        assert lib.get("benedetti-2024-sbom-python") is None
+
+
+@pytest.mark.skipif(hasattr(os, "geteuid") and os.geteuid() == 0, reason="root reads any folder")
+@pytest.mark.parametrize("strict", [True, False])
+def test_unreadable_versions_folder_fails_only_its_record(tmp_path, strict):
+    shutil.copytree(FIXTURES, tmp_path / "lib")
+    record = "records/ietf/draft-mih-scitt-agent-action-capsule"
+    versions = tmp_path / "lib" / record / "versions"
+    versions.chmod(0)
+    try:
+        expected = f"{record}/record.yaml: cannot read versions/ (Permission denied)"
+        if strict:
+            with pytest.raises(LibraryError) as caught:
+                load_library(tmp_path / "lib")
+            assert caught.value.problems == (expected,)
+        else:
+            lib = load_library(tmp_path / "lib", strict=False)
+            assert len(lib) == 11 and lib.problems == (expected,)
+    finally:
+        versions.chmod(0o755)
 
 
 def test_duplicate_id_names_both_files(tmp_path):

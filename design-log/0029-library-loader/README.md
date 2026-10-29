@@ -4,7 +4,7 @@ id: DL-0029
 title: "Library loader: read the pinned library's records into typed objects (#60, #138, #139)"
 type: process
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 date: "2026-10-29"
 updated: "2026-10-29"
 record: DL-0029
@@ -107,8 +107,9 @@ No other engine file changed, so this does not overlap #162, which edits `core.p
 
 ## What was rejected, and why
 
-Nothing yet. This waits on review by @Clovier and a teammate.
+Nothing yet.
 
 ## What a human accepted
 
-- Pending review.
+- @paria03 reviewed pull request #186 on 2026-10-29: the loader is well scoped, and the pinned library loads. One finding to fix before approval: two expected failures escaped the per-record error handling and stopped the whole load. One is a page count written with a non-ASCII digit, since "²" passes `str.isdigit()` but `int()` rejects it. The other is a `versions/` folder the loader cannot read. Both now fail only their own record, with its file named, and regression tests cover each in strict and partial mode. Other exceptions still propagate, as the review asked.
+- Pending: approval.
