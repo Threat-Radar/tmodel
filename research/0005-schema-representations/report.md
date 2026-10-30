@@ -22,7 +22,7 @@ reviewers: []
 needs_review: true
 reviewed: false
 canonical_path: research/0005-schema-representations/report.md
-library_commit: "4173143 (library main, 2026-10-29; the cve-json-5 stub is library#38, open)"
+library_commit: "3eacfd0 (library main, 2026-10-29, with the cve-json-5 stub of library#38)"
 informs: [DEC-001a, DEC-001b, DEC-002, DEC-008, DEC-009]
 open_decisions: [DEC-001b, DEC-008, DEC-009]
 issue: 39
@@ -30,7 +30,7 @@ issue: 39
 
 # RPT-0005: Schema representations of cybersecurity information
 
-**Status: draft 0.5.0.** Done: scope, search, ratings, the report, a technical review by @Clovier (applied in 0.3.3, DL-0013), a clarity pass (0.4.0) and a fresh-agent adversarial review (0.5.0: 4 material and 13 minor findings, fixed or declined in DL-0013). Open: the `cve-json-5` stub (library#38), crosswalk rows for the two formats the review added (§13), and the sponsor's sign-off. This report accepts nothing; each recommendation routes to an open `DEC-*`, to the follow-up work of an accepted ADR, or to an issue.
+**Status: draft 0.5.0.** Done: scope, search, ratings, the report, a technical review by @Clovier (applied in 0.3.3, DL-0013), a clarity pass (0.4.0) and a fresh-agent adversarial review (0.5.0: 4 material and 13 minor findings, fixed or declined in DL-0013). Phase 2 is complete. Open: crosswalk rows for the two formats the review added (§13), and the sponsor's sign-off. This report accepts nothing; each recommendation routes to an open `DEC-*`, to the follow-up work of an accepted ADR, or to an issue.
 
 **Abstract.** tmodel will import security data from formats it does not control. This report compares 24 of them, in seven families from weakness catalogs to software bills of materials, against tmodel's object model: what each represents, how it names and versions things, how it can be extended, who uses it, and what an import into tmodel loses. The field is mature where tmodel reads: vulnerability records, scores, applicability statements and component identifiers are standardized, versioned and widely produced. It is immature where tmodel writes: no format encodes tmodel's Review exactly (none carries an assigned impact), and none of the 24 holds an ordered attack path. One released format outside the 24 does: MITRE's Attack Flow, a STIX 2.1 extension, which orders attack actions but has no review object of its own. Both elements stay tmodel-native, with Attack Flow the candidate carrier for paths. The crosswalk also shows that relations need qualifiers, and that the committed OTM import needs three classes the accepted schema lacks: Asset, TrustBoundary and DataFlow. Fourteen findings (§11) route each result to a decision or an issue.
 
@@ -136,7 +136,7 @@ One row per format, pinned to the version surveyed. Per the sponsor's scope answ
 | Format | Family | Steward | Core entities | Identifier scheme | Encoding | Extension mechanism | Licence | Library record |
 |---|---|---|---|---|---|---|---|---|
 | CWE 4.20 / schema 7.3 (5.0 / schema 8.0 released 2026-10-28; §2) | weakness | MITRE (CISA-sponsored); submissions to the CWE team | Weakness, Category, View | `CWE-<int>`, never reused | XML + XSD; CSV | — (closed XSD) | MITRE CWE terms, attribution | `cwe`, FX-1 complete (library#21) |
-| CVE Record Format 5.2.0 | vulnerability | CVE Program (Board; MITRE secretariat; CISA sponsor) | Record → CNA container + ADP containers | `CVE-YYYY-N{4,19}`; org UUIDs | JSON + JSON Schema draft-07 | `x_` properties and tags; `metrics.other`; `taxonomyMappings` | schema CC0-1.0; records ? | `cve-json-5`, stub pinned to 5.2.0 (library#38, open) |
+| CVE Record Format 5.2.0 | vulnerability | CVE Program (Board; MITRE secretariat; CISA sponsor) | Record → CNA container + ADP containers | `CVE-YYYY-N{4,19}`; org UUIDs | JSON + JSON Schema draft-07 | `x_` properties and tags; `metrics.other`; `taxonomyMappings` | schema CC0-1.0; records ? | `cve-json-5`, stub pinned to 5.2.0 (library#38) |
 | NVD CVE API 2.0 | vulnerability (enrichment) | NIST | cve with weaknesses, metrics, configurations, KEV fields | CVE id; CPE 2.3; match UUIDs | JSON REST | — | ? | `nvd-cve-api-2-0`, stub |
 | OSV schema 1.9.1 | vulnerability (open-source packages) | OpenSSF `ossf/osv-schema` (authors at Google); PR process | record; `affected[]` (package, ranges, versions); references; credits | `<DB>-<ID>` from a closed prefix list or `x_`; `ecosystem` enum (52) + name; optional purl | JSON + JSON Schema 2020-12 | `database_specific`, `ecosystem_specific`; `x_` ids | Apache-2.0 (schema); per-DB data (CC-BY 4.0, CC0, ...) | `osv-schema`, FX-1 complete at 1.9.2 (RPT-0004, library#28) |
 | CVSS v3.1 / v4.0 | score | FIRST (CVSS-SIG) | score object (Base, Temporal/Threat, Environmental, Supplemental) | vector string `CVSS:3.1/...`, `CVSS:4.0/...`; no id | JSON Schema, XML Schema, vector text | — (closed; v4 `unevaluatedProperties: false`) | free use, attribution, publish score and vector | `first-cvss`, summarized (library#35); `first-cvss-v3-1` and `first-cvss-v4-0`, fetched |
@@ -709,7 +709,7 @@ Three results bear on near-term work:
 - **A STIX import yields attack knowledge, not a threat model** (G14). This is consistent with ADR-0007 letting STIX follow the MVP.
 - **NVD can no longer be relied on to enrich every CVE** (G7). DEC-008 should treat the CVE record's CNA and ADP containers as the primary source of CWE and applicability.
 
-What remains is the `cve-json-5` stub (library#38), crosswalk rows for Attack Flow and TM-BOM v1 (§13), and the sponsor's decisions on the routes in §11.
+What remains is crosswalk rows for Attack Flow and TM-BOM v1 (§13) and the sponsor's decisions on the routes in §11.
 
 ## 13. Method, coverage and limits
 
@@ -730,7 +730,7 @@ What remains is the `cve-json-5` stub (library#38), crosswalk rows for Attack Fl
 Attack Flow was outside the candidate list; the review found it (§5).
 
 **Not yet done.**
-- **Phase 2:** library records, as Table 1 lists them. `cwe` and `open-threat-model` are FX-1 complete and `ssvc` is a stub (library#21); `osv-schema` is FX-1 complete (library#28); the nine stubs of library#25 are merged; `cve-json-5` becomes a stub in library#38 (open). On 2026-10-29 the sponsor left #39's remaining questions to the student. STIX 2.1 and the other attack-backbone records (CAPEC, ATT&CK, D3FEND) are at the summary bar under tmodel #165 (library#36), with later extraction routed to #17 and #61; they are not extracted under #39. CycloneDX and SPDX are RPT-0004's stubs (library#26), and pytm, Threat Dragon and the TM-BOM v1 schema are RPT-0003's records (library#20), cited as they are.
+- **Phase 2:** library records, as Table 1 lists them. `cwe` and `open-threat-model` are FX-1 complete and `ssvc` is a stub (library#21); `osv-schema` is FX-1 complete (library#28); the nine stubs of library#25 are merged; `cve-json-5` is a stub pinned to 5.2.0 (library#38). On 2026-10-29 the sponsor left #39's remaining questions to the student. STIX 2.1 and the other attack-backbone records (CAPEC, ATT&CK, D3FEND) are at the summary bar under tmodel #165 (library#36), with later extraction routed to #17 and #61; they are not extracted under #39. CycloneDX and SPDX are RPT-0004's stubs (library#26), and pytm, Threat Dragon and the TM-BOM v1 schema are RPT-0003's records (library#20), cited as they are.
 - **Crosswalk rows for Attack Flow and TM-BOM v1.** The adversarial review added both as coverage rows. Full rows in Tables 2, 3 and 5 would re-run Phases 1 to 3 for two formats; until then, §5, §6, G1, G2 and G12 carry what they change.
 - **CWE 5.0** (schema 8.0, 2026-10-28) is not surveyed; a library record for it would be new, linked by `supersedes` (§2).
 
