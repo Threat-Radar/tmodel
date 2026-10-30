@@ -4,9 +4,9 @@ id: RPT-0005-sources
 title: "RPT-0005 source log"
 type: research
 status: draft
-version: "0.3.1"
+version: "0.4.0"
 date: "2026-10-05"
-updated: "2026-10-21"
+updated: "2026-10-29"
 record: RPT-0005
 ---
 
@@ -203,7 +203,7 @@ NVD (API 2.0 and CPE data), EPSS, OpenVEX, CSAF 2.x (and its VEX profile), TAXII
 | CWE FAQ (HTML) — https://cwe.mitre.org/about/faq.html — SHA-256 `1050e1761598a49c6a02e0e219810df28b024cb3d520d696146160650614472d` (`cwe-faq.html`) | doc | 1 | cwe | DEC-008 |
 | CodeQL query metadata style guide — https://github.com/github/codeql/blob/main/docs/query-metadata-style-guide.md | doc | 1 | new, Phase 2 | DEC-008 |
 | CodeQL example query (js/xss; source path not recovered: ?) — SHA-256 `bfbd13ad80c2740ad8ce1f7a8e73107477422ea3045f0dfe0dd19ef446ed31e9` (`codeql-js-Xss.ql`) | code | 1 | new, Phase 2 | DEC-008 |
-| SARIF 2.1.0 JSON Schema (OASIS; URL not re-fetched: ?) — SHA-256 `c3b4bb2d6093897483348925aaa73af03b3e3f4bd4ca38cef26dcb4212a2682e` (`sarif-schema-2.1.0.json`) | schema | 1 | new, Phase 2 | DEC-008 |
+| SARIF 2.1.0 JSON Schema (OASIS, errata01; its `id` is https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json) — https://raw.githubusercontent.com/oasis-tcs/sarif-spec/main/sarif-2.1/schema/sarif-schema-2.1.0.json (re-fetched 2026-10-29: same bytes; last changed in `a560296c`, 2024-05-02) — SHA-256 `c3b4bb2d6093897483348925aaa73af03b3e3f4bd4ca38cef26dcb4212a2682e` (`sarif-schema-2.1.0.json`) | schema | 1 | none (not ingested; DL-0013 Phase 4) | DEC-008, G1 |
 | CISA KEV feed — https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json — SHA-256 `f51fed1c9213e7b797104fcd6dbeb1b0dc0c7073a80467b9d4b1fc25e7dd786b` (`cisa-kev.json`) | data | 2, 9 | new, Phase 2 | scope Q2 |
 | CISA KEV JSON schema — https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities_schema.json — SHA-256 `0d5865c98694c5bfba2c78a26caf814f406b3fce8bfb81bef79e99c7f288b0e7` (`cisa-kev-schema.json`) | schema | 2 | new, Phase 2 | scope Q2 |
 | CISA BOD 26-04 (HTML) — https://www.cisa.gov/news-events/directives/bod-26-04-prioritizing-security-updates-based-risk — SHA-256 `b06b8354f6a4975e7d84c630eb42894e76dec1712ddb9774cdfd09f78aad76c6` (`cisa-bod-26-04.html`) | legal | 2, 9 | new, Phase 2 | scope Q2 |
@@ -220,3 +220,22 @@ NVD (API 2.0 and CPE data), EPSS, OpenVEX, CSAF 2.x (and its VEX profile), TAXII
 | Source-tree listings used as adoption evidence (git trees, `main`): DependencyTrack/dependency-track, aquasecurity/trivy, anchore/grype — https://github.com/anchore/grype/tree/main/grype/db/processors | code | 9 | new, Phase 2 | adoption |
 | VulnerableCode EPSS importer — https://github.com/aboutcode-org/vulnerablecode/blob/main/vulnerabilities/importers/epss.py | code | 9 | new, Phase 2 | adoption |
 | Bomber README — https://raw.githubusercontent.com/devops-kung-fu/bomber/main/README.md | doc | 9 | new, Phase 2 | adoption |
+
+## Sources checked in Phase 4 (adversarial review, 2026-10-29)
+
+Fetched by the reviewing agent. Those marked † were fetched again by the main session before the report was changed.
+
+| source | type | dimension | library record id | bears_on |
+|---|---|---|---|---|
+| Attack Flow language (rendered) — https://center-for-threat-informed-defense.github.io/attack-flow/language/ (the main session checked library record `mitre-attack-flow` instead, which pins `docs/language.rst` at v4.1.0); repository licence Apache-2.0 (`gh api`, †) | spec | 4, 10 | mitre-attack-flow | G2, G14 |
+| OWASP Threat Model Library schema v1.0.2 — https://raw.githubusercontent.com/OWASP/www-project-threat-model-library/v1.0.2/threat-model.schema.json — SHA-256 `428772fecfed799921e90bb7e7acf7ce7bb8e379128e43c4e7f4346a528539be` (tag commit `a3d9c0c5`, 2025-10-20; repository licence MIT) † | schema | 5, 10 | owasp-threat-model-library | G1, G12 |
+| OWASP Threat Model Library README at v1.0.2 — https://raw.githubusercontent.com/OWASP/www-project-threat-model-library/v1.0.2/README.md † | doc | 5, 10 | owasp-threat-model-library | G12 |
+| OWASP Developer Guide, Threat Model Library — https://devguide.owasp.org/en/04-design/01-threat-modeling/06-threat-model-library/ † | doc | 5, 9 | owasp-threat-model-library | G12, Table 4 |
+| CWE news 2026 (5.0 and Schema 8.0; 4.21) — https://cwe.mitre.org/news/archives/news2026.html † | doc | 1 | cwe | G8, G9, DEC-008 |
+| CSAF 2.1 directory listing (`csd04/`, 21-Oct-2026) — https://docs.oasis-open.org/csaf/csaf/v2.1/ † | doc | 3 | csaf-2-0 | — |
+| CVSS v3.1 specification §2.2 (Scope) — https://www.first.org/cvss/v3.1/specification-document | spec | 2 | first-cvss-v3-1 | Table 5 |
+| NIST XCCDF page — https://csrc.nist.gov/projects/security-content-automation-protocol/specifications/xccdf | doc | 10 | none | scope (§13) |
+| OASIS CACAO Security Playbooks 2.0 — https://docs.oasis-open.org/cacao/security-playbooks/v2.0/security-playbooks-v2.0.html | spec | 10 | none | scope (§13) |
+| OCSF schema browser — https://schema.ocsf.io/ | doc | 10 | none | scope (§13) |
+| MAEC project page — https://maecproject.github.io/ | doc | 10 | none | scope (§13) |
+| VERIS framework — https://verisframework.org/ | doc | 10 | none | scope (§13) |
