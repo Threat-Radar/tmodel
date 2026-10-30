@@ -192,7 +192,11 @@ bin/build-engine                                  # the engine as one executable
 `bin/build-engine` (PyInstaller, pinned in `engine/packaging/requirements.txt`)
 writes `apps/desktop/src-tauri/binaries/tmodel-engine-<target>`, which the Tauri
 build requires. Re-run it after changing the engine if you want the app's own
-copy to pick the change up.
+copy to pick the change up. The sidecar includes the example models from
+`spec/vectors/`. In the installed app, `/graph` resolves model filenames inside
+the sidecar's unpacked resources, independent of the working directory. In a
+source checkout it continues to read `spec/vectors/`. The examples are read-only
+inputs; they are separate from the reference library and a user's working store.
 
 **Run it:**
 
@@ -220,7 +224,8 @@ bin/build-engine
 when the terminal may not control Finder. Without an Apple certificate the app is
 ad-hoc signed (`signingIdentity: "-"` in `tauri.conf.json`); `Entitlements.plist`
 lets the one-file engine load the Python it unpacks at launch under the hardened
-runtime.
+runtime. The app also carries the Cytoscape MIT notice at
+`tmodel.app/Contents/Resources/THIRD_PARTY_NOTICES.md`.
 
 **Releases.** Pushing a tag `vX.Y.Z` (matching `version` in `tauri.conf.json`;
 `vX.Y.Z-rc.N` for a test) runs `.github/workflows/release.yml`: it builds the
@@ -239,7 +244,20 @@ unpacked runtime. The app waits up to ten seconds for termination. Check three
 launch/quit cycles for new `_MEI*` leftovers, confirm the engine port is released,
 and check startup with the port already occupied. `bin/build-engine` also reads
 an example model with the bundled engine in an empty environment, exercising
-PyYAML and attack-path computation without a system Python.
+PyYAML and attack-path computation without a system Python. Both app CI and the
+release workflow verify the bundled notice and test the installed sidecar. The
+tests copy only the executable to a temporary directory, clear its environment,
+load the bundled MVP-01 and MVP-02 graphs through the local API, and pass the
+returned model path to attack-path enumeration. They check review metadata,
+directory confinement, and runtime cleanup after exit. Run them locally with:
+
+```sh
+TMODEL_PACKAGED_ENGINE="$PWD/apps/desktop/src-tauri/target/release/bundle/macos/tmodel.app/Contents/MacOS/tmodel-engine" \
+  engine/.venv/bin/python -m pytest -q engine/tests/test_packaging.py
+```
+
+This automated isolation check complements the downloaded-installer check on a
+clean Mac; it does not verify Gatekeeper or replace that manual acceptance step.
 
 **Opening a build that is not signed with a Developer ID.** macOS refuses to open
 it on first launch and says it cannot verify the app. Close that dialog, then open **System

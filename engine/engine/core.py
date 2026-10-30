@@ -7,6 +7,7 @@ always run the same engine code (APP-0001 A-030 boundary, A-060 CLI parity).
 from __future__ import annotations
 
 import platform
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -17,7 +18,14 @@ from engine.model_graph import project_model_graph
 from engine.paths import enumerate_paths
 
 ENGINE_NAME = "tmodel-engine"
-APPROVED_VECTOR_DIRECTORY = Path(__file__).resolve().parents[2] / "spec" / "vectors"
+# PyInstaller unpacks the one-file sidecar and its data below _MEIPASS. In a
+# source checkout, the examples live at the repository root instead. Neither
+# location depends on the app's working directory or a developer's checkout.
+APPROVED_VECTOR_DIRECTORY = (
+    (Path(sys._MEIPASS) if getattr(sys, "frozen", False) else Path(__file__).resolve().parents[2])
+    / "spec"
+    / "vectors"
+)
 
 
 def version() -> dict[str, Any]:
@@ -62,8 +70,8 @@ def attack_paths(file: str, goal: str | None = None) -> dict[str, Any]:
 def model_graph(file: str) -> dict[str, Any]:
     """Return a read-only graph projection of an approved example model.
 
-    Relative paths are resolved below ``spec/vectors``. Absolute paths are
-    accepted only when their resolved target is in that same directory.
+    Relative paths are resolved below the bundled examples (or ``spec/vectors``
+    in a source checkout). Absolute paths must resolve inside that directory.
     """
     path = _approved_vector_path(file)
     try:

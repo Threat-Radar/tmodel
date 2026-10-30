@@ -4,9 +4,9 @@ id: DL-0028
 title: "Packaging review fixes for PR #155"
 type: process
 status: draft
-version: "0.1.0"
+version: "0.2.0"
 date: "2026-10-29"
-updated: "2026-10-29"
+updated: "2026-10-30"
 record: DL-0028
 defers_to: ARCH-0001
 ---
@@ -66,3 +66,63 @@ this log does not claim a human has accepted the revised implementation.
 - Actionlint 1.7.12 passed for app.yml and release.yml (ShellCheck unavailable).
   The downloaded actionlint archive was verified against its release checksum.
 - Tagged release, clean-machine download, and Developer ID signing remain untested.
+
+## Installed graph resources follow-up (2026-10-30)
+
+### Request and problem
+
+@paria03 asked to continue #124 after reviewing #162. PR #162 is now merged:
+its graph endpoint resolves models under the source checkout's `spec/vectors/`,
+but that directory was absent from the one-file engine. The Cytoscape notice
+also existed only in the source tree. The question was how an installed app
+can load its example graph and carry the dependency notice without a checkout.
+
+### Produced and choices
+
+- Include `spec/vectors/` as PyInstaller data. The engine resolves the examples
+  below PyInstaller's unpacked runtime in a frozen build and below the repository
+  root in source runs. Filename confinement and symlink checks still apply.
+- Map the existing Cytoscape notice into Tauri resources. On macOS the notice is
+  readable at `Contents/Resources/THIRD_PARTY_NOTICES.md`.
+- Test the actual standalone executable after copying only that executable to a
+  temporary directory with an empty environment. Request MVP-01 and MVP-02 via
+  `/graph`, use the returned filename with `/attack-paths`, preserve negative
+  human review states, reject graph access outside the example directory, and
+  verify runtime cleanup. App CI and the release workflow run these checks
+  against the sidecar from the app bundle and compare the notice byte for byte.
+- Rejected a dependency on the launch directory or a developer's absolute source
+  path: neither exists reliably in a downloaded installation. Putting the
+  examples in the engine also lets the standalone executable serve the same graph.
+- Reference-library installation is a separate integration question on #60/#188;
+  bundling examples does not select its policy. No schema, vector contents, or
+  architecture decisions change.
+
+Implementation references: [PyInstaller runtime data](https://www.pyinstaller.org/en/stable/runtime-information.html)
+and [Tauri resource mappings](https://v2.tauri.app/develop/resources/).
+
+### Human review and acceptance
+
+Pending for this follow-up. The automated isolation test supplements the clean
+Mac acceptance check; a tagged draft release and a downloaded-installer test
+remain necessary to close #124. No human acceptance or notarization is claimed.
+
+### Follow-up validation
+
+- Engine: 149 passed; 6 skipped without a packaged executable or initialized
+  library submodule. Ruff lint and formatting pass.
+- Packaged executable: all 5 checks pass, including both relocated graph tests
+  and six stdin-close cleanup cycles. All 5 also pass against the release app's
+  signed sidecar.
+- Frontend: 137 tests pass, TypeScript checking and production build pass.
+- Rust: 4 tests pass; formatting and clippy with warnings denied pass.
+- Release `.app` and `.dmg`, plus the debug app bundle used in app CI, build.
+  Both app bundles pass deep strict codesign verification and contain the exact
+  Cytoscape notice. The read-only mounted `.dmg` also passes these checks.
+- An app copied from the `.dmg` to a path outside the checkout starts its sidecar
+  and serves the default 42-node, 69-edge graph from its unpacked examples. An
+  interrupt stops the sidecar, releases the port, and removes the unpacked runtime.
+- Actionlint passes both changed workflows (ShellCheck unavailable), and archdoc,
+  publishing identity/link checks, shell syntax and `git diff --check` pass.
+- Window observation and menu-driven quit remain unverified for this follow-up:
+  computer-control permission was unavailable. A tagged draft release, download
+  on a clean account, and Developer ID notarization remain untested.

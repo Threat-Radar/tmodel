@@ -24,6 +24,7 @@ VPY="$BUILD/venv/bin/python"
 
 "$VPY" -m PyInstaller --onefile --clean --noconfirm --log-level WARN \
   --name "$NAME" \
+  --add-data "$PWD/spec/vectors:spec/vectors" \
   --distpath "$OUT" --workpath "$BUILD/work" --specpath "$BUILD" \
   engine/packaging/tmodel_engine.py
 

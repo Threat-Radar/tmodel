@@ -61,6 +61,9 @@ jobs:
       - name: Build the engine sidecar
         run: bin/build-engine
 
+      - name: Install bundle test dependencies
+        run: python -m pip install 'pytest>=8'
+
       - name: Install frontend dependencies
         working-directory: apps/desktop
         run: npm ci
@@ -90,6 +93,9 @@ jobs:
           app=apps/desktop/src-tauri/target/release/bundle/macos/tmodel.app
           codesign --verify --deep --strict "$app"
           "$app/Contents/MacOS/tmodel-engine" version --in-process
+          cmp apps/desktop/THIRD_PARTY_NOTICES.md "$app/Contents/Resources/THIRD_PARTY_NOTICES.md"
+          TMODEL_PACKAGED_ENGINE="$PWD/$app/Contents/MacOS/tmodel-engine" \
+            python -m pytest -q engine/tests/test_packaging.py
           dmg=$(ls apps/desktop/src-tauri/target/release/bundle/dmg/*.dmg)
           shasum -a 256 "$dmg" | sed 's|  .*/|  |' > "$dmg.sha256"
           echo "DMG=$dmg" >> "$GITHUB_ENV"
