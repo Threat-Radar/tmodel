@@ -4,9 +4,9 @@ id: RPT-0005-crosswalk
 title: "RPT-0005 crosswalk: 24 formats onto ARCH-0001's types and edges"
 type: research
 status: draft
-version: "0.1.2"
+version: "0.1.3"
 date: "2026-10-08"
-updated: "2026-10-21"
+updated: "2026-10-29"
 record: RPT-0005
 ---
 
@@ -16,7 +16,7 @@ This file assembles Tables 2, 3 and 6 of [dimensions.md](dimensions.md) from the
 
 **Since assembly:** on 2026-10-12 ADR-0010 accepted the core object model (DEC-001a), whose class names supersede the ARCH-0001 §3 working labels used as rows here, and on 2026-10-08 ADR-0007 committed tmodel to importing OTM and STIX 2.1 (DEC-002). The row-to-class mapping and the re-routed findings are in [report.md](report.md) (Overview and §11).
 
-**How it was built.** Each matrix cell is the fidelity mark taken by script from the matching cell of the source file. Where a source cell lists several elements with different marks, the matrix shows the first one (for example CycloneDX Mitigation is `txt`, although its source cell also gives `claims[].mitigationStrategies` `≈`). The SPDX 3.0.1 and CycloneDX 1.7 rows take their cells from fanout-attack-composition.md; where fanout-vuln-data.md's VEX-only cells differ (for example SPDX `instance_of`, `ext` there), they are not used. The source cell names the format's own element (field path or class) and its qualifiers; look there before relying on a mark. One mark was changed by hand after review: SPDX 3.0.1 Req./control is `⊂` in its source cell (fanout-attack-composition.md, kept as the agent wrote it) and `—` here, because `hasRequirement` is a lifecycle-scoped dependency, not a security requirement (DL-0013). A cell shows `∅` where the source did not assess that concept, and `?` where the source could not verify it.
+**How it was built.** Each matrix cell is the fidelity mark taken by script from the matching cell of the source file. Where a source cell lists several elements with different marks, the matrix shows the first one (for example CycloneDX Mitigation is `txt`, although its source cell also gives `claims[].mitigationStrategies` `≈`). The SPDX 3.0.1 and CycloneDX 1.7 rows take their cells from fanout-attack-composition.md; where fanout-vuln-data.md's VEX-only cells differ (for example SPDX `instance_of`, `ext` there), they are not used. The source cell names the format's own element (field path or class) and its qualifiers; look there before relying on a mark. Three marks were changed by hand after review. SPDX 3.0.1 Req./control is `⊂` in its source cell (fanout-attack-composition.md, kept as the agent wrote it) and `—` here, because `hasRequirement` is a lifecycle-scoped dependency, not a security requirement (DL-0013, technical review). OSV 1.9.1 Weakness is `—` in its source cell (fanout-vuln-data.md: "— (GHSA only: `database_specific.cwe_ids`, ext)"), where the script took the first mark, and `ext` here, because `database_specific` is an open object whose meaning "is entirely defined by the database" (DL-0013, Phase 4). OSV 1.9.1 Exploitation evidence is `—` in its source cell and `txt` here, for the `EVIDENCE` reference type (DL-0013, Phase 4). A cell shows `∅` where the source did not assess that concept, and `?` where the source could not verify it.
 
 **Scope.** The sponsor's answers on #39 (2026-10-08) apply. CPE, purl and SWID are identifier schemes, not columns; they appear in the identity sub-row below. CISA KEV is an annotation on a CVE and appears under exploitation evidence. MITRE ATLAS gets no column: it reuses ATT&CK's structure, and RPT-0014 covers it. OpenC2 is out of scope. SSVC stays as a row until its scope is settled. The VEX profiles of CycloneDX and SPDX 3 are folded into those formats' rows; the side-by-side VEX comparison is §8 of fanout-vuln-data.md.
 
@@ -32,7 +32,7 @@ The five right-hand columns count the marks in each row, as a loss profile for i
 | CWE 4.20 | — | — | — | = | ⊂ | — | — | ≈ | ≈ | ≈ | ⊂ | ⊃ | 1 | 6 | 0 | 0 | 5 |
 | CVE 5.2.0 | — | ⊂ | — | ⊂ | = | — | txt | — | txt | ≈ | ⊂ | = | 2 | 4 | 2 | 0 | 4 |
 | NVD API 2.0 | — | — | — | ⊂ | = | — | — | — | txt | ≈ | ⊂ | = | 2 | 3 | 1 | 0 | 6 |
-| OSV 1.9.1 | — | ≈ | — | — | = | — | txt | — | ≈ | ≈ | ext | ≈ | 1 | 4 | 1 | 1 | 5 |
+| OSV 1.9.1 | — | ≈ | — | ext | = | — | txt | — | ≈ | ≈ | ext | ≈ | 1 | 4 | 1 | 2 | 4 |
 | **Scores and signals** | | | | | | | | | | | | | | | | | |
 | CVSS 3.1 / 4.0 | ⊂ | — | ⊂ | — | — | — | ⊂ | — | ⊂ | = | — | — | 1 | 4 | 0 | 0 | 7 |
 | EPSS | — | — | — | — | ⊂ | — | — | — | — | ≈ | — | — | 0 | 2 | 0 | 0 | 10 |
@@ -79,7 +79,7 @@ Candidates for the gap analysis, not proposals to add types. Assumption and Veri
 | CWE 4.20 | — | — | — | ∅ | — | ≈ | ∅ | — | ≈ | ∅ | ∅ |
 | CVE 5.2.0 | — | — | ≈ | ∅ | ≈ | = | ∅ | = | — | ∅ | ∅ |
 | NVD API 2.0 | — | — | ≈ | ∅ | = | ≈ | ∅ | ≈ | — | ∅ | ∅ |
-| OSV 1.9.1 | — | — | ≈ | ≈ | — | ≈ | — | ≈ | txt | ∅ | ∅ |
+| OSV 1.9.1 | — | — | ≈ | ≈ | txt | ≈ | — | ≈ | txt | ∅ | ∅ |
 | **Scores and signals** | | | | | | | | | | | |
 | CVSS 3.1 / 4.0 | — | ⊂ | — | — | ≈ | — | ⊂ | — | — | ∅ | ∅ |
 | EPSS | — | — | — | — | = | — | — | ≈ | — | ∅ | ∅ |
@@ -197,7 +197,7 @@ Grouped from the four sources. Each group is a gap-analysis input.
 | Defence-to-artifact | D3FEND `analyzes`, `hardens`, … (its defence-offence pairs are derived from these) | `mitigated_by`, derived |
 | AI supply chain | SPDX 3 `trainedOn`, `testedOn` | none |
 
-**Edge qualifiers recur in every family:** scope (CWE `View_ID`), order (chain ordinal, step position), fit grade (CWE `Mapping_Fit`, D3FEND graded links), boolean logic (NVD `operator`, `negate`), status and justification (VEX), catalog version pins (ATT&CK collection version), negation (SysML v2 `isNegated`) and counter-evidence (SACM `isCounter`). An edge type alone loses all of these.
+**Edge qualifiers recur in every family:** scope (CWE `View_ID`), order (CWE `StartsWith`/`CanPrecede` within a `Chain_ID`; CAPEC step position), fit grade (CWE `Mapping_Fit`, D3FEND graded links), boolean logic (NVD `operator`, `negate`), status and justification (VEX), catalog version pins (ATT&CK collection version), negation (SysML v2 `isNegated`) and counter-evidence (SACM `isCounter`). An edge type alone loses all of these.
 
 ## Dimension 8, question by question
 
@@ -257,7 +257,7 @@ Table 6, consolidated from the four sources. Each row is evidence for the decisi
 Evidence only; each item routes to an open decision.
 
 1. **Review is tmodel's most distinctive element.** No surveyed format encodes it exactly, so every import and export loses it unless carried by extension (ARCH-0001 §7, R-018, #17).
-2. **Attack paths are tmodel-native for now.** No released format has an ordered attacker path; CycloneDX 2.0 is the only candidate and is unreleased (DEC-001, DEC-002).
+2. **Attack paths are tmodel-native for now.** None of the 24 formats has an ordered attacker path. Attack Flow, a released STIX 2.1 extension outside the 24 (found by the Phase 4 review; report §5), has one but no review object; CycloneDX 2.0 is an unreleased candidate (DEC-001, DEC-002).
 3. **The Assertion pattern is established practice.** Five formats carry attributed multi-source statements exactly (DEC-001, #16).
 4. **ARCH-0001 has no specialization edge.** CWE, CAPEC and ATT&CK all use one, and mapping it to `part_of` would be wrong (DEC-001).
 5. **Edges need qualifiers.** Every family uses at least one (ADR-0004's edge façade, #16).

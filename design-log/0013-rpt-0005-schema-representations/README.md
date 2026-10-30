@@ -4,9 +4,9 @@ id: DL-0013
 title: "RPT-0005 schema representations: AI-assisted scoping, survey and crosswalk"
 type: process
 status: draft
-version: "0.11.0"
+version: "0.12.0"
 date: "2026-10-05"
-updated: "2026-10-21"
+updated: "2026-10-29"
 record: DL-0013
 ---
 
@@ -399,3 +399,85 @@ The library session's final report on the CWE run, read on 2026-10-16:
 ### Note
 
 - `bin/validate-archdoc` reports one error on `main`: `project/SOW-0001-statement-of-work.md` has an id prefix the validator does not allow. This change does not touch that file, and its own files pass.
+
+## Phase 4: adversarial review, report 0.5.0 (2026-10-29)
+
+### Question asked
+
+On #39 the student had asked the sponsor four closing questions, the first being whether @Clovier's technical review counts as Phase 4. On 2026-10-29 the student relayed that the sponsor left all four to the student, and asked the agent to proceed. The agent chose a short fresh-agent pass, because #39's box asks for "a fresh agent" and @Clovier's review was a human one. The technical review stays on record beside it (entry of 2026-10-21).
+
+### What was produced
+
+- **The review.** One agent that had not written the draft worked read-only on tmodel `2d4b3ba` and library `4173143`, at maximum effort, in about 53 minutes and 400k tokens. It wrote its own list of formats before opening Table 1. It then ran four checks: coverage against that list and the dimension-10 candidates, 20 crosswalk cells, 15 citations, and the keyword counts of the three FX-1 records. It found 4 material and 13 minor problems (F-01 to F-17). All three FX-1 counts reconcile (`cwe` 0/0, `open-threat-model` 51/51, `osv-schema` 0/0), and `bin/validate` passed. The cells: 15 correct, 2 wrong, 3 imprecise. The citations: 13 traced, 2 wrong.
+- **`report.md` 0.5.0**, `crosswalk.md` 0.1.3, `sources.md` 0.4.0 (a Phase 4 section, and SARIF's URL), `searches.md` 0.4.0 (two Phase 4 rows).
+- **Material findings, all fixed:**
+  - F-01: Attack Flow, a released STIX 2.1 extension, encodes ordered attack actions. That contradicts "no released format holds an ordered attack path" (abstract, Overview, §9.1, §9.8, Table 6, G2, G14, §11, §12). It is now a coverage row with a §5 entry, and each claim is restated.
+  - F-02: OWASP's Threat Model Library schema is a released TM-BOM v1 that Threat Dragon imports. It is now a coverage row with a §6 entry. The Threat Dragon converter sentence, G12, Table 4 and the appendix are fixed.
+  - F-03: ADR-0012 (accepted 2026-10-26) made `Requirement` core. The decisions table, the class mapping, Figure 1 and G10's route are fixed.
+  - F-04: CWE 5.0 and Schema 8.0 were released on 2026-10-28 with breaking changes, and 4.21 continues on schema 7.x. There is a dated note in Table 1 and §2.
+- **Minor findings:**
+  - F-05, F-06: OSV Weakness `—` → `ext` and OSV Exploitation evidence `—` → `txt`, by hand. Both are noted in crosswalk.md, and the OSV row's counts are now `ext` 2 and `—` 4.
+  - F-07: CVSS TrustBoundary kept `⊂`, and Table 5 and §3 now say it is a crossing flag, not a boundary object.
+  - F-08: the `supersedes` column is annotated (replacement versus revision) rather than split.
+  - F-09: CWE `part_of` qualified (membership is grouping; the XSD's "part of" is `Requires`/`RequiredBy`).
+  - F-10: the edge-qualifier text now names `Chain_ID` and `StartsWith`/`CanPrecede`.
+  - F-11: "16 source defects, 9 of them documentation-versus-structure contradictions", counted from the defect kinds.
+  - F-12: newer releases noted (ATT&CK v20.0 in record `mitre-attack`, OSV 1.9.2, CSAF 2.1 CSD04).
+  - F-13: Table 1 statuses, `library_commit`, and §13 updated.
+  - F-14: a table mapping Table 3's edges onto the accepted slots. OTM's threat-instance link is named in G13.
+  - F-15: SARIF's URL recorded, and its suppression status added to G1's evidence.
+  - F-16: the abstract, §11 and §12 now use G1's wording on review.
+  - F-17: one verdict per dimension-10 candidate in §13, with XCCDF named.
+
+### Checks before applying
+
+- **The four material findings against their sources:**
+  - ADR-0012's front matter (`accepted`, 2026-10-26) and its Decision table; DECISIONS-0001's DEC-001b row.
+  - Library `mitre-attack-flow` (released 2022-10-27; `attack-action`, `effect_refs`, AND/OR operators); RPT-0002 §9.
+  - The TM-BOM v1.0.0 and v1.0.2 schemas (SHA-256 `428772fe…539be`) and README, and OWASP's Developer Guide page.
+  - The CWE news page (2026-09-03, 2026-10-05 and 2026-10-28 items).
+- **The minor findings:**
+  - CWE XSD 7.3: the `RelatedWeaknessesType` and `OrdinalEnumeration` documentation, `RelationshipsType` and `RelatedNatureEnumeration`.
+  - The kinds of the 16 CWE source defects.
+  - OSV `normative.md` (N-0290 and the withdrawn and `database_specific` sentences).
+  - The LinkML slots: `composed_of`, `affects`, `mitigates`, `steps`, `precedes` and `reviews`. `supersedes` is only on ThreatModel, SecurityProgram and GovernedView, and `ThreatInstance` has no slot to a generic threat.
+  - SARIF's schema bytes (unchanged since 2024-05-02) and its `suppression.status` enum.
+  - The CSAF 2.1 directory (`csd04/`, 21-Oct-2026).
+
+### Choices the agent made, open to review
+
+- **A short AI pass, not counting the technical review alone.** #39's box says "by a fresh agent". A full pass would cost most of a session.
+- **Coverage rows, not crosswalk rows, for Attack Flow and TM-BOM v1.** Full rows in Tables 2, 3 and 5 mean re-running Phases 1 to 3 for two formats, about 60 cells and 10 ratings. The material harm was the false claims, and those are fixed. The rows are listed as not yet done in §13. The reviewer's suggested Attack Flow marks (AttackStep `=` or `≈`, AttackPath `≈`) are not entered without a full row.
+- **ATT&CK stays pinned at 19.2.** The crosswalk was built on 19.2. The record moved to v20.0 under #165, so the report says where its 19.2 figures come from instead of re-pinning.
+- **CVSS TrustBoundary keeps `⊂`** with a qualifier, rather than `—`. The flag is about a boundary crossing, which `⊂` (narrower) describes. Changing it would also change the row's counts.
+- **`supersedes` is annotated, not split.** Splitting the column changes Table 3's shape, which `dimensions.md` fixed in Phase 0.
+
+### What a human accepted
+
+- The student relayed the sponsor's answer (decide the four questions within the student's lane) and asked the agent to proceed. The student did not judge the findings technically. The sponsor's sign-off on the report is still pending.
+
+### What was rejected, and why
+
+Twelve statements in 0.4.0:
+- "No released format holds an ordered attack path" (abstract, Overview, §9.8, §11, G2). Attack Flow has been released since 2022-10-27.
+- "`Requirement` held open (DEC-001b)" (decisions table, class mapping, Figure 1, G10). ADR-0012 made it core.
+- The appendix's TM-BOM, defined only as CycloneDX 2.0's unreleased modules. OWASP's v1 schema is released.
+- "The converters in its source tree do not work at 2.6.2" (Threat Dragon). Its TM-BOM import works, with loss.
+- "No format records a human's reviewed verdict" (abstract, §11). threagile, OSCAL, STIX `opinion` and SARIF suppressions record verdicts; none has an assigned impact (G1's wording).
+- "16 places where the schema's documentation contradicts its own structure." 16 is the defect count; 9 are contradictions.
+- OSV Weakness `—`. `database_specific` is open, and GitHub's records carry `cwe_ids` there.
+- OSV Exploitation evidence `—`. The `EVIDENCE` reference type links to exploitation evidence.
+- "order (chain ordinal …)". CWE's `Ordinal` marks the primary `ChildOf`, not a chain position.
+- CAPEC's execution flow as "the nearest thing to an AttackStep in any released format". Attack Flow's `attack-action` is nearer.
+- Stale statuses: `osv-schema` "summarized", `first-cvss` "queued", library#21 "open", `library_commit` "pending".
+- Record `mitre-attack` cited for ATT&CK 19.2. It now describes v20.0.
+
+Reviewer suggestions declined or deferred:
+- A SARIF library stub. Deferred: no crosswalk mark depends on SARIF, and its schema now has a verified URL in `sources.md`.
+- Re-pinning the ATT&CK row to v20.0, splitting the `supersedes` column, and marking CVSS TrustBoundary `—`. All three are under the choices above.
+- Full crosswalk rows for Attack Flow and TM-BOM v1. Deferred (§13).
+- A CWE 5.0 library record. Deferred: under the library's rules it would be a new record linked by `supersedes`, and it belongs with the CWE importer (DEC-008, #61).
+
+### Note
+
+- Under the playbook, the review is iterated until it finds nothing material. This entry fixes all four material findings. It does not run a second review pass.
