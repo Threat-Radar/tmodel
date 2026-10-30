@@ -4,7 +4,7 @@ id: DL-0028
 title: "Packaging review fixes for PR #155"
 type: process
 status: draft
-version: "0.2.0"
+version: "0.2.1"
 date: "2026-10-29"
 updated: "2026-10-30"
 record: DL-0028
@@ -102,9 +102,10 @@ and [Tauri resource mappings](https://v2.tauri.app/develop/resources/).
 
 ### Human review and acceptance
 
-Pending for this follow-up. The automated isolation test supplements the clean
-Mac acceptance check; a tagged draft release and a downloaded-installer test
-remain necessary to close #124. No human acceptance or notarization is claimed.
+On 2026-10-30, @paria03 reported successful manual testing of the local packaged
+build. Individual checklist results were not itemized. Code review remains
+pending; a tagged draft release and a downloaded-installer test on a clean
+account remain necessary to close #124. Notarization remains untested.
 
 ### Follow-up validation
 
@@ -123,6 +124,7 @@ remain necessary to close #124. No human acceptance or notarization is claimed.
   interrupt stops the sidecar, releases the port, and removes the unpacked runtime.
 - Actionlint passes both changed workflows (ShellCheck unavailable), and archdoc,
   publishing identity/link checks, shell syntax and `git diff --check` pass.
-- Window observation and menu-driven quit remain unverified for this follow-up:
-  computer-control permission was unavailable. A tagged draft release, download
-  on a clean account, and Developer ID notarization remain untested.
+- Automated window observation was unavailable because computer-control
+  permission was not granted. @paria03 subsequently reported that the local
+  manual test passed. A tagged draft release, download on a clean account, and
+  Developer ID notarization remain untested.
