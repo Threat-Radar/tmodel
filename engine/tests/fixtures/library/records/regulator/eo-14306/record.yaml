@@ -1,0 +1,59 @@
+# Topic kept as supply-chain-attestation (existing stub); SDL lane adds a verified summary only.
+schema: library-record/v1
+id: eo-14306
+body: regulator
+type: spec
+title: "Executive Order 14306: Sustaining Select Efforts To Strengthen the Nation's Cybersecurity and Amending Executive Order 13694 and Executive Order 14144"
+short_title: EO 14306
+authors:
+  - Donald J. Trump (President of the United States)
+date: "2025-06-06"
+publisher: "Executive Office of the President; published in the Federal Register (90 FR 24723, 2025-06-11)"
+version: as issued 2025-06-06
+identifiers:
+  eo: "14306"
+  fr: 90 FR 24723
+  fr_doc: "2025-10804"
+  url: "https://www.govinfo.gov/content/pkg/FR-2025-06-11/pdf/2025-10804.pdf"
+content:
+  url: "https://www.govinfo.gov/content/pkg/FR-2025-06-11/pdf/2025-10804.pdf"
+  sha256: 74da9b4afc40c012e51f596c00fa42c42565b89c518228ce361c77728143987d
+  retrieved: "2026-10-02"
+  local: false
+  media_type: application/pdf
+  pages: 4
+relations:
+  updates:
+    - eo-14144
+  see_also:
+    - eo-14028
+    - omb-m-26-05
+    - sp-800-218
+bears_on:
+  - R-042
+  - R-044
+cites:
+  - eo-14144
+  - sp-800-218
+  - ref: §3
+    title: "Executive Order 13694 (Blocking the Property of Certain Persons Engaging in Significant Malicious Cyber-Enabled Activities), as amended"
+  - ref: §2(b)
+    title: NIST SP 800-53
+  - ref: §2(d)
+    title: National Security Memorandum 10 (2022-05-04)
+applicability:
+  security: core
+  cryptography: adjacent
+  this_project: adjacent
+usefulness:
+  verdict: useful
+  reason: Removed the CISA attestation-validation / FAR-attestation directives of EO 14144 while keeping a dated SSDF update; explains why the US attestation regime contracted in 2025-2026.
+  assessed: "2026-10-02"
+topic: supply-chain-attestation
+tags:
+  - sdl
+  - regulation
+  - attestation
+  - us-federal
+status: summarized
+confidence: medium

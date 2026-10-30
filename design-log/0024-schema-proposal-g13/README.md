@@ -4,9 +4,9 @@ id: DL-0024
 title: "Schema proposal: composition slots (RPT-0004 Table 6) and Asset, TrustBoundary, DataFlow (RPT-0005 G13)"
 type: process
 status: draft
-version: "0.3.0"
+version: "0.3.1"
 date: "2026-10-18"
-updated: "2026-10-22"
+updated: "2026-10-29"
 record: DL-0024
 bears_on: [R-002, R-010, R-018, R-022, DEC-001, DEC-002, DEC-008, DEC-009]
 defers_to: ARCH-0001
@@ -147,10 +147,21 @@ This branch is based on `main`, which does not have #129's generated files yet. 
 **What changed.**
 
 - `spec/ADR-0011-object-model-core-amendment-1.md`, new.
-- ARCH-0001 0.1.9 (banner, §3, §8) and its changelog.
+- ARCH-0001 0.1.9 (banner, §3, §8) and its changelog; 0.1.10 since `main` was merged on 2026-10-29 (next section).
 - The schema: its 34 "PROPOSED" prefixes now say "Accepted via ADR-0011 (DL-0024)"; its header and top description name ADR-0011; the Component and DataFlow descriptions record decision 2.
 - `spec/schema/generated/` and `OBJECT-MODEL.md`, regenerated.
 - For decision 4: the proposal vectors' README section, the proposal container's comment and the attack-path test's comment.
+
+## Merging `main` after ADR-0012 (2026-10-29)
+
+Once ADR-0012 (Requirement in the core, pull request #167) reached `main`, this pull request conflicted with it in six files, because both amend DEC-001a in the same places. `main` was merged into the branch and the conflicts resolved as follows:
+
+- **The schema** (`tmodel-object-model.linkml.yaml`): the header names both amendments. ADR-0012's two enums (`RequirementKind`, `RequirementTextOrigin`) and this proposal's two (`ComponentKind`, `SecurityProperty`) are all kept, ADR-0012's first so that the ADR-0011 block stays together. Compared with both parents, the result has every class, slot and enum either side added (33 classes, 129 slots, 18 enums), no duplicate keys, and no class lost a slot.
+- **ARCH-0001**: both branches had bumped it from 0.1.8 to 0.1.9. `main`'s 0.1.9 (ADR-0012) stays, and ADR-0011's entry becomes 0.1.10 (2026-10-29). The banner, §3 and §8 name both amendments; the DEC-001b row and the "Still open" line keep `main`'s wording, since Requirement left DEC-001b.
+- **The generated files and `OBJECT-MODEL.md`**: regenerated with the pinned tools, not merged by hand.
+- **The proposal container**: it is the core container plus three collections, and ADR-0012 added `requirements` to the core container, so the proposal container gets the same line.
+
+Checks after the merge: `bin/gen-schema --check` passes; the four `mvp-*`, two `tv-*` and two `pv-*` vectors validate against their containers; `check-edges.py` (mvp vectors) and `check-refs.py` (65 reference slots, 611 references in all vectors, including mvp-02's new Requirements) resolve every reference; in `engine/`, `ruff check`, `ruff format --check` and pytest pass (138 passed; the 3 packaged-engine tests skip without a built engine).
 
 ## What was rejected, and why
 
@@ -168,3 +179,4 @@ This branch is based on `main`, which does not have #129's generated files yet. 
 - The student chose to take this piece of #64 and asked for it to be done as a pull request.
 - 2026-10-22: @Maimcghee reviewed it as the lane owner (four notes, none blocking). The student chose to merge `main`, regenerate, apply notes 1 and 2, and skip `pv-*` in the attack-path test.
 - 2026-10-22: the sponsor (@nymble) delegated the four decisions to the student. The student (@Clovier) made them as recommended (ADR-0011): A1 to A7 and B1 to B5 accepted; DataFlow joins Components directly; the names kept; pv-01 and pv-02 left for @paria03 to review.
+- 2026-10-29: the student asked for this pull request's conflicts with `main` to be fixed ("Merging `main` after ADR-0012" above).

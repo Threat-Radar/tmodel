@@ -1317,7 +1317,7 @@
         },
         "Mitigation": {
             "additionalProperties": false,
-            "description": "A mitigation/control (catalog example D3FEND, \u00a71). \u00a75 instance fields (implementation owner, external work-item refs, status) are on this class until a separate MitigationInstance class is accepted. Status is also surfaced as RiskScore.mitigation_status (R-045) \u2014 a peer of the derived risk, not an input to it.",
+            "description": "A mitigation/control (catalog example D3FEND, \u00a71). \u00a75 instance fields (implementation owner, external work-item refs, status) are on this class until a separate MitigationInstance class is accepted. Status is also surfaced as RiskScore.mitigation_status (R-045) \u2014 a peer of the derived risk, not an input to it. A GENERIC mitigation for a product type/family is `stated_as` a Requirement (technical, process, audit, \u2026); a product-specific mitigation discharges that Requirement through `Requirement.satisfied_by` (ADR-0012).",
             "properties": {
                 "applies_in_phase": {
                     "description": "Coarse lifecycle stage a threat or mitigation belongs to (\u00a73b). Not a substitute for Environment. One threat uses the axis that fits.",
@@ -1391,6 +1391,16 @@
                         "string",
                         "null"
                     ]
+                },
+                "stated_as": {
+                    "description": "A generic Mitigation (for a product type/family) expressed as a Requirement (ADR-0012). The Requirement carries the family scope and is discharged by product-specific Mitigations via `satisfied_by`. An AI-proposed link is a `proposed` Assertion with predicate `stated_as` until reviewed.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
                 }
             },
             "required": [
@@ -1457,11 +1467,12 @@
             "description": "One reusable identity for an organization or a person (\u00a72b). ThreatActor and PROV Agent are facets of this identity, not separate \u00a713 classes. Only intrinsic classifications live on the node; supplier/owner/vendor-of are edges.",
             "properties": {
                 "classifications": {
-                    "description": "Intrinsic classifications only, e.g. standards-body, cna (\u00a72b).",
+                    "description": "Intrinsic classifications only, e.g. standards-body, cna (\u00a72b). On a Product, the product types / families it belongs to, scheme-prefixed (e.g. `family:connected-ecu`); `Requirement.applies_to_family` matches these (ADR-0012).",
                     "examples": [
                         [
                             "standards-body",
-                            "cna"
+                            "cna",
+                            "family:connected-ecu"
                         ]
                     ],
                     "items": {
@@ -1520,8 +1531,25 @@
         },
         "Product": {
             "additionalProperties": false,
-            "description": "A product design (structural layer, \u00a71). Recursive composition is `composed_of` Components (\u00a73). Relational party roles are edges (\u00a72b).",
+            "description": "A product design (structural layer, \u00a71). Recursive composition is `composed_of` Components (\u00a73). Relational party roles are edges (\u00a72b). `classifications` names the product types / families it belongs to (e.g. `family:connected-ecu`); a Requirement scoped to a family by `applies_to_family` applies to every Product carrying that value (ADR-0012). There is no ProductFamily class (DEC-009).",
             "properties": {
+                "classifications": {
+                    "description": "Intrinsic classifications only, e.g. standards-body, cna (\u00a72b). On a Product, the product types / families it belongs to, scheme-prefixed (e.g. `family:connected-ecu`); `Requirement.applies_to_family` matches these (ADR-0012).",
+                    "examples": [
+                        [
+                            "standards-body",
+                            "cna",
+                            "family:connected-ecu"
+                        ]
+                    ],
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
                 "composed_of": {
                     "description": "Recursive structural composition (\u00a73). Inlined as references, not as nested trees.",
                     "items": {
@@ -1863,8 +1891,63 @@
         },
         "Requirement": {
             "additionalProperties": false,
-            "description": "A normative statement from a spec, satisfied through the SDL (\u00a73c R-044). Its `text` is the normative statement and `normativity` says how binding it is. `source_ref` is an OPAQUE uriorcurie into the library requirement record (Threat-Radar/library) \u2014 tmodel aligns by reference ONLY; it does not import or depend on the library schema. `maps_to` carries the MAP-0001 cross-spec crosswalk (how SSDF \u2194 MS SDL \u2194 SAMM \u2194 21434 \u2026 overlap; reviewed mappings reify as Assertions, \u00a74). `satisfied_by` links the Mitigation(s) that discharge it; `conformance_status` is the automatable R-042 verdict \u2014 it proves linkage + approval, NOT adequacy. ARCH lists audit (Requirement/WorkProduct) as post-MVP (#19); not yet a \u00a713 class. Post-MVP.",
+            "description": "CORE (ADR-0012, amending ADR-0010 / DEC-001a). A normative statement a product must meet: taken from a standard, regulation or guideline (ISO/SAE 21434, ETSI EN 304 223, NIST SP 800-218, \u2026) or authored for a product type/family. `text` is the statement and `text_origin` says whether it is a paraphrase, verbatim or authored; for a licensed standard it is ALWAYS a paraphrase and the clause is in `source_locator`. `source_ref` is an OPAQUE uriorcurie into the library requirement record (Threat-Radar/library) \u2014 tmodel aligns by reference ONLY; it does not import or depend on the library schema. `requirement_kind` classifies it (technical / process / audit / documentation / organizational / other) and `normativity` says how binding it is. Edges: `refines` / `derived_from` / `conflicts_with` / `maps_to` (overlap, the MAP-0001 crosswalk) to other Requirements; `addresses` the ThreatInstance / Weakness / AttackPattern it counters; `satisfied_by` the Mitigation(s) that discharge it; `applies_to` a Product / ProductInstance / Component, or `applies_to_family` a product type/family (matched against Product.classifications). A generic Mitigation is `stated_as` a Requirement. AI-proposed requirement links are `proposed` Assertions until a human Review accepts them (\u00a74). `conformance_status` is NOT accepted: it is the DEC-001b R-042 verdict (C1) and stays proposal-level; core vectors do not set it.",
             "properties": {
+                "addresses": {
+                    "description": "The ThreatInstance, Weakness or AttackPattern this Requirement counters (ADR-0012). An AI-proposed `addresses` link is a `proposed` Assertion, not a value of this slot, until a human Review accepts it.",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "applies_to": {
+                    "description": "The Product, ProductInstance or Component this Requirement applies to (ADR-0012).",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "applies_to_family": {
+                    "description": "Product type / family scope (ADR-0012), as an opaque scheme-prefixed value matched against `Product.classifications`, e.g. `family:connected-ecu`. Used instead of a ProductFamily class, which DEC-009 has not decided.",
+                    "examples": [
+                        [
+                            "family:connected-ecu"
+                        ]
+                    ],
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "conflicts_with": {
+                    "description": "The two Requirements cannot both be met as written; a human must resolve it (ADR-0012). Symmetric in meaning; record it on either side.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
                 "conformance_status": {
                     "anyOf": [
                         {
@@ -1874,7 +1957,17 @@
                             "type": "null"
                         }
                     ],
-                    "description": "Automatable R-042 conformance verdict for a Requirement: whether it has an approved, evidenced mitigation. Proves linkage + approval, NOT adequacy."
+                    "description": "PROPOSED (DEC-001b, not accepted by ADR-0012). Automatable R-042 conformance verdict for a Requirement: whether it has an approved, evidenced mitigation. Proves linkage + approval, NOT adequacy. Core (mvp-*) vectors do not set it."
+                },
+                "derived_from": {
+                    "description": "This Requirement was derived from the target (e.g. a product requirement derived from a standard's provision, ISO/SAE 21434 RQ-09-09). Unlike `refines`, the intent may differ (ADR-0012).",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
                 },
                 "description": {
                     "description": "Short prose description.",
@@ -1888,7 +1981,7 @@
                     "type": "string"
                 },
                 "maps_to": {
-                    "description": "Cross-spec crosswalk edges (\u00a73c R-044) = the MAP-0001 overlap. Reviewed mappings reify as Assertions (\u00a74) so they can carry provenance + a Review.",
+                    "description": "Overlap / cross-spec crosswalk edge (\u00a73c R-044) = the MAP-0001 overlap: the two Requirements ask for substantially the same thing. Reviewed mappings reify as Assertions (\u00a74) so they can carry provenance + a Review.",
                     "items": {
                         "type": "string"
                     },
@@ -1915,8 +2008,8 @@
                     ],
                     "description": "How binding a Requirement is (\u00a73c R-044): mandatory / recommended / optional / informative / conditional. MAP-0001 shows a cell means different things per framework (hard requirement vs maturity activity vs recommendation)."
                 },
-                "satisfied_by": {
-                    "description": "Mitigation(s) that discharge this Requirement (\u00a73c R-042).",
+                "refines": {
+                    "description": "This Requirement makes the target more specific for a product, family or component (same intent, narrower scope or more detail) (ADR-0012).",
                     "items": {
                         "type": "string"
                     },
@@ -1925,19 +2018,58 @@
                         "null"
                     ]
                 },
+                "requirement_kind": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/RequirementKind"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "What kind of obligation a Requirement is (ADR-0012)."
+                },
+                "satisfied_by": {
+                    "description": "Mitigation(s) that discharge this Requirement (ADR-0012; \u00a73c R-042). Normally product-specific mitigations; the generic family mitigation is linked the other way, by `Mitigation.stated_as`.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "source_locator": {
+                    "description": "Human-readable clause / section / table locator in the source, e.g. `RQ-09-09 (\u00a79.5.2)` or `Provision 5.2.1` (ADR-0012). With a paraphrased `text` this is how a reader finds the authoritative wording.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
                 "source_ref": {
-                    "description": "OPAQUE reference to a library requirement record (Threat-Radar/library), by uriorcurie id only (\u00a73c R-044, \u00a72b). tmodel aligns by reference \u2014 it does NOT import or depend on the library schema.",
+                    "description": "OPAQUE reference to the library record (Threat-Radar/library) the Requirement comes from, scheme-prefixed like `catalog_ref`, e.g. `library:iso-sae-21434-2021#RQ-09-09` (ADR-0012; \u00a73c R-044, \u00a72b). tmodel aligns by reference \u2014 it does NOT import or depend on the library schema. Absent for a project-authored requirement.",
                     "type": [
                         "string",
                         "null"
                     ]
                 },
                 "text": {
-                    "description": "The normative statement of a Requirement (\u00a73c R-044). Distinct from `description`.",
+                    "description": "The normative statement of a Requirement (ADR-0012; \u00a73c R-044). Distinct from `description`. For a licensed standard (ISO, IEC, SAE) it is a paraphrase, never the standard's wording; `text_origin` records which.",
                     "type": [
                         "string",
                         "null"
                     ]
+                },
+                "text_origin": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/RequirementTextOrigin"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Whether `text` is a paraphrase of the source, the source's own words (only where the source's licence allows it), or authored by the project (ADR-0012)."
                 }
             },
             "required": [
@@ -1956,6 +2088,29 @@
                 "not_assessed"
             ],
             "title": "RequirementConformanceStatus",
+            "type": "string"
+        },
+        "RequirementKind": {
+            "description": "What kind of obligation a Requirement is (ADR-0012). A mitigation that becomes a requirement can be any of these, not only technical.",
+            "enum": [
+                "technical",
+                "process",
+                "audit",
+                "documentation",
+                "organizational",
+                "other"
+            ],
+            "title": "RequirementKind",
+            "type": "string"
+        },
+        "RequirementTextOrigin": {
+            "description": "Where a Requirement's `text` comes from (ADR-0012).",
+            "enum": [
+                "paraphrase",
+                "verbatim",
+                "authored"
+            ],
+            "title": "RequirementTextOrigin",
             "type": "string"
         },
         "Review": {

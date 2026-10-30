@@ -55,6 +55,7 @@ classes:
       assertions: { range: Assertion, multivalued: true, inlined: true, inlined_as_list: true }
       lifecycle_phases: { range: LifecyclePhase, multivalued: true, inlined: true, inlined_as_list: true }
       views: { range: View, multivalued: true, inlined: true, inlined_as_list: true }
+      requirements: { range: Requirement, multivalued: true, inlined: true, inlined_as_list: true }
       assets: { range: Asset, multivalued: true, inlined: true, inlined_as_list: true }
       trust_boundaries: { range: TrustBoundary, multivalued: true, inlined: true, inlined_as_list: true }
       data_flows: { range: DataFlow, multivalued: true, inlined: true, inlined_as_list: true }

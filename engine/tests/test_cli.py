@@ -50,3 +50,25 @@ def test_missing_command_is_usage_error():
     with pytest.raises(SystemExit) as err:
         main([])
     assert err.value.code == 2
+
+
+def test_serve_exits_when_stdin_closes():
+    # The desktop app starts the engine with --exit-with-parent; closing stdin
+    # (what happens when the app quits or crashes) must stop it (#124).
+    import subprocess
+    import sys
+
+    proc = subprocess.Popen(
+        [sys.executable, "-m", "engine", "serve", "--port", "0", "--exit-with-parent"],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        text=True,
+    )
+    try:
+        assert "listening on http://127.0.0.1:" in proc.stdout.readline()
+        assert proc.poll() is None  # still serving while stdin is open
+        proc.stdin.close()
+        assert proc.wait(timeout=10) == 0
+    finally:
+        if proc.poll() is None:
+            proc.kill()

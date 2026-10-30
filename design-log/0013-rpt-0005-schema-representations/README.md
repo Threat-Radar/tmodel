@@ -4,7 +4,7 @@ id: DL-0013
 title: "RPT-0005 schema representations: AI-assisted scoping, survey and crosswalk"
 type: process
 status: draft
-version: "0.10.0"
+version: "0.11.0"
 date: "2026-10-05"
 updated: "2026-10-21"
 record: DL-0013
@@ -353,3 +353,49 @@ The library session's final report on the CWE run, read on 2026-10-16:
 ### Not fixable in this PR
 
 - Six earlier commits on this branch carry a personal name and a university email in their author and `Signed-off-by:` lines, and commit fedc13d's message repeats the old dates. A squash merge with a clean message and a GitHub-id sign-off fixes both on `main`. That is the sponsor's call at merge.
+
+## Phase 6: clarity pass, report 0.4.0 (2026-10-21)
+
+### Question asked
+
+#126 merged report 0.3.3. The student asked for the Phase 6 clarity pass: make the report read like a survey paper that a reviewer can follow top to bottom without the chat, for the faculty advisor and the sponsor.
+
+### What was produced
+
+`report.md` 0.4.0. Every finding, mark and count is unchanged.
+
+- **Front:** an abstract, and a status line that says what is done and what is open.
+- **Figure 1:** a diagram of the seven families and the accepted classes each one fills, showing the three classes OTM needs (G13) and the two no format carries (G1, G2).
+- **§9 restructured.** Its parts were second-level headings that broke the section numbering. They are now §9.1 to §9.9:
+  - one legend for every mark, including `∅` and `?`;
+  - lead-ins for Table 3 and for Q1's table;
+  - the summary paragraphs, which sat after the limits, moved ahead of them as §9.7;
+  - the list of inputs to the gap analysis (§9.8), which now points to §11's G-numbers instead of repeating routes that predate ADR-0007 and ADR-0010.
+- **§2 to §8:** a lead-in, and every format entry written the same way (steward; record id, status).
+- **§12, a new conclusion.** The method is now §13; its text covers Phases 2 and 6 and the technical review, and its "not yet done" list is current.
+- **An appendix** expanding 35 acronyms.
+- **Table 1:** the nine records of library#25 are merged, so their status is now `stub`.
+
+### Corrections made on the way
+
+- **SSVC's steward** was given as CISA in §3. Table 1 and the sources name CERT/CC, with CISA's decision tree; §3 now says so.
+- **TAXII** was described as having no record in §5. The stub `taxii-2-1` now exists (library#25).
+- **The Overview's NVD sentence** said NVD "enriches only a minority" of CVEs. It now gives the prioritization and the sample, as §2 has done since 0.3.3.
+
+### Choices the agent made, open to review
+
+- **Section numbers.** Table numbers are kept, because `dimensions.md` and the other files use them, so Table 5 still appears before Tables 2 to 4. The conclusion became §12 and the method §13; nothing outside the report cites §12.
+- **The diagram's simplifications.** It shows only the main class each family fills, not every crosswalk cell.
+
+### What a human accepted
+
+- The student asked for the pass. The student's review is for clarity; the technical side was reviewed by @Clovier (previous entry), and the sponsor's sign-off is pending.
+
+### What was rejected, and why
+
+- The three statements under "Corrections made on the way".
+- **Deleting the gap-analysis inputs from §9** as a duplicate of §11. They are kept as §9.8, because item 6 (Assumption) appears nowhere in §11.
+
+### Note
+
+- `bin/validate-archdoc` reports one error on `main`: `project/SOW-0001-statement-of-work.md` has an id prefix the validator does not allow. This change does not touch that file, and its own files pass.

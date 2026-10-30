@@ -7,9 +7,9 @@ description: "Normalizes the per-reference object models of the 44-record SDL to
 type: research
 category: process
 status: draft
-version: "0.2.0"
+version: "0.2.1"
 date: "2026-10-03"
-updated: "2026-10-03"
+updated: "2026-10-22"
 authors:
   - role: research
     id: agent-sdl-object-model-synthesis
@@ -38,7 +38,7 @@ agent_notes: >
 **Status: draft, proposals only.** This report folds the 42 per-reference object-model passes of the
 `sdl` topic into one canonical model. The machine-readable form, with every absorbed source object and
 edge, its locator, kind (stated or inferred) and the source's own tmodel mapping, is
-[`sdl-object-model.yaml`](sdl-object-model.yaml). Proposed names target
+[`sdl-object-model.yaml`](https://github.com/Threat-Radar/tmodel/blob/main/research/0013-sdl-conformance/sdl-object-model.yaml). Proposed names target
 `ARCH-0001-PROPOSAL-v0.2.0` (front matter `0.2.0-proposed.10`; its body status line still reads
 "proposed.8") and DL-0009 (R-040…R-044). Nothing here is accepted.
 
