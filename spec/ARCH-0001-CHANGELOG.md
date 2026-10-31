@@ -6,10 +6,10 @@ description: "Every change to ARCH-0001, newest first. §9.5 requires an entry p
 type: process
 category: security
 status: active
-version: "0.1.9"
+version: "0.1.10"
 version_policy: "tracks ARCH-0001; one entry per version bump"
 date: "2026-09-23"
-updated: "2026-10-26"
+updated: "2026-10-29"
 needs_review: false
 reviewed: true
 canonical_path: spec/ARCH-0001-CHANGELOG.md
@@ -19,6 +19,16 @@ defers_to: ARCH-0001
 # ARCH-0001 changelog
 
 Newest first. Every ARCH-0001 version bump appends a line here (§9.5).
+
+## 0.1.10 (2026-10-29)
+
+**DEC-001a amended** via ADR-0011 (decided 2026-10-22; merged after ADR-0012's 0.1.9). DL-0024's
+additions join the accepted core: the composition slots from RPT-0004's Table 6 (`instance_of`,
+`version`, `component_kind`, `build_composed_of`, Assertion provenance, `alias_ids`, Component
+`supplied_by` and `manufactured_by`) and the Asset, TrustBoundary and DataFlow classes from
+RPT-0005's G13, with `damages_asset`, `compromised_property` and `targets_element`. DataFlow joins
+Components directly (OTM's shape); a DFD layer is not adopted. Updated the status banner, §3 and §8,
+which now name ADR-0011 beside ADR-0012. Still open: DEC-001b, DEC-008, DEC-009.
 
 ## 0.1.9 — 2026-10-26
 

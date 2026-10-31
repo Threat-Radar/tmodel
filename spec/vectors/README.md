@@ -67,6 +67,31 @@ validate against the full `ExampleModel` container.
 | `tv-software-auth-service.yaml` | software (ADR-0002 *deep* product) | components w/ CPE/purl, CVE→CWE propagation (reviewed Assertion), two AttackPaths with AND + OR gates, Mitigations w/ status, composite-vector RiskScore (ADR-0006), Party roles, human-reviewed vs AI-proposed, a governed **ThreatModel** snapshot (supersedes chain), and an **SDL SecurityProgram** (Gate/Milestone, a `Requirement` with an opaque `source_ref`, a Gate that `validates_conformance_of` the ThreatModel) |
 | `tv-hardware-brake-ecu.yaml` | hardware/firmware (ADR-0002 *breadth* product) | firmware-image hash + compute cores as structural/instance identity, a physical/glitch AttackPath, LifecyclePhase + Environment/Deployment, Mitigations w/ status, composite-vector RiskScore, human-reviewed vs AI-proposed, a governed ThreatModel snapshot |
 
+## Proposal vectors (`pv-NN-*.yaml`, DL-0024)
+
+Example models built to shape the classes DL-0024 proposed and ADR-0011 accepted (Asset, TrustBoundary,
+DataFlow; RPT-0005 G13), as the sponsor directed on 2026-10-14: published automotive
+attacks, modeled from their primary write-ups. They validate against
+`example-container-proposed.linkml.yaml` (class `ExampleModelProposed`), the core
+container plus collections for the proposed classes. **AI-drafted and unreviewed:**
+every Assertion is `proposed`, no Review is recorded, and feasibility and impact are
+left for a human. They stay so until @paria03 reviews their attack paths (ADR-0011,
+decision 4); @Maimcghee has checked their sources.
+
+| File | Attack | Source | Exercises |
+|---|---|---|---|
+| `pv-01-can-injection-theft.yaml` | keyless car theft by CAN injection (Toyota RAV4, CVE-2023-29389) | Canis Automotive Labs write-up, 2023-04-03; CVE record | Asset, nested TrustBoundary zones, DataFlows on two CAN buses, `instance_of` with a CVE whose CWE came from CISA-ADP (Assertion with `asserted_by`) |
+| `pv-02-dealer-portal-owner-data.yaml` | theft of owners' personal data and silent takeover through a dealer portal (Kia, 2024) | Curry et al. write-up, 2024 | Assets with confidentiality, a dealer-only zone, DataFlows that carry personal data, a Weakness without a CVE (an `exploits` Assertion by a `software_agent` Party) |
+
+```sh
+for v in pv-01-can-injection-theft pv-02-dealer-portal-owner-data; do
+  linkml-validate -s spec/vectors/example-container-proposed.linkml.yaml \
+    -C ExampleModelProposed spec/vectors/$v.yaml
+done
+python3 design-log/0024-schema-proposal-g13/check-refs.py \
+  spec/vectors/mvp-*.yaml spec/vectors/tv-*.yaml spec/vectors/pv-*.yaml
+```
+
 ## Validating a vector
 
 `linkml` is installed. Each vector is one tree-rooted file validated against the
