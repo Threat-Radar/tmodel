@@ -1,0 +1,77 @@
+# Spec: NIST Trustworthy and Responsible AI report, 2025 edition (corrected PDF of 2025-04-01).
+# WAVE 1 calibration, lane supply-chain-infra (tmodel#134, part of #80).
+schema: "library-record/v1"
+id: nist-ai-100-2-e2025
+body: nist
+type: spec
+title: "Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations"
+short_title: "NIST AI 100-2e2025"
+authors:
+  - "Apostol Vassilev"
+  - "Alina Oprea"
+  - "Alie Fordyce"
+  - "Hyrum Anderson"
+  - "Xander Davies"
+  - "Maia Hamin"
+date: "2025-03"
+version: "e2025"
+publisher: "National Institute of Standards and Technology (NIST)"
+identifiers:
+  nist: "NIST AI 100-2e2025"
+  doi: "10.6028/NIST.AI.100-2e2025"
+  url: https://csrc.nist.gov/pubs/ai/100/2/e2025/final
+content:
+  url: https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-2e2025.pdf
+  sha256: "4811fb6ad73f9c9121843ab77e029b5adc6f2c86d33c2fc5b2099ef133847646"
+  retrieved: "2026-10-29"
+  local: false
+  media_type: application/pdf
+  pages: 127
+relations:
+  supersedes: []
+  superseded_by: []
+  see_also:
+    - biml-ara-ml-2020
+  cited_by: []
+  implements_concept: []
+bears_on:
+  - DEC-001a
+applicability:
+  security: core
+  cryptography: adjacent
+  this_project: adjacent
+implementations:
+  open_source:
+    - name: garak
+      url: https://github.com/NVIDIA/garak
+      license: Apache-2.0
+      note: "LLM vulnerability scanner named in section 3.6 (cited there as github.com/leondz/garak)"
+    - name: PyRIT
+      url: https://github.com/microsoft/PyRIT
+      license: MIT
+      note: "risk identification tool named in section 3.6; the cited github.com/Azure/PyRIT is archived"
+    - name: AgentDojo
+      url: https://github.com/ethz-spylab/agentdojo
+      license: MIT
+      note: "prompt injection benchmark for agents named in section 3.6"
+  commercial: []
+  searched: "2026-10-29"
+usefulness:
+  verdict: useful
+  reason: "The US government's reference vocabulary for ML attacks (TM-004): 30 stable NISTAML ids plus attacker goal, capability and knowledge axes; it covers attacks on models and data, so most supply-chain and infrastructure attacks fall outside it."
+  assessed: "2026-10-29"
+topic: ai-threat-model-supply-chain-infra
+tags:
+  - ai-weakness-catalog
+  - evasion
+  - data-poisoning
+  - backdoor
+  - prompt-injection
+  - jailbreak
+  - model-extraction
+  - membership-inference
+  - ai-supply-chain
+  - normative
+status: summarized
+confidence: medium
+owner: Clovier
