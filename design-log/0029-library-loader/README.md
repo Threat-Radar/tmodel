@@ -4,9 +4,9 @@ id: DL-0029
 title: "Library loader: read the pinned library's records into typed objects, and serve them (#60, #138, #139, #140, #141)"
 type: process
 status: draft
-version: "0.3.0"
+version: "0.3.1"
 date: "2026-10-29"
-updated: "2026-10-29"
+updated: "2026-10-30"
 record: DL-0029
 bears_on: [DEC-004, DEC-011]
 defers_to: ARCH-0001
@@ -76,7 +76,7 @@ These are the engine's read models of library records. They are not classes in t
 These are posted on the issues they belong to.
 
 - **For #65:** should library records be nodes in the working store with the id `library:<record-id>`? Which links become edges: all nine relation kinds plus `cites`, or a subset? Should the store keep `Library.digest` to decide when to rebuild?
-- **For #58:** the library holds documents (standards, papers, specs, datasets), not weaknesses or vulnerabilities. Weakness rows come from the CWE import (#61), and attack patterns later. Is a documents table plus a weakness table enough for November 5th? Which columns come first? Should the API page the list, since all 550 records are about 900 KB of JSON?
+- **For #58:** the library holds documents (standards, papers, specs, datasets), not weaknesses or vulnerabilities. Weakness rows come from the CWE import (#61), and attack patterns later. Is a documents table plus a weakness table enough for November 5th? Which columns come first? Should the API page the list, since all 550 records are about 900 KB of JSON? @kriishnaa-18 answered on 2026-10-30; see "What a human accepted" under #141.
 - **For the sponsor:** CI checks out this repo without its submodules, so the whole-library test is skipped there. Adding `submodules: true` to the engine job in `.github/workflows/app.yml` would run it on every pull request and catch a library pin bump that the loader cannot read. Separately, the packaged app (#124) needs the library too: should a snapshot be bundled at build time, or should the app be pointed at a library folder?
 
 ## What was produced
@@ -141,13 +141,12 @@ Nothing yet.
 - **503 instead of 400 for a missing library.** The server turns every ValueError into a 400, and `LibraryError` is a ValueError, so core raises `Unavailable` instead, and the server answers 503.
 - **Filters match exactly and take one value each.** The server keeps the last value of a repeated parameter, as it does for `/attack-paths`, so `?type=rfc&type=draft` filters on `draft`. Several values per filter, or matching that ignores case, can come with #141 if the table views need them.
 - **Every match comes back whole.** The response carries each record's full `to_dict()`. Shaping rows for the tables, with fewer fields, counts for filter menus or paging, is #141's job, once @kriishnaa-18 answers on #58.
-- **Placed to merge cleanly.** The core function sits after `health()` and the CLI command after `paths`, away from the lines that #162 and #155 change in the same files.
+- **Placed apart from #162 and #155.** The core function sits after `health()` and the CLI command after `paths`, away from the lines that #162 and #155 change in the same files. That kept the overlap small but not empty: after #162 merged on 2026-10-30, merging `main` conflicted in the imports and constants at the top of `core.py` and in one comment in `api/server.py`. Both sides were kept, and all six routes are served.
 - **The CLI catches ValueError,** which includes `GraphError`, so `--type ""` prints one error line instead of a traceback.
 
 ### Open
 
 - How the packaged app finds a library (#124; asked on #60).
-- Whether the API should page the records (asked on #58).
 
 ### What a human accepted
 
@@ -186,11 +185,12 @@ Nothing yet.
 
 ### Open
 
-- **The shape is a proposal until @kriishnaa-18 agrees on #58.** That is #141's first done item.
 - Paging is supported but off by default, since 550 rows are small enough to send at once.
+- Tables for one product's threats, attacks and risk will likely need their own engine data contract, as @kriishnaa-18 noted on #58. This feed covers the library's documents.
 
 ### What a human accepted
 
 - The student asked to start #141 (2026-10-29).
-- Pending: agreement on #58, and review.
+- @kriishnaa-18 agreed to the shape on #58 on 2026-10-30, for the frontend. The proposed fields cover what the table needs: title, type, status, topic, date and the reviewed-artifact information show first, and the rest go in a details view. All 550 rows can come in one response, with `limit` and `offset` kept for later. Search, sorting, filters and facets are enough, with no multi-select filters for now. The documents table comes first, and a weakness table follows if the CWE import (#61) is ready in time; whether that is enough for November 5th is still to be confirmed with @nymble. This meets #141's first done item.
+- Pending: review of #188.
 
