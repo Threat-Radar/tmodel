@@ -251,13 +251,7 @@ def load_library(root: str | Path, *, strict: bool = True) -> Library:
     that lists every failing file. With `strict=False`, failing records are left
     out and listed in `Library.problems` instead.
     """
-    root = Path(root).resolve()
-    if not (root / "records").is_dir():
-        raise LibraryError(
-            f"{root}: no records/ folder; is this a library checkout? "
-            "(an empty library/ usually means the submodule is not checked out: "
-            "git submodule update --init library)"
-        )
+    root = _checkout(root)
     files = sorted(root.glob(RECORD_GLOB), key=lambda p: p.relative_to(root).as_posix())
     digest = hashlib.sha256()
     loaded: dict[str, LibraryRecord] = {}
@@ -292,6 +286,28 @@ def load_library(root: str | Path, *, strict: bool = True) -> Library:
     )
 
 
+def _checkout(root: str | Path) -> Path:
+    """`root` made absolute, once it is known to hold `records/`; LibraryError if not.
+
+    A path the system cannot look at counts as no library too: a folder inside one
+    without read permission, a name that is too long, or a symlink loop.
+    """
+    try:
+        path = Path(root).resolve()
+        found = (path / "records").is_dir()
+    except OSError as exc:  # is_dir() raises for these instead of returning False
+        raise LibraryError(f"{root}: cannot read this folder ({exc.strerror or exc})") from exc
+    except RuntimeError as exc:  # resolve() raises this for a symlink loop before Python 3.13
+        raise LibraryError(f"{root}: cannot read this folder ({exc})") from exc
+    if not found:
+        raise LibraryError(
+            f"{path}: no records/ folder; is this a library checkout? "
+            "(an empty library/ usually means the submodule is not checked out: "
+            "git submodule update --init library)"
+        )
+    return path
+
+
 def configured_root() -> Path:
     """The library the engine serves: `$TMODEL_LIBRARY` if set, else the pinned submodule.
 
@@ -301,24 +317,32 @@ def configured_root() -> Path:
     """
     configured = os.environ.get(LIBRARY_ENV, "").strip()
     if configured:
-        return Path(configured).expanduser()
+        # os.path leaves "~name" as written when there is no such user, as the shell
+        # does, so it reads as no library; Path.expanduser() would raise instead.
+        return Path(os.path.expanduser(configured))
     return Path(__file__).resolve().parents[3] / "library"
 
 
 _cache_lock = threading.Lock()
-_cache: dict[str, tuple[tuple[tuple[str, int, int], ...], Library]] = {}
+_cache: dict[str, tuple[tuple[tuple[str, str], ...], Library]] = {}
 
 
-def _fingerprint(root: Path) -> tuple[tuple[str, int, int], ...]:
-    """Path, size and modification time of every file the loader reads or notes."""
-    paths = sorted({p for pattern in (RECORD_GLOB, *NOTED_GLOBS) for p in root.glob(pattern)})
+def _fingerprint(root: Path) -> tuple[tuple[str, str], ...]:
+    """Every record file with the SHA-256 of its bytes, then every file the loader notes.
+
+    Contents, not sizes and modification times, which an edit can keep (`cp -p` and
+    `rsync -t` do). Noted files count by path only, since the loader only checks
+    that they are there.
+    """
     seen = []
-    for path in paths:
+    for path in sorted(root.glob(RECORD_GLOB)):
         try:
-            stat = path.stat()
-        except OSError:  # removed since the glob; the next call sees the change
+            data = path.read_bytes()
+        except OSError:  # removed since the glob, or unreadable; the next call sees any change
             continue
-        seen.append((path.relative_to(root).as_posix(), stat.st_size, stat.st_mtime_ns))
+        seen.append((path.relative_to(root).as_posix(), hashlib.sha256(data).hexdigest()))
+    for pattern in NOTED_GLOBS:
+        seen += [(p.relative_to(root).as_posix(), "") for p in sorted(root.glob(pattern))]
     return tuple(seen)
 
 
@@ -326,12 +350,12 @@ def cached_library(root: str | Path | None = None) -> Library:
     """`load_library(root, strict=False)`, kept until a file it reads changes.
 
     Loading every record takes about half a second, which is too slow to repeat on
-    each request. Checking the files' sizes and times takes a few milliseconds, so
-    each call checks them and reloads only if something was added, removed or
+    each request. Hashing the record files takes a few hundredths of a second, so
+    each call hashes them and reloads only if something was added, removed or
     edited. With no `root`, it reads `configured_root()`. Like `load_library`, it
-    raises LibraryError when the folder holds no `records/`.
+    raises LibraryError when the folder holds no `records/` or cannot be read.
     """
-    root = Path(root if root is not None else configured_root()).resolve()
+    root = _checkout(root if root is not None else configured_root())
     with _cache_lock:
         fingerprint = _fingerprint(root)
         cached = _cache.get(str(root))

@@ -371,6 +371,14 @@ def test_not_a_library(tmp_path):
         load_library(tmp_path)
 
 
+def test_a_path_it_cannot_look_at_is_not_a_library(tmp_path):
+    loop = tmp_path / "loop"
+    loop.symlink_to(loop)
+    for path in (loop, tmp_path / ("x" * 300)):  # a symlink loop, a name too long
+        with pytest.raises(LibraryError):
+            load_library(path)
+
+
 # --- the whole pinned library ------------------------------------------------------
 
 

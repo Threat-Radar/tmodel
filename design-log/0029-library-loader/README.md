@@ -4,7 +4,7 @@ id: DL-0029
 title: "Library loader: read the pinned library's records into typed objects, and serve them (#60, #138, #139, #140, #141)"
 type: process
 status: draft
-version: "0.3.1"
+version: "0.3.2"
 date: "2026-10-29"
 updated: "2026-10-30"
 record: DL-0029
@@ -126,19 +126,20 @@ Nothing yet.
 - `GET /library` on the local API, with the filters as query parameters. An unknown or empty filter gets a 400 with a message. No library gets a 503 (`core.Unavailable`) with a message that says how to provide one.
 - `tmodel library`, with `--type`, `--topic`, `--status`, `--json`, `--in-process` and `--url`: a table of id, type, status and title, or the API's JSON.
 - In `engine/engine/load/library.py`: `configured_root()`, which is `$TMODEL_LIBRARY` or else the pinned submodule, and `cached_library()`.
-- `engine/tests/test_library_surface.py`: 39 tests.
+- `engine/tests/test_library_surface.py`: 44 tests, 5 of them added after review (0.3.2).
 - `CONTRIBUTING.md` §10: one paragraph on the library the engine serves.
 
 ### Method and checks
 
 - On the pinned library, the API lists 99 RFCs. The first request takes about 0.65 seconds and a repeated one about 0.03 seconds. All 550 records come to about 890 KB of JSON.
 - Engine suite: 169 passed, the 130 from #139's branch and 39 new. `ruff check` and `ruff format --check` are clean. Without the submodule, as CI runs, 67 library tests pass and the 2 that need the pinned library skip.
+- After @kriishnaa-18's review of #188 (0.3.2): 6 new tests, 5 in `test_library_surface.py` and 1 in `test_load_library.py`. On Python 3.12 all 6 fail on the code before the fix (on 3.13 the symlink loop already gave a 503). With the fix, the engine suite has 234 passed and 3 skipped on Python 3.12 and 3.13, and `ruff` is clean.
 
 ### Choices made, open to review
 
-- **One loaded copy, checked on every request.** Each call compares the size and modification time of every file the loader reads, which takes a few milliseconds, and reloads only if one was added, removed or edited. A pulled or edited library shows up on the next request without restarting the engine.
+- **One loaded copy, checked on every request.** Each call hashes every record file and checks which summaries and old versions exist, and reloads only if something was added, removed or edited. A pulled or edited library shows up on the next request without restarting the engine. The first version compared sizes and modification times, which an edit can keep (`cp -p` and `rsync -t` do), so @kriishnaa-18's review of #188 found that a same-size edit could go unseen. On the pinned library, hashing moved a repeated request from about 0.023 to 0.029 seconds.
 - **Broken records do not stop the screen.** The API answers 200 with the records that loaded and lists the failures under `library.problems`. The CLI prints them and exits 1 with a warning. A missing library is different: a 503, because the caller cannot fix it.
-- **503 instead of 400 for a missing library.** The server turns every ValueError into a 400, and `LibraryError` is a ValueError, so core raises `Unavailable` instead, and the server answers 503.
+- **503 instead of 400 for a missing library.** The server turns every ValueError into a 400, and `LibraryError` is a ValueError, so core raises `Unavailable` instead, and the server answers 503. A path the system cannot look at counts as missing too: a folder inside one without read permission, a name that is too long, a symlink loop, or `~name` for a user that does not exist. Before 0.3.2 these gave a 500, as @kriishnaa-18's review found.
 - **Filters match exactly and take one value each.** The server keeps the last value of a repeated parameter, as it does for `/attack-paths`, so `?type=rfc&type=draft` filters on `draft`. Several values per filter, or matching that ignores case, can come with #141 if the table views need them.
 - **Every match comes back whole.** The response carries each record's full `to_dict()`. Shaping rows for the tables, with fewer fields, counts for filter menus or paging, is #141's job, once @kriishnaa-18 answers on #58.
 - **Placed apart from #162 and #155.** The core function sits after `health()` and the CLI command after `paths`, away from the lines that #162 and #155 change in the same files. That kept the overlap small but not empty: after #162 merged on 2026-10-30, merging `main` conflicted in the imports and constants at the top of `core.py` and in one comment in `api/server.py`. Both sides were kept, and all six routes are served.
@@ -151,7 +152,8 @@ Nothing yet.
 ### What a human accepted
 
 - The student asked to start #140 (2026-10-29).
-- Pending: review.
+- @kriishnaa-18 reviewed #188 at `9c6a0ad`, against `main` with #162 merged: the routes match the contract agreed for #58, all 550 pinned records load, and `/graph` and `/attack-paths` still work. The review approved the pull request and asked for two nonblocking fixes before merging, the cache check and the 500s above; both were made in 0.3.2.
+- Pending: approval of the commit with those fixes.
 
 ## #141: the data feed for the table views
 
@@ -192,5 +194,6 @@ Nothing yet.
 
 - The student asked to start #141 (2026-10-29).
 - @kriishnaa-18 agreed to the shape on #58 on 2026-10-30, for the frontend. The proposed fields cover what the table needs: title, type, status, topic, date and the reviewed-artifact information show first, and the rest go in a details view. All 550 rows can come in one response, with `limit` and `offset` kept for later. Search, sorting, filters and facets are enough, with no multi-select filters for now. The documents table comes first, and a weakness table follows if the CWE import (#61) is ready in time; whether that is enough for November 5th is still to be confirmed with @nymble. This meets #141's first done item.
-- Pending: review of #188.
+- The same review of #188 found that `/library/table` behaves as agreed: search, filters, sorting, paging, facets and full-record retrieval.
+- Pending: approval of #188 with the review fixes (see #140).
 

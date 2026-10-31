@@ -6,6 +6,7 @@ when it is not checked out, as in CI.
 """
 
 import json
+import os
 import shutil
 import threading
 import urllib.error
@@ -158,6 +159,29 @@ def test_api_without_a_library_is_503(engine_url, monkeypatch, tmp_path):
     assert "git submodule update --init library" in body["error"]
 
 
+@pytest.mark.parametrize(
+    "case", ["unknown ~user", "symlink loop", "unreadable parent", "long name"]
+)
+def test_api_with_an_unreadable_library_path_is_503(engine_url, monkeypatch, tmp_path, case):
+    locked = tmp_path / "locked"
+    (locked / "lib").mkdir(parents=True)
+    (tmp_path / "loop").symlink_to(tmp_path / "loop")
+    path = {
+        "unknown ~user": "~no-such-user-for-tmodel-tests/library",  # Path.expanduser() raises
+        "symlink loop": str(tmp_path / "loop"),  # resolve() raises before Python 3.13
+        "unreadable parent": str(locked / "lib"),  # is_dir() raises PermissionError
+        "long name": str(tmp_path / ("x" * 300)),  # is_dir() raises: file name too long
+    }[case]
+    monkeypatch.setenv("TMODEL_LIBRARY", path)
+    locked.chmod(0)
+    try:
+        code, body = api_error(engine_url, "")
+    finally:
+        locked.chmod(0o755)
+    assert code == 503
+    assert body["error"].startswith(f"no library at {path}")
+
+
 def test_api_serves_what_loaded_and_lists_what_did_not(engine_url, monkeypatch, tmp_path):
     shutil.copytree(FIXTURES, tmp_path / "lib")
     broken = tmp_path / "lib" / "records" / "ietf" / "broken" / "record.yaml"
@@ -243,6 +267,19 @@ def test_the_library_is_loaded_once_until_a_file_changes(monkeypatch, tmp_path):
     shutil.rmtree(tmp_path / "lib" / "records" / "other" / "cwe")
     assert core.library_records()["library"]["count"] == 11
     assert len(loads) == 3
+
+
+def test_an_edit_that_keeps_the_size_and_time_is_seen(monkeypatch, tmp_path):
+    shutil.copytree(FIXTURES, tmp_path / "lib")
+    monkeypatch.setenv("TMODEL_LIBRARY", str(tmp_path / "lib"))
+    assert core.library_records({"id": "cwe"})["records"][0]["title"].startswith("MITRE CWE")
+    record = tmp_path / "lib" / "records" / "other" / "cwe" / "record.yaml"
+    before = record.stat()
+    record.write_bytes(record.read_bytes().replace(b"MITRE CWE", b"MITER CWE"))
+    os.utime(record, ns=(before.st_atime_ns, before.st_mtime_ns))  # as cp -p and rsync -t do
+    after = record.stat()
+    assert (after.st_size, after.st_mtime_ns) == (before.st_size, before.st_mtime_ns)
+    assert core.library_records({"id": "cwe"})["records"][0]["title"].startswith("MITER CWE")
 
 
 # --- the pinned library, by default -----------------------------------------------
