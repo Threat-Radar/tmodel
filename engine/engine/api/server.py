@@ -42,11 +42,18 @@ def _attack_paths(query: dict[str, str]) -> dict[str, Any]:
     return core.attack_paths(query["file"], query.get("goal"))
 
 
+def _graph(query: dict[str, str]) -> dict[str, Any]:
+    if "file" not in query:
+        raise ValueError("missing query parameter: file")
+    return core.model_graph(query["file"])
+
+
 # Each route takes the query parameters; a ValueError becomes a 400 with its message,
 # and core.Unavailable a 503 with its message.
 ROUTES: dict[str, Callable[[dict[str, str]], dict[str, Any]]] = {
     "/health": lambda _q: core.health(),
     "/version": lambda _q: core.version(),
+    "/graph": _graph,
     "/attack-paths": _attack_paths,
     "/library": core.library_records,  # filters: id, type, topic, status (#140)
     "/library/table": core.library_table,  # rows for the table views (#141, #58)
