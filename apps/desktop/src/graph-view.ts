@@ -116,6 +116,11 @@ export class KnowledgeGraphView {
     await this.loadAttackPaths();
   }
 
+  /** Re-measure the existing canvas after its application view becomes visible. */
+  resize(): void {
+    this.cy?.resize();
+  }
+
   /** Attack-path discovery failures stay in the path toolbar; the graph remains usable. */
   private async loadAttackPaths(): Promise<void> {
     try {

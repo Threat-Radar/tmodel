@@ -297,5 +297,30 @@
       "rpt-0003-threat-modeling-products": 2,
       "supply-chain-attestation": 2
     }
+  },
+  "contextual_facets": {
+    "type": {
+      "dataset": 1,
+      "draft": 1,
+      "paper": 2,
+      "repo": 1,
+      "rfc": 3,
+      "spec": 2,
+      "web": 2
+    },
+    "status": {
+      "distilled": 1,
+      "fetched": 2,
+      "stub": 4,
+      "summarized": 5
+    },
+    "topic": {
+      "canonical-encoding": 1,
+      "cbor-implementation": 1,
+      "predicate-rendering": 1,
+      "product-composition": 3,
+      "rpt-0003-threat-modeling-products": 2,
+      "supply-chain-attestation": 2
+    }
   }
 }

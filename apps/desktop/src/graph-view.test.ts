@@ -462,6 +462,32 @@ describe("knowledge-graph incremental layout", () => {
 });
 
 describe("knowledge-graph startup and recovery", () => {
+  it("preserves the loaded selection and viewport when a visible graph is resized", async () => {
+    const { view } = createDomView();
+    await view.start();
+    view.handleSelection("threat-instance:imds-pivot");
+    const pan = { x: 35, y: -12 };
+    const zoom = 1.6;
+    const resize = vi.fn();
+    const cy = view.cy as Record<string, unknown>;
+    Object.assign(cy, { resize, pan: () => ({ ...pan }), zoom: () => zoom });
+    const viewportBefore = {
+      pan: (cy.pan as () => { x: number; y: number })(),
+      zoom: (cy.zoom as () => number)(),
+    };
+
+    view.resize();
+    view.resize();
+
+    expect(resize).toHaveBeenCalledTimes(2);
+    expect(view.cy).toBe(cy);
+    expect(view.state.selectedNodeId).toBe("threat-instance:imds-pivot");
+    expect({
+      pan: (cy.pan as () => { x: number; y: number })(),
+      zoom: (cy.zoom as () => number)(),
+    }).toEqual(viewportBefore);
+  });
+
   it("does not recreate Cytoscape or listeners when start is retried", async () => {
     let initialCalls = 0;
     const { view, document } = createDomView({
@@ -1084,7 +1110,9 @@ async function waitFor(predicate: () => boolean): Promise<void> {
 interface DomViewHarness {
   state: GraphState;
   renderGraphCalls: number;
+  cy?: unknown;
   start(): Promise<void>;
+  resize(): void;
   handleSelection(nodeId: string): void;
   renderLegend(): void;
   renderAttackPathStatus(option?: AttackPathOption): void;

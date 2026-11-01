@@ -12,30 +12,83 @@
       <header class="app-header">
         <div class="app-header-copy">
           <p class="eyebrow">Threat Radar</p>
-          <h1>Knowledge graph</h1>
-          <p class="subtitle">Explore model objects and their directed relationships.</p>
-          <div class="source-row"><div id="data-source-notice" class="data-source-notice" role="note"></div><button id="graph-retry" class="retry-button" type="button" hidden>Retry graph</button></div>
+          <h1>tmodel</h1>
+          <p class="subtitle">Explore library evidence and threat-model relationships.</p>
         </div>
         <div class="engine-panel"><div id="engine-status" class="status status-pending" role="status" aria-live="polite">checking local engine…</div><p id="engine-hint" class="hint"></p></div>
       </header>
-      <section class="graph-workspace" aria-label="Knowledge graph workspace">
-        <aside class="panel node-panel">
-          <div class="panel-heading"><div><p class="eyebrow">Loaded objects</p><h2>Nodes</h2></div><span id="node-count" class="count-badge">0</span></div>
-          <ul id="node-list" class="node-list"></ul>
-        </aside>
-        <section class="graph-panel" aria-label="Interactive graph">
-          <div class="graph-toolbar"><div><p class="eyebrow">Interactive projection</p><h2>Model neighborhood</h2></div><div class="graph-toolbar-status"><span id="graph-loading" class="graph-loading" role="status" aria-live="polite" hidden></span><p>Scroll to zoom · drag background to pan · drag nodes to position</p></div></div>
-          <div class="path-toolbar"><label for="attack-path-select">Highlight attack path</label><select id="attack-path-select"><option value="">Choose an attack path…</option></select><button id="clear-attack-path" type="button" disabled>Clear highlight</button><span id="attack-path-status" class="path-status" role="status" aria-live="polite"></span></div>
-          <div id="graph-canvas" class="graph-canvas"></div>
-          <div class="graph-legend"><ul id="type-legend" class="type-legend" aria-label="Node type legend"></ul><ul id="relationship-legend" class="type-legend relationship-legend" aria-label="Relationship review-status legend"></ul></div>
+      <nav class="app-navigation" aria-label="Application views">
+        <div class="view-tabs" role="tablist" aria-label="Application views">
+          <button id="library-tab" type="button" role="tab" aria-controls="library-view-panel" aria-selected="true">Library</button>
+          <button id="graph-tab" type="button" role="tab" aria-controls="graph-view-panel" aria-selected="false" tabindex="-1">Knowledge Graph</button>
+        </div>
+      </nav>
+
+      <section id="library-view-panel" class="view-panel" role="tabpanel" aria-labelledby="library-tab">
+        <div id="library-workspace" class="library-workspace" aria-busy="false">
+          <section class="library-main">
+            <div class="library-heading">
+              <div><p class="eyebrow">Reference library</p><h2>Library documents</h2></div>
+              <span id="library-result-count" class="count-badge">0 documents</span>
+            </div>
+            <div class="source-row"><div id="library-source-notice" class="data-source-notice" role="note"></div><button id="library-retry" class="retry-button" type="button" hidden>Retry library</button></div>
+            <div class="library-controls" aria-label="Library search and filters">
+              <label class="search-control" for="library-search"><span>Search</span><input id="library-search" type="search" placeholder="Title, publisher, topic, or tags" autocomplete="off" /></label>
+              <label for="library-type-filter"><span>Type</span><select id="library-type-filter"><option value="">All types</option></select></label>
+              <label for="library-status-filter"><span>Status</span><select id="library-status-filter"><option value="">All statuses</option></select></label>
+              <label for="library-topic-filter"><span>Topic</span><select id="library-topic-filter"><option value="">All topics</option></select></label>
+            </div>
+            <div id="library-request-status" class="library-request-status" role="status" aria-live="polite">Loading library documents…</div>
+            <div id="library-warning" class="library-warning" role="alert" hidden></div>
+            <p id="library-empty" class="library-empty" hidden>No documents match the current search and filters.</p>
+            <div id="library-table-region" class="library-table-region" role="region" aria-label="Library documents" tabindex="0" hidden>
+              <table class="library-table">
+                <caption>Library document records</caption>
+                <thead><tr>
+                  <th scope="col" aria-sort="ascending"><button type="button" data-library-sort data-sort="title">Title</button></th>
+                  <th scope="col" aria-sort="none"><button type="button" data-library-sort data-sort="type">Type</button></th>
+                  <th scope="col" aria-sort="none"><button type="button" data-library-sort data-sort="status">Status</button></th>
+                  <th scope="col" aria-sort="none"><button type="button" data-library-sort data-sort="topic">Topic</button></th>
+                  <th scope="col" aria-sort="none"><button type="button" data-library-sort data-sort="date">Date</button></th>
+                  <th scope="col">Reviewed artifacts</th>
+                </tr></thead>
+                <tbody id="library-table-body"></tbody>
+              </table>
+            </div>
+          </section>
+          <aside class="panel library-inspector" aria-label="Selected library document">
+            <p class="eyebrow">Selected document</p><h2 id="library-detail-title">Select a document</h2>
+            <div class="library-detail-badges"><span id="library-detail-type" class="type-chip" hidden></span><span id="library-detail-record-status" class="status-chip" hidden></span></div>
+            <div class="library-detail-id"><span>Document ID</span><code id="library-detail-id" class="stable-id"></code></div>
+            <p id="library-detail-status" class="direction-help" role="status" aria-live="polite">Choose a row to inspect its full library record.</p>
+            <dl id="library-detail-list" class="property-list"></dl>
+            <section id="library-detail-evidence" class="inspector-section library-detail-section" hidden><h3>Evidence &amp; Extraction</h3><p id="library-detail-evidence-summary" class="library-detail-summary"></p></section>
+            <section id="library-detail-assessment" class="inspector-section library-detail-section" hidden><h3>Research assessment</h3><dl id="library-detail-assessment-list" class="property-list"></dl></section>
+          </aside>
+        </div>
+      </section>
+
+      <section id="graph-view-panel" class="view-panel" role="tabpanel" aria-labelledby="graph-tab" hidden>
+        <div class="source-row graph-source-row"><div id="data-source-notice" class="data-source-notice" role="note"></div><button id="graph-retry" class="retry-button" type="button" hidden>Retry graph</button></div>
+        <section class="graph-workspace" aria-label="Knowledge graph workspace">
+          <aside class="panel node-panel">
+            <div class="panel-heading"><div><p class="eyebrow">Loaded objects</p><h2>Nodes</h2></div><span id="node-count" class="count-badge">0</span></div>
+            <ul id="node-list" class="node-list"></ul>
+          </aside>
+          <section class="graph-panel" aria-label="Interactive graph">
+            <div class="graph-toolbar"><div><p class="eyebrow">Knowledge graph</p><h2>Model neighborhood</h2></div><div class="graph-toolbar-status"><span id="graph-loading" class="graph-loading" role="status" aria-live="polite" hidden></span><p>Scroll to zoom · drag background to pan · drag nodes to position</p></div></div>
+            <div class="path-toolbar"><label for="attack-path-select">Highlight attack path</label><select id="attack-path-select"><option value="">Choose an attack path…</option></select><button id="clear-attack-path" type="button" disabled>Clear highlight</button><span id="attack-path-status" class="path-status" role="status" aria-live="polite"></span></div>
+            <div id="graph-canvas" class="graph-canvas"></div>
+            <div class="graph-legend"><ul id="type-legend" class="type-legend" aria-label="Node type legend"></ul><ul id="relationship-legend" class="type-legend relationship-legend" aria-label="Relationship review-status legend"></ul></div>
+          </section>
+          <aside class="panel inspector-panel">
+            <p class="eyebrow">Selected object</p><h2 id="inspector-label">Select a node</h2>
+            <span id="inspector-type" class="type-chip"></span><code id="inspector-id" class="stable-id"></code>
+            <button id="expand-node" class="expand-button" type="button" disabled>Expand neighborhood</button>
+            <section class="inspector-section"><h3>Properties</h3><dl id="property-list" class="property-list"></dl></section>
+            <section class="inspector-section"><h3>Connected relationships</h3><p class="direction-help">→ outgoing · ← incoming</p><ul id="relationship-list" class="relationship-list"></ul></section>
+          </aside>
         </section>
-        <aside class="panel inspector-panel">
-          <p class="eyebrow">Selected object</p><h2 id="inspector-label">Select a node</h2>
-          <span id="inspector-type" class="type-chip"></span><code id="inspector-id" class="stable-id"></code>
-          <button id="expand-node" class="expand-button" type="button" disabled>Expand neighborhood</button>
-          <section class="inspector-section"><h3>Properties</h3><dl id="property-list" class="property-list"></dl></section>
-          <section class="inspector-section"><h3>Connected relationships</h3><p class="direction-help">→ outgoing · ← incoming</p><ul id="relationship-list" class="relationship-list"></ul></section>
-        </aside>
       </section>
     </main>
   </body>
