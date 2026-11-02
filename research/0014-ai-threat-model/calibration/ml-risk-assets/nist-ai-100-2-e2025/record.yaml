@@ -1,0 +1,94 @@
+# RPT-0014 WAVE 1 calibration, lane ml-risk-assets (tmodel#81). Scaffold from library bin/ingest
+# (library 3eacfd0, scratch copy); filled from the primary PDF. Not a library record until the
+# integration lane merges the five calibrations (calibration/COMPARISON.md).
+schema: "library-record/v1"
+id: nist-ai-100-2-e2025
+body: nist
+type: spec
+maturity: informational   # checked: p. viii says the content is voluntary guidance, not a standard or legal requirement
+title: "Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations"
+short_title: "NIST AI 100-2e2025 (adversarial ML taxonomy)"
+authors:
+  - "Apostol Vassilev"
+  - "Alina Oprea"
+  - "Alie Fordyce"
+  - "Hyrum Anderson"
+  - "Xander Davies"
+  - "Maia Hamin"
+date: "2025-03"
+publisher: "National Institute of Standards and Technology (NIST)"
+version: "E2025 (March 2025; corrected PDF uploaded 2025-04-01)"
+identifiers:
+  nist: "NIST AI 100-2e2025"
+  doi: 10.6028/NIST.AI.100-2e2025
+  url: https://csrc.nist.gov/pubs/ai/100/2/e2025/final
+content:
+  url: https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-2e2025.pdf
+  sha256: "4811fb6ad73f9c9121843ab77e029b5adc6f2c86d33c2fc5b2099ef133847646"
+  retrieved: "2026-10-30"
+  local: false
+  media_type: application/pdf
+  pages: 127
+cites:
+  # PARTIAL. The source has 449 references. Listed here: the two held as library records; four
+  # selected references that are RPT-0014 sources (sources.md): S-0166, a calibration source, and
+  # S-0003, S-0012 and S-0685, which are in this lane's subset-1; and the catalogs and frameworks it
+  # builds on. These four are a selection, not the only references that appear in sources.md; the
+  # rest were not enumerated. Full reference expansion is not part of calibration (LANES.md Step 1).
+  - debenedetti-2024-agentdojo   # [101]
+  - spotlighting-indirect-prompt-injection   # [160]
+  - {ref: "[17]", title: "Apruzzese et al., \"Real attackers don't compute gradients\": Bridging the gap between adversarial ML research and practice, IEEE SaTML 2023 (RPT-0014 S-0685)", locator: "https://arxiv.org/abs/2212.14315"}
+  - {ref: "[146]", title: "Greshake et al., Not what you signed up for: Compromising real-world LLM-integrated applications with indirect prompt injection, arXiv preprint 2023 (RPT-0014 S-0166)", locator: "https://arxiv.org/abs/2302.12173"}
+  - {ref: "[248]", title: "MITRE, ATLAS: Adversarial Threat Landscape for Artificial-Intelligence Systems, retrieved December 2024", locator: "https://atlas.mitre.org/"}
+  - {ref: "[266]", title: "National Cyber Security Centre (UK), Machine learning principles, 2024", locator: "https://www.ncsc.gov.uk/collection/machine-learning-principles"}
+  - {ref: "[274]", title: "NIST, Artificial Intelligence Risk Management Framework (AI RMF 1.0), NIST AI 100-1, 2023", locator: "https://doi.org/10.6028/NIST.AI.100-1"}
+  - {ref: "[332]", title: "Sharif et al., Accessorize to a crime: Real and stealthy attacks on state-of-the-art face recognition, ACM CCS 2016 (RPT-0014 S-0012)", locator: "https://doi.org/10.1145/2976749.2978392"}
+  - {ref: "[362]", title: "Szegedy et al., Intriguing properties of neural networks, ICLR 2014 (RPT-0014 S-0003)", locator: "https://arxiv.org/abs/1312.6199"}
+relations:
+  supersedes: []          # the prior edition E2023 (RPT-0014 S-0841) has no library record yet
+  superseded_by: []
+  see_also:
+    - etsi-en-304-223     # its distilled threats/requirements map provisions to NIST AI 100-2 E2025 ids
+  cited_by: []
+  implements_concept: []
+bears_on:
+  - R-020     # map a generic threat onto a product: NISTAML classes are generic AI attack classes, and the capability axis states the precondition
+  - DEC-009   # generic-threat -> product mapping and mitigation lifecycle: per-class mitigations with their stated limits
+applicability:
+  security: core
+  cryptography: adjacent
+  this_project: core
+usefulness:
+  verdict: useful
+  reason: "The only government taxonomy with stable attack-class ids (30 NISTAML ids). RPT-0014's preliminary attack-catalog.yaml (AI-generated, review_status hypothesis) pins them as one of its five catalogs and maps 98 of its 146 AITs to one; that mapping is RPT-0014's, not NIST's. It also gives the attacker-model axes (objective x capability x knowledge x lifecycle stage) that state an attack's preconditions. It names no assets as a vocabulary, so it does not settle attack-to-asset mapping."
+  assessed: "2026-10-30"
+implementations:
+  open_source:
+    - name: "garak (LLM vulnerability scanner)"
+      url: "https://github.com/NVIDIA/garak"
+      license: "Apache-2.0"
+      note: "cited [106] as github.com/leondz/garak, which now redirects to NVIDIA/garak"
+    - name: "PyRIT (Python Risk Identification Tool for generative AI)"
+      url: "https://github.com/microsoft/PyRIT"
+      license: "MIT"
+      note: "cited [364] as github.com/Azure/PyRIT, which is archived; development continues at microsoft/PyRIT"
+  commercial: []
+  searched: "2026-10-30"
+topic: ai-threat-model-ml-risk-assets
+tags:
+  - supply-chain
+  - normative
+  - ai-threat-model
+  - evasion
+  - data-poisoning
+  - backdoor
+  - membership-inference
+  - model-extraction
+  - training-data-extraction
+  - prompt-injection
+  - jailbreak
+  - rag-security
+  - agent-security
+  - ai-supply-chain
+status: summarized
+confidence: high

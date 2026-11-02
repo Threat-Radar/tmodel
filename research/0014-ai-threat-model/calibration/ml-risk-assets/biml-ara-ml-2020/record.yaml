@@ -1,0 +1,81 @@
+# RPT-0014 WAVE 1 calibration, lane ml-risk-assets (tmodel#81). Scaffold from library bin/ingest
+# (library 3eacfd0, scratch copy); filled from the primary PDF. Not a library record until the
+# integration lane merges the five calibrations (calibration/COMPARISON.md).
+schema: "library-record/v1"
+id: biml-ara-ml-2020
+body: other
+type: paper
+maturity: white-paper   # checked: self-published by BIML, no venue or peer review stated in the document or on berryvilleiml.com
+title: "An Architectural Risk Analysis of Machine Learning Systems: Toward More Secure Machine Learning"
+short_title: "BIML ARA of ML systems (BIML-78)"
+authors:
+  - "Gary McGraw"
+  - "Harold Figueroa"
+  - "Victor Shepardson"
+  - "Richie Bonett"
+date: "2020-01-20"   # publication date stated by BIML (berryvilleiml.com/results/); the cover dates Version 1.0 "1.13.20" (2020-01-13)
+publisher: "Berryville Institute of Machine Learning (BIML)"
+version: "1.0 (cover date 1.13.20)"
+identifiers:
+  url: https://berryvilleiml.com/results/ara.pdf
+content:
+  url: https://berryvilleiml.com/results/ara.pdf
+  sha256: "247d7f06d8c768cc734dc84ab7004c6e4d645e91911af61002fd1743807ef312"
+  retrieved: "2026-10-30"
+  local: false
+  media_type: application/pdf
+  pages: 42
+cites:
+  # PARTIAL. The source has 35 numbered references. Listed here: the 12 that are RPT-0014 sources
+  # (sources.md) and the NIST draft taxonomy it compares itself with ([31]). None is held as a library
+  # record. Locators are the ones the reference itself prints; where it prints none, the arXiv id, DOI or
+  # publisher page was matched by title and authors (arXiv API, Crossref, usenix.org; 2026-10-30).
+  # Full reference expansion is not part of calibration (LANES.md Step 1).
+  - {ref: "7", title: "Shokri, Stronati, Song, Shmatikov, Membership inference attacks against machine learning models, IEEE S&P 2017 (RPT-0014 S-0027)", locator: "https://arxiv.org/abs/1610.05820"}
+  - {ref: "14", title: "Goodfellow, Shlens, Szegedy, Explaining and harnessing adversarial examples, ICLR 2015 (RPT-0014 S-0006)", locator: "https://arxiv.org/abs/1412.6572"}
+  - {ref: "21", title: "Eykholt et al., Robust physical-world attacks on deep learning models, arXiv 2017 (RPT-0014 S-0038)", locator: "https://arxiv.org/abs/1707.08945"}
+  - {ref: "22", title: "Biggio et al., Evasion attacks against machine learning at test time, ECML PKDD 2013 (RPT-0014 S-0002)", locator: "https://arxiv.org/abs/1708.06131"}
+  - {ref: "23", title: "Carlini and Wagner, Audio adversarial examples: Targeted attacks on speech-to-text, IEEE SPW 2018 (RPT-0014 S-0035)", locator: "https://arxiv.org/abs/1801.01944"}
+  - {ref: "24", title: "Gu, Dolan-Gavitt, Garg, BadNets: Identifying vulnerabilities in the machine learning model supply chain, arXiv 2017 (RPT-0014 S-0019)", locator: "https://arxiv.org/abs/1708.06733"}
+  - {ref: "25", title: "Kumar et al., Failure Modes in Machine Learning Systems, arXiv 2019 (RPT-0014 S-0872)", locator: "https://arxiv.org/abs/1911.11034"}
+  - {ref: "27", title: "Fredrikson et al., Privacy in pharmacogenetics: An end-to-end case study of personalized warfarin dosing, USENIX Security 2014 (RPT-0014 S-0004)", locator: "https://www.usenix.org/conference/usenixsecurity14/technical-sessions/presentation/fredrikson_matthew"}
+  - {ref: "29", title: "Papernot et al., Practical black-box attacks against machine learning, ACM AsiaCCS 2017 (RPT-0014 S-0026)", locator: "https://arxiv.org/abs/1602.02697"}
+  - {ref: "31", title: "Tabassi et al., A Taxonomy and Terminology of Adversarial Machine Learning, NIST technical draft (NISTIR 8269 draft), Oct 2019", locator: "https://doi.org/10.6028/NIST.IR.8269-draft"}
+  - {ref: "32", title: "Jagielski et al., Manipulating Machine Learning: Poisoning Attacks and Countermeasures for Regression Learning, arXiv 2018 (RPT-0014 S-0042)", locator: "https://arxiv.org/abs/1804.00308"}
+  - {ref: "33", title: "Fredrikson, Jha, Ristenpart, Model inversion attacks that exploit confidence information and basic countermeasures, ACM CCS 2015 (RPT-0014 S-0005)", locator: "https://doi.org/10.1145/2810103.2813677"}
+  - {ref: "34", title: "Abadi et al., Deep Learning with Differential Privacy, ACM CCS 2016 (RPT-0014 S-0007)", locator: "https://doi.org/10.1145/2976749.2978318"}
+relations:
+  supersedes: []
+  superseded_by: []
+  see_also: []            # its LLM sequel, BIML's ARA of LLMs (2024; RPT-0014 S-0739), has no library record yet
+  cited_by: []
+  implements_concept: []
+bears_on:
+  - R-020     # map a generic threat onto a product: the method maps a generic nine-component ML system onto a specific one (worked GNMT example) and carries the component risks across
+  - DEC-009   # generic-threat -> product mapping model (open): component-keyed generic risks are one candidate shape for that mapping
+applicability:
+  security: core
+  cryptography: adjacent
+  this_project: core
+usefulness:
+  verdict: useful
+  reason: "A design-level ARA of a generic ML system: nine components (processes and collections), a labelled risk list per component plus ten system-wide risks, a six-category attack taxonomy and three attack surfaces. RPT-0014's preliminary threat-models.md (AI-generated, a hypothesis) already lists it as TM-014. Its component decomposition is directly reusable for placing ML risks on a company's system; it predates GenAI and names no business assets, and its labels are not unique keys (79 entries under 78 labels)."
+  assessed: "2026-10-30"
+implementations:
+  open_source: []
+  commercial: []
+  searched: "2026-10-30"
+topic: ai-threat-model-ml-risk-assets
+tags:
+  - method
+  - supply-chain
+  - ai-threat-model
+  - data-poisoning
+  - evasion
+  - backdoor
+  - model-extraction
+  - membership-inference
+  - model-inversion
+  - ai-supply-chain
+status: summarized
+confidence: high

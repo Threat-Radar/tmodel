@@ -1,0 +1,78 @@
+# RPT-0014 WAVE 1 calibration, lane ml-risk-assets (tmodel#81). Scaffold from library bin/ingest
+# (library 3eacfd0, scratch copy); filled from the primary PDF (arXiv v2). Not a library record until
+# the integration lane merges the five calibrations (calibration/COMPARISON.md).
+schema: "library-record/v1"
+id: greshake-2023-indirect-prompt-injection
+body: academic
+type: paper
+title: "Not What You've Signed Up For: Compromising Real-World LLM-Integrated Applications with Indirect Prompt Injection"
+short_title: "Indirect prompt injection (Greshake et al. 2023)"
+authors:
+  - "Kai Greshake"
+  - "Sahar Abdelnabi"
+  - "Shailesh Mishra"
+  - "Christoph Endres"
+  - "Thorsten Holz"
+  - "Mario Fritz"
+date: "2023-11-26"   # ACM version of record (AISec '23), published online; arXiv v1 2023-02-23, v2 2023-05-05
+publisher: "Association for Computing Machinery (ACM)"
+version: "arXiv v2 (2023-05-05), read in place of the ACM version of record (2023-11-26; Corrected VoR 2024-01-10, not compared)"
+identifiers:
+  doi: 10.1145/3605764.3623985
+  arxiv: "2302.12173"
+  url: https://arxiv.org/abs/2302.12173
+content:
+  url: https://arxiv.org/pdf/2302.12173v2
+  sha256: "428e23e8c7e4f89310e113e38d082b3f65548a8b887188ebc536099061800e81"
+  retrieved: "2026-10-30"
+  local: false
+  media_type: application/pdf
+  pages: 33
+cites:
+  # PARTIAL. The source has 82 references; 36 of them ([1]-[33], [60], [68], [74]) are given only as "[Link]",
+  # mostly news and product pages, with no URL in the PDF text.
+  # Listed here: five references, all of them RPT-0014 sources (sources.md). One of them, [53] Kang et
+  # al. (S-0173), is also held as a library record and is cited by its record id; the other four are
+  # not held. Full reference expansion is not part of calibration (LANES.md Step 1).
+  - llm-programmatic-dual-use   # [53] Kang et al., Exploiting Programmatic Behavior of LLMs (RPT-0014 S-0173)
+  # Locators: the paper prints none for these four; each arXiv id was matched by title and first authors
+  # on the arXiv API (2026-10-30) and agrees with the sources.md row.
+  - {ref: "[35]", title: "Apruzzese et al., Position: \"Real Attackers Don't Compute Gradients\": Bridging the Gap Between Adversarial ML Research and Practice, SaTML (RPT-0014 S-0685)", locator: "https://arxiv.org/abs/2212.14315"}
+  - {ref: "[48]", title: "Goldstein et al., Generative Language Models and Automated Influence Operations: Emerging Threats and Potential Mitigations, arXiv 2023 (RPT-0014 S-0734)", locator: "https://arxiv.org/abs/2301.04246"}
+  - {ref: "[67]", title: "Perez and Ribeiro, Ignore Previous Prompt: Attack Techniques For Language Models, NeurIPS ML Safety Workshop 2022 (RPT-0014 S-0149)", locator: "https://arxiv.org/abs/2211.09527"}
+  - {ref: "[78]", title: "Weidinger et al., Ethical and social risks of harm from language models, arXiv 2021 (RPT-0014 S-0134)", locator: "https://arxiv.org/abs/2112.04359"}
+relations:
+  supersedes: []
+  superseded_by: []
+  see_also: []
+  cited_by:
+    - spotlighting-indirect-prompt-injection   # its cites list this paper under the arXiv v1 title
+  implements_concept: []
+bears_on:
+  - R-020     # map a generic threat onto a product: the paper's preconditions (the application ingests attacker-reachable content; the model can call tools) decide whether IPI applies
+applicability:
+  security: core
+  cryptography: none
+  this_project: core
+usefulness:
+  verdict: useful
+  reason: "Primary source for indirect prompt injection: it names the attack, gives a threat taxonomy (injection method x threat x affected party), and demonstrates it end to end against Bing Chat, GitHub Copilot and GPT-4 tool-using apps. RPT-0014's preliminary artifacts (AI-generated, review_status hypothesis) already cite it as the source of AIT-064 and INC-025 and of the report's 'new root cause' finding. Evidence is qualitative: no success rates."
+  assessed: "2026-10-30"
+implementations:
+  open_source:
+    - name: "greshake/llm-security (the paper's demonstrations)"
+      url: "https://github.com/greshake/llm-security"
+      license: "MIT"
+      note: "named in footnote 1; footnote 11 gives github.com/greshake/lm-safety, which redirects to the same repository"
+  commercial: []
+  searched: "2026-10-30"
+topic: ai-threat-model-ml-risk-assets
+tags:
+  - evidence
+  - ai-threat-model
+  - prompt-injection
+  - jailbreak
+  - agent-security
+  - rag-security
+status: summarized
+confidence: high
