@@ -4,9 +4,9 @@ id: DL-0006
 title: "RPT-0009 SAGAI — AI-assisted source gathering and paper summaries"
 type: process
 status: draft
-version: "0.3.0"
+version: "0.4.0"
 date: "2026-10-01"
-updated: "2026-10-22"
+updated: "2026-11-02"
 record: DL-0006
 ---
 
@@ -136,3 +136,44 @@ With library#32 holding the FX-1 extractions of ETSI EN 304 223 and CISA AI-in-O
 - **"None of the 15 entries mapped to either prompt-injection class"** (draft). It counted entries mapped to both classes twice; there are 10 distinct entries.
 - **"ETSI names indirect prompt injection … (§1)"** (draft). The record locates it in the Introduction, p. 5.
 - **"Those are the four bypasses EchoLeak chained"** (draft). Only three of the four are on the output channel; the fourth, the injection classifier, is input-side.
+
+## References traced, report 0.3.1 (2026-11-02)
+
+### Question asked
+
+#189's first box, after Part B moved there from #39: every item in RPT-0009 §6, and so every source in `sources.md`, gets a library record (FX-1 or an honest stub) or a written reason it has none, with G12 routed. The student asked the agent to move on to this step.
+
+### What was produced
+
+- **library#40:** ten honest stubs and one not-useful record, each pinned by SHA-256 with a written summary. None is extracted.
+  - the two reference schemes: `nist-ai-100-2-e2025` and `mitre-atlas` (2026.09);
+  - the ETSI and agency documents: `etsi-ts-104-223`, `etsi-tr-104-128`, `etsi-tr-104-048`, `ncsc-secure-ai-guidelines-2023` and `uk-ai-cyber-security-code-2025`;
+  - the papers: `echoleak-zero-click-prompt-injection`, `agent-security-systems-problem` (§2.6) and `securing-future-genai-policy-technology` (§2.7);
+  - `fraunhofer-iese-sagai`, `not-useful`.
+  - `etsi-en-304-223` now `supersedes: [etsi-ts-104-223]`, as its own comment asked once the TS was held, and the `sagai` topic lists all of these.
+- **`sources.md` 0.4.0:** a record id or a written reason in every row; no row says "not yet a record".
+- **`report.md` 0.3.1:** the status line, Table 1, §2, §6, G12, open question 6, the `library_commit` note and `issue: 189`.
+
+### How it was checked
+
+- The NIST and ATLAS files hash to the digests 0.3.0 already recorded. Every other file was hashed twice (a download, then `bin/ingest --fetch`), and the two agree.
+- Metadata was taken from the publishers' own pages or files: NIST's CSRC page (authors, March 2025, DOI); ATLAS's YAML header (2026.09, format 6.0.0) and `LICENSE` at the tag (Apache-2.0); ETSI's `deliver` listings (each document has only V1.1.1); the NCSC and GOV.UK landing pages; arXiv's abstract pages.
+- The EN's History table names TS 104 223 V1.1.1 as its first publication (`etsi-en-304-223` `distilled/normative.md`), which supports the `supersedes` link.
+- ETSI TS 104 216's `deliver` directory returns 404, so it is unpublished.
+- The report was searched for NIST AI 100-1, OWASP, NSA and Barrett. Only Barrett appears, as a lead in §2.7, so "no claim rests on it" holds for each source given no record.
+- Library: `bin/validate` reports 0 errors, and 11 more records count as written; `bin/export` and `bin/reindex` show 612 records and 0 dangling. tmodel: `bin/validate-archdoc` passes.
+
+### Choices the agent made, open to review
+
+- **Stubs, not reasons, for the ten.** A stub costs a digest and a short summary and lets a cited id resolve. Reasons were kept for sources no claim rests on (NIST AI 100-1, OWASP, NSA, Barrett), for a committee (TC SAI), for an unpublished draft (TS 104 216) and for #8's SBOM documents.
+- **`cited_by` left empty.** `docs/references.md` reserves it for our own documents, although about 20 library records list library ids there.
+- **Summaries say only what was checked.** Content comes from RPT-0009's existing readings (§2.6, §2.7, §5) or the publishers' pages. TR 104 048's summary says its content was not read.
+
+### What a human accepted
+
+- The student asked for this step. Nothing here is technically reviewed yet; library#40 and this PR need a reviewer.
+
+### What was rejected, and why
+
+- **"Neither has a library record"** (§6) and **"have no record of their own"** (§6). Both are stubs now.
+- **"§2.6 and §2.7 have none"** (Table 1, §2). Both have stubs.

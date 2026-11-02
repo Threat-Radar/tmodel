@@ -7,9 +7,9 @@ description: "Which AI attacks the leading AI-security requirements defend again
 type: research
 category: security
 status: draft
-version: "0.3.0"
+version: "0.3.1"
 date: "2026-09-28"
-updated: "2026-10-22"
+updated: "2026-11-02"
 authors:
   - role: student
     id: Maimcghee
@@ -22,15 +22,15 @@ reviewers: []
 needs_review: true
 reviewed: false
 canonical_path: research/0009-sagai/report.md
-library_commit: "pending (library#32, unmerged: etsi-en-304-223 and cisa-ai-in-ot-principles FX-1 with threat mappings)"
+library_commit: "pending (library#40, unmerged: the reference stubs; library#32's FX-1 records are merged)"
 informs: [DEC-001a, DEC-001b, DEC-008, R-018]
 open_decisions: [DEC-001b, DEC-008]
-issue: 39
+issue: 189
 ---
 
 # RPT-0009: SAGAI and related AI-security specifications
 
-**Status: draft 0.3.0.** Done: the SAGAI papers (§2); full extractions of ETSI EN 304 223 and of CISA's AI-in-OT principles, with every entry mapped to AI attack classes (library#32); and one worked example, EchoLeak (§5). Not yet done: a human technical review, the adversarial review and the clarity pass. Related guidance (§6) is listed, not extracted. This report accepts nothing; each recommendation routes to an open `DEC-*`, an accepted ADR's follow-up work, or an issue.
+**Status: draft 0.3.1.** Done: the SAGAI papers (§2); full extractions of ETSI EN 304 223 and of CISA's AI-in-OT principles, with every entry mapped to AI attack classes (library#32); one worked example, EchoLeak (§5); and every source traced to a library record or a written reason it has none (0.3.1, #189). Not yet done: a human technical review, the adversarial review and the clarity pass. Related guidance (§6) is held as stubs, not extracted. This report accepts nothing; each recommendation routes to an open `DEC-*`, an accepted ADR's follow-up work, or an issue.
 
 **Abstract.** Which AI attacks do the leading AI-security requirements defend against, and what must tmodel represent to model those attacks? This report maps the 73 entries of ETSI EN 304 223 and the 136 of CISA's *Principles for the Secure Integration of AI in OT* onto NIST AI 100-2 E2025's attack classes and MITRE ATLAS techniques. It reads the SAGAI workshop papers for the threats and defenses research has established, and tests both on one documented attack, EchoLeak (CVE-2025-32711). The requirements cover poisoning, privacy, supply chain and conventional cyber security, but they reach prompt injection only by inference: each document names it once. Neither mentions retrieval, output rendering or exfiltration, which is the path EchoLeak took. The SAGAI papers propose the defenses the standards lack. To model attacks like EchoLeak, tmodel's schema needs seven additions (G1 to G7).
 
@@ -50,7 +50,7 @@ tmodel both **uses AI** (machine-proposed threats are hypotheses until a human r
 |---|---|---|---|---|---|
 | ETSI EN 304 223 V2.1.1 (2025-12), *Baseline Cyber Security Requirements for AI Models and Systems* | ETSI TC SAI | European Standard | 73: 72 provisions plus one clause 4 statement | 49 *shall*, 24 *should* | `etsi-en-304-223`, FX-1 (library#32) |
 | *Principles for the Secure Integration of Artificial Intelligence in Operational Technology* (2025-12-03; PDF 508cV2, revised 2026-01) | CISA with partner agencies | joint guidance | 136 | 104 recommendations, 10 permissions, 6 considerations, 5 principles, 3 requirements (*must*), 1 prohibition, 7 other | `cisa-ai-in-ot-principles`, FX-1 (library#32) |
-| SAGAI'24 papers (4), SAGAI'25 position papers (2), one related workshop report | IEEE S&P workshops; authors | research papers | threats and defenses (§2) | none | 5 records `summarized` (library#7); §2.6 and §2.7 have none |
+| SAGAI'24 papers (4), SAGAI'25 position papers (2), one related workshop report | IEEE S&P workshops; authors | research papers | threats and defenses (§2) | none | 5 records `summarized` (library#7); §2.6 and §2.7 stubs (library#40) |
 
 ### Table 2. Which attack classes the requirements defend against
 
@@ -93,7 +93,7 @@ Read across the rows:
 
 ## 2. SAGAI papers and outputs
 
-Threats and defenses established by the workshop papers, each placed in NIST AI 100-2 E2025's classes. The papers have library records (`summarized`, library#7) except §2.6 and §2.7.
+Threats and defenses established by the workshop papers, each placed in NIST AI 100-2 E2025's classes. The papers have library records (`summarized`, library#7); §2.6 and §2.7 have stubs (library#40).
 
 | Paper | Attack class it addresses (NIST AI 100-2 E2025) | Defense level |
 |---|---|---|
@@ -327,7 +327,7 @@ The documents the seeds cite are listed in [sources.md](sources.md). Two are use
 - **NIST AI 100-2 E2025** (*Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations*) supplies the attack classes and the `NISTAML.*` ids.
 - **MITRE ATLAS 2026.09** supplies the technique ids and the EchoLeak case study.
 
-Neither has a library record, so their ids resolve only to a citation (open question 6). The NCSC/CISA secure-AI guidelines, the UK AI Code of Practice, ETSI TR 104 128, TS 104 216 and TR 104 048 are cited inside the two extracted records, but have no record of their own. Overlaps: ATLAS with RPT-0014 (#71), agent threats with RPT-0008 (#12), and the AI bill of materials with RPT-0004 (#38).
+Both are held as stubs (`nist-ai-100-2-e2025`, `mitre-atlas`, library#40), so their ids resolve to a pinned version, though neither is extracted (open question 6). The NCSC/CISA secure-AI guidelines, the UK AI Code of Practice, ETSI TS 104 223 (the EN's predecessor), TR 104 128 and TR 104 048, all cited inside the two extracted records, are stubs too. TS 104 216 is unpublished. [sources.md](sources.md) gives every source a record or a reason it has none. Overlaps: ATLAS with RPT-0014 (#71), agent threats with RPT-0008 (#12), and the AI bill of materials with RPT-0004 (#38).
 
 ## 7. Synthesis
 
@@ -353,7 +353,7 @@ Each row is evidence for the decision or issue it routes to; none is a decision.
 | G9 | `catalog_ref` is single-valued, so one attack cannot carry a NIST class and several ATLAS ids. | library#32 question 3 | #64 |
 | G10 | Training data and model weights could be an Asset, a Component, or both. | library#32 question 2; em-01 | #130 decision 2 |
 | G11 | Neither standard covers the output channel (rendering, links, content security policies). The defenses come from research (§2) and the EchoLeak paper. | §5 item 1 | #74 (record shape for mitigations from research) |
-| G12 | NIST AI 100-2 E2025 and ATLAS have no library records, so their ids resolve to no record. | §6 | library issue (open question 6) |
+| G12 | NIST AI 100-2 E2025 and ATLAS had no library records, so their ids resolved to no record. Both are now stubs (0.3.1); neither is extracted. | §6 | library#40 (stubs); extracting ATLAS is shared with RPT-0014 (#71); open question 6 |
 
 ## 9. Open questions for the sponsor
 
@@ -362,7 +362,7 @@ Each row is evidence for the decision or issue it routes to; none is a decision.
 3. Should the core gain stakeholder roles (G8) and multi-valued catalog references (G9)?
 4. Do safety and reliability risks (drift, hallucination) count as threats in tmodel? Should attacks that use AI as a tool be modeled?
 5. Should the candidate CWE ids for AI weaknesses be adopted, and mappings derived from ATLAS's mitigation links?
-6. Should NIST AI 100-2 E2025 and ATLAS get library records (G12)?
+6. NIST AI 100-2 E2025 and ATLAS are now library stubs (G12). Should either be extracted in full, and should ATLAS's extraction sit with RPT-0014 (#71)?
 7. Is arXiv 2512.01295 the SAGAI'25 research-challenges document (§2.5)?
 
 Questions 1 to 6 are also in library#32.
@@ -387,4 +387,4 @@ Questions 1 to 6 are also in library#32.
 - em-01 depends on the unaccepted #130 proposal.
 - One example cannot show how often the gaps matter; a second model, of a different attack class, is the next step.
 
-**References** are in [sources.md](sources.md), and the library records named above. The library commit is pinned when library#32 merges.
+**References** are in [sources.md](sources.md), and the library records named above. The library commit is pinned when library#40 merges.
