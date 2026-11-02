@@ -1,0 +1,122 @@
+# Spec: version is load-bearing. New version = new record, linked by supersedes.
+# RPT-0014 Wave 1 calibration record (S-0855), lane ml-risk-assets (Threat-Radar/tmodel#81).
+schema: "library-record/v1"
+id: nist-ai-100-2-e2025
+body: nist
+type: spec
+title: "Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations"
+short_title: "NIST AI 100-2e2025"
+authors:
+  - "Apostol Vassilev"
+  - "Alina Oprea"
+  - "Alie Fordyce"
+  - "Hyrum Anderson"
+  - "Xander Davies"
+  - "Maia Hamin"
+date: "2025-03-24"
+publisher: "National Institute of Standards and Technology (NIST), NIST Trustworthy and Responsible AI series"
+version: "E2025 final (corrected PDF of 2025-04-01)"
+identifiers:
+  nist: "NIST AI 100-2e2025"
+  doi: 10.6028/NIST.AI.100-2e2025
+  url: https://csrc.nist.gov/pubs/ai/100/2/e2025/final
+content:
+  url: https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-2e2025.pdf
+  sha256: "4811fb6ad73f9c9121843ab77e029b5adc6f2c86d33c2fc5b2099ef133847646"
+  retrieved: "2026-11-01"
+  local: false
+  media_type: application/pdf
+  pages: 127
+# Calibration subset: 25 of the 449 references (pp. 61-106), chosen for RPT-0014
+# and the ml-risk-assets lane. Bracketed numbers are the source's own; plain ids
+# are records this library already holds. Complete reference expansion and stub
+# creation are reserved for subset-1 (LANES.md Step 2, item 5); none were created.
+cites:
+  - spotlighting-indirect-prompt-injection     # [160] Hines et al. 2024
+  - debenedetti-2024-agentdojo                 # [101] Debenedetti et al. 2024
+  - title: "[146] Greshake et al., Not what you signed up for: Compromising real-world LLM-integrated applications with indirect prompt injection"
+    locator: "https://arxiv.org/abs/2302.12173"
+  - title: "[362] Szegedy et al., Intriguing properties of neural networks"
+    locator: "https://arxiv.org/abs/1312.6199"
+  - title: "[332] Sharif et al., Accessorize to a crime: Real and stealthy attacks on state-of-the-art face recognition"
+    locator: "ACM CCS 2016"
+  - title: "[17] Apruzzese et al., Real attackers don't compute gradients"
+    locator: "https://arxiv.org/abs/2212.14315"
+  - title: "[57] Carlini et al., Poisoning web-scale training datasets is practical"
+    locator: "https://arxiv.org/abs/2302.10149"
+  - title: "[142] Goldwasser et al., Planting undetectable backdoors in machine learning models"
+    locator: "https://arxiv.org/abs/2204.06974"
+  - title: "[170] Hubinger et al., Sleeper agents: Training deceptive LLMs that persist through safety training"
+    locator: "https://arxiv.org/abs/2401.05566"
+  - title: "[305] Rando and Tramer, Universal jailbreak backdoors from poisoned human feedback"
+    locator: "https://arxiv.org/abs/2311.14455"
+  - title: "[118] Egashira et al., Exploiting LLM quantization"
+    locator: "https://arxiv.org/abs/2405.18137"
+  - title: "[205] Langford et al., Architectural neural backdoors from first principles"
+    locator: "https://arxiv.org/abs/2402.06957"
+  - title: "[376] Tramer et al., Stealing machine learning models via prediction APIs"
+    locator: "https://arxiv.org/abs/1609.02943"
+  - title: "[61] Carlini et al., Stealing part of a production language model"
+    locator: "https://arxiv.org/abs/2403.06634"
+  - title: "[63] Carlini et al., Extracting training data from large language models"
+    locator: "USENIX Security 2021"
+  - title: "[54] Carlini et al., Membership inference attacks from first principles"
+    locator: "doi:10.1109/SP46214.2022.00090"
+  - title: "[449] Zou et al., PoisonedRAG"
+    locator: "https://arxiv.org/abs/2402.07867"
+  - title: "[287] Pasquini et al., Neural Exec: Learning (and learning from) execution triggers for prompt injection attacks"
+    locator: "https://arxiv.org/abs/2403.03792"
+  - title: "[298] PromptArmor and Greshake, Data exfiltration from writer.com with indirect prompt injection"
+    locator: "https://promptarmor.substack.com/p/data-exfiltration-from-writercom"
+  - title: "[323] Samoilenko, New prompt injection attack on ChatGPT web version: markdown images can steal your chat data"
+    locator: "https://systemweakness.com/new-prompt-injection-attack-on-chatgpt-web-version-ef717492c5c2"
+  - title: "[353] U.S. AI Safety Institute Technical Staff, Strengthening AI agent hijacking evaluations"
+    locator: "https://www.nist.gov/news-events/news/2025/01/technical-blog-strengthening-ai-agent-hijacking-evaluations"
+  - title: "[358] Suciu et al., When does machine learning FAIL? Generalized transferability for evasion and poisoning attacks"
+    locator: "https://arxiv.org/abs/1803.06975"
+  - title: "[266] National Cyber Security Centre, Machine learning principles"
+    locator: "https://www.ncsc.gov.uk/collection/machine-learning-principles"
+  - title: "[248] MITRE, ATLAS (retrieved December 2024)"
+    locator: "https://atlas.mitre.org/"
+  - title: "[274] NIST, AI Risk Management Framework (AI RMF 1.0)"
+    locator: "https://doi.org/10.6028/NIST.AI.100-1"
+relations:
+  supersedes: []          # E2023 (S-0841) is not held as a record; the E2025 text itself never names it
+  superseded_by: []
+  see_also: []
+  cited_by: []
+  implements_concept: []
+bears_on:
+  - R-020        # capability axes = conditions for mapping a generic attack class onto a product (p. 37)
+  - DEC-009      # generic-threat -> product half only; not mitigation-lifecycle tracking
+applicability:
+  security: core
+  cryptography: adjacent
+  this_project: core
+implementations:
+  open_source: []
+  commercial: []
+  searched: "2026-11-01"
+usefulness:
+  verdict: useful
+  reason: "Attacker objective/capability/knowledge vocabulary and 30 NISTAML attack-class ids, with the capabilities each class needs; an attack taxonomy, not a weakness enumeration, with no asset model and no machine-readable form."
+  assessed: "2026-11-01"
+topic: ai-threat-model-ml-risk-assets
+tags:
+  - supply-chain
+  - prior-art
+  - evasion
+  - data-poisoning
+  - backdoor
+  - model-extraction
+  - membership-inference
+  - model-inversion
+  - training-data-extraction
+  - prompt-injection
+  - jailbreak
+  - rag-security
+  - agent-security
+  - ai-supply-chain
+status: summarized
+confidence: high
+owner: kriishnaa-18
