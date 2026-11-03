@@ -1,0 +1,2071 @@
+# unece-r155: requirement extraction, AI-proposed, UNREVIEWED unless a Review below says otherwise.
+# Source: library:unece-r155 (digest c41424c6f17784aa7cf8d3de79491e6bce142a674748039f1235dc8c37ea9654), read 2026-11-02.
+# Agent: Claude Code (claude-opus-5-5). Human owner: @Clovier.
+#
+# Scope (tmodel#172): Annex 5 only, the list of threats and corresponding mitigations of the original
+# version (E/ECE/TRANS/505/Rev.3/Add.154). The regulation's paragraphs 1 to 12 and Annexes 1 to 4 are
+# outside this lane's scope. UN text is free; the requirement texts are still one-line paraphrases.
+#
+# Coverage: Parts B and C hold 23 numbered mitigations (M1, M2, M3, M4, M5, M6, M7, M8, M9, M10, M11, M12, M13, M14, M15, M16, M18, M19, M20, M21, M22, M23, M24; M17 is not
+# used in this version) and three more statements inside the M7 and M23 cells. All
+# 26 are converted to Requirements, each restating a stub Mitigation. Part A's Table A1 has
+# 67 examples; Table C3 adds 30.1 to 30.3, which Table A1 does not list. All 70 are
+# stub ThreatInstances. Pairings were read from the rendered tables, where merged cells give one
+# mitigation to several rows.
+#
+# Normativity: paragraph 7.3.4 requires the manufacturer to implement every Part B or C mitigation
+# that is relevant to a risk it identified, or another appropriate one. Each numbered mitigation is
+# therefore `conditional`; descriptions note where the annex itself says "should" or "are applied".
+#
+# Families introduced (applies_to_family, from the source's own scope):
+#   family:unece-r155-vehicle: vehicles in the regulation's scope (paragraphs 1.1 and 1.2: categories
+#     M and N; O with at least one ECU; L6 and L7 with automated driving from level 3), for the
+#     Part B mitigations "intended for vehicle types".
+#   family:vehicle-backend: areas outside the vehicle, e.g. IT back-ends (Annex 5, paragraph 1), for Part C.
+#
+# Every link below was proposed as an Assertion: stated_as (stub Mitigation to Requirement), addresses
+# (Requirement to the Part A threats the annex pairs it with) and two links between statements
+# in the M23 cell. None is written into a slot. On 2026-11-02 @Clovier checked 10 of
+# them against the source and accepted all 10 (see reviews:); the rest stay proposed with no Review.
+
+requirements:
+  - id: requirement:unece-r155-m1
+    name: "M1: security controls against insider attack on back-end systems"
+    description: >-
+      The annex states this one descriptively ("Security Controls are applied").
+    text: >-
+      Apply security controls to back-end systems that limit the risk of insider
+      attacks.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: conditional
+    source_ref: "library:unece-r155#M1"
+    source_locator: "M1 (Annex 5, Part C, Table C1)"
+    applies_to_family: ["family:vehicle-backend"]
+  - id: requirement:unece-r155-m2
+    name: "M2: security controls against unauthorized access to back-end systems"
+    description: >-
+      The annex states this one descriptively and points to OWASP for example controls.
+    text: >-
+      Apply security controls to back-end systems that limit unauthorized access.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: conditional
+    source_ref: "library:unece-r155#M2"
+    source_locator: "M2 (Annex 5, Part C, Table C1)"
+    applies_to_family: ["family:vehicle-backend"]
+  - id: requirement:unece-r155-m3
+    name: "M3: secure back-end systems and plan for their recovery"
+    description: >-
+      Table B2 also lists it, against denial of service on the update server (13.1). The
+      annex points to OWASP for example controls.
+    text: >-
+      Apply security controls to back-end systems and, where a back-end server is
+      critical to the services vehicles rely on, have recovery measures for an outage.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: conditional
+    source_ref: "library:unece-r155#M3"
+    source_locator: "M3 (Annex 5, Part B, Table B2; Part C, Table C1)"
+    applies_to_family: ["family:vehicle-backend"]
+  - id: requirement:unece-r155-m4
+    name: "M4: security controls for cloud computing risks"
+    description: >-
+      The annex states this one descriptively and points to OWASP and the NCSC cloud
+      computing guidance for example controls.
+    text: >-
+      Apply security controls that limit the risks of using cloud computing.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: conditional
+    source_ref: "library:unece-r155#M4"
+    source_locator: "M4 (Annex 5, Part C, Table C1)"
+    applies_to_family: ["family:vehicle-backend"]
+  - id: requirement:unece-r155-m5
+    name: "M5: security controls against back-end data breaches"
+    description: >-
+      The annex states this one descriptively and points to OWASP for example controls.
+    text: >-
+      Apply security controls to back-end systems that prevent data breaches.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: conditional
+    source_ref: "library:unece-r155#M5"
+    source_locator: "M5 (Annex 5, Part C, Table C1)"
+    applies_to_family: ["family:vehicle-backend"]
+  - id: requirement:unece-r155-m6
+    name: "M6: security by design"
+    text: >-
+      Build systems with security designed in from the start, to keep risks low.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: conditional
+    source_ref: "library:unece-r155#M6"
+    source_locator: "M6 (Annex 5, Part B, Table B1)"
+    applies_to_family: ["family:unece-r155-vehicle"]
+  - id: requirement:unece-r155-m7
+    name: "M7: access control for system data and code"
+    description: >-
+      Some rows add that OWASP has example controls.
+    text: >-
+      Protect system data and code with access-control techniques and designs.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: conditional
+    source_ref: "library:unece-r155#M7"
+    source_locator: "M7 (Annex 5, Part B, Tables B1 and B5)"
+    applies_to_family: ["family:unece-r155-vehicle"]
+  - id: requirement:unece-r155-m7-data-correlation
+    name: "M7: cross-check data from different sources"
+    description: >-
+      A second statement inside the M7 cell for rows 20.3 to 20.5. The annex words it as
+      a possibility ("could be mitigated"), so it is optional here.
+    text: >-
+      Counter manipulation of sensor or transmitted data by cross-checking it against
+      data from other sources.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: optional
+    source_ref: "library:unece-r155#M7"
+    source_locator: "M7 (Annex 5, Part B, Table B5, rows 20.3 to 20.5, second line of the mitigation)"
+    applies_to_family: ["family:unece-r155-vehicle"]
+  - id: requirement:unece-r155-m8
+    name: "M8: keep unauthorized personnel from critical data"
+    description: >-
+      The annex words this one with "should" and points to OWASP for example controls.
+    text: >-
+      Design systems and their access control so that unauthorized personnel cannot
+      reach personal or system-critical data.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: conditional
+    source_ref: "library:unece-r155#M8"
+    source_locator: "M8 (Annex 5, Part B, Tables B1 and B5; Part C, Table C1)"
+    applies_to_family: ["family:unece-r155-vehicle", "family:vehicle-backend"]
+  - id: requirement:unece-r155-m9
+    name: "M9: prevent and detect unauthorized access"
+    text: >-
+      Use measures that both prevent and detect unauthorized access.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: conditional
+    source_ref: "library:unece-r155#M9"
+    source_locator: "M9 (Annex 5, Part B, Tables B1 and B8)"
+    applies_to_family: ["family:unece-r155-vehicle"]
+  - id: requirement:unece-r155-m10
+    name: "M10: verify received messages"
+    text: >-
+      Have the vehicle check that every message it receives is authentic and unaltered.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: conditional
+    source_ref: "library:unece-r155#M10"
+    source_locator: "M10 (Annex 5, Part B, Table B1)"
+    applies_to_family: ["family:unece-r155-vehicle"]
+  - id: requirement:unece-r155-m11
+    name: "M11: protect stored cryptographic keys"
+    text: >-
+      Protect stored cryptographic keys with security controls, for example hardware
+      security modules.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: conditional
+    source_ref: "library:unece-r155#M11"
+    source_locator: "M11 (Annex 5, Part B, Tables B1, B2 and B5)"
+    applies_to_family: ["family:unece-r155-vehicle"]
+  - id: requirement:unece-r155-m12
+    name: "M12: protect confidential data in transit"
+    text: >-
+      Protect confidential data sent to or from the vehicle.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: conditional
+    source_ref: "library:unece-r155#M12"
+    source_locator: "M12 (Annex 5, Part B, Table B1)"
+    applies_to_family: ["family:unece-r155-vehicle"]
+  - id: requirement:unece-r155-m13
+    name: "M13: detect and recover from denial of service"
+    text: >-
+      Use measures that detect a denial-of-service attack and restore service after it.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: conditional
+    source_ref: "library:unece-r155#M13"
+    source_locator: "M13 (Annex 5, Part B, Tables B1 and B5)"
+    applies_to_family: ["family:unece-r155-vehicle"]
+  - id: requirement:unece-r155-m14
+    name: "M14: protect against embedded viruses and malware"
+    description: >-
+      The annex words this one as "should be considered".
+    text: >-
+      Consider measures that protect systems from viruses or malware brought in through
+      communication media.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: conditional
+    source_ref: "library:unece-r155#M14"
+    source_locator: "M14 (Annex 5, Part B, Table B1)"
+    applies_to_family: ["family:unece-r155-vehicle"]
+  - id: requirement:unece-r155-m15
+    name: "M15: detect malicious internal messages"
+    description: >-
+      The annex words this one as "should be considered".
+    text: >-
+      Consider measures that detect malicious internal messages or activity.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: conditional
+    source_ref: "library:unece-r155#M15"
+    source_locator: "M15 (Annex 5, Part B, Table B1)"
+    applies_to_family: ["family:unece-r155-vehicle"]
+  - id: requirement:unece-r155-m16
+    name: "M16: secure software update procedures"
+    text: >-
+      Use secure procedures for software updates.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: conditional
+    source_ref: "library:unece-r155#M16"
+    source_locator: "M16 (Annex 5, Part B, Table B2)"
+    applies_to_family: ["family:unece-r155-vehicle"]
+  - id: requirement:unece-r155-m18
+    name: "M18: least-privilege user roles"
+    text: >-
+      Define and control user roles and access privileges on the principle of least
+      privilege.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: conditional
+    source_ref: "library:unece-r155#M18"
+    source_locator: "M18 (Annex 5, Part B, Table B3; Part C, Table C2)"
+    applies_to_family: ["family:unece-r155-vehicle", "family:vehicle-backend"]
+  - id: requirement:unece-r155-m19
+    name: "M19: defined and followed security procedures"
+    description: >-
+      An obligation on organizations, so no product family is set.
+    text: >-
+      Ensure the organization has security procedures that are written down and actually
+      followed, and keep logs of the actions and access involved in managing security
+      functions.
+    text_origin: paraphrase
+    requirement_kind: organizational
+    normativity: conditional
+    source_ref: "library:unece-r155#M19"
+    source_locator: "M19 (Annex 5, Part B, Table B3; Part C, Table C2)"
+  - id: requirement:unece-r155-m20
+    name: "M20: security controls for remote access"
+    text: >-
+      Apply security controls to systems that can be reached remotely.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: conditional
+    source_ref: "library:unece-r155#M20"
+    source_locator: "M20 (Annex 5, Part B, Table B4)"
+    applies_to_family: ["family:unece-r155-vehicle"]
+  - id: requirement:unece-r155-m21
+    name: "M21: assess and protect software, including hosted third-party software"
+    text: >-
+      Assess the security of software and protect its authenticity and integrity, and
+      apply controls that limit the risk from third-party software intended or likely to
+      be hosted on the vehicle.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: conditional
+    source_ref: "library:unece-r155#M21"
+    source_locator: "M21 (Annex 5, Part B, Table B4)"
+    applies_to_family: ["family:unece-r155-vehicle"]
+  - id: requirement:unece-r155-m22
+    name: "M22: security controls for external interfaces"
+    text: >-
+      Apply security controls to the vehicle's external interfaces.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: conditional
+    source_ref: "library:unece-r155#M22"
+    source_locator: "M22 (Annex 5, Part B, Table B4)"
+    applies_to_family: ["family:unece-r155-vehicle"]
+  - id: requirement:unece-r155-m23
+    name: "M23: development best practices"
+    text: >-
+      Follow cybersecurity best practices when developing software and hardware.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: conditional
+    source_ref: "library:unece-r155#M23"
+    source_locator: "M23 (Annex 5, Part B, Table B6)"
+    applies_to_family: ["family:unece-r155-vehicle"]
+  - id: requirement:unece-r155-m23-testing
+    name: "M23: cybersecurity testing with adequate coverage"
+    description: >-
+      A second statement inside the M23 cell for rows 28.1 to 29.1.
+    text: >-
+      Carry out cybersecurity testing with adequate coverage.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: conditional
+    source_ref: "library:unece-r155#M23"
+    source_locator: "M23 (Annex 5, Part B, Table B6, rows 28.1 to 29.1, second line of the mitigation)"
+    applies_to_family: ["family:unece-r155-vehicle"]
+  - id: requirement:unece-r155-m23-system-design
+    name: "M23: system design and integration best practices"
+    description: >-
+      A second statement inside the M23 cell for row 29.2.
+    text: >-
+      Apply recognized cybersecurity good practice when designing and integrating
+      systems.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: conditional
+    source_ref: "library:unece-r155#M23"
+    source_locator: "M23 (Annex 5, Part B, Table B6, row 29.2, second line of the mitigation)"
+    applies_to_family: ["family:unece-r155-vehicle"]
+  - id: requirement:unece-r155-m24
+    name: "M24: protect stored personal data"
+    description: >-
+      Table C3 adds that ISO/SC27/WG5 has example controls.
+    text: >-
+      Follow best practices that protect the integrity and confidentiality of stored
+      personal data.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: conditional
+    source_ref: "library:unece-r155#M24"
+    source_locator: "M24 (Annex 5, Part B, Table B7; Part C, Table C3)"
+    applies_to_family: ["family:unece-r155-vehicle", "family:vehicle-backend"]
+
+mitigations:
+  - id: mitigation:unece-r155-m1
+    name: "UN R155 Annex 5 M1: security controls against insider attack on back-end systems"
+    description: Stub for the numbered Annex 5 mitigation; its Requirement restatement is a proposed stated_as Assertion.
+    stated_as: []
+  - id: mitigation:unece-r155-m2
+    name: "UN R155 Annex 5 M2: security controls against unauthorized access to back-end systems"
+    description: Stub for the numbered Annex 5 mitigation; its Requirement restatement is a proposed stated_as Assertion.
+    stated_as: []
+  - id: mitigation:unece-r155-m3
+    name: "UN R155 Annex 5 M3: secure back-end systems and plan for their recovery"
+    description: Stub for the numbered Annex 5 mitigation; its Requirement restatement is a proposed stated_as Assertion.
+    stated_as: []
+  - id: mitigation:unece-r155-m4
+    name: "UN R155 Annex 5 M4: security controls for cloud computing risks"
+    description: Stub for the numbered Annex 5 mitigation; its Requirement restatement is a proposed stated_as Assertion.
+    stated_as: []
+  - id: mitigation:unece-r155-m5
+    name: "UN R155 Annex 5 M5: security controls against back-end data breaches"
+    description: Stub for the numbered Annex 5 mitigation; its Requirement restatement is a proposed stated_as Assertion.
+    stated_as: []
+  - id: mitigation:unece-r155-m6
+    name: "UN R155 Annex 5 M6: security by design"
+    description: Stub for the numbered Annex 5 mitigation; its Requirement restatement is a proposed stated_as Assertion.
+    stated_as: []
+  - id: mitigation:unece-r155-m7
+    name: "UN R155 Annex 5 M7: access control for system data and code"
+    description: Stub for the numbered Annex 5 mitigation; its Requirement restatement is a proposed stated_as Assertion.
+    stated_as: []
+  - id: mitigation:unece-r155-m8
+    name: "UN R155 Annex 5 M8: keep unauthorized personnel from critical data"
+    description: Stub for the numbered Annex 5 mitigation; its Requirement restatement is a proposed stated_as Assertion.
+    stated_as: []
+  - id: mitigation:unece-r155-m9
+    name: "UN R155 Annex 5 M9: prevent and detect unauthorized access"
+    description: Stub for the numbered Annex 5 mitigation; its Requirement restatement is a proposed stated_as Assertion.
+    stated_as: []
+  - id: mitigation:unece-r155-m10
+    name: "UN R155 Annex 5 M10: verify received messages"
+    description: Stub for the numbered Annex 5 mitigation; its Requirement restatement is a proposed stated_as Assertion.
+    stated_as: []
+  - id: mitigation:unece-r155-m11
+    name: "UN R155 Annex 5 M11: protect stored cryptographic keys"
+    description: Stub for the numbered Annex 5 mitigation; its Requirement restatement is a proposed stated_as Assertion.
+    stated_as: []
+  - id: mitigation:unece-r155-m12
+    name: "UN R155 Annex 5 M12: protect confidential data in transit"
+    description: Stub for the numbered Annex 5 mitigation; its Requirement restatement is a proposed stated_as Assertion.
+    stated_as: []
+  - id: mitigation:unece-r155-m13
+    name: "UN R155 Annex 5 M13: detect and recover from denial of service"
+    description: Stub for the numbered Annex 5 mitigation; its Requirement restatement is a proposed stated_as Assertion.
+    stated_as: []
+  - id: mitigation:unece-r155-m14
+    name: "UN R155 Annex 5 M14: protect against embedded viruses and malware"
+    description: Stub for the numbered Annex 5 mitigation; its Requirement restatement is a proposed stated_as Assertion.
+    stated_as: []
+  - id: mitigation:unece-r155-m15
+    name: "UN R155 Annex 5 M15: detect malicious internal messages"
+    description: Stub for the numbered Annex 5 mitigation; its Requirement restatement is a proposed stated_as Assertion.
+    stated_as: []
+  - id: mitigation:unece-r155-m16
+    name: "UN R155 Annex 5 M16: secure software update procedures"
+    description: Stub for the numbered Annex 5 mitigation; its Requirement restatement is a proposed stated_as Assertion.
+    stated_as: []
+  - id: mitigation:unece-r155-m18
+    name: "UN R155 Annex 5 M18: least-privilege user roles"
+    description: Stub for the numbered Annex 5 mitigation; its Requirement restatement is a proposed stated_as Assertion.
+    stated_as: []
+  - id: mitigation:unece-r155-m19
+    name: "UN R155 Annex 5 M19: defined and followed security procedures"
+    description: Stub for the numbered Annex 5 mitigation; its Requirement restatement is a proposed stated_as Assertion.
+    stated_as: []
+  - id: mitigation:unece-r155-m20
+    name: "UN R155 Annex 5 M20: security controls for remote access"
+    description: Stub for the numbered Annex 5 mitigation; its Requirement restatement is a proposed stated_as Assertion.
+    stated_as: []
+  - id: mitigation:unece-r155-m21
+    name: "UN R155 Annex 5 M21: assess and protect software, including hosted third-party software"
+    description: Stub for the numbered Annex 5 mitigation; its Requirement restatement is a proposed stated_as Assertion.
+    stated_as: []
+  - id: mitigation:unece-r155-m22
+    name: "UN R155 Annex 5 M22: security controls for external interfaces"
+    description: Stub for the numbered Annex 5 mitigation; its Requirement restatement is a proposed stated_as Assertion.
+    stated_as: []
+  - id: mitigation:unece-r155-m23
+    name: "UN R155 Annex 5 M23: development best practices"
+    description: Stub for the numbered Annex 5 mitigation; its Requirement restatement is a proposed stated_as Assertion.
+    stated_as: []
+  - id: mitigation:unece-r155-m24
+    name: "UN R155 Annex 5 M24: protect stored personal data"
+    description: Stub for the numbered Annex 5 mitigation; its Requirement restatement is a proposed stated_as Assertion.
+    stated_as: []
+
+threat_instances:
+  - id: threat-instance:unece-r155-1-1
+    name: "1.1: Abuse of privileges by staff (insider attack)"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 1.1, under high-level threat 1
+      (Back-end servers used as a means to attack a vehicle or extract data); group
+      4.3.1, threats regarding back-end servers related to vehicles in the field.
+  - id: threat-instance:unece-r155-1-2
+    name: "1.2: Unauthorized internet access to the server"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 1.2, under high-level threat 1
+      (Back-end servers used as a means to attack a vehicle or extract data); group
+      4.3.1, threats regarding back-end servers related to vehicles in the field.
+  - id: threat-instance:unece-r155-1-3
+    name: "1.3: Unauthorized physical access to the server"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 1.3, under high-level threat 1
+      (Back-end servers used as a means to attack a vehicle or extract data); group
+      4.3.1, threats regarding back-end servers related to vehicles in the field.
+  - id: threat-instance:unece-r155-2-1
+    name: "2.1: Attack on back-end server stops it functioning"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 2.1, under high-level threat 2
+      (Services from back-end server being disrupted, affecting the operation of a
+      vehicle); group 4.3.1, threats regarding back-end servers related to vehicles in
+      the field.
+  - id: threat-instance:unece-r155-3-1
+    name: "3.1: Abuse of privileges by staff (insider attack)"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 3.1, under high-level threat 3 (Vehicle
+      related data held on back-end servers being lost or compromised ("data breach"));
+      group 4.3.1, threats regarding back-end servers related to vehicles in the field.
+  - id: threat-instance:unece-r155-3-2
+    name: "3.2: Loss of information in the cloud"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 3.2, under high-level threat 3 (Vehicle
+      related data held on back-end servers being lost or compromised ("data breach"));
+      group 4.3.1, threats regarding back-end servers related to vehicles in the field.
+  - id: threat-instance:unece-r155-3-3
+    name: "3.3: Unauthorized internet access to the server"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 3.3, under high-level threat 3 (Vehicle
+      related data held on back-end servers being lost or compromised ("data breach"));
+      group 4.3.1, threats regarding back-end servers related to vehicles in the field.
+  - id: threat-instance:unece-r155-3-4
+    name: "3.4: Unauthorized physical access to the server"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 3.4, under high-level threat 3 (Vehicle
+      related data held on back-end servers being lost or compromised ("data breach"));
+      group 4.3.1, threats regarding back-end servers related to vehicles in the field.
+  - id: threat-instance:unece-r155-3-5
+    name: "3.5: Information breach by unintended sharing of data (e.g. admin errors)"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 3.5, under high-level threat 3 (Vehicle
+      related data held on back-end servers being lost or compromised ("data breach"));
+      group 4.3.1, threats regarding back-end servers related to vehicles in the field.
+  - id: threat-instance:unece-r155-4-1
+    name: "4.1: Spoofing of messages by impersonation (e.g. 802.11p V2X during platooning, GNSS messages)"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 4.1, under high-level threat 4
+      (Spoofing of messages or data received by the vehicle); group 4.3.2, threats to
+      vehicles regarding their communication channels.
+  - id: threat-instance:unece-r155-4-2
+    name: "4.2: Sybil attack (in order to spoof other vehicles as if there are many vehicles on the road)"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 4.2, under high-level threat 4
+      (Spoofing of messages or data received by the vehicle); group 4.3.2, threats to
+      vehicles regarding their communication channels.
+  - id: threat-instance:unece-r155-5-1
+    name: "5.1: Communications channels permit code injection"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 5.1, under high-level threat 5
+      (Communication channels used to conduct unauthorized manipulation, deletion or
+      other amendments to vehicle held code/data); group 4.3.2, threats to vehicles
+      regarding their communication channels.
+  - id: threat-instance:unece-r155-5-2
+    name: "5.2: Communications channels permit manipulation of vehicle held data/code"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 5.2, under high-level threat 5
+      (Communication channels used to conduct unauthorized manipulation, deletion or
+      other amendments to vehicle held code/data); group 4.3.2, threats to vehicles
+      regarding their communication channels.
+  - id: threat-instance:unece-r155-5-3
+    name: "5.3: Communications channels permit overwrite of vehicle held data/code"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 5.3, under high-level threat 5
+      (Communication channels used to conduct unauthorized manipulation, deletion or
+      other amendments to vehicle held code/data); group 4.3.2, threats to vehicles
+      regarding their communication channels.
+  - id: threat-instance:unece-r155-5-4
+    name: "5.4: Communications channels permit erasure of vehicle held data/code"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 5.4, under high-level threat 5
+      (Communication channels used to conduct unauthorized manipulation, deletion or
+      other amendments to vehicle held code/data); group 4.3.2, threats to vehicles
+      regarding their communication channels.
+  - id: threat-instance:unece-r155-5-5
+    name: "5.5: Communications channels permit introduction of data/code to the vehicle (write data code)"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 5.5, under high-level threat 5
+      (Communication channels used to conduct unauthorized manipulation, deletion or
+      other amendments to vehicle held code/data); group 4.3.2, threats to vehicles
+      regarding their communication channels.
+  - id: threat-instance:unece-r155-6-1
+    name: "6.1: Accepting information from an unreliable or untrusted source"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 6.1, under high-level threat 6
+      (Communication channels permit untrusted/unreliable messages to be accepted or are
+      vulnerable to session hijacking/replay attacks); group 4.3.2, threats to vehicles
+      regarding their communication channels.
+  - id: threat-instance:unece-r155-6-2
+    name: "6.2: Man in the middle attack / session hijacking"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 6.2, under high-level threat 6
+      (Communication channels permit untrusted/unreliable messages to be accepted or are
+      vulnerable to session hijacking/replay attacks); group 4.3.2, threats to vehicles
+      regarding their communication channels.
+  - id: threat-instance:unece-r155-6-3
+    name: "6.3: Replay attack"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 6.3, under high-level threat 6
+      (Communication channels permit untrusted/unreliable messages to be accepted or are
+      vulnerable to session hijacking/replay attacks); group 4.3.2, threats to vehicles
+      regarding their communication channels.
+  - id: threat-instance:unece-r155-7-1
+    name: "7.1: Interception of information / interfering radiations / monitoring communications"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 7.1, under high-level threat 7
+      (Information can be readily disclosed); group 4.3.2, threats to vehicles regarding
+      their communication channels.
+  - id: threat-instance:unece-r155-7-2
+    name: "7.2: Gaining unauthorized access to files or data"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 7.2, under high-level threat 7
+      (Information can be readily disclosed); group 4.3.2, threats to vehicles regarding
+      their communication channels.
+  - id: threat-instance:unece-r155-8-1
+    name: "8.1: Sending a large number of garbage data to vehicle information system"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 8.1, under high-level threat 8 (Denial
+      of service attacks via communication channels to disrupt vehicle functions); group
+      4.3.2, threats to vehicles regarding their communication channels.
+  - id: threat-instance:unece-r155-8-2
+    name: "8.2: Black hole attack"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 8.2, under high-level threat 8 (Denial
+      of service attacks via communication channels to disrupt vehicle functions); group
+      4.3.2, threats to vehicles regarding their communication channels.
+  - id: threat-instance:unece-r155-9-1
+    name: "9.1: An unprivileged user is able to gain privileged access, for example root access"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 9.1, under high-level threat 9 (An
+      unprivileged user is able to gain privileged access to vehicle systems); group
+      4.3.2, threats to vehicles regarding their communication channels.
+  - id: threat-instance:unece-r155-10-1
+    name: "10.1: Virus embedded in communication media infects vehicle systems"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 10.1, under high-level threat 10
+      (Viruses embedded in communication media are able to infect vehicle systems);
+      group 4.3.2, threats to vehicles regarding their communication channels.
+  - id: threat-instance:unece-r155-11-1
+    name: "11.1: Malicious internal (e.g. CAN) messages"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 11.1, under high-level threat 11
+      (Messages received by the vehicle, or transmitted within it, contain malicious
+      content); group 4.3.2, threats to vehicles regarding their communication channels.
+  - id: threat-instance:unece-r155-11-2
+    name: "11.2: Malicious V2X messages (e.g. CAM, DENM)"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 11.2, under high-level threat 11
+      (Messages received by the vehicle, or transmitted within it, contain malicious
+      content); group 4.3.2, threats to vehicles regarding their communication channels.
+  - id: threat-instance:unece-r155-11-3
+    name: "11.3: Malicious diagnostic messages"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 11.3, under high-level threat 11
+      (Messages received by the vehicle, or transmitted within it, contain malicious
+      content); group 4.3.2, threats to vehicles regarding their communication channels.
+  - id: threat-instance:unece-r155-11-4
+    name: "11.4: Malicious proprietary messages"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 11.4, under high-level threat 11
+      (Messages received by the vehicle, or transmitted within it, contain malicious
+      content); group 4.3.2, threats to vehicles regarding their communication channels.
+  - id: threat-instance:unece-r155-12-1
+    name: "12.1: Compromise of over the air software update procedures"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 12.1, under high-level threat 12
+      (Misuse or compromise of update procedures); group 4.3.3, threats to vehicles
+      regarding their update procedures.
+  - id: threat-instance:unece-r155-12-2
+    name: "12.2: Compromise of local/physical software update procedures"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 12.2, under high-level threat 12
+      (Misuse or compromise of update procedures); group 4.3.3, threats to vehicles
+      regarding their update procedures.
+  - id: threat-instance:unece-r155-12-3
+    name: "12.3: The software is manipulated before the update process, although the update process is intact"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 12.3, under high-level threat 12
+      (Misuse or compromise of update procedures); group 4.3.3, threats to vehicles
+      regarding their update procedures.
+  - id: threat-instance:unece-r155-12-4
+    name: "12.4: Compromise of cryptographic keys of the software provider to allow invalid update"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 12.4, under high-level threat 12
+      (Misuse or compromise of update procedures); group 4.3.3, threats to vehicles
+      regarding their update procedures.
+  - id: threat-instance:unece-r155-13-1
+    name: "13.1: Denial of Service attack against update server or network"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 13.1, under high-level threat 13 (It is
+      possible to deny legitimate updates); group 4.3.3, threats to vehicles regarding
+      their update procedures.
+  - id: threat-instance:unece-r155-15-1
+    name: "15.1: Innocent victim being tricked into taking an action to unintentionally load malware or enable an attack"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 15.1, under high-level threat 15
+      (Legitimate actors are able to take actions that would unwittingly facilitate a
+      cyber-attack); group 4.3.4, threats to vehicles regarding unintended human actions
+      facilitating a cyber attack.
+  - id: threat-instance:unece-r155-15-2
+    name: "15.2: Defined security procedures are not followed"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 15.2, under high-level threat 15
+      (Legitimate actors are able to take actions that would unwittingly facilitate a
+      cyber-attack); group 4.3.4, threats to vehicles regarding unintended human actions
+      facilitating a cyber attack.
+  - id: threat-instance:unece-r155-16-1
+    name: "16.1: Manipulation of functions designed to remotely operate systems (e.g. remote key, immobilizer, charging pile)"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 16.1, under high-level threat 16
+      (Manipulation of the connectivity of vehicle functions enables a cyber-attack);
+      group 4.3.5, threats to vehicles regarding their external connectivity and
+      connections.
+  - id: threat-instance:unece-r155-16-2
+    name: "16.2: Manipulation of vehicle telematics"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 16.2, under high-level threat 16
+      (Manipulation of the connectivity of vehicle functions enables a cyber-attack);
+      group 4.3.5, threats to vehicles regarding their external connectivity and
+      connections.
+  - id: threat-instance:unece-r155-16-3
+    name: "16.3: Interference with short range wireless systems or sensors"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 16.3, under high-level threat 16
+      (Manipulation of the connectivity of vehicle functions enables a cyber-attack);
+      group 4.3.5, threats to vehicles regarding their external connectivity and
+      connections.
+  - id: threat-instance:unece-r155-17-1
+    name: "17.1: Corrupted applications, or those with poor software security, used as a method to attack vehicle systems"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 17.1, under high-level threat 17
+      (Hosted 3rd party software, e.g. entertainment applications, used as a means to
+      attack vehicle systems); group 4.3.5, threats to vehicles regarding their external
+      connectivity and connections.
+  - id: threat-instance:unece-r155-18-1
+    name: "18.1: External interfaces such as USB or other ports used as a point of attack"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 18.1, under high-level threat 18
+      (Devices connected to external interfaces e.g. USB ports, OBD port, used as a
+      means to attack vehicle systems); group 4.3.5, threats to vehicles regarding their
+      external connectivity and connections.
+  - id: threat-instance:unece-r155-18-2
+    name: "18.2: Media infected with a virus connected to a vehicle system"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 18.2, under high-level threat 18
+      (Devices connected to external interfaces e.g. USB ports, OBD port, used as a
+      means to attack vehicle systems); group 4.3.5, threats to vehicles regarding their
+      external connectivity and connections.
+  - id: threat-instance:unece-r155-18-3
+    name: "18.3: Diagnostic access (e.g. dongles in OBD port) used to facilitate an attack"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 18.3, under high-level threat 18
+      (Devices connected to external interfaces e.g. USB ports, OBD port, used as a
+      means to attack vehicle systems); group 4.3.5, threats to vehicles regarding their
+      external connectivity and connections.
+  - id: threat-instance:unece-r155-19-1
+    name: "19.1: Extraction of copyright or proprietary software from vehicle systems (product piracy)"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 19.1, under high-level threat 19
+      (Extraction of vehicle data/code); group 4.3.6, threats to vehicle data/code.
+  - id: threat-instance:unece-r155-19-2
+    name: "19.2: Unauthorized access to the owner's privacy information"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 19.2, under high-level threat 19
+      (Extraction of vehicle data/code); group 4.3.6, threats to vehicle data/code.
+  - id: threat-instance:unece-r155-19-3
+    name: "19.3: Extraction of cryptographic keys"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 19.3, under high-level threat 19
+      (Extraction of vehicle data/code); group 4.3.6, threats to vehicle data/code.
+  - id: threat-instance:unece-r155-20-1
+    name: "20.1: Illegal/unauthorized changes to vehicle's electronic ID"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 20.1, under high-level threat 20
+      (Manipulation of vehicle data/code); group 4.3.6, threats to vehicle data/code.
+  - id: threat-instance:unece-r155-20-2
+    name: "20.2: Identity fraud"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 20.2, under high-level threat 20
+      (Manipulation of vehicle data/code); group 4.3.6, threats to vehicle data/code.
+  - id: threat-instance:unece-r155-20-3
+    name: "20.3: Action to circumvent monitoring systems"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 20.3, under high-level threat 20
+      (Manipulation of vehicle data/code); group 4.3.6, threats to vehicle data/code.
+  - id: threat-instance:unece-r155-20-4
+    name: "20.4: Data manipulation to falsify vehicle's driving data"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 20.4, under high-level threat 20
+      (Manipulation of vehicle data/code); group 4.3.6, threats to vehicle data/code.
+  - id: threat-instance:unece-r155-20-5
+    name: "20.5: Unauthorized changes to system diagnostic data"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 20.5, under high-level threat 20
+      (Manipulation of vehicle data/code); group 4.3.6, threats to vehicle data/code.
+  - id: threat-instance:unece-r155-21-1
+    name: "21.1: Unauthorized deletion/manipulation of system event logs"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 21.1, under high-level threat 21
+      (Erasure of data/code); group 4.3.6, threats to vehicle data/code.
+  - id: threat-instance:unece-r155-22-2
+    name: "22.2: Introduce malicious software or malicious software activity"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 22.2, under high-level threat 22
+      (Introduction of malware); group 4.3.6, threats to vehicle data/code.
+  - id: threat-instance:unece-r155-23-1
+    name: "23.1: Fabrication of software of the vehicle control system or information system"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 23.1, under high-level threat 23
+      (Introduction of new software or overwrite existing software); group 4.3.6,
+      threats to vehicle data/code.
+  - id: threat-instance:unece-r155-24-1
+    name: "24.1: Denial of service, for example by flooding a CAN bus or provoking faults on an ECU"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 24.1, under high-level threat 24
+      (Disruption of systems or operations); group 4.3.6, threats to vehicle data/code.
+  - id: threat-instance:unece-r155-25-1
+    name: "25.1: Unauthorized access to falsify the configuration parameters of vehicle's key functions"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 25.1, under high-level threat 25
+      (Manipulation of vehicle parameters); group 4.3.6, threats to vehicle data/code.
+  - id: threat-instance:unece-r155-25-2
+    name: "25.2: Unauthorized access to falsify the charging parameters"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 25.2, under high-level threat 25
+      (Manipulation of vehicle parameters); group 4.3.6, threats to vehicle data/code.
+  - id: threat-instance:unece-r155-26-1
+    name: "26.1: Combination of short encryption keys and long period of validity enables attacker to break encryption"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 26.1, under high-level threat 26
+      (Cryptographic technologies can be compromised or are insufficiently applied);
+      group 4.3.7, potential vulnerabilities that could be exploited if not sufficiently
+      protected or hardened.
+  - id: threat-instance:unece-r155-26-2
+    name: "26.2: Insufficient use of cryptographic algorithms to protect sensitive systems"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 26.2, under high-level threat 26
+      (Cryptographic technologies can be compromised or are insufficiently applied);
+      group 4.3.7, potential vulnerabilities that could be exploited if not sufficiently
+      protected or hardened.
+  - id: threat-instance:unece-r155-26-3
+    name: "26.3: Using already or soon to be deprecated cryptographic algorithms"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 26.3, under high-level threat 26
+      (Cryptographic technologies can be compromised or are insufficiently applied);
+      group 4.3.7, potential vulnerabilities that could be exploited if not sufficiently
+      protected or hardened.
+  - id: threat-instance:unece-r155-27-1
+    name: "27.1: Hardware or software, engineered to enable an attack or fails to meet design criteria to stop an attack"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 27.1, under high-level threat 27 (Parts
+      or supplies could be compromised to permit vehicles to be attacked); group 4.3.7,
+      potential vulnerabilities that could be exploited if not sufficiently protected or
+      hardened.
+  - id: threat-instance:unece-r155-28-1
+    name: "28.1: Software bugs"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 28.1, under high-level threat 28
+      (Software or hardware development permits vulnerabilities); group 4.3.7, potential
+      vulnerabilities that could be exploited if not sufficiently protected or hardened.
+  - id: threat-instance:unece-r155-28-2
+    name: "28.2: Using remainders from development (e.g. debug ports, JTAG ports, development certificates, developer passwords)"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 28.2, under high-level threat 28
+      (Software or hardware development permits vulnerabilities); group 4.3.7, potential
+      vulnerabilities that could be exploited if not sufficiently protected or hardened.
+  - id: threat-instance:unece-r155-29-1
+    name: "29.1: Superfluous internet ports left open, providing access to network systems"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 29.1, under high-level threat 29
+      (Network design introduces vulnerabilities); group 4.3.7, potential
+      vulnerabilities that could be exploited if not sufficiently protected or hardened.
+  - id: threat-instance:unece-r155-29-2
+    name: "29.2: Circumvent network separation to gain control"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 29.2, under high-level threat 29
+      (Network design introduces vulnerabilities); group 4.3.7, potential
+      vulnerabilities that could be exploited if not sufficiently protected or hardened.
+  - id: threat-instance:unece-r155-30-1
+    name: "30.1: Damage caused by a third party"
+    description: >-
+      UN R155 Annex 5, Part C, Table C3, example 30.1 (physical loss of data). Table A1
+      does not list threat 30 in this version.
+  - id: threat-instance:unece-r155-30-2
+    name: "30.2: Loss from DRM (digital right management) conflicts"
+    description: >-
+      UN R155 Annex 5, Part C, Table C3, example 30.2 (physical loss of data). Table A1
+      does not list threat 30 in this version.
+  - id: threat-instance:unece-r155-30-3
+    name: "30.3: The (integrity of) sensitive data may be lost due to IT components wear and tear"
+    description: >-
+      UN R155 Annex 5, Part C, Table C3, example 30.3 (physical loss of data). Table A1
+      does not list threat 30 in this version.
+  - id: threat-instance:unece-r155-31-1
+    name: "31.1: Information breach: personal data leaked when the car changes user"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 31.1, under high-level threat 31
+      (Unintended transfer of data can occur); group 4.3.7, potential vulnerabilities
+      that could be exploited if not sufficiently protected or hardened.
+  - id: threat-instance:unece-r155-32-1
+    name: "32.1: Manipulation of electronic hardware"
+    description: >-
+      UN R155 Annex 5, Part A, Table A1, example 32.1, under high-level threat 32
+      (Physical manipulation of systems can enable an attack); group 4.3.7, potential
+      vulnerabilities that could be exploited if not sufficiently protected or hardened.
+
+parties:
+  - id: party:clovier
+    name: "@Clovier"
+    description: Human owner and reviewer of this file (GitHub id).
+    party_kind: person
+
+assertions:
+  - id: assertion:unece-r155-m1--stated-as--m1
+    name: "M1 stated_as requirement m1"
+    subject: mitigation:unece-r155-m1
+    predicate: stated_as
+    object: requirement:unece-r155-m1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: the requirement
+      restates the M1 mitigation cell (M1 (Annex 5, Part C, Table C1)).
+  - id: assertion:unece-r155-m2--stated-as--m2
+    name: "M2 stated_as requirement m2"
+    subject: mitigation:unece-r155-m2
+    predicate: stated_as
+    object: requirement:unece-r155-m2
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: the requirement
+      restates the M2 mitigation cell (M2 (Annex 5, Part C, Table C1)).
+  - id: assertion:unece-r155-m3--stated-as--m3
+    name: "M3 stated_as requirement m3"
+    subject: mitigation:unece-r155-m3
+    predicate: stated_as
+    object: requirement:unece-r155-m3
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: the requirement
+      restates the M3 mitigation cell (M3 (Annex 5, Part B, Table B2; Part C, Table
+      C1)).
+  - id: assertion:unece-r155-m4--stated-as--m4
+    name: "M4 stated_as requirement m4"
+    subject: mitigation:unece-r155-m4
+    predicate: stated_as
+    object: requirement:unece-r155-m4
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: the requirement
+      restates the M4 mitigation cell (M4 (Annex 5, Part C, Table C1)).
+  - id: assertion:unece-r155-m5--stated-as--m5
+    name: "M5 stated_as requirement m5"
+    subject: mitigation:unece-r155-m5
+    predicate: stated_as
+    object: requirement:unece-r155-m5
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: the requirement
+      restates the M5 mitigation cell (M5 (Annex 5, Part C, Table C1)).
+  - id: assertion:unece-r155-m6--stated-as--m6
+    name: "M6 stated_as requirement m6"
+    subject: mitigation:unece-r155-m6
+    predicate: stated_as
+    object: requirement:unece-r155-m6
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: the requirement
+      restates the M6 mitigation cell (M6 (Annex 5, Part B, Table B1)).
+  - id: assertion:unece-r155-m7--stated-as--m7
+    name: "M7 stated_as requirement m7"
+    subject: mitigation:unece-r155-m7
+    predicate: stated_as
+    object: requirement:unece-r155-m7
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: the requirement
+      restates the M7 mitigation cell (M7 (Annex 5, Part B, Tables B1 and B5)).
+  - id: assertion:unece-r155-m7--stated-as--m7-data-correlation
+    name: "M7 stated_as requirement m7-data-correlation"
+    subject: mitigation:unece-r155-m7
+    predicate: stated_as
+    object: requirement:unece-r155-m7-data-correlation
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: the requirement
+      restates the M7 mitigation cell (M7 (Annex 5, Part B, Table B5, rows 20.3 to 20.5,
+      second line of the mitigation)).
+  - id: assertion:unece-r155-m8--stated-as--m8
+    name: "M8 stated_as requirement m8"
+    subject: mitigation:unece-r155-m8
+    predicate: stated_as
+    object: requirement:unece-r155-m8
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: the requirement
+      restates the M8 mitigation cell (M8 (Annex 5, Part B, Tables B1 and B5; Part C,
+      Table C1)).
+  - id: assertion:unece-r155-m9--stated-as--m9
+    name: "M9 stated_as requirement m9"
+    subject: mitigation:unece-r155-m9
+    predicate: stated_as
+    object: requirement:unece-r155-m9
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: the requirement
+      restates the M9 mitigation cell (M9 (Annex 5, Part B, Tables B1 and B8)).
+  - id: assertion:unece-r155-m10--stated-as--m10
+    name: "M10 stated_as requirement m10"
+    subject: mitigation:unece-r155-m10
+    predicate: stated_as
+    object: requirement:unece-r155-m10
+    confidence: high
+    assertion_status: accepted
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: the requirement
+      restates the M10 mitigation cell (M10 (Annex 5, Part B, Table B1)).
+  - id: assertion:unece-r155-m11--stated-as--m11
+    name: "M11 stated_as requirement m11"
+    subject: mitigation:unece-r155-m11
+    predicate: stated_as
+    object: requirement:unece-r155-m11
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: the requirement
+      restates the M11 mitigation cell (M11 (Annex 5, Part B, Tables B1, B2 and B5)).
+  - id: assertion:unece-r155-m12--stated-as--m12
+    name: "M12 stated_as requirement m12"
+    subject: mitigation:unece-r155-m12
+    predicate: stated_as
+    object: requirement:unece-r155-m12
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: the requirement
+      restates the M12 mitigation cell (M12 (Annex 5, Part B, Table B1)).
+  - id: assertion:unece-r155-m13--stated-as--m13
+    name: "M13 stated_as requirement m13"
+    subject: mitigation:unece-r155-m13
+    predicate: stated_as
+    object: requirement:unece-r155-m13
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: the requirement
+      restates the M13 mitigation cell (M13 (Annex 5, Part B, Tables B1 and B5)).
+  - id: assertion:unece-r155-m14--stated-as--m14
+    name: "M14 stated_as requirement m14"
+    subject: mitigation:unece-r155-m14
+    predicate: stated_as
+    object: requirement:unece-r155-m14
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: the requirement
+      restates the M14 mitigation cell (M14 (Annex 5, Part B, Table B1)).
+  - id: assertion:unece-r155-m15--stated-as--m15
+    name: "M15 stated_as requirement m15"
+    subject: mitigation:unece-r155-m15
+    predicate: stated_as
+    object: requirement:unece-r155-m15
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: the requirement
+      restates the M15 mitigation cell (M15 (Annex 5, Part B, Table B1)).
+  - id: assertion:unece-r155-m16--stated-as--m16
+    name: "M16 stated_as requirement m16"
+    subject: mitigation:unece-r155-m16
+    predicate: stated_as
+    object: requirement:unece-r155-m16
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: the requirement
+      restates the M16 mitigation cell (M16 (Annex 5, Part B, Table B2)).
+  - id: assertion:unece-r155-m18--stated-as--m18
+    name: "M18 stated_as requirement m18"
+    subject: mitigation:unece-r155-m18
+    predicate: stated_as
+    object: requirement:unece-r155-m18
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: the requirement
+      restates the M18 mitigation cell (M18 (Annex 5, Part B, Table B3; Part C, Table
+      C2)).
+  - id: assertion:unece-r155-m19--stated-as--m19
+    name: "M19 stated_as requirement m19"
+    subject: mitigation:unece-r155-m19
+    predicate: stated_as
+    object: requirement:unece-r155-m19
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: the requirement
+      restates the M19 mitigation cell (M19 (Annex 5, Part B, Table B3; Part C, Table
+      C2)).
+  - id: assertion:unece-r155-m20--stated-as--m20
+    name: "M20 stated_as requirement m20"
+    subject: mitigation:unece-r155-m20
+    predicate: stated_as
+    object: requirement:unece-r155-m20
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: the requirement
+      restates the M20 mitigation cell (M20 (Annex 5, Part B, Table B4)).
+  - id: assertion:unece-r155-m21--stated-as--m21
+    name: "M21 stated_as requirement m21"
+    subject: mitigation:unece-r155-m21
+    predicate: stated_as
+    object: requirement:unece-r155-m21
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: the requirement
+      restates the M21 mitigation cell (M21 (Annex 5, Part B, Table B4)).
+  - id: assertion:unece-r155-m22--stated-as--m22
+    name: "M22 stated_as requirement m22"
+    subject: mitigation:unece-r155-m22
+    predicate: stated_as
+    object: requirement:unece-r155-m22
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: the requirement
+      restates the M22 mitigation cell (M22 (Annex 5, Part B, Table B4)).
+  - id: assertion:unece-r155-m23--stated-as--m23
+    name: "M23 stated_as requirement m23"
+    subject: mitigation:unece-r155-m23
+    predicate: stated_as
+    object: requirement:unece-r155-m23
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: the requirement
+      restates the M23 mitigation cell (M23 (Annex 5, Part B, Table B6)).
+  - id: assertion:unece-r155-m23--stated-as--m23-testing
+    name: "M23 stated_as requirement m23-testing"
+    subject: mitigation:unece-r155-m23
+    predicate: stated_as
+    object: requirement:unece-r155-m23-testing
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: the requirement
+      restates the M23 mitigation cell (M23 (Annex 5, Part B, Table B6, rows 28.1 to
+      29.1, second line of the mitigation)).
+  - id: assertion:unece-r155-m23--stated-as--m23-system-design
+    name: "M23 stated_as requirement m23-system-design"
+    subject: mitigation:unece-r155-m23
+    predicate: stated_as
+    object: requirement:unece-r155-m23-system-design
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: the requirement
+      restates the M23 mitigation cell (M23 (Annex 5, Part B, Table B6, row 29.2, second
+      line of the mitigation)).
+  - id: assertion:unece-r155-m24--stated-as--m24
+    name: "M24 stated_as requirement m24"
+    subject: mitigation:unece-r155-m24
+    predicate: stated_as
+    object: requirement:unece-r155-m24
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: the requirement
+      restates the M24 mitigation cell (M24 (Annex 5, Part B, Table B7; Part C, Table
+      C3)).
+  - id: assertion:unece-r155-m10--addresses--4-1
+    name: "requirement m10 addresses threat 4.1"
+    subject: requirement:unece-r155-m10
+    predicate: addresses
+    object: threat-instance:unece-r155-4-1
+    confidence: high
+    assertion_status: accepted
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B1,
+      row 4.1; the annex pairs this threat with the mitigation the requirement restates.
+  - id: assertion:unece-r155-m11--addresses--4-2
+    name: "requirement m11 addresses threat 4.2"
+    subject: requirement:unece-r155-m11
+    predicate: addresses
+    object: threat-instance:unece-r155-4-2
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B1,
+      row 4.2; the annex pairs this threat with the mitigation the requirement restates.
+  - id: assertion:unece-r155-m10--addresses--5-1
+    name: "requirement m10 addresses threat 5.1"
+    subject: requirement:unece-r155-m10
+    predicate: addresses
+    object: threat-instance:unece-r155-5-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B1,
+      row 5.1; the annex pairs this threat with the mitigation the requirement restates.
+  - id: assertion:unece-r155-m6--addresses--5-1
+    name: "requirement m6 addresses threat 5.1"
+    subject: requirement:unece-r155-m6
+    predicate: addresses
+    object: threat-instance:unece-r155-5-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B1,
+      row 5.1; the annex pairs this threat with the mitigation the requirement restates.
+  - id: assertion:unece-r155-m7--addresses--5-2
+    name: "requirement m7 addresses threat 5.2"
+    subject: requirement:unece-r155-m7
+    predicate: addresses
+    object: threat-instance:unece-r155-5-2
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B1,
+      row 5.2; the annex pairs this threat with the mitigation the requirement restates.
+  - id: assertion:unece-r155-m7--addresses--5-3
+    name: "requirement m7 addresses threat 5.3"
+    subject: requirement:unece-r155-m7
+    predicate: addresses
+    object: threat-instance:unece-r155-5-3
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B1,
+      row 5.3; the annex pairs this threat with the mitigation the requirement restates.
+  - id: assertion:unece-r155-m7--addresses--5-4
+    name: "requirement m7 addresses threat 5.4"
+    subject: requirement:unece-r155-m7
+    predicate: addresses
+    object: threat-instance:unece-r155-5-4
+    confidence: high
+    assertion_status: accepted
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B1,
+      row 5.4; the annex pairs this threat with the mitigation the requirement restates.
+  - id: assertion:unece-r155-m7--addresses--5-5
+    name: "requirement m7 addresses threat 5.5"
+    subject: requirement:unece-r155-m7
+    predicate: addresses
+    object: threat-instance:unece-r155-5-5
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B1,
+      row 5.5; the annex pairs this threat with the mitigation the requirement restates.
+  - id: assertion:unece-r155-m7--addresses--21-1
+    name: "requirement m7 addresses threat 21.1"
+    subject: requirement:unece-r155-m7
+    predicate: addresses
+    object: threat-instance:unece-r155-21-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Tables B1
+      and B5, row 21.1; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m10--addresses--6-1
+    name: "requirement m10 addresses threat 6.1"
+    subject: requirement:unece-r155-m10
+    predicate: addresses
+    object: threat-instance:unece-r155-6-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B1,
+      row 6.1; the annex pairs this threat with the mitigation the requirement restates.
+  - id: assertion:unece-r155-m10--addresses--6-2
+    name: "requirement m10 addresses threat 6.2"
+    subject: requirement:unece-r155-m10
+    predicate: addresses
+    object: threat-instance:unece-r155-6-2
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B1,
+      row 6.2; the annex pairs this threat with the mitigation the requirement restates.
+  - id: assertion:unece-r155-m10--addresses--6-3
+    name: "requirement m10 addresses threat 6.3"
+    subject: requirement:unece-r155-m10
+    predicate: addresses
+    object: threat-instance:unece-r155-6-3
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B1,
+      row 6.3; the annex pairs this threat with the mitigation the requirement restates.
+  - id: assertion:unece-r155-m12--addresses--7-1
+    name: "requirement m12 addresses threat 7.1"
+    subject: requirement:unece-r155-m12
+    predicate: addresses
+    object: threat-instance:unece-r155-7-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B1,
+      row 7.1; the annex pairs this threat with the mitigation the requirement restates.
+  - id: assertion:unece-r155-m8--addresses--7-2
+    name: "requirement m8 addresses threat 7.2"
+    subject: requirement:unece-r155-m8
+    predicate: addresses
+    object: threat-instance:unece-r155-7-2
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B1,
+      row 7.2; the annex pairs this threat with the mitigation the requirement restates.
+  - id: assertion:unece-r155-m13--addresses--8-1
+    name: "requirement m13 addresses threat 8.1"
+    subject: requirement:unece-r155-m13
+    predicate: addresses
+    object: threat-instance:unece-r155-8-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B1,
+      row 8.1; the annex pairs this threat with the mitigation the requirement restates.
+  - id: assertion:unece-r155-m13--addresses--8-2
+    name: "requirement m13 addresses threat 8.2"
+    subject: requirement:unece-r155-m13
+    predicate: addresses
+    object: threat-instance:unece-r155-8-2
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B1,
+      row 8.2; the annex pairs this threat with the mitigation the requirement restates.
+  - id: assertion:unece-r155-m9--addresses--9-1
+    name: "requirement m9 addresses threat 9.1"
+    subject: requirement:unece-r155-m9
+    predicate: addresses
+    object: threat-instance:unece-r155-9-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B1,
+      row 9.1; the annex pairs this threat with the mitigation the requirement restates.
+  - id: assertion:unece-r155-m14--addresses--10-1
+    name: "requirement m14 addresses threat 10.1"
+    subject: requirement:unece-r155-m14
+    predicate: addresses
+    object: threat-instance:unece-r155-10-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B1,
+      row 10.1; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m15--addresses--11-1
+    name: "requirement m15 addresses threat 11.1"
+    subject: requirement:unece-r155-m15
+    predicate: addresses
+    object: threat-instance:unece-r155-11-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B1,
+      row 11.1; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m10--addresses--11-2
+    name: "requirement m10 addresses threat 11.2"
+    subject: requirement:unece-r155-m10
+    predicate: addresses
+    object: threat-instance:unece-r155-11-2
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B1,
+      row 11.2; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m10--addresses--11-3
+    name: "requirement m10 addresses threat 11.3"
+    subject: requirement:unece-r155-m10
+    predicate: addresses
+    object: threat-instance:unece-r155-11-3
+    confidence: high
+    assertion_status: accepted
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B1,
+      row 11.3; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m10--addresses--11-4
+    name: "requirement m10 addresses threat 11.4"
+    subject: requirement:unece-r155-m10
+    predicate: addresses
+    object: threat-instance:unece-r155-11-4
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B1,
+      row 11.4; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m16--addresses--12-1
+    name: "requirement m16 addresses threat 12.1"
+    subject: requirement:unece-r155-m16
+    predicate: addresses
+    object: threat-instance:unece-r155-12-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B2,
+      row 12.1; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m16--addresses--12-2
+    name: "requirement m16 addresses threat 12.2"
+    subject: requirement:unece-r155-m16
+    predicate: addresses
+    object: threat-instance:unece-r155-12-2
+    confidence: high
+    assertion_status: accepted
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B2,
+      row 12.2; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m16--addresses--12-3
+    name: "requirement m16 addresses threat 12.3"
+    subject: requirement:unece-r155-m16
+    predicate: addresses
+    object: threat-instance:unece-r155-12-3
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B2,
+      row 12.3; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m11--addresses--12-4
+    name: "requirement m11 addresses threat 12.4"
+    subject: requirement:unece-r155-m11
+    predicate: addresses
+    object: threat-instance:unece-r155-12-4
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B2,
+      row 12.4; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m3--addresses--13-1
+    name: "requirement m3 addresses threat 13.1"
+    subject: requirement:unece-r155-m3
+    predicate: addresses
+    object: threat-instance:unece-r155-13-1
+    confidence: high
+    assertion_status: accepted
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B2,
+      row 13.1; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m18--addresses--15-1
+    name: "requirement m18 addresses threat 15.1"
+    subject: requirement:unece-r155-m18
+    predicate: addresses
+    object: threat-instance:unece-r155-15-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Tables B3
+      and C2, row 15.1; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m19--addresses--15-2
+    name: "requirement m19 addresses threat 15.2"
+    subject: requirement:unece-r155-m19
+    predicate: addresses
+    object: threat-instance:unece-r155-15-2
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Tables B3
+      and C2, row 15.2; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m20--addresses--16-1
+    name: "requirement m20 addresses threat 16.1"
+    subject: requirement:unece-r155-m20
+    predicate: addresses
+    object: threat-instance:unece-r155-16-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B4,
+      row 16.1; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m20--addresses--16-2
+    name: "requirement m20 addresses threat 16.2"
+    subject: requirement:unece-r155-m20
+    predicate: addresses
+    object: threat-instance:unece-r155-16-2
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B4,
+      row 16.2; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m20--addresses--16-3
+    name: "requirement m20 addresses threat 16.3"
+    subject: requirement:unece-r155-m20
+    predicate: addresses
+    object: threat-instance:unece-r155-16-3
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B4,
+      row 16.3; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m21--addresses--17-1
+    name: "requirement m21 addresses threat 17.1"
+    subject: requirement:unece-r155-m21
+    predicate: addresses
+    object: threat-instance:unece-r155-17-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B4,
+      row 17.1; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m22--addresses--18-1
+    name: "requirement m22 addresses threat 18.1"
+    subject: requirement:unece-r155-m22
+    predicate: addresses
+    object: threat-instance:unece-r155-18-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B4,
+      row 18.1; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m22--addresses--18-2
+    name: "requirement m22 addresses threat 18.2"
+    subject: requirement:unece-r155-m22
+    predicate: addresses
+    object: threat-instance:unece-r155-18-2
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B4,
+      row 18.2; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m22--addresses--18-3
+    name: "requirement m22 addresses threat 18.3"
+    subject: requirement:unece-r155-m22
+    predicate: addresses
+    object: threat-instance:unece-r155-18-3
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B4,
+      row 18.3; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m7--addresses--19-1
+    name: "requirement m7 addresses threat 19.1"
+    subject: requirement:unece-r155-m7
+    predicate: addresses
+    object: threat-instance:unece-r155-19-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B5,
+      row 19.1; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m8--addresses--19-2
+    name: "requirement m8 addresses threat 19.2"
+    subject: requirement:unece-r155-m8
+    predicate: addresses
+    object: threat-instance:unece-r155-19-2
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B5,
+      row 19.2; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m11--addresses--19-3
+    name: "requirement m11 addresses threat 19.3"
+    subject: requirement:unece-r155-m11
+    predicate: addresses
+    object: threat-instance:unece-r155-19-3
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B5,
+      row 19.3; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m7--addresses--20-1
+    name: "requirement m7 addresses threat 20.1"
+    subject: requirement:unece-r155-m7
+    predicate: addresses
+    object: threat-instance:unece-r155-20-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B5,
+      row 20.1; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m7--addresses--20-2
+    name: "requirement m7 addresses threat 20.2"
+    subject: requirement:unece-r155-m7
+    predicate: addresses
+    object: threat-instance:unece-r155-20-2
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B5,
+      row 20.2; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m7--addresses--20-3
+    name: "requirement m7 addresses threat 20.3"
+    subject: requirement:unece-r155-m7
+    predicate: addresses
+    object: threat-instance:unece-r155-20-3
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B5,
+      row 20.3; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m7--addresses--20-4
+    name: "requirement m7 addresses threat 20.4"
+    subject: requirement:unece-r155-m7
+    predicate: addresses
+    object: threat-instance:unece-r155-20-4
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B5,
+      row 20.4; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m7--addresses--20-5
+    name: "requirement m7 addresses threat 20.5"
+    subject: requirement:unece-r155-m7
+    predicate: addresses
+    object: threat-instance:unece-r155-20-5
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B5,
+      row 20.5; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m7-data-correlation--addresses--20-3
+    name: "requirement m7-data-correlation addresses threat 20.3"
+    subject: requirement:unece-r155-m7-data-correlation
+    predicate: addresses
+    object: threat-instance:unece-r155-20-3
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B5,
+      row 20.3; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m7-data-correlation--addresses--20-4
+    name: "requirement m7-data-correlation addresses threat 20.4"
+    subject: requirement:unece-r155-m7-data-correlation
+    predicate: addresses
+    object: threat-instance:unece-r155-20-4
+    confidence: high
+    assertion_status: accepted
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B5,
+      row 20.4; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m7-data-correlation--addresses--20-5
+    name: "requirement m7-data-correlation addresses threat 20.5"
+    subject: requirement:unece-r155-m7-data-correlation
+    predicate: addresses
+    object: threat-instance:unece-r155-20-5
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B5,
+      row 20.5; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m7--addresses--22-2
+    name: "requirement m7 addresses threat 22.2"
+    subject: requirement:unece-r155-m7
+    predicate: addresses
+    object: threat-instance:unece-r155-22-2
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B5,
+      row 22.2; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m7--addresses--23-1
+    name: "requirement m7 addresses threat 23.1"
+    subject: requirement:unece-r155-m7
+    predicate: addresses
+    object: threat-instance:unece-r155-23-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B5,
+      row 23.1; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m13--addresses--24-1
+    name: "requirement m13 addresses threat 24.1"
+    subject: requirement:unece-r155-m13
+    predicate: addresses
+    object: threat-instance:unece-r155-24-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B5,
+      row 24.1; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m7--addresses--25-1
+    name: "requirement m7 addresses threat 25.1"
+    subject: requirement:unece-r155-m7
+    predicate: addresses
+    object: threat-instance:unece-r155-25-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B5,
+      row 25.1; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m7--addresses--25-2
+    name: "requirement m7 addresses threat 25.2"
+    subject: requirement:unece-r155-m7
+    predicate: addresses
+    object: threat-instance:unece-r155-25-2
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B5,
+      row 25.2; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m23--addresses--26-1
+    name: "requirement m23 addresses threat 26.1"
+    subject: requirement:unece-r155-m23
+    predicate: addresses
+    object: threat-instance:unece-r155-26-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B6,
+      row 26.1; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m23--addresses--26-2
+    name: "requirement m23 addresses threat 26.2"
+    subject: requirement:unece-r155-m23
+    predicate: addresses
+    object: threat-instance:unece-r155-26-2
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B6,
+      row 26.2; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m23--addresses--26-3
+    name: "requirement m23 addresses threat 26.3"
+    subject: requirement:unece-r155-m23
+    predicate: addresses
+    object: threat-instance:unece-r155-26-3
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B6,
+      row 26.3; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m23--addresses--27-1
+    name: "requirement m23 addresses threat 27.1"
+    subject: requirement:unece-r155-m23
+    predicate: addresses
+    object: threat-instance:unece-r155-27-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B6,
+      row 27.1; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m23--addresses--28-1
+    name: "requirement m23 addresses threat 28.1"
+    subject: requirement:unece-r155-m23
+    predicate: addresses
+    object: threat-instance:unece-r155-28-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B6,
+      row 28.1; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m23--addresses--28-2
+    name: "requirement m23 addresses threat 28.2"
+    subject: requirement:unece-r155-m23
+    predicate: addresses
+    object: threat-instance:unece-r155-28-2
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B6,
+      row 28.2; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m23--addresses--29-1
+    name: "requirement m23 addresses threat 29.1"
+    subject: requirement:unece-r155-m23
+    predicate: addresses
+    object: threat-instance:unece-r155-29-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B6,
+      row 29.1; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m23--addresses--29-2
+    name: "requirement m23 addresses threat 29.2"
+    subject: requirement:unece-r155-m23
+    predicate: addresses
+    object: threat-instance:unece-r155-29-2
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B6,
+      row 29.2; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m23-testing--addresses--28-1
+    name: "requirement m23-testing addresses threat 28.1"
+    subject: requirement:unece-r155-m23-testing
+    predicate: addresses
+    object: threat-instance:unece-r155-28-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B6,
+      row 28.1; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m23-testing--addresses--28-2
+    name: "requirement m23-testing addresses threat 28.2"
+    subject: requirement:unece-r155-m23-testing
+    predicate: addresses
+    object: threat-instance:unece-r155-28-2
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B6,
+      row 28.2; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m23-testing--addresses--29-1
+    name: "requirement m23-testing addresses threat 29.1"
+    subject: requirement:unece-r155-m23-testing
+    predicate: addresses
+    object: threat-instance:unece-r155-29-1
+    confidence: high
+    assertion_status: accepted
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B6,
+      row 29.1; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m23-system-design--addresses--29-2
+    name: "requirement m23-system-design addresses threat 29.2"
+    subject: requirement:unece-r155-m23-system-design
+    predicate: addresses
+    object: threat-instance:unece-r155-29-2
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B6,
+      row 29.2; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m24--addresses--31-1
+    name: "requirement m24 addresses threat 31.1"
+    subject: requirement:unece-r155-m24
+    predicate: addresses
+    object: threat-instance:unece-r155-31-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B7,
+      row 31.1; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m9--addresses--32-1
+    name: "requirement m9 addresses threat 32.1"
+    subject: requirement:unece-r155-m9
+    predicate: addresses
+    object: threat-instance:unece-r155-32-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B8,
+      row 32.1; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m1--addresses--1-1
+    name: "requirement m1 addresses threat 1.1"
+    subject: requirement:unece-r155-m1
+    predicate: addresses
+    object: threat-instance:unece-r155-1-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table C1,
+      row 1.1; the annex pairs this threat with the mitigation the requirement restates.
+  - id: assertion:unece-r155-m1--addresses--3-1
+    name: "requirement m1 addresses threat 3.1"
+    subject: requirement:unece-r155-m1
+    predicate: addresses
+    object: threat-instance:unece-r155-3-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table C1,
+      row 3.1; the annex pairs this threat with the mitigation the requirement restates.
+  - id: assertion:unece-r155-m2--addresses--1-2
+    name: "requirement m2 addresses threat 1.2"
+    subject: requirement:unece-r155-m2
+    predicate: addresses
+    object: threat-instance:unece-r155-1-2
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table C1,
+      row 1.2; the annex pairs this threat with the mitigation the requirement restates.
+  - id: assertion:unece-r155-m2--addresses--3-3
+    name: "requirement m2 addresses threat 3.3"
+    subject: requirement:unece-r155-m2
+    predicate: addresses
+    object: threat-instance:unece-r155-3-3
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table C1,
+      row 3.3; the annex pairs this threat with the mitigation the requirement restates.
+  - id: assertion:unece-r155-m8--addresses--1-3
+    name: "requirement m8 addresses threat 1.3"
+    subject: requirement:unece-r155-m8
+    predicate: addresses
+    object: threat-instance:unece-r155-1-3
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table C1,
+      row 1.3; the annex pairs this threat with the mitigation the requirement restates.
+  - id: assertion:unece-r155-m8--addresses--3-4
+    name: "requirement m8 addresses threat 3.4"
+    subject: requirement:unece-r155-m8
+    predicate: addresses
+    object: threat-instance:unece-r155-3-4
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table C1,
+      row 3.4; the annex pairs this threat with the mitigation the requirement restates.
+  - id: assertion:unece-r155-m3--addresses--2-1
+    name: "requirement m3 addresses threat 2.1"
+    subject: requirement:unece-r155-m3
+    predicate: addresses
+    object: threat-instance:unece-r155-2-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table C1,
+      row 2.1; the annex pairs this threat with the mitigation the requirement restates.
+  - id: assertion:unece-r155-m4--addresses--3-2
+    name: "requirement m4 addresses threat 3.2"
+    subject: requirement:unece-r155-m4
+    predicate: addresses
+    object: threat-instance:unece-r155-3-2
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table C1,
+      row 3.2; the annex pairs this threat with the mitigation the requirement restates.
+  - id: assertion:unece-r155-m5--addresses--3-5
+    name: "requirement m5 addresses threat 3.5"
+    subject: requirement:unece-r155-m5
+    predicate: addresses
+    object: threat-instance:unece-r155-3-5
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table C1,
+      row 3.5; the annex pairs this threat with the mitigation the requirement restates.
+  - id: assertion:unece-r155-m24--addresses--30-1
+    name: "requirement m24 addresses threat 30.1"
+    subject: requirement:unece-r155-m24
+    predicate: addresses
+    object: threat-instance:unece-r155-30-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table C3,
+      row 30.1; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m24--addresses--30-2
+    name: "requirement m24 addresses threat 30.2"
+    subject: requirement:unece-r155-m24
+    predicate: addresses
+    object: threat-instance:unece-r155-30-2
+    confidence: high
+    assertion_status: accepted
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table C3,
+      row 30.2; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m24--addresses--30-3
+    name: "requirement m24 addresses threat 30.3"
+    subject: requirement:unece-r155-m24
+    predicate: addresses
+    object: threat-instance:unece-r155-30-3
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table C3,
+      row 30.3; the annex pairs this threat with the mitigation the requirement
+      restates.
+  - id: assertion:unece-r155-m23-testing--refines--m23
+    name: "requirement m23-testing refines requirement m23"
+    subject: requirement:unece-r155-m23-testing
+    predicate: refines
+    object: requirement:unece-r155-m23
+    confidence: medium
+    assertion_status: accepted
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B6;
+      the testing line sits in the M23 cell for rows 28.1 to 29.1 and narrows its
+      development best practices to testing.
+  - id: assertion:unece-r155-m23-system-design--derived-from--m23
+    name: "requirement m23-system-design derived_from requirement m23"
+    subject: requirement:unece-r155-m23-system-design
+    predicate: derived_from
+    object: requirement:unece-r155-m23
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex 5, Table B6;
+      the system design line sits in the M23 cell for row 29.2 and extends its best
+      practices from development to system design and integration.
+
+reviews:
+  - id: review:unece-r155-m10--stated-as--m10
+    name: "Review, accept m10 stated-as m10"
+    reviews: assertion:unece-r155-m10--stated-as--m10
+    reviewer: party:clovier
+    review_status: accepted
+    justification: >-
+      Checked against the source on 2026-11-02: Requirement m10 restates mitigation M10
+      (Table B1): the vehicle verifies the authenticity and integrity of the messages it
+      receives.
+  - id: review:unece-r155-m10--addresses--4-1
+    name: "Review, accept m10 addresses 4-1"
+    reviews: assertion:unece-r155-m10--addresses--4-1
+    reviewer: party:clovier
+    review_status: accepted
+    justification: >-
+      Checked against the source on 2026-11-02: Table B1 pairs row 4.1 (spoofing of
+      messages by impersonation) with M10.
+  - id: review:unece-r155-m7--addresses--5-4
+    name: "Review, accept m7 addresses 5-4"
+    reviews: assertion:unece-r155-m7--addresses--5-4
+    reviewer: party:clovier
+    review_status: accepted
+    justification: >-
+      Checked against the source on 2026-11-02: Table B1 row 5.4 (erasure of
+      vehicle-held data/code) shares the merged M7 cell with rows 5.2 to 5.5.
+  - id: review:unece-r155-m10--addresses--11-3
+    name: "Review, accept m10 addresses 11-3"
+    reviews: assertion:unece-r155-m10--addresses--11-3
+    reviewer: party:clovier
+    review_status: accepted
+    justification: >-
+      Checked against the source on 2026-11-02: Table B1 row 11.3 (malicious diagnostic
+      messages) shares the merged M10 cell with rows 11.2 and 11.4.
+  - id: review:unece-r155-m16--addresses--12-2
+    name: "Review, accept m16 addresses 12-2"
+    reviews: assertion:unece-r155-m16--addresses--12-2
+    reviewer: party:clovier
+    review_status: accepted
+    justification: >-
+      Checked against the source on 2026-11-02: Table B2 row 12.2 (compromise of local
+      or physical update procedures) shares the merged M16 cell with rows 12.1 and 12.3.
+  - id: review:unece-r155-m3--addresses--13-1
+    name: "Review, accept m3 addresses 13-1"
+    reviews: assertion:unece-r155-m3--addresses--13-1
+    reviewer: party:clovier
+    review_status: accepted
+    justification: >-
+      Checked against the source on 2026-11-02: Table B2 pairs row 13.1 (denial of
+      service against the update server or network) with M3.
+  - id: review:unece-r155-m23-testing--addresses--29-1
+    name: "Review, accept m23-testing addresses 29-1"
+    reviews: assertion:unece-r155-m23-testing--addresses--29-1
+    reviewer: party:clovier
+    review_status: accepted
+    justification: >-
+      Checked against the source on 2026-11-02: Table B6 rows 28.1 to 29.1 share the M23
+      cell, whose second line asks for cybersecurity testing with adequate coverage.
+  - id: review:unece-r155-m24--addresses--30-2
+    name: "Review, accept m24 addresses 30-2"
+    reviews: assertion:unece-r155-m24--addresses--30-2
+    reviewer: party:clovier
+    review_status: accepted
+    justification: >-
+      Checked against the source on 2026-11-02: Table C3 rows 30.1 to 30.3 share the
+      merged M24 cell, so 30.2 (loss from DRM conflicts) is paired with M24.
+  - id: review:unece-r155-m23-testing--refines--m23
+    name: "Review, accept m23-testing refines m23"
+    reviews: assertion:unece-r155-m23-testing--refines--m23
+    reviewer: party:clovier
+    review_status: accepted
+    justification: >-
+      Checked against the source on 2026-11-02: In Table B6 the testing line sits in the
+      M23 cell under the development best practices, as a more specific practice.
+  - id: review:unece-r155-m7-data-correlation--addresses--20-4
+    name: "Review, accept m7-data-correlation addresses 20-4"
+    reviews: assertion:unece-r155-m7-data-correlation--addresses--20-4
+    reviewer: party:clovier
+    review_status: accepted
+    justification: >-
+      Checked against the source on 2026-11-02: Table B5 rows 20.3 to 20.5 share the M7
+      cell, whose second line suggests correlating data from different sources against
+      data manipulation.
