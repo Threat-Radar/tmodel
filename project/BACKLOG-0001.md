@@ -7,9 +7,9 @@ description: "Task backlog. Each task becomes a GitHub issue; this file is the d
 type: backlog
 category: process
 status: draft
-version: "0.2.8"
+version: "0.2.9"
 date: "2026-09-23"
-updated: "2026-10-15"
+updated: "2026-10-26"
 needs_review: true
 reviewed: false
 canonical_path: project/BACKLOG-0001.md
@@ -158,7 +158,7 @@ remote servers. Tracking epic: the GitHub "Path A" issue. Slices 0–3 are the s
 | T-221 | SDL / SecurityProgram object: ordered/named/dated Gates/Checkpoints/Milestones + program mgmt (R-041) — post-MVP | #15/#67 | L | todo |
 | T-222 | Conformance validation: Requirement↔Mitigation/Evidence+Review; automatable "threats-mitigated" check (R-042) | #19/#67 | M | todo |
 | T-223 | Governed document-views: TM & SDL as owned/approved/versioned views over KG-SoT (R-043) | #15 | M | todo |
-| T-224 | Requirement object + cross-spec mappings from MAP-0001 (R-044) | #67 | M | todo |
+| T-224 | Requirement object + cross-spec mappings from MAP-0001 (R-044). **Requirement is core** (ADR-0012); remaining: populate from library standards records (requirement-extraction lanes) and MAP-0001 `maps_to` | #67 | M | in progress |
 
 ## Parking lot
 

@@ -6,10 +6,10 @@ description: "Every change to ARCH-0001, newest first. §9.5 requires an entry p
 type: process
 category: security
 status: active
-version: "0.1.8"
+version: "0.1.9"
 version_policy: "tracks ARCH-0001; one entry per version bump"
 date: "2026-09-23"
-updated: "2026-10-12"
+updated: "2026-10-26"
 needs_review: false
 reviewed: true
 canonical_path: spec/ARCH-0001-CHANGELOG.md
@@ -19,6 +19,17 @@ defers_to: ARCH-0001
 # ARCH-0001 changelog
 
 Newest first. Every ARCH-0001 version bump appends a line here (§9.5).
+
+## 0.1.9 — 2026-10-26
+
+**DEC-001a amended via ADR-0012: Requirement moves into the core** (sponsor decision). Core
+`Requirement` gains `requirement_kind` (technical / process / audit / documentation /
+organizational / other), `text_origin` (paraphrase for licensed standards), `source_locator`,
+`refines` / `derived_from` / `conflicts_with` (plus `maps_to` = overlap), `addresses`
+(ThreatInstance / Weakness / AttackPattern), `applies_to` (Product / ProductInstance /
+Component) and `applies_to_family` (matched against `Product.classifications`); a generic
+family mitigation is `Mitigation.stated_as` a Requirement. §3 and §8 updated; DEC-001b keeps
+the rest of the governed layer and `Requirement.conformance_status`. Evidence: mvp-02 (DL-0025).
 
 ## 0.1.8 — 2026-10-12
 

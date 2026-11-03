@@ -26,7 +26,7 @@ appear as github ids / roles only (CLAUDE.md). AI-proposed content is marked
 
 These are the acceptance evidence for **DEC-001a**, the **CORE** object model: a
 reviewed attack-path knowledge graph with **NO governance layer** (no ThreatModel /
-SecurityProgram / Gate / Milestone / Checkpoint / Requirement / GovernedView) and
+SecurityProgram / Gate / Milestone / Checkpoint / GovernedView) and
 **no Environment/Deployment** (`ARCH-0001-PROPOSAL` §8: "no Environment parameter —
 post-MVP, H3"). They realise the §8 "MVP vectors 1–6 + 18" set — the critic's
 "attack-path KG, no Environment, no governance". The filename number `NN` is the §8
@@ -35,7 +35,7 @@ vector the file primarily realises.
 | File | §8 vector | Domain | Realises |
 |---|---|---|---|
 | `mvp-01-software-doc-service.yaml` | **1** | software (ADR-0002 *deep*) | container-image software model: Components w/ CPE/purl `identifiers`, CVE→CWE→CAPEC with propagation as a reviewed Assertion, two ordered AttackPaths (**AND** + **OR** gate), composite-vector RiskScore, graph `View`, human-reviewed vs AI-proposed |
-| `mvp-02-automotive-ecu.yaml` | **2** | automotive / embedded (ADR-0002 *breadth*) | ISO 21434 TARA asset/damage/threat-scenario binding onto the core classes + same CWE/CVE backbone; firmware/HBOM instance identity; remote+pivot AND/OR paths; composite RiskScore; AI-proposed path **human-rejected** |
+| `mvp-02-automotive-ecu.yaml` | **2** | automotive / embedded (ADR-0002 *breadth*) | ISO 21434 TARA asset/damage/threat-scenario binding onto the core classes + same CWE/CVE backbone; firmware/HBOM instance identity; remote+pivot AND/OR paths; composite RiskScore; AI-proposed path **human-rejected**; **core Requirements (ADR-0012)**: three ISO/SAE 21434 provisions (paraphrase + clause id; process, audit), a generic `connected-ecu` family mitigation `stated_as` a family Requirement (`applies_to_family`, `derived_from` RQ-09-09, `addresses` CWE/CAPEC), a TCU Requirement that `refines` it, both `satisfied_by` the TCU's mitigation, and an AI-proposed `addresses` link left `proposed` |
 | `mvp-03-hierarchical-system.yaml` | **3** | system (ADR-0002 *system* type) | 3-level `composed_of` subsystem tree; two subsystem threats **roll up** to one system-level DamageScenario + a worst-path system RiskScore; AND/OR paths; cross-subsystem AI-proposed pivot |
 | `mvp-18-shared-vuln-vex-override.yaml` | **18** | hardware + software | one finding propagates **core → chip → server** in product A; a **second product is VEX `not_affected`**; propagation and the per-product override both via the Assertion+Review spine (also the §8 vector-4 flavour — divergent per-product disposition, no ProductFamily class) |
 
@@ -51,7 +51,11 @@ Each `mvp-NN` vector validates against the **CORE** container
 (`example-container-core.linkml.yaml`, class `ExampleModelCore`), whose tree root
 exposes collections for the DEC-001a core classes **only** — no governed-layer and
 no Environment/Deployment collections — so "no governance, no Environment" is
-enforced structurally, not by convention.
+enforced structurally, not by convention. `Requirement` joined the core by ADR-0012
+(`requirements` collection); its `conformance_status` slot is still DEC-001b, and the
+reference checker (`design-log/0021-…/check-edges.py`) fails a core vector that sets it.
+The checker also resolves the requirement edges (`refines`, `derived_from`,
+`conflicts_with`, `maps_to`, `addresses`, `satisfied_by`, `applies_to`, `stated_as`).
 
 ## Governance-heavy worked examples (`tv-*.yaml`)
 

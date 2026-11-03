@@ -4,9 +4,9 @@ id: DL-0015
 title: "RPT-0004 second pass: AI-assisted scoping, survey, extraction and mapping"
 type: process
 status: draft
-version: "0.8.1"
+version: "0.16.0"
 date: "2026-10-08"
-updated: "2026-10-20"
+updated: "2026-10-29"
 record: DL-0015
 ---
 
@@ -418,3 +418,629 @@ After Threat-Radar/library#28 and #29 were submitted for review, the student ask
   - `sources.md` and `dimensions.md` said the report's §11 "summarizes" the ratings in 0.2.0, but `report.md` is still 0.1.2 and ends at §7. Both now say it will.
   - Row 68 was described two ways. The conventions said its values do not depend on the open extraction in Threat-Radar/library#29, while "For a human reviewer" and this entry said row 68 leans on it, and its AI-grounding cell gave the FX-1 requirement ids as the reason. The conventions were right: row 68's AI-grounding 3 is fanout-identity's rating, made before the extraction existed, and its Object model 2 is RPT-0005's. Row 68's cells, "For a human reviewer" and this entry now say so.
   - Row 3 said RPT-0005 rated the SPDX Security profile 1 on Human review. RPT-0005's `report.md` Table 5 gives 2, the value Table 7 chose; the 1 is in its fan-out notes (`fanout-vuln-data.md` §6). Row 3's `basis` cell and its entry under "Disagreements settled" now name that file.
+
+## Report 0.2.0: Tables 1 and 2, §1.4 to §1.6 (#147, 2026-10-22)
+
+### Question asked
+
+With #131 and #133 merged, the student asked to continue #38 with `report.md` 0.2.0, starting with sub-issue #147: Table 1 (formats at a glance) and Table 2 (minimum-element crosswalk) at the front of the report, and §1's new questions 6 to 8. The student chose one branch and one draft pull request for all of 0.2.0 (`topic/rpt-0004-report-0.2.0`), a stop for review after each sub-issue, and one fact-check agent per sub-issue.
+
+### What was produced
+
+- **`report.md` 0.2.0, in progress:** a status note at the top; "Comparison tables" with Table 1 and Table 2, which replace 0.1.2's table of CISA's 2024 attributes and its "five questions" table; the VEX status table, unchanged because RPT-0005 cites it; and three new sections: §1.4 (the SPDX 3 RDF model), §1.5 (validation in every format) and §1.6 (what changed, and what comes next).
+- **`dimensions.md` 0.7.4:** a Validation row in Table 1's plan, and a status line under Table 2.
+- **`searches.md` 0.3.2:** the release, milestone and record checks of 2026-10-22.
+
+### Method
+
+- The text is condensed from Phase 1's notes (`fanout-formats-baselines.md`, sections 2 and 3), with every correction this log has recorded since then applied: Syft writes SPDX 3.0.1 (`-o spdx-json@3.0`); the ISO stages from the file of 2026-10-14; and the record statuses at `a28a013`, where both format records are now stubs.
+- Release and milestone status was re-checked on GitHub on 2026-10-22, and every cited record id was looked up in the library at `a28a013` (`searches.md`).
+- One fact-check agent (Claude Code) checked every new claim against its primary source; see "Fact-check" below.
+
+### Choices the agent made, open to review
+
+- **Table 1 adds a Validation row** beyond the plan's list, as Phase 1 suggested; it points at §1.5.
+- **No extra columns in Table 1.** SPDX 2.3, CycloneDX 2.0 and SPDX 3.1 are discussed under the table and in §1.6 instead.
+- **Table 2 replaces 0.1.2's CISA 2024 table.** Its "Required by" column keeps the CISA 2024 levels, and its notes keep CISA 2024's official mappings.
+- **§1.5 shows all 31 sampled rules** (X7 and X8 share a row), so the argument is in the report and not only in the notes.
+- **Version 0.2.0 is set at the first sub-issue,** with a note at the top saying what is done so far; the pull request stays a draft until #151.
+
+### Fact-check
+
+- **The agent.** One fact-check agent (Claude Code; about 476,000 tokens, 189 tool calls, 33 minutes) checked the new text against primary sources it fetched itself: the CycloneDX schemas at 1.6.2 and 1.7.2, ECMA-424, the SPDX 3.0.1 model, context, JSON Schema and examples, the SPDX annex, RFC 9393, NIST IR 8060, the SWID XSD, the CISA 2026, NTIA 2021 and CISA 2024 documents, BSI TR-03183-2, CERT-In 2.0, the FDA guidance, the CRA (from the EU Publications Office, because EUR-Lex refused scripts), OMB M-26-05, the IANA registry and ISO Open Data. It re-ran Syft 1.52.0 on the pilot's image and plain pySHACL and spdx3-validate on the examples. Every source digest matched the notes except the IANA CSV, which has a new hash and the same nine rows. It sent no email or other personal data, and it did not use Crossref.
+- **What it confirmed.** 30 of Table 1's 39 cells exactly; all 23 of Table 2's CISA 2026 change labels and every other baseline level except those below; all of Syft's counts but one (below); and the §1.4 to §1.6 claims except those below, including every quoted rule in §1.5.
+- **Its 21 findings, all applied.**
+  - **Errors:**
+    - FDA was missing from six Table 2 rows its baseline covers.
+    - CISA 2024, CERT-In and BSI entries were missing from three practice rows.
+    - CERT-In does recommend signing (§5.4).
+    - The counts were off: 9 BOM-Link places, not 10; 13 objects with a signature, not 16; 11 CDDL group sockets plus 5 enumeration sockets, not 7.
+    - Syft leaves out 83 dependency entries, not 5.
+    - SPDX 3.0's ISO stage moved to 50.20 on 2026-10-21.
+    - "Versions must be SemVer" was too broad.
+    - #1158's summary fitted AI packages only.
+    - The milestone counts mix issues and pull requests.
+    - SPDX's hardware purposes include `deviceDriver`.
+    - "What Table 2 shows" listed only three of Syft's six misses.
+  - **Precision and citations:** a paraphrase shown as a quote (CycloneDX's licence choice); a top-level `@vocab`, not none; spdx3-validate is used by the SPDX specification repository but is not SPDX's own; test ids; and eleven smaller wordings.
+- **Applied differently.**
+  - The keyword counts in §1.5 now say "more than 700" and "more than 50", because the exact numbers depend on whether "shall not" and "must not" are counted.
+  - The forward reference to §8 now says it is to be written for #150.
+  - The extraction question now points at sponsor questions 1 and 2, since both bear on it.
+- **Main-session spot checks** of four findings against the agent's downloads (13 signature objects, 47 unique-item arrays, 9 BOM-Link places, PRF 5962 at 50.20) agreed; see `searches.md`.
+- **Not checked:**
+  - PyLD (T4), the SWID `xmllint` tests (T13), and the single mutations other than M9 and M11 were not re-run.
+  - The cryptographic-asset fields added in 1.7 were not itemized.
+  - The RFC 3339 and RFC 9557 reading stays "our reading".
+
+### What a human accepted
+
+- The student asked for this work and made the three choices above.
+- Pending: review.
+
+## Report 0.2.0: §2 to §4, Tables 4 and 5 (#148, 2026-10-22)
+
+### Question asked
+
+After #147, the student said to continue #38; the next sub-issue is #148: §2 with Table 4 (hardware and firmware coverage) from `fanout-hardware.md`, §3 with Table 5 (tools) from `fanout-tools.md`, and §4 re-checked against tradar's `main`. The student's earlier choices hold: one branch and one draft pull request, a stop for review after each sub-issue, and one fact-check agent per sub-issue. #147 was committed at the student's word ("commit #147") before this work began.
+
+### What was produced
+
+- **`report.md`, §2:** the 0.1.2 text kept where it still holds, with CISA's 2023 mapping counts set beside our reading of the current schemas; Table 4 in two parts (4a bills and guidance, 4b identity and attestation standards); and new paragraphs for questions 3 to 9: how firmware is tied to a device, buses and cores, firmware bills in practice, attestation as a measured bill, ISO/IEC 19770-6 (from public metadata and its preview only), hierarchical systems and vehicles, and guidance beyond CISA.
+- **`report.md`, §3:** the second round of tool runs (2026-10-08: four inputs, Syft 1.54.1, Grype 0.120.1, Trivy 0.75.0) beside the first; Table 5; the SPDX 3 support table; and new or rewritten paragraphs on Dependency-Track 5, GUAC's graph model and deps.dev.
+- **`report.md`, §4:** re-checked against tradar's `main` (still `26d9c76`), with Phase 1's three nuances and its new facts on what reaches the graph.
+- **`dimensions.md` 0.7.5** and **`searches.md` 0.3.3:** status lines and the checks of 2026-10-22.
+
+### Method
+
+- The text is condensed from Phase 1's notes, with this log's later corrections applied: uSWID is a header defined by python-uswid and required by the firmware SBOM specification, not a standard; Yocto 5.1 writes SPDX 3.0.0 and 5.2 onward 3.0.1; the SUIT manifest waits on five unpublished drafts; spdx/tools-golang still has no final release with SPDX 3.0.1; and the qualified tradar claims (`manifestDigest`, the GHSA ids named `cve:`).
+- On 2026-10-22: the latest tool releases and their notes, the two SPDX 3 issues, tradar's `main`, and every cited record id at `a28a013` (`searches.md`). The tools were not run again: the newer releases change no format support.
+- One fact-check agent (Claude Code) checked the new text against primary sources; see "Fact-check" below.
+
+### Choices the agent made, open to review
+
+- **Table 4 keeps the plan's rows** and does not split the last row ("measured identity") into device evidence and supplier references, which Phase 1 suggested; the intro and the cells say which each is.
+- **Table 4 has no ISO/IEC 19770-6 column,** as the plan allows when no copy can be read.
+- **Two draft columns** (the CycloneDX 2.0 and SPDX 3.1 development branches) are in Table 4a, marked unreleased, because they are where hardware support is moving.
+- **The 47-field crosswalk** stays in `fanout-hardware.md` §3.3; the report gives its counts.
+- **Table 5 pins the versions run on 2026-10-08,** and the text names the newer releases instead of re-running them.
+
+### Fact-check
+
+- **The agent.** One fact-check agent (Claude Code; about 606,000 tokens, 318 tool calls, 57 minutes) checked the #148 part of the version note, §2 with Tables 4a and 4b, §3 with Table 5 and its three smaller tables, and §4. It used primary sources it fetched itself:
+  - the CISA HBOM framework (from the Wayback Machine, because cisa.gov refuses scripts; the digest matched), NTIA, CERT-In 2.0, Auto-ISAC, UN R155 and R156, ITU-T C548, ISO Open Data and the BSI preview of ISO/IEC 19770-6;
+  - the CycloneDX 1.7.2 schema and property taxonomy, the CycloneDX 2.0 and SPDX 3.1 development branches, and SPDX 3.0.1;
+  - the TCG, DMTF and IETF documents of Table 4b;
+  - the firmware SBOM specification 0.10, python-uswid, coreboot, the UEFI material, Yocto and Zephyr;
+  - the source of Syft, Grype, Trivy, GUAC and Dependency-Track at the pinned tags, with their documentation;
+  - deps.dev, where it repeated 3 of the 15 live calls.
+
+  It re-ran Syft 1.54.1 on the pinned image digests after checking the release checksum. It also re-ran Grype 0.120.1 and Trivy 0.75.0 with the exact databases of 2026-10-08, which can still be downloaded and whose digests matched the notes. It read tradar at `26d9c76` without running it. It sent no email or other personal data, and it did not use Crossref.
+- **What it confirmed.**
+  - Every count in the composition and matching tables, including Trivy's 0.1.0 tradar figures, re-run with the database of 2026-09-30.
+  - Table 5's Syft cells; all four SPDX 3 files are valid against the 3.0.1 JSON Schema.
+  - The release dates, and that the newer releases change no formats.
+  - CISA's 47 fields, its 37 and 36 unmapped fields, our 24 = 9 + 15, 19 = 7 + 12, 40 and 38, and all 13 CISA quotes.
+  - Table 4b's standards and versions.
+  - Every code locator in §4 at `26d9c76`.
+  - All 33 cited record ids at `a28a013`.
+- **Its 17 findings, all applied.**
+  - **Errors:**
+    - GUAC's deps.dev certifier adds dependencies, source links and Scorecard results, not vulnerabilities (Table 5 and §3).
+    - Three Dependency-Track quotes came from its version 4 documentation, not version 5's.
+    - GUAC v1.1.0 pins tools-golang v0.5.5; only its `main` pins v0.5.7.
+    - The log4j SBOM has no dependency links.
+    - Trivy reads the Python and Java packages in Syft's SPDX 2.3 files (tradar 15, log4j 7); only the two images give nothing.
+    - SPDX 3.1's `Hardware` requires `partNumber` and `productAgent`; `category` is optional.
+    - On Alpine, Grype adds 14 CVEs that Trivy lacks, not 13; the 14th is busybox's CVE-2025-60876.
+  - **Overstatements and citations:**
+    - "No digest" in the CISA framework is our reading, because its hash fields are described as identifiers.
+    - Not every source names firmware.
+    - LVFS's export is now cited to the firmware SBOM specification §7.6, and CBFS to coreboot's documentation.
+    - "HIRS at version 1.1 r15" had no source for "r15".
+    - Two interpretations now say "our reading".
+    - 4 of GUAC's 86 edges have no reverse.
+    - tradar's converter is also called from tests.
+    - tradar can also ask Syft for Syft JSON, table or text.
+    - Syft's suppliers come from package metadata, not only maintainer fields.
+  - **Minor:**
+    - Grype also reads a CPE file, and Syft also writes SPDX 2.1 tag-value.
+    - CISA §1.3 is now quoted in full.
+    - R156's register is kept per RXSWIN.
+    - Table 4's marks are adapted from RPT-0005, which marks absence with a dash.
+    - "Hardware support beyond a purpose label".
+    - GUAC's documentation lives in a separate repository.
+    - tradar's helpers also read Syft's own properties.
+- **Applied differently.**
+  - Dependency-Track's hardware advice is kept, labelled as version 4's, beside version 5's statement that NVD is "the broadest source for non-package software (operating systems, firmware, network equipment)". The agent suggested dropping it or labelling it.
+  - The PACCOR and HIRS sentence is rewritten from their READMEs and HIRS's documentation: PACCOR supports 2.1 but writes 1.1 by default, and HIRS validates 1.1, with 2.0 in development.
+  - "It cannot read SPDX 3 at all" is said of the format, not of each file. Trivy's format detection (`pkg/sbom/sbom.go:105-117`) does not recognize SPDX 3, and only Alpine's SPDX 3 file was run.
+- **Corrected in our own log.** `searches.md` said §2 to §4 cite 28 records. They cite 33: 31 stubs, plus `guac` and `ntia-sbom-minimum-elements`, which are summarized.
+- **For the library repository.** The `tcg-platform-certificate-profile-2-1` stub carries the same unsupported "1.1 r15" for HIRS, in `record.yaml` and `summary.md`. It needs fixing there, not from this checkout.
+- **Main-session spot checks** agreed with the agent; see `searches.md`. They covered 12 findings (F1 to F3, F5, F6, F8, F10, F11 and F13 to F16) and four minor fixes, against the agent's downloads and runs and three read-only GitHub API calls (the HIRS README and v3.2.0 notes, and the PACCOR README).
+- **Not checked:**
+  - The 0.1.0 Grype figures and the 0.1.0 Trivy Alpine "0". The Grype databases of 2026-09-28 and 09-30 were never recorded, and the Trivy database of 09-28 was not fetched.
+  - "CISA has not updated the framework since" rests on the Wayback copy.
+  - The remaining 12 of the 15 deps.dev calls.
+  - "Syft's documentation lists no dictionary lookups for Alpine" was checked in Syft's source only.
+  - Some details were checked at term level only: CoRIM's triple semantics, EAT's measurement contents, Redfish's cable and `Port` details, and Yocto and Zephyr naming hardware only as a build input.
+  - PACCOR has since released v2.0r17 (2026-10-13). The report keeps v2.0r16, the release Phase 1 recorded.
+
+### What a human accepted
+
+- The student asked for this work.
+- Pending: review.
+
+## Report 0.2.0: §5 to §7, Table 3 (#149, 2026-10-22)
+
+### Question asked
+
+After #148 was committed and pushed at the student's word ("go ahead and commit + push"), the student said "continue with #149": §5 (the bridge) from `fanout-bridge.md`, and §6 (build identity and the radar → tmodel input contract) and §7 with Table 3 (identifier schemes) from `fanout-identity.md`. #149's definition of done: Table 3 filled, including the five failure modes `dimensions.md` lists; claims cite library record ids; sections fact-checked. During the work the student also asked for two corrections offered after #148 ("sure apply these fix"): a correction note in `fanout-tools.md` for its two GUAC errors, and a fix for the unsupported "1.1 r15" for HIRS.
+
+### What was produced
+
+- **`report.md`, §5:**
+  - what each vulnerability source needs from an SBOM (a table of nine sources);
+  - NVD's narrowed enrichment, and how seldom its CPE data agrees with the CNA's;
+  - each scanner's route, and our runs explained (including the Anchore override behind 0.1.2's open point);
+  - what each scanner records about a match;
+  - version ranges and ordering, published evidence on disagreement, and where CWEs come from.
+- **`report.md`, §6:**
+  - retitled to the plan's "Build identity and the radar → tmodel input contract";
+  - kept and updated from 0.1.2: the document versus the product, what pins the product, and records of the build;
+  - new: one image's five digests, and how the way an image is named changes which digest an SBOM keeps;
+  - new: candidate keys per model type, against the `identifiers` slot, and six options for "the same instance";
+  - new: a table of attestation carriers, and what the contract would have to ask radar for;
+  - new: firmware and vehicles, including the RXSWIN, which §2 deferred to here.
+- **`report.md`, §7 and Table 3:** new. Table 3 is split into 3a (what each scheme names, who mints it) and 3b (where it is carried, who keys on it, what policy says, how it fails), with the five failure modes in bold. Prose follows on assigned and computed ids, who keys on each, the failure patterns, and a stable key for a shared graph.
+- **`report.md`, elsewhere:** the 0.1.2 synthesis renumbered from §7 to §11, with a note; the status note lists #149; §2's forward reference to §6 updated.
+- **`dimensions.md` 0.7.6:** a status line under Table 3.
+- **`searches.md` 0.3.4:** the checks of 2026-10-22 for #149.
+- **`fanout-tools.md` 0.1.1** (the student's request): correction notes for the two GUAC errors the #148 fact-check found, marked where they occur, with the original text kept.
+- **`sources.md` 0.4.2** (the student's request): the two Table 9 notes that said HIRS implements profile "1.1 r15" now say it validates version 1.1 certificates, with 2.0 in development and not 2.1. The same wording in this log's Phase 2 entry ("The HIRS entry was reworded", 2026-10-18) is superseded. The library record `tcg-platform-certificate-profile-2-1` needs the same fix in its own repository; it is waiting for a branch there.
+
+### Method
+
+- The text is condensed from Phase 1's notes, applying the second agent's re-check of `fanout-identity.md` (its section 9: 3 claims rejected as stated, 17 qualified), and re-pointed at the accepted core through `mapping.md`.
+- Table 3b's "Named by policy" was read from the baseline texts the #147 fact-check agent downloaded.
+- Checked on 2026-10-22, as logged in `searches.md`:
+  - the releases of the specifications and tools §5 to §7 pin;
+  - the SUIT draft's state and NVD's news page;
+  - the schema's `identifiers` slot, and the proposal's §3b and §7;
+  - every cited record id at `a28a013`.
+- One fact-check agent (Claude Code) checks the new text against primary sources; see "Fact-check" below.
+
+### Choices the agent made, open to review
+
+- **Table 3 is split in two** (3a and 3b), as Table 4 is, because its 12 columns do not fit one table.
+- **vers is a companion row,** marked as a range syntax, not an identifier, because dimension 7 asks about purl ranges. **UUIDs have no row,** because they appear only as SWID tag ids and in policy text.
+- **§6 states `mapping.md`'s rules (R-ID-1, R-MERGE-1, R-HW-1 and others) as candidates,** with their ids, rather than restating Table 6, which §10 brings in for #150.
+- **The 0.1.2 synthesis moved to §11 now,** with its old text, so that section numbers match the plan; §8 to §10 are still to come (#150).
+- **`ecma-427` and `nvd-cve-api-2-0` are cited although their records are not at `a28a013`** (Threat-Radar/library#24, open, and #25, merged on 2026-10-21, after the pin); the text says so where it cites them.
+- **Newer patch releases** (BuildKit 0.34.1, cosign 3.1.4, OSV schema 1.9.2, OSV-Scanner 2.7.0) are named from their release notes, not re-read in full; none contradicts a claim in §5 to §7.
+
+### Fact-check
+
+- **The agent.** One fact-check agent (Claude Code; about 618,000 tokens, 259 tool calls, 77 minutes) checked the #149 part of the status note, §5 to §7 with Tables 3a and 3b, the §11 note, the changed §2 sentence, and the two corrections in `fanout-tools.md` and `sources.md`. Its primary sources, fetched itself:
+  - the CVE List of 2026-10-08 (digests matching the notes) and the CVE schema; NVD's API (re-run on 2026-10-22) and documentation;
+  - the source and documentation of Grype, Trivy, Dependency-Track 5, OSV-Scanner and osv.dev; the GitHub advisory, Alpine, Debian, Ubuntu and Red Hat data; the version-ordering specifications;
+  - the eight papers (digests matching); Docker Hub; the in-toto, SLSA, Sigstore, OCI, BuildKit, cosign and GitHub attest texts; UN R156 and the SUIT draft;
+  - the purl, vers, CPE, RFC 9393, OmniBOR and SWHID texts; the baselines; and the tmodel files the report quotes.
+
+  It ran Syft 1.52.0 (release checksum verified) on the alpine image named by tag and by index digest. It sent no email or other personal data, and it did not use Crossref.
+- **What it confirmed.**
+  - Every CVE List count but one (below), and the eight papers' numbers.
+  - The R156 and SUIT quotes and paragraph numbers.
+  - The five image digests, the pilot's attestations, Syft's naming behaviour and the attestation carriers.
+  - The version-ordering rules.
+  - All 56 cited record ids at `a28a013`, all five failure modes, and every "Named by policy" cell but one (below).
+  - Both corrections in `fanout-tools.md` and `sources.md`.
+  - Its NVD re-run of 2026-10-22 (31.1% with configurations, 393 of 1,620 identical, 27 placeholders), which fits the notes' 2026-10-08 figures.
+- **Its 20 findings: 19 applied in the report, 1 recorded for #150.**
+  - **Errors:**
+    - Threat-Radar/library#25 (`nvd-cve-api-2-0`) merged on 2026-10-21; the report and this entry said it was open.
+    - CISA's ADP adds a CWE where the CNA gave none, but 1,320 records carry both, so "only" was wrong.
+    - §6 said the SBOMs keep one digest and carry the index digest when an image is named by tag. Syft 1.52.0 runs show otherwise: named by tag, the CycloneDX file holds no image digest and the SPDX file the platform manifest digest; the index digest reaches either only when the image is named by it.
+  - **Imprecise or overstated:**
+    - 26.8% counts only CPE applicability statements (35.7% with the older `cpes` list), and 144,340, not 144,341.
+    - BSI's §8.2 mapping and NTIA's 2021 framing do name SWID tag ids, and the framing also names SWHID.
+    - NVD "prioritizes" these CVEs; it does not "enrich only" them.
+    - The RXSWIN "only when" is our reading.
+    - Grype also keeps CPE matching on for its `jvm` matcher.
+    - CVE-2025-60876 also has a Siemens supplier container.
+    - The SWHID defect's dates were imprecise.
+    - The quoted in-toto sentence is the SPDX 2 predicate's.
+    - OCI says SHA-256 "SHOULD" be used and "MUST" be supported.
+  - **Wording:** a source for the `NVD-CWE-noinfo` quote; "We found no published study"; "(our reading)" on "most records give an SBOM nothing to match"; the firmware specification means its GUID as the component name; NVD passes on the ADPs' `affected` data too.
+- **Recorded for #150, not applied here.** `mapping.md` (Table 6a and rule R-ID-1) says Syft's `tags` and `repoDigests` hold the index digest and the tags only when an image is named by tag. In every run `tags` was empty, and `repoDigests` also holds the index digest when the image is named by it. §10 brings `mapping.md` into the report in #150, so it is corrected there.
+- **Added from a main-session check:** by 2026-10-22, `latest`, `3.24` and `3` named a newer image index (`71e9b7ba…`), which §6 now uses as its example of tags moving.
+- **Main-session spot checks** agreed with the agent; see `searches.md`. They covered library #25's state, the agent's Syft outputs for the tag and digest names, and the live tags on Docker Hub.
+- **Not checked:**
+  - The exact 2026-10-08 NVD figures (NVD's data has changed since) and the 2026-09-28 Grype run (its database was never recorded).
+  - The 2026-10-18 CWE source counts in `mapping.md` (Grype was not re-run).
+  - Whether re-attesting an image changes its index digest (marked as our reading).
+  - cosign's default storage, beyond its release notes.
+  - The paywalled ISO texts.
+  - The digest of NTIA's 2021 framing, which the notes do not record.
+
+### What a human accepted
+
+- The student asked for this work, and for the two corrections.
+- Pending: review.
+
+## Report 0.2.0: §8 to §10, Table 6 (#150, 2026-10-22)
+
+### Question asked
+
+After #149 was committed and pushed at the student's word, the student said "continue with #150": §8 (minimum elements and policy baselines) and §9 (other bill types) from `fanout-formats-baselines.md`, and §10, which moves Table 6 in from `mapping.md`. #150's definition of done: §8 to §10 written, with Table 6 in the report; claims cite library record ids; sections fact-checked.
+
+### What was produced
+
+- **`report.md`, §8:**
+  - a table of the eight baselines: what each asks for, how binding it is, and which formats it names;
+  - what changed from NTIA 2021 to CISA 2026;
+  - a table of hash, producer, depth and completeness requirements;
+  - how our tools' output compares (pointing to Table 2 for the details).
+- **`report.md`, §9:**
+  - a table of what each other bill type adds (CycloneDX's SaaSBOM, CBOM, ML-BOM, OBOM and MBOM; SPDX's AI, Dataset, Build and Lite profiles; CERT-In's other bills);
+  - whether tmodel's Component covers each kind;
+  - two cautions about the AI-BOM sources.
+- **`report.md`, §10:**
+  - Table 6 (6a to 6f), its findings and its candidate rules, copied word for word from `mapping.md`, apart from the one correction the #149 fact-check found (Syft's `tags` and `repoDigests`);
+  - a new introduction, and a short table of what pull request #130 (DL-0024, ADR-0011, not merged) would change in Table 6;
+  - a takeaway.
+- **`report.md`, elsewhere:**
+  - the status note lists #150;
+  - the §11 note no longer says §8 to §10 are to come;
+  - thirteen references that pointed at `mapping.md`, or at §8 and §10 "to be written", now point at §8 and §10.
+- **`mapping.md` 0.1.2:** a note that Table 6 is now maintained in the report, and the correction marked where it occurs.
+- **`dimensions.md` 0.7.7:** a status line under Table 6.
+- **`searches.md` 0.3.5:** the checks for #150.
+
+### Method
+
+- §8 and §9 are condensed from Phase 1's notes, with this log's earlier corrections applied (for example, Syft does write SPDX 3.0.1, so BSI's format rule is within its reach).
+- Their quotes were checked against the baseline texts the #147 fact-check agent downloaded.
+- Every cited record id was checked at `a28a013` (`searches.md`).
+- §10 was assembled by a script from `mapping.md` (sections 1 to 10), so its tables, findings and rules are unchanged apart from the marked correction. Only these were adapted: headings, internal section references, and "this version" wording.
+- One fact-check agent (Claude Code) checks the new text against primary sources; see "Fact-check" below.
+
+### Choices the agent made, open to review
+
+- **Table 6 is copied into §10, not cut from `mapping.md`.** `mapping.md` stays as the record of how Table 6 was made (its §11: runs, reference files, the three-agent fact-check), with a note that the report's copy is the maintained one.
+- **§10 maps to the core ADR-0010 accepted, not to #130's additions,** because #130 is not merged; a separate table lists what #130 would change. If #130 merges before 0.2.0 is final, Table 6's gap rows need updating.
+- **§8 does not repeat Table 2's element-by-element crosswalk;** it compares the baselines and points to Table 2.
+- **§9 adds a CERT-In row** (QBOM, CBOM, AIBOM) and keeps the G7 AI guidance, whose element tables were not read, as unread.
+
+### Fact-check
+
+- **The agent.** One fact-check agent (Claude Code; about 502,000 tokens, 169 tool calls, 29 minutes) checked the #150 parts of the status note, §8 and §9 with their tables, §10's new text, the copy of Table 6 against `mapping.md`, the 13 repointed cross-references, and the notes in `mapping.md` and `dimensions.md`. It worked from primary sources:
+  - the baseline PDFs, with digests matching the notes, and the CRA from the EU Publications Office;
+  - the CycloneDX 1.7.2 schema and 2.0 draft, the SPDX 3.0.1 model, and the CycloneDX capability pages;
+  - the G7 document (BSI's copy, the record's digest), CISA's bulletin and the Linux Foundation guide;
+  - #130's branch, tmodel's `main` and tradar's `main`.
+
+  It sent no email or other personal data, and it did not use Crossref.
+- **Copy check.** The diff of §10 against `mapping.md` found only the intended differences: headings, internal section references, the "This version" wording, the one correction, and the new introduction, lead-in, table and takeaway.
+- **What it confirmed.**
+  - Every §8 date, status and quote; every §9 row; and every row of "What #130 would change".
+  - The 13 cross-references.
+  - The Table 6 counts, reproduced from the #148 runs.
+  - The 12 cited record ids at `a28a013`.
+- **Its 15 findings: all applied, except one point of the last, deferred to #151.**
+  - **Errors:**
+    - Finding 7 and Table 6d's Weakness row were stale at `main`: #128, merged on 2026-10-21, added a reviewed CVE-to-CWE Assertion to all four `mvp-*` vectors. Finding 7 now says what was true at 9f56628 and what #128 changed.
+    - The status note said §11 was the only part still reading as 0.1.2, but §1.1 to §1.3 and the VEX table keep 0.1.2's text too.
+  - **Citations:**
+    - §9's G7 quote came from CISA's bulletin, not the G7 document it cites; it now quotes the document (§1).
+    - §9 said the proposal models builds as PROV-O Activities, which the proposal does not say; it is now our reading, with the proposal's actual words.
+  - **Imprecise or overstated:**
+    - FDA's depth, now quoted, which Table 2's Coverage row also gains.
+    - The Linux Foundation guide's actual error, which is in the cardinalities.
+    - §8's "converge" and "BSI asks the most", both now marked as our reading and narrowed to what the texts say.
+    - #130's status (ADR-0011 is marked accepted on its branch, but not merged).
+    - CISA 2026's Appendix B locator, and SWID's removal being part of a change CISA calls major.
+    - The CISA 2024 maturity levels.
+    - What #130 leaves open.
+    - The bills' fifth kind (CERT-In's hardware).
+  - **Minor:** an ambiguous "It re-ran"; the plan's "word for word"; the 0.1.1 note's pointer to Table 6.
+  - **Deferred to #151:** the report's front matter still lists DEC-002 among its open decisions, although ADR-0007 accepted it. #151 rewrites the decisions part, so it fixes this there.
+- **Main-session spot checks** agreed with the agent; see `searches.md`. They covered #128's merge, and its Assertion in all four vectors.
+- **Not checked:**
+  - The 2026-10-18 re-run outputs, which were not kept.
+  - Whether a CRA implementing act appeared after 2026-10-08.
+  - The G7 element tables.
+  - Table 6e's format cells beyond type names.
+
+### What a human accepted
+
+- The student asked for this work, and for it to be committed and pushed once the fact-check's fixes were in.
+- Pending: review.
+
+## Report 0.2.0: §11, Tables 7 and 8 (#151, 2026-10-22)
+
+### Question asked
+
+The student asked that, once #150's fact-check was done, #150 be committed and pushed and the next task started ("once fact checking is done, commit and push then start the next task"). The next task is #151: §11, the synthesis and gap analysis. #151's definition of done: Table 8 filled, with every gap routed to an open DEC or issue; Table 7 summarized; version 0.2.0, with `updated` moved.
+
+### What was produced
+
+- **`report.md`, §11**, replacing the synthesis 0.1.2 had as §7:
+  - the evidence of §1 to §10 by decision: DEC-001 (DEC-001a accepted, DEC-001b open), DEC-002, DEC-004 and DEC-007 (accepted), and DEC-008 and DEC-009 (open);
+  - Table 7 in short: the counts per axis from `sources.md`, and four observations;
+  - Table 8: 29 gaps, each with its evidence, a recommendation offered as evidence only, and the open decision or issue it routes to; Table 6's last column routes the smaller mapping gaps;
+  - a takeaway, and a short list of limits that §12 (#152) will expand.
+- **`report.md`, elsewhere:**
+  - the front matter: `informs` lists the decisions §11 covers, and `open_decisions` only the two still open. This settles the point the #150 fact-check deferred: DEC-002, accepted by ADR-0007, was listed as open.
+  - the note under the title says which of those decisions are accepted, and by which ADR;
+  - the status note lists #151 and what is still to come;
+  - §9's reference to the Linux Foundation guide's Table 8 now says "the guide's Table 8", so it is not read as the report's new Table 8.
+  - §1.1's reference to the closed #9 now names RPT-0005 (#39).
+- **`dimensions.md` 0.7.8:** status lines under Table 7, Table 8 and the plan for §11.
+- **`searches.md` 0.3.6:** the checks for #151.
+
+### Method
+
+- §11 was written from §1 to §10 as they stand after #150's fixes. It cites sections, findings and rule ids rather than sources.
+- Its new facts were checked in this session (`searches.md`): the decision states on `main`, the state of every issue Table 8 routes to, the sponsor-question numbers in #38, and #133's review.
+- The Table 7 counts are copied from `sources.md`'s summary.
+- A script counts Table 8's rows, the rows routed to #15 or #17 and the rows naming #130, so that the takeaway's numbers match the table: 21, 16 and 7 in the draft; 29, 22 and 8 after the fact-check.
+- The checks found a numbering slip in the draft. Table 8 gave the paywalled standards "sponsor question 4", their number in `dimensions.md`, but on #38 question 4 is Part B's licensed text and the access question is 3. The draft was changed to 3 before the fact-check; after it, the row gives both numbers and says the question names only ISO/IEC 19770-2 and 19770-6.
+- One fact-check agent (Claude Code) checks the new text; see "Fact-check" below.
+
+### Choices the agent made, open to review
+
+- **§11 covers DEC-007 too, with its input contract.** The plan lists only DEC-001, DEC-002, DEC-004, DEC-008 and DEC-009, but ADR-0001's contract is where the gaps become fields radar emits.
+- **`open_decisions` lists DEC-008 and DEC-009, not DEC-001b** (RPT-0005 lists all three), because this report has no evidence for the governed layer.
+- **Where #130 would close a gap, Table 8 names its slot,** because #130 is not merged. Two rows also say what the accepted core can do until then: per-build composition, and a component's supplier or maker.
+- **Table 7's summary sits before Table 8,** although the plan names them the other way round, so that Table 8 and the takeaway end the section.
+- **Table 8's Evidence column cites sections, findings and rule ids, not sources,** although `dimensions.md` asks for the section and the source; the sections cite the sources.
+- **Table 8 lists the main gaps, and Table 6's last column routes the smaller mapping gaps row by row,** rather than Table 8 repeating every Table 6 row.
+- **§11's limits are a short list;** the full list waits for §12 (#152).
+
+### Fact-check
+
+- **The agent.** One fact-check agent (Claude Code; about 367,000 tokens, 75 tool calls, 20 minutes) checked §11, the front matter and notes, §9's change and the logs. It worked from:
+  - the report's own sections and `sources.md`;
+  - tmodel's `main`, #130's branch, and GitHub's issues and pull requests;
+  - earlier fact-checkers' downloads, reused as data.
+
+  It sent no email or other personal data, and it contacted GitHub only.
+- **What it confirmed.**
+  - The decision states on `main`, the state of every routed issue, ADR-0011's contents on #130's branch, #38's question numbers and #133's review.
+  - Table 7's counts, recounted from all 121 rows, and the four observations.
+  - Every finding and rule §11 cites, apart from the points below.
+  - No row was routed to a closed issue or an accepted decision.
+- **Its 21 findings, all applied, the first in a different form.**
+  - **Missing.** §11 said it routed every gap, but at least seven gaps from §6 to §10 had no row. Table 8 now has 29 rows:
+    - five come from the agent's drafts: a component's producer, the home of `dependsOn` and edge subtypes, the upstream package, the build record, and the firmware binding;
+    - three are drafted in the main session from the agent's list: the Product key, loading SPDX into RDF, and evidence that is closed or does not exist yet;
+    - its drafts for the match predicate and for the `oci` purls were merged into the existing rows on matches and on the instance key;
+    - the unowned importer and the checks the format schemas leave to the text went into the radar row.
+
+    The smaller mapping gaps it listed stay in Table 6, whose last column routes them, and §11's introduction now says so.
+  - **Overstated:** the DEC-009 bullet stated the draft proposal's (ProductInstance, time) design as fact; it now attributes it to the proposal.
+  - **Counts:** the takeaway's "seven of them" did not match the table; it is recounted for 29 rows.
+  - **Routes:**
+    - Row 14 sent each CWE's source and alias ids to #144, which imports the CWE catalog; it now goes to #61, and to #64 via #130.
+    - The format-crosswalk row went to #64, the schema-authoring lane, though finding 8 leaves the question to #15 and #17; it now goes there.
+  - **Sponsor questions:** the paywalled-standards question is 4 in `dimensions.md` and 3 on #38; the row now gives both.
+  - **Imprecise:**
+    - which digests Syft's SBOMs keep, and how identifiers are stored;
+    - VEX overrides, which have a home (an Assertion with a Review, as in mvp-18);
+    - the contract's fields, interconnects and cores, and the other-bills row;
+    - "64 rows" rather than sources, and SPDX 3.0.1's `creationInfo`;
+    - deps.dev's 15 live calls;
+    - the 4-then-30 matches, which came from the same image and tool versions, not the same SBOM file;
+    - R-MATCH-1 beside R-PROV-2;
+    - completeness, and the takeaway's "everything else as Assertions".
+  - **Our reading:** two interpretations are now marked.
+  - **Logs:** the stopgap wording under "Choices", a new choice on the Evidence column, and "among others" in `searches.md`.
+  - **Status note:** §12 and the clarity pass now come "after 0.2.0".
+- **Outside §11.**
+  - §1.1 still sent VEX to #9, which is closed; it now names RPT-0005 (#39).
+  - The old synthesis named ISO/IEC 27036-3 and ISO/IEC 18974 as not reviewed. The new §11 had dropped them, and its limits list names them again.
+- **Main-session spot checks** agreed with the agent (`searches.md`):
+  - #61's "CVEs link to CWE via BRON", and #144's scope (the CWE catalog);
+  - ADR-0007's crosswalk lane, #39, which covers threat-model formats;
+  - the question lists in `dimensions.md` and on #38;
+  - `pilot.md`'s wording of the 4-then-30 matches;
+  - the old limits line at 7761614.
+- **Not checked:** the student's words quoted under "Question asked"; Table 7's ratings against their sources; facts from §1 to §10 that §11 does not restate.
+
+### What a human accepted
+
+- The student asked for this work.
+- Pending: review.
+
+## Adversarial review and §12 (#152, 2026-10-22)
+
+### Question asked
+
+Phase 4 of #38 (`dimensions.md` §12; issue #152): a fresh agent that did not write the draft attacks it for coverage, citations, extraction counts and Table 6 cells. Every gap goes back through the earlier phases, and the review repeats until it finds nothing material. On 2026-10-22 the student asked for #152 to be drafted so that it could run right after #151 ("draft 152 so it's ready after 151"), and after #151 said "commit and push, then run 152". #152's definition of done: the review run and its findings fixed; rejected findings and the reasons in DL-0015; §12 written.
+
+### The review
+
+- **The agent.** One fresh agent (Claude Code; about 496,000 tokens, 189 tool calls, 40 minutes), with no part in the drafting and none of this session's context. Its brief, drafted on 2026-10-22 before #151 was finished, set the four checks of `dimensions.md` §12 and these rules:
+  - read-only: no edits, no git writes, nothing posted;
+  - no personal data sent anywhere, and no Crossref;
+  - downloads in their own folders, treated as untrusted data;
+  - no programs run except the checksum-verified Syft;
+  - at most 1 million tokens, working alone.
+
+  It was told to write its own coverage list before reading the report's sources, and to read the authors' notes only for locators. It sent no personal data, and the repository and `library/` were unchanged afterwards.
+- **What it did.**
+  - *Coverage:* its own list of formats, tools, standards, regulations and papers, saved with a digest before it read the report, then compared item by item.
+  - *Citations:* 57 claims, drawn before checking and spread across the sections, each checked against a fresh fetch of its source.
+  - *Extraction:* the normative markers in the three sources counted first, then compared with library#24, #28 and #29.
+  - *Mapping:* 36 cells of Tables 6a to 6e, against the format texts, `main`'s schema and a fresh run of Syft 1.52.0.
+- **Its verdict:** the report did not yet pass, because of two material coverage gaps. The citations, the extractions and Table 6 held.
+
+### Findings, and what happened to them
+
+The main-session checks of each finding are in `searches.md`.
+
+- **R1 (material): tools that write SPDX 3 were missing.**
+  - Confirmed from primary sources: sbom-tool's v4.0.2 release notes and README, cdxgen's v12.3.0 release notes and README at 388f434, OpenEmbedded-Core's SPDX 3 code on `walnascar` and `master`, and protobom's README.
+  - Applied: four rows in §3's SPDX 3 table, sentences after it, and new text in §3's takeaway and §11's DEC-002 bullet.
+  - One correction to the agent's evidence: Yocto leaves build timestamps out by default (`SPDX_INCLUDE_TIMESTAMPS ?= "0"`), so the report does not claim them.
+- **R2 (material): RFC 9472 was missing, and "Every carrier binds by digest" overstated.**
+  - Confirmed from the RFC's text, whose digest matches the agent's copy, and from the Transparency Exchange API's repository.
+  - Applied: §6 now says every *attestation* carrier binds by digest; a new paragraph after the carrier table describes discovery by device (RFC 9472) and by product identifier (TEA); Table 2's Distribution and Delivery row points to it.
+  - Applied differently: RFC 9472 is not a row of the carrier table, because it carries no attestation and the table compares how attestations bind. The honest stub `rfc-9472` is in Threat-Radar/library#33.
+- **Minor findings applied:**
+  - M1: the CRA row gives Article 14's earlier date (2026-09-11) and says its harmonised standards were not searched for, and so does Table 8's evidence row. BSI's row quotes BSI's statement that harmonised standards will replace its TR. (The second round found the "not searched for" part wrong; see the next entry, S3.)
+  - M2: the "not binding or mandatory" quote is now attributed to BSI's TR-03183 web page; it is not in the TR's PDF.
+  - M3: O'Donoghue et al.'s 2% and 12% are for the CycloneDX 1.5 SBOMs, not all 1,303.
+  - M4: Table 3a and §7 say that `nistir-7695` has a full extraction in library#29, and §5 says that `osv-schema` has one in library#28.
+  - M5: Table 3a and §7 say that library#24 extracts purl's 1st edition, while Table 3 also uses the 2nd edition's text.
+  - M6: `dimensions.md` records that Table 7's `?` cells mark texts the project cannot read, and the student decided that they count as exceptions (see "What a human accepted"). The agent counted six cells, and the first version of this fix repeated it without counting; there are five, one in row 66 and four in row 81, as Table 7's summary by axis already showed.
+  - M7: §5 adds the two 2026 studies the agent named, with the limit that neither separates CPE from ecosystem matching; the "no published study" sentence stands.
+  - M9: §1.6 notes that cdxgen already accepts `--spec-version 2.0`.
+  - M10: tradar's commit date is 2026-09-10, Pacific time, in both §4 and §10.
+  - M11: §8 says only Syft's output was checked against the baselines.
+- **Agreed not material:** the agent's other coverage gaps, such as bomctl, the OSS Review Toolkit, ScanCode, Tern, EUVD, IEC 62443-4-1, OWASP SCVS, and ISO/IEC 27036-3 and 18974 (already in the limits).
+- **New sources without records at the pin:** sbom-tool, cdxgen, protobom, RFC 9472, RFC 8520 (named only as the file RFC 9472 extends) and the two papers. Threat-Radar/library#33 (open) adds honest stubs for the two RFCs and the two papers, and lists sbom-tool and cdxgen under `spdx-3-0-1`, and cdxgen and protobom under `cyclonedx-1-7`, as implementations, because the library records a tool that only implements a spec it holds as an `implementations` entry (library docs/scope.md §3). None has a Table 7 rating yet. `sources.md` lists them.
+
+### Rejected, and why
+
+- **M8, a Table 5 row for OSV-Scanner.** Table 5 compares the tools that the report ran or assessed in depth. OSV-Scanner appears in §5 only for how it matches, and the agent itself said that a row would change no finding.
+- **Part of M7, citing `javed-2021-container-scanners` in §5.** The record is kept, but its text was not re-read in this pass, so it is not cited for a claim it has not been checked against.
+
+### Choices the agent made, open to review
+
+- **R1's new rows come from documentation and code, not runs,** like the Dependency-Track and GUAC rows. Running sbom-tool or cdxgen would mean running downloaded programs, which this session's rules keep to the verified Syft.
+- **§12 reports the review and the fixes, but not a second round.** Whether the fixed report "finds nothing material" (#38's test plan) needs the review to run again; the student asked for a second round on 2026-10-22.
+- **§11's short limits list now points to §12,** which holds the full list.
+- **The status note counts #152 as part of this version.** If #152 goes in a pull request of its own rather than #161, the note changes.
+- **The §12 draft was corrected before it went in.** It said the playbook had six phases (it has seven, 0 to 6), and it listed prEN 40000-1-3 among the paywalled standards read from public material. That item was removed in the belief that neither the report nor its notes mention it, which was wrong: `fanout-formats-baselines.md` §1.14 does, and the second round restored it (next entry, S3). Its evidence rules were rewritten from the rules DL-0015 and `dimensions.md` record.
+
+### Open
+
+- Threat-Radar/library#33, the new sources' records, waits for review and merge; the report's library pin stays at `a28a013` until then.
+- The second review round (#38: "The fresh-agent review finds nothing material"), asked for on 2026-10-22.
+
+### What a human accepted
+
+- The student asked for this work ("draft 152 so it's ready after 151"; "commit and push, then run 152").
+- On 2026-10-22 the student read the summary of the findings and fixes and decided ("commit and push, then run the second round"; "yes, create the library records pr"; "Those 6 ? should count as exceptions, in addition, you should list that they are paywalled and what they are"):
+  - commit and push #152's work, then run a second review round;
+  - open a library pull request for the new sources: Threat-Radar/library#33;
+  - count Table 7's `?` cells as exceptions to the rule that a `?` blocks done, and list them with what each source is and why it cannot be read. `dimensions.md` and §12 now do. There are five cells, not the six the student was told; row 81's text is restricted to ITU's TIES users rather than sold, and the list says so.
+- Pending: a review of the report text itself.
+
+## Second review round (#152, 2026-10-22)
+
+### Question asked
+
+#38's test plan says "The fresh-agent review finds nothing material", and nobody had reviewed the first round's fixes or §12. After the first part of #152 was committed (`bd159f1`), the student asked for a second round ("commit and push, then run the second round").
+
+### The review
+
+- **The agent.** A second fresh agent (Claude Code; about 456,000 tokens, 158 tool calls, 31 minutes), with no part in the drafting or in the first round. Its brief kept the first round's rules and checks, and added:
+  - save its own coverage list before reading §12, this log or the notes, since they describe the first round's findings;
+  - check every change the first round made, §12's claims about the project's own process, the records in Threat-Radar/library#33, and numbers that appear in more than one place;
+  - aim for about 500,000 tokens, at most 700,000.
+
+  It sent no personal data, used no Crossref, and left the repository, `library/` and the library worktree unchanged.
+- **What it did.**
+  - *Coverage:* its own list, saved with its digest before it read the report, compared item by item.
+  - *Citations:* 57 claims, 37 of them in text changed since the first round, each checked against a fresh fetch, the repository record or `gh`.
+  - *Extraction:* all three counts again: ECMA-427 101 of 101; the OSV schema 74, of which 68 extracted and 6 excluded for reasons it agreed with; NIST IR 7695 108, of which 106 extracted and 2 in a change-log line.
+  - *Mapping:* 38 cells of Tables 6a to 6e, against `main`'s schema, the CycloneDX 1.7.2 schema, the SPDX 3.0.1 model and a fresh Syft 1.52.0 run.
+- **Its verdict:** not yet a pass, because of three material findings. Everything else it checked held, including §12's counts and the counts of Tables 7 and 8.
+
+### Findings, and what happened to them
+
+The main-session checks of each finding are in `searches.md` (2026-10-22).
+
+- **S1 (material): cdxgen writes hardware bills.**
+  - Confirmed: cdxgen's README and `docs/HBOM.md` at 388f434 document an `hbom` command that writes a CycloneDX 1.7 bill of the live host, with `device` components and `cdx:hbom:*` properties; the CycloneDX property taxonomy registers `cdx:device` and no `cdx:hbom`.
+  - Applied: Table 6e's lead-in now says that no tool in radar's chain produces a hardware bill, and names cdxgen's `hbom` outside it; §2 has a "Hardware bills in practice" paragraph, and its takeaway says that property names differ by producer.
+  - Applied more widely than the agent asked: Table 5 has rows for all four tools the first round added (cdxgen, sbom-tool, protobom and Yocto's SPDX classes), not only cdxgen, because `dimensions.md` asks for a row for each tool the coverage review adds.
+- **S2 (material): SCITT binds statements to an issuer-defined subject.**
+  - Confirmed: RFC 9943 (Proposed Standard, June 2026) defines the Subject as "an identifier, defined by the Issuer", and its text never mentions a digest. Its digest matches the library record `rfc-9943` at `a28a013`.
+  - Applied: §6 narrows "Every attestation carrier binds by digest" to the carriers in its table and adds a paragraph on transparency services; the takeaway and rule R-BUILD-1 say what happens to a statement whose subject is not a digest.
+  - Applied differently: the agent proposed a new honest stub, but `rfc-9943` is already a summarized record at the pin, so the report cites it.
+- **S3 (material): the first round's CRA fix was wrong.**
+  - Confirmed: `fanout-formats-baselines.md` §1.14 and this report's Phase 1 search rows (2026-10-08) record the search that found prEN 40000-1-3, a DIN draft of edition 2026-09, paywalled and not read, and the Commission's guidance C(2026) 5252, which does not mention SBOMs. The first round's M1 said that the harmonised standards "were not searched for", and the main-session check repeated it without reading those notes.
+  - Applied: §8's CRA row, Table 8's evidence row (the paywalled draft now routes to sponsor question 4) and §12's limits; prEN 40000-1-3 is back in §12's list of paywalled standards.
+- **Minor findings applied in the report:**
+  - N1: the CRA row adds the date of Chapter IV (notification of conformity assessment bodies), 2026-06-11, from Article 71(2).
+  - N2: Table 6e's measured-identity cell gives CycloneDX's `externalReferences` type `attestation`, a link only, as Table 4a does.
+  - N3: cdxgen's "reads SPDX 3" cell says its README describes SPDX only as an output, instead of "not checked".
+  - N4: tools-golang's pre-release tags were cut from its `spdx3` branch; SPDX 3.0.1 reached `main` on 2026-09-30, after the last tag.
+  - N5: §12 lists the sponsor's merge of #133 into #131's branch.
+  - N9: §12 says why its phase table runs 0, 1, 2, 3, 5, 4, 6.
+- **Library changes, waiting for the student:**
+  - N6: `cisa-2026-sbom-minimum` is an empty template at `a28a013` (no date, version or digest), although Table 2 and §8 rest on its document. Table 9 already says so; filling it is a library change.
+  - N7: library#33's cdxgen entry on `cyclonedx-1-7` should mention `hbom`.
+- **Agreed not material:** N8 (firmware binary-analysis tools such as cve-bin-tool and EMBA, and support and end-of-life data such as OASIS OpenEoX) and the other gaps in its coverage table.
+
+### Rejected, and why
+
+None. The first round's rejection of a Table 5 row for OSV-Scanner (M8) stands, for a reason S1 makes clearer: `dimensions.md` asks for rows for the six named tools and for the tools the coverage review adds, and OSV-Scanner, cited in §5 since Phase 1, is neither.
+
+### Choices made here, open to review
+
+- **Table 5's new rows rest on documentation and code,** like the Dependency-Track and GUAC rows; none of the four tools was run. Where the documentation does not settle a cell, the cell says so ("not described") rather than `?`.
+- **`mapping.md` is not edited.** Its note says that it is not updated further, apart from the #149 correction, so §10's introduction lists the second round's three corrections instead.
+- **R-BUILD-1 gains one sentence:** a statement whose subject is not a digest is attached only after it is resolved to one, or is kept as an unbound claim. It stays a candidate rule.
+
+### Open
+
+- N6 and N7, if the student wants them: N7 in library#33, N6 in a library pull request.
+- A third review round, for #38's test.
+- The second round's fixes are not committed until the student says so.
+
+### What a human accepted
+
+- The student asked for the second round ("commit and push, then run the second round").
+- Pending: a review of these fixes.
+
+## Clarity pass (#153, 2026-10-29)
+
+### Question asked
+
+#153 is Phase 6 of #38: "an overview and a conclusion, acronyms defined, a lead-in for every table, consistent citations, and a diagram where it earns its place (candidate: the radar to tmodel data flow)". Its readers are the faculty advisor and the sponsor (`dimensions.md`). Its definition of done: the overview and conclusion are written; every acronym is defined on first use and every table introduced; and a teammate can state the main findings from the overview and conclusion alone. On 2026-10-29 the student asked to start on the issues whose sprint ended that day, which on the team board include #153.
+
+### What was done
+
+The pass followed RPT-0005's clarity pass (#158) so the two reports read alike: a status line, an abstract, an overview with a figure, a conclusion and an appendix of acronyms.
+
+- **Front.** A status line; the abstract; an overview with seven main findings and a reading guide; and Figure 1, in Mermaid, which follows composition data from a product through radar (Syft and Grype) to the accepted core, with dashed arrows for what the radar → tmodel contract would have to carry. The 0.1.1 and 0.1.2 correction notes moved word for word to Appendix B, with the 0.2.0 build note, which now ends with #153.
+- **§13, a conclusion.** What the evidence shows, in five points, and where each result goes next, from Table 8.
+- **Acronyms.** A list of the terms Tables 1 and 2 use, placed before Table 1, where most of them first appear; expansions at first use in about 90 places in the body; and Appendix A, with 172 entries.
+- **Lead-ins.** One sentence for each of the thirteen tables that had none: Table 1, Tables 3a and 3b, 4a and 4b, 6a to 6d, the second-round matching and SPDX 3 support tables in §3, and §10's two findings tables.
+- **Citations.** Report sections are cited as "§N" throughout (19 rewrites of "section N" and of bare numbers such as "(1.3)"), file names are in code font (21), and links to files show the name in code font (6). Appendix B's notes keep their original wording.
+- **`dimensions.md`** 0.7.11 records the status, and **`searches.md`** 0.3.9 logs the lookups below.
+
+### Method and checks
+
+- **First use.** A script found each acronym's first appearance after the title, outside code, and checked that its expansion sits next to it. Four flags were accepted: HBOM and RFC are defined in their plural form first, GUAC is expanded in the first line under the heading that names it, and "US" is left as is.
+- **Nothing else changed.** A word diff against the #152 text lists every removed word. Each removal is a citation reformatted, a note moved to Appendix B, or a phrase rewritten around a new expansion; no finding, mark, count or date in a table changed. The report still has no em dashes.
+- **Expansions checked at their sources** where the project's notes did not already give them (`searches.md`, 2026-10-29): CVMAP (NVD's announcement on the NIST `nvd-news` list), SWHID (ISO's catalogue page for ISO/IEC 18670:2025), HIRS (its repository's README) and PACCOR (its repository's About text). An expansion of OmniBOR appears only in a vendor blog, so the report describes OmniBOR ids as gitoids instead.
+- **The new summaries were checked against the sections they summarize,** in the main session: each of the seven findings and each point of §13 restates a takeaway of §1 to §11, with that section cited. No fact-check agent ran, because the pass adds no new evidence.
+
+### Choices made here, open to review
+
+- **The conclusion is §13, after the method,** instead of §12 as in RPT-0005. Making it §12 would renumber the method section, which this log, `dimensions.md` and pull request #161 cite.
+- **The old notes moved to an appendix** instead of being deleted, so the corrections stay visible to a reader who looks for them.
+- **A terms list before the tables,** instead of expansions inside the cells of Tables 1 and 2, which would have doubled their width.
+- **Bus names and processor types** (USB, SATA, SAS; CPU, GPU, DSP, DPU, SoC) are glossed in their table cells and expanded in Appendix A, rather than spelled out in full inline.
+- **One figure.** The radar → tmodel data flow is the candidate the plan names, and the overview's findings point to it. Other candidates, such as the firmware-to-device bindings of §2, already have a table.
+
+### Rejected, and why
+
+None yet. This waits on review.
+
+### Open
+
+- **#153's last check:** a teammate reads only the overview and §13 and states the main findings.
+- **Figure 1 has not been rendered here.** GitHub renders Mermaid on the pull request page, which is the place to check it.
+- **A third adversarial round** (#38's test) would now also cover the new text.
+
+### What a human accepted
+
+- The student asked to start on the Sprint 2 issues, which include #153 (2026-10-29).
+- Pending: a review of this pass.

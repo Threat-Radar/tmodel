@@ -4,9 +4,9 @@ id: RPT-0004-dimensions
 title: "RPT-0004 dimensions: the search axes"
 type: research
 status: draft
-version: "0.7.3"
+version: "0.7.11"
 date: "2026-09-28"
-updated: "2026-10-20"
+updated: "2026-10-29"
 record: RPT-0004
 ---
 
@@ -31,7 +31,14 @@ Sections 1 to 6 keep their 0.1.0 numbers, because RPT-0005 cites them (§1.1, §
 
 ## What complete means: the tables
 
-Every table below must be filled before the report leaves draft. In a cell, `none` means the source has no such thing, and `?` means it has not been found yet; a `?` blocks done. Wide tables may be split or turned on their side in the report; the columns below are what must be filled.
+Every table below must be filled before the report leaves draft. In a cell, `none` means the source has no such thing, and `?` means it has not been found yet; a `?` blocks done, except the five Table 7 cells listed below. Wide tables may be split or turned on their side in the report; the columns below are what must be filled.
+
+*Status 2026-10-22 (#152): Table 7 (`sources.md`) has five `?` cells. They mark texts the project cannot read, not facts still to be found, and the student decided on 2026-10-22 that they count as exceptions: they do not block done.*
+
+| Table 7 row | source | what it is | cells that are `?` | why it cannot be read |
+|---|---|---|---|---|
+| 66 | ISO/IEC 19770-6:2024 | the ISO/IEC standard for hardware identification (HWID) tags, the hardware counterpart of SWID tags | Human review/audit | paywalled: sold by ISO, and only its metadata and contents list are public; sponsor question 4 asks for access |
+| 81 | ITU-T SG17 Contribution 548 | Korea's proposal (2026-05-19) for a new ITU-T work item, X.hbomsec: guidelines for minimum hardware bill of materials requirements | Object model, Provenance/attribution, Human review/audit, Federation | not for sale: restricted to ITU's TIES users, and only its metadata page is public |
 
 Tables 4 and 6 use RPT-0005's fidelity marks, so the two reports can be read together:
 
@@ -62,6 +69,7 @@ Columns: CycloneDX 1.7, SPDX 3.0.1, SWID (ISO/IEC 19770-2) with CoSWID (RFC 9393
 | Vulnerability link | where a vulnerability or a CWE attaches (detail in RPT-0005, dimension 7) |
 | Build record | a record of how the product was built (SPDX `Build`, CycloneDX `formulation`), or `none` |
 | Extension mechanism | how a producer adds fields |
+| Validation | what the schema (and, for SPDX, the SHACL shapes) checks, and which rules stay text only (§1.5); added in 0.2.0 at Phase 1's suggestion |
 | Licence | of the specification and of its schema files |
 | Library record | id and status (`stub` or FX-1) |
 
@@ -78,6 +86,8 @@ One row per element of the pinned baseline. If CISA's 2026 Minimum Elements is f
 | SWID / CoSWID | element |
 | Filled in practice | whether Syft's output filled it in our tool runs |
 | Notes | "our reading" flags, where a cell is our closest match and not an official mapping |
+
+*Status 2026-10-22: Tables 1 and 2 are filled in `report.md` 0.2.0 (#147). Table 1 keeps three columns; SPDX 2.3, CycloneDX 2.0 and SPDX 3.1 are discussed under it and in §1.6. Table 2's rows are CISA 2026's elements, which are final.*
 
 ### Table 3. Identifier schemes (§7)
 
@@ -97,6 +107,8 @@ Version 0.4.0 added the "Named by policy" column and the five failure modes list
 | Standard status | Ecma, ISO, IETF or NIST status |
 | Named by policy | which baselines and rules in §8 name the scheme, and how strongly: required, recommended ("should"), allowed ("may"), or only as an example. For example, CISA 2026 says the Component Identifiers field "should use common software identifiers, such as" CPE and purl, and "may also include" UUIDs, organization-specific identifiers, commit hashes, OmniBOR and SWHID |
 | Library record | id and status |
+
+*Status 2026-10-22: Table 3 is filled in `report.md` 0.2.0 (#149), split into 3a (what each scheme names, who mints it) and 3b (where it is carried, who keys on it, what policy says, how it fails). The five failure modes above are in bold in 3b. vers is a companion row, marked as a range syntax; UUIDs have no row. The 0.1.2 synthesis moved from §7 to §11 in the same change.*
 
 ### Table 4. Hardware and firmware coverage (§2)
 
@@ -123,7 +135,11 @@ Rows: Syft, Grype, Trivy, Dependency-Track, GUAC, deps.dev, and any tool the cov
 | Evidence | run by us (input and date) or documentation (URL and date) |
 | Licence | |
 
+*Status 2026-10-22: Tables 4 and 5 are filled in `report.md` 0.2.0 (#148). Table 4 is split into 4a (bills and guidance) and 4b (identity and attestation); it has no ISO/IEC 19770-6 column, because no copy could be read, and its last row keeps device-reported evidence and supplier-signed references together, with the cells saying which. Table 5 pins the versions run on 2026-10-08; the releases since then change no format support.*
+
 ### Table 6. Composition → model-input mapping (§10, the deliverable for #15 and #17)
+
+*Status 2026-10-22: Table 6 moved into `report.md` 0.2.0 §10 (#150), word for word apart from headings, internal section references and one correction (Syft's `tags` and `repoDigests`), with a new introduction and takeaway and a short table of what pull request #130 (DL-0024, with ADR-0011 marked accepted on its branch; not merged) would change. `mapping.md` keeps how it was made. §8 and §9 are written in the same change.*
 
 *Status 2026-10-18: filled in [mapping.md](mapping.md) 0.1.0, against the core object model ADR-0010 accepted on 2026-10-12 (DEC-001a) rather than the draft named below; Phase 5 moves it into `report.md` as §10.*
 
@@ -160,6 +176,8 @@ Every kept source is rated 0 to 3 on the five axes #38 sets. The rubric is RPT-0
 
 *Status 2026-10-19: filled in [sources.md](sources.md#table-7-applicability-ratings-2026-10-19): 121 rows, one per Table 9 row, rated by five agents from the fan-outs' section 4 ratings and from the sources themselves; AI-produced and not yet reviewed by a human. The report's §11 will summarize it in 0.2.0.*
 
+*Status 2026-10-22: summarized in `report.md` 0.2.0 §11 (#151): the counts per axis over the 117 rated rows, and four observations. A teammate's review of #133 recounted the rows and counts but not the ratings, so they are still not checked against their sources by a human.*
+
 ### Table 8. Gap analysis (§11)
 
 | column | what goes in it |
@@ -168,6 +186,8 @@ Every kept source is rated 0 to 3 on the five axes #38 sets. The rubric is RPT-0
 | Evidence | the section and the source |
 | Recommendation | the smallest change that would close it, as evidence only |
 | Routes to | the `DEC-*` or issue that decides it |
+
+*Status 2026-10-22: filled in `report.md` 0.2.0 §11 (#151): 29 rows, each routed to an open decision (DEC-008, DEC-009) or an open issue; Table 6's last column routes the smaller mapping gaps.*
 
 ### Table 9. Library records (sources.md)
 
@@ -233,7 +253,7 @@ New in this pass:
 
 ### 4. How radar (tradar) uses these today
 
-Which formats and fields tradar reads, and what it keeps or drops on the way to its graph. tradar's `main` has not changed since `26d9c76` (checked on GitHub, 2026-10-08), so 0.1.0's findings stand. This pass re-checks them and adds to them only if the code changes.
+Which formats and fields tradar reads, and what it keeps or drops on the way to its graph. tradar's `main` has not changed since `26d9c76` (checked on GitHub, 2026-10-08 and 2026-10-22), so 0.1.0's findings stand. This pass re-checks them and adds to them only if the code changes.
 
 ### 5. The bridge: components to CVEs and CWEs
 
@@ -296,6 +316,8 @@ Assembled in the main session from sections 1 to 9, as Table 6.
 
 The evidence by decision (DEC-001, DEC-002, DEC-004, DEC-008, DEC-009), then Table 8 (gaps routed to `DEC-*` and issues) and a summary of the Table 7 ratings. Replaces 0.1.0's §7.
 
+*Status 2026-10-22: written in `report.md` 0.2.0 (#151). It also covers DEC-007, because ADR-0001's input contract is where the gaps become fields radar emits.*
+
 ### 12. Method, adversarial review and limits (Phase 4)
 
 A fresh agent that did not write the draft checks:
@@ -306,6 +328,8 @@ A fresh agent that did not write the draft checks:
 4. **Mapping.** Spot-check Table 6 cells against the format texts and the draft schema.
 
 Findings go back through dimensions 1 to 10. Rejected findings and the reasons go in the design log (DL-0015).
+
+*Status 2026-10-22: run twice (#152), each time by a fresh agent. The first round found two material findings (dimensions 3 and 6) and eleven minor ones: both material findings and ten minor ones were applied, and one was rejected. The second round found three material findings (dimensions 2 and 3, 6, and 8) and nine minor ones: all three material findings and six minor ones were applied, two minor ones are library changes that wait for the student, and one was agreed not to be material. DL-0015 gives the reasons, and §12 of `report.md` reports both rounds. A third round has not been run.*
 
 ## Per-source record
 
@@ -335,6 +359,8 @@ Rules for every agent: fetch every URL and read it from its own text, not from a
 | 4. Adversarial review | a fresh agent (dimension 12); every gap goes back through phases 1 to 3 until it finds nothing material | a findings list; rejections in the design log |
 | 5. Report | `report.md` 0.2.0: comparison tables first, sections 1 to 10, synthesis and gap analysis (§11), method and limits (§12); citations by library record id | `report.md` |
 | 6. Clarity pass | a separate editing pass: an overview and a conclusion, acronyms defined, a lead-in for every table, a diagram where it earns its place (candidate: the radar → tmodel data flow), consistent citations. Readers: the faculty advisor (@phaskell) and the sponsor | `report.md` |
+
+*Status 2026-10-29: Phase 6 is written in `report.md` 0.2.0 (#153): a status line, an abstract, an overview with seven main findings and Figure 1 (the radar → tmodel data flow, in Mermaid), a conclusion (§13), a list of terms before Table 1, acronyms expanded on first use with Appendix A listing them, a lead-in for each of the thirteen tables that had none, and section and file citations in one style. The 0.1.1 and 0.1.2 correction notes moved to Appendix B. No finding, mark or count changed. #153's last check, that a teammate can state the main findings from the overview and conclusion alone, is still to do.*
 
 ## Definition of done (from #38)
 

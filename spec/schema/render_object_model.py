@@ -78,11 +78,13 @@ def main() -> int:
             out.append(f"  {parent} <|-- {cn}")
         seen = set()
         for sname, sd in class_slots(cn, cls):
-            rng = sd.get("range", "")
-            if kind(rng) == "edge" and (sname, rng) not in seen:
-                seen.add((sname, rng))
-                card = ' "*"' if sd.get("multivalued") else ""
-                out.append(f"  {cn} -->{card} {rng} : {sname}")
+            # an any_of slot (ADR-0012) draws one edge per allowed class, not one to Node
+            rngs = [x.get("range", "") for x in sd.get("any_of") or []] or [sd.get("range", "")]
+            for rng in rngs:
+                if kind(rng) == "edge" and (sname, rng) not in seen:
+                    seen.add((sname, rng))
+                    card = ' "*"' if sd.get("multivalued") else ""
+                    out.append(f"  {cn} -->{card} {rng} : {sname}")
     out.append("```\n")
 
     # ---- per-object schema tables ----
@@ -107,7 +109,9 @@ def main() -> int:
         for sname, sd in rows:
             rng = sd.get("range", "string")
             k = kind(rng)
-            typ = (f"→ `{rng}`" if k == "edge" else
+            alts = [x.get("range", "") for x in sd.get("any_of") or []]
+            typ = (" \\| ".join(f"→ `{x}`" for x in alts) if alts else
+                   f"→ `{rng}`" if k == "edge" else
                    (f"enum `{rng}`" if k == "enum" else f"`{rng}`"))
             req = "✓" if sd.get("required") else ""
             multi = "✓" if sd.get("multivalued") else ""

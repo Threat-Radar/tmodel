@@ -7,9 +7,9 @@ description: "The product requirements for the tmodel application, distinct from
 type: application
 category: process
 status: draft
-version: "0.2.2"
+version: "0.2.3"
 date: "2026-10-01"
-updated: "2026-10-08"
+updated: "2026-10-26"
 needs_review: true
 reviewed: false
 canonical_path: spec/APP-0001-application-requirements.md
@@ -141,8 +141,9 @@ tmodel is the **architectural-modelling** product: it builds and displays the th
 model and carries human review. **tradar** does composition/finding discovery and feeds
 tmodel as imported attestations (SBOM/SLSA, ADR-0001 §…). This document scopes **only the
 tmodel application**; build/compile provenance and supply-chain scanning are radar's and
-arrive over the radar→tmodel contract, not re-implemented here. Audit/compliance tooling
-(Requirement/WorkProduct) stays deferred to `#19`.
+arrive over the radar→tmodel contract, not re-implemented here. `Requirement` is a core
+object (ADR-0012), so requirements and their links to threats and mitigations are in the
+graph; audit/compliance tooling (automated conformance, WorkProduct) stays deferred to `#19`.
 
 ## 8. Not in scope (MVP)
 

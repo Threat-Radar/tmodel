@@ -19,8 +19,9 @@ Two hard requirements shape it, both open as `DEC-*` until settled:
    specific product (or product family) keeps its provenance and its review.
 
 *Status 2026-10-18: ADR-0007 made LinkML the schema language (DEC-002), and ADR-0010
-accepted the core type system in `tmodel-object-model.linkml.yaml` (DEC-001a); the
-governed layer in the same file is still a proposal (DEC-001b). The paragraph below
+accepted the core type system in `tmodel-object-model.linkml.yaml` (DEC-001a), and ADR-0012
+(2026-10-26) moved `Requirement` into that core; the rest of the governed layer in the same
+file is still a proposal (DEC-001b). The paragraph below
 predates both.*
 
 This directory is empty of a chosen schema on purpose: selecting an encoding now

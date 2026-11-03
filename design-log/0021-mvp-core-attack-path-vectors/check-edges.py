@@ -13,7 +13,12 @@ REF_SLOTS = {
     "realizes_threat","pivots_to","mitigates","implementation_owner","threat",
     "attack_paths","damage_scenario","for_stakeholder","reviews","reviewer",
     "subject","object",
+    # Requirement in the core (ADR-0012, DL-0025)
+    "refines","derived_from","conflicts_with","maps_to","addresses","satisfied_by",
+    "applies_to","stated_as",
 }
+# DEC-001b slots a CORE vector must not set (ADR-0012 keeps them proposal-level).
+GOVERNED_SLOTS = {"conformance_status"}
 
 def check(path):
     doc = yaml.safe_load(pathlib.Path(path).read_text())
@@ -32,6 +37,8 @@ def check(path):
             if not isinstance(it, dict):
                 continue
             oid = it.get("id","<no id>")
+            for slot in GOVERNED_SLOTS & set(it):
+                bad.append((oid, slot, "(DEC-001b slot; not allowed in a core vector)"))
             for slot, val in it.items():
                 if slot not in REF_SLOTS:
                     continue

@@ -1,0 +1,48 @@
+# Paper/PDF: cite by DOI or arXiv id where one exists.
+schema: "library-record/v1"
+id: benedetti-2024-sbom-python
+body: academic
+type: paper
+title: "The Impact of SBOM Generators on Vulnerability Assessment in Python: A Comparison and a Novel Approach"
+short_title: "SBOM generators and Python vulnerability assessment"
+authors:
+  - "Giacomo Benedetti"
+  - "Serena Cofano"
+  - "Alessandro Brighente"
+  - "Mauro Conti"
+date: "2024-09-10"
+publisher: "arXiv; Springer (LNCS version)"
+version: "v1"
+identifiers:
+  url: https://arxiv.org/abs/2409.06390v1
+  arxiv: 2409.06390v1
+  doi: 10.1007/978-3-031-95764-2_19
+content:
+  url: https://arxiv.org/pdf/2409.06390v1
+  sha256: "51d5ab2467a212b89e8bf09235d2b35dd4ab63cffd0cd2c696a473e32c6bcd88"
+  retrieved: "2026-10-18"
+  local: false
+  media_type: application/pdf
+  pages: 23
+relations:
+  supersedes: []
+  superseded_by: []
+  see_also:
+    - anchore-syft
+    - aquasecurity-trivy
+    - anchore-grype
+  cited_by: []
+  implements_concept: []
+bears_on:
+  - DEC-002
+topic: product-composition
+tags:
+  - sbom
+  - supply-chain
+  - evidence
+license: "CC-BY-SA-4.0"
+venue: "Applied Cryptography and Network Security, Lecture Notes in Computer Science (Springer, 2025), pp. 487-509"
+# stub: honest keep-for-later (tmodel#38). Not read in full, not extracted.
+status: stub
+confidence: low
+owner: Clovier

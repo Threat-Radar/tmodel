@@ -12,6 +12,8 @@ from __future__ import annotations
 import ipaddress
 import json
 import os
+import sys
+import threading
 from collections.abc import Callable
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any
@@ -40,11 +42,21 @@ def _attack_paths(query: dict[str, str]) -> dict[str, Any]:
     return core.attack_paths(query["file"], query.get("goal"))
 
 
-# Each route takes the query parameters; a ValueError becomes a 400 with its message.
+def _graph(query: dict[str, str]) -> dict[str, Any]:
+    if "file" not in query:
+        raise ValueError("missing query parameter: file")
+    return core.model_graph(query["file"])
+
+
+# Each route takes the query parameters; a ValueError becomes a 400 with its message,
+# and core.Unavailable a 503 with its message.
 ROUTES: dict[str, Callable[[dict[str, str]], dict[str, Any]]] = {
     "/health": lambda _q: core.health(),
     "/version": lambda _q: core.version(),
+    "/graph": _graph,
     "/attack-paths": _attack_paths,
+    "/library": core.library_records,  # filters: id, type, topic, status (#140)
+    "/library/table": core.library_table,  # rows for the table views (#141, #58)
 }
 
 
@@ -90,6 +102,8 @@ class EngineHandler(BaseHTTPRequestHandler):
             status, payload = 200, route(query)
         except ValueError as exc:
             status, payload = 400, {"error": str(exc)}
+        except core.Unavailable as exc:
+            status, payload = 503, {"error": str(exc)}
         except Exception as exc:  # never drop the connection: the CLI would say "not running"
             status, payload = 500, {"error": f"internal error: {type(exc).__name__}"}
         self._send_json(status, payload)
@@ -107,7 +121,27 @@ def make_server(host: str = DEFAULT_HOST, port: int = DEFAULT_PORT) -> Threading
     return ThreadingHTTPServer((host, port), EngineHandler)
 
 
-def serve(host: str = DEFAULT_HOST, port: int | None = None) -> None:
+def _shutdown_when_stdin_closes(httpd: ThreadingHTTPServer) -> None:
+    """Stop the server once stdin reaches end-of-file.
+
+    The desktop app holds the write end of the engine's stdin, so the pipe
+    closes whenever the app exits, even if it crashes or is killed (#124).
+    """
+
+    def watch() -> None:
+        try:
+            while sys.stdin.buffer.read(4096):
+                pass
+        except (OSError, ValueError):
+            pass
+        httpd.shutdown()
+
+    threading.Thread(target=watch, name="stdin-watch", daemon=True).start()
+
+
+def serve(
+    host: str = DEFAULT_HOST, port: int | None = None, exit_with_parent: bool = False
+) -> None:
     if port is None:
         port = int(os.environ.get("TMODEL_ENGINE_PORT", DEFAULT_PORT))
     httpd = make_server(host, port)
@@ -116,6 +150,8 @@ def serve(host: str = DEFAULT_HOST, port: int | None = None) -> None:
         f"tmodel-engine {core.version()['version']} listening on http://{bound_host}:{bound_port}",
         flush=True,
     )
+    if exit_with_parent:
+        _shutdown_when_stdin_closes(httpd)
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:

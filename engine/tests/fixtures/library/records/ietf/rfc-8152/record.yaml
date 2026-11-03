@@ -1,0 +1,37 @@
+schema: "library-record/v1"
+id: rfc-8152
+body: ietf
+type: rfc
+maturity: standard
+title: "CBOR Object Signing and Encryption (COSE)"
+authors:
+  - "J. Schaad"
+date: "2017-07"
+publisher: "IETF"
+identifiers:
+  rfc: 8152
+  doi: 10.17487/RFC8152
+  url: https://www.rfc-editor.org/rfc/rfc8152.html
+content:
+  url: https://www.rfc-editor.org/rfc/rfc8152.txt
+  sha256: "bd44c8c3db43614c59c778d86bab9269c89bf6dbacfd32d5ac35882660f815e1"
+  retrieved: "2026-09-22"
+  local: false
+relations:
+  see_also: []
+  part_of:
+    - ietf-cose-wg
+bears_on:
+  - DEC-005
+topic: cbor-implementation
+tags:
+  - signatures
+  - ietf
+  - background
+status: fetched
+usefulness:
+  verdict: marginal
+  reason: "Obsoleted by RFC 9052 and RFC 9053; kept because deployed COSE stacks and older profiles still cite it."
+  assessed: "2026-09-22"
+confidence: medium
+owner: S1

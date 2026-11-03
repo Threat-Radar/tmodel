@@ -7,9 +7,9 @@ description: "How the field encodes weaknesses, vulnerabilities, scores, applica
 type: research
 category: security
 status: draft
-version: "0.3.3"
+version: "0.5.0"
 date: "2026-10-05"
-updated: "2026-10-21"
+updated: "2026-10-29"
 authors:
   - role: student
     id: Maimcghee
@@ -22,7 +22,7 @@ reviewers: []
 needs_review: true
 reviewed: false
 canonical_path: research/0005-schema-representations/report.md
-library_commit: "pending Phase 2 (library#21: cwe and open-threat-model FX-1, ssvc stub; library#25: nine stubs; both unmerged)"
+library_commit: "3eacfd0 (library main, 2026-10-29, with the cve-json-5 stub of library#38)"
 informs: [DEC-001a, DEC-001b, DEC-002, DEC-008, DEC-009]
 open_decisions: [DEC-001b, DEC-008, DEC-009]
 issue: 39
@@ -30,33 +30,36 @@ issue: 39
 
 # RPT-0005: Schema representations of cybersecurity information
 
-**Status: draft 0.3.3.** Survey, crosswalk and gap analysis are written, updated for the decisions accepted on 2026-10-08 and 2026-10-12 (below), and corrected after a technical review by @Clovier (DL-0013). Not yet done: the rest of the library records (Phase 2), the adversarial review (Phase 4) and the clarity pass (Phase 6). This report accepts nothing; each recommendation routes to an open `DEC-*`, to the follow-up work of an accepted ADR, or to an issue.
+**Status: draft 0.5.0.** Done: scope, search, ratings, the report, a technical review by @Clovier (applied in 0.3.3, DL-0013), a clarity pass (0.4.0) and a fresh-agent adversarial review (0.5.0: 4 material and 13 minor findings, fixed or declined in DL-0013). Phase 2 is complete. Open: crosswalk rows for the two formats the review added (§13), and the sponsor's sign-off. This report accepts nothing; each recommendation routes to an open `DEC-*`, to the follow-up work of an accepted ADR, or to an issue.
+
+**Abstract.** tmodel will import security data from formats it does not control. This report compares 24 of them, in seven families from weakness catalogs to software bills of materials, against tmodel's object model: what each represents, how it names and versions things, how it can be extended, who uses it, and what an import into tmodel loses. The field is mature where tmodel reads: vulnerability records, scores, applicability statements and component identifiers are standardized, versioned and widely produced. It is immature where tmodel writes: no format encodes tmodel's Review exactly (none carries an assigned impact), and none of the 24 holds an ordered attack path. One released format outside the 24 does: MITRE's Attack Flow, a STIX 2.1 extension, which orders attack actions but has no review object of its own. Both elements stay tmodel-native, with Attack Flow the candidate carrier for paths. The crosswalk also shows that relations need qualifiers, and that the committed OTM import needs three classes the accepted schema lacks: Asset, TrustBoundary and DataFlow. Fourteen findings (§11) route each result to a decision or an issue.
 
 ## Overview
 
-tmodel will import security data from formats it does not control, and may export to them (ARCH-0001 §5). This report surveys 24 of those formats in seven families, from weakness catalogs to software bills of materials, and asks of each: what it represents, how it names and versions things, how it can be extended, who uses it, and what is lost when it is mapped onto ARCH-0001's object model.
+Under ARCH-0001 §5, tmodel imports from formats it does not control and may export to them. For each of the 24 formats surveyed, in seven families from weakness catalogs to software bills of materials, this report asks: what it represents, how it names and versions things, how it can be extended, who uses it, and what is lost when it is mapped onto ARCH-0001's object model.
 
 Three findings matter most for the object model:
 
-1. **No surveyed format encodes ARCH-0001's Review exactly**, and none encodes an ordered attack path. These are the elements that most distinguish tmodel. ADR-0010 now has native `Review` and `AttackPath` classes, though the accepted `Review` has no date slot, keeps impact on `RiskScore.impact` rather than on the review, and reviews only an `Assertion` (DEC-001b C1); the open work is completing it and carrying both through other formats' extension points.
+1. **No surveyed format encodes ARCH-0001's Review exactly**, and none of the 24 encodes an ordered attack path; Attack Flow, a released STIX 2.1 extension added by the adversarial review, does (§5, G2). These are the elements that most distinguish tmodel. ADR-0010 now has native `Review` and `AttackPath` classes, though the accepted `Review` has no date slot, keeps impact on `RiskScore.impact` rather than on the review, and reviews only an `Assertion` (DEC-001b C1); the open work is completing it and carrying both through other formats' extension points.
 2. **Attributed, multi-source statements are established practice.** CVE records, OpenVEX, STIX, SPDX 3 and CycloneDX all keep several parties' claims side by side with who made them and when. ADR-0010 has since accepted `Assertion` as a core type, consistent with this evidence.
 3. **Edges need properties.** Relations in every family carry a scope, order, fit grade, logic or justification that a bare typed edge loses (ADR-0004).
 
-One external change bears directly on DEC-008: since April 2026, NIST's National Vulnerability Database enriches only a minority of CVEs, so CWE and product applicability must come mainly from the CVE record itself.
+One external change bears directly on DEC-008. Since April 2026, NIST's National Vulnerability Database (NVD) enriches priority CVEs first, and most new CVEs go without its enrichment: in a sample of 102, two had NVD product data and none had an NVD-assigned CWE. CWE and product applicability must therefore come mainly from the CVE record itself.
 
 ### Decisions accepted since this survey was scoped
 
-On 2026-10-08 (tmodel PR #111) the sponsor accepted DEC-002, DEC-003 and DEC-004 (ADR-0007, ADR-0006, ADR-0008), and on 2026-10-12 (PR #119) DEC-001a (ADR-0010). Only DEC-001b, DEC-008 and DEC-009 remain open.
+On 2026-10-08 (tmodel PR #111) the sponsor accepted DEC-002, DEC-003 and DEC-004 (ADR-0007, ADR-0006, ADR-0008), and on 2026-10-12 (PR #119) DEC-001a (ADR-0010). On 2026-10-26 ADR-0012 amended ADR-0010 to make `Requirement` core. Only DEC-001b, DEC-008 and DEC-009 remain open.
 
 | Decision | Accepted as | What it means for this report |
 |---|---|---|
 | DEC-001a, core object model | ADR-0010 | Its class names supersede ARCH-0001 §3's working labels, which the crosswalk's rows use (mapping below). Assertion, Party, AttackPattern, DamageScenario and an `identifiers` slot for purl and CPE are now core, as this survey's evidence suggested. |
-| DEC-001b, governed layer | held open | `Requirement` is proposal-level; G10 routes here. |
+| DEC-001a amendment | ADR-0012 | `Requirement` is core, with slots including `text`, `requirement_kind`, `refines`, `derived_from`, `conflicts_with`, `maps_to`, `addresses`, `satisfied_by`, `applies_to` and `applies_to_family`. G10 routes here. |
+| DEC-001b, governed layer | held open | Only `Requirement.conformance_status` and the rest of the governed layer stay here. |
 | DEC-002, encoding and interchange | ADR-0007 | LinkML is the canonical schema language; tmodel **imports OTM and STIX 2.1** and exports JSON-LD, Turtle, GraphML and CSV, each proven by a round-trip vector. ADR-0007 says this crosswalk "refines and may extend import coverage". §5 and §6 are therefore direct input to the OTM and STIX mappings. |
 | DEC-003, risk metric | ADR-0006 | A composite vector (feasibility, impact, mitigation status, derived risk). CVSS, EPSS and SSVC (§3) are inputs to it, not the metric. |
 | DEC-004, working store | ADR-0008 | Oxigraph (embedded RDF with RDF-star) behind the ADR-0004 façade. The edge qualifiers in G5 have a native carrier in RDF-star. |
 
-**Crosswalk rows mapped onto ADR-0010's classes.** The crosswalk was assembled against ARCH-0001 §3's working labels; this is how its rows correspond to the accepted classes in `spec/schema/tmodel-object-model.linkml.yaml` (main, 2026-10-13):
+**Crosswalk rows mapped onto ADR-0010's classes.** The crosswalk was assembled against ARCH-0001 §3's working labels; this is how its rows correspond to the accepted classes in `spec/schema/tmodel-object-model.linkml.yaml` (main, 2026-10-29, with ADR-0012):
 
 | Crosswalk row | Accepted class | Note |
 |---|---|---|
@@ -72,42 +75,91 @@ On 2026-10-08 (tmodel PR #111) the sponsor accepted DEC-002, DEC-003 and DEC-004
 | Product / ProductFamily | `Product`, `ProductInstance` | no ProductFamily class; family mapping is DEC-009 (open) |
 | Party, DamageScenario, Assertion (part 2) | `Party`, `DamageScenario`, `Assertion` | now core |
 | Software identifier (identity sub-row) | `identifiers` slot | purl, CPE, SBOM refs, firmware digest |
-| Requirement/Control (part 2) | `Requirement` | DEC-001b, open |
+| Requirement/Control (part 2) | `Requirement` | core since ADR-0012; `conformance_status` stays in DEC-001b |
 | DataFlow (part 2) | none | see G13 |
 
-The method is in §12. The questions and table columns were fixed in [dimensions.md](dimensions.md) before the search; the evidence behind every cell is in [pilot.md](pilot.md) and the three `fanout-*.md` files; the crosswalk is assembled in [crosswalk.md](crosswalk.md).
+**Table 3's edges mapped onto the accepted slots.** Five of ARCH-0001's eight typed edges have a first-class slot. The other three can travel only as an `Assertion`, whose `predicate` is "not a closed enum: reviewed edges that are not first-class slots still reify here".
+
+| Edge (Table 3) | Accepted slot | Note |
+|---|---|---|
+| `part_of` | `composed_of` | Component composition |
+| `applies_to_product` | `affects` | Vulnerability → Product |
+| `mitigated_by` | `mitigates` | Mitigation → ThreatInstance |
+| `step_of` | `steps`, `precedes` | AttackPath → AttackStep; order is the `precedes` edges |
+| `reviewed_by` | `reviews` | Review → Assertion only |
+| `exploits` | none | Assertion only |
+| `instance_of` | none | `ThreatInstance` has no slot to a generic threat or `AttackPattern`; see G13 |
+| `supersedes` | none in the core | the slot exists only on the unaccepted governed classes, as "the prior revision this governed artifact replaces" |
+
+The method is in §13, and acronyms are expanded in the appendix. The questions and table columns were fixed in [dimensions.md](dimensions.md) before the search; the evidence behind every cell is in [pilot.md](pilot.md) and the three `fanout-*.md` files; the crosswalk is assembled in [crosswalk.md](crosswalk.md).
+
+**Figure 1** shows the seven families and the accepted classes each one fills. Two needs have no source among the surveyed formats (Attack Flow, outside them, carries paths; §5), and three classes the OTM import needs are not yet in the schema.
+
+```mermaid
+flowchart LR
+  subgraph F["Formats surveyed"]
+    W["Weakness and vulnerability<br/>CWE · CVE · NVD · OSV"]
+    S["Scores and signals<br/>CVSS · EPSS · SSVC"]
+    A["Applicability and advisories<br/>OpenVEX · CSAF"]
+    K["Threat and attack knowledge<br/>ATT&CK · CAPEC · D3FEND · STIX · TAXII"]
+    M["Threat-model formats<br/>OTM · threagile · pytm · Threat Dragon"]
+    R["Requirements and assurance<br/>OSCAL · ReqIF · SysML v2 · SACM"]
+    C["Composition<br/>SPDX 3 · CycloneDX"]
+  end
+  subgraph T["tmodel classes (ADR-0010)"]
+    WV["Weakness · Vulnerability"]
+    RS["RiskScore inputs · Assertion"]
+    PC["Product · Component"]
+    AP["AttackPattern · ThreatInstance · Mitigation"]
+    SYS["Asset · TrustBoundary · DataFlow<br/>not yet in the schema (G13)"]
+    REQ["Requirement<br/>core since ADR-0012"]
+    NAT["Review · AttackPath<br/>no surveyed format carries them (G1, G2)"]
+  end
+  W --> WV
+  S --> RS
+  A -->|applicability| PC
+  K --> AP
+  M --> AP
+  M --> PC
+  M --> SYS
+  R --> REQ
+  C --> PC
+  C --> WV
+```
 
 ## 1. Comparison and applicability
 
 ### Table 1. The formats compared
 
-One row per format, pinned to the version surveyed. Per the sponsor's scope answer (#39, 2026-10-08), CPE and purl are treated as identifier schemes (§9) and CISA KEV as an annotation on a CVE (§3), not as formats; MITRE ATLAS gets one row and is covered by RPT-0014. The "Library record" column gives the record id and its status; Phase 2 moves each to FX-1 or an honest stub.
+One row per format, pinned to the version surveyed. Per the sponsor's scope answer (#39, 2026-10-08), CPE and purl are treated as identifier schemes (§9) and CISA KEV as an annotation on a CVE (§3), not as formats; MITRE ATLAS gets one row and is covered by RPT-0014. The adversarial review (0.5.0) added two coverage rows, Attack Flow and OWASP's TM-BOM v1 schema: they are described in §5 and §6 but have no row in Tables 2, 3 and 5 yet (§13). The "Library record" column gives each record's id and status on library `main` (2026-10-29). Records owned by other issues are cited as they are: CAPEC, ATT&CK, D3FEND and STIX are at the summary bar under tmodel #165 (library#36), and the CVSS records belong to their own lanes.
 
 | Format | Family | Steward | Core entities | Identifier scheme | Encoding | Extension mechanism | Licence | Library record |
 |---|---|---|---|---|---|---|---|---|
-| CWE 4.20 / schema 7.3 | weakness | MITRE (CISA-sponsored); submissions to the CWE team | Weakness, Category, View | `CWE-<int>`, never reused | XML + XSD; CSV | — (closed XSD) | MITRE CWE terms, attribution | `cwe`, FX-1 complete in library#21 (open) |
-| CVE Record Format 5.2.0 | vulnerability | CVE Program (Board; MITRE secretariat; CISA sponsor) | Record → CNA container + ADP containers | `CVE-YYYY-N{4,19}`; org UUIDs | JSON + JSON Schema draft-07 | `x_` properties and tags; `metrics.other`; `taxonomyMappings` | schema CC0-1.0; records ? | `cve-json-5`, summarized |
-| NVD CVE API 2.0 | vulnerability (enrichment) | NIST | cve with weaknesses, metrics, configurations, KEV fields | CVE id; CPE 2.3; match UUIDs | JSON REST | — | ? | `nvd-cve-api-2-0`, stub in library#25 (open) |
-| OSV schema 1.9.1 | vulnerability (open-source packages) | OpenSSF `ossf/osv-schema` (authors at Google); PR process | record; `affected[]` (package, ranges, versions); references; credits | `<DB>-<ID>` from a closed prefix list or `x_`; `ecosystem` enum (52) + name; optional purl | JSON + JSON Schema 2020-12 | `database_specific`, `ecosystem_specific`; `x_` ids | Apache-2.0 (schema); per-DB data (CC-BY 4.0, CC0, ...) | `osv-schema`, summarized; RPT-0004 extracts 1.9.2 to FX-1 in library#28 (open) |
-| CVSS v3.1 / v4.0 | score | FIRST (CVSS-SIG) | score object (Base, Temporal/Threat, Environmental, Supplemental) | vector string `CVSS:3.1/...`, `CVSS:4.0/...`; no id | JSON Schema, XML Schema, vector text | — (closed; v4 `unevaluatedProperties: false`) | free use, attribution, publish score and vector | `first-cvss`, queued; `first-cvss-v3-1` and `first-cvss-v4-0`, fetched |
-| EPSS | score (exploitation probability) | FIRST EPSS SIG; infrastructure by Empirical Security | (CVE, date) record: `epss`, `percentile` | CVE id; (id, date, model version) | CSV (gz), JSON API | — | free, attribution requested | `first-epss`, stub in library#25 (open) |
-| SSVC (SelectionList 2.0.0) | decision/score (method) | CERT/CC at CMU SEI; CISA tree | SelectionList; decision point selections | (namespace, key, version) per decision point | JSON Schema 2020-12 | namespaces for local decision points (schema `namespace` field) | mixed: CC BY-NC 4.0 text; MIT-style software; schema file ? | `ssvc`, stub in library#21 (open) |
-| OpenVEX 0.2.0 | applicability (VEX) | OpenVEX project (GitHub); no standards body | document; statement; product; subcomponent | document IRI `@id`; purl/CPE/hash for products; CVE-style `name` | JSON + JSON Schema 2020-12 | — (closed document; roadmap items for 1.0) | CC0-1.0 | `openvex-0-2-0`, stub in library#25 (open) |
-| CSAF 2.0 (errata 01) / 2.1 (CSD03) | advisory + applicability (VEX profile) | OASIS CSAF TC | document; product_tree; vulnerabilities | `tracking.id` + publisher namespace; document-local `product_id`; CVE; `ids[]` | JSON + JSON Schema 2020-12 | 2.0 none; 2.1 `x_extensions` + metaschema | OASIS IPR (non-assertion); per-document `license_expression` (2.1) | `csaf-2-0`, stub in library#25 (open) |
-| MITRE ATT&CK Enterprise 19.2 (ATT&CK spec 3.3.0) | threat/attack | MITRE; twice-yearly major releases plus minors; contribution process ? | tactic, technique/sub-technique, mitigation, group, software, campaign, detection strategy, analytic, data component (ICS: asset) | STIX `type--UUID` + ATT&CK id (`T1059.001`, `TA0005`, `M1031`, …); never reused; revoked/deprecated kept | STIX 2.1 JSON bundles; ADM Zod/TypeScript schema; TAXII 2.1 | STIX custom `x_mitre_*` properties and `x-mitre-*` objects (deprecated §11 route); Workbench org namespace for local ids | MITRE ATT&CK licence (royalty-free, attribution) | `mitre-attack`, summarized |
-| CAPEC 3.9 / schema 3.5 | threat/attack | MITRE with the CAPEC community; last release 2023-01-24 | Attack_Pattern (Meta/Standard/Detailed), Category, View | `CAPEC-<int>`, never reused | XML + XSD; STIX 2.1 copy in `mitre/cti` | — (closed XSD) | CAPEC terms (royalty-free, attribution) | `capec`, summarized |
-| D3FEND 1.6.0 | threat/attack (countermeasures) | MITRE NSEC, NSA-funded; GitHub issues/PRs | DefensiveTechnique, DefensiveTactic, DigitalArtifact, DigitalEvent, Agent; imported ATT&CK/ATLAS/SPARTA/CWE; NISTControl | class IRI + `d3fend-id` (`D3-TB`); `D3A-` ids not unique | OWL (RDF/XML, TTL, JSON-LD); inferred mappings as SPARQL CSV/JSON | open-world OWL import in own namespace | MIT (repo) + D3FEND terms (royalty-free, attribution) | `d3fend`, summarized |
-| STIX 2.1 (OS 2021-06-10; Errata 01 at CSD01) | threat/attack (CTI exchange) | OASIS CTI TC | 19 SDOs, 2 SROs, 18 SCOs, extension-definition | `type--UUID`; version = id + `modified` | JSON; JSON Schema 2020-12 (non-normative repo) | `extension-definition` (new-sdo/sco/sro, property, toplevel-property); §11 custom properties deprecated | OASIS IPR Non-Assertion; schemas BSD-3-Clause | `stix-2-1`, summarized |
-| TAXII 2.1 (OS 2021-06-10) | threat/attack (transport) | OASIS CTI TC | discovery, api-root, collection, manifest, envelope, versions, status | collection id/alias; STIX ids | HTTPS + JSON (`application/taxii+json;version=2.1`) | custom properties on resources (§7.1) | OASIS IPR Non-Assertion | `taxii-2-1`, stub in library#25 (open) |
+| CWE 4.20 / schema 7.3 (5.0 / schema 8.0 released 2026-10-28; §2) | weakness | MITRE (CISA-sponsored); submissions to the CWE team | Weakness, Category, View | `CWE-<int>`, never reused | XML + XSD; CSV | — (closed XSD) | MITRE CWE terms, attribution | `cwe`, FX-1 complete (library#21) |
+| CVE Record Format 5.2.0 | vulnerability | CVE Program (Board; MITRE secretariat; CISA sponsor) | Record → CNA container + ADP containers | `CVE-YYYY-N{4,19}`; org UUIDs | JSON + JSON Schema draft-07 | `x_` properties and tags; `metrics.other`; `taxonomyMappings` | schema CC0-1.0; records ? | `cve-json-5`, stub pinned to 5.2.0 (library#38) |
+| NVD CVE API 2.0 | vulnerability (enrichment) | NIST | cve with weaknesses, metrics, configurations, KEV fields | CVE id; CPE 2.3; match UUIDs | JSON REST | — | ? | `nvd-cve-api-2-0`, stub |
+| OSV schema 1.9.1 | vulnerability (open-source packages) | OpenSSF `ossf/osv-schema` (authors at Google); PR process | record; `affected[]` (package, ranges, versions); references; credits | `<DB>-<ID>` from a closed prefix list or `x_`; `ecosystem` enum (52) + name; optional purl | JSON + JSON Schema 2020-12 | `database_specific`, `ecosystem_specific`; `x_` ids | Apache-2.0 (schema); per-DB data (CC-BY 4.0, CC0, ...) | `osv-schema`, FX-1 complete at 1.9.2 (RPT-0004, library#28) |
+| CVSS v3.1 / v4.0 | score | FIRST (CVSS-SIG) | score object (Base, Temporal/Threat, Environmental, Supplemental) | vector string `CVSS:3.1/...`, `CVSS:4.0/...`; no id | JSON Schema, XML Schema, vector text | — (closed; v4 `unevaluatedProperties: false`) | free use, attribution, publish score and vector | `first-cvss`, summarized (library#35); `first-cvss-v3-1` and `first-cvss-v4-0`, fetched |
+| EPSS | score (exploitation probability) | FIRST EPSS SIG; infrastructure by Empirical Security | (CVE, date) record: `epss`, `percentile` | CVE id; (id, date, model version) | CSV (gz), JSON API | — | free, attribution requested | `first-epss`, stub |
+| SSVC (SelectionList 2.0.0) | decision/score (method) | CERT/CC at CMU SEI; CISA tree | SelectionList; decision point selections | (namespace, key, version) per decision point | JSON Schema 2020-12 | namespaces for local decision points (schema `namespace` field) | mixed: CC BY-NC 4.0 text; MIT-style software; schema file ? | `ssvc`, stub (library#21) |
+| OpenVEX 0.2.0 | applicability (VEX) | OpenVEX project (GitHub); no standards body | document; statement; product; subcomponent | document IRI `@id`; purl/CPE/hash for products; CVE-style `name` | JSON + JSON Schema 2020-12 | — (closed document; roadmap items for 1.0) | CC0-1.0 | `openvex-0-2-0`, stub |
+| CSAF 2.0 (errata 01) / 2.1 (CSD03) | advisory + applicability (VEX profile) | OASIS CSAF TC | document; product_tree; vulnerabilities | `tracking.id` + publisher namespace; document-local `product_id`; CVE; `ids[]` | JSON + JSON Schema 2020-12 | 2.0 none; 2.1 `x_extensions` + metaschema | OASIS IPR (non-assertion); per-document `license_expression` (2.1) | `csaf-2-0`, stub |
+| MITRE ATT&CK Enterprise 19.2 (ATT&CK spec 3.3.0) | threat/attack | MITRE; twice-yearly major releases plus minors; contribution process ? | tactic, technique/sub-technique, mitigation, group, software, campaign, detection strategy, analytic, data component (ICS: asset) | STIX `type--UUID` + ATT&CK id (`T1059.001`, `TA0005`, `M1031`, …); never reused; revoked/deprecated kept | STIX 2.1 JSON bundles; ADM Zod/TypeScript schema; TAXII 2.1 | STIX custom `x_mitre_*` properties and `x-mitre-*` objects (deprecated §11 route); Workbench org namespace for local ids | MITRE ATT&CK licence (royalty-free, attribution) | `mitre-attack`, summarized at Enterprise v20.0 (library#36); this survey's 19.2 figures are in fanout-attack-composition.md |
+| CAPEC 3.9 / schema 3.5 | threat/attack | MITRE with the CAPEC community; last release 2023-01-24 | Attack_Pattern (Meta/Standard/Detailed), Category, View | `CAPEC-<int>`, never reused | XML + XSD; STIX 2.1 copy in `mitre/cti` | — (closed XSD) | CAPEC terms (royalty-free, attribution) | `capec`, summarized (library#36) |
+| D3FEND 1.6.0 | threat/attack (countermeasures) | MITRE NSEC, NSA-funded; GitHub issues/PRs | DefensiveTechnique, DefensiveTactic, DigitalArtifact, DigitalEvent, Agent; imported ATT&CK/ATLAS/SPARTA/CWE; NISTControl | class IRI + `d3fend-id` (`D3-TB`); `D3A-` ids not unique | OWL (RDF/XML, TTL, JSON-LD); inferred mappings as SPARQL CSV/JSON | open-world OWL import in own namespace | MIT (repo) + D3FEND terms (royalty-free, attribution) | `d3fend`, summarized (library#36) |
+| STIX 2.1 (OS 2021-06-10; Errata 01 at CSD01) | threat/attack (CTI exchange) | OASIS CTI TC | 19 SDOs, 2 SROs, 18 SCOs, extension-definition | `type--UUID`; version = id + `modified` | JSON; JSON Schema 2020-12 (non-normative repo) | `extension-definition` (new-sdo/sco/sro, property, toplevel-property); §11 custom properties deprecated | OASIS IPR Non-Assertion; schemas BSD-3-Clause | `stix-2-1`, summarized (library#36) |
+| TAXII 2.1 (OS 2021-06-10) | threat/attack (transport) | OASIS CTI TC | discovery, api-root, collection, manifest, envelope, versions, status | collection id/alias; STIX ids | HTTPS + JSON (`application/taxii+json;version=2.1`) | custom properties on resources (§7.1) | OASIS IPR Non-Assertion | `taxii-2-1`, stub |
 | MITRE ATLAS (one row, per the sponsor) | threat/attack (AI systems) | MITRE | ATT&CK-shaped tactics and techniques for AI systems | see RPT-0014 | see RPT-0014 | see RPT-0014 | see RPT-0014 | not surveyed here |
-| OTM 0.2.0 | threat model | IriusRisk | project, asset, trustZone, component, dataflow, threat, mitigation, representation | free strings, file-local | JSON/YAML + JSON Schema | `attributes` map; open objects | spec CC BY-SA 4.0; schema file Apache-2.0 | `open-threat-model`, FX-1 complete in library#21 (open) |
+| Attack Flow (STIX 2.1 extension 2.0.0; coverage row, 0.5.0) | threat/attack (attack sequences) | MITRE Center for Threat-Informed Defense; GitHub | attack-flow, attack-action, attack-condition, attack-operator (AND/OR), attack-asset | STIX `type--UUID`; the extension's `extension-definition` id | STIX 2.1 JSON + JSON Schema | is itself a STIX `extension-definition` | Apache-2.0 (repository) | `mitre-attack-flow`, summarized (RPT-0002, library#30) |
+| OTM 0.2.0 | threat model | IriusRisk | project, asset, trustZone, component, dataflow, threat, mitigation, representation | free strings, file-local | JSON/YAML + JSON Schema | `attributes` map; open objects | spec CC BY-SA 4.0; schema file Apache-2.0 | `open-threat-model`, FX-1 complete (library#21) |
 | threagile (master `74e323ed`; tag v0.9.1) | threat model | Threagile GitHub org; PRs | data_assets, technical_assets (+ communication_links), trust_boundaries, shared_runtimes, risk categories, risks, risk_tracking | file-local keys; deterministic `category@element…` risk ids with wildcards in tracking | YAML + JSON Schema draft-07; JSON/PDF/XLSX out | `tags`; custom risk categories; risk scripts (under development) | MIT | `threagile`, summarized |
 | pytm 1.4.0 | threat model | OWASP; CODEOWNERS maintainers | Element subclasses, Boundary, Dataflow, Data, Controls, Threat, Finding, Assumption, TM | element `name`; seeded `uuid`; threat SID (`INP01`); per-run finding counter | Python (Pydantic v2) + JSON in/out; no schema file | `extra="allow"` attributes; custom `threatsFile` | MIT (+ CAPEC terms) | `owasp-pytm`, summarized (RPT-0003, library#20) |
 | OWASP Threat Dragon 2.6.2 (schema v2) | threat model | OWASP | summary, detail, diagrams, cells (Actor, Process, Store, Flow, Boundary, BoundaryBox, Text), per-cell threats | UUIDs per cell and threat; file-local | JSON + JSON Schema (open; warn-only) | — (open schema; `compatibility` block on `main`) | Apache-2.0 | `owasp-threat-dragon`, summarized (RPT-0003, library#20) |
-| OSCAL 1.2.3 | requirement/control | NIST; GitHub | catalog, profile, component-definition, SSP, assessment-plan, assessment-results, POA&M, mapping-collection | UUIDs everywhere; control token ids within a catalog (`ac-2.10`) | XML/JSON/YAML from Metaschema; XSD + JSON Schema | namespaced `props`, `links`, `parts` (`ns`) | US public domain + CC0 1.0 | `oscal-1-2-3`, stub in library#25 (open) |
-| ReqIF 1.2 | requirement/control | OMG (from HIS / ProSTEP iViP RIF) | SpecObject, SpecRelation, Specification/SpecHierarchy, RelationGroup, SpecTypes, Datatypes | `IDENTIFIER` xsd:ID, globally unique, lifetime immutable | XML + XSD (+ CMOF) | user-defined types; `REQ-IF-TOOL-EXTENSION` (`xsd:any ##other`) | OMG spec, IPR RF-Limited | `reqif-1-2`, stub in library#25 (open) |
-| SysML v2.0 (requirements) | requirement/control (systems model) | OMG; SST pilot on GitHub | RequirementDefinition/Usage, Concern, SatisfyRequirementUsage, VerificationCase, Derivation, Dependency, Allocation, MetadataUsage | `elementId` (global, immutable) + `reqId` short name | textual `.sysml`, JSON (2020-12), XMI, `.kpar`, REST API | `metadata def`, user libraries | OMG spec, IPR Non-Assert; pilot EPL-2.0 | `sysml-2-0`, stub in library#25 (open) |
-| OMG SACM 2.3 | assurance | OMG; RTF (MITRE, Cambridge, York) | ArgumentPackage, Claim, ArgumentReasoning, AssertedRelationship family, ArtifactReference, Artifact, Activity, Participant, Event, Term | `gid` unique within a model instance; citations across packages | XMI (MOF/UML) + UML profile | TaggedValue, ImplementationConstraint, Term.externalReference | OMG spec, IPR Non-Assert | `sacm-2-3`, stub in library#25 (open) |
+| OWASP Threat Model Library schema, "TM-BOM" v1 (v1.0.2; coverage row, 0.5.0) | threat model | OWASP Threat Model Library project; GitHub | trust_zones, trust_boundaries, actors, components, data_stores, data_sets, data_flows, assumptions, threat_personas, threats, controls, risks | `symbolic_name` per object, file-local | JSON + JSON Schema 2020-12 | `extensions` object | MIT (repository) | `owasp-threat-model-library`, summarized (RPT-0003) |
+| OSCAL 1.2.3 | requirement/control | NIST; GitHub | catalog, profile, component-definition, SSP, assessment-plan, assessment-results, POA&M, mapping-collection | UUIDs everywhere; control token ids within a catalog (`ac-2.10`) | XML/JSON/YAML from Metaschema; XSD + JSON Schema | namespaced `props`, `links`, `parts` (`ns`) | US public domain + CC0 1.0 | `oscal-1-2-3`, stub |
+| ReqIF 1.2 | requirement/control | OMG (from HIS / ProSTEP iViP RIF) | SpecObject, SpecRelation, Specification/SpecHierarchy, RelationGroup, SpecTypes, Datatypes | `IDENTIFIER` xsd:ID, globally unique, lifetime immutable | XML + XSD (+ CMOF) | user-defined types; `REQ-IF-TOOL-EXTENSION` (`xsd:any ##other`) | OMG spec, IPR RF-Limited | `reqif-1-2`, stub |
+| SysML v2.0 (requirements) | requirement/control (systems model) | OMG; SST pilot on GitHub | RequirementDefinition/Usage, Concern, SatisfyRequirementUsage, VerificationCase, Derivation, Dependency, Allocation, MetadataUsage | `elementId` (global, immutable) + `reqId` short name | textual `.sysml`, JSON (2020-12), XMI, `.kpar`, REST API | `metadata def`, user libraries | OMG spec, IPR Non-Assert; pilot EPL-2.0 | `sysml-2-0`, stub |
+| OMG SACM 2.3 | assurance | OMG; RTF (MITRE, Cambridge, York) | ArgumentPackage, Claim, ArgumentReasoning, AssertedRelationship family, ArtifactReference, Artifact, Activity, Participant, Event, Term | `gid` unique within a model instance; citations across packages | XMI (MOF/UML) + UML profile | TaggedValue, ImplementationConstraint, Term.externalReference | OMG spec, IPR Non-Assert | `sacm-2-3`, stub |
 | SPDX 3.0.1 (Security, AI, Dataset profiles) | composition | Linux Foundation SPDX project; ISO/IEC DIS 5962 | Vulnerability, VulnAssessmentRelationship (VEX ×4, CVSS ×3, EPSS, ExploitCatalog, SSVC), AIPackage, DatasetPackage, Annotation | `spdxId` IRI; typed `externalIdentifier` | OWL + SHACL; JSON-LD + JSON Schema | Extension profile (`Extension` subclasses, `CdxPropertiesExtension`) | CC-BY-3.0 + Community Specification License 1.0 | `spdx-3-0-1`, stub (RPT-0004, library#26) |
 | CycloneDX 1.7 (schema 1.7.2) | composition | OWASP + Ecma TC54 (ECMA-424 2nd ed.) | vulnerabilities (analysis, affects), services (trustZone, data flows), annotations, declarations, definitions, citations | `serialNumber`/`version` + local `bom-ref`; BOM-Link | JSON (draft-07), XML, Protobuf | `properties` name-value + Property Taxonomy | Apache-2.0 | `cyclonedx-1-7`, stub (RPT-0004, library#26) |
 
@@ -121,7 +173,7 @@ Each format is rated 0 (absent) to 3 (strong) on the five axes #39 sets, within 
 | CVE 5.2.0 | 2: Vulnerability, Product `=`; mitigations and exploits in prose | 3: every container attributed and dated | 1: `disputed`, REJECTED only | 3: global ids, multi-org containers by design | 3: stable ids, bulk repo and API |
 | NVD API 2.0 | 2: adds configurations and KEV fields | 2: `source` and `type` per weakness and score, no date | 1: `vulnStatus` is NVD's workflow, no rationale | 2: keyed on CVE id, single authority, read-only | 2: stable ids, but enrichment now sparse (2026-04) |
 | OSV 1.9.1 | 2: `affected[].package` + `ranges` ≈ Product applicability; no not-affected, no weakness field | 2: `severity[].source`, per-record `modified` and DB prefix; no per-field author | 1: no review field; only `database_specific.github_reviewed` | 3: DB-prefixed ids, `aliases`, `upstream`, `related`, `x_` local DBs, `modified` latest-wins merge rule | 3: stable ids, API without rate limit, versioned bucket, normative `IsVulnerable` text |
-| CVSS | 2: RiskScore inputs `=` (Base/Threat/Environmental); `scope` ⊂ TrustBoundary | 0: no author or date in `cvss-v3.1.json` / `cvss-v4.0.json` | 0: none | 2: vector string is globally meaningful but not an id; no registry of scores | 3: spec text and formulas public, schema versioned, vector parsable |
+| CVSS | 2: RiskScore inputs `=` (Base/Threat/Environmental); `scope` ⊂ TrustBoundary (a crossing flag on a vulnerability, not a boundary object) | 0: no author or date in `cvss-v3.1.json` / `cvss-v4.0.json` | 0: none | 2: vector string is globally meaningful but not an id; no registry of scores | 3: spec text and formulas public, schema versioned, vector parsable |
 | EPSS | 1: one RiskScore input (probability), CVE-keyed only | 1: single source (FIRST); only CSV header `score_date`, `model_version` | 0: none | 2: CVE-keyed, daily, free; one producer | 2: stable CVE key and API with date; no per-score id, model changes daily |
 | SSVC | 1: a decision outcome; decision points are not ARCH-0001 types | 2: `timestamp`, `role` when embedded (CISA Coordinator) | 1: a decision method, not a review record | 2: namespaced decision points, `target_ids` | 2: schema versioned; the decision-point catalogue was not read (?) |
 | OpenVEX 0.2.0 | 3: Applicability `=`, Component `≈`; no version range | 2: `author`, `role`, `timestamp`, `tooling` per document/statement; strings only | 1: `status_notes`, `impact_statement`; no reviewer | 2: IRIs for docs, purl/CPE for products; statements can be re-used; no federation rules until 1.0 | 2: `@id` optional on statements; spec is short and normative (MUST/SHOULD) |
@@ -150,28 +202,33 @@ Read across the columns:
 
 ## 2. Weakness and vulnerability records
 
-**CWE 4.20** (MITRE; record `cwe`, FX-1 on library#21). A catalog of 969 weakness types in a closed XML schema.
+Sections 2 to 8 take the families in turn. Each entry names the format's steward and its library record, with the record's status (Table 1 has the details); the points below it are what matters for tmodel.
+
+**CWE 4.20** (MITRE; record `cwe`, FX-1). A catalog of 969 weakness types in a closed XML schema.
 - Every entry says whether it may be used to map a real vulnerability (`Mapping_Notes/Usage`: Allowed, Allowed-with-Review, Discouraged, Prohibited), so a tmodel import can check its own mappings.
 - Relations are scoped to a view: `ChildOf` in one view can differ from `ChildOf` in another, and `ChildOf` means "is a kind of", not "is part of".
 - A deprecated entry usually names its successor only in prose: just 2 of the 25 deprecated weaknesses in 4.20 carry a machine-readable suggestion (FX-1 extraction, library#21). Provenance is recorded per entry, not per relation.
 - There is no extension point, so a local weakness needs its own namespace, linked to CWE by a fit-graded mapping.
-- The FX-1 extraction found 16 places where the schema's documentation contradicts its own structure.
+- The FX-1 extraction found 16 source defects; 9 of them are places where the documentation contradicts the declared structure (labels, value and type names, case, one definition).
+- **CWE 5.0 and Schema 8.0 were released on 2026-10-28, after this survey**, with breaking changes: Category is replaced by Grouping, the namespace becomes `http://cwe.mitre.org/cwe-8`, an `Overlaps` relationship nature is added, relationships can carry notes, and custom lifecycle phases are supported. CWE 4.21 continues on schema 7.x in parallel. Everything here describes 4.20 and schema 7.3. A CWE importer (DEC-008) must choose a line, and 5.0 would be a new library record linked by `supersedes`, not an edit of the FX-1 one.
 
-**CVE Record Format 5.2.0** (CVE Program; record `cve-json-5`). One record per vulnerability, with one container from the assigning CNA and any number from Authorized Data Publishers.
+**CVE Record Format 5.2.0** (CVE Program; record `cve-json-5`, stub in library#38). One record per vulnerability, with one container from the assigning CNA and any number from Authorized Data Publishers.
 - Several organizations assert facts about one vulnerability side by side, each container attributed and dated. In CVE-2021-44228 the CNA gives CWE ids and a text severity, CISA's container adds a CVSS score and an SSVC decision, and NVD separately assigns a different CWE.
 - Product applicability is version-range logic with a status per range, and since 5.2.0 a purl.
 - A rejected record may name its replacement in `replacedBy` (optional; 239 of 18,506 rejected records do, 2026-10-18); disputes are tags.
 
-**NVD CVE API 2.0** (NIST; `nvd-cve-api-2-0`, stub). Enrichment of CVE records.
+**NVD CVE API 2.0** (NIST; record `nvd-cve-api-2-0`, stub). Enrichment of CVE records.
 - Each CWE and score carries its source and a Primary or Secondary role.
 - Applicability is boolean CPE logic (AND, OR, negate), richer than a single `applies_to_product` edge. Since 2026-06-17 the API also passes through the CNA's `affected` list and CISA's SSVC (`ssvcV203`).
 - CISA KEV membership is carried inline.
 - **Enrichment is now the exception:** NIST announced on 2026-04-15 that it will prioritize CVEs in CISA's KEV catalog, CVEs for software used in the federal government and CVEs for critical software (EO 14028) for enrichment; other CVEs are "lowest priority" and "will not be immediately enriched", though users can request enrichment. Of 102 CVEs published on 2026-09-20, 2 had NVD product configurations and none had an NVD-assigned CWE. NVD also uses two placeholder weaknesses, `NVD-CWE-noinfo` and `NVD-CWE-Other`, on up to one CVE in six.
 
-**OSV 1.9.1** (OpenSSF; record `osv-schema`). The open-source vulnerability format.
+**OSV 1.9.1** (OpenSSF; record `osv-schema`, FX-1 at 1.9.2, library#28; the cells checked in Phase 4 are the same in both versions). The open-source vulnerability format.
 - Applicability is a typed version timeline per package, not a status per product.
 - Several databases describe the same vulnerability and are linked through `aliases`.
-- There is no weakness field, and withdrawal has no successor.
+- There is no weakness field, but the open `database_specific` object can carry one: GitHub's records put CWE ids in `database_specific.cwe_ids` (Table 2 `ext`).
+- A reference of type `EVIDENCE` links to "a demonstration of the validity of a vulnerability claim", such as an exploitation replay (Table 2 part 2 `txt`).
+- Withdrawal has no successor; the rationale goes into the summary text.
 - purl names the package, not the instance.
 
 ## 3. Scores and exploitation signals
@@ -179,87 +236,99 @@ Read across the columns:
 **CVSS 3.1 and 4.0** (FIRST; records `first-cvss`, `first-cvss-v3-1`, `first-cvss-v4-0`).
 - A score is a vector string in metric groups, and several scores per vulnerability are normal.
 - The score carries no author; attribution comes from where it is stored.
-- v3.1's `scope` and v4.0's subsequent-system impacts record that an impact crosses a security authority. This is a property of the vulnerability, not a trust boundary in the model.
+- v3.1's `scope` and v4.0's subsequent-system impacts record that an impact crosses a security authority. This is a property of the vulnerability, not a trust boundary in the model, which is why Table 2 marks it `⊂`: an importer should not create a TrustBoundary from it.
 
-**EPSS** (FIRST; `first-epss`, stub).
+**EPSS** (FIRST; record `first-epss`, stub).
 - A probability of exploitation in the next 30 days, which is not a severity.
 - Scores are published daily, so every score has a date; the percentile is a rank, not a second probability.
 
-**SSVC** (CISA; scope open). A decision model. Its `Exploitation` value already appears inside CVE records from CISA's ADP container and in the NVD API.
+**SSVC** (CERT/CC, with CISA's decision tree; record `ssvc`, stub). A decision model; whether it counts as a format is still open. Its `Exploitation` value already appears inside CVE records from CISA's ADP container and in the NVD API.
 
-**CISA KEV** (annotation, per the sponsor). A curated list of CVEs known to be exploited. NVD carries its fields inline, and SPDX 3 has an exploit-catalog relationship for it. In tmodel it belongs as an attributed assertion on a Vulnerability.
+**CISA KEV** (CISA; an annotation on a CVE, per the sponsor, so no record of its own). A curated list of CVEs known to be exploited. NVD carries its fields inline, and SPDX 3 has an exploit-catalog relationship for it. In tmodel it belongs as an attributed assertion on a Vulnerability.
 
 ## 4. Applicability and advisories (VEX and CSAF)
 
-VEX is one concept, "is this product affected by this vulnerability, and why", in four encodings. §8 of [fanout-vuln-data.md](fanout-vuln-data.md) compares them side by side.
+VEX is one concept, "is this product affected by this vulnerability, and why", in four encodings: OpenVEX and CSAF (records `openvex-0-2-0` and `csaf-2-0`, stubs) and the VEX parts of SPDX 3 and CycloneDX (§8). §8 of [fanout-vuln-data.md](fanout-vuln-data.md) compares them side by side.
 
 - **Status and justification agree in three encodings.** OpenVEX, CSAF and SPDX 3 use the same five justification codes. CycloneDX uses nine different ones, so mapping it is lossy.
 - **No encoding has a review field** for a human's accept or reject of a statement.
 - **Product naming differs.** OpenVEX has no version ranges; CSAF has the richest product identification; SPDX 3 makes product versus subcomponent explicit.
 - **Supersession is weak.** OpenVEX supersedes by time, CSAF by document revision and CycloneDX by BOM version. OpenVEX and CycloneDX statements may have no id at all.
 
-**CSAF 2.0 / 2.1** (OASIS; `csaf-2-0`, stub). A full advisory format in which VEX is one profile. The lifecycle is per document, not per statement. CSAF 2.1 is a Committee Specification Draft (2026-09-11), not yet an OASIS Standard.
+**CSAF 2.0 / 2.1** (OASIS; record `csaf-2-0`, stub). A full advisory format in which VEX is one profile. The lifecycle is per document, not per statement. CSAF 2.1 is a Committee Specification Draft, not yet an OASIS Standard: this survey read CSD03 (2026-09-11), and CSD04 followed on 2026-10-21.
 
 ## 5. Threat and attack knowledge
 
-**MITRE ATT&CK 19.2** (record `mitre-attack`).
+**MITRE ATT&CK 19.2** (MITRE; record `mitre-attack`, which now describes Enterprise v20.0 of 2026-10-13, library#36; the 19.2 figures here come from fanout-attack-composition.md).
 - Relations are first-class objects with their own citations, and revocation names its successor (`revoked-by`).
 - **ATT&CK no longer links to CAPEC:** no active technique has carried a CAPEC reference since v13.
-- An id can change meaning without being revoked (`TA0005`), so every mapping must pin the ATT&CK version.
-- Detection is now its own layer. There are no paths and no ordering of techniques.
+- An id can change meaning without being revoked (`TA0005`), so every mapping must pin the ATT&CK version. v20.0 shows why: its tactics include Stealth and Defense Impairment and no longer Defense Evasion (record `mitre-attack`).
+- Detection is now its own layer. There are no paths and no ordering of techniques; ordered sequences of techniques are what Attack Flow encodes (below).
 
-**CAPEC 3.9** (record `capec`).
+**CAPEC 3.9** (MITRE; record `capec`, summarized).
 - Frozen since 2023-01-24, with its ATT&CK mappings pinned to ATT&CK 12.0.
 - The CAPEC-to-CWE link is the one maintained on both sides.
-- Its execution flow (`Attack_Step`) is the nearest thing to an AttackStep in any released format.
+- Its execution flow (`Attack_Step`) is the nearest thing to an AttackStep among the 24 formats crosswalked; Attack Flow's `attack-action` (below) is nearer.
 - Deprecation names its successor only in prose, as most of CWE's deprecated entries do.
 
-**D3FEND 1.6.0** (record `d3fend`).
+**D3FEND 1.6.0** (MITRE; record `d3fend`, summarized).
 - Defence-to-offence links are not stated in the ontology. They are inferred through shared digital artifacts and published separately.
 - Its coverage of ATT&CK 19.2 is partial.
 - Digital artifacts are the closest catalog to Asset and Component types.
 - Neither key is fully stable: IRIs are renamed between releases, and 27 `D3A-` ids collide.
 
-**STIX 2.1 and TAXII 2.1** (OASIS; records `stix-2-1`, none for TAXII).
+**STIX 2.1 and TAXII 2.1** (OASIS; records `stix-2-1`, summarized, and `taxii-2-1`, stub).
 - STIX carries provenance and versioning in every object, and its `opinion` object is a native carrier for agreement, though not for tmodel's verdict.
-- STIX has no weakness, attack path, risk or product-version applicability (only `infrastructure`/`tool` `has` `vulnerability`, `≈` in Table 3).
+- Core STIX has no weakness, attack path, risk or product-version applicability (only `infrastructure`/`tool` `has` `vulnerability`, `≈` in Table 3). The Attack Flow extension (below) adds attack paths.
 - ATT&CK still uses STIX's deprecated custom-property route rather than extension definitions.
 - TAXII is a transport, not a model, and leaves retention undefined.
 
-**MITRE ATLAS** reuses ATT&CK's structure for AI systems. Its coverage is RPT-0014's.
+**MITRE ATLAS** reuses ATT&CK's structure for AI systems; RPT-0014 covers it.
+
+**Attack Flow** (MITRE Center for Threat-Informed Defense; record `mitre-attack-flow`, summarized, from RPT-0002). Added by the adversarial review as a coverage row; it has no row in Tables 2, 3 and 5 yet. A STIX 2.1 extension, released on 2022-10-27, for how adversary actions combine into an attack.
+- An `attack-action` (usually one ATT&CK technique) links to what follows through `effect_refs`, and that link is a dependency. An `attack-operator` joins paths with AND or OR, and an `attack-condition` branches on an outcome.
+- That is the shape of ADR-0010's `AttackStep` and `AttackPath`. So a released format does encode ordered attack steps, which this report denied before 0.5.0 (G2).
+- It has no review object of its own; STIX's `opinion` could point at its objects.
+- Because it is a STIX extension, the committed STIX import (ADR-0007) could read it if it accepts the extension (G14). RPT-0002 §9 names it as the format for ordered ATT&CK sequences.
 
 ## 6. Threat-model object models
 
-**OTM 0.2.0** (IriusRisk; record `open-threat-model`). The closest format to ARCH-0001's system side: assets, components, trust zones, data flows, and threats separated from their per-component instances.
+**OTM 0.2.0** (IriusRisk; record `open-threat-model`, FX-1). The closest format to ARCH-0001's system side: assets, components, trust zones, data flows, and threats separated from their per-component instances.
 - Nothing on the attack side, and state without review.
 - Trust boundaries are zones.
 - A vendor-controlled 0.x schema since 2023, though it is used across vendors (IriusRisk, StartLeft, Devici to SD Elements).
 
-**threagile** (latest tag v0.9.1; record `threagile`).
+**threagile** (Threagile project, latest tag v0.9.1; record `threagile`, summarized).
 - The only threat-model format with a real review record (`risk_tracking`: status, justification, reviewer, date).
 - Generic risks are instantiated by rule.
 - 15 of the 42 CWE links in its built-in risk categories point to ids CWE marks Prohibited for mapping.
 - Its published schema and its code disagree.
 
-**pytm 1.4.0** (OWASP; `owasp-pytm`, RPT-0003's record). Threats are rules and mitigations are flags, so an unset control and a false one look the same. References are plain strings. Its licence is MIT (RPT-0003 listed GPL-3.0 until its 2026-10-11 correction).
+**pytm 1.4.0** (OWASP; record `owasp-pytm`, RPT-0003's). Threats are rules and mitigations are flags, so an unset control and a false one look the same. References are plain strings. Its licence is MIT (RPT-0003 listed GPL-3.0 until its 2026-10-11 correction).
 
-**OWASP Threat Dragon 2.6.2** (`owasp-threat-dragon`, RPT-0003's record). The published schema does not validate threats. Review is model-level only, threat type is a category rather than a threat, and containment in a boundary is geometric. The converters in its source tree do not work at 2.6.2.
+**OWASP Threat Dragon 2.6.2** (OWASP; record `owasp-threat-dragon`, RPT-0003's). The published schema does not validate threats. Review is model-level only, threat type is a category rather than a threat, and containment in a boundary is geometric. Its OTM converters do not work at 2.6.2. Its TM-BOM import does work, but turns CWE and CAPEC ids into description text and imports each threat as Open unless a linked control's status counts as mitigated (fanout-models-requirements.md §8).
+
+**OWASP Threat Model Library schema, "TM-BOM" v1** (OWASP; record `owasp-threat-model-library`, summarized, from RPT-0003). Added by the adversarial review as a coverage row; it has no row in Tables 2, 3 and 5 yet. A released JSON format (v1.0.0 to v1.0.2, the last on 2025-10-20) that OWASP's Developer Guide calls the format of TM-BOM files. Threat Dragon imports it but cannot export it.
+- It has explicit `trust_boundaries` (each between two trust zones) beside `trust_zones`, and `data_flows`.
+- `assumptions` carry a `validity`. Threats reference CWE and CAPEC ids, and controls have a status that includes `under_review` and `approved`. The model has a `reviewed_at` date.
+- It has no ordered attack path, so G2's point about the threat-model formats holds.
+- Its README calls it interim: "Once TM-BOM is released, there will be another version released of the Threat Model Library Schema", meaning CycloneDX's TM-BOM (§8).
 
 **What converting between them loses** is in §8 of [fanout-models-requirements.md](fanout-models-requirements.md). In short, every conversion drops review state, and all four lack the attack side.
 
 ## 7. Requirements, controls and assurance
 
-**OSCAL 1.2.3** (NIST; `oscal-1-2-3`, stub). The only format rated 3 on all five axes.
+**OSCAL 1.2.3** (NIST; record `oscal-1-2-3`, stub). The only format rated 3 on all five axes.
 - Withdrawal names its successor, parameters are structured, and implementation and evidence are separate, linked objects.
 - Risks are first-class and carry threat ids, and provenance is native.
 - Cross-framework mapping is now standard.
 - It has no system model (no trust boundary or data flow), so it complements a threat model rather than replacing one.
 
-**ReqIF 1.2** (OMG; `reqif-1-2`, stub). Strong identity (globally unique, lifetime-immutable ids) and change tracking. Every type and link meaning is user-defined, so trace semantics need a published profile.
+**ReqIF 1.2** (OMG; record `reqif-1-2`, stub). Strong identity (globally unique, lifetime-immutable ids) and change tracking. Every type and link meaning is user-defined, so trace semantics need a published profile.
 
-**SysML v2.0** (OMG; `sysml-2-0`, stub). All four trace links (satisfy, verify, derive, refine) are typed, and satisfaction is a logical claim that can be negated. Status and rationale are library metadata. It has no security vocabulary; product-line variants are part of the language.
+**SysML v2.0** (OMG; record `sysml-2-0`, stub). All four trace links (satisfy, verify, derive, refine) are typed, and satisfaction is a logical claim that can be negated. Status and rationale are library metadata. It has no security vocabulary; product-line variants are part of the language.
 
-**OMG SACM 2.3** (`sacm-2-3`, stub). Assurance cases.
+**OMG SACM 2.3** (OMG; record `sacm-2-3`, stub). Assurance cases.
 - Claim states (`needsSupport`, `assumed`, `defeated`, …) are a review vocabulary, and counter-evidence is native.
 - Who and when are recorded on artifacts, not on claims.
 - The specification and its normative XMI disagree on one class name.
@@ -268,23 +337,38 @@ VEX is one concept, "is this product affected by this vulnerability, and why", i
 
 RPT-0004 covers naming, dependencies and build identity; this section covers only vulnerabilities, VEX and review.
 
-**SPDX 3.0.1** (record `spdx-3-0-1`, RPT-0004's stub).
+**SPDX 3.0.1** (Linux Foundation; record `spdx-3-0-1`, RPT-0004's stub).
 - A VEX statement or score is a relationship element with its own creator and time.
 - Human review has a slot (`Annotation` of type review), but no verdict.
 - Threat models are only referenced.
 - The AI and Dataset profiles add asset properties.
 - Producers exist; consumers were not found.
 
-**CycloneDX 1.7** (record `cyclonedx-1-7`, RPT-0004's stub).
+**CycloneDX 1.7** (OWASP and Ecma TC54; record `cyclonedx-1-7`, RPT-0004's stub).
 - Models the system side of a threat model: services, trust zones and data flows.
 - Per-field provenance (`citations`) arrived in 1.7.
 - Review, claims and attestations exist, but without a verdict.
 - Threat models are carried by reference; tool support for its VEX is real.
-- CycloneDX 2.0 adds threat-model modules (TM-BOM: threats, attack trees, ordered attack paths, requirements, controls). These are merged into the development branch but unreleased: the 2.0 milestone passed its 2026-08-31 date with 90 of 176 issues open.
+- CycloneDX 2.0 adds threat-model modules (its TM-BOM: threats, attack trees, ordered attack paths, requirements, controls), not to be confused with OWASP's released TM-BOM v1 schema (§6). These are merged into the development branch but unreleased: the 2.0 milestone passed its 2026-08-31 date with 90 of 176 issues open.
 
 ## 9. Crosswalk and local extension
 
-The full crosswalk, with its method, is [crosswalk.md](crosswalk.md). Its main matrix, ARCH-0001's types against all 24 formats (`=` same, `≈` close, `⊂`/`⊃` narrower/broader, `txt` prose only, `ext` extensible, `—` absent):
+The full crosswalk, with its method, is [crosswalk.md](crosswalk.md); its tables are reproduced here. Each cell says how well a format carries one tmodel concept:
+
+- `=`: the same concept, no loss on import
+- `≈`: close, with some loss
+- `⊂` / `⊃`: the format's element is narrower / broader than tmodel's
+- `txt`: present only as prose
+- `ext`: absent, but the format can be extended to carry it
+- `—`: absent, and not extensible
+- `∅`: not assessed
+- `?`: could not be verified
+
+The rows use ARCH-0001 §3's working labels; the Overview maps them to ADR-0010's classes.
+
+### 9.1 Table 2, part 1: ARCH-0001's types
+
+The main matrix sets ARCH-0001's types against all 24 formats. The five right-hand columns count each row's marks, as a loss profile for import.
 
 | Format | Asset | Comp. | Trust bnd. | Weak. | Vuln. | Threat | Att. step | Att. path | Mitig. | Risk | Review | Product | `=` | `≈⊂⊃` | `txt` | `ext` | `—` |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -292,7 +376,7 @@ The full crosswalk, with its method, is [crosswalk.md](crosswalk.md). Its main m
 | CWE 4.20 | — | — | — | = | ⊂ | — | — | ≈ | ≈ | ≈ | ⊂ | ⊃ | 1 | 6 | 0 | 0 | 5 |
 | CVE 5.2.0 | — | ⊂ | — | ⊂ | = | — | txt | — | txt | ≈ | ⊂ | = | 2 | 4 | 2 | 0 | 4 |
 | NVD API 2.0 | — | — | — | ⊂ | = | — | — | — | txt | ≈ | ⊂ | = | 2 | 3 | 1 | 0 | 6 |
-| OSV 1.9.1 | — | ≈ | — | — | = | — | txt | — | ≈ | ≈ | ext | ≈ | 1 | 4 | 1 | 1 | 5 |
+| OSV 1.9.1 | — | ≈ | — | ext | = | — | txt | — | ≈ | ≈ | ext | ≈ | 1 | 4 | 1 | 2 | 4 |
 | **Scores and signals** | | | | | | | | | | | | | | | | | |
 | CVSS 3.1 / 4.0 | ⊂ | — | ⊂ | — | — | — | ⊂ | — | ⊂ | = | — | — | 1 | 4 | 0 | 0 | 7 |
 | EPSS | — | — | — | — | ⊂ | — | — | — | — | ≈ | — | — | 0 | 2 | 0 | 0 | 10 |
@@ -324,12 +408,12 @@ The full crosswalk, with its method, is [crosswalk.md](crosswalk.md). Its main m
 What the matrix shows:
 
 - **Review has no exact match in any of the 24 formats.** Eight carry something narrower (`⊂`), usually an editorial or workflow status: CWE and CAPEC `Status`, NVD `vulnStatus`, OTM `state`. Seven carry something close (`≈`), such as STIX `opinion`, threagile `risk_tracking` and OSCAL findings. ARCH-0001 §7's Review (reviewer, date, verdict, assigned impact and rationale on any element) has no ready-made encoding to import or export.
-- **The attack side is the thinnest.** AttackStep has no exact match. AttackPath has none either: 19 formats lack it, and the two `≈` are ordered weakness or pattern sequences in CWE and CAPEC, not attacker steps. CycloneDX 2.0's threat module (TM-BOM) has an ordered `attackPath` but is unreleased (fanout-models-requirements.md §9).
+- **The attack side is the thinnest.** AttackStep has no exact match. AttackPath has none either: 19 formats lack it, and the two `≈` are ordered weakness or pattern sequences in CWE and CAPEC, not attacker steps. CycloneDX 2.0's threat module (TM-BOM) has an ordered `attackPath` but is unreleased (fanout-models-requirements.md §9). Outside the 24, Attack Flow, a released STIX 2.1 extension, encodes ordered and AND/OR-joined attack actions (§5); it has no row here yet.
 - **The system side is well covered.** Component has 8 exact matches and Product 5. Vulnerability has 6 exact matches.
-- **TrustBoundary and Threat each have one exact match** (threagile and pytm). Elsewhere a boundary is a zone (OTM, pytm), a drawn shape whose membership is geometric (Threat Dragon) or a property of a service (CycloneDX). A threat is either a generic library entry or a per-element instance; few formats keep both.
+- **TrustBoundary and Threat each have one exact match** (threagile and pytm; OWASP's TM-BOM v1, outside the 24, also has explicit `trust_boundaries`, §6). Elsewhere a boundary is a zone (OTM, pytm), a drawn shape whose membership is geometric (Threat Dragon) or a property of a service (CycloneDX). A threat is either a generic library entry or a per-element instance; few formats keep both.
 - **Weakness has two exact matches** (CWE, and D3FEND's imported CWE classes); eight formats reference a CWE id (`⊂`).
 
-## Table 2, part 2: concepts ARCH-0001 §3 does not have
+### 9.2 Table 2, part 2: concepts ARCH-0001 §3 does not have
 
 Candidates for the gap analysis, not proposals to add types. Assumption and Verification/Evidence were proposed by the requirements survey and assessed only there.
 
@@ -339,7 +423,7 @@ Candidates for the gap analysis, not proposals to add types. Assumption and Veri
 | CWE 4.20 | — | — | — | ∅ | — | ≈ | ∅ | — | ≈ | ∅ | ∅ |
 | CVE 5.2.0 | — | — | ≈ | ∅ | ≈ | = | ∅ | = | — | ∅ | ∅ |
 | NVD API 2.0 | — | — | ≈ | ∅ | = | ≈ | ∅ | ≈ | — | ∅ | ∅ |
-| OSV 1.9.1 | — | — | ≈ | ≈ | — | ≈ | — | ≈ | txt | ∅ | ∅ |
+| OSV 1.9.1 | — | — | ≈ | ≈ | txt | ≈ | — | ≈ | txt | ∅ | ∅ |
 | **Scores and signals** | | | | | | | | | | | |
 | CVSS 3.1 / 4.0 | — | ⊂ | — | — | ≈ | — | ⊂ | — | — | ∅ | ∅ |
 | EPSS | — | — | — | — | = | — | — | ≈ | — | ∅ | ∅ |
@@ -373,7 +457,7 @@ Candidates for the gap analysis, not proposals to add types. Assumption and Veri
 - **Applicability with a reason** is exact in the VEX-carrying formats (OpenVEX, CSAF, SPDX 3, CycloneDX); their justification codes do not fully agree (CycloneDX has 9, the others 5).
 - **DamageScenario has no exact match**; this matters for ISO/SAE 21434 (RPT-0007).
 
-### Identity sub-row: how formats name a Product or Component
+### 9.3 Identity: how formats name a Product or Component
 
 Per the sponsor's answer, identifier schemes are a property of Product and Component, not a format column.
 
@@ -394,7 +478,9 @@ Per the sponsor's answer, identifier schemes are a property of Product and Compo
 
 purl and CPE are the only schemes shared across vulnerability data, VEX and composition formats. CVE stores purl without a version; the version lives in the version ranges. A tmodel import that keeps both CPE and purl when present, and versions the purl only for an instance, loses no CPE or purl information (fanout-vuln-data.md, Table 6); the other schemes in the table above (hashes, SWID, OmniBOR, SWHID, CSAF serial, model and SKU numbers) still need a place, such as ADR-0010's opaque `identifiers` slot.
 
-## Table 3: ARCH-0001's typed edges
+### 9.4 Table 3: ARCH-0001's typed edges
+
+How each format carries ARCH-0001's typed edges, one column per edge.
 
 | Format | exploits | mitigated_by | part_of | step_of | instance_of | reviewed_by | applies_to_product | supersedes |
 |---|---|---|---|---|---|---|---|---|
@@ -435,8 +521,10 @@ purl and CPE are the only schemes shared across vulnerability data, VEX and comp
 - **`step_of` has one** (CAPEC's execution-flow steps); 21 formats lack it.
 - **`applies_to_product` is the best-covered edge** (7 exact), always with qualifiers ARCH-0001's single edge cannot hold: version ranges, AND/OR platform logic (NVD), status and justification (VEX).
 - **`supersedes` is exact in three formats** (CVE `replacedBy`, ATT&CK `revoked-by`, OSCAL withdrawn-control links) and mostly prose in three (CWE, where 2 of 25 deprecated weaknesses name a successor in `Mapping_Notes/Suggestions`; CAPEC; and pytm's `DEPRECATED` marker), where an importer must parse text.
+- **The `supersedes` column mixes two operations.** The `=` marks are replacement by a different id. Several `≈` marks (OSV `modified`, OpenVEX timestamps, CSAF `revision_history`, CycloneDX BOM version) are a new revision of the same record. OSV's `≈` is revision only: a withdrawn record names no successor. Which of the two tmodel's `supersedes` means is not settled, because the accepted core has no such slot (Overview).
+- **CWE's `part_of` `≈` rests on category membership** (`Has_Member`/`Member_Of`), which the XSD defines as grouping: "the weaknesses or other categories that are grouped together by a category". The XSD's own "part of" is `Requires`/`RequiredBy`, for "a weakness that is part of a composite weakness structure". CWE 5.0 replaces Category with Grouping (§2).
 
-### Edges the formats have and ARCH-0001 lacks
+### 9.5 Edges the formats have and ARCH-0001 lacks
 
 Grouped from the four sources. Each group is a gap-analysis input.
 
@@ -457,11 +545,15 @@ Grouped from the four sources. Each group is a gap-analysis input.
 | Defence-to-artifact | D3FEND `analyzes`, `hardens`, … (its defence-offence pairs are derived from these) | `mitigated_by`, derived |
 | AI supply chain | SPDX 3 `trainedOn`, `testedOn` | none |
 
-**Edge qualifiers recur in every family:** scope (CWE `View_ID`), order (chain ordinal, step position), fit grade (CWE `Mapping_Fit`, D3FEND graded links), boolean logic (NVD `operator`, `negate`), status and justification (VEX), catalog version pins (ATT&CK collection version), negation (SysML v2 `isNegated`) and counter-evidence (SACM `isCounter`). An edge type alone loses all of these.
+**Edge qualifiers recur in every family:** scope (CWE `View_ID`), order (CWE `StartsWith`/`CanPrecede` within a `Chain_ID`; CAPEC step position), fit grade (CWE `Mapping_Fit`, D3FEND graded links), boolean logic (NVD `operator`, `negate`), status and justification (VEX), catalog version pins (ATT&CK collection version), negation (SysML v2 `isNegated`) and counter-evidence (SACM `isCounter`). An edge type alone loses all of these.
 
-## Dimension 8, question by question
+### 9.6 Four cross-format questions
 
-### 1. Which identifiers can serve as stable keys across formats?
+Dimension 8 of [dimensions.md](dimensions.md) asks four questions of the crosswalk.
+
+#### Q1. Which identifiers can serve as stable keys across formats?
+
+The candidate keys, and how stable each one is:
 
 | Key | Stability, from the sources | Use as a cross-format key |
 |---|---|---|
@@ -478,14 +570,14 @@ Grouped from the four sources. Each group is a gap-analysis input.
 
 The catalogs' ids and purl/CPE can join formats; threat-model and SBOM-internal ids cannot. Every catalog key needs its catalog version beside it.
 
-### 2. Where is the same concept named differently, and where does one name mean different things?
+#### Q2. Where is the same concept named differently, and where does one name mean different things?
 
 - **One concept, many shapes: Mitigation.** CWE `Potential_Mitigations` is generic advice; ATT&CK `course-of-action` (M-ids) and D3FEND `DefensiveTechnique` are catalog entries; OTM `mitigations[]` and OSCAL implemented requirements carry per-instance state; pytm expresses mitigation only as control flags read by threat conditions. Only OTM and OSCAL record whether a mitigation is in place for one element.
 - **One concept, two levels: Threat.** OTM separates a library `threat` from its per-component instance; pytm separates `Threat` (rule) from `Finding` (instance); threagile separates risk category from risk. tmodel's generic-to-product mapping (DEC-009) needs both levels, and formats that keep only one lose the other on import.
 - **One concept, four shapes: TrustBoundary.** A zone (OTM with a trust rating, pytm with nesting), an explicit typed boundary with listed members (threagile), a drawn curve or box whose membership is geometric (Threat Dragon), or a `trustZone` property of a service (CycloneDX). CVSS `scope: CHANGED` looks like a boundary crossing but is a property of a vulnerability (fanout-vuln-data.md, Table 6).
 - **One word, different meanings: "status".** In CWE and CAPEC it is editorial maturity (Draft, Stable); in VEX it is applicability (`not_affected`, …); in OTM it is the state of a threat instance (`exposed`, `mitigated`); in NVD it is NIST's workflow (`Analyzed`, `Deferred`); in OSCAL findings it is satisfied or not. An importer that maps every `status` field to one tmodel field would mix all five.
 
-### 3. What is lost when importing each format into ARCH-0001's types?
+#### Q3. What is lost when importing each format into ARCH-0001's types?
 
 The loss profile columns of Table 2 part 1 give the count per format. Across all formats, three losses recur:
 
@@ -495,14 +587,14 @@ The loss profile columns of Table 2 part 1 give the count per format. Across all
 
 Per-format losses are listed in each source file's "Findings that bear on tmodel". These counts are the input to #16's round-trip test.
 
-### 4. Where must tmodel extend a format locally, and through which mechanism?
+#### Q4. Where must tmodel extend a format locally, and through which mechanism?
 
 Table 6, consolidated from the four sources. Each row is evidence for the decision it routes to, not a proposal. The routes were set before the decisions of 2026-10-08 and 2026-10-12: DEC-001 is now split (DEC-001a accepted by ADR-0010, DEC-001b open) and DEC-002 is accepted by ADR-0007, so §11 gives the current routes.
 
 | Need | Formats affected | Mechanism the sources found | Routes to |
 |---|---|---|---|
 | Review on any element (verdict, impact, rationale, reviewer, date) | OTM, threagile, pytm, Threat Dragon, STIX, SPDX 3, CycloneDX, SACM, VEX statements | OTM `attributes`; STIX `opinion` extension; SPDX `Annotation` + extension; CycloneDX properties; SACM `Activity` + `Participant`; for threagile, keep Review outside the YAML, keyed by `synthetic_id` | ARCH-0001 §7, R-018, #16, #17 |
-| Ordered attack steps and paths | ATT&CK, STIX, OTM and the other threat-model formats | none fits; keep tmodel-native, export to CycloneDX 2.0 when it is released | DEC-001, #17 |
+| Ordered attack steps and paths | ATT&CK, STIX, OTM and the other threat-model formats | none of the 24 fits; Attack Flow (a STIX 2.1 extension, §5) carries ordered, AND/OR-joined actions without review; otherwise keep tmodel-native, and CycloneDX 2.0 when it is released | DEC-001, #17 |
 | Fit-graded, version-pinned mappings between catalogs | CAPEC → ATT&CK (pinned to ATT&CK 12.0); ATT&CK → CAPEC (dropped in ATT&CK 13); D3FEND inferred pairs; CWE references in threat-model formats | a mapping edge carrying fit grade (CWE `Mapping_Fit` as model), both catalog versions, and provenance "derived" where inferred | #16, #17, DEC-001, DEC-008, DEC-009 |
 | Local entries a closed catalog lacks | CWE (closed XSD), ATT&CK, CAPEC | a separate local namespace linked to the nearest catalog entry by a fit-graded edge; SARIF custom taxonomies and ATT&CK Workbench namespaces are the nearest practice found | DEC-001, DEC-002, DEC-008 |
 | Machine-readable supersession | CWE, CAPEC (prose), OpenVEX (time order), CSAF 2.0 (revisions) | a `supersedes` edge filled at import, flagged when text-derived | ARCH-0001 §3, #16 |
@@ -512,32 +604,35 @@ Table 6, consolidated from the four sources. Each row is evidence for the decisi
 | Security vocabulary in general-purpose models | ReqIF, SysML v2, OSCAL | a published tmodel ReqIF profile; a small SysML v2 library (Threat, Mitigation, Review); a tmodel namespace for OSCAL `props` | DEC-002, MAP-0001 |
 | Valid CWE references | threagile (15 of 42 category links use Prohibited CWE ids), pytm | validate against CWE `Usage`; keep the original beside a corrected, fit-graded mapping | DEC-008, #17 |
 
-## Inputs to the gap analysis (Phase 5)
+### 9.7 In short
 
-Evidence only. These routes predate ADR-0007 and ADR-0010 (DEC-002 is accepted; DEC-001 is split into DEC-001a, accepted, and DEC-001b, open); §11 re-routes each item.
-
-1. **Review is tmodel's most distinctive element.** No surveyed format encodes it exactly, so every import and export loses it unless carried by extension (ARCH-0001 §7, R-018, #17).
-2. **Attack paths are tmodel-native for now.** No released format has an ordered attacker path; CycloneDX 2.0 is the only candidate and is unreleased (DEC-001, DEC-002).
-3. **The Assertion pattern is established practice.** Five formats carry attributed multi-source statements exactly (DEC-001, #16).
-4. **ARCH-0001 has no specialization edge.** CWE, CAPEC and ATT&CK all use one, and mapping it to `part_of` would be wrong (DEC-001).
-5. **Edges need qualifiers.** Every family uses at least one (ADR-0004's edge façade, #16).
-6. **Candidate concepts confirmed by the survey:** Requirement/Control, DataFlow, Applicability statement, Exploitation evidence, Party, Assertion; and proposed by it: Assumption, Verification/Evidence (DEC-001, #17).
-
-## Limits
-
-- Marks are extracted by script from the source files and were not re-judged here, except two cells corrected after review (DL-0013): CVE Exploitation evidence, whose source cell in pilot.md was corrected, and SPDX 3.0.1 Req./control, changed by hand (crosswalk.md, "How it was built"). The Phase 4 adversarial review spot-checks a sample of cells against the specifications (dimension 10, question 4).
-- `∅` cells were not assessed: the pilot did not assess Advisory/Remediation or DamageScenario, and only the requirements survey assessed Assumption and Verification/Evidence.
-- Table 4 (adoption, §10) and Table 5 (ratings, §1) are merged from the source files by script and were not re-judged here.
-
-**Identity.** CPE and purl are the only identifier schemes shared across vulnerability data, VEX and composition formats. Keeping both when present, and versioning the purl only for an instance, loses no CPE or purl information; the other schemes in the identity sub-row (hashes, SWID, OmniBOR, SWHID) need the `identifiers` slot too (crosswalk.md, identity sub-row).
+**Identity.** CPE and purl are the only identifier schemes shared across vulnerability data, VEX and composition formats. Keeping both when present, and versioning the purl only for an instance, loses no CPE or purl information; the other schemes in the identity sub-row (hashes, SWID, OmniBOR, SWHID) need the `identifiers` slot too (§9.3).
 
 **Stable keys.** CVE, CWE and CAPEC ids, ATT&CK ids pinned to a collection version, OSV ids through `aliases`, purl, CPE and OSCAL UUIDs can join formats. Threat-model and SBOM-internal ids cannot.
 
-**Local extension** is needed in ten places, consolidated in crosswalk.md (dimension 8, question 4). The recurring ones are: Review on any element; ordered attack paths; fit-graded, version-pinned mappings between catalogs; a local namespace for entries a closed catalog lacks; and machine-readable supersession.
+**Local extension** is needed in ten places, listed in Table 6 (§9.6, Q4). The recurring ones are: Review on any element; ordered attack paths; fit-graded, version-pinned mappings between catalogs; a local namespace for entries a closed catalog lacks; and machine-readable supersession.
+
+### 9.8 What the crosswalk passes to the gap analysis
+
+§11 routes each of these to the current decisions:
+
+1. **Review is tmodel's most distinctive element.** No surveyed format encodes it exactly, so every import and export loses it unless it is carried by extension (G1).
+2. **Attack paths are tmodel-native for now.** None of the 24 formats has an ordered attacker path. Attack Flow, a released STIX 2.1 extension added by the adversarial review, has one but no review; CycloneDX 2.0 is an unreleased candidate (G2).
+3. **The Assertion pattern is established practice.** Five formats carry attributed, multi-source statements exactly (G3).
+4. **ARCH-0001 has no specialization edge.** CWE, CAPEC and ATT&CK all use one, and mapping it to `part_of` would be wrong (G4).
+5. **Edges need qualifiers.** Every family uses at least one (G5).
+6. **Candidate concepts confirmed by the survey:** Requirement/Control, DataFlow, Applicability statement, Exploitation evidence, Party and Assertion. The requirements survey also proposed Assumption and Verification/Evidence (G3, G6, G10, G13).
+
+### 9.9 Limits of the crosswalk
+
+- Marks are extracted by script from the source files and were not re-judged here, except cells corrected after review (DL-0013): CVE Exploitation evidence, whose source cell in pilot.md was corrected, and three cells changed by hand (crosswalk.md, "How it was built"): SPDX 3.0.1 Req./control, OSV Weakness and OSV Exploitation evidence.
+- The Phase 4 adversarial review (0.5.0) checked 20 cells across 10 formats against the specifications: 15 correct, 2 wrong (the two OSV cells, now corrected) and 3 imprecise (CVSS TrustBoundary, CWE `part_of`, OSV `supersedes`, now qualified in §3 and §9.4).
+- `∅` cells were not assessed: the pilot did not assess Advisory/Remediation or DamageScenario, and only the requirements survey assessed Assumption and Verification/Evidence.
+- Table 4 (adoption, §10) and Table 5 (ratings, §1) are merged from the source files by script and were not re-judged here.
 
 ## 10. Adoption
 
-Who produces and consumes each format, with evidence. Vendor marketing alone was not accepted as evidence.
+**Table 4** lists who produces and consumes each format, with the evidence and the date it was checked. Vendor marketing alone was not accepted as evidence.
 
 | Format | Produced by | Consumed by | Kind | Evidence | As of |
 |---|---|---|---|---|---|
@@ -565,6 +660,7 @@ Who produces and consumes each format, with evidence. Vendor marketing alone was
 | threagile YAML | Threagile | Threagile; tmac (import, incl. `risk_tracking`) | open source | Threagile repo @`74e323ed`; tmac `threagile.ts` | 2026-10-05 |
 | pytm JSON | pytm (`--json`) | pytm (`pytm.json.load`); tmac (import) | open source | pytm v1.4.0 `pytm/json.py`, `tm.py`; tmac `pytm.ts` | 2026-10-05 |
 | Threat Dragon v2 JSON | OWASP Threat Dragon | Threat Dragon; tmac (import) | open source | TD v2.6.2 source; tmac `threat-dragon.ts` | 2026-10-05 |
+| OWASP TM-BOM v1 (Threat Model Library schema) | OWASP Threat Model Library (its published models) | Threat Dragon 2.6.2 (import only; CWE and CAPEC ids become text) | open source (MIT) | TD v2.6.2 `migration/tmBom/tmBom.js` (fanout-models-requirements.md §8); https://devguide.owasp.org/en/04-design/01-threat-modeling/06-threat-model-library/ ("Threat Dragon can import the TM-BOM file ... but it can not export TM-BOMs") | 2026-10-29 |
 | OSCAL | NIST (SP 800-53 Rev 5.2.0 catalog and baselines in OSCAL) | — | government | `usnistgov/oscal-content` @`78650f02`, `nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json` | 2026-10-05 |
 | OSCAL | compliance-trestle | compliance-trestle | open source (Apache-2.0; `oscal-compass` org) | `oscal-compass/compliance-trestle` README @`ecccc7cc`: "leverages NIST's OSCAL as a standard data format for interchange" | 2026-10-05 |
 | OSCAL | — | GSA oscal-ssp-to-word (SSP → Word) | government, open source; last push 2021-10-19 | `GSA/oscal-ssp-to-word` repo metadata; RPT-0013 lane 5 | 2026-10-05 |
@@ -582,14 +678,14 @@ Who produces and consumes each format, with evidence. Vendor marketing alone was
 
 ## 11. Synthesis and gap analysis
 
-The field is mature where tmodel needs to read: vulnerability records, scores, applicability statements and component identity are standardized, versioned and widely produced. It is immature where tmodel needs to write: no released format records a human's reviewed verdict on a threat, or an ordered attack path. tmodel's distinctive elements are therefore its own to model. Interchange is a matter of carrying them through other formats' extension points without loss.
+The field is mature where tmodel needs to read: vulnerability records, scores, applicability statements and component identity are standardized, versioned and widely produced. It is immature where tmodel needs to write: no format encodes ARCH-0001's Review exactly (none carries an assigned impact), and none of the 24 formats has an ordered attack path. Attack Flow, outside the 24, has paths but no review object of its own. tmodel's distinctive elements are therefore its own to model. Interchange is a matter of carrying them through other formats' extension points without loss.
 
 What the field has or lacks, against tmodel, with the decision each finding is evidence for:
 
 | # | Finding | Evidence | Routes to |
 |---|---|---|---|
-| G1 | No format encodes Review (verdict, assigned impact, rationale, reviewer, date) exactly. OSCAL and threagile come closest, and neither has assigned impact. Every import and export loses Review unless it is carried by extension. The accepted `Review` class has no date or impact slot either, and `reviews` ranges only over `Assertion`. | Table 5; crosswalk Review column (0 of 24 `=`); ADR-0010 C1 | ADR-0010 `Review` (export mapping), DEC-001b C1, R-018, #17 |
-| G2 | No released format has an ordered attack path. CAPEC's execution flow is the nearest; CycloneDX 2.0 TM-BOM is a draft candidate. | crosswalk AttackStep and AttackPath (0 of 24 `=`); §8 | ADR-0010 `AttackPath` (export mapping), ADR-0007, #17 |
+| G1 | No format encodes Review (verdict, assigned impact, rationale, reviewer, date) exactly. OSCAL and threagile come closest, and neither has assigned impact. Outside the crosswalk, SARIF's `suppression` (status `accepted`, `underReview` or `rejected`, with a `justification`) and OWASP's TM-BOM v1 (control status, `reviewed_at`) are review-shaped too, without impact. Every import and export loses Review unless it is carried by extension. The accepted `Review` class has no date or impact slot either, and `reviews` ranges only over `Assertion`. | Table 5; crosswalk Review column (0 of 24 `=`); §6; SARIF 2.1.0 schema (sources.md); ADR-0010 C1 | ADR-0010 `Review` (export mapping), DEC-001b C1, R-018, #17 |
+| G2 | None of the 24 formats has an ordered attack path; CAPEC's execution flow is the nearest among them. **Attack Flow, a released STIX 2.1 extension outside the crosswalk, has one**: actions linked by dependency and joined by AND/OR operators, with no review object of its own. CycloneDX 2.0 TM-BOM is an unreleased candidate. (Before 0.5.0 this read "no released format", which the adversarial review showed to be wrong.) | crosswalk AttackStep and AttackPath (0 of 24 `=`); §5 (Attack Flow); §8 | ADR-0010 `AttackPath` (import and export mapping, with Attack Flow as the candidate carrier), ADR-0007 (STIX import), #17 |
 | G3 | Attributed, multi-source assertions are common practice (5 exact, 8 close). | crosswalk part 2; §2, §4, §8 | ADR-0010 `Assertion` (accepted; consistent with this evidence), #16 |
 | G4 | ARCH-0001 has no specialization edge, but CWE, CAPEC and ATT&CK all use one. Mapping it to `part_of` would be wrong. | crosswalk, edges ARCH-0001 lacks | ADR-0010 amendment (its accepted relations have no specialization edge), #64 |
 | G5 | Edges carry qualifiers in every family: scope, order, fit, logic, justification, version pin. | crosswalk, edge qualifiers | ADR-0010 `Assertion` (reified edge), ADR-0004 edge façade (#52, #65), #16 |
@@ -597,25 +693,95 @@ What the field has or lacks, against tmodel, with the decision each finding is e
 | G7 | NVD no longer enriches most CVEs; CNA and ADP data in the CVE record is the main source of CWE and applicability. | §2 | DEC-008 |
 | G8 | Catalog references need a validity gate (CWE `Usage`) and a version pin (ATT&CK ids change meaning; CAPEC is frozen at ATT&CK 12.0). | §2, §5; threagile's 15 of 42 | DEC-008, #16 |
 | G9 | Closed catalogs (CWE, CAPEC) cannot be extended in place; local entries need a separate namespace with a fit-graded link. | §2; crosswalk Table 6 | DEC-008, #64 |
-| G10 | Requirement/Control and Verification evidence are first-class in OSCAL and SysML v2 but absent from ARCH-0001 §3. | §7; crosswalk part 2 | DEC-001b (`Requirement` held open), #19 |
+| G10 | Requirement/Control and Verification evidence are first-class in OSCAL and SysML v2 but absent from ARCH-0001 §3. ADR-0012 (2026-10-26) has since made `Requirement` core, so the open work is the import mapping onto its slots. | §7; crosswalk part 2; ADR-0012 | ADR-0012 follow-up (OSCAL, SysML v2, ReqIF and SACM mappings onto `Requirement`); DEC-001b only for `conformance_status`; #19 |
 | G11 | CPE and purl are the shared identity for Product and Component. | §9 | ADR-0010 `identifiers` slot (accepted; consistent with this evidence), DEC-009 |
-| G12 | OTM is the only threat-model interchange used across vendors, but it is a vendor-controlled 0.x schema without review or attack data; TM-BOM may supersede it. | §6, §8 | ADR-0007 (OTM import committed): OTM mapping and round-trip vector |
-| G13 | **The committed OTM import has no target for three of OTM's core entity types.** OTM is built on `assets`, `trustZones` and `dataflows`, but the accepted schema has no Asset, TrustBoundary or DataFlow class. Unless they are mapped onto accepted classes or added, an OTM import drops them, and the round-trip vector ADR-0007 requires cannot pass. ADR-0007 makes OTM the MVP import (STIX may follow after the MVP), so this bears on the MVP. The schema also describes `Component` as "not an OTM diagram node (§0)", so OTM `components` need an explicit mapping rule too. **Sponsor direction (2026-10-14, by text message, relayed by the student; DL-0013):** add them, shaped by iterative example models of published automotive attacks (car theft, theft of owners' private data). Accepting the added classes still needs an ADR amending ADR-0010. | §6; crosswalk part 1 and DataFlow; ADR-0010 class list; ADR-0007 Consequences | ADR-0007 OTM mapping, ADR-0010 amendment, #64 |
-| G14 | **The committed STIX import carries no weakness, attack path, risk or product-version applicability**, and ATT&CK, the main STIX producer, uses STIX's deprecated custom-property route rather than extension definitions. A STIX import yields attack patterns, mitigations, parties and provenance, not a threat model. | §5 | ADR-0007 STIX mapping (ADR-0007: STIX may come after the MVP) |
+| G12 | OTM is the only threat-model interchange used across vendors, but it is a vendor-controlled 0.x schema without review or attack data. OWASP's TM-BOM v1 is released and imported by Threat Dragon, and says it will follow CycloneDX 2.0's TM-BOM once that is released; either may supersede OTM. | §6, §8 | ADR-0007 (OTM import committed): OTM mapping and round-trip vector |
+| G13 | **The committed OTM import has no target for three of OTM's core entity types.** OTM is built on `assets`, `trustZones` and `dataflows`, but the accepted schema has no Asset, TrustBoundary or DataFlow class. Unless they are mapped onto accepted classes or added, an OTM import drops them, and the round-trip vector ADR-0007 requires cannot pass. ADR-0007 makes OTM the MVP import (STIX may follow after the MVP), so this bears on the MVP. The schema also describes `Component` as "not an OTM diagram node (§0)", so OTM `components` need an explicit mapping rule too. OTM's link from a threat instance to its library threat (`instance_of`, `=` in Table 3) has no slot either: `ThreatInstance` has no edge to a generic threat, so the link can travel only as an `Assertion` (Overview). **Sponsor direction (2026-10-14, by text message, relayed by the student; DL-0013):** add them, shaped by iterative example models of published automotive attacks (car theft, theft of owners' private data). Accepting the added classes still needs an ADR amending ADR-0010. | §6; crosswalk part 1 and DataFlow; ADR-0010 class list; ADR-0007 Consequences | ADR-0007 OTM mapping, ADR-0010 amendment, #64 |
+| G14 | **The committed STIX import carries no weakness, attack path, risk or product-version applicability**, and ATT&CK, the main STIX producer, uses STIX's deprecated custom-property route rather than extension definitions. A STIX import yields attack patterns, mitigations, parties and provenance, not a threat model, unless it also accepts the Attack Flow extension, which adds ordered attack actions. | §5 | ADR-0007 STIX mapping (ADR-0007: STIX may come after the MVP) |
 
-## 12. Method, coverage and limits
+## 12. Conclusion
 
-**Method.** The #39 playbook, phases 0 to 1, with a cost cap of three parallel agents. Phase 0 fixed the questions and table columns ([dimensions.md](dimensions.md)). A pilot on CWE, CVE, NVD and OTM in the main session tested the tables and changed five things in them ([pilot.md](pilot.md)). Three research agents then covered the other formats. Facts were taken from the artifacts (schema files, real example documents, live APIs), each with its SHA-256, not from summaries. The main session re-derived ten of the agents' facts from the artifacts, and all matched. The crosswalk marks were assembled by script without re-judgment. Every query is in [searches.md](searches.md) and every source in [sources.md](sources.md). The design log, DL-0013, records each phase and what was rejected: 4 claims in the pilot, 36 in the fan-out and 3 in the crosswalk draft.
+The 24 formats split in two. For what tmodel reads (weaknesses, vulnerabilities, scores, applicability and component identity) the field offers mature, versioned and widely produced formats. An import can keep almost everything if it keeps who said what (Assertion), the qualifiers on each relation, and the catalog version beside every id. For what tmodel adds, a human's reviewed verdict with an assigned impact and an ordered attack path, none of the 24 has an exact carrier. Both stay tmodel-native and travel through other formats' extension points. One released format outside the survey, Attack Flow, already carries ordered attack actions, and is the candidate for importing and exporting paths.
+
+Three results bear on near-term work:
+
+- **The OTM import needs three classes the schema lacks** (G13): Asset, TrustBoundary and DataFlow. The sponsor's direction is to add them through example models of published attacks, and a proposal built that way is under review (#130).
+- **A STIX import yields attack knowledge, not a threat model** (G14). This is consistent with ADR-0007 letting STIX follow the MVP.
+- **NVD can no longer be relied on to enrich every CVE** (G7). DEC-008 should treat the CVE record's CNA and ADP containers as the primary source of CWE and applicability.
+
+What remains is crosswalk rows for Attack Flow and TM-BOM v1 (§13) and the sponsor's decisions on the routes in §11.
+
+## 13. Method, coverage and limits
+
+**Method.** The #39 playbook, with a cost cap of three parallel agents. Phase 0 fixed the questions and table columns ([dimensions.md](dimensions.md)). In Phase 1, a pilot on CWE, CVE, NVD and OTM in the main session tested the tables and changed five things in them ([pilot.md](pilot.md)), and three research agents then covered the other formats. Facts were taken from the artifacts (schema files, real example documents, live APIs), each with its SHA-256, not from summaries. The main session re-derived ten of the agents' facts from the artifacts, and all matched. The crosswalk marks were assembled by script without re-judgment. Phase 2 extracted CWE and OTM in full and recorded the other formats as stubs or existing records (Table 1). A technical review by @Clovier checked about 25 external facts and 80 format cells against primary sources, and its fixes are in 0.3.3. The clarity pass in 0.4.0 changed no finding; it restructured §9, added the abstract, Figure 1, the conclusion and the appendix, and corrected two record notes (SSVC's steward, TAXII's record). In Phase 4 (0.5.0) a fresh agent that had not written the draft wrote its own list of formats before reading the report. It then tested coverage against that list and the dimension-10 candidates, checked 20 crosswalk cells and 15 citations against primary sources, and re-counted the keywords of the three FX-1 records (all three reconcile). It found 4 material and 13 minor problems. The main session checked each finding against its source before acting on it. Every query is in [searches.md](searches.md) and every source in [sources.md](sources.md). The design log, DL-0013, records each phase and what was rejected: 4 claims in the pilot, 36 in the fan-out, 3 in the crosswalk draft, 4 in the report draft, 7 after the technical review and 12 after the adversarial review.
 
 **Decisions taken during the survey.** DEC-002, DEC-003 and DEC-004 were accepted on 2026-10-08 and DEC-001a on 2026-10-12 (Overview); version 0.3.0 re-routes the gap analysis accordingly. The crosswalk itself still uses ARCH-0001 §3's working labels, with the mapping in the Overview.
 
 **Scope decisions.** OpenC2 is out of scope (a command language, not threat knowledge). CPE, purl and KEV are not formats. ATLAS is covered by RPT-0014. All three were decided by the sponsor. Still open: whether CycloneDX 2.0 TM-BOM gets full coverage as a pinned draft, and whether SSVC is a format.
 
+**The dimension-10 candidates**, as the adversarial review judged them. SWID is an identifier scheme (§9.3), and OpenC2, ATLAS and SSVC are handled as above. TM-BOM is now a coverage row (§6). The rest are out, and none changes a crosswalk conclusion:
+- CACAO describes how a course of action is executed, not the model.
+- OCSF findings are runtime events, not a design-time model.
+- MAEC characterizes malware, which STIX `malware` and ATT&CK software already cover.
+- SARIF holds code-analysis findings; it is cited in Table 6 and G1.
+- VERIS records incidents after the fact, with no system model.
+- OVAL and XCCDF (SCAP) are configuration checks. XCCDF, a checklist and benchmark language with a results model, is a plausible import source for configuration requirements now that `Requirement` is core; it is not surveyed here.
+
+Attack Flow was outside the candidate list; the review found it (§5).
+
 **Not yet done.**
-- **Phase 2:** library records, as Table 1 lists them. `cwe` and `open-threat-model` are FX-1 complete and `ssvc` is a stub (library#21); nine honest stubs are in library#25; CycloneDX and SPDX are RPT-0004's stubs (library#26) and pytm and Threat Dragon are RPT-0003's records (library#20), cited as they are (ownership on #39). Still to do: `stix-2-1`, the other committed import (ADR-0007), and the spec summaries (`cve-json-5`, `osv-schema`, `mitre-attack`, `capec`, `d3fend`), which the sponsor is asked on #39 whether they must become stubs.
-- **Phase 4:** the adversarial review. It will test coverage against CACAO, OCSF, MAEC, SARIF, OVAL/SCAP, VERIS and SWID; spot-check crosswalk cells against the specifications; and count normative statements against the extractions.
-- **Phase 6:** the clarity pass.
+- **Phase 2:** library records, as Table 1 lists them. `cwe` and `open-threat-model` are FX-1 complete and `ssvc` is a stub (library#21); `osv-schema` is FX-1 complete (library#28); the nine stubs of library#25 are merged; `cve-json-5` is a stub pinned to 5.2.0 (library#38). On 2026-10-29 the sponsor left #39's remaining questions to the student. STIX 2.1 and the other attack-backbone records (CAPEC, ATT&CK, D3FEND) are at the summary bar under tmodel #165 (library#36), with later extraction routed to #17 and #61; they are not extracted under #39. CycloneDX and SPDX are RPT-0004's stubs (library#26), and pytm, Threat Dragon and the TM-BOM v1 schema are RPT-0003's records (library#20), cited as they are.
+- **Crosswalk rows for Attack Flow and TM-BOM v1.** The adversarial review added both as coverage rows. Full rows in Tables 2, 3 and 5 would re-run Phases 1 to 3 for two formats; until then, §5, §6, G1, G2 and G12 carry what they change.
+- **CWE 5.0** (schema 8.0, 2026-10-28) is not surveyed; a library record for it would be new, linked by `supersedes` (§2).
 
-**Limits.** Ratings and marks are AI-produced and only spot-checked by a human. The student's review so far is for clarity, not technical correctness (DL-0013). Adoption evidence is a sample, dated per row.
+**Limits.** Ratings and marks are AI-produced. @Clovier's technical review and the Phase 4 adversarial review checked samples of them against primary sources; the student's review is for clarity, not technical correctness (DL-0013). Adoption evidence is a sample, dated per row. Pinned versions move: ATT&CK, OSV, CSAF 2.1 and CWE all have newer releases than the ones surveyed (§2, §4, §5).
 
-**References** live in the library: the record ids above, and every source with its URL and digest in [sources.md](sources.md). The library commit is pinned when Phase 2 merges.
+**References** live in the library: the record ids above, and every source with its URL and digest in [sources.md](sources.md). The library commit is pinned in the front matter (`library_commit`).
+
+## Appendix: acronyms
+
+| Acronym | Expansion |
+|---|---|
+| ADP | Authorized Data Publisher (CVE Program) |
+| ADR | Architecture decision record (tmodel `spec/ADR-*`); only an ADR accepts a `DEC-*` |
+| ATLAS | Adversarial Threat Landscape for Artificial-Intelligence Systems (MITRE) |
+| ATT&CK | Adversarial Tactics, Techniques, and Common Knowledge (MITRE) |
+| CACAO | Collaborative Automated Course of Action Operations (OASIS) |
+| CAPEC | Common Attack Pattern Enumeration and Classification (MITRE) |
+| CNA | CVE Numbering Authority |
+| CPE | Common Platform Enumeration (NIST) |
+| CSAF | Common Security Advisory Framework (OASIS) |
+| CVE | Common Vulnerabilities and Exposures |
+| CVSS | Common Vulnerability Scoring System (FIRST) |
+| CWE | Common Weakness Enumeration (MITRE) |
+| D3FEND | Detection, Denial, and Disruption Framework Empowering Network Defense (MITRE) |
+| DEC | An open decision in `project/DECISIONS-0001.md` |
+| EPSS | Exploit Prediction Scoring System (FIRST) |
+| FX-1 | The library's full-extraction standard (`library/docs/extraction.md`) |
+| KEV | Known Exploited Vulnerabilities catalog (CISA) |
+| LinkML | Linked Data Modeling Language, tmodel's schema language (ADR-0007) |
+| MAEC | Malware Attribute Enumeration and Characterization |
+| MVP | Minimum viable product |
+| NVD | National Vulnerability Database (NIST) |
+| OCSF | Open Cybersecurity Schema Framework |
+| OSCAL | Open Security Controls Assessment Language (NIST) |
+| OSV | Open Source Vulnerability format (OpenSSF) |
+| OTM | Open Threat Model (IriusRisk) |
+| OVAL | Open Vulnerability and Assessment Language |
+| purl | Package URL (ECMA-427) |
+| ReqIF | Requirements Interchange Format (OMG) |
+| SACM | Structured Assurance Case Metamodel (OMG) |
+| SARIF | Static Analysis Results Interchange Format (OASIS) |
+| SBOM | Software bill of materials |
+| SCAP | Security Content Automation Protocol (NIST) |
+| SDO, SRO | STIX Domain Object, STIX Relationship Object |
+| SPDX | The Linux Foundation's bill-of-materials standard (originally Software Package Data Exchange) |
+| SSVC | Stakeholder-Specific Vulnerability Categorization (CERT/CC) |
+| STIX | Structured Threat Information Expression (OASIS) |
+| SWID | Software Identification tag (ISO/IEC 19770-2) |
+| SysML | Systems Modeling Language (OMG) |
+| TAXII | Trusted Automated Exchange of Intelligence Information (OASIS) |
+| TM-BOM | Threat-model bill of materials. Two things: OWASP's Threat Model Library schema, released as v1 (§6), and CycloneDX 2.0's threat-model modules, unreleased (§8) |
+| VERIS | Vocabulary for Event Recording and Incident Sharing |
+| VEX | Vulnerability Exploitability eXchange |
+| XCCDF | Extensible Configuration Checklist Description Format (NIST) |

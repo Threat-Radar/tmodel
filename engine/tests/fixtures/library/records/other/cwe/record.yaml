@@ -1,0 +1,37 @@
+schema: "library-record/v1"
+id: cwe
+body: other
+type: dataset
+maturity: best-practice
+title: "MITRE CWE — Common Weakness Enumeration"
+identifiers:
+  url: https://cwe.mitre.org/
+content:
+  url: https://cwe.mitre.org/
+  sha256: ""
+  retrieved: "2026-09-26"
+  local: false
+relations:
+  supersedes: []
+  superseded_by: []
+  cited_by: []
+  see_also: []
+  implements_concept: []
+bears_on:
+  - DEC-001
+applicability:
+  security: core
+  cryptography: adjacent
+  this_project: core
+usefulness:
+  verdict: useful
+  reason: "Source for tmodel's Weakness nodes and their hierarchy; XSD validates ingestion. Ties to ARCH-0001 §3."
+  assessed: "2026-09-26"
+topic: ""
+tags:
+  - cwe
+  - weakness
+  - mitre
+  - graph
+status: summarized
+confidence: medium

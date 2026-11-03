@@ -1,0 +1,56 @@
+# Web page: content drifts. The digest + retrieved date is the whole point.
+# Base template. Every adapter is this shape; types differ only in defaults
+# and in which fields they leave for a human. Placeholders: {{...}}
+schema: "library-record/v1"
+id: threattree-help
+body: vendor
+type: web
+title: "ThreatTree Help Center"
+authors:
+  - ThreatTree
+maturity: implementation
+identifiers:
+  url: https://threattree.com/app/help
+content:
+  url: https://threattree.com/app/help
+  sha256: "57f6ff5946640f3f26bd4e5a2d2986c34cf72734aa3f3bba4e983348252801cd"
+  retrieved: "2026-10-04"
+  local: false
+relations:
+  supersedes: []
+  superseded_by: []
+  see_also: []
+  cited_by: []
+  implements_concept: []
+bears_on:
+  - DEC-001
+  - DEC-002
+  - DEC-003
+  - DEC-006
+  - R-018
+  - R-021
+topic: rpt-0003-threat-modeling-products
+implementations:
+  commercial:
+    - name: ThreatTree
+      url: https://threattree.com/
+      note: "Product homepage checked 2026-10-04; technical capability evidence is taken from this Help Center record."
+  open_source: []
+  searched: "2026-10-04"
+applicability:
+  security: core
+  cryptography: none
+  this_project: core
+usefulness:
+  verdict: useful
+  reason: "First-party technical documentation for linked DFD, attack-tree, risk-register, export, collaboration, and ticket-lifecycle behavior."
+  assessed: "2026-10-04"
+tags:
+  - threat-modeling
+  - attack-tree
+  - dfd
+  - stix
+  - risk-register
+  - workflow
+status: summarized
+confidence: medium

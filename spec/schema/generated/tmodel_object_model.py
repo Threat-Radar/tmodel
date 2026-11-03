@@ -82,10 +82,10 @@ linkml_meta = LinkMLMeta({'annotations': {'accepts': {'tag': 'accepts', 'value':
      'description': 'First-cut LinkML IDL for the ThreatRadar tmodel object model. '
                     'Source is ARCH-0001-PROPOSAL v0.2.0 §13 (classes) with edges '
                     'named in §§2–4, §10 and §3c. Core type system ACCEPTED '
-                    '(DEC-001a, ADR-0010); governed/program layer proposes '
-                    'DEC-001b. ADR-0004 is the accepted storage/edges pin (files '
-                    'in git, stable IDs, typed edges); this schema does not close '
-                    'DEC-002 or DEC-004.',
+                    '(DEC-001a, ADR-0010; Requirement added by ADR-0012); the rest '
+                    'of the governed/program layer proposes DEC-001b. ADR-0004 is '
+                    'the accepted storage/edges pin (files in git, stable IDs, '
+                    'typed edges); this schema does not close DEC-002 or DEC-004.',
      'id': 'https://threat-radar.github.io/tmodel/schema/object-model',
      'imports': ['linkml:types'],
      'name': 'TmodelObjectModel',
@@ -311,6 +311,51 @@ class Normativity(str, Enum):
     """
 
 
+class RequirementKind(str, Enum):
+    """
+    What kind of obligation a Requirement is (ADR-0012). A mitigation that becomes a requirement can be any of these, not only technical.
+    """
+    technical = "technical"
+    """
+    A property or behaviour of the product (e.g. authenticate diagnostic requests).
+    """
+    process = "process"
+    """
+    An activity the developer or operator must perform (e.g. analyse attack paths).
+    """
+    audit = "audit"
+    """
+    An independent check or assessment that must take place.
+    """
+    documentation = "documentation"
+    """
+    A work product or record that must exist.
+    """
+    organizational = "organizational"
+    """
+    A policy, role, competence or management obligation.
+    """
+    other = "other"
+
+
+class RequirementTextOrigin(str, Enum):
+    """
+    Where a Requirement's `text` comes from (ADR-0012).
+    """
+    paraphrase = "paraphrase"
+    """
+    Our wording of the source. Required for licensed standards.
+    """
+    verbatim = "verbatim"
+    """
+    The source's own words; only where the source's licence permits.
+    """
+    authored = "authored"
+    """
+    Written by the project (e.g. a family requirement from a generic mitigation).
+    """
+
+
 
 class Node(ConfiguredBaseModel):
     """
@@ -326,7 +371,7 @@ class Node(ConfiguredBaseModel):
 
 class Product(Node):
     """
-    A product design (structural layer, §1). Recursive composition is `composed_of` Components (§3). Relational party roles are edges (§2b).
+    A product design (structural layer, §1). Recursive composition is `composed_of` Components (§3). Relational party roles are edges (§2b). `classifications` names the product types / families it belongs to (e.g. `family:connected-ecu`); a Requirement scoped to a family by `applies_to_family` applies to every Product carrying that value (ADR-0012). There is no ProductFamily class (DEC-009).
     """
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://threat-radar.github.io/tmodel/schema/object-model'})
 
@@ -339,6 +384,10 @@ class Product(Node):
                       {'value': 'cpe:2.3:a:openssl:openssl:3.0.2:*:*:*:*:*:*:*'},
                       {'value': 'swid:acme-ecu-fw-2.4.1'},
                       {'value': 'sha256:9f2c1a7e...firmware-image-digest'}]} })
+    classifications: Optional[list[str]] = Field(default=None, description="""Intrinsic classifications only, e.g. standards-body, cna (§2b). On a Product, the product types / families it belongs to, scheme-prefixed (e.g. `family:connected-ecu`); `Requirement.applies_to_family` matches these (ADR-0012).""", json_schema_extra = { "linkml_meta": {'domain_of': ['Product', 'Party'],
+         'examples': [{'value': 'standards-body'},
+                      {'value': 'cna'},
+                      {'value': 'family:connected-ecu'}]} })
     id: str = Field(default=..., description="""Stable object id (ADR-0004). Adapters must not renumber it.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
     name: Optional[str] = Field(default=None, description="""Human-readable name.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
     description: Optional[str] = Field(default=None, description="""Short prose description.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
@@ -392,8 +441,10 @@ class Party(Node):
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://threat-radar.github.io/tmodel/schema/object-model'})
 
     party_kind: Optional[PartyKind] = Field(default=None, description="""Organization or person (§2b).""", json_schema_extra = { "linkml_meta": {'domain_of': ['Party']} })
-    classifications: Optional[list[str]] = Field(default=None, description="""Intrinsic classifications only, e.g. standards-body, cna (§2b).""", json_schema_extra = { "linkml_meta": {'domain_of': ['Party'],
-         'examples': [{'value': 'standards-body'}, {'value': 'cna'}]} })
+    classifications: Optional[list[str]] = Field(default=None, description="""Intrinsic classifications only, e.g. standards-body, cna (§2b). On a Product, the product types / families it belongs to, scheme-prefixed (e.g. `family:connected-ecu`); `Requirement.applies_to_family` matches these (ADR-0012).""", json_schema_extra = { "linkml_meta": {'domain_of': ['Product', 'Party'],
+         'examples': [{'value': 'standards-body'},
+                      {'value': 'cna'},
+                      {'value': 'family:connected-ecu'}]} })
     id: str = Field(default=..., description="""Stable object id (ADR-0004). Adapters must not renumber it.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
     name: Optional[str] = Field(default=None, description="""Human-readable name.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
     description: Optional[str] = Field(default=None, description="""Short prose description.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
@@ -496,7 +547,7 @@ class DamageScenario(Node):
 
 class Mitigation(Node):
     """
-    A mitigation/control (catalog example D3FEND, §1). §5 instance fields (implementation owner, external work-item refs, status) are on this class until a separate MitigationInstance class is accepted. Status is also surfaced as RiskScore.mitigation_status (R-045) — a peer of the derived risk, not an input to it.
+    A mitigation/control (catalog example D3FEND, §1). §5 instance fields (implementation owner, external work-item refs, status) are on this class until a separate MitigationInstance class is accepted. Status is also surfaced as RiskScore.mitigation_status (R-045) — a peer of the derived risk, not an input to it. A GENERIC mitigation for a product type/family is `stated_as` a Requirement (technical, process, audit, …); a product-specific mitigation discharges that Requirement through `Requirement.satisfied_by` (ADR-0012).
     """
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://threat-radar.github.io/tmodel/schema/object-model'})
 
@@ -506,6 +557,7 @@ class Mitigation(Node):
     implementation_owner: Optional[str] = Field(default=None, description="""Who implements the mitigation (§5).""", json_schema_extra = { "linkml_meta": {'domain_of': ['Mitigation']} })
     external_refs: Optional[list[str]] = Field(default=None, description="""Linked work items, e.g. a Jira key (§5). Opaque strings; no tracker schema.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Mitigation']} })
     mitigation_status: Optional[MitigationStatus] = Field(default=None, description="""Lifecycle of the mitigation (§3 R-045, §5): planned / in-progress / complete / accepted-risk / n-a. Vocabulary may be refined by DEC-009. On RiskScore this is a peer column of feasibility and impact, not folded into `risk`.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Mitigation', 'RiskScore']} })
+    stated_as: Optional[list[str]] = Field(default=None, description="""A generic Mitigation (for a product type/family) expressed as a Requirement (ADR-0012). The Requirement carries the family scope and is discharged by product-specific Mitigations via `satisfied_by`. An AI-proposed link is a `proposed` Assertion with predicate `stated_as` until reviewed.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Mitigation']} })
     id: str = Field(default=..., description="""Stable object id (ADR-0004). Adapters must not renumber it.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
     name: Optional[str] = Field(default=None, description="""Human-readable name.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
     description: Optional[str] = Field(default=None, description="""Short prose description.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
@@ -767,16 +819,31 @@ class Milestone(ProgramNode):
 
 class Requirement(Node):
     """
-    A normative statement from a spec, satisfied through the SDL (§3c R-044). Its `text` is the normative statement and `normativity` says how binding it is. `source_ref` is an OPAQUE uriorcurie into the library requirement record (Threat-Radar/library) — tmodel aligns by reference ONLY; it does not import or depend on the library schema. `maps_to` carries the MAP-0001 cross-spec crosswalk (how SSDF ↔ MS SDL ↔ SAMM ↔ 21434 … overlap; reviewed mappings reify as Assertions, §4). `satisfied_by` links the Mitigation(s) that discharge it; `conformance_status` is the automatable R-042 verdict — it proves linkage + approval, NOT adequacy. ARCH lists audit (Requirement/WorkProduct) as post-MVP (#19); not yet a §13 class. Post-MVP.
+    CORE (ADR-0012, amending ADR-0010 / DEC-001a). A normative statement a product must meet: taken from a standard, regulation or guideline (ISO/SAE 21434, ETSI EN 304 223, NIST SP 800-218, …) or authored for a product type/family. `text` is the statement and `text_origin` says whether it is a paraphrase, verbatim or authored; for a licensed standard it is ALWAYS a paraphrase and the clause is in `source_locator`. `source_ref` is an OPAQUE uriorcurie into the library requirement record (Threat-Radar/library) — tmodel aligns by reference ONLY; it does not import or depend on the library schema. `requirement_kind` classifies it (technical / process / audit / documentation / organizational / other) and `normativity` says how binding it is. Edges: `refines` / `derived_from` / `conflicts_with` / `maps_to` (overlap, the MAP-0001 crosswalk) to other Requirements; `addresses` the ThreatInstance / Weakness / AttackPattern it counters; `satisfied_by` the Mitigation(s) that discharge it; `applies_to` a Product / ProductInstance / Component, or `applies_to_family` a product type/family (matched against Product.classifications). A generic Mitigation is `stated_as` a Requirement. AI-proposed requirement links are `proposed` Assertions until a human Review accepts them (§4). `conformance_status` is NOT accepted: it is the DEC-001b R-042 verdict (C1) and stays proposal-level; core vectors do not set it.
     """
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://threat-radar.github.io/tmodel/schema/object-model'})
 
-    text: Optional[str] = Field(default=None, description="""The normative statement of a Requirement (§3c R-044). Distinct from `description`.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement']} })
+    text: Optional[str] = Field(default=None, description="""The normative statement of a Requirement (ADR-0012; §3c R-044). Distinct from `description`. For a licensed standard (ISO, IEC, SAE) it is a paraphrase, never the standard's wording; `text_origin` records which.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement']} })
+    text_origin: Optional[RequirementTextOrigin] = Field(default=None, description="""Whether `text` is a paraphrase of the source, the source's own words (only where the source's licence allows it), or authored by the project (ADR-0012).""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement']} })
+    requirement_kind: Optional[RequirementKind] = Field(default=None, description="""What kind of obligation a Requirement is (ADR-0012).""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement']} })
     normativity: Optional[Normativity] = Field(default=None, description="""How binding a Requirement is (§3c R-044): mandatory / recommended / optional / informative / conditional. MAP-0001 shows a cell means different things per framework (hard requirement vs maturity activity vs recommendation).""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement']} })
-    source_ref: Optional[str] = Field(default=None, description="""OPAQUE reference to a library requirement record (Threat-Radar/library), by uriorcurie id only (§3c R-044, §2b). tmodel aligns by reference — it does NOT import or depend on the library schema.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement']} })
-    maps_to: Optional[list[str]] = Field(default=None, description="""Cross-spec crosswalk edges (§3c R-044) = the MAP-0001 overlap. Reviewed mappings reify as Assertions (§4) so they can carry provenance + a Review.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement']} })
-    satisfied_by: Optional[list[str]] = Field(default=None, description="""Mitigation(s) that discharge this Requirement (§3c R-042).""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement']} })
-    conformance_status: Optional[RequirementConformanceStatus] = Field(default=None, description="""Automatable R-042 conformance verdict for a Requirement: whether it has an approved, evidenced mitigation. Proves linkage + approval, NOT adequacy.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement']} })
+    source_ref: Optional[str] = Field(default=None, description="""OPAQUE reference to the library record (Threat-Radar/library) the Requirement comes from, scheme-prefixed like `catalog_ref`, e.g. `library:iso-sae-21434-2021#RQ-09-09` (ADR-0012; §3c R-044, §2b). tmodel aligns by reference — it does NOT import or depend on the library schema. Absent for a project-authored requirement.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement']} })
+    source_locator: Optional[str] = Field(default=None, description="""Human-readable clause / section / table locator in the source, e.g. `RQ-09-09 (§9.5.2)` or `Provision 5.2.1` (ADR-0012). With a paraphrased `text` this is how a reader finds the authoritative wording.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement']} })
+    refines: Optional[list[str]] = Field(default=None, description="""This Requirement makes the target more specific for a product, family or component (same intent, narrower scope or more detail) (ADR-0012).""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement']} })
+    derived_from: Optional[list[str]] = Field(default=None, description="""This Requirement was derived from the target (e.g. a product requirement derived from a standard's provision, ISO/SAE 21434 RQ-09-09). Unlike `refines`, the intent may differ (ADR-0012).""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement']} })
+    conflicts_with: Optional[list[str]] = Field(default=None, description="""The two Requirements cannot both be met as written; a human must resolve it (ADR-0012). Symmetric in meaning; record it on either side.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement']} })
+    maps_to: Optional[list[str]] = Field(default=None, description="""Overlap / cross-spec crosswalk edge (§3c R-044) = the MAP-0001 overlap: the two Requirements ask for substantially the same thing. Reviewed mappings reify as Assertions (§4) so they can carry provenance + a Review.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement']} })
+    addresses: Optional[list[str]] = Field(default=None, description="""The ThreatInstance, Weakness or AttackPattern this Requirement counters (ADR-0012). An AI-proposed `addresses` link is a `proposed` Assertion, not a value of this slot, until a human Review accepts it.""", json_schema_extra = { "linkml_meta": {'any_of': [{'range': 'ThreatInstance'},
+                    {'range': 'Weakness'},
+                    {'range': 'AttackPattern'}],
+         'domain_of': ['Requirement']} })
+    satisfied_by: Optional[list[str]] = Field(default=None, description="""Mitigation(s) that discharge this Requirement (ADR-0012; §3c R-042). Normally product-specific mitigations; the generic family mitigation is linked the other way, by `Mitigation.stated_as`.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement']} })
+    applies_to: Optional[list[str]] = Field(default=None, description="""The Product, ProductInstance or Component this Requirement applies to (ADR-0012).""", json_schema_extra = { "linkml_meta": {'any_of': [{'range': 'Product'},
+                    {'range': 'ProductInstance'},
+                    {'range': 'Component'}],
+         'domain_of': ['Requirement']} })
+    applies_to_family: Optional[list[str]] = Field(default=None, description="""Product type / family scope (ADR-0012), as an opaque scheme-prefixed value matched against `Product.classifications`, e.g. `family:connected-ecu`. Used instead of a ProductFamily class, which DEC-009 has not decided.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement'], 'examples': [{'value': 'family:connected-ecu'}]} })
+    conformance_status: Optional[RequirementConformanceStatus] = Field(default=None, description="""PROPOSED (DEC-001b, not accepted by ADR-0012). Automatable R-042 conformance verdict for a Requirement: whether it has an approved, evidenced mitigation. Proves linkage + approval, NOT adequacy. Core (mvp-*) vectors do not set it.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement']} })
     id: str = Field(default=..., description="""Stable object id (ADR-0004). Adapters must not renumber it.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
     name: Optional[str] = Field(default=None, description="""Human-readable name.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
     description: Optional[str] = Field(default=None, description="""Short prose description.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
