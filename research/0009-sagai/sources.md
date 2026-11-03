@@ -23,7 +23,7 @@ it has none; "stub" means pinned by digest with a written summary, not extracted
 | Sharma, Gupta, Grossman, *Defending Language Models Against Image-Based Prompt Attacks via User-Provided Specifications* (SAGAI'24); [author PDF](https://homes.cs.washington.edu/~reshabh/SAGAI.pdf), [IEEE Xplore 10579532](https://ieeexplore.ieee.org/abstract/document/10579532) | paper | 2 | `spml-image-prompt-injection` (summarized) | — |
 | Kang et al., *Exploiting Programmatic Behavior of LLMs: Dual-Use Through Standard Security Attacks* (SAGAI'24); [arXiv 2302.05733](https://arxiv.org/abs/2302.05733) | paper | 2 | `llm-programmatic-dual-use` (summarized) | — |
 | Liu et al., *Pre-trained Encoders in Self-Supervised Learning Improve Secure and Privacy-preserving Supervised Learning* (SAGAI'24); [arXiv 2212.03334](https://arxiv.org/abs/2212.03334) | paper | 2 | `pretrained-encoders-secure-learning` (summarized) | — |
-| Christodorescu et al., *Systems Security Foundations for Agentic Computing* (arXiv 2512.01295); probably the SAGAI'25 output, unconfirmed | paper | 2 | `systems-security-agentic-computing` (summarized) | — |
+| Christodorescu et al., *Systems Security Foundations for Agentic Computing* (arXiv 2512.01295); the SAGAI'25 report: v1's Introduction says so, and v2 drops the sentence | paper | 2 | `systems-security-agentic-computing` (summarized; `part_of: sagai-workshop` since library#40) | — |
 | Christodorescu et al., *Agent Security is a Systems Problem* (arXiv 2605.18991) | paper | 2 | `agent-security-systems-problem` (stub, library#40) | — |
 | Christodorescu et al., *Securing the Future of GenAI: Policy and Technology* (arXiv 2407.12999); related Oct 2023 workshop | paper | 2 | `securing-future-genai-policy-technology` (stub, library#40) | — |
 | Fraunhofer IESE "SAGAI" (*Software Architecture and Generative AI*); name clash, out of scope | web | 1 | `fraunhofer-iese-sagai` (not-useful, library#40) | — |
@@ -51,6 +51,6 @@ Full digests for the rows above are in the header of [example-models/em-01-echol
 
 ## Open questions
 
-- Is arXiv 2512.01295 the SAGAI'25 research-challenges document? Ask @nymble.
+- ~~Is arXiv 2512.01295 the SAGAI'25 research-challenges document?~~ Yes (2026-11-02): its v1 Introduction calls it the report of "the IEEE Secure Generative AI Agents 2025 workshop (SAGAI …)".
 - SAGAI'26 program: the site's program page returns 404; find its papers or talks another way.
 - SAGAI'24 papers are in the IEEE SPW 2024 proceedings; free copies are linked above. Find the IEEE Xplore entry for the three arXiv papers.

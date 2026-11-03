@@ -30,7 +30,7 @@ issue: 189
 
 # RPT-0009: SAGAI and related AI-security specifications
 
-**Status: draft 0.3.1.** Done: the SAGAI papers (§2); full extractions of ETSI EN 304 223 and of CISA's AI-in-OT principles, with every entry mapped to AI attack classes (library#32); one worked example, EchoLeak (§5); and every source traced to a library record or a written reason it has none (0.3.1, #189). Not yet done: a human technical review, the adversarial review and the clarity pass. Related guidance (§6) is held as stubs, not extracted. This report accepts nothing; each recommendation routes to an open `DEC-*`, an accepted ADR's follow-up work, or an issue.
+**Status: draft 0.3.1.** Done: the SAGAI papers (§2); full extractions of ETSI EN 304 223 and of CISA's AI-in-OT principles, with every entry mapped to AI attack classes (library#32); one worked example, EchoLeak (§5); every source traced to a library record or a written reason it has none; and arXiv 2512.01295 confirmed as SAGAI'25's report (both 0.3.1, #189). Not yet done: a human technical review, the adversarial review and the clarity pass. Related guidance (§6) is held as stubs, not extracted. This report accepts nothing; each recommendation routes to an open `DEC-*`, an accepted ADR's follow-up work, or an issue.
 
 **Abstract.** Which AI attacks do the leading AI-security requirements defend against, and what must tmodel represent to model those attacks? This report maps the 73 entries of ETSI EN 304 223 and the 136 of CISA's *Principles for the Secure Integration of AI in OT* onto NIST AI 100-2 E2025's attack classes and MITRE ATLAS techniques. It reads the SAGAI workshop papers for the threats and defenses research has established, and tests both on one documented attack, EchoLeak (CVE-2025-32711). The requirements cover poisoning, privacy, supply chain and conventional cyber security, but they reach prompt injection only by inference: each document names it once. Neither mentions retrieval, output rendering or exfiltration, which is the path EchoLeak took. The SAGAI papers propose the defenses the standards lack. To model attacks like EchoLeak, tmodel's schema needs seven additions (G1 to G7).
 
@@ -50,7 +50,7 @@ tmodel both **uses AI** (machine-proposed threats are hypotheses until a human r
 |---|---|---|---|---|---|
 | ETSI EN 304 223 V2.1.1 (2025-12), *Baseline Cyber Security Requirements for AI Models and Systems* | ETSI TC SAI | European Standard | 73: 72 provisions plus one clause 4 statement | 49 *shall*, 24 *should* | `etsi-en-304-223`, FX-1 (library#32) |
 | *Principles for the Secure Integration of Artificial Intelligence in Operational Technology* (2025-12-03; PDF 508cV2, revised 2026-01) | CISA with partner agencies | joint guidance | 136 | 104 recommendations, 10 permissions, 6 considerations, 5 principles, 3 requirements (*must*), 1 prohibition, 7 other | `cisa-ai-in-ot-principles`, FX-1 (library#32) |
-| SAGAI'24 papers (4), SAGAI'25 position papers (2), one related workshop report | IEEE S&P workshops; authors | research papers | threats and defenses (§2) | none | 5 records `summarized` (library#7); §2.6 and §2.7 stubs (library#40) |
+| SAGAI'24 papers (4), the SAGAI'25 report and its authors' follow-up, one related workshop report | IEEE S&P workshops; authors | research papers | threats and defenses (§2) | none | 5 records `summarized` (library#7); §2.6 and §2.7 stubs (library#40) |
 
 ### Table 2. Which attack classes the requirements defend against
 
@@ -82,13 +82,14 @@ Read across the rows:
 - **SAGAI'24**, *Security Architectures for GenAI Systems*, May 23 2024: peer-reviewed
   papers, published in the IEEE SPW 2024 proceedings.
 - **SAGAI'25**, *Secure Generative AI Agents Workshop*, May 15 2025: invited talks and
-  panels, no papers; its stated output is a joint research-challenges document.
+  panels, no papers; its stated output is a joint research-challenges document, which is
+  arXiv 2512.01295 (§2.5).
 - **SAGAI'26**, *Secure Agents for Generative Artificial Intelligence*, May 21 2026:
   program not yet retrieved.
 - Not in scope: Fraunhofer IESE's "SAGAI" (*Software Architecture and Generative AI*),
   a different series with the same acronym.
 
-**Takeaway:** SAGAI is a research venue, not a standard: it supplies threats and system-level defenses (§2), while the requirements a product can be held to come from ETSI and CISA (§3, §4). The SAGAI'24 papers and the SAGAI'25 position papers are the research input; ETSI EN 304 223 and CISA's AI-in-OT principles are the requirements this report maps.
+**Takeaway:** SAGAI is a research venue, not a standard: it supplies threats and system-level defenses (§2), while the requirements a product can be held to come from ETSI and CISA (§3, §4). The SAGAI'24 papers, the SAGAI'25 report and its follow-up are the research input; ETSI EN 304 223 and CISA's AI-in-OT principles are the requirements this report maps.
 
 
 ## 2. SAGAI papers and outputs
@@ -186,10 +187,15 @@ Threats and defenses established by the workshop papers, each placed in NIST AI 
 - **Limits.** Assumes the encoder itself is clean; attacks on the encoder are out of
   scope (§3, §9).
 
-### 2.5 Systems security foundations for agentic computing (Christodorescu et al.; probable SAGAI'25 output)
+### 2.5 Systems security foundations for agentic computing (Christodorescu et al.; the SAGAI'25 report)
 
-Written by the SAGAI'25 organizers and a SAGAI'25 panelist; the paper itself does not name
-the workshop (see §8). Read version: arXiv 2512.01295v2, Feb 2026.
+The workshop's research-challenges document. Its first version (arXiv 2512.01295v1, Dec
+2025) opens: "The IEEE Secure Generative AI Agents 2025 workshop (SAGAI; co-located with the
+IEEE Symposium on Security and Privacy) set out to explore how computer-security research and
+practice can help inform and advance agentic computing security. This report captures those
+discussions …". Four of its six authors organized SAGAI'25, and a fifth, Rehberger, spoke
+there. Read version: v2 (Feb 2026), an expanded SoK with eight more authors, which drops that
+sentence.
 
 - **Position.** Agent security needs the systems-security view of the whole system, not
   only a more robust model (§1).
@@ -363,7 +369,7 @@ Each row is evidence for the decision or issue it routes to; none is a decision.
 4. Do safety and reliability risks (drift, hallucination) count as threats in tmodel? Should attacks that use AI as a tool be modeled?
 5. Should the candidate CWE ids for AI weaknesses be adopted, and mappings derived from ATLAS's mitigation links?
 6. NIST AI 100-2 E2025 and ATLAS are now library stubs (G12). Should either be extracted in full, and should ATLAS's extraction sit with RPT-0014 (#71)?
-7. Is arXiv 2512.01295 the SAGAI'25 research-challenges document (§2.5)?
+7. *(Answered in 0.3.1.)* arXiv 2512.01295 is the SAGAI'25 research-challenges document: its v1 says so (§2.5).
 
 Questions 1 to 6 are also in library#32.
 

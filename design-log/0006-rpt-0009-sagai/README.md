@@ -137,11 +137,11 @@ With library#32 holding the FX-1 extractions of ETSI EN 304 223 and CISA AI-in-O
 - **"ETSI names indirect prompt injection … (§1)"** (draft). The record locates it in the Introduction, p. 5.
 - **"Those are the four bypasses EchoLeak chained"** (draft). Only three of the four are on the output channel; the fourth, the injection classifier, is input-side.
 
-## References traced, report 0.3.1 (2026-11-02)
+## References traced and SAGAI'25 confirmed, report 0.3.1 (2026-11-02)
 
 ### Question asked
 
-#189's first box, after Part B moved there from #39: every item in RPT-0009 §6, and so every source in `sources.md`, gets a library record (FX-1 or an honest stub) or a written reason it has none, with G12 routed. The student asked the agent to move on to this step.
+#189's first box, after Part B moved there from #39: every item in RPT-0009 §6, and so every source in `sources.md`, gets a library record (FX-1 or an honest stub) or a written reason it has none, with G12 routed. The student asked the agent to move on to this step. While those PRs waited for review, the student asked what else could be done, and the agent took #189's second box: whether `systems-security-agentic-computing` (arXiv 2512.01295) is a SAGAI'25 output, adding `part_of: sagai-workshop` only if it is.
 
 ### What was produced
 
@@ -153,6 +153,7 @@ With library#32 holding the FX-1 extractions of ETSI EN 304 223 and CISA AI-in-O
   - `etsi-en-304-223` now `supersedes: [etsi-ts-104-223]`, as its own comment asked once the TS was held, and the `sagai` topic lists all of these.
 - **`sources.md` 0.4.0:** a record id or a written reason in every row; no row says "not yet a record".
 - **`report.md` 0.3.1:** the status line, Table 1, §2, §6, G12, open question 6, the `library_commit` note and `issue: 189`.
+- **SAGAI'25 confirmed (second box).** arXiv 2512.01295v1 (2025-12-01) opens: "The IEEE Secure Generative AI Agents 2025 workshop (SAGAI; co-located with the IEEE Symposium on Security and Privacy) set out to explore how computer-security research and practice can help inform and advance agentic computing security. This report captures those discussions …". In library#40 the record moves from `see_also` to `part_of: sagai-workshop`, with v1's digest in its header. `agent-security-systems-problem` stays `see_also`. The report's §1, §2.5, Table 1, the §1 takeaway and open question 7 (now answered) follow, as do `sources.md` (0.4.0) and `searches.md` (0.3.0, today's queries logged).
 
 ### How it was checked
 
@@ -162,12 +163,15 @@ With library#32 holding the FX-1 extractions of ETSI EN 304 223 and CISA AI-in-O
 - ETSI TS 104 216's `deliver` directory returns 404, so it is unpublished.
 - The report was searched for NIST AI 100-1, OWASP, NSA and Barrett. Only Barrett appears, as a lead in §2.7, so "no claim rests on it" holds for each source given no record.
 - Library: `bin/validate` reports 0 errors, and 11 more records count as written; `bin/export` and `bin/reindex` show 612 records and 0 dangling. tmodel: `bin/validate-archdoc` passes.
+- **SAGAI'25:** the full HTML text of 2512.01295 v1 and v2 and of 2605.18991 v1 and v2 was searched for "SAGAI". Only 2512.01295v1 names it. The 2026-09-28 search read v2, which explains its "none names SAGAI". The v1 author list (Christodorescu, Fernandes, Hooda, Jha, Rehberger, Shams) was read from the HTML. The SAGAI'25 site lists five organizers, four of them authors, and its program has Rehberger giving a talk. The site itself links to no paper, so the evidence is the paper's own sentence.
 
 ### Choices the agent made, open to review
 
 - **Stubs, not reasons, for the ten.** A stub costs a digest and a short summary and lets a cited id resolve. Reasons were kept for sources no claim rests on (NIST AI 100-1, OWASP, NSA, Barrett), for a committee (TC SAI), for an unpublished draft (TS 104 216) and for #8's SBOM documents.
 - **`cited_by` left empty.** `docs/references.md` reserves it for our own documents, although about 20 library records list library ids there.
 - **Summaries say only what was checked.** Content comes from RPT-0009's existing readings (§2.6, §2.7, §5) or the publishers' pages. TR 104 048's summary says its content was not read.
+- **The record keeps pinning v2.** v2 is the text §2.5 summarizes. v1, the workshop report as first issued, gets its digest in the record's header rather than a record of its own.
+- **Answered without asking the sponsor.** 0.3.0 planned to ask @nymble. The paper's own sentence settles it, so question 7 is marked answered rather than removed.
 
 ### What a human accepted
 
@@ -177,3 +181,6 @@ With library#32 holding the FX-1 extractions of ETSI EN 304 223 and CISA AI-in-O
 
 - **"Neither has a library record"** (§6) and **"have no record of their own"** (§6). Both are stubs now.
 - **"§2.6 and §2.7 have none"** (Table 1, §2). Both have stubs.
+- **"probable SAGAI'25 output"** and **"the paper itself does not name the workshop"** (§2.5), and "unconfirmed" (`sources.md`). Its v1 names the workshop and calls itself its report.
+- **"a SAGAI'25 panelist"** (§2.5). The program has Rehberger giving a talk in the session on attacks on agentic systems.
+- **"SAGAI'25 position papers (2)"** (Table 1, §1 takeaway). One is the workshop's report; the other, 2605.18991, does not name the workshop.

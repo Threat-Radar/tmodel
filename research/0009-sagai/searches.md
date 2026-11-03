@@ -4,9 +4,9 @@ id: RPT-0009-searches
 title: "RPT-0009 search log"
 type: research
 status: draft
-version: "0.2.0"
+version: "0.3.0"
 date: "2026-09-28"
-updated: "2026-10-01"
+updated: "2026-11-02"
 record: RPT-0009
 ---
 
@@ -30,6 +30,13 @@ Every query run, so the survey is reproducible. One row per query.
 | 2026-09-29 | 2 | arXiv API title search for each SAGAI'24 paper | arXiv API | 3 of 4 found: 2403.14720, 2302.05733, 2212.03334 |
 | 2026-09-29 | 2 | `"Defending Language Models Against Image-Based Prompt Attacks via User-Provided Specifications" Sharma Gupta Grossman` | web (via Claude Code) | author PDF (homes.cs.washington.edu/~reshabh/SAGAI.pdf); IEEE Xplore 10579532 |
 | 2026-09-29 | 1 | SAGAI'26 program page (sites.google.com/view/sagai-2026/program) | direct fetch | 404, no program published there |
+| 2026-11-02 | 3 | etsi.org/deliver listings for TS 104 223, TR 104 128, TR 104 048 and TS 104 216 | direct fetch | each published document has only V1.1.1 (2025-04, 2025-05, 2025-01); TS 104 216's directory is 404, so it is unpublished |
+| 2026-11-02 | 5 | NIST CSRC page for AI 100-2 E2025; NCSC collection page; GOV.UK AI Cyber Security Code of Practice page; ATLAS `v2026.09` YAML header and `LICENSE` | direct fetch | metadata for the library#40 stubs (authors, dates, publisher, licence) |
+| 2026-11-02 | 1 | `Fraunhofer IESE SAGAI workshop "Software Architecture and Generative AI" ICSA` | web (via Claude Code) | series page iese.fraunhofer.de/en/events/sagai.html → `fraunhofer-iese-sagai` (not-useful) |
+| 2026-11-02 | 1, 2 | `SAGAI 2025 "Secure Generative AI Agents" workshop IEEE S&P research challenges document` | web (via Claude Code) | SAGAI'25 site; IEEE S&P 2025 workshops page |
+| 2026-11-02 | 1, 2 | SAGAI'25 home, workshop-format and program pages; SAGAI'26 home and program pages | direct fetch | five SAGAI'25 organizers (Christodorescu, Fernandes, Jha, Mitchell, Shams); Rehberger gave a talk; no link to any paper; SAGAI'26 pages render no text |
+| 2026-11-02 | 2 | `"Systems Security Foundations for Agentic Computing" SAGAI workshop` | web (via Claude Code) | arXiv 2512.01295 v1 and v2 HTML; IACR ePrint 2025/2173 (same title, six authors) |
+| 2026-11-02 | 2 | full text of arXiv 2512.01295v1 and v2, 2605.18991v1 and v2 searched for "SAGAI" | direct fetch (arXiv HTML) | 2512.01295v1's Introduction names SAGAI'25 and calls itself its report; v2 (read on 2026-09-28) does not; 2605.18991 names it in neither version |
 
 ## Tool runs
 
@@ -47,3 +54,5 @@ Every query run, so the survey is reproducible. One row per query.
 | 2026-09-30 | `pypdf` text extraction; `shasum -a 256` | Christodorescu et al., Agent Security is a Systems Problem, arXiv 2605.18991v2 (18 pages) | read for §2.6; sha256 `eb02d189389663de9e0b4a315ca9f33b07fa1b2e32b23972ea245273134bbadf` |
 | 2026-09-30 | `pypdf` text extraction; `shasum -a 256` | Christodorescu et al., Securing the Future of GenAI, arXiv 2407.12999v1 (25 pages; intro, §6–8) | read for §2.7; sha256 `1a6596654e07c708bb09d8b374a1415489fdae72d6e26e689b80a3b3c41020e1` |
 | 2026-09-30 | `pypdf` text extraction | CISA AI-in-OT PDF, principles 1–4 | read in full for §4 |
+| 2026-11-02 | `shasum -a 256` on a download, then `bin/ingest --fetch` | the eleven library#40 sources | each pair agrees; NIST AI 100-2 E2025, ATLAS 2026.09, 2605.18991v2 and 2407.12999v1 also match the digests recorded above and in sources.md |
+| 2026-11-02 | `shasum -a 256` | arXiv 2512.01295v1 PDF (7 pages) | `eb44e09cdc240650f5d4636cf3627c1a7316aef448c2ed5dcf5ceaa23025fe6a`, kept in the library record's header |
