@@ -4,7 +4,7 @@ id: RPT-0009-searches
 title: "RPT-0009 search log"
 type: research
 status: draft
-version: "0.3.0"
+version: "0.4.0"
 date: "2026-09-28"
 updated: "2026-11-02"
 record: RPT-0009
@@ -37,6 +37,11 @@ Every query run, so the survey is reproducible. One row per query.
 | 2026-11-02 | 1, 2 | SAGAI'25 home, workshop-format and program pages; SAGAI'26 home and program pages | direct fetch | five SAGAI'25 organizers (Christodorescu, Fernandes, Jha, Mitchell, Shams); Rehberger gave a talk; no link to any paper; SAGAI'26 pages render no text |
 | 2026-11-02 | 2 | `"Systems Security Foundations for Agentic Computing" SAGAI workshop` | web (via Claude Code) | arXiv 2512.01295 v1 and v2 HTML; IACR ePrint 2025/2173 (same title, six authors) |
 | 2026-11-02 | 2 | full text of arXiv 2512.01295v1 and v2, 2605.18991v1 and v2 searched for "SAGAI" | direct fetch (arXiv HTML) | 2512.01295v1's Introduction names SAGAI'25 and calls itself its report; v2 (read on 2026-09-28) does not; 2605.18991 names it in neither version |
+| 2026-11-02 | 1, 2 | arXiv API search of author comments for "SAGAI" (adversarial review, DL-0006) | arXiv API | three papers accepted at SAGAI'26: 2605.27042, 2605.30613, 2604.14317 |
+| 2026-11-02 | 3 | ETSI TC SAI deliverables listing (adversarial review) | direct fetch | TS 104 050 V1.1.1 (*AI Threat Ontology and definitions*) and TR 104 222 V1.2.1 (*Mitigation Strategy Report*), neither cited by the seeds |
+| 2026-11-02 | 5 | `mitre-atlas/atlas-data` releases (adversarial review) | GitHub API | v2026.10 published 2026-10-28, after the 2026.09 pin; release assets include `stix-atlas.json` and `attack-flow-AML.CS0059.json` |
+| 2026-11-02 | 8 | cwe.mitre.org home page (adversarial review) | direct fetch | CWE List Version 5.0 is current |
+| 2026-11-02 | 3 | ETSI TR 104 128 V1.1.1 (pinned bytes), clause 6 searched for "prompt injection", "RAG", "exfiltrat", "render", "markdown" | read | prompt injection under five EN provisions, RAG under 5.1.2-3, exfiltration under 5.1.2-6; no rendering or markdown (report §3) |
 
 ## Tool runs
 

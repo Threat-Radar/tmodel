@@ -4,7 +4,7 @@ id: DL-0006
 title: "RPT-0009 SAGAI — AI-assisted source gathering and paper summaries"
 type: process
 status: draft
-version: "0.4.0"
+version: "0.5.0"
 date: "2026-10-01"
 updated: "2026-11-02"
 record: DL-0006
@@ -184,3 +184,86 @@ With library#32 holding the FX-1 extractions of ETSI EN 304 223 and CISA AI-in-O
 - **"probable SAGAI'25 output"** and **"the paper itself does not name the workshop"** (§2.5), and "unconfirmed" (`sources.md`). Its v1 names the workshop and calls itself its report.
 - **"a SAGAI'25 panelist"** (§2.5). The program has Rehberger giving a talk in the session on attacks on agentic systems.
 - **"SAGAI'25 position papers (2)"** (Table 1, §1 takeaway). One is the workshop's report; the other, 2605.18991, does not name the workshop.
+
+## Adversarial review and fixes, report 0.4.0 (2026-11-02)
+
+### Question asked
+
+#189's third box: an adversarial review by a fresh agent (Phase 4 of #39's playbook), with the findings fixed and the rejections recorded here. The student started the review while #195 and library#40 waited for reviewers. When it reported, the student asked how to go faster. Neither PR had a review or a comment yet, so the student chose to put the fixes on the open PRs rather than in follow-ups, so that reviewers read the corrected version once. The clarity pass (#189's fourth box) went into the same change.
+
+### What was produced
+
+- **The review.** A general-purpose agent at maximum effort, read-only on both repositories, reviewed tmodel `84da598` and library `5a8171a`. It wrote down its own list of the sources it expected before reading the report's source list. It took about 55 minutes and about 490k tokens, and found 28 problems: 12 material and 16 minor.
+- **`report.md` 0.4.0:**
+  - the status line and the abstract;
+  - Tables 1 to 3, with Table 3 now saying for each row whether its provisions were found by id or by reading;
+  - §3 and §4, and §5 with a new item 4 on human oversight;
+  - §6, §7 with a new conclusion, the gap table G1 to G12, and open questions 3, 4 and 8;
+  - §10, and a new acronyms table.
+- **`sources.md` 0.5.0** and **`searches.md` 0.4.0:** the sources the review found, and the searches it ran.
+- **`example-models/README.md` 0.1.2:** the real-name fix, the case study relabelled as secondary, and #130's design log cited by path.
+- **library#40:** five new stubs (`etsi-ts-104-050`, `aim-labs-echoleak-disclosure` and three SAGAI'26 papers), plus fixes to the existing stubs.
+
+| Finding | What was done |
+|---|---|
+| F-01 TR 104 128 names prompt injection, RAG and exfiltration against EN provisions | Fixed: §3 quotes the guide's clause 6 by clause; the abstract, Table 2, §5 and §7 scope "only by inference" to the EN's own text |
+| F-02 the prompt-injection list disagreed with the record | Fixed: the report now follows the record (5.1.2-2, 5.1.2-6, 5.1.3-1.2, 5.2.5-4.1, 5.4.2-1); 5.2.1-4.1 is discussed as the guide's reading, not ours |
+| F-03 Table 3's stated method did not reproduce it | Fixed: a "Linked by" column; ETSI 5.2.1-4 and CISA R-0039 added at S10, the id matches the table had left out |
+| F-04 CISA "no attack mapped" 79 should be 86 | Fixed, with the 7 framework-only entries named and the shares given (52%, 63%) |
+| F-05 S05 under Poisoning | Fixed: removed; a note gives NIST's placement (NISTAML.015, §3.4.2) and NISTAML.036 and .039 for S07 to S10 |
+| F-06 routing stale against ADR-0012 | Fixed: §3 and §4 route provisions to ADR-0012's Requirement; G8 and G9 restated against it; §7 names the accepted pair |
+| F-07 SAGAI'26 papers on arXiv | Fixed: three stubs; §1, Table 1, Table 2 and §2.8 |
+| F-08 ETSI TS 104 050 missing | Fixed as a stub and named in §6 and open question 4; its comparison with G1 to G10 is deferred |
+| F-09 arXiv 2509.10540 is secondary | Fixed in §5, `sources.md` and the README; the Aim Labs disclosure is a stub |
+| F-10 the catalogues name the output channel | Fixed in §5 item 1 and G11, which now routes catalogue mitigations to #74; the OWASP row in `sources.md` is revised |
+| F-11 ATLAS 2026.10 | The drift is stated in §6 and G12; G2 now also routes to ADR-0007. Re-pinning is deferred (open question 8) |
+| F-12 "defeat the human-oversight provisions by design" overstates | Fixed: Table 3 says "not engaged"; §5 item 4 and §7 give the case study's human-in-the-loop evidence |
+| F-13 a real first name in the README | Fixed: "the sponsor (@nymble)" |
+| F-14 duplicate DL ids | #130's DL-0024 is cited by path. The duplicate DL-0006 is not renumbered (below) |
+| F-15 "RPT-0008 (#12)" does not exist | Fixed: §6 points to RPT-0014 (#71) |
+| F-16 Organization omitted; G8 omits Affected entity | Fixed |
+| F-17 "14 entries" were threats | Fixed |
+| F-18 "neither mentions exfiltration" against CISA's egress entries | Fixed: scoped to the words, with CISA's egress and output-inspection entries named |
+| F-19 R-0087 paraphrase widened | Fixed: "when mapping threat-actor behavior" |
+| F-20 "all 38 id-and-name pairs" | Fixed: the claim no longer rests on a count; the review's count of 37 is given |
+| F-21 to F-25 stub wording (ATLAS relationships, NIST erratum, EchoLeak venue, unpinned GOV.UK quotes, TR 104 048 poisoning) | Fixed in library#40 |
+| F-26 G4's routing | Fixed: the CWE fit grade goes to DEC-008, the ATLAS join to #64 and #74 |
+| F-27 CWE 5.0 | Noted in G4 and `sources.md`; the pins stay at 4.20 |
+| F-28 `cwe-1426-genai-output-validation` unused | Deferred (below) |
+
+### How it was checked
+
+- **Every finding acted on was re-checked against its source first**, by the agent making the fixes, not by the reviewer. The checks used the bytes the reviewer downloaded, whose digests match the records, and the library records.
+- **The counts were recomputed from the library records:**
+  - CISA has 136 entries, 50 of them with an attack class, so 86 have none; 79 have no mapping at all.
+  - The record's prompt-injection entries are exactly the five §3 lists.
+  - Of ATLAS ids, only T0051 and T0025 occur in the records among EchoLeak's steps.
+  - ETSI has 6 Organization entries, 2 of them implied.
+- **The quotes were found verbatim:** TR 104 128's clause 6 (clause headings name the EN provisions), NIST §3.4.2 and §3.4.3, the case study's Limitations and its Tables 2 and 3, and TS 104 050's scope notes.
+- **ADR-0012** is on `main` (70b15ac), and its status is accepted.
+
+### Choices the agent made, open to review
+
+- **Fixing on the open PRs, not in follow-ups**, because neither had been reviewed yet.
+- **The report follows the library record on 5.2.1-4.1.** The library review read its normative text as training-data hygiene. ETSI's guide reads it as covering prompts too, and the report gives both readings rather than changing an FX-1 mapping on guidance alone.
+- **New sources are stubs, not readings.** TS 104 050 and the SAGAI'26 papers are summarized from their own front matter and abstracts only.
+
+### What a human accepted
+
+- The student approved the approach: fixes on the open PRs, stubs for new sources, deferring the ATLAS re-pin, and a narrower second review of the fixes. Nothing here is technically reviewed.
+
+### What was rejected or deferred, and why
+
+- **Corrected, by the agent itself: its own correction of AML.M0026's name.** The agent fixing the findings told the library helper that the review had M0026's 2026.10 name wrong. Its search had caught the next block's name instead, AML.M0027 ("Manage User-Delegated AI Agent Access"). The helper re-read the YAML. The review was right: M0026 is "Privileged AI Agent Permissions Configuration" in 2026.09 and "Manage AI Agent Service Access" in 2026.10.
+- **Rejected: the review's quote from TS 104 050**, "defines what an AI threat is …". It is not in the text. The stub and §6 quote its scope notes instead.
+- **Corrected: the review's "four" attack steps covered by the case study's human-in-the-loop check.** Its Table 3 marks five of six: the review missed the LLM scope violation column.
+- **Confirmed after a first doubt: CS0059's new attribution.** ATLAS 2026.10 replaces 2026.09's `actor: Aim Labs` with an `attributed-to` link to AML.E0016, Cato Networks, which acquired Aim Security in 2025. The `mitre-atlas` stub records it.
+- **Open, for the technical review: em-01's AML.M0026 link.** em-01 links its least-privilege suggestion to M0026 (privileged agent permissions). Copilot acted with the user's delegated access, so M0027 (single-user agent permissions) may fit better. em-01 is unchanged, because its mitigations are AI-drafted suggestions awaiting review.
+- **Not pinned: the Aim Labs disclosure.** Its page returned HTTP 403 to `bin/ingest --fetch`. The stub has a URL but no digest, and no claim rests on its content.
+- **Deferred: re-pinning ATLAS to 2026.10.** Four ids the records use are gone, so re-pinning means re-mapping both FX-1 records and em-01. The question goes to the sponsor (open question 8).
+- **Deferred: re-pinning CWE to 5.0.** The em-01 claims hold in 5.0, per the review; the parent did not re-check this.
+- **Deferred: TR 104 222 and a comparison of TS 104 050 with G1 to G10.** Neither changes a table now.
+- **Deferred: extracting TR 104 128.** It would turn several `inferred` mappings into ETSI-guidance links, but it is a separate FX-1 job.
+- **Deferred: F-28.** The parent did not confirm the review's reading of CWE-1426's guidance about prompt injection.
+- **Not renumbered: the duplicate DL-0006.** `design-log/0006-iteration5-research-fold` and this entry share the id. Renumbering either would retarget existing citations, so the report cites this one by path. The repo owners can decide which keeps the number.
+- **Passed on:** for RPT-0014 (#71), TS 104 050 updates and extends its GR SAI 001 entry, and ATLAS 2026.10 changes ids it may use.
