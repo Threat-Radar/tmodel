@@ -4,9 +4,9 @@ id: RPT-0005-searches
 title: "RPT-0005 search log"
 type: research
 status: draft
-version: "0.3.0"
+version: "0.4.0"
 date: "2026-10-05"
-updated: "2026-10-06"
+updated: "2026-10-29"
 record: RPT-0005
 ---
 
@@ -82,3 +82,5 @@ Every query run, so the survey is reproducible. One row per query.
 | 2026-10-06 | 3, 9 | git trees of `DependencyTrack/dependency-track`, `aquasecurity/trivy`, `anchore/grype` (paths for VEX, EPSS, KEV, OSV, NVD code); Trivy VEX docs | gh api | consumer evidence (section 5) |
 | 2026-10-06 | light | NIST CPE and CPE 3.0 pages, IR 7695 landing page; ECMA-427 page, purl-spec README, type index; CISA KEV feed, schema, `kev-data` licence, BOD 26-04; SSVC schema, repo licence, releases; `vulnrichment` | curl, gh | CPE 3.0 effort; ECMA-427 1st ed. Dec 2025; BOD 26-04 supersedes BOD 22-01; SSVC mixed licence |
 | 2026-10-06 | licences | `gh api repos/<r>` licence field and LICENSE files for 16 repositories | gh | see sections 1 and 2 |
+| 2026-10-29 | 10 | Phase 4 reviewer: two web searches, one on TM-BOM and one on Gemara (query strings not recorded verbatim) | web search | OWASP Threat Model Library schema, the released TM-BOM v1 (sources.md, Phase 4); Gemara judged minor |
+| 2026-10-29 | 10 | Phase 4 main session, confirming the material findings: CWE news page; OWASP Developer Guide TM-BOM page; TM-BOM v1.0.0 and v1.0.2 schema and README; SARIF 2.1.0 schema; CSAF 2.1 directory; Attack Flow and Threat Model Library repository metadata | WebFetch, curl, gh | all four material findings confirmed |

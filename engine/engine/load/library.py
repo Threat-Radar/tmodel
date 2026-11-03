@@ -21,12 +21,18 @@ its last digit and the version 1.10 would become 1.1. The few typed fields
 
 These are the engine's read models of library records, not classes of the tmodel
 schema: tmodel refers to library records by id only (schema slot `source_ref`).
+
+For serving (#140), `configured_root()` names the library the engine reads, and
+`cached_library()` keeps one loaded copy, reloading only when a file it reads
+has changed.
 """
 
 from __future__ import annotations
 
 import hashlib
+import os
 import re
+import threading
 from collections.abc import Iterator, Mapping
 from dataclasses import asdict, dataclass, field
 from functools import cached_property
@@ -41,6 +47,10 @@ REQUIRED = ("schema", "id", "body", "type", "title", "content", "tags", "status"
 RECORD_ID = re.compile(r"[a-z0-9][a-z0-9-]*")
 WHOLE_NUMBER = re.compile(r"[0-9]+")  # ASCII digits only, so int() always accepts it
 RECORD_GLOB = "records/*/*/record.yaml"
+# What a record's folder adds to its record.yaml: whether a summary exists, and old versions.
+NOTED_GLOBS = ("records/*/*/summary.md", "records/*/*/versions/*/record.yaml")
+# Points the engine at a library checkout other than this repo's pinned submodule.
+LIBRARY_ENV = "TMODEL_LIBRARY"
 
 
 class LibraryError(ValueError):
@@ -241,13 +251,7 @@ def load_library(root: str | Path, *, strict: bool = True) -> Library:
     that lists every failing file. With `strict=False`, failing records are left
     out and listed in `Library.problems` instead.
     """
-    root = Path(root).resolve()
-    if not (root / "records").is_dir():
-        raise LibraryError(
-            f"{root}: no records/ folder; is this a library checkout? "
-            "(an empty library/ usually means the submodule is not checked out: "
-            "git submodule update --init library)"
-        )
+    root = _checkout(root)
     files = sorted(root.glob(RECORD_GLOB), key=lambda p: p.relative_to(root).as_posix())
     digest = hashlib.sha256()
     loaded: dict[str, LibraryRecord] = {}
@@ -280,6 +284,86 @@ def load_library(root: str | Path, *, strict: bool = True) -> Library:
         digest=digest.hexdigest(),
         problems=tuple(problems),
     )
+
+
+def _checkout(root: str | Path) -> Path:
+    """`root` made absolute, once it is known to hold `records/`; LibraryError if not.
+
+    A path the system cannot look at counts as no library too: a folder inside one
+    without read permission, a name that is too long, or a symlink loop.
+    """
+    try:
+        path = Path(root).resolve()
+        found = (path / "records").is_dir()
+    except OSError as exc:  # is_dir() raises for these instead of returning False
+        raise LibraryError(f"{root}: cannot read this folder ({exc.strerror or exc})") from exc
+    except RuntimeError as exc:  # resolve() raises this for a symlink loop before Python 3.13
+        raise LibraryError(f"{root}: cannot read this folder ({exc})") from exc
+    if not found:
+        raise LibraryError(
+            f"{path}: no records/ folder; is this a library checkout? "
+            "(an empty library/ usually means the submodule is not checked out: "
+            "git submodule update --init library)"
+        )
+    return path
+
+
+def configured_root() -> Path:
+    """The library the engine serves: `$TMODEL_LIBRARY` if set, else the pinned submodule.
+
+    The default is the `library/` folder at the root of this repo, which exists in a
+    source checkout. A packaged engine has no repo around it, so it needs the
+    variable (#124 decides how the app provides a library).
+    """
+    configured = os.environ.get(LIBRARY_ENV, "").strip()
+    if configured:
+        # os.path leaves "~name" as written when there is no such user, as the shell
+        # does, so it reads as no library; Path.expanduser() would raise instead.
+        return Path(os.path.expanduser(configured))
+    return Path(__file__).resolve().parents[3] / "library"
+
+
+_cache_lock = threading.Lock()
+_cache: dict[str, tuple[tuple[tuple[str, str], ...], Library]] = {}
+
+
+def _fingerprint(root: Path) -> tuple[tuple[str, str], ...]:
+    """Every record file with the SHA-256 of its bytes, then every file the loader notes.
+
+    Contents, not sizes and modification times, which an edit can keep (`cp -p` and
+    `rsync -t` do). Noted files count by path only, since the loader only checks
+    that they are there.
+    """
+    seen = []
+    for path in sorted(root.glob(RECORD_GLOB)):
+        try:
+            data = path.read_bytes()
+        except OSError:  # removed since the glob, or unreadable; the next call sees any change
+            continue
+        seen.append((path.relative_to(root).as_posix(), hashlib.sha256(data).hexdigest()))
+    for pattern in NOTED_GLOBS:
+        seen += [(p.relative_to(root).as_posix(), "") for p in sorted(root.glob(pattern))]
+    return tuple(seen)
+
+
+def cached_library(root: str | Path | None = None) -> Library:
+    """`load_library(root, strict=False)`, kept until a file it reads changes.
+
+    Loading every record takes about half a second, which is too slow to repeat on
+    each request. Hashing the record files takes a few hundredths of a second, so
+    each call hashes them and reloads only if something was added, removed or
+    edited. With no `root`, it reads `configured_root()`. Like `load_library`, it
+    raises LibraryError when the folder holds no `records/` or cannot be read.
+    """
+    root = _checkout(root if root is not None else configured_root())
+    with _cache_lock:
+        fingerprint = _fingerprint(root)
+        cached = _cache.get(str(root))
+        if cached is not None and cached[0] == fingerprint:
+            return cached[1]
+        library = load_library(root, strict=False)
+        _cache[str(root)] = (fingerprint, library)
+        return library
 
 
 def _record(root: Path, path: Path, rel: str, data: bytes) -> LibraryRecord:
