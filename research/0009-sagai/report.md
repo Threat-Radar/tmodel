@@ -77,10 +77,10 @@ Table 2 gives the number of entries mapped to each NIST AI 100-2 E2025 class; on
 | Privacy | 5 (2) | 7 (2) | §2.4, §2.8 | S07, S10 (data leakage) |
 | Direct prompt injection | 5 (0) | 4 (0) | §2.2, §2.3 | — |
 | Indirect prompt injection | 2 (0) | 4 (0) | §2.1, §2.5, §2.6, §2.8 | S03 to S06 |
-| Supply chain | 8 (0) | 6 (0) | — | — |
+| Supply chain | 8 (0) | 6 (0) | §2.8 | — |
 | Availability | 1 (0) | 0 | — | — |
 | Misuse | 0 | 0 | §2.3 | — |
-| Conventional cyber security (outside NIST's taxonomy) | 7 (1) | 16 (4) | — | S02, S10 |
+| Conventional cyber security (outside NIST's taxonomy) | 7 (1) | 16 (4) | §2.8 | S02, S10 |
 | Not an attack (drift, explainability, skills) | 5 (3) | 18 (8) | — | — |
 | An attack, but no single class | 1 (1) | 5 (4) | — | — |
 | No attack mapped (governance and process) | 38 | 86 | — | — |
@@ -88,7 +88,7 @@ Table 2 gives the number of entries mapped to each NIST AI 100-2 E2025 class; on
 **Note on the EchoLeak column.** In NIST's taxonomy, EchoLeak's injection and exfiltration steps fall under indirect prompt injection (NISTAML.015), not under poisoning. That includes S05, where the attacker's email enters the retrieval index; NIST calls this "knowledge base poisoning" and places it under indirect prompt injection (§3.4.2). The exfiltration steps S07 to S10 match two of NIST's indirect-prompt-injection techniques in §3.4.3: "Compromising connected resources" (NISTAML.039), which includes querying an attacker-controlled URL, and "Leaking information from user interactions" (NISTAML.036), which includes markdown image rendering. The Privacy row lists S07 and S10 for the data they leak.
 
 Read across the rows:
-- **Prompt injection is reached only by inference.** ETSI names "indirect prompt injection" once, in its Introduction's list of AI-specific risks (p. 5), and CISA names "prompt injection" once, in Table 2. None of the 10 entries mapped to a prompt-injection class (5 in each document) names the attack itself. ETSI's guide TR 104 128 does name it against five of the EN's provisions (§3).
+- **Prompt injection is reached only by inference.** ETSI names "indirect prompt injection" once, in its Introduction's list of AI-specific risks (p. 5), and CISA names "prompt injection" once, in Table 2. None of the 10 entries mapped to a prompt-injection class (5 in each document) names the attack itself. ETSI's guide TR 104 128 does name it, in its examples for 15 of the EN's provisions (§3).
 - **Supply chain is covered, but never by name as an attack.** ETSI's Principle 7 (secure the supply chain) and CISA §2.3 (vendor transparency, including an SBOM that covers AI) are mapped to supply-chain attacks by us, not by the documents.
 - **Much of what CISA maps is operational risk, not AI attacks.** Of the 50 CISA entries with an attack class, 18 concern drift, explainability, operator load or skills, and 16 concern conventional cyber security around the AI.
 - **Much of each document maps to no attack**: 38 of ETSI's 73 entries (52%) and 86 of CISA's 136 (63%) are governance, documentation and process duties. For CISA, 79 of the 86 have no mapping at all, and 7 link only to a framework, not to an attack class (R-0017, R-0018, R-0021, R-0027, R-0037, R-0087, R-0096).
@@ -121,7 +121,7 @@ Threats and defenses established by the workshop papers, each placed in NIST AI 
 | §2.4 Pre-trained encoders | poisoning (including backdoors), evasion, privacy | model (certified training) |
 | §2.5, §2.6 Agentic systems security | indirect prompt injection leading to exfiltration or command execution | system (least privilege, information-flow control, separation) |
 | §2.7 Policy and technology | not one attack class: regulation against capability | policy |
-| §2.8 SAGAI'26 papers (3) | indirect prompt injection in deployed agents; privacy (a prompt-cache side channel); AI as a reverse-engineering tool | system (deployment lessons, gateway isolation) |
+| §2.8 SAGAI'26 papers (3) | indirect prompt injection in deployed agents, with conventional and supply-chain objectives; privacy (a prompt-cache side channel); AI as a reverse-engineering tool | system (deployment lessons, gateway isolation) |
 
 ### 2.1 Spotlighting (Hines et al., SAGAI'24, arXiv 2403.14720)
 
@@ -266,8 +266,9 @@ Three papers whose arXiv comments say they were accepted at SAGAI'26. They are s
 
 - **Lessons from penetration tests on large-scale agent systems** (arXiv 2605.27042; stub
   `pentest-lessons-agent-systems`). Two 2025 penetration tests of proprietary agent
-  systems. The threat is indirect prompt injection leading to unintended tool use and remote
-  code execution. Its caution on human approval bears on §5 item 4: "prompt injection
+  systems. The threat is indirect prompt injection leading to unintended tool use, remote code
+  execution and privilege escalation; a supply-chain attack is among the threat objectives
+  it tests. Its caution on human approval bears on §5 item 4: "prompt injection
   techniques combined with markdown hiding, can conceal malicious instructions from human
   reviewers while remaining fully visible to the agent. Therefore, user approval is not a
   reliable security boundary."
@@ -294,22 +295,26 @@ ETSI EN 304 223 V2.1.1 (record `etsi-en-304-223`, FX-1 in library#32) is a Europ
 
 - **Phases.** Secure design 26 entries, development 31, deployment 5, maintenance 8, end of life 2, and one clause 4 statement that spans them.
 - **Stakeholders.** Developer 54 (3 of them implied), System Operator 45 (1 implied), Data Custodian 6, End-user 2, Affected entity 1. A sixth label, Organization, is on 6 entries (5.1.1-1, 5.1.1-1.1, 5.1.1-2, 5.1.1-2.1, 5.1.1-2.2 and 5.1.2-5.1; 2 of them implied); it is not one of the roles in the EN's Table 4-1. ADR-0012's Requirement has no slot for the party a provision obliges (G8).
-- **Testable.** 29 entries are testable as written, 42 partly, 2 not.
+- **Testable.** 29 entries are testable as written, 42 partly, 2 not. This bears on `Requirement.conformance_status`, the one requirement slot ADR-0012 left in DEC-001b.
 - **Markers.** Reconciled over the whole document, with every exclusion listed (shall 61 → 59, should 32 → 29); all are lowercase, so the BCP 14 count is 0.
-- **Threats it names.** The record lists 14 threats. The EN names 13 of them as attacks in its own words; for the fourteenth, unintended influence through outputs, it names the effect, and the attack class is our reading. The 14 are: data poisoning, poisoned publicly sourced data, model obfuscation, indirect prompt injection, adversarial attacks, model inversion, membership inference, reverse engineering of the model or its data, API abuse, unintended influence through outputs, data drift, unexpected inputs and failure, issues carried between AI instantiations, and unauthorized access to training or test data.
+- **Threats it names.** The record lists 14 threats. The EN names 13 of them in its own words. For the fourteenth, unintended influence through outputs, it names the effect, and the class is our reading. The 14 are: data poisoning, poisoned publicly sourced data, model obfuscation, indirect prompt injection, adversarial attacks, model inversion, membership inference, reverse engineering of the model or its data, API abuse, unintended influence through outputs, data drift, unexpected inputs and failure, issues carried between AI instantiations, and unauthorized access to training or test data.
 - **Provisions mapped to prompt injection.** The library record maps five provisions to it; all five mappings are ours, as no provision names the attack:
   - 5.1.2-2: "withstand adversarial AI attacks, unexpected inputs and AI system failure" (direct);
   - 5.1.2-6: permissions on other systems and data sources "only provided as required for functionality and … risk assessed" (direct and indirect);
   - 5.1.3-1.2: "manage the security risks associated with AI models that provide superfluous functionalities" (direct and indirect);
   - 5.2.5-4.1: evaluate model outputs so they "do not provide System Operators or End-users with unintended influence over the system" (direct);
   - 5.4.2-1: "log system and user actions to support security compliance, incident investigations, and vulnerability remediation" (direct).
-- **What ETSI's own guide adds.** TR 104 128 (stub `etsi-tr-104-128`) is ETSI's informative guide to the EN. Its clause 6 gives examples for each provision, and several of them name the attacks the EN does not:
-  - prompt injection under 5.1.2-2 (§6.2.3: "implementing input validation to prevent prompt injection attacks");
-  - prompt injection under 5.1.3-1.3 and 5.1.3-2 (§6.3.4, §6.3.5);
-  - prompt injection under 5.2.1-4.1 (§6.5.6: "Apply data sanitisation in incoming user prompts to reduce the risk of prompt injections");
-  - prompt injection under 5.2.5-4.1 (§6.9.6: guardrails to "prevent output manipulation and abuse the app using prompt injection attacks");
-  - retrieval under 5.1.2-3 (§6.2.4: "For RAG workflows, track the embeddings generated, log metadata about retrieved data");
-  - exfiltration under 5.1.2-6 (§6.2.8).
+- **What ETSI's own guide adds.** TR 104 128 (stub `etsi-tr-104-128`) is ETSI's informative guide to the EN. Its clause 6 gives examples for each provision. A text search of clause 6 finds the attacks the EN does not name:
+  - **Prompt injection** appears in the examples for 15 provisions: 5.1.1-1, 5.1.1-1.1, 5.1.1-2, 5.1.1-2.2, 5.1.2-2, 5.1.2-5, 5.1.3-1.3, 5.1.3-2, 5.1.3-4, 5.2.1-3, 5.2.1-4.1, 5.2.5-1, 5.2.5-4, 5.2.5-4.1 and 5.3.1-2.2. For example:
+    - §6.2.3, on 5.1.2-2: "implementing input validation to prevent prompt injection attacks";
+    - §6.5.6, on 5.2.1-4.1: "Apply data sanitisation in incoming user prompts to reduce the risk of prompt injections";
+    - §6.9.6, on 5.2.5-4.1: guardrails to "prevent output manipulation and abuse the app using prompt injection attacks".
+  - **Retrieval (RAG)** appears in the examples for 11 provisions. Two of them:
+    - §6.2.4, on 5.1.2-3: "For RAG workflows, track the embeddings generated, log metadata about retrieved data";
+    - §6.5.5, on 5.2.1-4: "Apply RBAC with strict least-privilege access to datasets used in RAG".
+  - **Exfiltration** appears in the examples for 2 provisions:
+    - §6.2.8, on 5.1.2-6;
+    - §6.5.5, on 5.2.1-4: "alert for high volume downloads indicating potential data exfiltration".
 
   The library review removed the record's prompt-injection mapping for 5.2.1-4.1, reading its normative text ("checks and sanitisation to data and inputs") as training-data hygiene. The guide reads it more widely, as covering runtime prompts too. The guide never mentions output rendering or markdown.
 - **Human oversight** is its own principle (5.1.4-1 to 5.1.4-3), close to ARCH-0001 §7's Review.
@@ -355,42 +360,42 @@ CISA's joint guidance (record `cisa-ai-in-ot-principles`, FX-1 in library#32) ha
 
 ## 5. Worked example: EchoLeak against the requirements
 
-EchoLeak (CVE-2025-32711) is a zero-click prompt injection in Microsoft 365 Copilot. One email carried hidden instructions; when the user later asked Copilot an ordinary question, retrieval pulled the email into the model's context. Copilot then put the user's data into a reference-style image link, which the client fetched through an allow-listed Teams service to the attacker's server. The example model is [`example-models/em-01-echoleak-m365-copilot.yaml`](example-models/em-01-echoleak-m365-copilot.yaml). It follows MITRE ATLAS case study AML.CS0059 step by step, and is checked against the CVE record and a case study of the attack (arXiv:2509.10540).
-- **The case study is secondary.** Its authors, at The George Washington University, worked "solely on analysis of already-public data" and "did not reproduce the attack or run any experiments". It was published at the AAAI Fall Symposium Series 2025.
+EchoLeak (CVE-2025-32711) is a zero-click prompt injection in Microsoft 365 Copilot. One email carried hidden instructions; when the user later asked Copilot an ordinary question, retrieval pulled the email into the model's context. Copilot then put the user's data into a reference-style image link, which the client fetched through an allow-listed Teams service to the attacker's server. The example model is [`example-models/em-01-echoleak-m365-copilot.yaml`](example-models/em-01-echoleak-m365-copilot.yaml). It follows MITRE ATLAS case study AML.CS0059 step by step. It is checked against the CVE record and against a case study of the attack by George Washington University authors (arXiv:2509.10540), called "the GWU case study" below.
+- **The GWU case study is secondary.** Its authors worked "solely on analysis of already-public data" and "did not reproduce the attack or run any experiments". It was published at the AAAI Fall Symposium Series 2025.
 - **The primary source is the finders' own.** Aim Labs (Aim Security) found EchoLeak, and the CVE record cites their disclosure (stub `aim-labs-echoleak-disclosure`, not yet pinned).
 
 **Table 3** places each stage of the attack against the nearest provisions, and says how far they reach. The "Linked by" column says how each row's provisions were found:
-- **id:** an ATLAS id in the library records matches the step at the parent-technique level. Only S06 (AML.T0051) and S10 (AML.T0025) match this way, because neither record uses T0093, T0070, T0085, T0067 or T0077.
+- **id:** an ATLAS id in the library records matches the step at the parent-technique level. Among this table's steps, only S06 (AML.T0051) and S10 (AML.T0025) match this way, because neither record uses T0093, T0068, T0070, T0085, T0067 or T0077. S11, the harm (AML.T0048), also matches at the parent level: ETSI 5.2.1-4.2 maps AML.T0048.004. But that sub-technique is AI intellectual-property theft, not EchoLeak's harm, so the match is spurious, of the kind G4 is about.
 - **read:** we read the provision text and judged it relevant.
 
 Like the rest of the model, the table is AI-drafted and unreviewed.
 
 | EchoLeak stage (ATLAS steps) | Nearest provisions | Linked by | How far they reach |
 |---|---|---|---|
-| Injection through a retrieved email (S03 to S06: AML.T0093, T0070, T0051.002) | ETSI 5.1.2-2 (withstand adversarial attacks and unexpected inputs), 5.1.2-6, 5.1.3-1.2, 5.2.5-4.1, 5.4.2-1; CISA R-0011 (consider Table 2's risks), R-0101 and R-0114 (log and monitor inputs and outputs), R-0120 (update threat models) | id, at S06 | **General.** Robustness and input checks, with nothing on content that arrives through retrieval. ETSI's guide adds input validation and sanitisation of prompts (§3) |
-| Collecting data from the user's scope (S07: AML.T0085.000) | ETSI 5.1.2-6 (permissions only as required), 5.2.1-4 (protect sensitive data) | read | **Partial.** Least privilege applies, but Copilot acted with the user's own, delegated access |
+| Injection through a retrieved email (S03 to S06: AML.T0093, T0068, T0070, T0051.002) | ETSI 5.1.2-2 (withstand adversarial attacks and unexpected inputs), 5.1.2-6, 5.1.3-1.2, 5.2.5-4.1, 5.4.2-1; CISA R-0011 (consider Table 2's risks), R-0101 and R-0114 (log and monitor inputs and outputs), R-0120 (update threat models) | id, at S06 | **General.** Robustness and input checks, with nothing on content that arrives through retrieval. ETSI's guide adds input validation and sanitisation of prompts (§3) |
+| Collecting data from the user's scope (S07: AML.T0085.000) | ETSI 5.1.2-6 (permissions only as required), 5.2.1-4 (protect sensitive data) | read | **Partial.** Least privilege applies, but Copilot acted with the user's own, delegated access. ETSI's guide adds least-privilege access to RAG datasets (§6.5.5) |
 | Hiding the data in the answer (S08, S09: AML.T0067, T0077) | ETSI 5.2.5-4.1 (evaluate outputs for unintended influence); CISA R-0085 (output inspection, data loss prevention) | read | **Partial.** Inspection of what the output says, not of how the client renders it |
-| Sending it out through an allow-listed service (S10: AML.T0025) | ETSI 5.2.1-4 (protect sensitive data against unauthorized access); CISA R-0039, R-0084 (track data egress), R-0116 (egress controls) | id | **Detection.** Egress is tracked, but the request went to an allowed domain |
+| Sending it out through an allow-listed service (S10: AML.T0025) | ETSI 5.2.1-4 (protect sensitive data against unauthorized access); CISA R-0039, R-0084 (track data egress), R-0116 (egress controls) | id | **Detection.** Egress is tracked, but the request went to an allowed domain. ETSI's guide adds alerts on high-volume downloads (§6.5.5) |
 | After the fact | ETSI 5.4.2-1 and 5.4.2-2 (log and analyse); CISA R-0101, R-0109, R-0114 (log inputs and outputs, distinct AI identity) | read | **Forensics.** These would show what happened, not stop it |
 | Human oversight | ETSI 5.1.4-1 to 5.1.4-3; CISA R-0068, R-0104 | read | **Not engaged.** The deployed system had no human step between the email and the fetch. A consent step on external fetches would have reached it (item 4) |
 
 What the example shows:
 
-1. **The requirements stop short of the output channel.** Neither document's text mentions retrieval (RAG), output rendering, links or images, content security policies, or exfiltration. CISA comes closest, with egress tracking and output inspection (R-0084, R-0085, R-0116). Three of the four bypasses EchoLeak chained are on that channel: link redaction, auto-fetched images and the content-security-policy allowlist. The fourth, the injection classifier, falls only under ETSI 5.1.2-2's general robustness duty. The case study's mitigations, filtering every link and image and strict content security policies, have no counterpart in either standard. The attack catalogues do name them:
+1. **The requirements stop short of the output channel.** Neither document's text mentions retrieval (RAG), output rendering, links or images in model output, content security policies, or exfiltration. CISA comes closest, with egress tracking and output inspection (R-0084, R-0085, R-0116). Three of the four bypasses EchoLeak chained are on that channel: link redaction, auto-fetched images and the content-security-policy allowlist. The fourth, the injection classifier, falls only under ETSI 5.1.2-2's general robustness duty. The GWU case study's mitigations, filtering every link and image and strict content security policies, have no counterpart in either standard. The attack catalogues do name them:
    - NIST AI 100-2's "Leaking information from user interactions" (NISTAML.036), which includes markdown image rendering, and "Compromising connected resources" (NISTAML.039);
-   - OWASP's *Insecure Output Handling* (LLM02), to which the case study maps the output steps (its Table 2);
-   - from ATLAS 2026.10, a `mitigates` link from Generative AI Guardrails (AML.M0020) to T0067.
-2. **The research covers that gap too.** Spotlighting (§2.1) is one form of the "prompt partitioning" the case study recommends. The agentic-systems papers (§2.5, §2.6) argue for exactly the least-privilege and information-flow controls that would have contained S07 to S10.
+   - OWASP's *Insecure Output Handling*, to which the GWU case study maps the output steps (its Table 2). It is LLM02 in the 2023 list the case study uses, and LLM05, *Improper Output Handling*, in the 2025 list;
+   - from ATLAS 2026.10, `mitigates` links from Generative AI Guardrails (AML.M0020) to T0067 and to T0077 (*LLM Response Rendering*); in 2026.09 no mitigation targets either.
+2. **The research covers that gap too.** Spotlighting (§2.1) is one form of the "prompt partitioning" the GWU case study recommends. The agentic-systems papers (§2.5, §2.6) argue for exactly the least-privilege and information-flow controls that would have contained S07 to S10.
 3. **Id matching needs the parent technique.** The library records map prompt-injection provisions to ATLAS AML.T0051.000 (direct) and .001 (indirect), while ATLAS classifies EchoLeak as .002 (triggered). A match at the sub-technique level finds nothing. At AML.T0051 it finds ETSI's five prompt-injection provisions (§3) and CISA's R-0011, R-0101, R-0114 and R-0120. Mappings in tmodel therefore need a fit grade and a level (G4).
-4. **Human oversight was absent, not defeated.** The case study's Table 3 marks a "Human-in-the-Loop (external content)" check as covering five of its six attack steps: the LLM scope violation, the classifier bypass, the redaction bypass, the auto-fetched image and the zero-click exfiltration. The sixth, the proxy/CSP hole, is marked not applicable. It recommends action confirmation ("Allow Copilot to fetch attacker.com?"), though it calls its table a "theoretical mapping". ETSI 5.1.4-3 makes such measures a design duty where oversight is a risk control, and ATLAS lists *Human In-the-Loop for AI Agent Actions* (AML.M0029). A SAGAI'26 paper adds a caution from two penetration tests: markdown can hide injected instructions from the human reviewer, so "user approval is not a reliable security boundary" (§2.8).
+4. **Human oversight was absent, not defeated.** The GWU case study's Table 3 marks a "Human-in-the-Loop (external content)" check as covering five of its six attack steps: the LLM scope violation, the classifier bypass, the redaction bypass, the auto-fetched image and the zero-click exfiltration. The sixth, the proxy/CSP hole, is marked not applicable. It recommends action confirmation ("Allow Copilot to fetch attacker.com?"), though it calls its table a "theoretical mapping". ETSI 5.1.4-3 makes such measures a design duty where oversight is a risk control, and ATLAS lists *Human In-the-Loop for AI Agent Actions* (AML.M0029). A SAGAI'26 paper adds a caution from two penetration tests: markdown can hide injected instructions from the human reviewer, so "user approval is not a reliable security boundary" (§2.8).
 
 ## 6. Related guidance
 
-The documents the seeds cite are listed in [sources.md](sources.md), which gives every source a library record or a written reason it has none. All the records below are stubs: pinned by digest, with a summary, but not extracted.
+The documents the seeds cite are listed in [sources.md](sources.md), which gives every source a library record or a written reason it has none. The records below are stubs: pinned by digest, with a summary, but not extracted. TR 104 222 has no record yet.
 
 **Two reference schemes**, used here without being extracted:
 - **NIST AI 100-2 E2025** (*Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations*; stub `nist-ai-100-2-e2025`) supplies the attack classes and the `NISTAML.*` ids.
-- **MITRE ATLAS** (stub `mitre-atlas`) supplies the technique ids and the EchoLeak case study. This report, the records and em-01 are pinned to **2026.09**. ATLAS released 2026.10 on 2026-10-28. It removes four ids the records use (AML.T0024.000, .001 and .002, and AML.T0057) and renames AML.M0026, which em-01 uses (now "Manage AI Agent Service Access"). CS0059's steps are unchanged. Re-pinning is deferred (DL-0006, open question 8). Each ATLAS release also ships a STIX 2.1 bundle, and CS0059 has an Attack Flow file (G2).
+- **MITRE ATLAS** (stub `mitre-atlas`) supplies the technique ids and the EchoLeak case study. This report, the records and em-01 are pinned to **2026.09**. ATLAS released 2026.10 on 2026-10-28. It removes four ids the records use (AML.T0024.000, .001 and .002, and AML.T0057). It renames the supply-chain family AML.T0010 and its .001 to .003, which the records also use. And it renames AML.M0026, which em-01 uses (now "Manage AI Agent Service Access"). CS0059's steps are unchanged. Re-pinning is deferred (DL-0006, open question 8). Each ATLAS release also ships a STIX 2.1 bundle, and CS0059 has an Attack Flow file (G2).
 
 Neither scheme is extracted (open question 6).
 
@@ -412,7 +417,7 @@ TS 104 216 is unpublished.
 ## 7. Synthesis
 
 - **The standards and the research meet at different layers.** ETSI and CISA set duties: robustness, least privilege, logging, human oversight, supplier transparency. The SAGAI papers explain why model-level robustness fails against prompt injection, and propose system-level defenses: separating instructions from data, least privilege, information-flow control. A threat model needs both, the duty as a requirement and the defense as a mitigation. ADR-0012 accepted that pair: a `Requirement` is `satisfied_by` a `Mitigation`, and a generic mitigation can be `stated_as` a Requirement.
-- **Prompt injection is the weakest link between the two.** It is the attack the SAGAI papers and nearly every agent incident in §2.5 are about, yet both standards name it once and no provision names it. ETSI's guide links it to five provisions, but only as guidance. EchoLeak's path, through retrieval and through the output channel, is outside both documents' requirements. The catalogues (NIST AI 100-2, OWASP, ATLAS) and the research name it.
+- **Prompt injection is the weakest link between the two.** It is the attack the SAGAI papers and nearly every agent incident in §2.5 are about, yet both standards name it once and no provision names it. ETSI's guide names it in its examples for 15 provisions, but only as guidance. EchoLeak's path, through retrieval and through the output channel, is outside both documents' requirements. The catalogues (NIST AI 100-2, OWASP, ATLAS) and the research name it.
 - **Human-oversight provisions only work where the design has a human step.** Those provisions match ARCH-0001 §7 and R-018 for decisions a human makes. EchoLeak's deployed system had no human step, so they were never engaged, although a consent step on external fetches would have reached the attack (§5 item 4), provided the reviewer can see what the agent sees (§2.8). tmodel should therefore model when a review can happen, not only whether one is required.
 - **For tmodel's own AI features**, the provisions that apply most directly are human oversight (ETSI 5.1.4), logging of AI inputs, outputs and identity (ETSI 5.4.2-1; CISA R-0101, R-0109, R-0114), and treating the model as untrusted (§2.6). These already align with R-018; the gap is in implementation, not in the requirements (#17, #19).
 
@@ -434,7 +439,7 @@ Each row is evidence for the decision or issue it routes to; none is a decision.
 | G8 | ETSI's stakeholder roles (Developer, System Operator, Data Custodian, End-user, Affected entity) have no edge in the core. ADR-0012's Requirement has no slot for the party a provision obliges. | §3; library#32 question 3; ADR-0012 | ADR-0012 follow-up (#64) |
 | G9 | One Requirement can now address several AttackPatterns (ADR-0012 `addresses`). But an AttackPattern's `catalog_ref` is single-valued, so nothing can say that a NIST class and several ATLAS ids name the same attack. | library#32 question 3; ADR-0012 | #64 |
 | G10 | Training data and model weights could be an Asset, a Component, or both. | library#32 question 2; em-01 | #130 decision 2 |
-| G11 | Neither standard's text covers the output channel (rendering, links, content security policies). The defenses are named by the catalogues (NIST AI 100-2's NISTAML.036 and .039, OWASP LLM02, ATLAS 2026.10's AML.M0020 link to T0067), by research (§2) and by the EchoLeak case study. | §5 item 1 | #74 (record shape for mitigations from catalogues and research) |
+| G11 | Neither standard's text covers the output channel (rendering, links, content security policies). The defenses are named by the catalogues (NIST AI 100-2's NISTAML.036 and .039; OWASP LLM02 in its 2023 list, LLM05 in 2025; ATLAS 2026.10's AML.M0020 links to T0067 and T0077), by research (§2) and by the GWU case study. | §5 item 1 | #74 (record shape for mitigations from catalogues and research) |
 | G12 | NIST AI 100-2 E2025 and ATLAS had no library records, so their ids resolved to no record. Both are now stubs (0.3.1); neither is extracted. ATLAS 2026.10 has since removed four ids the records use (§6). | §6 | library#40 (stubs); extracting ATLAS is shared with RPT-0014 (#71); open questions 6 and 8 |
 
 ## 9. Open questions for the sponsor
@@ -446,7 +451,7 @@ Each row is evidence for the decision or issue it routes to; none is a decision.
 5. Should the candidate CWE ids for AI weaknesses be adopted, and mappings derived from ATLAS's mitigation links?
 6. NIST AI 100-2 E2025 and ATLAS are now library stubs (G12). Should either be extracted in full, and should ATLAS's extraction sit with RPT-0014 (#71)?
 7. *(Answered in 0.3.1.)* arXiv 2512.01295 is the SAGAI'25 research-challenges document: its v1 says so (§2.5).
-8. ATLAS 2026.10 removes four ids the records use and renames one em-01 uses (§6). Should the records and em-01 move to 2026.10 now, or stay on 2026.09 until ATLAS is extracted?
+8. ATLAS 2026.10 removes four ids the records use and renames others, including the T0010 family the records use and M0026, which em-01 uses (§6). Should the records and em-01 move to 2026.10 now, or stay on 2026.09 until ATLAS is extracted?
 
 Questions 1 to 6 are also in library#32.
 
@@ -461,7 +466,7 @@ Questions 1 to 6 are also in library#32.
   - all 44 threats marked `stated` quote their source verbatim;
   - the PDFs' digests match the records.
 - **Worked example.** em-01 was built from the EchoLeak paper, the CVE record and ATLAS case study AML.CS0059, and validated against the #130 proposal schema (LinkML 1.12.1; 167 references resolve).
-- **SAGAI papers.** §2 is unchanged from 0.2.0, apart from the class table.
+- **SAGAI papers.** §2.1 to §2.7 are unchanged from 0.2.0, apart from the class table; §2.8 is new in 0.4.0.
 - **Adversarial review** (#39's Phase 4, now under #189). A fresh agent that had not written the report attacked 0.3.1. It recounted the normative markers of both documents from the PDFs, traced claims to their sources, and listed what it expected the report to cover before reading it. It found 28 problems, 12 of them material. Its counts matched the report's: ETSI's 73 entries and markers, CISA's 136 entries, 21 of Table 2's 22 cells, and em-01's ids and steps. The agent writing the fixes re-checked each finding against the source before acting on it. DL-0006 lists what was fixed, what was deferred, and why.
 
 **Limits.**
@@ -474,8 +479,12 @@ Questions 1 to 6 are also in library#32.
 
 ## Acronyms
 
+The acronyms and document-id prefixes used in this report.
+
 | Term | Meaning |
 |---|---|
+| ADR, ARCH, DEC, DL, R-, RPT | tmodel document ids: an architecture decision record, the architecture spec, an open decision, a design-log entry, an application requirement, a research report |
+| API | Application programming interface |
 | ADP | Authorized Data Publisher, a CVE Program role (CISA-ADP adds SSVC data to CVE records) |
 | ATLAS | MITRE's *Adversarial Threat Landscape for Artificial-Intelligence Systems* |
 | ATT&CK | MITRE's catalogue of adversary tactics and techniques |
@@ -483,10 +492,12 @@ Questions 1 to 6 are also in library#32.
 | CISA | US Cybersecurity and Infrastructure Security Agency |
 | CNA | CVE Numbering Authority, the organization that issues a CVE id |
 | CSP | Content Security Policy, a browser allowlist for what a page may load |
-| CVE / CVSS | Common Vulnerabilities and Exposures / Common Vulnerability Scoring System |
+| CVE | Common Vulnerabilities and Exposures |
 | CWE | Common Weakness Enumeration |
 | EN / TS / TR | ETSI deliverables: European Standard / Technical Specification / Technical Report |
 | ETSI, TC SAI | European Telecommunications Standards Institute; its Technical Committee Securing Artificial Intelligence |
+| GR | ETSI Group Report (as in GR SAI 001) |
+| GWU | The George Washington University (§5) |
 | FX-1 | The library's full-extraction profile (normative text, every requirement, counts reconciled) |
 | LLM | Large language model |
 | NCSC | UK National Cyber Security Centre |
@@ -495,12 +506,12 @@ Questions 1 to 6 are also in library#32.
 | OWASP | Open Worldwide Application Security Project |
 | RAG | Retrieval-augmented generation: the system retrieves documents into the model's context |
 | SAGAI | The IEEE S&P workshop series on securing generative AI (its expansion changes by year; §1) |
+| S&P, SPW | The IEEE Symposium on Security and Privacy; its workshops (Security and Privacy Workshops) |
 | SBOM | Software bill of materials |
 | SoK | Systematization of knowledge, a survey paper format |
 | SSVC | Stakeholder-Specific Vulnerability Categorization |
 | STIX | Structured Threat Information Expression, a threat-intelligence exchange format |
 | TCB | Trusted computing base |
-| TTP | Tactics, techniques and procedures |
 | XPIA | Cross-prompt injection attack, Microsoft's term for indirect prompt injection |
 
 **References** are in [sources.md](sources.md), and the library records named above. The library commit is pinned when library#40 merges.

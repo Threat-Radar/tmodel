@@ -41,7 +41,7 @@ Every query run, so the survey is reproducible. One row per query.
 | 2026-11-02 | 3 | ETSI TC SAI deliverables listing (adversarial review) | direct fetch | TS 104 050 V1.1.1 (*AI Threat Ontology and definitions*) and TR 104 222 V1.2.1 (*Mitigation Strategy Report*), neither cited by the seeds |
 | 2026-11-02 | 5 | `mitre-atlas/atlas-data` releases (adversarial review) | GitHub API | v2026.10 published 2026-10-28, after the 2026.09 pin; release assets include `stix-atlas.json` and `attack-flow-AML.CS0059.json` |
 | 2026-11-02 | 8 | cwe.mitre.org home page (adversarial review) | direct fetch | CWE List Version 5.0 is current |
-| 2026-11-02 | 3 | ETSI TR 104 128 V1.1.1 (pinned bytes), clause 6 searched for "prompt injection", "RAG", "exfiltrat", "render", "markdown" | read | prompt injection under five EN provisions, RAG under 5.1.2-3, exfiltration under 5.1.2-6; no rendering or markdown (report §3) |
+| 2026-11-02 | 3 | ETSI TR 104 128 V1.1.1 (pinned bytes), clause 6 searched for "prompt injection", "RAG", "exfiltrat", "render", "markdown" | read | prompt injection in the examples for 15 EN provisions, RAG for 11, exfiltration for 2 (5.1.2-6, 5.2.1-4); no render, markdown or "content security" (report §3). A first count gave five, from the seven subclauses read in full; the second review corrected it |
 
 ## Tool runs
 

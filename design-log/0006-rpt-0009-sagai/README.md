@@ -204,6 +204,8 @@ With library#32 holding the FX-1 extractions of ETSI EN 304 223 and CISA AI-in-O
 - **`example-models/README.md` 0.1.2:** the real-name fix, the case study relabelled as secondary, and #130's design log cited by path.
 - **library#40:** five new stubs (`etsi-ts-104-050`, `aim-labs-echoleak-disclosure` and three SAGAI'26 papers), plus fixes to the existing stubs.
 
+The table maps each first-round finding to what was done.
+
 | Finding | What was done |
 |---|---|
 | F-01 TR 104 128 names prompt injection, RAG and exfiltration against EN provisions | Fixed: §3 quotes the guide's clause 6 by clause; the abstract, Table 2, §5 and §7 scope "only by inference" to the EN's own text |
@@ -237,10 +239,26 @@ With library#32 holding the FX-1 extractions of ETSI EN 304 223 and CISA AI-in-O
 - **The counts were recomputed from the library records:**
   - CISA has 136 entries, 50 of them with an attack class, so 86 have none; 79 have no mapping at all.
   - The record's prompt-injection entries are exactly the five §3 lists.
-  - Of ATLAS ids, only T0051 and T0025 occur in the records among EchoLeak's steps.
+  - Of ATLAS ids, only T0051 and T0025 occur in the records among Table 3's steps. S11's T0048 also matches at the parent level, spuriously; the second review found this.
   - ETSI has 6 Organization entries, 2 of them implied.
 - **The quotes were found verbatim:** TR 104 128's clause 6 (clause headings name the EN provisions), NIST §3.4.2 and §3.4.3, the case study's Limitations and its Tables 2 and 3, and TS 104 050's scope notes.
 - **ADR-0012** is on `main` (70b15ac), and its status is accepted.
+
+### Second review of the fixes
+
+A second fresh agent reviewed only the fixes (tmodel `84da598..1f15fa3`, library `5a8171a..f527c1e`), checking each first-round finding and spot-checking the new claims against the sources. It found 11 problems, 1 of them material. Of the 28 first-round findings, 24 were resolved, 3 were partly resolved and 1 (F-28) was legitimately deferred. All 11 were then fixed, after re-checking each one against its source:
+- **R-01 (material): TR 104 128 was undercounted.** The report said the guide names prompt injection against five EN provisions. A search of all of clause 6 finds it in the examples for 15, RAG for 11 and exfiltration for 2 (5.1.2-6 and 5.2.1-4). The "five" came from the seven subclauses read in full, and the `searches.md` row recorded that partial result as a search of clause 6. Fixed in §3, Table 2's read-across, Table 3 (S07, S10), §7, `searches.md` and the library stub (`c3d6e3b`).
+- **R-02 to R-11 (minor):**
+  - the DEC-001b routing is scoped to `conformance_status`;
+  - the §10 method line names §2.8;
+  - "13 of them as attacks" is now "13 in its own words";
+  - Table 3's id-match sentence covers S11's spurious T0048 match and adds T0068;
+  - ATLAS 2026.10's M0020 → T0077 link is added;
+  - the T0010 renames are added to §6 and open question 8;
+  - the OWASP id now gives both editions (LLM02 in 2023, LLM05 in 2025);
+  - "links or images" is now "in model output";
+  - Table 2's SAGAI column gets the pentest paper's conventional and supply-chain objectives;
+  - the GWU case study is named so that it is not confused with ATLAS's, and the acronyms and table introductions are completed.
 
 ### Choices the agent made, open to review
 
