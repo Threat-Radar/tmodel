@@ -10,7 +10,7 @@ status: accepted
 version: "1.0.0"
 version_policy: "semver; an accepted ADR is 1.0.0 and only changes to record superseding"
 date: "2026-10-22"
-updated: "2026-10-22"
+updated: "2026-11-03"
 decision_makers:
   - role: student
     id: Clovier
