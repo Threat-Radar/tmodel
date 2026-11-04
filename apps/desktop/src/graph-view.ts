@@ -94,6 +94,8 @@ export class KnowledgeGraphView {
   private activeAttackPath?: AttackPathOption;
   private incrementalLayout?: Layouts;
   private incrementalLayoutCleanup?: () => void;
+  private visible = false;
+  private fitOnVisibleResize = false;
 
   constructor(
     private readonly provider: GraphDataProvider = new DevelopmentFixtureProvider(),
@@ -114,6 +116,20 @@ export class KnowledgeGraphView {
     const initialSelection = this.state.selectedNodeId ?? graph.focusId ?? this.state.nodes[0]?.id;
     if (initialSelection) this.handleSelection(initialSelection);
     await this.loadAttackPaths();
+  }
+
+  setVisible(visible: boolean): void {
+    this.visible = visible;
+  }
+
+  /** Re-measure the canvas after its view becomes visible, fitting one hidden initial layout. */
+  resize(): void {
+    if (!this.visible || !this.cy) return;
+    this.cy.resize();
+    if (this.fitOnVisibleResize) {
+      this.cy.fit(undefined, 48);
+      this.fitOnVisibleResize = false;
+    }
   }
 
   /** Attack-path discovery failures stay in the path toolbar; the graph remains usable. */
@@ -437,6 +453,7 @@ export class KnowledgeGraphView {
 
   private runGraphLayout(preservePositions = false): void {
     if (!this.cy) return;
+    if (!this.visible) this.fitOnVisibleResize = true;
     this.cy.layout(graphLayoutForSize(
       this.cy.nodes().length,
       this.cy.edges().length,

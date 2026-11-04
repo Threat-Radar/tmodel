@@ -96,7 +96,15 @@ def test_gui_fixture_is_the_engines_answer():
 
 def test_row_shape():
     payload = core.library_table()
-    assert list(payload) == ["library", "query", "total", "count", "rows", "facets"]
+    assert list(payload) == [
+        "library",
+        "query",
+        "total",
+        "count",
+        "rows",
+        "facets",
+        "contextual_facets",
+    ]
     assert "root" not in payload["library"]  # no local path: the fixture is machine-independent
     for row in payload["rows"]:
         assert list(row) == ROW_KEYS
@@ -209,6 +217,40 @@ def test_facets_count_the_whole_library():
     }
     assert core.library_table()["facets"] == expected
     assert core.library_table({"type": "rfc", "search": "x"})["facets"] == expected
+
+
+def test_contextual_facets_follow_search_and_exclude_their_own_filter():
+    payload = core.library_table(
+        {
+            "search": "sbom",
+            "type": "paper",
+            "status": "stub",
+            "topic": "product-composition",
+        }
+    )
+    assert ids(payload) == ["benedetti-2024-sbom-python", "sbomproof-2025"]
+    assert payload["contextual_facets"] == {
+        # Search applies, but the active type filter does not constrain its own choices.
+        "type": {"paper": 2, "rfc": 1},
+        # Each other facet also excludes itself while respecting search and the remaining filters.
+        "status": {"stub": 2},
+        "topic": {"product-composition": 2},
+    }
+
+
+def test_contextual_facets_keep_alternatives_when_an_active_filter_has_no_results():
+    payload = core.library_table({"search": "sbom", "type": "dataset"})
+    assert payload["total"] == 0
+    assert payload["contextual_facets"] == {
+        "type": {"paper": 2, "rfc": 1},
+        "status": {},
+        "topic": {},
+    }
+
+
+def test_contextual_facets_equal_whole_library_facets_without_a_query():
+    payload = core.library_table()
+    assert payload["contextual_facets"] == payload["facets"]
 
 
 BAD = [

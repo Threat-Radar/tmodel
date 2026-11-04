@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import platform
 from collections import Counter
-from collections.abc import Mapping
+from collections.abc import Iterable, Mapping
 from pathlib import Path
 from typing import Any
 
@@ -76,8 +76,8 @@ def _served_library() -> Library:
         ) from exc
 
 
-def _matching(library: Library, filters: Mapping[str, str]) -> list[LibraryRecord]:
-    return [r for r in library if all(getattr(r, k) == v for k, v in filters.items())]
+def _matching(records: Iterable[LibraryRecord], filters: Mapping[str, str]) -> list[LibraryRecord]:
+    return [r for r in records if all(getattr(r, k) == v for k, v in filters.items())]
 
 
 def library_records(filters: Mapping[str, str] | None = None) -> dict[str, Any]:
@@ -113,9 +113,11 @@ def library_table(query: Mapping[str, str] | None = None) -> dict[str, Any]:
     topic or tags; `sort`, one of TABLE_SORTS (default `id`); `order`, `asc` or
     `desc`; and `limit` and `offset` for paging. Records without a value for the
     sort field come last in both orders, and ties keep id order. `total` counts
-    the matches before paging. `facets` counts each type, status and topic in the
-    whole library, for filter menus. The payload names no local path, so a saved
-    copy is the same on every machine.
+    the matches before paging. `facets` contains whole-library counts for type,
+    status, and topic. `contextual_facets` applies the current search and the
+    other exact filters, excluding each facet's own filter so a user can switch
+    its selection. The payload names no local path, so a saved copy is the same
+    on every machine.
     """
     values = _values(query or {}, LIBRARY_FILTERS + TABLE_OPTIONS, "parameter")
     sort = values.get("sort", "id")
@@ -130,10 +132,8 @@ def library_table(query: Mapping[str, str] | None = None) -> dict[str, Any]:
 
     library = _served_library()
     filters = {k: v for k, v in values.items() if k in LIBRARY_FILTERS}
-    matched = _matching(library, filters)
-    if search is not None:
-        needle = search.casefold()
-        matched = [r for r in matched if needle in _searchable(r)]
+    searched = _searched(library, search)
+    matched = _matching(searched, filters)
     matched = _sorted(matched, sort, descending=order == "desc")
     page = matched[offset : offset + limit if limit is not None else None]
     return {
@@ -154,12 +154,19 @@ def library_table(query: Mapping[str, str] | None = None) -> dict[str, Any]:
         "count": len(page),
         "rows": [_row(r) for r in page],
         "facets": {name: _counts(library, name) for name in TABLE_FACETS},
+        "contextual_facets": {
+            name: _counts(
+                _matching(searched, {key: value for key, value in filters.items() if key != name}),
+                name,
+            )
+            for name in TABLE_FACETS
+        },
     }
 
 
-def _counts(library: Library, field: str) -> dict[str, int]:
+def _counts(records: Iterable[LibraryRecord], field: str) -> dict[str, int]:
     """How many records have each value of `field`, in value order; blanks are not counted."""
-    return dict(sorted(Counter(getattr(r, field) for r in library if getattr(r, field)).items()))
+    return dict(sorted(Counter(getattr(r, field) for r in records if getattr(r, field)).items()))
 
 
 def _whole_number(values: Mapping[str, str], name: str, minimum: int) -> int | None:
@@ -174,6 +181,14 @@ def _whole_number(values: Mapping[str, str], name: str, minimum: int) -> int | N
 def _searchable(r: LibraryRecord) -> str:
     fields = [r.id, r.title, r.short_title, r.publisher, r.topic, *r.tags]
     return " ".join(f for f in fields if f).casefold()
+
+
+def _searched(records: Iterable[LibraryRecord], search: str | None) -> list[LibraryRecord]:
+    """Records matching the table's text search, or every record when search is absent."""
+    if search is None:
+        return list(records)
+    needle = search.casefold()
+    return [record for record in records if needle in _searchable(record)]
 
 
 def _sort_value(r: LibraryRecord, field: str) -> str | None:
