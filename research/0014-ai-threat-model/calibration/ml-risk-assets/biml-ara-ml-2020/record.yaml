@@ -1,0 +1,108 @@
+# Paper/PDF: cite by DOI or arXiv id where one exists.
+# RPT-0014 Wave 1 calibration record (S-0728), lane ml-risk-assets (Threat-Radar/tmodel#81).
+schema: "library-record/v1"
+id: biml-ara-ml-2020
+body: other
+type: paper
+title: "An Architectural Risk Analysis of Machine Learning Systems: Toward More Secure Machine Learning"
+short_title: "BIML ARA of ML systems (BIML-78)"
+authors:
+  - "Gary McGraw"
+  - "Harold Figueroa"
+  - "Victor Shepardson"
+  - "Richie Bonett"
+date: "2020-01-20"
+publisher: "Berryville Institute of Machine Learning (BIML)"
+version: "1.0 (cover dated 1.13.20; released 2020-01-20 per the BIML results page and PDF metadata)"
+identifiers:
+  url: https://berryvilleiml.com/results/
+content:
+  url: https://berryvilleiml.com/results/ara.pdf
+  sha256: "247d7f06d8c768cc734dc84ab7004c6e4d645e91911af61002fd1743807ef312"
+  retrieved: "2026-11-01"
+  local: false
+  media_type: application/pdf
+  pages: 42
+# Calibration subset: 21 of the 35 references (pp. 39-41). Bracketed numbers are
+# the source's own; locators are the source's own. Complete reference expansion
+# and stub creation are reserved for subset-1 (LANES.md Step 2, item 5); none
+# were created.
+cites:
+  - title: "[1] Viega and McGraw, Building Secure Software"
+    locator: "Addison-Wesley 2001"
+  - title: "[2] McGraw, Software Security (chapter 5)"
+    locator: "Addison-Wesley 2006"
+  - title: "[3] Saltzer and Schroeder, The protection of information in computer systems"
+    locator: "Proceedings of the IEEE 1975 (the source prints 9(63); Crossref has 63(9), doi:10.1109/PROC.1975.9939)"
+  - title: "[4] Papernot, A Marauder's Map of Security and Privacy in Machine Learning"
+    locator: "arXiv:1811.01134"
+  - title: "[5] Barreno et al., Can machine learning be secure?"
+    locator: "ASIACCS 2006"
+  - title: "[7] Shokri et al., Membership inference attacks against machine learning models"
+    locator: "IEEE S&P 2017"
+  - title: "[8] Barreno et al., The Security of Machine Learning"
+    locator: "Machine Learning 81(2), 2010"
+  - title: "[10] Sculley et al., Machine learning: The high interest credit card of technical debt"
+    locator: "2014"
+  - title: "[13] McGraw, Bonett, Figueroa and Shepardson, Securing Engineering for Machine Learning"   # title as printed on p. 40
+    locator: "IEEE Computer 52(8):54-57 (as printed). Published title per BIML's results page (retrieved 2026-11-01): Security Engineering for Machine Learning, IEEE Computer 52(8):54-57, August 2019"
+  - title: "[14] Goodfellow et al., Explaining and harnessing adversarial examples"
+    locator: "ICLR 2015"
+  - title: "[19] Alfeld et al., Data poisoning attacks against autoregressive models (also listed as [12])"
+    locator: "AAAI 2016"
+  - title: "[21] Eykholt et al., Robust physical-world attacks on deep learning models"
+    locator: "arXiv:1707.08945"
+  - title: "[22] Biggio et al., Evasion attacks against machine learning at test time"
+    locator: "ECML PKDD 2013"
+  - title: "[23] Carlini and Wagner, Audio adversarial examples"
+    locator: "IEEE SPW 2018"
+  - title: "[24] Gu et al., BadNets"
+    locator: "arXiv:1708.06733"
+  - title: "[25] Kumar et al., Failure Modes in Machine Learning Systems"
+    locator: "arXiv:1911.11034"
+  - title: "[26] Ateniese et al., Hacking smart machines with smarter ones"
+    locator: "arXiv:1306.4447"
+  - title: "[27] Fredrikson et al., Privacy in pharmacogenetics"
+    locator: "USENIX Security 2014"
+  - title: "[28] Wang et al., With Great Training Comes Great Vulnerability: Practical Attacks against Transfer Learning"
+    locator: "USENIX Security 2018"
+  - title: "[29] Papernot et al., Practical black-box attacks against machine learning"
+    locator: "ASIACCS 2017"
+  - title: "[31] Tabassi et al., A Taxonomy and Terminology of Adversarial Machine Learning (NIST draft)"
+    locator: "https://doi.org/10.6028/NIST.IR.8269-draft"
+relations:
+  supersedes: []
+  superseded_by: []
+  see_also: []
+  cited_by: []
+  implements_concept: []
+bears_on:
+  - R-020        # the source maps its generic nine-component model onto a specific system (GNMT, p. 8)
+  - DEC-009      # generic-threat -> product half only; not mitigation-lifecycle tracking
+applicability:
+  security: core
+  cryptography: adjacent
+  this_project: core
+implementations:
+  open_source: []
+  commercial: []
+  searched: "2026-11-01"
+usefulness:
+  verdict: useful
+  reason: "A component-keyed risk list (78 identifiers) and attack-surface model for a generic ML system, written to be mapped onto specific systems; no assets, no scoring, pre-LLM, and the identifiers have internal defects."
+  assessed: "2026-11-01"
+topic: ai-threat-model-ml-risk-assets
+tags:
+  - method
+  - prior-art
+  - ai-threat-model
+  - data-poisoning
+  - evasion
+  - backdoor
+  - model-extraction
+  - membership-inference
+  - model-inversion
+  - ai-supply-chain
+status: summarized
+confidence: high
+owner: kriishnaa-18
