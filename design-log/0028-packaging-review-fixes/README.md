@@ -4,9 +4,9 @@ id: DL-0028
 title: "Packaging review fixes for PR #155"
 type: process
 status: draft
-version: "0.2.2"
+version: "0.2.3"
 date: "2026-10-29"
-updated: "2026-11-03"
+updated: "2026-11-04"
 record: DL-0028
 defers_to: ARCH-0001
 ---
@@ -148,6 +148,6 @@ four tests, formatting and clippy with warnings denied passed. Engine lint and
 formatting, archdoc, workflow linting (without ShellCheck), publishing identity
 and relative-link checks, and `git diff --check` passed.
 
-The successful manual test recorded above applies to the October 30 build.
-Manual testing of this rebuilt installer is pending. The tagged-release and
+On 2026-11-04, @paria03 reported that this rebuilt installer worked in manual
+testing. Individual checklist results were not itemized. The tagged-release and
 clean-account acceptance checks remain outstanding; #124 stays open.
