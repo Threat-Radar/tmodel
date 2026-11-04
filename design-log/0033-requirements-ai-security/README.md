@@ -105,13 +105,20 @@ For each file, 12 proposed links were chosen to cover:
 - one ATLAS id that 2026.10 removes;
 - the within-source links.
 
-The PR lists them. @Maimcghee records a verdict for each, and each verdict becomes a Review in the file.
+The PR listed them, and the agent gave the student each provision's text, the target and the basis. The agent flagged five for a closer look:
+- ETSI #3 and CISA #7 point at AML.T0024.000, which ATLAS 2026.10 removes;
+- ETSI #9 and CISA #5 link logging to an attack it only detects;
+- ETSI #8 is a T0048 match, after RPT-0009 found a spurious one in em-01.
 
 ## What a human accepted
 
-- The student asked for both files. *(The sample review is pending: verdicts and Reviews are added here when made.)*
+- The student asked for both files.
+- **Review sample: all 24 links accepted** (12 per file) by @Maimcghee on 2026-11-03, including the five the agent flagged. Each is now `assertion_status: accepted`, with a Review (`review_status: accepted`, reviewer `party:maimcghee`). Each justification gives the basis shown at review.
+  - The two AML.T0024.000 links are accepted against ATLAS 2026.09, the version the library pins. A move to 2026.10 would retarget them (RPT-0009 open question 8).
+  - The two logging links are accepted with `addresses` read as including detection.
+- The other 218 links (ETSI 108 of 120, CISA 110 of 122) stay `proposed`, with no Review.
 
 ## What was rejected, and why
 
 - **Corrected by the agent before review: the CISA scope line.** The first draft said every mapped entry was kept "except R-0001". R-0001's mapping has no NIST AI 100-2 or ATLAS id, so it was never an exception, and the line now gives the count instead.
-- *(Human rejections from the sample review are added here.)*
+- **Human:** none. No link in the sample was rejected.

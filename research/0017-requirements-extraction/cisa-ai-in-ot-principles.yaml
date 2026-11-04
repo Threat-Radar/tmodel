@@ -35,7 +35,9 @@
 #   (kind: stated), medium where the mapping is inferred. ATLAS ids are 2026.09, as the library
 #   pins; stubs say where 2026.10 removes or renames one.
 #   15 `refines` or `derived_from` between provisions of this source.
-# No Review yet: the human owner reviews a sample next.
+# Review: @Maimcghee checked 12 of these links on 2026-11-03, from the review sample in
+# tmodel#199 (each provision's text, the target and the basis), and accepted all 12 (see
+# reviews:). The rest stay proposed, with no Review.
 
 requirements:
   - id: requirement:cisa-ai-in-ot-principles-r-0011
@@ -1262,7 +1264,7 @@ assertions:
     predicate: addresses
     object: attack-pattern:nistaml-013
     confidence: high
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
       threat mapping (NIST AI 100-2 E2025 (March 2025); kind: stated, provenance: ours).
@@ -1417,7 +1419,7 @@ assertions:
     predicate: addresses
     object: attack-pattern:aml-t0024-000
     confidence: medium
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
       threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
@@ -1480,7 +1482,7 @@ assertions:
     predicate: addresses
     object: attack-pattern:aml-t0010-003
     confidence: medium
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
       threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
@@ -1626,7 +1628,7 @@ assertions:
     predicate: addresses
     object: attack-pattern:aml-t0122
     confidence: medium
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
       threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
@@ -1762,7 +1764,7 @@ assertions:
     predicate: addresses
     object: attack-pattern:nistaml-036
     confidence: medium
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
       threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
@@ -1824,7 +1826,7 @@ assertions:
     predicate: addresses
     object: attack-pattern:nistaml-015
     confidence: medium
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
       threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
@@ -1988,7 +1990,7 @@ assertions:
     predicate: addresses
     object: attack-pattern:aml-t0053
     confidence: medium
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
       threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
@@ -2086,7 +2088,7 @@ assertions:
     predicate: addresses
     object: attack-pattern:nistaml-022
     confidence: high
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
       threat mapping (NIST AI 100-2 E2025 (March 2025); kind: stated, provenance: ours).
@@ -2161,7 +2163,7 @@ assertions:
     predicate: addresses
     object: attack-pattern:nistaml-013
     confidence: high
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
       threat mapping (NIST AI 100-2 E2025 (March 2025); kind: stated, provenance: ours).
@@ -2334,7 +2336,7 @@ assertions:
     predicate: refines
     object: requirement:cisa-ai-in-ot-principles-r-0083
     confidence: high
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: R-0084 (§3.2
       Integrating AI Into Existing Security and Cybersecurity Frameworks, p. 17);
@@ -2356,7 +2358,7 @@ assertions:
     predicate: refines
     object: requirement:cisa-ai-in-ot-principles-r-0086
     confidence: medium
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: R-0087 (§3.2
       Integrating AI Into Existing Security and Cybersecurity Frameworks, p. 17); 'For
@@ -2367,7 +2369,7 @@ assertions:
     predicate: derived_from
     object: requirement:cisa-ai-in-ot-principles-r-0100
     confidence: medium
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: R-0101 (§4.1
       Establish Monitoring and Oversight Mechanisms for AI in OT, p. 18); follows R-0100
@@ -2395,4 +2397,127 @@ assertions:
       Safety and Failsafe Mechanisms, p. 20); follows R-0132; names the response steps
       the plan needs.
 
-reviews: []
+reviews:
+  - id: review:cisa-ai-in-ot-principles-r-0042--addresses--nistaml-013
+    name: "Review, accept R-0042 addresses NISTAML.013"
+    reviews: assertion:cisa-ai-in-ot-principles-r-0042--addresses--nistaml-013
+    reviewer: party:maimcghee
+    review_status: accepted
+    justification: >-
+      Accepted by @Maimcghee on 2026-11-03, from the tmodel#199 review sample, which
+      showed the provision's text, the target and this basis: R-0042 (§2.2 Manage OT
+      Data Security Risks for AI Systems, p. 13); the statement names "intentional or
+      inadvertent data poisoning".
+  - id: review:cisa-ai-in-ot-principles-r-0048--addresses--aml-t0024-000
+    name: "Review, accept R-0048 addresses AML.T0024.000"
+    reviews: assertion:cisa-ai-in-ot-principles-r-0048--addresses--aml-t0024-000
+    reviewer: party:maimcghee
+    review_status: accepted
+    justification: >-
+      Accepted by @Maimcghee on 2026-11-03, from the tmodel#199 review sample, which
+      showed the provision's text, the target and this basis: R-0048 (§2.2 Manage OT
+      Data Security Risks for AI Systems, p. 13); 'patterns of activity' in training
+      data are what property inference recovers (NIST §2.4.3; ATLAS T0024.000 'global
+      characteristics of the data').
+  - id: review:cisa-ai-in-ot-principles-r-0051--addresses--aml-t0010-003
+    name: "Review, accept R-0051 addresses AML.T0010.003"
+    reviews: assertion:cisa-ai-in-ot-principles-r-0051--addresses--aml-t0010-003
+    reviewer: party:maimcghee
+    review_status: accepted
+    justification: >-
+      Accepted by @Maimcghee on 2026-11-03, from the tmodel#199 review sample, which
+      showed the provision's text, the target and this basis: R-0051 (§2.3 Understanding
+      the Role of OT Vendors in AI Integration, p. 14); knowing which models a product
+      embeds and where they are hosted is the precondition for detecting supply chain
+      compromise.
+  - id: review:cisa-ai-in-ot-principles-r-0064--addresses--aml-t0122
+    name: "Review, accept R-0064 addresses AML.T0122"
+    reviews: assertion:cisa-ai-in-ot-principles-r-0064--addresses--aml-t0122
+    reviewer: party:maimcghee
+    review_status: accepted
+    justification: >-
+      Accepted by @Maimcghee on 2026-11-03, from the tmodel#199 review sample, which
+      showed the provision's text, the target and this basis: R-0064 (§2.4 Evaluate
+      Challenges in AI-OT System Integration, p. 15); no persistent access into OT means
+      a compromised AI system is not a way in.
+  - id: review:cisa-ai-in-ot-principles-r-0085--addresses--nistaml-036
+    name: "Review, accept R-0085 addresses NISTAML.036"
+    reviews: assertion:cisa-ai-in-ot-principles-r-0085--addresses--nistaml-036
+    reviewer: party:maimcghee
+    review_status: accepted
+    justification: >-
+      Accepted by @Maimcghee on 2026-11-03, from the tmodel#199 review sample, which
+      showed the provision's text, the target and this basis: R-0085 (§3.2 Integrating
+      AI Into Existing Security and Cybersecurity Frameworks, p. 17); inspecting prompts
+      and outputs catches sensitive data leaving through the model.
+  - id: review:cisa-ai-in-ot-principles-r-0101--addresses--nistaml-015
+    name: "Review, accept R-0101 addresses NISTAML.015"
+    reviews: assertion:cisa-ai-in-ot-principles-r-0101--addresses--nistaml-015
+    reviewer: party:maimcghee
+    review_status: accepted
+    justification: >-
+      Accepted by @Maimcghee on 2026-11-03, from the tmodel#199 review sample, which
+      showed the provision's text, the target and this basis: R-0101 (§4.1 Establish
+      Monitoring and Oversight Mechanisms for AI in OT, p. 18); logged inputs include
+      third-party content the system ingested.
+  - id: review:cisa-ai-in-ot-principles-r-0109--addresses--aml-t0053
+    name: "Review, accept R-0109 addresses AML.T0053"
+    reviews: assertion:cisa-ai-in-ot-principles-r-0109--addresses--aml-t0053
+    reviewer: party:maimcghee
+    review_status: accepted
+    justification: >-
+      Accepted by @Maimcghee on 2026-11-03, from the tmodel#199 review sample, which
+      showed the provision's text, the target and this basis: R-0109 (§4.1 Establish
+      Monitoring and Oversight Mechanisms for AI in OT, p. 19); a distinct AI identity
+      in logs separates actions an AI took after an injected instruction from those of
+      users and machines (ATLAS M0024 covers agent identity in logs).
+  - id: review:cisa-ai-in-ot-principles-r-0120--addresses--nistaml-022
+    name: "Review, accept R-0120 addresses NISTAML.022"
+    reviews: assertion:cisa-ai-in-ot-principles-r-0120--addresses--nistaml-022
+    reviewer: party:maimcghee
+    review_status: accepted
+    justification: >-
+      Accepted by @Maimcghee on 2026-11-03, from the tmodel#199 review sample, which
+      showed the provision's text, the target and this basis: R-0120 (§4.1 Establish
+      Monitoring and Oversight Mechanisms for AI in OT, p. 20); the statement names
+      "adversarial inputs".
+  - id: review:cisa-ai-in-ot-principles-r-0120--addresses--nistaml-013
+    name: "Review, accept R-0120 addresses NISTAML.013"
+    reviews: assertion:cisa-ai-in-ot-principles-r-0120--addresses--nistaml-013
+    reviewer: party:maimcghee
+    review_status: accepted
+    justification: >-
+      Accepted by @Maimcghee on 2026-11-03, from the tmodel#199 review sample, which
+      showed the provision's text, the target and this basis: R-0120 (§4.1 Establish
+      Monitoring and Oversight Mechanisms for AI in OT, p. 20); the statement names
+      "data poisoning".
+  - id: review:cisa-ai-in-ot-principles-r-0084--refines--r-0083
+    name: "Review, accept R-0084 refines R-0083"
+    reviews: assertion:cisa-ai-in-ot-principles-r-0084--refines--r-0083
+    reviewer: party:maimcghee
+    review_status: accepted
+    justification: >-
+      Accepted by @Maimcghee on 2026-11-03, from the tmodel#199 review sample, which
+      showed the provision's text, the target and this basis: R-0084 (§3.2 Integrating
+      AI Into Existing Security and Cybersecurity Frameworks, p. 17); sub-item of
+      R-0083; a specific logging control.
+  - id: review:cisa-ai-in-ot-principles-r-0087--refines--r-0086
+    name: "Review, accept R-0087 refines R-0086"
+    reviews: assertion:cisa-ai-in-ot-principles-r-0087--refines--r-0086
+    reviewer: party:maimcghee
+    review_status: accepted
+    justification: >-
+      Accepted by @Maimcghee on 2026-11-03, from the tmodel#199 review sample, which
+      showed the provision's text, the target and this basis: R-0087 (§3.2 Integrating
+      AI Into Existing Security and Cybersecurity Frameworks, p. 17); 'For instance'
+      after R-0086; names the catalogue to use for AI TTPs.
+  - id: review:cisa-ai-in-ot-principles-r-0101--derived-from--r-0100
+    name: "Review, accept R-0101 derived_from R-0100"
+    reviews: assertion:cisa-ai-in-ot-principles-r-0101--derived-from--r-0100
+    reviewer: party:maimcghee
+    review_status: accepted
+    justification: >-
+      Accepted by @Maimcghee on 2026-11-03, from the tmodel#199 review sample, which
+      showed the provision's text, the target and this basis: R-0101 (§4.1 Establish
+      Monitoring and Oversight Mechanisms for AI in OT, p. 18); follows R-0100 and logs
+      'these components', the AI components R-0100 inventories.

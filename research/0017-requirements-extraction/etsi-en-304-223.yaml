@@ -31,7 +31,9 @@
 #   (kind: stated), medium where the mapping is inferred. ATLAS ids are 2026.09, as the library
 #   pins; stubs say where 2026.10 removes or renames one.
 #   12 `refines` or `derived_from` between provisions of this source.
-# No Review yet: the human owner reviews a sample next.
+# Review: @Maimcghee checked 12 of these links on 2026-11-03, from the review sample in
+# tmodel#199 (each provision's text, the target and the basis), and accepted all 12 (see
+# reviews:). The rest stay proposed, with no Review.
 
 requirements:
   - id: requirement:etsi-en-304-223-5-1-2-1
@@ -878,7 +880,7 @@ assertions:
     predicate: addresses
     object: attack-pattern:aml-t0043
     confidence: high
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
       threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
@@ -1076,7 +1078,7 @@ assertions:
     predicate: addresses
     object: attack-pattern:nistaml-015
     confidence: medium
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
       threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
@@ -1186,7 +1188,7 @@ assertions:
     predicate: addresses
     object: attack-pattern:nistaml-013
     confidence: high
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
       threat mapping (NIST AI 100-2 E2025 (March 2025); kind: stated, provenance: ours).
@@ -1232,7 +1234,7 @@ assertions:
     predicate: addresses
     object: attack-pattern:nistaml-033
     confidence: high
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
       threat mapping (NIST AI 100-2 E2025 (March 2025); kind: stated, provenance: ours).
@@ -1244,7 +1246,7 @@ assertions:
     predicate: addresses
     object: attack-pattern:aml-t0024-000
     confidence: high
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
       threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
@@ -1453,7 +1455,7 @@ assertions:
     predicate: addresses
     object: attack-pattern:aml-t0048-004
     confidence: medium
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
       threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
@@ -1552,7 +1554,7 @@ assertions:
     predicate: addresses
     object: attack-pattern:aml-t0029
     confidence: medium
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
       threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
@@ -1794,7 +1796,7 @@ assertions:
     predicate: addresses
     object: attack-pattern:aml-t0010-003
     confidence: medium
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
       threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
@@ -2049,7 +2051,7 @@ assertions:
     predicate: addresses
     object: attack-pattern:aml-t0051-000
     confidence: medium
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
       threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
@@ -2182,7 +2184,7 @@ assertions:
     predicate: refines
     object: requirement:etsi-en-304-223-5-1-3-1
     confidence: high
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: §5.1.3, Provision
       5.1.3-1.2, p. 11; sub-provision of 5.1.3-1; names one specific risk to manage.
@@ -2225,7 +2227,7 @@ assertions:
     predicate: derived_from
     object: requirement:etsi-en-304-223-5-2-3-2
     confidence: high
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: §5.2.3, Provision
       5.2.3-2.1, p. 13; sub-provision of 5.2.3-2; 'In this case' applies to the
@@ -2268,7 +2270,7 @@ assertions:
     predicate: refines
     object: requirement:etsi-en-304-223-5-2-5-2
     confidence: medium
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: §5.2.5, Provision
       5.2.5-2.1, p. 14; sub-provision of 5.2.5-2; who should do the security testing.
@@ -2294,4 +2296,119 @@ assertions:
       5.4.1-1.1, p. 14; sub-provision of 5.4.1-1; covers the case where its updates
       cannot be provided.
 
-reviews: []
+reviews:
+  - id: review:etsi-en-304-223-5-1-2-2--addresses--aml-t0043
+    name: "Review, accept 5.1.2-2 addresses AML.T0043"
+    reviews: assertion:etsi-en-304-223-5-1-2-2--addresses--aml-t0043
+    reviewer: party:maimcghee
+    review_status: accepted
+    justification: >-
+      Accepted by @Maimcghee on 2026-11-03, from the tmodel#199 review sample, which
+      showed the provision's text, the target and this basis: §5.1.2, Provision 5.1.2-2,
+      p. 10; the provision names "adversarial AI attacks"; clause 3.1 defines an
+      adversarial attack as specially crafted inputs that make the model produce errors,
+      which is evasion.
+  - id: review:etsi-en-304-223-5-1-2-6--addresses--nistaml-015
+    name: "Review, accept 5.1.2-6 addresses NISTAML.015"
+    reviews: assertion:etsi-en-304-223-5-1-2-6--addresses--nistaml-015
+    reviewer: party:maimcghee
+    review_status: accepted
+    justification: >-
+      Accepted by @Maimcghee on 2026-11-03, from the tmodel#199 review sample, which
+      showed the provision's text, the target and this basis: §5.1.2, Provision 5.1.2-6,
+      p. 11; least privilege on connected systems limits what an injected instruction
+      can make the AI system do there.
+  - id: review:etsi-en-304-223-5-1-3-1--addresses--nistaml-013
+    name: "Review, accept 5.1.3-1 addresses NISTAML.013"
+    reviews: assertion:etsi-en-304-223-5-1-3-1--addresses--nistaml-013
+    reviewer: party:maimcghee
+    review_status: accepted
+    justification: >-
+      Accepted by @Maimcghee on 2026-11-03, from the tmodel#199 review sample, which
+      showed the provision's text, the target and this basis: §5.1.3, Provision 5.1.3-1,
+      p. 11; the provision names "data poisoning".
+  - id: review:etsi-en-304-223-5-1-3-1--addresses--nistaml-033
+    name: "Review, accept 5.1.3-1 addresses NISTAML.033"
+    reviews: assertion:etsi-en-304-223-5-1-3-1--addresses--nistaml-033
+    reviewer: party:maimcghee
+    review_status: accepted
+    justification: >-
+      Accepted by @Maimcghee on 2026-11-03, from the tmodel#199 review sample, which
+      showed the provision's text, the target and this basis: §5.1.3, Provision 5.1.3-1,
+      p. 11; the provision names "membership inference".
+  - id: review:etsi-en-304-223-5-1-3-1--addresses--aml-t0024-000
+    name: "Review, accept 5.1.3-1 addresses AML.T0024.000"
+    reviews: assertion:etsi-en-304-223-5-1-3-1--addresses--aml-t0024-000
+    reviewer: party:maimcghee
+    review_status: accepted
+    justification: >-
+      Accepted by @Maimcghee on 2026-11-03, from the tmodel#199 review sample, which
+      showed the provision's text, the target and this basis: §5.1.3, Provision 5.1.3-1,
+      p. 11; the provision names "membership inference".
+  - id: review:etsi-en-304-223-5-2-1-4-2--addresses--aml-t0048-004
+    name: "Review, accept 5.2.1-4.2 addresses AML.T0048.004"
+    reviews: assertion:etsi-en-304-223-5-2-1-4-2--addresses--aml-t0048-004
+    reviewer: party:maimcghee
+    review_status: accepted
+    justification: >-
+      Accepted by @Maimcghee on 2026-11-03, from the tmodel#199 review sample, which
+      showed the provision's text, the target and this basis: §5.2.1, Provision
+      5.2.1-4.2, p. 12; confidential weights and training data are targets of theft by
+      conventional means.
+  - id: review:etsi-en-304-223-5-2-2-2--addresses--aml-t0029
+    name: "Review, accept 5.2.2-2 addresses AML.T0029"
+    reviews: assertion:etsi-en-304-223-5-2-2-2--addresses--aml-t0029
+    reviewer: party:maimcghee
+    review_status: accepted
+    justification: >-
+      Accepted by @Maimcghee on 2026-11-03, from the tmodel#199 review sample, which
+      showed the provision's text, the target and this basis: §5.2.2, Provision 5.2.2-2,
+      p. 12; rate limits on model access also counter denial of service and cost
+      harvesting (ATLAS M0004 mitigates both).
+  - id: review:etsi-en-304-223-5-2-4-1-2--addresses--aml-t0010-003
+    name: "Review, accept 5.2.4-1.2 addresses AML.T0010.003"
+    reviews: assertion:etsi-en-304-223-5-2-4-1-2--addresses--aml-t0010-003
+    reviewer: party:maimcghee
+    review_status: accepted
+    justification: >-
+      Accepted by @Maimcghee on 2026-11-03, from the tmodel#199 review sample, which
+      showed the provision's text, the target and this basis: §5.2.4, Provision
+      5.2.4-1.2, p. 13; published hashes let a downstream party detect a tampered model
+      component; the provision names authenticity, not an attack.
+  - id: review:etsi-en-304-223-5-4-2-1--addresses--aml-t0051-000
+    name: "Review, accept 5.4.2-1 addresses AML.T0051.000"
+    reviews: assertion:etsi-en-304-223-5-4-2-1--addresses--aml-t0051-000
+    reviewer: party:maimcghee
+    review_status: accepted
+    justification: >-
+      Accepted by @Maimcghee on 2026-11-03, from the tmodel#199 review sample, which
+      showed the provision's text, the target and this basis: §5.4.2, Provision 5.4.2-1,
+      p. 15; logged user actions show injection attempts.
+  - id: review:etsi-en-304-223-5-1-3-1-2--refines--5-1-3-1
+    name: "Review, accept 5.1.3-1.2 refines 5.1.3-1"
+    reviews: assertion:etsi-en-304-223-5-1-3-1-2--refines--5-1-3-1
+    reviewer: party:maimcghee
+    review_status: accepted
+    justification: >-
+      Accepted by @Maimcghee on 2026-11-03, from the tmodel#199 review sample, which
+      showed the provision's text, the target and this basis: §5.1.3, Provision
+      5.1.3-1.2, p. 11; sub-provision of 5.1.3-1; names one specific risk to manage.
+  - id: review:etsi-en-304-223-5-2-3-2-1--derived-from--5-2-3-2
+    name: "Review, accept 5.2.3-2.1 derived_from 5.2.3-2"
+    reviews: assertion:etsi-en-304-223-5-2-3-2-1--derived-from--5-2-3-2
+    reviewer: party:maimcghee
+    review_status: accepted
+    justification: >-
+      Accepted by @Maimcghee on 2026-11-03, from the tmodel#199 review sample, which
+      showed the provision's text, the target and this basis: §5.2.3, Provision
+      5.2.3-2.1, p. 13; sub-provision of 5.2.3-2; 'In this case' applies to the
+      components 5.2.3-2 describes.
+  - id: review:etsi-en-304-223-5-2-5-2-1--refines--5-2-5-2
+    name: "Review, accept 5.2.5-2.1 refines 5.2.5-2"
+    reviews: assertion:etsi-en-304-223-5-2-5-2-1--refines--5-2-5-2
+    reviewer: party:maimcghee
+    review_status: accepted
+    justification: >-
+      Accepted by @Maimcghee on 2026-11-03, from the tmodel#199 review sample, which
+      showed the provision's text, the target and this basis: §5.2.5, Provision
+      5.2.5-2.1, p. 14; sub-provision of 5.2.5-2; who should do the security testing.
