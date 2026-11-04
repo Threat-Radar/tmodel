@@ -1,0 +1,279 @@
+# iso-iec-30111-2019: requirement extraction, AI-proposed, UNREVIEWED unless a Review below says otherwise.
+# Source: library:iso-iec-30111-2019 (digest 5a2f9235b70896ecece35a823aebbe3a3151a471888c232d776bbc2658ec08b8), read 2026-11-03.
+# Agent: none yet (converter skeleton). Human owner: @Maimcghee.
+#
+# Converted by research/0017-requirements-extraction/convert.py from library@3eacfd0 iso/iso-iec-30111-2019.
+# Coverage: 32 in the source, 32 converted, 0 skipped.
+# Licensed source: every `text` is empty and must be a one-sentence paraphrase. Never copy its wording.
+# `# REVIEW:` marks a value the converter defaulted. Confirm or change it, then drop the mark.
+
+requirements:
+  - id: requirement:iso-iec-30111-2019-5-1-r01
+    name: "5.1-R01"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: process  # REVIEW: default from nature process
+    normativity: mandatory
+    source_ref: "library:iso-iec-30111-2019#5.1-R01"
+    source_locator: "5.1-R01 (§5.1)"
+  - id: requirement:iso-iec-30111-2019-6-1-r01
+    name: "6.1-R01"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: process  # REVIEW: default from nature process
+    normativity: recommended
+    source_ref: "library:iso-iec-30111-2019#6.1-R01"
+    source_locator: "6.1-R01 (§6.1)"
+  - id: requirement:iso-iec-30111-2019-6-1-r02
+    name: "6.1-R02"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: process  # REVIEW: default from nature process
+    normativity: recommended
+    source_ref: "library:iso-iec-30111-2019#6.1-R02"
+    source_locator: "6.1-R02 (§6.1)"
+  - id: requirement:iso-iec-30111-2019-6-1-r03
+    name: "6.1-R03"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: documentation  # REVIEW: default from nature deliverable
+    normativity: recommended
+    source_ref: "library:iso-iec-30111-2019#6.1-R03"
+    source_locator: "6.1-R03 (§6.1)"
+  - id: requirement:iso-iec-30111-2019-6-1-r04
+    name: "6.1-R04"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: documentation  # REVIEW: default from nature deliverable
+    normativity: recommended
+    source_ref: "library:iso-iec-30111-2019#6.1-R04"
+    source_locator: "6.1-R04 (§6.1)"
+  - id: requirement:iso-iec-30111-2019-6-2-1-r01
+    name: "6.2.1-R01"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: organizational  # REVIEW: default from nature process, actor top management
+    normativity: recommended
+    source_ref: "library:iso-iec-30111-2019#6.2.1-R01"
+    source_locator: "6.2.1-R01 (§6.2.1 a)-h))"
+  - id: requirement:iso-iec-30111-2019-6-2-2-r01
+    name: "6.2.2-R01"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: documentation  # REVIEW: default from nature deliverable
+    normativity: recommended
+    source_ref: "library:iso-iec-30111-2019#6.2.2-R01"
+    source_locator: "6.2.2-R01 (§6.2.2 a)-c))"
+  - id: requirement:iso-iec-30111-2019-6-2-3-r01
+    name: "6.2.3-R01"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: organizational  # REVIEW: default from nature process, actor top management
+    normativity: recommended
+    source_ref: "library:iso-iec-30111-2019#6.2.3-R01"
+    source_locator: "6.2.3-R01 (§6.2.3)"
+  - id: requirement:iso-iec-30111-2019-6-2-3-r02
+    name: "6.2.3-R02"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: organizational  # REVIEW: default from nature process, actor top management
+    normativity: recommended
+    source_ref: "library:iso-iec-30111-2019#6.2.3-R02"
+    source_locator: "6.2.3-R02 (§6.2.3 a)-b))"
+  - id: requirement:iso-iec-30111-2019-6-3-r01
+    name: "6.3-R01"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: documentation  # REVIEW: default from nature deliverable
+    normativity: mandatory
+    source_ref: "library:iso-iec-30111-2019#6.3-R01"
+    source_locator: "6.3-R01 (§6.3)"
+  - id: requirement:iso-iec-30111-2019-6-3-r02
+    name: "6.3-R02"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: documentation  # REVIEW: default from nature deliverable
+    normativity: recommended
+    source_ref: "library:iso-iec-30111-2019#6.3-R02"
+    source_locator: "6.3-R02 (§6.3)"
+  - id: requirement:iso-iec-30111-2019-6-3-r03
+    name: "6.3-R03"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: documentation  # REVIEW: default from nature deliverable
+    normativity: recommended
+    source_ref: "library:iso-iec-30111-2019#6.3-R03"
+    source_locator: "6.3-R03 (§6.3 a)-d))"
+  - id: requirement:iso-iec-30111-2019-6-4-r01
+    name: "6.4-R01"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: process  # REVIEW: default from nature process
+    normativity: recommended
+    source_ref: "library:iso-iec-30111-2019#6.4-R01"
+    source_locator: "6.4-R01 (§6.4)"
+  - id: requirement:iso-iec-30111-2019-6-4-r02
+    name: "6.4-R02"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: organizational  # REVIEW: default from nature process, actor organization (vendor)
+    normativity: recommended
+    source_ref: "library:iso-iec-30111-2019#6.4-R02"
+    source_locator: "6.4-R02 (§6.4)"
+  - id: requirement:iso-iec-30111-2019-6-4-r03
+    name: "6.4-R03"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: process  # REVIEW: default from nature process
+    normativity: recommended
+    source_ref: "library:iso-iec-30111-2019#6.4-R03"
+    source_locator: "6.4-R03 (§6.4)"
+  - id: requirement:iso-iec-30111-2019-6-4-r04
+    name: "6.4-R04"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: organizational  # REVIEW: default from nature process, actor organization (vendor)
+    normativity: recommended
+    source_ref: "library:iso-iec-30111-2019#6.4-R04"
+    source_locator: "6.4-R04 (§6.4)"
+  - id: requirement:iso-iec-30111-2019-6-4-r05
+    name: "6.4-R05"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: documentation  # REVIEW: default from nature deliverable
+    normativity: recommended
+    source_ref: "library:iso-iec-30111-2019#6.4-R05"
+    source_locator: "6.4-R05 (§6.4)"
+  - id: requirement:iso-iec-30111-2019-6-4-r06
+    name: "6.4-R06"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: organizational  # REVIEW: default from nature process, actor organization (vendor)
+    normativity: recommended
+    source_ref: "library:iso-iec-30111-2019#6.4-R06"
+    source_locator: "6.4-R06 (§6.4)"
+  - id: requirement:iso-iec-30111-2019-6-4-r07
+    name: "6.4-R07"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: process  # REVIEW: default from nature process
+    normativity: recommended
+    source_ref: "library:iso-iec-30111-2019#6.4-R07"
+    source_locator: "6.4-R07 (§6.4)"
+  - id: requirement:iso-iec-30111-2019-6-5-1-i01
+    name: "6.5.1-I01"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: process  # REVIEW: default from nature process
+    normativity: mandatory
+    source_ref: "library:iso-iec-30111-2019#6.5.1-I01"
+    source_locator: "6.5.1-I01 (§6.5.1)"
+  - id: requirement:iso-iec-30111-2019-6-5-2-r01
+    name: "6.5.2-R01"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: process  # REVIEW: default from nature process
+    normativity: recommended
+    source_ref: "library:iso-iec-30111-2019#6.5.2-R01"
+    source_locator: "6.5.2-R01 (§6.5.2)"
+  - id: requirement:iso-iec-30111-2019-6-5-2-r02
+    name: "6.5.2-R02"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: process  # REVIEW: default from nature process
+    normativity: recommended
+    source_ref: "library:iso-iec-30111-2019#6.5.2-R02"
+    source_locator: "6.5.2-R02 (§6.5.2)"
+  - id: requirement:iso-iec-30111-2019-6-5-2-p01
+    name: "6.5.2-P01"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: process  # REVIEW: default from nature process
+    normativity: optional
+    source_ref: "library:iso-iec-30111-2019#6.5.2-P01"
+    source_locator: "6.5.2-P01 (§6.5.2)"
+  - id: requirement:iso-iec-30111-2019-6-5-3-2-r01
+    name: "6.5.3.2-R01"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: process  # REVIEW: default from nature process
+    normativity: recommended
+    source_ref: "library:iso-iec-30111-2019#6.5.3.2-R01"
+    source_locator: "6.5.3.2-R01 (§6.5.3.2)"
+  - id: requirement:iso-iec-30111-2019-6-5-3-3-r01
+    name: "6.5.3.3-R01"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: documentation  # REVIEW: default from nature deliverable
+    normativity: recommended
+    source_ref: "library:iso-iec-30111-2019#6.5.3.3-R01"
+    source_locator: "6.5.3.3-R01 (§6.5.3.3)"
+  - id: requirement:iso-iec-30111-2019-6-5-3-3-i01
+    name: "6.5.3.3-I01"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: process  # REVIEW: default from nature process
+    normativity: mandatory
+    source_ref: "library:iso-iec-30111-2019#6.5.3.3-I01"
+    source_locator: "6.5.3.3-I01 (§6.5.3.3)"
+  - id: requirement:iso-iec-30111-2019-6-5-3-3-p01
+    name: "6.5.3.3-P01"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: process  # REVIEW: default from nature process
+    normativity: optional
+    source_ref: "library:iso-iec-30111-2019#6.5.3.3-P01"
+    source_locator: "6.5.3.3-P01 (§6.5.3.3)"
+  - id: requirement:iso-iec-30111-2019-6-5-3-3-r02
+    name: "6.5.3.3-R02"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: process  # REVIEW: default from nature process
+    normativity: recommended  # REVIEW: the source states a condition (when the PSIRT routes customer reports through customer supp); consider conditional
+    source_ref: "library:iso-iec-30111-2019#6.5.3.3-R02"
+    source_locator: "6.5.3.3-R02 (§6.5.3.3)"
+  - id: requirement:iso-iec-30111-2019-6-5-3-3-r03
+    name: "6.5.3.3-R03"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: process  # REVIEW: default from nature process
+    normativity: recommended  # REVIEW: the source states a condition (when the PSIRT routes customer reports through customer supp); consider conditional
+    source_ref: "library:iso-iec-30111-2019#6.5.3.3-R03"
+    source_locator: "6.5.3.3-R03 (§6.5.3.3)"
+  - id: requirement:iso-iec-30111-2019-6-5-3-4-r01
+    name: "6.5.3.4-R01"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: documentation  # REVIEW: default from nature deliverable
+    normativity: recommended
+    source_ref: "library:iso-iec-30111-2019#6.5.3.4-R01"
+    source_locator: "6.5.3.4-R01 (§6.5.3.4)"
+  - id: requirement:iso-iec-30111-2019-6-5-3-4-r02
+    name: "6.5.3.4-R02"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: process  # REVIEW: default from nature process
+    normativity: recommended
+    source_ref: "library:iso-iec-30111-2019#6.5.3.4-R02"
+    source_locator: "6.5.3.4-R02 (§6.5.3.4)"
+  - id: requirement:iso-iec-30111-2019-6-5-3-4-r03
+    name: "6.5.3.4-R03"  # REVIEW: add a short title in your own words
+    text: ""  # REVIEW: licensed source; write a one-sentence paraphrase
+    text_origin: paraphrase
+    requirement_kind: process  # REVIEW: default from nature process
+    normativity: recommended
+    source_ref: "library:iso-iec-30111-2019#6.5.3.4-R03"
+    source_locator: "6.5.3.4-R03 (§6.5.3.4)"
+
+# The human reviewer. Add stub nodes (weaknesses, attack_patterns, threat_instances,
+# mitigations) only for targets a proposed Assertion points at.
+parties:
+  - id: party:maimcghee
+    name: "@Maimcghee"
+    description: Human owner and reviewer of this file (GitHub id).
+    party_kind: person
+
+# Every proposed link is an Assertion (README.md). The converter proposes none.
+assertions: []
+
+reviews: []
