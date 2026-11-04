@@ -5,12 +5,28 @@
 # Source: BSI TR-03183-2 version 2.1.0 (2025-08-20), read in full. Its normative statements are
 # the capitalized BCP 14 keywords (TR §2) in sections 3 to 7: MUST/MUST NOT/SHALL -> mandatory,
 # SHOULD/SHOULD NOT -> recommended, MAY -> optional, and "MUST ... if it exists" (§5.2.3, §5.2.4)
-# -> conditional. BSI text is free; the texts are still one-line paraphrases.
+# -> conditional. §2 gives BCP 14 meaning only to capitalized keywords; it does not say that
+# notes are informative. So each note in §3 to §7 was read on its own. A note that states a
+# duty, a recommendation or a permission in lowercase words is converted, with normativity taken
+# from its plain wording (must, has to -> mandatory; recommended -> recommended; may -> optional)
+# and a description saying it comes from a note. BSI text is free; the texts are still one-line
+# paraphrases.
 #
-# Coverage: 52 requirements from the normative statements of §3 to §7. Not converted: §3.1's
-# pointer sentence (an SBOM MUST contain the minimum information of section 5), which the §5
-# requirements cover; definitions (§3.2.3, §3.2.6 to §3.2.9); the notes, whose lowercase
-# "must" and "recommended" are not BCP 14 keywords; and the informative appendix (§8).
+# Coverage: 59 requirements. 52 come from the capitalized statements of §3 to §7, 6 from notes
+# (§3.2.8, two in §5.1, §5.2.1, two in §5.2.2), and 1 from a §3.2.5 sentence with no keyword
+# (the referenced BOM's information prevails). Not converted: §3.1's pointer sentence (an SBOM
+# MUST contain the minimum information of section 5), which the §5 requirements cover;
+# definitions (§3.2.3, §3.2.6 to §3.2.9, apart from the §3.2.8 note); the five notes that only
+# explain (§3.1 on expanded information, §3.2.5 on why the copied fields matter, the format notes
+# under Tables 2 and 3, and §5.2.5's note that its list is not exhaustive); and the appendix
+# (§8), which the guideline itself calls explanatory.
+#
+# Scope of Table 3 (§5.2.2): creator, name and version apply to every kind of component;
+# dependencies and distribution licences also apply to a logical component (§3.2.2); filename,
+# hash and the three file properties apply only to a fully described component that is not
+# logical. Identified (§3.2.4) and referenced (§3.2.5) components need only their own field sets,
+# and a field that the way a component was assembled makes unavailable is left out (§3.2.1).
+# Each Table 3 requirement states its scope.
 #
 # No applies_to_family: the guideline sets requirements for the SBOM of any software product
 # and names no narrower product family.
@@ -176,6 +192,33 @@ requirements:
     normativity: recommended
     source_ref: "library:bsi-tr-03183-2#3.2.5"
     source_locator: "§3.2.5"
+  - id: requirement:bsi-tr-03183-2-3-2-5-referenced-bom-prevails
+    name: "§3.2.5: the referenced BOM wins on conflicts"
+    description: >-
+      A §3.2.5 sentence with no BCP 14 keyword, stating that the referenced BOM's
+      information prevails. Normativity follows its plain wording, a rule.
+    text: >-
+      Where the referencing SBOM and the referenced BOM disagree about a component, take
+      the referenced BOM's information.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: mandatory
+    source_ref: "library:bsi-tr-03183-2#3.2.5"
+    source_locator: "§3.2.5"
+  - id: requirement:bsi-tr-03183-2-3-2-8-effective-licence-on-merge
+    name: "§3.2.8 (note): set the effective licence again when merging"
+    description: >-
+      From the Note in §3.2.8. Its wording is lowercase ("has to"), which §2 does not give
+      BCP 14 force; normativity follows the plain wording. The note adds that the result
+      may be the same effective licence.
+    text: >-
+      When SBOMs are merged, set the effective licence anew, because the creator of the
+      current SBOM sets it.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: mandatory
+    source_ref: "library:bsi-tr-03183-2#3.2.8"
+    source_locator: "§3.2.8 (Note)"
   - id: requirement:bsi-tr-03183-2-4-format-and-version
     name: "§4: accepted formats and versions"
     text: >-
@@ -197,6 +240,22 @@ requirements:
     normativity: mandatory
     source_ref: "library:bsi-tr-03183-2#5.1"
     source_locator: "§5.1"
+  - id: requirement:bsi-tr-03183-2-5-1-identify-first-external-dependencies
+    name: "§5.1 (note): identify the first dependencies outside the delivery"
+    description: >-
+      From the first Note in §5.1. Its wording is lowercase ("must be identified"), which
+      §2 does not give BCP 14 force; normativity follows the plain wording. It ties the
+      recursion limit of 5-1-recursive-resolution to the identified-component fields of
+      §3.2.4.
+    text: >-
+      Identify each dependency on the first level outside the scope of delivery as an
+      identified component, so that the SBOM can be chained to the SBOM of the environment
+      it runs in.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: mandatory
+    source_ref: "library:bsi-tr-03183-2#5.1"
+    source_locator: "§5.1 (Note)"
   - id: requirement:bsi-tr-03183-2-5-1-separate-instances
     name: "§5.1: list differing instances separately"
     text: >-
@@ -250,6 +309,19 @@ requirements:
     normativity: mandatory
     source_ref: "library:bsi-tr-03183-2#5.1"
     source_locator: "§5.1"
+  - id: requirement:bsi-tr-03183-2-5-1-sbom-filename
+    name: "§5.1 (note): the SBOM filename may name the primary component"
+    description: >-
+      From the second Note in §5.1, a permission in lowercase ("may"); normativity follows
+      the plain wording.
+    text: >-
+      The SBOM's filename may reflect the name of its primary component, so that people
+      can identify it.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: optional
+    source_ref: "library:bsi-tr-03183-2#5.1"
+    source_locator: "§5.1 (Note)"
   - id: requirement:bsi-tr-03183-2-5-2-1-sbom-creator
     name: "§5.2.1, Table 2 (Creator of the SBOM): SBOM creator"
     text: >-
@@ -269,8 +341,24 @@ requirements:
     normativity: mandatory
     source_ref: "library:bsi-tr-03183-2#5.2.1"
     source_locator: "§5.2.1, Table 2 (Timestamp)"
+  - id: requirement:bsi-tr-03183-2-5-2-1-utc-timestamps
+    name: "§5.2.1, Table 2 (Timestamp, note): UTC timestamps"
+    description: >-
+      From the Note on the Timestamp row of Table 2. Its wording is lowercase
+      ("recommended"), which §2 does not give BCP 14 force; normativity follows the plain
+      wording.
+    text: >-
+      Give SBOM timestamps in UTC only.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: recommended
+    source_ref: "library:bsi-tr-03183-2#5.2.1"
+    source_locator: "§5.2.1, Table 2 (Timestamp, Note)"
   - id: requirement:bsi-tr-03183-2-5-2-2-component-creator
     name: "§5.2.2, Table 3 (Component creator): component creator"
+    description: >-
+      Applies to every kind of component: the field sets for logical (§3.2.2), identified
+      (§3.2.4) and referenced (§3.2.5) components all include the creator.
     text: >-
       For each component, give an email address for its creator, who may also maintain
       it, or a URL when no email address exists.
@@ -279,8 +367,24 @@ requirements:
     normativity: mandatory
     source_ref: "library:bsi-tr-03183-2#5.2.2"
     source_locator: "§5.2.2, Table 3 (Component creator)"
+  - id: requirement:bsi-tr-03183-2-5-2-2-creator-current-name
+    name: "§5.2.2, Table 3 (Component creator, note): a renamed creator"
+    description: >-
+      From the Note on the Component creator row of Table 3, a permission in lowercase
+      ("may"); normativity follows the plain wording.
+    text: >-
+      If a component's creator still maintains it but now operates under another name, the
+      current name may be given.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: optional
+    source_ref: "library:bsi-tr-03183-2#5.2.2"
+    source_locator: "§5.2.2, Table 3 (Component creator, Note)"
   - id: requirement:bsi-tr-03183-2-5-2-2-component-name
     name: "§5.2.2, Table 3 (Component name): component name"
+    description: >-
+      Applies to every kind of component: the field sets for logical (§3.2.2), identified
+      (§3.2.4) and referenced (§3.2.5) components all include the name.
     text: >-
       For each component, give the name its creator assigned, or the actual filename if
       it has no name.
@@ -289,8 +393,25 @@ requirements:
     normativity: mandatory
     source_ref: "library:bsi-tr-03183-2#5.2.2"
     source_locator: "§5.2.2, Table 3 (Component name)"
+  - id: requirement:bsi-tr-03183-2-5-2-2-name-at-integration
+    name: "§5.2.2, Table 3 (Component name, note): the name at integration"
+    description: >-
+      From the Note on the Component name row of Table 3. Its wording is lowercase ("must
+      be used"), which §2 does not give BCP 14 force; normativity follows the plain
+      wording.
+    text: >-
+      If a component's name changed between versions, give the name that was valid when
+      the component was integrated.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: mandatory
+    source_ref: "library:bsi-tr-03183-2#5.2.2"
+    source_locator: "§5.2.2, Table 3 (Component name, Note)"
   - id: requirement:bsi-tr-03183-2-5-2-2-component-version
     name: "§5.2.2, Table 3 (Component version): component version"
+    description: >-
+      Applies to every kind of component: the field sets for logical (§3.2.2), identified
+      (§3.2.4) and referenced (§3.2.5) components all include the version.
     text: >-
       For each component, give its creator's version identifier without changing
       existing identifiers, preferably in Semantic or Calendar Versioning where one
@@ -303,8 +424,14 @@ requirements:
     source_locator: "§5.2.2, Table 3 (Component version)"
   - id: requirement:bsi-tr-03183-2-5-2-2-filename
     name: "§5.2.2, Table 3 (Filename of the component): component filename"
+    description: >-
+      Scope: not in the field sets for logical (§3.2.2), identified (§3.2.4) or referenced
+      (§3.2.5) components. §3.2.1 adds that a required field which the way a component was
+      assembled makes unavailable, such as the filename, is left out.
     text: >-
-      For each component, give its actual filename, without the file system path.
+      For each fully described component that is not a logical one, give its actual
+      filename, without the file system path, unless the way it was assembled makes the
+      filename unavailable.
     text_origin: paraphrase
     requirement_kind: documentation
     normativity: mandatory
@@ -312,9 +439,12 @@ requirements:
     source_locator: "§5.2.2, Table 3 (Filename of the component)"
   - id: requirement:bsi-tr-03183-2-5-2-2-dependencies
     name: "§5.2.2, Table 3 (Dependencies on other components): component dependencies"
+    description: >-
+      Scope: §3.2.2 keeps dependencies for a logical component, but the field sets for
+      identified (§3.2.4) and referenced (§3.2.5) components do not include them.
     text: >-
-      For each component, list every component it directly depends on or contains, and
-      state clearly whether that list is complete.
+      For each fully described component, logical ones included, list every component it
+      directly depends on or contains, and state clearly whether that list is complete.
     text_origin: paraphrase
     requirement_kind: documentation
     normativity: mandatory
@@ -322,9 +452,12 @@ requirements:
     source_locator: "§5.2.2, Table 3 (Dependencies on other components)"
   - id: requirement:bsi-tr-03183-2-5-2-2-distribution-licences
     name: "§5.2.2, Table 3 (Distribution licences): distribution licences"
+    description: >-
+      Scope: §3.2.2 keeps distribution licences for a logical component, but the field
+      sets for identified (§3.2.4) and referenced (§3.2.5) components do not include them.
     text: >-
-      For each component, give the licence or licences under which a licensee may use
-      it.
+      For each fully described component, logical ones included, give the licence or
+      licences under which a licensee may use it.
     text_origin: paraphrase
     requirement_kind: documentation
     normativity: mandatory
@@ -332,9 +465,14 @@ requirements:
     source_locator: "§5.2.2, Table 3 (Distribution licences)"
   - id: requirement:bsi-tr-03183-2-5-2-2-hash
     name: "§5.2.2, Table 3 (Hash value of the deployable component): hash of the deployable component"
+    description: >-
+      Scope: not in the field sets for logical (§3.2.2), identified (§3.2.4) or referenced
+      (§3.2.5) components. §3.2.1 adds that a required field which the way a component was
+      assembled makes unavailable, such as the hash, is left out.
     text: >-
-      For each component, give a SHA-512 hash of the component in its deployed or
-      deployable form as a file.
+      For each fully described component that is not a logical one, give a SHA-512 hash of
+      it in its deployed or deployable form as a file, unless the way it was assembled
+      makes the hash unavailable.
     text_origin: paraphrase
     requirement_kind: documentation
     normativity: mandatory
@@ -342,8 +480,12 @@ requirements:
     source_locator: "§5.2.2, Table 3 (Hash value of the deployable component)"
   - id: requirement:bsi-tr-03183-2-5-2-2-executable-property
     name: "§5.2.2, Table 3 (Executable property): executable property"
+    description: >-
+      Scope: not in the field sets for logical (§3.2.2), identified (§3.2.4) or referenced
+      (§3.2.5) components.
     text: >-
-      For each component, state whether it is executable or non-executable.
+      For each fully described component that is not a logical one, state whether it is
+      executable or non-executable.
     text_origin: paraphrase
     requirement_kind: documentation
     normativity: mandatory
@@ -351,8 +493,12 @@ requirements:
     source_locator: "§5.2.2, Table 3 (Executable property)"
   - id: requirement:bsi-tr-03183-2-5-2-2-archive-property
     name: "§5.2.2, Table 3 (Archive property): archive property"
+    description: >-
+      Scope: not in the field sets for logical (§3.2.2), identified (§3.2.4) or referenced
+      (§3.2.5) components.
     text: >-
-      For each component, state whether it is an archive or not.
+      For each fully described component that is not a logical one, state whether it is an
+      archive or not.
     text_origin: paraphrase
     requirement_kind: documentation
     normativity: mandatory
@@ -360,10 +506,13 @@ requirements:
     source_locator: "§5.2.2, Table 3 (Archive property)"
   - id: requirement:bsi-tr-03183-2-5-2-2-structured-property
     name: "§5.2.2, Table 3 (Structured property): structured property"
+    description: >-
+      Scope: not in the field sets for logical (§3.2.2), identified (§3.2.4) or referenced
+      (§3.2.5) components.
     text: >-
-      For each component, state whether it is structured, meaning metadata about its
-      contents survives, or unstructured, choosing structured when it has both kinds of
-      part.
+      For each fully described component that is not a logical one, state whether it is
+      structured, meaning metadata about its contents survives, or unstructured, choosing
+      structured when it has both kinds of part.
     text_origin: paraphrase
     requirement_kind: documentation
     normativity: mandatory
@@ -778,6 +927,59 @@ assertions:
       Proposed by Claude Code (claude-opus-5-5), 2026-11-02. AI inference; the guideline
       names no CWE. Basis: resolving dependencies beyond the first level reaches
       vulnerable components deeper in the tree (TR §1, §5.1).
+  - id: assertion:bsi-tr-03183-2-3-2-5-referenced-bom-prevails--refines--3-2-5-referenced-component-fields
+    name: "3-2-5-referenced-bom-prevails refines 3-2-5-referenced-component-fields"
+    subject: requirement:bsi-tr-03183-2-3-2-5-referenced-bom-prevails
+    predicate: refines
+    object: requirement:bsi-tr-03183-2-3-2-5-referenced-component-fields
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, after review on tmodel#196.
+      Basis: §3.2.5; the rule settles conflicts in the creator, name and version copied
+      for a referenced component.
+  - id: assertion:bsi-tr-03183-2-5-1-identify-first-external-dependencies--refines--5-1-recursive-resolution
+    name: "5-1-identify-first-external-dependencies refines 5-1-recursive-resolution"
+    subject: requirement:bsi-tr-03183-2-5-1-identify-first-external-dependencies
+    predicate: refines
+    object: requirement:bsi-tr-03183-2-5-1-recursive-resolution
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, after review on tmodel#196.
+      Basis: §5.1 (Note); the note says how the first components outside the scope of
+      delivery, where recursion stops, are to be recorded.
+  - id: assertion:bsi-tr-03183-2-5-2-1-utc-timestamps--refines--5-2-1-timestamp
+    name: "5-2-1-utc-timestamps refines 5-2-1-timestamp"
+    subject: requirement:bsi-tr-03183-2-5-2-1-utc-timestamps
+    predicate: refines
+    object: requirement:bsi-tr-03183-2-5-2-1-timestamp
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, after review on tmodel#196.
+      Basis: §5.2.1, Table 2; the note narrows the timestamp field to UTC.
+  - id: assertion:bsi-tr-03183-2-5-2-2-creator-current-name--refines--5-2-2-component-creator
+    name: "5-2-2-creator-current-name refines 5-2-2-component-creator"
+    subject: requirement:bsi-tr-03183-2-5-2-2-creator-current-name
+    predicate: refines
+    object: requirement:bsi-tr-03183-2-5-2-2-component-creator
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, after review on tmodel#196.
+      Basis: §5.2.2, Table 3; the note qualifies which creator name the field may carry.
+  - id: assertion:bsi-tr-03183-2-5-2-2-name-at-integration--refines--5-2-2-component-name
+    name: "5-2-2-name-at-integration refines 5-2-2-component-name"
+    subject: requirement:bsi-tr-03183-2-5-2-2-name-at-integration
+    predicate: refines
+    object: requirement:bsi-tr-03183-2-5-2-2-component-name
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, after review on tmodel#196.
+      Basis: §5.2.2, Table 3; the note says which name the field must carry when it has
+      changed.
 
 reviews:
   - id: review:bsi-tr-03183-2-5-2-2-dependencies--derived-from--5-1-recursive-resolution

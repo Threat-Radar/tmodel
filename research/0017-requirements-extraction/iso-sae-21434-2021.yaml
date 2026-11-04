@@ -4,19 +4,24 @@
 #
 # Scope (tmodel#172): clauses 8 (continual cybersecurity activities), 9 (concept), 10 (product
 # development) and 15 (TARA methods). Coverage: the record holds 118 provisions; 49 are in scope and
-# all 49 are converted below. The other 69 (clauses 5, 6, 7, 11, 12, 13 and 14) are outside
-# this lane's scope.
+# 42 are converted below. The other 69 (clauses 5, 6, 7, 11, 12, 13 and 14) are outside this
+# lane's scope.
+#   skipped (the library record's text is broken, so no source-supported paraphrase is possible
+#   until the text is checked against a licensed copy; review on tmodel#196): RQ-09-01, RQ-09-03,
+#   RQ-09-04, RQ-10-01, RQ-10-04, RQ-10-08, RQ-15-17
 #
 # Licensed standard: every `text` is a paraphrase written for this file. No sentence is copied
 # from the standard or from the library's requirements.yaml. Designator, locator and normativity
 # are copied from that file (requirement -> mandatory, recommendation -> recommended,
-# permission -> optional). Seven provisions have broken text in the library record (four cut
-# off, three holding annex or bibliography text); each says so in its description.
+# permission -> optional). Seven in-scope provisions have broken text in the library record (four
+# cut off, three holding annex or bibliography text), so they are left out, with their 14 links.
 # No applies_to_family: these are process obligations on the organization or project, and the
 # library record does not state the standard's product scope.
 # Every link below was proposed as an Assertion (derived_from or refines between provisions of this
 # source). None is written into a slot. On 2026-11-02 @Clovier checked 10 of
-# them against the source and accepted all 10 (see reviews:); the rest stay proposed with no Review.
+# them against the source and accepted all 10; 4 of those links touched the seven left-out
+# provisions and went with them. On 2026-11-03 @Clovier checked and accepted 4 more, so there
+# are 10 Reviews again (see reviews:). The rest stay proposed with no Review.
 
 requirements:
   - id: requirement:iso-sae-21434-2021-rq-08-01
@@ -97,19 +102,6 @@ requirements:
     normativity: mandatory
     source_ref: "library:iso-sae-21434-2021#RQ-08-08"
     source_locator: "RQ-08-08 (§8.6.2)"
-  - id: requirement:iso-sae-21434-2021-rq-09-01
-    name: "RQ-09-01: identify the item information"
-    description: >-
-      The library record's text stops after the first listed piece of information (the
-      item boundary). The rest of the list in §9.3.2 is not in the record and is not
-      paraphrased here.
-    text: >-
-      Identify the information that defines the item, beginning with the item boundary.
-    text_origin: paraphrase
-    requirement_kind: process
-    normativity: mandatory
-    source_ref: "library:iso-sae-21434-2021#RQ-09-01"
-    source_locator: "RQ-09-01 (§9.3.2)"
   - id: requirement:iso-sae-21434-2021-rq-09-02
     name: "RQ-09-02: describe the operational environment"
     text: >-
@@ -120,38 +112,6 @@ requirements:
     normativity: mandatory
     source_ref: "library:iso-sae-21434-2021#RQ-09-02"
     source_locator: "RQ-09-02 (§9.3.2)"
-  - id: requirement:iso-sae-21434-2021-rq-09-03
-    name: "RQ-09-03: analyse the item's risks (TARA)"
-    description: >-
-      The library record's text for this provision holds Annex H and bibliography text,
-      not the requirement. This paraphrase rests on what the record does show: Annex H
-      says RQ-09-03 calls for risk determination per 15.8, RQ-09-07 checks its result
-      against the item definition, and work product WP-09-02 (TARA) comes from it. A
-      human with the standard should check it.
-    text: >-
-      Carry out a threat analysis and risk assessment of the item, based on its
-      definition, that ends in a risk value for each threat scenario as described in
-      15.8.
-    text_origin: paraphrase
-    requirement_kind: process
-    normativity: mandatory
-    source_ref: "library:iso-sae-21434-2021#RQ-09-03"
-    source_locator: "RQ-09-03 (§9.4.2)"
-  - id: requirement:iso-sae-21434-2021-rq-09-04
-    name: "RQ-09-04: decide risk treatment"
-    description: >-
-      The library record's text for this provision holds Annex H and bibliography text,
-      not the requirement. This paraphrase rests on Annex H (RQ-09-04 requires selecting
-      treatment options per 15.9) and on RQ-09-07, which checks these decisions against
-      the RQ-09-03 results. A human with the standard should check it.
-    text: >-
-      Using the results of RQ-09-03, choose the risk treatment option or options for
-      each threat scenario as described in 15.9.
-    text_origin: paraphrase
-    requirement_kind: process
-    normativity: mandatory
-    source_ref: "library:iso-sae-21434-2021#RQ-09-04"
-    source_locator: "RQ-09-04 (§9.4.2)"
   - id: requirement:iso-sae-21434-2021-rq-09-05
     name: "RQ-09-05: specify cybersecurity goals"
     text: >-
@@ -225,20 +185,6 @@ requirements:
     normativity: mandatory
     source_ref: "library:iso-sae-21434-2021#RQ-09-11"
     source_locator: "RQ-09-11 (§9.5.2)"
-  - id: requirement:iso-sae-21434-2021-rq-10-01
-    name: "RQ-10-01: define cybersecurity specifications"
-    description: >-
-      The library record's text stops after the second basis (b). Any further basis in
-      §10.4.1 is not in the record and is not paraphrased here.
-    text: >-
-      Define the cybersecurity specifications, building on the specifications from
-      higher levels of the architecture and on any cybersecurity controls chosen for
-      implementation.
-    text_origin: paraphrase
-    requirement_kind: process
-    normativity: mandatory
-    source_ref: "library:iso-sae-21434-2021#RQ-10-01"
-    source_locator: "RQ-10-01 (§10.4.1)"
   - id: requirement:iso-sae-21434-2021-rq-10-02
     name: "RQ-10-02: allocate requirements to architecture components"
     text: >-
@@ -259,21 +205,6 @@ requirements:
     normativity: mandatory
     source_ref: "library:iso-sae-21434-2021#RQ-10-03"
     source_locator: "RQ-10-03 (§10.4.1)"
-  - id: requirement:iso-sae-21434-2021-rq-10-04
-    name: "RQ-10-04: criteria for choosing notations and languages"
-    description: >-
-      The library record's text stops after criterion e). Any further criterion in
-      §10.4.1 is not in the record and is not paraphrased here.
-    text: >-
-      If the cybersecurity specifications, or the code that implements them, are written
-      in a design, modelling or programming notation or language, select it for
-      qualities such as clear and unambiguous syntax and semantics, support for modular,
-      structured and secure design, and ease of integrating existing components.
-    text_origin: paraphrase
-    requirement_kind: process
-    normativity: mandatory
-    source_ref: "library:iso-sae-21434-2021#RQ-10-04"
-    source_locator: "RQ-10-04 (§10.4.1)"
   - id: requirement:iso-sae-21434-2021-rq-10-05
     name: "RQ-10-05: cover language gaps with guidelines"
     text: >-
@@ -304,21 +235,6 @@ requirements:
     normativity: mandatory
     source_ref: "library:iso-sae-21434-2021#RQ-10-07"
     source_locator: "RQ-10-07 (§10.4.1)"
-  - id: requirement:iso-sae-21434-2021-rq-10-08
-    name: "RQ-10-08: verify the cybersecurity specifications"
-    description: >-
-      The library record's text for this provision holds Annex E table text, not the
-      requirement. This paraphrase rests only on the work product the record ties to it,
-      WP-10-04 (verification report for the cybersecurity specifications). A human with
-      the standard should check it.
-    text: >-
-      Verify the defined cybersecurity specifications and record the outcome in their
-      verification report (WP-10-04).
-    text_origin: paraphrase
-    requirement_kind: process
-    normativity: mandatory
-    source_ref: "library:iso-sae-21434-2021#RQ-10-08"
-    source_locator: "RQ-10-08 (§10.4.1)"
   - id: requirement:iso-sae-21434-2021-rq-10-09
     name: "RQ-10-09: verify implementation and integration"
     text: >-
@@ -528,20 +444,6 @@ requirements:
     normativity: mandatory
     source_ref: "library:iso-sae-21434-2021#RQ-15-16"
     source_locator: "RQ-15-16 (§15.8.2)"
-  - id: requirement:iso-sae-21434-2021-rq-15-17
-    name: "RQ-15-17: decide risk treatment options"
-    description: >-
-      The library record's text stops after the first option (avoiding the risk). The
-      other options are not in the record; RQ-09-05 and RQ-09-06 name reducing, sharing
-      and retaining the risk.
-    text: >-
-      For each threat scenario, choose one or more risk treatment options, such as
-      avoiding the risk, taking its risk values into account.
-    text_origin: paraphrase
-    requirement_kind: process
-    normativity: mandatory
-    source_ref: "library:iso-sae-21434-2021#RQ-15-17"
-    source_locator: "RQ-15-17 (§15.9.2)"
 
 parties:
   - id: party:clovier
@@ -560,36 +462,6 @@ assertions:
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: RQ-09-09 (§9.5.2)
       defines the requirements in accordance with the RQ-09-08 description.
-  - id: assertion:iso-sae-21434-2021-rq-09-06--derived-from--rq-09-03
-    name: "RQ-09-06 derived_from RQ-09-03"
-    subject: requirement:iso-sae-21434-2021-rq-09-06
-    predicate: derived_from
-    object: requirement:iso-sae-21434-2021-rq-09-03
-    confidence: high
-    assertion_status: accepted
-    description: >-
-      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: RQ-09-06 (§9.4.2)
-      covers risk retained because of assumptions made in the RQ-09-03 analysis.
-  - id: assertion:iso-sae-21434-2021-rq-09-07--derived-from--rq-09-03
-    name: "RQ-09-07 derived_from RQ-09-03"
-    subject: requirement:iso-sae-21434-2021-rq-09-07
-    predicate: derived_from
-    object: requirement:iso-sae-21434-2021-rq-09-03
-    confidence: medium
-    assertion_status: proposed
-    description: >-
-      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: RQ-09-07 (§9.4.2)
-      verifies the result of RQ-09-03.
-  - id: assertion:iso-sae-21434-2021-rq-09-07--derived-from--rq-09-04
-    name: "RQ-09-07 derived_from RQ-09-04"
-    subject: requirement:iso-sae-21434-2021-rq-09-07
-    predicate: derived_from
-    object: requirement:iso-sae-21434-2021-rq-09-04
-    confidence: medium
-    assertion_status: proposed
-    description: >-
-      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: RQ-09-07 (§9.4.2)
-      verifies the RQ-09-04 treatment decisions.
   - id: assertion:iso-sae-21434-2021-rq-09-07--derived-from--rq-09-05
     name: "RQ-09-07 derived_from RQ-09-05"
     subject: requirement:iso-sae-21434-2021-rq-09-07
@@ -640,26 +512,6 @@ assertions:
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: RQ-09-11 (§9.5.2)
       verifies the results of RQ-09-10.
-  - id: assertion:iso-sae-21434-2021-rq-10-05--derived-from--rq-10-04
-    name: "RQ-10-05 derived_from RQ-10-04"
-    subject: requirement:iso-sae-21434-2021-rq-10-05
-    predicate: derived_from
-    object: requirement:iso-sae-21434-2021-rq-10-04
-    confidence: high
-    assertion_status: accepted
-    description: >-
-      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: RQ-10-05 (§10.4.1)
-      covers the RQ-10-04 criteria that the language does not meet.
-  - id: assertion:iso-sae-21434-2021-rq-10-07--derived-from--rq-10-01
-    name: "RQ-10-07 derived_from RQ-10-01"
-    subject: requirement:iso-sae-21434-2021-rq-10-07
-    predicate: derived_from
-    object: requirement:iso-sae-21434-2021-rq-10-01
-    confidence: high
-    assertion_status: proposed
-    description: >-
-      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: RQ-10-07 (§10.4.1)
-      analyses the architectural design defined in RQ-10-01.
   - id: assertion:iso-sae-21434-2021-rq-10-10--refines--rq-10-09
     name: "RQ-10-10 refines RQ-10-09"
     subject: requirement:iso-sae-21434-2021-rq-10-10
@@ -676,7 +528,7 @@ assertions:
     predicate: derived_from
     object: requirement:iso-sae-21434-2021-rq-10-05
     confidence: high
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: RQ-10-10 (§10.4.2)
       requires conformity with the RQ-10-05 guidelines.
@@ -690,78 +542,6 @@ assertions:
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: RQ-10-13 (§10.4.2)
       asks for a rationale when the RC-10-12 testing is not done.
-  - id: assertion:iso-sae-21434-2021-rq-08-07--derived-from--rq-15-17
-    name: "RQ-08-07 derived_from RQ-15-17"
-    subject: requirement:iso-sae-21434-2021-rq-08-07
-    predicate: derived_from
-    object: requirement:iso-sae-21434-2021-rq-15-17
-    confidence: medium
-    assertion_status: accepted
-    description: >-
-      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: RQ-08-07 (§8.6.2)
-      treats risk in accordance with 15.9, whose provision in the record is RQ-15-17.
-  - id: assertion:iso-sae-21434-2021-rq-08-08--derived-from--rq-15-17
-    name: "RQ-08-08 derived_from RQ-15-17"
-    subject: requirement:iso-sae-21434-2021-rq-08-08
-    predicate: derived_from
-    object: requirement:iso-sae-21434-2021-rq-15-17
-    confidence: medium
-    assertion_status: proposed
-    description: >-
-      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: RQ-08-08 (§8.6.2)
-      acts on a risk treatment decision made in accordance with 15.9 (RQ-15-17).
-  - id: assertion:iso-sae-21434-2021-rq-09-04--derived-from--rq-15-17
-    name: "RQ-09-04 derived_from RQ-15-17"
-    subject: requirement:iso-sae-21434-2021-rq-09-04
-    predicate: derived_from
-    object: requirement:iso-sae-21434-2021-rq-15-17
-    confidence: low
-    assertion_status: proposed
-    description: >-
-      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex H text in the
-      record says RQ-09-04 selects treatment options per 15.9 (RQ-15-17); the
-      provision's own text is not in the record.
-  - id: assertion:iso-sae-21434-2021-rq-09-03--derived-from--rq-15-15
-    name: "RQ-09-03 derived_from RQ-15-15"
-    subject: requirement:iso-sae-21434-2021-rq-09-03
-    predicate: derived_from
-    object: requirement:iso-sae-21434-2021-rq-15-15
-    confidence: low
-    assertion_status: accepted
-    description: >-
-      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: Annex H text in the
-      record says RQ-09-03 calls for risk determination per 15.8 (RQ-15-15); the
-      provision's own text is not in the record.
-  - id: assertion:iso-sae-21434-2021-rq-09-04--derived-from--rq-09-03
-    name: "RQ-09-04 derived_from RQ-09-03"
-    subject: requirement:iso-sae-21434-2021-rq-09-04
-    predicate: derived_from
-    object: requirement:iso-sae-21434-2021-rq-09-03
-    confidence: medium
-    assertion_status: proposed
-    description: >-
-      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: RQ-09-07 b) (§9.4.2)
-      checks the RQ-09-04 decisions against the RQ-09-03 results.
-  - id: assertion:iso-sae-21434-2021-rq-09-05--derived-from--rq-09-04
-    name: "RQ-09-05 derived_from RQ-09-04"
-    subject: requirement:iso-sae-21434-2021-rq-09-05
-    predicate: derived_from
-    object: requirement:iso-sae-21434-2021-rq-09-04
-    confidence: medium
-    assertion_status: proposed
-    description: >-
-      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: RQ-09-05 (§9.4.2)
-      applies when the risk treatment decision includes reducing the risk.
-  - id: assertion:iso-sae-21434-2021-rq-09-06--derived-from--rq-09-04
-    name: "RQ-09-06 derived_from RQ-09-04"
-    subject: requirement:iso-sae-21434-2021-rq-09-06
-    predicate: derived_from
-    object: requirement:iso-sae-21434-2021-rq-09-04
-    confidence: medium
-    assertion_status: proposed
-    description: >-
-      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: RQ-09-06 (§9.4.2)
-      applies when the risk treatment decision includes sharing or retaining the risk.
   - id: assertion:iso-sae-21434-2021-rq-09-10--derived-from--rq-09-09
     name: "RQ-09-10 derived_from RQ-09-09"
     subject: requirement:iso-sae-21434-2021-rq-09-10
@@ -772,16 +552,6 @@ assertions:
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: RQ-09-10 (§9.5.2)
       allocates the cybersecurity requirements that RQ-09-09 defines.
-  - id: assertion:iso-sae-21434-2021-rq-10-02--derived-from--rq-10-01
-    name: "RQ-10-02 derived_from RQ-10-01"
-    subject: requirement:iso-sae-21434-2021-rq-10-02
-    predicate: derived_from
-    object: requirement:iso-sae-21434-2021-rq-10-01
-    confidence: medium
-    assertion_status: proposed
-    description: >-
-      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: RQ-10-02 (§10.4.1)
-      allocates the requirements defined with the RQ-10-01 specifications.
   - id: assertion:iso-sae-21434-2021-rq-08-06--derived-from--rq-08-05
     name: "RQ-08-06 derived_from RQ-08-05"
     subject: requirement:iso-sae-21434-2021-rq-08-06
@@ -879,7 +649,7 @@ assertions:
     predicate: refines
     object: requirement:iso-sae-21434-2021-rq-15-10
     confidence: medium
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: RC-15-11 (§15.7.2)
       names the methods for the RQ-15-10 rating.
@@ -899,7 +669,7 @@ assertions:
     predicate: refines
     object: requirement:iso-sae-21434-2021-rc-15-11
     confidence: high
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: RC-15-13 (§15.7.2)
       details the CVSS approach that RC-15-11 lists.
@@ -909,7 +679,7 @@ assertions:
     predicate: refines
     object: requirement:iso-sae-21434-2021-rc-15-11
     confidence: high
-    assertion_status: proposed
+    assertion_status: accepted
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: RC-15-14 (§15.7.2)
       details the attack vector approach that RC-15-11 lists.
@@ -943,16 +713,6 @@ assertions:
     description: >-
       Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: RQ-15-16 (§15.8.2)
       fixes the range of the RQ-15-15 risk value.
-  - id: assertion:iso-sae-21434-2021-rq-15-17--derived-from--rq-15-15
-    name: "RQ-15-17 derived_from RQ-15-15"
-    subject: requirement:iso-sae-21434-2021-rq-15-17
-    predicate: derived_from
-    object: requirement:iso-sae-21434-2021-rq-15-15
-    confidence: medium
-    assertion_status: proposed
-    description: >-
-      Proposed by Claude Code (claude-opus-5-5), 2026-11-02. Basis: RQ-15-17 (§15.9.2)
-      decides treatment considering the RQ-15-15 risk values.
 
 reviews:
   - id: review:iso-sae-21434-2021-rq-09-09--derived-from--rq-09-08
@@ -964,22 +724,6 @@ reviews:
       Checked against the source on 2026-11-02: RQ-09-09 (§9.5.2) defines the
       requirements in accordance with the RQ-09-08 description, so it builds on
       RQ-09-08's output.
-  - id: review:iso-sae-21434-2021-rq-09-06--derived-from--rq-09-03
-    name: "Review, accept rq-09-06 derived-from rq-09-03"
-    reviews: assertion:iso-sae-21434-2021-rq-09-06--derived-from--rq-09-03
-    reviewer: party:clovier
-    review_status: accepted
-    justification: >-
-      Checked against the source on 2026-11-02: RQ-09-06 (§9.4.2) asks for claims where
-      risk is retained because of assumptions made in the RQ-09-03 analysis.
-  - id: review:iso-sae-21434-2021-rq-10-05--derived-from--rq-10-04
-    name: "Review, accept rq-10-05 derived-from rq-10-04"
-    reviews: assertion:iso-sae-21434-2021-rq-10-05--derived-from--rq-10-04
-    reviewer: party:clovier
-    review_status: accepted
-    justification: >-
-      Checked against the source on 2026-11-02: RQ-10-05 (§10.4.1) refers back to the
-      RQ-10-04 criteria and covers the ones the language does not meet.
   - id: review:iso-sae-21434-2021-rq-10-10--refines--rq-10-09
     name: "Review, accept rq-10-10 refines rq-10-09"
     reviews: assertion:iso-sae-21434-2021-rq-10-10--refines--rq-10-09
@@ -996,14 +740,6 @@ reviews:
     justification: >-
       Checked against the source on 2026-11-02: RQ-10-13 (§10.4.2) asks for a rationale
       when the RC-10-12 testing is not performed.
-  - id: review:iso-sae-21434-2021-rq-08-07--derived-from--rq-15-17
-    name: "Review, accept rq-08-07 derived-from rq-15-17"
-    reviews: assertion:iso-sae-21434-2021-rq-08-07--derived-from--rq-15-17
-    reviewer: party:clovier
-    review_status: accepted
-    justification: >-
-      Checked against the source on 2026-11-02: RQ-08-07 (§8.6.2) treats risk in
-      accordance with 15.9, and RQ-15-17 is the 15.9 provision.
   - id: review:iso-sae-21434-2021-rq-09-07--derived-from--rq-09-05
     name: "Review, accept rq-09-07 derived-from rq-09-05"
     reviews: assertion:iso-sae-21434-2021-rq-09-07--derived-from--rq-09-05
@@ -1028,12 +764,36 @@ reviews:
     justification: >-
       Checked against the source on 2026-11-02: RC-15-12 (§15.7.2) details the attack
       potential approach, the first approach RC-15-11 lists.
-  - id: review:iso-sae-21434-2021-rq-09-03--derived-from--rq-15-15
-    name: "Review, accept rq-09-03 derived-from rq-15-15"
-    reviews: assertion:iso-sae-21434-2021-rq-09-03--derived-from--rq-15-15
+  - id: review:iso-sae-21434-2021-rc-15-13--refines--rc-15-11
+    name: "Review, accept rc-15-13 refines rc-15-11"
+    reviews: assertion:iso-sae-21434-2021-rc-15-13--refines--rc-15-11
     reviewer: party:clovier
     review_status: accepted
     justification: >-
-      Checked against the source on 2026-11-02: The record's Annex H text says RQ-09-03
-      calls for risk determination per 15.8, which is RQ-15-15; the provision's own text
-      is missing from the record.
+      Checked against the source on 2026-11-03: RC-15-13 (§15.7.2) details the CVSS
+      approach, one of the three approaches RC-15-11 lists.
+  - id: review:iso-sae-21434-2021-rc-15-14--refines--rc-15-11
+    name: "Review, accept rc-15-14 refines rc-15-11"
+    reviews: assertion:iso-sae-21434-2021-rc-15-14--refines--rc-15-11
+    reviewer: party:clovier
+    review_status: accepted
+    justification: >-
+      Checked against the source on 2026-11-03: RC-15-14 (§15.7.2) details the attack
+      vector approach, one of the three approaches RC-15-11 lists.
+  - id: review:iso-sae-21434-2021-rq-10-10--derived-from--rq-10-05
+    name: "Review, accept rq-10-10 derived-from rq-10-05"
+    reviews: assertion:iso-sae-21434-2021-rq-10-10--derived-from--rq-10-05
+    reviewer: party:clovier
+    review_status: accepted
+    justification: >-
+      Checked against the source on 2026-11-03: RQ-10-10 (§10.4.2) requires the
+      integration and verification activities to conform with the guidelines from
+      RQ-10-05, where relevant.
+  - id: review:iso-sae-21434-2021-rc-15-11--refines--rq-15-10
+    name: "Review, accept rc-15-11 refines rq-15-10"
+    reviews: assertion:iso-sae-21434-2021-rc-15-11--refines--rq-15-10
+    reviewer: party:clovier
+    review_status: accepted
+    justification: >-
+      Checked against the source on 2026-11-03: RC-15-11 (§15.7.2) names the methods on
+      which the RQ-15-10 attack feasibility rating is based.
