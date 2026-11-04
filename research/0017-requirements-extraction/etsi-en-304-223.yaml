@@ -1,0 +1,2297 @@
+# etsi-en-304-223: requirement extraction, AI-proposed, UNREVIEWED unless a Review below says otherwise.
+# Source: library:etsi-en-304-223 (digest 1ef542acf1fac7f108aa0b3c8548d91d82395fe026f0036bffe7f1f32456d21a), read 2026-11-03.
+# Agent: Claude Code (claude-opus-5-5). Human owner: @Maimcghee.
+#
+# Made with research/0017-requirements-extraction/convert.py (tmodel#197) from library@3eacfd0
+# records/other/etsi-en-304-223, then edited by the agent: scope, paraphrases, kinds and links.
+#
+# Scope (tmodel#169): every provision with a product or technical link. Kept: every provision that
+# constrains the AI system, its data, models, components, interfaces, tests, logs or lifecycle, and
+# every provision the library maps to an attack. Skipped: duties that fall only on people or
+# management, with the reasons below. All 35 provisions with a library threat mapping are converted,
+# including the 32 that map to a NIST AI 100-2 or ATLAS id.
+#
+# Coverage: 73 in the source, 64 converted, 9 skipped.
+#   skipped (a note on stakeholders' data protection obligations; no product link): C4-1
+#   skipped (staff training and awareness; organizational only, no product link): 5.1.1-1, 5.1.1-1.1, 5.1.1-2, 5.1.1-2.1, 5.1.1-2.2
+#   skipped (who takes part in requirements discussions; organizational only, no product link): 5.1.2-1.1
+#   skipped (staff reporting culture; organizational only, no product link): 5.1.2-5.1
+#   skipped (cloud contract terms; no product control): 5.2.2-6
+#
+# Text: every `text` is the agent's one-sentence paraphrase (text_origin: paraphrase). Designator,
+# locator and normativity are copied from the library record (requirement -> mandatory,
+# recommendation -> recommended, permission -> optional).
+# requirement_kind is the agent's reading of each provision, not the converter's default.
+# No applies_to_family: the source's scope is AI systems in general, and no family value
+# for that exists yet (DEC-009 is open).
+#
+# Links: 120 proposed Assertions, none written into a slot.
+#   108 `addresses`, one per NIST AI 100-2 or MITRE ATLAS id in the library record's own
+#   threat mapping (its maps_to): confidence high where the provision names the attack
+#   (kind: stated), medium where the mapping is inferred. ATLAS ids are 2026.09, as the library
+#   pins; stubs say where 2026.10 removes or renames one.
+#   12 `refines` or `derived_from` between provisions of this source.
+# No Review yet: the human owner reviews a sample next.
+
+requirements:
+  - id: requirement:etsi-en-304-223-5-1-2-1
+    name: "5.1.2-1 — Assess business need, AI security risks and mitigations before building"
+    text: >-
+      Before deciding to build an AI system, assess and document the business need it
+      meets, together with its AI security risks and how they will be mitigated.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.1.2-1"
+    source_locator: "§5.1.2, Provision 5.1.2-1, p. 10"
+  - id: requirement:etsi-en-304-223-5-1-2-2
+    name: "5.1.2-2 — Design AI systems to withstand adversarial attacks and failures"
+    text: >-
+      Design and build the AI system so that it withstands adversarial attacks,
+      unexpected inputs and its own failures.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.1.2-2"
+    source_locator: "§5.1.2, Provision 5.1.2-2, p. 10"
+  - id: requirement:etsi-en-304-223-5-1-2-3
+    name: "5.1.2-3 — Keep an audit trail of models, datasets and prompts"
+    text: >-
+      Keep an audit trail of how the system's models, datasets and prompts are operated
+      and managed over their lifecycle, to support data preparation, security audits and
+      incident response.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.1.2-3"
+    source_locator: "§5.1.2, Provision 5.1.2-3, p. 10"
+  - id: requirement:etsi-en-304-223-5-1-2-4
+    name: "5.1.2-4 — Risk-assess external components for AI-specific risks"
+    text: >-
+      Before using an external component, run an AI security risk assessment and
+      due-diligence check on it within the normal software development process.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.1.2-4"
+    source_locator: "§5.1.2, Provision 5.1.2-4, p. 10"
+  - id: requirement:etsi-en-304-223-5-1-2-5
+    name: "5.1.2-5 — Match intended use to the sensitivity of training data"
+    text: >-
+      Check that the system's intended use suits the sensitivity of its training data
+      and the controls meant to protect that data.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.1.2-5"
+    source_locator: "§5.1.2, Provision 5.1.2-5, p. 11"
+  - id: requirement:etsi-en-304-223-5-1-2-6
+    name: "5.1.2-6 — Give the AI system only the permissions it needs on other systems"
+    text: >-
+      Grant the AI system only the permissions on other systems and data sources that
+      its function needs, and risk-assess those permissions.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.1.2-6"
+    source_locator: "§5.1.2, Provision 5.1.2-6, p. 11"
+  - id: requirement:etsi-en-304-223-5-1-2-7
+    name: "5.1.2-7 — Do due diligence on external providers"
+    text: >-
+      Carry out due diligence on any external provider and check that it follows this
+      standard.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.1.2-7"
+    source_locator: "§5.1.2, Provision 5.1.2-7, p. 11"
+  - id: requirement:etsi-en-304-223-5-1-3-1
+    name: "5.1.3-1 — Threat-model and manage risks, including AI-specific attacks"
+    text: >-
+      Analyse threats and manage security risks to the system, with threat models that
+      are reviewed regularly and cover AI-specific attacks such as data poisoning, model
+      inversion and membership inference.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.1.3-1"
+    source_locator: "§5.1.3, Provision 5.1.3-1, p. 11"
+  - id: requirement:etsi-en-304-223-5-1-3-1-1
+    name: "5.1.3-1.1 — Re-run threat modelling when settings or configuration change"
+    text: >-
+      Repeat threat modelling and risk management whenever a setting or configuration
+      option is added or changed, at any stage of the lifecycle.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.1.3-1.1"
+    source_locator: "§5.1.3, Provision 5.1.3-1.1, p. 11"
+  - id: requirement:etsi-en-304-223-5-1-3-1-2
+    name: "5.1.3-1.2 — Manage risks of superfluous model functionality"
+    text: >-
+      Manage the extra risk from model capabilities the system does not need, such as
+      the unused modalities of a multi-modal model.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.1.3-1.2"
+    source_locator: "§5.1.3, Provision 5.1.3-1.2, p. 11"
+  - id: requirement:etsi-en-304-223-5-1-3-1-3
+    name: "5.1.3-1.3 — Apply controls in line with corporate risk tolerance"
+    text: >-
+      Choose controls for the risks the analysis finds, weighing factors such as
+      implementation cost against the organization's risk tolerance.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.1.3-1.3"
+    source_locator: "§5.1.3, Provision 5.1.3-1.3, p. 11"
+  - id: requirement:etsi-en-304-223-5-1-3-2
+    name: "5.1.3-2 — Pass unresolved AI threats on to System Operators and End-users"
+    text: >-
+      Pass AI threats that the developer cannot resolve on to system operators, and from
+      them to end-users, with the risks, impacts and recommended actions.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.1.3-2"
+    source_locator: "§5.1.3, Provision 5.1.3-2, p. 11"
+  - id: requirement:etsi-en-304-223-5-1-3-3
+    name: "5.1.3-3 — Get assurance from external parties responsible for AI risks"
+    text: >-
+      Where an external party is responsible for an AI security risk in the
+      organization's infrastructure, get assurance that it can handle that risk.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:etsi-en-304-223#5.1.3-3"
+    source_locator: "§5.1.3, Provision 5.1.3-3, p. 11"
+  - id: requirement:etsi-en-304-223-5-1-3-4
+    name: "5.1.3-4 — Continuously monitor and review infrastructure against risk appetite"
+    text: >-
+      Monitor and review the system's infrastructure continuously in line with risk
+      appetite, accepting that AI systems keep more residual risk than other systems.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:etsi-en-304-223#5.1.3-4"
+    source_locator: "§5.1.3, Provision 5.1.3-4, p. 11"
+  - id: requirement:etsi-en-304-223-5-1-4-1
+    name: "5.1.4-1 — Build in capabilities for human oversight"
+    text: >-
+      Build in, and keep, the capabilities that humans need to oversee the AI system.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:etsi-en-304-223#5.1.4-1"
+    source_locator: "§5.1.4, Provision 5.1.4-1, p. 11"
+  - id: requirement:etsi-en-304-223-5-1-4-2
+    name: "5.1.4-2 — Make outputs easy for humans to assess"
+    text: >-
+      Make the system's outputs easy for the responsible humans to assess, for example
+      by making them explainable or interpretable.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:etsi-en-304-223#5.1.4-2"
+    source_locator: "§5.1.4, Provision 5.1.4-2, p. 11"
+  - id: requirement:etsi-en-304-223-5-1-4-3
+    name: "5.1.4-3 — Build technical measures where human oversight is a risk control"
+    text: >-
+      Where human oversight is used as a risk control, design, build, verify and
+      maintain the technical measures that make that oversight work.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.1.4-3"
+    source_locator: "§5.1.4, Provision 5.1.4-3, p. 11"
+  - id: requirement:etsi-en-304-223-5-1-4-4
+    name: "5.1.4-4 — Verify Data Custodian security controls are built in"
+    text: >-
+      Verify that the security controls the data custodian specified are built into the
+      system.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:etsi-en-304-223#5.1.4-4"
+    source_locator: "§5.1.4, Provision 5.1.4-4, p. 11"
+  - id: requirement:etsi-en-304-223-5-1-4-5
+    name: "5.1.4-5 — Tell End-users about prohibited use cases"
+    text: >-
+      Tell end-users which uses of the AI system are prohibited.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:etsi-en-304-223#5.1.4-5"
+    source_locator: "§5.1.4, Provision 5.1.4-5, p. 12"
+  - id: requirement:etsi-en-304-223-5-2-1-1
+    name: "5.2.1-1 — Maintain an inventory of assets and their interdependencies"
+    text: >-
+      Keep a complete inventory of assets, including how they depend on and connect to
+      each other.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.2.1-1"
+    source_locator: "§5.2.1, Provision 5.2.1-1, p. 12"
+  - id: requirement:etsi-en-304-223-5-2-1-2
+    name: "5.2.1-2 — Track, authenticate, version-control and secure AI assets"
+    text: >-
+      Have processes and tools to track, authenticate, version-control and secure AI
+      assets.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.2.1-2"
+    source_locator: "§5.2.1, Provision 5.2.1-2, p. 12"
+  - id: requirement:etsi-en-304-223-5-2-1-3
+    name: "5.2.1-3 — Tailor disaster recovery plans to attacks on AI systems"
+    text: >-
+      Adapt disaster recovery plans to cover attacks aimed specifically at AI systems.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.2.1-3"
+    source_locator: "§5.2.1, Provision 5.2.1-3, p. 12"
+  - id: requirement:etsi-en-304-223-5-2-1-3-1
+    name: "5.2.1-3.1 — Be able to restore a known good state"
+    text: >-
+      Be able to restore the system to a known good state.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:etsi-en-304-223#5.2.1-3.1"
+    source_locator: "§5.2.1, Provision 5.2.1-3.1, p. 12"
+  - id: requirement:etsi-en-304-223-5-2-1-4
+    name: "5.2.1-4 — Protect sensitive data such as training and test data"
+    text: >-
+      Protect sensitive data, such as training and test data, from unauthorized access.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.2.1-4"
+    source_locator: "§5.2.1, Provision 5.2.1-4, p. 12"
+  - id: requirement:etsi-en-304-223-5-2-1-4-1
+    name: "5.2.1-4.1 — Check and sanitise data and inputs, and repeat on model revisions"
+    text: >-
+      Check and sanitise data and inputs when designing the model, according to how they
+      are accessed and stored, and repeat this when the model is revised from user
+      feedback or continuous learning.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.2.1-4.1"
+    source_locator: "§5.2.1, Provision 5.2.1-4.1, p. 12"
+  - id: requirement:etsi-en-304-223-5-2-1-4-2
+    name: "5.2.1-4.2 — Protect confidential training data and model weights"
+    text: >-
+      Protect training data and model weights in proportion to how confidential they
+      are.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.2.1-4.2"
+    source_locator: "§5.2.1, Provision 5.2.1-4.2, p. 12"
+  - id: requirement:etsi-en-304-223-5-2-2-1
+    name: "5.2.2-1 — Secure access to APIs, models, data and pipelines"
+    text: >-
+      Review the organization's access control framework and decide how to secure APIs,
+      models, data, and training and processing pipelines.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.2.2-1"
+    source_locator: "§5.2.2, Provision 5.2.2-1, p. 12"
+  - id: requirement:etsi-en-304-223-5-2-2-2
+    name: "5.2.2-2 — Protect externally offered APIs, e.g. with rate limits"
+    text: >-
+      Protect an API offered to external users against attacks on the AI system through
+      it, for example with rate limits that slow reverse engineering or rapid poisoning.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.2.2-2"
+    source_locator: "§5.2.2, Provision 5.2.2-2, p. 12"
+  - id: requirement:etsi-en-304-223-5-2-2-3
+    name: "5.2.2-3 — Use separate, least-privilege development and tuning environments"
+    text: >-
+      Use separate development and model-tuning environments, enforced by technical
+      separation and least privilege, and keep non-public training data only in them.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.2.2-3"
+    source_locator: "§5.2.2, Provision 5.2.2-3, p. 12"
+  - id: requirement:etsi-en-304-223-5-2-2-4
+    name: "5.2.2-4 — Publish a vulnerability disclosure policy"
+    text: >-
+      Implement and publish a clear, accessible vulnerability disclosure policy.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.2.2-4"
+    source_locator: "§5.2.2, Provision 5.2.2-4, p. 12"
+  - id: requirement:etsi-en-304-223-5-2-2-5
+    name: "5.2.2-5 — Maintain an AI incident management plan and recovery plan"
+    text: >-
+      Create, test and maintain an incident management plan and a recovery plan for the
+      AI system.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.2.2-5"
+    source_locator: "§5.2.2, Provision 5.2.2-5, p. 12"
+  - id: requirement:etsi-en-304-223-5-2-3-1
+    name: "5.2.3-1 — Follow secure software supply chain processes"
+    text: >-
+      Follow secure software supply chain processes when developing the AI model and
+      system.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.2.3-1"
+    source_locator: "§5.2.3, Provision 5.2.3-1, p. 13"
+  - id: requirement:etsi-en-304-223-5-2-3-2
+    name: "5.2.3-2 — Justify using poorly documented or unsecured models or components"
+    text: >-
+      Document a justification for using any model or component that is poorly
+      documented or unsecured.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.2.3-2"
+    source_locator: "§5.2.3, Provision 5.2.3-2, p. 13"
+  - id: requirement:etsi-en-304-223-5-2-3-2-1
+    name: "5.2.3-2.1 — Mitigate and risk-assess such models or components"
+    text: >-
+      Put mitigating controls and a risk assessment in place for any such model or
+      component.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.2.3-2.1"
+    source_locator: "§5.2.3, Provision 5.2.3-2.1, p. 13"
+  - id: requirement:etsi-en-304-223-5-2-3-2-2
+    name: "5.2.3-2.2 — Share that justification with End-users"
+    text: >-
+      Share that justification with end-users in an accessible form.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.2.3-2.2"
+    source_locator: "§5.2.3, Provision 5.2.3-2.2, p. 13"
+  - id: requirement:etsi-en-304-223-5-2-3-3
+    name: "5.2.3-3 — Re-run evaluations on released models before using them"
+    text: >-
+      Re-run evaluations on any released model before using it.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.2.3-3"
+    source_locator: "§5.2.3, Provision 5.2.3-3, p. 13"
+  - id: requirement:etsi-en-304-223-5-2-3-4
+    name: "5.2.3-4 — Tell End-users before models are updated"
+    text: >-
+      Tell end-users, in an accessible way, before a model is updated.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.2.3-4"
+    source_locator: "§5.2.3, Provision 5.2.3-4, p. 13"
+  - id: requirement:etsi-en-304-223-5-2-4-1
+    name: "5.2.4-1 — Document an audit trail of design and maintenance plans"
+    text: >-
+      Document and maintain an audit trail of the system design and post-deployment
+      maintenance plans, and make it available to downstream operators and data
+      custodians.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.2.4-1"
+    source_locator: "§5.2.4, Provision 5.2.4-1, p. 13"
+  - id: requirement:etsi-en-304-223-5-2-4-1-1
+    name: "5.2.4-1.1 — Include security-relevant information in the documentation"
+    text: >-
+      Include security-relevant details in that documentation, such as training data
+      sources, intended scope and limits, guardrails, retention time, review frequency
+      and failure modes.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: recommended
+    source_ref: "library:etsi-en-304-223#5.2.4-1.1"
+    source_locator: "§5.2.4, Provision 5.2.4-1.1, p. 13"
+  - id: requirement:etsi-en-304-223-5-2-4-1-2
+    name: "5.2.4-1.2 — Release cryptographic hashes of shared model components"
+    text: >-
+      Publish cryptographic hashes for model components given to others, so that they
+      can verify the components are authentic.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.2.4-1.2"
+    source_locator: "§5.2.4, Provision 5.2.4-1.2, p. 13"
+  - id: requirement:etsi-en-304-223-5-2-4-2
+    name: "5.2.4-2 — Document the source and use of public training data"
+    text: >-
+      Document where public training data came from, how it was obtained and how the
+      model uses it, so that poisoned data can be traced later.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.2.4-2"
+    source_locator: "§5.2.4, Provision 5.2.4-2, p. 13"
+  - id: requirement:etsi-en-304-223-5-2-4-2-1
+    name: "5.2.4-2.1 — Record the source URL and date of training data"
+    text: >-
+      Record at least the source of each piece of training data, such as its URL, and
+      the date and time it was obtained.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: recommended
+    source_ref: "library:etsi-en-304-223#5.2.4-2.1"
+    source_locator: "§5.2.4, Provision 5.2.4-2.1, p. 13"
+  - id: requirement:etsi-en-304-223-5-2-4-3
+    name: "5.2.4-3 — Keep an audit log of system prompt and configuration changes"
+    text: >-
+      Keep an audit log of changes to system prompts and other model configuration that
+      affect how the system works.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:etsi-en-304-223#5.2.4-3"
+    source_locator: "§5.2.4, Provision 5.2.4-3, p. 13"
+  - id: requirement:etsi-en-304-223-5-2-5-1
+    name: "5.2.5-1 — Security-test all released models, applications and systems"
+    text: >-
+      Security-test every model, application and system before releasing it to operators
+      or end-users.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.2.5-1"
+    source_locator: "§5.2.5, Provision 5.2.5-1, p. 13"
+  - id: requirement:etsi-en-304-223-5-2-5-2
+    name: "5.2.5-2 — Test before deployment, with Developer support"
+    text: >-
+      Test the system before deployment, with the developer's support.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.2.5-2"
+    source_locator: "§5.2.5, Provision 5.2.5-2, p. 13"
+  - id: requirement:etsi-en-304-223-5-2-5-2-1
+    name: "5.2.5-2.1 — Use independent security testers"
+    text: >-
+      Use independent security testers with skills relevant to the AI system.
+    text_origin: paraphrase
+    requirement_kind: audit
+    normativity: recommended
+    source_ref: "library:etsi-en-304-223#5.2.5-2.1"
+    source_locator: "§5.2.5, Provision 5.2.5-2.1, p. 14"
+  - id: requirement:etsi-en-304-223-5-2-5-3
+    name: "5.2.5-3 — Share test findings with System Operators"
+    text: >-
+      Share testing and evaluation findings with system operators to inform their own
+      testing.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:etsi-en-304-223#5.2.5-3"
+    source_locator: "§5.2.5, Provision 5.2.5-3, p. 14"
+  - id: requirement:etsi-en-304-223-5-2-5-4
+    name: "5.2.5-4 — Check outputs do not allow reverse engineering of the model or data"
+    text: >-
+      Evaluate model outputs to make sure they do not let operators or end-users
+      reverse-engineer non-public parts of the model or its training data.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:etsi-en-304-223#5.2.5-4"
+    source_locator: "§5.2.5, Provision 5.2.5-4, p. 14"
+  - id: requirement:etsi-en-304-223-5-2-5-4-1
+    name: "5.2.5-4.1 — Check outputs do not give unintended influence over the system"
+    text: >-
+      Evaluate model outputs to make sure they do not give operators or end-users
+      unintended influence over the system.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:etsi-en-304-223#5.2.5-4.1"
+    source_locator: "§5.2.5, Provision 5.2.5-4.1, p. 14"
+  - id: requirement:etsi-en-304-223-5-3-1-1
+    name: "5.3.1-1 — Tell End-users how their data is used, accessed and stored"
+    text: >-
+      Tell end-users, accessibly, where and how their data will be used, accessed and
+      stored, for example for retraining or human review.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.3.1-1"
+    source_locator: "§5.3.1, Provision 5.3.1-1, p. 14"
+  - id: requirement:etsi-en-304-223-5-3-1-2
+    name: "5.3.1-2 — Give End-users guidance on use and configuration"
+    text: >-
+      Give end-users accessible guidance on using, managing, integrating and configuring
+      the AI system.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.3.1-2"
+    source_locator: "§5.3.1, Provision 5.3.1-2, p. 14"
+  - id: requirement:etsi-en-304-223-5-3-1-2-1
+    name: "5.3.1-2.1 — Cover appropriate use, limitations and failure modes in guidance"
+    text: >-
+      Cover appropriate use, limitations and possible failure modes in that guidance.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.3.1-2.1"
+    source_locator: "§5.3.1, Provision 5.3.1-2.1, p. 14"
+  - id: requirement:etsi-en-304-223-5-3-1-2-2
+    name: "5.3.1-2.2 — Proactively inform End-users of security-relevant updates"
+    text: >-
+      Proactively tell end-users about security-relevant updates, with clear
+      explanations.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.3.1-2.2"
+    source_locator: "§5.3.1, Provision 5.3.1-2.2, p. 14"
+  - id: requirement:etsi-en-304-223-5-3-1-3
+    name: "5.3.1-3 — Support End-users and Affected Entities during incidents"
+    text: >-
+      Help end-users and affected entities contain and mitigate a cyber security
+      incident, under a documented process agreed in their contracts.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:etsi-en-304-223#5.3.1-3"
+    source_locator: "§5.3.1, Provision 5.3.1-3, p. 14"
+  - id: requirement:etsi-en-304-223-5-4-1-1
+    name: "5.4.1-1 — Provide security updates and deliver them to End-users"
+    text: >-
+      Provide security updates and patches where possible and notify system operators,
+      who deliver them to end-users.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.4.1-1"
+    source_locator: "§5.4.1, Provision 5.4.1-1, p. 14"
+  - id: requirement:etsi-en-304-223-5-4-1-1-1
+    name: "5.4.1-1.1 — Have contingency plans where updates cannot be provided"
+    text: >-
+      Have mechanisms and contingency plans to reduce security risk where updates cannot
+      be provided.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.4.1-1.1"
+    source_locator: "§5.4.1, Provision 5.4.1-1.1, p. 14"
+  - id: requirement:etsi-en-304-223-5-4-1-2
+    name: "5.4.1-2 — Treat major updates as a new model and re-test"
+    text: >-
+      Treat a major update as a new model version and repeat security testing and
+      evaluation.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:etsi-en-304-223#5.4.1-2"
+    source_locator: "§5.4.1, Provision 5.4.1-2, p. 14"
+  - id: requirement:etsi-en-304-223-5-4-1-3
+    name: "5.4.1-3 — Help System Operators evaluate model changes"
+    text: >-
+      Help system operators evaluate and respond to model changes, for example with
+      preview access or versioned APIs.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:etsi-en-304-223#5.4.1-3"
+    source_locator: "§5.4.1, Provision 5.4.1-3, p. 14"
+  - id: requirement:etsi-en-304-223-5-4-2-1
+    name: "5.4.2-1 — Log system and user actions"
+    text: >-
+      Log system and user actions to support security compliance, incident investigation
+      and vulnerability remediation.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.4.2-1"
+    source_locator: "§5.4.2, Provision 5.4.2-1, p. 15"
+  - id: requirement:etsi-en-304-223-5-4-2-2
+    name: "5.4.2-2 — Analyse logs for anomalies, drift and poisoning"
+    text: >-
+      Analyse logs to confirm the model still behaves as intended, and to detect
+      anomalies, breaches or unexpected behaviour such as from data drift or poisoning.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:etsi-en-304-223#5.4.2-2"
+    source_locator: "§5.4.2, Provision 5.4.2-2, p. 15"
+  - id: requirement:etsi-en-304-223-5-4-2-3
+    name: "5.4.2-3 — Monitor internal states of the AI system"
+    text: >-
+      Monitor the AI system's internal states where that helps address security threats
+      or supports later security analysis.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:etsi-en-304-223#5.4.2-3"
+    source_locator: "§5.4.2, Provision 5.4.2-3, p. 15"
+  - id: requirement:etsi-en-304-223-5-4-2-4
+    name: "5.4.2-4 — Monitor model performance over time"
+    text: >-
+      Monitor model and system performance over time to detect sudden or gradual changes
+      in behaviour that could affect security.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:etsi-en-304-223#5.4.2-4"
+    source_locator: "§5.4.2, Provision 5.4.2-4, p. 15"
+  - id: requirement:etsi-en-304-223-5-5-1-1
+    name: "5.5.1-1 — Involve Data Custodians and dispose securely when transferring ownership"
+    text: >-
+      When transferring or sharing ownership of training data or a model, involve the
+      data custodians and securely dispose of the assets.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.5.1-1"
+    source_locator: "§5.5.1, Provision 5.5.1-1, p. 15"
+  - id: requirement:etsi-en-304-223-5-5-1-2
+    name: "5.5.1-2 — Involve Data Custodians and delete data when decommissioning"
+    text: >-
+      When decommissioning a model or system, involve the data custodians and securely
+      delete the relevant data and configuration.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: mandatory
+    source_ref: "library:etsi-en-304-223#5.5.1-2"
+    source_locator: "§5.5.1, Provision 5.5.1-2, p. 15"
+
+# Stub nodes, only for targets a proposed Assertion points at.
+attack_patterns:
+  - id: attack-pattern:aml-t0010
+    name: "AML.T0010 AI Supply Chain Compromise"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it. Renamed in ATLAS 2026.10 to \"Supply Chain Compromise\"."
+    catalog_ref: "AML.T0010"
+  - id: attack-pattern:aml-t0010-001
+    name: "AML.T0010.001 AI Supply Chain Compromise: AI Software"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it. Renamed in ATLAS 2026.10 to \"Software\"."
+    catalog_ref: "AML.T0010.001"
+  - id: attack-pattern:aml-t0010-002
+    name: "AML.T0010.002 AI Supply Chain Compromise: Data"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it. Renamed in ATLAS 2026.10 to \"Data Repository\"."
+    catalog_ref: "AML.T0010.002"
+  - id: attack-pattern:aml-t0010-003
+    name: "AML.T0010.003 AI Supply Chain Compromise: Model"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it. Renamed in ATLAS 2026.10 to \"Model Repository\"."
+    catalog_ref: "AML.T0010.003"
+  - id: attack-pattern:aml-t0011-000
+    name: "AML.T0011.000 User Execution: Unsafe AI Artifacts"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0011.000"
+  - id: attack-pattern:aml-t0012
+    name: "AML.T0012 Valid Accounts"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0012"
+  - id: attack-pattern:aml-t0015
+    name: "AML.T0015 Evade AI Model"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0015"
+  - id: attack-pattern:aml-t0018
+    name: "AML.T0018 Manipulate AI Model"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0018"
+  - id: attack-pattern:aml-t0018-000
+    name: "AML.T0018.000 Manipulate AI Model: Poison AI Model"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0018.000"
+  - id: attack-pattern:aml-t0018-003
+    name: "AML.T0018.003 Manipulate AI Model: Modify Prompt Construction Logic"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0018.003"
+  - id: attack-pattern:aml-t0020
+    name: "AML.T0020 Training Data Poisoning"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0020"
+  - id: attack-pattern:aml-t0024-000
+    name: "AML.T0024.000 Exfiltration via AI Inference API: Infer Training Data Membership"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it. Removed in ATLAS 2026.10 (RPT-0009 §6, open question 8)."
+    catalog_ref: "AML.T0024.000"
+  - id: attack-pattern:aml-t0024-001
+    name: "AML.T0024.001 Exfiltration via AI Inference API: Invert AI Model"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it. Removed in ATLAS 2026.10 (RPT-0009 §6, open question 8)."
+    catalog_ref: "AML.T0024.001"
+  - id: attack-pattern:aml-t0024-002
+    name: "AML.T0024.002 Exfiltration via AI Inference API: Extract AI Model"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it. Removed in ATLAS 2026.10 (RPT-0009 §6, open question 8)."
+    catalog_ref: "AML.T0024.002"
+  - id: attack-pattern:aml-t0025
+    name: "AML.T0025 Exfiltration via Cyber Means"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0025"
+  - id: attack-pattern:aml-t0029
+    name: "AML.T0029 Denial of AI Service"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0029"
+  - id: attack-pattern:aml-t0034
+    name: "AML.T0034 Cost Harvesting"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0034"
+  - id: attack-pattern:aml-t0035
+    name: "AML.T0035 AI Artifact Collection"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0035"
+  - id: attack-pattern:aml-t0043
+    name: "AML.T0043 Craft Adversarial Data"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0043"
+  - id: attack-pattern:aml-t0048-004
+    name: "AML.T0048.004 External Harms: AI Intellectual Property Theft"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0048.004"
+  - id: attack-pattern:aml-t0051-000
+    name: "AML.T0051.000 LLM Prompt Injection: Direct"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0051.000"
+  - id: attack-pattern:aml-t0051-001
+    name: "AML.T0051.001 LLM Prompt Injection: Indirect"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0051.001"
+  - id: attack-pattern:aml-t0053
+    name: "AML.T0053 AI Agent Tool Invocation"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0053"
+  - id: attack-pattern:aml-t0054
+    name: "AML.T0054 LLM Jailbreak"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0054"
+  - id: attack-pattern:aml-t0055
+    name: "AML.T0055 Unsecured Credentials"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0055"
+  - id: attack-pattern:aml-t0057
+    name: "AML.T0057 LLM Data Leakage"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it. Removed in ATLAS 2026.10 (RPT-0009 §6, open question 8)."
+    catalog_ref: "AML.T0057"
+  - id: attack-pattern:aml-t0081
+    name: "AML.T0081 Modify AI Agent Configuration"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0081"
+  - id: attack-pattern:aml-t0129
+    name: "AML.T0129 Triggers in Multimodal Inputs"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0129"
+  - id: attack-pattern:nistaml-01
+    name: "NISTAML.01 Availability Violations"
+    description: "Stub: NIST AI 100-2 E2025 taxonomy entry, as the library record maps it."
+    catalog_ref: "NISTAML.01"
+  - id: attack-pattern:nistaml-013
+    name: "NISTAML.013 Data Poisoning"
+    description: "Stub: NIST AI 100-2 E2025 taxonomy entry, as the library record maps it."
+    catalog_ref: "NISTAML.013"
+  - id: attack-pattern:nistaml-015
+    name: "NISTAML.015 Indirect Prompt Injection"
+    description: "Stub: NIST AI 100-2 E2025 taxonomy entry, as the library record maps it."
+    catalog_ref: "NISTAML.015"
+  - id: attack-pattern:nistaml-018
+    name: "NISTAML.018 Prompt Injection"
+    description: "Stub: NIST AI 100-2 E2025 taxonomy entry, as the library record maps it."
+    catalog_ref: "NISTAML.018"
+  - id: attack-pattern:nistaml-022
+    name: "NISTAML.022 Evasion"
+    description: "Stub: NIST AI 100-2 E2025 taxonomy entry, as the library record maps it."
+    catalog_ref: "NISTAML.022"
+  - id: attack-pattern:nistaml-026
+    name: "NISTAML.026 Model Poisoning"
+    description: "Stub: NIST AI 100-2 E2025 taxonomy entry, as the library record maps it."
+    catalog_ref: "NISTAML.026"
+  - id: attack-pattern:nistaml-027
+    name: "NISTAML.027 Misaligned Outputs"
+    description: "Stub: NIST AI 100-2 E2025 taxonomy entry, as the library record maps it."
+    catalog_ref: "NISTAML.027"
+  - id: attack-pattern:nistaml-031
+    name: "NISTAML.031 Model Extraction"
+    description: "Stub: NIST AI 100-2 E2025 taxonomy entry, as the library record maps it."
+    catalog_ref: "NISTAML.031"
+  - id: attack-pattern:nistaml-032
+    name: "NISTAML.032 Reconstruction"
+    description: "Stub: NIST AI 100-2 E2025 taxonomy entry, as the library record maps it."
+    catalog_ref: "NISTAML.032"
+  - id: attack-pattern:nistaml-033
+    name: "NISTAML.033 Membership Inference"
+    description: "Stub: NIST AI 100-2 E2025 taxonomy entry, as the library record maps it."
+    catalog_ref: "NISTAML.033"
+  - id: attack-pattern:nistaml-038
+    name: "NISTAML.038 Data Extraction"
+    description: "Stub: NIST AI 100-2 E2025 taxonomy entry, as the library record maps it."
+    catalog_ref: "NISTAML.038"
+  - id: attack-pattern:nistaml-039
+    name: "NISTAML.039 Compromising connected resources"
+    description: "Stub: NIST AI 100-2 E2025 taxonomy entry, as the library record maps it."
+    catalog_ref: "NISTAML.039"
+  - id: attack-pattern:nistaml-05
+    name: "NISTAML.05 Supply Chain Attacks"
+    description: "Stub: NIST AI 100-2 E2025 taxonomy entry, as the library record maps it."
+    catalog_ref: "NISTAML.05"
+  - id: attack-pattern:nistaml-051
+    name: "NISTAML.051 Model Poisoning"
+    description: "Stub: NIST AI 100-2 E2025 taxonomy entry, as the library record maps it."
+    catalog_ref: "NISTAML.051"
+
+parties:
+  - id: party:maimcghee
+    name: "@Maimcghee"
+    description: Human owner and reviewer of this file (GitHub id).
+    party_kind: person
+
+assertions:
+  - id: assertion:etsi-en-304-223-5-1-2-2--addresses--nistaml-022
+    name: "5.1.2-2 addresses NISTAML.022"
+    subject: requirement:etsi-en-304-223-5-1-2-2
+    predicate: addresses
+    object: attack-pattern:nistaml-022
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: stated, provenance: ours).
+      Basis: §5.1.2, Provision 5.1.2-2, p. 10; the provision names "adversarial AI
+      attacks"; clause 3.1 defines an adversarial attack as specially crafted inputs
+      that make the model produce errors, which is evasion.
+  - id: assertion:etsi-en-304-223-5-1-2-2--addresses--aml-t0015
+    name: "5.1.2-2 addresses AML.T0015"
+    subject: requirement:etsi-en-304-223-5-1-2-2
+    predicate: addresses
+    object: attack-pattern:aml-t0015
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      §5.1.2, Provision 5.1.2-2, p. 10; the provision names "adversarial AI attacks";
+      clause 3.1 defines an adversarial attack as specially crafted inputs that make the
+      model produce errors, which is evasion.
+  - id: assertion:etsi-en-304-223-5-1-2-2--addresses--aml-t0043
+    name: "5.1.2-2 addresses AML.T0043"
+    subject: requirement:etsi-en-304-223-5-1-2-2
+    predicate: addresses
+    object: attack-pattern:aml-t0043
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      §5.1.2, Provision 5.1.2-2, p. 10; the provision names "adversarial AI attacks";
+      clause 3.1 defines an adversarial attack as specially crafted inputs that make the
+      model produce errors, which is evasion.
+  - id: assertion:etsi-en-304-223-5-1-2-2--addresses--nistaml-018
+    name: "5.1.2-2 addresses NISTAML.018"
+    subject: requirement:etsi-en-304-223-5-1-2-2
+    predicate: addresses
+    object: attack-pattern:nistaml-018
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.1.2, Provision 5.1.2-2, p. 10; the clause 3.1 definition (crafted
+      inputs causing errors or unintended outcomes) also covers optimisation-based
+      prompting of generative models, which NIST §3.3.1 likens to PredAI evasion.
+  - id: assertion:etsi-en-304-223-5-1-2-2--addresses--aml-t0051-000
+    name: "5.1.2-2 addresses AML.T0051.000"
+    subject: requirement:etsi-en-304-223-5-1-2-2
+    predicate: addresses
+    object: attack-pattern:aml-t0051-000
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.1.2, Provision 5.1.2-2, p. 10; the clause 3.1 definition (crafted inputs
+      causing errors or unintended outcomes) also covers optimisation-based prompting of
+      generative models, which NIST §3.3.1 likens to PredAI evasion.
+  - id: assertion:etsi-en-304-223-5-1-2-2--addresses--aml-t0054
+    name: "5.1.2-2 addresses AML.T0054"
+    subject: requirement:etsi-en-304-223-5-1-2-2
+    predicate: addresses
+    object: attack-pattern:aml-t0054
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.1.2, Provision 5.1.2-2, p. 10; the clause 3.1 definition (crafted inputs
+      causing errors or unintended outcomes) also covers optimisation-based prompting of
+      generative models, which NIST §3.3.1 likens to PredAI evasion.
+  - id: assertion:etsi-en-304-223-5-1-2-3--addresses--nistaml-013
+    name: "5.1.2-3 addresses NISTAML.013"
+    subject: requirement:etsi-en-304-223-5-1-2-3
+    predicate: addresses
+    object: attack-pattern:nistaml-013
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.1.2, Provision 5.1.2-3, p. 10; an audit trail of datasets and
+      models is what lets a poisoning be traced after the fact (5.2.4-2 makes the same
+      link for training data).
+  - id: assertion:etsi-en-304-223-5-1-2-3--addresses--aml-t0020
+    name: "5.1.2-3 addresses AML.T0020"
+    subject: requirement:etsi-en-304-223-5-1-2-3
+    predicate: addresses
+    object: attack-pattern:aml-t0020
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.1.2, Provision 5.1.2-3, p. 10; an audit trail of datasets and models is what
+      lets a poisoning be traced after the fact (5.2.4-2 makes the same link for
+      training data).
+  - id: assertion:etsi-en-304-223-5-1-2-4--addresses--nistaml-05
+    name: "5.1.2-4 addresses NISTAML.05"
+    subject: requirement:etsi-en-304-223-5-1-2-4
+    predicate: addresses
+    object: attack-pattern:nistaml-05
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.1.2, Provision 5.1.2-4, p. 10; an external component is the entry
+      point for an AI supply chain compromise.
+  - id: assertion:etsi-en-304-223-5-1-2-4--addresses--aml-t0010
+    name: "5.1.2-4 addresses AML.T0010"
+    subject: requirement:etsi-en-304-223-5-1-2-4
+    predicate: addresses
+    object: attack-pattern:aml-t0010
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.1.2, Provision 5.1.2-4, p. 10; an external component is the entry point for an
+      AI supply chain compromise.
+  - id: assertion:etsi-en-304-223-5-1-2-4--addresses--aml-t0010-001
+    name: "5.1.2-4 addresses AML.T0010.001"
+    subject: requirement:etsi-en-304-223-5-1-2-4
+    predicate: addresses
+    object: attack-pattern:aml-t0010-001
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.1.2, Provision 5.1.2-4, p. 10; an external component is the entry point for an
+      AI supply chain compromise.
+  - id: assertion:etsi-en-304-223-5-1-2-4--addresses--aml-t0010-003
+    name: "5.1.2-4 addresses AML.T0010.003"
+    subject: requirement:etsi-en-304-223-5-1-2-4
+    predicate: addresses
+    object: attack-pattern:aml-t0010-003
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.1.2, Provision 5.1.2-4, p. 10; an external component is the entry point for an
+      AI supply chain compromise.
+  - id: assertion:etsi-en-304-223-5-1-2-5--addresses--nistaml-033
+    name: "5.1.2-5 addresses NISTAML.033"
+    subject: requirement:etsi-en-304-223-5-1-2-5
+    predicate: addresses
+    object: attack-pattern:nistaml-033
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.1.2, Provision 5.1.2-5, p. 11; a model can leak the data it was
+      trained on, so its use has to match that data's sensitivity.
+  - id: assertion:etsi-en-304-223-5-1-2-5--addresses--nistaml-032
+    name: "5.1.2-5 addresses NISTAML.032"
+    subject: requirement:etsi-en-304-223-5-1-2-5
+    predicate: addresses
+    object: attack-pattern:nistaml-032
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.1.2, Provision 5.1.2-5, p. 11; a model can leak the data it was
+      trained on, so its use has to match that data's sensitivity.
+  - id: assertion:etsi-en-304-223-5-1-2-5--addresses--nistaml-038
+    name: "5.1.2-5 addresses NISTAML.038"
+    subject: requirement:etsi-en-304-223-5-1-2-5
+    predicate: addresses
+    object: attack-pattern:nistaml-038
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.1.2, Provision 5.1.2-5, p. 11; a model can leak the data it was
+      trained on, so its use has to match that data's sensitivity.
+  - id: assertion:etsi-en-304-223-5-1-2-5--addresses--aml-t0024-000
+    name: "5.1.2-5 addresses AML.T0024.000"
+    subject: requirement:etsi-en-304-223-5-1-2-5
+    predicate: addresses
+    object: attack-pattern:aml-t0024-000
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.1.2, Provision 5.1.2-5, p. 11; a model can leak the data it was trained on, so
+      its use has to match that data's sensitivity.
+  - id: assertion:etsi-en-304-223-5-1-2-5--addresses--aml-t0024-001
+    name: "5.1.2-5 addresses AML.T0024.001"
+    subject: requirement:etsi-en-304-223-5-1-2-5
+    predicate: addresses
+    object: attack-pattern:aml-t0024-001
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.1.2, Provision 5.1.2-5, p. 11; a model can leak the data it was trained on, so
+      its use has to match that data's sensitivity.
+  - id: assertion:etsi-en-304-223-5-1-2-5--addresses--aml-t0057
+    name: "5.1.2-5 addresses AML.T0057"
+    subject: requirement:etsi-en-304-223-5-1-2-5
+    predicate: addresses
+    object: attack-pattern:aml-t0057
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.1.2, Provision 5.1.2-5, p. 11; a model can leak the data it was trained on, so
+      its use has to match that data's sensitivity.
+  - id: assertion:etsi-en-304-223-5-1-2-6--addresses--nistaml-015
+    name: "5.1.2-6 addresses NISTAML.015"
+    subject: requirement:etsi-en-304-223-5-1-2-6
+    predicate: addresses
+    object: attack-pattern:nistaml-015
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.1.2, Provision 5.1.2-6, p. 11; least privilege on connected
+      systems limits what an injected instruction can make the AI system do there.
+  - id: assertion:etsi-en-304-223-5-1-2-6--addresses--nistaml-027
+    name: "5.1.2-6 addresses NISTAML.027"
+    subject: requirement:etsi-en-304-223-5-1-2-6
+    predicate: addresses
+    object: attack-pattern:nistaml-027
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.1.2, Provision 5.1.2-6, p. 11; least privilege on connected
+      systems limits what an injected instruction can make the AI system do there.
+  - id: assertion:etsi-en-304-223-5-1-2-6--addresses--nistaml-039
+    name: "5.1.2-6 addresses NISTAML.039"
+    subject: requirement:etsi-en-304-223-5-1-2-6
+    predicate: addresses
+    object: attack-pattern:nistaml-039
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.1.2, Provision 5.1.2-6, p. 11; least privilege on connected
+      systems limits what an injected instruction can make the AI system do there.
+  - id: assertion:etsi-en-304-223-5-1-2-6--addresses--aml-t0051-001
+    name: "5.1.2-6 addresses AML.T0051.001"
+    subject: requirement:etsi-en-304-223-5-1-2-6
+    predicate: addresses
+    object: attack-pattern:aml-t0051-001
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.1.2, Provision 5.1.2-6, p. 11; least privilege on connected systems limits what
+      an injected instruction can make the AI system do there.
+  - id: assertion:etsi-en-304-223-5-1-2-6--addresses--aml-t0053
+    name: "5.1.2-6 addresses AML.T0053"
+    subject: requirement:etsi-en-304-223-5-1-2-6
+    predicate: addresses
+    object: attack-pattern:aml-t0053
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.1.2, Provision 5.1.2-6, p. 11; least privilege on connected systems limits what
+      an injected instruction can make the AI system do there.
+  - id: assertion:etsi-en-304-223-5-1-2-6--addresses--nistaml-018
+    name: "5.1.2-6 addresses NISTAML.018"
+    subject: requirement:etsi-en-304-223-5-1-2-6
+    predicate: addresses
+    object: attack-pattern:nistaml-018
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.1.2, Provision 5.1.2-6, p. 11; least privilege also limits what a
+      user's own injected instructions can make the system do through its tools and APIs
+      (NIST §3.3).
+  - id: assertion:etsi-en-304-223-5-1-2-6--addresses--aml-t0051-000
+    name: "5.1.2-6 addresses AML.T0051.000"
+    subject: requirement:etsi-en-304-223-5-1-2-6
+    predicate: addresses
+    object: attack-pattern:aml-t0051-000
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.1.2, Provision 5.1.2-6, p. 11; least privilege also limits what a user's own
+      injected instructions can make the system do through its tools and APIs (NIST
+      §3.3).
+  - id: assertion:etsi-en-304-223-5-1-2-7--addresses--nistaml-05
+    name: "5.1.2-7 addresses NISTAML.05"
+    subject: requirement:etsi-en-304-223-5-1-2-7
+    predicate: addresses
+    object: attack-pattern:nistaml-05
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.1.2, Provision 5.1.2-7, p. 11; due diligence on an external
+      provider addresses compromise through the AI supply chain.
+  - id: assertion:etsi-en-304-223-5-1-2-7--addresses--aml-t0010
+    name: "5.1.2-7 addresses AML.T0010"
+    subject: requirement:etsi-en-304-223-5-1-2-7
+    predicate: addresses
+    object: attack-pattern:aml-t0010
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.1.2, Provision 5.1.2-7, p. 11; due diligence on an external provider addresses
+      compromise through the AI supply chain.
+  - id: assertion:etsi-en-304-223-5-1-3-1--addresses--nistaml-013
+    name: "5.1.3-1 addresses NISTAML.013"
+    subject: requirement:etsi-en-304-223-5-1-3-1
+    predicate: addresses
+    object: attack-pattern:nistaml-013
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: stated, provenance: ours).
+      Basis: §5.1.3, Provision 5.1.3-1, p. 11; the provision names "data poisoning".
+  - id: assertion:etsi-en-304-223-5-1-3-1--addresses--aml-t0020
+    name: "5.1.3-1 addresses AML.T0020"
+    subject: requirement:etsi-en-304-223-5-1-3-1
+    predicate: addresses
+    object: attack-pattern:aml-t0020
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      §5.1.3, Provision 5.1.3-1, p. 11; the provision names "data poisoning".
+  - id: assertion:etsi-en-304-223-5-1-3-1--addresses--nistaml-032
+    name: "5.1.3-1 addresses NISTAML.032"
+    subject: requirement:etsi-en-304-223-5-1-3-1
+    predicate: addresses
+    object: attack-pattern:nistaml-032
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: stated, provenance: ours).
+      Basis: §5.1.3, Provision 5.1.3-1, p. 11; the provision names "model inversion";
+      NIST AI 100-2 E2025 treats model inversion under data reconstruction (§2.4.1).
+  - id: assertion:etsi-en-304-223-5-1-3-1--addresses--aml-t0024-001
+    name: "5.1.3-1 addresses AML.T0024.001"
+    subject: requirement:etsi-en-304-223-5-1-3-1
+    predicate: addresses
+    object: attack-pattern:aml-t0024-001
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      §5.1.3, Provision 5.1.3-1, p. 11; the provision names "model inversion"; NIST AI
+      100-2 E2025 treats model inversion under data reconstruction (§2.4.1).
+  - id: assertion:etsi-en-304-223-5-1-3-1--addresses--nistaml-033
+    name: "5.1.3-1 addresses NISTAML.033"
+    subject: requirement:etsi-en-304-223-5-1-3-1
+    predicate: addresses
+    object: attack-pattern:nistaml-033
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: stated, provenance: ours).
+      Basis: §5.1.3, Provision 5.1.3-1, p. 11; the provision names "membership
+      inference".
+  - id: assertion:etsi-en-304-223-5-1-3-1--addresses--aml-t0024-000
+    name: "5.1.3-1 addresses AML.T0024.000"
+    subject: requirement:etsi-en-304-223-5-1-3-1
+    predicate: addresses
+    object: attack-pattern:aml-t0024-000
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      §5.1.3, Provision 5.1.3-1, p. 11; the provision names "membership inference".
+  - id: assertion:etsi-en-304-223-5-1-3-1-2--addresses--nistaml-015
+    name: "5.1.3-1.2 addresses NISTAML.015"
+    subject: requirement:etsi-en-304-223-5-1-3-1-2
+    predicate: addresses
+    object: attack-pattern:nistaml-015
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.1.3, Provision 5.1.3-1.2, p. 11; an unused modality is an input
+      channel no control watches; ATLAS describes instructions hidden in one part of a
+      multimodal input.
+  - id: assertion:etsi-en-304-223-5-1-3-1-2--addresses--aml-t0129
+    name: "5.1.3-1.2 addresses AML.T0129"
+    subject: requirement:etsi-en-304-223-5-1-3-1-2
+    predicate: addresses
+    object: attack-pattern:aml-t0129
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.1.3, Provision 5.1.3-1.2, p. 11; an unused modality is an input channel no
+      control watches; ATLAS describes instructions hidden in one part of a multimodal
+      input.
+  - id: assertion:etsi-en-304-223-5-1-3-1-2--addresses--nistaml-018
+    name: "5.1.3-1.2 addresses NISTAML.018"
+    subject: requirement:etsi-en-304-223-5-1-3-1-2
+    predicate: addresses
+    object: attack-pattern:nistaml-018
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.1.3, Provision 5.1.3-1.2, p. 11; the unused modality can carry a
+      cross-modal injection from the user as well as from ingested content.
+  - id: assertion:etsi-en-304-223-5-1-3-1-2--addresses--aml-t0051-000
+    name: "5.1.3-1.2 addresses AML.T0051.000"
+    subject: requirement:etsi-en-304-223-5-1-3-1-2
+    predicate: addresses
+    object: attack-pattern:aml-t0051-000
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.1.3, Provision 5.1.3-1.2, p. 11; the unused modality can carry a cross-modal
+      injection from the user as well as from ingested content.
+  - id: assertion:etsi-en-304-223-5-2-1-2--addresses--nistaml-051
+    name: "5.2.1-2 addresses NISTAML.051"
+    subject: requirement:etsi-en-304-223-5-2-1-2
+    predicate: addresses
+    object: attack-pattern:nistaml-051
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.2.1, Provision 5.2.1-2, p. 12; authenticating and
+      version-controlling model assets detects a swapped or manipulated model.
+  - id: assertion:etsi-en-304-223-5-2-1-2--addresses--aml-t0018
+    name: "5.2.1-2 addresses AML.T0018"
+    subject: requirement:etsi-en-304-223-5-2-1-2
+    predicate: addresses
+    object: attack-pattern:aml-t0018
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.1, Provision 5.2.1-2, p. 12; authenticating and version-controlling model
+      assets detects a swapped or manipulated model.
+  - id: assertion:etsi-en-304-223-5-2-1-2--addresses--aml-t0010-003
+    name: "5.2.1-2 addresses AML.T0010.003"
+    subject: requirement:etsi-en-304-223-5-2-1-2
+    predicate: addresses
+    object: attack-pattern:aml-t0010-003
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.1, Provision 5.2.1-2, p. 12; authenticating and version-controlling model
+      assets detects a swapped or manipulated model.
+  - id: assertion:etsi-en-304-223-5-2-1-3-1--addresses--nistaml-013
+    name: "5.2.1-3.1 addresses NISTAML.013"
+    subject: requirement:etsi-en-304-223-5-2-1-3-1
+    predicate: addresses
+    object: attack-pattern:nistaml-013
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.2.1, Provision 5.2.1-3.1, p. 12; restoring a known good state is
+      the recovery path from a poisoned dataset or model.
+  - id: assertion:etsi-en-304-223-5-2-1-3-1--addresses--nistaml-026
+    name: "5.2.1-3.1 addresses NISTAML.026"
+    subject: requirement:etsi-en-304-223-5-2-1-3-1
+    predicate: addresses
+    object: attack-pattern:nistaml-026
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.2.1, Provision 5.2.1-3.1, p. 12; restoring a known good state is
+      the recovery path from a poisoned dataset or model.
+  - id: assertion:etsi-en-304-223-5-2-1-3-1--addresses--aml-t0020
+    name: "5.2.1-3.1 addresses AML.T0020"
+    subject: requirement:etsi-en-304-223-5-2-1-3-1
+    predicate: addresses
+    object: attack-pattern:aml-t0020
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.1, Provision 5.2.1-3.1, p. 12; restoring a known good state is the recovery
+      path from a poisoned dataset or model.
+  - id: assertion:etsi-en-304-223-5-2-1-3-1--addresses--aml-t0018-000
+    name: "5.2.1-3.1 addresses AML.T0018.000"
+    subject: requirement:etsi-en-304-223-5-2-1-3-1
+    predicate: addresses
+    object: attack-pattern:aml-t0018-000
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.1, Provision 5.2.1-3.1, p. 12; restoring a known good state is the recovery
+      path from a poisoned dataset or model.
+  - id: assertion:etsi-en-304-223-5-2-1-4--addresses--aml-t0035
+    name: "5.2.1-4 addresses AML.T0035"
+    subject: requirement:etsi-en-304-223-5-2-1-4
+    predicate: addresses
+    object: attack-pattern:aml-t0035
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      §5.2.1, Provision 5.2.1-4, p. 12; the provision names "against unauthorized
+      access"; unauthorized access to training or test data is a conventional
+      confidentiality attack on an AI artifact.
+  - id: assertion:etsi-en-304-223-5-2-1-4--addresses--aml-t0025
+    name: "5.2.1-4 addresses AML.T0025"
+    subject: requirement:etsi-en-304-223-5-2-1-4
+    predicate: addresses
+    object: attack-pattern:aml-t0025
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      §5.2.1, Provision 5.2.1-4, p. 12; the provision names "against unauthorized
+      access"; unauthorized access to training or test data is a conventional
+      confidentiality attack on an AI artifact.
+  - id: assertion:etsi-en-304-223-5-2-1-4-1--addresses--nistaml-013
+    name: "5.2.1-4.1 addresses NISTAML.013"
+    subject: requirement:etsi-en-304-223-5-2-1-4-1
+    predicate: addresses
+    object: attack-pattern:nistaml-013
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.2.1, Provision 5.2.1-4.1, p. 12; checking and sanitising data
+      before training, and again on revisions from feedback or continuous learning,
+      screens out poisoned samples (ATLAS M0007 Sanitize Training Data).
+  - id: assertion:etsi-en-304-223-5-2-1-4-1--addresses--aml-t0020
+    name: "5.2.1-4.1 addresses AML.T0020"
+    subject: requirement:etsi-en-304-223-5-2-1-4-1
+    predicate: addresses
+    object: attack-pattern:aml-t0020
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.1, Provision 5.2.1-4.1, p. 12; checking and sanitising data before training,
+      and again on revisions from feedback or continuous learning, screens out poisoned
+      samples (ATLAS M0007 Sanitize Training Data).
+  - id: assertion:etsi-en-304-223-5-2-1-4-2--addresses--aml-t0035
+    name: "5.2.1-4.2 addresses AML.T0035"
+    subject: requirement:etsi-en-304-223-5-2-1-4-2
+    predicate: addresses
+    object: attack-pattern:aml-t0035
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.1, Provision 5.2.1-4.2, p. 12; confidential weights and training data are
+      targets of theft by conventional means.
+  - id: assertion:etsi-en-304-223-5-2-1-4-2--addresses--aml-t0048-004
+    name: "5.2.1-4.2 addresses AML.T0048.004"
+    subject: requirement:etsi-en-304-223-5-2-1-4-2
+    predicate: addresses
+    object: attack-pattern:aml-t0048-004
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.1, Provision 5.2.1-4.2, p. 12; confidential weights and training data are
+      targets of theft by conventional means.
+  - id: assertion:etsi-en-304-223-5-2-2-1--addresses--aml-t0012
+    name: "5.2.2-1 addresses AML.T0012"
+    subject: requirement:etsi-en-304-223-5-2-2-1
+    predicate: addresses
+    object: attack-pattern:aml-t0012
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.2, Provision 5.2.2-1, p. 12; access control on APIs, models, data and
+      pipelines blocks credential abuse and artifact collection.
+  - id: assertion:etsi-en-304-223-5-2-2-1--addresses--aml-t0035
+    name: "5.2.2-1 addresses AML.T0035"
+    subject: requirement:etsi-en-304-223-5-2-2-1
+    predicate: addresses
+    object: attack-pattern:aml-t0035
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.2, Provision 5.2.2-1, p. 12; access control on APIs, models, data and
+      pipelines blocks credential abuse and artifact collection.
+  - id: assertion:etsi-en-304-223-5-2-2-2--addresses--nistaml-031
+    name: "5.2.2-2 addresses NISTAML.031"
+    subject: requirement:etsi-en-304-223-5-2-2-2
+    predicate: addresses
+    object: attack-pattern:nistaml-031
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.2.2, Provision 5.2.2-2, p. 12; 'limit an attacker's ability to
+      reverse engineer or overwhelm defences to rapidly poison a model' parses two ways;
+      on the reading 'reverse engineer [the model]' it names model extraction, which
+      rate limits slow (ATLAS M0004).
+  - id: assertion:etsi-en-304-223-5-2-2-2--addresses--aml-t0024-002
+    name: "5.2.2-2 addresses AML.T0024.002"
+    subject: requirement:etsi-en-304-223-5-2-2-2
+    predicate: addresses
+    object: attack-pattern:aml-t0024-002
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.2, Provision 5.2.2-2, p. 12; 'limit an attacker's ability to reverse engineer
+      or overwhelm defences to rapidly poison a model' parses two ways; on the reading
+      'reverse engineer [the model]' it names model extraction, which rate limits slow
+      (ATLAS M0004).
+  - id: assertion:etsi-en-304-223-5-2-2-2--addresses--nistaml-013
+    name: "5.2.2-2 addresses NISTAML.013"
+    subject: requirement:etsi-en-304-223-5-2-2-2
+    predicate: addresses
+    object: attack-pattern:nistaml-013
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: stated, provenance: ours).
+      Basis: §5.2.2, Provision 5.2.2-2, p. 12; the provision names "rapidly poison a
+      model".
+  - id: assertion:etsi-en-304-223-5-2-2-2--addresses--aml-t0020
+    name: "5.2.2-2 addresses AML.T0020"
+    subject: requirement:etsi-en-304-223-5-2-2-2
+    predicate: addresses
+    object: attack-pattern:aml-t0020
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      §5.2.2, Provision 5.2.2-2, p. 12; the provision names "rapidly poison a model".
+  - id: assertion:etsi-en-304-223-5-2-2-2--addresses--nistaml-01
+    name: "5.2.2-2 addresses NISTAML.01"
+    subject: requirement:etsi-en-304-223-5-2-2-2
+    predicate: addresses
+    object: attack-pattern:nistaml-01
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.2.2, Provision 5.2.2-2, p. 12; rate limits on model access also
+      counter denial of service and cost harvesting (ATLAS M0004 mitigates both).
+  - id: assertion:etsi-en-304-223-5-2-2-2--addresses--aml-t0029
+    name: "5.2.2-2 addresses AML.T0029"
+    subject: requirement:etsi-en-304-223-5-2-2-2
+    predicate: addresses
+    object: attack-pattern:aml-t0029
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.2, Provision 5.2.2-2, p. 12; rate limits on model access also counter denial
+      of service and cost harvesting (ATLAS M0004 mitigates both).
+  - id: assertion:etsi-en-304-223-5-2-2-2--addresses--aml-t0034
+    name: "5.2.2-2 addresses AML.T0034"
+    subject: requirement:etsi-en-304-223-5-2-2-2
+    predicate: addresses
+    object: attack-pattern:aml-t0034
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.2, Provision 5.2.2-2, p. 12; rate limits on model access also counter denial
+      of service and cost harvesting (ATLAS M0004 mitigates both).
+  - id: assertion:etsi-en-304-223-5-2-2-3--addresses--aml-t0035
+    name: "5.2.2-3 addresses AML.T0035"
+    subject: requirement:etsi-en-304-223-5-2-2-3
+    predicate: addresses
+    object: attack-pattern:aml-t0035
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.2, Provision 5.2.2-3, p. 12; keeping non-public training data inside
+      separated development environments limits where it can be collected.
+  - id: assertion:etsi-en-304-223-5-2-3-1--addresses--nistaml-05
+    name: "5.2.3-1 addresses NISTAML.05"
+    subject: requirement:etsi-en-304-223-5-2-3-1
+    predicate: addresses
+    object: attack-pattern:nistaml-05
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.2.3, Provision 5.2.3-1, p. 13; secure supply chain processes are
+      the control for AI supply chain compromise.
+  - id: assertion:etsi-en-304-223-5-2-3-1--addresses--aml-t0010
+    name: "5.2.3-1 addresses AML.T0010"
+    subject: requirement:etsi-en-304-223-5-2-3-1
+    predicate: addresses
+    object: attack-pattern:aml-t0010
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.3, Provision 5.2.3-1, p. 13; secure supply chain processes are the control
+      for AI supply chain compromise.
+  - id: assertion:etsi-en-304-223-5-2-3-1--addresses--aml-t0010-001
+    name: "5.2.3-1 addresses AML.T0010.001"
+    subject: requirement:etsi-en-304-223-5-2-3-1
+    predicate: addresses
+    object: attack-pattern:aml-t0010-001
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.3, Provision 5.2.3-1, p. 13; secure supply chain processes are the control
+      for AI supply chain compromise.
+  - id: assertion:etsi-en-304-223-5-2-3-1--addresses--aml-t0010-002
+    name: "5.2.3-1 addresses AML.T0010.002"
+    subject: requirement:etsi-en-304-223-5-2-3-1
+    predicate: addresses
+    object: attack-pattern:aml-t0010-002
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.3, Provision 5.2.3-1, p. 13; secure supply chain processes are the control
+      for AI supply chain compromise.
+  - id: assertion:etsi-en-304-223-5-2-3-1--addresses--aml-t0010-003
+    name: "5.2.3-1 addresses AML.T0010.003"
+    subject: requirement:etsi-en-304-223-5-2-3-1
+    predicate: addresses
+    object: attack-pattern:aml-t0010-003
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.3, Provision 5.2.3-1, p. 13; secure supply chain processes are the control
+      for AI supply chain compromise.
+  - id: assertion:etsi-en-304-223-5-2-3-2--addresses--nistaml-05
+    name: "5.2.3-2 addresses NISTAML.05"
+    subject: requirement:etsi-en-304-223-5-2-3-2
+    predicate: addresses
+    object: attack-pattern:nistaml-05
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.2.3, Provision 5.2.3-2, p. 13; a model that is not well
+      documented or secured may be an unsafe artifact.
+  - id: assertion:etsi-en-304-223-5-2-3-2--addresses--aml-t0010-003
+    name: "5.2.3-2 addresses AML.T0010.003"
+    subject: requirement:etsi-en-304-223-5-2-3-2
+    predicate: addresses
+    object: attack-pattern:aml-t0010-003
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.3, Provision 5.2.3-2, p. 13; a model that is not well documented or secured
+      may be an unsafe artifact.
+  - id: assertion:etsi-en-304-223-5-2-3-2--addresses--aml-t0011-000
+    name: "5.2.3-2 addresses AML.T0011.000"
+    subject: requirement:etsi-en-304-223-5-2-3-2
+    predicate: addresses
+    object: attack-pattern:aml-t0011-000
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.3, Provision 5.2.3-2, p. 13; a model that is not well documented or secured
+      may be an unsafe artifact.
+  - id: assertion:etsi-en-304-223-5-2-3-2-1--addresses--nistaml-05
+    name: "5.2.3-2.1 addresses NISTAML.05"
+    subject: requirement:etsi-en-304-223-5-2-3-2-1
+    predicate: addresses
+    object: attack-pattern:nistaml-05
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.2.3, Provision 5.2.3-2.1, p. 13; mitigating controls for the same
+      poorly documented models and components.
+  - id: assertion:etsi-en-304-223-5-2-3-2-1--addresses--aml-t0010-003
+    name: "5.2.3-2.1 addresses AML.T0010.003"
+    subject: requirement:etsi-en-304-223-5-2-3-2-1
+    predicate: addresses
+    object: attack-pattern:aml-t0010-003
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.3, Provision 5.2.3-2.1, p. 13; mitigating controls for the same poorly
+      documented models and components.
+  - id: assertion:etsi-en-304-223-5-2-3-2-1--addresses--aml-t0011-000
+    name: "5.2.3-2.1 addresses AML.T0011.000"
+    subject: requirement:etsi-en-304-223-5-2-3-2-1
+    predicate: addresses
+    object: attack-pattern:aml-t0011-000
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.3, Provision 5.2.3-2.1, p. 13; mitigating controls for the same poorly
+      documented models and components.
+  - id: assertion:etsi-en-304-223-5-2-3-3--addresses--nistaml-051
+    name: "5.2.3-3 addresses NISTAML.051"
+    subject: requirement:etsi-en-304-223-5-2-3-3
+    predicate: addresses
+    object: attack-pattern:nistaml-051
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.2.3, Provision 5.2.3-3, p. 13; re-evaluating a released model
+      before use can surface a poisoned or backdoored model.
+  - id: assertion:etsi-en-304-223-5-2-3-3--addresses--aml-t0010-003
+    name: "5.2.3-3 addresses AML.T0010.003"
+    subject: requirement:etsi-en-304-223-5-2-3-3
+    predicate: addresses
+    object: attack-pattern:aml-t0010-003
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.3, Provision 5.2.3-3, p. 13; re-evaluating a released model before use can
+      surface a poisoned or backdoored model.
+  - id: assertion:etsi-en-304-223-5-2-3-3--addresses--aml-t0018-000
+    name: "5.2.3-3 addresses AML.T0018.000"
+    subject: requirement:etsi-en-304-223-5-2-3-3
+    predicate: addresses
+    object: attack-pattern:aml-t0018-000
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.3, Provision 5.2.3-3, p. 13; re-evaluating a released model before use can
+      surface a poisoned or backdoored model.
+  - id: assertion:etsi-en-304-223-5-2-4-1-1--addresses--nistaml-013
+    name: "5.2.4-1.1 addresses NISTAML.013"
+    subject: requirement:etsi-en-304-223-5-2-4-1-1
+    predicate: addresses
+    object: attack-pattern:nistaml-013
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.2.4, Provision 5.2.4-1.1, p. 13; recording training data sources
+      is what makes later poisoning reports traceable (5.2.4-2 states this for public
+      data).
+  - id: assertion:etsi-en-304-223-5-2-4-1-1--addresses--aml-t0020
+    name: "5.2.4-1.1 addresses AML.T0020"
+    subject: requirement:etsi-en-304-223-5-2-4-1-1
+    predicate: addresses
+    object: attack-pattern:aml-t0020
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.4, Provision 5.2.4-1.1, p. 13; recording training data sources is what makes
+      later poisoning reports traceable (5.2.4-2 states this for public data).
+  - id: assertion:etsi-en-304-223-5-2-4-1-2--addresses--nistaml-051
+    name: "5.2.4-1.2 addresses NISTAML.051"
+    subject: requirement:etsi-en-304-223-5-2-4-1-2
+    predicate: addresses
+    object: attack-pattern:nistaml-051
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.2.4, Provision 5.2.4-1.2, p. 13; published hashes let a
+      downstream party detect a tampered model component; the provision names
+      authenticity, not an attack.
+  - id: assertion:etsi-en-304-223-5-2-4-1-2--addresses--aml-t0010-003
+    name: "5.2.4-1.2 addresses AML.T0010.003"
+    subject: requirement:etsi-en-304-223-5-2-4-1-2
+    predicate: addresses
+    object: attack-pattern:aml-t0010-003
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.4, Provision 5.2.4-1.2, p. 13; published hashes let a downstream party detect
+      a tampered model component; the provision names authenticity, not an attack.
+  - id: assertion:etsi-en-304-223-5-2-4-1-2--addresses--aml-t0018
+    name: "5.2.4-1.2 addresses AML.T0018"
+    subject: requirement:etsi-en-304-223-5-2-4-1-2
+    predicate: addresses
+    object: attack-pattern:aml-t0018
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.4, Provision 5.2.4-1.2, p. 13; published hashes let a downstream party detect
+      a tampered model component; the provision names authenticity, not an attack.
+  - id: assertion:etsi-en-304-223-5-2-4-2--addresses--nistaml-013
+    name: "5.2.4-2 addresses NISTAML.013"
+    subject: requirement:etsi-en-304-223-5-2-4-2
+    predicate: addresses
+    object: attack-pattern:nistaml-013
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: stated, provenance: ours).
+      Basis: §5.2.4, Provision 5.2.4-2, p. 13; the provision names "this data might have
+      been poisoned".
+  - id: assertion:etsi-en-304-223-5-2-4-2--addresses--aml-t0020
+    name: "5.2.4-2 addresses AML.T0020"
+    subject: requirement:etsi-en-304-223-5-2-4-2
+    predicate: addresses
+    object: attack-pattern:aml-t0020
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      §5.2.4, Provision 5.2.4-2, p. 13; the provision names "this data might have been
+      poisoned".
+  - id: assertion:etsi-en-304-223-5-2-4-2--addresses--aml-t0010-002
+    name: "5.2.4-2 addresses AML.T0010.002"
+    subject: requirement:etsi-en-304-223-5-2-4-2
+    predicate: addresses
+    object: attack-pattern:aml-t0010-002
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      §5.2.4, Provision 5.2.4-2, p. 13; the provision names "this data might have been
+      poisoned".
+  - id: assertion:etsi-en-304-223-5-2-4-2-1--addresses--nistaml-013
+    name: "5.2.4-2.1 addresses NISTAML.013"
+    subject: requirement:etsi-en-304-223-5-2-4-2-1
+    predicate: addresses
+    object: attack-pattern:nistaml-013
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: stated, provenance: ours).
+      Basis: §5.2.4, Provision 5.2.4-2.1, p. 13; the provision names "data poisoning
+      attack".
+  - id: assertion:etsi-en-304-223-5-2-4-2-1--addresses--aml-t0020
+    name: "5.2.4-2.1 addresses AML.T0020"
+    subject: requirement:etsi-en-304-223-5-2-4-2-1
+    predicate: addresses
+    object: attack-pattern:aml-t0020
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      §5.2.4, Provision 5.2.4-2.1, p. 13; the provision names "data poisoning attack".
+  - id: assertion:etsi-en-304-223-5-2-4-2-1--addresses--aml-t0010-002
+    name: "5.2.4-2.1 addresses AML.T0010.002"
+    subject: requirement:etsi-en-304-223-5-2-4-2-1
+    predicate: addresses
+    object: attack-pattern:aml-t0010-002
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      §5.2.4, Provision 5.2.4-2.1, p. 13; the provision names "data poisoning attack".
+  - id: assertion:etsi-en-304-223-5-2-4-3--addresses--aml-t0081
+    name: "5.2.4-3 addresses AML.T0081"
+    subject: requirement:etsi-en-304-223-5-2-4-3
+    predicate: addresses
+    object: attack-pattern:aml-t0081
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.4, Provision 5.2.4-3, p. 13; an audit log of system prompt and configuration
+      changes exposes unauthorized changes to them.
+  - id: assertion:etsi-en-304-223-5-2-4-3--addresses--aml-t0018-003
+    name: "5.2.4-3 addresses AML.T0018.003"
+    subject: requirement:etsi-en-304-223-5-2-4-3
+    predicate: addresses
+    object: attack-pattern:aml-t0018-003
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.4, Provision 5.2.4-3, p. 13; an audit log of system prompt and configuration
+      changes exposes unauthorized changes to them.
+  - id: assertion:etsi-en-304-223-5-2-5-4--addresses--nistaml-031
+    name: "5.2.5-4 addresses NISTAML.031"
+    subject: requirement:etsi-en-304-223-5-2-5-4
+    predicate: addresses
+    object: attack-pattern:nistaml-031
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: stated, provenance: ours).
+      Basis: §5.2.5, Provision 5.2.5-4, p. 14; the provision names "reverse engineer
+      non-public aspects of the model".
+  - id: assertion:etsi-en-304-223-5-2-5-4--addresses--aml-t0024-002
+    name: "5.2.5-4 addresses AML.T0024.002"
+    subject: requirement:etsi-en-304-223-5-2-5-4
+    predicate: addresses
+    object: attack-pattern:aml-t0024-002
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      §5.2.5, Provision 5.2.5-4, p. 14; the provision names "reverse engineer non-public
+      aspects of the model".
+  - id: assertion:etsi-en-304-223-5-2-5-4--addresses--nistaml-032
+    name: "5.2.5-4 addresses NISTAML.032"
+    subject: requirement:etsi-en-304-223-5-2-5-4
+    predicate: addresses
+    object: attack-pattern:nistaml-032
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: stated, provenance: ours).
+      Basis: §5.2.5, Provision 5.2.5-4, p. 14; the provision names "reverse engineer
+      non-public aspects of the model or the training data"; NIST §2.4 describes data
+      reconstruction as attacks that seek to reverse-engineer private information.
+  - id: assertion:etsi-en-304-223-5-2-5-4--addresses--nistaml-038
+    name: "5.2.5-4 addresses NISTAML.038"
+    subject: requirement:etsi-en-304-223-5-2-5-4
+    predicate: addresses
+    object: attack-pattern:nistaml-038
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: stated, provenance: ours).
+      Basis: §5.2.5, Provision 5.2.5-4, p. 14; the provision names "reverse engineer
+      non-public aspects of the model or the training data"; NIST §2.4 describes data
+      reconstruction as attacks that seek to reverse-engineer private information.
+  - id: assertion:etsi-en-304-223-5-2-5-4--addresses--aml-t0024-001
+    name: "5.2.5-4 addresses AML.T0024.001"
+    subject: requirement:etsi-en-304-223-5-2-5-4
+    predicate: addresses
+    object: attack-pattern:aml-t0024-001
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      §5.2.5, Provision 5.2.5-4, p. 14; the provision names "reverse engineer non-public
+      aspects of the model or the training data"; NIST §2.4 describes data
+      reconstruction as attacks that seek to reverse-engineer private information.
+  - id: assertion:etsi-en-304-223-5-2-5-4--addresses--aml-t0057
+    name: "5.2.5-4 addresses AML.T0057"
+    subject: requirement:etsi-en-304-223-5-2-5-4
+    predicate: addresses
+    object: attack-pattern:aml-t0057
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      §5.2.5, Provision 5.2.5-4, p. 14; the provision names "reverse engineer non-public
+      aspects of the model or the training data"; NIST §2.4 describes data
+      reconstruction as attacks that seek to reverse-engineer private information.
+  - id: assertion:etsi-en-304-223-5-2-5-4-1--addresses--nistaml-018
+    name: "5.2.5-4.1 addresses NISTAML.018"
+    subject: requirement:etsi-en-304-223-5-2-5-4-1
+    predicate: addresses
+    object: attack-pattern:nistaml-018
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.2.5, Provision 5.2.5-4.1, p. 14; outputs that give a user
+      unintended influence over the system is what a successful direct prompt injection
+      achieves.
+  - id: assertion:etsi-en-304-223-5-2-5-4-1--addresses--aml-t0051-000
+    name: "5.2.5-4.1 addresses AML.T0051.000"
+    subject: requirement:etsi-en-304-223-5-2-5-4-1
+    predicate: addresses
+    object: attack-pattern:aml-t0051-000
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.2.5, Provision 5.2.5-4.1, p. 14; outputs that give a user unintended influence
+      over the system is what a successful direct prompt injection achieves.
+  - id: assertion:etsi-en-304-223-5-4-2-1--addresses--nistaml-031
+    name: "5.4.2-1 addresses NISTAML.031"
+    subject: requirement:etsi-en-304-223-5-4-2-1
+    predicate: addresses
+    object: attack-pattern:nistaml-031
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.4.2, Provision 5.4.2-1, p. 15; logged user actions show the query
+      patterns of model extraction.
+  - id: assertion:etsi-en-304-223-5-4-2-1--addresses--aml-t0024-002
+    name: "5.4.2-1 addresses AML.T0024.002"
+    subject: requirement:etsi-en-304-223-5-4-2-1
+    predicate: addresses
+    object: attack-pattern:aml-t0024-002
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.4.2, Provision 5.4.2-1, p. 15; logged user actions show the query patterns of
+      model extraction.
+  - id: assertion:etsi-en-304-223-5-4-2-1--addresses--nistaml-018
+    name: "5.4.2-1 addresses NISTAML.018"
+    subject: requirement:etsi-en-304-223-5-4-2-1
+    predicate: addresses
+    object: attack-pattern:nistaml-018
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.4.2, Provision 5.4.2-1, p. 15; logged user actions show injection
+      attempts.
+  - id: assertion:etsi-en-304-223-5-4-2-1--addresses--aml-t0051-000
+    name: "5.4.2-1 addresses AML.T0051.000"
+    subject: requirement:etsi-en-304-223-5-4-2-1
+    predicate: addresses
+    object: attack-pattern:aml-t0051-000
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.4.2, Provision 5.4.2-1, p. 15; logged user actions show injection attempts.
+  - id: assertion:etsi-en-304-223-5-4-2-2--addresses--nistaml-013
+    name: "5.4.2-2 addresses NISTAML.013"
+    subject: requirement:etsi-en-304-223-5-4-2-2
+    predicate: addresses
+    object: attack-pattern:nistaml-013
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: stated, provenance: ours).
+      Basis: §5.4.2, Provision 5.4.2-2, p. 15; the provision names "data poisoning".
+  - id: assertion:etsi-en-304-223-5-4-2-2--addresses--aml-t0020
+    name: "5.4.2-2 addresses AML.T0020"
+    subject: requirement:etsi-en-304-223-5-4-2-2
+    predicate: addresses
+    object: attack-pattern:aml-t0020
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      §5.4.2, Provision 5.4.2-2, p. 15; the provision names "data poisoning".
+  - id: assertion:etsi-en-304-223-5-4-2-4--addresses--nistaml-013
+    name: "5.4.2-4 addresses NISTAML.013"
+    subject: requirement:etsi-en-304-223-5-4-2-4
+    predicate: addresses
+    object: attack-pattern:nistaml-013
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.4.2, Provision 5.4.2-4, p. 15; a gradual change in behaviour can
+      show a poisoned dataset or model; ATLAS M0008 (monitor for concept drift)
+      mitigates both techniques.
+  - id: assertion:etsi-en-304-223-5-4-2-4--addresses--nistaml-026
+    name: "5.4.2-4 addresses NISTAML.026"
+    subject: requirement:etsi-en-304-223-5-4-2-4
+    predicate: addresses
+    object: attack-pattern:nistaml-026
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: §5.4.2, Provision 5.4.2-4, p. 15; a gradual change in behaviour can
+      show a poisoned dataset or model; ATLAS M0008 (monitor for concept drift)
+      mitigates both techniques.
+  - id: assertion:etsi-en-304-223-5-4-2-4--addresses--aml-t0020
+    name: "5.4.2-4 addresses AML.T0020"
+    subject: requirement:etsi-en-304-223-5-4-2-4
+    predicate: addresses
+    object: attack-pattern:aml-t0020
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.4.2, Provision 5.4.2-4, p. 15; a gradual change in behaviour can show a
+      poisoned dataset or model; ATLAS M0008 (monitor for concept drift) mitigates both
+      techniques.
+  - id: assertion:etsi-en-304-223-5-4-2-4--addresses--aml-t0018-000
+    name: "5.4.2-4 addresses AML.T0018.000"
+    subject: requirement:etsi-en-304-223-5-4-2-4
+    predicate: addresses
+    object: attack-pattern:aml-t0018-000
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.4.2, Provision 5.4.2-4, p. 15; a gradual change in behaviour can show a
+      poisoned dataset or model; ATLAS M0008 (monitor for concept drift) mitigates both
+      techniques.
+  - id: assertion:etsi-en-304-223-5-5-1-1--addresses--aml-t0035
+    name: "5.5.1-1 addresses AML.T0035"
+    subject: requirement:etsi-en-304-223-5-5-1-1
+    predicate: addresses
+    object: attack-pattern:aml-t0035
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.5.1, Provision 5.5.1-1, p. 15; data or a model handed on without disposal can
+      be collected by the next holder; the provision names no attack ('security issues
+      that can transfer').
+  - id: assertion:etsi-en-304-223-5-5-1-2--addresses--aml-t0035
+    name: "5.5.1-2 addresses AML.T0035"
+    subject: requirement:etsi-en-304-223-5-5-1-2
+    predicate: addresses
+    object: attack-pattern:aml-t0035
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.5.1, Provision 5.5.1-2, p. 15; configuration left on a decommissioned system
+      can expose artifacts and insecurely stored credentials.
+  - id: assertion:etsi-en-304-223-5-5-1-2--addresses--aml-t0055
+    name: "5.5.1-2 addresses AML.T0055"
+    subject: requirement:etsi-en-304-223-5-5-1-2
+    predicate: addresses
+    object: attack-pattern:aml-t0055
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      §5.5.1, Provision 5.5.1-2, p. 15; configuration left on a decommissioned system
+      can expose artifacts and insecurely stored credentials.
+  - id: assertion:etsi-en-304-223-5-1-3-1-1--refines--5-1-3-1
+    name: "5.1.3-1.1 refines 5.1.3-1"
+    subject: requirement:etsi-en-304-223-5-1-3-1-1
+    predicate: refines
+    object: requirement:etsi-en-304-223-5-1-3-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: §5.1.3, Provision
+      5.1.3-1.1, p. 11; sub-provision of 5.1.3-1; narrows its threat modelling to new or
+      changed settings.
+  - id: assertion:etsi-en-304-223-5-1-3-1-2--refines--5-1-3-1
+    name: "5.1.3-1.2 refines 5.1.3-1"
+    subject: requirement:etsi-en-304-223-5-1-3-1-2
+    predicate: refines
+    object: requirement:etsi-en-304-223-5-1-3-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: §5.1.3, Provision
+      5.1.3-1.2, p. 11; sub-provision of 5.1.3-1; names one specific risk to manage.
+  - id: assertion:etsi-en-304-223-5-1-3-1-3--derived-from--5-1-3-1
+    name: "5.1.3-1.3 derived_from 5.1.3-1"
+    subject: requirement:etsi-en-304-223-5-1-3-1-3
+    predicate: derived_from
+    object: requirement:etsi-en-304-223-5-1-3-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: §5.1.3, Provision
+      5.1.3-1.3, p. 11; sub-provision of 5.1.3-1; applies controls to the risks that
+      analysis identifies.
+  - id: assertion:etsi-en-304-223-5-2-1-3-1--refines--5-2-1-3
+    name: "5.2.1-3.1 refines 5.2.1-3"
+    subject: requirement:etsi-en-304-223-5-2-1-3-1
+    predicate: refines
+    object: requirement:etsi-en-304-223-5-2-1-3
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: §5.2.1, Provision
+      5.2.1-3.1, p. 12; sub-provision of 5.2.1-3; one capability a disaster recovery
+      plan needs.
+  - id: assertion:etsi-en-304-223-5-2-1-4-2--refines--5-2-1-4
+    name: "5.2.1-4.2 refines 5.2.1-4"
+    subject: requirement:etsi-en-304-223-5-2-1-4-2
+    predicate: refines
+    object: requirement:etsi-en-304-223-5-2-1-4
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: §5.2.1, Provision
+      5.2.1-4.2, p. 12; sub-provision of 5.2.1-4; protection for confidential training
+      data and weights specifically.
+  - id: assertion:etsi-en-304-223-5-2-3-2-1--derived-from--5-2-3-2
+    name: "5.2.3-2.1 derived_from 5.2.3-2"
+    subject: requirement:etsi-en-304-223-5-2-3-2-1
+    predicate: derived_from
+    object: requirement:etsi-en-304-223-5-2-3-2
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: §5.2.3, Provision
+      5.2.3-2.1, p. 13; sub-provision of 5.2.3-2; 'In this case' applies to the
+      components 5.2.3-2 describes.
+  - id: assertion:etsi-en-304-223-5-2-3-2-2--derived-from--5-2-3-2
+    name: "5.2.3-2.2 derived_from 5.2.3-2"
+    subject: requirement:etsi-en-304-223-5-2-3-2-2
+    predicate: derived_from
+    object: requirement:etsi-en-304-223-5-2-3-2
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: §5.2.3, Provision
+      5.2.3-2.2, p. 13; sub-provision of 5.2.3-2; shares the documentation 5.2.3-2
+      produces.
+  - id: assertion:etsi-en-304-223-5-2-4-1-1--refines--5-2-4-1
+    name: "5.2.4-1.1 refines 5.2.4-1"
+    subject: requirement:etsi-en-304-223-5-2-4-1-1
+    predicate: refines
+    object: requirement:etsi-en-304-223-5-2-4-1
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: §5.2.4, Provision
+      5.2.4-1.1, p. 13; sub-provision of 5.2.4-1; says what that documentation includes.
+  - id: assertion:etsi-en-304-223-5-2-4-2-1--refines--5-2-4-2
+    name: "5.2.4-2.1 refines 5.2.4-2"
+    subject: requirement:etsi-en-304-223-5-2-4-2-1
+    predicate: refines
+    object: requirement:etsi-en-304-223-5-2-4-2
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: §5.2.4, Provision
+      5.2.4-2.1, p. 13; sub-provision of 5.2.4-2; sets the minimum content of that
+      documentation.
+  - id: assertion:etsi-en-304-223-5-2-5-2-1--refines--5-2-5-2
+    name: "5.2.5-2.1 refines 5.2.5-2"
+    subject: requirement:etsi-en-304-223-5-2-5-2-1
+    predicate: refines
+    object: requirement:etsi-en-304-223-5-2-5-2
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: §5.2.5, Provision
+      5.2.5-2.1, p. 14; sub-provision of 5.2.5-2; who should do the security testing.
+  - id: assertion:etsi-en-304-223-5-3-1-2-1--refines--5-3-1-2
+    name: "5.3.1-2.1 refines 5.3.1-2"
+    subject: requirement:etsi-en-304-223-5-3-1-2-1
+    predicate: refines
+    object: requirement:etsi-en-304-223-5-3-1-2
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: §5.3.1, Provision
+      5.3.1-2.1, p. 14; sub-provision of 5.3.1-2; says what the guidance covers.
+  - id: assertion:etsi-en-304-223-5-4-1-1-1--derived-from--5-4-1-1
+    name: "5.4.1-1.1 derived_from 5.4.1-1"
+    subject: requirement:etsi-en-304-223-5-4-1-1-1
+    predicate: derived_from
+    object: requirement:etsi-en-304-223-5-4-1-1
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: §5.4.1, Provision
+      5.4.1-1.1, p. 14; sub-provision of 5.4.1-1; covers the case where its updates
+      cannot be provided.
+
+reviews: []

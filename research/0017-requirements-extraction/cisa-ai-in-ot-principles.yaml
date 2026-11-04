@@ -1,0 +1,2398 @@
+# cisa-ai-in-ot-principles: requirement extraction, AI-proposed, UNREVIEWED unless a Review below says otherwise.
+# Source: library:cisa-ai-in-ot-principles (digest 1fde3cbaadf9f75411158a144595631f8dd4029e52b11545c49811d29f531560), read 2026-11-03.
+# Agent: Claude Code (claude-opus-5-5). Human owner: @Maimcghee.
+#
+# Made with research/0017-requirements-extraction/convert.py (tmodel#197) from library@3eacfd0
+# records/regulator/cisa-ai-in-ot-principles, then edited by the agent: scope, paraphrases, kinds and links.
+#
+# Scope (tmodel#169): principles that name a threat or control. Kept: all 34 entries the library maps
+# to a NIST AI 100-2 or ATLAS id, and every entry that prescribes a concrete security or safety
+# control on the AI system, its data or its integration into OT. Skipped, with the reasons below:
+# framing, non-normative text, governance and skills, deliberation, pointers to other guidance,
+# contract terms, and accuracy or quality tuning. The 11 skipped entries with a library mapping
+# map only to a framework or to a general or non-adversarial risk, never to an attack id.
+#
+# Coverage: 136 in the source, 67 converted, 69 skipped.
+#   skipped (lead-in or framing text with no threat or control of its own): R-0001, R-0007, R-0012, R-0015, R-0038, R-0046, R-0056, R-0057, R-0058, R-0080, R-0088, R-0103, R-0110, R-0111, R-0135, R-0136
+#   skipped (not normative (library normativity: principle, scope, consideration, statement or informative)): R-0002, R-0003, R-0004, R-0005, R-0006, R-0008, R-0009, R-0010, R-0017, R-0023, R-0024, R-0025, R-0034, R-0090, R-0094, R-0099, R-0134
+#   skipped (governance, roles or skills; organizational only): R-0016, R-0028, R-0030, R-0070, R-0071, R-0072, R-0073, R-0074, R-0075, R-0077, R-0117, R-0118
+#   skipped (business case, awareness or exploration; no threat class or control): R-0026, R-0032, R-0033, R-0035, R-0036, R-0040, R-0043, R-0062, R-0105, R-0122, R-0123, R-0124
+#   skipped (points to other guidance only; no threat or control): R-0027, R-0037, R-0096
+#   skipped (contract terms; no product control): R-0050, R-0060, R-0061
+#   skipped (accuracy or data quality only; no attack class (non-adversarial)): R-0044, R-0069, R-0079, R-0097, R-0107, R-0121
+#
+# Text: every `text` is the agent's one-sentence paraphrase (text_origin: paraphrase). Designator,
+# locator and normativity are copied from the library record (requirement -> mandatory,
+# recommendation -> recommended, permission -> optional); R-0013 and R-0014 are exceptions, each
+# noted in its description.
+# requirement_kind is the agent's reading of each provision, not the converter's default.
+# No applies_to_family: the source's scope is AI systems in general, and no family value
+# for that exists yet (DEC-009 is open).
+#
+# Links: 122 proposed Assertions, none written into a slot.
+#   107 `addresses`, one per NIST AI 100-2 or MITRE ATLAS id in the library record's own
+#   threat mapping (its maps_to): confidence high where the provision names the attack
+#   (kind: stated), medium where the mapping is inferred. ATLAS ids are 2026.09, as the library
+#   pins; stubs say where 2026.10 removes or renames one.
+#   15 `refines` or `derived_from` between provisions of this source.
+# No Review yet: the human owner reviews a sample next.
+
+requirements:
+  - id: requirement:cisa-ai-in-ot-principles-r-0011
+    name: "R-0011 — Consider the known AI risks"
+    text: >-
+      Consider the known AI risks that the guidance's Table 2 lists for AI in OT.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0011"
+    source_locator: "R-0011 (§1.1 Understand the Unique Risks of AI and Potential Impact to OT, p. 7)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0013
+    name: "R-0013 — Traditional security still applies"
+    description: >-
+      Normativity is informative: a statement (library normativity: statement), not a
+      recommendation.
+    text: >-
+      Keep applying traditional security measures such as access control, auditing and
+      encryption to AI and AI-enabled systems.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: informative
+    source_ref: "library:cisa-ai-in-ot-principles#R-0013"
+    source_locator: "R-0013 (§1.1 Understand the Unique Risks of AI and Potential Impact to OT, p. 7)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0014
+    name: "R-0014 — No LLM safety decisions"
+    description: >-
+      Normativity is recommended: 'almost certainly should not': a recommendation
+      (library normativity: prohibition).
+    text: >-
+      Do not use AI such as large language models to make safety decisions in OT
+      environments.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0014"
+    source_locator: "R-0014 (§1.1 Understand the Unique Risks of AI and Potential Impact to OT, p. 9)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0018
+    name: "R-0018 — Secure design"
+    text: >-
+      Design the AI system with security in mind from the start, including robust
+      coding, protocols and data protection.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0018"
+    source_locator: "R-0018 (§1.2 Understand the Secure AI System Development Lifecycle, p. 10)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0019
+    name: "R-0019 — Secure procurement or development"
+    text: >-
+      Choose vendors that follow secure practices, and develop AI systems with secure
+      methods and tools.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0019"
+    source_locator: "R-0019 (§1.2 Understand the Secure AI System Development Lifecycle, p. 10)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0020
+    name: "R-0020 — Secure deployment"
+    text: >-
+      Deploy the AI system in a way that keeps its security posture, with network
+      segmentation and access control, and verify that it works as intended.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0020"
+    source_locator: "R-0020 (§1.2 Understand the Secure AI System Development Lifecycle, p. 10)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0021
+    name: "R-0021 — Secure operation and maintenance"
+    text: >-
+      Keep the AI system secure throughout its life, including regular updates and
+      patches and monitoring for vulnerabilities.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0021"
+    source_locator: "R-0021 (§1.2 Understand the Secure AI System Development Lifecycle, p. 10)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0022
+    name: "R-0022 — Weigh the ways of sourcing an AI system"
+    text: >-
+      Weigh the trade-offs between procuring, building and customizing an AI system.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0022"
+    source_locator: "R-0022 (§1.2 Understand the Secure AI System Development Lifecycle, p. 10)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0029
+    name: "R-0029 — Train OT teams to validate AI output"
+    text: >-
+      Train OT teams in AI fundamentals and threat modelling, so that they can validate
+      AI outputs, for example against alternative sensors, and know what to do when
+      outputs are invalid.
+    text_origin: paraphrase
+    requirement_kind: organizational
+    normativity: optional
+    source_ref: "library:cisa-ai-in-ot-principles#R-0029"
+    source_locator: "R-0029 (§1.3 Educate Personnel on AI, p. 11)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0031
+    name: "R-0031 — Request explainable outputs"
+    text: >-
+      Ask for AI outputs that document how a decision was reached, so that humans can
+      understand and validate them.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: optional
+    source_ref: "library:cisa-ai-in-ot-principles#R-0031"
+    source_locator: "R-0031 (§1.3 Educate Personnel on AI, p. 11)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0039
+    name: "R-0039 — Data assurance"
+    text: >-
+      Know where OT training data is stored, keep it under the organization's control,
+      manage who can view or change it, and understand how AI vendors access and use it.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0039"
+    source_locator: "R-0039 (§2.2 Manage OT Data Security Risks for AI Systems, p. 12)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0041
+    name: "R-0041 — Limit exposure of sensitive data"
+    text: >-
+      Avoid sharing sensitive data with AI models, especially models hosted by external
+      parties such as public cloud providers.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0041"
+    source_locator: "R-0041 (§2.2 Manage OT Data Security Risks for AI Systems, p. 13)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0042
+    name: "R-0042 — Data privacy and security"
+    text: >-
+      Protect proprietary and personal information in OT datasets, including against
+      access abuse, data poisoning and over-reliance on synthetic data.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0042"
+    source_locator: "R-0042 (§2.2 Manage OT Data Security Risks for AI Systems, p. 13)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0045
+    name: "R-0045 — Cover AI in the data integrity program"
+    text: >-
+      Work with model developers so that the data integrity program covers AI systems.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0045"
+    source_locator: "R-0045 (§2.2 Manage OT Data Security Risks for AI Systems, p. 13)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0047
+    name: "R-0047 — Protect engineering configuration data"
+    text: >-
+      Give priority to protecting engineering configuration data, such as network
+      diagrams, asset inventories, logic diagrams and schematics, which adversaries
+      value.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0047"
+    source_locator: "R-0047 (§2.2 Manage OT Data Security Risks for AI Systems, p. 13)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0048
+    name: "R-0048 — Protect ephemeral OT data"
+    text: >-
+      Give priority to protecting process measurement data, because a model trained on
+      it can retain it and reveal intellectual property or patterns of activity.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0048"
+    source_locator: "R-0048 (§2.2 Manage OT Data Security Risks for AI Systems, p. 13)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0049
+    name: "R-0049 — Demand AI transparency from OT vendors"
+    text: >-
+      Require OT vendors to be transparent about how AI is embedded in their products
+      and how it is secured.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0049"
+    source_locator: "R-0049 (§2.3 Understanding the Role of OT Vendors in AI Integration, p. 14)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0051
+    name: "R-0051 — Software supply chain and SBOM"
+    text: >-
+      Require OT vendors to say how AI is embedded in their products, including through
+      an SBOM, and where the AI models they use come from and are hosted.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0051"
+    source_locator: "R-0051 (§2.3 Understanding the Role of OT Vendors in AI Integration, p. 14)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0052
+    name: "R-0052 — Vendor notifications"
+    text: >-
+      Expect AI vendors to disclose any sign that their AI can give improper advice or
+      take inappropriate action, beyond their usual vulnerability disclosure.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0052"
+    source_locator: "R-0052 (§2.3 Understanding the Role of OT Vendors in AI Integration, p. 14)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0053
+    name: "R-0053 — Data usage policy"
+    text: >-
+      Control whether and how vendors use operational data, for example for training,
+      through a data usage policy that covers residency, communication paths, encryption
+      and storage.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: optional
+    source_ref: "library:cisa-ai-in-ot-principles#R-0053"
+    source_locator: "R-0053 (§2.3 Understanding the Role of OT Vendors in AI Integration, p. 14)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0054
+    name: "R-0054 — Ask about offline operation"
+    text: >-
+      Ask whether the vendor's AI can run on premises, or without continuous access to
+      the internet or the vendor's cloud.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0054"
+    source_locator: "R-0054 (§2.3 Understanding the Role of OT Vendors in AI Integration, p. 14)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0055
+    name: "R-0055 — Operator control of AI features"
+    text: >-
+      Specify when AI features can be disabled or enabled, with the operator in control.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0055"
+    source_locator: "R-0055 (§2.3 Understanding the Role of OT Vendors in AI Integration, p. 14)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0059
+    name: "R-0059 — Combine AI and traditional security"
+    text: >-
+      Add AI security to an overall security strategy that also covers traditional
+      controls such as encryption, access control and intrusion detection.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0059"
+    source_locator: "R-0059 (§2.4 Evaluate Challenges in AI-OT System Integration, p. 15)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0063
+    name: "R-0063 — Use test infrastructure first"
+    text: >-
+      Where possible, test on dedicated test infrastructure before deploying to
+      production.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0063"
+    source_locator: "R-0063 (§2.4 Evaluate Challenges in AI-OT System Integration, p. 15)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0064
+    name: "R-0064 — Push-based architectures"
+    text: >-
+      Prefer architectures that push data out of the OT network for AI use, without
+      giving the AI persistent access into that network.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0064"
+    source_locator: "R-0064 (§2.4 Evaluate Challenges in AI-OT System Integration, p. 15)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0065
+    name: "R-0065 — Keep control of critical functions"
+    text: >-
+      Keep the organization in control of the critical functions an AI system integrates
+      with or enables, whether it is hosted locally or in the cloud.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0065"
+    source_locator: "R-0065 (§2.4 Evaluate Challenges in AI-OT System Integration, p. 15)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0066
+    name: "R-0066 — Failsafe to traditional control"
+    text: >-
+      Provide failsafe mechanisms that revert AI-enabled processes to traditional
+      automation or manual operation.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0066"
+    source_locator: "R-0066 (§2.4 Evaluate Challenges in AI-OT System Integration, p. 15)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0067
+    name: "R-0067 — Integrate AI like any new OT system"
+    text: >-
+      Test AI systems for safety impacts such as latency and interoperability, and check
+      that new connection paths are approved and go through the existing DMZ or
+      jump-host infrastructure.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0067"
+    source_locator: "R-0067 (§2.4 Evaluate Challenges in AI-OT System Integration, p. 15)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0068
+    name: "R-0068 — Limit AI control without a human"
+    text: >-
+      Limit the AI's active control of OT infrastructure when no human is in the loop.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0068"
+    source_locator: "R-0068 (§2.4 Evaluate Challenges in AI-OT System Integration, p. 16)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0076
+    name: "R-0076 — Strict data governance"
+    text: >-
+      Enforce data governance policies that protect sensitive OT data used by AI,
+      including encryption, access control and user behaviour analytics.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: optional
+    source_ref: "library:cisa-ai-in-ot-principles#R-0076"
+    source_locator: "R-0076 (§3.1 Establish Governance Mechanisms for AI in OT, p. 16)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0078
+    name: "R-0078 — Regular audits and compliance testing"
+    text: >-
+      Run regular audits and compliance tests to find issues and confirm continued
+      adherence to AI governance requirements.
+    text_origin: paraphrase
+    requirement_kind: audit
+    normativity: optional
+    source_ref: "library:cisa-ai-in-ot-principles#R-0078"
+    source_locator: "R-0078 (§3.1 Establish Governance Mechanisms for AI in OT, p. 16)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0081
+    name: "R-0081 — Apply existing cyber requirements to AI"
+    text: >-
+      Factor in traditional cybersecurity requirements, vulnerability management and
+      critical infrastructure regulations when integrating AI systems.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: mandatory
+    source_ref: "library:cisa-ai-in-ot-principles#R-0081"
+    source_locator: "R-0081 (§3.2 Integrating AI Into Existing Security and Cybersecurity Frameworks, p. 17)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0082
+    name: "R-0082 — Regular security audits and risk assessments"
+    text: >-
+      Conduct regular security audits and risk assessments of AI systems, or get proof
+      that the AI vendor does, to find vulnerabilities.
+    text_origin: paraphrase
+    requirement_kind: audit
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0082"
+    source_locator: "R-0082 (§3.2 Integrating AI Into Existing Security and Cybersecurity Frameworks, p. 17)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0083
+    name: "R-0083 — Robust security controls"
+    text: >-
+      Implement controls such as encryption, access control and intrusion detection that
+      protect AI systems and data and detect anomalies in them.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0083"
+    source_locator: "R-0083 (§3.2 Integrating AI Into Existing Security and Cybersecurity Frameworks, p. 17)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0084
+    name: "R-0084 — Log AI endpoint traffic"
+    text: >-
+      Collect flow and access logs for AI endpoints, and track data egress by asset and
+      identity.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0084"
+    source_locator: "R-0084 (§3.2 Integrating AI Into Existing Security and Cybersecurity Frameworks, p. 17)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0085
+    name: "R-0085 — Data loss prevention for prompts and outputs"
+    text: >-
+      Use data loss prevention to inspect prompts and outputs.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0085"
+    source_locator: "R-0085 (§3.2 Integrating AI Into Existing Security and Cybersecurity Frameworks, p. 17)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0086
+    name: "R-0086 — Use AI-specific threat information"
+    text: >-
+      Include AI-related tactics, techniques and procedures when assessing risk or
+      modelling threats.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0086"
+    source_locator: "R-0086 (§3.2 Integrating AI Into Existing Security and Cybersecurity Frameworks, p. 17)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0087
+    name: "R-0087 — Use ATLAS alongside ATT&CK"
+    text: >-
+      When mapping threat-actor behaviour with MITRE ATT&CK, also use AI-specific
+      techniques such as those in MITRE ATLAS.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0087"
+    source_locator: "R-0087 (§3.2 Integrating AI Into Existing Security and Cybersecurity Frameworks, p. 17)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0089
+    name: "R-0089 — Test on dedicated infrastructure"
+    text: >-
+      Test the AI system first on infrastructure built for testing.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0089"
+    source_locator: "R-0089 (§3.3 Conduct Thorough AI Testing and Evaluation, p. 17)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0091
+    name: "R-0091 — Understand vendor testing"
+    text: >-
+      Alternatively, find out how vendors test, including which dependencies, such as
+      operating system versions and protocols, their tests cover.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0091"
+    source_locator: "R-0091 (§3.3 Conduct Thorough AI Testing and Evaluation, p. 17)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0092
+    name: "R-0092 — Test on realistic non-production systems"
+    text: >-
+      As the system matures, test on more realistic non-production systems, including
+      hardware in the loop.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: optional
+    source_ref: "library:cisa-ai-in-ot-principles#R-0092"
+    source_locator: "R-0092 (§3.3 Conduct Thorough AI Testing and Evaluation, p. 17)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0093
+    name: "R-0093 — Move to production only after testing"
+    text: >-
+      Move the AI system into production only after enough testing in a non-production
+      environment.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0093"
+    source_locator: "R-0093 (§3.3 Conduct Thorough AI Testing and Evaluation, p. 17)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0095
+    name: "R-0095 — Protect data during testing"
+    text: >-
+      Apply normal data protection during AI testing and evaluation, such as keeping
+      production data out of non-production environments.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0095"
+    source_locator: "R-0095 (§3.3 Conduct Thorough AI Testing and Evaluation, p. 17)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0098
+    name: "R-0098 — Thresholds for falling back to non-AI systems"
+    text: >-
+      Set and deploy thresholds at which OT falls back to non-AI systems, such as when
+      AI outputs drop below performance or safety thresholds.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0098"
+    source_locator: "R-0098 (§3.4 Navigating Regulatory and Compliance Considerations for AI in OT, p. 18)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0100
+    name: "R-0100 — Inventory AI components"
+    text: >-
+      Support oversight by inventorying AI components and the components that rely on
+      them.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0100"
+    source_locator: "R-0100 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 18)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0101
+    name: "R-0101 — Log and monitor AI inputs and outputs"
+    text: >-
+      Log and monitor the inputs and outputs of those AI components.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0101"
+    source_locator: "R-0101 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 18)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0102
+    name: "R-0102 — Known good state and safe-behaviour thresholds"
+    text: >-
+      Keep a known good state, or thresholds for safe behaviour, so that it is clear
+      when to maintain the system or restore it from backup.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0102"
+    source_locator: "R-0102 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 18)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0104
+    name: "R-0104 — Human-in-the-loop decisions"
+    text: >-
+      Involve operators and engineers in decisions, especially for critical OT
+      operations, for example through the existing change management process for passive
+      AI systems.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0104"
+    source_locator: "R-0104 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 18)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0106
+    name: "R-0106 — Human intervention points in control logic"
+    text: >-
+      Where AI updates control logic, add human intervention points using safety
+      thresholds, alternative sensor output or state changes.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0106"
+    source_locator: "R-0106 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 19)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0108
+    name: "R-0108 — Anomaly detection and safe operating bounds"
+    text: >-
+      Use anomaly detection and behavioural analytics, with safe operating bounds that
+      detect AI drift, safety-relevant model changes or security risks.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0108"
+    source_locator: "R-0108 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 19)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0109
+    name: "R-0109 — Log AI decisions under a distinct identity"
+    text: >-
+      Log AI decisions for compliance and forensics, under an AI identity distinct from
+      ordinary machine or user identifiers.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0109"
+    source_locator: "R-0109 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 19)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0112
+    name: "R-0112 — Anomaly detection on AI output (example)"
+    text: >-
+      In the predictive-maintenance example, use statistical process control to detect
+      outliers in the AI's predictions.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0112"
+    source_locator: "R-0112 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 19)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0113
+    name: "R-0113 — Monitoring dashboards (example)"
+    text: >-
+      Track AI performance and detect anomalies with real-time monitoring, ideally
+      integrated into existing HMI views.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0113"
+    source_locator: "R-0113 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 19)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0114
+    name: "R-0114 — Audit trail of AI operation (example)"
+    text: >-
+      Log all AI operating data, including timestamps, inputs and outputs, for auditing
+      and analysing its behaviour.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0114"
+    source_locator: "R-0114 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 19)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0115
+    name: "R-0115 — AI red teaming (example)"
+    text: >-
+      Regularly assess the AI system's functions offensively, as red teaming, to find
+      vulnerabilities and test resilience.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0115"
+    source_locator: "R-0115 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 19)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0116
+    name: "R-0116 — Network and egress controls (example)"
+    text: >-
+      Define and enforce network controls, following CISA's Cybersecurity Performance
+      Goal 2.F.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0116"
+    source_locator: "R-0116 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 19)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0119
+    name: "R-0119 — Validate models in simulation"
+    text: >-
+      Continuously validate and refine AI models in simulated environments before
+      deployment.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0119"
+    source_locator: "R-0119 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 20)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0120
+    name: "R-0120 — Update threat models for AI attacks"
+    text: >-
+      Regularly update threat models with AI-specific attack vectors, such as
+      adversarial inputs or data poisoning, and monitor for anomalies or manipulation
+      attempts.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0120"
+    source_locator: "R-0120 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 20)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0125
+    name: "R-0125 — Push-based or brokered architectures"
+    text: >-
+      Prefer push-based or brokered designs that move the needed features or summaries
+      out of OT without persistent inbound access.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0125"
+    source_locator: "R-0125 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 20)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0126
+    name: "R-0126 — One-way transfer to business networks"
+    text: >-
+      Where data must reach business networks, use one-way transfer and audited staging
+      buffers.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0126"
+    source_locator: "R-0126 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 20)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0127
+    name: "R-0127 — Fail gracefully"
+    text: >-
+      Provide failsafe mechanisms so that AI systems fail gracefully without disrupting
+      critical operations.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0127"
+    source_locator: "R-0127 (§4.2 Embed Safety and Failsafe Mechanisms, p. 20)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0128
+    name: "R-0128 — Add AI failure states to safety and response processes"
+    text: >-
+      Add AI failure states, including how to bypass or replace the AI system, to
+      existing functional safety and incident response processes.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0128"
+    source_locator: "R-0128 (§4.2 Embed Safety and Failsafe Mechanisms, p. 20)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0129
+    name: "R-0129 — Process owners add the failure states"
+    text: >-
+      Have the operators who maintain the functional safety and incident response
+      processes add these AI failure states.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0129"
+    source_locator: "R-0129 (§4.2 Embed Safety and Failsafe Mechanisms, p. 20)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0130
+    name: "R-0130 — Functional safety procedures for AI"
+    text: >-
+      Design functional safety procedures that take the AI system into account.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0130"
+    source_locator: "R-0130 (§4.2 Embed Safety and Failsafe Mechanisms, p. 20)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0131
+    name: "R-0131 — Safe-use procedures for AI integration"
+    text: >-
+      Review how the AI system fits existing procedures, and write new safe-use and
+      implementation procedures for integrating it into OT.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0131"
+    source_locator: "R-0131 (§4.2 Embed Safety and Failsafe Mechanisms, p. 20)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0132
+    name: "R-0132 — AI in the incident response plan"
+    text: >-
+      Add AI considerations to the cybersecurity incident response plan.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0132"
+    source_locator: "R-0132 (§4.2 Embed Safety and Failsafe Mechanisms, p. 20)"
+  - id: requirement:cisa-ai-in-ot-principles-r-0133
+    name: "R-0133 — Respond to attacks on and failures of AI"
+    text: >-
+      Update incident response plans and functional safety procedures with steps for
+      responding to malicious activity against an AI system and to its failure.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: recommended
+    source_ref: "library:cisa-ai-in-ot-principles#R-0133"
+    source_locator: "R-0133 (§4.2 Embed Safety and Failsafe Mechanisms, p. 20)"
+
+# Stub nodes, only for targets a proposed Assertion points at.
+attack_patterns:
+  - id: attack-pattern:aml-t0010
+    name: "AML.T0010 AI Supply Chain Compromise"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it. Renamed in ATLAS 2026.10 to \"Supply Chain Compromise\"."
+    catalog_ref: "AML.T0010"
+  - id: attack-pattern:aml-t0010-001
+    name: "AML.T0010.001 AI Supply Chain Compromise: AI Software"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it. Renamed in ATLAS 2026.10 to \"Software\"."
+    catalog_ref: "AML.T0010.001"
+  - id: attack-pattern:aml-t0010-003
+    name: "AML.T0010.003 AI Supply Chain Compromise: Model"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it. Renamed in ATLAS 2026.10 to \"Model Repository\"."
+    catalog_ref: "AML.T0010.003"
+  - id: attack-pattern:aml-t0012
+    name: "AML.T0012 Valid Accounts"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0012"
+  - id: attack-pattern:aml-t0015
+    name: "AML.T0015 Evade AI Model"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0015"
+  - id: attack-pattern:aml-t0018
+    name: "AML.T0018 Manipulate AI Model"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0018"
+  - id: attack-pattern:aml-t0018-000
+    name: "AML.T0018.000 Manipulate AI Model: Poison AI Model"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0018.000"
+  - id: attack-pattern:aml-t0020
+    name: "AML.T0020 Training Data Poisoning"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0020"
+  - id: attack-pattern:aml-t0024
+    name: "AML.T0024 Exfiltration via AI Inference API"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0024"
+  - id: attack-pattern:aml-t0024-000
+    name: "AML.T0024.000 Exfiltration via AI Inference API: Infer Training Data Membership"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it. Removed in ATLAS 2026.10 (RPT-0009 §6, open question 8)."
+    catalog_ref: "AML.T0024.000"
+  - id: attack-pattern:aml-t0024-001
+    name: "AML.T0024.001 Exfiltration via AI Inference API: Invert AI Model"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it. Removed in ATLAS 2026.10 (RPT-0009 §6, open question 8)."
+    catalog_ref: "AML.T0024.001"
+  - id: attack-pattern:aml-t0024-002
+    name: "AML.T0024.002 Exfiltration via AI Inference API: Extract AI Model"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it. Removed in ATLAS 2026.10 (RPT-0009 §6, open question 8)."
+    catalog_ref: "AML.T0024.002"
+  - id: attack-pattern:aml-t0025
+    name: "AML.T0025 Exfiltration via Cyber Means"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0025"
+  - id: attack-pattern:aml-t0035
+    name: "AML.T0035 AI Artifact Collection"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0035"
+  - id: attack-pattern:aml-t0036
+    name: "AML.T0036 Data from Information Repositories"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0036"
+  - id: attack-pattern:aml-t0041
+    name: "AML.T0041 Physical Environment Access"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0041"
+  - id: attack-pattern:aml-t0043
+    name: "AML.T0043 Craft Adversarial Data"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0043"
+  - id: attack-pattern:aml-t0051-000
+    name: "AML.T0051.000 LLM Prompt Injection: Direct"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0051.000"
+  - id: attack-pattern:aml-t0051-001
+    name: "AML.T0051.001 LLM Prompt Injection: Indirect"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0051.001"
+  - id: attack-pattern:aml-t0053
+    name: "AML.T0053 AI Agent Tool Invocation"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0053"
+  - id: attack-pattern:aml-t0054
+    name: "AML.T0054 LLM Jailbreak"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0054"
+  - id: attack-pattern:aml-t0057
+    name: "AML.T0057 LLM Data Leakage"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it. Removed in ATLAS 2026.10 (RPT-0009 §6, open question 8)."
+    catalog_ref: "AML.T0057"
+  - id: attack-pattern:aml-t0059
+    name: "AML.T0059 Erode Dataset Integrity"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0059"
+  - id: attack-pattern:aml-t0122
+    name: "AML.T0122 Exploitation of Remote Services"
+    description: "Stub: MITRE ATLAS 2026.09 technique, as the library record maps it."
+    catalog_ref: "AML.T0122"
+  - id: attack-pattern:nistaml-013
+    name: "NISTAML.013 Data Poisoning"
+    description: "Stub: NIST AI 100-2 E2025 taxonomy entry, as the library record maps it."
+    catalog_ref: "NISTAML.013"
+  - id: attack-pattern:nistaml-015
+    name: "NISTAML.015 Indirect Prompt Injection"
+    description: "Stub: NIST AI 100-2 E2025 taxonomy entry, as the library record maps it."
+    catalog_ref: "NISTAML.015"
+  - id: attack-pattern:nistaml-018
+    name: "NISTAML.018 Prompt Injection"
+    description: "Stub: NIST AI 100-2 E2025 taxonomy entry, as the library record maps it."
+    catalog_ref: "NISTAML.018"
+  - id: attack-pattern:nistaml-022
+    name: "NISTAML.022 Evasion"
+    description: "Stub: NIST AI 100-2 E2025 taxonomy entry, as the library record maps it."
+    catalog_ref: "NISTAML.022"
+  - id: attack-pattern:nistaml-026
+    name: "NISTAML.026 Model Poisoning"
+    description: "Stub: NIST AI 100-2 E2025 taxonomy entry, as the library record maps it."
+    catalog_ref: "NISTAML.026"
+  - id: attack-pattern:nistaml-031
+    name: "NISTAML.031 Model Extraction"
+    description: "Stub: NIST AI 100-2 E2025 taxonomy entry, as the library record maps it."
+    catalog_ref: "NISTAML.031"
+  - id: attack-pattern:nistaml-032
+    name: "NISTAML.032 Reconstruction"
+    description: "Stub: NIST AI 100-2 E2025 taxonomy entry, as the library record maps it."
+    catalog_ref: "NISTAML.032"
+  - id: attack-pattern:nistaml-034
+    name: "NISTAML.034 Property Inference"
+    description: "Stub: NIST AI 100-2 E2025 taxonomy entry, as the library record maps it."
+    catalog_ref: "NISTAML.034"
+  - id: attack-pattern:nistaml-036
+    name: "NISTAML.036 Leaking information from user interactions"
+    description: "Stub: NIST AI 100-2 E2025 taxonomy entry, as the library record maps it."
+    catalog_ref: "NISTAML.036"
+  - id: attack-pattern:nistaml-038
+    name: "NISTAML.038 Data Extraction"
+    description: "Stub: NIST AI 100-2 E2025 taxonomy entry, as the library record maps it."
+    catalog_ref: "NISTAML.038"
+  - id: attack-pattern:nistaml-05
+    name: "NISTAML.05 Supply Chain Attacks"
+    description: "Stub: NIST AI 100-2 E2025 taxonomy entry, as the library record maps it."
+    catalog_ref: "NISTAML.05"
+
+parties:
+  - id: party:maimcghee
+    name: "@Maimcghee"
+    description: Human owner and reviewer of this file (GitHub id).
+    party_kind: person
+
+assertions:
+  - id: assertion:cisa-ai-in-ot-principles-r-0011--addresses--nistaml-018
+    name: "R-0011 addresses NISTAML.018"
+    subject: requirement:cisa-ai-in-ot-principles-r-0011
+    predicate: addresses
+    object: attack-pattern:nistaml-018
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0011 (§1.1 Understand the Unique Risks of AI and Potential Impact
+      to OT, p. 7); R-text asks that Table 2's risks be considered; its Cybersecurity
+      Risks row (p. 7) names 'prompt injection' without saying direct or indirect, so
+      both are mapped.
+  - id: assertion:cisa-ai-in-ot-principles-r-0011--addresses--aml-t0051-000
+    name: "R-0011 addresses AML.T0051.000"
+    subject: requirement:cisa-ai-in-ot-principles-r-0011
+    predicate: addresses
+    object: attack-pattern:aml-t0051-000
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0011 (§1.1 Understand the Unique Risks of AI and Potential Impact to OT, p. 7);
+      R-text asks that Table 2's risks be considered; its Cybersecurity Risks row (p. 7)
+      names 'prompt injection' without saying direct or indirect, so both are mapped.
+  - id: assertion:cisa-ai-in-ot-principles-r-0011--addresses--nistaml-015
+    name: "R-0011 addresses NISTAML.015"
+    subject: requirement:cisa-ai-in-ot-principles-r-0011
+    predicate: addresses
+    object: attack-pattern:nistaml-015
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0011 (§1.1 Understand the Unique Risks of AI and Potential Impact
+      to OT, p. 7); Table 2's Cybersecurity Risks row (p. 7) names 'prompt injection'
+      without saying direct or indirect, so both are mapped.
+  - id: assertion:cisa-ai-in-ot-principles-r-0011--addresses--aml-t0051-001
+    name: "R-0011 addresses AML.T0051.001"
+    subject: requirement:cisa-ai-in-ot-principles-r-0011
+    predicate: addresses
+    object: attack-pattern:aml-t0051-001
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0011 (§1.1 Understand the Unique Risks of AI and Potential Impact to OT, p. 7);
+      Table 2's Cybersecurity Risks row (p. 7) names 'prompt injection' without saying
+      direct or indirect, so both are mapped.
+  - id: assertion:cisa-ai-in-ot-principles-r-0011--addresses--nistaml-013
+    name: "R-0011 addresses NISTAML.013"
+    subject: requirement:cisa-ai-in-ot-principles-r-0011
+    predicate: addresses
+    object: attack-pattern:nistaml-013
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0011 (§1.1 Understand the Unique Risks of AI and Potential Impact
+      to OT, p. 7); Table 2's Cybersecurity Risks row (p. 7) says 'AI data, models, and
+      deployment software can be manipulated'; manipulated data and models are data and
+      model poisoning.
+  - id: assertion:cisa-ai-in-ot-principles-r-0011--addresses--nistaml-026
+    name: "R-0011 addresses NISTAML.026"
+    subject: requirement:cisa-ai-in-ot-principles-r-0011
+    predicate: addresses
+    object: attack-pattern:nistaml-026
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0011 (§1.1 Understand the Unique Risks of AI and Potential Impact
+      to OT, p. 7); Table 2's Cybersecurity Risks row (p. 7) says 'AI data, models, and
+      deployment software can be manipulated'; manipulated data and models are data and
+      model poisoning.
+  - id: assertion:cisa-ai-in-ot-principles-r-0011--addresses--aml-t0020
+    name: "R-0011 addresses AML.T0020"
+    subject: requirement:cisa-ai-in-ot-principles-r-0011
+    predicate: addresses
+    object: attack-pattern:aml-t0020
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0011 (§1.1 Understand the Unique Risks of AI and Potential Impact to OT, p. 7);
+      Table 2's Cybersecurity Risks row (p. 7) says 'AI data, models, and deployment
+      software can be manipulated'; manipulated data and models are data and model
+      poisoning.
+  - id: assertion:cisa-ai-in-ot-principles-r-0011--addresses--aml-t0018
+    name: "R-0011 addresses AML.T0018"
+    subject: requirement:cisa-ai-in-ot-principles-r-0011
+    predicate: addresses
+    object: attack-pattern:aml-t0018
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0011 (§1.1 Understand the Unique Risks of AI and Potential Impact to OT, p. 7);
+      Table 2's Cybersecurity Risks row (p. 7) says 'AI data, models, and deployment
+      software can be manipulated'; manipulated data and models are data and model
+      poisoning.
+  - id: assertion:cisa-ai-in-ot-principles-r-0011--addresses--aml-t0054
+    name: "R-0011 addresses AML.T0054"
+    subject: requirement:cisa-ai-in-ot-principles-r-0011
+    predicate: addresses
+    object: attack-pattern:aml-t0054
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0011 (§1.1 Understand the Unique Risks of AI and Potential Impact to OT, p. 7);
+      Table 2's Cybersecurity Risks row (p. 7) names bypassing 'guardrails';
+      circumventing guardrails is a jailbreak, which NIST treats as a direct prompting
+      attack (§3.3); NIST misuse (NISTAML.04) is not used because the guidance excludes
+      misuse of AI from its scope (Appendix, p. 23).
+  - id: assertion:cisa-ai-in-ot-principles-r-0011--addresses--nistaml-022
+    name: "R-0011 addresses NISTAML.022"
+    subject: requirement:cisa-ai-in-ot-principles-r-0011
+    predicate: addresses
+    object: attack-pattern:nistaml-022
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0011 (§1.1 Understand the Unique Risks of AI and Potential Impact
+      to OT, p. 7); manipulated input data (Table 2, p. 7, 'AI data ... can be
+      manipulated') at inference time is evasion; in OT, through the data collection
+      process (ATLAS T0041).
+  - id: assertion:cisa-ai-in-ot-principles-r-0011--addresses--aml-t0015
+    name: "R-0011 addresses AML.T0015"
+    subject: requirement:cisa-ai-in-ot-principles-r-0011
+    predicate: addresses
+    object: attack-pattern:aml-t0015
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0011 (§1.1 Understand the Unique Risks of AI and Potential Impact to OT, p. 7);
+      manipulated input data (Table 2, p. 7, 'AI data ... can be manipulated') at
+      inference time is evasion; in OT, through the data collection process (ATLAS
+      T0041).
+  - id: assertion:cisa-ai-in-ot-principles-r-0011--addresses--aml-t0043
+    name: "R-0011 addresses AML.T0043"
+    subject: requirement:cisa-ai-in-ot-principles-r-0011
+    predicate: addresses
+    object: attack-pattern:aml-t0043
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0011 (§1.1 Understand the Unique Risks of AI and Potential Impact to OT, p. 7);
+      manipulated input data (Table 2, p. 7, 'AI data ... can be manipulated') at
+      inference time is evasion; in OT, through the data collection process (ATLAS
+      T0041).
+  - id: assertion:cisa-ai-in-ot-principles-r-0011--addresses--aml-t0041
+    name: "R-0011 addresses AML.T0041"
+    subject: requirement:cisa-ai-in-ot-principles-r-0011
+    predicate: addresses
+    object: attack-pattern:aml-t0041
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0011 (§1.1 Understand the Unique Risks of AI and Potential Impact to OT, p. 7);
+      manipulated input data (Table 2, p. 7, 'AI data ... can be manipulated') at
+      inference time is evasion; in OT, through the data collection process (ATLAS
+      T0041).
+  - id: assertion:cisa-ai-in-ot-principles-r-0011--addresses--nistaml-05
+    name: "R-0011 addresses NISTAML.05"
+    subject: requirement:cisa-ai-in-ot-principles-r-0011
+    predicate: addresses
+    object: attack-pattern:nistaml-05
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0011 (§1.1 Understand the Unique Risks of AI and Potential Impact
+      to OT, p. 7); manipulated 'deployment software' (Table 2, p. 7) is AI software
+      supply chain compromise.
+  - id: assertion:cisa-ai-in-ot-principles-r-0011--addresses--aml-t0010-001
+    name: "R-0011 addresses AML.T0010.001"
+    subject: requirement:cisa-ai-in-ot-principles-r-0011
+    predicate: addresses
+    object: attack-pattern:aml-t0010-001
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0011 (§1.1 Understand the Unique Risks of AI and Potential Impact to OT, p. 7);
+      manipulated 'deployment software' (Table 2, p. 7) is AI software supply chain
+      compromise.
+  - id: assertion:cisa-ai-in-ot-principles-r-0013--addresses--aml-t0012
+    name: "R-0013 addresses AML.T0012"
+    subject: requirement:cisa-ai-in-ot-principles-r-0013
+    predicate: addresses
+    object: attack-pattern:aml-t0012
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      R-0013 (§1.1 Understand the Unique Risks of AI and Potential Impact to OT, p. 7);
+      the statement names "Traditional cybersecurity risks remain within AI systems";
+      the conventional controls named (access control, auditing, encryption) answer
+      account abuse and collection of AI artifacts.
+  - id: assertion:cisa-ai-in-ot-principles-r-0013--addresses--aml-t0035
+    name: "R-0013 addresses AML.T0035"
+    subject: requirement:cisa-ai-in-ot-principles-r-0013
+    predicate: addresses
+    object: attack-pattern:aml-t0035
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      R-0013 (§1.1 Understand the Unique Risks of AI and Potential Impact to OT, p. 7);
+      the statement names "Traditional cybersecurity risks remain within AI systems";
+      the conventional controls named (access control, auditing, encryption) answer
+      account abuse and collection of AI artifacts.
+  - id: assertion:cisa-ai-in-ot-principles-r-0019--addresses--nistaml-05
+    name: "R-0019 addresses NISTAML.05"
+    subject: requirement:cisa-ai-in-ot-principles-r-0019
+    predicate: addresses
+    object: attack-pattern:nistaml-05
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0019 (§1.2 Understand the Secure AI System Development Lifecycle,
+      p. 10); vendor selection is the first control on the AI supply chain.
+  - id: assertion:cisa-ai-in-ot-principles-r-0019--addresses--aml-t0010
+    name: "R-0019 addresses AML.T0010"
+    subject: requirement:cisa-ai-in-ot-principles-r-0019
+    predicate: addresses
+    object: attack-pattern:aml-t0010
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0019 (§1.2 Understand the Secure AI System Development Lifecycle, p. 10); vendor
+      selection is the first control on the AI supply chain.
+  - id: assertion:cisa-ai-in-ot-principles-r-0020--addresses--aml-t0122
+    name: "R-0020 addresses AML.T0122"
+    subject: requirement:cisa-ai-in-ot-principles-r-0020
+    predicate: addresses
+    object: attack-pattern:aml-t0122
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0020 (§1.2 Understand the Secure AI System Development Lifecycle, p. 10);
+      segmentation and access control stop an attacker moving through the AI system to
+      other networks.
+  - id: assertion:cisa-ai-in-ot-principles-r-0022--addresses--nistaml-05
+    name: "R-0022 addresses NISTAML.05"
+    subject: requirement:cisa-ai-in-ot-principles-r-0022
+    predicate: addresses
+    object: attack-pattern:nistaml-05
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0022 (§1.2 Understand the Secure AI System Development Lifecycle,
+      p. 10); each sourcing option sets a different supply chain exposure.
+  - id: assertion:cisa-ai-in-ot-principles-r-0022--addresses--aml-t0010
+    name: "R-0022 addresses AML.T0010"
+    subject: requirement:cisa-ai-in-ot-principles-r-0022
+    predicate: addresses
+    object: attack-pattern:aml-t0010
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0022 (§1.2 Understand the Secure AI System Development Lifecycle, p. 10); each
+      sourcing option sets a different supply chain exposure.
+  - id: assertion:cisa-ai-in-ot-principles-r-0029--addresses--nistaml-022
+    name: "R-0029 addresses NISTAML.022"
+    subject: requirement:cisa-ai-in-ot-principles-r-0029
+    predicate: addresses
+    object: attack-pattern:nistaml-022
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0029 (§1.3 Educate Personnel on AI, p. 11); checking AI output
+      against independent sensors catches outputs an attacker has steered with crafted
+      inputs.
+  - id: assertion:cisa-ai-in-ot-principles-r-0029--addresses--aml-t0015
+    name: "R-0029 addresses AML.T0015"
+    subject: requirement:cisa-ai-in-ot-principles-r-0029
+    predicate: addresses
+    object: attack-pattern:aml-t0015
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0029 (§1.3 Educate Personnel on AI, p. 11); checking AI output against
+      independent sensors catches outputs an attacker has steered with crafted inputs.
+  - id: assertion:cisa-ai-in-ot-principles-r-0039--addresses--nistaml-013
+    name: "R-0039 addresses NISTAML.013"
+    subject: requirement:cisa-ai-in-ot-principles-r-0039
+    predicate: addresses
+    object: attack-pattern:nistaml-013
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0039 (§2.2 Manage OT Data Security Risks for AI Systems, p. 12);
+      controlling who can modify training data is the access-side control on data
+      poisoning.
+  - id: assertion:cisa-ai-in-ot-principles-r-0039--addresses--aml-t0020
+    name: "R-0039 addresses AML.T0020"
+    subject: requirement:cisa-ai-in-ot-principles-r-0039
+    predicate: addresses
+    object: attack-pattern:aml-t0020
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0039 (§2.2 Manage OT Data Security Risks for AI Systems, p. 12); controlling who
+      can modify training data is the access-side control on data poisoning.
+  - id: assertion:cisa-ai-in-ot-principles-r-0039--addresses--aml-t0035
+    name: "R-0039 addresses AML.T0035"
+    subject: requirement:cisa-ai-in-ot-principles-r-0039
+    predicate: addresses
+    object: attack-pattern:aml-t0035
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0039 (§2.2 Manage OT Data Security Risks for AI Systems, p. 12); controlling who
+      can view or access OT data limits its collection and exfiltration.
+  - id: assertion:cisa-ai-in-ot-principles-r-0039--addresses--aml-t0025
+    name: "R-0039 addresses AML.T0025"
+    subject: requirement:cisa-ai-in-ot-principles-r-0039
+    predicate: addresses
+    object: attack-pattern:aml-t0025
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0039 (§2.2 Manage OT Data Security Risks for AI Systems, p. 12); controlling who
+      can view or access OT data limits its collection and exfiltration.
+  - id: assertion:cisa-ai-in-ot-principles-r-0041--addresses--nistaml-038
+    name: "R-0041 addresses NISTAML.038"
+    subject: requirement:cisa-ai-in-ot-principles-r-0041
+    predicate: addresses
+    object: attack-pattern:nistaml-038
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: stated, provenance: ours).
+      Basis: R-0041 (§2.2 Manage OT Data Security Risks for AI Systems, p. 13); the
+      statement names "Exposure of Sensitive Information"; sensitive data given to a
+      model can be extracted through its outputs.
+  - id: assertion:cisa-ai-in-ot-principles-r-0041--addresses--aml-t0057
+    name: "R-0041 addresses AML.T0057"
+    subject: requirement:cisa-ai-in-ot-principles-r-0041
+    predicate: addresses
+    object: attack-pattern:aml-t0057
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      R-0041 (§2.2 Manage OT Data Security Risks for AI Systems, p. 13); the statement
+      names "Exposure of Sensitive Information"; sensitive data given to a model can be
+      extracted through its outputs.
+  - id: assertion:cisa-ai-in-ot-principles-r-0042--addresses--nistaml-013
+    name: "R-0042 addresses NISTAML.013"
+    subject: requirement:cisa-ai-in-ot-principles-r-0042
+    predicate: addresses
+    object: attack-pattern:nistaml-013
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: stated, provenance: ours).
+      Basis: R-0042 (§2.2 Manage OT Data Security Risks for AI Systems, p. 13); the
+      statement names "intentional or inadvertent data poisoning".
+  - id: assertion:cisa-ai-in-ot-principles-r-0042--addresses--aml-t0020
+    name: "R-0042 addresses AML.T0020"
+    subject: requirement:cisa-ai-in-ot-principles-r-0042
+    predicate: addresses
+    object: attack-pattern:aml-t0020
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      R-0042 (§2.2 Manage OT Data Security Risks for AI Systems, p. 13); the statement
+      names "intentional or inadvertent data poisoning".
+  - id: assertion:cisa-ai-in-ot-principles-r-0042--addresses--aml-t0012
+    name: "R-0042 addresses AML.T0012"
+    subject: requirement:cisa-ai-in-ot-principles-r-0042
+    predicate: addresses
+    object: attack-pattern:aml-t0012
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      R-0042 (§2.2 Manage OT Data Security Risks for AI Systems, p. 13); the statement
+      names "access abuse"; abuse of legitimate access, which ATLAS files under Valid
+      Accounts.
+  - id: assertion:cisa-ai-in-ot-principles-r-0045--addresses--nistaml-013
+    name: "R-0045 addresses NISTAML.013"
+    subject: requirement:cisa-ai-in-ot-principles-r-0045
+    predicate: addresses
+    object: attack-pattern:nistaml-013
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0045 (§2.2 Manage OT Data Security Risks for AI Systems, p. 13); a
+      data integrity program is the standing control against manipulated datasets.
+  - id: assertion:cisa-ai-in-ot-principles-r-0045--addresses--aml-t0020
+    name: "R-0045 addresses AML.T0020"
+    subject: requirement:cisa-ai-in-ot-principles-r-0045
+    predicate: addresses
+    object: attack-pattern:aml-t0020
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0045 (§2.2 Manage OT Data Security Risks for AI Systems, p. 13); a data
+      integrity program is the standing control against manipulated datasets.
+  - id: assertion:cisa-ai-in-ot-principles-r-0045--addresses--aml-t0059
+    name: "R-0045 addresses AML.T0059"
+    subject: requirement:cisa-ai-in-ot-principles-r-0045
+    predicate: addresses
+    object: attack-pattern:aml-t0059
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0045 (§2.2 Manage OT Data Security Risks for AI Systems, p. 13); a data
+      integrity program is the standing control against manipulated datasets.
+  - id: assertion:cisa-ai-in-ot-principles-r-0047--addresses--aml-t0036
+    name: "R-0047 addresses AML.T0036"
+    subject: requirement:cisa-ai-in-ot-principles-r-0047
+    predicate: addresses
+    object: attack-pattern:aml-t0036
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      R-0047 (§2.2 Manage OT Data Security Risks for AI Systems, p. 13); the statement
+      names "highly valuable to cyber adversaries"; theft of engineering data from
+      repositories is conventional collection.
+  - id: assertion:cisa-ai-in-ot-principles-r-0048--addresses--nistaml-032
+    name: "R-0048 addresses NISTAML.032"
+    subject: requirement:cisa-ai-in-ot-principles-r-0048
+    predicate: addresses
+    object: attack-pattern:nistaml-032
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: stated, provenance: ours).
+      Basis: R-0048 (§2.2 Manage OT Data Security Risks for AI Systems, p. 13); the
+      statement names "the data may become accessible or stored (statistically) for a
+      longer period of time in the model"; training data that stays recoverable from the
+      model is what reconstruction and data extraction attacks recover.
+  - id: assertion:cisa-ai-in-ot-principles-r-0048--addresses--nistaml-038
+    name: "R-0048 addresses NISTAML.038"
+    subject: requirement:cisa-ai-in-ot-principles-r-0048
+    predicate: addresses
+    object: attack-pattern:nistaml-038
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: stated, provenance: ours).
+      Basis: R-0048 (§2.2 Manage OT Data Security Risks for AI Systems, p. 13); the
+      statement names "the data may become accessible or stored (statistically) for a
+      longer period of time in the model"; training data that stays recoverable from the
+      model is what reconstruction and data extraction attacks recover.
+  - id: assertion:cisa-ai-in-ot-principles-r-0048--addresses--aml-t0024-001
+    name: "R-0048 addresses AML.T0024.001"
+    subject: requirement:cisa-ai-in-ot-principles-r-0048
+    predicate: addresses
+    object: attack-pattern:aml-t0024-001
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      R-0048 (§2.2 Manage OT Data Security Risks for AI Systems, p. 13); the statement
+      names "the data may become accessible or stored (statistically) for a longer
+      period of time in the model"; training data that stays recoverable from the model
+      is what reconstruction and data extraction attacks recover.
+  - id: assertion:cisa-ai-in-ot-principles-r-0048--addresses--aml-t0057
+    name: "R-0048 addresses AML.T0057"
+    subject: requirement:cisa-ai-in-ot-principles-r-0048
+    predicate: addresses
+    object: attack-pattern:aml-t0057
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      R-0048 (§2.2 Manage OT Data Security Risks for AI Systems, p. 13); the statement
+      names "the data may become accessible or stored (statistically) for a longer
+      period of time in the model"; training data that stays recoverable from the model
+      is what reconstruction and data extraction attacks recover.
+  - id: assertion:cisa-ai-in-ot-principles-r-0048--addresses--nistaml-034
+    name: "R-0048 addresses NISTAML.034"
+    subject: requirement:cisa-ai-in-ot-principles-r-0048
+    predicate: addresses
+    object: attack-pattern:nistaml-034
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0048 (§2.2 Manage OT Data Security Risks for AI Systems, p. 13);
+      'patterns of activity' in training data are what property inference recovers (NIST
+      §2.4.3; ATLAS T0024.000 'global characteristics of the data').
+  - id: assertion:cisa-ai-in-ot-principles-r-0048--addresses--aml-t0024-000
+    name: "R-0048 addresses AML.T0024.000"
+    subject: requirement:cisa-ai-in-ot-principles-r-0048
+    predicate: addresses
+    object: attack-pattern:aml-t0024-000
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0048 (§2.2 Manage OT Data Security Risks for AI Systems, p. 13); 'patterns of
+      activity' in training data are what property inference recovers (NIST §2.4.3;
+      ATLAS T0024.000 'global characteristics of the data').
+  - id: assertion:cisa-ai-in-ot-principles-r-0049--addresses--nistaml-05
+    name: "R-0049 addresses NISTAML.05"
+    subject: requirement:cisa-ai-in-ot-principles-r-0049
+    predicate: addresses
+    object: attack-pattern:nistaml-05
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0049 (§2.3 Understanding the Role of OT Vendors in AI Integration,
+      p. 14); vendor transparency is the buyer-side control on the AI supply chain.
+  - id: assertion:cisa-ai-in-ot-principles-r-0049--addresses--aml-t0010
+    name: "R-0049 addresses AML.T0010"
+    subject: requirement:cisa-ai-in-ot-principles-r-0049
+    predicate: addresses
+    object: attack-pattern:aml-t0010
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0049 (§2.3 Understanding the Role of OT Vendors in AI Integration, p. 14);
+      vendor transparency is the buyer-side control on the AI supply chain.
+  - id: assertion:cisa-ai-in-ot-principles-r-0051--addresses--nistaml-05
+    name: "R-0051 addresses NISTAML.05"
+    subject: requirement:cisa-ai-in-ot-principles-r-0051
+    predicate: addresses
+    object: attack-pattern:nistaml-05
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0051 (§2.3 Understanding the Role of OT Vendors in AI Integration,
+      p. 14); knowing which models a product embeds and where they are hosted is the
+      precondition for detecting supply chain compromise.
+  - id: assertion:cisa-ai-in-ot-principles-r-0051--addresses--aml-t0010
+    name: "R-0051 addresses AML.T0010"
+    subject: requirement:cisa-ai-in-ot-principles-r-0051
+    predicate: addresses
+    object: attack-pattern:aml-t0010
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0051 (§2.3 Understanding the Role of OT Vendors in AI Integration, p. 14);
+      knowing which models a product embeds and where they are hosted is the
+      precondition for detecting supply chain compromise.
+  - id: assertion:cisa-ai-in-ot-principles-r-0051--addresses--aml-t0010-003
+    name: "R-0051 addresses AML.T0010.003"
+    subject: requirement:cisa-ai-in-ot-principles-r-0051
+    predicate: addresses
+    object: attack-pattern:aml-t0010-003
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0051 (§2.3 Understanding the Role of OT Vendors in AI Integration, p. 14);
+      knowing which models a product embeds and where they are hosted is the
+      precondition for detecting supply chain compromise.
+  - id: assertion:cisa-ai-in-ot-principles-r-0053--addresses--nistaml-038
+    name: "R-0053 addresses NISTAML.038"
+    subject: requirement:cisa-ai-in-ot-principles-r-0053
+    predicate: addresses
+    object: attack-pattern:nistaml-038
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0053 (§2.3 Understanding the Role of OT Vendors in AI Integration,
+      p. 14); operational data used to train a vendor model can later be inferred or
+      extracted from it (most of it trains predictive ML, so membership, inversion and
+      property inference apply as well as LLM leakage).
+  - id: assertion:cisa-ai-in-ot-principles-r-0053--addresses--nistaml-032
+    name: "R-0053 addresses NISTAML.032"
+    subject: requirement:cisa-ai-in-ot-principles-r-0053
+    predicate: addresses
+    object: attack-pattern:nistaml-032
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0053 (§2.3 Understanding the Role of OT Vendors in AI Integration,
+      p. 14); operational data used to train a vendor model can later be inferred or
+      extracted from it (most of it trains predictive ML, so membership, inversion and
+      property inference apply as well as LLM leakage).
+  - id: assertion:cisa-ai-in-ot-principles-r-0053--addresses--nistaml-034
+    name: "R-0053 addresses NISTAML.034"
+    subject: requirement:cisa-ai-in-ot-principles-r-0053
+    predicate: addresses
+    object: attack-pattern:nistaml-034
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0053 (§2.3 Understanding the Role of OT Vendors in AI Integration,
+      p. 14); operational data used to train a vendor model can later be inferred or
+      extracted from it (most of it trains predictive ML, so membership, inversion and
+      property inference apply as well as LLM leakage).
+  - id: assertion:cisa-ai-in-ot-principles-r-0053--addresses--aml-t0057
+    name: "R-0053 addresses AML.T0057"
+    subject: requirement:cisa-ai-in-ot-principles-r-0053
+    predicate: addresses
+    object: attack-pattern:aml-t0057
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0053 (§2.3 Understanding the Role of OT Vendors in AI Integration, p. 14);
+      operational data used to train a vendor model can later be inferred or extracted
+      from it (most of it trains predictive ML, so membership, inversion and property
+      inference apply as well as LLM leakage).
+  - id: assertion:cisa-ai-in-ot-principles-r-0053--addresses--aml-t0024-000
+    name: "R-0053 addresses AML.T0024.000"
+    subject: requirement:cisa-ai-in-ot-principles-r-0053
+    predicate: addresses
+    object: attack-pattern:aml-t0024-000
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0053 (§2.3 Understanding the Role of OT Vendors in AI Integration, p. 14);
+      operational data used to train a vendor model can later be inferred or extracted
+      from it (most of it trains predictive ML, so membership, inversion and property
+      inference apply as well as LLM leakage).
+  - id: assertion:cisa-ai-in-ot-principles-r-0053--addresses--aml-t0024-001
+    name: "R-0053 addresses AML.T0024.001"
+    subject: requirement:cisa-ai-in-ot-principles-r-0053
+    predicate: addresses
+    object: attack-pattern:aml-t0024-001
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0053 (§2.3 Understanding the Role of OT Vendors in AI Integration, p. 14);
+      operational data used to train a vendor model can later be inferred or extracted
+      from it (most of it trains predictive ML, so membership, inversion and property
+      inference apply as well as LLM leakage).
+  - id: assertion:cisa-ai-in-ot-principles-r-0054--addresses--nistaml-05
+    name: "R-0054 addresses NISTAML.05"
+    subject: requirement:cisa-ai-in-ot-principles-r-0054
+    predicate: addresses
+    object: attack-pattern:nistaml-05
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0054 (§2.3 Understanding the Role of OT Vendors in AI Integration,
+      p. 14); continuous vendor connectivity is an initial-access path through the
+      supplier.
+  - id: assertion:cisa-ai-in-ot-principles-r-0054--addresses--aml-t0010
+    name: "R-0054 addresses AML.T0010"
+    subject: requirement:cisa-ai-in-ot-principles-r-0054
+    predicate: addresses
+    object: attack-pattern:aml-t0010
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0054 (§2.3 Understanding the Role of OT Vendors in AI Integration, p. 14);
+      continuous vendor connectivity is an initial-access path through the supplier.
+  - id: assertion:cisa-ai-in-ot-principles-r-0059--addresses--aml-t0012
+    name: "R-0059 addresses AML.T0012"
+    subject: requirement:cisa-ai-in-ot-principles-r-0059
+    predicate: addresses
+    object: attack-pattern:aml-t0012
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0059 (§2.4 Evaluate Challenges in AI-OT System Integration, p. 15); access
+      controls and encryption address account abuse and collection of AI data.
+  - id: assertion:cisa-ai-in-ot-principles-r-0059--addresses--aml-t0035
+    name: "R-0059 addresses AML.T0035"
+    subject: requirement:cisa-ai-in-ot-principles-r-0059
+    predicate: addresses
+    object: attack-pattern:aml-t0035
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0059 (§2.4 Evaluate Challenges in AI-OT System Integration, p. 15); access
+      controls and encryption address account abuse and collection of AI data.
+  - id: assertion:cisa-ai-in-ot-principles-r-0064--addresses--aml-t0122
+    name: "R-0064 addresses AML.T0122"
+    subject: requirement:cisa-ai-in-ot-principles-r-0064
+    predicate: addresses
+    object: attack-pattern:aml-t0122
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0064 (§2.4 Evaluate Challenges in AI-OT System Integration, p. 15); no
+      persistent access into OT means a compromised AI system is not a way in.
+  - id: assertion:cisa-ai-in-ot-principles-r-0064--addresses--aml-t0012
+    name: "R-0064 addresses AML.T0012"
+    subject: requirement:cisa-ai-in-ot-principles-r-0064
+    predicate: addresses
+    object: attack-pattern:aml-t0012
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0064 (§2.4 Evaluate Challenges in AI-OT System Integration, p. 15); no
+      persistent access into OT means a compromised AI system is not a way in.
+  - id: assertion:cisa-ai-in-ot-principles-r-0067--addresses--aml-t0122
+    name: "R-0067 addresses AML.T0122"
+    subject: requirement:cisa-ai-in-ot-principles-r-0067
+    predicate: addresses
+    object: attack-pattern:aml-t0122
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0067 (§2.4 Evaluate Challenges in AI-OT System Integration, p. 15); routing new
+      connection paths through the DMZ or jump host keeps remote access under existing
+      control.
+  - id: assertion:cisa-ai-in-ot-principles-r-0076--addresses--aml-t0012
+    name: "R-0076 addresses AML.T0012"
+    subject: requirement:cisa-ai-in-ot-principles-r-0076
+    predicate: addresses
+    object: attack-pattern:aml-t0012
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0076 (§3.1 Establish Governance Mechanisms for AI in OT, p. 16); access control
+      and behaviour analytics address abuse of accounts and collection of AI data.
+  - id: assertion:cisa-ai-in-ot-principles-r-0076--addresses--aml-t0035
+    name: "R-0076 addresses AML.T0035"
+    subject: requirement:cisa-ai-in-ot-principles-r-0076
+    predicate: addresses
+    object: attack-pattern:aml-t0035
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0076 (§3.1 Establish Governance Mechanisms for AI in OT, p. 16); access control
+      and behaviour analytics address abuse of accounts and collection of AI data.
+  - id: assertion:cisa-ai-in-ot-principles-r-0083--addresses--aml-t0012
+    name: "R-0083 addresses AML.T0012"
+    subject: requirement:cisa-ai-in-ot-principles-r-0083
+    predicate: addresses
+    object: attack-pattern:aml-t0012
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0083 (§3.2 Integrating AI Into Existing Security and Cybersecurity Frameworks,
+      p. 17); conventional controls on the AI system and its data.
+  - id: assertion:cisa-ai-in-ot-principles-r-0083--addresses--aml-t0035
+    name: "R-0083 addresses AML.T0035"
+    subject: requirement:cisa-ai-in-ot-principles-r-0083
+    predicate: addresses
+    object: attack-pattern:aml-t0035
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0083 (§3.2 Integrating AI Into Existing Security and Cybersecurity Frameworks,
+      p. 17); conventional controls on the AI system and its data.
+  - id: assertion:cisa-ai-in-ot-principles-r-0084--addresses--aml-t0025
+    name: "R-0084 addresses AML.T0025"
+    subject: requirement:cisa-ai-in-ot-principles-r-0084
+    predicate: addresses
+    object: attack-pattern:aml-t0025
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0084 (§3.2 Integrating AI Into Existing Security and Cybersecurity Frameworks,
+      p. 17); egress tracking by asset and identity shows exfiltration.
+  - id: assertion:cisa-ai-in-ot-principles-r-0084--addresses--nistaml-031
+    name: "R-0084 addresses NISTAML.031"
+    subject: requirement:cisa-ai-in-ot-principles-r-0084
+    predicate: addresses
+    object: attack-pattern:nistaml-031
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0084 (§3.2 Integrating AI Into Existing Security and Cybersecurity
+      Frameworks, p. 17); access logs on AI endpoints show the query volume that
+      extraction through the inference API needs.
+  - id: assertion:cisa-ai-in-ot-principles-r-0084--addresses--aml-t0024
+    name: "R-0084 addresses AML.T0024"
+    subject: requirement:cisa-ai-in-ot-principles-r-0084
+    predicate: addresses
+    object: attack-pattern:aml-t0024
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0084 (§3.2 Integrating AI Into Existing Security and Cybersecurity Frameworks,
+      p. 17); access logs on AI endpoints show the query volume that extraction through
+      the inference API needs.
+  - id: assertion:cisa-ai-in-ot-principles-r-0085--addresses--nistaml-038
+    name: "R-0085 addresses NISTAML.038"
+    subject: requirement:cisa-ai-in-ot-principles-r-0085
+    predicate: addresses
+    object: attack-pattern:nistaml-038
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0085 (§3.2 Integrating AI Into Existing Security and Cybersecurity
+      Frameworks, p. 17); inspecting prompts and outputs catches sensitive data leaving
+      through the model.
+  - id: assertion:cisa-ai-in-ot-principles-r-0085--addresses--nistaml-036
+    name: "R-0085 addresses NISTAML.036"
+    subject: requirement:cisa-ai-in-ot-principles-r-0085
+    predicate: addresses
+    object: attack-pattern:nistaml-036
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0085 (§3.2 Integrating AI Into Existing Security and Cybersecurity
+      Frameworks, p. 17); inspecting prompts and outputs catches sensitive data leaving
+      through the model.
+  - id: assertion:cisa-ai-in-ot-principles-r-0085--addresses--aml-t0057
+    name: "R-0085 addresses AML.T0057"
+    subject: requirement:cisa-ai-in-ot-principles-r-0085
+    predicate: addresses
+    object: attack-pattern:aml-t0057
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0085 (§3.2 Integrating AI Into Existing Security and Cybersecurity Frameworks,
+      p. 17); inspecting prompts and outputs catches sensitive data leaving through the
+      model.
+  - id: assertion:cisa-ai-in-ot-principles-r-0095--addresses--aml-t0035
+    name: "R-0095 addresses AML.T0035"
+    subject: requirement:cisa-ai-in-ot-principles-r-0095
+    predicate: addresses
+    object: attack-pattern:aml-t0035
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0095 (§3.3 Conduct Thorough AI Testing and Evaluation, p. 17); production data
+      copied into weaker test environments is easier to collect.
+  - id: assertion:cisa-ai-in-ot-principles-r-0101--addresses--nistaml-018
+    name: "R-0101 addresses NISTAML.018"
+    subject: requirement:cisa-ai-in-ot-principles-r-0101
+    predicate: addresses
+    object: attack-pattern:nistaml-018
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0101 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in
+      OT, p. 18); logged inputs show injection attempts.
+  - id: assertion:cisa-ai-in-ot-principles-r-0101--addresses--aml-t0051-000
+    name: "R-0101 addresses AML.T0051.000"
+    subject: requirement:cisa-ai-in-ot-principles-r-0101
+    predicate: addresses
+    object: attack-pattern:aml-t0051-000
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0101 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 18);
+      logged inputs show injection attempts.
+  - id: assertion:cisa-ai-in-ot-principles-r-0101--addresses--nistaml-015
+    name: "R-0101 addresses NISTAML.015"
+    subject: requirement:cisa-ai-in-ot-principles-r-0101
+    predicate: addresses
+    object: attack-pattern:nistaml-015
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0101 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in
+      OT, p. 18); logged inputs include third-party content the system ingested.
+  - id: assertion:cisa-ai-in-ot-principles-r-0101--addresses--aml-t0051-001
+    name: "R-0101 addresses AML.T0051.001"
+    subject: requirement:cisa-ai-in-ot-principles-r-0101
+    predicate: addresses
+    object: attack-pattern:aml-t0051-001
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0101 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 18);
+      logged inputs include third-party content the system ingested.
+  - id: assertion:cisa-ai-in-ot-principles-r-0101--addresses--nistaml-031
+    name: "R-0101 addresses NISTAML.031"
+    subject: requirement:cisa-ai-in-ot-principles-r-0101
+    predicate: addresses
+    object: attack-pattern:nistaml-031
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0101 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in
+      OT, p. 18); logged queries show extraction patterns.
+  - id: assertion:cisa-ai-in-ot-principles-r-0101--addresses--aml-t0024-002
+    name: "R-0101 addresses AML.T0024.002"
+    subject: requirement:cisa-ai-in-ot-principles-r-0101
+    predicate: addresses
+    object: attack-pattern:aml-t0024-002
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0101 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 18);
+      logged queries show extraction patterns.
+  - id: assertion:cisa-ai-in-ot-principles-r-0102--addresses--nistaml-013
+    name: "R-0102 addresses NISTAML.013"
+    subject: requirement:cisa-ai-in-ot-principles-r-0102
+    predicate: addresses
+    object: attack-pattern:nistaml-013
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0102 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in
+      OT, p. 18); a known good state is what a poisoned or manipulated model is restored
+      to.
+  - id: assertion:cisa-ai-in-ot-principles-r-0102--addresses--nistaml-026
+    name: "R-0102 addresses NISTAML.026"
+    subject: requirement:cisa-ai-in-ot-principles-r-0102
+    predicate: addresses
+    object: attack-pattern:nistaml-026
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0102 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in
+      OT, p. 18); a known good state is what a poisoned or manipulated model is restored
+      to.
+  - id: assertion:cisa-ai-in-ot-principles-r-0102--addresses--aml-t0020
+    name: "R-0102 addresses AML.T0020"
+    subject: requirement:cisa-ai-in-ot-principles-r-0102
+    predicate: addresses
+    object: attack-pattern:aml-t0020
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0102 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 18); a
+      known good state is what a poisoned or manipulated model is restored to.
+  - id: assertion:cisa-ai-in-ot-principles-r-0102--addresses--aml-t0018-000
+    name: "R-0102 addresses AML.T0018.000"
+    subject: requirement:cisa-ai-in-ot-principles-r-0102
+    predicate: addresses
+    object: attack-pattern:aml-t0018-000
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0102 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 18); a
+      known good state is what a poisoned or manipulated model is restored to.
+  - id: assertion:cisa-ai-in-ot-principles-r-0106--addresses--nistaml-022
+    name: "R-0106 addresses NISTAML.022"
+    subject: requirement:cisa-ai-in-ot-principles-r-0106
+    predicate: addresses
+    object: attack-pattern:nistaml-022
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0106 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in
+      OT, p. 19); an independent sensor check and a human stop limit what a steered
+      model output can do to control logic.
+  - id: assertion:cisa-ai-in-ot-principles-r-0106--addresses--aml-t0015
+    name: "R-0106 addresses AML.T0015"
+    subject: requirement:cisa-ai-in-ot-principles-r-0106
+    predicate: addresses
+    object: attack-pattern:aml-t0015
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0106 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 19);
+      an independent sensor check and a human stop limit what a steered model output can
+      do to control logic.
+  - id: assertion:cisa-ai-in-ot-principles-r-0108--addresses--nistaml-026
+    name: "R-0108 addresses NISTAML.026"
+    subject: requirement:cisa-ai-in-ot-principles-r-0108
+    predicate: addresses
+    object: attack-pattern:nistaml-026
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0108 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in
+      OT, p. 19); a model change that moves behaviour outside safe bounds is how a
+      manipulated model shows up.
+  - id: assertion:cisa-ai-in-ot-principles-r-0108--addresses--aml-t0018
+    name: "R-0108 addresses AML.T0018"
+    subject: requirement:cisa-ai-in-ot-principles-r-0108
+    predicate: addresses
+    object: attack-pattern:aml-t0018
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0108 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 19); a
+      model change that moves behaviour outside safe bounds is how a manipulated model
+      shows up.
+  - id: assertion:cisa-ai-in-ot-principles-r-0109--addresses--nistaml-015
+    name: "R-0109 addresses NISTAML.015"
+    subject: requirement:cisa-ai-in-ot-principles-r-0109
+    predicate: addresses
+    object: attack-pattern:nistaml-015
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0109 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in
+      OT, p. 19); a distinct AI identity in logs separates actions an AI took after an
+      injected instruction from those of users and machines (ATLAS M0024 covers agent
+      identity in logs).
+  - id: assertion:cisa-ai-in-ot-principles-r-0109--addresses--aml-t0053
+    name: "R-0109 addresses AML.T0053"
+    subject: requirement:cisa-ai-in-ot-principles-r-0109
+    predicate: addresses
+    object: attack-pattern:aml-t0053
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0109 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 19); a
+      distinct AI identity in logs separates actions an AI took after an injected
+      instruction from those of users and machines (ATLAS M0024 covers agent identity in
+      logs).
+  - id: assertion:cisa-ai-in-ot-principles-r-0114--addresses--nistaml-018
+    name: "R-0114 addresses NISTAML.018"
+    subject: requirement:cisa-ai-in-ot-principles-r-0114
+    predicate: addresses
+    object: attack-pattern:nistaml-018
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0114 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in
+      OT, p. 19); logged inputs show injection attempts.
+  - id: assertion:cisa-ai-in-ot-principles-r-0114--addresses--aml-t0051-000
+    name: "R-0114 addresses AML.T0051.000"
+    subject: requirement:cisa-ai-in-ot-principles-r-0114
+    predicate: addresses
+    object: attack-pattern:aml-t0051-000
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0114 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 19);
+      logged inputs show injection attempts.
+  - id: assertion:cisa-ai-in-ot-principles-r-0114--addresses--nistaml-015
+    name: "R-0114 addresses NISTAML.015"
+    subject: requirement:cisa-ai-in-ot-principles-r-0114
+    predicate: addresses
+    object: attack-pattern:nistaml-015
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0114 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in
+      OT, p. 19); logged inputs include third-party content the system ingested.
+  - id: assertion:cisa-ai-in-ot-principles-r-0114--addresses--aml-t0051-001
+    name: "R-0114 addresses AML.T0051.001"
+    subject: requirement:cisa-ai-in-ot-principles-r-0114
+    predicate: addresses
+    object: attack-pattern:aml-t0051-001
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0114 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 19);
+      logged inputs include third-party content the system ingested.
+  - id: assertion:cisa-ai-in-ot-principles-r-0114--addresses--nistaml-031
+    name: "R-0114 addresses NISTAML.031"
+    subject: requirement:cisa-ai-in-ot-principles-r-0114
+    predicate: addresses
+    object: attack-pattern:nistaml-031
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0114 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in
+      OT, p. 19); logged queries show extraction patterns.
+  - id: assertion:cisa-ai-in-ot-principles-r-0114--addresses--aml-t0024-002
+    name: "R-0114 addresses AML.T0024.002"
+    subject: requirement:cisa-ai-in-ot-principles-r-0114
+    predicate: addresses
+    object: attack-pattern:aml-t0024-002
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0114 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 19);
+      logged queries show extraction patterns.
+  - id: assertion:cisa-ai-in-ot-principles-r-0116--addresses--aml-t0025
+    name: "R-0116 addresses AML.T0025"
+    subject: requirement:cisa-ai-in-ot-principles-r-0116
+    predicate: addresses
+    object: attack-pattern:aml-t0025
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0116 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 19);
+      egress control limits exfiltration from the data zone.
+  - id: assertion:cisa-ai-in-ot-principles-r-0120--addresses--nistaml-022
+    name: "R-0120 addresses NISTAML.022"
+    subject: requirement:cisa-ai-in-ot-principles-r-0120
+    predicate: addresses
+    object: attack-pattern:nistaml-022
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: stated, provenance: ours).
+      Basis: R-0120 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p.
+      20); the statement names "adversarial inputs".
+  - id: assertion:cisa-ai-in-ot-principles-r-0120--addresses--aml-t0015
+    name: "R-0120 addresses AML.T0015"
+    subject: requirement:cisa-ai-in-ot-principles-r-0120
+    predicate: addresses
+    object: attack-pattern:aml-t0015
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      R-0120 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 20);
+      the statement names "adversarial inputs".
+  - id: assertion:cisa-ai-in-ot-principles-r-0120--addresses--aml-t0043
+    name: "R-0120 addresses AML.T0043"
+    subject: requirement:cisa-ai-in-ot-principles-r-0120
+    predicate: addresses
+    object: attack-pattern:aml-t0043
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      R-0120 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 20);
+      the statement names "adversarial inputs".
+  - id: assertion:cisa-ai-in-ot-principles-r-0120--addresses--nistaml-018
+    name: "R-0120 addresses NISTAML.018"
+    subject: requirement:cisa-ai-in-ot-principles-r-0120
+    predicate: addresses
+    object: attack-pattern:nistaml-018
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: inferred, provenance:
+      ours). Basis: R-0120 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in
+      OT, p. 20); the guidance covers LLMs and agents (Scope), and adversarial inputs to
+      them are prompting attacks (NIST §3.3.1).
+  - id: assertion:cisa-ai-in-ot-principles-r-0120--addresses--aml-t0051-000
+    name: "R-0120 addresses AML.T0051.000"
+    subject: requirement:cisa-ai-in-ot-principles-r-0120
+    predicate: addresses
+    object: attack-pattern:aml-t0051-000
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0120 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 20);
+      the guidance covers LLMs and agents (Scope), and adversarial inputs to them are
+      prompting attacks (NIST §3.3.1).
+  - id: assertion:cisa-ai-in-ot-principles-r-0120--addresses--aml-t0054
+    name: "R-0120 addresses AML.T0054"
+    subject: requirement:cisa-ai-in-ot-principles-r-0120
+    predicate: addresses
+    object: attack-pattern:aml-t0054
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0120 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 20);
+      the guidance covers LLMs and agents (Scope), and adversarial inputs to them are
+      prompting attacks (NIST §3.3.1).
+  - id: assertion:cisa-ai-in-ot-principles-r-0120--addresses--nistaml-013
+    name: "R-0120 addresses NISTAML.013"
+    subject: requirement:cisa-ai-in-ot-principles-r-0120
+    predicate: addresses
+    object: attack-pattern:nistaml-013
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (NIST AI 100-2 E2025 (March 2025); kind: stated, provenance: ours).
+      Basis: R-0120 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p.
+      20); the statement names "data poisoning".
+  - id: assertion:cisa-ai-in-ot-principles-r-0120--addresses--aml-t0020
+    name: "R-0120 addresses AML.T0020"
+    subject: requirement:cisa-ai-in-ot-principles-r-0120
+    predicate: addresses
+    object: attack-pattern:aml-t0020
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: stated, provenance: ours). Basis:
+      R-0120 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 20);
+      the statement names "data poisoning".
+  - id: assertion:cisa-ai-in-ot-principles-r-0125--addresses--aml-t0122
+    name: "R-0125 addresses AML.T0122"
+    subject: requirement:cisa-ai-in-ot-principles-r-0125
+    predicate: addresses
+    object: attack-pattern:aml-t0122
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0125 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 20);
+      the source's next sentence gives the aim: the AI system is not a persistent attack
+      path into OT.
+  - id: assertion:cisa-ai-in-ot-principles-r-0125--addresses--aml-t0012
+    name: "R-0125 addresses AML.T0012"
+    subject: requirement:cisa-ai-in-ot-principles-r-0125
+    predicate: addresses
+    object: attack-pattern:aml-t0012
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0125 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 20);
+      the source's next sentence gives the aim: the AI system is not a persistent attack
+      path into OT.
+  - id: assertion:cisa-ai-in-ot-principles-r-0126--addresses--aml-t0122
+    name: "R-0126 addresses AML.T0122"
+    subject: requirement:cisa-ai-in-ot-principles-r-0126
+    predicate: addresses
+    object: attack-pattern:aml-t0122
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0126 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 20);
+      one-way transfer removes the return path into OT.
+  - id: assertion:cisa-ai-in-ot-principles-r-0126--addresses--aml-t0012
+    name: "R-0126 addresses AML.T0012"
+    subject: requirement:cisa-ai-in-ot-principles-r-0126
+    predicate: addresses
+    object: attack-pattern:aml-t0012
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03, from the library record's
+      threat mapping (MITRE ATLAS 2026.09; kind: inferred, provenance: ours). Basis:
+      R-0126 (§4.1 Establish Monitoring and Oversight Mechanisms for AI in OT, p. 20);
+      one-way transfer removes the return path into OT.
+  - id: assertion:cisa-ai-in-ot-principles-r-0051--refines--r-0049
+    name: "R-0051 refines R-0049"
+    subject: requirement:cisa-ai-in-ot-principles-r-0051
+    predicate: refines
+    object: requirement:cisa-ai-in-ot-principles-r-0049
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: R-0051 (§2.3
+      Understanding the Role of OT Vendors in AI Integration, p. 14); list item under
+      R-0049 ('This includes:'); one form of the vendor transparency it asks for.
+  - id: assertion:cisa-ai-in-ot-principles-r-0052--refines--r-0049
+    name: "R-0052 refines R-0049"
+    subject: requirement:cisa-ai-in-ot-principles-r-0052
+    predicate: refines
+    object: requirement:cisa-ai-in-ot-principles-r-0049
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: R-0052 (§2.3
+      Understanding the Role of OT Vendors in AI Integration, p. 14); list item under
+      R-0049 ('This includes:'); one form of the vendor transparency it asks for.
+  - id: assertion:cisa-ai-in-ot-principles-r-0053--refines--r-0049
+    name: "R-0053 refines R-0049"
+    subject: requirement:cisa-ai-in-ot-principles-r-0053
+    predicate: refines
+    object: requirement:cisa-ai-in-ot-principles-r-0049
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: R-0053 (§2.3
+      Understanding the Role of OT Vendors in AI Integration, p. 14); list item under
+      R-0049 ('This includes:'); vendor use of operational data.
+  - id: assertion:cisa-ai-in-ot-principles-r-0054--refines--r-0049
+    name: "R-0054 refines R-0049"
+    subject: requirement:cisa-ai-in-ot-principles-r-0054
+    predicate: refines
+    object: requirement:cisa-ai-in-ot-principles-r-0049
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: R-0054 (§2.3
+      Understanding the Role of OT Vendors in AI Integration, p. 14); list item under
+      R-0049 ('This includes:'); vendor connectivity.
+  - id: assertion:cisa-ai-in-ot-principles-r-0055--refines--r-0049
+    name: "R-0055 refines R-0049"
+    subject: requirement:cisa-ai-in-ot-principles-r-0055
+    predicate: refines
+    object: requirement:cisa-ai-in-ot-principles-r-0049
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: R-0055 (§2.3
+      Understanding the Role of OT Vendors in AI Integration, p. 14); list item under
+      R-0049 ('This includes:'); operator control of vendor AI features.
+  - id: assertion:cisa-ai-in-ot-principles-r-0066--refines--r-0065
+    name: "R-0066 refines R-0065"
+    subject: requirement:cisa-ai-in-ot-principles-r-0066
+    predicate: refines
+    object: requirement:cisa-ai-in-ot-principles-r-0065
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: R-0066 (§2.4
+      Evaluate Challenges in AI-OT System Integration, p. 15); sub-item of R-0065; a
+      failsafe is one way to keep control of critical functions.
+  - id: assertion:cisa-ai-in-ot-principles-r-0082--refines--r-0081
+    name: "R-0082 refines R-0081"
+    subject: requirement:cisa-ai-in-ot-principles-r-0082
+    predicate: refines
+    object: requirement:cisa-ai-in-ot-principles-r-0081
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: R-0082 (§3.2
+      Integrating AI Into Existing Security and Cybersecurity Frameworks, p. 17); list
+      item under R-0081 ('These processes include:').
+  - id: assertion:cisa-ai-in-ot-principles-r-0083--refines--r-0081
+    name: "R-0083 refines R-0081"
+    subject: requirement:cisa-ai-in-ot-principles-r-0083
+    predicate: refines
+    object: requirement:cisa-ai-in-ot-principles-r-0081
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: R-0083 (§3.2
+      Integrating AI Into Existing Security and Cybersecurity Frameworks, p. 17); list
+      item under R-0081 ('These processes include:').
+  - id: assertion:cisa-ai-in-ot-principles-r-0086--refines--r-0081
+    name: "R-0086 refines R-0081"
+    subject: requirement:cisa-ai-in-ot-principles-r-0086
+    predicate: refines
+    object: requirement:cisa-ai-in-ot-principles-r-0081
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: R-0086 (§3.2
+      Integrating AI Into Existing Security and Cybersecurity Frameworks, p. 17); list
+      item under R-0081 ('These processes include:').
+  - id: assertion:cisa-ai-in-ot-principles-r-0084--refines--r-0083
+    name: "R-0084 refines R-0083"
+    subject: requirement:cisa-ai-in-ot-principles-r-0084
+    predicate: refines
+    object: requirement:cisa-ai-in-ot-principles-r-0083
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: R-0084 (§3.2
+      Integrating AI Into Existing Security and Cybersecurity Frameworks, p. 17);
+      sub-item of R-0083; a specific logging control.
+  - id: assertion:cisa-ai-in-ot-principles-r-0085--refines--r-0083
+    name: "R-0085 refines R-0083"
+    subject: requirement:cisa-ai-in-ot-principles-r-0085
+    predicate: refines
+    object: requirement:cisa-ai-in-ot-principles-r-0083
+    confidence: high
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: R-0085 (§3.2
+      Integrating AI Into Existing Security and Cybersecurity Frameworks, p. 17);
+      sub-item of R-0083; a specific inspection control.
+  - id: assertion:cisa-ai-in-ot-principles-r-0087--refines--r-0086
+    name: "R-0087 refines R-0086"
+    subject: requirement:cisa-ai-in-ot-principles-r-0087
+    predicate: refines
+    object: requirement:cisa-ai-in-ot-principles-r-0086
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: R-0087 (§3.2
+      Integrating AI Into Existing Security and Cybersecurity Frameworks, p. 17); 'For
+      instance' after R-0086; names the catalogue to use for AI TTPs.
+  - id: assertion:cisa-ai-in-ot-principles-r-0101--derived-from--r-0100
+    name: "R-0101 derived_from R-0100"
+    subject: requirement:cisa-ai-in-ot-principles-r-0101
+    predicate: derived_from
+    object: requirement:cisa-ai-in-ot-principles-r-0100
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: R-0101 (§4.1
+      Establish Monitoring and Oversight Mechanisms for AI in OT, p. 18); follows R-0100
+      and logs 'these components', the AI components R-0100 inventories.
+  - id: assertion:cisa-ai-in-ot-principles-r-0129--refines--r-0128
+    name: "R-0129 refines R-0128"
+    subject: requirement:cisa-ai-in-ot-principles-r-0129
+    predicate: refines
+    object: requirement:cisa-ai-in-ot-principles-r-0128
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: R-0129 (§4.2 Embed
+      Safety and Failsafe Mechanisms, p. 20); 'Therefore' after R-0128; says who adds
+      the failure states.
+  - id: assertion:cisa-ai-in-ot-principles-r-0133--refines--r-0132
+    name: "R-0133 refines R-0132"
+    subject: requirement:cisa-ai-in-ot-principles-r-0133
+    predicate: refines
+    object: requirement:cisa-ai-in-ot-principles-r-0132
+    confidence: medium
+    assertion_status: proposed
+    description: >-
+      Proposed by Claude Code (claude-opus-5-5), 2026-11-03. Basis: R-0133 (§4.2 Embed
+      Safety and Failsafe Mechanisms, p. 20); follows R-0132; names the response steps
+      the plan needs.
+
+reviews: []
