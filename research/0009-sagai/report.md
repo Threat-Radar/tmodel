@@ -7,9 +7,9 @@ description: "Which AI attacks the leading AI-security requirements defend again
 type: research
 category: security
 status: draft
-version: "0.4.1"
+version: "0.4.2"
 date: "2026-09-28"
-updated: "2026-11-03"
+updated: "2026-11-04"
 authors:
   - role: student
     id: Maimcghee
@@ -22,7 +22,7 @@ reviewers: []
 needs_review: true
 reviewed: false
 canonical_path: research/0009-sagai/report.md
-library_commit: "pending (library#40, unmerged: the reference stubs; library#32's FX-1 records are merged)"
+library_commit: "1fca00a (library main, 2026-11-04: library#40's reference stubs, with library#32's FX-1 records)"
 informs: [DEC-001a, DEC-001b, DEC-008, R-018]
 open_decisions: [DEC-001b, DEC-008]
 issue: 189
@@ -30,15 +30,16 @@ issue: 189
 
 # RPT-0009: SAGAI and related AI-security specifications
 
-**Status: draft 0.4.1.** Done:
+**Status: draft 0.4.2.** Done:
 - the SAGAI papers (§2);
 - full extractions of ETSI EN 304 223 and of CISA's AI-in-OT principles, with every entry mapped to AI attack classes (library#32);
 - one worked example, EchoLeak (§5);
 - every source traced to a library record or a written reason it has none, and arXiv 2512.01295 confirmed as SAGAI'25's report (0.3.1);
 - an adversarial review by a fresh agent, with its findings fixed or rejected in DL-0006, a clarity pass and a second, narrower review of the fixes (0.4.0, #189);
-- a human technical review of 0.4.0 by @Clovier, whose two wording fixes are in 0.4.1 (DL-0006).
+- a human technical review of 0.4.0 by @Clovier, whose two wording fixes are in 0.4.1 (DL-0006);
+- the library pin, `1fca00a`, after library#40 merged (0.4.2).
 
-Not yet done: the reviewer's approval, which waits on the library pin (library#40). Related guidance (§6) is held as stubs, not extracted. This report accepts nothing; each recommendation routes to an open `DEC-*`, an accepted ADR's follow-up work, or an issue.
+Not yet done: the reviewer's approval of 0.4.2. Related guidance (§6) is held as stubs, not extracted. This report accepts nothing; each recommendation routes to an open `DEC-*`, an accepted ADR's follow-up work, or an issue.
 
 **Abstract.** Which AI attacks do the leading AI-security requirements defend against, and what must tmodel represent to model those attacks? This report maps the 73 entries of ETSI EN 304 223 and the 136 of CISA's *Principles for the Secure Integration of AI in OT* onto the attack classes of NIST AI 100-2 E2025 and the techniques of MITRE ATLAS. It reads the SAGAI workshop papers for the threats and defenses research has established, and tests both on one documented attack, EchoLeak (CVE-2025-32711).
 - **What the requirements cover.** Poisoning, privacy, supply chain and conventional cyber security.
@@ -515,4 +516,4 @@ The acronyms and document-id prefixes used in this report.
 | TCB | Trusted computing base |
 | XPIA | Cross-prompt injection attack, Microsoft's term for indirect prompt injection |
 
-**References** are in [sources.md](sources.md), and the library records named above. The library commit is pinned when library#40 merges.
+**References** are in [sources.md](sources.md), and the library records named above. The library commit is `1fca00a`, the merge of library#40.

@@ -4,9 +4,9 @@ id: DL-0006
 title: "RPT-0009 SAGAI — AI-assisted source gathering and paper summaries"
 type: process
 status: draft
-version: "0.5.1"
+version: "0.5.2"
 date: "2026-10-01"
-updated: "2026-11-03"
+updated: "2026-11-04"
 record: DL-0006
 ---
 
@@ -302,3 +302,7 @@ The review found no errors. Its two optional wording fixes were both accepted:
 - **§9:** "Questions 1 to 6 are also in library#32" now says 3 and 6 are restated here.
 
 The reviewer will approve after library#40 merges and the `library_commit` pin is updated, so that the approval is not dismissed by that push. em-01's M0026 question (above) was not taken up and stays open.
+
+**Second comment (2026-11-04).** @Clovier confirmed both fixes, and noted that three commits on the branch (`1f15fa3`, `2a45c45`, `e4b0bd0`) had no `Signed-off-by` line, as CONTRIBUTING.md §9's DCO requires. Both are fixed in report 0.4.2:
+- `library_commit` is pinned to `1fca00a`, library#40's merge on library `main`;
+- the branch was rebased with `--signoff`, which adds the line without changing any file. The tree hash before and after the rebase is the same.
