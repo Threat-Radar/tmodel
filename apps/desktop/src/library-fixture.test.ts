@@ -4,7 +4,7 @@ import { parseTableResponse } from "./engine-library-provider";
 import { FixtureLibraryDataProvider } from "./library-fixture";
 
 describe("library fixture contract", () => {
-  it("matches PR #188's response contract and contains the 12 sample records", () => {
+  it("matches the library table response contract and contains the 12 sample records", () => {
     const response = parseTableResponse(fixture);
 
     expect(response.rows).toHaveLength(12);

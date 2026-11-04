@@ -113,10 +113,11 @@ def library_table(query: Mapping[str, str] | None = None) -> dict[str, Any]:
     topic or tags; `sort`, one of TABLE_SORTS (default `id`); `order`, `asc` or
     `desc`; and `limit` and `offset` for paging. Records without a value for the
     sort field come last in both orders, and ties keep id order. `total` counts
-    the matches before paging. `facets` retains PR #188's whole-library counts.
-    `contextual_facets` applies the current search and the other exact filters,
-    excluding each facet's own filter so a user can switch its selection. The
-    payload names no local path, so a saved copy is the same on every machine.
+    the matches before paging. `facets` contains whole-library counts for type,
+    status, and topic. `contextual_facets` applies the current search and the
+    other exact filters, excluding each facet's own filter so a user can switch
+    its selection. The payload names no local path, so a saved copy is the same
+    on every machine.
     """
     values = _values(query or {}, LIBRARY_FILTERS + TABLE_OPTIONS, "parameter")
     sort = values.get("sort", "id")

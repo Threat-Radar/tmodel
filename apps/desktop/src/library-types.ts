@@ -1,5 +1,10 @@
-export type LibrarySort = "title" | "type" | "status" | "topic" | "date";
+export const LIBRARY_SORTS = ["title", "type", "status", "topic", "date"] as const;
+export type LibrarySort = typeof LIBRARY_SORTS[number];
 export type SortOrder = "asc" | "desc";
+
+export function isLibrarySort(value: string): value is LibrarySort {
+  return (LIBRARY_SORTS as readonly string[]).includes(value);
+}
 
 export interface LibraryTableQuery {
   search?: string;
@@ -45,9 +50,9 @@ export interface LibraryTableResponse {
   total: number;
   count: number;
   rows: readonly LibraryTableRow[];
-  /** PR #188's original whole-library counts. */
+  /** Whole-library counts for type, status, and topic. */
   facets: LibraryFacets;
-  /** Counts under the current search and other filters, excluding each facet's own filter. */
+  /** Counts constrained by search and other filters, excluding each facet's own filter. */
   contextual_facets: LibraryFacets;
 }
 

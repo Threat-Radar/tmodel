@@ -179,6 +179,25 @@ describe("library documents view", () => {
     expect(link?.getAttribute("rel")).toBe("noopener noreferrer");
   });
 
+  it.each([
+    "file:///private/sensitive-document",
+    "mailto:reviewer@example.test",
+    "javascript:alert('unsafe')",
+  ])("omits a source link for unsupported URL %s", async (sourceUrl) => {
+    const provider = providerFor(tableResponse(["unsafe-source"]));
+    provider.getRecord = vi.fn(async () => ({
+      ...details("unsafe-source", null),
+      content: { url: sourceUrl },
+    }));
+    const { view, elements } = viewHarness(provider);
+    view.activate();
+    await settle();
+
+    await view.selectRecord("unsafe-source");
+
+    expect(detailLabels(elements.detailList)).not.toContain("Source URL");
+  });
+
   it("shows exact reviewed and unreviewed artifact counts only when evidence exists", async () => {
     const provider = providerFor(tableResponse(["evidence"]));
     provider.getRecord = vi.fn(async () => ({

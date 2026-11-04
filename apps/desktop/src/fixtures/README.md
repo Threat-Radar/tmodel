@@ -21,11 +21,11 @@ The answer has six parts:
 | `query` | the filters, search, sort, order, limit and offset the answer used |
 | `total`, `count` | matches before paging, and rows in this answer |
 | `rows` | one row per record: id, title, short title, type, shelf, status, maturity, date, publisher, topic, tags, url, artifact counts and extraction profile |
-| `facets` | PR #188's original whole-library counts for each type, status and topic |
-| `contextual_facets` | counts after the current search and other active filters; each facet excludes its own filter so users can switch selections |
+| `facets` | whole-library counts for type, status and topic |
+| `contextual_facets` | counts constrained by the active search and other filters; each facet excludes its own filter so users can switch selections |
 
 `contextual_facets` is a backward-compatible response addition for #58. The
 meaning of `facets` does not change, so existing API clients continue to receive
-the whole-library counts defined by PR #188.
+whole-library counts.
 
 `GET /library?id=<record id>` returns one record in full, for a details view.

@@ -32,7 +32,7 @@ describe("engine library provider", () => {
     expect(result.rows.map((row) => row.id)).toEqual(["second", "first"]);
   });
 
-  it("uses contextual facets and falls back to PR #188 facets from an older engine", () => {
+  it("uses contextual facets and falls back to whole-library facets from an older engine", () => {
     const current = tableResponse(["one"]);
     current.facets.type = { paper: 12 };
     current.contextual_facets.type = { rfc: 1 };
@@ -64,7 +64,7 @@ describe("engine library provider", () => {
           kind: "requirements",
           path: "requirements.yaml",
           coverage: "full",
-          reviewed_by: "Ty",
+          reviewed_by: "test-reviewer",
           generated_from: null,
           reviewed: true,
         }],
@@ -171,7 +171,7 @@ describe("engine library provider", () => {
           kind: "requirements",
           path: "requirements.yaml",
           coverage: "full",
-          reviewed_by: "Ty",
+          reviewed_by: "test-reviewer",
           generated_from: null,
           reviewed: "yes",
         }],

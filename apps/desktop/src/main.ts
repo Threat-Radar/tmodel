@@ -67,14 +67,16 @@ window.addEventListener("DOMContentLoaded", () => {
   }, {
     libraryActivated: () => {
       graphVisible = false;
+      graph.view.setVisible(false);
       libraryView.activate();
     },
     graphActivated: () => {
       graphVisible = true;
-      if (graph.startup.started) requestAnimationFrame(() => graph.view.resize());
-      else if (graph.usesEngine && lastEngineState) {
+      graph.view.setVisible(true);
+      requestAnimationFrame(() => graph.view.resize());
+      if (!graph.startup.started && graph.usesEngine && lastEngineState) {
         void graph.startup.engineStateChanged(lastEngineState);
-      } else if (!graph.usesEngine) {
+      } else if (!graph.startup.started && !graph.usesEngine) {
         void graph.startup.startNow();
       }
     },

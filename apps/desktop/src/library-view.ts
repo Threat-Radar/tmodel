@@ -7,7 +7,7 @@ import type {
   LibraryTableRow,
 } from "./library-types";
 import type { EngineState } from "./engine";
-import { DEFAULT_LIBRARY_QUERY } from "./library-types";
+import { DEFAULT_LIBRARY_QUERY, isLibrarySort } from "./library-types";
 import { LatestRequestGuard } from "./request-guard";
 
 const SEARCH_DELAY_MS = 250;
@@ -514,10 +514,6 @@ function isExternalSourceUrl(value: string): boolean {
 function displayKey(value: string): string {
   const words = value.replace(/_/g, " ");
   return words.charAt(0).toUpperCase() + words.slice(1);
-}
-
-function isLibrarySort(value: string): value is LibrarySort {
-  return ["title", "type", "status", "topic", "date"].includes(value);
 }
 
 function textCell(root: Document, text: string): HTMLTableCellElement {
