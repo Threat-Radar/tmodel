@@ -4,6 +4,9 @@ name: schema
 # 2. Every example vector validates against its container.
 # 3. Every id-reference in the MVP core vectors resolves (linkml-validate does
 #    not check references between objects; DL-0021).
+# 4. Every requirement extraction file (research/0017-requirements-extraction,
+#    #169) validates against the core container, its references resolve, and it
+#    keeps the extraction rules (check.py); the converter's tests pass.
 # GitHub runners only, no cloud services (APP-0001 A-043).
 
 on:
@@ -13,6 +16,7 @@ on:
       - "spec/vectors/**"
       - "bin/gen-schema"
       - "design-log/0021-mvp-core-attack-path-vectors/check-edges.py"
+      - "research/0017-requirements-extraction/**"
       - ".github/workflows/schema.yml"
   push:
     branches: [main]
@@ -21,6 +25,7 @@ on:
       - "spec/vectors/**"
       - "bin/gen-schema"
       - "design-log/0021-mvp-core-attack-path-vectors/check-edges.py"
+      - "research/0017-requirements-extraction/**"
       - ".github/workflows/schema.yml"
 
 concurrency:
@@ -57,3 +62,19 @@ jobs:
           done
       - name: MVP core vectors, references resolve
         run: python3 design-log/0021-mvp-core-attack-path-vectors/check-edges.py spec/vectors/mvp-*.yaml
+      - name: Requirement extraction files validate (core container)
+        run: |
+          shopt -s nullglob
+          for f in research/0017-requirements-extraction/*.yaml; do
+            echo "== $f"
+            linkml-validate -s spec/vectors/example-container-core.linkml.yaml -C ExampleModelCore "$f"
+          done
+      - name: Requirement extraction files, references resolve and rules hold
+        run: |
+          shopt -s nullglob
+          files=(research/0017-requirements-extraction/*.yaml)
+          if [ ${#files[@]} -eq 0 ]; then echo "no extraction files"; exit 0; fi
+          python3 design-log/0021-mvp-core-attack-path-vectors/check-edges.py "${files[@]}"
+          python3 research/0017-requirements-extraction/check.py "${files[@]}"
+      - name: Requirement converter tests
+        run: python3 -B research/0017-requirements-extraction/test_convert.py
