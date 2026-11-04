@@ -1,16 +1,16 @@
 ---
 schema: "archdoc/v1"
-id: DL-0025
+id: DL-0033
 title: "RPT-0002 v0.2: Attack Flow, surveys, STRIDE origin, evidence, gap analysis, adversarial review"
 type: process
 status: draft
 version: "0.1.0"
 date: "2026-10-22"
 updated: "2026-10-22"
-record: DL-0025
+record: DL-0033
 ---
 
-# DL-0025: RPT-0002 v0.2, threat model frameworks
+# DL-0033: RPT-0002 v0.2, threat model frameworks
 
 AI-assisted research record for the RPT-0002 v0.2 story in #36, per `CLAUDE.md`.
 Student: @paria03, working with Claude Code. Report:
