@@ -4,18 +4,18 @@ id: DL-0033
 title: "RPT-0002 v0.2: Attack Flow, surveys, STRIDE origin, evidence, gap analysis, adversarial review"
 type: process
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 date: "2026-10-22"
-updated: "2026-10-22"
+updated: "2026-11-03"
 record: DL-0033
 ---
 
 # DL-0033: RPT-0002 v0.2, threat model frameworks
 
 AI-assisted research record for the RPT-0002 v0.2 story in #36, per `CLAUDE.md`.
-Student: @paria03, working with Claude Code. Report:
-`research/0002-threat-model-frameworks/report.md`; library records on the library
-branch `topic/rpt-0002-v0.2`. Every claim an agent returned was re-checked by hand
+Student: @paria03. Report:
+`research/0002-threat-model-frameworks/report.md`; library records merged in
+Threat-Radar/library#30. Every claim an agent returned was re-checked by hand
 against its source before it entered a record or the report; the rejections below
 are the evidence of that check.
 
@@ -240,3 +240,29 @@ numbers and §11 items 1–7 (G1–G6) are unchanged.
 |---|---|---|---|
 | tmodel described as "the project's threat-modeling knowledge graph" | editing agent | corrected | tmodel is a threat-modeling tool built on a knowledge graph |
 | British spelling, chosen by the editing agent as the report's majority form | editing agent | changed | @paria03 chose American spelling throughout, matching "modeling" in the project's name; quotations, titles, record ids and links were left as written |
+
+## PR preparation (2026-11-03)
+
+@paria03 requested the remaining #36 preparation and a report PR. Library #30
+has merged. The report's `library_commit` and the submodule pin now both name
+`f1443afa4519d1f5df1f6f809be973756176e796`, the merge containing its references.
+This advances the existing pin; no library records are authored in this change.
+The identical untracked search-log copy was archived outside the repository.
+The research index identifies the report as draft 0.2.0, and this log uses
+DL-0033 to avoid colliding with the existing Requirement design log DL-0025.
+
+The substantive corrections and the clarity pass are recorded above. The larger
+analysis listed under "Deferred to the next iteration" remains deferred. Human
+review of the completed report, including a cold read of its overview and
+conclusion, remains pending. This preparation does not mark the report reviewed.
+
+Validation before opening the PR:
+
+- All 27 source-table record IDs resolve in the pinned library.
+- Library validation: 601 records, 23 topics, 0 errors and 112 warnings. The
+  warnings are reported by the already merged library snapshot; no library
+  record changes are included in the tmodel PR.
+- Engine library-loader regression tests: 36 passed, including the full pinned
+  library.
+- Archdoc: 25 documents, 0 errors. Publishing identity and relative-link checks
+  pass for all 423 published pages; `git diff --check` passes.

@@ -9,7 +9,7 @@ category: security
 status: draft
 version: "0.2.0"
 date: "2026-09-28"
-updated: "2026-10-22"
+updated: "2026-11-03"
 authors:
   - role: student
     id: paria03
@@ -24,7 +24,7 @@ reviewers:
 needs_review: true
 reviewed: false
 canonical_path: research/0002-threat-model-frameworks/report.md
-library_commit: "see library/ submodule pointer at time of merge"
+library_commit: "f1443afa4519d1f5df1f6f809be973756176e796"
 issue: "Threat-Radar/tmodel#6 (v0.1); Threat-Radar/tmodel#36 (v0.2)"
 informs: [DEC-001a, DEC-002, DEC-003, DEC-005]
 open_decisions: []
