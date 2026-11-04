@@ -1,0 +1,66 @@
+# Paper: arXiv preprint v2 (summarized here); version of record in ACM AISec '23.
+# WAVE 1 calibration, lane supply-chain-infra (tmodel#134, part of #80).
+schema: "library-record/v1"
+id: greshake-2023-indirect-prompt-injection
+body: academic
+type: paper
+title: "Not what you've signed up for: Compromising Real-World LLM-Integrated Applications with Indirect Prompt Injection"
+short_title: "Not what you've signed up for"
+authors:
+  - "Kai Greshake"
+  - "Sahar Abdelnabi"
+  - "Shailesh Mishra"
+  - "Christoph Endres"
+  - "Thorsten Holz"
+  - "Mario Fritz"
+date: "2023-05-05"
+version: "v2"
+publisher: "Authors at CISPA Helmholtz Center for Information Security, Saarland University and sequire technology (arXiv) / ACM (AISec '23 proceedings)"
+venue: "AISec '23: 16th ACM Workshop on Artificial Intelligence and Security, held with ACM CCS '23, pp. 79-90"
+identifiers:
+  arxiv: "2302.12173"
+  doi: "10.1145/3605764.3623985"
+  url: https://arxiv.org/abs/2302.12173
+content:
+  url: https://arxiv.org/pdf/2302.12173v2
+  sha256: "428e23e8c7e4f89310e113e38d082b3f65548a8b887188ebc536099061800e81"
+  retrieved: "2026-10-29"
+  local: false
+  media_type: application/pdf
+  pages: 33
+relations:
+  supersedes: []
+  superseded_by: []
+  see_also: []
+  cited_by:
+    - nist-ai-100-2-e2025
+    - spotlighting-indirect-prompt-injection
+  implements_concept: []
+bears_on:
+  - DEC-001a
+applicability:
+  security: core
+  cryptography: none
+  this_project: adjacent
+implementations:
+  open_source:
+    - name: greshake/llm-security
+      url: https://github.com/greshake/llm-security
+      license: MIT
+      note: "the paper's demonstration code and prompts (footnote 1; footnote 11's lm-safety address redirects here)"
+  commercial: []
+  searched: "2026-10-29"
+usefulness:
+  verdict: useful
+  reason: "Introduced indirect prompt injection: AIT-064 lists it first, CWE-1427 cites it (REF-1452) and NIST AI 100-2e2025 cites it for six of its indirect prompt injection ids."
+  assessed: "2026-10-29"
+topic: ai-threat-model-supply-chain-infra
+tags:
+  - prompt-injection
+  - rag-security
+  - agent-security
+  - ai-threat-model
+  - evidence
+status: summarized
+confidence: medium
+owner: Clovier
