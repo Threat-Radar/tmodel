@@ -305,4 +305,4 @@ The reviewer will approve after library#40 merges and the `library_commit` pin i
 
 **Second comment (2026-11-04).** @Clovier confirmed both fixes, and noted that three commits on the branch (`1f15fa3`, `2a45c45`, `e4b0bd0`) had no `Signed-off-by` line, as CONTRIBUTING.md §9's DCO requires. Both are fixed in report 0.4.2:
 - `library_commit` is pinned to `1fca00a`, library#40's merge on library `main`;
-- the branch was rebased with `--signoff`, which adds the line without changing any file. The tree hash before and after the rebase is the same.
+- the branch was rebased with `--signoff`, which adds the line without changing any file. The tree hash before and after the rebase is the same. The three commits are now `b6a0272`, `f71377b` and `c900957`. The older ids cited above (`1f15fa3`, `2a45c45`) are the first two of them before the rebase.
