@@ -4,9 +4,9 @@ id: DL-0028
 title: "Packaging review fixes for PR #155"
 type: process
 status: draft
-version: "0.2.1"
+version: "0.2.2"
 date: "2026-10-29"
-updated: "2026-10-30"
+updated: "2026-11-03"
 record: DL-0028
 defers_to: ARCH-0001
 ---
@@ -128,3 +128,26 @@ account remain necessary to close #124. Notarization remains untested.
   permission was not granted. @paria03 subsequently reported that the local
   manual test passed. A tagged draft release, download on a clean account, and
   Developer ID notarization remain untested.
+
+## Retest after pulling main (2026-11-03)
+
+@paria03 requested a fresh installer before publication. The code at `a469b35`
+includes the pulled library API/table work and preserves the packaged example
+lookup. The engine was rebuilt with Python 3.13.1, followed by the release app
+and `.dmg`. No implementation changes were needed for this retest.
+
+The installer was mounted read-only. Its app passed deep strict codesign
+verification, its notice matched the source file, and a copy was placed outside
+the checkout for manual testing. The engine suite used the signed sidecar from
+that installer copy: 237 tests passed, including all five packaging checks;
+two full-library checks skipped because the submodule is not initialized in
+this worktree. Both bundled example graphs and stdin-close cleanup passed.
+
+Frontend: 137 tests, TypeScript checking and production build passed. Rust:
+four tests, formatting and clippy with warnings denied passed. Engine lint and
+formatting, archdoc, workflow linting (without ShellCheck), publishing identity
+and relative-link checks, and `git diff --check` passed.
+
+The successful manual test recorded above applies to the October 30 build.
+Manual testing of this rebuilt installer is pending. The tagged-release and
+clean-account acceptance checks remain outstanding; #124 stays open.
