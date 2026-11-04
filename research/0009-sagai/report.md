@@ -7,9 +7,9 @@ description: "Which AI attacks the leading AI-security requirements defend again
 type: research
 category: security
 status: draft
-version: "0.4.0"
+version: "0.4.1"
 date: "2026-09-28"
-updated: "2026-11-02"
+updated: "2026-11-03"
 authors:
   - role: student
     id: Maimcghee
@@ -30,14 +30,15 @@ issue: 189
 
 # RPT-0009: SAGAI and related AI-security specifications
 
-**Status: draft 0.4.0.** Done:
+**Status: draft 0.4.1.** Done:
 - the SAGAI papers (§2);
 - full extractions of ETSI EN 304 223 and of CISA's AI-in-OT principles, with every entry mapped to AI attack classes (library#32);
 - one worked example, EchoLeak (§5);
 - every source traced to a library record or a written reason it has none, and arXiv 2512.01295 confirmed as SAGAI'25's report (0.3.1);
-- an adversarial review by a fresh agent, with its findings fixed or rejected in DL-0006, and a clarity pass (0.4.0, #189).
+- an adversarial review by a fresh agent, with its findings fixed or rejected in DL-0006, a clarity pass and a second, narrower review of the fixes (0.4.0, #189);
+- a human technical review of 0.4.0 by @Clovier, whose two wording fixes are in 0.4.1 (DL-0006).
 
-Not yet done: a second, narrower review of the fixes, and a human technical review. Related guidance (§6) is held as stubs, not extracted. This report accepts nothing; each recommendation routes to an open `DEC-*`, an accepted ADR's follow-up work, or an issue.
+Not yet done: the reviewer's approval, which waits on the library pin (library#40). Related guidance (§6) is held as stubs, not extracted. This report accepts nothing; each recommendation routes to an open `DEC-*`, an accepted ADR's follow-up work, or an issue.
 
 **Abstract.** Which AI attacks do the leading AI-security requirements defend against, and what must tmodel represent to model those attacks? This report maps the 73 entries of ETSI EN 304 223 and the 136 of CISA's *Principles for the Secure Integration of AI in OT* onto the attack classes of NIST AI 100-2 E2025 and the techniques of MITRE ATLAS. It reads the SAGAI workshop papers for the threats and defenses research has established, and tests both on one documented attack, EchoLeak (CVE-2025-32711).
 - **What the requirements cover.** Poisoning, privacy, supply chain and conventional cyber security.
@@ -90,7 +91,7 @@ Table 2 gives the number of entries mapped to each NIST AI 100-2 E2025 class; on
 Read across the rows:
 - **Prompt injection is reached only by inference.** ETSI names "indirect prompt injection" once, in its Introduction's list of AI-specific risks (p. 5), and CISA names "prompt injection" once, in Table 2. None of the 10 entries mapped to a prompt-injection class (5 in each document) names the attack itself. ETSI's guide TR 104 128 does name it, in its examples for 15 of the EN's provisions (§3).
 - **Supply chain is covered, but never by name as an attack.** ETSI's Principle 7 (secure the supply chain) and CISA §2.3 (vendor transparency, including an SBOM that covers AI) are mapped to supply-chain attacks by us, not by the documents.
-- **Much of what CISA maps is operational risk, not AI attacks.** Of the 50 CISA entries with an attack class, 18 concern drift, explainability, operator load or skills, and 16 concern conventional cyber security around the AI.
+- **Much of what CISA maps is operational risk, not AI attacks.** Of the 50 CISA entries outside the "No attack mapped" row, 18 concern drift, explainability, operator load or skills, and 16 concern conventional cyber security around the AI.
 - **Much of each document maps to no attack**: 38 of ETSI's 73 entries (52%) and 86 of CISA's 136 (63%) are governance, documentation and process duties. For CISA, 79 of the 86 have no mapping at all, and 7 link only to a framework, not to an attack class (R-0017, R-0018, R-0021, R-0027, R-0037, R-0087, R-0096).
 
 ## 1. Target and family map
@@ -453,7 +454,7 @@ Each row is evidence for the decision or issue it routes to; none is a decision.
 7. *(Answered in 0.3.1.)* arXiv 2512.01295 is the SAGAI'25 research-challenges document: its v1 says so (§2.5).
 8. ATLAS 2026.10 removes four ids the records use and renames others, including the T0010 family the records use and M0026, which em-01 uses (§6). Should the records and em-01 move to 2026.10 now, or stay on 2026.09 until ATLAS is extracted?
 
-Questions 1 to 6 are also in library#32.
+Questions 1 to 6 began in library#32; 3 and 6 are restated here.
 
 ## 10. Method and limits
 

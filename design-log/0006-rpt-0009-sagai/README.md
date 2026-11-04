@@ -4,9 +4,9 @@ id: DL-0006
 title: "RPT-0009 SAGAI — AI-assisted source gathering and paper summaries"
 type: process
 status: draft
-version: "0.5.0"
+version: "0.5.1"
 date: "2026-10-01"
-updated: "2026-11-02"
+updated: "2026-11-03"
 record: DL-0006
 ---
 
@@ -285,3 +285,20 @@ A second fresh agent reviewed only the fixes (tmodel `84da598..1f15fa3`, library
 - **Deferred: F-28.** The parent did not confirm the review's reading of CWE-1426's guidance about prompt injection.
 - **Not renumbered: the duplicate DL-0006.** `design-log/0006-iteration5-research-fold` and this entry share the id. Renumbering either would retarget existing citations, so the report cites this one by path. The repo owners can decide which keeps the number.
 - **Passed on:** for RPT-0014 (#71), TS 104 050 updates and extends its GR SAI 001 entry, and ATLAS 2026.10 changes ids it may use.
+
+## Human technical review, report 0.4.1 (2026-11-03)
+
+@Clovier reviewed tmodel#195 at `2a45c45` (report 0.4.0, with the second review's fixes) and re-checked its claims against the sources:
+- NIST AI 100-2 E2025 §3.4.2 and §3.4.3 (knowledge base poisoning, NISTAML.036, NISTAML.039);
+- ATLAS 2026.09 against 2026.10: the removed ids, the T0010 and M0026 renames, M0020's new links, and CS0059's steps and attribution;
+- TR 104 128 clause 6: prompt injection for the same 15 provisions, RAG for 11, exfiltration for 2, and nothing on rendering or markdown. This confirms R-01's count independently;
+- the TS 104 050, GWU case study, SAGAI'25 and SAGAI'26 quotes, CVE-2025-32711's references and CWE, the two library#32 records' `maps_to`, and ADR-0012's status;
+- no teammate's real name in the five files.
+
+### What a human accepted
+
+The review found no errors. Its two optional wording fixes were both accepted:
+- **Table 2's read-across:** "Of the 50 CISA entries with an attack class" contradicted the "Not an attack" row those 18 belong to. The review suggested "with any mapping"; the report says "outside the 'No attack mapped' row" instead, because 7 more entries link only to a framework (the next bullet), so "any mapping" would count 57.
+- **§9:** "Questions 1 to 6 are also in library#32" now says 3 and 6 are restated here.
+
+The reviewer will approve after library#40 merges and the `library_commit` pin is updated, so that the approval is not dismissed by that push. em-01's M0026 question (above) was not taken up and stays open.
