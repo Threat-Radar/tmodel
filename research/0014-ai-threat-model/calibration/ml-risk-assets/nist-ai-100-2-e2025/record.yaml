@@ -99,7 +99,7 @@ implementations:
   searched: "2026-11-01"
 usefulness:
   verdict: useful
-  reason: "Attacker objective/capability/knowledge vocabulary and 30 NISTAML attack-class ids, with the capabilities each class needs; an attack taxonomy, not a weakness enumeration, with no asset model and no machine-readable form."
+  reason: "Attacker objective/capability/knowledge vocabulary and 30 NISTAML ids (25 attack classes, plus 5 top-level ids for the attacker objectives and supply-chain attacks), with the capabilities each class needs; an attack taxonomy, not a weakness enumeration, with no asset model and no machine-readable form."
   assessed: "2026-11-01"
 topic: ai-threat-model-ml-risk-assets
 tags:
