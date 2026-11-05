@@ -12,6 +12,7 @@ on:
       - "apps/**"
       - "bin/build-engine"
       - ".github/workflows/app.yml"
+      - ".github/workflows/release.yml"
   push:
     branches: [main]
     paths:
@@ -20,6 +21,7 @@ on:
       - "apps/**"
       - "bin/build-engine"
       - ".github/workflows/app.yml"
+      - ".github/workflows/release.yml"
 
 concurrency:
   group: app-${{ github.ref }}
@@ -102,13 +104,9 @@ jobs:
       - name: Build the engine sidecar (#124)
         working-directory: .
         run: bin/build-engine
-      - name: Test the bundled engine
+      - name: Install bundle test dependencies
         working-directory: .
-        env:
-          TMODEL_PACKAGED_ENGINE: ${{ github.workspace }}/apps/desktop/src-tauri/binaries/tmodel-engine-aarch64-apple-darwin
-        run: |
-          python -m pip install 'pytest>=8'
-          python -m pytest -q engine/tests/test_packaging.py
+        run: python -m pip install 'pytest>=8'
       - name: Install
         run: npm ci
       - name: Build frontend
@@ -122,5 +120,13 @@ jobs:
       - name: Rust tests
         working-directory: apps/desktop/src-tauri
         run: cargo test
-      - name: Build app (debug, unbundled)
-        run: npx tauri build --debug --no-bundle
+      - name: Build app bundle (debug)
+        run: CI=true npx tauri build --debug --bundles app
+      - name: Check installed app resources
+        working-directory: .
+        run: |
+          app=apps/desktop/src-tauri/target/debug/bundle/macos/tmodel.app
+          codesign --verify --deep --strict "$app"
+          cmp apps/desktop/THIRD_PARTY_NOTICES.md "$app/Contents/Resources/THIRD_PARTY_NOTICES.md"
+          TMODEL_PACKAGED_ENGINE="$PWD/$app/Contents/MacOS/tmodel-engine" \
+            python -m pytest -q engine/tests/test_packaging.py

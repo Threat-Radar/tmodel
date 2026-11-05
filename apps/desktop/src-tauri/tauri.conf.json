@@ -40,6 +40,9 @@
     "externalBin": [
       "binaries/tmodel-engine"
     ],
+    "resources": {
+      "../THIRD_PARTY_NOTICES.md": "THIRD_PARTY_NOTICES.md"
+    },
     "macOS": {
       "signingIdentity": "-",
       "minimumSystemVersion": "11.0",
