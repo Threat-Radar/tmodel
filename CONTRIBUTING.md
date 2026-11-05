@@ -232,14 +232,51 @@ lets the one-file engine load the Python it unpacks at launch under the hardened
 runtime. The app also carries the Cytoscape MIT notice at
 `tmodel.app/Contents/Resources/THIRD_PARTY_NOTICES.md`.
 
-**Releases.** Pushing a tag `vX.Y.Z` (matching `version` in `tauri.conf.json`;
-`vX.Y.Z-rc.N` for a test) runs `.github/workflows/release.yml`: it builds the
-`.dmg` on a macOS runner, checks it, and attaches it with a SHA-256 file to a
-**draft** GitHub Release that a maintainer publishes. Release-candidate tags (`vX.Y.Z-rc.N`) create draft prereleases.
-With the `APPLE_*` secrets
-listed in that workflow it also signs with a Developer ID and notarizes; without
-them the app stays ad-hoc signed. Dependency installation runs before signing
-credentials are exposed; credentials are scoped to the app build step.
+**Releases and supply chain.** `.github/workflows/release.yml` builds the
+`.dmg` on a GitHub-hosted macOS runner, checks the bundle, and publishes it with
+a `.sha256` file and an SPDX SBOM (`.spdx.json`, taken from the lockfiles):
+
+| trigger | result |
+|---|---|
+| tag `vX.Y.Z` (matching `version` in `tauri.conf.json`) | **draft** release that a maintainer reviews and publishes |
+| tag `vX.Y.Z-rc.N` | draft **prerelease** |
+| merge to `main` touching `apps/`, `engine/`, `spec/vectors/` or the build | rolling prerelease [`latest-main`](https://github.com/Threat-Radar/tmodel/releases/tag/latest-main): its tag moves to the new commit and its assets are replaced; the build is named `<version>-main.<sha7>` (#203) |
+| manual run (`workflow_dispatch`) | workflow artifact only |
+| pull request touching the app | `app.yml` uploads an ad-hoc-signed debug `.app` (zip) as a workflow artifact, kept 7 days (#205) |
+
+The `build` job can only read the repository and mint an OIDC token; it signs a
+[SLSA build provenance](https://slsa.dev/spec/v1.0/provenance) attestation for
+the `.dmg`, the bundled engine (`tmodel.app/Contents/MacOS/tmodel-engine`) and
+the SBOM with `actions/attest-build-provenance` (Sigstore, stored on this repo).
+A separate `publish` job, which never runs build tools, holds the token that
+writes releases. All third-party actions are pinned to commit SHAs; checkouts
+do not keep their token; `npm ci` and `cargo fetch --locked` hold the build to
+the lockfiles. With the `APPLE_*` secrets listed in the workflow the app is also
+signed with a Developer ID and notarized; without them it stays ad-hoc signed.
+Dependency installation runs before signing credentials are exposed; credentials
+are scoped to the app build step.
+
+*SLSA level: Build L2* (hosted build platform, signed provenance that anyone can
+verify), with most of L3's isolation from GitHub-hosted runners and the split
+jobs. It is not L3: the provenance comes from a step inside the build job, not
+an isolated reusable workflow, and the build is neither hermetic nor
+reproducible (rust, npm and pip caches; a floating `stable` Rust toolchain;
+engine dependencies installed without hashes). Not signed with a Developer ID
+yet, so Gatekeeper cannot vouch for it; the provenance is the integrity check.
+
+*Download and verify* (needs the GitHub CLI, `gh`):
+
+```sh
+gh release download latest-main -R Threat-Radar/tmodel -p '*.dmg' -p '*.sha256'   # or a version tag
+shasum -a 256 -c tmodel_*_aarch64.dmg.sha256
+gh attestation verify tmodel_*_aarch64.dmg -R Threat-Radar/tmodel
+# after installing, the engine inside the app verifies too:
+gh attestation verify /Applications/tmodel.app/Contents/MacOS/tmodel-engine -R Threat-Radar/tmodel
+```
+
+`gh attestation verify` checks that the file was built by a workflow in this
+repository and prints the workflow, commit and trigger. Then open the `.dmg`,
+drag tmodel to Applications and, on first launch, use **Open Anyway** (below).
 
 **Packaging acceptance (#124).** Keep the issue open after the implementation
 merges until a test version tag has produced the draft release and a downloaded
