@@ -8,6 +8,11 @@ cd "$(git rev-parse --show-toplevel)"
 [ -f library/bin/_record_html.py ] || {
   echo "library submodule missing bin/_record_html.py — git submodule update --init" >&2; exit 1; }
 python3 docs/publishing/render_report.py
+# The TARA pages read the example models through the engine, which needs PyYAML:
+# the engine's environment (CONTRIBUTING §10) when it exists, else python3.
+tara_py=python3
+[ -x engine/.venv/bin/python ] && tara_py=engine/.venv/bin/python
+"$tara_py" docs/publishing/render_tara.py
 python3 docs/publishing/render_bibliography.py
 python3 docs/publishing/check_identities.py
 python3 docs/publishing/check_links.py

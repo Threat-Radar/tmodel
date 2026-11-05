@@ -23,3 +23,10 @@ reports:
     links:
       - { text: "Secure Development Lifecycle report", href: "sdl.html" }
       - { text: "Requirements crosswalk (MAP-0001)", href: "../bibliography/crosswalk.html" }
+# Pages under docs/reports/ that another renderer writes. The index lists them
+# after the reports; render_tara.py checks that each of its pages is listed here
+# with the same title.
+listed:
+  - page: docs/reports/tara-mvp-02.html
+    title: "TARA draft v0 (example data): Telematics Control Unit"
+    note: "draft v0 · example data · ISO/SAE 21434 clause 15 order · built by render_tara.py"
