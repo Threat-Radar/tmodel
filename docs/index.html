@@ -166,6 +166,11 @@
       font-weight: 650;
     }
     table.models tr:last-child td { border-bottom: 0; }
+    table.models tr.group th {
+      padding-top: 14px;
+      background: var(--paper);
+      color: var(--accent);
+    }
     .tag {
       display: inline-block;
       font-size: 0.8rem;
@@ -229,6 +234,7 @@
       .facts { grid-template-columns: 1fr; gap: 0 12px; }
       .facts dd { margin-bottom: 6px; }
       table.models thead { display: none; }
+      table.models tr.group th { display: block; }
       table.models, table.models tbody, table.models tr, table.models td { display: block; width: 100%; }
       table.models td { border-bottom: 0; padding: 4px 12px; }
       table.models td:first-child { padding-top: 12px; font-weight: 600; }
@@ -317,13 +323,14 @@
     <section id="examples">
       <div class="wrap">
         <h2>Example threat models</h2>
-        <p class="section-lead">Four of the examples. Each was written to exercise the object model, so none is a security assessment of a real product.</p>
+        <p class="section-lead">All eight examples, as the app's model picker lists them. Each was written to exercise the object model, so none is a security assessment. The proposal examples are AI drafts from published write-ups of real attacks, and name the real products.</p>
         <div class="table-scroll">
           <table class="models">
             <thead>
               <tr><th>Model</th><th>What it shows</th><th>Review</th></tr>
             </thead>
             <tbody>
+              <tr class="group"><th colspan="3">Core examples</th></tr>
               <tr>
                 <td><a href="models/mvp-02-automotive-ecu.html">Telematics Control Unit (TCU)</a></td>
                 <td>An automotive ECU bridging the cellular network and the in-vehicle CAN. A reviewer accepted one threat and rejected the other. The TARA draft is built from it.</td>
@@ -335,19 +342,41 @@
                 <td><span class="tag ok">accepted</span><span class="tag open">changes requested</span></td>
               </tr>
               <tr>
+                <td><a href="models/mvp-03-hierarchical-system.html">Connected-Vehicle System</a></td>
+                <td>A system built from subsystems, an in-vehicle platform and a cloud backend, composed level by level.</td>
+                <td><span class="tag open">changes requested</span><span class="tag open">not reviewed</span></td>
+              </tr>
+              <tr>
                 <td><a href="models/mvp-18-shared-vuln-vex-override.html">Crypto Server Appliance and Edge Sensor</a></td>
                 <td>One vulnerable chip in two products: one is affected, the other is not, and a VEX statement records why.</td>
                 <td><span class="tag open">changes requested</span><span class="tag open">not reviewed</span></td>
               </tr>
+              <tr class="group"><th colspan="3">Worked examples with governance</th></tr>
               <tr>
-                <td><a href="models/pv-01-can-injection-theft.html">CAN injection theft</a></td>
-                <td>A proposal drafted by AI from the published write-up of a real automotive attack. Nothing in it has been reviewed yet.</td>
+                <td><a href="models/tv-hardware-brake-ecu.html">Brake ECU</a></td>
+                <td>A safety-critical brake ECU: a physical glitching attack beside the software one, a lifecycle phase, and a governed snapshot of the threat model.</td>
+                <td><span class="tag open">not reviewed</span></td>
+              </tr>
+              <tr>
+                <td><a href="models/tv-software-auth-service.html">Acme Auth Service</a></td>
+                <td>The same governance in software: an open-source authentication and token-refresh service.</td>
+                <td><span class="tag open">changes requested</span><span class="tag open">not reviewed</span></td>
+              </tr>
+              <tr class="group"><th colspan="3">Proposal examples (AI-drafted, unreviewed)</th></tr>
+              <tr>
+                <td><a href="models/pv-01-can-injection-theft.html">Toyota RAV4 (2021): CAN injection theft</a></td>
+                <td>Keyless car theft by injecting messages onto the CAN bus, drafted by AI from the published write-up of the attack.</td>
+                <td><span class="tag open">not reviewed</span></td>
+              </tr>
+              <tr>
+                <td><a href="models/pv-02-dealer-portal-owner-data.html">Kia vehicle with remote services</a></td>
+                <td>Theft of owners' private data through a dealer web portal, drafted by AI from the published write-up of the attack.</td>
                 <td><span class="tag open">not reviewed</span></td>
               </tr>
             </tbody>
           </table>
         </div>
-        <p class="meta" style="margin-top:12px"><a href="models/index.html">All example models →</a></p>
+        <p class="meta" style="margin-top:12px"><a href="models/index.html">The example models index →</a></p>
       </div>
     </section>
 
