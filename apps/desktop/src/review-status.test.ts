@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import cases from "./fixtures/review-state-cases.json";
 import { relationshipReviewState, reviewStatePresentation } from "./review-status";
 
 describe("review-state presentation", () => {
@@ -71,5 +72,25 @@ describe("review-state presentation", () => {
       review_ids: ["review:ai-triage"],
       review_status: "changes_requested",
     })).toMatchObject({ kind: "changes_requested", label: "Changes Requested" });
+  });
+});
+
+// The same cases the engine's ReviewState is tested on (engine/tests/test_graph.py),
+// so the picker's accepted-review count and the report's states agree (#208).
+describe("review state shared with the engine", () => {
+  it.each(cases.cases.map((item) => [item.assertion_status, item.review_status, item.kind, item.why] as const))(
+    "assertion %s with review %s is %s (%s)",
+    (assertion, review, kind) => {
+      expect(reviewStatePresentation(assertion, review).kind).toBe(kind);
+    },
+  );
+
+  it("counts only an accepted state as reviewed, in every contradictory or transitional case", () => {
+    const contradictory = cases.cases.filter((item) => item.assertion_status?.toLowerCase().trim() === "accepted");
+    expect(contradictory.map((item) => reviewStatePresentation(item.assertion_status, item.review_status).kind))
+      .toEqual(contradictory.map((item) => item.kind));
+    expect(contradictory.filter((item) => item.kind === "accepted").every((item) => (
+      item.review_status === null || item.review_status.trim().toLowerCase() === "accepted"
+    ))).toBe(true);
   });
 });

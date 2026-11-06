@@ -11,6 +11,7 @@ it instead of crashing.
 
 from __future__ import annotations
 
+import re
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from typing import Any
@@ -28,9 +29,13 @@ class ReviewState:
 
     The values are the file's own `assertion_status` and `review_status` (both
     open strings in the schema). `reviewed` is true only for an accepted
-    Assertion: the schema says an Assertion "must not be `accepted` until
-    provenance and a review are present". Anything else, including no record at
-    all, is not presented as reviewed (CLAUDE.md; APP-0001 A-007, A-045).
+    Assertion with no contrary Review: the schema says an Assertion "must not be
+    `accepted` until provenance and a review are present", and a Review that
+    rejects it or asks for changes outweighs that status. Anything else,
+    including no record at all or a Review verdict the engine does not
+    recognise, is not presented as reviewed (CLAUDE.md; APP-0001 A-007, A-045).
+    The app applies the same rule (apps/desktop/src/review-status.ts); the shared
+    cases are in apps/desktop/src/fixtures/review-state-cases.json.
     """
 
     assertion_status: str | None = None
@@ -38,7 +43,9 @@ class ReviewState:
 
     @property
     def reviewed(self) -> bool:
-        return self.assertion_status == "accepted"
+        assertion = _status(self.assertion_status)
+        review = _status(self.review_status)
+        return assertion == "accepted" and review in (None, "accepted")
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -84,6 +91,14 @@ def _ids(raw: Mapping[str, Any], field_name: str) -> tuple[str, ...]:
     if not isinstance(value, list) or not all(isinstance(v, str) for v in value):
         raise GraphError(f"{raw['id']}: {field_name} must be a list of ids")
     return tuple(value)
+
+
+def _status(value: str | None) -> str | None:
+    """A status as the app compares it: trimmed, lower case, spaces and hyphens as `_`."""
+    if value is None:
+        return None
+    normalized = re.sub(r"[\s-]+", "_", value.strip().lower())
+    return normalized or None
 
 
 def _text(raw: Mapping[str, Any], field_name: str) -> str | None:

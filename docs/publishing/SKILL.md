@@ -25,6 +25,7 @@ and only after the WAVE 2 gate (#84).
 | `docs/publishing/render_bibliography.py` | Local generator. Stdlib only. Writes `docs/bibliography/` and copies library record pages to `docs/library/records/`. |
 | `docs/publishing/site.yaml` | Site map: top nav for every generated page, and which manifest builds which path under `docs/`. |
 | `docs/publishing/site_nav.py` | Shared site nav, read from `site.yaml`. |
+| `docs/publishing/render_models.py` | Example-model pages under `docs/models/` (#208): the engine collects each model in `spec/vectors/`, and the app's report renderer writes the HTML through Node (22.6 or newer). Run with the engine's Python; it refuses to write a page whose default view shows an id or schema name, and `--check` fails if the pages are out of date. Not stdlib-only. |
 | `docs/publishing/check_links.py` | Fails if a relative link under `docs/` does not resolve. Runs in CI. |
 | `bin/publish-site` | Rebuilds every generated page, then runs the identity and link checks. |
 | `docs/publishing/reports.yaml` | Manifest of **report pages** (md → static HTML). |

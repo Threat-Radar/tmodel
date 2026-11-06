@@ -1,0 +1,1255 @@
+{
+ "attackPaths": [
+  {
+   "file": "mvp-02-automotive-ecu.yaml",
+   "goal": "threat-instance:infotainment-pivot",
+   "paths": [
+    {
+     "authored_path": "attack-path:infotainment-pivot",
+     "goal_step": "attack-step:pivot-to-can",
+     "review": {
+      "assertion_status": "proposed",
+      "review_status": "rejected",
+      "reviewed": false
+     },
+     "steps": [
+      "attack-step:compromise-companion-app",
+      "attack-step:gain-infotainment-foothold",
+      "attack-step:pivot-to-can"
+     ]
+    },
+    {
+     "authored_path": "attack-path:infotainment-pivot",
+     "goal_step": "attack-step:pivot-to-can",
+     "review": {
+      "assertion_status": "proposed",
+      "review_status": "rejected",
+      "reviewed": false
+     },
+     "steps": [
+      "attack-step:malicious-ota",
+      "attack-step:gain-infotainment-foothold",
+      "attack-step:pivot-to-can"
+     ]
+    }
+   ]
+  },
+  {
+   "file": "mvp-02-automotive-ecu.yaml",
+   "goal": "threat-instance:remote-diag-injection",
+   "paths": [
+    {
+     "authored_path": "attack-path:remote-diag-injection",
+     "goal_step": "attack-step:inject-can-frame",
+     "review": {
+      "assertion_status": "accepted",
+      "review_status": "accepted",
+      "reviewed": true
+     },
+     "steps": [
+      "attack-step:reach-modem-over-cellular",
+      "attack-step:bypass-diag-auth",
+      "attack-step:inject-can-frame"
+     ]
+    }
+   ]
+  }
+ ],
+ "graph": {
+  "edges": [
+   {
+    "id": "relationship:product:telematics-control-unit|composed_of|component:tcu-soc",
+    "properties": {},
+    "relationship_type": "composed_of",
+    "source": "product:telematics-control-unit",
+    "target": "component:tcu-soc"
+   },
+   {
+    "id": "relationship:product:telematics-control-unit|composed_of|component:cellular-modem",
+    "properties": {},
+    "relationship_type": "composed_of",
+    "source": "product:telematics-control-unit",
+    "target": "component:cellular-modem"
+   },
+   {
+    "id": "relationship:product:telematics-control-unit|composed_of|component:tcu-firmware",
+    "properties": {},
+    "relationship_type": "composed_of",
+    "source": "product:telematics-control-unit",
+    "target": "component:tcu-firmware"
+   },
+   {
+    "id": "relationship:product:telematics-control-unit|manufactured_by|party:tier1-supplier",
+    "properties": {},
+    "relationship_type": "manufactured_by",
+    "source": "product:telematics-control-unit",
+    "target": "party:tier1-supplier"
+   },
+   {
+    "id": "relationship:product:telematics-control-unit|owned_by|party:fleet-operator",
+    "properties": {},
+    "relationship_type": "owned_by",
+    "source": "product:telematics-control-unit",
+    "target": "party:fleet-operator"
+   },
+   {
+    "id": "relationship:product:telematics-control-unit|supplied_by|party:tier1-supplier",
+    "properties": {},
+    "relationship_type": "supplied_by",
+    "source": "product:telematics-control-unit",
+    "target": "party:tier1-supplier"
+   },
+   {
+    "id": "relationship:product-instance:tcu-unit-7f21|current_phase|lifecycle-phase:operation",
+    "properties": {},
+    "relationship_type": "current_phase",
+    "source": "product-instance:tcu-unit-7f21",
+    "target": "lifecycle-phase:operation"
+   },
+   {
+    "id": "relationship:product-instance:tcu-unit-7f21|of_product|product:telematics-control-unit",
+    "properties": {},
+    "relationship_type": "of_product",
+    "source": "product-instance:tcu-unit-7f21",
+    "target": "product:telematics-control-unit"
+   },
+   {
+    "id": "relationship:product-instance:tcu-unit-7f21|owned_by|party:fleet-operator",
+    "properties": {},
+    "relationship_type": "owned_by",
+    "source": "product-instance:tcu-unit-7f21",
+    "target": "party:fleet-operator"
+   },
+   {
+    "id": "relationship:component:tcu-soc|composed_of|component:core-app",
+    "properties": {},
+    "relationship_type": "composed_of",
+    "source": "component:tcu-soc",
+    "target": "component:core-app"
+   },
+   {
+    "id": "relationship:component:tcu-soc|composed_of|component:core-comms",
+    "properties": {},
+    "relationship_type": "composed_of",
+    "source": "component:tcu-soc",
+    "target": "component:core-comms"
+   },
+   {
+    "id": "relationship:component:cellular-modem|uses_component|component:diag-service-lib",
+    "properties": {},
+    "relationship_type": "uses_component",
+    "source": "component:cellular-modem",
+    "target": "component:diag-service-lib"
+   },
+   {
+    "id": "relationship:component:tcu-firmware|composed_of|component:diag-service-lib",
+    "properties": {},
+    "relationship_type": "composed_of",
+    "source": "component:tcu-firmware",
+    "target": "component:diag-service-lib"
+   },
+   {
+    "id": "relationship:vulnerability:cve-2026-41200|affects|product:telematics-control-unit",
+    "properties": {},
+    "relationship_type": "affects",
+    "source": "vulnerability:cve-2026-41200",
+    "target": "product:telematics-control-unit"
+   },
+   {
+    "id": "relationship:vulnerability:cve-2026-41200|assigned_by|party:cna-auto",
+    "properties": {},
+    "relationship_type": "assigned_by",
+    "source": "vulnerability:cve-2026-41200",
+    "target": "party:cna-auto"
+   },
+   {
+    "id": "relationship:vulnerability:cve-2026-41200|reported_by|party:av-reviewer",
+    "properties": {},
+    "relationship_type": "reported_by",
+    "source": "vulnerability:cve-2026-41200",
+    "target": "party:av-reviewer"
+   },
+   {
+    "id": "relationship:threat-instance:remote-diag-injection|applies_in_phase|lifecycle-phase:operation",
+    "properties": {},
+    "relationship_type": "applies_in_phase",
+    "source": "threat-instance:remote-diag-injection",
+    "target": "lifecycle-phase:operation"
+   },
+   {
+    "id": "relationship:threat-instance:remote-diag-injection|realizes_damage|damage-scenario:unauthorized-can-actuation",
+    "properties": {},
+    "relationship_type": "realizes_damage",
+    "source": "threat-instance:remote-diag-injection",
+    "target": "damage-scenario:unauthorized-can-actuation"
+   },
+   {
+    "id": "relationship:threat-instance:infotainment-pivot|applies_in_phase|lifecycle-phase:operation",
+    "properties": {},
+    "relationship_type": "applies_in_phase",
+    "source": "threat-instance:infotainment-pivot",
+    "target": "lifecycle-phase:operation"
+   },
+   {
+    "id": "relationship:threat-instance:infotainment-pivot|realizes_damage|damage-scenario:unauthorized-can-actuation",
+    "properties": {},
+    "relationship_type": "realizes_damage",
+    "source": "threat-instance:infotainment-pivot",
+    "target": "damage-scenario:unauthorized-can-actuation"
+   },
+   {
+    "id": "relationship:attack-step:reach-modem-over-cellular|precedes|attack-step:inject-can-frame",
+    "properties": {},
+    "relationship_type": "precedes",
+    "source": "attack-step:reach-modem-over-cellular",
+    "target": "attack-step:inject-can-frame"
+   },
+   {
+    "id": "relationship:attack-step:bypass-diag-auth|precedes|attack-step:inject-can-frame",
+    "properties": {},
+    "relationship_type": "precedes",
+    "source": "attack-step:bypass-diag-auth",
+    "target": "attack-step:inject-can-frame"
+   },
+   {
+    "id": "relationship:attack-step:compromise-companion-app|precedes|attack-step:gain-infotainment-foothold",
+    "properties": {},
+    "relationship_type": "precedes",
+    "source": "attack-step:compromise-companion-app",
+    "target": "attack-step:gain-infotainment-foothold"
+   },
+   {
+    "id": "relationship:attack-step:malicious-ota|precedes|attack-step:gain-infotainment-foothold",
+    "properties": {},
+    "relationship_type": "precedes",
+    "source": "attack-step:malicious-ota",
+    "target": "attack-step:gain-infotainment-foothold"
+   },
+   {
+    "id": "relationship:attack-step:gain-infotainment-foothold|precedes|attack-step:pivot-to-can",
+    "properties": {},
+    "relationship_type": "precedes",
+    "source": "attack-step:gain-infotainment-foothold",
+    "target": "attack-step:pivot-to-can"
+   },
+   {
+    "id": "relationship:attack-path:remote-diag-injection|realizes_threat|threat-instance:remote-diag-injection",
+    "properties": {
+     "assertion_ids": [
+      "assertion:remote-path-realizes"
+     ],
+     "assertion_status": "accepted",
+     "confidence": "high",
+     "review_ids": [
+      "review:remote-path"
+     ],
+     "review_status": "accepted"
+    },
+    "relationship_type": "realizes_threat",
+    "source": "attack-path:remote-diag-injection",
+    "target": "threat-instance:remote-diag-injection"
+   },
+   {
+    "id": "relationship:attack-path:remote-diag-injection|steps|attack-step:reach-modem-over-cellular",
+    "properties": {},
+    "relationship_type": "steps",
+    "source": "attack-path:remote-diag-injection",
+    "target": "attack-step:reach-modem-over-cellular"
+   },
+   {
+    "id": "relationship:attack-path:remote-diag-injection|steps|attack-step:bypass-diag-auth",
+    "properties": {},
+    "relationship_type": "steps",
+    "source": "attack-path:remote-diag-injection",
+    "target": "attack-step:bypass-diag-auth"
+   },
+   {
+    "id": "relationship:attack-path:remote-diag-injection|steps|attack-step:inject-can-frame",
+    "properties": {},
+    "relationship_type": "steps",
+    "source": "attack-path:remote-diag-injection",
+    "target": "attack-step:inject-can-frame"
+   },
+   {
+    "id": "relationship:attack-path:infotainment-pivot|realizes_threat|threat-instance:infotainment-pivot",
+    "properties": {
+     "assertion_ids": [
+      "assertion:ai-pivot-realizes"
+     ],
+     "assertion_status": "proposed",
+     "confidence": "low",
+     "review_ids": [
+      "review:ai-pivot-reject"
+     ],
+     "review_status": "rejected"
+    },
+    "relationship_type": "realizes_threat",
+    "source": "attack-path:infotainment-pivot",
+    "target": "threat-instance:infotainment-pivot"
+   },
+   {
+    "id": "relationship:attack-path:infotainment-pivot|steps|attack-step:compromise-companion-app",
+    "properties": {},
+    "relationship_type": "steps",
+    "source": "attack-path:infotainment-pivot",
+    "target": "attack-step:compromise-companion-app"
+   },
+   {
+    "id": "relationship:attack-path:infotainment-pivot|steps|attack-step:malicious-ota",
+    "properties": {},
+    "relationship_type": "steps",
+    "source": "attack-path:infotainment-pivot",
+    "target": "attack-step:malicious-ota"
+   },
+   {
+    "id": "relationship:attack-path:infotainment-pivot|steps|attack-step:gain-infotainment-foothold",
+    "properties": {},
+    "relationship_type": "steps",
+    "source": "attack-path:infotainment-pivot",
+    "target": "attack-step:gain-infotainment-foothold"
+   },
+   {
+    "id": "relationship:attack-path:infotainment-pivot|steps|attack-step:pivot-to-can",
+    "properties": {},
+    "relationship_type": "steps",
+    "source": "attack-path:infotainment-pivot",
+    "target": "attack-step:pivot-to-can"
+   },
+   {
+    "id": "relationship:mitigation:authenticate-diag-service|applies_in_phase|lifecycle-phase:design",
+    "properties": {},
+    "relationship_type": "applies_in_phase",
+    "source": "mitigation:authenticate-diag-service",
+    "target": "lifecycle-phase:design"
+   },
+   {
+    "id": "relationship:mitigation:authenticate-diag-service|applies_in_phase|lifecycle-phase:implementation",
+    "properties": {},
+    "relationship_type": "applies_in_phase",
+    "source": "mitigation:authenticate-diag-service",
+    "target": "lifecycle-phase:implementation"
+   },
+   {
+    "id": "relationship:mitigation:authenticate-diag-service|implementation_owner|party:tier1-supplier",
+    "properties": {},
+    "relationship_type": "implementation_owner",
+    "source": "mitigation:authenticate-diag-service",
+    "target": "party:tier1-supplier"
+   },
+   {
+    "id": "relationship:mitigation:authenticate-diag-service|mitigates|threat-instance:remote-diag-injection",
+    "properties": {},
+    "relationship_type": "mitigates",
+    "source": "mitigation:authenticate-diag-service",
+    "target": "threat-instance:remote-diag-injection"
+   },
+   {
+    "id": "relationship:mitigation:domain-gateway-firewall|applies_in_phase|lifecycle-phase:implementation",
+    "properties": {},
+    "relationship_type": "applies_in_phase",
+    "source": "mitigation:domain-gateway-firewall",
+    "target": "lifecycle-phase:implementation"
+   },
+   {
+    "id": "relationship:mitigation:domain-gateway-firewall|applies_in_phase|lifecycle-phase:production",
+    "properties": {},
+    "relationship_type": "applies_in_phase",
+    "source": "mitigation:domain-gateway-firewall",
+    "target": "lifecycle-phase:production"
+   },
+   {
+    "id": "relationship:mitigation:domain-gateway-firewall|implementation_owner|party:vehicle-oem",
+    "properties": {},
+    "relationship_type": "implementation_owner",
+    "source": "mitigation:domain-gateway-firewall",
+    "target": "party:vehicle-oem"
+   },
+   {
+    "id": "relationship:mitigation:domain-gateway-firewall|mitigates|threat-instance:remote-diag-injection",
+    "properties": {},
+    "relationship_type": "mitigates",
+    "source": "mitigation:domain-gateway-firewall",
+    "target": "threat-instance:remote-diag-injection"
+   },
+   {
+    "id": "relationship:mitigation:domain-gateway-firewall|mitigates|threat-instance:infotainment-pivot",
+    "properties": {},
+    "relationship_type": "mitigates",
+    "source": "mitigation:domain-gateway-firewall",
+    "target": "threat-instance:infotainment-pivot"
+   },
+   {
+    "id": "relationship:mitigation:family-authenticated-diagnostics|implementation_owner|party:vehicle-oem",
+    "properties": {},
+    "relationship_type": "implementation_owner",
+    "source": "mitigation:family-authenticated-diagnostics",
+    "target": "party:vehicle-oem"
+   },
+   {
+    "id": "relationship:risk-score:remote-diag-injection|attack_paths|attack-path:remote-diag-injection",
+    "properties": {},
+    "relationship_type": "attack_paths",
+    "source": "risk-score:remote-diag-injection",
+    "target": "attack-path:remote-diag-injection"
+   },
+   {
+    "id": "relationship:risk-score:remote-diag-injection|damage_scenario|damage-scenario:unauthorized-can-actuation",
+    "properties": {},
+    "relationship_type": "damage_scenario",
+    "source": "risk-score:remote-diag-injection",
+    "target": "damage-scenario:unauthorized-can-actuation"
+   },
+   {
+    "id": "relationship:risk-score:remote-diag-injection|for_stakeholder|party:fleet-operator",
+    "properties": {},
+    "relationship_type": "for_stakeholder",
+    "source": "risk-score:remote-diag-injection",
+    "target": "party:fleet-operator"
+   },
+   {
+    "id": "relationship:risk-score:remote-diag-injection|threat|threat-instance:remote-diag-injection",
+    "properties": {},
+    "relationship_type": "threat",
+    "source": "risk-score:remote-diag-injection",
+    "target": "threat-instance:remote-diag-injection"
+   },
+   {
+    "id": "relationship:review:vuln-prop|reviewer|party:av-reviewer",
+    "properties": {},
+    "relationship_type": "reviewer",
+    "source": "review:vuln-prop",
+    "target": "party:av-reviewer"
+   },
+   {
+    "id": "relationship:review:vuln-prop|reviews|assertion:vuln-propagation",
+    "properties": {},
+    "relationship_type": "reviews",
+    "source": "review:vuln-prop",
+    "target": "assertion:vuln-propagation"
+   },
+   {
+    "id": "relationship:review:cve-cwe|reviewer|party:av-reviewer",
+    "properties": {},
+    "relationship_type": "reviewer",
+    "source": "review:cve-cwe",
+    "target": "party:av-reviewer"
+   },
+   {
+    "id": "relationship:review:cve-cwe|reviews|assertion:cve-cwe-instance",
+    "properties": {},
+    "relationship_type": "reviews",
+    "source": "review:cve-cwe",
+    "target": "assertion:cve-cwe-instance"
+   },
+   {
+    "id": "relationship:review:cwe-capec|reviewer|party:av-reviewer",
+    "properties": {},
+    "relationship_type": "reviewer",
+    "source": "review:cwe-capec",
+    "target": "party:av-reviewer"
+   },
+   {
+    "id": "relationship:review:cwe-capec|reviews|assertion:cwe-capec-map",
+    "properties": {},
+    "relationship_type": "reviews",
+    "source": "review:cwe-capec",
+    "target": "assertion:cwe-capec-map"
+   },
+   {
+    "id": "relationship:review:remote-path|reviewer|party:av-reviewer",
+    "properties": {},
+    "relationship_type": "reviewer",
+    "source": "review:remote-path",
+    "target": "party:av-reviewer"
+   },
+   {
+    "id": "relationship:review:remote-path|reviews|assertion:remote-path-realizes",
+    "properties": {},
+    "relationship_type": "reviews",
+    "source": "review:remote-path",
+    "target": "assertion:remote-path-realizes"
+   },
+   {
+    "id": "relationship:review:ai-pivot-reject|reviewer|party:av-reviewer",
+    "properties": {},
+    "relationship_type": "reviewer",
+    "source": "review:ai-pivot-reject",
+    "target": "party:av-reviewer"
+   },
+   {
+    "id": "relationship:review:ai-pivot-reject|reviews|assertion:ai-pivot-realizes",
+    "properties": {},
+    "relationship_type": "reviews",
+    "source": "review:ai-pivot-reject",
+    "target": "assertion:ai-pivot-realizes"
+   },
+   {
+    "id": "relationship:assertion:vuln-propagation|object|component:tcu-firmware",
+    "properties": {},
+    "relationship_type": "object",
+    "source": "assertion:vuln-propagation",
+    "target": "component:tcu-firmware"
+   },
+   {
+    "id": "relationship:assertion:vuln-propagation|subject|vulnerability:cve-2026-41200",
+    "properties": {},
+    "relationship_type": "subject",
+    "source": "assertion:vuln-propagation",
+    "target": "vulnerability:cve-2026-41200"
+   },
+   {
+    "id": "relationship:assertion:cve-cwe-instance|object|weakness:cwe-306",
+    "properties": {},
+    "relationship_type": "object",
+    "source": "assertion:cve-cwe-instance",
+    "target": "weakness:cwe-306"
+   },
+   {
+    "id": "relationship:assertion:cve-cwe-instance|subject|vulnerability:cve-2026-41200",
+    "properties": {},
+    "relationship_type": "subject",
+    "source": "assertion:cve-cwe-instance",
+    "target": "vulnerability:cve-2026-41200"
+   },
+   {
+    "id": "relationship:assertion:cwe-capec-map|object|attack-pattern:capec-115",
+    "properties": {},
+    "relationship_type": "object",
+    "source": "assertion:cwe-capec-map",
+    "target": "attack-pattern:capec-115"
+   },
+   {
+    "id": "relationship:assertion:cwe-capec-map|subject|weakness:cwe-306",
+    "properties": {},
+    "relationship_type": "subject",
+    "source": "assertion:cwe-capec-map",
+    "target": "weakness:cwe-306"
+   },
+   {
+    "id": "relationship:assertion:remote-path-realizes|object|threat-instance:remote-diag-injection",
+    "properties": {},
+    "relationship_type": "object",
+    "source": "assertion:remote-path-realizes",
+    "target": "threat-instance:remote-diag-injection"
+   },
+   {
+    "id": "relationship:assertion:remote-path-realizes|subject|attack-path:remote-diag-injection",
+    "properties": {},
+    "relationship_type": "subject",
+    "source": "assertion:remote-path-realizes",
+    "target": "attack-path:remote-diag-injection"
+   },
+   {
+    "id": "relationship:assertion:ai-pivot-realizes|object|threat-instance:infotainment-pivot",
+    "properties": {},
+    "relationship_type": "object",
+    "source": "assertion:ai-pivot-realizes",
+    "target": "threat-instance:infotainment-pivot"
+   },
+   {
+    "id": "relationship:assertion:ai-pivot-realizes|subject|attack-path:infotainment-pivot",
+    "properties": {},
+    "relationship_type": "subject",
+    "source": "assertion:ai-pivot-realizes",
+    "target": "attack-path:infotainment-pivot"
+   },
+   {
+    "id": "relationship:assertion:ai-req-addresses-pivot|object|threat-instance:infotainment-pivot",
+    "properties": {},
+    "relationship_type": "object",
+    "source": "assertion:ai-req-addresses-pivot",
+    "target": "threat-instance:infotainment-pivot"
+   },
+   {
+    "id": "relationship:assertion:ai-req-addresses-pivot|subject|requirement:family-authenticated-diagnostics",
+    "properties": {},
+    "relationship_type": "subject",
+    "source": "assertion:ai-req-addresses-pivot",
+    "target": "requirement:family-authenticated-diagnostics"
+   },
+   {
+    "id": "relationship:requirement:family-authenticated-diagnostics|satisfied_by|mitigation:authenticate-diag-service",
+    "properties": {},
+    "relationship_type": "satisfied_by",
+    "source": "requirement:family-authenticated-diagnostics",
+    "target": "mitigation:authenticate-diag-service"
+   },
+   {
+    "id": "relationship:requirement:tcu-diag-authentication|satisfied_by|mitigation:authenticate-diag-service",
+    "properties": {},
+    "relationship_type": "satisfied_by",
+    "source": "requirement:tcu-diag-authentication",
+    "target": "mitigation:authenticate-diag-service"
+   },
+   {
+    "id": "relationship:vulnerability:cve-2026-41200|propagates_to|component:tcu-firmware",
+    "properties": {
+     "assertion_ids": [
+      "assertion:vuln-propagation"
+     ],
+     "assertion_status": "accepted",
+     "confidence": "high",
+     "review_ids": [
+      "review:vuln-prop"
+     ],
+     "review_status": "accepted"
+    },
+    "relationship_type": "propagates_to",
+    "source": "vulnerability:cve-2026-41200",
+    "target": "component:tcu-firmware"
+   },
+   {
+    "id": "relationship:vulnerability:cve-2026-41200|instance_of|weakness:cwe-306",
+    "properties": {
+     "assertion_ids": [
+      "assertion:cve-cwe-instance"
+     ],
+     "assertion_status": "accepted",
+     "confidence": "high",
+     "review_ids": [
+      "review:cve-cwe"
+     ],
+     "review_status": "accepted"
+    },
+    "relationship_type": "instance_of",
+    "source": "vulnerability:cve-2026-41200",
+    "target": "weakness:cwe-306"
+   },
+   {
+    "id": "relationship:weakness:cwe-306|exploited_by|attack-pattern:capec-115",
+    "properties": {
+     "assertion_ids": [
+      "assertion:cwe-capec-map"
+     ],
+     "assertion_status": "accepted",
+     "confidence": "high",
+     "review_ids": [
+      "review:cwe-capec"
+     ],
+     "review_status": "accepted"
+    },
+    "relationship_type": "exploited_by",
+    "source": "weakness:cwe-306",
+    "target": "attack-pattern:capec-115"
+   },
+   {
+    "id": "relationship:requirement:family-authenticated-diagnostics|addresses|threat-instance:infotainment-pivot",
+    "properties": {
+     "assertion_ids": [
+      "assertion:ai-req-addresses-pivot"
+     ],
+     "assertion_status": "proposed",
+     "confidence": "low"
+    },
+    "relationship_type": "addresses",
+    "source": "requirement:family-authenticated-diagnostics",
+    "target": "threat-instance:infotainment-pivot"
+   }
+  ],
+  "file": "mvp-02-automotive-ecu.yaml",
+  "nodes": [
+   {
+    "domain_type": "Party",
+    "id": "party:vehicle-oem",
+    "label": "Vehicle OEM",
+    "properties": {
+     "classifications": [
+      "manufacturer"
+     ],
+     "description": "Manufacturer of the vehicle integrating the TCU (role identity, \u00a72b).",
+     "party_kind": "organization"
+    }
+   },
+   {
+    "domain_type": "Party",
+    "id": "party:tier1-supplier",
+    "label": "Tier-1 TCU supplier",
+    "properties": {
+     "classifications": [
+      "supplier"
+     ],
+     "party_kind": "organization"
+    }
+   },
+   {
+    "domain_type": "Party",
+    "id": "party:fleet-operator",
+    "label": "Fleet operator",
+    "properties": {
+     "classifications": [
+      "asset-owner"
+     ],
+     "description": "Owns deployed vehicles; the stakeholder safety impact is reported for.",
+     "party_kind": "organization"
+    }
+   },
+   {
+    "domain_type": "Party",
+    "id": "party:cna-auto",
+    "label": "Automotive CVE Numbering Authority",
+    "properties": {
+     "classifications": [
+      "cna"
+     ],
+     "party_kind": "organization"
+    }
+   },
+   {
+    "domain_type": "Party",
+    "id": "party:av-reviewer",
+    "label": "@av-reviewer",
+    "properties": {
+     "description": "Human vehicle-cybersecurity reviewer / ISO 21434 assessor (github id, role).",
+     "party_kind": "person"
+    }
+   },
+   {
+    "domain_type": "Product",
+    "id": "product:telematics-control-unit",
+    "label": "Telematics Control Unit (TCU)",
+    "properties": {
+     "classifications": [
+      "family:connected-ecu"
+     ],
+     "description": "Cellular-connected telematics ECU bridging the mobile network and the in-vehicle CAN.",
+     "identifiers": [
+      "cpe:2.3:o:acme_auto:tcu:-:*:*:*:*:*:*:*",
+      "oem-part:TCU-0071"
+     ]
+    }
+   },
+   {
+    "domain_type": "ProductInstance",
+    "id": "product-instance:tcu-unit-7f21",
+    "label": "TCU unit 7F21",
+    "properties": {
+     "description": "A fielded unit. Hardware instance identity is the firmware image digest + a hardware part/serial \u2014 the HBOM/firmware form of ADR-0002 instance identity, carried as opaque `identifiers`.",
+     "identifiers": [
+      "swid:tcu-fw-5.2.0",
+      "sha256:7f21c0a9b8d7e6f5a4b3c2d1e0f9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a",
+      "hw-serial:TCU-7F21-2026W18"
+     ],
+     "valid_from": "2026-05-01T00:00:00Z"
+    }
+   },
+   {
+    "domain_type": "Component",
+    "id": "component:tcu-soc",
+    "label": "TCU system-on-chip",
+    "properties": {
+     "description": "Multi-core applications SoC hosting the telematics stack (\u00a73 structural node).",
+     "identifiers": [
+      "cpe:2.3:h:chipco:soc_t500:-:*:*:*:*:*:*:*"
+     ]
+    }
+   },
+   {
+    "domain_type": "Component",
+    "id": "component:core-app",
+    "label": "Application core",
+    "properties": {
+     "description": "General-purpose compute core running the telematics OS.",
+     "identifiers": [
+      "hw-core:soc_t500.app"
+     ]
+    }
+   },
+   {
+    "domain_type": "Component",
+    "id": "component:core-comms",
+    "label": "Communications core",
+    "properties": {
+     "description": "Core handling the cellular / CAN gateway path.",
+     "identifiers": [
+      "hw-core:soc_t500.comms"
+     ]
+    }
+   },
+   {
+    "domain_type": "Component",
+    "id": "component:cellular-modem",
+    "label": "Cellular modem module",
+    "properties": {
+     "description": "Remote attack surface; exposes a diagnostic service over the carrier network.",
+     "identifiers": [
+      "cpe:2.3:h:modemco:lte_m9:-:*:*:*:*:*:*:*"
+     ]
+    }
+   },
+   {
+    "domain_type": "Component",
+    "id": "component:diag-service-lib",
+    "label": "diagnostic-service library (firmware module)",
+    "properties": {
+     "description": "The remote diagnostic command handler along which the finding propagates (\u00a75).",
+     "identifiers": [
+      "swid:tcu-diag-service@5.2.0"
+     ]
+    }
+   },
+   {
+    "domain_type": "Component",
+    "id": "component:tcu-firmware",
+    "label": "TCU firmware image",
+    "properties": {
+     "description": "The signed firmware artifact; its digest is the instance identity above.",
+     "identifiers": [
+      "swid:tcu-fw-5.2.0",
+      "sha256:7f21c0a9b8d7e6f5a4b3c2d1e0f9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a"
+     ]
+    }
+   },
+   {
+    "domain_type": "Weakness",
+    "id": "weakness:cwe-306",
+    "label": "Missing Authentication for Critical Function",
+    "properties": {
+     "catalog_ref": "CWE-306",
+     "description": "Generic weakness class (CWE, \u00a71 layer 3) \u2014 the unauthenticated diagnostic command path."
+    }
+   },
+   {
+    "domain_type": "Vulnerability",
+    "id": "vulnerability:cve-2026-41200",
+    "label": "Unauthenticated remote diagnostic command on TCU modem (illustrative)",
+    "properties": {
+     "catalog_ref": "CVE-2026-41200",
+     "description": "Finding affecting the product; propagation to components is a reviewed Assertion (\u00a75)."
+    }
+   },
+   {
+    "domain_type": "AttackPattern",
+    "id": "attack-pattern:capec-115",
+    "label": "Authentication Bypass",
+    "properties": {
+     "catalog_ref": "CAPEC-115",
+     "description": "Generic attack pattern (CAPEC = what, \u00a72a). The CWE\u2194CAPEC link is a reviewed Assertion."
+    }
+   },
+   {
+    "domain_type": "ThreatInstance",
+    "id": "threat-instance:remote-diag-injection",
+    "label": "Remote unauthenticated diagnostic command injection onto CAN",
+    "properties": {
+     "description": "Human-elicited ISO 21434 TARA threat scenario, STRIDE-tagged. The 21434 asset/damage/threat-scenario vocabulary binds onto the core classes (\u00a78 V2).",
+     "method_facet": [
+      "stride"
+     ],
+     "source_method": "iso21434-TARA + stride (human-elicited, reviewed)",
+     "violates_property": "S authentication / E authorization"
+    }
+   },
+   {
+    "domain_type": "ThreatInstance",
+    "id": "threat-instance:infotainment-pivot",
+    "label": "Lateral movement from infotainment domain into the safety CAN domain",
+    "properties": {
+     "description": "AI-PROPOSED hypothesis. Its realizing edge is a `proposed` Assertion and the paired Review REJECTS it (CLAUDE.md: AI output is a hypothesis, never reviewed truth). source_method records the proposing method.",
+     "method_facet": [
+      "stride"
+     ],
+     "source_method": "ai:llm-threat-proposer (hypothesis, unreviewed)",
+     "violates_property": "E authorization"
+    }
+   },
+   {
+    "domain_type": "AttackStep",
+    "id": "attack-step:reach-modem-over-cellular",
+    "label": "Reach the modem's diagnostic port over the carrier network",
+    "properties": {
+     "kill_chain_phase": "delivery"
+    }
+   },
+   {
+    "domain_type": "AttackStep",
+    "id": "attack-step:bypass-diag-auth",
+    "label": "Bypass the missing/weak diagnostic authentication",
+    "properties": {}
+   },
+   {
+    "domain_type": "AttackStep",
+    "id": "attack-step:inject-can-frame",
+    "label": "Inject a crafted CAN frame to a safety actuator",
+    "properties": {
+     "description": "Requires BOTH reachability over cellular AND an auth bypass \u2014 an AND gate (\u00a72a).",
+     "gate": "and_gate",
+     "kill_chain_phase": "exploitation"
+    }
+   },
+   {
+    "domain_type": "AttackStep",
+    "id": "attack-step:compromise-companion-app",
+    "label": "Compromise the paired companion mobile app",
+    "properties": {}
+   },
+   {
+    "domain_type": "AttackStep",
+    "id": "attack-step:malicious-ota",
+    "label": "Deliver a malicious OTA update to the infotainment domain",
+    "properties": {}
+   },
+   {
+    "domain_type": "AttackStep",
+    "id": "attack-step:gain-infotainment-foothold",
+    "label": "Gain a foothold in the infotainment domain",
+    "properties": {
+     "description": "Either a compromised companion app OR a malicious OTA suffices \u2014 an OR gate (\u00a72a).",
+     "gate": "or_gate"
+    }
+   },
+   {
+    "domain_type": "AttackStep",
+    "id": "attack-step:pivot-to-can",
+    "label": "Pivot across the domain gateway onto the safety CAN bus",
+    "properties": {
+     "kill_chain_phase": "lateral_movement"
+    }
+   },
+   {
+    "domain_type": "AttackPath",
+    "id": "attack-path:remote-diag-injection",
+    "label": "Remote diagnostic-injection path",
+    "properties": {
+     "attack_feasibility": "medium",
+     "description": "Human-reviewed path realizing the remote-injection threat; feasibility human-rated (\u00a73)."
+    }
+   },
+   {
+    "domain_type": "AttackPath",
+    "id": "attack-path:infotainment-pivot",
+    "label": "Infotainment-to-CAN pivot path",
+    "properties": {
+     "attack_feasibility": "very_low",
+     "description": "The AI-PROPOSED path; realizing edge is a `proposed` Assertion, human-REJECTED."
+    }
+   },
+   {
+    "domain_type": "DamageScenario",
+    "id": "damage-scenario:unauthorized-can-actuation",
+    "label": "Unauthorized CAN command \u2192 unsafe vehicle behavior",
+    "properties": {
+     "description": "ISO 21434 damage scenario; the safety/financial/operational/privacy impact categories live on RiskScore (\u00a73), not collapsed here."
+    }
+   },
+   {
+    "domain_type": "Mitigation",
+    "id": "mitigation:authenticate-diag-service",
+    "label": "Require strong authentication on the diagnostic service",
+    "properties": {
+     "catalog_ref": "D3FEND:D3-MFA",
+     "description": "Control for the remote-injection threat (D3FEND-style catalog ref, \u00a75).",
+     "external_refs": [
+      "JIRA-TCU-310"
+     ],
+     "mitigation_status": "complete"
+    }
+   },
+   {
+    "domain_type": "Mitigation",
+    "id": "mitigation:domain-gateway-firewall",
+    "label": "Enforce a filtering gateway between infotainment and safety domains",
+    "properties": {
+     "catalog_ref": "D3FEND:D3-NTF",
+     "description": "Control reducing cross-domain pivot; still being rolled out.",
+     "external_refs": [
+      "JIRA-TCU-355"
+     ],
+     "mitigation_status": "in_progress"
+    }
+   },
+   {
+    "domain_type": "Mitigation",
+    "id": "mitigation:family-authenticated-diagnostics",
+    "label": "Authenticate every remote diagnostic session (connected-ECU family)",
+    "properties": {
+     "catalog_ref": "D3FEND:D3-MFA",
+     "description": "GENERIC mitigation for the whole `connected-ecu` product family, not for one product. It is stated as a Requirement (stated_as) so each family member can be checked against it; the TCU discharges it with its own mitigation (mitigation:authenticate-diag-service). No threat or status of its own.",
+     "stated_as": [
+      "requirement:family-authenticated-diagnostics"
+     ]
+    }
+   },
+   {
+    "domain_type": "RiskScore",
+    "id": "risk-score:remote-diag-injection",
+    "label": "Risk \u2014 remote diagnostic injection",
+    "properties": {
+     "description": "Composite vector per ADR-0006/DEC-003: feasibility + S/F/O/P impact + mitigation-status + derived risk, shown with its inputs. Safety-dominated. Computed WITHOUT an Environment parameter (\u00a78 MVP).",
+     "feasibility": "medium",
+     "impact": "{\"financial\": \"major\", \"operational\": \"major\", \"privacy\": \"moderate\", \"safety\": \"severe\"}",
+     "mitigation_status": "in_progress",
+     "risk": "safety 5 / operational 4 / financial 4 (worst-path, medium feasibility; 1\u20135 per 21434 M(I,F))"
+    }
+   },
+   {
+    "domain_type": "Review",
+    "id": "review:vuln-prop",
+    "label": "Review \u2014 accept vuln propagation",
+    "properties": {
+     "justification": "Diagnostic lib is in the firmware image and reachable from the modem; propagation confirmed.",
+     "priority": "high",
+     "review_status": "accepted"
+    }
+   },
+   {
+    "domain_type": "Review",
+    "id": "review:cve-cwe",
+    "label": "Review, accept the CVE-to-CWE link",
+    "properties": {
+     "justification": "The CWE in the CVE record (illustrative) matches the root cause; the diagnostic command runs without authenticating the caller.",
+     "priority": "medium",
+     "review_status": "accepted"
+    }
+   },
+   {
+    "domain_type": "Review",
+    "id": "review:cwe-capec",
+    "label": "Review \u2014 accept CWE\u2194CAPEC mapping",
+    "properties": {
+     "justification": "Authentication-bypass pattern matches the missing-authentication weakness.",
+     "priority": "medium",
+     "review_status": "accepted"
+    }
+   },
+   {
+    "domain_type": "Review",
+    "id": "review:remote-path",
+    "label": "Review \u2014 accept remote-injection path",
+    "properties": {
+     "justification": "Reproduced on the bench against firmware 5.2.0; path realizes the reviewed threat.",
+     "priority": "high",
+     "review_status": "accepted"
+    }
+   },
+   {
+    "domain_type": "Review",
+    "id": "review:ai-pivot-reject",
+    "label": "Review \u2014 AI-proposed infotainment pivot (REJECTED)",
+    "properties": {
+     "description": "Human triage of the AI hypothesis; it is REJECTED, not accepted (V6).",
+     "justification": "AI-proposed path. The domain gateway blocks the only claimed pivot and the companion-app foothold is out of scope for this unit's configuration; rejected as not realizable here. Retained as a rejected hypothesis for provenance, NOT presented as a reviewed/accepted path.",
+     "priority": "low",
+     "review_status": "rejected"
+    }
+   },
+   {
+    "domain_type": "Assertion",
+    "id": "assertion:vuln-propagation",
+    "label": "CVE propagates from the diagnostic lib to the product along uses_component/composed_of",
+    "properties": {
+     "assertion_status": "accepted",
+     "confidence": "high",
+     "description": "Reviewed propagation edge (\u00a75), reified so a Review can point at it.",
+     "predicate": "propagates_to"
+    }
+   },
+   {
+    "domain_type": "Assertion",
+    "id": "assertion:cve-cwe-instance",
+    "label": "CVE-2026-41200 is an instance of CWE-306",
+    "properties": {
+     "assertion_status": "accepted",
+     "confidence": "high",
+     "description": "The CVE-to-CWE step of the ADR-0002 backbone (CVE, CWE, CAPEC, ATT&CK). Vulnerability has no Weakness slot, so the link is reified, with the predicate ARCH-0001 \u00a73 and PLAN-0002 \u00a75 name (RPT-0004 mapping.md, finding 7). In a real import the CWE comes from the CVE record and stays proposed until a human reviews it (R-018).",
+     "predicate": "instance_of"
+    }
+   },
+   {
+    "domain_type": "Assertion",
+    "id": "assertion:cwe-capec-map",
+    "label": "CWE-306 is exploited by CAPEC-115",
+    "properties": {
+     "assertion_status": "accepted",
+     "confidence": "high",
+     "description": "The human-reviewed CWE\u2194CAPEC mapping the schema calls out (\u00a72).",
+     "predicate": "exploited_by"
+    }
+   },
+   {
+    "domain_type": "Assertion",
+    "id": "assertion:remote-path-realizes",
+    "label": "Human-reviewed \u2014 remote path realizes the injection threat",
+    "properties": {
+     "assertion_status": "accepted",
+     "confidence": "high",
+     "predicate": "realizes_threat"
+    }
+   },
+   {
+    "domain_type": "Assertion",
+    "id": "assertion:ai-pivot-realizes",
+    "label": "AI-proposed \u2014 infotainment-pivot path realizes the pivot threat",
+    "properties": {
+     "assertion_status": "proposed",
+     "confidence": "low",
+     "description": "AI-PROPOSED edge. assertion_status `proposed` (NOT accepted); a hypothesis until a human accepts it. The paired Review REJECTS it.",
+     "predicate": "realizes_threat"
+    }
+   },
+   {
+    "domain_type": "Assertion",
+    "id": "assertion:ai-req-addresses-pivot",
+    "label": "AI-proposed \u2014 the family diagnostics requirement addresses the infotainment pivot",
+    "properties": {
+     "assertion_status": "proposed",
+     "confidence": "low",
+     "description": "AI-PROPOSED requirement link (ADR-0012). It is NOT written into the requirement's `addresses` slot; it stays a `proposed` Assertion with no Review until a human decides. Ingesting is not reviewing.",
+     "predicate": "addresses"
+    }
+   },
+   {
+    "domain_type": "LifecyclePhase",
+    "id": "lifecycle-phase:design",
+    "label": "Design",
+    "properties": {
+     "code": "design"
+    }
+   },
+   {
+    "domain_type": "LifecyclePhase",
+    "id": "lifecycle-phase:implementation",
+    "label": "Implementation",
+    "properties": {
+     "code": "implementation"
+    }
+   },
+   {
+    "domain_type": "LifecyclePhase",
+    "id": "lifecycle-phase:production",
+    "label": "Production / manufacturing",
+    "properties": {
+     "code": "production"
+    }
+   },
+   {
+    "domain_type": "LifecyclePhase",
+    "id": "lifecycle-phase:operation",
+    "label": "Operation / use",
+    "properties": {
+     "code": "operation"
+    }
+   },
+   {
+    "domain_type": "View",
+    "id": "view:tcu-attack-graph",
+    "label": "TCU attack-path graph",
+    "properties": {
+     "description": "Interactive-graph-able lens over this model (\u00a710, R-014): projection `graph`, opened from a bounded focus query. A derived core View, never written back.",
+     "focus_query": "product:telematics-control-unit -> threat_instances -> attack_paths -> attack_steps",
+     "projection": "graph"
+    }
+   },
+   {
+    "domain_type": "Requirement",
+    "id": "requirement:iso21434-rq-09-09",
+    "label": "ISO/SAE 21434 RQ-09-09 \u2014 define the item's cybersecurity requirements",
+    "properties": {
+     "applies_to_family": [
+      "family:connected-ecu"
+     ],
+     "normativity": "mandatory",
+     "requirement_kind": "process",
+     "source_locator": "RQ-09-09 (\u00a79.5.2)",
+     "source_ref": "library:iso-sae-21434-2021#RQ-09-09",
+     "text": "For each cybersecurity goal, specify the cybersecurity requirements on the item and any requirements on its operational environment.",
+     "text_origin": "paraphrase"
+    }
+   },
+   {
+    "domain_type": "Requirement",
+    "id": "requirement:iso21434-rq-08-07",
+    "label": "ISO/SAE 21434 RQ-08-07 \u2014 manage each vulnerability",
+    "properties": {
+     "applies_to": [
+      "product:telematics-control-unit"
+     ],
+     "normativity": "mandatory",
+     "requirement_kind": "process",
+     "source_locator": "RQ-08-07 (\u00a78.6.2)",
+     "source_ref": "library:iso-sae-21434-2021#RQ-08-07",
+     "text": "Handle every identified vulnerability either by assessing and treating its risk (per clause 15.9) so no unreasonable risk remains, or by eliminating it.",
+     "text_origin": "paraphrase"
+    }
+   },
+   {
+    "domain_type": "Requirement",
+    "id": "requirement:iso21434-rq-05-17",
+    "label": "ISO/SAE 21434 RQ-05-17 \u2014 independent cybersecurity audit",
+    "properties": {
+     "applies_to_family": [
+      "family:connected-ecu"
+     ],
+     "normativity": "mandatory",
+     "requirement_kind": "audit",
+     "source_locator": "RQ-05-17 (\u00a75.4.7)",
+     "source_ref": "library:iso-sae-21434-2021#RQ-05-17",
+     "text": "Have the organization's cybersecurity processes audited independently against the standard's objectives.",
+     "text_origin": "paraphrase"
+    }
+   },
+   {
+    "domain_type": "Requirement",
+    "id": "requirement:family-authenticated-diagnostics",
+    "label": "Connected-ECU family \u2014 authenticate remote diagnostics",
+    "properties": {
+     "addresses": [
+      "weakness:cwe-306",
+      "attack-pattern:capec-115"
+     ],
+     "applies_to_family": [
+      "family:connected-ecu"
+     ],
+     "derived_from": [
+      "requirement:iso21434-rq-09-09"
+     ],
+     "description": "The generic family mitigation restated as a requirement (Mitigation.stated_as). Derived from the 21434 obligation to specify cybersecurity requirements.",
+     "normativity": "mandatory",
+     "requirement_kind": "technical",
+     "text": "A connected ECU shall authenticate the requester before executing any diagnostic command received over a remote interface.",
+     "text_origin": "authored"
+    }
+   },
+   {
+    "domain_type": "Requirement",
+    "id": "requirement:tcu-diag-authentication",
+    "label": "TCU \u2014 authenticate the modem diagnostic service",
+    "properties": {
+     "addresses": [
+      "threat-instance:remote-diag-injection"
+     ],
+     "applies_to": [
+      "product:telematics-control-unit",
+      "component:diag-service-lib"
+     ],
+     "description": "The family requirement made specific to the TCU's cellular diagnostic path.",
+     "normativity": "mandatory",
+     "refines": [
+      "requirement:family-authenticated-diagnostics"
+     ],
+     "requirement_kind": "technical",
+     "text": "The TCU diagnostic-service library shall reject any diagnostic command arriving over the cellular modem unless the session is authenticated.",
+     "text_origin": "authored"
+    }
+   }
+  ]
+ },
+ "model": {
+  "counts": {
+   "assets": 0,
+   "attack_paths": 2,
+   "components": 6,
+   "damage_scenarios": 1,
+   "mitigations": 3,
+   "requirements": 5,
+   "risk_scores": 1,
+   "threats": 2
+  },
+  "description": "Cellular-connected telematics ECU bridging the mobile network and the in-vehicle CAN.",
+  "file": "mvp-02-automotive-ecu.yaml",
+  "id": "mvp-02-automotive-ecu",
+  "kind": "core",
+  "kind_label": "Core example",
+  "reviewed_threats": 1,
+  "title": "Telematics Control Unit (TCU)"
+ }
+}

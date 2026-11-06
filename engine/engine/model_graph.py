@@ -45,6 +45,11 @@ COLLECTION_DOMAIN_TYPES = {
     "checkpoints": "Checkpoint",
     "requirements": "Requirement",
     "governed_views": "GovernedView",
+    # ADR-0011 (accepted 2026-10-22) added these classes to the core; the proposal
+    # container lists them. Their own reference slots stay node properties here.
+    "assets": "Asset",
+    "trust_boundaries": "TrustBoundary",
+    "data_flows": "DataFlow",
 }
 
 # Sponsor-approved slots whose ranges are model classes. ``impact`` is omitted:

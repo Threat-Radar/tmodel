@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connected-Vehicle System: example threat model · tmodel</title>
+<meta name="description" content="Example data. This is an illustrative threat model written for the tmodel project to exercise its object model. It is not a security assessment of a real product. AI-proposed threats and paths are hypotheses until a human reviewer accepts them.">
+<style>
+body { margin: 0; background: #f3f5f9; color: #172033; font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
+.model-page { max-width: 1180px; margin: 0 auto; padding: 22px 24px 40px; }
+.breadcrumb { margin: 0 0 12px; font-size: 0.85rem; }
+.breadcrumb a, .model-page-footer a, .model-index a { color: #3730a3; }
+.model-page-footer { margin-top: 18px; color: #5b6678; font-size: 0.8rem; }
+.model-page-footer code { font-size: 0.78rem; }
+.model-index h1 { margin: 0 0 6px; font-size: 1.7rem; letter-spacing: -0.02em; }
+.model-index .lead { max-width: 75ch; margin: 0 0 14px; color: #5b6678; }
+.model-list { display: grid; gap: 12px; margin: 16px 0 0; padding: 0; list-style: none; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+.model-list li { padding: 14px 16px; border: 1px solid #dde3ec; border-radius: 12px; background: #fff; }
+.model-list h2 { margin: 2px 0 6px; font-size: 1.05rem; }
+.model-list p { margin: 0 0 6px; font-size: 0.85rem; }
+.model-list .meta { color: #5b6678; font-size: 0.78rem; }
+.model-list .kind { color: #5b6678; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+.problems { margin-top: 16px; color: #991b1b; font-size: 0.85rem; }
+@media (prefers-color-scheme: dark) {
+  body { background: #0f172a; color: #e5e7eb; }
+  .model-list li { border-color: #334155; background: #111827; }
+  .model-list .meta, .model-list .kind, .model-index .lead, .model-page-footer { color: #a3b0c2; }
+  .breadcrumb a, .model-page-footer a, .model-index a { color: #a5b4fc; }
+}
+
+/* Model report styles (#208). One stylesheet for both outputs: the app imports
+   it, and the static Pages build inlines it into each model page. */
+
+.model-report {
+  --rp-text: #172033;
+  --rp-muted: #5b6678;
+  --rp-faint: #8792a5;
+  --rp-surface: #ffffff;
+  --rp-subtle: #f6f8fb;
+  --rp-border: #dde3ec;
+  --rp-accent: #3730a3;
+  --rp-ok-bg: #dcfce7; --rp-ok-fg: #166534; --rp-ok-line: #16a34a;
+  --rp-bad-bg: #fee2e2; --rp-bad-fg: #991b1b; --rp-bad-line: #dc2626;
+  --rp-warn-bg: #ffedd5; --rp-warn-fg: #9a3412; --rp-warn-line: #ea580c;
+  --rp-hyp-bg: #fef3c7; --rp-hyp-fg: #854d0e; --rp-hyp-line: #d97706;
+  --rp-neutral-bg: #e8edf5; --rp-neutral-fg: #475569;
+  --rp-step-bg: #f5f3ff; --rp-step-line: #7c3aed;
+  --rp-threat-bg: #fff1f2; --rp-threat-line: #be123c;
+  --rp-damage-bg: #fff7ed; --rp-damage-line: #c2410c;
+  --rp-mit-bg: #f0fdf4; --rp-mit-line: #15803d;
+  --rp-target-bg: #eff6ff; --rp-target-line: #2563eb;
+  --rp-gate-bg: #1e293b; --rp-gate-fg: #ffffff;
+  --rp-edge: #64748b;
+  color: var(--rp-text);
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.model-report h2 { margin: 0 0 6px; font-size: 1.55rem; letter-spacing: -0.02em; }
+.model-report h3 { display: flex; align-items: center; gap: 9px; margin: 0 0 12px; font-size: 1.02rem; letter-spacing: 0; text-transform: none; }
+.model-report h4 { margin: 0 0 3px; font-size: 0.98rem; }
+.model-report .eyebrow { margin: 0 0 4px; color: var(--rp-muted); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+.section-number { display: inline-grid; width: 24px; height: 24px; place-items: center; border-radius: 50%; background: var(--rp-neutral-bg); color: var(--rp-neutral-fg); font-size: 0.74rem; }
+
+.report-header { margin-bottom: 18px; padding: 18px 20px; border: 1px solid var(--rp-border); border-radius: 12px; background: var(--rp-surface); }
+.report-scope { max-width: 72ch; margin: 0 0 12px; color: var(--rp-muted); }
+.example-banner { max-width: 90ch; margin: 0 0 14px; padding: 9px 12px; border: 1px solid #f3c969; border-left-width: 5px; border-radius: 8px; background: #fffbeb; color: #713f12; }
+.report-scope-details { margin: -6px 0 12px; }
+.report-scope + .report-scope { margin-top: -6px; }
+.model-report .table-steps { margin: 0; padding-left: 20px; }
+.model-report .table-steps li { margin: 0 0 2px; }
+.model-report .path-link { color: inherit; text-decoration: underline; text-decoration-color: var(--rp-border); text-underline-offset: 3px; }
+.model-report .path-link:hover { text-decoration-color: currentColor; }
+.model-report .step-button { margin: 0; padding: 0; border: 0; border-radius: 3px; background: none; color: inherit; font: inherit; font-weight: 650; text-align: left; cursor: pointer; }
+.model-report .step-button:hover { text-decoration: underline; text-underline-offset: 3px; }
+.model-report .step-button:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; }
+.report-warning { max-width: 90ch; margin: 0 0 14px; padding: 9px 12px; border: 1px solid #fca5a5; border-left-width: 5px; border-radius: 8px; background: #fef2f2; color: #991b1b; }
+.report-warning p, .report-warning ul { margin: 0; }
+.report-warning ul { margin-top: 4px; padding-left: 18px; }
+.model-report .warning-note { color: #991b1b; }
+.threat-summary { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; }
+.threat-summary p { margin: 0; }
+.summary-total { font-size: 0.95rem; }
+.summary-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.summary-chip { padding: 3px 9px; border-radius: 999px; font-size: 0.78rem; }
+.summary-reviewers { color: var(--rp-muted); font-size: 0.8rem; }
+.report-contents ol { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 14px 0 0; padding: 0; list-style: none; counter-reset: rc; font-size: 0.82rem; }
+.report-contents li { counter-increment: rc; }
+.report-contents li::before { content: counter(rc) ". "; color: var(--rp-faint); }
+.report-contents a { color: var(--rp-accent); }
+
+.report-section { margin-bottom: 18px; padding: 16px 20px 18px; border: 1px solid var(--rp-border); border-radius: 12px; background: var(--rp-surface); scroll-margin-top: 12px; }
+.section-help, .empty-note { margin: 0 0 10px; color: var(--rp-muted); }
+.empty-note { padding: 10px 12px; border: 1px dashed var(--rp-border); border-radius: 8px; background: var(--rp-subtle); }
+
+.report-table-scroll { max-width: 100%; margin-bottom: 14px; overflow-x: auto; }
+.report-table-scroll:last-child { margin-bottom: 0; }
+.report-table { width: 100%; border-collapse: collapse; }
+.report-table caption { padding: 0 0 7px; color: var(--rp-muted); font-size: 0.76rem; font-weight: 700; text-align: left; }
+.report-table th, .report-table td { padding: 9px 10px; border-top: 1px solid var(--rp-border); text-align: left; vertical-align: top; }
+.report-table thead th { border-top: 0; border-bottom: 1px solid var(--rp-border); background: var(--rp-subtle); color: var(--rp-muted); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+.report-table tbody th { min-width: 170px; font-weight: 650; }
+.report-table td { min-width: 110px; }
+.cell-note { margin-top: 3px; color: var(--rp-muted); font-size: 0.76rem; font-weight: 400; }
+.missing { color: var(--rp-faint); font-style: italic; }
+.ref { white-space: normal; }
+.impact-list { display: grid; grid-template-columns: auto auto; gap: 0 8px; width: fit-content; margin: 0; padding: 0; list-style: none; }
+.impact-list li { display: contents; }
+.impact-list span { color: var(--rp-muted); }
+.handle { white-space: nowrap; }
+
+.status-badge { display: inline-block; padding: 2px 8px; border: 1px solid transparent; border-radius: 999px; font-size: 0.74rem; font-weight: 750; white-space: nowrap; }
+.rs-accepted { border-color: var(--rp-ok-line); background: var(--rp-ok-bg); color: var(--rp-ok-fg); }
+.rs-rejected { border-color: var(--rp-bad-line); background: var(--rp-bad-bg); color: var(--rp-bad-fg); }
+.rs-changes_requested { border-color: var(--rp-warn-line); background: var(--rp-warn-bg); color: var(--rp-warn-fg); }
+.rs-proposed, .rs-not_reviewed { border-color: var(--rp-hyp-line); border-style: dashed; background: var(--rp-hyp-bg); color: var(--rp-hyp-fg); }
+.rs-unknown, .rs-mixed { border-color: var(--rp-neutral-fg); border-style: dotted; background: var(--rp-neutral-bg); color: var(--rp-neutral-fg); }
+.row-status-rejected > th:first-child { box-shadow: inset 4px 0 0 var(--rp-bad-line); }
+.row-status-changes_requested > th:first-child { box-shadow: inset 4px 0 0 var(--rp-warn-line); }
+.row-not-assessed th, .row-not-assessed td { background: var(--rp-subtle); }
+
+.row-details { margin-top: 6px; font-size: 0.74rem; }
+.row-details summary { width: fit-content; color: var(--rp-accent); cursor: pointer; font-weight: 650; }
+.row-details dl { display: grid; gap: 4px; margin: 6px 0 0; padding: 8px 10px; border-radius: 7px; background: var(--rp-subtle); }
+.row-details dl > div { display: grid; grid-template-columns: minmax(90px, 0.35fr) 1fr; gap: 8px; }
+.row-details dt { color: var(--rp-muted); font-weight: 700; }
+.row-details dd { margin: 0; overflow-wrap: anywhere; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.72rem; }
+
+.path-card { margin-bottom: 16px; padding: 14px 16px; border: 1px solid var(--rp-border); border-radius: 10px; background: var(--rp-surface); }
+.path-card:last-child { margin-bottom: 0; }
+.path-card.row-status-rejected { border: 2px dashed var(--rp-bad-line); }
+.path-card.row-status-changes_requested { border: 2px dashed var(--rp-warn-line); }
+.path-card-header { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 8px 16px; margin-bottom: 8px; }
+.path-card-header p { margin: 0; }
+.path-card-status { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.open-path-button { padding: 5px 10px; border: 1px solid var(--rp-accent); border-radius: 7px; background: var(--rp-surface); color: var(--rp-accent); font: inherit; font-size: 0.76rem; font-weight: 700; cursor: pointer; }
+.open-path-button:focus-visible { outline: 2px solid var(--rp-accent); outline-offset: 2px; }
+.status-callout { margin: 0 0 10px; padding: 8px 11px; border-left: 4px solid; border-radius: 6px; }
+.path-story { display: grid; gap: 4px; }
+.path-steps { margin: 0 0 4px; padding-left: 1.6em; }
+.path-steps li { margin: 3px 0; }
+.step-name { font-weight: 650; }
+.phase-chip { display: inline-block; padding: 1px 6px; border-radius: 5px; background: var(--rp-neutral-bg); color: var(--rp-neutral-fg); font-size: 0.68rem; font-weight: 700; }
+.gate { display: inline-block; min-width: 28px; padding: 1px 6px; border-radius: 999px; background: var(--rp-gate-bg); color: var(--rp-gate-fg); font-size: 0.66rem; font-weight: 800; text-align: center; }
+.path-outcome { margin: 0; }
+.path-figure { margin: 12px 0 0; }
+.path-figure-scroll { overflow-x: auto; border: 1px solid var(--rp-border); border-radius: 8px; background: var(--rp-subtle); }
+.path-figure figcaption { margin-top: 5px; color: var(--rp-muted); font-size: 0.74rem; }
+
+/* Path diagram (inline SVG; the same layout the app draws with Cytoscape). */
+.path-diagram { display: block; width: 100%; min-width: 720px; max-width: 100%; height: auto; font-family: inherit; }
+.path-diagram .pd-node rect { stroke-width: 1.6; }
+.path-diagram .pd-step rect { fill: var(--rp-step-bg); stroke: var(--rp-step-line); }
+.path-diagram .pd-gate rect { fill: var(--rp-gate-bg); stroke: var(--rp-gate-bg); }
+.path-diagram .pd-gate .pd-text { fill: var(--rp-gate-fg); font-weight: 800; }
+.path-diagram .pd-threat rect { fill: var(--rp-threat-bg); stroke: var(--rp-threat-line); stroke-width: 2.2; }
+.path-diagram .pd-damage rect { fill: var(--rp-damage-bg); stroke: var(--rp-damage-line); }
+.path-diagram .pd-mitigation rect { fill: var(--rp-mit-bg); stroke: var(--rp-mit-line); }
+.path-diagram .pd-target rect { fill: var(--rp-target-bg); stroke: var(--rp-target-line); }
+.path-diagram .pd-caption { fill: var(--rp-muted); font-size: 10.5px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
+.path-diagram .pd-text { fill: var(--rp-text); font-size: 13px; font-weight: 600; }
+.path-diagram .pd-edge path { fill: none; stroke: var(--rp-edge); stroke-width: 1.7; }
+.path-diagram .pd-edge-mitigates path { stroke: var(--rp-mit-line); stroke-dasharray: 6 4; }
+.path-diagram .pd-edge-targets path { stroke: var(--rp-target-line); stroke-dasharray: 2 3; }
+.path-diagram .pd-arrow { fill: var(--rp-edge); }
+.path-diagram .pd-edge path { stroke-linejoin: round; }
+.path-diagram .pd-edge-label-bg { fill: var(--rp-subtle); }
+.path-diagram .pd-edge-label { fill: var(--rp-muted); font-size: 11px; font-weight: 700; }
+.path-diagram .pd-edge-label-group.pd-edge-mitigates .pd-edge-label { fill: var(--rp-mit-line); }
+.path-diagram .pd-edge-label-group.pd-edge-targets .pd-edge-label { fill: var(--rp-target-line); }
+.path-diagram.pd-status-rejected .pd-step rect,
+.path-diagram.pd-status-rejected .pd-threat rect { stroke: var(--rp-bad-line); stroke-dasharray: 7 4; }
+.path-diagram.pd-status-changes_requested .pd-threat rect { stroke: var(--rp-warn-line); stroke-dasharray: 7 4; }
+.path-diagram.pd-status-proposed .pd-threat rect,
+.path-diagram.pd-status-not_reviewed .pd-threat rect { stroke: var(--rp-hyp-line); stroke-dasharray: 7 4; }
+
+@media (max-width: 720px) {
+  .report-header, .report-section { padding: 14px; }
+  .report-table tbody th { min-width: 140px; }
+  .path-card-status { align-items: flex-start; }
+}
+
+@media (prefers-color-scheme: dark) {
+  .model-report {
+    --rp-text: #e5e7eb;
+    --rp-muted: #a3b0c2;
+    --rp-faint: #7c879a;
+    --rp-surface: #111827;
+    --rp-subtle: #172033;
+    --rp-border: #334155;
+    --rp-accent: #a5b4fc;
+    --rp-ok-bg: #0f2e1d; --rp-ok-fg: #86efac; --rp-ok-line: #22c55e;
+    --rp-bad-bg: #3f1818; --rp-bad-fg: #fecaca; --rp-bad-line: #f87171;
+    --rp-warn-bg: #3b2312; --rp-warn-fg: #fdba74; --rp-warn-line: #fb923c;
+    --rp-hyp-bg: #3b2f12; --rp-hyp-fg: #fde68a; --rp-hyp-line: #f59e0b;
+    --rp-neutral-bg: #243147; --rp-neutral-fg: #cbd5e1;
+    --rp-step-bg: #241d3d; --rp-step-line: #a78bfa;
+    --rp-threat-bg: #3a1622; --rp-threat-line: #fb7185;
+    --rp-damage-bg: #3a2414; --rp-damage-line: #fb923c;
+    --rp-mit-bg: #102a1c; --rp-mit-line: #4ade80;
+    --rp-target-bg: #132544; --rp-target-line: #60a5fa;
+    --rp-gate-bg: #e2e8f0; --rp-gate-fg: #0f172a;
+    --rp-edge: #94a3b8;
+  }
+  .example-banner { border-color: #8a671b; background: #3b2f12; color: #fde68a; }
+  .report-warning { border-color: #7f1d1d; background: #2b1414; color: #fecaca; }
+  .model-report .warning-note { color: #fca5a5; }
+}
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../index.html">tmodel</a><nav aria-label="Site"><a href="../index.html">Home</a><a href="../bibliography/index.html">Bibliography</a><a href="../reports/index.html">Reports</a></nav></div></header>
+<main class="model-page">
+<p class="breadcrumb"><a href="index.html">Example models</a> › Connected-Vehicle System</p>
+<article class="model-report" aria-labelledby="report-title">
+<header class="report-header">
+  <p class="eyebrow">Example threat model · Core example</p>
+  <h2 id="report-title">Connected-Vehicle System</h2>
+  <p class="report-scope">A SYSTEM product that hierarchically composes an in-vehicle platform subsystem and a cloud-backend subsystem.</p><details class="row-details report-scope-details"><summary>Details</summary><dl><div><dt>Full description</dt><dd>A SYSTEM product (ADR-0002) that hierarchically composes an in-vehicle platform subsystem and a cloud-backend subsystem. Recursive `composed_of` is the structural layer (§3).</dd></div></dl></details>
+  <p class="example-banner" role="note"><strong>Example data.</strong> This is an illustrative threat model written for the tmodel project to exercise its object model. It is not a security assessment of a real product. AI-proposed threats and paths are hypotheses until a human reviewer accepts them.</p>
+
+  <div class="threat-summary" aria-label="Threats by review status">
+    <p class="summary-total"><strong>3 threats</strong>, 1 of them AI-proposed</p>
+    <ul class="summary-chips"><li class="summary-chip rs-changes_requested"><strong>1</strong> changes requested</li><li class="summary-chip rs-not_reviewed"><strong>2</strong> not reviewed</li></ul>
+    <p class="summary-reviewers">Human reviews recorded by @sys-reviewer.</p>
+  </div>
+  <nav class="report-contents" aria-label="Report sections"><ol><li><a href="#report-components">Assets and components</a></li><li><a href="#report-damage">Damage scenarios</a></li><li><a href="#report-threats">Threats</a></li><li><a href="#report-paths">Attack paths</a></li><li><a href="#report-mitigations">Mitigations</a></li><li><a href="#report-risk">Risk</a></li><li><a href="#report-requirements">Requirements</a></li></ol></nav>
+</header>
+<section class="report-section" id="report-components" aria-labelledby="report-components-title">
+<h3 id="report-components-title"><span class="section-number">1</span> Assets and components</h3>
+<p class="empty-note">No assets are recorded in this model. The components below are the parts of the system.</p><div class="report-table-scroll" role="region" aria-label="Products and components" tabindex="0">
+<table class="report-table">
+<caption>Products and components</caption>
+<thead><tr><th scope="col">Name</th><th scope="col">Kind</th><th scope="col">Structure</th><th scope="col">Description</th></tr></thead>
+<tbody><tr>
+<th scope="row">Connected-Vehicle System</th>
+<td>Product</td>
+<td><div>Contains <span class="ref">In-vehicle platform subsystem</span>, <span class="ref">Cloud backend subsystem</span></div></td>
+<td>A SYSTEM product that hierarchically composes an in-vehicle platform subsystem and a cloud-backend subsystem.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>product:connected-vehicle-system</dd></div><div><dt>Object type</dt><dd>Product</dd></div><div><dt>Full description</dt><dd>A SYSTEM product (ADR-0002) that hierarchically composes an in-vehicle platform subsystem and a cloud-backend subsystem. Recursive `composed_of` is the structural layer (§3).</dd></div><div><dt>Identifiers</dt><dd>pkg:generic/connected-vehicle-system@2026.3</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">Connected-Vehicle System release 2026.3</th>
+<td>Product instance</td>
+<td><span class="missing">No structure recorded</span></td>
+<td>A released system configuration. System instance identity is an SBOM/manifest digest over its subsystems, opaque.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>product-instance:cvs-release-2026-3</dd></div><div><dt>Object type</dt><dd>ProductInstance</dd></div><div><dt>Full description</dt><dd>A released system configuration. System instance identity is an SBOM/manifest digest over its subsystems (ADR-0002 &quot;system&quot; per-type identity), opaque.</dd></div><div><dt>Identifiers</dt><dd>manifest:cvs@2026.3, sha256:aa11bb22cc33dd44ee55ff6677889900aabbccddeeff00112233445566778899</dd></div><div><dt>Valid from</dt><dd>2026-08-01T00:00:00Z</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">In-vehicle platform subsystem</th>
+<td>Component</td>
+<td><div>Part of <span class="ref">Connected-Vehicle System</span></div><div>Contains <span class="ref">CAN gateway ECU</span>, <span class="ref">Brake ECU</span></div></td>
+<td>The vehicle-side subsystem; composed of two ECUs.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>component:in-vehicle-platform</dd></div><div><dt>Object type</dt><dd>Component</dd></div><div><dt>Full description</dt><dd>The vehicle-side subsystem; composed of two ECUs (§3 recursive composition).</dd></div><div><dt>Identifiers</dt><dd>subsystem:in-vehicle-platform</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">Cloud backend subsystem</th>
+<td>Component</td>
+<td><div>Part of <span class="ref">Connected-Vehicle System</span></div><div>Contains <span class="ref">Telemetry ingest API</span>, <span class="ref">Fleet datastore</span></div></td>
+<td>The cloud-side subsystem; composed of the ingest API and the fleet datastore.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>component:cloud-backend</dd></div><div><dt>Object type</dt><dd>Component</dd></div><div><dt>Identifiers</dt><dd>subsystem:cloud-backend</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">CAN gateway ECU</th>
+<td>Component</td>
+<td><div>Part of <span class="ref">In-vehicle platform subsystem</span></div><div>Uses <span class="ref">CAN protocol-stack library</span></div></td>
+<td>Routes between the telematics path and the safety CAN bus.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>component:gateway-ecu</dd></div><div><dt>Object type</dt><dd>Component</dd></div><div><dt>Identifiers</dt><dd>cpe:2.3:o:acme_auto:gw_ecu:-:*:*:*:*:*:*:*</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">Brake ECU</th>
+<td>Component</td>
+<td><div>Part of <span class="ref">In-vehicle platform subsystem</span></div></td>
+<td>Safety-critical braking control unit on the in-vehicle CAN.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>component:brake-ecu</dd></div><div><dt>Object type</dt><dd>Component</dd></div><div><dt>Identifiers</dt><dd>cpe:2.3:o:acme_auto:brake_ecu:-:*:*:*:*:*:*:*</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">CAN protocol-stack library</th>
+<td>Component</td>
+<td><span class="missing">No structure recorded</span></td>
+<td>Shared firmware library along which a finding propagates.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>component:can-stack-lib</dd></div><div><dt>Object type</dt><dd>Component</dd></div><div><dt>Full description</dt><dd>Shared firmware library along which a finding propagates (§5).</dd></div><div><dt>Identifiers</dt><dd>swid:can-stack@3.0.1</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">Telemetry ingest API</th>
+<td>Component</td>
+<td><div>Part of <span class="ref">Cloud backend subsystem</span></div><div>Uses <span class="ref">jwt-verify library (transitive dependency)</span></div></td>
+<td>Cloud service receiving vehicle telemetry; software component.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>component:ingest-api</dd></div><div><dt>Object type</dt><dd>Component</dd></div><div><dt>Identifiers</dt><dd>pkg:oci/fleet/ingest-api@sha256:c0ffee11</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">Fleet datastore</th>
+<td>Component</td>
+<td><div>Part of <span class="ref">Cloud backend subsystem</span></div></td>
+<td>Backend datastore holding fleet records.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>component:fleet-datastore</dd></div><div><dt>Object type</dt><dd>Component</dd></div><div><dt>Identifiers</dt><dd>pkg:oci/fleet/datastore@sha256:d0cada11</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">jwt-verify library (transitive dependency)</th>
+<td>Component</td>
+<td><span class="missing">No structure recorded</span></td>
+<td>Vulnerable OSS JWT dependency used by the ingest API.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>component:jwt-lib</dd></div><div><dt>Object type</dt><dd>Component</dd></div><div><dt>Identifiers</dt><dd>pkg:npm/jwt-verify@2.1.0, cpe:2.3:a:jwt_verify:jwt_verify:2.1.0:*:*:*:*:*:*:*</dd></div></dl></details></td>
+</tr></tbody>
+</table>
+</div>
+</section><section class="report-section" id="report-damage" aria-labelledby="report-damage-title">
+<h3 id="report-damage-title"><span class="section-number">2</span> Damage scenarios</h3>
+<div class="report-table-scroll" role="region" aria-label="Damage scenarios: what could go wrong for the stakeholder" tabindex="0">
+<table class="report-table">
+<caption>Damage scenarios: what could go wrong for the stakeholder</caption>
+<thead><tr><th scope="col">Damage scenario</th><th scope="col">Assets damaged</th><th scope="col">Threats leading to it</th><th scope="col">Impact</th><th scope="col">Description</th></tr></thead>
+<tbody><tr>
+<th scope="row">Fleet-wide compromise — unsafe actuation and mass telemetry breach</th>
+<td><span class="missing">Not recorded</span></td>
+<td><span class="ref">In-vehicle — gateway default credentials allow CAN actuation</span>, <span class="ref">Cloud — JWT verification bypass grants fleet-wide API access</span>, <span class="ref">AI-proposed — chain the cloud bypass into in-vehicle actuation</span></td>
+<td><ul class="impact-list"><li><span>Safety</span> Severe</li><li><span>Financial</span> Severe</li><li><span>Operational</span> Severe</li><li><span>Privacy</span> Major</li></ul><div class="cell-note">As rated in the risk assessment</div></td>
+<td>System-level damage the subsystem threats ROLL UP to.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>damage-scenario:fleet-wide-compromise</dd></div><div><dt>Object type</dt><dd>DamageScenario</dd></div><div><dt>Full description</dt><dd>System-level damage the subsystem threats ROLL UP to (§8 V3). Impact categories live on the system RiskScore (§3), reduced worst-path across subsystems.</dd></div></dl></details></td>
+</tr></tbody>
+</table>
+</div>
+</section><section class="report-section" id="report-threats" aria-labelledby="report-threats-title">
+<h3 id="report-threats-title"><span class="section-number">3</span> Threats</h3>
+<div class="report-table-scroll" role="region" aria-label="Threats and their review status" tabindex="0">
+<table class="report-table">
+<caption>Threats and their review status</caption>
+<thead><tr><th scope="col">Threat</th><th scope="col">Source</th><th scope="col">Review status</th><th scope="col">Damage</th><th scope="col">Attack paths</th><th scope="col">Mitigations</th></tr></thead>
+<tbody><tr class="row-status-not_reviewed">
+<th scope="row">In-vehicle — gateway default credentials allow CAN actuation<div class="cell-note">Violates: S authentication / E authorization</div><div class="cell-note">Human-elicited threat at the in-vehicle platform subsystem (rolls up).</div></th>
+<td>Human-elicited</td>
+<td><span class="status-badge rs-not_reviewed">Not reviewed</span></td>
+<td><span class="ref">Fleet-wide compromise — unsafe actuation and mass telemetry breach</span></td>
+<td><span class="ref">In-vehicle default-credential actuation path</span></td>
+<td><span class="ref">Enforce unique provisioned credentials; disable defaults</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>threat-instance:gateway-default-creds</dd></div><div><dt>Object type</dt><dd>ThreatInstance</dd></div></dl></details></td>
+</tr><tr class="row-status-not_reviewed">
+<th scope="row">Cloud — JWT verification bypass grants fleet-wide API access<div class="cell-note">Violates: S authentication / I confidentiality</div><div class="cell-note">Human-elicited threat at the cloud-backend subsystem (rolls up).</div></th>
+<td>Human-elicited</td>
+<td><span class="status-badge rs-not_reviewed">Not reviewed</span></td>
+<td><span class="ref">Fleet-wide compromise — unsafe actuation and mass telemetry breach</span></td>
+<td><span class="ref">Cloud JWT-forgery path</span></td>
+<td><span class="ref">Pin JWT algorithm; verify signatures; rotate keys</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>threat-instance:cloud-jwt-bypass</dd></div><div><dt>Object type</dt><dd>ThreatInstance</dd></div></dl></details></td>
+</tr><tr class="row-status-changes_requested">
+<th scope="row">AI-proposed — chain the cloud bypass into in-vehicle actuation<div class="cell-note">Violates: E authorization</div></th>
+<td>AI-proposed</td>
+<td><span class="status-badge rs-changes_requested">Changes requested</span><div class="cell-note">Reviewer: <span class="handle">@sys-reviewer</span></div></td>
+<td><span class="ref">Fleet-wide compromise — unsafe actuation and mass telemetry breach</span></td>
+<td><span class="ref">Cloud-to-in-vehicle cross-subsystem chain (AI-proposed)</span></td>
+<td><span class="missing">None recorded</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>threat-instance:cross-subsystem-chain</dd></div><div><dt>Object type</dt><dd>ThreatInstance</dd></div><div><dt>Full description</dt><dd>AI-PROPOSED hypothesis that the cloud foothold chains down into the in-vehicle subsystem. `proposed` Assertion + a Review that requests changes; not accepted.</dd></div><div><dt>Assertion status</dt><dd>proposed</dd></div><div><dt>Review status</dt><dd>changes_requested</dd></div><div><dt>Assertions</dt><dd>assertion:ai-cross-subsystem</dd></div><div><dt>Reviews</dt><dd>review:ai-cross-subsystem</dd></div><div><dt>Review justification</dt><dd>AI-proposed chain. The push-to-vehicle step assumes a command path the fleet API does not expose; needs evidence before acceptance. Keep as a flagged hypothesis, do not treat as reviewed.</dd></div></dl></details></td>
+</tr></tbody>
+</table>
+</div>
+</section><section class="report-section" id="report-paths" aria-labelledby="report-paths-title">
+<h3 id="report-paths-title"><span class="section-number">4</span> Attack paths</h3>
+<div class="report-table-scroll" role="region" aria-label="Attack paths: how each threat could be carried out" tabindex="0">
+<table class="report-table">
+<caption>Attack paths: how each threat could be carried out</caption>
+<thead><tr><th scope="col">Attack path</th><th scope="col">Threat</th><th scope="col">Steps, in order</th><th scope="col">Feasibility</th><th scope="col">Review status</th></tr></thead>
+<tbody><tr class="row-status-not_reviewed">
+<th scope="row"><a class="path-link" href="#path-attack-path-in-vehicle-actuation">In-vehicle default-credential actuation path</a></th>
+<td>In-vehicle — gateway default credentials allow CAN actuation</td>
+<td><ol class="table-steps"><li value="1">Reach the gateway management service</li><li value="2">Authenticate with unchanged default credentials</li><li value="3">Send an actuation command onto the safety CAN bus</li></ol></td>
+<td>Medium</td>
+<td><span class="status-badge rs-not_reviewed">Not reviewed</span></td>
+</tr><tr class="row-status-not_reviewed">
+<th scope="row"><a class="path-link" href="#path-attack-path-cloud-jwt-forgery">Cloud JWT-forgery path</a></th>
+<td>Cloud — JWT verification bypass grants fleet-wide API access</td>
+<td><ol class="table-steps"><li value="1">Forge a JWT using the alg=none bypass</li><li value="2">Forge a JWT using a leaked weak signing key</li><li value="3">Call the fleet API with a forged token</li></ol></td>
+<td>High</td>
+<td><span class="status-badge rs-not_reviewed">Not reviewed</span></td>
+</tr><tr class="row-status-changes_requested">
+<th scope="row"><a class="path-link" href="#path-attack-path-cross-subsystem-chain">Cloud-to-in-vehicle cross-subsystem chain (AI-proposed)</a></th>
+<td>AI-proposed — chain the cloud bypass into in-vehicle actuation</td>
+<td><ol class="table-steps"><li value="1">Call the fleet API with a forged token</li><li value="2">Use fleet API access to push a command to a target vehicle</li></ol></td>
+<td>Low</td>
+<td><span class="status-badge rs-changes_requested">Changes requested</span><div class="cell-note">Reviewer: <span class="handle">@sys-reviewer</span></div></td>
+</tr></tbody>
+</table>
+</div>
+<p class="section-help">Each path in detail, below: its steps in order, and where two branches join, whether the step needs all of them (AND) or any one (OR).</p>
+<article class="path-card row-status-not_reviewed" id="path-attack-path-in-vehicle-actuation" aria-labelledby="path-attack-path-in-vehicle-actuation-title">
+<header class="path-card-header">
+  <div>
+    <h4 id="path-attack-path-in-vehicle-actuation-title">In-vehicle default-credential actuation path</h4>
+    <p class="cell-note">Realizes In-vehicle — gateway default credentials allow CAN actuation · Feasibility: Medium</p>
+  </div>
+  <div class="path-card-status"><span class="status-badge rs-not_reviewed">Not reviewed</span></div>
+</header>
+
+<div class="path-story">
+  <ol class="path-steps"><li value="1" data-step="attack-step:reach-gateway-service"><span class="step-name">Reach the gateway management service</span> <span class="phase-chip">Delivery</span></li><li value="2" data-step="attack-step:use-default-creds"><span class="step-name">Authenticate with unchanged default credentials</span></li><li value="3" data-step="attack-step:actuate-via-can"><span class="step-name">Send an actuation command onto the safety CAN bus</span> <span class="phase-chip">Exploitation</span> <span class="gate gate-and">AND</span> <span class="cell-note">needs all of steps 1 and 2</span></li></ol>
+
+  <p class="path-outcome"><span>Realizes the threat <strong>In-vehicle — gateway default credentials allow CAN actuation</strong></span><span>, which leads to <strong><span class="ref">Fleet-wide compromise — unsafe actuation and mass telemetry breach</span></strong></span>.</p>
+  <p class="path-outcome">Mitigated by <span class="ref">Enforce unique provisioned credentials; disable defaults</span>.</p>
+
+</div>
+<figure class="path-figure">
+  <div class="path-figure-scroll"><svg class="path-diagram pd-status-not_reviewed" viewBox="0 0 1080 380" width="1080" height="380" role="img" aria-label="Attack path diagram: In-vehicle default-credential actuation path, Not reviewed" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrow-attack-path-in-vehicle-actuation" viewBox="0 0 10 10" refX="9.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" class="pd-arrow"/></marker></defs><g class="pd-edge pd-edge-joins"><path d="M198,57 L218,57 Q224,57 224,63 L224,107 Q224,113 230,113 L238,113" marker-end="url(#arrow-attack-path-in-vehicle-actuation)"/></g><g class="pd-edge pd-edge-joins"><path d="M198,161 L218,161 Q224,161 224,155 L224,119 Q224,113 230,113 L238,113" marker-end="url(#arrow-attack-path-in-vehicle-actuation)"/></g><g class="pd-edge pd-edge-then"><path d="M288,113 L338,113" marker-end="url(#arrow-attack-path-in-vehicle-actuation)"/></g><g class="pd-edge pd-edge-realizes"><path d="M516,113 L596,113" marker-end="url(#arrow-attack-path-in-vehicle-actuation)"/></g><g class="pd-edge pd-edge-leads_to"><path d="M788,113 L868,113" marker-end="url(#arrow-attack-path-in-vehicle-actuation)"/></g><g class="pd-edge pd-edge-mitigates"><path d="M692,254 L692,158" marker-end="url(#arrow-attack-path-in-vehicle-actuation)"/></g><g class="pd-node pd-step"><title>Step 1 · Delivery: Reach the gateway management service</title><rect x="20" y="20" width="178" height="74" rx="8"/><text class="pd-caption" x="30" y="41">Step 1 · Delivery</text><text class="pd-text" text-anchor="start"><tspan x="30" y="61">Reach the gateway</tspan><tspan x="30" y="77">management service</tspan></text></g><g class="pd-node pd-step"><title>Step 2: Authenticate with unchanged default credentials</title><rect x="20" y="116" width="178" height="90" rx="8"/><text class="pd-caption" x="30" y="137">Step 2</text><text class="pd-text" text-anchor="start"><tspan x="30" y="157">Authenticate with</tspan><tspan x="30" y="173">unchanged default</tspan><tspan x="30" y="189">credentials</tspan></text></g><g class="pd-node pd-step"><title>Step 3 · Exploitation: Send an actuation command onto the safety CAN bus</title><rect x="338" y="68" width="178" height="90" rx="8"/><text class="pd-caption" x="348" y="89">Step 3 · Exploitation</text><text class="pd-text" text-anchor="start"><tspan x="348" y="109">Send an actuation</tspan><tspan x="348" y="125">command onto the</tspan><tspan x="348" y="141">safety CAN bus</tspan></text></g><g class="pd-node pd-gate"><title>AND: step 3 needs all of steps 1, 2</title><rect x="238" y="98" width="50" height="30" rx="15"/><text class="pd-text" text-anchor="middle"><tspan x="263" y="118">AND</tspan></text></g><g class="pd-node pd-threat"><title>Threat · Not reviewed: In-vehicle — gateway default credentials allow CAN actuation</title><rect x="596" y="68" width="192" height="90" rx="8"/><text class="pd-caption" x="606" y="89">Threat · Not reviewed</text><text class="pd-text" text-anchor="start"><tspan x="606" y="109">In-vehicle — gateway</tspan><tspan x="606" y="125">default credentials</tspan><tspan x="606" y="141">allow CAN actuation</tspan></text></g><g class="pd-node pd-damage"><title>Damage scenario: Fleet-wide compromise — unsafe actuation and mass telemetry breach</title><rect x="868" y="68" width="192" height="90" rx="8"/><text class="pd-caption" x="878" y="89">Damage scenario</text><text class="pd-text" text-anchor="start"><tspan x="878" y="109">Fleet-wide compromise</tspan><tspan x="878" y="125">— unsafe actuation and</tspan><tspan x="878" y="141">mass telemetry breach</tspan></text></g><g class="pd-node pd-mitigation"><title>Mitigation: Enforce unique provisioned credentials; disable defaults</title><rect x="599" y="254" width="186" height="106" rx="8"/><text class="pd-caption" x="609" y="275">Mitigation</text><text class="pd-text" text-anchor="start"><tspan x="609" y="295">Enforce unique</tspan><tspan x="609" y="311">provisioned</tspan><tspan x="609" y="327">credentials; disable</tspan><tspan x="609" y="343">defaults</tspan></text></g><g class="pd-edge-label-group pd-edge-then"><rect class="pd-edge-label-bg" x="296" y="96" width="34" height="16" rx="4"/><text class="pd-edge-label" x="313" y="108" text-anchor="middle">then</text></g><g class="pd-edge-label-group pd-edge-realizes"><rect class="pd-edge-label-bg" x="527" y="96" width="58" height="16" rx="4"/><text class="pd-edge-label" x="556" y="108" text-anchor="middle">realizes</text></g><g class="pd-edge-label-group pd-edge-leads_to"><rect class="pd-edge-label-bg" x="799" y="96" width="58" height="16" rx="4"/><text class="pd-edge-label" x="828" y="108" text-anchor="middle">leads to</text></g><g class="pd-edge-label-group pd-edge-mitigates"><rect class="pd-edge-label-bg" x="698" y="186" width="64" height="16" rx="4"/><text class="pd-edge-label" x="730" y="198" text-anchor="middle">mitigates</text></g></svg></div>
+  <figcaption>Steps run left to right. AND/OR marks where branches join; the threat, its damage and its mitigations follow.</figcaption>
+</figure>
+<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>attack-path:in-vehicle-actuation</dd></div><div><dt>Object type</dt><dd>AttackPath</dd></div><div><dt>Full description</dt><dd>Human-reviewed subsystem path; feasibility human-rated (§3).</dd></div></dl></details>
+</article><article class="path-card row-status-not_reviewed" id="path-attack-path-cloud-jwt-forgery" aria-labelledby="path-attack-path-cloud-jwt-forgery-title">
+<header class="path-card-header">
+  <div>
+    <h4 id="path-attack-path-cloud-jwt-forgery-title">Cloud JWT-forgery path</h4>
+    <p class="cell-note">Realizes Cloud — JWT verification bypass grants fleet-wide API access · Feasibility: High</p>
+  </div>
+  <div class="path-card-status"><span class="status-badge rs-not_reviewed">Not reviewed</span></div>
+</header>
+
+<div class="path-story">
+  <ol class="path-steps"><li value="1" data-step="attack-step:forge-jwt-none-alg"><span class="step-name">Forge a JWT using the alg=none bypass</span></li><li value="2" data-step="attack-step:forge-jwt-weak-key"><span class="step-name">Forge a JWT using a leaked weak signing key</span></li><li value="3" data-step="attack-step:call-fleet-api"><span class="step-name">Call the fleet API with a forged token</span> <span class="phase-chip">Exploitation</span> <span class="gate gate-or">OR</span> <span class="cell-note">needs any one of steps 1 or 2</span></li></ol>
+  <p class="cell-note">The engine finds 2 ways through this path: steps 1 → 3; steps 2 → 3.</p>
+  <p class="path-outcome"><span>Realizes the threat <strong>Cloud — JWT verification bypass grants fleet-wide API access</strong></span><span>, which leads to <strong><span class="ref">Fleet-wide compromise — unsafe actuation and mass telemetry breach</span></strong></span>.</p>
+  <p class="path-outcome">Mitigated by <span class="ref">Pin JWT algorithm; verify signatures; rotate keys</span>.</p>
+
+</div>
+<figure class="path-figure">
+  <div class="path-figure-scroll"><svg class="path-diagram pd-status-not_reviewed" viewBox="0 0 1080 364" width="1080" height="364" role="img" aria-label="Attack path diagram: Cloud JWT-forgery path, Not reviewed" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrow-attack-path-cloud-jwt-forgery" viewBox="0 0 10 10" refX="9.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" class="pd-arrow"/></marker></defs><g class="pd-edge pd-edge-joins"><path d="M198,57 L218,57 Q224,57 224,63 L224,107 Q224,113 230,113 L238,113" marker-end="url(#arrow-attack-path-cloud-jwt-forgery)"/></g><g class="pd-edge pd-edge-joins"><path d="M198,161 L218,161 Q224,161 224,155 L224,119 Q224,113 230,113 L238,113" marker-end="url(#arrow-attack-path-cloud-jwt-forgery)"/></g><g class="pd-edge pd-edge-then"><path d="M288,113 L338,113" marker-end="url(#arrow-attack-path-cloud-jwt-forgery)"/></g><g class="pd-edge pd-edge-realizes"><path d="M516,113 L596,113" marker-end="url(#arrow-attack-path-cloud-jwt-forgery)"/></g><g class="pd-edge pd-edge-leads_to"><path d="M788,113 L868,113" marker-end="url(#arrow-attack-path-cloud-jwt-forgery)"/></g><g class="pd-edge pd-edge-mitigates"><path d="M692,254 L692,166" marker-end="url(#arrow-attack-path-cloud-jwt-forgery)"/></g><g class="pd-node pd-step"><title>Step 1: Forge a JWT using the alg=none bypass</title><rect x="20" y="20" width="178" height="74" rx="8"/><text class="pd-caption" x="30" y="41">Step 1</text><text class="pd-text" text-anchor="start"><tspan x="30" y="61">Forge a JWT using the</tspan><tspan x="30" y="77">alg=none bypass</tspan></text></g><g class="pd-node pd-step"><title>Step 2: Forge a JWT using a leaked weak signing key</title><rect x="20" y="116" width="178" height="90" rx="8"/><text class="pd-caption" x="30" y="137">Step 2</text><text class="pd-text" text-anchor="start"><tspan x="30" y="157">Forge a JWT using a</tspan><tspan x="30" y="173">leaked weak signing</tspan><tspan x="30" y="189">key</tspan></text></g><g class="pd-node pd-step"><title>Step 3 · Exploitation: Call the fleet API with a forged token</title><rect x="338" y="76" width="178" height="74" rx="8"/><text class="pd-caption" x="348" y="97">Step 3 · Exploitation</text><text class="pd-text" text-anchor="start"><tspan x="348" y="117">Call the fleet API</tspan><tspan x="348" y="133">with a forged token</tspan></text></g><g class="pd-node pd-gate"><title>OR: step 3 needs any one of steps 1, 2</title><rect x="238" y="98" width="50" height="30" rx="15"/><text class="pd-text" text-anchor="middle"><tspan x="263" y="118">OR</tspan></text></g><g class="pd-node pd-threat"><title>Threat · Not reviewed: Cloud — JWT verification bypass grants fleet-wide API access</title><rect x="596" y="60" width="192" height="106" rx="8"/><text class="pd-caption" x="606" y="81">Threat · Not reviewed</text><text class="pd-text" text-anchor="start"><tspan x="606" y="101">Cloud — JWT</tspan><tspan x="606" y="117">verification bypass</tspan><tspan x="606" y="133">grants fleet-wide API</tspan><tspan x="606" y="149">access</tspan></text></g><g class="pd-node pd-damage"><title>Damage scenario: Fleet-wide compromise — unsafe actuation and mass telemetry breach</title><rect x="868" y="68" width="192" height="90" rx="8"/><text class="pd-caption" x="878" y="89">Damage scenario</text><text class="pd-text" text-anchor="start"><tspan x="878" y="109">Fleet-wide compromise</tspan><tspan x="878" y="125">— unsafe actuation and</tspan><tspan x="878" y="141">mass telemetry breach</tspan></text></g><g class="pd-node pd-mitigation"><title>Mitigation: Pin JWT algorithm; verify signatures; rotate keys</title><rect x="599" y="254" width="186" height="90" rx="8"/><text class="pd-caption" x="609" y="275">Mitigation</text><text class="pd-text" text-anchor="start"><tspan x="609" y="295">Pin JWT algorithm;</tspan><tspan x="609" y="311">verify signatures;</tspan><tspan x="609" y="327">rotate keys</tspan></text></g><g class="pd-edge-label-group pd-edge-then"><rect class="pd-edge-label-bg" x="296" y="96" width="34" height="16" rx="4"/><text class="pd-edge-label" x="313" y="108" text-anchor="middle">then</text></g><g class="pd-edge-label-group pd-edge-realizes"><rect class="pd-edge-label-bg" x="527" y="96" width="58" height="16" rx="4"/><text class="pd-edge-label" x="556" y="108" text-anchor="middle">realizes</text></g><g class="pd-edge-label-group pd-edge-leads_to"><rect class="pd-edge-label-bg" x="799" y="96" width="58" height="16" rx="4"/><text class="pd-edge-label" x="828" y="108" text-anchor="middle">leads to</text></g><g class="pd-edge-label-group pd-edge-mitigates"><rect class="pd-edge-label-bg" x="698" y="190" width="64" height="16" rx="4"/><text class="pd-edge-label" x="730" y="202" text-anchor="middle">mitigates</text></g></svg></div>
+  <figcaption>Steps run left to right. AND/OR marks where branches join; the threat, its damage and its mitigations follow.</figcaption>
+</figure>
+<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>attack-path:cloud-jwt-forgery</dd></div><div><dt>Object type</dt><dd>AttackPath</dd></div><div><dt>Full description</dt><dd>Human-reviewed subsystem path; feasibility human-rated (§3).</dd></div></dl></details>
+</article><article class="path-card row-status-changes_requested" id="path-attack-path-cross-subsystem-chain" aria-labelledby="path-attack-path-cross-subsystem-chain-title">
+<header class="path-card-header">
+  <div>
+    <h4 id="path-attack-path-cross-subsystem-chain-title">Cloud-to-in-vehicle cross-subsystem chain (AI-proposed)</h4>
+    <p class="cell-note">Realizes AI-proposed — chain the cloud bypass into in-vehicle actuation · Feasibility: Low</p>
+  </div>
+  <div class="path-card-status"><span class="status-badge rs-changes_requested">Changes requested</span><div class="cell-note">Reviewer: <span class="handle">@sys-reviewer</span></div></div>
+</header>
+<p class="status-callout rs-changes_requested" role="note"><strong>Changes requested:</strong> this path is not an accepted part of the model. Reviewer’s reason: AI-proposed chain. The push-to-vehicle step assumes a command path the fleet API does not expose; needs evidence before acceptance. Keep as a flagged hypothesis, do not treat as reviewed.</p>
+<div class="path-story">
+  <ol class="path-steps"><li value="1" data-step="attack-step:call-fleet-api"><span class="step-name">Call the fleet API with a forged token</span> <span class="phase-chip">Exploitation</span></li><li value="2" data-step="attack-step:chain-to-in-vehicle"><span class="step-name">Use fleet API access to push a command to a target vehicle</span> <span class="phase-chip">Lateral movement</span> <span class="cell-note">after step 1</span></li></ol>
+
+  <p class="path-outcome"><span>Realizes the threat <strong>AI-proposed — chain the cloud bypass into in-vehicle actuation</strong></span><span>, which leads to <strong><span class="ref">Fleet-wide compromise — unsafe actuation and mass telemetry breach</span></strong></span>.</p>
+  <p class="path-outcome"><span class="missing">No mitigation is recorded for this threat.</span></p>
+
+</div>
+<figure class="path-figure">
+  <div class="path-figure-scroll"><svg class="path-diagram pd-status-changes_requested" viewBox="0 0 998 180" width="998" height="180" role="img" aria-label="Attack path diagram: Cloud-to-in-vehicle cross-subsystem chain (AI-proposed), Changes requested" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrow-attack-path-cross-subsystem-chain" viewBox="0 0 10 10" refX="9.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" class="pd-arrow"/></marker></defs><g class="pd-edge pd-edge-then"><path d="M198,90 L256,90" marker-end="url(#arrow-attack-path-cross-subsystem-chain)"/></g><g class="pd-edge pd-edge-realizes"><path d="M434,90 L514,90" marker-end="url(#arrow-attack-path-cross-subsystem-chain)"/></g><g class="pd-edge pd-edge-leads_to"><path d="M706,90 L786,90" marker-end="url(#arrow-attack-path-cross-subsystem-chain)"/></g><g class="pd-node pd-step"><title>Step 1 · Exploitation: Call the fleet API with a forged token</title><rect x="20" y="53" width="178" height="74" rx="8"/><text class="pd-caption" x="30" y="74">Step 1 · Exploitation</text><text class="pd-text" text-anchor="start"><tspan x="30" y="94">Call the fleet API</tspan><tspan x="30" y="110">with a forged token</tspan></text></g><g class="pd-node pd-step"><title>Step 2 · Lateral movement: Use fleet API access to push a command to a target vehicle</title><rect x="256" y="36" width="178" height="108" rx="8"/><text class="pd-caption" x="266" y="57">Step 2 · Lateral</text><text class="pd-caption" x="266" y="75">movement</text><text class="pd-text" text-anchor="start"><tspan x="266" y="95">Use fleet API access</tspan><tspan x="266" y="111">to push a command to</tspan><tspan x="266" y="127">a target vehicle</tspan></text></g><g class="pd-node pd-threat"><title>Threat · Changes requested: AI-proposed — chain the cloud bypass into in-vehicle actuation (Reviewed by @sys-reviewer)</title><rect x="514" y="20" width="192" height="140" rx="8"/><text class="pd-caption" x="524" y="41">Threat · Changes</text><text class="pd-caption" x="524" y="59">requested</text><text class="pd-text" text-anchor="start"><tspan x="524" y="79">AI-proposed — chain</tspan><tspan x="524" y="95">the cloud bypass into</tspan><tspan x="524" y="111">in-vehicle actuation</tspan><tspan x="524" y="127">Reviewed by</tspan><tspan x="524" y="143">@sys-reviewer</tspan></text></g><g class="pd-node pd-damage"><title>Damage scenario: Fleet-wide compromise — unsafe actuation and mass telemetry breach</title><rect x="786" y="45" width="192" height="90" rx="8"/><text class="pd-caption" x="796" y="66">Damage scenario</text><text class="pd-text" text-anchor="start"><tspan x="796" y="86">Fleet-wide compromise</tspan><tspan x="796" y="102">— unsafe actuation and</tspan><tspan x="796" y="118">mass telemetry breach</tspan></text></g><g class="pd-edge-label-group pd-edge-then"><rect class="pd-edge-label-bg" x="210" y="73" width="34" height="16" rx="4"/><text class="pd-edge-label" x="227" y="85" text-anchor="middle">then</text></g><g class="pd-edge-label-group pd-edge-realizes"><rect class="pd-edge-label-bg" x="445" y="73" width="58" height="16" rx="4"/><text class="pd-edge-label" x="474" y="85" text-anchor="middle">realizes</text></g><g class="pd-edge-label-group pd-edge-leads_to"><rect class="pd-edge-label-bg" x="717" y="73" width="58" height="16" rx="4"/><text class="pd-edge-label" x="746" y="85" text-anchor="middle">leads to</text></g></svg></div>
+  <figcaption>Steps run left to right. AND/OR marks where branches join; the threat, its damage and its mitigations follow.</figcaption>
+</figure>
+<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>attack-path:cross-subsystem-chain</dd></div><div><dt>Object type</dt><dd>AttackPath</dd></div><div><dt>Full description</dt><dd>AI-PROPOSED path pivoting from the cloud path into the in-vehicle path. `pivots_to` the in-vehicle path; realizing edge is a `proposed` Assertion.</dd></div><div><dt>Assertion status</dt><dd>proposed</dd></div><div><dt>Review status</dt><dd>changes_requested</dd></div><div><dt>Assertions</dt><dd>assertion:ai-cross-subsystem</dd></div><div><dt>Reviews</dt><dd>review:ai-cross-subsystem</dd></div><div><dt>Review justification</dt><dd>AI-proposed chain. The push-to-vehicle step assumes a command path the fleet API does not expose; needs evidence before acceptance. Keep as a flagged hypothesis, do not treat as reviewed.</dd></div></dl></details>
+</article>
+</section><section class="report-section" id="report-mitigations" aria-labelledby="report-mitigations-title">
+<h3 id="report-mitigations-title"><span class="section-number">5</span> Mitigations</h3>
+<div class="report-table-scroll" role="region" aria-label="Mitigations: what is done about the threats" tabindex="0">
+<table class="report-table">
+<caption>Mitigations: what is done about the threats</caption>
+<thead><tr><th scope="col">Mitigation</th><th scope="col">Against threats</th><th scope="col">Status</th><th scope="col">Owner</th><th scope="col">Lifecycle phases</th><th scope="col">Description</th></tr></thead>
+<tbody><tr>
+<th scope="row">Enforce unique provisioned credentials; disable defaults</th>
+<td><span class="ref">In-vehicle — gateway default credentials allow CAN actuation</span></td>
+<td>Complete</td>
+<td>System integrator</td>
+<td>Production / manufacturing, Deployment / commissioning</td>
+<td>Control for the in-vehicle default-credential threat.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>mitigation:enforce-unique-creds</dd></div><div><dt>Object type</dt><dd>Mitigation</dd></div><div><dt>Full description</dt><dd>Control for the in-vehicle default-credential threat (§5).</dd></div><div><dt>Catalog ref</dt><dd>D3FEND:D3-SPP</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">Pin JWT algorithm; verify signatures; rotate keys</th>
+<td><span class="ref">Cloud — JWT verification bypass grants fleet-wide API access</span></td>
+<td>In progress</td>
+<td>System integrator</td>
+<td>Implementation</td>
+<td>Control for the cloud JWT-bypass threat; still being rolled out.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>mitigation:pin-jwt-alg-and-rotate</dd></div><div><dt>Object type</dt><dd>Mitigation</dd></div><div><dt>Catalog ref</dt><dd>D3FEND:D3-CH</dd></div><div><dt>External refs</dt><dd>JIRA-CVS-77</dd></div></dl></details></td>
+</tr></tbody>
+</table>
+</div>
+</section><section class="report-section" id="report-risk" aria-labelledby="report-risk-title">
+<h3 id="report-risk-title"><span class="section-number">6</span> Risk</h3>
+<div class="report-table-scroll" role="region" aria-label="Risk: how likely and how bad, per threat" tabindex="0">
+<table class="report-table">
+<caption>Risk: how likely and how bad, per threat</caption>
+<thead><tr><th scope="col">Threat</th><th scope="col">Damage</th><th scope="col">Feasibility</th><th scope="col">Impact</th><th scope="col">Risk</th><th scope="col">Mitigation status</th></tr></thead>
+<tbody><tr>
+<th scope="row">Cloud — JWT verification bypass grants fleet-wide API access<div class="cell-note">Risk — fleet-wide system compromise (rolled up)</div></th>
+<td>Fleet-wide compromise — unsafe actuation and mass telemetry breach<div class="cell-note">For Fleet owner</div></td>
+<td>High</td>
+<td><ul class="impact-list"><li><span>Safety</span> Severe</li><li><span>Financial</span> Severe</li><li><span>Operational</span> Severe</li><li><span>Privacy</span> Major</li></ul></td>
+<td>safety 5 / financial 5 / operational 5 / privacy 4 (worst-path over subsystems, high feasibility; 1–5 per 21434 M(I,F))</td>
+<td>In progress<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>risk-score:fleet-wide-system</dd></div><div><dt>Object type</dt><dd>RiskScore</dd></div><div><dt>Full description</dt><dd>SYSTEM-level composite vector (ADR-0006). Reduces WORST-PATH across the two reviewed subsystem attack paths (in-vehicle + cloud). This is the §8 vector-3 roll-up; per-S/F/O/P cross-subsystem aggregation with a human override is NOT a core class (reported limit). No Environment parameter (§8 MVP).</dd></div></dl></details></td>
+</tr><tr class="row-not-assessed">
+<th scope="row">In-vehicle — gateway default credentials allow CAN actuation</th>
+<td>Fleet-wide compromise — unsafe actuation and mass telemetry breach</td>
+<td colspan="4"><span class="missing">Not assessed: the model records no risk score for this threat.</span></td>
+</tr><tr class="row-not-assessed">
+<th scope="row">AI-proposed — chain the cloud bypass into in-vehicle actuation</th>
+<td>Fleet-wide compromise — unsafe actuation and mass telemetry breach</td>
+<td colspan="4"><span class="missing">Not assessed: the model records no risk score for this threat.</span></td>
+</tr></tbody>
+</table>
+</div>
+</section><section class="report-section" id="report-requirements" aria-labelledby="report-requirements-title">
+<h3 id="report-requirements-title"><span class="section-number">7</span> Requirements</h3>
+<p class="empty-note">No requirements are recorded in this model.</p>
+</section>
+</article>
+<footer class="model-page-footer">
+<p>Built by the tmodel engine from <code>spec/vectors/mvp-03-hierarchical-system.yaml</code> (<a href="https://github.com/Threat-Radar/tmodel/blob/main/spec/vectors/mvp-03-hierarchical-system.yaml">view the model source</a>). The same renderer draws the report in the tmodel app. Model ids and raw values are under each row's Details.</p>
+</footer>
+</main>
+</body>
+</html>

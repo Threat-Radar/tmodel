@@ -22,7 +22,7 @@ from engine.load.library import (
     cached_library,
     configured_root,
 )
-from engine.load.vector import load_vector, load_vector_document
+from engine.load.vector import MODEL_SUFFIXES, load_vector, load_vector_document
 from engine.model_graph import project_model_graph
 from engine.paths import enumerate_paths
 
@@ -40,6 +40,26 @@ LIBRARY_FILTERS = ("id", "type", "topic", "status")
 TABLE_OPTIONS = ("search", "sort", "order", "limit", "offset")
 TABLE_SORTS = ("id", "title", "type", "shelf", "status", "maturity", "date", "publisher", "topic")
 TABLE_FACETS = ("type", "status", "topic")
+# The example-model families, told apart by file-name prefix (spec/vectors/README.md).
+# The order is the order the model list uses.
+MODEL_KINDS = (
+    ("mvp-", "core", "Core example"),
+    ("tv-", "worked", "Worked example with governance"),
+    ("pv-", "proposal", "Proposal example (AI-drafted, unreviewed)"),
+)
+# Schema test harnesses live beside the models but are not models.
+HARNESS_SUFFIX = ".linkml.yaml"
+# What a model summary counts: summary name -> model collection.
+MODEL_COUNTS = (
+    ("assets", "assets"),
+    ("components", "components"),
+    ("damage_scenarios", "damage_scenarios"),
+    ("threats", "threat_instances"),
+    ("attack_paths", "attack_paths"),
+    ("mitigations", "mitigations"),
+    ("risk_scores", "risk_scores"),
+    ("requirements", "requirements"),
+)
 
 
 class Unavailable(RuntimeError):
@@ -275,6 +295,93 @@ def model_graph(file: str) -> dict[str, Any]:
     if not graph.nodes:
         raise GraphError(f"{path.name}: expected at least one model object")
     return {"file": str(path), **graph.to_dict()}
+
+
+def list_models() -> dict[str, Any]:
+    """The example models a reader can open (#208), one summary each.
+
+    Lists the approved model directory: the bundled examples, or ``spec/vectors``
+    in a source checkout. Schema test harnesses (``*.linkml.yaml``) are not models
+    and are left out. A file that fails to load is listed under ``problems`` so the
+    rest can still be opened. Each summary's ``file`` is what ``/graph`` accepts.
+    The title and description come from the model itself (its products), else the
+    file name; nothing is made up. The payload names no local path.
+    """
+    root = APPROVED_VECTOR_DIRECTORY.resolve()
+    models: list[dict[str, Any]] = []
+    problems: list[dict[str, str]] = []
+    candidates = sorted(root.iterdir()) if root.is_dir() else []
+    for path in candidates:
+        if (
+            path.suffix not in MODEL_SUFFIXES
+            or path.name.endswith(HARNESS_SUFFIX)
+            or not path.is_file()
+        ):
+            continue
+        try:
+            summary = _model_summary(path)
+        except GraphError as exc:
+            problems.append({"file": path.name, "error": _sanitized_model_error(path, exc)})
+            continue
+        if summary is not None:
+            models.append(summary)
+    rank = {kind: index for index, (_prefix, kind, _label) in enumerate(MODEL_KINDS)}
+    models.sort(key=lambda model: (rank.get(model["kind"], len(rank)), model["file"]))
+    return {"count": len(models), "models": models, "problems": problems}
+
+
+def _model_summary(path: Path) -> dict[str, Any] | None:
+    """One model's list entry, or None for a file with no model objects."""
+    doc = load_vector_document(path)
+    attack_graph = AttackGraph.from_dict(doc)  # the same integrity checks as /graph
+    if not project_model_graph(doc).nodes:
+        return None
+    products = [p for p in doc.get("products") or [] if isinstance(p, Mapping)]
+    names = [p["name"].strip() for p in products if _has_text(p.get("name"))]
+    kind, kind_label = next(
+        ((kind, label) for prefix, kind, label in MODEL_KINDS if path.name.startswith(prefix)),
+        ("other", "Example model"),
+    )
+    threats = attack_graph.threats()
+    return {
+        "id": path.stem,
+        "file": path.name,
+        "title": " and ".join(names) if names else path.stem,
+        "description": _products_description(products),
+        "kind": kind,
+        "kind_label": kind_label,
+        "counts": {
+            name: len(entries) if isinstance(entries := doc.get(collection), list) else 0
+            for name, collection in MODEL_COUNTS
+        },
+        "reviewed_threats": sum(1 for t in threats if attack_graph.threat_reviewed(t)),
+    }
+
+
+def _products_description(products: list[Mapping[str, Any]]) -> str | None:
+    """The products' own descriptions, in model order, nothing added.
+
+    One product: its description. Several (mvp-18 has two): one line per product
+    that has a description, "Name: description", so the scope covers every
+    product the title names. Whitespace inside a description is collapsed, so a
+    newline only ever separates two products; the app reads each line apart.
+    """
+    described = [
+        (p.get("name"), " ".join(p["description"].split()))
+        for p in products
+        if _has_text(p.get("description"))
+    ]
+    if not described:
+        return None
+    if len(products) == 1:
+        return described[0][1]
+    return "\n".join(
+        f"{name.strip()}: {text}" if _has_text(name) else text for name, text in described
+    )
+
+
+def _has_text(value: Any) -> bool:
+    return isinstance(value, str) and bool(value.strip())
 
 
 def _approved_vector_path(file: str) -> Path:
