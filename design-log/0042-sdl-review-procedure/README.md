@@ -29,6 +29,8 @@ check.
   and a `--strict` gate mode. The page shows how many selections are awaiting review.
 - `docs/publishing/test_render_sdl.py`: nine cases (AI reviewer, decided without a review,
   missing justification, status mismatch, unknown verdict, wrong role, changes requested).
+- `.claude/skills/sdl/SKILL.md` (separate PR, stacked on this one): the agent side of the
+  procedure. It covers how an agent proposes, validates, renders and opens a PR, and never decides.
 - `schema.yml` now runs `render_sdl.py --check` and the tests. DL-0040 described the check, but
   CI did not run it.
 
