@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+# build-dmg-local: build the macOS app (.app + .dmg, Apple Silicon) on your own Mac,
+# from the current checkout, for REVIEW ONLY.
+#
+#   bin/build-dmg-local          run from anywhere inside a checkout
+#
+# It runs the same two steps as CONTRIBUTING §10 "Build the installer":
+# bin/build-engine, then `npm ci` and `CI=true npx tauri build` in apps/desktop.
+# It does not clone, fetch or switch branches: check out the ref you want first
+# (`git switch --detach origin/main`, or a PR branch) and keep the `library`
+# submodule initialised (`git submodule update --init library`).
+#
+# The result is ad-hoc signed and not notarized. Do not publish it or hand it to
+# users: releases come only from .github/workflows/release.yml, which attests
+# SLSA build provenance (`gh attestation verify`). See CONTRIBUTING §10 and
+# design-log/0035-release-history-2026-11-04.
+#
+# Typical times on an Apple Silicon Mac mini: about 190 s cold, about 75 s warm
+# (Rust and npm caches populated), against about 9 min on GitHub's macos-latest.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+fail() { printf 'build-dmg-local: %s\n' "$*" >&2; exit 1; }
+
+[ "$(uname -s)" = "Darwin" ] || fail "macOS only: the .app/.dmg bundle is built with macOS tools."
+
+# Homebrew's node@22 is keg-only; use it when it is installed.
+for d in /opt/homebrew/opt/node@22/bin /usr/local/opt/node@22/bin /opt/homebrew/bin "$HOME/.cargo/bin"; do
+  [ -d "$d" ] && PATH="$d:$PATH"
+done
+export PATH
+
+xcode-select -p >/dev/null 2>&1 || fail "Xcode command-line tools missing: run 'xcode-select --install'."
+command -v python3 >/dev/null || fail "python3 missing: install Python 3.11+ (python.org or 'brew install python@3.12')."
+python3 -c 'import sys; sys.exit(0 if sys.version_info >= (3, 11) else 1)' \
+  || fail "python3 is $(python3 -V 2>&1); 3.11 or newer is required."
+command -v node >/dev/null || fail "node missing: 'brew install node@22' (or nodejs.org 22 LTS)."
+node_major=$(node -p 'process.versions.node.split(".")[0]')
+[ "$node_major" -ge 22 ] || fail "node is $(node -v); 22 or newer is required ('brew install node@22')."
+command -v npm >/dev/null || fail "npm missing (it ships with node)."
+{ command -v cargo >/dev/null && command -v rustc >/dev/null; } \
+  || fail "Rust missing: 'brew install rustup && rustup default stable', then add \$(brew --prefix rustup)/bin to PATH."
+[ -n "$(ls -A library 2>/dev/null)" ] || fail "library/ submodule is empty: run 'git submodule update --init library'."
+
+echo "build-dmg-local: $(git rev-parse --short HEAD) ($(git describe --always --dirty)) · node $(node -v) · $(rustc -V) · $(python3 -V)"
+echo "build-dmg-local: REVIEW BUILD ONLY: ad-hoc signed, not notarized, no provenance."
+
+start=$(date +%s)
+bin/build-engine
+(cd apps/desktop && npm ci --no-audit --no-fund && CI=true npx tauri build)
+echo "BUILD_SECONDS=$(( $(date +%s) - start ))"
+
+dmg=""
+for f in apps/desktop/src-tauri/target/release/bundle/dmg/*.dmg; do
+  if [ -f "$f" ] && { [ -z "$dmg" ] || [ "$f" -nt "$dmg" ]; }; then dmg=$f; fi
+done
+[ -n "$dmg" ] || fail "tauri build finished but no .dmg was found under apps/desktop/src-tauri/target/release/bundle/dmg/."
+echo "DMG=$PWD/$dmg"
+echo "APP=$PWD/apps/desktop/src-tauri/target/release/bundle/macos/tmodel.app"
