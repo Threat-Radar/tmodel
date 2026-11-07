@@ -1,0 +1,32 @@
+# SDL page ("tmodel SDL") built from one SDL example model (DL-0040).
+# Rendered by render_sdl.py (bin/publish-site runs it). The page is EXAMPLE DATA
+# and says so: every selection on it is a proposal until a human Review accepts it.
+# NO personal identities in output: parties render as roles, and
+# check_identities.py is the backstop. Licensed standards: ids only (#154).
+schema: tmodel.publishing/v0
+id: pub-sdl
+status: draft
+source:
+  wave: null
+  example_data: true
+security:
+  remote_scripts: false
+  trackers: false
+  secrets: false
+  links: relative
+review:
+  human_required: true
+pages:
+  - src: spec/vectors/sdl-01-tmodel-desktop.yaml
+    out: docs/sdl/index.html
+    title: "tmodel SDL"
+    program: security-program:tmodel-sdl
+    # Requirement set -> its column in spec/MAP-0001.yaml, so each practice row can
+    # show which ids of the selected and candidate sets it covers.
+    map_columns:
+      requirement-set:ssdf-1-1: ssdf
+      requirement-set:slsa-1-2-build-l2: slsa
+      requirement-set:eu-cra: cra
+      requirement-set:openssf-osps: osps
+      requirement-set:iso-sae-21434: iso21434
+      requirement-set:iec-62443-4-1: iec

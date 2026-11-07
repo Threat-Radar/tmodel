@@ -17,6 +17,7 @@ reports:
       - { text: "SDL bibliography", href: "../bibliography/" }
       - { text: "Requirements crosswalk (MAP-0001)", href: "../bibliography/crosswalk.html" }
       - { text: "SDL object model", href: "sdl-object-model.html" }
+      - { text: "tmodel SDL (example)", href: "../sdl/index.html" }
   - src: research/0013-sdl-conformance/sdl-object-model.md
     out: docs/reports/sdl-object-model.html
     title: "SDL object model (consolidated, RPT-0013-OM)"

@@ -7,6 +7,8 @@ name: schema
 # 4. Every requirement extraction file (research/0017-requirements-extraction,
 #    #169) validates against the core container, its references resolve, and it
 #    keeps the extraction rules (check.py); the converter's tests pass.
+# 5. The SDL example (sdl-*.yaml, DL-0040) validates against the SDL proposal
+#    container. Its references are checked by docs/publishing/render_sdl.py.
 # GitHub runners only, no cloud services (APP-0001 A-043).
 
 on:
@@ -61,6 +63,12 @@ jobs:
           for v in spec/vectors/tv-*.yaml; do
             echo "== $v"
             linkml-validate -s spec/vectors/example-container.linkml.yaml -C ExampleModel "$v"
+          done
+      - name: SDL example validates (SDL proposal container, DL-0040)
+        run: |
+          for v in spec/vectors/sdl-*.yaml; do
+            echo "== $v"
+            linkml-validate -s spec/vectors/example-container-sdl.linkml.yaml -C ExampleModelSdl "$v"
           done
       - name: MVP core vectors, references resolve
         run: python3 design-log/0021-mvp-core-attack-path-vectors/check-edges.py spec/vectors/mvp-*.yaml
