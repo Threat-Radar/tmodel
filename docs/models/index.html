@@ -6,27 +6,23 @@
 <title>Example threat models · tmodel</title>
 <meta name="description" content="Example data. These models were written to exercise tmodel&#39;s object model; none of them is a security assessment. The proposal examples were drafted by AI from published write-ups of real automotive attacks and name the real products. AI-proposed threats and paths are hypotheses until a human reviewer accepts them.">
 <style>
-body { margin: 0; background: #f3f5f9; color: #172033; font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
-.model-page { max-width: 1180px; margin: 0 auto; padding: 22px 24px 40px; }
-.breadcrumb { margin: 0 0 12px; font-size: 0.85rem; }
-.breadcrumb a, .model-page-footer a, .model-index a { color: #3730a3; }
-.model-page-footer { margin-top: 18px; color: #5b6678; font-size: 0.8rem; }
+:root { --ink: #1a1916; --muted: #5c574e; --line: #e2dcd0; --paper: #f6f3ec; --card: #fffcf7; --accent: #1e4d3a; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
+.model-page { max-width: 920px; margin: 0 auto; padding: 22px 24px 40px; }
+.breadcrumb { margin: 0 0 12px; font-size: 0.85rem; color: var(--muted); }
+.breadcrumb a, .model-page-footer a, .model-index a { color: var(--accent); }
+.model-page-footer { margin-top: 32px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.8rem; }
 .model-page-footer code { font-size: 0.78rem; }
-.model-index h1 { margin: 0 0 6px; font-size: 1.7rem; letter-spacing: -0.02em; }
-.model-index .lead { max-width: 75ch; margin: 0 0 14px; color: #5b6678; }
-.model-list { display: grid; gap: 12px; margin: 16px 0 0; padding: 0; list-style: none; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
-.model-list li { padding: 14px 16px; border: 1px solid #dde3ec; border-radius: 12px; background: #fff; }
+.model-index h1 { margin: 6px 0 6px; font-size: clamp(1.7rem, 3vw, 2.3rem); letter-spacing: -0.03em; }
+.model-index .lead { max-width: 75ch; margin: 0 0 14px; color: var(--muted); font-size: 1.05rem; }
+.model-list { display: grid; gap: 12px; margin: 16px 0 0; padding: 0; list-style: none; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+.model-list li { padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
 .model-list h2 { margin: 2px 0 6px; font-size: 1.05rem; }
-.model-list p { margin: 0 0 6px; font-size: 0.85rem; }
-.model-list .meta { color: #5b6678; font-size: 0.78rem; }
-.model-list .kind { color: #5b6678; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+.model-list p { margin: 0 0 6px; font-size: 0.88rem; }
+.model-list .meta { color: var(--muted); font-size: 0.8rem; }
+.model-list .kind { color: var(--accent); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
 .problems { margin-top: 16px; color: #991b1b; font-size: 0.85rem; }
-@media (prefers-color-scheme: dark) {
-  body { background: #0f172a; color: #e5e7eb; }
-  .model-list li { border-color: #334155; background: #111827; }
-  .model-list .meta, .model-list .kind, .model-index .lead, .model-page-footer { color: #a3b0c2; }
-  .breadcrumb a, .model-page-footer a, .model-index a { color: #a5b4fc; }
-}
 
 /* Model report styles (#208). One stylesheet for both outputs: the app imports
    it, and the static Pages build inlines it into each model page. */
@@ -206,6 +202,27 @@ body { margin: 0; background: #f3f5f9; color: #172033; font-family: Inter, ui-sa
   .report-warning { border-color: #7f1d1d; background: #2b1414; color: #fecaca; }
   .model-report .warning-note { color: #fca5a5; }
 }
+
+
+.model-report {
+  --rp-text: #1a1916; --rp-muted: #5c574e; --rp-faint: #8a8377;
+  --rp-surface: #fffcf7; --rp-subtle: #f6f3ec; --rp-border: #e2dcd0; --rp-accent: #1e4d3a;
+  --rp-ok-bg: #e5efe8; --rp-ok-fg: #1e4d3a; --rp-ok-line: #6f9c80;
+  --rp-bad-bg: #f6e4dc; --rp-bad-fg: #7f1d1d; --rp-bad-line: #c27a6a;
+  --rp-warn-bg: #ffedd5; --rp-warn-fg: #9a3412; --rp-warn-line: #ea580c;
+  --rp-hyp-bg: #f3ead3; --rp-hyp-fg: #6b4e16; --rp-hyp-line: #c99a3a;
+  --rp-neutral-bg: #ece6da; --rp-neutral-fg: #5c574e;
+  --rp-step-bg: #f5f3ff; --rp-step-line: #7c3aed;
+  --rp-threat-bg: #fff1f2; --rp-threat-line: #be123c;
+  --rp-damage-bg: #fff7ed; --rp-damage-line: #c2410c;
+  --rp-mit-bg: #f0fdf4; --rp-mit-line: #15803d;
+  --rp-target-bg: #eff6ff; --rp-target-line: #2563eb;
+  --rp-gate-bg: #1a1916; --rp-gate-fg: #ffffff;
+  --rp-edge: #6b665c;
+}
+.example-banner { border-color: #e0cfa3; background: #f3ead3; color: #6b4e16; }
+.report-warning { border-color: #e3b5a8; background: #f6e4dc; color: #7f1d1d; }
+.model-report .warning-note { color: #991b1b; }
 </style>
 </head>
 <body>
