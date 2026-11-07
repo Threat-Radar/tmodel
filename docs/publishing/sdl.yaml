@@ -21,6 +21,9 @@ pages:
     out: docs/sdl/index.html
     title: "tmodel SDL"
     program: security-program:tmodel-sdl
+    # Who may decide an SDL selection (PROC-0002): a Party with one of these
+    # `role:` classifications. An AI agent never may, whatever its roles.
+    required_reviewer_roles: [sponsor]
     # Requirement set -> its column in spec/MAP-0001.yaml, so each practice row can
     # show which ids of the selected and candidate sets it covers.
     map_columns:
