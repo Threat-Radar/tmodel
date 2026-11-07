@@ -1,0 +1,89 @@
+{
+  "file": "mvp-01-software-doc-service.yaml",
+  "kind": "threat",
+  "proposals": [
+    {
+      "id": "proposal:20261107T200000Z-f6e9c7c0cd",
+      "state": "proposed",
+      "by": "AI agent",
+      "at": "2026-11-07T20:00:00Z",
+      "generated_by": "example agent, run 0002",
+      "rationale": "The XXE path has one mitigation; add an upload-time check and a saved view of it.",
+      "objects": [
+        {
+          "collection": "parties",
+          "id": "party:example-agent",
+          "name": "Example coding agent"
+        },
+        {
+          "collection": "mitigations",
+          "id": "mitigation:reject-doctype-uploads",
+          "name": "Reject uploads that declare a DOCTYPE"
+        },
+        {
+          "collection": "views",
+          "id": "view:xxe-focus",
+          "name": "XXE threat and its path"
+        }
+      ],
+      "changes": [
+        {
+          "action": "edit",
+          "collection": "components",
+          "id": "component:render-worker",
+          "fields": [
+            "description"
+          ]
+        }
+      ],
+      "assertions": [
+        {
+          "id": "assertion:doctype-reject-mitigates-xxe",
+          "predicate": "mitigates",
+          "object": "threat-instance:xxe-file-read",
+          "name": "Rejecting DOCTYPE uploads mitigates the XXE threat"
+        }
+      ]
+    }
+  ],
+  "views": [
+    {
+      "id": "view:papermill-attack-graph",
+      "name": "Papermill attack-path graph",
+      "description": "Interactive-graph-able lens over this model (\u00a710, R-014): projection `graph`, opened from a bounded focus query. A derived View, never written back to domain nodes; this is the core (non-governed) View class.",
+      "focus_query": "product:papermill-doc-service -> threat_instances -> attack_paths -> attack_steps",
+      "state": "accepted",
+      "proposal": null,
+      "node_ids": [
+        "product:papermill-doc-service",
+        "threat-instance:imds-pivot",
+        "threat-instance:xxe-file-read",
+        "attack-path:imds-pivot",
+        "attack-path:xxe-file-read",
+        "attack-step:coerce-file-uri",
+        "attack-step:dns-rebind-to-metadata",
+        "attack-step:fetch-instance-credentials",
+        "attack-step:parser-resolves-entity",
+        "attack-step:point-entity-at-metadata",
+        "attack-step:read-internal-file",
+        "attack-step:upload-crafted-doc"
+      ]
+    },
+    {
+      "id": "view:xxe-focus",
+      "name": "XXE threat and its path",
+      "description": "The XXE threat, its attack path and steps (proposed saved view).",
+      "focus_query": "threat-instance:xxe-file-read -> attack_paths -> attack_steps",
+      "state": "proposed",
+      "proposal": "proposal:20261107T200000Z-f6e9c7c0cd",
+      "node_ids": [
+        "threat-instance:xxe-file-read",
+        "attack-path:xxe-file-read",
+        "attack-step:coerce-file-uri",
+        "attack-step:parser-resolves-entity",
+        "attack-step:read-internal-file",
+        "attack-step:upload-crafted-doc"
+      ]
+    }
+  ]
+}

@@ -26,6 +26,7 @@ def vectors(tmp_path, monkeypatch):
     d.mkdir(parents=True)
     shutil.copy(MODEL, d / MODEL.name)
     shutil.copy(MODEL.parent / "mvp-01-software-doc-service.yaml", d)
+    shutil.copy(MODEL.parent / "example-container.linkml.yaml", d)
     shutil.copy(ROOT / "spec" / "MAP-0001.yaml", tmp_path / "spec" / "MAP-0001.yaml")
     monkeypatch.setattr(core, "APPROVED_VECTOR_DIRECTORY", d)
     monkeypatch.setattr(core, "CROSSWALK_FILE", tmp_path / "spec" / "MAP-0001.yaml")
@@ -81,8 +82,9 @@ def test_same_ids_twice_are_refused(vectors):
         ({"add": {"reviews": [{"id": "review:x"}]}}, "not a collection a proposal may add to"),
         ({"reviews": []}, "unknown key 'reviews'"),
         ({"schema": "nope"}, "schema must be"),
+        ({"edit": [{"collection": "gates", "id": "gate:x", "set": {"name": "y"}}]}, "needs schema"),
         ({"generated_by": ""}, "generated_by is required"),
-        ({"target": "mvp-01-software-doc-service.yaml"}, "proposals are for SDL models"),
+        ({"target": "example-container.linkml.yaml"}, "not a model file"),
         ({"target": "../../etc/passwd.yaml"}, "outside approved model directory"),
         ({"proposed_by": "party:nobody"}, "not a Party"),
     ],

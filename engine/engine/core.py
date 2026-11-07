@@ -354,8 +354,23 @@ def sdl(query: Mapping[str, str] | None = None) -> dict[str, Any]:
     return {"file": path.name, **view}
 
 
+def _model_path(file: str) -> Path:
+    """An example model in the approved directory: mvp-*, tv-*, pv-* or sdl-*.yaml."""
+    path = _approved_vector_path(file)
+    if not path.name.startswith(proposals.MODEL_PREFIXES) or path.suffix != ".yaml":
+        raise GraphError(
+            f"{path.name}: not a model file (expected "
+            f"{', '.join(p + '*.yaml' for p in proposals.MODEL_PREFIXES)})"
+        )
+    return path
+
+
+def _relative(path: Path) -> str:
+    return str(path.relative_to(APPROVED_VECTOR_DIRECTORY.parent.parent))
+
+
 def propose(patch: Mapping[str, Any], write: bool = True) -> dict[str, Any]:
-    """Check an agent's patch and append it to the target's proposals file (DL-0044).
+    """Check an agent's patch and append it to the target's proposals file (DL-0044, DL-0046).
 
     Never edits the model, writes a Review or accepts anything. Raises ValueError
     (ProposalError) with every problem when the patch is refused; nothing is written.
@@ -363,19 +378,52 @@ def propose(patch: Mapping[str, Any], write: bool = True) -> dict[str, Any]:
     target = patch.get("target") if isinstance(patch, Mapping) else None
     if not isinstance(target, str):
         raise proposals.ProposalError("target is required")
-    path = _approved_vector_path(target)
-    if not path.name.startswith(SDL_PREFIX):
-        raise proposals.ProposalError(
-            f"{path.name}: proposals are for SDL models ({SDL_PREFIX}*.yaml)"
-        )
+    try:
+        path = _model_path(target)
+    except GraphError as exc:
+        raise proposals.ProposalError(str(exc)) from exc
     xwalk = load_vector_document(CROSSWALK_FILE)
     record = proposals.propose(patch, path, xwalk, write=write)
     return {
         "written": write,
-        "file": str(
-            proposals.proposals_path(path).relative_to(APPROVED_VECTOR_DIRECTORY.parent.parent)
-        )
-        if write
-        else None,
+        "file": _relative(proposals.proposals_path(path)) if write else None,
         "proposal": record,
     }
+
+
+def pending_proposals(query: Mapping[str, str] | None = None) -> dict[str, Any]:
+    """GET /proposals (DL-0046): pending proposals and saved KG views. Read-only.
+
+    Without `file`, lists every example model with its number of pending proposals.
+    With `file`, returns that model's pending proposals (as GET /sdl shows them) and
+    its saved KG views, the model's own first, then the proposed ones, each with the
+    object ids it selects. Nothing here accepts anything; there is no write route.
+    """
+    values = _values(query or {}, ("file",), "parameter")
+    root = APPROVED_VECTOR_DIRECTORY
+    if "file" not in values:
+        models = []
+        for path in sorted(root.glob("*.yaml")):
+            if not path.name.startswith(proposals.MODEL_PREFIXES):
+                continue
+            try:
+                count = len(proposals.load_proposals(path))
+            except proposals.ProposalError as exc:
+                models.append({"file": path.name, "error": str(exc)})
+                continue
+            models.append({"file": path.name, "kind": proposals.model_kind(path), "pending": count})
+        return {"models": models}
+    path = _model_path(values["file"])
+    try:
+        doc = dict(load_vector_document(path))
+        pending = proposals.load_proposals(path)
+        return {
+            "file": path.name,
+            "kind": proposals.model_kind(path),
+            "proposals": proposals.summary(pending, doc),
+            "views": proposals.views(doc, pending),
+        }
+    except GraphError as exc:
+        raise GraphError(_sanitized_model_error(path, exc)) from exc
+    except (KeyError, TypeError) as exc:
+        raise GraphError(f"{path.name}: malformed proposals ({type(exc).__name__}: {exc})") from exc
