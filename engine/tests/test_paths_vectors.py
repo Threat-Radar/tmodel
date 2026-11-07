@@ -16,7 +16,9 @@ VECTORS = Path(__file__).resolve().parents[2] / "spec" / "vectors"
 # pv-* files are example models (DL-0024): their attack paths are AI-proposed and not yet
 # reviewed, so they join this test once a human has reviewed them (ADR-0011, decision 4).
 EXAMPLE_MODELS = sorted(
-    p for p in VECTORS.glob("*.yaml") if ".linkml." not in p.name and not p.name.startswith("pv-")
+    p
+    for p in VECTORS.glob("*.yaml")
+    if ".linkml." not in p.name and not p.name.startswith(("pv-", "sdl-"))
 )
 
 # file -> threat -> expected paths (step ids without the "attack-step:" prefix)

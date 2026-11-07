@@ -6,7 +6,10 @@ from engine.graph import AttackGraph, GraphError
 from engine.load.vector import load_vector
 
 VECTORS = Path(__file__).resolve().parents[2] / "spec" / "vectors"
-EXAMPLE_MODELS = sorted(p for p in VECTORS.glob("*.yaml") if ".linkml." not in p.name)
+# Attack-path models only: the SDL examples (sdl-*.yaml, DL-0040) model a program, not paths.
+EXAMPLE_MODELS = sorted(
+    p for p in VECTORS.glob("*.yaml") if ".linkml." not in p.name and not p.name.startswith("sdl-")
+)
 
 
 def doc(steps, paths=()):
