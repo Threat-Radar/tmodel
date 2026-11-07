@@ -250,7 +250,7 @@ a `.sha256` file and an SPDX SBOM (`.spdx.json`, taken from the lockfiles):
 |---|---|
 | tag `vX.Y.Z` (matching `version` in `tauri.conf.json`) | **draft** release that a maintainer reviews and publishes |
 | tag `vX.Y.Z-rc.N` | draft **prerelease** |
-| merge to `main` touching `apps/`, `engine/`, `spec/vectors/` or the build | rolling prerelease [`latest-main`](https://github.com/Threat-Radar/tmodel/releases/tag/latest-main): its tag moves to the new commit and its assets are replaced; the build is named `<version>-main.<sha7>` (#203) |
+| merge to `main` touching `apps/`, `engine/`, `spec/vectors/` or the build | rolling prerelease [`latest-main`](https://github.com/Threat-Radar/tmodel/releases/tag/latest-main): its tag moves to the new commit and its assets are replaced; the build is named `<version>-main.<sha7>` (#203), and the same `.dmg` is also published as `tmodel_macos_aarch64.dmg` so the landing page can link [straight to it](https://github.com/Threat-Radar/tmodel/releases/download/latest-main/tmodel_macos_aarch64.dmg) |
 | manual run (`workflow_dispatch`) | workflow artifact only |
 | pull request touching the app | `app.yml` uploads an ad-hoc-signed debug `.app` (zip) as a workflow artifact, kept 7 days (#205) |
 
@@ -277,9 +277,9 @@ yet, so Gatekeeper cannot vouch for it; the provenance is the integrity check.
 *Download and verify* (needs the GitHub CLI, `gh`):
 
 ```sh
-gh release download latest-main -R Threat-Radar/tmodel -p '*.dmg' -p '*.sha256'   # or a version tag
-shasum -a 256 -c tmodel_*_aarch64.dmg.sha256
-gh attestation verify tmodel_*_aarch64.dmg -R Threat-Radar/tmodel
+gh release download latest-main -R Threat-Radar/tmodel -p 'tmodel_macos_aarch64.dmg*'   # or a version tag
+shasum -a 256 -c tmodel_macos_aarch64.dmg.sha256
+gh attestation verify tmodel_macos_aarch64.dmg -R Threat-Radar/tmodel
 # after installing, the engine inside the app verifies too:
 gh attestation verify /Applications/tmodel.app/Contents/MacOS/tmodel-engine -R Threat-Radar/tmodel
 ```
