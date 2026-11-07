@@ -114,11 +114,18 @@ DECISIONS   open-decision register         GLOSSARY   terms
 
 ```sh
 bin/validate-archdoc          # front matter, version/updated coupling
-git submodule status          # library pin intentional (once wired)
-cd library && bin/validate    # library records (once wired)
+git submodule status          # library pin intentional; no leading '-' or '+'
+(cd library && bin/validate)  # validate the initialized, pinned library
 ```
 
-CI runs the archdoc check. Running it locally means you find out in 3 seconds.
+Initialize a missing library checkout with `git submodule update --init library`.
+Review an intentional pin change before staging it; keep library-record edits
+in the independent library repository. `bin/validate` can report warnings;
+resolve errors and describe relevant warnings in the PR.
+
+CI checks archdoc front matter and published-page identity and link rules. For
+engine or app changes, also run the checks listed in §10. Running the applicable
+checks locally catches problems before a push.
 
 ---
 
@@ -129,21 +136,24 @@ git clone --recurse-submodules https://github.com/Threat-Radar/tmodel
 cd tmodel
 ```
 
-**Wiring the library submodule** (done once, by a maintainer, after the
-`Threat-Radar/library` fork exists):
+The library submodule is already configured. For an existing clone that did not
+initialize it:
 
 ```sh
-git submodule add https://github.com/Threat-Radar/library.git library
-git commit -m "Add library submodule (fork of m-of-n/library)"
+git submodule update --init library
 ```
 
+For the app, start with the [README quickstart](README.md#try-it-in-five-minutes).
+It runs the Python engine and browser UI with Python 3.11–3.13 and Node.js 22; native
+Tauri development additionally needs the toolchain in §10.
+
 **Set your git identity to an address GitHub will accept.** If *Block command
-line pushes that expose my email* is on (it is on by default), a push is rejected
+line pushes that expose my email* is enabled, a push is rejected
 with `email privacy restrictions`. Use your GitHub noreply address:
 
 ```sh
 git config user.email "<id>+<login>@users.noreply.github.com"
-git config user.name  "Your Name"
+git config user.name  "<github-login>"
 ```
 
 Use a repo-local setting (no `--global`).
