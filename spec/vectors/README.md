@@ -67,6 +67,19 @@ validate against the full `ExampleModel` container.
 | `tv-software-auth-service.yaml` | software (ADR-0002 *deep* product) | components w/ CPE/purl, CVE→CWE propagation (reviewed Assertion), two AttackPaths with AND + OR gates, Mitigations w/ status, composite-vector RiskScore (ADR-0006), Party roles, human-reviewed vs AI-proposed, a governed **ThreatModel** snapshot (supersedes chain), and an **SDL SecurityProgram** (Gate/Milestone, a `Requirement` with an opaque `source_ref`, a Gate that `validates_conformance_of` the ThreatModel) |
 | `tv-hardware-brake-ecu.yaml` | hardware/firmware (ADR-0002 *breadth* product) | firmware-image hash + compute cores as structural/instance identity, a physical/glitch AttackPath, LifecyclePhase + Environment/Deployment, Mitigations w/ status, composite-vector RiskScore, human-reviewed vs AI-proposed, a governed ThreatModel snapshot |
 
+## SDL example (`sdl-NN-*.yaml`, DL-0040)
+
+| File | Product | Exercises |
+|---|---|---|
+| `sdl-01-tmodel-desktop.yaml` | the tmodel desktop app itself | a draft SDL `SecurityProgram` with Milestones and a Gate; SDL practices by phase keyed to MAP-0001 rows, with status, owner and evidence (repo paths, PRs, workflows); candidate requirement sets (SSDF, SLSA, CRA, OSPS, ISO/SAE 21434, IEC 62443-4-1); a four-threat seed threat model of the app with CWE/CAPEC; every selection a `proposed` Assertion awaiting a human Review |
+
+It validates against `example-container-sdl.linkml.yaml` (class `ExampleModelSdl`): the
+full container plus three SDL classes, `SdlPractice`, `Evidence` and
+`RequirementSource`, accepted into the object model by ADR-0013 (2026-11-07; the rest of DEC-001b stays
+open). `docs/publishing/render_sdl.py` renders it as the "tmodel SDL" page
+(`docs/sdl/index.html`) and fails on a dangling reference. **Example data**, drafted by an
+AI agent and unreviewed.
+
 ## Proposal vectors (`pv-NN-*.yaml`, DL-0024)
 
 Example models built to shape the classes DL-0024 proposed and ADR-0011 accepted (Asset, TrustBoundary,

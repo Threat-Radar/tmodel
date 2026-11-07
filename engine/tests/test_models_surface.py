@@ -43,9 +43,12 @@ def test_lists_every_example_model_and_no_schema_harness():
     on_disk = {
         p.name
         for p in VECTORS.iterdir()
-        if p.suffix in (".yaml", ".yml") and not p.name.endswith(".linkml.yaml")
+        if p.suffix in (".yaml", ".yml")
+        and not p.name.endswith(".linkml.yaml")
+        and not p.name.startswith("sdl-")
     }
     assert set(files) == on_disk
+    assert not any(name.startswith("sdl-") for name in files)
 
 
 def test_core_examples_come_first_and_the_order_is_stable():

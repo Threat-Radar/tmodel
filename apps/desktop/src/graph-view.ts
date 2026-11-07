@@ -1,3 +1,4 @@
+import { savedViewPresentation } from "./graph-saved-views";
 import cytoscape, {
   type Core,
   type ElementDefinition,
@@ -67,6 +68,8 @@ const OTHER_TYPE_COLOR = "#64748b";
 // Placement time per batch before the remaining nodes use a short search, so
 // expanding a dense large graph cannot freeze the window.
 const PLACEMENT_BUDGET_MS = 250;
+// A saved view loads at most this many missing objects' neighborhoods (DL-0046).
+const SAVED_VIEW_LOAD_LIMIT = 60;
 
 // Relationships backed by an Assertion are styled by their review state with
 // both a color and a line pattern. Structural relationships keep the neutral
@@ -268,6 +271,45 @@ export class KnowledgeGraphView {
     }
   }
 
+  /**
+   * Show a saved KG view (DL-0046): load the view's objects that are not on the
+   * canvas yet, then dim everything outside the view. No ids clears the view.
+   * Objects a proposed view names but the model does not have yet are skipped.
+   */
+  async focusSavedView(nodeIds?: readonly string[]): Promise<void> {
+    if (!this.cy) return;
+    if (!nodeIds || nodeIds.length === 0) {
+      this.applySavedViewHighlight();
+      return;
+    }
+    if (this.activeAttackPath) this.clearAttackPath();
+    const previousNodeIds = new Set(this.state.nodes.map((node) => node.id));
+    const loaded = new Set(previousNodeIds);
+    for (const id of nodeIds.slice(0, SAVED_VIEW_LOAD_LIMIT)) {
+      if (loaded.has(id)) continue;
+      try {
+        await this.loadGraphResponse(await this.provider.getNeighborhood(id), false);
+      } catch (error) {
+        console.warn(`Saved view: cannot load ${id}`, error);
+      }
+      for (const node of this.state.nodes) loaded.add(node.id);
+    }
+    if (this.state.nodes.some((node) => !previousNodeIds.has(node.id))) {
+      this.runIncrementalGraphLayout(previousNodeIds, this.state.selectedNodeId);
+    }
+    this.applySavedViewHighlight(nodeIds);
+  }
+
+  private applySavedViewHighlight(nodeIds?: readonly string[]): void {
+    if (!this.cy) return;
+    this.cy.elements().removeClass("view-member view-dimmed");
+    if (!nodeIds) return;
+    const presentation = savedViewPresentation(this.state, nodeIds);
+    for (const id of presentation.memberNodeIds) this.cy.getElementById(id).addClass("view-member");
+    for (const id of presentation.dimmedNodeIds) this.cy.getElementById(id).addClass("view-dimmed");
+    for (const id of presentation.dimmedEdgeIds) this.cy.getElementById(id).addClass("view-dimmed");
+  }
+
   /** Attack-path discovery failures stay in the path toolbar; the graph remains usable. */
   private async loadAttackPaths(): Promise<void> {
     try {
@@ -361,6 +403,14 @@ export class KnowledgeGraphView {
             "border-width": 6, "border-color": "#facc15", "overlay-color": "#facc15",
             "overlay-opacity": 0.2, "overlay-padding": 8,
           },
+        },
+        {
+          selector: ".view-dimmed",
+          style: { opacity: 0.16, "text-opacity": 0.2 },
+        },
+        {
+          selector: "node.view-member",
+          style: { "border-width": 4, "border-color": "#0ea5e9" },
         },
         {
           selector: "node.path-dimmed:selected",

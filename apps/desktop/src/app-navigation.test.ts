@@ -3,15 +3,14 @@ import { AppNavigation, type AppView } from "./app-navigation";
 import type { EngineState } from "./engine";
 import { GraphStartup } from "./graph-startup";
 
-const VIEWS: readonly AppView[] = ["report", "paths", "graph", "library"];
+const VIEWS: readonly AppView[] = ["report", "paths", "graph", "library", "sdl"];
 
 describe("application navigation", () => {
   it("defaults to the model report and initializes each view only when selected", () => {
     const harness = navigationHarness("");
-
     harness.navigation.start();
     expect(harness.panel("report").hidden).toBe(false);
-    for (const view of ["paths", "graph", "library"] as const) {
+    for (const view of ["paths", "graph", "library", "sdl"] as const) {
       expect(harness.panel(view).hidden).toBe(true);
       expect(harness.activated(view)).not.toHaveBeenCalled();
     }
@@ -28,6 +27,16 @@ describe("application navigation", () => {
     harness.button("graph").click();
     expect(harness.activated("graph")).toHaveBeenCalledTimes(2);
     expect(harness.activated("library")).toHaveBeenCalledTimes(1);
+
+    harness.button("sdl").click();
+    expect(harness.panel("sdl").hidden).toBe(false);
+    expect(harness.panel("library").hidden).toBe(true);
+    expect(harness.activated("sdl")).toHaveBeenCalledTimes(1);
+    expect(harness.location.hash).toBe("#sdl");
+
+    harness.button("graph").click();
+    harness.button("sdl").click();
+    expect(harness.activated("sdl")).toHaveBeenCalledTimes(2);
   });
 
   it("starts in the view the URL hash names, and in the report for an unknown hash", () => {
@@ -42,12 +51,18 @@ describe("application navigation", () => {
     library.navigation.start();
     expect(library.panel("library").hidden).toBe(false);
 
+    const sdl = navigationHarness("#sdl");
+    sdl.navigation.start();
+    expect(sdl.panel("sdl").hidden).toBe(false);
+    expect(sdl.button("sdl").getAttribute("aria-selected")).toBe("true");
+    expect(sdl.navigation.currentView).toBe("sdl");
+
     const unknown = navigationHarness("#report-components");
     unknown.navigation.start();
     expect(unknown.panel("report").hidden).toBe(false);
   });
 
-  it("does not reactivate or duplicate initialization when the active tab is clicked again", () => {
+  it("does not reactivate when the active tab is clicked again", () => {
     const harness = navigationHarness("");
     harness.navigation.start();
 
@@ -69,17 +84,23 @@ describe("application navigation", () => {
     expect(harness.panel("paths").hidden).toBe(false);
 
     harness.button("paths").keydown("End");
+    expect(harness.button("sdl").focused).toBe(true);
+    expect(harness.panel("sdl").hidden).toBe(false);
+
+    harness.button("graph").keydown("ArrowRight");
     expect(harness.button("library").focused).toBe(true);
-    expect(harness.panel("library").hidden).toBe(false);
 
     harness.button("library").keydown("ArrowRight");
+    expect(harness.button("sdl").focused).toBe(true);
+
+    harness.button("sdl").keydown("ArrowRight");
     expect(harness.button("report").focused).toBe(true);
     expect(harness.panel("report").hidden).toBe(false);
 
     harness.button("report").keydown("ArrowLeft");
-    expect(harness.button("library").focused).toBe(true);
+    expect(harness.button("sdl").focused).toBe(true);
 
-    harness.button("library").keydown("Home");
+    harness.button("sdl").keydown("Home");
     expect(harness.button("report").focused).toBe(true);
     expect(harness.panel("report").hidden).toBe(false);
   });
@@ -103,16 +124,19 @@ describe("application navigation", () => {
     expect(harness.panel("library").hidden).toBe(false);
     expect(harness.location.hash).toBe("#library");
     expect(harness.activated("library")).toHaveBeenCalledTimes(3);
+
+    harness.hashEvents.navigate("#sdl");
+    expect(harness.panel("sdl").hidden).toBe(false);
+    expect(harness.location.hash).toBe("#sdl");
+
+    harness.hashEvents.navigate("#sdl");
+    expect(harness.activated("sdl")).toHaveBeenCalledTimes(1);
   });
 
   it("starts the graph only once and resizes it across repeated view switches", async () => {
     const start = vi.fn(async () => undefined);
     const resize = vi.fn();
-    const startup = new GraphStartup({
-      start,
-      onWaiting: vi.fn(),
-      onFailure: vi.fn(),
-    }, false);
+    const startup = new GraphStartup({ start, onWaiting: vi.fn(), onFailure: vi.fn() }, false);
     const harness = navigationHarness("", {
       graph: () => {
         if (startup.started) resize();
@@ -125,7 +149,7 @@ describe("application navigation", () => {
     await settle();
     harness.button("library").click();
     harness.button("graph").click();
-    harness.button("library").click();
+    harness.button("sdl").click();
     harness.button("graph").click();
 
     expect(start).toHaveBeenCalledTimes(1);
@@ -134,11 +158,7 @@ describe("application navigation", () => {
 
   it("starts a visible graph when the engine recovers after startup", async () => {
     const start = vi.fn(async () => undefined);
-    const startup = new GraphStartup({
-      start,
-      onWaiting: vi.fn(),
-      onFailure: vi.fn(),
-    });
+    const startup = new GraphStartup({ start, onWaiting: vi.fn(), onFailure: vi.fn() });
     let engineState: EngineState = { kind: "unreachable", error: "connection refused" };
     const harness = navigationHarness("", {
       graph: () => void startup.engineStateChanged(engineState),
@@ -147,13 +167,8 @@ describe("application navigation", () => {
     harness.button("graph").click();
     await settle();
     expect(start).not.toHaveBeenCalled();
-
-    engineState = {
-      kind: "connected",
-      health: { status: "ok", engine: "tmodel", version: "0.1.0" },
-    };
+    engineState = { kind: "connected", health: { status: "ok", engine: "tmodel", version: "0.1.0" } };
     await startup.engineStateChanged(engineState);
-
     expect(start).toHaveBeenCalledTimes(1);
     expect(startup.started).toBe(true);
   });

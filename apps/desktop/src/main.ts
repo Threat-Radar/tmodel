@@ -1,6 +1,8 @@
 import { AppNavigation } from "./app-navigation";
 import { checkEngine, describe, engineProcess, type EngineState } from "./engine";
 import { EngineGraphDataProvider } from "./engine-graph-provider";
+import { EngineProposalsDataProvider } from "./engine-proposals-provider";
+import { SavedViewsPanel, savedViewElements, savedViewFile } from "./graph-saved-views";
 import { EngineLibraryDataProvider } from "./engine-library-provider";
 import { DevelopmentFixtureProvider } from "./graph-fixture";
 import { connectGraphStartup, GraphStartup } from "./graph-startup";
@@ -19,6 +21,8 @@ import { ModelSession } from "./model-session";
 import type { ModelSummary } from "./model-types";
 import { AttackPathView } from "./path-view";
 import { ModelReportView } from "./report-view";
+import { EngineSdlDataProvider } from "./engine-sdl-provider";
+import { SdlProgramView, sdlViewElements } from "./sdl-view";
 
 const POLL_MS = 2000;
 
@@ -37,6 +41,7 @@ async function refresh(): Promise<EngineState> {
 }
 
 interface ExploreGraph {
+  savedViews?: SavedViewsPanel;
   startup: GraphStartup;
   usesEngine: boolean;
   view: KnowledgeGraphView;
@@ -59,11 +64,24 @@ function createExploreGraph(parameters: URLSearchParams, file: string | undefine
   // One view per model: switching model disposes the old one first, so
   // Cytoscape and its listeners are never duplicated.
   const view = new KnowledgeGraphView(provider);
-  const startup = connectGraphStartup(() => view.start(), usesEngine, {
+  // Saved KG views and pending proposals (DL-0046) come from the engine's read-only
+  // GET /proposals; a failure there stays in the view toolbar.
+  const savedViews = usesEngine
+    ? new SavedViewsPanel(
+      new EngineProposalsDataProvider(),
+      savedViewFile(file, parameters.get("file")),
+      savedViewElements(),
+      (ids) => view.focusSavedView(ids),
+    )
+    : undefined;
+  const startup = connectGraphStartup(async () => {
+    await view.start();
+    await savedViews?.load();
+  }, usesEngine, {
     notice: document.querySelector<HTMLElement>("#data-source-notice"),
     retryButton: document.querySelector<HTMLButtonElement>("#graph-retry"),
   });
-  return { startup, usesEngine, view };
+  return { savedViews, startup, usesEngine, view };
 }
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -122,6 +140,7 @@ window.addEventListener("DOMContentLoaded", () => {
   };
 
   const replaceExplore = (file: string | undefined) => {
+    explore.savedViews?.dispose();
     explore.view.dispose();
     explore = createExploreGraph(parameters, file, bookkeepingToggle.checked);
     explore.view.setVisible(visibleView === "graph");
@@ -168,6 +187,8 @@ window.addEventListener("DOMContentLoaded", () => {
     },
   });
 
+  const sdlView = new SdlProgramView(new EngineSdlDataProvider(), sdlViewElements());
+
   const navigation = new AppNavigation([
     {
       view: "report",
@@ -203,6 +224,15 @@ window.addEventListener("DOMContentLoaded", () => {
         libraryView.activate();
       },
     },
+    {
+      view: "sdl",
+      button: required("sdl-tab"),
+      panel: required("sdl-view-panel"),
+      activated: () => {
+        show("sdl");
+        sdlView.activate();
+      },
+    },
   ]);
 
   function show(view: string): void {
@@ -218,6 +248,7 @@ window.addEventListener("DOMContentLoaded", () => {
     void catalogStartup.engineStateChanged(lastEngineState);
     if (libraryUsesEngine) void libraryView.engineStateChanged(lastEngineState);
     if (visibleView === "graph" && explore.usesEngine) void explore.startup.engineStateChanged(lastEngineState);
+    if (visibleView === "sdl") void sdlView.engineStateChanged(lastEngineState);
   };
   void poll();
   window.setInterval(() => void poll(), POLL_MS);

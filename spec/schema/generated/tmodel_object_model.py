@@ -397,6 +397,37 @@ class SecurityProperty(str, Enum):
     non_repudiation = "non_repudiation"
 
 
+class EvidenceKind(str, Enum):
+    """
+    Accepted via ADR-0013. Kinds of SDL work product.
+    """
+    document = "document"
+    workflow = "workflow"
+    attestation = "attestation"
+    sbom = "sbom"
+    test_suite = "test_suite"
+    configuration = "configuration"
+    page = "page"
+    issue = "issue"
+    pull_request = "pull_request"
+    library_record = "library_record"
+    model = "model"
+
+
+class EvidenceNature(str, Enum):
+    """
+    Accepted via ADR-0013 (RPT-0013-OM Evidence). How a work product came to exist.
+    """
+    work_product = "work_product"
+    """
+    Authored on purpose (a design, plan, record, policy).
+    """
+    by_product = "by_product"
+    """
+    Produced by doing the work (tool output, test report, log, attestation).
+    """
+
+
 
 class Node(ConfiguredBaseModel):
     """
@@ -450,7 +481,7 @@ class ProductInstance(Node):
                       {'value': 'cpe:2.3:a:openssl:openssl:3.0.2:*:*:*:*:*:*:*'},
                       {'value': 'swid:acme-ecu-fw-2.4.1'},
                       {'value': 'sha256:9f2c1a7e...firmware-image-digest'}]} })
-    version: Optional[str] = Field(default=None, description="""Accepted via ADR-0011 (DL-0024). The version string as the source wrote it (RPT-0004 Table 6b). Until now only the purl inside `identifiers` carried it.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProductInstance', 'Component']} })
+    version: Optional[str] = Field(default=None, description="""Accepted via ADR-0011 (DL-0024). The version string as the source wrote it (RPT-0004 Table 6b). Until now only the purl inside `identifiers` carried it.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProductInstance', 'Component', 'RequirementSource']} })
     build_composed_of: Optional[list[str]] = Field(default=None, description="""Accepted via ADR-0011 (DL-0024). The Components one build contains, as an SBOM lists them (RPT-0004 Table 6c, pilot finding 1). `composed_of` stays the design-level composition on Product and Component; this is the per-build list, which differs between builds of one Product.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProductInstance']} })
     id: str = Field(default=..., description="""Stable object id (ADR-0004). Adapters must not renumber it.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
     name: Optional[str] = Field(default=None, description="""Human-readable name.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
@@ -472,7 +503,7 @@ class Component(Node):
                       {'value': 'cpe:2.3:a:openssl:openssl:3.0.2:*:*:*:*:*:*:*'},
                       {'value': 'swid:acme-ecu-fw-2.4.1'},
                       {'value': 'sha256:9f2c1a7e...firmware-image-digest'}]} })
-    version: Optional[str] = Field(default=None, description="""Accepted via ADR-0011 (DL-0024). The version string as the source wrote it (RPT-0004 Table 6b). Until now only the purl inside `identifiers` carried it.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProductInstance', 'Component']} })
+    version: Optional[str] = Field(default=None, description="""Accepted via ADR-0011 (DL-0024). The version string as the source wrote it (RPT-0004 Table 6b). Until now only the purl inside `identifiers` carried it.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProductInstance', 'Component', 'RequirementSource']} })
     component_kind: Optional[ComponentKind] = Field(default=None, description="""Accepted via ADR-0011 (DL-0024). What kind of thing a Component is (RPT-0004 Table 6b, 6e; R-022).""", json_schema_extra = { "linkml_meta": {'domain_of': ['Component']} })
     supplied_by: Optional[str] = Field(default=None, description="""Relational role edge (§2b). The same Party may supply one product and consume another.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Product', 'Component']} })
     manufactured_by: Optional[str] = Field(default=None, description="""Relational role edge (§2b), not a classification on Party.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Product', 'Component']} })
@@ -612,8 +643,8 @@ class Mitigation(Node):
     mitigates: Optional[list[str]] = Field(default=None, description="""Threats this mitigation addresses (§5). Phase binding is applies_in_phase.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Mitigation']} })
     applies_in_phase: Optional[list[str]] = Field(default=None, description="""Coarse lifecycle stage a threat or mitigation belongs to (§3b). Not a substitute for Environment. One threat uses the axis that fits.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatInstance', 'Mitigation']} })
     implementation_owner: Optional[str] = Field(default=None, description="""Who implements the mitigation (§5).""", json_schema_extra = { "linkml_meta": {'domain_of': ['Mitigation']} })
-    external_refs: Optional[list[str]] = Field(default=None, description="""Linked work items, e.g. a Jira key (§5). Opaque strings; no tracker schema.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Mitigation']} })
-    mitigation_status: Optional[MitigationStatus] = Field(default=None, description="""Lifecycle of the mitigation (§3 R-045, §5): planned / in-progress / complete / accepted-risk / n-a. Vocabulary may be refined by DEC-009. On RiskScore this is a peer column of feasibility and impact, not folded into `risk`.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Mitigation', 'RiskScore']} })
+    external_refs: Optional[list[str]] = Field(default=None, description="""Linked work items, e.g. a Jira key (§5). Opaque strings; no tracker schema.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Mitigation', 'SdlPractice']} })
+    mitigation_status: Optional[MitigationStatus] = Field(default=None, description="""Lifecycle of the mitigation (§3 R-045, §5): planned / in-progress / complete / accepted-risk / n-a. Vocabulary may be refined by DEC-009. On RiskScore this is a peer column of feasibility and impact, not folded into `risk`.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Mitigation', 'RiskScore', 'SdlPractice']} })
     stated_as: Optional[list[str]] = Field(default=None, description="""A generic Mitigation (for a product type/family) expressed as a Requirement (ADR-0012). The Requirement carries the family scope and is discharged by product-specific Mitigations via `satisfied_by`. An AI-proposed link is a `proposed` Assertion with predicate `stated_as` until reviewed.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Mitigation']} })
     id: str = Field(default=..., description="""Stable object id (ADR-0004). Adapters must not renumber it.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
     name: Optional[str] = Field(default=None, description="""Human-readable name.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
@@ -632,7 +663,7 @@ class RiskScore(Node):
     for_stakeholder: Optional[str] = Field(default=None, description="""Owner this score is reported for, when a path crosses assets with different owners (§3). MVP assumes one stakeholder; omit unless needed.""", json_schema_extra = { "linkml_meta": {'domain_of': ['RiskScore']} })
     feasibility: Optional[FeasibilityLevel] = Field(default=None, description="""Vector component (§3, DL-0011). Copied or reduced from AttackPath.attack_feasibility (worst path). Method is ISO 21434 Table-1, not Common Criteria.""", json_schema_extra = { "linkml_meta": {'domain_of': ['RiskScore']} })
     impact: Optional[ImpactVector] = Field(default=None, description="""Per-category S/F/O/P vector (§3). Human-supplied. Do not replace this object with a single severity.""", json_schema_extra = { "linkml_meta": {'domain_of': ['RiskScore']} })
-    mitigation_status: Optional[MitigationStatus] = Field(default=None, description="""Lifecycle of the mitigation (§3 R-045, §5): planned / in-progress / complete / accepted-risk / n-a. Vocabulary may be refined by DEC-009. On RiskScore this is a peer column of feasibility and impact, not folded into `risk`.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Mitigation', 'RiskScore']} })
+    mitigation_status: Optional[MitigationStatus] = Field(default=None, description="""Lifecycle of the mitigation (§3 R-045, §5): planned / in-progress / complete / accepted-risk / n-a. Vocabulary may be refined by DEC-009. On RiskScore this is a peer column of feasibility and impact, not folded into `risk`.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Mitigation', 'RiskScore', 'SdlPractice']} })
     risk: Optional[str] = Field(default=None, description="""Derived Risk = M(Impact, Feasibility) (§3). ISO 21434 wants one value 1–5 per (threat-scenario, impact-category), and per stakeholder when owners differ. Stored as text because the aggregation function is not fixed until a DEC-003 ADR. Not a CVSS base score. Display may add a colour and a feasibility label; that styling is not a slot.""", json_schema_extra = { "linkml_meta": {'domain_of': ['RiskScore']} })
     id: str = Field(default=..., description="""Stable object id (ADR-0004). Adapters must not renumber it.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
     name: Optional[str] = Field(default=None, description="""Human-readable name.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
@@ -669,7 +700,7 @@ class Assertion(Node):
     asserted_by: Optional[str] = Field(default=None, description="""Accepted via ADR-0011 (DL-0024). Who made the statement: a person, an organization (a CNA, a scanner vendor's feed) or a software agent (PartyKind `software_agent`). PROV-O wasAttributedTo (proposal §4; DL-0021 finding 4).""", json_schema_extra = { "linkml_meta": {'domain_of': ['Assertion']} })
     asserted_at: Optional[datetime ] = Field(default=None, description="""Accepted via ADR-0011 (DL-0024). When the statement was made or captured (PROV-O generatedAtTime).""", json_schema_extra = { "linkml_meta": {'domain_of': ['Assertion']} })
     generated_by: Optional[str] = Field(default=None, description="""Accepted via ADR-0011 (DL-0024). The activity that produced the statement, as text: a tool and version, a database build time, a method (PROV-O wasGeneratedBy). Without it the same SBOM gives different answers on different days (RPT-0004 pilot.md §3).""", json_schema_extra = { "linkml_meta": {'domain_of': ['Assertion']} })
-    evidence: Optional[list[str]] = Field(default=None, description="""Accepted via ADR-0011 (DL-0024). Opaque references to what the statement rests on: an SBOM digest, an advisory or CVE record URL, a write-up.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Assertion']} })
+    evidence: Optional[list[str]] = Field(default=None, description="""Accepted via ADR-0011 (DL-0024). Opaque references to what the statement rests on: an SBOM digest, an advisory or CVE record URL, a write-up.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Assertion', 'Evidence']} })
     id: str = Field(default=..., description="""Stable object id (ADR-0004). Adapters must not renumber it.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
     name: Optional[str] = Field(default=None, description="""Human-readable name.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
     description: Optional[str] = Field(default=None, description="""Short prose description.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
@@ -800,7 +831,11 @@ class ThreatModel(Node):
 
     scope_query: Optional[str] = Field(default=None, description="""Bounded query/filter defining a ThreatModel snapshot's membership (§3c R-043). Opaque to this schema (DEC-004 open), like View.focus_query. Use `members` for an explicit set instead.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatModel']} })
     members: Optional[list[str]] = Field(default=None, description="""Explicit in-scope members of a ThreatModel snapshot (§3c R-043): ThreatInstances, AttackPaths, Components, Products. References, not copies — membership is a reviewed lens over the KG, never domain truth re-stated.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatModel']} })
-    owner: Optional[str] = Field(default=None, description="""Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatModel', 'SecurityProgram', 'ProgramNode', 'GovernedView']} })
+    owner: Optional[str] = Field(default=None, description="""Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatModel',
+                       'SecurityProgram',
+                       'ProgramNode',
+                       'GovernedView',
+                       'SdlPractice']} })
     revision: Optional[str] = Field(default=None, description="""Monotonic revision/version of a governed snapshot (§3c R-043). This is the saved view's \"version\"; ThreatModel and SecurityProgram name the same field `revision`. Tracked across review cycles via `supersedes`.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatModel', 'SecurityProgram', 'GovernedView']} })
     approved_by: Optional[list[str]] = Field(default=None, description="""Approving Review(s) of a governed artifact (§3c R-043). Approval runs through the existing Review + Assertion spine (§4) — NOT a parallel provenance mechanism (iteration-7 guardrail, DL-0010).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatModel', 'SecurityProgram', 'GovernedView']} })
     approval_digest: Optional[str] = Field(default=None, description="""Commit/content digest the approval is pinned to, so the sign-off is REPRODUCIBLE against KG state at a point in time (§3c R-043; SysML v2 View/Viewpoint, OMG SACM, OSCAL→Word prior art). Opaque string; digest scheme not pinned here.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatModel', 'SecurityProgram', 'GovernedView']} })
@@ -828,7 +863,11 @@ class SecurityProgram(Node):
     governs: Optional[str] = Field(default=None, description="""The Product / ProductInstance / ProductFamily a SecurityProgram is attached to (§3c R-041). Range Node: ProductFamily is not a §13 class.""", json_schema_extra = { "linkml_meta": {'domain_of': ['SecurityProgram']} })
     program_nodes: Optional[list[str]] = Field(default=None, description="""Ordered Gate / Milestone / Checkpoint nodes of a SecurityProgram (§3c R-041). Order is each node's `order`, not list position.""", json_schema_extra = { "linkml_meta": {'domain_of': ['SecurityProgram']} })
     incorporates: Optional[list[str]] = Field(default=None, description="""Requirements a SecurityProgram enforces (§3c R-041/R-044).""", json_schema_extra = { "linkml_meta": {'domain_of': ['SecurityProgram']} })
-    owner: Optional[str] = Field(default=None, description="""Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatModel', 'SecurityProgram', 'ProgramNode', 'GovernedView']} })
+    owner: Optional[str] = Field(default=None, description="""Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatModel',
+                       'SecurityProgram',
+                       'ProgramNode',
+                       'GovernedView',
+                       'SdlPractice']} })
     revision: Optional[str] = Field(default=None, description="""Monotonic revision/version of a governed snapshot (§3c R-043). This is the saved view's \"version\"; ThreatModel and SecurityProgram name the same field `revision`. Tracked across review cycles via `supersedes`.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatModel', 'SecurityProgram', 'GovernedView']} })
     approved_by: Optional[list[str]] = Field(default=None, description="""Approving Review(s) of a governed artifact (§3c R-043). Approval runs through the existing Review + Assertion spine (§4) — NOT a parallel provenance mechanism (iteration-7 guardrail, DL-0010).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatModel', 'SecurityProgram', 'GovernedView']} })
     approval_digest: Optional[str] = Field(default=None, description="""Commit/content digest the approval is pinned to, so the sign-off is REPRODUCIBLE against KG state at a point in time (§3c R-043; SysML v2 View/Viewpoint, OMG SACM, OSCAL→Word prior art). Opaque string; digest scheme not pinned here.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatModel', 'SecurityProgram', 'GovernedView']} })
@@ -853,8 +892,12 @@ class ProgramNode(Node):
     planned_date: Optional[date] = Field(default=None, description="""Planned date of a program node (§3c R-041 program management).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
     actual_date: Optional[date] = Field(default=None, description="""Actual date a program node occurred (§3c R-041). Open if not yet reached.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
     gate_status: Optional[GateStatus] = Field(default=None, description="""Passage status of a program node (§3c R-041): planned / in-progress / passed / failed / waived / blocked.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
-    owner: Optional[str] = Field(default=None, description="""Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatModel', 'SecurityProgram', 'ProgramNode', 'GovernedView']} })
-    at_phase: Optional[str] = Field(default=None, description="""Canonical LifecyclePhase a program node maps onto (§3b/§3c R-041). Gates are the governance points between phases; `name` is the local corporate label (MAP-0001 gate crosswalk).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
+    owner: Optional[str] = Field(default=None, description="""Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatModel',
+                       'SecurityProgram',
+                       'ProgramNode',
+                       'GovernedView',
+                       'SdlPractice']} })
+    at_phase: Optional[str] = Field(default=None, description="""Canonical LifecyclePhase a program node maps onto (§3b/§3c R-041). Gates are the governance points between phases; `name` is the local corporate label (MAP-0001 gate crosswalk).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode', 'SdlPractice']} })
     gated_by: Optional[list[str]] = Field(default=None, description="""Requirements whose conformance gates passage of this program node (§3c R-041/R-042).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
     decided_by: Optional[list[str]] = Field(default=None, description="""Reviews that decide a program node's passage (§3c R-041). The §4 human-review spine — not a parallel approval mechanism.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
     depends_on_node: Optional[list[str]] = Field(default=None, description="""Entry-criteria / dependency edges between program nodes (§3c R-041).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
@@ -874,8 +917,12 @@ class Gate(ProgramNode):
     planned_date: Optional[date] = Field(default=None, description="""Planned date of a program node (§3c R-041 program management).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
     actual_date: Optional[date] = Field(default=None, description="""Actual date a program node occurred (§3c R-041). Open if not yet reached.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
     gate_status: Optional[GateStatus] = Field(default=None, description="""Passage status of a program node (§3c R-041): planned / in-progress / passed / failed / waived / blocked.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
-    owner: Optional[str] = Field(default=None, description="""Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatModel', 'SecurityProgram', 'ProgramNode', 'GovernedView']} })
-    at_phase: Optional[str] = Field(default=None, description="""Canonical LifecyclePhase a program node maps onto (§3b/§3c R-041). Gates are the governance points between phases; `name` is the local corporate label (MAP-0001 gate crosswalk).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
+    owner: Optional[str] = Field(default=None, description="""Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatModel',
+                       'SecurityProgram',
+                       'ProgramNode',
+                       'GovernedView',
+                       'SdlPractice']} })
+    at_phase: Optional[str] = Field(default=None, description="""Canonical LifecyclePhase a program node maps onto (§3b/§3c R-041). Gates are the governance points between phases; `name` is the local corporate label (MAP-0001 gate crosswalk).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode', 'SdlPractice']} })
     gated_by: Optional[list[str]] = Field(default=None, description="""Requirements whose conformance gates passage of this program node (§3c R-041/R-042).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
     decided_by: Optional[list[str]] = Field(default=None, description="""Reviews that decide a program node's passage (§3c R-041). The §4 human-review spine — not a parallel approval mechanism.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
     depends_on_node: Optional[list[str]] = Field(default=None, description="""Entry-criteria / dependency edges between program nodes (§3c R-041).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
@@ -894,8 +941,12 @@ class Checkpoint(ProgramNode):
     planned_date: Optional[date] = Field(default=None, description="""Planned date of a program node (§3c R-041 program management).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
     actual_date: Optional[date] = Field(default=None, description="""Actual date a program node occurred (§3c R-041). Open if not yet reached.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
     gate_status: Optional[GateStatus] = Field(default=None, description="""Passage status of a program node (§3c R-041): planned / in-progress / passed / failed / waived / blocked.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
-    owner: Optional[str] = Field(default=None, description="""Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatModel', 'SecurityProgram', 'ProgramNode', 'GovernedView']} })
-    at_phase: Optional[str] = Field(default=None, description="""Canonical LifecyclePhase a program node maps onto (§3b/§3c R-041). Gates are the governance points between phases; `name` is the local corporate label (MAP-0001 gate crosswalk).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
+    owner: Optional[str] = Field(default=None, description="""Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatModel',
+                       'SecurityProgram',
+                       'ProgramNode',
+                       'GovernedView',
+                       'SdlPractice']} })
+    at_phase: Optional[str] = Field(default=None, description="""Canonical LifecyclePhase a program node maps onto (§3b/§3c R-041). Gates are the governance points between phases; `name` is the local corporate label (MAP-0001 gate crosswalk).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode', 'SdlPractice']} })
     gated_by: Optional[list[str]] = Field(default=None, description="""Requirements whose conformance gates passage of this program node (§3c R-041/R-042).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
     decided_by: Optional[list[str]] = Field(default=None, description="""Reviews that decide a program node's passage (§3c R-041). The §4 human-review spine — not a parallel approval mechanism.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
     depends_on_node: Optional[list[str]] = Field(default=None, description="""Entry-criteria / dependency edges between program nodes (§3c R-041).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
@@ -915,8 +966,12 @@ class Milestone(ProgramNode):
     planned_date: Optional[date] = Field(default=None, description="""Planned date of a program node (§3c R-041 program management).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
     actual_date: Optional[date] = Field(default=None, description="""Actual date a program node occurred (§3c R-041). Open if not yet reached.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
     gate_status: Optional[GateStatus] = Field(default=None, description="""Passage status of a program node (§3c R-041): planned / in-progress / passed / failed / waived / blocked.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
-    owner: Optional[str] = Field(default=None, description="""Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatModel', 'SecurityProgram', 'ProgramNode', 'GovernedView']} })
-    at_phase: Optional[str] = Field(default=None, description="""Canonical LifecyclePhase a program node maps onto (§3b/§3c R-041). Gates are the governance points between phases; `name` is the local corporate label (MAP-0001 gate crosswalk).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
+    owner: Optional[str] = Field(default=None, description="""Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatModel',
+                       'SecurityProgram',
+                       'ProgramNode',
+                       'GovernedView',
+                       'SdlPractice']} })
+    at_phase: Optional[str] = Field(default=None, description="""Canonical LifecyclePhase a program node maps onto (§3b/§3c R-041). Gates are the governance points between phases; `name` is the local corporate label (MAP-0001 gate crosswalk).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode', 'SdlPractice']} })
     gated_by: Optional[list[str]] = Field(default=None, description="""Requirements whose conformance gates passage of this program node (§3c R-041/R-042).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
     decided_by: Optional[list[str]] = Field(default=None, description="""Reviews that decide a program node's passage (§3c R-041). The §4 human-review spine — not a parallel approval mechanism.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
     depends_on_node: Optional[list[str]] = Field(default=None, description="""Entry-criteria / dependency edges between program nodes (§3c R-041).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode']} })
@@ -935,8 +990,8 @@ class Requirement(Node):
     text_origin: Optional[RequirementTextOrigin] = Field(default=None, description="""Whether `text` is a paraphrase of the source, the source's own words (only where the source's licence allows it), or authored by the project (ADR-0012).""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement']} })
     requirement_kind: Optional[RequirementKind] = Field(default=None, description="""What kind of obligation a Requirement is (ADR-0012).""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement']} })
     normativity: Optional[Normativity] = Field(default=None, description="""How binding a Requirement is (§3c R-044): mandatory / recommended / optional / informative / conditional. MAP-0001 shows a cell means different things per framework (hard requirement vs maturity activity vs recommendation).""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement']} })
-    source_ref: Optional[str] = Field(default=None, description="""OPAQUE reference to the library record (Threat-Radar/library) the Requirement comes from, scheme-prefixed like `catalog_ref`, e.g. `library:iso-sae-21434-2021#RQ-09-09` (ADR-0012; §3c R-044, §2b). tmodel aligns by reference — it does NOT import or depend on the library schema. Absent for a project-authored requirement.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement']} })
-    source_locator: Optional[str] = Field(default=None, description="""Human-readable clause / section / table locator in the source, e.g. `RQ-09-09 (§9.5.2)` or `Provision 5.2.1` (ADR-0012). With a paraphrased `text` this is how a reader finds the authoritative wording.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement']} })
+    source_ref: Optional[str] = Field(default=None, description="""OPAQUE reference to the library record (Threat-Radar/library) the Requirement comes from, scheme-prefixed like `catalog_ref`, e.g. `library:iso-sae-21434-2021#RQ-09-09` (ADR-0012; §3c R-044, §2b). tmodel aligns by reference — it does NOT import or depend on the library schema. Absent for a project-authored requirement.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement', 'RequirementSource']} })
+    source_locator: Optional[str] = Field(default=None, description="""Human-readable clause / section / table locator in the source, e.g. `RQ-09-09 (§9.5.2)` or `Provision 5.2.1` (ADR-0012). With a paraphrased `text` this is how a reader finds the authoritative wording.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement', 'RequirementSource']} })
     refines: Optional[list[str]] = Field(default=None, description="""This Requirement makes the target more specific for a product, family or component (same intent, narrower scope or more detail) (ADR-0012).""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement']} })
     derived_from: Optional[list[str]] = Field(default=None, description="""This Requirement was derived from the target (e.g. a product requirement derived from a standard's provision, ISO/SAE 21434 RQ-09-09). Unlike `refines`, the intent may differ (ADR-0012).""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement']} })
     conflicts_with: Optional[list[str]] = Field(default=None, description="""The two Requirements cannot both be met as written; a human must resolve it (ADR-0012). Symmetric in meaning; record it on either side.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement']} })
@@ -950,7 +1005,8 @@ class Requirement(Node):
                     {'range': 'ProductInstance'},
                     {'range': 'Component'}],
          'domain_of': ['Requirement']} })
-    applies_to_family: Optional[list[str]] = Field(default=None, description="""Product type / family scope (ADR-0012), as an opaque scheme-prefixed value matched against `Product.classifications`, e.g. `family:connected-ecu`. Used instead of a ProductFamily class, which DEC-009 has not decided.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement'], 'examples': [{'value': 'family:connected-ecu'}]} })
+    applies_to_family: Optional[list[str]] = Field(default=None, description="""Product type / family scope (ADR-0012), as an opaque scheme-prefixed value matched against `Product.classifications`, e.g. `family:connected-ecu`. Used instead of a ProductFamily class, which DEC-009 has not decided.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement', 'RequirementSource'],
+         'examples': [{'value': 'family:connected-ecu'}]} })
     conformance_status: Optional[RequirementConformanceStatus] = Field(default=None, description="""PROPOSED (DEC-001b, not accepted by ADR-0012). Automatable R-042 conformance verdict for a Requirement: whether it has an approved, evidenced mitigation. Proves linkage + approval, NOT adequacy. Core (mvp-*) vectors do not set it.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement']} })
     id: str = Field(default=..., description="""Stable object id (ADR-0004). Adapters must not renumber it.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
     name: Optional[str] = Field(default=None, description="""Human-readable name.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
@@ -969,7 +1025,11 @@ class GovernedView(View):
                                        'range': 'GovernedView'}}})
 
     renders: Optional[list[str]] = Field(default=None, description="""The KG scope a GovernedView materializes (§3c R-043) — e.g. a ThreatModel or SecurityProgram. Content derives from KG state; never written back.""", json_schema_extra = { "linkml_meta": {'domain_of': ['GovernedView']} })
-    owner: Optional[str] = Field(default=None, description="""Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatModel', 'SecurityProgram', 'ProgramNode', 'GovernedView']} })
+    owner: Optional[str] = Field(default=None, description="""Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatModel',
+                       'SecurityProgram',
+                       'ProgramNode',
+                       'GovernedView',
+                       'SdlPractice']} })
     revision: Optional[str] = Field(default=None, description="""Monotonic revision/version of a governed snapshot (§3c R-043). This is the saved view's \"version\"; ThreatModel and SecurityProgram name the same field `revision`. Tracked across review cycles via `supersedes`.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatModel', 'SecurityProgram', 'GovernedView']} })
     approved_by: Optional[list[str]] = Field(default=None, description="""Approving Review(s) of a governed artifact (§3c R-043). Approval runs through the existing Review + Assertion spine (§4) — NOT a parallel provenance mechanism (iteration-7 guardrail, DL-0010).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatModel', 'SecurityProgram', 'GovernedView']} })
     approval_digest: Optional[str] = Field(default=None, description="""Commit/content digest the approval is pinned to, so the sign-off is REPRODUCIBLE against KG state at a point in time (§3c R-043; SysML v2 View/Viewpoint, OMG SACM, OSCAL→Word prior art). Opaque string; digest scheme not pinned here.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatModel', 'SecurityProgram', 'GovernedView']} })
@@ -995,6 +1055,64 @@ class ImpactVector(ConfiguredBaseModel):
     financial: Optional[ImpactSeverity] = Field(default=None, description="""Financial impact on the end-beneficiary, not the owner's P&L (§3).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ImpactVector']} })
     operational: Optional[ImpactSeverity] = Field(default=None, description="""Operational impact (§3).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ImpactVector']} })
     privacy: Optional[ImpactSeverity] = Field(default=None, description="""Privacy impact (§3). Not re-indexed by asset owner.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ImpactVector']} })
+
+
+class SdlPractice(Node):
+    """
+    Accepted via ADR-0013 (DL-0041). One secure-development activity as a product team runs it: threat modeling, code review, release integrity, coordinated disclosure. `practice_key` names the MAP-0001 row, so the 16-framework crosswalk (and the library records behind it) is one hop away instead of being re-typed per product. Progress reuses MitigationStatus, the phase reuses LifecyclePhase, the owner is a Party. Whether the practice is a delivery item for this product is an Assertion (`selects_practice`) plus a human Review, not a field. RPT-0013-OM has no canonical Activity type; its nearest objects are GateCriterion and ActionPlan.
+    """
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://threat-radar.github.io/tmodel/schema/object-model'})
+
+    practice_key: Optional[str] = Field(default=None, description="""Accepted via ADR-0013. Row key in spec/MAP-0001.yaml (e.g. `threat-modeling`).""", json_schema_extra = { "linkml_meta": {'domain_of': ['SdlPractice']} })
+    at_phase: Optional[str] = Field(default=None, description="""Canonical LifecyclePhase a program node maps onto (§3b/§3c R-041). Gates are the governance points between phases; `name` is the local corporate label (MAP-0001 gate crosswalk).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProgramNode', 'SdlPractice']} })
+    owner: Optional[str] = Field(default=None, description="""Owner/approver of a governed artifact (§3c R-043). A Party ROLE (§2b — one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010).""", json_schema_extra = { "linkml_meta": {'domain_of': ['ThreatModel',
+                       'SecurityProgram',
+                       'ProgramNode',
+                       'GovernedView',
+                       'SdlPractice']} })
+    mitigation_status: Optional[MitigationStatus] = Field(default=None, description="""Lifecycle of the mitigation (§3 R-045, §5): planned / in-progress / complete / accepted-risk / n-a. Vocabulary may be refined by DEC-009. On RiskScore this is a peer column of feasibility and impact, not folded into `risk`.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Mitigation', 'RiskScore', 'SdlPractice']} })
+    implements: Optional[list[str]] = Field(default=None, description="""Accepted via ADR-0013. Requirements this practice is meant to discharge.""", json_schema_extra = { "linkml_meta": {'domain_of': ['SdlPractice']} })
+    produces: Optional[list[str]] = Field(default=None, description="""Accepted via ADR-0013. Work products (deliverables, evidence) of the practice.""", json_schema_extra = { "linkml_meta": {'domain_of': ['SdlPractice']} })
+    in_program_node: Optional[list[str]] = Field(default=None, description="""Accepted via ADR-0013. Milestone / Gate / Checkpoint the practice is due at.""", json_schema_extra = { "linkml_meta": {'domain_of': ['SdlPractice']} })
+    external_refs: Optional[list[str]] = Field(default=None, description="""Linked work items, e.g. a Jira key (§5). Opaque strings; no tracker schema.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Mitigation', 'SdlPractice']} })
+    id: str = Field(default=..., description="""Stable object id (ADR-0004). Adapters must not renumber it.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
+    name: Optional[str] = Field(default=None, description="""Human-readable name.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
+    description: Optional[str] = Field(default=None, description="""Short prose description.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
+
+
+class Evidence(Node):
+    """
+    Accepted via ADR-0013. A deliverable or evidence item an SdlPractice produces: a document, workflow, attestation, SBOM, test suite, page, issue or pull request. `locator` is an opaque URL or repo path. It is evidence of linkage, not of adequacy: a human still judges whether it is good enough (CLAUDE.md). This is the MVP subset of RPT-0013-OM `Evidence`: `evidence_nature`, `digest`, `about_version` and `fresh_until` are optional and carry that object's version binding and freshness when a team has them.
+    """
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://threat-radar.github.io/tmodel/schema/object-model'})
+
+    locator: Optional[str] = Field(default=None, description="""Accepted via ADR-0013. Opaque URL or repo path of a work product.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Evidence']} })
+    evidence_kind: Optional[EvidenceKind] = Field(default=None, description="""Accepted via ADR-0013. What kind of work product this is.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Evidence']} })
+    evidence_nature: Optional[EvidenceNature] = Field(default=None, description="""Accepted via ADR-0013 (RPT-0013-OM Evidence `nature`). Authored on purpose, or a by-product of development such as tool output or a log.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Evidence']} })
+    digest: Optional[str] = Field(default=None, description="""Accepted via ADR-0013. Content digest of the work product, e.g. `sha256:...`.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Evidence']} })
+    about_version: Optional[str] = Field(default=None, description="""Accepted via ADR-0013 (RPT-0013-OM Evidence `about`). The product version, tag or commit the work product is evidence about.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Evidence']} })
+    fresh_until: Optional[date] = Field(default=None, description="""Accepted via ADR-0013 (RPT-0013-OM Evidence `fresh_until`). After this date it needs redoing.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Evidence']} })
+    evidence: Optional[list[str]] = Field(default=None, description="""Accepted via ADR-0011 (DL-0024). Opaque references to what the statement rests on: an SBOM digest, an advisory or CVE record URL, a write-up.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Assertion', 'Evidence']} })
+    id: str = Field(default=..., description="""Stable object id (ADR-0004). Adapters must not renumber it.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
+    name: Optional[str] = Field(default=None, description="""Human-readable name.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
+    description: Optional[str] = Field(default=None, description="""Short prose description.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
+
+
+class RequirementSource(Node):
+    """
+    Accepted via ADR-0013. A candidate governing body of requirements for a product: a standard, regulation or framework, or a named level of one (SLSA Build L2). RPT-0013-OM `RequirementSource`: `source_ref` points at the library record and `version` pins the edition. `source_members` lists the Requirements of the set this model uses. Selecting, considering or excluding a set for a program is an Assertion with the rationale in its description and a human Review. A tailored per-product selection with per-member status (RPT-0013-OM `RequirementProfile`) is deferred.
+    """
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://threat-radar.github.io/tmodel/schema/object-model'})
+
+    source_ref: Optional[str] = Field(default=None, description="""OPAQUE reference to the library record (Threat-Radar/library) the Requirement comes from, scheme-prefixed like `catalog_ref`, e.g. `library:iso-sae-21434-2021#RQ-09-09` (ADR-0012; §3c R-044, §2b). tmodel aligns by reference — it does NOT import or depend on the library schema. Absent for a project-authored requirement.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement', 'RequirementSource']} })
+    source_locator: Optional[str] = Field(default=None, description="""Human-readable clause / section / table locator in the source, e.g. `RQ-09-09 (§9.5.2)` or `Provision 5.2.1` (ADR-0012). With a paraphrased `text` this is how a reader finds the authoritative wording.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement', 'RequirementSource']} })
+    version: Optional[str] = Field(default=None, description="""Accepted via ADR-0011 (DL-0024). The version string as the source wrote it (RPT-0004 Table 6b). Until now only the purl inside `identifiers` carried it.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ProductInstance', 'Component', 'RequirementSource']} })
+    source_members: Optional[list[str]] = Field(default=None, description="""Accepted via ADR-0013. Requirements of a RequirementSource used by this model.""", json_schema_extra = { "linkml_meta": {'domain_of': ['RequirementSource']} })
+    applies_to_family: Optional[list[str]] = Field(default=None, description="""Product type / family scope (ADR-0012), as an opaque scheme-prefixed value matched against `Product.classifications`, e.g. `family:connected-ecu`. Used instead of a ProductFamily class, which DEC-009 has not decided.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Requirement', 'RequirementSource'],
+         'examples': [{'value': 'family:connected-ecu'}]} })
+    id: str = Field(default=..., description="""Stable object id (ADR-0004). Adapters must not renumber it.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
+    name: Optional[str] = Field(default=None, description="""Human-readable name.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
+    description: Optional[str] = Field(default=None, description="""Short prose description.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Node']} })
 
 
 # Model rebuild
@@ -1032,3 +1150,6 @@ Milestone.model_rebuild()
 Requirement.model_rebuild()
 GovernedView.model_rebuild()
 ImpactVector.model_rebuild()
+SdlPractice.model_rebuild()
+Evidence.model_rebuild()
+RequirementSource.model_rebuild()

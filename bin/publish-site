@@ -13,6 +13,7 @@ python3 docs/publishing/render_report.py
 tara_py=python3
 [ -x engine/.venv/bin/python ] && tara_py=engine/.venv/bin/python
 "$tara_py" docs/publishing/render_tara.py
+"$tara_py" docs/publishing/render_sdl.py   # tmodel SDL page (DL-0040)
 python3 docs/publishing/render_bibliography.py
 # Example-model pages (#208): the engine collects each model, which needs PyYAML
 # (the engine's environment, CONTRIBUTING §10, when it exists, else python3), and

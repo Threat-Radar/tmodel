@@ -44,3 +44,9 @@ sections:
     note: >
       TARA-shaped page built from the mvp-02 example model, in ISO/SAE 21434
       clause 15 order (issue 202, item 3). Listed on the reports index.
+  - path: docs/sdl/
+    manifest: docs/publishing/sdl.yaml
+    builder: docs/publishing/render_sdl.py
+    note: >
+      "tmodel SDL": one product's SDL (practices by phase, requirement sets,
+      milestones, gaps) from an example SDL model (DL-0040). Example data.

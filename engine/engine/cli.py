@@ -10,6 +10,20 @@
   tmodel library [--id I] [--type T] [--topic T] [--status S] [--json]
                                the library's records, optionally filtered; the
                                library is $TMODEL_LIBRARY or the pinned submodule
+  tmodel sdl [FILE] [--program P] [--json]
+                               the SDL program view of an SDL model (DL-0043);
+                               without FILE, list the SDL models
+  tmodel propose PATCH [--dry-run] [--json]
+                               check an agent's patch to a threat model, SDL model
+                               or saved KG views and append it to the model's
+                               proposals file; never accepts (DL-0044, DL-0046)
+  tmodel proposals [FILE] [--json]
+                               pending proposals and saved KG views of a model;
+                               without FILE, pending counts per model (DL-0046)
+  tmodel accept PROPOSAL --model FILE --reviewer PARTY --justification TEXT
+                [--verdict accepted|rejected|changes_requested] [--declare-sponsor GH]
+                               the sponsor decides one proposal, in a branch; always
+                               in-process, never through the API (DL-0046)
 
 By default these go through the local API, exactly like the desktop app
 (APP-0001 A-030, A-060). `--in-process` calls the engine code directly
@@ -182,12 +196,115 @@ def _library(args: argparse.Namespace) -> int:
     return 0
 
 
+def _print_sdl(payload: dict[str, Any]) -> None:
+    if "models" in payload:
+        for m in payload["models"]:
+            progs = ", ".join(p["id"] for p in m.get("programs", [])) or m.get("error", "")
+            print(f"  {m['file']}  {progs}")
+        return
+    print(f"{payload['file']}: {payload['program']['name']} ({payload['proposal']})")
+    for phase in payload["phases"]:
+        print(f"  {phase['name']}")
+        for it in phase["items"]:
+            print(f"    [{it['status']}] {it['name']}  ({it['decision']['state']})")
+    print(f"  {len(payload['awaiting_review'])} selections awaiting human review (PROC-0002)")
+
+
+def _sdl(args: argparse.Namespace) -> int:
+    params = {k: v for k, v in (("file", args.file), ("program", args.program)) if v}
+    payload = _call(
+        lambda: core.sdl(params) if args.in_process else get("/sdl", args.url, params=params)
+    )
+    if payload is None:
+        return 1
+    if args.json:
+        print(json.dumps(payload))
+    else:
+        _print_sdl(payload)
+    return 0
+
+
+def _propose(args: argparse.Namespace) -> int:
+    import yaml  # the engine's one dependency
+
+    try:
+        text = sys.stdin.read() if args.patch == "-" else open(args.patch, encoding="utf-8").read()
+        patch = yaml.safe_load(text)
+    except (OSError, yaml.YAMLError) as exc:
+        print(f"error: cannot read the patch: {exc}", file=sys.stderr)
+        return 2
+    payload = _call(lambda: core.propose(patch, write=not args.dry_run))
+    if payload is None:
+        return 1
+    if args.json:
+        print(json.dumps(payload))
+        return 0
+    rec = payload["proposal"]
+    where = payload["file"] or "(dry run, nothing written)"
+    print(f"{rec['id']}: proposed by {rec['proposed_by']} -> {where}")
+    print("  status: proposed. A human decides it in a PR (PROC-0002).")
+    return 0
+
+
 def _add_transport(cmd: argparse.ArgumentParser) -> None:
     cmd.add_argument("--json", action="store_true", help="print JSON")
     cmd.add_argument("--url", default=None, help="engine URL (default http://127.0.0.1:47811)")
     cmd.add_argument(
         "--in-process", action="store_true", help="call the engine directly, no server"
     )
+
+
+def _proposals(args: argparse.Namespace) -> int:
+    params = {"file": args.file} if args.file else {}
+    payload = _call(
+        lambda: (
+            core.pending_proposals(params)
+            if args.in_process
+            else get("/proposals", args.url, params=params)
+        )
+    )
+    if payload is None:
+        return 1
+    if args.json:
+        print(json.dumps(payload))
+        return 0
+    if "models" in payload:
+        for m in payload["models"]:
+            print(f"  {m['file']}  {m.get('pending', m.get('error'))} pending")
+        return 0
+    for p in payload["proposals"]:
+        n = len(p["objects"]) + len(p["changes"]) + len(p["assertions"])
+        print(f"  {p['id']}  by {p['by']}  {n} changes  ({p['state']})")
+    for v in payload["views"]:
+        print(f"  view {v['id']}  [{v['state']}]  {len(v['node_ids'])} objects")
+    return 0
+
+
+def _accept(args: argparse.Namespace) -> int:
+    from engine import accept  # a human's command: never reachable from the API
+
+    try:
+        model = core._model_path(args.model)
+        xwalk = core.load_vector_document(core.CROSSWALK_FILE)
+        out = accept.decide(
+            model,
+            args.proposal,
+            verdict=args.verdict,
+            reviewer=args.reviewer,
+            justification=args.justification,
+            xwalk=xwalk,
+            declare_sponsor=args.declare_sponsor,
+        )
+    except ValueError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+    if args.json:
+        print(json.dumps(out))
+        return 0
+    changed = "model updated" if out["model_changed"] else "model unchanged"
+    print(f"{out['proposal']}: {out['verdict']} by {out['decided_by']} ({changed})")
+    print("  Commit the model, proposals and decision log, and open a pull request.")
+    return 0
 
 
 def _serve(args: argparse.Namespace) -> int:
@@ -234,6 +351,44 @@ def build_parser() -> argparse.ArgumentParser:
         library.add_argument(f"--{name}", default=None, help=f"only records with this {name}")
     _add_transport(library)
     library.set_defaults(func=_library)
+
+    sdl = sub.add_parser("sdl", help="SDL program view of an SDL model (DL-0043)")
+    sdl.add_argument("file", nargs="?", default=None, help="e.g. sdl-01-tmodel-desktop.yaml")
+    sdl.add_argument("--program", default=None, help="SecurityProgram id, if the file has several")
+    _add_transport(sdl)
+    sdl.set_defaults(func=_sdl)
+
+    propose = sub.add_parser(
+        "propose", help="write an agent's patch as proposals only (DL-0044, DL-0046)"
+    )
+    propose.add_argument("patch", help="patch file (YAML or JSON), or - for stdin")
+    propose.add_argument("--dry-run", action="store_true", help="check only, write nothing")
+    propose.add_argument("--json", action="store_true", help="print JSON")
+    propose.set_defaults(func=_propose)
+
+    pending = sub.add_parser("proposals", help="pending proposals and saved KG views (DL-0046)")
+    pending.add_argument(
+        "file", nargs="?", default=None, help="e.g. mvp-01-software-doc-service.yaml"
+    )
+    _add_transport(pending)
+    pending.set_defaults(func=_proposals)
+
+    decide = sub.add_parser("accept", help="the sponsor decides one proposal (DL-0046)")
+    decide.add_argument("proposal", help="proposal id, e.g. proposal:20261107T200000Z-abc123")
+    decide.add_argument("--model", required=True, help="the model file the proposal targets")
+    decide.add_argument("--reviewer", required=True, help="the sponsor's Party id")
+    decide.add_argument("--justification", required=True, help="why; goes on the Review")
+    decide.add_argument(
+        "--verdict", choices=("accepted", "rejected", "changes_requested"), default="accepted"
+    )
+    decide.add_argument(
+        "--declare-sponsor",
+        default=None,
+        metavar="GITHUB",
+        help="add the reviewer as a sponsor Party if the model has none",
+    )
+    decide.add_argument("--json", action="store_true", help="print JSON")
+    decide.set_defaults(func=_accept)
     return parser
 
 
