@@ -1,13 +1,31 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Secure Development Lifecycle</title><style>body{max-width:52rem;margin:0 auto 2rem;padding:0 1rem;font:16px/1.6 -apple-system,Segoe UI,Roboto,sans-serif;color:#1a1a1a}
-h1,h2,h3,h4{line-height:1.25} h1{border-bottom:2px solid #eee;padding-bottom:.3rem}
-code{background:#f4f4f4;padding:.1em .3em;border-radius:3px;font-size:.9em}
-pre{background:#f4f4f4;padding:1rem;overflow:auto;border-radius:6px}
-table{border-collapse:collapse;width:100%;margin:1rem 0;font-size:.95em} th,td{border:1px solid #ddd;padding:.4rem .6rem;text-align:left;vertical-align:top}
-th{background:#fafafa} blockquote{border-left:4px solid #ddd;margin:1rem 0;padding:.2rem 1rem;color:#555}
-.rev{font-size:.85em;color:#666;background:#fafafa;border:1px solid #eee;border-radius:6px;padding:.5rem .8rem;margin:1rem 0}
-.rl a{margin-right:1rem} footer{margin-top:3rem;border-top:1px solid #eee;padding-top:1rem;font-size:.85em;color:#777}</style></head><body>
+<title>Secure Development Lifecycle</title><style>:root{--ink:#1a1916;--muted:#5c574e;--line:#e2dcd0;--paper:#f6f3ec;--card:#fffcf7;--accent:#1e4d3a;--code:#efebe2}
+*{box-sizing:border-box}
+body{margin:0;padding-bottom:2rem;color:var(--ink);background:var(--paper);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif}
+body>:not(.site-nav){max-width:min(52rem,calc(100% - 48px));margin-left:auto;margin-right:auto}
+a{color:var(--accent)} a:hover{text-decoration:none}
+h1,h2,h3,h4{line-height:1.25;letter-spacing:-.015em}
+h1{font-size:clamp(1.7rem,3vw,2.3rem);letter-spacing:-.03em;margin-top:28px;margin-bottom:10px}
+h2{margin-top:1.6em;margin-bottom:.4em;padding-top:.6em;border-top:1px solid var(--line)}
+code{background:var(--code);padding:.1em .35em;border-radius:4px;font-size:.88em;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+pre{background:var(--code);border:1px solid var(--line);padding:12px 14px;overflow:auto;border-radius:8px} pre code{background:none;padding:0}
+table{border-collapse:collapse;width:100%;margin-top:1rem;margin-bottom:1rem;font-size:.93em;background:var(--card);border:1px solid var(--line)}
+th,td{border-bottom:1px solid var(--line);padding:.45rem .65rem;text-align:left;vertical-align:top}
+th{font-size:.78rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:650}
+blockquote{border-left:4px solid var(--line);margin-top:1rem;margin-bottom:1rem;padding:.2rem 1rem;color:var(--muted)}
+img{max-width:100%;height:auto}
+.kicker{margin-top:28px;margin-bottom:0;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:650}
+.kicker+h1{margin-top:8px}
+.lede{color:var(--muted);margin-top:0;font-size:1.05rem}
+.rev{font-size:.88em;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:.55rem .85rem;margin-top:1rem;margin-bottom:1rem}
+.rev strong{color:var(--ink)}
+.rl a{margin-right:1rem}
+ul.cards{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+ul.cards li{display:flex;flex-direction:column;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+ul.cards a{font-weight:650;font-size:1.02rem}
+ul.cards .meta{color:var(--muted);font-size:.86rem}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-top:16px;font-size:.85em;color:var(--muted)}</style></head><body>
 <style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../index.html">tmodel</a><nav aria-label="Site"><a href="../index.html">Home</a><a href="../bibliography/index.html">Bibliography</a><a href="../reports/index.html" aria-current="page">Reports</a></nav></div></header>
 <h1>Secure Development Lifecycle</h1>
 <div class="rev"><strong>Revision 1.0.0</strong> · updated 2026-10-22 · static page (regenerated only when the source changes)</div>
