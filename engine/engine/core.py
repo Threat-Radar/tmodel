@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any
 
 from engine import __version__
+from engine import sdl as sdl_view
 from engine.graph import AttackGraph, GraphError
 from engine.load.library import (
     Library,
@@ -35,6 +36,10 @@ APPROVED_VECTOR_DIRECTORY = (
     / "spec"
     / "vectors"
 )
+# The MAP-0001 crosswalk the SDL view reads (bundled beside spec/vectors by bin/build-engine).
+CROSSWALK_FILE = APPROVED_VECTOR_DIRECTORY.parent / "MAP-0001.yaml"
+SDL_PREFIX = "sdl-"  # SDL models are spec/vectors/sdl-*.yaml (DL-0040)
+SDL_OPTIONS = ("file", "program")
 LIBRARY_FILTERS = ("id", "type", "topic", "status")
 # The library table view (#141, #58): what it can sort by, and what it counts for filter menus.
 TABLE_OPTIONS = ("search", "sort", "order", "limit", "offset")
@@ -301,3 +306,46 @@ def _sanitized_model_error(path: Path, error: GraphError) -> str:
     """Keep model errors useful without returning the engine's local filesystem path."""
     message = str(error).replace(str(path), path.name)
     return message if message.startswith(f"{path.name}:") else f"{path.name}: {message}"
+
+
+def sdl_models() -> dict[str, Any]:
+    """The SDL models the app can open (spec/vectors/sdl-*.yaml), with their programs."""
+    root = APPROVED_VECTOR_DIRECTORY
+    models = []
+    for path in sorted(root.glob(f"{SDL_PREFIX}*.yaml")):
+        try:
+            doc = load_vector_document(path)
+        except GraphError as exc:
+            models.append({"file": path.name, "error": _sanitized_model_error(path, exc)})
+            continue
+        models.append({"file": path.name, "programs": sdl_view.programs(dict(doc))})
+    return {"models": models}
+
+
+def sdl(query: Mapping[str, str] | None = None) -> dict[str, Any]:
+    """The SDL program view of one SDL model (DL-0043): what the "tmodel SDL" page shows.
+
+    Without `file`, lists the SDL models (`sdl_models`). `file` is a name in the
+    approved model directory and must be an `sdl-*.yaml` model; `program` picks a
+    SecurityProgram when the file has more than one. Raises ValueError (400) for a bad
+    file, an unknown program, a dangling reference or a broken PROC-0002 review rule.
+    The payload is read-only and names no local path.
+    """
+    values = _values(query or {}, SDL_OPTIONS, "parameter")
+    if "file" not in values:
+        return sdl_models()
+    path = _approved_vector_path(values["file"])
+    if not path.name.startswith(SDL_PREFIX):
+        raise GraphError(f"{path.name}: not an SDL model (expected {SDL_PREFIX}*.yaml)")
+    try:
+        doc = dict(load_vector_document(path))
+        xwalk = load_vector_document(CROSSWALK_FILE)
+    except GraphError as exc:
+        raise GraphError(_sanitized_model_error(path, exc)) from exc
+    try:
+        view = sdl_view.collect(doc, dict(xwalk), program=values.get("program"))
+    except (KeyError, TypeError) as exc:
+        raise GraphError(f"{path.name}: malformed SDL model ({type(exc).__name__}: {exc})") from exc
+    except sdl_view.SdlError as exc:
+        raise GraphError(f"{path.name}: {exc}") from exc
+    return {"file": path.name, **view}

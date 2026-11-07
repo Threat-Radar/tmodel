@@ -1,0 +1,1421 @@
+{
+ "awaiting_review": [
+  {
+   "id": "assertion:select-ssdf",
+   "name": "Govern the program by NIST SSDF 1.1",
+   "predicate": "selects_requirement_source"
+  },
+  {
+   "id": "assertion:select-slsa",
+   "name": "Govern the build by SLSA 1.2 Build L2",
+   "predicate": "selects_requirement_source"
+  },
+  {
+   "id": "assertion:candidate-cra",
+   "name": "Keep the EU CRA as a candidate",
+   "predicate": "considers_requirement_source"
+  },
+  {
+   "id": "assertion:candidate-osps",
+   "name": "Keep the OpenSSF OSPS Baseline as a candidate",
+   "predicate": "considers_requirement_source"
+  },
+  {
+   "id": "assertion:exclude-iso-21434",
+   "name": "ISO/SAE 21434 does not apply to the desktop app",
+   "predicate": "excludes_requirement_source"
+  },
+  {
+   "id": "assertion:exclude-iec-62443-4-1",
+   "name": "IEC 62443-4-1 does not apply to the desktop app",
+   "predicate": "excludes_requirement_source"
+  },
+  {
+   "id": "assertion:name-mvp",
+   "name": "Milestone name \"MVP launch\"",
+   "predicate": "proposes_milestone_name"
+  },
+  {
+   "id": "assertion:name-i4",
+   "name": "Milestone name \"I4 Risk & mitigation\"",
+   "predicate": "proposes_milestone_name"
+  },
+  {
+   "id": "assertion:name-gate",
+   "name": "Gate name \"v0.1.0 release gate\"",
+   "predicate": "proposes_milestone_name"
+  },
+  {
+   "id": "assertion:name-i5",
+   "name": "Milestone name \"I5 Integrate & demo\"",
+   "predicate": "proposes_milestone_name"
+  }
+ ],
+ "columns": [
+  [
+   "ssdf",
+   "NIST SSDF 1.1 (SP 800-218)"
+  ],
+  [
+   "slsa",
+   "SLSA 1.2, Build track L2"
+  ],
+  [
+   "cra",
+   "EU Cyber Resilience Act (Regulation 2024/2847)"
+  ],
+  [
+   "osps",
+   "OpenSSF OSPS Baseline"
+  ]
+ ],
+ "counts": {
+  "accepted_risk": 0,
+  "complete": 4,
+  "in_progress": 11,
+  "not_applicable": 0,
+  "planned": 3
+ },
+ "file": "sdl-01-tmodel-desktop.yaml",
+ "gaps": [
+  "Release sign-off: Tag builds become draft releases a human publishes; there is no recorded gate decision or checklist yet.",
+  "Coordinated vulnerability disclosure: No SECURITY.md and GitHub private vulnerability reporting is off.",
+  "Watch released dependencies for vulnerabilities: Dependabot alerts are on; security updates and secret scanning are off; no triage owner.",
+  "Developer ID signing and Apple notarization: Not done; the Apple secrets are not set, so Gatekeeper warns on every install.",
+  "Hermetic, hash-pinned build inputs (SLSA L3 gaps): Floating stable Rust, shared caches and unhashed pip installs remain; provenance is not from an isolated workflow."
+ ],
+ "map_rows": 34,
+ "nodes": [
+  {
+   "actual": "",
+   "description": "External view and a downloadable app (#202). rc.1 and rc.2 are draft releases awaiting a clean-Mac check.",
+   "gated_by": [],
+   "kind": "Milestone",
+   "name": "MVP launch",
+   "name_decision": {
+    "by": "AI agent",
+    "css": "prop",
+    "label": "Proposed, awaiting human review",
+    "state": "proposed"
+   },
+   "order": 1,
+   "owner": "sponsor",
+   "planned": "2026-11-06",
+   "practices": 7,
+   "status": "In progress"
+  },
+  {
+   "actual": "",
+   "description": "PLAN-0001 increment I4 (Nov 6 to Nov 19).",
+   "gated_by": [],
+   "kind": "Milestone",
+   "name": "I4 Risk & mitigation",
+   "name_decision": {
+    "by": "AI agent",
+    "css": "prop",
+    "label": "Proposed, awaiting human review",
+    "state": "proposed"
+   },
+   "order": 2,
+   "owner": "student team",
+   "planned": "2026-11-19",
+   "practices": 6,
+   "status": "Planned"
+  },
+  {
+   "actual": "",
+   "description": "Publishing the first non-draft release. Proposed exit criteria: the gated requirements are satisfied by complete mitigations, and the app threat model has an approved revision. Checks linkage and approval, not adequacy.",
+   "gated_by": [
+    "SSDF PS.2.1",
+    "SSDF PS.3.2",
+    "SSDF PW.1.1"
+   ],
+   "kind": "Gate",
+   "name": "v0.1.0 release gate",
+   "name_decision": {
+    "by": "AI agent",
+    "css": "prop",
+    "label": "Proposed, awaiting human review",
+    "state": "proposed"
+   },
+   "order": 3,
+   "owner": "sponsor",
+   "planned": "2026-11-26",
+   "practices": 4,
+   "status": "Planned"
+  },
+  {
+   "actual": "",
+   "description": "PLAN-0001 increment I5 (Nov 20 to Dec 5).",
+   "gated_by": [],
+   "kind": "Milestone",
+   "name": "I5 Integrate & demo",
+   "name_decision": {
+    "by": "AI agent",
+    "css": "prop",
+    "label": "Proposed, awaiting human review",
+    "state": "proposed"
+   },
+   "order": 4,
+   "owner": "student team",
+   "planned": "2026-12-05",
+   "practices": 1,
+   "status": "Planned"
+  }
+ ],
+ "phases": [
+  {
+   "code": "concept",
+   "items": [
+    {
+     "covered": 12,
+     "decision": {
+      "by": "",
+      "css": "prop",
+      "label": "Proposed delivery item, awaiting human selection",
+      "state": "proposed"
+     },
+     "description": "Sponsor-owned decisions (ADR), team process (PROC-0001), CODEOWNERS and agent rules (CLAUDE.md).",
+     "due": [
+      "MVP launch"
+     ],
+     "evidence": [
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/blob/main/project/PROC-0001-team-coordination.md",
+       "kind": "document",
+       "name": "PROC-0001 team coordination"
+      },
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/blob/main/CLAUDE.md",
+       "kind": "document",
+       "name": "CLAUDE.md agent rules"
+      },
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/blob/main/.github/CODEOWNERS",
+       "kind": "configuration",
+       "name": "CODEOWNERS"
+      }
+     ],
+     "frameworks": {
+      "cra": [],
+      "osps": [
+       "OSPS-GV-01.02"
+      ],
+      "slsa": [],
+      "ssdf": [
+       "PO.2.1",
+       "PO.2.3"
+      ]
+     },
+     "id": "sdl-practice:roles-governance",
+     "name": "Security roles and decision records",
+     "owner": "sponsor",
+     "requirements": [],
+     "row": "Security roles, responsibilities & management commitment",
+     "row_n": 28,
+     "status": "complete",
+     "total": 16
+    },
+    {
+     "covered": 14,
+     "decision": {
+      "by": "",
+      "css": "prop",
+      "label": "Proposed delivery item, awaiting human selection",
+      "state": "proposed"
+     },
+     "description": "Requirement is a core class (ADR-0012) and library requirements are extracted (RPT-0017); this product has no selected requirement set yet.",
+     "due": [
+      "I4 Risk & mitigation"
+     ],
+     "evidence": [
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/blob/main/spec/ADR-0012-requirement-in-core.md",
+       "kind": "document",
+       "name": "ADR-0012 Requirement in the core"
+      },
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/tree/main/research/0017-requirements-extraction/",
+       "kind": "document",
+       "name": "RPT-0017 requirements extraction"
+      },
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/blob/main/spec/MAP-0001-sdl-requirements-crosswalk.md",
+       "kind": "document",
+       "name": "MAP-0001 SDL requirements crosswalk"
+      }
+     ],
+     "frameworks": {
+      "cra": [
+       "Art13(3)-3",
+       "AnnexI-PartI(2)(d)",
+       "AnnexI-PartI(2)(e)",
+       "AnnexI-PartI(2)(f)",
+       "AnnexI-PartI(2)(h)",
+       "AnnexI-PartI(2)(i)"
+      ],
+      "osps": [],
+      "slsa": [],
+      "ssdf": [
+       "PO.1.1",
+       "PO.1.2",
+       "PW.1.2"
+      ]
+     },
+     "id": "sdl-practice:security-requirements",
+     "name": "Define and track security requirements",
+     "owner": "student team",
+     "requirements": [
+      {
+       "href": "https://github.com/Threat-Radar/library/tree/main/records",
+       "name": "SSDF PO.1.1"
+      }
+     ],
+     "row": "Define & track security requirements",
+     "row_n": 2,
+     "status": "in_progress",
+     "total": 16
+    },
+    {
+     "covered": 3,
+     "decision": {
+      "by": "",
+      "css": "prop",
+      "label": "Proposed delivery item, awaiting human selection",
+      "state": "proposed"
+     },
+     "description": "AI output is a proposal until a human accepts it; the design log records accepts and rejections.",
+     "due": [
+      "MVP launch"
+     ],
+     "evidence": [
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/blob/main/CLAUDE.md",
+       "kind": "document",
+       "name": "CLAUDE.md agent rules"
+      },
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/blob/main/design-log/README.md",
+       "kind": "document",
+       "name": "Design log"
+      }
+     ],
+     "frameworks": {
+      "cra": [],
+      "osps": [],
+      "slsa": [],
+      "ssdf": []
+     },
+     "id": "sdl-practice:ai-assisted-development",
+     "name": "Rules for AI-assisted development",
+     "owner": "sponsor",
+     "requirements": [],
+     "row": "AI-generated code & AI dev tools",
+     "row_n": 32,
+     "status": "complete",
+     "total": 16
+    }
+   ],
+   "name": "Program and requirements"
+  },
+  {
+   "code": "design",
+   "items": [
+    {
+     "covered": 15,
+     "decision": {
+      "by": "",
+      "css": "prop",
+      "label": "Proposed delivery item, awaiting human selection",
+      "state": "proposed"
+     },
+     "description": "Only the four-threat seed in this file exists, AI-drafted and unreviewed.",
+     "due": [
+      "v0.1.0 release gate"
+     ],
+     "evidence": [
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/blob/main/spec/vectors/sdl-01-tmodel-desktop.yaml",
+       "kind": "model",
+       "name": "App threat model seed (this file)"
+      }
+     ],
+     "frameworks": {
+      "cra": [
+       "Art13(2)",
+       "Art13(3)-2",
+       "AnnexI-PartI(1)"
+      ],
+      "osps": [
+       "OSPS-SA-03.01",
+       "OSPS-SA-03.02"
+      ],
+      "slsa": [],
+      "ssdf": [
+       "PW.1.1"
+      ]
+     },
+     "id": "sdl-practice:threat-modeling",
+     "name": "Threat model of the app itself",
+     "owner": "student",
+     "requirements": [
+      {
+       "href": "https://github.com/Threat-Radar/library/tree/main/records",
+       "name": "SSDF PW.1.1"
+      }
+     ],
+     "row": "Threat modeling / risk assessment (TARA)",
+     "row_n": 3,
+     "status": "in_progress",
+     "total": 16
+    },
+    {
+     "covered": 11,
+     "decision": {
+      "by": "",
+      "css": "prop",
+      "label": "Proposed delivery item, awaiting human selection",
+      "state": "proposed"
+     },
+     "description": "ADRs with adversarial review passes; the presentation-layer reset is under review.",
+     "due": [
+      "I4 Risk & mitigation"
+     ],
+     "evidence": [
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/blob/main/spec/ADR-0003-path-a-local-app.md",
+       "kind": "document",
+       "name": "ADR-0003 local app (Path A)"
+      },
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/issues/208",
+       "kind": "issue",
+       "name": "Issue #208 presentation layer"
+      }
+     ],
+     "frameworks": {
+      "cra": [],
+      "osps": [],
+      "slsa": [],
+      "ssdf": [
+       "PW.2.1"
+      ]
+     },
+     "id": "sdl-practice:design-review",
+     "name": "Design and architecture review",
+     "owner": "sponsor",
+     "requirements": [],
+     "row": "Security design / architecture review",
+     "row_n": 5,
+     "status": "in_progress",
+     "total": 16
+    }
+   ],
+   "name": "Design"
+  },
+  {
+   "code": "implementation",
+   "items": [
+    {
+     "covered": 12,
+     "decision": {
+      "by": "",
+      "css": "prop",
+      "label": "Proposed delivery item, awaiting human selection",
+      "state": "proposed"
+     },
+     "description": "Actions pinned to SHAs, least-privilege permissions, no persisted checkout credentials, cargo fetch --locked. Rust toolchain floats.",
+     "due": [
+      "MVP launch"
+     ],
+     "evidence": [
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/blob/main/design-log/0034-slsa-release-pipeline/README.md",
+       "kind": "document",
+       "name": "DL-0034 SLSA release pipeline"
+      },
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/pull/206",
+       "kind": "pull_request",
+       "name": "PR #206 SLSA provenance"
+      }
+     ],
+     "frameworks": {
+      "cra": [],
+      "osps": [
+       "OSPS-BR-05.01"
+      ],
+      "slsa": [
+       "R-0003"
+      ],
+      "ssdf": [
+       "PO.3.1",
+       "PO.3.2",
+       "PW.6.1",
+       "PW.6.2"
+      ]
+     },
+     "id": "sdl-practice:secure-toolchain",
+     "name": "Approved, pinned toolchain",
+     "owner": "sponsor",
+     "requirements": [],
+     "row": "Approved, securely configured toolchain",
+     "row_n": 8,
+     "status": "in_progress",
+     "total": 16
+    },
+    {
+     "covered": 15,
+     "decision": {
+      "by": "",
+      "css": "prop",
+      "label": "Proposed delivery item, awaiting human selection",
+      "state": "proposed"
+     },
+     "description": "Lockfiles for npm and Cargo; Dependabot alerts on but security updates off; pip installs are not hash-pinned.",
+     "due": [
+      "I4 Risk & mitigation"
+     ],
+     "evidence": [
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/blob/main/.github/workflows/release.yml",
+       "kind": "workflow",
+       "name": "release.yml workflow"
+      }
+     ],
+     "frameworks": {
+      "cra": [
+       "Art13(5)",
+       "Art13(6)-1",
+       "AnnexI-PartII(1)"
+      ],
+      "osps": [
+       "OSPS-BR-05.01",
+       "OSPS-DO-06.01",
+       "OSPS-VM-05.01",
+       "OSPS-VM-05.02",
+       "OSPS-VM-05.03"
+      ],
+      "slsa": [],
+      "ssdf": [
+       "PO.1.3",
+       "PW.4.1",
+       "PW.4.4"
+      ]
+     },
+     "id": "sdl-practice:third-party-components",
+     "name": "Third-party component risk",
+     "owner": "student team",
+     "requirements": [
+      {
+       "href": "https://github.com/Threat-Radar/library/tree/main/records",
+       "name": "SSDF PW.4.1"
+      }
+     ],
+     "row": "Third-party component risk management",
+     "row_n": 7,
+     "status": "in_progress",
+     "total": 16
+    },
+    {
+     "covered": 14,
+     "decision": {
+      "by": "",
+      "css": "prop",
+      "label": "Proposed delivery item, awaiting human selection",
+      "state": "proposed"
+     },
+     "description": "One approving review required on main, stale approvals dismissed. Admins can bypass, and did (#206); no static analysis (no CodeQL).",
+     "due": [
+      "I4 Risk & mitigation"
+     ],
+     "evidence": [
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/blob/main/CONTRIBUTING.md",
+       "kind": "document",
+       "name": "CONTRIBUTING (branch and review rules)"
+      },
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/blob/main/.github/PULL_REQUEST_TEMPLATE.md",
+       "kind": "document",
+       "name": "PR template"
+      }
+     ],
+     "frameworks": {
+      "cra": [
+       "AnnexI-PartII(3)"
+      ],
+      "osps": [
+       "OSPS-QA-07.01",
+       "OSPS-VM-06.01",
+       "OSPS-VM-06.02"
+      ],
+      "slsa": [
+       "R-0113",
+       "R-0114"
+      ],
+      "ssdf": [
+       "PW.7.1",
+       "PW.7.2"
+      ]
+     },
+     "id": "sdl-practice:code-review",
+     "name": "Code review before merge",
+     "owner": "student team",
+     "requirements": [
+      {
+       "href": "https://github.com/Threat-Radar/library/tree/main/records",
+       "name": "SSDF PW.7.2"
+      }
+     ],
+     "row": "Code review & static analysis",
+     "row_n": 10,
+     "status": "in_progress",
+     "total": 16
+    },
+    {
+     "covered": 13,
+     "decision": {
+      "by": "",
+      "css": "prop",
+      "label": "Proposed delivery item, awaiting human selection",
+      "state": "proposed"
+     },
+     "description": "Force pushes and branch deletion blocked on main; no required status checks and no required signed commits.",
+     "due": [
+      "I4 Risk & mitigation"
+     ],
+     "evidence": [
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/blob/main/CONTRIBUTING.md",
+       "kind": "document",
+       "name": "CONTRIBUTING (branch and review rules)"
+      }
+     ],
+     "frameworks": {
+      "cra": [],
+      "osps": [
+       "OSPS-AC-01.01",
+       "OSPS-AC-02.01",
+       "OSPS-AC-03.01",
+       "OSPS-AC-03.02",
+       "OSPS-AC-04.01"
+      ],
+      "slsa": [
+       "R-0078",
+       "R-0080",
+       "R-0103"
+      ],
+      "ssdf": [
+       "PO.5.1",
+       "PO.5.2",
+       "PS.1.1"
+      ]
+     },
+     "id": "sdl-practice:protect-dev-environment",
+     "name": "Protect the repository",
+     "owner": "sponsor",
+     "requirements": [],
+     "row": "Protect development environments & source code",
+     "row_n": 16,
+     "status": "in_progress",
+     "total": 16
+    }
+   ],
+   "name": "Implementation"
+  },
+  {
+   "code": "verification_validation",
+   "items": [
+    {
+     "covered": 15,
+     "decision": {
+      "by": "",
+      "css": "prop",
+      "label": "Proposed delivery item, awaiting human selection",
+      "state": "proposed"
+     },
+     "description": "Engine pytest (including loopback-bind tests), frontend vitest, Rust tests and a bundle check run on every PR. No fuzzing or DAST.",
+     "due": [
+      "I4 Risk & mitigation"
+     ],
+     "evidence": [
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/blob/main/.github/workflows/app.yml",
+       "kind": "workflow",
+       "name": "app.yml CI workflow"
+      },
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/blob/main/engine/tests/test_api.py",
+       "kind": "test_suite",
+       "name": "Engine API tests"
+      }
+     ],
+     "frameworks": {
+      "cra": [
+       "AnnexI-PartII(3)"
+      ],
+      "osps": [
+       "OSPS-QA-06.01",
+       "OSPS-QA-06.02",
+       "OSPS-QA-06.03"
+      ],
+      "slsa": [],
+      "ssdf": [
+       "PW.8.1",
+       "PW.8.2"
+      ]
+     },
+     "id": "sdl-practice:security-testing",
+     "name": "Automated tests in CI",
+     "owner": "student team",
+     "requirements": [],
+     "row": "Security testing of executable code (dynamic, functional, fuzz)",
+     "row_n": 11,
+     "status": "in_progress",
+     "total": 16
+    },
+    {
+     "covered": 13,
+     "decision": {
+      "by": "",
+      "css": "prop",
+      "label": "Proposed delivery item, awaiting human selection",
+      "state": "proposed"
+     },
+     "description": "Engine API binds loopback only, checks Host and Origin; the webview has a restrictive CSP.",
+     "due": [
+      "MVP launch"
+     ],
+     "evidence": [
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/blob/main/engine/engine/api/server.py",
+       "kind": "configuration",
+       "name": "Engine API server"
+      },
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/blob/main/apps/desktop/src-tauri/tauri.conf.json",
+       "kind": "configuration",
+       "name": "Tauri config (CSP)"
+      }
+     ],
+     "frameworks": {
+      "cra": [
+       "AnnexI-PartI(2)(b)",
+       "AnnexI-PartI(2)(j)"
+      ],
+      "osps": [],
+      "slsa": [],
+      "ssdf": [
+       "PW.9.1",
+       "PW.9.2"
+      ]
+     },
+     "id": "sdl-practice:secure-defaults",
+     "name": "Secure defaults in the app",
+     "owner": "student team",
+     "requirements": [],
+     "row": "Secure-by-default configuration & hardening guidance",
+     "row_n": 14,
+     "status": "complete",
+     "total": 16
+    }
+   ],
+   "name": "Verification"
+  },
+  {
+   "code": "distribution",
+   "items": [
+    {
+     "covered": 13,
+     "decision": {
+      "by": "",
+      "css": "prop",
+      "label": "Proposed delivery item, awaiting human selection",
+      "state": "proposed"
+     },
+     "description": "SPDX SBOM generated in release.yml and attested with the .dmg.",
+     "due": [
+      "MVP launch"
+     ],
+     "evidence": [
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/blob/main/.github/workflows/release.yml",
+       "kind": "workflow",
+       "name": "release.yml workflow"
+      }
+     ],
+     "frameworks": {
+      "cra": [
+       "AnnexI-PartII(1)",
+       "AnnexII(9)",
+       "AnnexVII(8)"
+      ],
+      "osps": [
+       "OSPS-QA-02.01",
+       "OSPS-QA-02.02"
+      ],
+      "slsa": [],
+      "ssdf": [
+       "PS.3.2"
+      ]
+     },
+     "id": "sdl-practice:sbom",
+     "name": "SBOM for every release",
+     "owner": "sponsor",
+     "requirements": [
+      {
+       "href": "https://github.com/Threat-Radar/library/tree/main/records",
+       "name": "SSDF PS.3.2"
+      },
+      {
+       "href": "https://github.com/Threat-Radar/library/tree/main/records",
+       "name": "CRA Annex I Part II(1)"
+      }
+     ],
+     "row": "SBOM / component inventory",
+     "row_n": 20,
+     "status": "complete",
+     "total": 16
+    },
+    {
+     "covered": 7,
+     "decision": {
+      "by": "",
+      "css": "prop",
+      "label": "Proposed delivery item, awaiting human selection",
+      "state": "proposed"
+     },
+     "description": "Build L2 attestation for the .dmg, engine and SBOM. L3 needs an isolated provenance workflow and a hermetic build.",
+     "due": [
+      "MVP launch"
+     ],
+     "evidence": [
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/blob/main/design-log/0034-slsa-release-pipeline/README.md",
+       "kind": "document",
+       "name": "DL-0034 SLSA release pipeline"
+      },
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/pull/206",
+       "kind": "pull_request",
+       "name": "PR #206 SLSA provenance"
+      },
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/blob/main/.github/workflows/release.yml",
+       "kind": "workflow",
+       "name": "release.yml workflow"
+      }
+     ],
+     "frameworks": {
+      "cra": [],
+      "osps": [
+       "OSPS-BR-02.01",
+       "OSPS-BR-06.01",
+       "OSPS-DO-03.01"
+      ],
+      "slsa": [
+       "R-0008",
+       "R-0010",
+       "R-0016",
+       "R-0028",
+       "R-0050",
+       "R-0058"
+      ],
+      "ssdf": [
+       "PS.3.2"
+      ]
+     },
+     "id": "sdl-practice:build-provenance",
+     "name": "Build provenance (SLSA)",
+     "owner": "sponsor",
+     "requirements": [
+      {
+       "href": "https://github.com/Threat-Radar/library/tree/main/records",
+       "name": "SLSA Build L2 provenance"
+      }
+     ],
+     "row": "Build provenance & attestation",
+     "row_n": 21,
+     "status": "in_progress",
+     "total": 16
+    },
+    {
+     "covered": 12,
+     "decision": {
+      "by": "",
+      "css": "prop",
+      "label": "Proposed delivery item, awaiting human selection",
+      "state": "proposed"
+     },
+     "description": "Users can verify with gh attestation verify. No Developer ID signing or notarization; macOS warns on install.",
+     "due": [
+      "v0.1.0 release gate"
+     ],
+     "evidence": [
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/blob/main/README.md",
+       "kind": "document",
+       "name": "README quickstart (install and verify)"
+      },
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/pull/213",
+       "kind": "pull_request",
+       "name": "PR #213 fixed-name .dmg"
+      }
+     ],
+     "frameworks": {
+      "cra": [],
+      "osps": [
+       "OSPS-BR-06.01",
+       "OSPS-DO-03.01"
+      ],
+      "slsa": [],
+      "ssdf": [
+       "PS.2.1",
+       "PS.3.1"
+      ]
+     },
+     "id": "sdl-practice:release-integrity",
+     "name": "Release integrity and signing",
+     "owner": "sponsor",
+     "requirements": [
+      {
+       "href": "https://github.com/Threat-Radar/library/tree/main/records",
+       "name": "SSDF PS.2.1"
+      }
+     ],
+     "row": "Release integrity: signing, integrity data & archiving",
+     "row_n": 13,
+     "status": "in_progress",
+     "total": 16
+    },
+    {
+     "covered": 12,
+     "decision": {
+      "by": "",
+      "css": "prop",
+      "label": "Proposed delivery item, awaiting human selection",
+      "state": "proposed"
+     },
+     "description": "Tag builds become draft releases a human publishes; there is no recorded gate decision or checklist yet.",
+     "due": [
+      "v0.1.0 release gate"
+     ],
+     "evidence": [
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/blob/main/.github/workflows/release.yml",
+       "kind": "workflow",
+       "name": "release.yml workflow"
+      }
+     ],
+     "frameworks": {
+      "cra": [
+       "AnnexI-PartI(2)(a)",
+       "Art13(12)-2"
+      ],
+      "osps": [
+       "OSPS-QA-03.01",
+       "OSPS-VM-05.02",
+       "OSPS-VM-06.02"
+      ],
+      "slsa": [],
+      "ssdf": [
+       "PO.4.1",
+       "PO.4.2"
+      ]
+     },
+     "id": "sdl-practice:release-gate",
+     "name": "Release sign-off",
+     "owner": "sponsor",
+     "requirements": [],
+     "row": "Release security gate / sign-off",
+     "row_n": 15,
+     "status": "planned",
+     "total": 16
+    },
+    {
+     "covered": 11,
+     "decision": {
+      "by": "",
+      "css": "prop",
+      "label": "Proposed delivery item, awaiting human selection",
+      "state": "proposed"
+     },
+     "description": "The README quickstart explains the Open Anyway step and how to verify a download.",
+     "due": [
+      "MVP launch"
+     ],
+     "evidence": [
+      {
+       "href": "https://github.com/Threat-Radar/tmodel/blob/main/README.md",
+       "kind": "document",
+       "name": "README quickstart (install and verify)"
+      }
+     ],
+     "frameworks": {
+      "cra": [
+       "Art13(18)-1",
+       "Art13(18)-4",
+       "AnnexII(4)",
+       "AnnexII(5)",
+       "AnnexII(8(a))",
+       "AnnexII(8(d))"
+      ],
+      "osps": [
+       "OSPS-DO-01.01"
+      ],
+      "slsa": [],
+      "ssdf": [
+       "PW.9.1",
+       "PW.9.2"
+      ]
+     },
+     "id": "sdl-practice:user-security-docs",
+     "name": "Security information for users",
+     "owner": "student team",
+     "requirements": [],
+     "row": "Security information & instructions for users",
+     "row_n": 29,
+     "status": "in_progress",
+     "total": 16
+    }
+   ],
+   "name": "Release and distribution"
+  },
+  {
+   "code": "maintenance",
+   "items": [
+    {
+     "covered": 12,
+     "decision": {
+      "by": "",
+      "css": "prop",
+      "label": "Proposed delivery item, awaiting human selection",
+      "state": "proposed"
+     },
+     "description": "No SECURITY.md and GitHub private vulnerability reporting is off.",
+     "due": [
+      "v0.1.0 release gate"
+     ],
+     "evidence": [],
+     "frameworks": {
+      "cra": [
+       "AnnexI-PartII(5)",
+       "AnnexI-PartII(6)",
+       "Art13(8)-9",
+       "AnnexII(2)",
+       "Art13(17)-1"
+      ],
+      "osps": [
+       "OSPS-VM-01.01",
+       "OSPS-VM-02.01",
+       "OSPS-VM-03.01"
+      ],
+      "slsa": [],
+      "ssdf": [
+       "RV.1.3"
+      ]
+     },
+     "id": "sdl-practice:coordinated-disclosure",
+     "name": "Coordinated vulnerability disclosure",
+     "owner": "sponsor",
+     "requirements": [
+      {
+       "href": "https://github.com/Threat-Radar/library/tree/main/records",
+       "name": "SSDF RV.1.3"
+      },
+      {
+       "href": "https://github.com/Threat-Radar/library/tree/main/records",
+       "name": "CRA Annex I Part II(5)"
+      }
+     ],
+     "row": "Coordinated vulnerability disclosure (policy & reporting channel)",
+     "row_n": 23,
+     "status": "planned",
+     "total": 16
+    },
+    {
+     "covered": 14,
+     "decision": {
+      "by": "",
+      "css": "prop",
+      "label": "Proposed delivery item, awaiting human selection",
+      "state": "proposed"
+     },
+     "description": "Dependabot alerts are on; security updates and secret scanning are off; no triage owner.",
+     "due": [
+      "I5 Integrate & demo"
+     ],
+     "evidence": [],
+     "frameworks": {
+      "cra": [
+       "Art13(8)-1",
+       "AnnexI-PartII(6)"
+      ],
+      "osps": [
+       "OSPS-DO-02.01"
+      ],
+      "slsa": [],
+      "ssdf": [
+       "RV.1.1",
+       "RV.1.2"
+      ]
+     },
+     "id": "sdl-practice:vulnerability-intake",
+     "name": "Watch released dependencies for vulnerabilities",
+     "owner": "student team",
+     "requirements": [],
+     "row": "Vulnerability monitoring & investigation (released software)",
+     "row_n": 18,
+     "status": "planned",
+     "total": 16
+    }
+   ],
+   "name": "Maintenance and response"
+  }
+ ],
+ "product": {
+  "description": "Local threat-modeling app: a Tauri + TypeScript shell with a Python engine sidecar that serves a loopback-only API (127.0.0.1:47811). Distributed as an ad-hoc-signed .dmg from GitHub Releases (ADR-0003, PLAN-0002).",
+  "name": "tmodel desktop app (macOS)"
+ },
+ "program": {
+  "approval": "pending",
+  "description": "The SDL for the tmodel desktop app as a governed, versioned object (\u00a73c R-041). Draft: no human has approved the program, its practices, its requirement sets or its milestone names.",
+  "governance": "draft",
+  "name": "tmodel SDL (rev 0, draft)",
+  "owner": "sponsor",
+  "revision": "0"
+ },
+ "proposal": "Example data: each selection is a proposal until the sponsor reviews it",
+ "sets": [
+  {
+   "column": "ssdf",
+   "decision": {
+    "by": "AI agent",
+    "css": "prop",
+    "label": "Proposed, awaiting human review",
+    "state": "proposed"
+   },
+   "id": "requirement-source:ssdf-1-1",
+   "link": "https://github.com/Threat-Radar/library/tree/main/records",
+   "members": [
+    {
+     "_coll": "requirements",
+     "applies_to": [
+      "product:tmodel-desktop"
+     ],
+     "id": "requirement:ssdf-po-1-1",
+     "name": "SSDF PO.1.1",
+     "normativity": "recommended",
+     "requirement_kind": "process",
+     "source_locator": "SSDF 1.1 task PO.1.1",
+     "source_ref": "library:sp-800-218#PO.1.1",
+     "text": "Write down the security requirements for the development infrastructure and processes, and keep them current.",
+     "text_origin": "paraphrase"
+    },
+    {
+     "_coll": "requirements",
+     "applies_to": [
+      "product:tmodel-desktop"
+     ],
+     "id": "requirement:ssdf-pw-1-1",
+     "name": "SSDF PW.1.1",
+     "normativity": "recommended",
+     "requirement_kind": "process",
+     "source_locator": "SSDF 1.1 task PW.1.1",
+     "source_ref": "library:sp-800-218#PW.1.1",
+     "text": "Model the product's threats and attack surface, and use the result to drive design and mitigations.",
+     "text_origin": "paraphrase"
+    },
+    {
+     "_coll": "requirements",
+     "applies_to": [
+      "product:tmodel-desktop"
+     ],
+     "id": "requirement:ssdf-pw-4-1",
+     "name": "SSDF PW.4.1",
+     "normativity": "recommended",
+     "requirement_kind": "process",
+     "source_locator": "SSDF 1.1 task PW.4.1",
+     "source_ref": "library:sp-800-218#PW.4.1",
+     "text": "Acquire and maintain third-party components that are themselves well secured.",
+     "text_origin": "paraphrase"
+    },
+    {
+     "_coll": "requirements",
+     "applies_to": [
+      "product:tmodel-desktop"
+     ],
+     "id": "requirement:ssdf-pw-7-2",
+     "name": "SSDF PW.7.2",
+     "normativity": "recommended",
+     "requirement_kind": "process",
+     "source_locator": "SSDF 1.1 task PW.7.2",
+     "source_ref": "library:sp-800-218#PW.7.2",
+     "text": "Review or analyse code for vulnerabilities, and record and triage what is found.",
+     "text_origin": "paraphrase"
+    },
+    {
+     "_coll": "requirements",
+     "applies_to": [
+      "product:tmodel-desktop"
+     ],
+     "id": "requirement:ssdf-ps-2-1",
+     "name": "SSDF PS.2.1",
+     "normativity": "recommended",
+     "requirement_kind": "technical",
+     "satisfied_by": [
+      "mitigation:slsa-provenance"
+     ],
+     "source_locator": "SSDF 1.1 task PS.2.1",
+     "source_ref": "library:sp-800-218#PS.2.1",
+     "text": "Publish information that lets users check that a release is genuine and unmodified.",
+     "text_origin": "paraphrase"
+    },
+    {
+     "_coll": "requirements",
+     "applies_to": [
+      "product:tmodel-desktop"
+     ],
+     "id": "requirement:ssdf-ps-3-2",
+     "name": "SSDF PS.3.2",
+     "normativity": "recommended",
+     "requirement_kind": "documentation",
+     "satisfied_by": [
+      "mitigation:slsa-provenance"
+     ],
+     "source_locator": "SSDF 1.1 task PS.3.2",
+     "source_ref": "library:sp-800-218#PS.3.2",
+     "text": "Collect, protect and share provenance data for each release, such as an SBOM.",
+     "text_origin": "paraphrase"
+    },
+    {
+     "_coll": "requirements",
+     "applies_to": [
+      "product:tmodel-desktop"
+     ],
+     "id": "requirement:ssdf-rv-1-3",
+     "name": "SSDF RV.1.3",
+     "normativity": "recommended",
+     "requirement_kind": "organizational",
+     "source_locator": "SSDF 1.1 task RV.1.3",
+     "source_ref": "library:sp-800-218#RV.1.3",
+     "text": "Have a policy, roles and a process for receiving vulnerability reports and fixing them.",
+     "text_origin": "paraphrase"
+    }
+   ],
+   "name": "NIST SSDF 1.1 (SP 800-218)",
+   "proposal": "select",
+   "rationale": "Proposed as the governing set. Any software producer can follow it, and MAP-0001 uses it as the hub."
+  },
+  {
+   "column": "slsa",
+   "decision": {
+    "by": "AI agent",
+    "css": "prop",
+    "label": "Proposed, awaiting human review",
+    "state": "proposed"
+   },
+   "id": "requirement-source:slsa-1-2-build-l2",
+   "link": "https://github.com/Threat-Radar/library/tree/main/records",
+   "members": [
+    {
+     "_coll": "requirements",
+     "applies_to": [
+      "product:tmodel-desktop"
+     ],
+     "id": "requirement:slsa-build-l2",
+     "name": "SLSA Build L2 provenance",
+     "normativity": "conditional",
+     "requirement_kind": "technical",
+     "satisfied_by": [
+      "mitigation:slsa-provenance"
+     ],
+     "source_locator": "SLSA 1.2 Build track, level 2",
+     "source_ref": "library:slsa-1-2#R-0010",
+     "text": "Each release artifact carries signed build provenance generated by a hosted build platform.",
+     "text_origin": "paraphrase"
+    }
+   ],
+   "name": "SLSA 1.2, Build track L2",
+   "proposal": "select",
+   "rationale": "Proposed; DL-0034 already claims Build L2 for releases."
+  },
+  {
+   "column": "cra",
+   "decision": {
+    "by": "AI agent",
+    "css": "prop",
+    "label": "Proposed, awaiting human review",
+    "state": "proposed"
+   },
+   "id": "requirement-source:eu-cra",
+   "link": "https://github.com/Threat-Radar/library/tree/main/records",
+   "members": [
+    {
+     "_coll": "requirements",
+     "applies_to": [
+      "product:tmodel-desktop"
+     ],
+     "id": "requirement:cra-annex-i-2-1",
+     "maps_to": [
+      "requirement:ssdf-ps-3-2"
+     ],
+     "name": "CRA Annex I Part II(1)",
+     "normativity": "conditional",
+     "requirement_kind": "documentation",
+     "source_locator": "Regulation (EU) 2024/2847, Annex I Part II(1)",
+     "source_ref": "library:eu-cra-2024-2847#AnnexI-PartII(1)",
+     "text": "Identify and document the product's vulnerabilities and components, including an SBOM of at least the top-level dependencies.",
+     "text_origin": "paraphrase"
+    },
+    {
+     "_coll": "requirements",
+     "applies_to": [
+      "product:tmodel-desktop"
+     ],
+     "id": "requirement:cra-annex-i-2-5",
+     "maps_to": [
+      "requirement:ssdf-rv-1-3"
+     ],
+     "name": "CRA Annex I Part II(5)",
+     "normativity": "conditional",
+     "requirement_kind": "organizational",
+     "source_locator": "Regulation (EU) 2024/2847, Annex I Part II(5)",
+     "source_ref": "library:eu-cra-2024-2847#AnnexI-PartII(5)",
+     "text": "Put a coordinated vulnerability disclosure policy in place and follow it.",
+     "text_origin": "paraphrase"
+    }
+   ],
+   "name": "EU Cyber Resilience Act (Regulation 2024/2847)",
+   "proposal": "candidate",
+   "rationale": "Candidate, not selected. A free, non-commercial open-source app may fall outside the CRA's \"placing on the market\"; whether it applies is a human (legal) call. Its SBOM and disclosure duties are cheap to meet early."
+  },
+  {
+   "column": "osps",
+   "decision": {
+    "by": "AI agent",
+    "css": "prop",
+    "label": "Proposed, awaiting human review",
+    "state": "proposed"
+   },
+   "id": "requirement-source:openssf-osps",
+   "link": "https://github.com/Threat-Radar/library/tree/main/records",
+   "members": [],
+   "name": "OpenSSF OSPS Baseline",
+   "proposal": "candidate",
+   "rationale": "Candidate; written for open-source projects on hosted forges like this one."
+  },
+  {
+   "column": "iso21434",
+   "decision": {
+    "by": "AI agent",
+    "css": "prop",
+    "label": "Proposed, awaiting human review",
+    "state": "proposed"
+   },
+   "id": "requirement-source:iso-sae-21434",
+   "link": "https://github.com/Threat-Radar/library/tree/main/records",
+   "members": [],
+   "name": "ISO/SAE 21434:2021 (road vehicles)",
+   "proposal": "not applicable",
+   "rationale": "Proposed not applicable. The standard covers road-vehicle E/E items and their components (its scope clause); a desktop analysis tool is not one. tmodel models 21434 TARAs as content (mvp-02), which does not make the tool itself in scope."
+  },
+  {
+   "column": "iec",
+   "decision": {
+    "by": "AI agent",
+    "css": "prop",
+    "label": "Proposed, awaiting human review",
+    "state": "proposed"
+   },
+   "id": "requirement-source:iec-62443-4-1",
+   "link": "https://github.com/Threat-Radar/library/tree/main/records",
+   "members": [],
+   "name": "IEC 62443-4-1:2018 (industrial automation)",
+   "proposal": "not applicable",
+   "rationale": "Proposed not applicable. It targets suppliers of industrial automation and control system components."
+  }
+ ],
+ "threat_model": {
+  "name": "tmodel desktop app threat model (rev 0, draft)",
+  "status": "draft"
+ },
+ "threats": [
+  {
+   "capec": "CAPEC-275",
+   "cwe": "CWE-346",
+   "description": "DNS rebinding or a cross-origin request reaches 127.0.0.1:47811 and reads or changes the model.",
+   "mitigations": [
+    {
+     "name": "Loopback-only bind, Host check and Origin allowlist on the engine API",
+     "status": "complete"
+    }
+   ],
+   "name": "A web page in the user's browser drives the local engine API"
+  },
+  {
+   "capec": "CAPEC-439",
+   "cwe": "CWE-494",
+   "description": "A swapped release asset or a look-alike download runs on the user's Mac. Ad-hoc signing means Gatekeeper cannot tell the real build from a fake, and users are told to click Open Anyway.",
+   "mitigations": [
+    {
+     "name": "SLSA Build L2 provenance for the .dmg, engine and SBOM",
+     "status": "complete"
+    },
+    {
+     "name": "Developer ID signing and Apple notarization",
+     "status": "planned"
+    }
+   ],
+   "name": "A tampered .dmg reaches users"
+  },
+  {
+   "capec": "CAPEC-538",
+   "cwe": "CWE-829",
+   "description": "A third-party GitHub Action, npm, Cargo or pip package injects code during the release build.",
+   "mitigations": [
+    {
+     "name": "Actions pinned to commit SHAs, least-privilege permissions, split build and publish",
+     "status": "complete"
+    },
+    {
+     "name": "Hermetic, hash-pinned build inputs (SLSA L3 gaps)",
+     "status": "planned"
+    }
+   ],
+   "name": "A compromised action or dependency poisons the build"
+  },
+  {
+   "capec": "CAPEC-586",
+   "cwe": "CWE-502",
+   "description": "A crafted YAML model or record abuses the loader to build objects or run code.",
+   "mitigations": [
+    {
+     "name": "Safe YAML loading in the engine",
+     "status": "complete"
+    }
+   ],
+   "name": "A malicious model or library file runs code in the engine"
+  }
+ ],
+ "uncovered": [
+  "Security training & competence",
+  "Secure design principles & standard security features",
+  "Cryptographic standards & key management",
+  "Secure coding standards",
+  "Penetration testing",
+  "Vulnerability / defect management (triage & remediation)",
+  "Security monitoring & incident response (operations)",
+  "Security advisories & VEX (vulnerability-status communication)",
+  "Secure update delivery",
+  "Defined support period & end-of-support notice",
+  "Root-cause analysis fed back into the SDL",
+  "Security exceptions & risk acceptance",
+  "Notification of exploited vulnerabilities & severe incidents",
+  "AI/ML components: inventory, provenance & AI-specific threats",
+  "Secrets & credential management (no hard-coded secrets)",
+  "SDL programme metrics & continuous improvement"
+ ]
+}
