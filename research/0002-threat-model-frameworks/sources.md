@@ -4,9 +4,9 @@ id: RPT-0002-sources
 title: "RPT-0002 source log"
 type: research
 status: draft
-version: "0.1.0"
+version: "0.2.0"
 date: "2026-09-28"
-updated: "2026-09-28"
+updated: "2026-10-22"
 record: RPT-0002
 ---
 
@@ -32,3 +32,14 @@ A source is not "in the report" until it is a `library/` record.
 | LINDDUN official site (KU Leuven DistriNet) | web | LINDDUN | `linddun-org` | DEC-001, DEC-005 |
 | Real World Threat Modeling Using the PASTA Methodology (UcedaVélez, OWASP AppSec EU 2012) | slides | PASTA | `ucedavelez-pasta-owasp-2012` | DEC-001, DEC-003, DEC-005 |
 | Risk Centric Threat Modeling (UcedaVélez & Morana, Wiley 2015) — not read, paywalled | book | PASTA | `pasta-risk-centric-threat-modeling` (existing stub, completed) | DEC-001, DEC-003, DEC-005 |
+| Attack Flow — Language, STIX 2.1 extension 2.0.0 (MITRE Center for Threat-Informed Defense; docs at release v4.1.0, 2026) | spec | MITRE Attack Flow | `mitre-attack-flow` | DEC-001, DEC-005 |
+| Threat analysis of software systems: A systematic literature review (Tuma, Calikli & Scandariato, Journal of Systems and Software 144, 2018) — read via the first author's 2021 thesis | paper | all (survey of 26) | `tuma-2018-threat-analysis-slr` | DEC-001 |
+| Threat modeling – A systematic literature review (Xiong & Lagerström, Computers & Security 84, 2019) — paywalled, abstract only | paper | all (survey) | `xiong-2019-threat-modeling-slr` (stub) | DEC-001 |
+| The threats to our products (Kohnfelder & Garg, Microsoft, 1999; published by Microsoft 2009) | article | STRIDE | `kohnfelder-garg-1999-threats-to-our-products` | DEC-001 |
+| Experiences Threat Modeling at Microsoft (Shostack, MODSEC08, CEUR-WS Vol-413, 2008) | paper | STRIDE | `shostack-2008-experiences-threat-modeling-microsoft` | DEC-001 |
+| Threat Modeling: Designing for Security (Shostack, Wiley 2014) — paid book, not read | book | STRIDE | `shostack-threat-modeling-2014` (stub) | DEC-001 |
+| A descriptive study of Microsoft's threat modeling technique (Scandariato, Wuyts & Joosen, Requirements Engineering 20, 2015) | paper | STRIDE (evaluation) | `scandariato-2015-stride-descriptive-study` | DEC-001 |
+| Threat modeling state of practice in Dutch organizations (Verreydt, Yskout, Sion & Joosen, SOUPS 2024) | paper | practice | `verreydt-2024-threat-modeling-practice` | DEC-001 |
+| On the Measures of Success in Replication of Controlled Experiments with STRIDE (Mbaka & Tuma, IJSEKE 34, 2024) — read via the arXiv preprint | paper | STRIDE (evaluation) | `mbaka-tuma-2024-stride-replication` | DEC-001 |
+| Comparing attack trees and misuse cases in an industrial setting (Karpati, Redda, Opdahl & Sindre, IST 56, 2014) — paywalled, abstract only | paper | attack trees (evaluation) | `karpati-2014-attack-trees-misuse-cases` (stub) | DEC-001 |
+| An Empirical Evaluation of the Effectiveness of Attack Graphs and Fault Trees in Cyber-Attack Perception (Lallie, Debattista & Bal, IEEE TIFS 13, 2018) — paywalled, abstract only | paper | attack graphs (evaluation) | `lallie-2018-attack-graphs-fault-trees` (stub) | DEC-001 |
