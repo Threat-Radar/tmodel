@@ -8,7 +8,8 @@ name: schema
 #    #169) validates against the core container, its references resolve, and it
 #    keeps the extraction rules (check.py); the converter's tests pass.
 # 5. The SDL example (sdl-*.yaml, DL-0040) validates against the SDL proposal
-#    container. Its references are checked by docs/publishing/render_sdl.py.
+#    container. render_sdl.py --check resolves its references, applies the PROC-0002
+#    review rules (DL-0042) and fails if docs/sdl/ is stale.
 # GitHub runners only, no cloud services (APP-0001 A-043).
 
 on:
@@ -19,6 +20,10 @@ on:
       - "bin/gen-schema"
       - "design-log/0021-mvp-core-attack-path-vectors/check-edges.py"
       - "research/0017-requirements-extraction/**"
+      - "docs/publishing/render_sdl.py"
+      - "docs/publishing/test_render_sdl.py"
+      - "docs/publishing/sdl.yaml"
+      - "docs/sdl/**"
       - ".github/workflows/schema.yml"
   push:
     branches: [main]
@@ -28,6 +33,10 @@ on:
       - "bin/gen-schema"
       - "design-log/0021-mvp-core-attack-path-vectors/check-edges.py"
       - "research/0017-requirements-extraction/**"
+      - "docs/publishing/render_sdl.py"
+      - "docs/publishing/test_render_sdl.py"
+      - "docs/publishing/sdl.yaml"
+      - "docs/sdl/**"
       - ".github/workflows/schema.yml"
 
 concurrency:
@@ -70,6 +79,10 @@ jobs:
             echo "== $v"
             linkml-validate -s spec/vectors/example-container-sdl.linkml.yaml -C ExampleModelSdl "$v"
           done
+      - name: SDL page is fresh and the review rules hold (PROC-0002, DL-0042)
+        run: |
+          python3 docs/publishing/render_sdl.py --check
+          python3 -B docs/publishing/test_render_sdl.py
       - name: MVP core vectors, references resolve
         run: python3 design-log/0021-mvp-core-attack-path-vectors/check-edges.py spec/vectors/mvp-*.yaml
       - name: Requirement extraction files validate (core container)

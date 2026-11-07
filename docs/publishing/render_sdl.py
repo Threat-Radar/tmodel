@@ -18,6 +18,11 @@ only (#154).
 
     engine/.venv/bin/python docs/publishing/render_sdl.py           # write
     engine/.venv/bin/python docs/publishing/render_sdl.py --check   # compare only
+    engine/.venv/bin/python docs/publishing/render_sdl.py --check --strict
+                                   # also fail while a selection awaits review
+
+Review rules (PROC-0002) are checked on every run: a selection is decided only by a
+person's Review, never an AI agent's; see governance().
 
 The same collect() output is the shape an engine route (e.g. GET /sdl) would
 return to the desktop app; see DL-0040.
@@ -66,6 +71,10 @@ SET_PREDICATES = {
     "considers_requirement_set": "candidate",
     "excludes_requirement_set": "not applicable",
 }
+# Every predicate that records an SDL selection (PROC-0002). Each Assertion with one of
+# these is a proposal until a human Review decides it.
+SELECTION_PREDICATES = frozenset(SET_PREDICATES) | {"selects_practice", "proposes_milestone_name"}
+VERDICTS = {"accepted", "rejected", "changes_requested"}
 REF_KEYS = {
     "composed_of", "manufactured_by", "supplied_by", "owned_by", "of_product", "current_phase",
     "applies_in_phase", "targets_element", "mitigates", "implementation_owner", "members",
@@ -161,9 +170,63 @@ def link_for(loc: str, depth: int) -> str:
     return f"{REPO}{kind}/main/{loc}"
 
 
+def _roles(party: dict) -> set:
+    return {str(c)[5:] for c in as_list(party.get("classifications")) if str(c).startswith("role:")}
+
+
+def governance(doc: dict, ids: dict, entry: dict) -> list[dict]:
+    """Check the PROC-0002 review rules; return the selections still awaiting a human.
+
+    Fails (SdlError) when a selection is decided without a human Review, when an AI
+    agent's Review tries to decide one, when a verdict is not one of VERDICTS, when a
+    rejection or change request has no justification, when the Assertion's status and
+    its latest Review disagree, or when the reviewer lacks a role the manifest's
+    `required_reviewer_roles` names.
+    """
+    allowed = set(as_list(entry.get("required_reviewer_roles")))
+    by_target: dict = {}
+    for r in as_list(doc.get("reviews")):
+        by_target.setdefault(r.get("reviews"), []).append(r)
+    bad, waiting = [], []
+    for a in as_list(doc.get("assertions")):
+        if a.get("predicate") not in SELECTION_PREDICATES:
+            continue
+        status = str(a.get("assertion_status", "proposed")).lower()
+        revs = by_target.get(a["id"], [])
+        for r in revs:
+            who = ids.get(r.get("reviewer"), {})
+            verdict = str(r.get("review_status", "")).lower()
+            if who.get("party_kind") != "person":
+                bad.append(f"{r['id']}: reviewer {r.get('reviewer')} is not a person; "
+                           "an AI agent may propose but never decide (CLAUDE.md, PROC-0002)")
+            if verdict not in VERDICTS:
+                bad.append(f"{r['id']}: review_status {verdict!r} is not one of {sorted(VERDICTS)}")
+            if verdict in ("rejected", "changes_requested") and not r.get("justification"):
+                bad.append(f"{r['id']}: a {verdict} verdict needs a justification")
+            if allowed and who and not (_roles(who) & allowed):
+                bad.append(f"{r['id']}: reviewer {r.get('reviewer')} has none of the roles "
+                           f"{sorted(allowed)} that may decide SDL selections")
+        if not revs:
+            if status != "proposed":
+                bad.append(f"{a['id']}: assertion_status {status!r} with no Review; "
+                           "a selection is decided only by a human Review (PROC-0002)")
+            waiting.append({"id": a["id"], "predicate": a["predicate"], "name": a.get("name", "")})
+            continue
+        last = str(revs[-1].get("review_status", "")).lower()
+        if last in ("accepted", "rejected") and status != last:
+            bad.append(f"{a['id']}: latest Review says {last} but assertion_status is {status!r}; "
+                       "set both (PROC-0002 step 3)")
+        if last == "changes_requested":
+            waiting.append({"id": a["id"], "predicate": a["predicate"], "name": a.get("name", "")})
+    if bad:
+        raise SdlError("review rules (PROC-0002):\n  " + "\n  ".join(bad))
+    return waiting
+
+
 def collect(doc: dict, entry: dict, xwalk: dict) -> dict:
     ids = index(doc)
     check_refs(ids)
+    waiting = governance(doc, ids, entry)
     depth = entry["out"].count("/") - 1
     prog = ids.get(entry["program"])
     if not prog or prog["_coll"] != "security_programs":
@@ -274,6 +337,7 @@ def collect(doc: dict, entry: dict, xwalk: dict) -> dict:
         "threats": threats,
         "threat_model": {"name": tm.get("name"), "status": tm.get("governance_status")} if tm else None,
         "gaps": gaps, "uncovered": uncovered, "map_rows": len(xwalk["rows"]),
+        "awaiting_review": waiting,
         "counts": {k: sum(1 for ph in phase_list for it in ph["items"] if it["status"] == k) for k in STATUS},
     }
 
@@ -313,7 +377,8 @@ conformance claim. Licensed standards appear as ids only.</div>
     for k, (label, css) in STATUS.items():
         if d["counts"].get(k):
             w(f"<span>{pill(label, css)} {d['counts'][k]}</span>")
-    w(f"<span>{len(d['gaps'])} open gaps</span></div>")
+    w(f"<span>{len(d['gaps'])} open gaps</span>"
+      f"<span>{pill(str(len(d['awaiting_review'])) + ' selections awaiting human review', 'prop')}</span></div>")
 
     w("<h2>Governing requirement sets</h2><table><tr><th>Set</th><th>Proposal</th><th>Why</th><th>Decision</th></tr>")
     for s in d["sets"]:
@@ -389,6 +454,7 @@ re-run. No personal identities are published (people show as roles; enforced by
 
 def main(argv: list[str]) -> int:
     check = "--check" in argv
+    strict = "--strict" in argv  # also fail while any selection awaits review (a gate)
     manifest = load(MANIFEST)
     xwalk = load(MAP_0001)
     stale = 0
@@ -400,6 +466,13 @@ def main(argv: list[str]) -> int:
             print(f"render_sdl: {entry['src']}: {exc}", file=sys.stderr)
             return 1
         data["digest"] = hashlib.sha256(src.read_bytes()).hexdigest()
+        if data["awaiting_review"]:
+            print(f"render_sdl: {entry['src']}: {len(data['awaiting_review'])} selections await "
+                  "human review (PROC-0002)", file=sys.stderr)
+            if strict:
+                for a in data["awaiting_review"]:
+                    print(f"  {a['id']} ({a['predicate']})", file=sys.stderr)
+                stale += 1
         page = render(data)
         out = ROOT / entry["out"]
         if check:
