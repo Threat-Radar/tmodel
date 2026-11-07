@@ -274,6 +274,13 @@ reproducible (rust, npm and pip caches; a floating `stable` Rust toolchain;
 engine dependencies installed without hashes). Not signed with a Developer ID
 yet, so Gatekeeper cannot vouch for it; the provenance is the integrity check.
 
+**Security reports and scanning.** Report vulnerabilities privately as
+[SECURITY.md](SECURITY.md) describes, never in a public issue. `codeql.yml`
+scans Python, TypeScript and the workflows on every pull request, on `main` and
+weekly; Dependabot (`.github/dependabot.yml`) proposes grouped weekly updates
+for actions, engine and desktop dependencies; secret scanning with push
+protection is on (DL-0045).
+
 *Download and verify* (needs the GitHub CLI, `gh`):
 
 ```sh
