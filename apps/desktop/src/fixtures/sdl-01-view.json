@@ -1088,6 +1088,7 @@
   "revision": "0"
  },
  "proposal": "Example data: each selection is a proposal until the sponsor reviews it",
+ "proposals": [],
  "sets": [
   {
    "column": "ssdf",
