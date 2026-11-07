@@ -117,6 +117,24 @@ export interface ThreatRow extends ReportItem {
   mitigations: ReportRef[];
 }
 
+export interface VulnerabilityRow extends ReportItem {
+  catalogRef: string | null;
+  affects: ReportRef[];
+  weaknesses: ReportRef[];
+  propagatesTo: ReportRef[];
+}
+
+export interface WeaknessRow extends ReportItem {
+  catalogRef: string | null;
+  vulnerabilities: ReportRef[];
+  attackPatterns: ReportRef[];
+}
+
+export interface AttackPatternRow extends ReportItem {
+  catalogRef: string | null;
+  weaknesses: ReportRef[];
+}
+
 export type StepGate = "and" | "or" | "unspecified";
 
 export interface StoryStep {
@@ -143,8 +161,10 @@ export interface PathStory {
   damages: ReportRef[];
   mitigations: ReportRef[];
   targets: ReportRef[];
+  /** The threat's own provenance state, kept apart from the path assertion's review. */
+  threatStatus: ReportStatus;
   status: ReportStatus;
-  /** The engine could not compute this path's alternatives, so `alternatives` may be incomplete. */
+  /** The engine failed, or a computed step is unavailable, so `alternatives` may be incomplete. */
   alternativesMissing: boolean;
 }
 
@@ -234,6 +254,9 @@ export interface ModelReport {
   components: ComponentRow[];
   damageScenarios: DamageRow[];
   threats: ThreatRow[];
+  vulnerabilities: VulnerabilityRow[];
+  weaknesses: WeaknessRow[];
+  attackPatterns: AttackPatternRow[];
   attackPaths: PathRow[];
   mitigations: MitigationRow[];
   risks: RiskRow[];
@@ -279,6 +302,9 @@ const OBJECT_TYPE_LABELS: Readonly<Record<string, string>> = {
   Mitigation: "Mitigation",
   Requirement: "Requirement",
   Asset: "Asset",
+  Vulnerability: "Vulnerability",
+  Weakness: "Weakness",
+  AttackPattern: "Attack pattern",
 };
 
 /** Builds the report for one model. Pure: the same input always gives the same report. */
@@ -346,6 +372,9 @@ export function buildModelReport(input: ModelReportInput): ModelReport {
     ].map((node) => componentRow(index, node)),
     damageScenarios: index.ofType("DamageScenario").map((node) => damageRow(index, node, riskScores)),
     threats,
+    vulnerabilities: index.ofType("Vulnerability").map((node) => vulnerabilityRow(index, node)),
+    weaknesses: index.ofType("Weakness").map((node) => weaknessRow(index, node)),
+    attackPatterns: index.ofType("AttackPattern").map((node) => attackPatternRow(index, node)),
     attackPaths,
     mitigations: index.ofType("Mitigation").map((node) => mitigationRow(index, node)),
     risks: [...riskScores, ...notAssessed],
@@ -409,6 +438,33 @@ function threatRow(index: GraphIndex, node: EngineGraphNode): ThreatRow {
   };
 }
 
+function vulnerabilityRow(index: GraphIndex, node: EngineGraphNode): VulnerabilityRow {
+  return {
+    ...item(node, ["catalog_ref"]),
+    catalogRef: text(node.properties.catalog_ref),
+    affects: index.refs(node.id, "affects"),
+    weaknesses: index.refs(node.id, "instance_of"),
+    propagatesTo: index.refs(node.id, "propagates_to"),
+  };
+}
+
+function weaknessRow(index: GraphIndex, node: EngineGraphNode): WeaknessRow {
+  return {
+    ...item(node, ["catalog_ref"]),
+    catalogRef: text(node.properties.catalog_ref),
+    vulnerabilities: index.sources(node.id, "instance_of").map((source) => index.ref(source.id)),
+    attackPatterns: index.refs(node.id, "exploited_by"),
+  };
+}
+
+function attackPatternRow(index: GraphIndex, node: EngineGraphNode): AttackPatternRow {
+  return {
+    ...item(node, ["catalog_ref"]),
+    catalogRef: text(node.properties.catalog_ref),
+    weaknesses: index.sources(node.id, "exploited_by").map((source) => index.ref(source.id)),
+  };
+}
+
 function pathRow(
   index: GraphIndex,
   node: EngineGraphNode,
@@ -458,23 +514,35 @@ function pathStory(
   alternativesMissing: boolean,
 ): PathStory {
   const authored = index.linked(path.id, "steps");
-  const inPath = new Set(authored.map((step) => step.id));
-  const authoredOrder = new Map(authored.map((step, position) => [step.id, position]));
-  const predecessors = new Map(authored.map((step) => [
+  const computed = responses
+    .flatMap((response) => response.paths)
+    .filter((candidate) => candidate.authored_path === path.id);
+  const computedStepIds = unique(computed.flatMap((candidate) => candidate.steps));
+  const computedSteps = computedStepIds
+    .map((id) => index.node(id))
+    .filter((node): node is EngineGraphNode => node?.domain_type === "AttackStep");
+  // A computed route can enter this authored path through a prerequisite step
+  // owned by another path. Keep that step in the story: it is part of the
+  // engine's route even though it is not repeated in this path's `steps` slot.
+  const storySteps = uniqueNodes([...authored, ...computedSteps]);
+  const inPath = new Set(storySteps.map((step) => step.id));
+  const storyOrder = new Map(storySteps.map((step, position) => [step.id, position]));
+  const predecessors = new Map(storySteps.map((step) => [
     step.id,
     index.sources(step.id, "precedes")
       .filter((before) => inPath.has(before.id))
       .map((before) => before.id),
   ]));
 
-  // Topological order under `precedes`, ties in authored order: the order the
-  // engine uses for its computed paths (engine/paths.py `_ordered`).
-  const remaining = new Map(authored.map((step) => [step.id, predecessors.get(step.id)?.length ?? 0]));
+  // Topological order under `precedes`, with authored order followed by first
+  // computed appearance as the stable tie-breaker. This matches the engine's
+  // `_ordered` rule while retaining prerequisites that another path authored.
+  const remaining = new Map(storySteps.map((step) => [step.id, predecessors.get(step.id)?.length ?? 0]));
   const ordered: string[] = [];
-  const byAuthored = (a: string, b: string) => (authoredOrder.get(a) ?? 0) - (authoredOrder.get(b) ?? 0);
-  const ready = authored.filter((step) => remaining.get(step.id) === 0).map((step) => step.id);
+  const byStoryOrder = (a: string, b: string) => (storyOrder.get(a) ?? 0) - (storyOrder.get(b) ?? 0);
+  const ready = storySteps.filter((step) => remaining.get(step.id) === 0).map((step) => step.id);
   while (ready.length > 0) {
-    ready.sort(byAuthored);
+    ready.sort(byStoryOrder);
     const next = ready.shift() as string;
     ordered.push(next);
     for (const after of index.linked(next, "precedes")) {
@@ -484,8 +552,9 @@ function pathStory(
       if (left === 0) ready.push(after.id);
     }
   }
-  // A cycle (the engine rejects one) leaves steps unordered; keep them, in authored order.
-  for (const step of authored) if (!ordered.includes(step.id)) ordered.push(step.id);
+  // A cycle (the engine rejects one) leaves steps unordered; keep them in the
+  // stable authored/computed order so the report still names every known step.
+  for (const step of storySteps) if (!ordered.includes(step.id)) ordered.push(step.id);
 
   const number = new Map(ordered.map((id, position) => [id, position + 1]));
   const stage = new Map<string, number>();
@@ -510,10 +579,9 @@ function pathStory(
     };
   });
 
-  const alternatives = responses
-    .flatMap((response) => response.paths)
-    .filter((computed) => computed.authored_path === path.id)
-    .map((computed) => computed.steps.map((id) => number.get(id)).filter(isNumber));
+  const alternatives = computed
+    .map((candidate) => candidate.steps.map((id) => number.get(id)).filter(isNumber));
+  const computedStepsIncomplete = computedStepIds.some((id) => !number.has(id));
   const targets = uniqueRefs([
     ...(threat ? index.refs(threat.id, "targets_element") : []),
     ...ordered.flatMap((id) => index.refs(id, "targets_element")),
@@ -528,8 +596,9 @@ function pathStory(
     damages: threat?.damages ?? [],
     mitigations: threat?.mitigations ?? [],
     targets,
+    threatStatus: threat ? statusFrom(undefined, threat.source, index) : emptyStatus(),
     status,
-    alternativesMissing,
+    alternativesMissing: alternativesMissing || computedStepsIncomplete,
   };
 }
 
@@ -900,6 +969,11 @@ function unique<T>(values: readonly T[]): T[] {
 function uniqueRefs(refs: readonly ReportRef[]): ReportRef[] {
   const seen = new Set<string>();
   return refs.filter((ref) => (seen.has(ref.id) ? false : (seen.add(ref.id), true)));
+}
+
+function uniqueNodes(nodes: readonly EngineGraphNode[]): EngineGraphNode[] {
+  const seen = new Set<string>();
+  return nodes.filter((node) => (seen.has(node.id) ? false : (seen.add(node.id), true)));
 }
 
 function uniqueLists(lists: readonly number[][]): number[][] {

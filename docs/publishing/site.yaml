@@ -38,3 +38,9 @@ sections:
   - path: docs/reports/
     manifest: docs/publishing/reports.yaml
     builder: docs/publishing/render_report.py
+  - path: docs/reports/tara-mvp-02.html
+    manifest: docs/publishing/tara.yaml
+    builder: docs/publishing/render_tara.py
+    note: >
+      TARA-shaped page built from the mvp-02 example model, in ISO/SAE 21434
+      clause 15 order (issue 202, item 3). Listed on the reports index.

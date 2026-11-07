@@ -184,6 +184,20 @@
     "target": "damage-scenario:unauthorized-can-actuation"
    },
    {
+    "id": "relationship:threat-instance:remote-diag-injection|targets_element|asset:diagnostic-service",
+    "properties": {},
+    "relationship_type": "targets_element",
+    "source": "threat-instance:remote-diag-injection",
+    "target": "asset:diagnostic-service"
+   },
+   {
+    "id": "relationship:threat-instance:remote-diag-injection|targets_element|asset:safety-can-commands",
+    "properties": {},
+    "relationship_type": "targets_element",
+    "source": "threat-instance:remote-diag-injection",
+    "target": "asset:safety-can-commands"
+   },
+   {
     "id": "relationship:threat-instance:infotainment-pivot|applies_in_phase|lifecycle-phase:operation",
     "properties": {},
     "relationship_type": "applies_in_phase",
@@ -314,6 +328,13 @@
     "relationship_type": "steps",
     "source": "attack-path:infotainment-pivot",
     "target": "attack-step:pivot-to-can"
+   },
+   {
+    "id": "relationship:damage-scenario:unauthorized-can-actuation|damages_asset|asset:safety-can-commands",
+    "properties": {},
+    "relationship_type": "damages_asset",
+    "source": "damage-scenario:unauthorized-can-actuation",
+    "target": "asset:safety-can-commands"
    },
    {
     "id": "relationship:mitigation:authenticate-diag-service|applies_in_phase|lifecycle-phase:design",
@@ -582,6 +603,27 @@
     "target": "mitigation:authenticate-diag-service"
    },
    {
+    "id": "relationship:requirement:gateway-filter-safety-can|satisfied_by|mitigation:domain-gateway-firewall",
+    "properties": {},
+    "relationship_type": "satisfied_by",
+    "source": "requirement:gateway-filter-safety-can",
+    "target": "mitigation:domain-gateway-firewall"
+   },
+   {
+    "id": "relationship:asset:safety-can-commands|processed_by|component:core-comms",
+    "properties": {},
+    "relationship_type": "processed_by",
+    "source": "asset:safety-can-commands",
+    "target": "component:core-comms"
+   },
+   {
+    "id": "relationship:asset:diagnostic-service|processed_by|component:diag-service-lib",
+    "properties": {},
+    "relationship_type": "processed_by",
+    "source": "asset:diagnostic-service",
+    "target": "component:diag-service-lib"
+   },
+   {
     "id": "relationship:vulnerability:cve-2026-41200|propagates_to|component:tcu-firmware",
     "properties": {
      "assertion_ids": [
@@ -679,7 +721,7 @@
      "classifications": [
       "asset-owner"
      ],
-     "description": "Owns deployed vehicles; the stakeholder safety impact is reported for.",
+     "description": "Owns the deployed vehicles: the owner this risk score is reported for (RiskScore.for_stakeholder). The impact ratings are for the road users harmed (ISO/SAE 21434 15.5), not for this party.",
      "party_kind": "organization"
     }
    },
@@ -723,7 +765,7 @@
     "id": "product-instance:tcu-unit-7f21",
     "label": "TCU unit 7F21",
     "properties": {
-     "description": "A fielded unit. Hardware instance identity is the firmware image digest + a hardware part/serial \u2014 the HBOM/firmware form of ADR-0002 instance identity, carried as opaque `identifiers`.",
+     "description": "A fielded unit. Hardware instance identity is the firmware image digest + a hardware part/serial: the HBOM/firmware form of ADR-0002 instance identity, carried as opaque `identifiers`.",
      "identifiers": [
       "swid:tcu-fw-5.2.0",
       "sha256:7f21c0a9b8d7e6f5a4b3c2d1e0f9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a",
@@ -805,7 +847,7 @@
     "label": "Missing Authentication for Critical Function",
     "properties": {
      "catalog_ref": "CWE-306",
-     "description": "Generic weakness class (CWE, \u00a71 layer 3) \u2014 the unauthenticated diagnostic command path."
+     "description": "Generic weakness class (CWE, \u00a71 layer 3): the unauthenticated diagnostic command path."
     }
    },
    {
@@ -871,7 +913,7 @@
     "id": "attack-step:inject-can-frame",
     "label": "Inject a crafted CAN frame to a safety actuator",
     "properties": {
-     "description": "Requires BOTH reachability over cellular AND an auth bypass \u2014 an AND gate (\u00a72a).",
+     "description": "Requires BOTH reachability over cellular AND an auth bypass: an AND gate (\u00a72a).",
      "gate": "and_gate",
      "kill_chain_phase": "exploitation"
     }
@@ -893,7 +935,7 @@
     "id": "attack-step:gain-infotainment-foothold",
     "label": "Gain a foothold in the infotainment domain",
     "properties": {
-     "description": "Either a compromised companion app OR a malicious OTA suffices \u2014 an OR gate (\u00a72a).",
+     "description": "Either a compromised companion app OR a malicious OTA suffices: an OR gate (\u00a72a).",
      "gate": "or_gate"
     }
    },
@@ -910,8 +952,8 @@
     "id": "attack-path:remote-diag-injection",
     "label": "Remote diagnostic-injection path",
     "properties": {
-     "attack_feasibility": "medium",
-     "description": "Human-reviewed path realizing the remote-injection threat; feasibility human-rated (\u00a73)."
+     "attack_feasibility": "high",
+     "description": "Human-reviewed path realizing the remote-injection threat; feasibility human-rated (\u00a73). Rated High by the attack-vector approach (ISO/SAE 21434 RC-15-14, G.4): the path starts over the cellular network, a network attack vector, which Table G.9 rates High."
     }
    },
    {
@@ -928,7 +970,11 @@
     "id": "damage-scenario:unauthorized-can-actuation",
     "label": "Unauthorized CAN command \u2192 unsafe vehicle behavior",
     "properties": {
-     "description": "ISO 21434 damage scenario; the safety/financial/operational/privacy impact categories live on RiskScore (\u00a73), not collapsed here."
+     "compromised_property": [
+      "integrity",
+      "authenticity"
+     ],
+     "description": "ISO 21434 damage scenario (15.3). Vehicle function: braking. A brake command the driver never gave reaches the brakes while the vehicle is moving, so it brakes without warning and can be hit by following traffic or lose control. Road users harmed: the vehicle's occupants and the people around it (following vehicles, cyclists, pedestrians). The safety/financial/operational/privacy impact categories live on RiskScore (\u00a73), not collapsed here."
     }
    },
    {
@@ -972,19 +1018,19 @@
    {
     "domain_type": "RiskScore",
     "id": "risk-score:remote-diag-injection",
-    "label": "Risk \u2014 remote diagnostic injection",
+    "label": "Risk: remote diagnostic injection",
     "properties": {
-     "description": "Composite vector per ADR-0006/DEC-003: feasibility + S/F/O/P impact + mitigation-status + derived risk, shown with its inputs. Safety-dominated. Computed WITHOUT an Environment parameter (\u00a78 MVP).",
-     "feasibility": "medium",
-     "impact": "{\"financial\": \"major\", \"operational\": \"major\", \"privacy\": \"moderate\", \"safety\": \"severe\"}",
+     "description": "Composite vector per ADR-0006/DEC-003: feasibility + S/F/O/P impact + mitigation-status + derived risk, shown with its inputs. Safety-dominated. Computed WITHOUT an Environment parameter (\u00a78 MVP).\nImpact (15.5), rated for the road users harmed, with the Annex F examples as RPT-0007 \u00a73.1 paraphrases them. Safety severe: a brake command no one gave, at speed, can cause fatal or life-threatening injuries with survival uncertain, which is ISO 26262-3 class S3 (RQ-15-06). Financial major: crash repair, recovery and time off the road are serious costs that the road user can recover from. Operational severe: braking, a core vehicle function, behaves unexpectedly, and the vehicle cannot be trusted to drive until the unit is isolated or patched. Privacy negligible: this damage scenario exposes no personal information; data that the same diagnostic access could read would be a separate damage scenario.\nFeasibility (15.7): High, by attack vector (RC-15-14, G.4), as rated on the attack path.\nRisk values (15.8): one per impact category (RQ-15-15, NOTE 1), read from the example risk matrix in Annex H (Table H.8).\nTreatment decision (15.9): reduce (RQ-15-17). Diagnostic authentication is in place (complete) and the domain gateway filter is being rolled out (in progress); each is stated as a requirement. The score's mitigation status stays in progress until the filter is complete.",
+     "feasibility": "high",
+     "impact": "{\"financial\": \"major\", \"operational\": \"severe\", \"privacy\": \"negligible\", \"safety\": \"severe\"}",
      "mitigation_status": "in_progress",
-     "risk": "safety 5 / operational 4 / financial 4 (worst-path, medium feasibility; 1\u20135 per 21434 M(I,F))"
+     "risk": "safety 5 / financial 4 / operational 5 / privacy 1 (one attack path, feasibility High; 1 to 5 per ISO/SAE 21434 15.8, read from the Annex H example matrix, Table H.8)"
     }
    },
    {
     "domain_type": "Review",
     "id": "review:vuln-prop",
-    "label": "Review \u2014 accept vuln propagation",
+    "label": "Review: accept vuln propagation",
     "properties": {
      "justification": "Diagnostic lib is in the firmware image and reachable from the modem; propagation confirmed.",
      "priority": "high",
@@ -1004,7 +1050,7 @@
    {
     "domain_type": "Review",
     "id": "review:cwe-capec",
-    "label": "Review \u2014 accept CWE\u2194CAPEC mapping",
+    "label": "Review: accept CWE\u2194CAPEC mapping",
     "properties": {
      "justification": "Authentication-bypass pattern matches the missing-authentication weakness.",
      "priority": "medium",
@@ -1014,7 +1060,7 @@
    {
     "domain_type": "Review",
     "id": "review:remote-path",
-    "label": "Review \u2014 accept remote-injection path",
+    "label": "Review: accept remote-injection path",
     "properties": {
      "justification": "Reproduced on the bench against firmware 5.2.0; path realizes the reviewed threat.",
      "priority": "high",
@@ -1024,7 +1070,7 @@
    {
     "domain_type": "Review",
     "id": "review:ai-pivot-reject",
-    "label": "Review \u2014 AI-proposed infotainment pivot (REJECTED)",
+    "label": "Review: AI-proposed infotainment pivot (REJECTED)",
     "properties": {
      "description": "Human triage of the AI hypothesis; it is REJECTED, not accepted (V6).",
      "justification": "AI-proposed path. The domain gateway blocks the only claimed pivot and the companion-app foothold is out of scope for this unit's configuration; rejected as not realizable here. Retained as a rejected hypothesis for provenance, NOT presented as a reviewed/accepted path.",
@@ -1068,7 +1114,7 @@
    {
     "domain_type": "Assertion",
     "id": "assertion:remote-path-realizes",
-    "label": "Human-reviewed \u2014 remote path realizes the injection threat",
+    "label": "Human-reviewed: remote path realizes the injection threat",
     "properties": {
      "assertion_status": "accepted",
      "confidence": "high",
@@ -1078,7 +1124,7 @@
    {
     "domain_type": "Assertion",
     "id": "assertion:ai-pivot-realizes",
-    "label": "AI-proposed \u2014 infotainment-pivot path realizes the pivot threat",
+    "label": "AI-proposed: infotainment-pivot path realizes the pivot threat",
     "properties": {
      "assertion_status": "proposed",
      "confidence": "low",
@@ -1089,7 +1135,7 @@
    {
     "domain_type": "Assertion",
     "id": "assertion:ai-req-addresses-pivot",
-    "label": "AI-proposed \u2014 the family diagnostics requirement addresses the infotainment pivot",
+    "label": "AI-proposed: the family diagnostics requirement addresses the infotainment pivot",
     "properties": {
      "assertion_status": "proposed",
      "confidence": "low",
@@ -1142,7 +1188,7 @@
    {
     "domain_type": "Requirement",
     "id": "requirement:iso21434-rq-09-09",
-    "label": "ISO/SAE 21434 RQ-09-09 \u2014 define the item's cybersecurity requirements",
+    "label": "ISO/SAE 21434 RQ-09-09: define the item's cybersecurity requirements",
     "properties": {
      "applies_to_family": [
       "family:connected-ecu"
@@ -1158,7 +1204,7 @@
    {
     "domain_type": "Requirement",
     "id": "requirement:iso21434-rq-08-07",
-    "label": "ISO/SAE 21434 RQ-08-07 \u2014 manage each vulnerability",
+    "label": "ISO/SAE 21434 RQ-08-07: manage each vulnerability",
     "properties": {
      "applies_to": [
       "product:telematics-control-unit"
@@ -1174,7 +1220,7 @@
    {
     "domain_type": "Requirement",
     "id": "requirement:iso21434-rq-05-17",
-    "label": "ISO/SAE 21434 RQ-05-17 \u2014 independent cybersecurity audit",
+    "label": "ISO/SAE 21434 RQ-05-17: independent cybersecurity audit",
     "properties": {
      "applies_to_family": [
       "family:connected-ecu"
@@ -1190,7 +1236,7 @@
    {
     "domain_type": "Requirement",
     "id": "requirement:family-authenticated-diagnostics",
-    "label": "Connected-ECU family \u2014 authenticate remote diagnostics",
+    "label": "Connected-ECU family: authenticate remote diagnostics",
     "properties": {
      "addresses": [
       "weakness:cwe-306",
@@ -1212,7 +1258,7 @@
    {
     "domain_type": "Requirement",
     "id": "requirement:tcu-diag-authentication",
-    "label": "TCU \u2014 authenticate the modem diagnostic service",
+    "label": "TCU: authenticate the modem diagnostic service",
     "properties": {
      "addresses": [
       "threat-instance:remote-diag-injection"
@@ -1230,17 +1276,58 @@
      "text": "The TCU diagnostic-service library shall reject any diagnostic command arriving over the cellular modem unless the session is authenticated.",
      "text_origin": "authored"
     }
+   },
+   {
+    "domain_type": "Requirement",
+    "id": "requirement:gateway-filter-safety-can",
+    "label": "Domain gateway: forward only allow-listed frames to the safety CAN",
+    "properties": {
+     "addresses": [
+      "threat-instance:remote-diag-injection"
+     ],
+     "derived_from": [
+      "requirement:iso21434-rq-09-09"
+     ],
+     "description": "The TARA's reduce decision for the remote-injection risk (ISO/SAE 21434 15.9), stated as a requirement on the TCU's operational environment: the vehicle's domain gateway, which mvp-02 does not model as a component. Derived from the 21434 obligation to specify requirements on the item and on its operational environment.",
+     "normativity": "mandatory",
+     "requirement_kind": "technical",
+     "text": "The domain gateway shall forward to the safety CAN domain only the frames on its allow-list for the sending domain, and shall drop every other frame that arrives from the telematics or infotainment domain.",
+     "text_origin": "authored"
+    }
+   },
+   {
+    "domain_type": "Asset",
+    "id": "asset:safety-can-commands",
+    "label": "Safety CAN commands (braking)",
+    "properties": {
+     "description": "The brake request frames on the safety CAN bus, which the TCU's communications core can reach (ISO/SAE 21434 15.3). A forged or altered frame makes the brakes act on a request the driver never gave, so integrity and authenticity are the properties to protect.",
+     "security_properties": [
+      "integrity",
+      "authenticity"
+     ]
+    }
+   },
+   {
+    "domain_type": "Asset",
+    "id": "asset:diagnostic-service",
+    "label": "Remote diagnostic service",
+    "properties": {
+     "description": "The diagnostic command handler the modem exposes over the carrier network. Only an authorized requester may run its commands, so authorization is the property to protect.",
+     "security_properties": [
+      "authorization"
+     ]
+    }
    }
   ]
  },
  "model": {
   "counts": {
-   "assets": 0,
+   "assets": 2,
    "attack_paths": 2,
    "components": 6,
    "damage_scenarios": 1,
    "mitigations": 3,
-   "requirements": 5,
+   "requirements": 6,
    "risk_scores": 1,
    "threats": 2
   },

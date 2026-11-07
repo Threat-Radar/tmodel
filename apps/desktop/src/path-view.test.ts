@@ -32,8 +32,8 @@ describe("attack-path view elements", () => {
       expect(BOOKKEEPING_TYPES.has(String(node.data.kind))).toBe(false);
     }
     const threat = nodes.find((node) => node.data.kind === "threat");
-    expect(threat?.classes).toBe("threat status-rejected");
-    expect(String(threat?.data.label)).toMatch(/^THREAT · REJECTED\nLateral movement/);
+    expect(threat?.classes).toBe("threat status-not_reviewed");
+    expect(String(threat?.data.label).replace(/\n/g, " ")).toMatch(/^THREAT · AI-PROPOSED, NOT REVIEWED Lateral movement/);
     expect(elements.filter((element) => element.group === "edges").map((edge) => edge.data.label))
       .toEqual(expect.arrayContaining(["then", "realizes", "leads to", "mitigates"]));
   });

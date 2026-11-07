@@ -65,7 +65,10 @@ export interface DiagramEdge {
 
 export interface PathDiagram {
   pathId: string;
+  /** Review state of the path assertion. */
   status: ReportStatusKind;
+  /** Provenance/review state of the threat itself, never borrowed from the path assertion. */
+  threatStatus: ReportStatusKind;
   nodes: DiagramNode[];
   edges: DiagramEdge[];
   width: number;
@@ -171,7 +174,7 @@ export function layoutPathDiagram(story: PathStory): PathDiagram {
       `threat|${story.threat.id}`,
       story.threat.id,
       "threat",
-      `Threat · ${story.status.label}`,
+      `Threat · ${story.threatStatus.label}`,
       story.threat.label,
       END,
       reviewerLine(story),
@@ -285,6 +288,7 @@ export function layoutPathDiagram(story: PathStory): PathDiagram {
   return {
     pathId: story.pathId,
     status: story.status.kind,
+    threatStatus: story.threatStatus.kind,
     nodes,
     edges,
     width: Math.ceil(right + MARGIN),
@@ -334,7 +338,7 @@ export function pathDiagramSvg(diagram: PathDiagram, accessibleName: string, anc
       + `<rect x="${num(left)}" y="${num(topY)}" width="${num(node.width)}" height="${num(node.height)}" rx="${rx}"/>`
       + `${caption}<text class="pd-text" text-anchor="${anchor}">${lines}</text></g>`;
   }).join("");
-  return `<svg class="path-diagram pd-status-${diagram.status}" viewBox="0 0 ${diagram.width} ${diagram.height}" `
+  return `<svg class="path-diagram pd-status-${diagram.status} pd-threat-status-${diagram.threatStatus}" viewBox="0 0 ${diagram.width} ${diagram.height}" `
     + `width="${diagram.width}" height="${diagram.height}" role="img" aria-label="${escapeHtml(accessibleName)}" `
     + `preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg">`
     + `<defs><marker id="${marker}" viewBox="0 0 10 10" refX="9.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">`
@@ -364,11 +368,11 @@ export function wrapLabel(text: string, width: number, maxLines = MAX_LINES): st
   return kept;
 }
 
-/** "Reviewed by @handle" under a threat whose path a human decided; otherwise nothing. */
+/** A threat review belongs here only when the threat itself records one. */
 function reviewerLine(story: PathStory): string | undefined {
-  const decided = ["accepted", "rejected", "changes_requested"].includes(story.status.kind);
-  return decided && story.status.reviewers.length > 0
-    ? `Reviewed by ${story.status.reviewers.join(", ")}`
+  const decided = ["accepted", "rejected", "changes_requested"].includes(story.threatStatus.kind);
+  return decided && story.threatStatus.reviewers.length > 0
+    ? `Reviewed by ${story.threatStatus.reviewers.join(", ")}`
     : undefined;
 }
 

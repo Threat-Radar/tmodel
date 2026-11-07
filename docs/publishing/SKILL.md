@@ -29,7 +29,9 @@ and only after the WAVE 2 gate (#84).
 | `docs/publishing/check_links.py` | Fails if a relative link under `docs/` does not resolve. Runs in CI. |
 | `bin/publish-site` | Rebuilds every generated page, then runs the identity and link checks. |
 | `docs/publishing/reports.yaml` | Manifest of **report pages** (md → static HTML). |
-| `docs/publishing/render_report.py` | Renders archdoc markdown reports to `docs/reports/*.html` (revisioned). Stdlib only. |
+| `docs/publishing/render_report.py` | Renders archdoc markdown reports to `docs/reports/*.html` (revisioned). Stdlib only. Its index also lists the pages under `listed:` in `reports.yaml`. |
+| `docs/publishing/tara.yaml` | Manifest of **TARA pages**: an example model in `spec/vectors/`, the page to write, the library records it cites and the gaps the page lists. |
+| `docs/publishing/render_tara.py` | Renders each model as a "TARA draft (example data)" page in ISO/SAE 21434 clause 15 order (DL-0037). Reads the model through the engine, so it needs PyYAML: `engine/.venv/bin/python`. `--check` compares instead of writing. |
 | `docs/publishing/check_identities.py` | **Privacy guard.** Fails if a protected personal identity appears in any published page. Run in CI. |
 | `publishing/identities.yaml` | **Outside `docs/`** (never published): protected project identities + the `approved` allow-list. |
 | `docs/publishing/SKILL.md` | This playbook. |

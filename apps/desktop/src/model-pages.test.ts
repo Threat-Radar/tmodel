@@ -2,12 +2,13 @@
 import { describe, expect, it } from "vitest";
 import mvp01 from "./fixtures/report-input-mvp-01.json";
 import mvp02 from "./fixtures/report-input-mvp-02.json";
+import mvp03 from "./fixtures/report-input-mvp-03.json";
 import { buildModelReport } from "./model-report";
 import { modelPagePath, modelPagePaths, renderModelPages, type ModelPageBundle } from "./model-pages";
 import type { ModelReportInput } from "./model-types";
 import { defaultViewLeaks, renderModelReport } from "./report-render";
 
-const inputs = [mvp01, mvp02] as unknown as ModelReportInput[];
+const inputs = [mvp01, mvp02, mvp03] as unknown as ModelReportInput[];
 const NAV = '<header class="site-nav"><a href="../index.html">tmodel</a></header>';
 const bundle: ModelPageBundle = {
   nav_html: NAV,
@@ -24,6 +25,7 @@ describe("static example-model pages", () => {
       "index.html",
       "mvp-01-software-doc-service.html",
       "mvp-02-automotive-ecu.html",
+      "mvp-03-hierarchical-system.html",
     ]);
     const index = pages[0].content;
     expect(index).toContain('<a href="mvp-01-software-doc-service.html">Papermill Document Service</a>');
@@ -38,6 +40,24 @@ describe("static example-model pages", () => {
     expect(page).toContain(NAV);
     expect(page).toContain('<a href="index.html">Example models</a>');
     expect(page).toContain('href="https://github.com/Threat-Radar/tmodel/blob/main/spec/vectors/mvp-02-automotive-ecu.yaml"');
+  });
+
+  it("keeps mvp-02 catalog records in the static page produced by the shared renderer", () => {
+    const page = pages.find((candidate) => candidate.path === "mvp-02-automotive-ecu.html")?.content ?? "";
+    expect(page).toContain("Unauthenticated remote diagnostic command on TCU modem (illustrative)");
+    expect(page).toContain("CVE-2026-41200");
+    expect(page).toContain("CWE-306");
+    expect(page).toContain("CAPEC-115");
+    expect(page).toContain("<caption>Vulnerabilities</caption>");
+    expect(page).toContain("<caption>Weaknesses</caption>");
+    expect(page).toContain("<caption>Attack patterns</caption>");
+  });
+
+  it("keeps mvp-03 engine prerequisites and alternatives in its static report", () => {
+    const page = pages.find((candidate) => candidate.path === "mvp-03-hierarchical-system.html")?.content ?? "";
+    expect(page).toContain("Forge a JWT using the alg=none bypass");
+    expect(page).toContain("Forge a JWT using a leaked weak signing key");
+    expect(page).toContain("steps 1 → 3 → 4; steps 2 → 3 → 4");
   });
 
   it("is self-contained: inline CSS, no script, relative links, no local path", () => {
@@ -128,6 +148,22 @@ describe("published example-model pages (docs/models/)", () => {
       const chip = content.match(/<li class="summary-chip rs-accepted"><strong>(\d+)<\/strong>/);
       expect(Number(chip?.[1] ?? 0), page).toBe(Number(count));
     }
+  });
+
+  it("publishes mvp-02's CVE, CWE and CAPEC tables from the current engine data", () => {
+    const content = entries.find(([name]) => name === "mvp-02-automotive-ecu.html")?.[1] ?? "";
+    expect(content).toContain("CVE-2026-41200");
+    expect(content).toContain("CWE-306");
+    expect(content).toContain("CAPEC-115");
+    expect(content).toContain("Domain gateway: forward only allow-listed frames to the safety CAN");
+  });
+
+  it("publishes both mvp-03 JWT alternatives in the report and focused diagram", () => {
+    const content = entries.find(([name]) => name === "mvp-03-hierarchical-system.html")?.[1] ?? "";
+    expect(content).toContain("Forge a JWT using the alg=none bypass");
+    expect(content).toContain("Forge a JWT using a leaked weak signing key");
+    expect(content).toContain("steps 1 → 3 → 4; steps 2 → 3 → 4");
+    expect(content).toContain(">OR<");
   });
 
   it("says a proposal model is drafted from a published attack, not an assessment of the real product", () => {

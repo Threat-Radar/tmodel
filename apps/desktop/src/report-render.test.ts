@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import mvp01 from "./fixtures/report-input-mvp-01.json";
 import mvp02 from "./fixtures/report-input-mvp-02.json";
+import mvp03 from "./fixtures/report-input-mvp-03.json";
 import { buildModelReport } from "./model-report";
 import type { ModelReportInput } from "./model-types";
 import {
@@ -14,6 +15,7 @@ import { escapeHtml, html, join, trusted } from "./safe-html";
 
 const MVP01 = mvp01 as unknown as ModelReportInput;
 const MVP02 = mvp02 as unknown as ModelReportInput;
+const MVP03 = mvp03 as unknown as ModelReportInput;
 
 /** What a reader sees by default: tag text outside every closed <details> toggle. */
 function visibleText(markup: string): string {
@@ -50,6 +52,7 @@ describe("model report renderer", () => {
       "Assets and components",
       "Damage scenarios",
       "Threats",
+      "Vulnerabilities and catalog records",
       "Attack paths",
       "Mitigations",
       "Risk",
@@ -74,14 +77,19 @@ describe("model report renderer", () => {
     expect(markup).toContain("cpe:2.3:h:chipco:soc_t500");
   });
 
-  it("marks the rejected AI pivot as rejected in the threat table and the path card", () => {
+  it("labels the AI threat as unreviewed while keeping rejection on its path assertion and path", () => {
     const threatsSection = markup.slice(markup.indexOf('id="report-threats"'), markup.indexOf('id="report-paths"'));
     const pivotRow = threatsSection.slice(threatsSection.indexOf("Lateral movement from infotainment"));
-    expect(pivotRow).toMatch(/<span class="status-badge rs-rejected">Rejected<\/span><div class="cell-note">Reviewer: <span class="handle">@av-reviewer<\/span><\/div><div class="cell-note">Rejected AI hypothesis<\/div>/);
+    expect(pivotRow).toContain("Status of the assertion linking this threat to its path");
+    expect(pivotRow).toMatch(/<span class="status-badge rs-rejected">Rejected<\/span><div class="cell-note">Reviewer: <span class="handle">@av-reviewer<\/span><\/div><div class="cell-note">Rejected path assertion for an AI-proposed threat<\/div>/);
     const card = markup.slice(markup.lastIndexOf("<article", markup.indexOf('id="path-attack-path-infotainment-pivot"')));
     expect(card.startsWith('<article class="path-card row-status-rejected"')).toBe(true);
+    expect(card).toContain("Rejected path assertion for an AI-proposed threat");
+    expect(card).not.toContain("Rejected AI hypothesis");
     expect(card).toContain("<strong>Rejected:</strong> this path is not an accepted part of the model.");
     expect(card).toContain("pd-status-rejected");
+    expect(card).toContain("Threat · AI-proposed, not reviewed");
+    expect(card).not.toContain("Threat · Rejected");
   });
 
   it("writes AND/OR and step order into the text, not only the drawing", () => {
@@ -91,8 +99,64 @@ describe("model report renderer", () => {
   });
 
   it("states missing data as missing", () => {
-    expect(markup).toContain("No assets are recorded in this model.");
+    expect(markup).toContain("Safety CAN commands (braking)");
+    expect(markup).toContain("Remote diagnostic service");
     expect(markup).toContain("Not assessed: the model records no risk score for this threat.");
+  });
+
+  it("renders the CVE, CWE and CAPEC records as first-class catalog tables", () => {
+    const catalog = sectionMarkup(markup, "report-catalog");
+    expect(catalog).toContain("<caption>Vulnerabilities</caption>");
+    expect(catalog).toContain("Unauthenticated remote diagnostic command on TCU modem (illustrative)");
+    expect(catalog).toContain("CVE-2026-41200");
+    expect(catalog).toContain("<caption>Weaknesses</caption>");
+    expect(catalog).toContain("CWE-306");
+    expect(catalog).toContain("<caption>Attack patterns</caption>");
+    expect(catalog).toContain("CAPEC-115");
+    expect(catalog).toContain("Missing Authentication for Critical Function (CWE-306)");
+    expect(catalog).toContain("Authentication Bypass (CAPEC-115)");
+  });
+
+  it("handles empty and partial catalog fields without inventing details", () => {
+    const input = structuredClone(MVP02);
+    const vulnerability = input.graph.nodes.find((node) => node.domain_type === "Vulnerability");
+    if (!vulnerability) throw new Error("mvp-02 fixture changed");
+    const omitted = new Set(input.graph.nodes
+      .filter((node) => node.domain_type === "Weakness" || node.domain_type === "AttackPattern")
+      .map((node) => node.id));
+    input.graph.nodes = input.graph.nodes
+      .filter((node) => !omitted.has(node.id))
+      .map((node) => node.id === vulnerability.id
+        ? {
+            ...node,
+            properties: Object.fromEntries(Object.entries(node.properties)
+              .filter(([key]) => key !== "catalog_ref" && key !== "description")),
+          }
+        : node);
+    input.graph.edges = input.graph.edges.filter((edge) => (
+      edge.source !== vulnerability.id
+      && edge.target !== vulnerability.id
+      && !omitted.has(edge.source)
+      && !omitted.has(edge.target)
+    ));
+    const report = buildModelReport(input);
+    const catalog = sectionMarkup(renderModelReport(report), "report-catalog");
+    expect(catalog).toContain("No weaknesses are recorded.");
+    expect(catalog).toContain("No attack patterns are recorded.");
+    expect(catalog).toContain("Not recorded");
+    expect(catalog).toContain("No description");
+    expect(catalog).not.toContain("undefined");
+  });
+
+  it("renders mvp-03's computed JWT prerequisites, alternatives and OR gate in the report diagram", () => {
+    const output = renderModelReport(buildModelReport(MVP03));
+    const card = output.slice(output.indexOf('id="path-attack-path-cross-subsystem-chain"'));
+    expect(card).toContain("Forge a JWT using the alg=none bypass");
+    expect(card).toContain("Forge a JWT using a leaked weak signing key");
+    expect(card).toContain("needs any one of steps 1 or 2");
+    expect(card).toContain("steps 1 → 3 → 4; steps 2 → 3 → 4");
+    expect(card).toContain(">OR<");
+    expect(card).toContain("pd-status-changes_requested");
   });
 
   it("adds path-view buttons only in the app", () => {
@@ -236,9 +300,9 @@ describe("renderer fixes from the #208 review", () => {
     expect(warning).toBeGreaterThan(-1);
     expect(warning).toBeLessThan(markup.indexOf("<table"));
     expect(markup).toContain("Engine request failed: timed out");
-    expect(markup.match(/could not compute the ways through this path/g)).toHaveLength(1);
+    expect(markup.match(/ways through this path are missing or incomplete/g)).toHaveLength(1);
     const pivot = report.attackPaths.find((row) => row.story.alternativesMissing);
-    expect(renderPathSummary(pivot ?? report.attackPaths[0])).toContain("could not compute the ways through this path");
+    expect(renderPathSummary(pivot ?? report.attackPaths[0])).toContain("ways through this path are missing or incomplete");
   });
 
   it("gives every path card and diagram arrow a unique id, even when two path ids slug alike", () => {

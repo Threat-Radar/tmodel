@@ -168,11 +168,12 @@ body { margin: 0; background: #f3f5f9; color: #172033; font-family: Inter, ui-sa
 .path-diagram .pd-edge-label { fill: var(--rp-muted); font-size: 11px; font-weight: 700; }
 .path-diagram .pd-edge-label-group.pd-edge-mitigates .pd-edge-label { fill: var(--rp-mit-line); }
 .path-diagram .pd-edge-label-group.pd-edge-targets .pd-edge-label { fill: var(--rp-target-line); }
-.path-diagram.pd-status-rejected .pd-step rect,
-.path-diagram.pd-status-rejected .pd-threat rect { stroke: var(--rp-bad-line); stroke-dasharray: 7 4; }
-.path-diagram.pd-status-changes_requested .pd-threat rect { stroke: var(--rp-warn-line); stroke-dasharray: 7 4; }
-.path-diagram.pd-status-proposed .pd-threat rect,
-.path-diagram.pd-status-not_reviewed .pd-threat rect { stroke: var(--rp-hyp-line); stroke-dasharray: 7 4; }
+.path-diagram.pd-status-rejected .pd-step rect { stroke: var(--rp-bad-line); stroke-dasharray: 7 4; }
+.path-diagram.pd-status-changes_requested .pd-step rect { stroke: var(--rp-warn-line); stroke-dasharray: 7 4; }
+.path-diagram.pd-threat-status-rejected .pd-threat rect { stroke: var(--rp-bad-line); stroke-dasharray: 7 4; }
+.path-diagram.pd-threat-status-changes_requested .pd-threat rect { stroke: var(--rp-warn-line); stroke-dasharray: 7 4; }
+.path-diagram.pd-threat-status-proposed .pd-threat rect,
+.path-diagram.pd-threat-status-not_reviewed .pd-threat rect { stroke: var(--rp-hyp-line); stroke-dasharray: 7 4; }
 
 @media (max-width: 720px) {
   .report-header, .report-section { padding: 14px; }

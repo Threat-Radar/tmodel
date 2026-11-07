@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import mvp01 from "./fixtures/report-input-mvp-01.json";
 import mvp02 from "./fixtures/report-input-mvp-02.json";
+import mvp03 from "./fixtures/report-input-mvp-03.json";
 import type { AttackPathResponse } from "./graph-types";
 import {
   buildModelReport,
@@ -14,6 +15,7 @@ import type { EngineGraphEdge, EngineGraphNode, ModelReportInput, ModelSummary }
 
 const MVP01 = mvp01 as unknown as ModelReportInput;
 const MVP02 = mvp02 as unknown as ModelReportInput;
+const MVP03 = mvp03 as unknown as ModelReportInput;
 
 describe("model report from engine responses (mvp-02)", () => {
   const report = buildModelReport(MVP02);
@@ -56,7 +58,7 @@ describe("model report from engine responses (mvp-02)", () => {
     ]);
     const path = report.attackPaths.find((row) => row.id === "attack-path:remote-diag-injection");
     expect(path?.name).toBe("Remote diagnostic-injection path");
-    expect(path?.feasibility).toBe("Medium");
+    expect(path?.feasibility).toBe("High");
   });
 
   it("orders steps by precedes and records the AND gate", () => {
@@ -83,7 +85,22 @@ describe("model report from engine responses (mvp-02)", () => {
   });
 
   it("lists every TARA table in its own terms, without inventing missing data", () => {
-    expect(report.assets).toEqual([]); // mvp-02 has no Asset objects (#184)
+    expect(report.assets.map((asset) => ({
+      name: asset.name,
+      properties: asset.securityProperties,
+      processedBy: asset.processedBy.map((ref) => ref.label),
+    }))).toEqual([
+      {
+        name: "Safety CAN commands (braking)",
+        properties: ["Integrity", "Authenticity"],
+        processedBy: ["Communications core"],
+      },
+      {
+        name: "Remote diagnostic service",
+        properties: ["Authorization"],
+        processedBy: ["diagnostic-service library (firmware module)"],
+      },
+    ]);
     expect(report.components.map((row) => row.kind)).toEqual([
       "Product",
       "Product instance",
@@ -103,13 +120,17 @@ describe("model report from engine responses (mvp-02)", () => {
     expect(damage.impact).toEqual([
       { category: "Safety", rating: "Severe" },
       { category: "Financial", rating: "Major" },
-      { category: "Operational", rating: "Major" },
-      { category: "Privacy", rating: "Moderate" },
+      { category: "Operational", rating: "Severe" },
+      { category: "Privacy", rating: "Negligible" },
     ]);
 
     const assessed = report.risks.filter((risk) => risk.assessed);
     expect(assessed).toHaveLength(1);
-    expect(assessed[0]).toMatchObject({ feasibility: "Medium", mitigationStatus: "In progress" });
+    expect(assessed[0]).toMatchObject({
+      feasibility: "High",
+      mitigationStatus: "In progress",
+      risk: "safety 5 / financial 4 / operational 5 / privacy 1 (one attack path, feasibility High; 1 to 5 per ISO/SAE 21434 15.8, read from the Annex H example matrix, Table H.8)",
+    });
     expect(assessed[0].stakeholder?.label).toBe("Fleet operator");
     // The rejected pivot has no RiskScore: it is listed as not assessed, not given a score.
     const notAssessed = report.risks.filter((risk) => !risk.assessed);
@@ -119,7 +140,26 @@ describe("model report from engine responses (mvp-02)", () => {
     const family = report.mitigations.find((row) => row.id === "mitigation:family-authenticated-diagnostics");
     expect(family?.threats).toEqual([]);
     expect(family?.status).toBeNull();
-    expect(family?.statedAs.map((ref) => ref.label)).toEqual(["Connected-ECU family — authenticate remote diagnostics"]);
+    expect(family?.statedAs.map((ref) => ref.label)).toEqual(["Connected-ECU family: authenticate remote diagnostics"]);
+  });
+
+  it("collects the CVE, CWE and CAPEC records with their names and relationships", () => {
+    expect(report.vulnerabilities).toEqual([expect.objectContaining({
+      name: "Unauthenticated remote diagnostic command on TCU modem (illustrative)",
+      catalogRef: "CVE-2026-41200",
+      weaknesses: [{ id: "weakness:cwe-306", label: "Missing Authentication for Critical Function (CWE-306)" }],
+    })]);
+    expect(report.weaknesses).toEqual([expect.objectContaining({
+      name: "Missing Authentication for Critical Function",
+      catalogRef: "CWE-306",
+      vulnerabilities: [expect.objectContaining({ id: "vulnerability:cve-2026-41200" })],
+      attackPatterns: [{ id: "attack-pattern:capec-115", label: "Authentication Bypass (CAPEC-115)" }],
+    })]);
+    expect(report.attackPatterns).toEqual([expect.objectContaining({
+      name: "Authentication Bypass",
+      catalogRef: "CAPEC-115",
+      weaknesses: [expect.objectContaining({ id: "weakness:cwe-306" })],
+    })]);
   });
 
   it("keeps the AI-proposed requirement link apart from the authored ones", () => {
@@ -135,6 +175,14 @@ describe("model report from engine responses (mvp-02)", () => {
     const rq = report.requirements.find((row) => row.id === "requirement:iso21434-rq-09-09");
     expect(rq?.clause).toBe("RQ-09-09 (§9.5.2)");
     expect(rq?.origin).toBe("Paraphrase");
+    const gateway = report.requirements.find((row) => row.id === "requirement:gateway-filter-safety-can");
+    expect(gateway?.name).toBe("Domain gateway: forward only allow-listed frames to the safety CAN");
+    expect(gateway?.addresses.map((ref) => ref.label)).toEqual([
+      "Remote unauthenticated diagnostic command injection onto CAN",
+    ]);
+    expect(gateway?.derivedFrom.map((ref) => ref.label)).toEqual([
+      "ISO/SAE 21434 RQ-09-09: define the item's cybersecurity requirements",
+    ]);
   });
 
   it("keeps ids, CPE strings and schema names in details only", () => {
@@ -156,6 +204,32 @@ describe("model report review states (mvp-01)", () => {
     expect(imds.status).toMatchObject({ kind: "changes_requested", label: "Changes requested", reviewed: false });
     expect(imds.status.reviewers).toEqual(["@sec-reviewer"]);
     expect(report.threatSummary.byStatus.map((entry) => entry.kind)).toEqual(["accepted", "changes_requested"]);
+  });
+});
+
+describe("model report engine prerequisites (mvp-03)", () => {
+  const report = buildModelReport(MVP03);
+  const cross = report.attackPaths.find((row) => row.id === "attack-path:cross-subsystem-chain");
+  if (!cross) throw new Error("mvp-03 fixture changed");
+
+  it("keeps the engine-computed JWT prerequisites outside the authored step list", () => {
+    expect(cross.story.steps.map((step) => [step.number, step.id, step.gate, step.after, step.stage])).toEqual([
+      [1, "attack-step:forge-jwt-none-alg", null, [], 0],
+      [2, "attack-step:forge-jwt-weak-key", null, [], 0],
+      [3, "attack-step:call-fleet-api", "or", [1, 2], 1],
+      [4, "attack-step:chain-to-in-vehicle", null, [3], 2],
+    ]);
+    expect(cross.story.alternatives).toEqual([[1, 3, 4], [2, 3, 4]]);
+    expect(cross.story.alternativesMissing).toBe(false);
+  });
+
+  it("marks an engine alternative incomplete when one of its computed steps is absent from the graph", () => {
+    const input = structuredClone(MVP03);
+    const response = input.attackPaths.find((answer) => answer.goal === "threat-instance:cross-subsystem-chain");
+    if (!response) throw new Error("mvp-03 fixture changed");
+    response.paths[0].steps[0] = "attack-step:engine-only-prerequisite";
+    const changed = buildModelReport(input).attackPaths.find((row) => row.id === cross.id);
+    expect(changed?.story.alternativesMissing).toBe(true);
   });
 });
 
@@ -193,6 +267,23 @@ describe("model report edge cases", () => {
     expect(report.damageScenarios[0].assets.map((ref) => ref.label)).toEqual(["Brake commands"]);
     expect(report.damageScenarios[0].impact).toEqual([]);
     expect(report.damageScenarios[0].impactSource).toBeNull();
+  });
+
+  it("keeps partially populated catalog rows instead of inventing fields", () => {
+    const input = tinyModel({});
+    input.graph = {
+      ...input.graph,
+      nodes: [
+        ...input.graph.nodes,
+        { id: "vulnerability:v", domain_type: "Vulnerability", label: "Observed flaw", properties: {} },
+        { id: "weakness:w", domain_type: "Weakness", label: "Weakness with no catalog entry", properties: { catalog_ref: "" } },
+        { id: "attack-pattern:a", domain_type: "AttackPattern", label: "Unnamed catalog mapping", properties: {} },
+      ],
+    };
+    const report = buildModelReport(input);
+    expect(report.vulnerabilities[0]).toMatchObject({ name: "Observed flaw", catalogRef: null, weaknesses: [] });
+    expect(report.weaknesses[0]).toMatchObject({ catalogRef: null, vulnerabilities: [], attackPatterns: [] });
+    expect(report.attackPatterns[0]).toMatchObject({ catalogRef: null, weaknesses: [] });
   });
 
   it("is deterministic", () => {

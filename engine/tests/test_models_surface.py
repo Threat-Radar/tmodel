@@ -186,14 +186,22 @@ def test_adr_0011_classes_are_projected_as_nodes():
     assert by_id["asset:vehicle"]["properties"]["security_properties"] == ["availability"]
     flow = by_id["data-flow:key-validated-to-gateway"]
     assert flow["domain_type"] == "DataFlow"
-    # Slots outside the sponsor-approved relationship list stay properties.
-    assert flow["properties"]["carries"] == ["asset:key-validated-message"]
+    assert "carries" not in flow["properties"]
     assert by_id["trust-boundary:control-domain"]["domain_type"] == "TrustBoundary"
-    # owned_by is a relationship slot, so the Asset gets its edge to the Party.
-    assert any(
-        e["source"] == "asset:vehicle" and e["relationship_type"] == "owned_by"
-        for e in graph["edges"]
-    )
+    projected = {
+        (edge["source"], edge["relationship_type"], edge["target"]) for edge in graph["edges"]
+    }
+    assert ("asset:vehicle", "owned_by", "party:vehicle-owner") in projected
+    assert (
+        "data-flow:key-validated-to-gateway",
+        "carries",
+        "asset:key-validated-message",
+    ) in projected
+    assert (
+        "data-flow:key-validated-to-engine",
+        "crosses_boundary",
+        "trust-boundary:control-domain",
+    ) in projected
 
 
 GUI_FIXTURES = VECTORS.parents[1] / "apps" / "desktop" / "src" / "fixtures"
@@ -253,6 +261,7 @@ def assert_same_shape(saved, current, file):
     [
         ("mvp-01-software-doc-service.yaml", "report-input-mvp-01.json"),
         ("mvp-02-automotive-ecu.yaml", "report-input-mvp-02.json"),
+        ("mvp-03-hierarchical-system.yaml", "report-input-mvp-03.json"),
     ],
 )
 def test_gui_report_fixtures_have_the_engines_response_shape(file, fixture):

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import mvp01 from "./fixtures/report-input-mvp-01.json";
 import mvp02 from "./fixtures/report-input-mvp-02.json";
+import mvp03 from "./fixtures/report-input-mvp-03.json";
 import { BOOKKEEPING_TYPES, buildModelReport, type PathStory, type ReportRef, type StoryStep } from "./model-report";
 import type { ModelReportInput } from "./model-types";
 import {
@@ -13,6 +14,7 @@ import {
 } from "./path-diagram";
 
 const report = buildModelReport(mvp02 as unknown as ModelReportInput);
+const mvp03Report = buildModelReport(mvp03 as unknown as ModelReportInput);
 const remote = report.attackPaths.find((row) => row.id === "attack-path:remote-diag-injection");
 const pivot = report.attackPaths.find((row) => row.id === "attack-path:infotainment-pivot");
 if (!remote || !pivot) throw new Error("fixture changed");
@@ -59,6 +61,21 @@ describe("attack-path diagram layout", () => {
     expect(diagram.status).toBe("rejected");
   });
 
+  it("draws both engine-computed mvp-03 JWT prerequisites and their OR join", () => {
+    const cross = mvp03Report.attackPaths.find((row) => row.id === "attack-path:cross-subsystem-chain");
+    if (!cross) throw new Error("mvp-03 fixture changed");
+    const diagram = layoutPathDiagram(cross.story);
+    expect(diagram.nodes.filter((node) => node.kind === "step").map((node) => node.objectId)).toEqual([
+      "attack-step:forge-jwt-none-alg",
+      "attack-step:forge-jwt-weak-key",
+      "attack-step:call-fleet-api",
+      "attack-step:chain-to-in-vehicle",
+    ]);
+    expect(diagram.nodes.filter((node) => node.kind === "gate").map((node) => node.lines[0])).toEqual(["OR"]);
+    expect(cross.story.alternatives).toEqual([[1, 3, 4], [2, 3, 4]]);
+    expect(diagram.status).toBe("changes_requested");
+  });
+
   it("labels every node, draws only path objects, and keeps everything inside its bounds", () => {
     for (const row of report.attackPaths) {
       const diagram = layoutPathDiagram(row.story);
@@ -77,10 +94,11 @@ describe("attack-path diagram layout", () => {
     }
   });
 
-  it("names the reviewer on a decided threat", () => {
+  it("keeps a rejected path assertion separate from its AI-proposed, unreviewed threat", () => {
     const threat = layoutPathDiagram(pivot.story).nodes.find((node) => node.kind === "threat");
-    expect(threat?.captionLines.join(" ")).toBe("Threat · Rejected");
-    expect(threat?.lines.join(" ")).toContain("Reviewed by @av-reviewer");
+    expect(threat?.captionLines.join(" ")).toBe("Threat · AI-proposed, not reviewed");
+    expect(threat?.lines.join(" ")).not.toContain("Reviewed by");
+    expect(layoutPathDiagram(pivot.story).status).toBe("rejected");
   });
 });
 
@@ -160,6 +178,7 @@ describe("attack-path connectors", () => {
   const fixturePaths = [
     ...buildModelReport(mvp01 as unknown as ModelReportInput).attackPaths,
     ...report.attackPaths,
+    ...mvp03Report.attackPaths,
   ];
 
   it.each(fixturePaths.map((row) => [row.id, row] as const))(
@@ -242,7 +261,7 @@ describe("attack-path SVG", () => {
     const story = structuredClone(remote.story);
     story.steps[0].name = "<script>alert(1)</script>";
     const svg = pathDiagramSvg(layoutPathDiagram(story), "Diagram & <path>");
-    expect(svg.startsWith("<svg class=\"path-diagram pd-status-accepted\"")).toBe(true);
+    expect(svg.startsWith("<svg class=\"path-diagram pd-status-accepted pd-threat-status-not_reviewed\"")).toBe(true);
     expect(svg).toContain('aria-label="Diagram &amp; &lt;path&gt;"');
     expect(svg).not.toMatch(/<script/i);
     expect(svg).toContain("&lt;script&gt;alert(1)");

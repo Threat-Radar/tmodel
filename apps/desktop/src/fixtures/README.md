@@ -32,8 +32,9 @@ whole-library counts.
 
 ## Model report inputs (#208)
 
-`report-input-mvp-01.json` and `report-input-mvp-02.json` are what the Model
-report view reads for those two example models: the model's `/models` entry,
+`report-input-mvp-01.json`, `report-input-mvp-02.json` and
+`report-input-mvp-03.json` are what the Model report view reads for those three
+example models: the model's `/models` entry,
 its `/graph` answer and one `/attack-paths` answer per threat. The `file` fields
 hold the bare file name, never a local path. The report, path-diagram and
 static-page tests run on them, so they test real model data rather than a mock.

@@ -1,0 +1,49 @@
+# TARA-shaped pages built from example models, in ISO/SAE 21434 clause 15 order.
+# Rendered by render_tara.py (bin/publish-site runs it). Each page is a DRAFT built
+# from example data and says so on the page; the governed, versioned TARA with
+# approvals is DL-0027 (I4), and these pages are not it. The standard is licensed:
+# paraphrase and clause, provision and table ids only (#154).
+# NO personal identities in output: person parties render as roles, and
+# check_identities.py is the backstop.
+schema: tmodel.publishing/v0
+id: pub-tara
+status: draft
+source:
+  # Example models in spec/vectors/: not the knowledge graph (wave kg) and not the
+  # bibliography (wave 1), so every page says it is example data (SKILL.md,
+  # "Content rule"). The library records each page cites are listed per entry.
+  wave: null
+  example_data: true
+security:
+  remote_scripts: false
+  trackers: false
+  secrets: false
+  links: relative
+review:
+  human_required: true
+taras:
+  - src: spec/vectors/mvp-02-automotive-ecu.yaml
+    out: docs/reports/tara-mvp-02.html
+    title: "TARA draft v0 (example data): Telematics Control Unit"
+    item: product:telematics-control-unit
+    # Library records the page cites; each links to its page under docs/library/.
+    record_ids: [iso/iso-sae-21434-2021, iso/iso-26262-3-2018]
+    # What this draft cannot show yet. Each gap is a schema or decision follow-up
+    # from #184 (F1 to F6) or a later step; the page lists them as they are here.
+    gaps:
+      - clause: "9.3"
+        text: "No item definition yet: the model has a product and its parts, not the item's functions, boundary and operational environment (#184 F6)."
+      - clause: "9.4"
+        text: "No cybersecurity goals. Reducing a risk calls for at least one goal (RQ-09-05); here the requirements stand in for them."
+      - clause: "15.5"
+        text: "The impact ratings sit on the risk score, not on the damage scenario, so a second threat reaching the same damage would repeat them (#184 F1)."
+      - clause: "15.6"
+        text: "An attack path can realize only one threat scenario in the schema; the standard links a path to every threat scenario it can realize (RQ-15-09, #184 F2)."
+      - clause: "15.7"
+        text: "The rating method and its inputs are text in the path's description, not fields (RC-15-11 to RC-15-14, #184 F3)."
+      - clause: "15.8"
+        text: "Risk values are one text field, not numbers per category; the risk metric is still open (DEC-003, #184 F4)."
+      - clause: "15.9"
+        text: "The treatment decision is text in the risk score's description; there is no field for the four options or for the cybersecurity claims behind retaining or sharing a risk (#184 F5)."
+      - clause: "DL-0027"
+        text: "No governance: no owner, version history, approvals or stale check. That is the governed TARA pilot (DL-0027, #181, #182)."

@@ -16,6 +16,10 @@ REF_SLOTS = {
     # Requirement in the core (ADR-0012, DL-0025)
     "refines","derived_from","conflicts_with","maps_to","addresses","satisfied_by",
     "applies_to","stated_as",
+    # Core amendment 1 (ADR-0011, DL-0024): composition, Asset, TrustBoundary, DataFlow
+    "build_composed_of","instance_of","asserted_by","damages_asset","targets_element",
+    "stored_in","processed_by","in_trust_zone","within_boundary","flow_from","flow_to",
+    "carries","crosses_boundary",
 }
 # DEC-001b slots a CORE vector must not set (ADR-0012 keeps them proposal-level).
 GOVERNED_SLOTS = {"conformance_status"}

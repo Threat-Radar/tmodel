@@ -10,6 +10,7 @@
 
 import type {
   AssetRow,
+  AttackPatternRow,
   ComponentRow,
   DamageRow,
   ImpactRating,
@@ -23,6 +24,8 @@ import type {
   RequirementRow,
   RiskRow,
   ThreatRow,
+  VulnerabilityRow,
+  WeaknessRow,
 } from "./model-report";
 import { layoutPathDiagram, pathDiagramSvg } from "./path-diagram.ts";
 import { html, join, trusted, type SafeHtml } from "./safe-html.ts";
@@ -39,6 +42,7 @@ export const REPORT_SECTIONS = [
   { id: "report-components", title: "Assets and components" },
   { id: "report-damage", title: "Damage scenarios" },
   { id: "report-threats", title: "Threats" },
+  { id: "report-catalog", title: "Vulnerabilities and catalog records" },
   { id: "report-paths", title: "Attack paths" },
   { id: "report-mitigations", title: "Mitigations" },
   { id: "report-risk", title: "Risk" },
@@ -79,10 +83,11 @@ export function renderModelReport(report: ModelReport, options: ReportRenderOpti
     section(0, componentsSection(report)),
     section(1, damageSection(report)),
     section(2, threatsSection(report)),
-    section(3, pathsSection(report, options, anchors)),
-    section(4, mitigationsSection(report)),
-    section(5, riskSection(report)),
-    section(6, requirementsSection(report)),
+    section(3, catalogSection(report)),
+    section(4, pathsSection(report, options, anchors)),
+    section(5, mitigationsSection(report)),
+    section(6, riskSection(report)),
+    section(7, requirementsSection(report)),
   ];
   return html`<article class="model-report" aria-labelledby="report-title">
 ${header(report, options)}
@@ -107,11 +112,12 @@ function header(report: ModelReport, options: ReportRenderOptions): SafeHtml {
   ${scope(model.description)}
   <p class="example-banner" role="note"><strong>Example data.</strong> ${exampleNotice(report)}</p>
   ${attackPathWarning(report)}
-  <div class="threat-summary" aria-label="Threats by review status">
+  <div class="threat-summary" aria-label="Threats by attack-path assertion review status">
     <p class="summary-total"><strong>${plural(threatSummary.total, "threat")}</strong>${threatSummary.aiProposed > 0 ? html`, ${threatSummary.aiProposed} of them AI-proposed` : ""}</p>
     ${chips.length > 0 ? html`<ul class="summary-chips">${chips}</ul>` : ""}
     <p class="summary-reviewers">${reviewers}</p>
   </div>
+  <p class="cell-note">Counts use the review status of the assertion linking each threat to its attack path.</p>
   ${contents}
 </header>`;
 }
@@ -213,7 +219,7 @@ function damageRow(row: DamageRow): SafeHtml {
 function threatsSection(report: ModelReport): SafeHtml {
   return table(
     "Threats and their review status",
-    ["Threat", "Source", "Review status", "Damage", "Attack paths", "Mitigations"],
+    ["Threat", "Source", "Attack-path assertion review", "Damage", "Attack paths", "Mitigations"],
     report.threats.map(threatRow),
     "No threats are recorded.",
   );
@@ -226,10 +232,62 @@ function threatRow(row: ThreatRow): SafeHtml {
   return html`<tr class="${rowClass(row.status)}">
 <th scope="row">${row.name}${violated}${row.description.summary ? html`<div class="cell-note">${row.description.summary}</div>` : ""}</th>
 <td>${row.source.kind === "unrecorded" ? missing("Not recorded") : row.source.label}</td>
-<td>${statusBlock(row.status, row.source.kind === "ai")}</td>
+<td><div class="cell-note">Status of the assertion linking this threat to its path</div>${statusBlock(row.status, false)}${row.source.kind === "ai" && row.status.kind === "rejected" ? html`<div class="cell-note">Rejected path assertion for an AI-proposed threat</div>` : ""}</td>
 <td>${refs(row.damages)}</td>
 <td>${refs(row.paths)}</td>
 <td>${row.mitigations.length > 0 ? refs(row.mitigations) : missing("None recorded")}${detailsToggle(row.details, row.description, row.status)}</td>
+</tr>`;
+}
+
+function catalogSection(report: ModelReport): SafeHtml {
+  const vulnerabilities = table(
+    "Vulnerabilities",
+    ["Vulnerability", "Catalog reference", "Affects", "Weakness class", "Description"],
+    report.vulnerabilities.map(vulnerabilityRow),
+    "No vulnerabilities are recorded.",
+  );
+  const weaknesses = table(
+    "Weaknesses",
+    ["Weakness", "Catalog reference", "Vulnerabilities", "Attack patterns", "Description"],
+    report.weaknesses.map(weaknessRow),
+    "No weaknesses are recorded.",
+  );
+  const attackPatterns = table(
+    "Attack patterns",
+    ["Attack pattern", "Catalog reference", "Related weaknesses", "Description"],
+    report.attackPatterns.map(attackPatternRow),
+    "No attack patterns are recorded.",
+  );
+  return html`${vulnerabilities}${weaknesses}${attackPatterns}`;
+}
+
+function vulnerabilityRow(row: VulnerabilityRow): SafeHtml {
+  const affected = uniqueRefsForRender([...row.affects, ...row.propagatesTo]);
+  return html`<tr>
+<th scope="row">${row.name}</th>
+<td>${row.catalogRef ?? missing("Not recorded")}</td>
+<td>${affected.length > 0 ? refs(affected) : missing("None recorded")}</td>
+<td>${row.weaknesses.length > 0 ? refs(row.weaknesses) : missing("None recorded")}</td>
+<td>${description(row.description)}${detailsToggle(row.details, row.description)}</td>
+</tr>`;
+}
+
+function weaknessRow(row: WeaknessRow): SafeHtml {
+  return html`<tr>
+<th scope="row">${row.name}</th>
+<td>${row.catalogRef ?? missing("Not recorded")}</td>
+<td>${row.vulnerabilities.length > 0 ? refs(row.vulnerabilities) : missing("None recorded")}</td>
+<td>${row.attackPatterns.length > 0 ? refs(row.attackPatterns) : missing("None recorded")}</td>
+<td>${description(row.description)}${detailsToggle(row.details, row.description)}</td>
+</tr>`;
+}
+
+function attackPatternRow(row: AttackPatternRow): SafeHtml {
+  return html`<tr>
+<th scope="row">${row.name}</th>
+<td>${row.catalogRef ?? missing("Not recorded")}</td>
+<td>${row.weaknesses.length > 0 ? refs(row.weaknesses) : missing("None recorded")}</td>
+<td>${description(row.description)}${detailsToggle(row.details, row.description)}</td>
 </tr>`;
 }
 
@@ -330,7 +388,7 @@ function pathStoryBody(row: PathRow, stepButtons = false): SafeHtml {
     return html`<li value="${step.number}" data-step="${step.id}">${name}${step.phase ? html` <span class="phase-chip">${step.phase}</span>` : ""}${joins}</li>`;
   });
   const alternatives = story.alternativesMissing
-    ? html`<p class="cell-note warning-note">The engine could not compute the ways through this path, so its list of alternatives is missing.</p>`
+    ? html`<p class="cell-note warning-note">The engine's ways through this path are missing or incomplete.</p>`
     : story.alternatives.length > 1
       ? html`<p class="cell-note">The engine finds ${story.alternatives.length} ways through this path: ${join(story.alternatives.map((alternative) => `steps ${alternative.join(" → ")}`), "; ")}.</p>`
       : "";
@@ -447,7 +505,7 @@ function statusBlock(status: ReportStatus, aiSource: boolean): SafeHtml {
       ? html`<div class="cell-note">Reviewer not recorded</div>`
       : "";
   const hypothesis = aiSource && status.kind === "rejected"
-    ? html`<div class="cell-note">Rejected AI hypothesis</div>`
+    ? html`<div class="cell-note">Rejected path assertion for an AI-proposed threat</div>`
     : "";
   return html`<span class="status-badge rs-${status.kind}">${status.label}</span>${reviewers}${hypothesis}`;
 }
@@ -478,6 +536,11 @@ function detailsToggle(details: readonly ReportDetail[], text: ReportText, statu
 function refs(values: readonly ReportRef[]): SafeHtml {
   if (values.length === 0) return missing("None");
   return join(values.map((ref) => ref.missing ? missing("an object the model does not define") : html`<span class="ref">${ref.label}</span>`), ", ");
+}
+
+function uniqueRefsForRender(values: readonly ReportRef[]): ReportRef[] {
+  const seen = new Set<string>();
+  return values.filter((value) => (seen.has(value.id) ? false : (seen.add(value.id), true)));
 }
 
 function list(values: readonly string[]): SafeHtml {

@@ -78,7 +78,6 @@ export function connectorGeometry(item: DiagramEdge, source: DiagramNode, target
 
 /** Cytoscape elements for a laid-out diagram, at the layout's own positions and on its own routes. */
 export function pathViewElements(diagram: PathDiagram): ElementDefinition[] {
-  const negative = diagram.status !== "accepted";
   const nodes: ElementDefinition[] = diagram.nodes.map((node) => ({
     group: "nodes",
     data: {
@@ -91,7 +90,11 @@ export function pathViewElements(diagram: PathDiagram): ElementDefinition[] {
       height: node.height,
     },
     position: { x: node.x, y: node.y },
-    classes: [node.kind, negative && (node.kind === "step" || node.kind === "threat") ? `status-${diagram.status}` : ""]
+    classes: [
+      node.kind,
+      node.kind === "step" && diagram.status !== "accepted" ? `status-${diagram.status}` : "",
+      node.kind === "threat" && diagram.threatStatus !== "accepted" ? `status-${diagram.threatStatus}` : "",
+    ]
       .filter(Boolean)
       .join(" "),
   }));
