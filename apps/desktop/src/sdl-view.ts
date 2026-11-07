@@ -149,6 +149,16 @@ export class SdlProgramView {
       view.nodes.map((n) => [String(n.order ?? ""), n.name, n.kind, n.actual ? `${n.planned} / ${n.actual}` : n.planned,
         n.status, String(n.practices), n.name_decision ? this.decision(n.name_decision) : "—"])));
 
+    const proposals = view.proposals ?? [];
+    sections.push(this.table(`Pending proposals (${proposals.length})`, ["Proposal", "By", "Adds", "Asks", "Review"],
+      proposals.map((p) => [
+        e("div", "", [e("strong", "", p.rationale), e("div", "sdl-small", `${p.id} · ${p.at} · ${p.generated_by}`)]),
+        p.by,
+        e("ul", "sdl-links", p.objects.map((o) => e("li", "", `${o.name || o.id} (${o.collection})`))),
+        e("ul", "sdl-links", p.assertions.map((a) => e("li", "", `${a.predicate} → ${a.object}`))),
+        this.decision({ state: "proposed", label: "Proposed by tmodel propose; a human decides it in a PR (PROC-0002)" }),
+      ]), "sdl-proposals"));
+
     sections.push(e("section", "sdl-gaps", [e("h3", "", "Open gaps"), e("ul", "", view.gaps.map((g) => e("li", "", g)))]));
     this.elements.content.replaceChildren(...sections);
   }

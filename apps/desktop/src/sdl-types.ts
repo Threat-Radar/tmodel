@@ -58,6 +58,18 @@ export interface SdlProgramNode {
   name_decision: SdlDecision | null;
 }
 
+/** A pending `tmodel propose` record (DL-0044). Always proposed; never decided here. */
+export interface SdlProposal {
+  id: string;
+  state: string;
+  by: string;
+  at: string;
+  generated_by: string;
+  rationale: string;
+  objects: { collection: string; id: string; name: string }[];
+  assertions: { id: string; predicate: string; object: string; name: string }[];
+}
+
 export interface SdlView {
   file: string;
   proposal: string;
@@ -69,6 +81,8 @@ export interface SdlView {
   gaps: string[];
   uncovered: string[];
   awaiting_review: { id: string; predicate: string; name: string }[];
+  /** Absent from engines older than DL-0044. */
+  proposals?: SdlProposal[];
 }
 
 export interface SdlModel {

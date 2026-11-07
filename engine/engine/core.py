@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any
 
 from engine import __version__
+from engine import propose as proposals
 from engine import sdl as sdl_view
 from engine.graph import AttackGraph, GraphError
 from engine.load.library import (
@@ -343,9 +344,38 @@ def sdl(query: Mapping[str, str] | None = None) -> dict[str, Any]:
     except GraphError as exc:
         raise GraphError(_sanitized_model_error(path, exc)) from exc
     try:
+        pending = proposals.load_proposals(path)
         view = sdl_view.collect(doc, dict(xwalk), program=values.get("program"))
+        view["proposals"] = proposals.summary(pending, doc)
     except (KeyError, TypeError) as exc:
         raise GraphError(f"{path.name}: malformed SDL model ({type(exc).__name__}: {exc})") from exc
     except sdl_view.SdlError as exc:
         raise GraphError(f"{path.name}: {exc}") from exc
     return {"file": path.name, **view}
+
+
+def propose(patch: Mapping[str, Any], write: bool = True) -> dict[str, Any]:
+    """Check an agent's patch and append it to the target's proposals file (DL-0044).
+
+    Never edits the model, writes a Review or accepts anything. Raises ValueError
+    (ProposalError) with every problem when the patch is refused; nothing is written.
+    """
+    target = patch.get("target") if isinstance(patch, Mapping) else None
+    if not isinstance(target, str):
+        raise proposals.ProposalError("target is required")
+    path = _approved_vector_path(target)
+    if not path.name.startswith(SDL_PREFIX):
+        raise proposals.ProposalError(
+            f"{path.name}: proposals are for SDL models ({SDL_PREFIX}*.yaml)"
+        )
+    xwalk = load_vector_document(CROSSWALK_FILE)
+    record = proposals.propose(patch, path, xwalk, write=write)
+    return {
+        "written": write,
+        "file": str(
+            proposals.proposals_path(path).relative_to(APPROVED_VECTOR_DIRECTORY.parent.parent)
+        )
+        if write
+        else None,
+        "proposal": record,
+    }

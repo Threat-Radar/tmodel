@@ -34,6 +34,24 @@ describe("SDL view", () => {
     expect(find(elements.content, (n) => n.textContent === "<img src=x onerror=alert(1)>")).toHaveLength(1);
   });
 
+  it("lists pending tmodel propose records as proposed, never accepted", async () => {
+    const withProposal: SdlView = structuredClone(VIEW);
+    withProposal.proposals = [{
+      id: "proposal:20261107T120000Z-abc", state: "proposed", by: "AI agent", at: "2026-11-07T12:00:00Z",
+      generated_by: "example agent", rationale: "Add secrets management",
+      objects: [{ collection: "sdl_practices", id: "sdl-practice:secrets-management", name: "Keep secrets out" }],
+      assertions: [{ id: "assertion:x", predicate: "selects_practice", object: "sdl-practice:secrets-management", name: "" }],
+    }];
+    const { view, elements } = harness(withProposal);
+    view.activate();
+    await settle();
+    expect(headings(elements.content)).toContain("Pending proposals (1)");
+    const section = find(elements.content, (n) => n.className === "sdl-section sdl-proposals")[0];
+    const chips = find(section, (n) => n.className.startsWith("review-chip"));
+    expect(chips.map((c) => c.className)).toEqual(["review-chip review-proposed"]);
+    expect(find(section, (n) => n.textContent === "selects_practice → sdl-practice:secrets-management")).toHaveLength(1);
+  });
+
   it("reports an engine error without rendering stale content", async () => {
     const { view, elements } = harness(VIEW, true);
     view.activate();

@@ -10,6 +10,9 @@
                                the library's records, optionally filtered; the
                                library is $TMODEL_LIBRARY or the pinned submodule
   tmodel sdl [FILE] [--program P] [--json]
+  tmodel propose PATCH [--dry-run] [--json]
+                               check an agent's patch to an SDL model and append it
+                               to the model's proposals file; never accepts (DL-0044)
                                the SDL program view of an SDL model (DL-0043);
                                without FILE, list the SDL models
 
@@ -186,6 +189,28 @@ def _sdl(args: argparse.Namespace) -> int:
     return 0
 
 
+def _propose(args: argparse.Namespace) -> int:
+    import yaml  # the engine's one dependency
+
+    try:
+        text = sys.stdin.read() if args.patch == "-" else open(args.patch, encoding="utf-8").read()
+        patch = yaml.safe_load(text)
+    except (OSError, yaml.YAMLError) as exc:
+        print(f"error: cannot read the patch: {exc}", file=sys.stderr)
+        return 2
+    payload = _call(lambda: core.propose(patch, write=not args.dry_run))
+    if payload is None:
+        return 1
+    if args.json:
+        print(json.dumps(payload))
+        return 0
+    rec = payload["proposal"]
+    where = payload["file"] or "(dry run, nothing written)"
+    print(f"{rec['id']}: proposed by {rec['proposed_by']} -> {where}")
+    print("  status: proposed. A human decides it in a PR (PROC-0002).")
+    return 0
+
+
 def _add_transport(cmd: argparse.ArgumentParser) -> None:
     cmd.add_argument("--json", action="store_true", help="print JSON")
     cmd.add_argument("--url", default=None, help="engine URL (default http://127.0.0.1:47811)")
@@ -240,6 +265,12 @@ def build_parser() -> argparse.ArgumentParser:
     sdl.add_argument("--program", default=None, help="SecurityProgram id, if the file has several")
     _add_transport(sdl)
     sdl.set_defaults(func=_sdl)
+
+    propose = sub.add_parser("propose", help="write an agent's SDL patch as proposals (DL-0044)")
+    propose.add_argument("patch", help="patch file (YAML or JSON), or - for stdin")
+    propose.add_argument("--dry-run", action="store_true", help="check only, write nothing")
+    propose.add_argument("--json", action="store_true", help="print JSON")
+    propose.set_defaults(func=_propose)
     return parser
 
 
