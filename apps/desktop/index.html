@@ -21,6 +21,7 @@
         <div class="view-tabs" role="tablist" aria-label="Application views">
           <button id="library-tab" type="button" role="tab" aria-controls="library-view-panel" aria-selected="true">Library</button>
           <button id="graph-tab" type="button" role="tab" aria-controls="graph-view-panel" aria-selected="false" tabindex="-1">Knowledge Graph</button>
+          <button id="sdl-tab" type="button" role="tab" aria-controls="sdl-view-panel" aria-selected="false" tabindex="-1">SDL</button>
         </div>
       </nav>
 
@@ -89,6 +90,14 @@
             <section class="inspector-section"><h3>Connected relationships</h3><p class="direction-help">→ outgoing · ← incoming</p><ul id="relationship-list" class="relationship-list"></ul></section>
           </aside>
         </section>
+      </section>
+      <section id="sdl-view-panel" class="view-panel" role="tabpanel" aria-labelledby="sdl-tab" hidden>
+        <div class="sdl-heading">
+          <div><p class="eyebrow">Secure development lifecycle</p><h2>tmodel SDL</h2></div>
+          <label for="sdl-model-select"><span>SDL model</span><select id="sdl-model-select"></select></label>
+        </div>
+        <div id="sdl-status" class="library-request-status" role="status" aria-live="polite">Open this view to load SDL models from the local engine.</div>
+        <div id="sdl-content" class="sdl-content"></div>
       </section>
     </main>
   </body>

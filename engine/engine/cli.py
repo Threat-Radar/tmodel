@@ -9,6 +9,9 @@
   tmodel library [--id I] [--type T] [--topic T] [--status S] [--json]
                                the library's records, optionally filtered; the
                                library is $TMODEL_LIBRARY or the pinned submodule
+  tmodel sdl [FILE] [--program P] [--json]
+                               the SDL program view of an SDL model (DL-0043);
+                               without FILE, list the SDL models
 
 By default these go through the local API, exactly like the desktop app
 (APP-0001 A-030, A-060). `--in-process` calls the engine code directly
@@ -155,6 +158,34 @@ def _library(args: argparse.Namespace) -> int:
     return 0
 
 
+def _print_sdl(payload: dict[str, Any]) -> None:
+    if "models" in payload:
+        for m in payload["models"]:
+            progs = ", ".join(p["id"] for p in m.get("programs", [])) or m.get("error", "")
+            print(f"  {m['file']}  {progs}")
+        return
+    print(f"{payload['file']}: {payload['program']['name']} ({payload['proposal']})")
+    for phase in payload["phases"]:
+        print(f"  {phase['name']}")
+        for it in phase["items"]:
+            print(f"    [{it['status']}] {it['name']}  ({it['decision']['state']})")
+    print(f"  {len(payload['awaiting_review'])} selections awaiting human review (PROC-0002)")
+
+
+def _sdl(args: argparse.Namespace) -> int:
+    params = {k: v for k, v in (("file", args.file), ("program", args.program)) if v}
+    payload = _call(
+        lambda: core.sdl(params) if args.in_process else get("/sdl", args.url, params=params)
+    )
+    if payload is None:
+        return 1
+    if args.json:
+        print(json.dumps(payload))
+    else:
+        _print_sdl(payload)
+    return 0
+
+
 def _add_transport(cmd: argparse.ArgumentParser) -> None:
     cmd.add_argument("--json", action="store_true", help="print JSON")
     cmd.add_argument("--url", default=None, help="engine URL (default http://127.0.0.1:47811)")
@@ -203,6 +234,12 @@ def build_parser() -> argparse.ArgumentParser:
         library.add_argument(f"--{name}", default=None, help=f"only records with this {name}")
     _add_transport(library)
     library.set_defaults(func=_library)
+
+    sdl = sub.add_parser("sdl", help="SDL program view of an SDL model (DL-0043)")
+    sdl.add_argument("file", nargs="?", default=None, help="e.g. sdl-01-tmodel-desktop.yaml")
+    sdl.add_argument("--program", default=None, help="SecurityProgram id, if the file has several")
+    _add_transport(sdl)
+    sdl.set_defaults(func=_sdl)
     return parser
 
 

@@ -57,6 +57,7 @@ ROUTES: dict[str, Callable[[dict[str, str]], dict[str, Any]]] = {
     "/attack-paths": _attack_paths,
     "/library": core.library_records,  # filters: id, type, topic, status (#140)
     "/library/table": core.library_table,  # rows for the table views (#141, #58)
+    "/sdl": core.sdl,  # SDL program view; no file = list SDL models (DL-0043)
 }
 
 
