@@ -3,6 +3,7 @@
   tmodel serve                 start the local engine (loopback only)
   tmodel health [--json]       ask the running engine whether it is healthy
   tmodel version [--json]      ask the running engine for its version
+  tmodel models [--json]       the example models the app can open
   tmodel paths FILE [--goal G] [--json]
                                attack paths to a step or threat in a model file;
                                without --goal, list the file's threats
@@ -115,6 +116,32 @@ def _paths(args: argparse.Namespace) -> int:
     return 0
 
 
+def _print_models(payload: dict[str, Any]) -> None:
+    models = payload["models"]
+    print(f"{payload['count']} example model{'s' if payload['count'] != 1 else ''}")
+    width = max((len(m["file"]) for m in models), default=0)
+    for m in models:
+        threats = m["counts"]["threats"]
+        noun = "threat" if threats == 1 else "threats"
+        print(
+            f"  {m['file']:<{width}}  {m['title']}"
+            f"  ({m['kind_label']}; {threats} {noun}, {m['reviewed_threats']} reviewed)"
+        )
+    for problem in payload["problems"]:
+        print(f"  {problem['file']}: not loaded ({problem['error']})")
+
+
+def _models(args: argparse.Namespace) -> int:
+    payload = _call(lambda: core.list_models() if args.in_process else get("/models", args.url))
+    if payload is None:
+        return 1
+    if args.json:
+        print(json.dumps(payload))
+    else:
+        _print_models(payload)
+    return 0
+
+
 LIBRARY_TIMEOUT_S = 60.0  # the engine's first request loads every record
 
 
@@ -189,6 +216,10 @@ def build_parser() -> argparse.ArgumentParser:
         cmd = sub.add_parser(name, help=text)
         _add_transport(cmd)
         cmd.set_defaults(func=_query)
+
+    models = sub.add_parser("models", help="the example models the app can open (#208)")
+    _add_transport(models)
+    models.set_defaults(func=_models)
 
     paths = sub.add_parser("paths", help="attack paths in a model file (#63)")
     paths.add_argument(

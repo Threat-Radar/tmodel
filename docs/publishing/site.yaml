@@ -26,6 +26,15 @@ sections:
       Per-record pages. Built in the library beside their source
       (library bin/render-html, records/<body>/<id>/summary.html) and copied
       here unchanged, except that the site nav fills the page's site-nav slot.
+  - path: docs/models/
+    manifest: spec/vectors/
+    builder: docs/publishing/render_models.py
+    note: >
+      Example threat models, one report page each plus an index (#208). The
+      engine collects every model in spec/vectors/ and the app's own report
+      renderer (apps/desktop/src/report-render.ts, run by Node) writes the HTML,
+      so a page and the app's Model report view cannot disagree. Linked from the
+      landing page, not yet from the shared nav (adding it re-renders every page).
   - path: docs/reports/
     manifest: docs/publishing/reports.yaml
     builder: docs/publishing/render_report.py

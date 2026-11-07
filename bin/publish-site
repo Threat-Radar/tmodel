@@ -14,5 +14,11 @@ tara_py=python3
 [ -x engine/.venv/bin/python ] && tara_py=engine/.venv/bin/python
 "$tara_py" docs/publishing/render_tara.py
 python3 docs/publishing/render_bibliography.py
+# Example-model pages (#208): the engine collects each model, which needs PyYAML
+# (the engine's environment, CONTRIBUTING §10, when it exists, else python3), and
+# the app's own report renderer writes the HTML through Node 22.6 or newer.
+models_py=python3
+[ -x engine/.venv/bin/python ] && models_py=engine/.venv/bin/python
+"$models_py" docs/publishing/render_models.py
 python3 docs/publishing/check_identities.py
 python3 docs/publishing/check_links.py

@@ -96,6 +96,9 @@ export class KnowledgeGraphView {
   private incrementalLayoutCleanup?: () => void;
   private visible = false;
   private fitOnVisibleResize = false;
+  private disposed = false;
+  // Aborted on dispose, so a graph load still in progress stops at its next batch.
+  private readonly lifetime = new AbortController();
 
   constructor(
     private readonly provider: GraphDataProvider = new DevelopmentFixtureProvider(),
@@ -103,7 +106,22 @@ export class KnowledgeGraphView {
   ) {}
 
   async start(): Promise<void> {
+    try {
+      await this.startGraph();
+    } catch (error) {
+      // A replaced view's failure is no one's to report: its replacement owns
+      // the source notice and the Retry graph button now (#208 model switch).
+      if (this.disposed) return;
+      throw error;
+    }
+  }
+
+  private async startGraph(): Promise<void> {
     const graph = await this.provider.getInitialGraph();
+    // A view disposed while its graph loaded (another model was chosen) must
+    // not draw into the canvas, or fill the controls, its replacement now owns.
+    // The same check follows every later wait in this start.
+    if (this.disposed) return;
     const notice = this.requiredElement("data-source-notice");
     notice.textContent = graph.notice ?? this.provider.metadata.notice;
     notice.classList.remove("is-error");
@@ -112,7 +130,9 @@ export class KnowledgeGraphView {
       this.renderLegend();
       this.renderGraph();
     }
+    this.renderWholeModelControl();
     await this.loadGraphResponse(graph);
+    if (this.disposed) return;
     const initialSelection = this.state.selectedNodeId ?? graph.focusId ?? this.state.nodes[0]?.id;
     if (initialSelection) this.handleSelection(initialSelection);
     await this.loadAttackPaths();
@@ -120,6 +140,122 @@ export class KnowledgeGraphView {
 
   setVisible(visible: boolean): void {
     this.visible = visible;
+  }
+
+  /**
+   * Releases the Cytoscape instance, cancels pending work and empties the
+   * shared controls, so a view for another model (#208 model picker, or the
+   * bookkeeping toggle) takes over the same canvas and controls. A disposed
+   * view never writes to them again, even when an older request finishes late.
+   */
+  dispose(): void {
+    if (this.disposed) return;
+    this.disposed = true;
+    this.lifetime.abort();
+    this.expansionRequests.cancel();
+    this.attackPathRequests.cancel();
+    this.stopIncrementalLayout();
+    this.cy?.destroy();
+    this.cy = undefined;
+    this.nodeButtons.clear();
+    this.clearSharedControls();
+  }
+
+  get isDisposed(): boolean {
+    return this.disposed;
+  }
+
+  /** The controls this view fills, back to their empty state and with its handlers removed. */
+  private clearSharedControls(): void {
+    const element = <T extends HTMLElement>(id: string) => this.documentRoot.getElementById(id) as T | null;
+    element("node-list")?.replaceChildren();
+    const count = element("node-count");
+    if (count) count.textContent = "0";
+    const notice = element("data-source-notice");
+    if (notice) {
+      notice.textContent = "";
+      notice.classList.remove("is-error");
+    }
+    const loading = element("graph-loading");
+    if (loading) {
+      loading.textContent = "";
+      loading.hidden = true;
+    }
+    const select = element<HTMLSelectElement>("attack-path-select");
+    if (select) {
+      const placeholder = this.documentRoot.createElement("option");
+      placeholder.value = "";
+      placeholder.textContent = "Choose an attack path…";
+      select.replaceChildren(placeholder);
+      select.onchange = null;
+      select.disabled = true;
+    }
+    const clear = element<HTMLButtonElement>("clear-attack-path");
+    if (clear) {
+      clear.onclick = null;
+      clear.disabled = true;
+    }
+    const status = element("attack-path-status");
+    if (status) {
+      status.textContent = "";
+      status.className = "path-status";
+    }
+    const label = element("inspector-label");
+    if (label) label.textContent = "Select a node";
+    for (const id of ["inspector-type", "inspector-id"]) {
+      const value = element(id);
+      if (value) value.textContent = "";
+    }
+    element("property-list")?.replaceChildren();
+    element("relationship-list")?.replaceChildren();
+    const expand = element<HTMLButtonElement>("expand-node");
+    if (expand) {
+      expand.onclick = null;
+      expand.disabled = true;
+      expand.textContent = "Expand neighborhood";
+    }
+    const showAll = element<HTMLButtonElement>("graph-show-all");
+    if (showAll) {
+      showAll.onclick = null;
+      showAll.disabled = true;
+    }
+  }
+
+  /**
+   * "Show whole model": loads every visible object of the model at once, for a
+   * developer who wants the full graph rather than neighbourhoods (#208). Only
+   * offered when the provider can list the whole model.
+   */
+  private renderWholeModelControl(): void {
+    const button = this.documentRoot.getElementById("graph-show-all") as HTMLButtonElement | null;
+    if (!button) return;
+    const supported = typeof this.provider.getWholeGraph === "function";
+    button.hidden = !supported;
+    button.disabled = !supported;
+    button.textContent = "Show whole model";
+    button.onclick = supported ? () => void this.showWholeGraph() : null;
+  }
+
+  private async showWholeGraph(): Promise<void> {
+    const getWholeGraph = this.provider.getWholeGraph?.bind(this.provider);
+    if (this.disposed || !this.cy || !getWholeGraph) return;
+    const button = this.documentRoot.getElementById("graph-show-all") as HTMLButtonElement | null;
+    if (button) button.disabled = true;
+    this.expansionRequests.cancel();
+    try {
+      const response = await getWholeGraph();
+      if (this.disposed) return;
+      const result = await this.loadGraphResponse(response);
+      if (this.disposed || result?.canceled) return;
+      this.renderInspector();
+      this.applyAttackPathHighlight(this.activeAttackPath);
+      if (button) button.textContent = "Whole model shown";
+    } catch (error) {
+      if (this.disposed) return;
+      if (button) button.disabled = false;
+      this.loadingDisplayToken = undefined;
+      this.setLoadingProgress(`Unable to show the whole model: ${errorMessage(error)}`);
+    }
   }
 
   /** Re-measure the canvas after its view becomes visible, fitting one hidden initial layout. */
@@ -135,9 +271,13 @@ export class KnowledgeGraphView {
   /** Attack-path discovery failures stay in the path toolbar; the graph remains usable. */
   private async loadAttackPaths(): Promise<void> {
     try {
-      this.renderAttackPathOptions(await this.provider.getAttackPaths());
+      const responses = await this.provider.getAttackPaths();
+      // An older model's paths arriving after a switch belong to no view.
+      if (this.disposed) return;
+      this.renderAttackPathOptions(responses);
       this.renderAttackPathStatus();
     } catch (error) {
+      if (this.disposed) return;
       console.error("Unable to load attack paths", error);
       this.renderAttackPathOptions([]);
       this.requiredElement<HTMLSelectElement>("attack-path-select").disabled = true;
@@ -236,6 +376,7 @@ export class KnowledgeGraphView {
   }
 
   private handleSelection(nodeId: string): void {
+    if (this.disposed) return;
     const previousNodeId = this.state.selectedNodeId;
     const selectedState = selectNode(this.state, nodeId);
     if (selectedState.selectedNodeId !== nodeId) return;
@@ -252,7 +393,7 @@ export class KnowledgeGraphView {
 
   private async expandSelection(): Promise<void> {
     const nodeId = this.state.selectedNodeId;
-    if (!nodeId || !this.cy) return;
+    if (this.disposed || !nodeId || !this.cy) return;
     const request = this.expansionRequests.begin();
     const previousNodeIds = new Set(this.state.nodes.map((node) => node.id));
     try {
@@ -299,6 +440,7 @@ export class KnowledgeGraphView {
   }
 
   private async selectAttackPath(optionId: string): Promise<void> {
+    if (this.disposed) return;
     const option = this.availableAttackPaths.find((candidate) => candidate.id === optionId);
     if (!option) {
       this.clearAttackPath();
@@ -338,6 +480,7 @@ export class KnowledgeGraphView {
   }
 
   private clearAttackPath(): void {
+    if (this.disposed) return;
     this.attackPathRequests.cancel();
     this.activeAttackPath = undefined;
     this.applyAttackPathHighlight();
@@ -384,7 +527,7 @@ export class KnowledgeGraphView {
     runLayout = true,
     externalSignal?: AbortSignal,
   ): Promise<GraphLoadResult | undefined> {
-    if (!this.cy) return;
+    if (!this.cy || this.disposed) return;
     const controller = new AbortController();
     const displayToken = Symbol("graph-loading-display");
     this.loadingDisplayToken = displayToken;
@@ -394,6 +537,7 @@ export class KnowledgeGraphView {
     const cancelFromExternalSignal = () => controller.abort();
     externalSignal?.addEventListener("abort", cancelFromExternalSignal, { once: true });
     if (externalSignal?.aborted) controller.abort();
+    this.lifetime.signal.addEventListener("abort", cancelFromExternalSignal, { once: true });
     const responseSize = response.nodes.length + response.edges.length;
     let showProgress = responseSize > DEFAULT_GRAPH_BATCH_SIZE;
     setCurrentProgress(showProgress ? "Loading graph…" : "");
@@ -403,6 +547,7 @@ export class KnowledgeGraphView {
       result = await this.loader.load(
         response,
         (batch) => {
+          if (this.disposed) return;
           this.state = mergeGraph(this.state, {
             source: response.source,
             nodes: batch.nodes,
@@ -430,11 +575,13 @@ export class KnowledgeGraphView {
       );
     } finally {
       externalSignal?.removeEventListener("abort", cancelFromExternalSignal);
-      if (this.loadingDisplayToken === displayToken) {
+      this.lifetime.signal.removeEventListener("abort", cancelFromExternalSignal);
+      if (!this.disposed && this.loadingDisplayToken === displayToken) {
         this.loadingDisplayToken = undefined;
         this.setLoadingProgress("");
       }
     }
+    if (this.disposed) return { ...result, canceled: true };
     if (!result.canceled) {
       // Batches intentionally skip duplicate nodes. Reconcile their current
       // provider metadata after a successful response so fields such as

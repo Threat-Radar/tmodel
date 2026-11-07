@@ -53,6 +53,7 @@ def _graph(query: dict[str, str]) -> dict[str, Any]:
 ROUTES: dict[str, Callable[[dict[str, str]], dict[str, Any]]] = {
     "/health": lambda _q: core.health(),
     "/version": lambda _q: core.version(),
+    "/models": lambda _q: core.list_models(),  # the example models a reader can open (#208)
     "/graph": _graph,
     "/attack-paths": _attack_paths,
     "/library": core.library_records,  # filters: id, type, topic, status (#140)
