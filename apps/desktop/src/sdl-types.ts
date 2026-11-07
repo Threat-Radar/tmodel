@@ -67,6 +67,8 @@ export interface SdlProposal {
   generated_by: string;
   rationale: string;
   objects: { collection: string; id: string; name: string }[];
+  /** Edits and removals (DL-0046); absent from engines older than DL-0046. */
+  changes?: { action: "edit" | "remove"; collection: string; id: string; fields: string[] }[];
   assertions: { id: string; predicate: string; object: string; name: string }[];
 }
 

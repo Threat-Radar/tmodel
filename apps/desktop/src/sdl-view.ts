@@ -154,9 +154,12 @@ export class SdlProgramView {
       proposals.map((p) => [
         e("div", "", [e("strong", "", p.rationale), e("div", "sdl-small", `${p.id} · ${p.at} · ${p.generated_by}`)]),
         p.by,
-        e("ul", "sdl-links", p.objects.map((o) => e("li", "", `${o.name || o.id} (${o.collection})`))),
+        e("ul", "sdl-links", [
+          ...p.objects.map((o) => e("li", "", `${o.name || o.id} (${o.collection})`)),
+          ...(p.changes ?? []).map((c) => e("li", "", changeLabel(c))),
+        ]),
         e("ul", "sdl-links", p.assertions.map((a) => e("li", "", `${a.predicate} → ${a.object}`))),
-        this.decision({ state: "proposed", label: "Proposed by tmodel propose; a human decides it in a PR (PROC-0002)" }),
+        this.decision({ state: "proposed", label: "Proposed by tmodel propose; the sponsor decides it with tmodel accept in a PR (PROC-0002)" }),
       ]), "sdl-proposals"));
 
     sections.push(e("section", "sdl-gaps", [e("h3", "", "Open gaps"), e("ul", "", view.gaps.map((g) => e("li", "", g)))]));
@@ -207,4 +210,11 @@ export class SdlProgramView {
 
 function message(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
+}
+
+/** "edit component:x (name, description)" or "remove mitigation:y" (DL-0046). */
+export function changeLabel(c: { action: string; collection: string; id: string; fields: string[] }): string {
+  return c.action === "edit"
+    ? `edit ${c.id} (${c.fields.join(", ") || "fields"})`
+    : `remove ${c.id} (${c.collection})`;
 }

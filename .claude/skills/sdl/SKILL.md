@@ -35,7 +35,9 @@ Rules: `CLAUDE.md` and `project/PROC-0002-sdl-review-and-selection.md`. Schema:
      `selects_practice`, `proposes_milestone_name`.
    - To change a decided selection, add a new proposed Assertion and leave the old one as it is.
    - With the engine available, `tmodel propose` writes proposals for you and refuses anything
-     else (DL-0044).
+     else (DL-0044). A `tmodel.patch/v1` patch can also edit or remove SDL objects, and can
+     propose saved KG views; see `.claude/skills/kg-propose/SKILL.md` (DL-0046). The sponsor
+     decides with `tmodel accept`; an agent never runs it.
 3. **Validate.** Use the pinned tools (`pip install -r spec/schema/requirements.txt`):
    ```sh
    linkml-validate -s spec/vectors/example-container-sdl.linkml.yaml -C ExampleModelSdl spec/vectors/sdl-01-tmodel-desktop.yaml

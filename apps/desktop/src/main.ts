@@ -1,6 +1,8 @@
 import { AppNavigation } from "./app-navigation";
 import { checkEngine, describe, engineProcess, type EngineState } from "./engine";
-import { EngineGraphDataProvider } from "./engine-graph-provider";
+import { DEFAULT_MODEL_FILE, EngineGraphDataProvider } from "./engine-graph-provider";
+import { EngineProposalsDataProvider } from "./engine-proposals-provider";
+import { SavedViewsPanel, savedViewElements } from "./graph-saved-views";
 import { EngineLibraryDataProvider } from "./engine-library-provider";
 import { DevelopmentFixtureProvider } from "./graph-fixture";
 import { connectGraphStartup, type GraphStartup } from "./graph-startup";
@@ -38,7 +40,20 @@ function createKnowledgeGraphStartup(parameters: URLSearchParams): {
   // One view per window: navigation and retries reuse it, so Cytoscape and its
   // listeners are never duplicated.
   const view = new KnowledgeGraphView(provider);
-  const startup = connectGraphStartup(() => view.start(), usesEngine, {
+  // Saved KG views and pending proposals (DL-0046) come from the engine's read-only
+  // GET /proposals; a failure there stays in the view toolbar.
+  const savedViews = usesEngine
+    ? new SavedViewsPanel(
+      new EngineProposalsDataProvider(),
+      parameters.get("file") ?? DEFAULT_MODEL_FILE,
+      savedViewElements(),
+      (ids) => view.focusSavedView(ids),
+    )
+    : undefined;
+  const startup = connectGraphStartup(async () => {
+    await view.start();
+    await savedViews?.load();
+  }, usesEngine, {
     notice: document.querySelector<HTMLElement>("#data-source-notice"),
     retryButton: document.querySelector<HTMLButtonElement>("#graph-retry"),
   });
