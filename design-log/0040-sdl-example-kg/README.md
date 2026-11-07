@@ -18,6 +18,12 @@ bears_on: [DEC-001b, DEC-009, R-040, R-041, R-042, R-043, R-044]
 open PRs (#207, #211), 0039 is on main. The log already has duplicate numbers
 (0012, 0015, 0024 each used twice); this entry does not add one.
 
+**Renamed 2026-11-07.** @nymble accepted ADR-0013 with the RPT-0013-OM names: `WorkProduct`
+is now `Evidence` (collection `evidence_items`, ids `evidence:`, `evidence_kind`), and
+`RequirementSet` is now `RequirementSource` (collection `requirement_sources`, ids
+`requirement-source:`, `source_members`, predicates `*_requirement_source`). RPT-0013-OM has no
+practice type, so `SdlPractice` keeps its name. The text below uses the original names.
+
 ## Request
 
 @nymble asked on 2026-11-07: do we have a well-formed SDL schema that can publish

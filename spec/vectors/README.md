@@ -74,8 +74,8 @@ validate against the full `ExampleModel` container.
 | `sdl-01-tmodel-desktop.yaml` | the tmodel desktop app itself | a draft SDL `SecurityProgram` with Milestones and a Gate; SDL practices by phase keyed to MAP-0001 rows, with status, owner and evidence (repo paths, PRs, workflows); candidate requirement sets (SSDF, SLSA, CRA, OSPS, ISO/SAE 21434, IEC 62443-4-1); a four-threat seed threat model of the app with CWE/CAPEC; every selection a `proposed` Assertion awaiting a human Review |
 
 It validates against `example-container-sdl.linkml.yaml` (class `ExampleModelSdl`): the
-full container plus three **proposal** classes, `SdlPractice`, `WorkProduct` and
-`RequirementSet`, that live only in that container (not in `spec/schema/`; DEC-001b stays
+full container plus three **proposal** classes, `SdlPractice`, `Evidence` and
+`RequirementSource`, that live only in that container (not in `spec/schema/`; DEC-001b stays
 open). `docs/publishing/render_sdl.py` renders it as the "tmodel SDL" page
 (`docs/sdl/index.html`) and fails on a dangling reference. **Example data**, drafted by an
 AI agent and unreviewed.

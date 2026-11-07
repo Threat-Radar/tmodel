@@ -61,10 +61,10 @@ STATUS = {  # MitigationStatus -> label, css class
 }
 GATE_STATUS = {"planned": "Planned", "in_progress": "In progress", "passed": "Passed",
                "failed": "Failed", "waived": "Waived", "blocked": "Blocked"}
-SET_PREDICATES = {
-    "selects_requirement_set": "select",
-    "considers_requirement_set": "candidate",
-    "excludes_requirement_set": "not applicable",
+SOURCE_PREDICATES = {
+    "selects_requirement_source": "select",
+    "considers_requirement_source": "candidate",
+    "excludes_requirement_source": "not applicable",
 }
 REF_KEYS = {
     "composed_of", "manufactured_by", "supplied_by", "owned_by", "of_product", "current_phase",
@@ -72,7 +72,7 @@ REF_KEYS = {
     "owner", "governs", "program_nodes", "incorporates", "at_phase", "gated_by", "decided_by",
     "depends_on_node", "validates_conformance_of", "offset_from", "satisfied_by", "applies_to",
     "maps_to", "refines", "derived_from", "addresses", "subject", "object", "reviews",
-    "reviewer", "asserted_by", "implements", "produces", "in_program_node", "set_members",
+    "reviewer", "asserted_by", "implements", "produces", "in_program_node", "source_members",
 }
 
 
@@ -175,13 +175,13 @@ def collect(doc: dict, entry: dict, xwalk: dict) -> dict:
     # Requirement sets and their (proposed or decided) standing
     sets = []
     for a in as_list(doc.get("assertions")):
-        if a.get("subject") == prog["id"] and a.get("predicate") in SET_PREDICATES:
+        if a.get("subject") == prog["id"] and a.get("predicate") in SOURCE_PREDICATES:
             rs = ids[a["object"]]
             sets.append({
-                "id": rs["id"], "name": rs.get("name"), "proposal": SET_PREDICATES[a["predicate"]],
+                "id": rs["id"], "name": rs.get("name"), "proposal": SOURCE_PREDICATES[a["predicate"]],
                 "rationale": a.get("description", ""), "decision": decision(doc, ids, a["id"]),
                 "link": link_for(rs["source_ref"], depth) if rs.get("source_ref") else "",
-                "members": [ids[m] for m in as_list(rs.get("set_members"))],
+                "members": [ids[m] for m in as_list(rs.get("source_members"))],
                 "column": cols.get(rs["id"]),
             })
     shown_cols = [(s["column"], s["name"]) for s in sets
@@ -209,7 +209,7 @@ def collect(doc: dict, entry: dict, xwalk: dict) -> dict:
             "id": p["id"], "name": p.get("name"), "description": p.get("description", ""),
             "row": row["title"], "row_n": row["n"], "status": st, "owner": role(ids, p.get("owner")),
             "evidence": [{"name": ids[w].get("name"), "href": link_for(ids[w]["locator"], depth),
-                          "kind": ids[w].get("work_product_kind")} for w in as_list(p.get("produces"))],
+                          "kind": ids[w].get("evidence_kind")} for w in as_list(p.get("produces"))],
             "requirements": [{"name": ids[r].get("name"), "href": link_for(ids[r]["source_ref"], depth)
                               if ids[r].get("source_ref") else ""} for r in as_list(p.get("implements"))],
             "frameworks": fw, "covered": covered, "total": len(row["cells"]),

@@ -6,9 +6,9 @@
 # and the object model does not have yet:
 #
 #   SdlPractice     an SDL activity a product team performs (MAP-0001 row)
-#   WorkProduct     a deliverable / evidence item a practice produces (repo path, PR,
+#   Evidence     a deliverable / evidence item a practice produces (repo path, PR,
 #                   workflow, attestation, page, library record)
-#   RequirementSet  a candidate governing requirement set (SSDF, CRA, ISO/SAE 21434,
+#   RequirementSource  a candidate governing requirement set (SSDF, CRA, ISO/SAE 21434,
 #                   IEC 62443-4-1, ...) that a product program may select
 #
 # Selection (which practices are delivery items, which requirement sets govern, what
@@ -21,7 +21,7 @@ name: TmodelExampleContainerSdl
 title: tmodel SDL example container (test harness, full model plus DL-0040 proposals)
 description: >-
   Validation-only wrapper so an SDL example (the full model plus the SdlPractice,
-  WorkProduct and RequirementSet proposals of DL-0040) validates as one file. Not
+  Evidence and RequirementSource proposals of DL-0040) validates as one file. Not
   normative; not a domain class.
 version: 0.1.0
 status: draft
@@ -73,8 +73,8 @@ classes:
       requirements: { range: Requirement, multivalued: true, inlined: true, inlined_as_list: true }
       governed_views: { range: GovernedView, multivalued: true, inlined: true, inlined_as_list: true }
       sdl_practices: { range: SdlPractice, multivalued: true, inlined: true, inlined_as_list: true }
-      work_products: { range: WorkProduct, multivalued: true, inlined: true, inlined_as_list: true }
-      requirement_sets: { range: RequirementSet, multivalued: true, inlined: true, inlined_as_list: true }
+      evidence_items: { range: Evidence, multivalued: true, inlined: true, inlined_as_list: true }
+      requirement_sources: { range: RequirementSource, multivalued: true, inlined: true, inlined_as_list: true }
 
   # ---- PROPOSAL (DL-0040). Not in spec/schema/; DEC-001b stays open. ----
   SdlPractice:
@@ -98,7 +98,7 @@ classes:
       - in_program_node
       - external_refs
 
-  WorkProduct:
+  Evidence:
     is_a: Node
     description: >-
       PROPOSAL (DL-0040). A deliverable or evidence item an SdlPractice produces: a
@@ -106,26 +106,26 @@ classes:
       `locator` is an opaque URL or repo path. It is evidence of linkage, not of
       adequacy: a human still judges whether it is good enough (CLAUDE.md).
       RPT-0013-OM's Evidence object (digest, about_version, fresh_until) is the
-      fuller form; only `locator`, `work_product_kind` and `evidence` are used here.
+      fuller form; only `locator`, `evidence_kind` and `evidence` are used here.
     slots:
       - locator
-      - work_product_kind
+      - evidence_kind
       - evidence
 
-  RequirementSet:
+  RequirementSource:
     is_a: Node
     description: >-
       PROPOSAL (DL-0040). A candidate governing requirement set for a product: a
       standard, regulation or framework (or a named profile of one). `source_ref`
-      points at the library record; `set_members` lists the Requirements of the set
+      points at the library record; `source_members` lists the Requirements of the set
       this example uses. Selecting or excluding a set for a program is an Assertion
-      (`selects_requirement_set` / `excludes_requirement_set`) with the rationale in
+      (`selects_requirement_source` / `excludes_requirement_source`) with the rationale in
       its description and a human Review. RPT-0013-OM's RequirementProfile is the
       fuller form.
     slots:
       - source_ref
       - source_locator
-      - set_members
+      - source_members
       - applies_to_family
 
 slots:
@@ -138,7 +138,7 @@ slots:
     inlined: false
     description: PROPOSAL (DL-0040). Requirements this practice is meant to discharge.
   produces:
-    range: WorkProduct
+    range: Evidence
     multivalued: true
     inlined: false
     description: PROPOSAL (DL-0040). Work products (deliverables, evidence) of the practice.
@@ -150,17 +150,17 @@ slots:
   locator:
     range: string
     description: PROPOSAL (DL-0040). Opaque URL or repo path of a work product.
-  work_product_kind:
-    range: WorkProductKind
+  evidence_kind:
+    range: EvidenceKind
     description: PROPOSAL (DL-0040). What kind of work product this is.
-  set_members:
+  source_members:
     range: Requirement
     multivalued: true
     inlined: false
-    description: PROPOSAL (DL-0040). Requirements of a RequirementSet used by this model.
+    description: PROPOSAL (DL-0040). Requirements of a RequirementSource used by this model.
 
 enums:
-  WorkProductKind:
+  EvidenceKind:
     description: PROPOSAL (DL-0040). Kinds of SDL work product.
     permissible_values:
       document:

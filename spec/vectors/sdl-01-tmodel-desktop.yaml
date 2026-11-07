@@ -9,7 +9,7 @@
 # docs/publishing/render_sdl.py ("tmodel SDL").
 #
 # EXAMPLE DATA — NOT accepted truth and NOT a conformance claim. Every DEC-* stays
-# open; SdlPractice / WorkProduct / RequirementSet are DL-0040 proposals that live
+# open; SdlPractice / Evidence / RequirementSource are DL-0040 proposals that live
 # only in example-container-sdl.linkml.yaml. Every selection below (practice as a
 # delivery item, requirement set, milestone name) is a `proposed` Assertion with
 # no Review: it waits for a human. Status values describe the repository as of
@@ -341,13 +341,13 @@ requirements:
     applies_to: [product:tmodel-desktop]
     maps_to: [requirement:ssdf-rv-1-3]
 
-requirement_sets:
-  - id: requirement-set:ssdf-1-1
+requirement_sources:
+  - id: requirement-source:ssdf-1-1
     name: NIST SSDF 1.1 (SP 800-218)
     description: Practice framework for any software producer; the hub of the MAP-0001 crosswalk.
     source_ref: "library:sp-800-218"
     source_locator: "SP 800-218 v1.1, Table 1"
-    set_members:
+    source_members:
       - requirement:ssdf-po-1-1
       - requirement:ssdf-pw-1-1
       - requirement:ssdf-pw-4-1
@@ -355,28 +355,28 @@ requirement_sets:
       - requirement:ssdf-ps-2-1
       - requirement:ssdf-ps-3-2
       - requirement:ssdf-rv-1-3
-  - id: requirement-set:slsa-1-2-build-l2
+  - id: requirement-source:slsa-1-2-build-l2
     name: SLSA 1.2, Build track L2
     description: Build-provenance levels; DL-0034 already claims Build L2 for the release pipeline.
     source_ref: "library:slsa-1-2"
     source_locator: "SLSA 1.2 Build track"
-    set_members: [requirement:slsa-build-l2]
-  - id: requirement-set:eu-cra
+    source_members: [requirement:slsa-build-l2]
+  - id: requirement-source:eu-cra
     name: EU Cyber Resilience Act (Regulation 2024/2847)
     description: EU regulation for products with digital elements; main obligations apply from late 2027.
     source_ref: "library:eu-cra-2024-2847"
     source_locator: "Art. 13, Art. 14, Annex I, Annex II"
-    set_members: [requirement:cra-annex-i-2-1, requirement:cra-annex-i-2-5]
-  - id: requirement-set:openssf-osps
+    source_members: [requirement:cra-annex-i-2-1, requirement:cra-annex-i-2-5]
+  - id: requirement-source:openssf-osps
     name: OpenSSF OSPS Baseline
     description: Baseline controls for open-source projects; fits a public GitHub project.
     source_ref: "library:openssf-osps-baseline"
-  - id: requirement-set:iso-sae-21434
+  - id: requirement-source:iso-sae-21434
     name: ISO/SAE 21434:2021 (road vehicles)
     description: Cybersecurity engineering for road-vehicle E/E systems.
     source_ref: "library:iso-sae-21434-2021"
     source_locator: "clauses 5 to 15"
-  - id: requirement-set:iec-62443-4-1
+  - id: requirement-source:iec-62443-4-1
     name: IEC 62443-4-1:2018 (industrial automation)
     description: Secure product development lifecycle for industrial automation and control system components.
     source_ref: "library:iec-62443-4-1-2018"
@@ -464,7 +464,7 @@ sdl_practices:
     at_phase: lifecycle-phase:concept
     owner: party:nymble
     mitigation_status: complete
-    produces: [work-product:proc-0001, work-product:claude-md, work-product:codeowners]
+    produces: [evidence:proc-0001, evidence:claude-md, evidence:codeowners]
     in_program_node: [milestone:mvp-launch]
   - id: sdl-practice:security-requirements
     name: Define and track security requirements
@@ -474,7 +474,7 @@ sdl_practices:
     owner: party:student-team
     mitigation_status: in_progress
     implements: [requirement:ssdf-po-1-1]
-    produces: [work-product:adr-0012, work-product:rpt-0017, work-product:map-0001]
+    produces: [evidence:adr-0012, evidence:rpt-0017, evidence:map-0001]
     in_program_node: [milestone:i4-risk-mitigation]
   - id: sdl-practice:ai-assisted-development
     name: Rules for AI-assisted development
@@ -483,7 +483,7 @@ sdl_practices:
     at_phase: lifecycle-phase:concept
     owner: party:nymble
     mitigation_status: complete
-    produces: [work-product:claude-md, work-product:design-log]
+    produces: [evidence:claude-md, evidence:design-log]
     in_program_node: [milestone:mvp-launch]
   - id: sdl-practice:threat-modeling
     name: Threat model of the app itself
@@ -493,7 +493,7 @@ sdl_practices:
     owner: party:paria03
     mitigation_status: in_progress
     implements: [requirement:ssdf-pw-1-1]
-    produces: [work-product:sdl-01-threat-model]
+    produces: [evidence:sdl-01-threat-model]
     in_program_node: [gate:release-0-1-0]
   - id: sdl-practice:design-review
     name: Design and architecture review
@@ -502,7 +502,7 @@ sdl_practices:
     at_phase: lifecycle-phase:design
     owner: party:nymble
     mitigation_status: in_progress
-    produces: [work-product:adr-0003, work-product:issue-208]
+    produces: [evidence:adr-0003, evidence:issue-208]
     in_program_node: [milestone:i4-risk-mitigation]
   - id: sdl-practice:secure-toolchain
     name: Approved, pinned toolchain
@@ -511,7 +511,7 @@ sdl_practices:
     at_phase: lifecycle-phase:implementation
     owner: party:nymble
     mitigation_status: in_progress
-    produces: [work-product:dl-0034, work-product:pr-206]
+    produces: [evidence:dl-0034, evidence:pr-206]
     in_program_node: [milestone:mvp-launch]
   - id: sdl-practice:third-party-components
     name: Third-party component risk
@@ -521,7 +521,7 @@ sdl_practices:
     owner: party:student-team
     mitigation_status: in_progress
     implements: [requirement:ssdf-pw-4-1]
-    produces: [work-product:release-yml]
+    produces: [evidence:release-yml]
     in_program_node: [milestone:i4-risk-mitigation]
   - id: sdl-practice:code-review
     name: Code review before merge
@@ -531,7 +531,7 @@ sdl_practices:
     owner: party:student-team
     mitigation_status: in_progress
     implements: [requirement:ssdf-pw-7-2]
-    produces: [work-product:contributing, work-product:pr-template]
+    produces: [evidence:contributing, evidence:pr-template]
     in_program_node: [milestone:i4-risk-mitigation]
   - id: sdl-practice:protect-dev-environment
     name: Protect the repository
@@ -540,7 +540,7 @@ sdl_practices:
     at_phase: lifecycle-phase:implementation
     owner: party:nymble
     mitigation_status: in_progress
-    produces: [work-product:contributing]
+    produces: [evidence:contributing]
     in_program_node: [milestone:i4-risk-mitigation]
   - id: sdl-practice:security-testing
     name: Automated tests in CI
@@ -549,7 +549,7 @@ sdl_practices:
     at_phase: lifecycle-phase:verification
     owner: party:student-team
     mitigation_status: in_progress
-    produces: [work-product:app-yml, work-product:test-api]
+    produces: [evidence:app-yml, evidence:test-api]
     in_program_node: [milestone:i4-risk-mitigation]
   - id: sdl-practice:secure-defaults
     name: Secure defaults in the app
@@ -558,7 +558,7 @@ sdl_practices:
     at_phase: lifecycle-phase:verification
     owner: party:student-team
     mitigation_status: complete
-    produces: [work-product:server-py, work-product:tauri-conf]
+    produces: [evidence:server-py, evidence:tauri-conf]
     in_program_node: [milestone:mvp-launch]
   - id: sdl-practice:sbom
     name: SBOM for every release
@@ -568,7 +568,7 @@ sdl_practices:
     owner: party:nymble
     mitigation_status: complete
     implements: [requirement:ssdf-ps-3-2, requirement:cra-annex-i-2-1]
-    produces: [work-product:release-yml]
+    produces: [evidence:release-yml]
     in_program_node: [milestone:mvp-launch]
   - id: sdl-practice:build-provenance
     name: Build provenance (SLSA)
@@ -578,7 +578,7 @@ sdl_practices:
     owner: party:nymble
     mitigation_status: in_progress
     implements: [requirement:slsa-build-l2]
-    produces: [work-product:dl-0034, work-product:pr-206, work-product:release-yml]
+    produces: [evidence:dl-0034, evidence:pr-206, evidence:release-yml]
     in_program_node: [milestone:mvp-launch]
   - id: sdl-practice:release-integrity
     name: Release integrity and signing
@@ -588,7 +588,7 @@ sdl_practices:
     owner: party:nymble
     mitigation_status: in_progress
     implements: [requirement:ssdf-ps-2-1]
-    produces: [work-product:readme-quickstart, work-product:pr-213]
+    produces: [evidence:readme-quickstart, evidence:pr-213]
     in_program_node: [gate:release-0-1-0]
   - id: sdl-practice:release-gate
     name: Release sign-off
@@ -597,7 +597,7 @@ sdl_practices:
     at_phase: lifecycle-phase:distribution
     owner: party:nymble
     mitigation_status: planned
-    produces: [work-product:release-yml]
+    produces: [evidence:release-yml]
     in_program_node: [gate:release-0-1-0]
   - id: sdl-practice:user-security-docs
     name: Security information for users
@@ -606,7 +606,7 @@ sdl_practices:
     at_phase: lifecycle-phase:distribution
     owner: party:student-team
     mitigation_status: in_progress
-    produces: [work-product:readme-quickstart]
+    produces: [evidence:readme-quickstart]
     in_program_node: [milestone:mvp-launch]
   - id: sdl-practice:coordinated-disclosure
     name: Coordinated vulnerability disclosure
@@ -626,28 +626,28 @@ sdl_practices:
     mitigation_status: planned
     in_program_node: [milestone:i5-integrate-demo]
 
-work_products:
-  - { id: work-product:proc-0001, name: PROC-0001 team coordination, work_product_kind: document, locator: project/PROC-0001-team-coordination.md }
-  - { id: work-product:claude-md, name: CLAUDE.md agent rules, work_product_kind: document, locator: CLAUDE.md }
-  - { id: work-product:codeowners, name: CODEOWNERS, work_product_kind: configuration, locator: .github/CODEOWNERS }
-  - { id: work-product:design-log, name: Design log, work_product_kind: document, locator: design-log/README.md }
-  - { id: work-product:adr-0012, name: ADR-0012 Requirement in the core, work_product_kind: document, locator: spec/ADR-0012-requirement-in-core.md }
-  - { id: work-product:adr-0003, name: ADR-0003 local app (Path A), work_product_kind: document, locator: spec/ADR-0003-path-a-local-app.md }
-  - { id: work-product:rpt-0017, name: RPT-0017 requirements extraction, work_product_kind: document, locator: research/0017-requirements-extraction/ }
-  - { id: work-product:map-0001, name: MAP-0001 SDL requirements crosswalk, work_product_kind: document, locator: spec/MAP-0001-sdl-requirements-crosswalk.md }
-  - { id: work-product:sdl-01-threat-model, name: App threat model seed (this file), work_product_kind: model, locator: spec/vectors/sdl-01-tmodel-desktop.yaml }
-  - { id: work-product:issue-208, name: "Issue #208 presentation layer", work_product_kind: issue, locator: "https://github.com/Threat-Radar/tmodel/issues/208" }
-  - { id: work-product:dl-0034, name: DL-0034 SLSA release pipeline, work_product_kind: document, locator: design-log/0034-slsa-release-pipeline/README.md }
-  - { id: work-product:pr-206, name: "PR #206 SLSA provenance", work_product_kind: pull_request, locator: "https://github.com/Threat-Radar/tmodel/pull/206" }
-  - { id: work-product:pr-213, name: "PR #213 fixed-name .dmg", work_product_kind: pull_request, locator: "https://github.com/Threat-Radar/tmodel/pull/213" }
-  - { id: work-product:release-yml, name: release.yml workflow, work_product_kind: workflow, locator: .github/workflows/release.yml }
-  - { id: work-product:app-yml, name: app.yml CI workflow, work_product_kind: workflow, locator: .github/workflows/app.yml }
-  - { id: work-product:test-api, name: Engine API tests, work_product_kind: test_suite, locator: engine/tests/test_api.py }
-  - { id: work-product:server-py, name: Engine API server, work_product_kind: configuration, locator: engine/engine/api/server.py }
-  - { id: work-product:tauri-conf, name: Tauri config (CSP), work_product_kind: configuration, locator: apps/desktop/src-tauri/tauri.conf.json }
-  - { id: work-product:contributing, name: CONTRIBUTING (branch and review rules), work_product_kind: document, locator: CONTRIBUTING.md }
-  - { id: work-product:pr-template, name: PR template, work_product_kind: document, locator: .github/PULL_REQUEST_TEMPLATE.md }
-  - { id: work-product:readme-quickstart, name: README quickstart (install and verify), work_product_kind: document, locator: README.md }
+evidence_items:
+  - { id: evidence:proc-0001, name: PROC-0001 team coordination, evidence_kind: document, locator: project/PROC-0001-team-coordination.md }
+  - { id: evidence:claude-md, name: CLAUDE.md agent rules, evidence_kind: document, locator: CLAUDE.md }
+  - { id: evidence:codeowners, name: CODEOWNERS, evidence_kind: configuration, locator: .github/CODEOWNERS }
+  - { id: evidence:design-log, name: Design log, evidence_kind: document, locator: design-log/README.md }
+  - { id: evidence:adr-0012, name: ADR-0012 Requirement in the core, evidence_kind: document, locator: spec/ADR-0012-requirement-in-core.md }
+  - { id: evidence:adr-0003, name: ADR-0003 local app (Path A), evidence_kind: document, locator: spec/ADR-0003-path-a-local-app.md }
+  - { id: evidence:rpt-0017, name: RPT-0017 requirements extraction, evidence_kind: document, locator: research/0017-requirements-extraction/ }
+  - { id: evidence:map-0001, name: MAP-0001 SDL requirements crosswalk, evidence_kind: document, locator: spec/MAP-0001-sdl-requirements-crosswalk.md }
+  - { id: evidence:sdl-01-threat-model, name: App threat model seed (this file), evidence_kind: model, locator: spec/vectors/sdl-01-tmodel-desktop.yaml }
+  - { id: evidence:issue-208, name: "Issue #208 presentation layer", evidence_kind: issue, locator: "https://github.com/Threat-Radar/tmodel/issues/208" }
+  - { id: evidence:dl-0034, name: DL-0034 SLSA release pipeline, evidence_kind: document, locator: design-log/0034-slsa-release-pipeline/README.md }
+  - { id: evidence:pr-206, name: "PR #206 SLSA provenance", evidence_kind: pull_request, locator: "https://github.com/Threat-Radar/tmodel/pull/206" }
+  - { id: evidence:pr-213, name: "PR #213 fixed-name .dmg", evidence_kind: pull_request, locator: "https://github.com/Threat-Radar/tmodel/pull/213" }
+  - { id: evidence:release-yml, name: release.yml workflow, evidence_kind: workflow, locator: .github/workflows/release.yml }
+  - { id: evidence:app-yml, name: app.yml CI workflow, evidence_kind: workflow, locator: .github/workflows/app.yml }
+  - { id: evidence:test-api, name: Engine API tests, evidence_kind: test_suite, locator: engine/tests/test_api.py }
+  - { id: evidence:server-py, name: Engine API server, evidence_kind: configuration, locator: engine/engine/api/server.py }
+  - { id: evidence:tauri-conf, name: Tauri config (CSP), evidence_kind: configuration, locator: apps/desktop/src-tauri/tauri.conf.json }
+  - { id: evidence:contributing, name: CONTRIBUTING (branch and review rules), evidence_kind: document, locator: CONTRIBUTING.md }
+  - { id: evidence:pr-template, name: PR template, evidence_kind: document, locator: .github/PULL_REQUEST_TEMPLATE.md }
+  - { id: evidence:readme-quickstart, name: README quickstart (install and verify), evidence_kind: document, locator: README.md }
 
 # ---- Proposals awaiting a human (the Assertion + Review spine) ----------------
 # No Review exists for any of these: every one is a proposal. A human accepts or
@@ -658,8 +658,8 @@ assertions:
     name: Govern the program by NIST SSDF 1.1
     description: Proposed as the governing set. Any software producer can follow it, and MAP-0001 uses it as the hub.
     subject: security-program:tmodel-sdl
-    predicate: selects_requirement_set
-    object: requirement-set:ssdf-1-1
+    predicate: selects_requirement_source
+    object: requirement-source:ssdf-1-1
     confidence: high
     assertion_status: proposed
     asserted_by: party:drafting-agent
@@ -668,8 +668,8 @@ assertions:
     name: Govern the build by SLSA 1.2 Build L2
     description: Proposed; DL-0034 already claims Build L2 for releases.
     subject: security-program:tmodel-sdl
-    predicate: selects_requirement_set
-    object: requirement-set:slsa-1-2-build-l2
+    predicate: selects_requirement_source
+    object: requirement-source:slsa-1-2-build-l2
     confidence: high
     assertion_status: proposed
     asserted_by: party:drafting-agent
@@ -681,8 +681,8 @@ assertions:
       the CRA's "placing on the market"; whether it applies is a human (legal) call.
       Its SBOM and disclosure duties are cheap to meet early.
     subject: security-program:tmodel-sdl
-    predicate: considers_requirement_set
-    object: requirement-set:eu-cra
+    predicate: considers_requirement_source
+    object: requirement-source:eu-cra
     confidence: medium
     assertion_status: proposed
     asserted_by: party:drafting-agent
@@ -691,8 +691,8 @@ assertions:
     name: Keep the OpenSSF OSPS Baseline as a candidate
     description: Candidate; written for open-source projects on hosted forges like this one.
     subject: security-program:tmodel-sdl
-    predicate: considers_requirement_set
-    object: requirement-set:openssf-osps
+    predicate: considers_requirement_source
+    object: requirement-source:openssf-osps
     confidence: medium
     assertion_status: proposed
     asserted_by: party:drafting-agent
@@ -704,8 +704,8 @@ assertions:
       components (its scope clause); a desktop analysis tool is not one. tmodel models
       21434 TARAs as content (mvp-02), which does not make the tool itself in scope.
     subject: security-program:tmodel-sdl
-    predicate: excludes_requirement_set
-    object: requirement-set:iso-sae-21434
+    predicate: excludes_requirement_source
+    object: requirement-source:iso-sae-21434
     confidence: high
     assertion_status: proposed
     asserted_by: party:drafting-agent
@@ -714,8 +714,8 @@ assertions:
     name: IEC 62443-4-1 does not apply to the desktop app
     description: Proposed not applicable. It targets suppliers of industrial automation and control system components.
     subject: security-program:tmodel-sdl
-    predicate: excludes_requirement_set
-    object: requirement-set:iec-62443-4-1
+    predicate: excludes_requirement_source
+    object: requirement-source:iec-62443-4-1
     confidence: medium
     assertion_status: proposed
     asserted_by: party:drafting-agent

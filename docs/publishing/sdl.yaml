@@ -24,9 +24,9 @@ pages:
     # Requirement set -> its column in spec/MAP-0001.yaml, so each practice row can
     # show which ids of the selected and candidate sets it covers.
     map_columns:
-      requirement-set:ssdf-1-1: ssdf
-      requirement-set:slsa-1-2-build-l2: slsa
-      requirement-set:eu-cra: cra
-      requirement-set:openssf-osps: osps
-      requirement-set:iso-sae-21434: iso21434
-      requirement-set:iec-62443-4-1: iec
+      requirement-source:ssdf-1-1: ssdf
+      requirement-source:slsa-1-2-build-l2: slsa
+      requirement-source:eu-cra: cra
+      requirement-source:openssf-osps: osps
+      requirement-source:iso-sae-21434: iso21434
+      requirement-source:iec-62443-4-1: iec
