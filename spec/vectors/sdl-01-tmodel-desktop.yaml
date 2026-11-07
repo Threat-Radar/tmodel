@@ -1,0 +1,808 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# SDL EXAMPLE — the tmodel desktop app itself (this project), DL-0040
+#
+# One product's secure development lifecycle as a knowledge graph: the SDL
+# program, its practices grouped by lifecycle phase, the work products that
+# evidence them (repo paths, PRs, workflows, library records), the candidate
+# governing requirement sets, proposed milestone names, open gaps, and a small
+# threat model of the app. Rendered to docs/sdl/index.html by
+# docs/publishing/render_sdl.py ("tmodel SDL").
+#
+# EXAMPLE DATA — NOT accepted truth and NOT a conformance claim. Every DEC-* stays
+# open; SdlPractice / WorkProduct / RequirementSet are DL-0040 proposals that live
+# only in example-container-sdl.linkml.yaml. Every selection below (practice as a
+# delivery item, requirement set, milestone name) is a `proposed` Assertion with
+# no Review: it waits for a human. Status values describe the repository as of
+# 2026-11-07 and were drafted by an AI agent from repo evidence; a human has not
+# reviewed them. People appear as github ids or roles only (CLAUDE.md); the page
+# shows roles. Licensed standards: paraphrase and clause ids only (#154).
+#
+# Validate:
+#   linkml-validate -s spec/vectors/example-container-sdl.linkml.yaml \
+#     -C ExampleModelSdl spec/vectors/sdl-01-tmodel-desktop.yaml
+#   python3 docs/publishing/render_sdl.py --check
+# ─────────────────────────────────────────────────────────────────────────────
+
+parties:
+  - id: party:threat-radar
+    name: Threat-Radar (USF CS 490 project)
+    description: Maker and publisher of the tmodel desktop app.
+    party_kind: organization
+    classifications: [oss-maintainer]
+  - id: party:nymble
+    name: "@nymble"
+    description: Sponsor; repository admin and release owner.
+    party_kind: person
+    classifications: [role:sponsor]
+  - id: party:phaskell
+    name: "@phaskell"
+    description: Faculty advisor.
+    party_kind: person
+    classifications: [role:faculty]
+  - id: party:student-team
+    name: Student team
+    description: The CS 490 student team, as a group role. Individual owners are a human choice.
+    party_kind: organization
+    classifications: [role:student-team]
+  - id: party:paria03
+    name: "@paria03"
+    description: Student; attack-path reviewer for the proposal vectors (ADR-0011 decision 4).
+    party_kind: person
+    classifications: [role:student]
+  - id: party:Clovier
+    name: "@Clovier"
+    description: Student; ISO/SAE 21434 content review (#184, library#44).
+    party_kind: person
+    classifications: [role:student]
+  - id: party:drafting-agent
+    name: Grok Bot (drafting agent)
+    description: AI agent that drafted this example. Its statements are proposals, never reviews.
+    party_kind: software_agent
+    classifications: [role:ai-agent]
+
+products:
+  - id: product:tmodel-desktop
+    name: tmodel desktop app (macOS)
+    description: >-
+      Local threat-modeling app: a Tauri + TypeScript shell with a Python engine
+      sidecar that serves a loopback-only API (127.0.0.1:47811). Distributed as an
+      ad-hoc-signed .dmg from GitHub Releases (ADR-0003, PLAN-0002).
+    composed_of:
+      - component:desktop-shell
+      - component:engine-sidecar
+      - component:local-api
+    manufactured_by: party:threat-radar
+    supplied_by: party:threat-radar
+    identifiers: ["pkg:github/Threat-Radar/tmodel"]
+    classifications: [family:desktop-software, family:open-source]
+
+product_instances:
+  - id: product-instance:tmodel-v0-1-0-rc-2
+    name: tmodel v0.1.0-rc.2 (draft release)
+    of_product: product:tmodel-desktop
+    current_phase: lifecycle-phase:distribution
+    version: 0.1.0-rc.2
+
+components:
+  - id: component:desktop-shell
+    name: Desktop shell (Tauri webview + Rust host)
+    component_kind: application
+    supplied_by: party:threat-radar
+  - id: component:engine-sidecar
+    name: Engine sidecar (Python, PyInstaller)
+    component_kind: application
+    supplied_by: party:threat-radar
+  - id: component:local-api
+    name: Local engine API (loopback HTTP)
+    component_kind: application
+    supplied_by: party:threat-radar
+  - id: component:release-pipeline
+    name: Release pipeline (GitHub Actions release.yml)
+    description: Build and publish workflow; part of the product's supply chain, not of the app.
+    component_kind: platform
+    supplied_by: party:threat-radar
+
+lifecycle_phases:
+  - id: lifecycle-phase:concept
+    name: Program and requirements
+    code: concept
+  - id: lifecycle-phase:design
+    name: Design
+    code: design
+  - id: lifecycle-phase:implementation
+    name: Implementation
+    code: implementation
+  - id: lifecycle-phase:verification
+    name: Verification
+    code: verification_validation
+  - id: lifecycle-phase:distribution
+    name: Release and distribution
+    code: distribution
+  - id: lifecycle-phase:maintenance
+    name: Maintenance and response
+    code: maintenance
+
+# ---- Threat model of the app (small, AI-drafted, unreviewed) -----------------
+weaknesses:
+  - id: weakness:cwe-346
+    name: Origin Validation Error
+    catalog_ref: CWE-346
+  - id: weakness:cwe-494
+    name: Download of Code Without Integrity Check
+    catalog_ref: CWE-494
+  - id: weakness:cwe-829
+    name: Inclusion of Functionality from Untrusted Control Sphere
+    catalog_ref: CWE-829
+  - id: weakness:cwe-502
+    name: Deserialization of Untrusted Data
+    catalog_ref: CWE-502
+
+attack_patterns:
+  - id: attack-pattern:capec-275
+    name: DNS Rebinding
+    catalog_ref: CAPEC-275
+  - id: attack-pattern:capec-439
+    name: Manipulation During Distribution
+    catalog_ref: CAPEC-439
+  - id: attack-pattern:capec-538
+    name: Open-Source Library Manipulation
+    catalog_ref: CAPEC-538
+  - id: attack-pattern:capec-586
+    name: Object Injection
+    catalog_ref: CAPEC-586
+
+threat_instances:
+  - id: threat-instance:web-page-drives-local-api
+    name: A web page in the user's browser drives the local engine API
+    description: DNS rebinding or a cross-origin request reaches 127.0.0.1:47811 and reads or changes the model.
+    method_facet: [stride]
+    violates_property: "I confidentiality / T integrity"
+    applies_in_phase: [lifecycle-phase:maintenance]
+    targets_element: [component:local-api]
+  - id: threat-instance:tampered-dmg
+    name: A tampered .dmg reaches users
+    description: >-
+      A swapped release asset or a look-alike download runs on the user's Mac. Ad-hoc
+      signing means Gatekeeper cannot tell the real build from a fake, and users are
+      told to click Open Anyway.
+    method_facet: [stride]
+    violates_property: "T integrity"
+    applies_in_phase: [lifecycle-phase:distribution]
+    targets_element: [component:release-pipeline]
+  - id: threat-instance:poisoned-build-input
+    name: A compromised action or dependency poisons the build
+    description: A third-party GitHub Action, npm, Cargo or pip package injects code during the release build.
+    method_facet: [stride]
+    violates_property: "T integrity"
+    applies_in_phase: [lifecycle-phase:implementation, lifecycle-phase:distribution]
+    targets_element: [component:release-pipeline]
+  - id: threat-instance:malicious-model-file
+    name: A malicious model or library file runs code in the engine
+    description: A crafted YAML model or record abuses the loader to build objects or run code.
+    method_facet: [stride]
+    violates_property: "T integrity"
+    applies_in_phase: [lifecycle-phase:maintenance]
+    targets_element: [component:engine-sidecar]
+
+mitigations:
+  - id: mitigation:loopback-host-origin-check
+    name: Loopback-only bind, Host check and Origin allowlist on the engine API
+    description: engine/engine/api/server.py refuses non-loopback binds and Hosts and allows only the app's origins; Tauri CSP limits connect-src.
+    mitigates: [threat-instance:web-page-drives-local-api]
+    implementation_owner: party:student-team
+    external_refs: ["engine/engine/api/server.py", "engine/tests/test_api.py", "apps/desktop/src-tauri/tauri.conf.json"]
+    mitigation_status: complete
+  - id: mitigation:slsa-provenance
+    name: SLSA Build L2 provenance for the .dmg, engine and SBOM
+    description: actions/attest-build-provenance in release.yml; users verify with `gh attestation verify`.
+    mitigates: [threat-instance:tampered-dmg]
+    implementation_owner: party:nymble
+    external_refs: [".github/workflows/release.yml", "https://github.com/Threat-Radar/tmodel/pull/206"]
+    mitigation_status: complete
+  - id: mitigation:developer-id-notarization
+    name: Developer ID signing and Apple notarization
+    description: Not done; the Apple secrets are not set, so Gatekeeper warns on every install.
+    mitigates: [threat-instance:tampered-dmg]
+    implementation_owner: party:nymble
+    mitigation_status: planned
+  - id: mitigation:pinned-actions-least-privilege
+    name: Actions pinned to commit SHAs, least-privilege permissions, split build and publish
+    mitigates: [threat-instance:poisoned-build-input]
+    implementation_owner: party:nymble
+    external_refs: ["design-log/0034-slsa-release-pipeline/README.md", "https://github.com/Threat-Radar/tmodel/pull/206"]
+    mitigation_status: complete
+  - id: mitigation:hermetic-build
+    name: Hermetic, hash-pinned build inputs (SLSA L3 gaps)
+    description: Floating stable Rust, shared caches and unhashed pip installs remain; provenance is not from an isolated workflow.
+    mitigates: [threat-instance:poisoned-build-input]
+    implementation_owner: party:nymble
+    mitigation_status: planned
+  - id: mitigation:safe-yaml-loading
+    name: Safe YAML loading in the engine
+    description: Models load with yaml.safe_load; library records with BaseLoader (strings only).
+    mitigates: [threat-instance:malicious-model-file]
+    implementation_owner: party:student-team
+    external_refs: ["engine/engine/load/vector.py", "engine/engine/load/library.py"]
+    mitigation_status: complete
+
+threat_models:
+  - id: threat-model:tmodel-desktop-v0
+    name: tmodel desktop app threat model (rev 0, draft)
+    description: AI-drafted seed with four threats; not reviewed. The SDL threat-modeling practice owns it.
+    members:
+      - threat-instance:web-page-drives-local-api
+      - threat-instance:tampered-dmg
+      - threat-instance:poisoned-build-input
+      - threat-instance:malicious-model-file
+      - product:tmodel-desktop
+    owner: party:paria03
+    revision: "0"
+    governance_status: draft
+    approval_status: pending
+    created: "2026-11-07T00:00:00Z"
+    updated: "2026-11-07T00:00:00Z"
+
+# ---- Requirements and candidate requirement sets -----------------------------
+# `text` is our paraphrase; `source_locator` names the clause or task.
+requirements:
+  - id: requirement:ssdf-po-1-1
+    name: SSDF PO.1.1
+    text: Write down the security requirements for the development infrastructure and processes, and keep them current.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:sp-800-218#PO.1.1"
+    source_locator: "SSDF 1.1 task PO.1.1"
+    applies_to: [product:tmodel-desktop]
+  - id: requirement:ssdf-pw-1-1
+    name: SSDF PW.1.1
+    text: Model the product's threats and attack surface, and use the result to drive design and mitigations.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:sp-800-218#PW.1.1"
+    source_locator: "SSDF 1.1 task PW.1.1"
+    applies_to: [product:tmodel-desktop]
+  - id: requirement:ssdf-pw-4-1
+    name: SSDF PW.4.1
+    text: Acquire and maintain third-party components that are themselves well secured.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:sp-800-218#PW.4.1"
+    source_locator: "SSDF 1.1 task PW.4.1"
+    applies_to: [product:tmodel-desktop]
+  - id: requirement:ssdf-pw-7-2
+    name: SSDF PW.7.2
+    text: Review or analyse code for vulnerabilities, and record and triage what is found.
+    text_origin: paraphrase
+    requirement_kind: process
+    normativity: recommended
+    source_ref: "library:sp-800-218#PW.7.2"
+    source_locator: "SSDF 1.1 task PW.7.2"
+    applies_to: [product:tmodel-desktop]
+  - id: requirement:ssdf-ps-2-1
+    name: SSDF PS.2.1
+    text: Publish information that lets users check that a release is genuine and unmodified.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: recommended
+    source_ref: "library:sp-800-218#PS.2.1"
+    source_locator: "SSDF 1.1 task PS.2.1"
+    applies_to: [product:tmodel-desktop]
+    satisfied_by: [mitigation:slsa-provenance]
+  - id: requirement:ssdf-ps-3-2
+    name: SSDF PS.3.2
+    text: Collect, protect and share provenance data for each release, such as an SBOM.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: recommended
+    source_ref: "library:sp-800-218#PS.3.2"
+    source_locator: "SSDF 1.1 task PS.3.2"
+    applies_to: [product:tmodel-desktop]
+    satisfied_by: [mitigation:slsa-provenance]
+  - id: requirement:ssdf-rv-1-3
+    name: SSDF RV.1.3
+    text: Have a policy, roles and a process for receiving vulnerability reports and fixing them.
+    text_origin: paraphrase
+    requirement_kind: organizational
+    normativity: recommended
+    source_ref: "library:sp-800-218#RV.1.3"
+    source_locator: "SSDF 1.1 task RV.1.3"
+    applies_to: [product:tmodel-desktop]
+  - id: requirement:slsa-build-l2
+    name: SLSA Build L2 provenance
+    text: Each release artifact carries signed build provenance generated by a hosted build platform.
+    text_origin: paraphrase
+    requirement_kind: technical
+    normativity: conditional
+    source_ref: "library:slsa-1-2#R-0010"
+    source_locator: "SLSA 1.2 Build track, level 2"
+    applies_to: [product:tmodel-desktop]
+    satisfied_by: [mitigation:slsa-provenance]
+  - id: requirement:cra-annex-i-2-1
+    name: CRA Annex I Part II(1)
+    text: Identify and document the product's vulnerabilities and components, including an SBOM of at least the top-level dependencies.
+    text_origin: paraphrase
+    requirement_kind: documentation
+    normativity: conditional
+    source_ref: "library:eu-cra-2024-2847#AnnexI-PartII(1)"
+    source_locator: "Regulation (EU) 2024/2847, Annex I Part II(1)"
+    applies_to: [product:tmodel-desktop]
+    maps_to: [requirement:ssdf-ps-3-2]
+  - id: requirement:cra-annex-i-2-5
+    name: CRA Annex I Part II(5)
+    text: Put a coordinated vulnerability disclosure policy in place and follow it.
+    text_origin: paraphrase
+    requirement_kind: organizational
+    normativity: conditional
+    source_ref: "library:eu-cra-2024-2847#AnnexI-PartII(5)"
+    source_locator: "Regulation (EU) 2024/2847, Annex I Part II(5)"
+    applies_to: [product:tmodel-desktop]
+    maps_to: [requirement:ssdf-rv-1-3]
+
+requirement_sets:
+  - id: requirement-set:ssdf-1-1
+    name: NIST SSDF 1.1 (SP 800-218)
+    description: Practice framework for any software producer; the hub of the MAP-0001 crosswalk.
+    source_ref: "library:sp-800-218"
+    source_locator: "SP 800-218 v1.1, Table 1"
+    set_members:
+      - requirement:ssdf-po-1-1
+      - requirement:ssdf-pw-1-1
+      - requirement:ssdf-pw-4-1
+      - requirement:ssdf-pw-7-2
+      - requirement:ssdf-ps-2-1
+      - requirement:ssdf-ps-3-2
+      - requirement:ssdf-rv-1-3
+  - id: requirement-set:slsa-1-2-build-l2
+    name: SLSA 1.2, Build track L2
+    description: Build-provenance levels; DL-0034 already claims Build L2 for the release pipeline.
+    source_ref: "library:slsa-1-2"
+    source_locator: "SLSA 1.2 Build track"
+    set_members: [requirement:slsa-build-l2]
+  - id: requirement-set:eu-cra
+    name: EU Cyber Resilience Act (Regulation 2024/2847)
+    description: EU regulation for products with digital elements; main obligations apply from late 2027.
+    source_ref: "library:eu-cra-2024-2847"
+    source_locator: "Art. 13, Art. 14, Annex I, Annex II"
+    set_members: [requirement:cra-annex-i-2-1, requirement:cra-annex-i-2-5]
+  - id: requirement-set:openssf-osps
+    name: OpenSSF OSPS Baseline
+    description: Baseline controls for open-source projects; fits a public GitHub project.
+    source_ref: "library:openssf-osps-baseline"
+  - id: requirement-set:iso-sae-21434
+    name: ISO/SAE 21434:2021 (road vehicles)
+    description: Cybersecurity engineering for road-vehicle E/E systems.
+    source_ref: "library:iso-sae-21434-2021"
+    source_locator: "clauses 5 to 15"
+  - id: requirement-set:iec-62443-4-1
+    name: IEC 62443-4-1:2018 (industrial automation)
+    description: Secure product development lifecycle for industrial automation and control system components.
+    source_ref: "library:iec-62443-4-1-2018"
+
+# ---- SDL program, milestones and gate ----------------------------------------
+security_programs:
+  - id: security-program:tmodel-sdl
+    name: tmodel SDL (rev 0, draft)
+    description: >-
+      The SDL for the tmodel desktop app as a governed, versioned object (§3c R-041).
+      Draft: no human has approved the program, its practices, its requirement sets
+      or its milestone names.
+    governs: product:tmodel-desktop
+    program_nodes:
+      - milestone:mvp-launch
+      - milestone:i4-risk-mitigation
+      - gate:release-0-1-0
+      - milestone:i5-integrate-demo
+    incorporates:
+      - requirement:ssdf-po-1-1
+      - requirement:ssdf-pw-1-1
+      - requirement:ssdf-pw-4-1
+      - requirement:ssdf-pw-7-2
+      - requirement:ssdf-ps-2-1
+      - requirement:ssdf-ps-3-2
+      - requirement:ssdf-rv-1-3
+      - requirement:slsa-build-l2
+    owner: party:nymble
+    revision: "0"
+    governance_status: draft
+    approval_status: pending
+    created: "2026-11-07T00:00:00Z"
+    updated: "2026-11-07T00:00:00Z"
+
+milestones:
+  - id: milestone:mvp-launch
+    name: MVP launch
+    description: External view and a downloadable app (#202). rc.1 and rc.2 are draft releases awaiting a clean-Mac check.
+    order: 1
+    planned_date: "2026-11-06"
+    gate_status: in_progress
+    owner: party:nymble
+    at_phase: lifecycle-phase:distribution
+  - id: milestone:i4-risk-mitigation
+    name: I4 Risk & mitigation
+    description: PLAN-0001 increment I4 (Nov 6 to Nov 19).
+    order: 2
+    planned_date: "2026-11-19"
+    gate_status: planned
+    owner: party:student-team
+    at_phase: lifecycle-phase:implementation
+    depends_on_node: [milestone:mvp-launch]
+  - id: milestone:i5-integrate-demo
+    name: I5 Integrate & demo
+    description: PLAN-0001 increment I5 (Nov 20 to Dec 5).
+    order: 4
+    planned_date: "2026-12-05"
+    gate_status: planned
+    owner: party:student-team
+    at_phase: lifecycle-phase:verification
+    depends_on_node: [gate:release-0-1-0]
+
+gates:
+  - id: gate:release-0-1-0
+    name: v0.1.0 release gate
+    description: >-
+      Publishing the first non-draft release. Proposed exit criteria: the gated
+      requirements are satisfied by complete mitigations, and the app threat model
+      has an approved revision. Checks linkage and approval, not adequacy.
+    order: 3
+    planned_date: "2026-11-26"
+    gate_status: planned
+    owner: party:nymble
+    at_phase: lifecycle-phase:distribution
+    gated_by: [requirement:ssdf-ps-2-1, requirement:ssdf-ps-3-2, requirement:ssdf-pw-1-1]
+    depends_on_node: [milestone:i4-risk-mitigation]
+    validates_conformance_of: threat-model:tmodel-desktop-v0
+
+# ---- SDL practices (DL-0040 proposal class) ----------------------------------
+sdl_practices:
+  - id: sdl-practice:roles-governance
+    name: Security roles and decision records
+    description: Sponsor-owned decisions (ADR), team process (PROC-0001), CODEOWNERS and agent rules (CLAUDE.md).
+    practice_key: roles-governance
+    at_phase: lifecycle-phase:concept
+    owner: party:nymble
+    mitigation_status: complete
+    produces: [work-product:proc-0001, work-product:claude-md, work-product:codeowners]
+    in_program_node: [milestone:mvp-launch]
+  - id: sdl-practice:security-requirements
+    name: Define and track security requirements
+    description: Requirement is a core class (ADR-0012) and library requirements are extracted (RPT-0017); this product has no selected requirement set yet.
+    practice_key: security-requirements
+    at_phase: lifecycle-phase:concept
+    owner: party:student-team
+    mitigation_status: in_progress
+    implements: [requirement:ssdf-po-1-1]
+    produces: [work-product:adr-0012, work-product:rpt-0017, work-product:map-0001]
+    in_program_node: [milestone:i4-risk-mitigation]
+  - id: sdl-practice:ai-assisted-development
+    name: Rules for AI-assisted development
+    description: AI output is a proposal until a human accepts it; the design log records accepts and rejections.
+    practice_key: ai-assisted-development
+    at_phase: lifecycle-phase:concept
+    owner: party:nymble
+    mitigation_status: complete
+    produces: [work-product:claude-md, work-product:design-log]
+    in_program_node: [milestone:mvp-launch]
+  - id: sdl-practice:threat-modeling
+    name: Threat model of the app itself
+    description: Only the four-threat seed in this file exists, AI-drafted and unreviewed.
+    practice_key: threat-modeling
+    at_phase: lifecycle-phase:design
+    owner: party:paria03
+    mitigation_status: in_progress
+    implements: [requirement:ssdf-pw-1-1]
+    produces: [work-product:sdl-01-threat-model]
+    in_program_node: [gate:release-0-1-0]
+  - id: sdl-practice:design-review
+    name: Design and architecture review
+    description: ADRs with adversarial review passes; the presentation-layer reset is under review.
+    practice_key: design-review
+    at_phase: lifecycle-phase:design
+    owner: party:nymble
+    mitigation_status: in_progress
+    produces: [work-product:adr-0003, work-product:issue-208]
+    in_program_node: [milestone:i4-risk-mitigation]
+  - id: sdl-practice:secure-toolchain
+    name: Approved, pinned toolchain
+    description: Actions pinned to SHAs, least-privilege permissions, no persisted checkout credentials, cargo fetch --locked. Rust toolchain floats.
+    practice_key: secure-toolchain
+    at_phase: lifecycle-phase:implementation
+    owner: party:nymble
+    mitigation_status: in_progress
+    produces: [work-product:dl-0034, work-product:pr-206]
+    in_program_node: [milestone:mvp-launch]
+  - id: sdl-practice:third-party-components
+    name: Third-party component risk
+    description: Lockfiles for npm and Cargo; Dependabot alerts on but security updates off; pip installs are not hash-pinned.
+    practice_key: third-party-components
+    at_phase: lifecycle-phase:implementation
+    owner: party:student-team
+    mitigation_status: in_progress
+    implements: [requirement:ssdf-pw-4-1]
+    produces: [work-product:release-yml]
+    in_program_node: [milestone:i4-risk-mitigation]
+  - id: sdl-practice:code-review
+    name: Code review before merge
+    description: One approving review required on main, stale approvals dismissed. Admins can bypass, and did (#206); no static analysis (no CodeQL).
+    practice_key: code-review-sast
+    at_phase: lifecycle-phase:implementation
+    owner: party:student-team
+    mitigation_status: in_progress
+    implements: [requirement:ssdf-pw-7-2]
+    produces: [work-product:contributing, work-product:pr-template]
+    in_program_node: [milestone:i4-risk-mitigation]
+  - id: sdl-practice:protect-dev-environment
+    name: Protect the repository
+    description: Force pushes and branch deletion blocked on main; no required status checks and no required signed commits.
+    practice_key: protect-dev-environment
+    at_phase: lifecycle-phase:implementation
+    owner: party:nymble
+    mitigation_status: in_progress
+    produces: [work-product:contributing]
+    in_program_node: [milestone:i4-risk-mitigation]
+  - id: sdl-practice:security-testing
+    name: Automated tests in CI
+    description: Engine pytest (including loopback-bind tests), frontend vitest, Rust tests and a bundle check run on every PR. No fuzzing or DAST.
+    practice_key: security-testing
+    at_phase: lifecycle-phase:verification
+    owner: party:student-team
+    mitigation_status: in_progress
+    produces: [work-product:app-yml, work-product:test-api]
+    in_program_node: [milestone:i4-risk-mitigation]
+  - id: sdl-practice:secure-defaults
+    name: Secure defaults in the app
+    description: Engine API binds loopback only, checks Host and Origin; the webview has a restrictive CSP.
+    practice_key: secure-defaults
+    at_phase: lifecycle-phase:verification
+    owner: party:student-team
+    mitigation_status: complete
+    produces: [work-product:server-py, work-product:tauri-conf]
+    in_program_node: [milestone:mvp-launch]
+  - id: sdl-practice:sbom
+    name: SBOM for every release
+    description: SPDX SBOM generated in release.yml and attested with the .dmg.
+    practice_key: sbom
+    at_phase: lifecycle-phase:distribution
+    owner: party:nymble
+    mitigation_status: complete
+    implements: [requirement:ssdf-ps-3-2, requirement:cra-annex-i-2-1]
+    produces: [work-product:release-yml]
+    in_program_node: [milestone:mvp-launch]
+  - id: sdl-practice:build-provenance
+    name: Build provenance (SLSA)
+    description: Build L2 attestation for the .dmg, engine and SBOM. L3 needs an isolated provenance workflow and a hermetic build.
+    practice_key: build-provenance
+    at_phase: lifecycle-phase:distribution
+    owner: party:nymble
+    mitigation_status: in_progress
+    implements: [requirement:slsa-build-l2]
+    produces: [work-product:dl-0034, work-product:pr-206, work-product:release-yml]
+    in_program_node: [milestone:mvp-launch]
+  - id: sdl-practice:release-integrity
+    name: Release integrity and signing
+    description: Users can verify with gh attestation verify. No Developer ID signing or notarization; macOS warns on install.
+    practice_key: release-integrity
+    at_phase: lifecycle-phase:distribution
+    owner: party:nymble
+    mitigation_status: in_progress
+    implements: [requirement:ssdf-ps-2-1]
+    produces: [work-product:readme-quickstart, work-product:pr-213]
+    in_program_node: [gate:release-0-1-0]
+  - id: sdl-practice:release-gate
+    name: Release sign-off
+    description: Tag builds become draft releases a human publishes; there is no recorded gate decision or checklist yet.
+    practice_key: release-gate
+    at_phase: lifecycle-phase:distribution
+    owner: party:nymble
+    mitigation_status: planned
+    produces: [work-product:release-yml]
+    in_program_node: [gate:release-0-1-0]
+  - id: sdl-practice:user-security-docs
+    name: Security information for users
+    description: The README quickstart explains the Open Anyway step and how to verify a download.
+    practice_key: user-security-documentation
+    at_phase: lifecycle-phase:distribution
+    owner: party:student-team
+    mitigation_status: in_progress
+    produces: [work-product:readme-quickstart]
+    in_program_node: [milestone:mvp-launch]
+  - id: sdl-practice:coordinated-disclosure
+    name: Coordinated vulnerability disclosure
+    description: No SECURITY.md and GitHub private vulnerability reporting is off.
+    practice_key: coordinated-disclosure
+    at_phase: lifecycle-phase:maintenance
+    owner: party:nymble
+    mitigation_status: planned
+    implements: [requirement:ssdf-rv-1-3, requirement:cra-annex-i-2-5]
+    in_program_node: [gate:release-0-1-0]
+  - id: sdl-practice:vulnerability-intake
+    name: Watch released dependencies for vulnerabilities
+    description: Dependabot alerts are on; security updates and secret scanning are off; no triage owner.
+    practice_key: vulnerability-intake
+    at_phase: lifecycle-phase:maintenance
+    owner: party:student-team
+    mitigation_status: planned
+    in_program_node: [milestone:i5-integrate-demo]
+
+work_products:
+  - { id: work-product:proc-0001, name: PROC-0001 team coordination, work_product_kind: document, locator: project/PROC-0001-team-coordination.md }
+  - { id: work-product:claude-md, name: CLAUDE.md agent rules, work_product_kind: document, locator: CLAUDE.md }
+  - { id: work-product:codeowners, name: CODEOWNERS, work_product_kind: configuration, locator: .github/CODEOWNERS }
+  - { id: work-product:design-log, name: Design log, work_product_kind: document, locator: design-log/README.md }
+  - { id: work-product:adr-0012, name: ADR-0012 Requirement in the core, work_product_kind: document, locator: spec/ADR-0012-requirement-in-core.md }
+  - { id: work-product:adr-0003, name: ADR-0003 local app (Path A), work_product_kind: document, locator: spec/ADR-0003-path-a-local-app.md }
+  - { id: work-product:rpt-0017, name: RPT-0017 requirements extraction, work_product_kind: document, locator: research/0017-requirements-extraction/ }
+  - { id: work-product:map-0001, name: MAP-0001 SDL requirements crosswalk, work_product_kind: document, locator: spec/MAP-0001-sdl-requirements-crosswalk.md }
+  - { id: work-product:sdl-01-threat-model, name: App threat model seed (this file), work_product_kind: model, locator: spec/vectors/sdl-01-tmodel-desktop.yaml }
+  - { id: work-product:issue-208, name: "Issue #208 presentation layer", work_product_kind: issue, locator: "https://github.com/Threat-Radar/tmodel/issues/208" }
+  - { id: work-product:dl-0034, name: DL-0034 SLSA release pipeline, work_product_kind: document, locator: design-log/0034-slsa-release-pipeline/README.md }
+  - { id: work-product:pr-206, name: "PR #206 SLSA provenance", work_product_kind: pull_request, locator: "https://github.com/Threat-Radar/tmodel/pull/206" }
+  - { id: work-product:pr-213, name: "PR #213 fixed-name .dmg", work_product_kind: pull_request, locator: "https://github.com/Threat-Radar/tmodel/pull/213" }
+  - { id: work-product:release-yml, name: release.yml workflow, work_product_kind: workflow, locator: .github/workflows/release.yml }
+  - { id: work-product:app-yml, name: app.yml CI workflow, work_product_kind: workflow, locator: .github/workflows/app.yml }
+  - { id: work-product:test-api, name: Engine API tests, work_product_kind: test_suite, locator: engine/tests/test_api.py }
+  - { id: work-product:server-py, name: Engine API server, work_product_kind: configuration, locator: engine/engine/api/server.py }
+  - { id: work-product:tauri-conf, name: Tauri config (CSP), work_product_kind: configuration, locator: apps/desktop/src-tauri/tauri.conf.json }
+  - { id: work-product:contributing, name: CONTRIBUTING (branch and review rules), work_product_kind: document, locator: CONTRIBUTING.md }
+  - { id: work-product:pr-template, name: PR template, work_product_kind: document, locator: .github/PULL_REQUEST_TEMPLATE.md }
+  - { id: work-product:readme-quickstart, name: README quickstart (install and verify), work_product_kind: document, locator: README.md }
+
+# ---- Proposals awaiting a human (the Assertion + Review spine) ----------------
+# No Review exists for any of these: every one is a proposal. A human accepts or
+# rejects each by adding a Review (review_status accepted / rejected) that points
+# at it; the page then shows the decision.
+assertions:
+  - id: assertion:select-ssdf
+    name: Govern the program by NIST SSDF 1.1
+    description: Proposed as the governing set. Any software producer can follow it, and MAP-0001 uses it as the hub.
+    subject: security-program:tmodel-sdl
+    predicate: selects_requirement_set
+    object: requirement-set:ssdf-1-1
+    confidence: high
+    assertion_status: proposed
+    asserted_by: party:drafting-agent
+    asserted_at: "2026-11-07T00:00:00Z"
+  - id: assertion:select-slsa
+    name: Govern the build by SLSA 1.2 Build L2
+    description: Proposed; DL-0034 already claims Build L2 for releases.
+    subject: security-program:tmodel-sdl
+    predicate: selects_requirement_set
+    object: requirement-set:slsa-1-2-build-l2
+    confidence: high
+    assertion_status: proposed
+    asserted_by: party:drafting-agent
+    asserted_at: "2026-11-07T00:00:00Z"
+  - id: assertion:candidate-cra
+    name: Keep the EU CRA as a candidate
+    description: >-
+      Candidate, not selected. A free, non-commercial open-source app may fall outside
+      the CRA's "placing on the market"; whether it applies is a human (legal) call.
+      Its SBOM and disclosure duties are cheap to meet early.
+    subject: security-program:tmodel-sdl
+    predicate: considers_requirement_set
+    object: requirement-set:eu-cra
+    confidence: medium
+    assertion_status: proposed
+    asserted_by: party:drafting-agent
+    asserted_at: "2026-11-07T00:00:00Z"
+  - id: assertion:candidate-osps
+    name: Keep the OpenSSF OSPS Baseline as a candidate
+    description: Candidate; written for open-source projects on hosted forges like this one.
+    subject: security-program:tmodel-sdl
+    predicate: considers_requirement_set
+    object: requirement-set:openssf-osps
+    confidence: medium
+    assertion_status: proposed
+    asserted_by: party:drafting-agent
+    asserted_at: "2026-11-07T00:00:00Z"
+  - id: assertion:exclude-iso-21434
+    name: ISO/SAE 21434 does not apply to the desktop app
+    description: >-
+      Proposed not applicable. The standard covers road-vehicle E/E items and their
+      components (its scope clause); a desktop analysis tool is not one. tmodel models
+      21434 TARAs as content (mvp-02), which does not make the tool itself in scope.
+    subject: security-program:tmodel-sdl
+    predicate: excludes_requirement_set
+    object: requirement-set:iso-sae-21434
+    confidence: high
+    assertion_status: proposed
+    asserted_by: party:drafting-agent
+    asserted_at: "2026-11-07T00:00:00Z"
+  - id: assertion:exclude-iec-62443-4-1
+    name: IEC 62443-4-1 does not apply to the desktop app
+    description: Proposed not applicable. It targets suppliers of industrial automation and control system components.
+    subject: security-program:tmodel-sdl
+    predicate: excludes_requirement_set
+    object: requirement-set:iec-62443-4-1
+    confidence: medium
+    assertion_status: proposed
+    asserted_by: party:drafting-agent
+    asserted_at: "2026-11-07T00:00:00Z"
+  - id: assertion:name-mvp
+    name: Milestone name "MVP launch"
+    subject: security-program:tmodel-sdl
+    predicate: proposes_milestone_name
+    object: milestone:mvp-launch
+    assertion_status: proposed
+    asserted_by: party:drafting-agent
+  - id: assertion:name-i4
+    name: Milestone name "I4 Risk & mitigation"
+    subject: security-program:tmodel-sdl
+    predicate: proposes_milestone_name
+    object: milestone:i4-risk-mitigation
+    assertion_status: proposed
+    asserted_by: party:drafting-agent
+  - id: assertion:name-gate
+    name: Gate name "v0.1.0 release gate"
+    subject: security-program:tmodel-sdl
+    predicate: proposes_milestone_name
+    object: gate:release-0-1-0
+    assertion_status: proposed
+    asserted_by: party:drafting-agent
+  - id: assertion:name-i5
+    name: Milestone name "I5 Integrate & demo"
+    subject: security-program:tmodel-sdl
+    predicate: proposes_milestone_name
+    object: milestone:i5-integrate-demo
+    assertion_status: proposed
+    asserted_by: party:drafting-agent
+  - id: assertion:cwe-346-capec-275
+    name: CWE-346 is exploited by CAPEC-275
+    subject: weakness:cwe-346
+    predicate: exploited_by
+    object: attack-pattern:capec-275
+    assertion_status: proposed
+    asserted_by: party:drafting-agent
+  - id: assertion:cwe-494-capec-439
+    name: CWE-494 is exploited by CAPEC-439
+    subject: weakness:cwe-494
+    predicate: exploited_by
+    object: attack-pattern:capec-439
+    assertion_status: proposed
+    asserted_by: party:drafting-agent
+  - id: assertion:cwe-829-capec-538
+    name: CWE-829 is exploited by CAPEC-538
+    subject: weakness:cwe-829
+    predicate: exploited_by
+    object: attack-pattern:capec-538
+    assertion_status: proposed
+    asserted_by: party:drafting-agent
+  - id: assertion:cwe-502-capec-586
+    name: CWE-502 is exploited by CAPEC-586
+    subject: weakness:cwe-502
+    predicate: exploited_by
+    object: attack-pattern:capec-586
+    assertion_status: proposed
+    asserted_by: party:drafting-agent
+  - id: assertion:threat-web-cwe-346
+    name: Web-page threat rests on CWE-346
+    subject: threat-instance:web-page-drives-local-api
+    predicate: exploits_weakness
+    object: weakness:cwe-346
+    assertion_status: proposed
+    asserted_by: party:drafting-agent
+  - id: assertion:threat-dmg-cwe-494
+    name: Tampered .dmg threat rests on CWE-494
+    subject: threat-instance:tampered-dmg
+    predicate: exploits_weakness
+    object: weakness:cwe-494
+    assertion_status: proposed
+    asserted_by: party:drafting-agent
+  - id: assertion:threat-build-cwe-829
+    name: Poisoned-build threat rests on CWE-829
+    subject: threat-instance:poisoned-build-input
+    predicate: exploits_weakness
+    object: weakness:cwe-829
+    assertion_status: proposed
+    asserted_by: party:drafting-agent
+  - id: assertion:threat-model-file-cwe-502
+    name: Malicious-file threat rests on CWE-502
+    subject: threat-instance:malicious-model-file
+    predicate: exploits_weakness
+    object: weakness:cwe-502
+    assertion_status: proposed
+    asserted_by: party:drafting-agent
+
+reviews: []
