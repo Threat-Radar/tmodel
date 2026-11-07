@@ -14,6 +14,9 @@
 # (21434 S/F/O/P) + mitigation status + derived risk. Feasibility METHOD is ISO/SAE 21434
 # Table-1; Common Criteria styling is display-only. DEC-003 is OPEN — ADR-0005 was DROPPED,
 # not accepted (DL-0011); no DEC is accepted by this file.
+# Elements whose description starts "Accepted via ADR-0013" (SdlPractice, Evidence,
+# RequirementSource; DL-0041) were accepted by @nymble on 2026-11-07 as part of DEC-001b;
+# the rest of DEC-001b stays open.
 # Elements whose description starts "Accepted via ADR-0011 (DL-0024)" are additions to the
 # core (RPT-0004 Table 6; RPT-0005 G13: Asset, TrustBoundary, DataFlow), accepted on
 # 2026-10-22 by ADR-0011, which amends ADR-0010.
@@ -585,6 +588,65 @@ classes:
       privacy:
         range: ImpactSeverity
         description: Privacy impact (§3). Not re-indexed by asset owner.
+
+  # ---- Accepted via ADR-0013 (DL-0041): SDL program classes, RPT-0013-OM names. ----
+  SdlPractice:
+    is_a: Node
+    description: >-
+      Accepted via ADR-0013 (DL-0041). One secure-development activity as a product
+      team runs it: threat modeling, code review, release integrity, coordinated
+      disclosure. `practice_key` names the MAP-0001 row, so the 16-framework crosswalk
+      (and the library records behind it) is one hop away instead of being re-typed
+      per product. Progress reuses MitigationStatus, the phase reuses LifecyclePhase,
+      the owner is a Party. Whether the practice is a delivery item for this product is
+      an Assertion (`selects_practice`) plus a human Review, not a field. RPT-0013-OM has
+      no canonical Activity type; its nearest objects are GateCriterion and ActionPlan.
+    slots:
+      - practice_key
+      - at_phase
+      - owner
+      - mitigation_status
+      - implements
+      - produces
+      - in_program_node
+      - external_refs
+
+  Evidence:
+    is_a: Node
+    description: >-
+      Accepted via ADR-0013. A deliverable or evidence item an SdlPractice produces: a
+      document, workflow, attestation, SBOM, test suite, page, issue or pull request.
+      `locator` is an opaque URL or repo path. It is evidence of linkage, not of
+      adequacy: a human still judges whether it is good enough (CLAUDE.md). This is the
+      MVP subset of RPT-0013-OM `Evidence`: `evidence_nature`, `digest`, `about_version`
+      and `fresh_until` are optional and carry that object's version binding and
+      freshness when a team has them.
+    slots:
+      - locator
+      - evidence_kind
+      - evidence_nature
+      - digest
+      - about_version
+      - fresh_until
+      - evidence
+
+  RequirementSource:
+    is_a: Node
+    description: >-
+      Accepted via ADR-0013. A candidate governing body of requirements for a product: a
+      standard, regulation or framework, or a named level of one (SLSA Build L2).
+      RPT-0013-OM `RequirementSource`: `source_ref` points at the library record and
+      `version` pins the edition. `source_members` lists the Requirements of the set this
+      model uses. Selecting, considering or excluding a set for a program is an
+      Assertion with the rationale in its description and a human Review. A tailored
+      per-product selection with per-member status (RPT-0013-OM `RequirementProfile`)
+      is deferred.
+    slots:
+      - source_ref
+      - source_locator
+      - version
+      - source_members
+      - applies_to_family
 
 slots:
   id:
@@ -1349,6 +1411,53 @@ slots:
     inlined: false
     description: "Accepted via ADR-0011 (DL-0024). Trust zones the DataFlow crosses, stated explicitly when zone membership is incomplete."
 
+  # ---- Accepted via ADR-0013 (DL-0041): SDL program classes, RPT-0013-OM names. ----
+  practice_key:
+    range: string
+    description: Accepted via ADR-0013. Row key in spec/MAP-0001.yaml (e.g. `threat-modeling`).
+  implements:
+    range: Requirement
+    multivalued: true
+    inlined: false
+    description: Accepted via ADR-0013. Requirements this practice is meant to discharge.
+  produces:
+    range: Evidence
+    multivalued: true
+    inlined: false
+    description: Accepted via ADR-0013. Work products (deliverables, evidence) of the practice.
+  in_program_node:
+    range: ProgramNode
+    multivalued: true
+    inlined: false
+    description: Accepted via ADR-0013. Milestone / Gate / Checkpoint the practice is due at.
+  locator:
+    range: string
+    description: Accepted via ADR-0013. Opaque URL or repo path of a work product.
+  evidence_kind:
+    range: EvidenceKind
+    description: Accepted via ADR-0013. What kind of work product this is.
+  evidence_nature:
+    range: EvidenceNature
+    description: >-
+      Accepted via ADR-0013 (RPT-0013-OM Evidence `nature`). Authored on purpose, or a
+      by-product of development such as tool output or a log.
+  digest:
+    range: string
+    description: Accepted via ADR-0013. Content digest of the work product, e.g. `sha256:...`.
+  about_version:
+    range: string
+    description: >-
+      Accepted via ADR-0013 (RPT-0013-OM Evidence `about`). The product version, tag or
+      commit the work product is evidence about.
+  fresh_until:
+    range: date
+    description: Accepted via ADR-0013 (RPT-0013-OM Evidence `fresh_until`). After this date it needs redoing.
+  source_members:
+    range: Requirement
+    multivalued: true
+    inlined: false
+    description: Accepted via ADR-0013. Requirements of a RequirementSource used by this model.
+
 enums:
   PartyKind:
     description: Party is an organization or a person (§2b).
@@ -1571,3 +1680,26 @@ enums:
       authenticity:
       authorization:
       non_repudiation:
+
+  # ---- Accepted via ADR-0013 (DL-0041): SDL program classes, RPT-0013-OM names. ----
+  EvidenceKind:
+    description: Accepted via ADR-0013. Kinds of SDL work product.
+    permissible_values:
+      document:
+      workflow:
+      attestation:
+      sbom:
+      test_suite:
+      configuration:
+      page:
+      issue:
+      pull_request:
+      library_record:
+      model:
+  EvidenceNature:
+    description: Accepted via ADR-0013 (RPT-0013-OM Evidence). How a work product came to exist.
+    permissible_values:
+      work_product:
+        description: Authored on purpose (a design, plan, record, policy).
+      by_product:
+        description: Produced by doing the work (tool output, test report, log, attestation).

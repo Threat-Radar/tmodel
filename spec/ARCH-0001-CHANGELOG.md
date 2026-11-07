@@ -6,10 +6,10 @@ description: "Every change to ARCH-0001, newest first. §9.5 requires an entry p
 type: process
 category: security
 status: active
-version: "0.1.10"
+version: "0.1.11"
 version_policy: "tracks ARCH-0001; one entry per version bump"
 date: "2026-09-23"
-updated: "2026-10-29"
+updated: "2026-11-07"
 needs_review: false
 reviewed: true
 canonical_path: spec/ARCH-0001-CHANGELOG.md
@@ -19,6 +19,14 @@ defers_to: ARCH-0001
 # ARCH-0001 changelog
 
 Newest first. Every ARCH-0001 version bump appends a line here (§9.5).
+
+## 0.1.11 (2026-11-07)
+
+**DEC-001b accepted in part** via ADR-0013 (decided by @nymble on 2026-11-07, DL-0041). Three SDL
+program classes join the object model under the RPT-0013-OM names: `SdlPractice` (keyed to a
+MAP-0001 row; RPT-0013-OM has no practice type), `Evidence` and `RequirementSource`. Selecting
+practices, requirement sources and milestone names stays an Assertion plus a sponsor Review
+(PROC-0002). Updated the status banner and the DEC-001b row. The rest of DEC-001b stays open.
 
 ## 0.1.10 (2026-10-29)
 

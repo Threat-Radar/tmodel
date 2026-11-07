@@ -380,7 +380,7 @@ conformance claim. Licensed standards appear as ids only.</div>
           f"({len(d['uncovered'])} of {d['map_rows']}): {esc('; '.join(d['uncovered']))}.</p>")
     w(f"""<footer>Generated from <code>{esc(d['src'])}</code> (sha256 {esc(d['digest'][:12])}) and
 <code>spec/MAP-0001.yaml</code> by <code>docs/publishing/render_sdl.py</code>; schema proposal in
-<code>spec/vectors/example-container-sdl.linkml.yaml</code> (DL-0040). Do not hand-edit: change the model and
+<code>spec/schema/tmodel-object-model.linkml.yaml</code> (SDL classes: ADR-0013). Do not hand-edit: change the model and
 re-run. No personal identities are published (people show as roles; enforced by
 <code>check_identities.py</code>).</footer></body></html>
 """)

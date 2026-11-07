@@ -2,26 +2,22 @@
 #
 # NOT part of the domain object model and NOT normative. It is the FULL container
 # (core + the DEC-001b governed layer: SecurityProgram / Gate / Milestone /
-# Checkpoint / ThreatModel) plus three PROPOSAL-LEVEL classes the SDL example needed
-# and the object model does not have yet:
+# Checkpoint / ThreatModel) plus collections for the three SDL classes ADR-0013
+# accepted on 2026-11-07 (defined in ../schema/tmodel-object-model.linkml.yaml):
 #
-#   SdlPractice     an SDL activity a product team performs (MAP-0001 row)
-#   Evidence     a deliverable / evidence item a practice produces (repo path, PR,
-#                   workflow, attestation, page, library record)
-#   RequirementSource  a candidate governing requirement set (SSDF, CRA, ISO/SAE 21434,
-#                   IEC 62443-4-1, ...) that a product program may select
+#   SdlPractice        an SDL activity a product team performs (a MAP-0001 row)
+#   Evidence           a deliverable or evidence item a practice produces (RPT-0013-OM)
+#   RequirementSource  a governing body of requirements a program may select (RPT-0013-OM)
 #
-# Selection (which practices are delivery items, which requirement sets govern, what
-# the milestones are called) is NOT a field here: it goes through the existing
-# Assertion + Review spine (ARCH-0001 §4). An Assertion with no accepted Review is a
-# proposal. Nothing in this file accepts a DEC-*; it is evidence for DEC-001b and
-# RPT-0013-OM (SDLProgram, Evidence, RequirementProfile there). See DL-0040.
+# Selection (which practices are delivery items, which sources govern, what the
+# milestones are called) is NOT a field: it is an Assertion plus a human Review
+# (ARCH-0001 §4, PROC-0002). See DL-0040, DL-0041.
 id: https://threat-radar.github.io/tmodel/schema/vectors/example-container-sdl
 name: TmodelExampleContainerSdl
-title: tmodel SDL example container (test harness, full model plus DL-0040 proposals)
+title: tmodel SDL example container (test harness, full model plus the ADR-0013 collections)
 description: >-
   Validation-only wrapper so an SDL example (the full model plus the SdlPractice,
-  Evidence and RequirementSource proposals of DL-0040) validates as one file. Not
+  Evidence and RequirementSource classes ADR-0013 accepted) validates as one file. Not
   normative; not a domain class.
 version: 0.1.0
 status: draft
@@ -75,103 +71,3 @@ classes:
       sdl_practices: { range: SdlPractice, multivalued: true, inlined: true, inlined_as_list: true }
       evidence_items: { range: Evidence, multivalued: true, inlined: true, inlined_as_list: true }
       requirement_sources: { range: RequirementSource, multivalued: true, inlined: true, inlined_as_list: true }
-
-  # ---- PROPOSAL (DL-0040). Not in spec/schema/; DEC-001b stays open. ----
-  SdlPractice:
-    is_a: Node
-    description: >-
-      PROPOSAL (DL-0040). One secure-development activity as a product team runs it:
-      threat modeling, code review, release integrity, coordinated disclosure, ...
-      `practice_key` names the MAP-0001 row, so the 16-framework crosswalk (and the
-      library records behind it) is one hop away instead of being re-typed per
-      product. Progress reuses MitigationStatus; the phase reuses LifecyclePhase; the
-      owner is a Party role. Whether the practice is a delivery item for this
-      product is an Assertion (predicate `selects_practice`) plus a human Review, not
-      a field. RPT-0013-OM calls the closest canonical types Activity / Practice.
-    slots:
-      - practice_key
-      - at_phase
-      - owner
-      - mitigation_status
-      - implements
-      - produces
-      - in_program_node
-      - external_refs
-
-  Evidence:
-    is_a: Node
-    description: >-
-      PROPOSAL (DL-0040). A deliverable or evidence item an SdlPractice produces: a
-      document, workflow, attestation, SBOM, test suite, page, issue or pull request.
-      `locator` is an opaque URL or repo path. It is evidence of linkage, not of
-      adequacy: a human still judges whether it is good enough (CLAUDE.md).
-      RPT-0013-OM's Evidence object (digest, about_version, fresh_until) is the
-      fuller form; only `locator`, `evidence_kind` and `evidence` are used here.
-    slots:
-      - locator
-      - evidence_kind
-      - evidence
-
-  RequirementSource:
-    is_a: Node
-    description: >-
-      PROPOSAL (DL-0040). A candidate governing requirement set for a product: a
-      standard, regulation or framework (or a named profile of one). `source_ref`
-      points at the library record; `source_members` lists the Requirements of the set
-      this example uses. Selecting or excluding a set for a program is an Assertion
-      (`selects_requirement_source` / `excludes_requirement_source`) with the rationale in
-      its description and a human Review. RPT-0013-OM's RequirementProfile is the
-      fuller form.
-    slots:
-      - source_ref
-      - source_locator
-      - source_members
-      - applies_to_family
-
-slots:
-  practice_key:
-    range: string
-    description: PROPOSAL (DL-0040). Row key in spec/MAP-0001.yaml (e.g. `threat-modeling`).
-  implements:
-    range: Requirement
-    multivalued: true
-    inlined: false
-    description: PROPOSAL (DL-0040). Requirements this practice is meant to discharge.
-  produces:
-    range: Evidence
-    multivalued: true
-    inlined: false
-    description: PROPOSAL (DL-0040). Work products (deliverables, evidence) of the practice.
-  in_program_node:
-    range: ProgramNode
-    multivalued: true
-    inlined: false
-    description: PROPOSAL (DL-0040). Milestone / Gate / Checkpoint the practice is due at.
-  locator:
-    range: string
-    description: PROPOSAL (DL-0040). Opaque URL or repo path of a work product.
-  evidence_kind:
-    range: EvidenceKind
-    description: PROPOSAL (DL-0040). What kind of work product this is.
-  source_members:
-    range: Requirement
-    multivalued: true
-    inlined: false
-    description: PROPOSAL (DL-0040). Requirements of a RequirementSource used by this model.
-
-enums:
-  EvidenceKind:
-    description: PROPOSAL (DL-0040). Kinds of SDL work product.
-    permissible_values:
-      document:
-      workflow:
-      attestation:
-      sbom:
-      test_suite:
-      configuration:
-      page:
-      issue:
-      pull_request:
-      library_record:
-      model:
-

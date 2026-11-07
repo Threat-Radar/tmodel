@@ -347,6 +347,7 @@ requirement_sources:
     description: Practice framework for any software producer; the hub of the MAP-0001 crosswalk.
     source_ref: "library:sp-800-218"
     source_locator: "SP 800-218 v1.1, Table 1"
+    version: "1.1"
     source_members:
       - requirement:ssdf-po-1-1
       - requirement:ssdf-pw-1-1
@@ -360,6 +361,7 @@ requirement_sources:
     description: Build-provenance levels; DL-0034 already claims Build L2 for the release pipeline.
     source_ref: "library:slsa-1-2"
     source_locator: "SLSA 1.2 Build track"
+    version: "1.2"
     source_members: [requirement:slsa-build-l2]
   - id: requirement-source:eu-cra
     name: EU Cyber Resilience Act (Regulation 2024/2847)
@@ -640,9 +642,9 @@ evidence_items:
   - { id: evidence:dl-0034, name: DL-0034 SLSA release pipeline, evidence_kind: document, locator: design-log/0034-slsa-release-pipeline/README.md }
   - { id: evidence:pr-206, name: "PR #206 SLSA provenance", evidence_kind: pull_request, locator: "https://github.com/Threat-Radar/tmodel/pull/206" }
   - { id: evidence:pr-213, name: "PR #213 fixed-name .dmg", evidence_kind: pull_request, locator: "https://github.com/Threat-Radar/tmodel/pull/213" }
-  - { id: evidence:release-yml, name: release.yml workflow, evidence_kind: workflow, locator: .github/workflows/release.yml }
+  - { id: evidence:release-yml, name: release.yml workflow, evidence_kind: workflow, evidence_nature: work_product, locator: .github/workflows/release.yml }
   - { id: evidence:app-yml, name: app.yml CI workflow, evidence_kind: workflow, locator: .github/workflows/app.yml }
-  - { id: evidence:test-api, name: Engine API tests, evidence_kind: test_suite, locator: engine/tests/test_api.py }
+  - { id: evidence:test-api, name: Engine API tests, evidence_kind: test_suite, evidence_nature: work_product, locator: engine/tests/test_api.py }
   - { id: evidence:server-py, name: Engine API server, evidence_kind: configuration, locator: engine/engine/api/server.py }
   - { id: evidence:tauri-conf, name: Tauri config (CSP), evidence_kind: configuration, locator: apps/desktop/src-tauri/tauri.conf.json }
   - { id: evidence:contributing, name: CONTRIBUTING (branch and review rules), evidence_kind: document, locator: CONTRIBUTING.md }
