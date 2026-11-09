@@ -242,6 +242,15 @@ lets the one-file engine load the Python it unpacks at launch under the hardened
 runtime. The app also carries the Cytoscape MIT notice at
 `tmodel.app/Contents/Resources/THIRD_PARTY_NOTICES.md`.
 
+**Fast local review build.** `bin/build-dmg-local` runs the two steps above from
+the current checkout after checking the prerequisites (macOS, Xcode command-line
+tools, Python 3.11+, Node 22+, Rust), then prints `BUILD_SECONDS=` and the `.dmg`
+path. About 3 minutes cold and 75 s warm on an Apple Silicon Mac, against about
+9 minutes in CI. The result is ad-hoc signed, not notarized and has no
+provenance: use it to look at a change, never to distribute. Releases come only
+from `release.yml` (below). The history of the first release candidates and a
+repair runbook are in `design-log/0035-release-history-2026-11-04/`.
+
 **Releases and supply chain.** `.github/workflows/release.yml` builds the
 `.dmg` on a GitHub-hosted macOS runner, checks the bundle, and publishes it with
 a `.sha256` file and an SPDX SBOM (`.spdx.json`, taken from the lockfiles):
