@@ -241,8 +241,9 @@ def test_all_current_vectors_can_be_reported_and_serialized():
     for path in vectors.glob("*.yaml"):
         if ".linkml." in path.name:
             continue
-        out = assess_document(load_vector_document(path), matrix=MATRIX_ID)
-        assert out["assessments"], path.name
+        doc = load_vector_document(path)
+        out = assess_document(doc, matrix=MATRIX_ID)
+        assert bool(out["assessments"]) == bool(doc.get("threat_instances")), path.name
         json.dumps(out)
 
 

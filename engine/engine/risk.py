@@ -14,7 +14,7 @@ from typing import Any
 
 from engine.graph import AttackGraph, GraphError
 from engine.model_graph import project_model_graph
-from engine.paths import enumerate_paths
+from engine.risk_routes import rated_routes
 
 MATRIX_ID = "annex-h-table-h8"
 CATEGORIES = ("safety", "financial", "operational", "privacy")
@@ -49,8 +49,8 @@ def assess_document(
 ) -> dict[str, Any]:
     """Compute existing RiskScore assessments; list unrated threats as incomplete.
 
-    Missing inputs stay missing. OR alternatives are not silently assigned the
-    authored path's single rating while #63's route-rating decision is open.
+    Missing inputs stay missing. OR routes use separately authored path ratings
+    matched to their complete steps, never a broad path's shared rating.
     Computation neither accepts an assertion nor creates a human review.
     """
     _matrix(matrix)
@@ -152,44 +152,61 @@ def _assessment(
     if scope is not None and set(scope) != expected:
         problems.append("attack_path_scope_mismatch")
 
-    path_results = []
-    path_ratings = []
-    all_paths_rated = bool(selected)
-    for path in selected:
-        rating = _optional_enum(
+    ratings = {
+        path.id: _optional_enum(
             paths[path.id].get("attack_feasibility"), FEASIBILITIES, "attack_feasibility"
         )
-        path_problems = []
-        # The full step graph is retained, so shared prerequisites participate.
-        single_path = AttackGraph(steps=graph.steps, paths={path.id: path})
-        alternatives = enumerate_paths(single_path, threat)
-        if len(alternatives) != 1:
-            path_problems.append("alternative_route_ratings_required")
-        if rating is None:
-            path_problems.append("feasibility_missing")
-        if path_problems:
-            all_paths_rated = False
-        elif rating is not None:
-            path_ratings.append(rating)
-        path_risk = {
-            category: risk_value(severity, rating, matrix=matrix)
-            if severity is not None and rating is not None and not path_problems
+        for path in selected
+    }
+    routes = rated_routes(graph, threat, ratings) if selected else []
+    for route in routes:
+        route["derived_risk"] = _derived(impact, route["feasibility"], matrix)
+        problems.extend(f"{route['id']}:{problem}" for problem in route["problems"])
+
+    path_results = []
+    for path in selected:
+        owned = [route for route in routes if path.id in route["rating_paths"]]
+        unbound = [
+            route
+            for route in routes
+            if not route["rating_paths"] and route["authored_path"] == path.id
+        ]
+        visible = owned + unbound
+        path_problems = sorted(
+            {
+                "alternative_route_ratings_required"
+                if problem == "route_rating_required"
+                else problem
+                for route in visible
+                for problem in route["problems"]
+            }
+        )
+        rated = bool(owned) and all(route["feasibility"] is not None for route in owned)
+        rating = (
+            max((route["feasibility"] for route in owned), key=FEASIBILITIES.index)
+            if rated
             else None
-            for category, severity in impact.items()
-        }
+        )
         path_results.append(
             {
                 "id": path.id,
-                "feasibility": rating,
+                "feasibility": ratings[path.id],
                 "rating_source": "AttackPath.attack_feasibility",
-                "alternatives": [list(route.steps) for route in alternatives],
-                "derived_risk": path_risk,
+                "used_for_ratings": bool(owned),
+                "route_ids": [route["id"] for route in visible],
+                "alternatives": [route["steps"] for route in visible],
+                "derived_risk": _derived(impact, rating, matrix),
                 "review_records": _review_records(doc, path.id, threat),
                 "problems": path_problems,
             }
         )
         problems.extend(f"{path.id}:{problem}" for problem in path_problems)
-    feasibility = max(path_ratings, key=FEASIBILITIES.index) if all_paths_rated else None
+    all_routes_rated = bool(routes) and all(route["feasibility"] is not None for route in routes)
+    feasibility = (
+        max((route["feasibility"] for route in routes), key=FEASIBILITIES.index)
+        if all_routes_rated
+        else None
+    )
     scope_valid = damage is not None and not any("scope_mismatch" in p for p in problems)
     derived = {
         category: risk_value(severity, feasibility, matrix=matrix)
@@ -208,8 +225,20 @@ def _assessment(
         "derived_risk": derived,
         "recorded": {"feasibility": recorded_feasibility, "risk": recorded_risk},
         "paths": path_results,
+        "routes": routes,
         "complete": not problems,
         "problems": problems,
+    }
+
+
+def _derived(
+    impact: Mapping[str, str | None], rating: str | None, matrix: str
+) -> dict[str, int | None]:
+    return {
+        category: risk_value(severity, rating, matrix=matrix)
+        if severity is not None and rating is not None
+        else None
+        for category, severity in impact.items()
     }
 
 

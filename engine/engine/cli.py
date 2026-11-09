@@ -161,6 +161,14 @@ def _risk(args: argparse.Namespace) -> int:
                 impact = assessment["impact"][category] or "not rated"
                 print(f"    {category}: impact {impact}; risk {value if value else 'not assessed'}")
             print(f"    mitigation status: {assessment['mitigation_status'] or 'not recorded'}")
+            for index, route in enumerate(assessment["routes"], 1):
+                sources = ", ".join(route["rating_paths"]) or "no matching rating"
+                rating = route["feasibility"] or "not assessed"
+                vector = ", ".join(
+                    f"{category}={value if value is not None else 'not assessed'}"
+                    for category, value in route["derived_risk"].items()
+                )
+                print(f"    route {index} ({sources}): feasibility {rating}; {vector}")
             for problem in assessment["problems"]:
                 print(f"    needs input: {problem}")
     # JSON is still emitted for incomplete data, while scripts can detect it.

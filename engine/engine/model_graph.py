@@ -45,6 +45,10 @@ COLLECTION_DOMAIN_TYPES = {
     "checkpoints": "Checkpoint",
     "requirements": "Requirement",
     "governed_views": "GovernedView",
+    # ADR-0013: mixed SDL/threat models may reference these from Assertions.
+    "sdl_practices": "SdlPractice",
+    "evidence_items": "Evidence",
+    "requirement_sources": "RequirementSource",
 }
 
 # Sponsor-approved slots whose ranges are model classes. ``impact`` is omitted:

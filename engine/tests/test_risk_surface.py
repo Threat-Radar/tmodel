@@ -118,3 +118,41 @@ def test_cli_requires_explicit_matrix():
     with pytest.raises(SystemExit) as error:
         main(["risk", MODEL])
     assert error.value.code == 2
+
+
+def test_separate_route_ratings_work_through_api_and_cli(engine_url, tmp_path, monkeypatch, capsys):
+    import yaml
+    from test_risk_routes import separately_rated
+
+    file = tmp_path / "different-difficulty.yaml"
+    file.write_text(yaml.safe_dump(separately_rated()), encoding="utf-8")
+    monkeypatch.setattr(core, "APPROVED_VECTOR_DIRECTORY", tmp_path)
+    expected = core.risk_assessments(file.name, MATRIX_ID)
+    assert expected["assessments"][0]["derived_risk"]["safety"] == 5
+    assert [route["derived_risk"]["safety"] for route in expected["assessments"][0]["routes"]] == [
+        3,
+        5,
+    ]
+    assert api(engine_url, file=file.name, matrix=MATRIX_ID) == expected
+
+    args = ["risk", file.name, "--matrix", MATRIX_ID]
+    for transport in (["--in-process"], ["--url", engine_url]):
+        assert main([*args, "--json", *transport]) == 0
+        assert json.loads(capsys.readouterr().out) == expected
+    assert main([*args, "--in-process"]) == 0
+    text = capsys.readouterr().out
+    assert "route 1 (path:physical): feasibility low; safety=3" in text
+    assert "route 2 (path:remote): feasibility high; safety=5" in text
+
+
+def test_missing_route_rating_is_visible_over_http(engine_url, tmp_path, monkeypatch):
+    import yaml
+    from test_risk_routes import separately_rated
+
+    file = tmp_path / "missing-route-rating.yaml"
+    file.write_text(yaml.safe_dump(separately_rated("low", None)), encoding="utf-8")
+    monkeypatch.setattr(core, "APPROVED_VECTOR_DIRECTORY", tmp_path)
+    row = api(engine_url, file=file.name, matrix=MATRIX_ID)["assessments"][0]
+    assert not row["complete"]
+    assert row["derived_risk"]["safety"] is None
+    assert [route["derived_risk"]["safety"] for route in row["routes"]] == [3, None]
