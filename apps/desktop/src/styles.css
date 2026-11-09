@@ -200,3 +200,29 @@ h3 { margin-bottom: 10px; font-size: 0.84rem; text-transform: uppercase; letter-
   .library-source-link { color: #93c5fd; }
   .library-warning { border-color: #8a671b; background: #3b2f12; color: #fde68a; }
 }
+
+/* SDL view (DL-0043) */
+.sdl-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin: 12px 0; }
+.sdl-heading label { display: grid; gap: 4px; font-size: 0.72rem; font-weight: 700; }
+.sdl-content { display: grid; gap: 14px; }
+.sdl-banner { padding: 8px 12px; border: 1px solid #e8c766; border-radius: 6px; background: #fff4d6; font-size: 0.8rem; }
+.sdl-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+.sdl-table th, .sdl-table td { padding: 6px 8px; border-bottom: 1px solid #e2e8f0; text-align: left; vertical-align: top; }
+.sdl-small { color: #697386; font-size: 0.68rem; }
+.sdl-links { margin: 0; padding-left: 16px; }
+.sdl-status, .review-chip { display: inline-block; padding: 2px 7px; border-radius: 999px; font-size: 0.66rem; font-weight: 750; white-space: nowrap; border: 1px solid; }
+.sdl-status-complete { background: #e7f6ea; border-color: #9fd3aa; color: #1d5b2a; }
+.sdl-status-in_progress, .sdl-status-accepted_risk { background: #fff6e0; border-color: #e8c766; color: #6b4e00; }
+.sdl-status-planned { background: #fde8e8; border-color: #eba3a3; color: #7d1f1f; }
+.sdl-status-not_applicable { background: #f1f1f1; border-color: #ccc; color: #555; }
+.review-chip.review-accepted { color: #166534; border-color: #86efac; }
+.review-chip.review-proposed { color: #92400e; border-color: #fcd34d; border-style: dashed; }
+.review-chip.review-changes_requested { color: #9a3412; border-style: dashed; }
+.review-chip.review-rejected { color: #991b1b; border-style: dashed; }
+.review-chip.review-unknown { color: #475569; border-style: dashed; }
+
+/* Saved KG views and pending proposals on the Graph tab (DL-0046) */
+.graph-proposals { margin: 0 18px 8px; font-size: 0.7rem; color: #526078; }
+.graph-proposals summary { cursor: pointer; font-weight: 750; }
+.graph-proposals-list { margin: 4px 0 0; padding-left: 0; list-style: none; display: grid; gap: 4px; }
+.graph-proposals-list li { overflow-wrap: anywhere; }

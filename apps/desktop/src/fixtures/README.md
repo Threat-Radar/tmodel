@@ -29,3 +29,11 @@ meaning of `facets` does not change, so existing API clients continue to receive
 whole-library counts.
 
 `GET /library?id=<record id>` returns one record in full, for a details view.
+
+`sdl-01-view.json` is the engine's answer to `GET /sdl?file=sdl-01-tmodel-desktop.yaml`
+(DL-0043). `engine/tests/test_sdl.py` fails when it drifts. After a change to the SDL
+model or the view, regenerate it from the engine folder:
+
+```sh
+cd engine && TMODEL_UPDATE_FIXTURES=1 .venv/bin/pytest tests/test_sdl.py
+```

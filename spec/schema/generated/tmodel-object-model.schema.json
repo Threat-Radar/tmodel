@@ -804,6 +804,123 @@
             "title": "Environment",
             "type": "object"
         },
+        "Evidence": {
+            "additionalProperties": false,
+            "description": "Accepted via ADR-0013. A deliverable or evidence item an SdlPractice produces: a document, workflow, attestation, SBOM, test suite, page, issue or pull request. `locator` is an opaque URL or repo path. It is evidence of linkage, not of adequacy: a human still judges whether it is good enough (CLAUDE.md). This is the MVP subset of RPT-0013-OM `Evidence`: `evidence_nature`, `digest`, `about_version` and `fresh_until` are optional and carry that object's version binding and freshness when a team has them.",
+            "properties": {
+                "about_version": {
+                    "description": "Accepted via ADR-0013 (RPT-0013-OM Evidence `about`). The product version, tag or commit the work product is evidence about.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "description": {
+                    "description": "Short prose description.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "digest": {
+                    "description": "Accepted via ADR-0013. Content digest of the work product, e.g. `sha256:...`.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "evidence": {
+                    "description": "Accepted via ADR-0011 (DL-0024). Opaque references to what the statement rests on: an SBOM digest, an advisory or CVE record URL, a write-up.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "evidence_kind": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/EvidenceKind"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Accepted via ADR-0013. What kind of work product this is."
+                },
+                "evidence_nature": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/EvidenceNature"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Accepted via ADR-0013 (RPT-0013-OM Evidence `nature`). Authored on purpose, or a by-product of development such as tool output or a log."
+                },
+                "fresh_until": {
+                    "description": "Accepted via ADR-0013 (RPT-0013-OM Evidence `fresh_until`). After this date it needs redoing.",
+                    "format": "date",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "Stable object id (ADR-0004). Adapters must not renumber it.",
+                    "type": "string"
+                },
+                "locator": {
+                    "description": "Accepted via ADR-0013. Opaque URL or repo path of a work product.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "name": {
+                    "description": "Human-readable name.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id"
+            ],
+            "title": "Evidence",
+            "type": "object"
+        },
+        "EvidenceKind": {
+            "description": "Accepted via ADR-0013. Kinds of SDL work product.",
+            "enum": [
+                "document",
+                "workflow",
+                "attestation",
+                "sbom",
+                "test_suite",
+                "configuration",
+                "page",
+                "issue",
+                "pull_request",
+                "library_record",
+                "model"
+            ],
+            "title": "EvidenceKind",
+            "type": "string"
+        },
+        "EvidenceNature": {
+            "description": "Accepted via ADR-0013 (RPT-0013-OM Evidence). How a work product came to exist.",
+            "enum": [
+                "work_product",
+                "by_product"
+            ],
+            "title": "EvidenceNature",
+            "type": "string"
+        },
         "FeasibilityLevel": {
             "description": "ISO/SAE 21434 path-level 4-point scale (\u00a73, Table 1). Human-rated at MVP. Not a Common Criteria score and not a CVSS exploitability number.",
             "enum": [
@@ -2103,6 +2220,81 @@
             "title": "RequirementKind",
             "type": "string"
         },
+        "RequirementSource": {
+            "additionalProperties": false,
+            "description": "Accepted via ADR-0013. A candidate governing body of requirements for a product: a standard, regulation or framework, or a named level of one (SLSA Build L2). RPT-0013-OM `RequirementSource`: `source_ref` points at the library record and `version` pins the edition. `source_members` lists the Requirements of the set this model uses. Selecting, considering or excluding a set for a program is an Assertion with the rationale in its description and a human Review. A tailored per-product selection with per-member status (RPT-0013-OM `RequirementProfile`) is deferred.",
+            "properties": {
+                "applies_to_family": {
+                    "description": "Product type / family scope (ADR-0012), as an opaque scheme-prefixed value matched against `Product.classifications`, e.g. `family:connected-ecu`. Used instead of a ProductFamily class, which DEC-009 has not decided.",
+                    "examples": [
+                        [
+                            "family:connected-ecu"
+                        ]
+                    ],
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "description": {
+                    "description": "Short prose description.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "Stable object id (ADR-0004). Adapters must not renumber it.",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Human-readable name.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "source_locator": {
+                    "description": "Human-readable clause / section / table locator in the source, e.g. `RQ-09-09 (\u00a79.5.2)` or `Provision 5.2.1` (ADR-0012). With a paraphrased `text` this is how a reader finds the authoritative wording.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "source_members": {
+                    "description": "Accepted via ADR-0013. Requirements of a RequirementSource used by this model.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "source_ref": {
+                    "description": "OPAQUE reference to the library record (Threat-Radar/library) the Requirement comes from, scheme-prefixed like `catalog_ref`, e.g. `library:iso-sae-21434-2021#RQ-09-09` (ADR-0012; \u00a73c R-044, \u00a72b). tmodel aligns by reference \u2014 it does NOT import or depend on the library schema. Absent for a project-authored requirement.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "version": {
+                    "description": "Accepted via ADR-0011 (DL-0024). The version string as the source wrote it (RPT-0004 Table 6b). Until now only the purl inside `identifiers` carried it.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id"
+            ],
+            "title": "RequirementSource",
+            "type": "object"
+        },
         "RequirementTextOrigin": {
             "description": "Where a Requirement's `text` comes from (ADR-0012).",
             "enum": [
@@ -2271,6 +2463,107 @@
                 "id"
             ],
             "title": "RiskScore",
+            "type": "object"
+        },
+        "SdlPractice": {
+            "additionalProperties": false,
+            "description": "Accepted via ADR-0013 (DL-0041). One secure-development activity as a product team runs it: threat modeling, code review, release integrity, coordinated disclosure. `practice_key` names the MAP-0001 row, so the 16-framework crosswalk (and the library records behind it) is one hop away instead of being re-typed per product. Progress reuses MitigationStatus, the phase reuses LifecyclePhase, the owner is a Party. Whether the practice is a delivery item for this product is an Assertion (`selects_practice`) plus a human Review, not a field. RPT-0013-OM has no canonical Activity type; its nearest objects are GateCriterion and ActionPlan.",
+            "properties": {
+                "at_phase": {
+                    "description": "Canonical LifecyclePhase a program node maps onto (\u00a73b/\u00a73c R-041). Gates are the governance points between phases; `name` is the local corporate label (MAP-0001 gate crosswalk).",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "description": {
+                    "description": "Short prose description.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "external_refs": {
+                    "description": "Linked work items, e.g. a Jira key (\u00a75). Opaque strings; no tracker schema.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "Stable object id (ADR-0004). Adapters must not renumber it.",
+                    "type": "string"
+                },
+                "implements": {
+                    "description": "Accepted via ADR-0013. Requirements this practice is meant to discharge.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "in_program_node": {
+                    "description": "Accepted via ADR-0013. Milestone / Gate / Checkpoint the practice is due at.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "mitigation_status": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/MitigationStatus"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Lifecycle of the mitigation (\u00a73 R-045, \u00a75): planned / in-progress / complete / accepted-risk / n-a. Vocabulary may be refined by DEC-009. On RiskScore this is a peer column of feasibility and impact, not folded into `risk`."
+                },
+                "name": {
+                    "description": "Human-readable name.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "owner": {
+                    "description": "Owner/approver of a governed artifact (\u00a73c R-043). A Party ROLE (\u00a72b \u2014 one identity, many facets), NOT a new actor type (iteration-7 guardrail, DL-0010).",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "practice_key": {
+                    "description": "Accepted via ADR-0013. Row key in spec/MAP-0001.yaml (e.g. `threat-modeling`).",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "produces": {
+                    "description": "Accepted via ADR-0013. Work products (deliverables, evidence) of the practice.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id"
+            ],
+            "title": "SdlPractice",
             "type": "object"
         },
         "SecurityProgram": {
