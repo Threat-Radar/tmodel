@@ -115,6 +115,105 @@ def test_relationship_slots_are_projected_in_sorted_order():
     ]
 
 
+def test_adr_0011_reference_slots_are_projected_as_edges_not_properties():
+    graph = core.project_model_graph(
+        {
+            "parties": [{"id": "party:author"}],
+            "products": [{"id": "product:p"}],
+            "product_instances": [
+                {
+                    "id": "instance:i",
+                    "build_composed_of": "component:a",
+                }
+            ],
+            "components": [
+                {
+                    "id": "component:a",
+                    "in_trust_zone": "boundary:b",
+                },
+                {"id": "component:b"},
+            ],
+            "weaknesses": [{"id": "weakness:w"}],
+            "vulnerabilities": [
+                {
+                    "id": "vulnerability:v",
+                    "instance_of": "weakness:w",
+                }
+            ],
+            "assertions": [
+                {
+                    "id": "assertion:a",
+                    "subject": "component:a",
+                    "predicate": "depends_on",
+                    "object": "component:b",
+                    "asserted_by": "party:author",
+                }
+            ],
+            "assets": [
+                {
+                    "id": "asset:a",
+                    "stored_in": "component:a",
+                    "processed_by": ["component:a", "component:b"],
+                }
+            ],
+            "trust_boundaries": [
+                {
+                    "id": "boundary:b",
+                    "within_boundary": "boundary:outer",
+                },
+                {"id": "boundary:outer"},
+            ],
+            "data_flows": [
+                {
+                    "id": "flow:f",
+                    "flow_from": "component:a",
+                    "flow_to": "component:b",
+                    "carries": "asset:a",
+                    "crosses_boundary": ["boundary:b", "boundary:outer"],
+                }
+            ],
+            "damage_scenarios": [
+                {
+                    "id": "damage:d",
+                    "damages_asset": "asset:a",
+                }
+            ],
+            "threat_instances": [
+                {
+                    "id": "threat:t",
+                    "targets_element": ["component:a", "flow:f", "asset:a", "boundary:b"],
+                }
+            ],
+        }
+    )
+    projected = {(edge.source, edge.relationship_type, edge.target) for edge in graph.edges}
+    expected = {
+        ("instance:i", "build_composed_of", "component:a"),
+        ("vulnerability:v", "instance_of", "weakness:w"),
+        ("assertion:a", "asserted_by", "party:author"),
+        ("asset:a", "stored_in", "component:a"),
+        ("asset:a", "processed_by", "component:a"),
+        ("asset:a", "processed_by", "component:b"),
+        ("component:a", "in_trust_zone", "boundary:b"),
+        ("boundary:b", "within_boundary", "boundary:outer"),
+        ("flow:f", "flow_from", "component:a"),
+        ("flow:f", "flow_to", "component:b"),
+        ("flow:f", "carries", "asset:a"),
+        ("flow:f", "crosses_boundary", "boundary:b"),
+        ("flow:f", "crosses_boundary", "boundary:outer"),
+        ("damage:d", "damages_asset", "asset:a"),
+        ("threat:t", "targets_element", "component:a"),
+        ("threat:t", "targets_element", "flow:f"),
+        ("threat:t", "targets_element", "asset:a"),
+        ("threat:t", "targets_element", "boundary:b"),
+    }
+    assert expected <= projected
+
+    by_id = {node.id: node for node in graph.nodes}
+    for source, relationship, _target in expected:
+        assert relationship not in by_id[source].properties
+
+
 def test_graph_edge_order_does_not_depend_on_string_hash_seed():
     script = (
         "import json; from engine import core; "

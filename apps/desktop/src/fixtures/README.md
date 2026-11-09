@@ -30,6 +30,27 @@ whole-library counts.
 
 `GET /library?id=<record id>` returns one record in full, for a details view.
 
+## Model report inputs (#208)
+
+`report-input-mvp-01.json`, `report-input-mvp-02.json` and
+`report-input-mvp-03.json` are what the Model report view reads for those three
+example models: the model's `/models` entry,
+its `/graph` answer and one `/attack-paths` answer per threat. The `file` fields
+hold the bare file name, never a local path. The report, path-diagram and
+static-page tests run on them, so they test real model data rather than a mock.
+
+They are a saved snapshot of the engine's answer, so their values can lag the
+model files: editing mvp-01 or mvp-02 does not break any test. What
+`engine/tests/test_models_surface.py` does check is their shape: if the engine
+renames or drops a field the report reads, it fails and asks for the GUI types
+to be updated. Every model's default view (all eight) is checked on the
+published pages in `docs/models/` instead (`model-pages.test.ts`). To refresh
+the snapshot on purpose, from the engine folder:
+
+```sh
+cd engine && TMODEL_UPDATE_FIXTURES=1 .venv/bin/pytest tests/test_models_surface.py
+```
+
 `sdl-01-view.json` is the engine's answer to `GET /sdl?file=sdl-01-tmodel-desktop.yaml`
 (DL-0043). `engine/tests/test_sdl.py` fails when it drifts. After a change to the SDL
 model or the view, regenerate it from the engine folder:
