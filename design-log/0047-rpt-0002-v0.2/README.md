@@ -1,16 +1,16 @@
 ---
 schema: "archdoc/v1"
-id: DL-0033
+id: DL-0047
 title: "RPT-0002 v0.2: Attack Flow, surveys, STRIDE origin, evidence, gap analysis, adversarial review"
 type: process
 status: draft
-version: "0.1.1"
+version: "0.2.0"
 date: "2026-10-22"
-updated: "2026-11-03"
-record: DL-0033
+updated: "2026-11-09"
+record: DL-0047
 ---
 
-# DL-0033: RPT-0002 v0.2, threat model frameworks
+# DL-0047: RPT-0002 v0.2, threat model frameworks
 
 AI-assisted research record for the RPT-0002 v0.2 story in #36, per `CLAUDE.md`.
 Student: @paria03. Report:
@@ -248,8 +248,10 @@ has merged. The report's `library_commit` and the submodule pin now both name
 `f1443afa4519d1f5df1f6f809be973756176e796`, the merge containing its references.
 This advances the existing pin; no library records are authored in this change.
 The identical untracked search-log copy was archived outside the repository.
-The research index identifies the report as draft 0.2.0, and this log uses
+The research index identifies the report as draft 0.2.0, and this log initially used
 DL-0033 to avoid colliding with the existing Requirement design log DL-0025.
+That number was later taken on main; the 2026-11-09 correction renames this
+log DL-0047 after checking main and open PR file lists.
 
 The substantive corrections and the clarity pass are recorded above. The larger
 analysis listed under "Deferred to the next iteration" remains deferred. Human
@@ -266,3 +268,120 @@ Validation before opening the PR:
   library.
 - Archdoc: 25 documents, 0 errors. Publishing identity and relative-link checks
   pass for all 423 published pages; `git diff --check` passes.
+
+## Review corrections (2026-11-09)
+
+### Question asked
+
+Finish the remaining #36 work after the #63 route-rating implementation.
+Address PR #200's review findings without accepting a new architecture decision.
+
+### Changes prepared
+
+- Correct both Verreydt passages against the original SOUPS paper, §3.3 / RQ3.1,
+  p. 477. The downloaded PDF's SHA-256 matches the existing library record.
+  Reassessment practices vary; no interviewed organization used CI/CD to trigger
+  reassessment. The earlier claim that none ever reassess is withdrawn.
+- Name Attack Flow as an exception to the traditional methods' lack of defined
+  interchange formats in both §11 and the conclusion. Point G6 to MAP-0002's
+  STIX extension-consumer boundary; general STIX import is not Attack Flow import.
+- Keep Karpati as a metadata-only stub with no empirical findings used. Neither
+  abstract nor full text was read; the source log's abstract-only label was
+  unsupported and is corrected. Identify Shostack's existing stub consistently.
+- Correct the search log's dependency/order wording and its stale claim that
+  comparative evidence had not yet been searched.
+- Identify the October 22 architecture/search baseline prominently. Note the
+  later accepted ADR-0011/0012/0013 additions and the G4 implementation under
+  review in #229; do not present historical G1/G5 as current missing classes.
+- Rename this log to DL-0047. Main already uses DL-0033 and DL-0034; main and
+  open PR file lists were checked before choosing the next free number.
+- Complete the `mitre-attack-flow` extraction in the independent library
+  worktree, using the repository's FX-1 skill. Separate artifact extractors
+  read the primary sources; source contradictions are retained instead of
+  repaired in extracted fixtures. Independent verification and cross-check
+  must pass before the record declares those passes complete.
+
+### Rejections
+
+| proposed or earlier claim | result | reason |
+|---|---|---|
+| None of the seven organizations reassess after changes | rejected | The study reports varying reassessment practices and specifically no CI/CD-triggered reassessment. |
+| No surveyed method defines a file format | rejected | Attack Flow defines a published STIX-based format. |
+| Calling Karpati a controlled comparison | rejected | The retained metadata does not establish its study design; the report now says comparison. |
+| Karpati abstract-only label | rejected | The recorded evidence establishes metadata, not a read abstract. |
+| Reuse DL-0034 as suggested at the time of review | rejected | It has since been merged for the release pipeline; DL-0047 is free at preparation time. |
+| Treat published schema validation as complete language conformance | rejected | The source has prose/schema differences, custom-type fallback, and whole-flow rules outside per-object validation. |
+| Automatically mark extraction or the report human-reviewed | rejected | Automated checking is not the per-artifact human sign-off required by FX-1. |
+
+### Human review
+
+No new human acceptance is claimed by this correction. The report stays draft
+and the extraction's `reviewed_by` values remain empty. Reviewer sign-off and
+merges remain separate steps.
+
+
+### Fresh automated report passes
+
+A fresh adversarial reviewer independently enumerated the requested framework
+groups and SEI's twelve methods, resolved all 27 source-log record IDs, checked
+the Verreydt and Attack Flow digests and source claims, and verified the later
+accepted ADRs and MAP-0002 boundary. It found no material blocker. Its minor
+finding — the unsupported word "controlled" for the metadata-only Karpati
+comparison — was applied and recorded in the rejection table above.
+
+A separate fresh clarity reviewer read the overview, conclusion and full paper
+without the chat. It found no material clarity blocker. Applied its bounded
+polish: reinforce local baseline wording; expand SDL and CI/CD at first use;
+clarify the unread PASTA book's existing metadata-stub label. A lead-in was
+added to the revision table. No finding, decision, quotation, source identifier
+or numeric result changed in this editing pass.
+
+### Extraction cross-check corrections
+
+The independent artifact cross-check caught two prose errors in the message
+inventory. The dictionary datatype note had copied a binary/hex suffix rule
+from the separate generic-property schema; the actual dictionary schema has
+no such rule. That sentence was removed only from the dictionary note. The
+bundle note now names the five Attack Flow SDO types as the individual objects
+validated by the root schema, avoiding any suggestion that it validates the
+extension-definition or creator identity grammar. No published schema,
+fixture bytes or extracted normative requirement changed.
+
+
+### Final dependency and validation
+
+The full extraction is committed in the independent library branch
+`topic/36-attack-flow-extraction` at
+`a04e8899138a49c2dec7aaf4b8c3356c4c430d27`, based on library main `20399c2`.
+The report's `library_commit` and the submodule pin both name that exact commit.
+This also includes the already merged library-main updates since the old report
+pin; they are not new records authored for this correction. The library PR must
+be published and merged, and the final report pin checked against that merge,
+before PR #200 is merged. No remote publication or merge is implied by this
+local preparation.
+
+Independent extraction verification and cross-check completed at maximum
+effort with no unresolved material finding. All 22 source modals occur exactly
+once in the 109 entries; ten language tables, 14 schemas/36 references and all
+ten source fixtures were checked. Five JSON examples validate; the two custom
+examples reproduce their upstream errors. Human artifact signatures stay empty.
+One authored README hard-break was replaced with a blank line for whitespace
+validation after the automated passes; no source fixture, schema, requirement
+or semantic statement changed.
+
+Final local checks:
+
+- Library: 685 records, 24 topics, 41 fully extracted, 0 errors; 99 existing
+  warnings remain, with none attributable to this extraction.
+- Requirements schema: all 53 sets validate; artifact checker: 180 YAML files,
+  0 parse/structural errors, 38 existing warnings, none on this extraction.
+- YAML reader: 15/15 regression cases; export and reindex: all 685 bibliography
+  entries, 0 dangling relations. FX-1 changed-record gate passes.
+- Report: all 27 source-log IDs resolve at the exact new pin; archdoc: 28
+  documents, 0 errors; publishing identity/link checks: all 425 pages clean.
+- Engine library-loader/table/surface regression tests: 122 passed against the
+  new pin. Staged whitespace checks pass in both repositories.
+
+Publication still follows @paria03's approval rule. The report remains draft
+0.2.1 and `reviewed: false`; teammate review and per-artifact human sign-off are
+not replaced by these automated passes.

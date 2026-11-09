@@ -25,7 +25,7 @@ a reference we did not need.
 | id | report | status |
 |---|---|---|
 | `RPT-0001` | [Threat-modeling landscape](0001-threat-modeling-landscape/report.md) | draft (I1) |
-| `RPT-0002` | [Threat model frameworks](0002-threat-model-frameworks/report.md) | draft 0.2.0 (#36) |
+| `RPT-0002` | [Threat model frameworks](0002-threat-model-frameworks/report.md) | draft 0.2.1 (#36) |
 | `RPT-0003` | [Threat-modeling products](0003-threat-modeling-products/report.md) | draft (#7) |
 | `RPT-0004` | [Product composition](0004-product-composition/report.md) | draft (I1) |
 | `RPT-0006` | [Knowledge graph visualization & review console](0006-knowledge-graph-visualization/report.md) | issue (#10) |

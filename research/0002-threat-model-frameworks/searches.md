@@ -4,9 +4,9 @@ id: RPT-0002-searches
 title: "RPT-0002 search log"
 type: research
 status: draft
-version: "0.2.0"
+version: "0.2.1"
 date: "2026-09-28"
-updated: "2026-10-22"
+updated: "2026-11-09"
 record: RPT-0002
 ---
 
@@ -46,7 +46,7 @@ was ingested twice.
 | 2026-09-29 | VAST | `VAST threat modeling Agarwal ThreatModeler "Visual, Agile, and Simple Threat" application threat model operational threat model process flow diagram` | web search | vendor page → `threatmodeler-vast`; detailed vendor blog post now 404 |
 | 2026-09-29 | other (MAESTRO) | `Cloud Security Alliance MAESTRO agentic AI threat modeling framework Ken Huang 2025 seven layers` | web search | CSA blog → `csa-maestro-2025` |
 | 2026-10-22 | Attack Flow | `center-for-threat-informed-defense/attack-flow`: repository metadata and releases (GitHub API) | GitHub | Apache-2.0; tools v4.1.0 and v4.0.0 (2026-10-14), v3.0.0 (2025-07-07) |
-| 2026-10-22 | Attack Flow | `docs/language.rst`, `docs/introduction.rst`, `docs/changelog.rst` at tag v4.1.0 | direct (raw.githubusercontent.com) | `mitre-attack-flow` — language spec (digest of `language.rst`); dependency, not order; v4 changes |
+| 2026-10-22 | Attack Flow | `docs/language.rst`, `docs/introduction.rst`, `docs/changelog.rst` at tag v4.1.0 | direct (raw.githubusercontent.com) | `mitre-attack-flow` — language spec (digest of `language.rst`); dependency implies partial order for acyclic flows (corrected after independent review, DL-0047); v4 changes |
 | 2026-10-22 | Attack Flow | `stix/attack-flow-schema-2.0.0.json`, `stix/attack-flow-extension-2.0.0.json` at tag v4.1.0 | direct (raw.githubusercontent.com) | object types and properties; `operator` enum `AND`/`OR`; `scope` includes `attack-tree`; extension created 2022-08-02 |
 | 2026-10-22 | Attack Flow | language page and `ctid.io/flow` short link | direct | both resolve; the short link opens the Builder (`/attack-flow/ui/`) |
 | 2026-10-22 | surveys (peer-reviewed) | research agent: 19 web searches (e.g. `"threat modeling" systematic literature review Computers & Security`, `systematic literature review automated threat modeling tools`, `SoK threat modeling methods`) plus Crossref, OpenAlex and Semantic Scholar lookups | web search + APIs | candidates: Xiong & Lagerström 2019, Tuma et al. 2018, Tatam et al. 2021, Granata & Rak 2024, Huang et al. 2026, Tran et al. 2026; chosen: `tuma-2018-threat-analysis-slr` (open via the thesis reprint), `xiong-2019-threat-modeling-slr` (stub) |
@@ -56,10 +56,13 @@ was ingested twice.
 | 2026-10-22 | STRIDE — origin | shostack.org copy of the 1999 article; CEUR-WS Vol-413 paper 12; Wiley product page; SEI 2018 PDF text search for "adopted by Microsoft" | direct (re-checked by hand) | digest and byline of the 1999 article confirmed; the 2008 paper names a different 1999 document (Garms, Garg, Howard) |
 | 2026-10-22 | comparative evidence | research agent: 24 web searches (e.g. `controlled experiment comparing threat modeling methods STRIDE attack trees empirical evaluation`, `threat modeling practitioners interview study`, `Experimental comparison of attack trees and misuse cases`) plus Crossref, OpenAlex and Semantic Scholar lookups | web search + APIs | Karpati 2014, Opdahl & Sindre 2009, Lallie 2018, Tuma & Scandariato 2018, Mbaka & Tuma 2024, Tuma et al. 2021, Labunets 2013, Stevens 2018, Scandariato 2015, Verreydt 2024 and others |
 | 2026-10-22 | comparative evidence | Crossref for 10.1007/s00766-013-0195-2, 10.1142/s0218194023500651, 10.1016/j.infsof.2013.10.004, 10.1109/TIFS.2017.2771238; full texts of Scandariato (Lirias), Verreydt (USENIX), Mbaka & Tuma (arXiv 2208.01524) | API + direct (re-checked by hand) | figures confirmed: 19-24% incorrect / 64-69% overlooked; 13 participants, 7 organizations, no CI/CD integration; 2.5 vs 3.57 threats/hour, 0.40 vs 0.43 precision |
+| 2026-11-09 | review corrections | Verreydt SOUPS 2024 PDF, §3.3 / RQ3.1, p. 477; original SHA-256 rechecked | USENIX primary PDF | Reassessment varies; none used CI/CD to trigger it. Corrected both report passages; no claim that all seven never reassess. |
+| 2026-11-09 | FX-1 extraction | Attack Flow `docs/language.rst` and both `stix/` schema/extension files at tag v4.1.0; transitive OASIS schema dependencies pinned separately | primary GitHub sources | Full artifact extraction and independent checks in `mitre-attack-flow/distilled/`; source differences kept explicit. |
+| 2026-11-09 | architecture baseline | ARCH-0001, ADR-0011/0012/0013, MAP-0002 and current PR #229 | repository | Keep October 22 gaps as a dated snapshot; identify later accepted additions and the route-rating PR separately. |
 
 **Coverage notes.**
+
 - Frameworks came from the #6 scope list plus the SEI survey's twelve methods,
   then CSA MAESTRO (found via RPT-0003) for agentic AI.
-- Not yet searched: academic evaluations comparing methods beyond SEI (2018);
-  original papers for Persona non Grata, hTMM and Quantitative TMM (listed in
+- Not yet searched: original papers for Persona non Grata, hTMM and Quantitative TMM (listed in
   report §10 for later ingestion).
