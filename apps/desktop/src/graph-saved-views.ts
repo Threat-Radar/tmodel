@@ -2,6 +2,7 @@
 // proposed view is shown, clearly marked, but it is accepted only by the sponsor
 // (`tmodel accept` in a pull request, PROC-0002), never from the app.
 import type { GraphState } from "./graph-model";
+import { DEFAULT_MODEL_FILE } from "./engine-graph-provider";
 import type { ProposalsDataProvider, ProposalsResponse, SavedView } from "./proposal-types";
 import { reviewStatePresentation } from "./review-status";
 import { changeLabel } from "./sdl-view";
@@ -15,6 +16,11 @@ export interface SavedViewElements {
 }
 
 export type FocusSavedView = (nodeIds?: readonly string[]) => Promise<void>;
+
+/** The active picker choice wins over the startup URL when loading model-scoped views. */
+export function savedViewFile(selectedFile?: string, requestedFile?: string | null): string {
+  return selectedFile ?? requestedFile ?? DEFAULT_MODEL_FILE;
+}
 
 export function savedViewElements(root: Document = document): SavedViewElements {
   const get = <T extends HTMLElement>(id: string): T => {
@@ -61,6 +67,7 @@ export function savedViewLabel(view: SavedView): string {
 
 export class SavedViewsPanel {
   private views: SavedView[] = [];
+  private disposed = false;
 
   constructor(
     private readonly provider: ProposalsDataProvider,
@@ -71,10 +78,12 @@ export class SavedViewsPanel {
   ) {}
 
   async load(): Promise<void> {
+    if (this.disposed) return;
     let data: ProposalsResponse;
     try {
       data = await this.provider.getProposals(this.file);
     } catch (error) {
+      if (this.disposed) return;
       this.views = [];
       this.renderOptions();
       this.elements.select.disabled = true;
@@ -82,10 +91,28 @@ export class SavedViewsPanel {
       this.elements.status.textContent = `Saved views unavailable: ${error instanceof Error ? error.message : String(error)}`;
       return;
     }
+    if (this.disposed) return;
     this.views = data.views;
     this.renderOptions();
     this.renderProposals(data);
     this.renderStatus();
+  }
+
+  /** Stop an older model's pending response and controls from owning the shared toolbar. */
+  dispose(): void {
+    if (this.disposed) return;
+    this.disposed = true;
+    this.views = [];
+    const { select, clear, status, summary, list } = this.elements;
+    select.replaceChildren(this.option("", "No saved views"));
+    select.disabled = true;
+    select.onchange = null;
+    clear.disabled = true;
+    clear.onclick = null;
+    status.textContent = "";
+    status.className = "path-status";
+    summary.textContent = "Pending proposals (0)";
+    list.replaceChildren();
   }
 
   private renderOptions(): void {
