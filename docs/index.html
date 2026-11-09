@@ -316,6 +316,16 @@
             <p>The standards, papers and vendor specifications the models and reports cite, each with a summary page. Browse by topic, type or publishing body, or use the crosswalk.</p>
             <a class="go" href="bibliography/index.html">Open the bibliography →</a>
           </article>
+          <article class="card">
+            <h3>A secure development lifecycle</h3>
+            <p>tmodel's own SDL as an example: the requirement sets it could follow, the practices it has done, has in progress or lacks, and the evidence for each. Every selection waits for a human decision.</p>
+            <a class="go" href="sdl/index.html">Read the SDL page →</a>
+          </article>
+          <article class="card">
+            <h3>The models as data</h3>
+            <p>Every page here is generated from YAML files in the repository, checked against the project's LinkML schema. Read them, or load them into the engine yourself.</p>
+            <a class="go" href="https://github.com/Threat-Radar/tmodel/tree/main/spec/vectors">Browse the YAML →</a>
+          </article>
         </div>
       </div>
     </section>
@@ -394,7 +404,7 @@
           </article>
           <article class="card">
             <h3>Build from source</h3>
-            <p class="meta">macOS or Linux · Python 3.11+ · Node.js 22</p>
+            <p class="meta">macOS or Linux · Python 3.11–3.13 · Node.js 22</p>
             <p>Linux and Windows builds are not published yet, and Windows is untested. The engine and the app run from a checkout in a few minutes; the steps are below.</p>
             <a class="btn btn-quiet" href="#source">Build from source</a>
           </article>
@@ -405,17 +415,18 @@
     <section id="source">
       <div class="wrap">
         <h2>Try it from source</h2>
-        <p class="section-lead">Starts the local engine and the app in a browser tab. The engine listens on 127.0.0.1 only.</p>
+        <p class="section-lead">The local engine and the app in a browser tab, with no Rust or native build. The engine listens on 127.0.0.1 only. In a first terminal:</p>
 <pre><code>git clone --recurse-submodules https://github.com/Threat-Radar/tmodel
 cd tmodel
-python3 -m venv engine/.venv
-engine/.venv/bin/pip install -e "engine[dev]"
-engine/.venv/bin/tmodel serve &amp;
-<span class="c"># attack paths in the terminal</span>
-engine/.venv/bin/tmodel paths spec/vectors/mvp-02-automotive-ecu.yaml
-<span class="c"># the app, at http://localhost:1420/</span>
-(cd apps/desktop &amp;&amp; npm ci &amp;&amp; npm run dev)</code></pre>
-        <p class="meta">The desktop window itself needs Rust as well. Full toolchain: <a href="https://github.com/Threat-Radar/tmodel/blob/main/CONTRIBUTING.md#10-the-desktop-app-and-engine--toolchain">CONTRIBUTING §10</a>.</p>
+python3.13 -m venv engine/.venv
+engine/.venv/bin/python -m pip install -e ./engine
+(cd apps/desktop &amp;&amp; npm ci)
+engine/.venv/bin/tmodel serve</code></pre>
+        <p class="section-lead">Leave it running. In a second terminal, from the same folder, start the app and open <code>http://localhost:1420/</code>:</p>
+<pre><code>(cd apps/desktop &amp;&amp; npm run dev)
+<span class="c"># or list attack paths in the terminal</span>
+engine/.venv/bin/tmodel paths spec/vectors/mvp-02-automotive-ecu.yaml</code></pre>
+        <p class="meta">Python 3.11 or 3.12 work too; change <code>python3.13</code> to match. These are the README's <a href="https://github.com/Threat-Radar/tmodel#try-it-in-five-minutes">tested quickstart</a> steps. The native desktop window also needs Rust: <a href="https://github.com/Threat-Radar/tmodel/blob/main/CONTRIBUTING.md#10-the-desktop-app-and-engine--toolchain">CONTRIBUTING §10</a>.</p>
       </div>
     </section>
 
