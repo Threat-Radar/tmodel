@@ -64,3 +64,5 @@ classes:
       lifecycle_phases: { range: LifecyclePhase, multivalued: true, inlined: true, inlined_as_list: true }
       views: { range: View, multivalued: true, inlined: true, inlined_as_list: true }
       requirements: { range: Requirement, multivalued: true, inlined: true, inlined_as_list: true }
+      # Asset in the core (ADR-0011, DL-0024); first used by mvp-02 (#184 A1).
+      assets: { range: Asset, multivalued: true, inlined: true, inlined_as_list: true }

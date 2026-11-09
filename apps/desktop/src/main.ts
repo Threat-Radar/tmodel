@@ -1,12 +1,16 @@
 import { AppNavigation } from "./app-navigation";
 import { checkEngine, describe, engineProcess, type EngineState } from "./engine";
-import { EngineGraphDataProvider } from "./engine-graph-provider";
+import { DEFAULT_MODEL_FILE, EngineGraphDataProvider } from "./engine-graph-provider";
+import { EngineProposalsDataProvider } from "./engine-proposals-provider";
+import { SavedViewsPanel, savedViewElements } from "./graph-saved-views";
 import { EngineLibraryDataProvider } from "./engine-library-provider";
 import { DevelopmentFixtureProvider } from "./graph-fixture";
 import { connectGraphStartup, type GraphStartup } from "./graph-startup";
 import { KnowledgeGraphView } from "./graph-view";
 import { FixtureLibraryDataProvider } from "./library-fixture";
 import { libraryViewElements, LibraryDocumentsView } from "./library-view";
+import { EngineSdlDataProvider } from "./engine-sdl-provider";
+import { SdlProgramView, sdlViewElements } from "./sdl-view";
 
 const POLL_MS = 2000;
 
@@ -36,7 +40,20 @@ function createKnowledgeGraphStartup(parameters: URLSearchParams): {
   // One view per window: navigation and retries reuse it, so Cytoscape and its
   // listeners are never duplicated.
   const view = new KnowledgeGraphView(provider);
-  const startup = connectGraphStartup(() => view.start(), usesEngine, {
+  // Saved KG views and pending proposals (DL-0046) come from the engine's read-only
+  // GET /proposals; a failure there stays in the view toolbar.
+  const savedViews = usesEngine
+    ? new SavedViewsPanel(
+      new EngineProposalsDataProvider(),
+      parameters.get("file") ?? DEFAULT_MODEL_FILE,
+      savedViewElements(),
+      (ids) => view.focusSavedView(ids),
+    )
+    : undefined;
+  const startup = connectGraphStartup(async () => {
+    await view.start();
+    await savedViews?.load();
+  }, usesEngine, {
     notice: document.querySelector<HTMLElement>("#data-source-notice"),
     retryButton: document.querySelector<HTMLButtonElement>("#graph-retry"),
   });
@@ -59,34 +76,57 @@ window.addEventListener("DOMContentLoaded", () => {
     if (!element) throw new Error(`Missing required application element #${id}`);
     return element as T;
   };
-  const navigation = new AppNavigation({
-    libraryButton: required("library-tab"),
-    graphButton: required("graph-tab"),
-    libraryPanel: required("library-view-panel"),
-    graphPanel: required("graph-view-panel"),
-  }, {
-    libraryActivated: () => {
-      graphVisible = false;
-      graph.view.setVisible(false);
-      libraryView.activate();
+  const sdlView = new SdlProgramView(new EngineSdlDataProvider(), sdlViewElements());
+  let sdlVisible = false;
+  const hideGraph = () => {
+    graphVisible = false;
+    graph.view.setVisible(false);
+  };
+  const navigation = new AppNavigation([
+    {
+      view: "library",
+      button: required("library-tab"),
+      panel: required("library-view-panel"),
+      activated: () => {
+        hideGraph();
+        sdlVisible = false;
+        libraryView.activate();
+      },
     },
-    graphActivated: () => {
-      graphVisible = true;
-      graph.view.setVisible(true);
-      requestAnimationFrame(() => graph.view.resize());
-      if (!graph.startup.started && graph.usesEngine && lastEngineState) {
-        void graph.startup.engineStateChanged(lastEngineState);
-      } else if (!graph.startup.started && !graph.usesEngine) {
-        void graph.startup.startNow();
-      }
+    {
+      view: "graph",
+      button: required("graph-tab"),
+      panel: required("graph-view-panel"),
+      activated: () => {
+        sdlVisible = false;
+        graphVisible = true;
+        graph.view.setVisible(true);
+        requestAnimationFrame(() => graph.view.resize());
+        if (!graph.startup.started && graph.usesEngine && lastEngineState) {
+          void graph.startup.engineStateChanged(lastEngineState);
+        } else if (!graph.startup.started && !graph.usesEngine) {
+          void graph.startup.startNow();
+        }
+      },
     },
-  });
+    {
+      view: "sdl",
+      button: required("sdl-tab"),
+      panel: required("sdl-view-panel"),
+      activated: () => {
+        hideGraph();
+        sdlVisible = true;
+        sdlView.activate();
+      },
+    },
+  ]);
   navigation.start();
 
   const poll = async () => {
     lastEngineState = await refresh();
     if (libraryUsesEngine) void libraryView.engineStateChanged(lastEngineState);
     if (graphVisible && graph.usesEngine) void graph.startup.engineStateChanged(lastEngineState);
+    if (sdlVisible) void sdlView.engineStateChanged(lastEngineState);
   };
   void poll();
   window.setInterval(() => void poll(), POLL_MS);

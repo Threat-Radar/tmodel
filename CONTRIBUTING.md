@@ -114,11 +114,18 @@ DECISIONS   open-decision register         GLOSSARY   terms
 
 ```sh
 bin/validate-archdoc          # front matter, version/updated coupling
-git submodule status          # library pin intentional (once wired)
-cd library && bin/validate    # library records (once wired)
+git submodule status          # library pin intentional; no leading '-' or '+'
+(cd library && bin/validate)  # validate the initialized, pinned library
 ```
 
-CI runs the archdoc check. Running it locally means you find out in 3 seconds.
+Initialize a missing library checkout with `git submodule update --init library`.
+Review an intentional pin change before staging it; keep library-record edits
+in the independent library repository. `bin/validate` can report warnings;
+resolve errors and describe relevant warnings in the PR.
+
+CI checks archdoc front matter and published-page identity and link rules. For
+engine or app changes, also run the checks listed in §10. Running the applicable
+checks locally catches problems before a push.
 
 ---
 
@@ -129,21 +136,24 @@ git clone --recurse-submodules https://github.com/Threat-Radar/tmodel
 cd tmodel
 ```
 
-**Wiring the library submodule** (done once, by a maintainer, after the
-`Threat-Radar/library` fork exists):
+The library submodule is already configured. For an existing clone that did not
+initialize it:
 
 ```sh
-git submodule add https://github.com/Threat-Radar/library.git library
-git commit -m "Add library submodule (fork of m-of-n/library)"
+git submodule update --init library
 ```
 
+For the app, start with the [README quickstart](README.md#try-it-in-five-minutes).
+It runs the Python engine and browser UI with Python 3.11–3.13 and Node.js 22; native
+Tauri development additionally needs the toolchain in §10.
+
 **Set your git identity to an address GitHub will accept.** If *Block command
-line pushes that expose my email* is on (it is on by default), a push is rejected
+line pushes that expose my email* is enabled, a push is rejected
 with `email privacy restrictions`. Use your GitHub noreply address:
 
 ```sh
 git config user.email "<id>+<login>@users.noreply.github.com"
-git config user.name  "Your Name"
+git config user.name  "<github-login>"
 ```
 
 Use a repo-local setting (no `--global`).
@@ -240,7 +250,7 @@ a `.sha256` file and an SPDX SBOM (`.spdx.json`, taken from the lockfiles):
 |---|---|
 | tag `vX.Y.Z` (matching `version` in `tauri.conf.json`) | **draft** release that a maintainer reviews and publishes |
 | tag `vX.Y.Z-rc.N` | draft **prerelease** |
-| merge to `main` touching `apps/`, `engine/`, `spec/vectors/` or the build | rolling prerelease [`latest-main`](https://github.com/Threat-Radar/tmodel/releases/tag/latest-main): its tag moves to the new commit and its assets are replaced; the build is named `<version>-main.<sha7>` (#203) |
+| merge to `main` touching `apps/`, `engine/`, `spec/vectors/` or the build | rolling prerelease [`latest-main`](https://github.com/Threat-Radar/tmodel/releases/tag/latest-main): its tag moves to the new commit and its assets are replaced; the build is named `<version>-main.<sha7>` (#203), and the same `.dmg` is also published as `tmodel_macos_aarch64.dmg` so the landing page can link [straight to it](https://github.com/Threat-Radar/tmodel/releases/download/latest-main/tmodel_macos_aarch64.dmg) |
 | manual run (`workflow_dispatch`) | workflow artifact only |
 | pull request touching the app | `app.yml` uploads an ad-hoc-signed debug `.app` (zip) as a workflow artifact, kept 7 days (#205) |
 
@@ -264,12 +274,19 @@ reproducible (rust, npm and pip caches; a floating `stable` Rust toolchain;
 engine dependencies installed without hashes). Not signed with a Developer ID
 yet, so Gatekeeper cannot vouch for it; the provenance is the integrity check.
 
+**Security reports and scanning.** Report vulnerabilities privately as
+[SECURITY.md](SECURITY.md) describes, never in a public issue. `codeql.yml`
+scans Python, TypeScript and the workflows on every pull request, on `main` and
+weekly; Dependabot (`.github/dependabot.yml`) proposes grouped weekly updates
+for actions, engine and desktop dependencies; secret scanning with push
+protection is on (DL-0045).
+
 *Download and verify* (needs the GitHub CLI, `gh`):
 
 ```sh
-gh release download latest-main -R Threat-Radar/tmodel -p '*.dmg' -p '*.sha256'   # or a version tag
-shasum -a 256 -c tmodel_*_aarch64.dmg.sha256
-gh attestation verify tmodel_*_aarch64.dmg -R Threat-Radar/tmodel
+gh release download latest-main -R Threat-Radar/tmodel -p 'tmodel_macos_aarch64.dmg*'   # or a version tag
+shasum -a 256 -c tmodel_macos_aarch64.dmg.sha256
+gh attestation verify tmodel_macos_aarch64.dmg -R Threat-Radar/tmodel
 # after installing, the engine inside the app verifies too:
 gh attestation verify /Applications/tmodel.app/Contents/MacOS/tmodel-engine -R Threat-Radar/tmodel
 ```
