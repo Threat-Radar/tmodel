@@ -1,0 +1,58 @@
+# RPT-0014 WAVE 1 calibration, lane catalogs-schema (tmodel #79), written
+# independently of the other lanes (LANES.md Step 1). Not yet a library record.
+schema: "library-record/v1"
+id: biml-ara-ml-2020
+body: other
+type: article
+title: "An Architectural Risk Analysis of Machine Learning Systems: Toward More Secure Machine Learning"
+short_title: "BIML ARA of ML systems (BIML-78)"
+authors:
+  - "Gary McGraw"
+  - "Harold Figueroa"
+  - "Victor Shepardson"
+  - "Richie Bonett"
+date: "2020-01-13"
+publisher: "Berryville Institute of Machine Learning (BIML)"
+version: "1.0 (1.13.20)"
+license: "CC BY-SA 3.0"
+identifiers:
+  url: https://berryvilleiml.com/results/ara.pdf
+content:
+  url: https://berryvilleiml.com/results/ara.pdf
+  sha256: "247d7f06d8c768cc734dc84ab7004c6e4d645e91911af61002fd1743807ef312"
+  retrieved: "2026-11-08"
+  local: false
+  media_type: application/pdf
+relations:
+  supersedes: []
+  superseded_by: []
+  see_also:
+    - nist-ai-100-2-e2025
+  cited_by: []
+  implements_concept: []
+bears_on:
+  - DEC-001a
+  - DEC-009
+applicability:
+  security: core
+  cryptography: none
+  this_project: adjacent
+implementations:
+  open_source: []
+  commercial: []
+  searched: "2026-11-08"
+usefulness:
+  verdict: useful
+  reason: "A published component-based ML threat model with 78 parseable risk ids, and the closest prior art to tmodel's generic-threat-to-component mapping."
+  assessed: "2026-11-08"
+topic: ai-threat-model-catalogs-schema
+tags:
+  - ai-threat-model
+  - ai-weakness-catalog
+  - data-poisoning
+  - evasion
+  - model-extraction
+  - prior-art
+status: summarized
+confidence: medium
+owner: Maimcghee
