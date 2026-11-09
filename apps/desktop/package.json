@@ -13,12 +13,12 @@
   },
   "dependencies": {
     "@tauri-apps/api": "^2",
-    "cytoscape": "^3.34.0"
+    "cytoscape": "^3.34.4"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2",
-    "typescript": "~6.0.3",
-    "vite": "^8.0.16",
-    "vitest": "^5.0.3"
+    "typescript": "~7.0.2",
+    "vite": "^8.3.5",
+    "vitest": "^5.1.0"
   }
 }
