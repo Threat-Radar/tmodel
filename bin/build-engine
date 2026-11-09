@@ -24,6 +24,8 @@ VPY="$BUILD/venv/bin/python"
 
 "$VPY" -m PyInstaller --onefile --clean --noconfirm --log-level WARN \
   --name "$NAME" \
+  --add-data "$PWD/spec/vectors:spec/vectors" \
+  --add-data "$PWD/spec/MAP-0001.yaml:spec" \
   --distpath "$OUT" --workpath "$BUILD/work" --specpath "$BUILD" \
   engine/packaging/tmodel_engine.py
 
@@ -32,4 +34,5 @@ env -i HOME="$HOME" "$OUT/$NAME" version --in-process --json
 env -i HOME="$HOME" "$OUT/$NAME" paths \
   "$PWD/spec/vectors/mvp-01-software-doc-service.yaml" \
   --goal threat-instance:imds-pivot --in-process --json
+env -i HOME="$HOME" "$OUT/$NAME" sdl sdl-01-tmodel-desktop.yaml --in-process --json >/dev/null
 echo "built $OUT/$NAME"

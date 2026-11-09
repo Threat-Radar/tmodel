@@ -114,11 +114,18 @@ DECISIONS   open-decision register         GLOSSARY   terms
 
 ```sh
 bin/validate-archdoc          # front matter, version/updated coupling
-git submodule status          # library pin intentional (once wired)
-cd library && bin/validate    # library records (once wired)
+git submodule status          # library pin intentional; no leading '-' or '+'
+(cd library && bin/validate)  # validate the initialized, pinned library
 ```
 
-CI runs the archdoc check. Running it locally means you find out in 3 seconds.
+Initialize a missing library checkout with `git submodule update --init library`.
+Review an intentional pin change before staging it; keep library-record edits
+in the independent library repository. `bin/validate` can report warnings;
+resolve errors and describe relevant warnings in the PR.
+
+CI checks archdoc front matter and published-page identity and link rules. For
+engine or app changes, also run the checks listed in §10. Running the applicable
+checks locally catches problems before a push.
 
 ---
 
@@ -129,21 +136,24 @@ git clone --recurse-submodules https://github.com/Threat-Radar/tmodel
 cd tmodel
 ```
 
-**Wiring the library submodule** (done once, by a maintainer, after the
-`Threat-Radar/library` fork exists):
+The library submodule is already configured. For an existing clone that did not
+initialize it:
 
 ```sh
-git submodule add https://github.com/Threat-Radar/library.git library
-git commit -m "Add library submodule (fork of m-of-n/library)"
+git submodule update --init library
 ```
 
+For the app, start with the [README quickstart](README.md#try-it-in-five-minutes).
+It runs the Python engine and browser UI with Python 3.11–3.13 and Node.js 22; native
+Tauri development additionally needs the toolchain in §10.
+
 **Set your git identity to an address GitHub will accept.** If *Block command
-line pushes that expose my email* is on (it is on by default), a push is rejected
+line pushes that expose my email* is enabled, a push is rejected
 with `email privacy restrictions`. Use your GitHub noreply address:
 
 ```sh
 git config user.email "<id>+<login>@users.noreply.github.com"
-git config user.name  "Your Name"
+git config user.name  "<github-login>"
 ```
 
 Use a repo-local setting (no `--global`).
@@ -197,7 +207,11 @@ bin/build-engine                                  # the engine as one executable
 `bin/build-engine` (PyInstaller, pinned in `engine/packaging/requirements.txt`)
 writes `apps/desktop/src-tauri/binaries/tmodel-engine-<target>`, which the Tauri
 build requires. Re-run it after changing the engine if you want the app's own
-copy to pick the change up.
+copy to pick the change up. The sidecar includes the example models from
+`spec/vectors/`. In the installed app, `/graph` resolves model filenames inside
+the sidecar's unpacked resources, independent of the working directory. In a
+source checkout it continues to read `spec/vectors/`. The examples are read-only
+inputs; they are separate from the reference library and a user's working store.
 
 **Run it:**
 
@@ -225,16 +239,61 @@ bin/build-engine
 when the terminal may not control Finder. Without an Apple certificate the app is
 ad-hoc signed (`signingIdentity: "-"` in `tauri.conf.json`); `Entitlements.plist`
 lets the one-file engine load the Python it unpacks at launch under the hardened
-runtime.
+runtime. The app also carries the Cytoscape MIT notice at
+`tmodel.app/Contents/Resources/THIRD_PARTY_NOTICES.md`.
 
-**Releases.** Pushing a tag `vX.Y.Z` (matching `version` in `tauri.conf.json`;
-`vX.Y.Z-rc.N` for a test) runs `.github/workflows/release.yml`: it builds the
-`.dmg` on a macOS runner, checks it, and attaches it with a SHA-256 file to a
-**draft** GitHub Release that a maintainer publishes. Release-candidate tags (`vX.Y.Z-rc.N`) create draft prereleases.
-With the `APPLE_*` secrets
-listed in that workflow it also signs with a Developer ID and notarizes; without
-them the app stays ad-hoc signed. Dependency installation runs before signing
-credentials are exposed; credentials are scoped to the app build step.
+**Releases and supply chain.** `.github/workflows/release.yml` builds the
+`.dmg` on a GitHub-hosted macOS runner, checks the bundle, and publishes it with
+a `.sha256` file and an SPDX SBOM (`.spdx.json`, taken from the lockfiles):
+
+| trigger | result |
+|---|---|
+| tag `vX.Y.Z` (matching `version` in `tauri.conf.json`) | **draft** release that a maintainer reviews and publishes |
+| tag `vX.Y.Z-rc.N` | draft **prerelease** |
+| merge to `main` touching `apps/`, `engine/`, `spec/vectors/` or the build | rolling prerelease [`latest-main`](https://github.com/Threat-Radar/tmodel/releases/tag/latest-main): its tag moves to the new commit and its assets are replaced; the build is named `<version>-main.<sha7>` (#203), and the same `.dmg` is also published as `tmodel_macos_aarch64.dmg` so the landing page can link [straight to it](https://github.com/Threat-Radar/tmodel/releases/download/latest-main/tmodel_macos_aarch64.dmg) |
+| manual run (`workflow_dispatch`) | workflow artifact only |
+| pull request touching the app | `app.yml` uploads an ad-hoc-signed debug `.app` (zip) as a workflow artifact, kept 7 days (#205) |
+
+The `build` job can only read the repository and mint an OIDC token; it signs a
+[SLSA build provenance](https://slsa.dev/spec/v1.0/provenance) attestation for
+the `.dmg`, the bundled engine (`tmodel.app/Contents/MacOS/tmodel-engine`) and
+the SBOM with `actions/attest-build-provenance` (Sigstore, stored on this repo).
+A separate `publish` job, which never runs build tools, holds the token that
+writes releases. All third-party actions are pinned to commit SHAs; checkouts
+do not keep their token; `npm ci` and `cargo fetch --locked` hold the build to
+the lockfiles. With the `APPLE_*` secrets listed in the workflow the app is also
+signed with a Developer ID and notarized; without them it stays ad-hoc signed.
+Dependency installation runs before signing credentials are exposed; credentials
+are scoped to the app build step.
+
+*SLSA level: Build L2* (hosted build platform, signed provenance that anyone can
+verify), with most of L3's isolation from GitHub-hosted runners and the split
+jobs. It is not L3: the provenance comes from a step inside the build job, not
+an isolated reusable workflow, and the build is neither hermetic nor
+reproducible (rust, npm and pip caches; a floating `stable` Rust toolchain;
+engine dependencies installed without hashes). Not signed with a Developer ID
+yet, so Gatekeeper cannot vouch for it; the provenance is the integrity check.
+
+**Security reports and scanning.** Report vulnerabilities privately as
+[SECURITY.md](SECURITY.md) describes, never in a public issue. `codeql.yml`
+scans Python, TypeScript and the workflows on every pull request, on `main` and
+weekly; Dependabot (`.github/dependabot.yml`) proposes grouped weekly updates
+for actions, engine and desktop dependencies; secret scanning with push
+protection is on (DL-0045).
+
+*Download and verify* (needs the GitHub CLI, `gh`):
+
+```sh
+gh release download latest-main -R Threat-Radar/tmodel -p 'tmodel_macos_aarch64.dmg*'   # or a version tag
+shasum -a 256 -c tmodel_macos_aarch64.dmg.sha256
+gh attestation verify tmodel_macos_aarch64.dmg -R Threat-Radar/tmodel
+# after installing, the engine inside the app verifies too:
+gh attestation verify /Applications/tmodel.app/Contents/MacOS/tmodel-engine -R Threat-Radar/tmodel
+```
+
+`gh attestation verify` checks that the file was built by a workflow in this
+repository and prints the workflow, commit and trigger. Then open the `.dmg`,
+drag tmodel to Applications and, on first launch, use **Open Anyway** (below).
 
 **Packaging acceptance (#124).** Keep the issue open after the implementation
 merges until a test version tag has produced the draft release and a downloaded
@@ -244,7 +303,20 @@ unpacked runtime. The app waits up to ten seconds for termination. Check three
 launch/quit cycles for new `_MEI*` leftovers, confirm the engine port is released,
 and check startup with the port already occupied. `bin/build-engine` also reads
 an example model with the bundled engine in an empty environment, exercising
-PyYAML and attack-path computation without a system Python.
+PyYAML and attack-path computation without a system Python. Both app CI and the
+release workflow verify the bundled notice and test the installed sidecar. The
+tests copy only the executable to a temporary directory, clear its environment,
+load the bundled MVP-01 and MVP-02 graphs through the local API, and pass the
+returned model path to attack-path enumeration. They check review metadata,
+directory confinement, and runtime cleanup after exit. Run them locally with:
+
+```sh
+TMODEL_PACKAGED_ENGINE="$PWD/apps/desktop/src-tauri/target/release/bundle/macos/tmodel.app/Contents/MacOS/tmodel-engine" \
+  engine/.venv/bin/python -m pytest -q engine/tests/test_packaging.py
+```
+
+This automated isolation check complements the downloaded-installer check on a
+clean Mac; it does not verify Gatekeeper or replace that manual acceptance step.
 
 **Opening a build that is not signed with a Developer ID.** macOS refuses to open
 it on first launch and says it cannot verify the app. Close that dialog, then open **System

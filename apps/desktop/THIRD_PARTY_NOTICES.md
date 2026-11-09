@@ -31,7 +31,5 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-Release packaging note: keeping this notice in the source tree satisfies the
-repository record, but Tauri does not automatically copy arbitrary Markdown
-files into a macOS `.app` bundle. The release process must include this notice
-in the distributed application or accompanying materials before shipping.
+Tauri includes this notice in the distributed application. On macOS it is at
+`tmodel.app/Contents/Resources/THIRD_PARTY_NOTICES.md`.

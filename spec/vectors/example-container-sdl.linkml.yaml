@@ -1,0 +1,73 @@
+# Test-harness container for the SDL example (sdl-01-*.yaml, DL-0040).
+#
+# NOT part of the domain object model and NOT normative. It is the FULL container
+# (core + the DEC-001b governed layer: SecurityProgram / Gate / Milestone /
+# Checkpoint / ThreatModel) plus collections for the three SDL classes ADR-0013
+# accepted on 2026-11-07 (defined in ../schema/tmodel-object-model.linkml.yaml):
+#
+#   SdlPractice        an SDL activity a product team performs (a MAP-0001 row)
+#   Evidence           a deliverable or evidence item a practice produces (RPT-0013-OM)
+#   RequirementSource  a governing body of requirements a program may select (RPT-0013-OM)
+#
+# Selection (which practices are delivery items, which sources govern, what the
+# milestones are called) is NOT a field: it is an Assertion plus a human Review
+# (ARCH-0001 §4, PROC-0002). See DL-0040, DL-0041.
+id: https://threat-radar.github.io/tmodel/schema/vectors/example-container-sdl
+name: TmodelExampleContainerSdl
+title: tmodel SDL example container (test harness, full model plus the ADR-0013 collections)
+description: >-
+  Validation-only wrapper so an SDL example (the full model plus the SdlPractice,
+  Evidence and RequirementSource classes ADR-0013 accepted) validates as one file. Not
+  normative; not a domain class.
+version: 0.1.0
+status: draft
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+  tmodel: https://threat-radar.github.io/tmodel/schema/object-model/
+default_prefix: tmodel
+default_range: string
+
+imports:
+  - linkml:types
+  - ../schema/tmodel-object-model.linkml
+
+classes:
+  ExampleModelSdl:
+    tree_root: true
+    description: >-
+      An SDL example bundle: the full ExampleModel collections (core plus the
+      DEC-001b governed layer) plus the DL-0040 proposal collections. Flat lists;
+      edges are id references. Referential integrity is checked by
+      bin/render-sdl, not by linkml-validate.
+    attributes:
+      parties: { range: Party, multivalued: true, inlined: true, inlined_as_list: true }
+      products: { range: Product, multivalued: true, inlined: true, inlined_as_list: true }
+      product_instances: { range: ProductInstance, multivalued: true, inlined: true, inlined_as_list: true }
+      components: { range: Component, multivalued: true, inlined: true, inlined_as_list: true }
+      weaknesses: { range: Weakness, multivalued: true, inlined: true, inlined_as_list: true }
+      vulnerabilities: { range: Vulnerability, multivalued: true, inlined: true, inlined_as_list: true }
+      attack_patterns: { range: AttackPattern, multivalued: true, inlined: true, inlined_as_list: true }
+      threat_instances: { range: ThreatInstance, multivalued: true, inlined: true, inlined_as_list: true }
+      attack_steps: { range: AttackStep, multivalued: true, inlined: true, inlined_as_list: true }
+      attack_paths: { range: AttackPath, multivalued: true, inlined: true, inlined_as_list: true }
+      damage_scenarios: { range: DamageScenario, multivalued: true, inlined: true, inlined_as_list: true }
+      mitigations: { range: Mitigation, multivalued: true, inlined: true, inlined_as_list: true }
+      risk_scores: { range: RiskScore, multivalued: true, inlined: true, inlined_as_list: true }
+      reviews: { range: Review, multivalued: true, inlined: true, inlined_as_list: true }
+      assertions: { range: Assertion, multivalued: true, inlined: true, inlined_as_list: true }
+      deployments: { range: Deployment, multivalued: true, inlined: true, inlined_as_list: true }
+      environments: { range: Environment, multivalued: true, inlined: true, inlined_as_list: true }
+      lifecycle_phases: { range: LifecyclePhase, multivalued: true, inlined: true, inlined_as_list: true }
+      redundancy_groups: { range: RedundancyGroup, multivalued: true, inlined: true, inlined_as_list: true }
+      views: { range: View, multivalued: true, inlined: true, inlined_as_list: true }
+      threat_models: { range: ThreatModel, multivalued: true, inlined: true, inlined_as_list: true }
+      security_programs: { range: SecurityProgram, multivalued: true, inlined: true, inlined_as_list: true }
+      gates: { range: Gate, multivalued: true, inlined: true, inlined_as_list: true }
+      milestones: { range: Milestone, multivalued: true, inlined: true, inlined_as_list: true }
+      checkpoints: { range: Checkpoint, multivalued: true, inlined: true, inlined_as_list: true }
+      requirements: { range: Requirement, multivalued: true, inlined: true, inlined_as_list: true }
+      governed_views: { range: GovernedView, multivalued: true, inlined: true, inlined_as_list: true }
+      sdl_practices: { range: SdlPractice, multivalued: true, inlined: true, inlined_as_list: true }
+      evidence_items: { range: Evidence, multivalued: true, inlined: true, inlined_as_list: true }
+      requirement_sources: { range: RequirementSource, multivalued: true, inlined: true, inlined_as_list: true }

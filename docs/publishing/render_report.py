@@ -134,13 +134,20 @@ def render(rep: dict) -> None:
     return {"title": title, "rev": rev, "updated": updated, "out": rep["out"]}
 
 
-def render_index(done: list[dict]) -> None:
-    """docs/reports/index.html: one line per report in reports.yaml."""
+def render_index(done: list[dict], listed: list[dict]) -> None:
+    """docs/reports/index.html: one line per report in reports.yaml, then its `listed` pages."""
     items = "".join(
         f'<li><a href="{html.escape(Path(d["out"]).name)}">{html.escape(d["title"])}</a> '
         f'<span class="rev">revision {html.escape(str(d["rev"]))} · updated {html.escape(str(d["updated"]))}</span></li>'
         for d in done
     )
+    others = "".join(
+        f'<li><a href="{html.escape(Path(d["out"]).name)}">{html.escape(d["title"])}</a> '
+        f'<span class="rev">{html.escape(d.get("note", ""))}</span></li>'
+        for d in listed
+    )
+    if others:
+        others = f"<h2>Threat analyses</h2><p>Built from example models by other renderers; each page says what it was built from.</p><ul>{others}</ul>"
     page = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Reports — tmodel</title><style>{CSS}</style></head><body>
@@ -148,6 +155,7 @@ def render_index(done: list[dict]) -> None:
 <h1>Reports</h1>
 <p>Research reports published from <code>research/</code>. Each page is versioned by its source's front matter.</p>
 <ul>{items}</ul>
+{others}
 <footer>Generated from <code>docs/publishing/reports.yaml</code> by <code>render_report.py</code>. Do not hand-edit.</footer>
 </body></html>"""
     INDEX.parent.mkdir(parents=True, exist_ok=True)
@@ -157,19 +165,24 @@ def render_index(done: list[dict]) -> None:
 
 def main() -> int:
     txt = MANIFEST.read_text()
-    reps, cur = [], None
+    reps, listed, cur = [], [], None
     for line in txt.splitlines():
         m = re.match(r"^\s*-\s+src:\s*(\S+)", line)
+        mp = re.match(r"^\s*-\s+page:\s*(\S+)", line)  # `listed`: built elsewhere, indexed here
         if m:
             cur = {"src": m.group(1), "links": []}; reps.append(cur); continue
+        if mp:
+            cur = {"out": mp.group(1), "links": []}; listed.append(cur); continue
         if cur is not None:
             mo = re.match(r'^\s+out:\s*(\S+)', line); mt = re.match(r'^\s+title:\s*"?(.+?)"?\s*$', line)
             ml = re.match(r'^\s+-\s+\{\s*text:\s*"?(.+?)"?,\s*href:\s*"?(.+?)"?\s*\}', line)
+            mn = re.match(r'^\s+note:\s*"?(.+?)"?\s*$', line)
             if mo: cur["out"] = mo.group(1)
             elif mt and "title" not in cur: cur["title"] = mt.group(1)
             elif ml: cur["links"].append({"text": ml.group(1), "href": ml.group(2)})
-    print(f"render_report: {len(reps)} report page(s)")
-    render_index([render(r) for r in reps])
+            elif mn: cur["note"] = mn.group(1)
+    print(f"render_report: {len(reps)} report page(s), {len(listed)} listed")
+    render_index([render(r) for r in reps], listed)
     return 0
 
 
