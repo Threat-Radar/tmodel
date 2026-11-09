@@ -1,0 +1,436 @@
+# EXAMPLE MODEL 3 (RPT-0009): ForcedLeak, a web form makes Salesforce Agentforce leak CRM data
+#
+# A published attack on a real AI product, modeled from its primary source the way the sponsor
+# directed on 2026-10-14 (DL-0013) and em-01 followed. Like EchoLeak it ends in an image fetch
+# that carries the data out, but it starts from a public web form, has no CVE, and gets past
+# the Content Security Policy through an allow-listed domain that had expired.
+#
+# Sources (fetched 2026-11-09; SHA-256 of the bytes as fetched):
+# - S. Levi (Noma Labs), "ForcedLeak: AI agent risks exposed in Salesforce Agentforce", Noma
+#   Security, 2025-09-25.
+#   https://noma.security/blog/forcedleak-agent-risks-exposed-in-salesforce-agentforce/
+#   (3e9d639af26c59faaaa4f0a9eb201e34731ad1cf36475a0df815d734e2ad6ad7). Its "Vulnerability
+#   Discovery Process" (Phases 1 to 4), "Execution Flow" and "Disclosure timeline" are the basis
+#   for the steps and mitigations. It links Salesforce's help article 005135034
+#   (https://help.salesforce.com/s/articleView?id=005135034&type=1), which renders only with
+#   JavaScript and was not read; the fix is described here as Noma reports it.
+# - CWE pages for CWE-1427 and CWE-942, as fetched 2026-11-09
+#   (https://cwe.mitre.org/data/definitions/1427.html,
+#   c8da9d9e153b3becc0a0ea6b0fa3c43568d71e3b07c86c2cbae655087e6699b9;
+#   .../942.html, 80fdddbd24420f0a44ce4e47ccf595d6bdc084e493b865755bc481d4c41d6ad8).
+# - MITRE ATLAS 2026.09 (format 6.0.0) for technique, tactic and mitigation ids, the same file
+#   em-01 cites (935efa93e28294432d3e2f537eb94991ef8d1f8c58341cd360ea3321ddb66688). ATLAS has
+#   NO case study for ForcedLeak, so every step-to-technique link below is the AI drafter's
+#   mapping, not ATLAS's (README.md, gap AI-8).
+#
+# No CVE is recorded for ForcedLeak, so its weaknesses enter through AI-proposed `exploits`
+# Assertions, as in pv-02.
+#
+# AI-DRAFTED, NOT REVIEWED. Every Assertion is `proposed` and no Review is recorded
+# (CLAUDE.md, R-018). Feasibility and impact are human inputs and are left unset.
+#
+# Validate:
+#   linkml-validate -s spec/vectors/example-container-proposed.linkml.yaml \
+#     -C ExampleModelProposed research/0009-sagai/example-models/em-03-forcedleak-agentforce.yaml
+
+parties:
+  - id: party:salesforce
+    name: Salesforce
+    description: Vendor of Agentforce and of the Salesforce platform it runs on.
+    party_kind: organization
+    classifications: [vendor]
+  - id: party:noma-labs
+    name: Noma Labs (Noma Security)
+    description: >-
+      Found ForcedLeak and reported it to Salesforce on 2025-07-28. The write-up calls it
+      "critical severity (CVSS 9.4)" but gives no vector, and there is no CVE record to hold
+      the score. See README.md, gap AI-10.
+    party_kind: organization
+    classifications: [researcher]
+  - id: party:customer-org
+    name: Customer organization
+    description: A Salesforce customer using Agentforce with Web-to-Lead enabled (a role, not a real organization).
+    party_kind: organization
+  - id: party:employee
+    name: Sales employee
+    description: An employee who asks Agentforce to handle a lead (a role, not a person).
+    party_kind: person
+  - id: party:ai-drafter
+    name: AI model drafter
+    description: The AI agent that drafted this file and proposed its ATLAS and CWE mappings.
+    party_kind: software_agent
+
+products:
+  - id: product:agentforce
+    name: Salesforce Agentforce with Web-to-Lead (before the September 2025 fix)
+    description: >-
+      Salesforce's autonomous AI agents for CRM work, in an org where Web-to-Lead lets anyone on
+      the web submit a lead. Noma enabled Web-to-Lead for its test. The write-up gives no
+      versions; Agentforce is a hosted service.
+    composed_of:
+      - component:web-to-lead-form
+      - component:crm-lead-store
+      - component:agentforce-agent
+      - component:agentforce-llm
+      - component:crm-query-action
+      - component:salesforce-ui
+    manufactured_by: party:salesforce
+
+components:
+  - id: component:web-to-lead-form
+    name: Web-to-Lead form
+    description: >-
+      Public: website visitors, conference attendees and prospects submit leads that go straight
+      into the CRM. Its Description field takes 42,000 characters; the other fields take 40 to 80.
+    component_kind: service
+    in_trust_zone: trust-boundary:salesforce-org
+  - id: component:crm-lead-store
+    name: Lead records in the CRM
+    component_kind: data
+    in_trust_zone: trust-boundary:salesforce-org
+  - id: component:agentforce-agent
+    name: Agentforce agent
+    description: >-
+      Plans and carries out multi-step work for the employee, calling actions such as CRM
+      queries. The schema has no kind for an AI agent (README.md, gap AI-6).
+    component_kind: application
+    uses_component: [component:crm-query-action]
+    in_trust_zone: trust-boundary:salesforce-org
+  - id: component:agentforce-llm
+    name: The language model behind Agentforce
+    description: >-
+      In Noma's words it operated "as a straightforward execution engine" and could not tell
+      lead data in its context apart from instructions. Noma's off-topic test question
+      ("What color do you get by mixing red and yellow?") showed it answered outside its domain.
+    component_kind: machine_learning_model
+    in_trust_zone: trust-boundary:salesforce-org
+  - id: component:crm-query-action
+    name: The agent's CRM query action
+    description: Reads lead records, including email addresses, for the agent.
+    component_kind: service
+    in_trust_zone: trust-boundary:salesforce-org
+  - id: component:salesforce-ui
+    name: The employee's Salesforce interface (browser)
+    description: >-
+      Renders the agent's response, HTML included, and loads images only from domains on its
+      Content Security Policy's img-src allowlist.
+    component_kind: application
+    in_trust_zone: trust-boundary:client
+  - id: component:attacker-browser
+    name: Attacker's browser
+    description: Submits the form like any website visitor. Not part of the product.
+    component_kind: application
+    in_trust_zone: trust-boundary:internet
+  - id: component:expired-domain-server
+    name: Server behind cdn.my-salesforce-cms.com, bought by the attacker
+    description: >-
+      my-salesforce-cms.com was on the CSP allowlist but had expired; Noma bought it for $5 and
+      pointed it at a logging server on Amazon Lightsail. Not part of the product, yet inside
+      the zone the browser trusts. See README.md, gap AI-11.
+    component_kind: service
+    in_trust_zone: trust-boundary:csp-allowlisted-domains
+
+assets:
+  - id: asset:crm-lead-data
+    name: Lead records, including the leads' email addresses
+    description: >-
+      Noma's proof of concept takes email addresses. Its write-up says the exposure could extend
+      to contact details, pipeline data, internal communications, integration data and
+      interaction history.
+    security_properties: [confidentiality]
+    stored_in: [component:crm-lead-store]
+    processed_by: [component:crm-query-action, component:agentforce-llm]
+    owned_by: party:customer-org
+  - id: asset:agent-context
+    name: Agentforce's prompt context for one request
+    description: >-
+      The employee's request plus the lead record it retrieved, with the attacker's Description
+      field inside. As in em-01, trusted and untrusted content arrive in one context.
+    security_properties: [integrity]
+    processed_by: [component:agentforce-llm]
+  - id: asset:agent-response
+    name: Agentforce's rendered response
+    description: Its HTML image tag is what the browser fetches.
+    security_properties: [integrity]
+    processed_by: [component:agentforce-agent, component:salesforce-ui]
+  - id: asset:csp-allowlist
+    name: The CSP's image-source allowlist
+    description: >-
+      Trusts domains by name. One of them, my-salesforce-cms.com, had expired and anyone could
+      buy it, so a domain the policy trusted was no longer under Salesforce's control.
+    security_properties: [integrity]
+    processed_by: [component:salesforce-ui]
+    owned_by: party:salesforce
+
+trust_boundaries:
+  - id: trust-boundary:internet
+    name: The internet (untrusted visitors and servers)
+  - id: trust-boundary:salesforce-org
+    name: The customer's Salesforce org
+  - id: trust-boundary:client
+    name: The employee's browser
+  - id: trust-boundary:csp-allowlisted-domains
+    name: Domains the browser may load images from (the CSP allowlist)
+    description: >-
+      A zone inside the internet that the client trusts by domain name. Membership was decided
+      when each domain was added, and nothing records when that trust should lapse, so the
+      expired domain stayed in the zone after its ownership changed. See README.md, gap AI-11.
+    within_boundary: trust-boundary:internet
+    zone_type: allowlist
+
+data_flows:
+  - id: data-flow:form-submission
+    name: The attacker submits a Web-to-Lead form
+    description: >-
+      The Description field carries the instructions. They are not an Asset, so `carries`
+      cannot name them (README.md, gap AI-3).
+    flow_from: component:attacker-browser
+    flow_to: component:web-to-lead-form
+    protocol: HTTPS
+    crosses_boundary: [trust-boundary:internet, trust-boundary:salesforce-org]
+  - id: data-flow:form-to-crm
+    name: The submission is stored as a lead
+    flow_from: component:web-to-lead-form
+    flow_to: component:crm-lead-store
+  - id: data-flow:employee-request
+    name: The employee asks Agentforce to check the lead and answer its questions
+    flow_from: component:salesforce-ui
+    flow_to: component:agentforce-agent
+    crosses_boundary: [trust-boundary:client, trust-boundary:salesforce-org]
+  - id: data-flow:query-leads
+    name: The CRM query action reads lead records
+    flow_from: component:crm-lead-store
+    flow_to: component:crm-query-action
+    carries: [asset:crm-lead-data]
+  - id: data-flow:context-to-llm
+    name: The agent sends the request and the lead data to the model and gets its answer back
+    description: The injected Description and the real lead data arrive in one context, with no trust label on either.
+    flow_from: component:agentforce-agent
+    flow_to: component:agentforce-llm
+    carries: [asset:agent-context, asset:crm-lead-data]
+    bidirectional: true
+  - id: data-flow:response-to-ui
+    name: The agent's response is rendered in the employee's browser
+    flow_from: component:agentforce-agent
+    flow_to: component:salesforce-ui
+    carries: [asset:agent-response]
+    crosses_boundary: [trust-boundary:salesforce-org, trust-boundary:client]
+  - id: data-flow:image-fetch
+    name: The browser fetches the response's image from the expired domain
+    description: >-
+      The image URL's query string carries the email addresses
+      (https://cdn.my-salesforce-cms.com/c.png?n=...). The CSP allows it because the domain is
+      on the allowlist.
+    flow_from: component:salesforce-ui
+    flow_to: component:expired-domain-server
+    carries: [asset:crm-lead-data]
+    protocol: HTTPS
+    crosses_boundary: [trust-boundary:client, trust-boundary:csp-allowlisted-domains]
+
+weaknesses:
+  - id: weakness:cwe-1427
+    name: Improper Neutralization of Input Used for LLM Prompting
+    description: >-
+      Base, mapping usage ALLOWED. The model treats the lead's Description as instructions.
+      AI-proposed; see assertion:trigger-exploits-cwe-1427.
+    catalog_ref: "CWE-1427"
+  - id: weakness:cwe-942
+    name: Permissive Cross-domain Security Policy with Untrusted Domains
+    description: >-
+      Variant, mapping usage ALLOWED: "the product uses a web-client protection mechanism such
+      as a Content Security Policy (CSP) ... but the policy includes untrusted domains". The
+      domain became untrusted by expiring, not by being added carelessly. AI-proposed; see
+      assertion:csp-exploits-cwe-942.
+    catalog_ref: "CWE-942"
+
+attack_patterns:
+  - {id: "attack-pattern:aml-t0069", name: Discover LLM System Information, catalog_ref: "AML.T0069"}
+  - {id: "attack-pattern:aml-t0065", name: LLM Prompt Crafting, catalog_ref: "AML.T0065"}
+  - {id: "attack-pattern:aml-t0008-002", name: "Acquire Infrastructure: Domains", catalog_ref: "AML.T0008.002"}
+  - {id: "attack-pattern:aml-t0093", name: Prompt Infiltration via Public-Facing Application, catalog_ref: "AML.T0093"}
+  - {id: "attack-pattern:aml-t0051-002", name: "LLM Prompt Injection: Triggered", catalog_ref: "AML.T0051.002"}
+  - {id: "attack-pattern:aml-t0085-001", name: "Data from AI Services: AI Agent Tools", catalog_ref: "AML.T0085.001"}
+  - {id: "attack-pattern:aml-t0077", name: LLM Response Rendering, catalog_ref: "AML.T0077"}
+  - {id: "attack-pattern:aml-t0025", name: Exfiltration via Cyber Means, catalog_ref: "AML.T0025"}
+  - {id: "attack-pattern:aml-t0048", name: External Harms, catalog_ref: "AML.T0048"}
+
+damage_scenarios:
+  - id: damage-scenario:crm-data-disclosed
+    name: The customer's CRM lead data reaches an outside attacker
+    description: Noma's write-up is a proof of concept and reports no exploitation; this is the harm the attack makes possible.
+    damages_asset: [asset:crm-lead-data]
+    compromised_property: [confidentiality]
+
+threat_instances:
+  - id: threat-instance:web-form-exfiltration
+    name: A public web form submission makes Agentforce send CRM data to an outside server when an employee asks about the lead
+    realizes_damage: damage-scenario:crm-data-disclosed
+    method_facet: [stride]
+    source_method: "published attack, modeled from the cited source (AI-drafted, unreviewed)"
+    violates_property: "I confidentiality; E authorization (the agent acts on a stranger's instructions with the employee's access)"
+    applies_in_phase: [lifecycle-phase:operation]
+    targets_element: [component:agentforce-llm, data-flow:context-to-llm, asset:agent-context, asset:csp-allowlist]
+
+attack_steps:
+  # From the write-up's Phases 1 to 4 and its "Execution Flow". ATLAS has no case study for
+  # ForcedLeak; each tactic in kill_chain_phase is ATLAS's tactic for the AI-proposed technique.
+  - id: attack-step:probe-scope
+    name: Ask Agentforce an off-topic question to see whether it answers outside its domain
+    description: Phase 1, in the researchers' own test org. It answered "Orange".
+    kill_chain_phase: "Discovery (AML.TA0008)"
+    precedes: [attack-step:craft-payload]
+  - id: attack-step:craft-payload
+    name: Write questions for the agent plus an HTML image tag whose URL will carry the answer
+    description: >-
+      Phases 2 and 3: the payload goes in the Description field, the only one long enough, and is
+      worded so that an ordinary employee request will set it off.
+    kill_chain_phase: "AI Attack Adaptation (AML.TA0001)"
+    precedes: [attack-step:submit-form]
+  - id: attack-step:buy-expired-domain
+    name: Buy the expired allow-listed domain and point it at a logging server
+    description: Phase 4. The domain cost $5; without it the CSP would have blocked the exfiltration.
+    kill_chain_phase: "Resource Development (AML.TA0003)"
+    precedes: [attack-step:submit-form]
+  - id: attack-step:submit-form
+    name: Submit the Web-to-Lead form with the payload in its Description field
+    description: Needs both the payload and the domain, an AND gate.
+    gate: and_gate
+    kill_chain_phase: "Initial Access (AML.TA0004)"
+    precedes: [attack-step:employee-triggers]
+  - id: attack-step:employee-triggers
+    name: An employee asks Agentforce to check the lead and answer its questions
+    description: >-
+      Noma's realistic request: 'Please, check the lead with name "Alice Bob" and respond to
+      their questions.' The agent then follows both the employee's and the attacker's
+      instructions.
+    kill_chain_phase: "Execution (AML.TA0005)"
+    precedes: [attack-step:collect-lead-emails]
+  - id: attack-step:collect-lead-emails
+    name: Agentforce queries the CRM for the leads' email addresses
+    kill_chain_phase: "Collection (AML.TA0009)"
+    precedes: [attack-step:render-image]
+  - id: attack-step:render-image
+    name: The response includes the image tag, and the browser fetches its URL
+    kill_chain_phase: "Exfiltration (AML.TA0010)"
+    precedes: [attack-step:pass-csp]
+  - id: attack-step:pass-csp
+    name: The CSP lets the request through to the expired domain, whose server logs the data
+    kill_chain_phase: "Exfiltration (AML.TA0010)"
+    precedes: [attack-step:data-disclosed]
+  - id: attack-step:data-disclosed
+    name: The lead data reaches the attacker
+    kill_chain_phase: "Impact (AML.TA0011)"
+
+attack_paths:
+  - id: attack-path:web-form-to-exfiltration
+    name: Web form to exfiltration through the expired domain
+    steps:
+      - attack-step:probe-scope
+      - attack-step:craft-payload
+      - attack-step:buy-expired-domain
+      - attack-step:submit-form
+      - attack-step:employee-triggers
+      - attack-step:collect-lead-emails
+      - attack-step:render-image
+      - attack-step:pass-csp
+      - attack-step:data-disclosed
+    realizes_threat: threat-instance:web-form-exfiltration
+
+mitigations:
+  - id: mitigation:domain-resecured
+    name: Salesforce took back the expired allow-listed domain
+    description: Per Noma's write-up; it gives no date.
+    mitigates: [threat-instance:web-form-exfiltration]
+    applies_in_phase: [lifecycle-phase:operation]
+    implementation_owner: party:salesforce
+    mitigation_status: complete
+  - id: mitigation:trusted-urls-enforcement
+    name: Trusted URLs Enforcement for Agentforce and Einstein AI (2025-09-08)
+    description: >-
+      Per Noma, Salesforce's patch "prevent[s] output in Agentforce agents from being sent to
+      untrusted URLs". Salesforce's own article was not read (see the header).
+    mitigates: [threat-instance:web-form-exfiltration]
+    applies_in_phase: [lifecycle-phase:operation]
+    implementation_owner: party:salesforce
+    mitigation_status: complete
+  - id: mitigation:customer-applies-trusted-urls
+    name: Apply Salesforce's recommended actions to enforce Trusted URLs in the org
+    description: >-
+      Noma's first recommendation to customers. Whether a given org has done it is unknown.
+      MitigationStatus has no "unknown", so `planned` stands in (README.md, gap AI-12).
+    mitigates: [threat-instance:web-form-exfiltration]
+    applies_in_phase: [lifecycle-phase:operation]
+    implementation_owner: party:customer-org
+    mitigation_status: planned
+  - id: mitigation:validate-inputs-and-outputs
+    name: Screen user-controlled fields for injected instructions and sanitize agent output
+    description: Noma's recommendations; status not published.
+    catalog_ref: "AML.M0033"
+    mitigates: [threat-instance:web-form-exfiltration]
+    applies_in_phase: [lifecycle-phase:design, lifecycle-phase:operation]
+    implementation_owner: party:customer-org
+    mitigation_status: planned
+  - id: mitigation:audit-leads
+    name: Audit existing leads for submissions with unusual instructions or formatting
+    description: Noma's recommendation; it finds planted payloads before an employee sets them off.
+    mitigates: [threat-instance:web-form-exfiltration]
+    applies_in_phase: [lifecycle-phase:operation]
+    implementation_owner: party:customer-org
+    mitigation_status: planned
+
+assertions:
+  - id: assertion:trigger-exploits-cwe-1427
+    name: The triggered injection exploits CWE-1427 (AI-proposed)
+    description: No source names a CWE; this mapping is the AI drafter's hypothesis.
+    subject: attack-step:employee-triggers
+    predicate: exploits
+    object: weakness:cwe-1427
+    confidence: medium
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-09T00:00:00Z"
+    generated_by: "AI-drafted from the write-up and the CWE-1427 page"
+    evidence: ["https://cwe.mitre.org/data/definitions/1427.html"]
+  - id: assertion:csp-exploits-cwe-942
+    name: Passing the CSP exploits CWE-942 (AI-proposed)
+    description: No source names a CWE; this mapping is the AI drafter's hypothesis.
+    subject: attack-step:pass-csp
+    predicate: exploits
+    object: weakness:cwe-942
+    confidence: medium
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-09T00:00:00Z"
+    generated_by: "AI-drafted from the write-up and the CWE-942 page"
+    evidence: ["https://cwe.mitre.org/data/definitions/942.html"]
+  # Step-to-technique links. ATLAS has no case study for ForcedLeak, so each is the AI
+  # drafter's mapping, not ATLAS's (README.md, gaps AI-1 and AI-8).
+  - {id: "assertion:probe-uses", name: "Probing uses AML.T0069", subject: "attack-step:probe-scope", predicate: uses_technique, object: "attack-pattern:aml-t0069", confidence: low, assertion_status: proposed, asserted_by: "party:ai-drafter", asserted_at: "2026-11-09T00:00:00Z", generated_by: "AI-drafted from the write-up and ATLAS 2026.09"}
+  - {id: "assertion:craft-uses", name: "Crafting uses AML.T0065", subject: "attack-step:craft-payload", predicate: uses_technique, object: "attack-pattern:aml-t0065", confidence: high, assertion_status: proposed, asserted_by: "party:ai-drafter", asserted_at: "2026-11-09T00:00:00Z", generated_by: "AI-drafted from the write-up and ATLAS 2026.09"}
+  - {id: "assertion:domain-uses", name: "Buying the domain uses AML.T0008.002", subject: "attack-step:buy-expired-domain", predicate: uses_technique, object: "attack-pattern:aml-t0008-002", confidence: high, assertion_status: proposed, asserted_by: "party:ai-drafter", asserted_at: "2026-11-09T00:00:00Z", generated_by: "AI-drafted from the write-up and ATLAS 2026.09"}
+  - {id: "assertion:submit-uses", name: "Submitting the form uses AML.T0093", subject: "attack-step:submit-form", predicate: uses_technique, object: "attack-pattern:aml-t0093", confidence: high, assertion_status: proposed, asserted_by: "party:ai-drafter", asserted_at: "2026-11-09T00:00:00Z", generated_by: "AI-drafted from the write-up and ATLAS 2026.09"}
+  - {id: "assertion:trigger-uses", name: "The employee's request triggers AML.T0051.002", subject: "attack-step:employee-triggers", predicate: uses_technique, object: "attack-pattern:aml-t0051-002", confidence: high, assertion_status: proposed, asserted_by: "party:ai-drafter", asserted_at: "2026-11-09T00:00:00Z", generated_by: "AI-drafted from the write-up and ATLAS 2026.09"}
+  - {id: "assertion:collect-uses", name: "Collecting lead emails uses AML.T0085.001", subject: "attack-step:collect-lead-emails", predicate: uses_technique, object: "attack-pattern:aml-t0085-001", confidence: high, assertion_status: proposed, asserted_by: "party:ai-drafter", asserted_at: "2026-11-09T00:00:00Z", generated_by: "AI-drafted from the write-up and ATLAS 2026.09"}
+  - {id: "assertion:render-uses", name: "Rendering the image uses AML.T0077", subject: "attack-step:render-image", predicate: uses_technique, object: "attack-pattern:aml-t0077", confidence: high, assertion_status: proposed, asserted_by: "party:ai-drafter", asserted_at: "2026-11-09T00:00:00Z", generated_by: "AI-drafted from the write-up and ATLAS 2026.09"}
+  - {id: "assertion:csp-uses", name: "Passing the CSP uses AML.T0025", subject: "attack-step:pass-csp", predicate: uses_technique, object: "attack-pattern:aml-t0025", confidence: medium, assertion_status: proposed, asserted_by: "party:ai-drafter", asserted_at: "2026-11-09T00:00:00Z", generated_by: "AI-drafted from the write-up and ATLAS 2026.09"}
+  - {id: "assertion:disclosed-uses", name: "The disclosure uses AML.T0048", subject: "attack-step:data-disclosed", predicate: uses_technique, object: "attack-pattern:aml-t0048", confidence: medium, assertion_status: proposed, asserted_by: "party:ai-drafter", asserted_at: "2026-11-09T00:00:00Z", generated_by: "AI-drafted from the write-up and ATLAS 2026.09"}
+  - id: assertion:path-realizes-threat
+    name: The web-form path realizes the exfiltration threat
+    description: AI-drafted from the write-up; awaits a human Review.
+    subject: attack-path:web-form-to-exfiltration
+    predicate: realizes_threat
+    object: threat-instance:web-form-exfiltration
+    confidence: high
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-09T00:00:00Z"
+    generated_by: "AI-drafted from the write-up"
+    evidence: ["https://noma.security/blog/forcedleak-agent-risks-exposed-in-salesforce-agentforce/"]
+
+lifecycle_phases:
+  - id: lifecycle-phase:design
+    name: Design
+    code: design
+  - id: lifecycle-phase:operation
+    name: Operation / use
+    code: operation
