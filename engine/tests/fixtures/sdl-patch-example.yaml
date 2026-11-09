@@ -1,0 +1,35 @@
+# Example `tmodel propose` patch (DL-0044): an agent proposes a secrets-management
+# practice for the tmodel app and asks for it to be a delivery item. Nothing here is
+# accepted; `tmodel propose` writes it to spec/vectors/proposals/ as `proposed`.
+schema: tmodel.patch/v0
+target: sdl-01-tmodel-desktop.yaml
+proposed_by: party:example-agent
+generated_by: "example agent, run 0001"
+rationale: MAP-0001 row secrets-management has no practice in this program yet.
+add:
+  parties:
+    - id: party:example-agent
+      name: Example coding agent
+      party_kind: software_agent
+  evidence_items:
+    - id: evidence:secret-scanning
+      name: GitHub secret scanning (proposed)
+      evidence_kind: configuration
+      locator: "https://github.com/Threat-Radar/tmodel/settings/security_analysis"
+  sdl_practices:
+    - id: sdl-practice:secrets-management
+      name: Keep secrets out of the repository
+      description: Secret scanning on, no tokens in workflows beyond GITHUB_TOKEN.
+      practice_key: secrets-management
+      at_phase: lifecycle-phase:implementation
+      owner: party:nymble
+      mitigation_status: planned
+      produces: [evidence:secret-scanning]
+assertions:
+  - id: assertion:select-secrets-management
+    name: Make secrets management a delivery item
+    description: Cheap to turn on, and a public repo takes outside PRs.
+    subject: security-program:tmodel-sdl
+    predicate: selects_practice
+    object: sdl-practice:secrets-management
+    confidence: medium

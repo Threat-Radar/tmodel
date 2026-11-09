@@ -1,0 +1,37 @@
+# Example `tmodel propose` v1 patch (DL-0046) against a threat model: an agent proposes
+# a mitigation, a rename, a removal and a saved KG view. Nothing here is accepted;
+# `tmodel propose` writes it to spec/vectors/proposals/ as `proposed`, and only the
+# sponsor accepts it, with `tmodel accept` in a pull request.
+schema: tmodel.patch/v1
+target: mvp-01-software-doc-service.yaml
+proposed_by: party:example-agent
+generated_by: "example agent, run 0002"
+rationale: The XXE path has one mitigation; add an upload-time check and a saved view of it.
+add:
+  parties:
+    - id: party:example-agent
+      name: Example coding agent
+      party_kind: software_agent
+  mitigations:
+    - id: mitigation:reject-doctype-uploads
+      name: Reject uploads that declare a DOCTYPE
+      description: Refuse documents with a DOCTYPE at upload, before parsing (defence in depth).
+      mitigation_status: planned
+  views:
+    - id: view:xxe-focus
+      name: XXE threat and its path
+      description: The XXE threat, its attack path and steps (proposed saved view).
+      projection: graph
+      focus_query: "threat-instance:xxe-file-read -> attack_paths -> attack_steps"
+edit:
+  - collection: components
+    id: component:render-worker
+    set:
+      description: Renders uploaded documents; runs the XML parser (agent clarification).
+assertions:
+  - id: assertion:doctype-reject-mitigates-xxe
+    name: Rejecting DOCTYPE uploads mitigates the XXE threat
+    subject: mitigation:reject-doctype-uploads
+    predicate: mitigates
+    object: threat-instance:xxe-file-read
+    confidence: medium

@@ -135,9 +135,11 @@ requirements:
   - id: requirement:iso-sae-21434-2021-rq-09-07
     name: "RQ-09-07: verify the TARA results, goals and claims"
     text: >-
-      Verify that the RQ-09-03 analysis is correct and complete for the item definition,
-      and that the treatment decisions, cybersecurity goals and cybersecurity claims are
-      complete, correct and consistent with what they rest on and with each other.
+      Verify that the RQ-09-03 results are correct and complete for the item definition;
+      that the RQ-09-04 treatment decisions are complete, correct and consistent with
+      those results; that the RQ-09-05 goals and RQ-09-06 claims are complete, correct
+      and consistent with the treatment decisions; and that all of the item's goals and
+      claims are consistent with one another.
     text_origin: paraphrase
     requirement_kind: process
     normativity: mandatory
@@ -198,8 +200,8 @@ requirements:
   - id: requirement:iso-sae-21434-2021-rq-10-03
     name: "RQ-10-03: specify post-development procedures"
     text: >-
-      Where applicable, specify the procedures that keep the component secure after its
-      development ends.
+      Where applicable, specify the procedures that maintain the component's
+      cybersecurity once its development is complete.
     text_origin: paraphrase
     requirement_kind: process
     normativity: mandatory
@@ -289,7 +291,7 @@ requirements:
   - id: requirement:iso-sae-21434-2021-rq-15-01
     name: "RQ-15-01: identify damage scenarios"
     text: >-
-      Work out the damage scenarios that apply.
+      Identify the damage scenarios for the analysis.
     text_origin: paraphrase
     requirement_kind: process
     normativity: mandatory
