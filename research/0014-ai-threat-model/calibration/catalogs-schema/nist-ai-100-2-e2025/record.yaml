@@ -41,17 +41,18 @@ bears_on:
   - DEC-009
 applicability:
   security: core
-  cryptography: none
+  cryptography: adjacent
   this_project: adjacent
 implementations:
   open_source:
     - "Adversarial Robustness Toolbox (ART), MIT, https://github.com/Trusted-AI/adversarial-robustness-toolbox"
     - "garak (LLM vulnerability scanner), Apache-2.0, https://github.com/NVIDIA/garak"
+    - "PyRIT (GenAI red-teaming toolkit), MIT, https://github.com/microsoft/PyRIT"
   commercial: []
-  searched: "2026-11-08"
+  searched: "2026-11-10"
 usefulness:
   verdict: useful
-  reason: "The NISTAML.* id scheme every RPT-0014 attack-catalog entry carries, and the attacker-model axes TM-004 records."
+  reason: "The NISTAML.* id scheme carried by 98 of RPT-0014's 146 attack-catalog entries, and the attacker-model axes TM-004 records."
   assessed: "2026-11-08"
 topic: ai-threat-model-catalogs-schema
 tags:

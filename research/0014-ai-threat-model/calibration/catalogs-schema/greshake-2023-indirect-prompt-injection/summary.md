@@ -3,7 +3,7 @@ schema: "library-summary/v1"
 id: greshake-2023-indirect-prompt-injection
 record: greshake-2023-indirect-prompt-injection
 type: summary
-updated: "2026-11-08"
+updated: "2026-11-10"
 lane: catalogs-schema
 reviewed_by: ""
 ---
@@ -65,9 +65,9 @@ Defences that grew from this line of work are records in their own right, for ex
 
 | Topic of interest | Rating | Linked ids | Why |
 |---|---|---|---|
-| Published attacks | core | AIT-064, AIT-108, AIT-102, AIT-112, AIT-068 | Primary evidence. §4.2 demonstrates indirect prompt injection (AIT-064), an email worm (§4.2.3, AIT-108), memory persistence (§4.2.4, AIT-102) and slow or blocked service (§4.2.6, AIT-112). The multimodal case (AIT-068) is only a limited LLaVA example (§5.3, Fig. 28). |
+| Published attacks | core | AIT-064, AIT-108, AIT-102, AIT-111, AIT-068 | Primary evidence. §4.2 demonstrates indirect prompt injection (AIT-064), an email worm (§4.2.3, AIT-108), memory persistence (§4.2.4, AIT-102) and slow or blocked service (§4.2.6). The time-consuming background task in §4.2.6 is a loop of instructions that makes the model time out. NIST names it `NISTAML.017`, citing this paper, and the catalog files `.017` under AIT-111. The search-disruption attacks in §4.2.6 resemble AIT-088 (RAG jamming, `.016`), but that entry is about a poisoned retrieval index, so it is noted here, not linked. The multimodal case (AIT-068) is only a limited LLaVA example (§5.3, Fig. 28). |
 | Existing AI threat models | adjacent | — | Fig. 2 is a threat model of LLM-integrated applications (method × threat × target), but it has no system decomposition and no TM id in `threat-models.md`. |
-| Weakness enumerations | adjacent | NISTAML.015, LLM01:2025, AML.T0051.001, CWE-1427 | It predates these ids and is cited by them, through RPT-0014's AIT-064 `catalog_ids` and `sources`. It defines no ids of its own. |
+| Weakness enumerations | adjacent | NISTAML.015, NISTAML.016, NISTAML.017, LLM01:2025, AML.T0051.001, CWE-1427 | It predates these ids and is cited by them, through RPT-0014's AIT-064 `catalog_ids` and `sources`. NIST cites it ([146]) as the only source for `.016`, availability attacks through indirect prompt injection, and `.017`, time-consuming background tasks (§3.4.1). It defines no ids of its own. |
 | Attack → asset mapping | core | A07, A09, A04, A06, A11, A13; C06, C07, C08, C09, C10, C17 | Each threat names its target. Information gathering takes user data and credentials (A07, A09); intrusion reaches the system prompt, tools and memory (A04, A06; C08–C10); availability hits A11; manipulated content hits A13. Delivery comes through retrieval and the application (C06, C07) to downstream consumers (C17). |
 
 ## Reference expansion

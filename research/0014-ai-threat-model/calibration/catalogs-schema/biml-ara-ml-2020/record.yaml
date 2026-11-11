@@ -43,7 +43,7 @@ implementations:
   searched: "2026-11-08"
 usefulness:
   verdict: useful
-  reason: "A published component-based ML threat model with 78 parseable risk ids, and the closest prior art to tmodel's generic-threat-to-component mapping."
+  reason: "A published component-based ML threat model with 78 risk ids (unique only as full component:n:descriptor strings), and the closest prior art to tmodel's generic-threat-to-component mapping."
   assessed: "2026-11-08"
 topic: ai-threat-model-catalogs-schema
 tags:
