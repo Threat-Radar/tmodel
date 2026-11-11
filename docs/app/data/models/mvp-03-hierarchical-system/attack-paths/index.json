@@ -1,0 +1,10 @@
+{
+  "file": "mvp-03-hierarchical-system.yaml",
+  "reviewed_threats": [],
+  "steps": 7,
+  "threats": [
+    "threat-instance:cloud-jwt-bypass",
+    "threat-instance:cross-subsystem-chain",
+    "threat-instance:gateway-default-creds"
+  ]
+}

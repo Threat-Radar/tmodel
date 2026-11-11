@@ -21,5 +21,6 @@ python3 docs/publishing/render_bibliography.py
 models_py=python3
 [ -x engine/.venv/bin/python ] && models_py=engine/.venv/bin/python
 "$models_py" docs/publishing/render_models.py
+"$models_py" docs/publishing/render_app.py
 python3 docs/publishing/check_identities.py
 python3 docs/publishing/check_links.py

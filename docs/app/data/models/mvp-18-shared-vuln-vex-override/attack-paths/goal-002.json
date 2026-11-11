@@ -1,0 +1,20 @@
+{
+  "file": "mvp-18-shared-vuln-vex-override.yaml",
+  "goal": "threat-instance:weak-rng-key-recovery",
+  "paths": [
+    {
+      "authored_path": "attack-path:weak-rng-key-recovery",
+      "goal_step": "attack-step:derive-session-key",
+      "review": {
+        "assertion_status": null,
+        "review_status": null,
+        "reviewed": false
+      },
+      "steps": [
+        "attack-step:observe-rng-outputs",
+        "attack-step:capture-tls-handshake",
+        "attack-step:derive-session-key"
+      ]
+    }
+  ]
+}

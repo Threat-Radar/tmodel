@@ -6,9 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:pages": "tsc && vite build --mode pages",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "preview": "vite preview",
+    "preview:pages": "vite preview --mode pages",
     "tauri": "tauri"
   },
   "dependencies": {

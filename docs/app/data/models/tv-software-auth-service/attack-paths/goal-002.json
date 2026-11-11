@@ -1,0 +1,34 @@
+{
+  "file": "tv-software-auth-service.yaml",
+  "goal": "threat-instance:supply-chain-rce",
+  "paths": [
+    {
+      "authored_path": "attack-path:supply-chain-swap",
+      "goal_step": "attack-step:downstream-pulls-update",
+      "review": {
+        "assertion_status": "proposed",
+        "review_status": "changes_requested",
+        "reviewed": false
+      },
+      "steps": [
+        "attack-step:compromise-maintainer-account",
+        "attack-step:publish-malicious-release",
+        "attack-step:downstream-pulls-update"
+      ]
+    },
+    {
+      "authored_path": "attack-path:supply-chain-swap",
+      "goal_step": "attack-step:downstream-pulls-update",
+      "review": {
+        "assertion_status": "proposed",
+        "review_status": "changes_requested",
+        "reviewed": false
+      },
+      "steps": [
+        "attack-step:typosquat-dependency",
+        "attack-step:publish-malicious-release",
+        "attack-step:downstream-pulls-update"
+      ]
+    }
+  ]
+}

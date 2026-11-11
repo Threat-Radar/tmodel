@@ -1,33 +1,56 @@
 #!/usr/bin/env python3
-"""Fail if a generated page under docs/ links to a relative path that does not exist.
+"""Fail if a published page under docs/ links to a local path that does not exist.
 
-External links (http:, https:, mailto:) and in-page anchors are not checked.
+Checks ``href`` and ``src``. GitHub Pages project-root links beginning
+``/tmodel/`` resolve below docs/. External links and in-page anchors are ignored.
 Stdlib only.
 
     python3 docs/publishing/check_links.py
 """
+
 from __future__ import annotations
 
 import re
 import sys
 from pathlib import Path
+from urllib.parse import unquote, urlsplit
 
 DOCS = Path(__file__).resolve().parents[2] / "docs"
-HREF = re.compile(r'href="([^"#]*)(?:#[^"]*)?"')
+LOCAL_ATTRIBUTE = re.compile(r'(?:href|src)="([^"]+)"')
+PAGES_ROOT = "/tmodel/"
 
 
-def main() -> int:
+def check_links(docs: Path = DOCS) -> list[tuple[Path, str]]:
     broken = []
-    pages = sorted(DOCS.rglob("*.html"))
+    pages = sorted(docs.rglob("*.html"))
     for page in pages:
-        for target in HREF.findall(page.read_text(errors="replace")):
-            if not target or re.match(r"^[a-z][a-z0-9+.-]*:", target):
+        for target in LOCAL_ATTRIBUTE.findall(page.read_text(errors="replace")):
+            parsed = urlsplit(target)
+            if not parsed.path or parsed.scheme or parsed.netloc:
                 continue
-            path = (page.parent / target).resolve()
+            if parsed.path.startswith(PAGES_ROOT):
+                path = docs / unquote(parsed.path.removeprefix(PAGES_ROOT))
+            elif parsed.path.startswith("/"):
+                broken.append((page.relative_to(docs), target))
+                continue
+            else:
+                path = page.parent / unquote(parsed.path)
+            path = path.resolve()
+            try:
+                path.relative_to(docs.resolve())
+            except ValueError:
+                broken.append((page.relative_to(docs), target))
+                continue
             if path.is_dir():
                 path = path / "index.html"
             if not path.exists():
-                broken.append((page.relative_to(DOCS), target))
+                broken.append((page.relative_to(docs), target))
+    return broken
+
+
+def main() -> int:
+    pages = sorted(DOCS.rglob("*.html"))
+    broken = check_links()
     for page, target in broken:
         print(f"  {page}: {target}", file=sys.stderr)
     if broken:

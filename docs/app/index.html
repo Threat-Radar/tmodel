@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tmodel</title>
+    <script type="module" crossorigin src="/tmodel/app/assets/index-BNmVQKsM.js"></script>
+    <link rel="stylesheet" crossorigin href="/tmodel/app/assets/index-DdddPS-b.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <div id="preview-banner" class="preview-banner" role="note" hidden>Example data, read-only preview</div>
+      <header class="app-header">
+        <div class="app-header-copy">
+          <p class="eyebrow">Threat Radar</p>
+          <h1>tmodel</h1>
+          <p class="subtitle">Read example threat models, follow their attack paths, and browse the reference library.</p>
+        </div>
+        <div class="model-picker">
+          <label for="model-select">Example model</label>
+          <select id="model-select" disabled><option value="">Loading example models…</option></select>
+          <p id="model-picker-status" class="hint" role="status" aria-live="polite"></p>
+        </div>
+        <div id="engine-panel" class="engine-panel"><div id="engine-status" class="status status-pending" role="status" aria-live="polite">checking local engine…</div><p id="engine-hint" class="hint"></p></div>
+      </header>
+      <nav class="app-navigation" aria-label="Application views">
+        <div class="view-tabs" role="tablist" aria-label="Application views">
+          <button id="report-tab" type="button" role="tab" aria-controls="report-view-panel" aria-selected="true">Model report</button>
+          <button id="paths-tab" type="button" role="tab" aria-controls="paths-view-panel" aria-selected="false" tabindex="-1">Attack paths</button>
+          <button id="graph-tab" type="button" role="tab" aria-controls="graph-view-panel" aria-selected="false" tabindex="-1">Explore graph</button>
+          <button id="library-tab" type="button" role="tab" aria-controls="library-view-panel" aria-selected="false" tabindex="-1">Library</button>
+          <button id="sdl-tab" type="button" role="tab" aria-controls="sdl-view-panel" aria-selected="false" tabindex="-1">SDL</button>
+        </div>
+      </nav>
+
+      <section id="report-view-panel" class="view-panel" role="tabpanel" aria-labelledby="report-tab">
+        <div id="report-scroll" class="report-scroll">
+          <div class="report-status-row"><p id="report-status" class="report-status is-pending" role="status" aria-live="polite">Loading model data…</p><button id="report-retry" class="retry-button" type="button" hidden>Retry</button></div>
+          <div id="report-content" class="report-content"></div>
+        </div>
+      </section>
+
+      <section id="paths-view-panel" class="view-panel" role="tabpanel" aria-labelledby="paths-tab" hidden>
+        <section class="path-workspace" aria-label="Attack path view">
+          <div class="path-view-main">
+            <div class="path-view-toolbar">
+              <label for="path-view-select">Attack path</label>
+              <select id="path-view-select" disabled></select>
+              <button id="path-view-fit" class="path-view-fit" type="button">Fit to view</button>
+              <p class="path-view-help">Steps run left to right · AND/OR where branches join · then the threat, its damage and its mitigations<br />Drag the background to pan · scroll to zoom · boxes stay in place</p>
+            </div>
+            <p id="path-view-banner" class="path-view-banner" role="status" aria-live="polite">Open a model to see its attack paths.</p>
+            <div id="path-view-canvas" class="graph-canvas path-view-canvas" role="img" aria-label="Attack path drawing; the same path is described in text beside it"></div>
+          </div>
+          <aside id="path-view-summary" class="panel path-view-summary" aria-label="Selected attack path"></aside>
+        </section>
+      </section>
+
+      <section id="library-view-panel" class="view-panel" role="tabpanel" aria-labelledby="library-tab" hidden>
+        <div id="library-workspace" class="library-workspace" aria-busy="false">
+          <section class="library-main">
+            <div class="library-heading">
+              <div><p class="eyebrow">Reference library</p><h2>Library documents</h2></div>
+              <span id="library-result-count" class="count-badge">0 documents</span>
+            </div>
+            <div class="source-row"><div id="library-source-notice" class="data-source-notice" role="note"></div><button id="library-retry" class="retry-button" type="button" hidden>Retry library</button></div>
+            <div class="library-controls" aria-label="Library search and filters">
+              <label class="search-control" for="library-search"><span>Search</span><input id="library-search" type="search" placeholder="Title, publisher, topic, or tags" autocomplete="off" /></label>
+              <label for="library-type-filter"><span>Type</span><select id="library-type-filter"><option value="">All types</option></select></label>
+              <label for="library-status-filter"><span>Status</span><select id="library-status-filter"><option value="">All statuses</option></select></label>
+              <label for="library-topic-filter"><span>Topic</span><select id="library-topic-filter"><option value="">All topics</option></select></label>
+            </div>
+            <div id="library-request-status" class="library-request-status" role="status" aria-live="polite">Loading library documents…</div>
+            <div id="library-warning" class="library-warning" role="alert" hidden></div>
+            <p id="library-empty" class="library-empty" hidden>No documents match the current search and filters.</p>
+            <div id="library-table-region" class="library-table-region" role="region" aria-label="Library documents" tabindex="0" hidden>
+              <table class="library-table">
+                <caption>Library document records</caption>
+                <thead><tr>
+                  <th scope="col" aria-sort="ascending"><button type="button" data-library-sort data-sort="title">Title</button></th>
+                  <th scope="col" aria-sort="none"><button type="button" data-library-sort data-sort="type">Type</button></th>
+                  <th scope="col" aria-sort="none"><button type="button" data-library-sort data-sort="status">Status</button></th>
+                  <th scope="col" aria-sort="none"><button type="button" data-library-sort data-sort="topic">Topic</button></th>
+                  <th scope="col" aria-sort="none"><button type="button" data-library-sort data-sort="date">Date</button></th>
+                  <th scope="col">Reviewed artifacts</th>
+                </tr></thead>
+                <tbody id="library-table-body"></tbody>
+              </table>
+            </div>
+          </section>
+          <aside class="panel library-inspector" aria-label="Selected library document">
+            <p class="eyebrow">Selected document</p><h2 id="library-detail-title">Select a document</h2>
+            <div class="library-detail-badges"><span id="library-detail-type" class="type-chip" hidden></span><span id="library-detail-record-status" class="status-chip" hidden></span></div>
+            <div class="library-detail-id"><span>Document ID</span><code id="library-detail-id" class="stable-id"></code></div>
+            <p id="library-detail-status" class="direction-help" role="status" aria-live="polite">Choose a row to inspect its document details.</p>
+            <dl id="library-detail-list" class="property-list"></dl>
+            <section id="library-detail-evidence" class="inspector-section library-detail-section" hidden><h3>Evidence &amp; Extraction</h3><p id="library-detail-evidence-summary" class="library-detail-summary"></p></section>
+            <section id="library-detail-assessment" class="inspector-section library-detail-section" hidden><h3>Research assessment</h3><dl id="library-detail-assessment-list" class="property-list"></dl></section>
+          </aside>
+        </div>
+      </section>
+
+      <section id="graph-view-panel" class="view-panel" role="tabpanel" aria-labelledby="graph-tab" hidden>
+        <div class="source-row graph-source-row"><div id="data-source-notice" class="data-source-notice" role="note"></div><button id="graph-retry" class="retry-button" type="button" hidden>Retry graph</button></div>
+        <section class="graph-workspace" aria-label="Knowledge graph workspace">
+          <aside class="panel node-panel">
+            <div class="panel-heading"><div><p class="eyebrow">Loaded objects</p><h2>Nodes</h2></div><span id="node-count" class="count-badge">0</span></div>
+            <ul id="node-list" class="node-list"></ul>
+          </aside>
+          <section class="graph-panel" aria-label="Interactive graph">
+            <div class="graph-toolbar"><div><p class="eyebrow">Explore graph · for model developers</p><h2>Model graph</h2><div class="graph-options"><label class="bookkeeping-toggle"><input id="graph-show-bookkeeping" type="checkbox" /> Show bookkeeping records (assertions, reviews, parties, phases, views)</label><button id="graph-show-all" class="show-all-button" type="button" hidden disabled>Show whole model</button></div></div><div class="graph-toolbar-status"><span id="graph-loading" class="graph-loading" role="status" aria-live="polite" hidden></span><p>Opens on the threats and their neighbours; Expand neighborhood loads more · Scroll to zoom · drag background to pan · drag nodes to position</p></div></div>
+            <div class="path-toolbar"><label for="attack-path-select">Highlight attack path</label><select id="attack-path-select"><option value="">Choose an attack path…</option></select><button id="clear-attack-path" type="button" disabled>Clear highlight</button><span id="attack-path-status" class="path-status" role="status" aria-live="polite"></span></div>
+            <div id="saved-view-toolbar" class="path-toolbar view-toolbar"><label for="saved-view-select">Saved view</label><select id="saved-view-select" disabled><option value="">No saved views</option></select><button id="clear-saved-view" type="button" disabled>Show all</button><span id="saved-view-status" class="path-status" role="status" aria-live="polite"></span></div>
+            <details id="graph-proposals" class="graph-proposals"><summary id="graph-proposals-summary">Pending proposals (0)</summary><p class="direction-help">Agent proposals for this model (tmodel propose). Read-only here; the sponsor decides each one with tmodel accept in a pull request (PROC-0002).</p><ul id="graph-proposals-list" class="graph-proposals-list"></ul></details>
+            <div id="graph-canvas" class="graph-canvas"></div>
+            <div class="graph-legend"><ul id="type-legend" class="type-legend" aria-label="Node type legend"></ul><ul id="relationship-legend" class="type-legend relationship-legend" aria-label="Relationship review-status legend"></ul></div>
+          </section>
+          <aside class="panel inspector-panel">
+            <p class="eyebrow">Selected object</p><h2 id="inspector-label">Select a node</h2>
+            <span id="inspector-type" class="type-chip"></span><code id="inspector-id" class="stable-id"></code>
+            <button id="expand-node" class="expand-button" type="button" disabled>Expand neighborhood</button>
+            <section class="inspector-section"><h3>Properties</h3><dl id="property-list" class="property-list"></dl></section>
+            <section class="inspector-section"><h3>Connected relationships</h3><p class="direction-help">→ outgoing · ← incoming</p><ul id="relationship-list" class="relationship-list"></ul></section>
+          </aside>
+        </section>
+      </section>
+      <section id="sdl-view-panel" class="view-panel" role="tabpanel" aria-labelledby="sdl-tab" hidden>
+        <div class="sdl-heading">
+          <div><p class="eyebrow">Secure development lifecycle</p><h2>tmodel SDL</h2></div>
+          <label for="sdl-model-select"><span>SDL model</span><select id="sdl-model-select"></select></label>
+        </div>
+        <div id="sdl-status" class="library-request-status" role="status" aria-live="polite">Open this view to load SDL models from the local engine.</div>
+        <div id="sdl-content" class="sdl-content"></div>
+      </section>
+    </main>
+  </body>
+</html>

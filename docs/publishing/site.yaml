@@ -35,6 +35,14 @@ sections:
       renderer (apps/desktop/src/report-render.ts, run by Node) writes the HTML,
       so a page and the app's Model report view cannot disagree. Linked from the
       landing page, not yet from the shared nav (adding it re-renders every page).
+  - path: docs/app/
+    manifest: spec/vectors/
+    builder: docs/publishing/render_app.py
+    note: >
+      Interactive read-only browser preview (#204). The Pages-mode build reuses
+      the desktop frontend and reads deterministic JSON for every example model
+      plus the complete public library table. It has no engine, mutation API,
+      telemetry, remote asset, or Tauri dependency at runtime.
   - path: docs/reports/
     manifest: docs/publishing/reports.yaml
     builder: docs/publishing/render_report.py

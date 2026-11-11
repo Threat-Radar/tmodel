@@ -1,0 +1,34 @@
+{
+  "file": "mvp-03-hierarchical-system.yaml",
+  "goal": "threat-instance:cross-subsystem-chain",
+  "paths": [
+    {
+      "authored_path": "attack-path:cross-subsystem-chain",
+      "goal_step": "attack-step:chain-to-in-vehicle",
+      "review": {
+        "assertion_status": "proposed",
+        "review_status": "changes_requested",
+        "reviewed": false
+      },
+      "steps": [
+        "attack-step:forge-jwt-none-alg",
+        "attack-step:call-fleet-api",
+        "attack-step:chain-to-in-vehicle"
+      ]
+    },
+    {
+      "authored_path": "attack-path:cross-subsystem-chain",
+      "goal_step": "attack-step:chain-to-in-vehicle",
+      "review": {
+        "assertion_status": "proposed",
+        "review_status": "changes_requested",
+        "reviewed": false
+      },
+      "steps": [
+        "attack-step:forge-jwt-weak-key",
+        "attack-step:call-fleet-api",
+        "attack-step:chain-to-in-vehicle"
+      ]
+    }
+  ]
+}

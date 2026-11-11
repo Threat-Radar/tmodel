@@ -29,7 +29,7 @@ export interface GraphRelationship {
 }
 
 export interface GraphResponse {
-  source: "development-fixture" | "engine";
+  source: "development-fixture" | "engine" | "static-preview";
   notice?: string;
   focusId?: string;
   nodes: readonly GraphNode[];

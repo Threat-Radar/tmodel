@@ -1,0 +1,11 @@
+{
+  "file": "mvp-01-software-doc-service.yaml",
+  "reviewed_threats": [
+    "threat-instance:xxe-file-read"
+  ],
+  "steps": 7,
+  "threats": [
+    "threat-instance:imds-pivot",
+    "threat-instance:xxe-file-read"
+  ]
+}

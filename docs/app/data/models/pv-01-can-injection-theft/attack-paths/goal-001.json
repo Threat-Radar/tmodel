@@ -1,0 +1,22 @@
+{
+  "file": "pv-01-can-injection-theft.yaml",
+  "goal": "threat-instance:spoofed-key-validated",
+  "paths": [
+    {
+      "authored_path": "attack-path:headlight-can-injection",
+      "goal_step": "attack-step:drive-away",
+      "review": {
+        "assertion_status": "proposed",
+        "review_status": null,
+        "reviewed": false
+      },
+      "steps": [
+        "attack-step:reach-control-can",
+        "attack-step:inject-key-validated",
+        "attack-step:immobilizer-off",
+        "attack-step:doors-unlocked",
+        "attack-step:drive-away"
+      ]
+    }
+  ]
+}

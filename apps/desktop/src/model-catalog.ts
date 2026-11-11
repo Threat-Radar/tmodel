@@ -84,6 +84,19 @@ export function rememberModel(file: string, storage: Pick<Storage, "setItem"> | 
   }
 }
 
+/** Keep the selected example shareable without reloading the application. */
+export function syncModelUrl(
+  model: ModelSummary,
+  href: string = globalThis.location?.href ?? "https://tmodel.invalid/",
+  history: Pick<History, "replaceState"> | undefined = globalThis.history,
+): string {
+  const url = new URL(href);
+  url.searchParams.set("model", model.id);
+  url.searchParams.delete("file");
+  history?.replaceState(null, "", url);
+  return url.href;
+}
+
 function browserStorage(): Storage | undefined {
   try {
     return globalThis.localStorage;
@@ -98,6 +111,7 @@ export class ModelPicker {
   // Files the engine could not load. Kept on the status line after a model
   // opens, so the reader still learns that some examples are missing.
   private problemNote = "";
+  private externalNote = "";
 
   constructor(
     private readonly select: HTMLSelectElement,
@@ -131,12 +145,17 @@ export class ModelPicker {
       ? `Could not load: ${response.problems.map((problem) => `${problem.file} (${problem.error})`).join("; ")}`
       : "";
     const empty = response.models.length === 0 ? "The engine lists no example models." : "";
-    this.status.textContent = [empty, this.problemNote].filter(Boolean).join(" · ");
+    this.status.textContent = [empty, this.problemNote, this.externalNote].filter(Boolean).join(" · ");
   }
 
   show(model: ModelSummary): void {
     this.select.value = model.file;
-    this.status.textContent = [modelSummaryLine(model), this.problemNote].filter(Boolean).join(" · ");
+    this.status.textContent = [modelSummaryLine(model), this.problemNote, this.externalNote].filter(Boolean).join(" · ");
+  }
+
+  notice(message: string): void {
+    this.externalNote = message;
+    this.status.textContent = [this.status.textContent, message].filter(Boolean).join(" · ");
   }
 
   waiting(message: string): void {

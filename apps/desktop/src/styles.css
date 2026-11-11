@@ -7,6 +7,7 @@ body { margin: 0; min-height: 100vh; }
 button { font: inherit; }
 [hidden] { display: none !important; }
 .app-shell { display: flex; height: 100vh; min-height: 0; flex-direction: column; padding: 18px; }
+.preview-banner { margin: -18px -18px 14px; padding: 9px 16px; background: #5f370e; color: #fff8e8; font-size: 0.82rem; font-weight: 800; letter-spacing: 0.025em; text-align: center; }
 .app-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 28px; width: 100%; max-width: 1600px; margin: 0 auto 10px; }
 .app-header-copy { min-width: 0; }
 h1, h2, h3, p { margin-top: 0; }
