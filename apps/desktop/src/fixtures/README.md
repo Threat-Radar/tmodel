@@ -40,12 +40,12 @@ paths or the full library records.
 
 `weakness-table.json` is the engine's answer to `GET /weaknesses/table`, with no
 parameters, over the CWE sample in `engine/tests/fixtures/cwe/`: nine weaknesses
-copied verbatim from CWE 4.20. It lets a weakness table view (#58) start before the
-CWE import reaches a running engine (DL-0050).
+copied verbatim from CWE 4.20. It lets the weakness table view (#234) start before
+the CWE import reaches a running engine (DL-0050).
 
 It is generated in the same way as the library fixture, and
 `engine/tests/test_weakness_table.py` fails when the engine's answer no longer
-matches it. Agree a new shape on #58 first, then regenerate it from the engine
+matches it. Agree a new shape on #234 first, then regenerate it from the engine
 folder:
 
 ```sh

@@ -4,9 +4,9 @@ id: DL-0050
 title: "CWE import: every CWE 4.20 entry read whole, mapped onto the core model, and served to the table views (#144, #61, #58)"
 type: process
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 date: "2026-11-11"
-updated: "2026-11-11"
+updated: "2026-11-12"
 record: DL-0050
 bears_on: [DEC-001a, DEC-008]
 defers_to: ARCH-0001
@@ -28,15 +28,15 @@ AI-assisted design record (per `CLAUDE.md`). Student: @Clovier, the Data lane ow
 |---|---|
 | `engine/engine/load/cwe.py` | new: the reader (`load_catalog`, `cached_catalog`), the entries (`CweEntry`, `CweCatalog`), the field and link reports, and `to_objects` |
 | `engine/engine/core.py`, `engine/engine/api/server.py` | `GET /weaknesses` (what the import found, or one entry in full) and `GET /weaknesses/table` (rows for the table view) |
-| `engine/engine/cli.py` | `tmodel weaknesses`, and `--id` for one entry, so the CLI matches the API (APP-0001 A-060) |
-| `engine/tests/test_load_cwe.py`, `engine/tests/test_weakness_table.py` | 81 tests, and one more that runs only when MITRE's file is at hand |
+| `engine/engine/cli.py` | `tmodel weaknesses`, and `--id` for one entry, which refuses table options as `GET /weaknesses` does, so the CLI matches the API (APP-0001 A-060) |
+| `engine/tests/test_load_cwe.py`, `engine/tests/test_weakness_table.py` | 88 tests, and one more that runs only when MITRE's file is at hand |
 | `engine/tests/fixtures/cwe/` | the sample catalog, the extraction's expected values for it, and a one-record test library |
-| `apps/desktop/src/fixtures/weakness-table.json` and its README | the table feed's answer over the sample, for #58 |
+| `apps/desktop/src/fixtures/weakness-table.json` and its README | the table feed's answer over the sample, for #58 (now #234) |
 | `CONTRIBUTING.md` §10 | how to point the engine at the catalog |
 
 ### Where the catalog comes from
 
-The library's `cwe` record (Threat-Radar/library#21) pins the release: CWE 4.20 (2026-04-30), written to CWE XML Schema 7.3, as MITRE's `cwec_v4.20.xml.zip` with SHA-256 `3976f599e5e5200219a3108bb896d06e2a88fbb293369e1883cb423a5e9d7d50`. The engine reads that file from the path in `TMODEL_CWE_CATALOG`, refuses a file with any other digest, and never downloads it itself: whether the app bundles, caches or fetches the catalog is DEC-008, still open.
+The library's `cwe` record (Threat-Radar/library#21) pins the release: CWE 4.20 (2026-04-30), written to CWE XML Schema 7.3, as MITRE's `cwec_v4.20.xml.zip` with SHA-256 `3976f599e5e5200219a3108bb896d06e2a88fbb293369e1883cb423a5e9d7d50`. The engine reads that file from the path in `TMODEL_CWE_CATALOG`, refuses a file with any other digest, or one that is not a regular file or is larger than 256 MiB, and never downloads it itself: whether the app bundles, caches or fetches the catalog is DEC-008, still open.
 
 tmodel's library pin (`a28a013`) predates the extraction, and its `cwe` record has no digest. Until the pin moves, `TMODEL_LIBRARY` has to point at a library checkout that has it (library `main` at `20399c2` does). Without a pinned digest or a catalog, the API answers 503 with what to set.
 
@@ -67,13 +67,14 @@ Every Assertion is `proposed`, `asserted_by` `party:mitre-cwe` (an organization)
 
 ## How it was checked
 
-- **The sample.** 13 entries the library copied verbatim from CWE 4.20 for importer tests. Each was checked byte for byte against its digest in the library's `expected.yaml` and against MITRE's 4.20 file. The assembled sample validates against `cwe_schema_v7.3.xsd` with `xmllint --nonet`, with the W3C XHTML schemas matched by digest.
+- **The sample.** The library's 13 example files, copied verbatim from CWE 4.20 for importer tests: 12 entries (9 weaknesses, 2 categories and 1 view) and a file of 3 external references, so the reader finds 15 items. Each file was checked byte for byte against its digest in the library's `expected.yaml` and against MITRE's 4.20 file. The assembled sample validates against `cwe_schema_v7.3.xsd` with `xmllint --nonet`, with the W3C XHTML schemas matched by digest.
 - **The extraction's values.** For every sample entry, the values the extraction says an importer must find are found: names, abstraction, structure, status, related weaknesses with view, ordinal and chain, taxonomy mappings, CAPEC ids, cited references, counts, note types, mapping notes and content history.
 - **Nothing lost.** Per entry, the elements, attributes and words kept equal those in the XML.
 - **The whole 4.20 release**, MITRE's zip, whose digest matches the record. It has 969 weaknesses, 422 categories, 59 views and 1,026 references, with 0 unknown fields, and parses in about 0.6 s. The status and usage counts, the content-history counts per kind, the 1,212 CAPEC links and the 3,134 observed examples all equal the extraction's `catalog-stats.yaml`.
 - **The objects.** For the whole release, the import makes 969 weaknesses, 450 attack patterns, 2,154 vulnerabilities, 4,329 assertions and 1 party. Those objects and the sample's both validate against `ExampleModelCore` with `linkml-validate` (LinkML 1.12.1), with no issues. Every reference resolves inside them.
 - **CWE 4.21** (2026-10-28, schema 7.4). The library does not pin it, so it was read without a digest. It reads with no code change: 984 weaknesses, 431 categories, 62 views and 1,081 references. The report flags five External_Reference fields that schema 7.4 adds (`Access_Restrictions`, `Alt_URL`, `Alt_URL_Date`, `Media_Type`, `Rationale`), which are kept, not dropped.
-- **The engine.** 411 passed and 6 skipped on Python 3.13; the CWE, API and CLI tests also pass on 3.11 and 3.12. `ruff check` and `ruff format --check` are clean, and `tmodel health --in-process` answers ok.
+- **A bounded read.** A FIFO with no writer, `/dev/zero` and a directory are refused at once. Before the change, the FIFO made the read wait for a writer, and the device would have been read without end. A file over the size limit is refused before it is read, and MITRE's 4.20 zip still reads whole in about 0.6 s.
+- **The engine.** After merging main (`b0604a4`): 418 passed and 6 skipped on Python 3.11, 3.12 and 3.13. CI's engine jobs skip two more, the tests that read the library submodule, which those jobs do not check out. `ruff check` and `ruff format --check` are clean, and `tmodel health --in-process` answers ok.
 
 ## Found in MITRE's 4.20 data
 
@@ -94,10 +95,13 @@ Every Assertion is `proposed`, `asserted_by` `party:mitre-cwe` (an organization)
 8. **An enumeration sorts in CWE's own order,** not alphabetically.
 9. **A copy of the sample in tmodel.** The engine CI does not check out the library, so the tests need their own copy. It is the library's verbatim set, with MITRE's notice and licence beside it.
 10. **No route that exports every object.** `to_objects` is there for the store (#65) and the graph. The API serves the report, one entry with its objects, and the table.
+11. **One size limit for the file and its XML,** 256 MiB. A zip is far smaller than the XML inside it, so the file's limit refuses nothing the XML's limit would accept.
 
 ## What a human accepted
 
 - @Clovier, 2026-11-11: after the sponsor's #58 comment, build #144 on the answers proposed on #61 (the 4.x line, option (c)) without waiting for a reply there, and give #58 the table feed's shape and a fixture first.
+
+- @Clovier, 2026-11-12: make the changes the review of #233 asked for (below).
 
 The code, the mapping and the choices above are the agent's draft until a human reviews them on the pull request.
 
@@ -110,6 +114,17 @@ The code, the mapping and the choices above are the agent's draft until a human 
 - **Plain strings for structured text.** A text such as `x < y` would be misread as markup. Writing the tests found this, and structured text became `#xhtml`.
 - **Unwrapping one-value fields** (`Description: "…"` instead of a list). That needs each field's cardinality, and lists everywhere keep one shape.
 - **Moving the library pin in this change.** It also moves the site's record pages, so it is a change of its own.
+
+## Changes after review (2026-11-12)
+
+@kriishnaa-18 reviewed #233 on 2026-11-12 and asked for two changes before approving. Both are made:
+
+- **Merge main.** #231 added a paragraph about the browser preview where this change adds the weakness table's section to `apps/desktop/src/fixtures/README.md`. Both are kept, the preview's paragraph first, since it is about the library fixture above it.
+- **A bounded read.** `load_catalog` read the whole file into memory before checking its digest, and only the XML inside a zip had a size limit. Now the file is opened without waiting, and anything that is not a regular file is refused, as is a file larger than `MAX_FILE_BYTES` (256 MiB, the XML's limit), before any of it is read. The read stops one byte past the limit, so a file that grows after the check is refused too.
+
+The review's two suggestions are taken as well, open to review like the rest: `tmodel weaknesses --id` refuses table options instead of ignoring them, as `GET /weaknesses` already did with a 400; and the sample's description now tells the library's 13 example files apart from the 15 items read from them (12 entries and 3 references).
+
+#58 was closed the same day and split into one issue per table. The weakness table view is #234, so the fixture README, the test that checks the fixture and the code comments now point there.
 
 ## Follow-ups
 

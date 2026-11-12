@@ -1,10 +1,10 @@
-"""The weakness feeds (#144, #58): GET /weaknesses/table, GET /weaknesses, and the GUI's fixture.
+"""The weakness feeds (#144, #234): GET /weaknesses/table, GET /weaknesses, and the GUI's fixture.
 
 The engine reads the CWE sample (`fixtures/cwe/`, 9 weaknesses copied verbatim from
 CWE 4.20) through TMODEL_CWE_CATALOG, with the digest a one-record test library pins
 (TMODEL_LIBRARY). `apps/desktop/src/fixtures/weakness-table.json` must equal the
 engine's answer; TMODEL_UPDATE_FIXTURES=1 rewrites it after a shape change agreed on
-#58.
+#234.
 """
 
 import json
@@ -88,7 +88,7 @@ def test_gui_fixture_is_the_engines_answer():
         text = json.dumps(payload, indent=2, ensure_ascii=False) + "\n"
         GUI_FIXTURE.write_text(text, encoding="utf-8")
     assert json.loads(GUI_FIXTURE.read_text(encoding="utf-8")) == payload, (
-        "the weakness feed changed: agree the new shape on #58, then regenerate the fixture "
+        "the weakness feed changed: agree the new shape on #234, then regenerate the fixture "
         "with TMODEL_UPDATE_FIXTURES=1 pytest tests/test_weakness_table.py"
     )
 
@@ -346,6 +346,15 @@ def test_cli_shows_one_entry(capsys):
     assert out[0].startswith("CWE-79  Improper Neutralization of Input")
     assert out[1] == "  Weakness (Base/Simple); status Stable; usage Allowed"
     assert out[2] == "  6 CAPEC links, 20 observed examples, 12 mitigations"
+
+
+def test_cli_refuses_table_options_with_id(capsys):
+    assert main(["weaknesses", "--in-process", "--id", "CWE-79", "--status", "Stable"]) == 2
+    captured = capsys.readouterr()
+    assert captured.out == ""
+    assert "--id shows one entry and takes no table options (--status)" in captured.err
+    assert main(["weaknesses", "--in-process", "--id", "79", "--search", "x", "--limit", "1"]) == 2
+    assert "(--search, --limit)" in capsys.readouterr().err
 
 
 def test_cli_json_is_the_engines_answer(capsys):

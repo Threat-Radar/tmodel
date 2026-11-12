@@ -41,6 +41,7 @@ import html
 import io
 import os
 import re
+import stat
 import threading
 import zipfile
 from collections import Counter
@@ -61,8 +62,10 @@ XSI_NS = "http://www.w3.org/2001/XMLSchema-instance"
 CATALOG_ENV = "TMODEL_CWE_CATALOG"
 # The library record that pins the release: content.url and content.sha256.
 LIBRARY_RECORD = "cwe"
-# The 4.21 XML is 18.6 MB. A zip whose XML claims more than this is refused.
+# The 4.21 XML is 18.6 MB. A zip whose XML is larger than this is refused.
 MAX_XML_BYTES = 256 * 1024 * 1024
+# A catalog file, zip or XML, larger than this is refused before any of it is read.
+MAX_FILE_BYTES = MAX_XML_BYTES
 TERMS_URL = "https://cwe.mitre.org/about/termsofuse.html"
 # The licence on that page (last updated 2023-07-20), which a copy of CWE content reproduces.
 LICENSE = (
@@ -356,7 +359,9 @@ def load_catalog(path: str | Path, sha256: str | None = None) -> CweCatalog:
     """Read the catalog at `path`, a CWE zip as MITRE publishes it or the XML inside one.
 
     With `sha256`, the file must have exactly that digest, or CweError says which it
-    has instead. Raises CweError for a file that is not a CWE Schema 7 catalog.
+    has instead. Raises CweError for a file that is not a CWE Schema 7 catalog, and,
+    before reading it, for one that is not a regular file or is larger than
+    MAX_FILE_BYTES.
     """
     path = Path(path)
     return _from_bytes(path.name, _read(path), sha256)
@@ -498,10 +503,33 @@ def to_objects(
 
 
 def _read(path: Path) -> bytes:
+    """The bytes of `path`, a regular file of at most MAX_FILE_BYTES; CweError otherwise.
+
+    The open file's type and size are checked before anything is read, so a FIFO or
+    a device is refused rather than waited on or read without end. The read stops one
+    byte past the limit, so a file that grows after the check is refused too, and the
+    digest is never taken over more than MAX_FILE_BYTES.
+    """
+    too_large = f"{path.name}: larger than {MAX_FILE_BYTES} bytes, so it is not read"
     try:
-        return path.read_bytes()
+        with open(path, "rb", opener=_open_without_waiting) as handle:
+            info = os.fstat(handle.fileno())
+            if not stat.S_ISREG(info.st_mode):
+                raise CweError(f"{path.name}: not a regular file, so it is not read")
+            if info.st_size > MAX_FILE_BYTES:
+                raise CweError(too_large)
+            data = handle.read(MAX_FILE_BYTES + 1)
     except OSError as exc:
         raise CweError(f"{path.name}: cannot read ({exc.strerror or exc})") from exc
+    if len(data) > MAX_FILE_BYTES:  # it grew after the check
+        raise CweError(too_large)
+    return data
+
+
+def _open_without_waiting(path: str | Path, flags: int) -> int:
+    # Opening a FIFO that has no writer waits for one; O_NONBLOCK returns at once, so
+    # _read can refuse it. A regular file reads the same either way.
+    return os.open(path, flags | getattr(os, "O_NONBLOCK", 0))
 
 
 def _from_bytes(name: str, data: bytes, sha256: str | None) -> CweCatalog:

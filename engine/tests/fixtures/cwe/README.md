@@ -5,7 +5,7 @@ catalog or the library submodule.
 
 | File | What it is |
 |---|---|
-| `cwec_v4.20-sample.xml` | One CWE catalog holding the 13 entries the library copied verbatim from CWE 4.20 for importer tests: 9 weaknesses (CWE-79, 373, 689, 692, 710, 769, 1093, 1174, 1187), 2 categories (CWE-411, 811), 1 view (CWE-709) and 3 external references (REF-7, REF-44, REF-726) |
+| `cwec_v4.20-sample.xml` | One CWE catalog built from the library's 13 example files, copied verbatim from CWE 4.20 for importer tests. Twelve files hold one entry each: 9 weaknesses (CWE-79, 373, 689, 692, 710, 769, 1093, 1174, 1187), 2 categories (CWE-411, 811) and 1 view (CWE-709). The thirteenth holds 3 external references (REF-7, REF-44, REF-726). So the reader finds 15 items in it: 12 entries and 3 references |
 | `expected.json` | What the library's extraction says an importer must find in those entries, copied from its `examples/expected.yaml` |
 | `library/` | A one-record test library whose `cwe` record pins the sample's SHA-256 |
 | `.gitattributes` | Keeps the sample's bytes as they are: git converts no line ends (the references section ends its lines in CRLF, as MITRE's file does) |

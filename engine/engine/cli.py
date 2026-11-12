@@ -238,12 +238,19 @@ def _print_weakness(payload: dict[str, Any]) -> None:
 
 
 def _weaknesses(args: argparse.Namespace) -> int:
+    names = core.WEAKNESS_FILTERS + core.TABLE_OPTIONS
+    table = {n: getattr(args, n) for n in names if getattr(args, n) is not None}
     if args.id is not None:
+        if table:  # they would be ignored, so refuse them, as GET /weaknesses does
+            given = ", ".join(f"--{n}" for n in table)
+            print(
+                f"error: --id shows one entry and takes no table options ({given})",
+                file=sys.stderr,
+            )
+            return 2
         path, params, local = "/weaknesses", {"id": args.id}, core.weaknesses
     else:
-        names = core.WEAKNESS_FILTERS + core.TABLE_OPTIONS
-        params = {n: getattr(args, n) for n in names if getattr(args, n) is not None}
-        path, local = "/weaknesses/table", core.weakness_table
+        path, params, local = "/weaknesses/table", table, core.weakness_table
     payload = _call(
         lambda: (
             local(params)

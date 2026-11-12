@@ -1,15 +1,17 @@
 """The CWE reader and its objects (#144): every field kept, the extraction's values found.
 
-Runs on `fixtures/cwe/cwec_v4.20-sample.xml`, 13 entries the library copied verbatim
-from CWE 4.20, and compares them with what the library's extraction says an importer
-must find (`fixtures/cwe/expected.json`, from its examples/expected.yaml). Set
-TMODEL_CWE_FULL to MITRE's cwec_v4.20.xml.zip to check the whole release against the
-extraction's catalog-stats.yaml as well.
+Runs on `fixtures/cwe/cwec_v4.20-sample.xml`, built from the library's 13 example files
+(12 entries and 3 external references, copied verbatim from CWE 4.20), and compares what
+it reads with what the library's extraction says an importer must find
+(`fixtures/cwe/expected.json`, from its examples/expected.yaml). Set TMODEL_CWE_FULL to
+MITRE's cwec_v4.20.xml.zip to check the whole release against the extraction's
+catalog-stats.yaml as well.
 """
 
 import io
 import json
 import os
+import threading
 import zipfile
 from collections import Counter
 from collections.abc import Mapping
@@ -243,6 +245,60 @@ def test_what_is_not_a_cwe_schema_7_catalog_is_refused(tmp_path, change, message
     bad.write_text(change(SAMPLE.read_text(encoding="utf-8")), encoding="utf-8")
     with pytest.raises(cwe.CweError, match=message):
         cwe.load_catalog(bad)
+
+
+def test_a_file_over_the_size_limit_is_refused_before_it_is_read(monkeypatch):
+    monkeypatch.setattr(cwe, "MAX_FILE_BYTES", SAMPLE.stat().st_size - 1)
+    with pytest.raises(cwe.CweError, match="larger than .* bytes, so it is not read"):
+        cwe.load_catalog(SAMPLE, SAMPLE_SHA256)
+    monkeypatch.setattr(cwe, "MAX_FILE_BYTES", SAMPLE.stat().st_size)
+    assert len(cwe.load_catalog(SAMPLE, SAMPLE_SHA256).weaknesses) == 9
+
+
+def test_a_zip_whose_xml_is_over_the_size_limit_is_refused(tmp_path, monkeypatch):
+    archive = tmp_path / "cwec_v4.20.xml.zip"
+    with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+        z.write(SAMPLE, "cwec_v4.20.xml")
+    monkeypatch.setattr(cwe, "MAX_XML_BYTES", SAMPLE.stat().st_size - 1)
+    with pytest.raises(cwe.CweError, match="cwec_v4.20.xml is larger than"):
+        cwe.load_catalog(archive)
+
+
+def test_a_missing_file_cannot_be_read(tmp_path):
+    with pytest.raises(cwe.CweError, match="missing.xml: cannot read"):
+        cwe.load_catalog(tmp_path / "missing.xml")
+
+
+@pytest.mark.parametrize("kind", ["directory", "device"])
+def test_only_a_regular_file_is_read(tmp_path, kind):
+    target = tmp_path if kind == "directory" else Path(os.devnull)
+    if not target.exists():
+        pytest.skip(f"no {os.devnull} here")
+    with pytest.raises(cwe.CweError, match="cannot read|not a regular file"):
+        cwe.load_catalog(target)
+
+
+@pytest.mark.skipif(not hasattr(os, "mkfifo"), reason="no FIFOs on this platform")
+def test_a_fifo_is_refused_without_waiting_for_a_writer(tmp_path):
+    fifo = tmp_path / "cwec_v4.20.xml"
+    os.mkfifo(fifo)
+    errors = []
+
+    def load():
+        try:
+            cwe.load_catalog(fifo)
+        except cwe.CweError as exc:
+            errors.append(str(exc))
+
+    worker = threading.Thread(target=load, daemon=True)
+    worker.start()
+    worker.join(timeout=10)
+    waited = worker.is_alive()
+    if waited:  # open the FIFO's other end, so the thread can finish
+        os.close(os.open(fifo, os.O_WRONLY | os.O_NONBLOCK))
+        worker.join(timeout=10)
+    assert not waited, "load_catalog waited for a writer instead of refusing the FIFO"
+    assert errors == ["cwec_v4.20.xml: not a regular file, so it is not read"]
 
 
 def test_cached_catalog_reloads_only_when_the_bytes_change(tmp_path):

@@ -47,7 +47,7 @@ LIBRARY_FILTERS = ("id", "type", "topic", "status")
 TABLE_OPTIONS = ("search", "sort", "order", "limit", "offset")
 TABLE_SORTS = ("id", "title", "type", "shelf", "status", "maturity", "date", "publisher", "topic")
 TABLE_FACETS = ("type", "status", "topic")
-# The weakness table view (#144, #58): exact filters, sorts and facet counts over CWE weaknesses.
+# The weakness table view (#144, #234): exact filters, sorts and facet counts over CWE weaknesses.
 WEAKNESS_FILTERS = ("abstraction", "structure", "status", "usage")
 WEAKNESS_SORTS = ("id", "name", "abstraction", "structure", "status", "usage", "likelihood")
 WEAKNESS_FACETS = WEAKNESS_FILTERS
@@ -352,7 +352,7 @@ def weaknesses(query: Mapping[str, str] | None = None) -> dict[str, Any]:
 
 
 def weakness_table(query: Mapping[str, str] | None = None) -> dict[str, Any]:
-    """Rows for the weakness table view (#144, #58): filtered, searched, sorted, paged.
+    """Rows for the weakness table view (#144, #234): filtered, searched, sorted, paged.
 
     Parameters, all optional, as in `library_table`: the WEAKNESS_FILTERS, each an
     exact match; `search`, a text that must appear (ignoring case) in a weakness's
