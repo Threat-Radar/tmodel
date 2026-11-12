@@ -1,0 +1,3 @@
+# MITRE CWE bytes, kept verbatim: the External_References section ends its lines in CRLF,
+# and the SHA-256 the test library pins covers those bytes (README.md).
+cwec_v4.20-sample.xml -text -whitespace

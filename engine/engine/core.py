@@ -17,6 +17,7 @@ from engine import __version__
 from engine import propose as proposals
 from engine import sdl as sdl_view
 from engine.graph import AttackGraph, GraphError
+from engine.load import cwe
 from engine.load.library import (
     Library,
     LibraryError,
@@ -46,6 +47,18 @@ LIBRARY_FILTERS = ("id", "type", "topic", "status")
 TABLE_OPTIONS = ("search", "sort", "order", "limit", "offset")
 TABLE_SORTS = ("id", "title", "type", "shelf", "status", "maturity", "date", "publisher", "topic")
 TABLE_FACETS = ("type", "status", "topic")
+# The weakness table view (#144, #58): exact filters, sorts and facet counts over CWE weaknesses.
+WEAKNESS_FILTERS = ("abstraction", "structure", "status", "usage")
+WEAKNESS_SORTS = ("id", "name", "abstraction", "structure", "status", "usage", "likelihood")
+WEAKNESS_FACETS = WEAKNESS_FILTERS
+# CWE's own order for its enumerations, which a sort follows; other values come after, by name.
+WEAKNESS_ORDER = {
+    "abstraction": ("Pillar", "Class", "Base", "Variant", "Compound"),
+    "structure": ("Simple", "Chain", "Composite"),
+    "status": ("Stable", "Usable", "Draft", "Incomplete", "Obsolete", "Deprecated"),
+    "usage": ("Allowed", "Allowed-with-Review", "Discouraged", "Prohibited"),
+    "likelihood": ("High", "Medium", "Low", "Unknown"),
+}
 # The example-model families, told apart by file-name prefix (spec/vectors/README.md).
 # The order is the order the model list uses.
 MODEL_KINDS = (
@@ -256,6 +269,187 @@ def _row(r: LibraryRecord) -> dict[str, Any]:
         "artifacts": len(r.artifacts),
         "reviewed_artifacts": sum(1 for a in r.artifacts if a.reviewed),
         "profile": r.profile,
+    }
+
+
+def _served_catalog() -> cwe.CweCatalog:
+    """The CWE release the library pins, read from the file `$TMODEL_CWE_CATALOG` names."""
+    record = _served_library().get(cwe.LIBRARY_RECORD)
+    pinned = record.content.sha256 if record is not None else None
+    if record is None or not pinned:
+        raise Unavailable(
+            "the library pins no CWE release: its cwe record has no content.sha256 "
+            "(the CWE extraction is Threat-Radar/library#21); set TMODEL_LIBRARY to a "
+            "library checkout that has it"
+        )
+    path = cwe.configured_catalog()
+    if path is None:
+        raise Unavailable(
+            f"no CWE catalog: download {record.content.url} (SHA-256 {pinned}) "
+            f"and set {cwe.CATALOG_ENV} to that file"
+        )
+    try:
+        return cwe.cached_catalog(path, pinned)
+    except cwe.CweError as exc:
+        raise Unavailable(str(exc)) from exc
+
+
+def _catalog_summary(catalog: cwe.CweCatalog) -> dict[str, Any]:
+    """Which CWE release an answer comes from, with MITRE's notice and licence.
+
+    Every answer that holds CWE content carries them, as the CWE Terms of Use require
+    of a copy. Names no local path.
+    """
+    return {
+        "name": catalog.name,
+        "version": catalog.version,
+        "date": catalog.date,
+        "schema": catalog.schema,
+        "file": catalog.file,
+        "sha256": catalog.sha256,
+        "weaknesses": len(catalog.weaknesses),
+        "categories": len(catalog.categories),
+        "views": len(catalog.views),
+        "references": len(catalog.references),
+        "unknown_fields": len(catalog.unknown),
+        "notice": cwe.notice(catalog),
+        "license": cwe.LICENSE,
+        "terms_url": cwe.TERMS_URL,
+    }
+
+
+def weaknesses(query: Mapping[str, str] | None = None) -> dict[str, Any]:
+    """The CWE release the engine serves (#144): what the import found, or one entry in full.
+
+    Without parameters: the catalog; `fields`, one row per entry field with how many
+    entries carry it and where it goes in the object model (an unknown field has
+    `known` false); `links`, what became of CWE's CAPEC and CVE links, naming each
+    one not mapped; and how many objects of each kind the import makes. With `id`
+    (`CWE-79` or `79`): that weakness, category or view with every field, and the
+    objects the import makes for a weakness. An id the catalog does not have gives
+    `entry: null`. Raises ValueError for another parameter or a malformed id, and
+    Unavailable when there is no pinned catalog to read.
+    """
+    values = _values(query or {}, ("id",), "parameter")
+    catalog = _served_catalog()
+    summary = {"catalog": _catalog_summary(catalog)}
+    if "id" not in values:
+        return {
+            **summary,
+            "fields": catalog.report(),
+            "links": catalog.links(),
+            "objects": {name: len(items) for name, items in catalog.objects.items()},
+        }
+    number = cwe.cwe_number(values["id"])
+    entry = catalog.get(number)
+    weakness = entry is not None and entry.kind == "Weakness"
+    return {
+        **summary,
+        "id": f"CWE-{number}",
+        "entry": entry.to_dict() if entry is not None else None,
+        "objects": cwe.to_objects(catalog, [number]) if weakness else None,
+    }
+
+
+def weakness_table(query: Mapping[str, str] | None = None) -> dict[str, Any]:
+    """Rows for the weakness table view (#144, #58): filtered, searched, sorted, paged.
+
+    Parameters, all optional, as in `library_table`: the WEAKNESS_FILTERS, each an
+    exact match; `search`, a text that must appear (ignoring case) in a weakness's
+    id, name, description or alternate terms; `sort`, one of WEAKNESS_SORTS (default
+    `id`, by number), where an enumeration sorts in CWE's own order; `order`, `asc`
+    or `desc`; and `limit` and `offset` for paging. Weaknesses without a value for
+    the sort field come last in both orders, and ties keep id order. `facets` counts
+    the whole catalog; `contextual_facets` apply the search and the other filters,
+    each leaving out its own. The payload names no local path.
+    """
+    values = _values(query or {}, WEAKNESS_FILTERS + TABLE_OPTIONS, "parameter")
+    sort = values.get("sort", "id")
+    if sort not in WEAKNESS_SORTS:
+        raise ValueError(f"cannot sort by {sort!r}: use one of {', '.join(WEAKNESS_SORTS)}")
+    order = values.get("order", "asc")
+    if order not in ("asc", "desc"):
+        raise ValueError(f"order must be asc or desc, not {order!r}")
+    limit = _whole_number(values, "limit", minimum=1)
+    offset = _whole_number(values, "offset", minimum=0) or 0
+    search = values.get("search")
+
+    catalog = _served_catalog()
+    filters = {k: v for k, v in values.items() if k in WEAKNESS_FILTERS}
+    searched = _weakness_searched(catalog.weaknesses, search)
+    matched = _weakness_sorted(_matching(searched, filters), sort, descending=order == "desc")
+    page = matched[offset : offset + limit if limit is not None else None]
+    return {
+        "catalog": _catalog_summary(catalog),
+        "query": {
+            "filters": filters,
+            "search": search,
+            "sort": sort,
+            "order": order,
+            "limit": limit,
+            "offset": offset,
+        },
+        "total": len(matched),
+        "count": len(page),
+        "rows": [_weakness_row(w) for w in page],
+        "facets": {name: _counts(catalog.weaknesses, name) for name in WEAKNESS_FACETS},
+        "contextual_facets": {
+            name: _counts(
+                _matching(searched, {key: value for key, value in filters.items() if key != name}),
+                name,
+            )
+            for name in WEAKNESS_FACETS
+        },
+    }
+
+
+def _weakness_searched(
+    weaknesses: Iterable[cwe.CweEntry], search: str | None
+) -> list[cwe.CweEntry]:
+    if search is None:
+        return list(weaknesses)
+    needle = search.casefold()
+    return [
+        w
+        for w in weaknesses
+        if needle in " ".join((w.id, w.name, w.description, *w.alternate_terms)).casefold()
+    ]
+
+
+def _weakness_sorted(
+    weaknesses: list[cwe.CweEntry], field: str, descending: bool
+) -> list[cwe.CweEntry]:
+    by_number = sorted(weaknesses, key=lambda w: w.number)
+    if field == "id":
+        return by_number[::-1] if descending else by_number
+    order = {value: rank for rank, value in enumerate(WEAKNESS_ORDER.get(field, ()))}
+
+    def key(w: cwe.CweEntry) -> tuple[int, str]:
+        value = getattr(w, field)
+        return (order.get(value, len(order)), value.casefold())
+
+    present = [w for w in by_number if getattr(w, field)]
+    missing = [w for w in by_number if not getattr(w, field)]
+    present.sort(key=key, reverse=descending)  # stable: ties keep id order
+    return present + missing
+
+
+def _weakness_row(w: cwe.CweEntry) -> dict[str, Any]:
+    """One table row: what a list of weaknesses shows, plus the keys to fetch the rest."""
+    return {
+        "id": w.id,
+        "weakness": cwe.weakness_id(w.number),
+        "name": w.name,
+        "abstraction": w.abstraction,
+        "structure": w.structure,
+        "status": w.status,
+        "usage": w.usage,
+        "likelihood": w.likelihood,
+        "description": w.description,
+        "attack_patterns": len(w.attack_patterns),
+        "observed_examples": len(w.observed_examples),
+        "mitigations": w.mitigations,
+        "url": w.url,
     }
 
 
