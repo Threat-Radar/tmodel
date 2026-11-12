@@ -248,6 +248,7 @@
     <div class="wrap bar">
       <a class="mark" href="./">tmodel</a>
       <nav>
+        <a href="app/?model=mvp-02-automotive-ecu">Try the app</a>
         <a href="models/index.html">Example models</a>
         <a href="reports/index.html">Reports</a>
         <a href="bibliography/index.html">Bibliography</a>
@@ -263,7 +264,8 @@
       <h1>Threat models you can review.</h1>
       <p class="lede">tmodel builds a threat model as a knowledge graph: products and components, weaknesses, threats, attack paths, damage scenarios and mitigations. Anything an assistant proposes stays a hypothesis until a person accepts it, and every view shows which is which.</p>
       <div class="actions">
-        <a class="btn btn-primary" href="models/index.html">Read an example threat model</a>
+        <a class="btn btn-primary" href="app/?model=mvp-02-automotive-ecu">Try the browser preview</a>
+        <a class="btn btn-quiet" href="models/index.html">Read an example threat model</a>
         <a class="btn btn-quiet" href="#get">Get tmodel</a>
       </div>
     </div>
@@ -296,6 +298,11 @@
         <h2>What tmodel produces</h2>
         <p class="section-lead">Everything below is published from the repository and regenerated from its sources. All of it is readable without installing anything.</p>
         <div class="grid">
+          <article class="card">
+            <h3>Interactive browser preview</h3>
+            <p>Open every example model in the app without installing anything. Switch models and use the report, attack-path, graph and reference-library views with published read-only data.</p>
+            <a class="go" href="app/?model=mvp-02-automotive-ecu">Try the app →</a>
+          </article>
           <article class="card">
             <h3>Threat-model reports</h3>
             <p>One page per example model: components, damage scenarios, threats, attack paths, mitigations, risk and requirements, as tables. Every threat and path carries its review status.</p>
@@ -454,7 +461,7 @@ engine/.venv/bin/tmodel paths spec/vectors/mvp-02-automotive-ecu.yaml</code></pr
   <footer>
     <div class="wrap">
       <p>tmodel · Threat-Radar. The example models on this site are illustrative data, not security assessments.</p>
-      <p>Static HTML and CSS: no scripts, trackers or remote assets.</p>
+      <p>This landing page is static HTML and CSS. The app preview uses only same-site scripts and data; neither page has trackers or remote assets.</p>
     </div>
   </footer>
 </body>

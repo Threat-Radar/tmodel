@@ -98,7 +98,7 @@ export interface LibraryRecordDetails {
 }
 
 export interface LibraryProviderMetadata {
-  source: "fixture" | "engine";
+  source: "fixture" | "engine" | "static-preview";
   notice: string;
   supportsQueries: boolean;
 }

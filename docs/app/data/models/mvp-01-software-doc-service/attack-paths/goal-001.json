@@ -1,0 +1,32 @@
+{
+  "file": "mvp-01-software-doc-service.yaml",
+  "goal": "threat-instance:imds-pivot",
+  "paths": [
+    {
+      "authored_path": "attack-path:imds-pivot",
+      "goal_step": "attack-step:fetch-instance-credentials",
+      "review": {
+        "assertion_status": "proposed",
+        "review_status": "changes_requested",
+        "reviewed": false
+      },
+      "steps": [
+        "attack-step:point-entity-at-metadata",
+        "attack-step:fetch-instance-credentials"
+      ]
+    },
+    {
+      "authored_path": "attack-path:imds-pivot",
+      "goal_step": "attack-step:fetch-instance-credentials",
+      "review": {
+        "assertion_status": "proposed",
+        "review_status": "changes_requested",
+        "reviewed": false
+      },
+      "steps": [
+        "attack-step:dns-rebind-to-metadata",
+        "attack-step:fetch-instance-credentials"
+      ]
+    }
+  ]
+}

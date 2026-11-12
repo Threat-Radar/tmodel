@@ -1,0 +1,21 @@
+{
+  "file": "tv-software-auth-service.yaml",
+  "goal": "threat-instance:rce-via-deser",
+  "paths": [
+    {
+      "authored_path": "attack-path:deser-rce",
+      "goal_step": "attack-step:trigger-gadget-chain",
+      "review": {
+        "assertion_status": null,
+        "review_status": null,
+        "reviewed": false
+      },
+      "steps": [
+        "attack-step:enumerate-refresh-endpoint",
+        "attack-step:craft-serialized-payload",
+        "attack-step:deliver-via-refresh",
+        "attack-step:trigger-gadget-chain"
+      ]
+    }
+  ]
+}

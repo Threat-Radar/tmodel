@@ -1,0 +1,23 @@
+{
+  "file": "pv-02-dealer-portal-owner-data.yaml",
+  "goal": "threat-instance:silent-account-takeover",
+  "paths": [
+    {
+      "authored_path": "attack-path:takeover",
+      "goal_step": "attack-step:command-vehicle",
+      "review": {
+        "assertion_status": "proposed",
+        "review_status": null,
+        "reviewed": false
+      },
+      "steps": [
+        "attack-step:plate-to-vin",
+        "attack-step:dealer-token",
+        "attack-step:owner-lookup",
+        "attack-step:demote-owner",
+        "attack-step:add-attacker",
+        "attack-step:command-vehicle"
+      ]
+    }
+  ]
+}

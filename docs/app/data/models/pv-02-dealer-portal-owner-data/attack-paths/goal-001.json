@@ -1,0 +1,20 @@
+{
+  "file": "pv-02-dealer-portal-owner-data.yaml",
+  "goal": "threat-instance:owner-data-harvest",
+  "paths": [
+    {
+      "authored_path": "attack-path:owner-data",
+      "goal_step": "attack-step:owner-lookup",
+      "review": {
+        "assertion_status": null,
+        "review_status": null,
+        "reviewed": false
+      },
+      "steps": [
+        "attack-step:plate-to-vin",
+        "attack-step:dealer-token",
+        "attack-step:owner-lookup"
+      ]
+    }
+  ]
+}

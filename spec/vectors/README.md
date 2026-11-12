@@ -136,6 +136,22 @@ for the `mvp-NN` vectors by a standalone resolver (see
 `design-log/0021-mvp-core-attack-path-vectors/`): 284 id-references across the four
 files (268 before DL-0022 added the CVE-to-CWE links), all resolving.
 
+## Regenerating the browser preview
+
+The committed browser preview under `docs/app/` is generated from these
+vectors. Regenerate it after changing `spec/vectors/**`, relevant engine model,
+graph, attack-path, or library-table behavior, or the pinned `library` commit:
+
+```sh
+npm ci --prefix apps/desktop
+engine/.venv/bin/python docs/publishing/render_app.py
+engine/.venv/bin/python docs/publishing/render_app.py --check
+```
+
+The engine environment and pinned submodule must already be initialized; the
+complete reproducible setup and CI freshness contract are documented in
+[`docs/publishing/SKILL.md`](../../docs/publishing/SKILL.md#browser-app-preview).
+
 ## Findings (what dogfooding revealed)
 
 See `design-log/0019-object-model-example-vectors/` for the full list. The one

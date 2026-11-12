@@ -1,0 +1,1425 @@
+{
+  "edges": [
+    {
+      "id": "relationship:product:acme-auth-service|composed_of|component:auth-service-svc",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "product:acme-auth-service",
+      "target": "component:auth-service-svc"
+    },
+    {
+      "id": "relationship:product:acme-auth-service|manufactured_by|party:acme-oss-foundation",
+      "properties": {},
+      "relationship_type": "manufactured_by",
+      "source": "product:acme-auth-service",
+      "target": "party:acme-oss-foundation"
+    },
+    {
+      "id": "relationship:product:acme-auth-service|owned_by|party:downstream-saas",
+      "properties": {},
+      "relationship_type": "owned_by",
+      "source": "product:acme-auth-service",
+      "target": "party:downstream-saas"
+    },
+    {
+      "id": "relationship:product:acme-auth-service|supplied_by|party:acme-oss-foundation",
+      "properties": {},
+      "relationship_type": "supplied_by",
+      "source": "product:acme-auth-service",
+      "target": "party:acme-oss-foundation"
+    },
+    {
+      "id": "relationship:product-instance:auth-service-2-4-1|current_phase|lifecycle-phase:operation",
+      "properties": {},
+      "relationship_type": "current_phase",
+      "source": "product-instance:auth-service-2-4-1",
+      "target": "lifecycle-phase:operation"
+    },
+    {
+      "id": "relationship:product-instance:auth-service-2-4-1|of_product|product:acme-auth-service",
+      "properties": {},
+      "relationship_type": "of_product",
+      "source": "product-instance:auth-service-2-4-1",
+      "target": "product:acme-auth-service"
+    },
+    {
+      "id": "relationship:product-instance:auth-service-2-4-1|owned_by|party:downstream-saas",
+      "properties": {},
+      "relationship_type": "owned_by",
+      "source": "product-instance:auth-service-2-4-1",
+      "target": "party:downstream-saas"
+    },
+    {
+      "id": "relationship:component:auth-service-svc|composed_of|component:token-module",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "component:auth-service-svc",
+      "target": "component:token-module"
+    },
+    {
+      "id": "relationship:component:auth-service-svc|owned_by|party:downstream-saas",
+      "properties": {},
+      "relationship_type": "owned_by",
+      "source": "component:auth-service-svc",
+      "target": "party:downstream-saas"
+    },
+    {
+      "id": "relationship:component:auth-service-svc|uses_component|component:log4j-core",
+      "properties": {},
+      "relationship_type": "uses_component",
+      "source": "component:auth-service-svc",
+      "target": "component:log4j-core"
+    },
+    {
+      "id": "relationship:component:token-module|uses_component|component:log4j-core",
+      "properties": {},
+      "relationship_type": "uses_component",
+      "source": "component:token-module",
+      "target": "component:log4j-core"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2021-44832|affects|product:acme-auth-service",
+      "properties": {},
+      "relationship_type": "affects",
+      "source": "vulnerability:cve-2021-44832",
+      "target": "product:acme-auth-service"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2021-44832|assigned_by|party:cna-mitre",
+      "properties": {},
+      "relationship_type": "assigned_by",
+      "source": "vulnerability:cve-2021-44832",
+      "target": "party:cna-mitre"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2021-44832|reported_by|party:researcher-01",
+      "properties": {},
+      "relationship_type": "reported_by",
+      "source": "vulnerability:cve-2021-44832",
+      "target": "party:researcher-01"
+    },
+    {
+      "id": "relationship:threat-instance:rce-via-deser|applies_in_phase|lifecycle-phase:operation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "threat-instance:rce-via-deser",
+      "target": "lifecycle-phase:operation"
+    },
+    {
+      "id": "relationship:threat-instance:rce-via-deser|realizes_damage|damage-scenario:token-forgery",
+      "properties": {},
+      "relationship_type": "realizes_damage",
+      "source": "threat-instance:rce-via-deser",
+      "target": "damage-scenario:token-forgery"
+    },
+    {
+      "id": "relationship:threat-instance:supply-chain-rce|applies_in_phase|lifecycle-phase:distribution",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "threat-instance:supply-chain-rce",
+      "target": "lifecycle-phase:distribution"
+    },
+    {
+      "id": "relationship:threat-instance:supply-chain-rce|realizes_damage|damage-scenario:token-forgery",
+      "properties": {},
+      "relationship_type": "realizes_damage",
+      "source": "threat-instance:supply-chain-rce",
+      "target": "damage-scenario:token-forgery"
+    },
+    {
+      "id": "relationship:attack-step:enumerate-refresh-endpoint|precedes|attack-step:craft-serialized-payload",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:enumerate-refresh-endpoint",
+      "target": "attack-step:craft-serialized-payload"
+    },
+    {
+      "id": "relationship:attack-step:craft-serialized-payload|precedes|attack-step:trigger-gadget-chain",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:craft-serialized-payload",
+      "target": "attack-step:trigger-gadget-chain"
+    },
+    {
+      "id": "relationship:attack-step:deliver-via-refresh|precedes|attack-step:trigger-gadget-chain",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:deliver-via-refresh",
+      "target": "attack-step:trigger-gadget-chain"
+    },
+    {
+      "id": "relationship:attack-step:compromise-maintainer-account|precedes|attack-step:publish-malicious-release",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:compromise-maintainer-account",
+      "target": "attack-step:publish-malicious-release"
+    },
+    {
+      "id": "relationship:attack-step:typosquat-dependency|precedes|attack-step:publish-malicious-release",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:typosquat-dependency",
+      "target": "attack-step:publish-malicious-release"
+    },
+    {
+      "id": "relationship:attack-step:publish-malicious-release|precedes|attack-step:downstream-pulls-update",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:publish-malicious-release",
+      "target": "attack-step:downstream-pulls-update"
+    },
+    {
+      "id": "relationship:attack-path:deser-rce|realizes_threat|threat-instance:rce-via-deser",
+      "properties": {},
+      "relationship_type": "realizes_threat",
+      "source": "attack-path:deser-rce",
+      "target": "threat-instance:rce-via-deser"
+    },
+    {
+      "id": "relationship:attack-path:deser-rce|steps|attack-step:enumerate-refresh-endpoint",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:deser-rce",
+      "target": "attack-step:enumerate-refresh-endpoint"
+    },
+    {
+      "id": "relationship:attack-path:deser-rce|steps|attack-step:craft-serialized-payload",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:deser-rce",
+      "target": "attack-step:craft-serialized-payload"
+    },
+    {
+      "id": "relationship:attack-path:deser-rce|steps|attack-step:deliver-via-refresh",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:deser-rce",
+      "target": "attack-step:deliver-via-refresh"
+    },
+    {
+      "id": "relationship:attack-path:deser-rce|steps|attack-step:trigger-gadget-chain",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:deser-rce",
+      "target": "attack-step:trigger-gadget-chain"
+    },
+    {
+      "id": "relationship:attack-path:supply-chain-swap|realizes_threat|threat-instance:supply-chain-rce",
+      "properties": {
+        "assertion_ids": [
+          "assertion:ai-supply-chain-realizes"
+        ],
+        "assertion_status": "proposed",
+        "confidence": "low",
+        "review_ids": [
+          "review:ai-triage"
+        ],
+        "review_status": "changes_requested"
+      },
+      "relationship_type": "realizes_threat",
+      "source": "attack-path:supply-chain-swap",
+      "target": "threat-instance:supply-chain-rce"
+    },
+    {
+      "id": "relationship:attack-path:supply-chain-swap|steps|attack-step:compromise-maintainer-account",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:supply-chain-swap",
+      "target": "attack-step:compromise-maintainer-account"
+    },
+    {
+      "id": "relationship:attack-path:supply-chain-swap|steps|attack-step:typosquat-dependency",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:supply-chain-swap",
+      "target": "attack-step:typosquat-dependency"
+    },
+    {
+      "id": "relationship:attack-path:supply-chain-swap|steps|attack-step:publish-malicious-release",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:supply-chain-swap",
+      "target": "attack-step:publish-malicious-release"
+    },
+    {
+      "id": "relationship:attack-path:supply-chain-swap|steps|attack-step:downstream-pulls-update",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:supply-chain-swap",
+      "target": "attack-step:downstream-pulls-update"
+    },
+    {
+      "id": "relationship:mitigation:disable-native-deser|applies_in_phase|lifecycle-phase:design",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "mitigation:disable-native-deser",
+      "target": "lifecycle-phase:design"
+    },
+    {
+      "id": "relationship:mitigation:disable-native-deser|applies_in_phase|lifecycle-phase:implementation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "mitigation:disable-native-deser",
+      "target": "lifecycle-phase:implementation"
+    },
+    {
+      "id": "relationship:mitigation:disable-native-deser|implementation_owner|party:acme-oss-foundation",
+      "properties": {},
+      "relationship_type": "implementation_owner",
+      "source": "mitigation:disable-native-deser",
+      "target": "party:acme-oss-foundation"
+    },
+    {
+      "id": "relationship:mitigation:disable-native-deser|mitigates|threat-instance:rce-via-deser",
+      "properties": {},
+      "relationship_type": "mitigates",
+      "source": "mitigation:disable-native-deser",
+      "target": "threat-instance:rce-via-deser"
+    },
+    {
+      "id": "relationship:mitigation:pin-and-verify-deps|applies_in_phase|lifecycle-phase:implementation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "mitigation:pin-and-verify-deps",
+      "target": "lifecycle-phase:implementation"
+    },
+    {
+      "id": "relationship:mitigation:pin-and-verify-deps|applies_in_phase|lifecycle-phase:distribution",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "mitigation:pin-and-verify-deps",
+      "target": "lifecycle-phase:distribution"
+    },
+    {
+      "id": "relationship:mitigation:pin-and-verify-deps|implementation_owner|party:acme-oss-foundation",
+      "properties": {},
+      "relationship_type": "implementation_owner",
+      "source": "mitigation:pin-and-verify-deps",
+      "target": "party:acme-oss-foundation"
+    },
+    {
+      "id": "relationship:mitigation:pin-and-verify-deps|mitigates|threat-instance:supply-chain-rce",
+      "properties": {},
+      "relationship_type": "mitigates",
+      "source": "mitigation:pin-and-verify-deps",
+      "target": "threat-instance:supply-chain-rce"
+    },
+    {
+      "id": "relationship:mitigation:security-requirements-baseline|implementation_owner|party:sdl-owner",
+      "properties": {},
+      "relationship_type": "implementation_owner",
+      "source": "mitigation:security-requirements-baseline",
+      "target": "party:sdl-owner"
+    },
+    {
+      "id": "relationship:mitigation:security-requirements-baseline|mitigates|threat-instance:rce-via-deser",
+      "properties": {},
+      "relationship_type": "mitigates",
+      "source": "mitigation:security-requirements-baseline",
+      "target": "threat-instance:rce-via-deser"
+    },
+    {
+      "id": "relationship:risk-score:rce-via-deser|attack_paths|attack-path:deser-rce",
+      "properties": {},
+      "relationship_type": "attack_paths",
+      "source": "risk-score:rce-via-deser",
+      "target": "attack-path:deser-rce"
+    },
+    {
+      "id": "relationship:risk-score:rce-via-deser|attack_paths|attack-path:supply-chain-swap",
+      "properties": {},
+      "relationship_type": "attack_paths",
+      "source": "risk-score:rce-via-deser",
+      "target": "attack-path:supply-chain-swap"
+    },
+    {
+      "id": "relationship:risk-score:rce-via-deser|damage_scenario|damage-scenario:token-forgery",
+      "properties": {},
+      "relationship_type": "damage_scenario",
+      "source": "risk-score:rce-via-deser",
+      "target": "damage-scenario:token-forgery"
+    },
+    {
+      "id": "relationship:risk-score:rce-via-deser|for_stakeholder|party:downstream-saas",
+      "properties": {},
+      "relationship_type": "for_stakeholder",
+      "source": "risk-score:rce-via-deser",
+      "target": "party:downstream-saas"
+    },
+    {
+      "id": "relationship:risk-score:rce-via-deser|threat|threat-instance:rce-via-deser",
+      "properties": {},
+      "relationship_type": "threat",
+      "source": "risk-score:rce-via-deser",
+      "target": "threat-instance:rce-via-deser"
+    },
+    {
+      "id": "relationship:review:vuln-prop|reviewer|party:sec-lead",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:vuln-prop",
+      "target": "party:sec-lead"
+    },
+    {
+      "id": "relationship:review:vuln-prop|reviews|assertion:vuln-propagation",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:vuln-prop",
+      "target": "assertion:vuln-propagation"
+    },
+    {
+      "id": "relationship:review:cwe-capec|reviewer|party:sec-lead",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:cwe-capec",
+      "target": "party:sec-lead"
+    },
+    {
+      "id": "relationship:review:cwe-capec|reviews|assertion:cwe-capec-map",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:cwe-capec",
+      "target": "assertion:cwe-capec-map"
+    },
+    {
+      "id": "relationship:review:ai-triage|reviewer|party:sec-lead",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:ai-triage",
+      "target": "party:sec-lead"
+    },
+    {
+      "id": "relationship:review:ai-triage|reviews|assertion:ai-supply-chain-realizes",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:ai-triage",
+      "target": "assertion:ai-supply-chain-realizes"
+    },
+    {
+      "id": "relationship:review:tm-approval|reviewer|party:sec-lead",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:tm-approval",
+      "target": "party:sec-lead"
+    },
+    {
+      "id": "relationship:review:tm-approval|reviews|assertion:tm-scope",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:tm-approval",
+      "target": "assertion:tm-scope"
+    },
+    {
+      "id": "relationship:review:sdl-approval|reviewer|party:sdl-owner",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:sdl-approval",
+      "target": "party:sdl-owner"
+    },
+    {
+      "id": "relationship:review:sdl-approval|reviews|assertion:sdl-approved",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:sdl-approval",
+      "target": "assertion:sdl-approved"
+    },
+    {
+      "id": "relationship:review:design-gate|reviewer|party:sdl-owner",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:design-gate",
+      "target": "party:sdl-owner"
+    },
+    {
+      "id": "relationship:review:design-gate|reviews|assertion:design-gate-pass",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:design-gate",
+      "target": "assertion:design-gate-pass"
+    },
+    {
+      "id": "relationship:assertion:vuln-propagation|object|component:auth-service-svc",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:vuln-propagation",
+      "target": "component:auth-service-svc"
+    },
+    {
+      "id": "relationship:assertion:vuln-propagation|subject|vulnerability:cve-2021-44832",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:vuln-propagation",
+      "target": "vulnerability:cve-2021-44832"
+    },
+    {
+      "id": "relationship:assertion:cwe-capec-map|object|attack-pattern:capec-586",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:cwe-capec-map",
+      "target": "attack-pattern:capec-586"
+    },
+    {
+      "id": "relationship:assertion:cwe-capec-map|subject|weakness:cwe-502",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:cwe-capec-map",
+      "target": "weakness:cwe-502"
+    },
+    {
+      "id": "relationship:assertion:ai-supply-chain-realizes|object|threat-instance:supply-chain-rce",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:ai-supply-chain-realizes",
+      "target": "threat-instance:supply-chain-rce"
+    },
+    {
+      "id": "relationship:assertion:ai-supply-chain-realizes|subject|attack-path:supply-chain-swap",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:ai-supply-chain-realizes",
+      "target": "attack-path:supply-chain-swap"
+    },
+    {
+      "id": "relationship:assertion:tm-scope|object|product:acme-auth-service",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:tm-scope",
+      "target": "product:acme-auth-service"
+    },
+    {
+      "id": "relationship:assertion:tm-scope|subject|threat-model:auth-service-v3",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:tm-scope",
+      "target": "threat-model:auth-service-v3"
+    },
+    {
+      "id": "relationship:assertion:sdl-approved|object|product:acme-auth-service",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:sdl-approved",
+      "target": "product:acme-auth-service"
+    },
+    {
+      "id": "relationship:assertion:sdl-approved|subject|security-program:acme-sdl",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:sdl-approved",
+      "target": "security-program:acme-sdl"
+    },
+    {
+      "id": "relationship:assertion:design-gate-pass|object|product:acme-auth-service",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:design-gate-pass",
+      "target": "product:acme-auth-service"
+    },
+    {
+      "id": "relationship:assertion:design-gate-pass|subject|gate:design-review",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:design-gate-pass",
+      "target": "gate:design-review"
+    },
+    {
+      "id": "relationship:threat-model:auth-service-v2|owner|party:sec-lead",
+      "properties": {},
+      "relationship_type": "owner",
+      "source": "threat-model:auth-service-v2",
+      "target": "party:sec-lead"
+    },
+    {
+      "id": "relationship:threat-model:auth-service-v3|approved_by|review:tm-approval",
+      "properties": {},
+      "relationship_type": "approved_by",
+      "source": "threat-model:auth-service-v3",
+      "target": "review:tm-approval"
+    },
+    {
+      "id": "relationship:threat-model:auth-service-v3|members|threat-instance:rce-via-deser",
+      "properties": {},
+      "relationship_type": "members",
+      "source": "threat-model:auth-service-v3",
+      "target": "threat-instance:rce-via-deser"
+    },
+    {
+      "id": "relationship:threat-model:auth-service-v3|members|threat-instance:supply-chain-rce",
+      "properties": {},
+      "relationship_type": "members",
+      "source": "threat-model:auth-service-v3",
+      "target": "threat-instance:supply-chain-rce"
+    },
+    {
+      "id": "relationship:threat-model:auth-service-v3|members|attack-path:deser-rce",
+      "properties": {},
+      "relationship_type": "members",
+      "source": "threat-model:auth-service-v3",
+      "target": "attack-path:deser-rce"
+    },
+    {
+      "id": "relationship:threat-model:auth-service-v3|members|attack-path:supply-chain-swap",
+      "properties": {},
+      "relationship_type": "members",
+      "source": "threat-model:auth-service-v3",
+      "target": "attack-path:supply-chain-swap"
+    },
+    {
+      "id": "relationship:threat-model:auth-service-v3|members|component:auth-service-svc",
+      "properties": {},
+      "relationship_type": "members",
+      "source": "threat-model:auth-service-v3",
+      "target": "component:auth-service-svc"
+    },
+    {
+      "id": "relationship:threat-model:auth-service-v3|members|component:log4j-core",
+      "properties": {},
+      "relationship_type": "members",
+      "source": "threat-model:auth-service-v3",
+      "target": "component:log4j-core"
+    },
+    {
+      "id": "relationship:threat-model:auth-service-v3|members|product:acme-auth-service",
+      "properties": {},
+      "relationship_type": "members",
+      "source": "threat-model:auth-service-v3",
+      "target": "product:acme-auth-service"
+    },
+    {
+      "id": "relationship:threat-model:auth-service-v3|owner|party:sec-lead",
+      "properties": {},
+      "relationship_type": "owner",
+      "source": "threat-model:auth-service-v3",
+      "target": "party:sec-lead"
+    },
+    {
+      "id": "relationship:threat-model:auth-service-v3|supersedes|threat-model:auth-service-v2",
+      "properties": {},
+      "relationship_type": "supersedes",
+      "source": "threat-model:auth-service-v3",
+      "target": "threat-model:auth-service-v2"
+    },
+    {
+      "id": "relationship:security-program:acme-sdl|approved_by|review:sdl-approval",
+      "properties": {},
+      "relationship_type": "approved_by",
+      "source": "security-program:acme-sdl",
+      "target": "review:sdl-approval"
+    },
+    {
+      "id": "relationship:security-program:acme-sdl|governs|product:acme-auth-service",
+      "properties": {},
+      "relationship_type": "governs",
+      "source": "security-program:acme-sdl",
+      "target": "product:acme-auth-service"
+    },
+    {
+      "id": "relationship:security-program:acme-sdl|incorporates|requirement:ssdf-po-1-1",
+      "properties": {},
+      "relationship_type": "incorporates",
+      "source": "security-program:acme-sdl",
+      "target": "requirement:ssdf-po-1-1"
+    },
+    {
+      "id": "relationship:security-program:acme-sdl|incorporates|requirement:ssdf-pw-4-1",
+      "properties": {},
+      "relationship_type": "incorporates",
+      "source": "security-program:acme-sdl",
+      "target": "requirement:ssdf-pw-4-1"
+    },
+    {
+      "id": "relationship:security-program:acme-sdl|owner|party:sdl-owner",
+      "properties": {},
+      "relationship_type": "owner",
+      "source": "security-program:acme-sdl",
+      "target": "party:sdl-owner"
+    },
+    {
+      "id": "relationship:security-program:acme-sdl|program_nodes|gate:design-review",
+      "properties": {},
+      "relationship_type": "program_nodes",
+      "source": "security-program:acme-sdl",
+      "target": "gate:design-review"
+    },
+    {
+      "id": "relationship:security-program:acme-sdl|program_nodes|milestone:threat-model-complete",
+      "properties": {},
+      "relationship_type": "program_nodes",
+      "source": "security-program:acme-sdl",
+      "target": "milestone:threat-model-complete"
+    },
+    {
+      "id": "relationship:security-program:acme-sdl|program_nodes|gate:release-gate",
+      "properties": {},
+      "relationship_type": "program_nodes",
+      "source": "security-program:acme-sdl",
+      "target": "gate:release-gate"
+    },
+    {
+      "id": "relationship:gate:design-review|at_phase|lifecycle-phase:design",
+      "properties": {},
+      "relationship_type": "at_phase",
+      "source": "gate:design-review",
+      "target": "lifecycle-phase:design"
+    },
+    {
+      "id": "relationship:gate:design-review|decided_by|review:design-gate",
+      "properties": {},
+      "relationship_type": "decided_by",
+      "source": "gate:design-review",
+      "target": "review:design-gate"
+    },
+    {
+      "id": "relationship:gate:design-review|gated_by|requirement:ssdf-po-1-1",
+      "properties": {},
+      "relationship_type": "gated_by",
+      "source": "gate:design-review",
+      "target": "requirement:ssdf-po-1-1"
+    },
+    {
+      "id": "relationship:gate:design-review|owner|party:sdl-owner",
+      "properties": {},
+      "relationship_type": "owner",
+      "source": "gate:design-review",
+      "target": "party:sdl-owner"
+    },
+    {
+      "id": "relationship:gate:release-gate|at_phase|lifecycle-phase:verification",
+      "properties": {},
+      "relationship_type": "at_phase",
+      "source": "gate:release-gate",
+      "target": "lifecycle-phase:verification"
+    },
+    {
+      "id": "relationship:gate:release-gate|depends_on_node|milestone:threat-model-complete",
+      "properties": {},
+      "relationship_type": "depends_on_node",
+      "source": "gate:release-gate",
+      "target": "milestone:threat-model-complete"
+    },
+    {
+      "id": "relationship:gate:release-gate|gated_by|requirement:ssdf-pw-4-1",
+      "properties": {},
+      "relationship_type": "gated_by",
+      "source": "gate:release-gate",
+      "target": "requirement:ssdf-pw-4-1"
+    },
+    {
+      "id": "relationship:gate:release-gate|owner|party:sdl-owner",
+      "properties": {},
+      "relationship_type": "owner",
+      "source": "gate:release-gate",
+      "target": "party:sdl-owner"
+    },
+    {
+      "id": "relationship:gate:release-gate|validates_conformance_of|threat-model:auth-service-v3",
+      "properties": {},
+      "relationship_type": "validates_conformance_of",
+      "source": "gate:release-gate",
+      "target": "threat-model:auth-service-v3"
+    },
+    {
+      "id": "relationship:milestone:threat-model-complete|at_phase|lifecycle-phase:implementation",
+      "properties": {},
+      "relationship_type": "at_phase",
+      "source": "milestone:threat-model-complete",
+      "target": "lifecycle-phase:implementation"
+    },
+    {
+      "id": "relationship:milestone:threat-model-complete|depends_on_node|gate:design-review",
+      "properties": {},
+      "relationship_type": "depends_on_node",
+      "source": "milestone:threat-model-complete",
+      "target": "gate:design-review"
+    },
+    {
+      "id": "relationship:milestone:threat-model-complete|offset_from|gate:design-review",
+      "properties": {},
+      "relationship_type": "offset_from",
+      "source": "milestone:threat-model-complete",
+      "target": "gate:design-review"
+    },
+    {
+      "id": "relationship:milestone:threat-model-complete|owner|party:sec-lead",
+      "properties": {},
+      "relationship_type": "owner",
+      "source": "milestone:threat-model-complete",
+      "target": "party:sec-lead"
+    },
+    {
+      "id": "relationship:requirement:ssdf-po-1-1|satisfied_by|mitigation:security-requirements-baseline",
+      "properties": {},
+      "relationship_type": "satisfied_by",
+      "source": "requirement:ssdf-po-1-1",
+      "target": "mitigation:security-requirements-baseline"
+    },
+    {
+      "id": "relationship:requirement:ssdf-pw-4-1|maps_to|requirement:ssdf-po-1-1",
+      "properties": {},
+      "relationship_type": "maps_to",
+      "source": "requirement:ssdf-pw-4-1",
+      "target": "requirement:ssdf-po-1-1"
+    },
+    {
+      "id": "relationship:requirement:ssdf-pw-4-1|satisfied_by|mitigation:pin-and-verify-deps",
+      "properties": {},
+      "relationship_type": "satisfied_by",
+      "source": "requirement:ssdf-pw-4-1",
+      "target": "mitigation:pin-and-verify-deps"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2021-44832|propagates_to|component:auth-service-svc",
+      "properties": {
+        "assertion_ids": [
+          "assertion:vuln-propagation"
+        ],
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "review_ids": [
+          "review:vuln-prop"
+        ],
+        "review_status": "accepted"
+      },
+      "relationship_type": "propagates_to",
+      "source": "vulnerability:cve-2021-44832",
+      "target": "component:auth-service-svc"
+    },
+    {
+      "id": "relationship:weakness:cwe-502|exploited_by|attack-pattern:capec-586",
+      "properties": {
+        "assertion_ids": [
+          "assertion:cwe-capec-map"
+        ],
+        "assertion_status": "accepted",
+        "confidence": "medium",
+        "review_ids": [
+          "review:cwe-capec"
+        ],
+        "review_status": "accepted"
+      },
+      "relationship_type": "exploited_by",
+      "source": "weakness:cwe-502",
+      "target": "attack-pattern:capec-586"
+    },
+    {
+      "id": "relationship:threat-model:auth-service-v3|scope_approved|product:acme-auth-service",
+      "properties": {
+        "assertion_ids": [
+          "assertion:tm-scope"
+        ],
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "review_ids": [
+          "review:tm-approval"
+        ],
+        "review_status": "accepted"
+      },
+      "relationship_type": "scope_approved",
+      "source": "threat-model:auth-service-v3",
+      "target": "product:acme-auth-service"
+    },
+    {
+      "id": "relationship:security-program:acme-sdl|program_approved|product:acme-auth-service",
+      "properties": {
+        "assertion_ids": [
+          "assertion:sdl-approved"
+        ],
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "review_ids": [
+          "review:sdl-approval"
+        ],
+        "review_status": "accepted"
+      },
+      "relationship_type": "program_approved",
+      "source": "security-program:acme-sdl",
+      "target": "product:acme-auth-service"
+    },
+    {
+      "id": "relationship:gate:design-review|passed|product:acme-auth-service",
+      "properties": {
+        "assertion_ids": [
+          "assertion:design-gate-pass"
+        ],
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "review_ids": [
+          "review:design-gate"
+        ],
+        "review_status": "accepted"
+      },
+      "relationship_type": "passed",
+      "source": "gate:design-review",
+      "target": "product:acme-auth-service"
+    }
+  ],
+  "file": "tv-software-auth-service.yaml",
+  "nodes": [
+    {
+      "domain_type": "Party",
+      "id": "party:acme-oss-foundation",
+      "label": "Acme OSS Foundation",
+      "properties": {
+        "classifications": [
+          "oss-maintainer"
+        ],
+        "description": "Upstream maintainer/manufacturer of the auth service (role identity, §2b).",
+        "party_kind": "organization"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:downstream-saas",
+      "label": "Downstream SaaS operator",
+      "properties": {
+        "classifications": [
+          "asset-owner"
+        ],
+        "description": "Deploys and owns a running instance; the stakeholder impact is reported for.",
+        "party_kind": "organization"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:cna-mitre",
+      "label": "CVE Numbering Authority",
+      "properties": {
+        "classifications": [
+          "cna"
+        ],
+        "party_kind": "organization"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:researcher-01",
+      "label": "@researcher-01",
+      "properties": {
+        "description": "Independent reporter of the vulnerability (github id only, §2b).",
+        "party_kind": "person"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:sec-lead",
+      "label": "@sec-lead",
+      "properties": {
+        "description": "Human security reviewer / threat-model owner (github id, role identity).",
+        "party_kind": "person"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:sdl-owner",
+      "label": "@sdl-owner",
+      "properties": {
+        "description": "SDL program owner / gate approver (github id, role identity).",
+        "party_kind": "person"
+      }
+    },
+    {
+      "domain_type": "Product",
+      "id": "product:acme-auth-service",
+      "label": "Acme Auth Service",
+      "properties": {
+        "description": "OSS authentication & token-refresh microservice.",
+        "identifiers": [
+          "pkg:github/acme/auth-service",
+          "cpe:2.3:a:acme:auth_service:2.4.1:*:*:*:*:*:*:*"
+        ]
+      }
+    },
+    {
+      "domain_type": "ProductInstance",
+      "id": "product-instance:auth-service-2-4-1",
+      "label": "auth-service build 2.4.1",
+      "properties": {
+        "description": "The reviewed build; software instance identity is a build/commit/SBOM hash (ADR-0002).",
+        "identifiers": [
+          "build:acme-auth@2.4.1+git.8f2c1a7",
+          "sha256:8f2c1a7e4d6b9c0f1a2b3c4d5e6f70819a2b3c4d5e6f7081a2b3c4d5e6f70819"
+        ],
+        "valid_from": "2026-09-01T00:00:00Z"
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:auth-service-svc",
+      "label": "auth-service (service container)",
+      "properties": {
+        "description": "The deployed service artifact (§0 authoritative component, not a DFD node).",
+        "identifiers": [
+          "pkg:oci/acme/auth-service@sha256:8f2c1a7e"
+        ]
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:token-module",
+      "label": "token-refresh module",
+      "properties": {
+        "identifiers": [
+          "pkg:github/acme/auth-service@2.4.1#token"
+        ]
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:log4j-core",
+      "label": "log4j-core (transitive dependency)",
+      "properties": {
+        "description": "Vulnerable OSS logging dependency along which the finding propagates (§5).",
+        "identifiers": [
+          "pkg:maven/org.apache.logging.log4j/log4j-core@2.14.1",
+          "cpe:2.3:a:apache:log4j:2.14.1:*:*:*:*:*:*:*"
+        ]
+      }
+    },
+    {
+      "domain_type": "Weakness",
+      "id": "weakness:cwe-502",
+      "label": "Deserialization of Untrusted Data",
+      "properties": {
+        "catalog_ref": "CWE-502",
+        "description": "Generic weakness class (CWE, §1 layer 3)."
+      }
+    },
+    {
+      "domain_type": "Vulnerability",
+      "id": "vulnerability:cve-2021-44832",
+      "label": "log4j-core RCE via JDBC Appender (illustrative)",
+      "properties": {
+        "catalog_ref": "CVE-2021-44832",
+        "description": "Finding affecting the product; propagation to components is a reviewed Assertion (§5)."
+      }
+    },
+    {
+      "domain_type": "AttackPattern",
+      "id": "attack-pattern:capec-586",
+      "label": "Object Injection",
+      "properties": {
+        "catalog_ref": "CAPEC-586",
+        "description": "Generic attack pattern (CAPEC = what, §2a). The CWE↔CAPEC link is a reviewed Assertion."
+      }
+    },
+    {
+      "domain_type": "ThreatInstance",
+      "id": "threat-instance:rce-via-deser",
+      "label": "RCE via unsafe deserialization in logging dependency",
+      "properties": {
+        "description": "Human-elicited STRIDE threat on the token-refresh flow.",
+        "method_facet": [
+          "stride"
+        ],
+        "source_method": "stride-dfd (human-elicited, reviewed)",
+        "violates_property": "E authorization / T integrity"
+      }
+    },
+    {
+      "domain_type": "ThreatInstance",
+      "id": "threat-instance:supply-chain-rce",
+      "label": "RCE via compromised upstream dependency release",
+      "properties": {
+        "description": "AI-PROPOSED hypothesis (not reviewed/accepted). source_method records the proposing method; its realizing edge is an Assertion in `proposed` state with a Review that has NOT accepted it (CLAUDE.md: AI output is a hypothesis).",
+        "method_facet": [
+          "stride"
+        ],
+        "source_method": "ai:maestro-agent (hypothesis, unreviewed)",
+        "violates_property": "T integrity"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:enumerate-refresh-endpoint",
+      "label": "Enumerate the token-refresh endpoint",
+      "properties": {
+        "kill_chain_phase": "reconnaissance"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:craft-serialized-payload",
+      "label": "Craft a malicious serialized payload",
+      "properties": {}
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:deliver-via-refresh",
+      "label": "Deliver payload via the refresh endpoint",
+      "properties": {}
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:trigger-gadget-chain",
+      "label": "Trigger the deserialization gadget chain → RCE",
+      "properties": {
+        "description": "Requires BOTH a crafted payload AND a reachable gadget — an AND gate (§2a).",
+        "gate": "and_gate",
+        "kill_chain_phase": "exploitation"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:compromise-maintainer-account",
+      "label": "Compromise an upstream maintainer account",
+      "properties": {}
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:typosquat-dependency",
+      "label": "Publish a typosquatted dependency",
+      "properties": {}
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:publish-malicious-release",
+      "label": "Publish a malicious release downstream pulls",
+      "properties": {
+        "description": "Either account compromise OR typosquat suffices — an OR gate (§2a).",
+        "gate": "or_gate"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:downstream-pulls-update",
+      "label": "Downstream build pulls the malicious update",
+      "properties": {
+        "kill_chain_phase": "delivery"
+      }
+    },
+    {
+      "domain_type": "AttackPath",
+      "id": "attack-path:deser-rce",
+      "label": "Deserialization RCE path",
+      "properties": {
+        "attack_feasibility": "medium",
+        "description": "Human-reviewed path realizing the deserialization threat; feasibility human-rated (§3)."
+      }
+    },
+    {
+      "domain_type": "AttackPath",
+      "id": "attack-path:supply-chain-swap",
+      "label": "Upstream supply-chain compromise path",
+      "properties": {
+        "attack_feasibility": "low",
+        "description": "The AI-PROPOSED path; realizing edge is a `proposed` Assertion, not yet accepted."
+      }
+    },
+    {
+      "domain_type": "DamageScenario",
+      "id": "damage-scenario:token-forgery",
+      "label": "Forged auth tokens → cross-tenant data breach",
+      "properties": {
+        "description": "The damage the RCE threat realizes; impact categories live on RiskScore (§3)."
+      }
+    },
+    {
+      "domain_type": "Mitigation",
+      "id": "mitigation:disable-native-deser",
+      "label": "Disable native deserialization / use allow-listed codecs",
+      "properties": {
+        "catalog_ref": "D3FEND:D3-HBPI",
+        "description": "Control for the deserialization threat (D3FEND-style catalog ref, §5).",
+        "external_refs": [
+          "JIRA-AUTH-1234"
+        ],
+        "mitigation_status": "complete"
+      }
+    },
+    {
+      "domain_type": "Mitigation",
+      "id": "mitigation:pin-and-verify-deps",
+      "label": "Pin and verify dependencies with provenance",
+      "properties": {
+        "catalog_ref": "D3FEND:D3-SCA",
+        "description": "Control for the supply-chain path; still being rolled out.",
+        "external_refs": [
+          "SLSA-provenance",
+          "JIRA-AUTH-1300"
+        ],
+        "mitigation_status": "in_progress"
+      }
+    },
+    {
+      "domain_type": "Mitigation",
+      "id": "mitigation:security-requirements-baseline",
+      "label": "Maintain a security-requirements baseline",
+      "properties": {
+        "description": "Process control discharging the SSDF \"define security requirements\" practice.",
+        "mitigation_status": "complete"
+      }
+    },
+    {
+      "domain_type": "RiskScore",
+      "id": "risk-score:rce-via-deser",
+      "label": "Risk — RCE via deserialization",
+      "properties": {
+        "description": "Composite vector per ADR-0006/DEC-003: feasibility + S/F/O/P impact + mitigation-status + derived risk, shown with its inputs — never one number.",
+        "feasibility": "medium",
+        "impact": "{\"financial\": \"major\", \"operational\": \"major\", \"privacy\": \"severe\", \"safety\": \"negligible\"}",
+        "mitigation_status": "in_progress",
+        "risk": "privacy 4 / operational 3 / financial 3 (worst-path, medium feasibility; 1–5 per 21434 M(I,F))"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:vuln-prop",
+      "label": "Review — accept vuln propagation",
+      "properties": {
+        "justification": "Reachable from the token-refresh flow via log4j-core; propagation confirmed.",
+        "priority": "high",
+        "review_status": "accepted"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:cwe-capec",
+      "label": "Review — accept CWE↔CAPEC mapping",
+      "properties": {
+        "justification": "Object-injection pattern matches the deserialization weakness.",
+        "priority": "medium",
+        "review_status": "accepted"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:ai-triage",
+      "label": "Review — AI-proposed supply-chain path (changes requested)",
+      "properties": {
+        "description": "Human triage of the AI hypothesis; it is NOT accepted.",
+        "justification": "AI-proposed path. Maintainer-account-compromise step needs scoping evidence before acceptance; keep as a flagged hypothesis, do not treat as reviewed.",
+        "priority": "medium",
+        "review_status": "changes_requested"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:tm-approval",
+      "label": "Review — approve ThreatModel v3",
+      "properties": {
+        "justification": "All in-scope reviewed threats have an approved or in-progress mitigation; the AI-proposed supply-chain path remains flagged (changes_requested), not accepted.",
+        "priority": "high",
+        "review_status": "accepted"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:sdl-approval",
+      "label": "Review — approve SDL program",
+      "properties": {
+        "justification": "Program nodes, requirements, and gate linkage reviewed and signed off.",
+        "priority": "high",
+        "review_status": "accepted"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:design-gate",
+      "label": "Review — design-review gate decision",
+      "properties": {
+        "justification": "Security-requirements baseline present; design review cleared.",
+        "priority": "high",
+        "review_status": "accepted"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:vuln-propagation",
+      "label": "CVE propagates to the service along uses_component",
+      "properties": {
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "description": "Reviewed propagation edge (§5) — not a facet property; reified so a Review can point at it.",
+        "predicate": "propagates_to"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:cwe-capec-map",
+      "label": "CWE-502 is exploited by CAPEC-586",
+      "properties": {
+        "assertion_status": "accepted",
+        "confidence": "medium",
+        "description": "The human-reviewed CWE↔CAPEC mapping the schema calls out (§2).",
+        "predicate": "exploited_by"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:ai-supply-chain-realizes",
+      "label": "AI-proposed — supply-chain path realizes the supply-chain threat",
+      "properties": {
+        "assertion_status": "proposed",
+        "confidence": "low",
+        "description": "AI-PROPOSED edge. assertion_status is `proposed` (NOT accepted); it is a hypothesis until a human accepts it. The paired Review requests changes.",
+        "predicate": "realizes_threat"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:tm-scope",
+      "label": "ThreatModel v3 scope is complete for the product",
+      "properties": {
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "predicate": "scope_approved"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:sdl-approved",
+      "label": "SDL program approved for the product",
+      "properties": {
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "predicate": "program_approved"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:design-gate-pass",
+      "label": "Design-review gate passed",
+      "properties": {
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "predicate": "passed"
+      }
+    },
+    {
+      "domain_type": "LifecyclePhase",
+      "id": "lifecycle-phase:design",
+      "label": "Design",
+      "properties": {
+        "code": "design"
+      }
+    },
+    {
+      "domain_type": "LifecyclePhase",
+      "id": "lifecycle-phase:implementation",
+      "label": "Implementation",
+      "properties": {
+        "code": "implementation"
+      }
+    },
+    {
+      "domain_type": "LifecyclePhase",
+      "id": "lifecycle-phase:verification",
+      "label": "Verification & validation",
+      "properties": {
+        "code": "verification_validation"
+      }
+    },
+    {
+      "domain_type": "LifecyclePhase",
+      "id": "lifecycle-phase:distribution",
+      "label": "Distribution",
+      "properties": {
+        "code": "distribution"
+      }
+    },
+    {
+      "domain_type": "LifecyclePhase",
+      "id": "lifecycle-phase:operation",
+      "label": "Operation / use",
+      "properties": {
+        "code": "operation"
+      }
+    },
+    {
+      "domain_type": "ThreatModel",
+      "id": "threat-model:auth-service-v2",
+      "label": "Auth Service threat model (rev 2, superseded)",
+      "properties": {
+        "created": "2026-08-01T00:00:00Z",
+        "description": "Prior revision, kept to demonstrate the supersedes chain.",
+        "governance_status": "superseded",
+        "revision": "2",
+        "updated": "2026-08-20T00:00:00Z"
+      }
+    },
+    {
+      "domain_type": "ThreatModel",
+      "id": "threat-model:auth-service-v3",
+      "label": "Auth Service threat model (rev 3)",
+      "properties": {
+        "approval_digest": "sha256:PLACEHOLDER-tm-auth-v3-pinned-to-kg-commit",
+        "approval_status": "approved",
+        "created": "2026-09-02T00:00:00Z",
+        "description": "GOVERNED, VERSIONED snapshot (§3c R-043): a reviewed LENS over the KG, not domain truth re-stated. Membership explicit; approval via the Review spine, pinned to a reproducible approval_digest.",
+        "governance_status": "approved",
+        "revision": "3",
+        "scope_query": "product:acme-auth-service AND phase in {operation, distribution}",
+        "updated": "2026-10-09T00:00:00Z"
+      }
+    },
+    {
+      "domain_type": "SecurityProgram",
+      "id": "security-program:acme-sdl",
+      "label": "Acme SDL program (rev 1)",
+      "properties": {
+        "approval_digest": "sha256:PLACEHOLDER-acme-sdl-rev1-pinned",
+        "approval_status": "approved",
+        "created": "2026-09-10T00:00:00Z",
+        "description": "The SDL as a first-class governed, versioned object (§3c R-041): ordered dated program nodes, the Requirements it incorporates, and a release gate that validates conformance of the ThreatModel.",
+        "governance_status": "approved",
+        "revision": "1",
+        "updated": "2026-10-09T00:00:00Z"
+      }
+    },
+    {
+      "domain_type": "Gate",
+      "id": "gate:design-review",
+      "label": "Design review gate",
+      "properties": {
+        "actual_date": "2026-10-22",
+        "description": "Decision point at design; gated by the security-requirements practice.",
+        "gate_status": "passed",
+        "order": 1,
+        "planned_date": "2026-10-20"
+      }
+    },
+    {
+      "domain_type": "Gate",
+      "id": "gate:release-gate",
+      "label": "Release gate",
+      "properties": {
+        "description": "Exit criterion runs the conformance check (R-042): validates_conformance_of the ThreatModel — proves linkage + approval, NOT adequacy.",
+        "gate_status": "planned",
+        "order": 3,
+        "planned_date": "2026-12-01"
+      }
+    },
+    {
+      "domain_type": "Milestone",
+      "id": "milestone:threat-model-complete",
+      "label": "Threat model complete",
+      "properties": {
+        "description": "Dated deliverable, dated relative to the design-review gate.",
+        "gate_status": "in_progress",
+        "order": 2,
+        "planned_date": "2026-11-05"
+      }
+    },
+    {
+      "domain_type": "Requirement",
+      "id": "requirement:ssdf-po-1-1",
+      "label": "SSDF PO.1.1 — Define security requirements",
+      "properties": {
+        "conformance_status": "conformant",
+        "normativity": "mandatory",
+        "source_ref": "library:nist-sp-800-218#PO.1.1",
+        "text": "Define security requirements for software development and maintain them over time."
+      }
+    },
+    {
+      "domain_type": "Requirement",
+      "id": "requirement:ssdf-pw-4-1",
+      "label": "SSDF PW.4.1 — Acquire well-secured components",
+      "properties": {
+        "conformance_status": "partial",
+        "normativity": "recommended",
+        "source_ref": "library:nist-sp-800-218#PW.4.1",
+        "text": "Acquire and maintain well-secured software components (e.g., pin and verify dependencies)."
+      }
+    }
+  ]
+}

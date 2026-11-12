@@ -1,0 +1,158 @@
+{
+  "count": 8,
+  "models": [
+    {
+      "counts": {
+        "assets": 0,
+        "attack_paths": 2,
+        "components": 3,
+        "damage_scenarios": 1,
+        "mitigations": 2,
+        "requirements": 0,
+        "risk_scores": 1,
+        "threats": 2
+      },
+      "description": "OSS document-ingest & rendering microservice.",
+      "file": "mvp-01-software-doc-service.yaml",
+      "id": "mvp-01-software-doc-service",
+      "kind": "core",
+      "kind_label": "Core example",
+      "reviewed_threats": 1,
+      "title": "Papermill Document Service"
+    },
+    {
+      "counts": {
+        "assets": 2,
+        "attack_paths": 2,
+        "components": 6,
+        "damage_scenarios": 1,
+        "mitigations": 3,
+        "requirements": 6,
+        "risk_scores": 1,
+        "threats": 2
+      },
+      "description": "Cellular-connected telematics ECU bridging the mobile network and the in-vehicle CAN.",
+      "file": "mvp-02-automotive-ecu.yaml",
+      "id": "mvp-02-automotive-ecu",
+      "kind": "core",
+      "kind_label": "Core example",
+      "reviewed_threats": 1,
+      "title": "Telematics Control Unit (TCU)"
+    },
+    {
+      "counts": {
+        "assets": 0,
+        "attack_paths": 3,
+        "components": 8,
+        "damage_scenarios": 1,
+        "mitigations": 2,
+        "requirements": 0,
+        "risk_scores": 1,
+        "threats": 3
+      },
+      "description": "A SYSTEM product (ADR-0002) that hierarchically composes an in-vehicle platform subsystem and a cloud-backend subsystem. Recursive `composed_of` is the structural layer (§3).",
+      "file": "mvp-03-hierarchical-system.yaml",
+      "id": "mvp-03-hierarchical-system",
+      "kind": "core",
+      "kind_label": "Core example",
+      "reviewed_threats": 0,
+      "title": "Connected-Vehicle System"
+    },
+    {
+      "counts": {
+        "assets": 0,
+        "attack_paths": 2,
+        "components": 4,
+        "damage_scenarios": 1,
+        "mitigations": 1,
+        "requirements": 0,
+        "risk_scores": 1,
+        "threats": 2
+      },
+      "description": "Crypto Server Appliance: Product A — a TLS-terminating server appliance that embeds the SoC. AFFECTED.\nEdge Sensor: Product X — an edge sensor that embeds the SAME SoC/IP core, but is VEX NOT_AFFECTED: the vulnerable RNG path is not on its execute path.",
+      "file": "mvp-18-shared-vuln-vex-override.yaml",
+      "id": "mvp-18-shared-vuln-vex-override",
+      "kind": "core",
+      "kind_label": "Core example",
+      "reviewed_threats": 0,
+      "title": "Crypto Server Appliance and Edge Sensor"
+    },
+    {
+      "counts": {
+        "assets": 0,
+        "attack_paths": 1,
+        "components": 4,
+        "damage_scenarios": 1,
+        "mitigations": 2,
+        "requirements": 0,
+        "risk_scores": 1,
+        "threats": 1
+      },
+      "description": "Safety-critical braking electronic control unit.",
+      "file": "tv-hardware-brake-ecu.yaml",
+      "id": "tv-hardware-brake-ecu",
+      "kind": "worked",
+      "kind_label": "Worked example with governance",
+      "reviewed_threats": 0,
+      "title": "Brake ECU"
+    },
+    {
+      "counts": {
+        "assets": 0,
+        "attack_paths": 2,
+        "components": 3,
+        "damage_scenarios": 1,
+        "mitigations": 3,
+        "requirements": 2,
+        "risk_scores": 1,
+        "threats": 2
+      },
+      "description": "OSS authentication & token-refresh microservice.",
+      "file": "tv-software-auth-service.yaml",
+      "id": "tv-software-auth-service",
+      "kind": "worked",
+      "kind_label": "Worked example with governance",
+      "reviewed_threats": 0,
+      "title": "Acme Auth Service"
+    },
+    {
+      "counts": {
+        "assets": 2,
+        "attack_paths": 1,
+        "components": 7,
+        "damage_scenarios": 1,
+        "mitigations": 2,
+        "requirements": 0,
+        "risk_scores": 0,
+        "threats": 1
+      },
+      "description": "The vehicle model CVE-2023-29389 names.",
+      "file": "pv-01-can-injection-theft.yaml",
+      "id": "pv-01-can-injection-theft",
+      "kind": "proposal",
+      "kind_label": "Proposal example (AI-drafted, unreviewed)",
+      "reviewed_threats": 0,
+      "title": "Toyota RAV4 (2021)"
+    },
+    {
+      "counts": {
+        "assets": 4,
+        "attack_paths": 2,
+        "components": 6,
+        "damage_scenarios": 2,
+        "mitigations": 2,
+        "requirements": 0,
+        "risk_scores": 0,
+        "threats": 2
+      },
+      "description": "A Kia vehicle with the telematics hardware, and the web services that control it (the write-up's table lists affected models from 2014 to 2025).",
+      "file": "pv-02-dealer-portal-owner-data.yaml",
+      "id": "pv-02-dealer-portal-owner-data",
+      "kind": "proposal",
+      "kind_label": "Proposal example (AI-drafted, unreviewed)",
+      "reviewed_threats": 0,
+      "title": "Kia vehicle with remote services"
+    }
+  ],
+  "problems": []
+}

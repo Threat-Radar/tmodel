@@ -1,0 +1,21 @@
+{
+  "file": "mvp-01-software-doc-service.yaml",
+  "goal": "threat-instance:xxe-file-read",
+  "paths": [
+    {
+      "authored_path": "attack-path:xxe-file-read",
+      "goal_step": "attack-step:read-internal-file",
+      "review": {
+        "assertion_status": "accepted",
+        "review_status": "accepted",
+        "reviewed": true
+      },
+      "steps": [
+        "attack-step:upload-crafted-doc",
+        "attack-step:parser-resolves-entity",
+        "attack-step:coerce-file-uri",
+        "attack-step:read-internal-file"
+      ]
+    }
+  ]
+}
