@@ -186,6 +186,19 @@ check it out first (`git submodule update --init library`), or set
 `TMODEL_LIBRARY` to another library checkout. `tmodel library` lists the records,
 and `--type`, `--topic` and `--status` filter them (#140).
 
+The CWE weaknesses (#144) come from the CWE release that the library's `cwe` record
+pins. The engine reads MITRE's file, unchanged, from the path in
+`TMODEL_CWE_CATALOG`, refuses a file with any other SHA-256, and never downloads it
+itself. The pinned submodule predates the CWE extraction (Threat-Radar/library#21),
+so until the pin moves, also point `TMODEL_LIBRARY` at a library checkout that has
+it. `tmodel weaknesses` lists the weaknesses, and `tmodel weaknesses --id CWE-79`
+shows one with every field (DL-0050).
+
+```sh
+curl -LO https://cwe.mitre.org/data/xml/cwec_v4.20.xml.zip   # the file the record pins
+export TMODEL_CWE_CATALOG="$PWD/cwec_v4.20.xml.zip"
+```
+
 **Prerequisites (macOS)**
 
 | tool | version | install |
