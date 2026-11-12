@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OWASP Juice Shop: example threat model · tmodel</title>
+<meta name="description" content="Example data. This model was drafted by AI from published sources about a real product, to exercise tmodel&#39;s object model. It is not a verified security assessment of the product it names. No human review is recorded in it, so every threat and attack path in it is a hypothesis.">
+<style>
+:root { --ink: #1a1916; --muted: #5c574e; --line: #e2dcd0; --paper: #f6f3ec; --card: #fffcf7; --accent: #1e4d3a; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
+.model-page { max-width: 920px; margin: 0 auto; padding: 22px 24px 40px; }
+.breadcrumb { margin: 0 0 12px; font-size: 0.85rem; color: var(--muted); }
+.breadcrumb a, .model-page-footer a, .model-index a { color: var(--accent); }
+.model-page-footer { margin-top: 32px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.8rem; }
+.model-page-footer code { font-size: 0.78rem; }
+.model-index h1 { margin: 6px 0 6px; font-size: clamp(1.7rem, 3vw, 2.3rem); letter-spacing: -0.03em; }
+.model-index .lead { max-width: 75ch; margin: 0 0 14px; color: var(--muted); font-size: 1.05rem; }
+.model-list { display: grid; gap: 12px; margin: 16px 0 0; padding: 0; list-style: none; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+.model-list li { padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+.model-list h2 { margin: 2px 0 6px; font-size: 1.05rem; }
+.model-list p { margin: 0 0 6px; font-size: 0.88rem; }
+.model-list .meta { color: var(--muted); font-size: 0.8rem; }
+.model-list .kind { color: var(--accent); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+.problems { margin-top: 16px; color: #991b1b; font-size: 0.85rem; }
+
+/* Model report styles (#208). One stylesheet for both outputs: the app imports
+   it, and the static Pages build inlines it into each model page. */
+
+.model-report {
+  --rp-text: #172033;
+  --rp-muted: #5b6678;
+  --rp-faint: #8792a5;
+  --rp-surface: #ffffff;
+  --rp-subtle: #f6f8fb;
+  --rp-border: #dde3ec;
+  --rp-accent: #3730a3;
+  --rp-ok-bg: #dcfce7; --rp-ok-fg: #166534; --rp-ok-line: #16a34a;
+  --rp-bad-bg: #fee2e2; --rp-bad-fg: #991b1b; --rp-bad-line: #dc2626;
+  --rp-warn-bg: #ffedd5; --rp-warn-fg: #9a3412; --rp-warn-line: #ea580c;
+  --rp-hyp-bg: #fef3c7; --rp-hyp-fg: #854d0e; --rp-hyp-line: #d97706;
+  --rp-neutral-bg: #e8edf5; --rp-neutral-fg: #475569;
+  --rp-step-bg: #f5f3ff; --rp-step-line: #7c3aed;
+  --rp-threat-bg: #fff1f2; --rp-threat-line: #be123c;
+  --rp-damage-bg: #fff7ed; --rp-damage-line: #c2410c;
+  --rp-mit-bg: #f0fdf4; --rp-mit-line: #15803d;
+  --rp-target-bg: #eff6ff; --rp-target-line: #2563eb;
+  --rp-gate-bg: #1e293b; --rp-gate-fg: #ffffff;
+  --rp-edge: #64748b;
+  color: var(--rp-text);
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.model-report h2 { margin: 0 0 6px; font-size: 1.55rem; letter-spacing: -0.02em; }
+.model-report h3 { display: flex; align-items: center; gap: 9px; margin: 0 0 12px; font-size: 1.02rem; letter-spacing: 0; text-transform: none; }
+.model-report h4 { margin: 0 0 3px; font-size: 0.98rem; }
+.model-report .eyebrow { margin: 0 0 4px; color: var(--rp-muted); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+.section-number { display: inline-grid; width: 24px; height: 24px; place-items: center; border-radius: 50%; background: var(--rp-neutral-bg); color: var(--rp-neutral-fg); font-size: 0.74rem; }
+
+.report-header { margin-bottom: 18px; padding: 18px 20px; border: 1px solid var(--rp-border); border-radius: 12px; background: var(--rp-surface); }
+.report-scope { max-width: 72ch; margin: 0 0 12px; color: var(--rp-muted); }
+.example-banner { max-width: 90ch; margin: 0 0 14px; padding: 9px 12px; border: 1px solid #f3c969; border-left-width: 5px; border-radius: 8px; background: #fffbeb; color: #713f12; }
+.report-scope-details { margin: -6px 0 12px; }
+.report-scope + .report-scope { margin-top: -6px; }
+.model-report .table-steps { margin: 0; padding-left: 20px; }
+.model-report .table-steps li { margin: 0 0 2px; }
+.model-report .path-link { color: inherit; text-decoration: underline; text-decoration-color: var(--rp-border); text-underline-offset: 3px; }
+.model-report .path-link:hover { text-decoration-color: currentColor; }
+.model-report .step-button { margin: 0; padding: 0; border: 0; border-radius: 3px; background: none; color: inherit; font: inherit; font-weight: 650; text-align: left; cursor: pointer; }
+.model-report .step-button:hover { text-decoration: underline; text-underline-offset: 3px; }
+.model-report .step-button:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; }
+.report-warning { max-width: 90ch; margin: 0 0 14px; padding: 9px 12px; border: 1px solid #fca5a5; border-left-width: 5px; border-radius: 8px; background: #fef2f2; color: #991b1b; }
+.report-warning p, .report-warning ul { margin: 0; }
+.report-warning ul { margin-top: 4px; padding-left: 18px; }
+.model-report .warning-note { color: #991b1b; }
+.threat-summary { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; }
+.threat-summary p { margin: 0; }
+.summary-total { font-size: 0.95rem; }
+.summary-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.summary-chip { padding: 3px 9px; border-radius: 999px; font-size: 0.78rem; }
+.summary-reviewers { color: var(--rp-muted); font-size: 0.8rem; }
+.report-contents ol { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 14px 0 0; padding: 0; list-style: none; counter-reset: rc; font-size: 0.82rem; }
+.report-contents li { counter-increment: rc; }
+.report-contents li::before { content: counter(rc) ". "; color: var(--rp-faint); }
+.report-contents a { color: var(--rp-accent); }
+
+.report-section { margin-bottom: 18px; padding: 16px 20px 18px; border: 1px solid var(--rp-border); border-radius: 12px; background: var(--rp-surface); scroll-margin-top: 12px; }
+.section-help, .empty-note { margin: 0 0 10px; color: var(--rp-muted); }
+.empty-note { padding: 10px 12px; border: 1px dashed var(--rp-border); border-radius: 8px; background: var(--rp-subtle); }
+
+.report-table-scroll { max-width: 100%; margin-bottom: 14px; overflow-x: auto; }
+.report-table-scroll:last-child { margin-bottom: 0; }
+.report-table { width: 100%; border-collapse: collapse; }
+.report-table caption { padding: 0 0 7px; color: var(--rp-muted); font-size: 0.76rem; font-weight: 700; text-align: left; }
+.report-table th, .report-table td { padding: 9px 10px; border-top: 1px solid var(--rp-border); text-align: left; vertical-align: top; }
+.report-table thead th { border-top: 0; border-bottom: 1px solid var(--rp-border); background: var(--rp-subtle); color: var(--rp-muted); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+.report-table tbody th { min-width: 170px; font-weight: 650; }
+.report-table td { min-width: 110px; }
+.cell-note { margin-top: 3px; color: var(--rp-muted); font-size: 0.76rem; font-weight: 400; }
+.missing { color: var(--rp-faint); font-style: italic; }
+.ref { white-space: normal; }
+.impact-list { display: grid; grid-template-columns: auto auto; gap: 0 8px; width: fit-content; margin: 0; padding: 0; list-style: none; }
+.impact-list li { display: contents; }
+.impact-list span { color: var(--rp-muted); }
+.handle { white-space: nowrap; }
+
+.status-badge { display: inline-block; padding: 2px 8px; border: 1px solid transparent; border-radius: 999px; font-size: 0.74rem; font-weight: 750; white-space: nowrap; }
+.rs-accepted { border-color: var(--rp-ok-line); background: var(--rp-ok-bg); color: var(--rp-ok-fg); }
+.rs-rejected { border-color: var(--rp-bad-line); background: var(--rp-bad-bg); color: var(--rp-bad-fg); }
+.rs-changes_requested { border-color: var(--rp-warn-line); background: var(--rp-warn-bg); color: var(--rp-warn-fg); }
+.rs-proposed, .rs-not_reviewed { border-color: var(--rp-hyp-line); border-style: dashed; background: var(--rp-hyp-bg); color: var(--rp-hyp-fg); }
+.rs-unknown, .rs-mixed { border-color: var(--rp-neutral-fg); border-style: dotted; background: var(--rp-neutral-bg); color: var(--rp-neutral-fg); }
+.row-status-rejected > th:first-child { box-shadow: inset 4px 0 0 var(--rp-bad-line); }
+.row-status-changes_requested > th:first-child { box-shadow: inset 4px 0 0 var(--rp-warn-line); }
+.row-not-assessed th, .row-not-assessed td { background: var(--rp-subtle); }
+
+.row-details { margin-top: 6px; font-size: 0.74rem; }
+.row-details summary { width: fit-content; color: var(--rp-accent); cursor: pointer; font-weight: 650; }
+.row-details dl { display: grid; gap: 4px; margin: 6px 0 0; padding: 8px 10px; border-radius: 7px; background: var(--rp-subtle); }
+.row-details dl > div { display: grid; grid-template-columns: minmax(90px, 0.35fr) 1fr; gap: 8px; }
+.row-details dt { color: var(--rp-muted); font-weight: 700; }
+.row-details dd { margin: 0; overflow-wrap: anywhere; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.72rem; }
+
+.path-card { margin-bottom: 16px; padding: 14px 16px; border: 1px solid var(--rp-border); border-radius: 10px; background: var(--rp-surface); }
+.path-card:last-child { margin-bottom: 0; }
+.path-card.row-status-rejected { border: 2px dashed var(--rp-bad-line); }
+.path-card.row-status-changes_requested { border: 2px dashed var(--rp-warn-line); }
+.path-card-header { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 8px 16px; margin-bottom: 8px; }
+.path-card-header p { margin: 0; }
+.path-card-status { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.open-path-button { padding: 5px 10px; border: 1px solid var(--rp-accent); border-radius: 7px; background: var(--rp-surface); color: var(--rp-accent); font: inherit; font-size: 0.76rem; font-weight: 700; cursor: pointer; }
+.open-path-button:focus-visible { outline: 2px solid var(--rp-accent); outline-offset: 2px; }
+.status-callout { margin: 0 0 10px; padding: 8px 11px; border-left: 4px solid; border-radius: 6px; }
+.path-story { display: grid; gap: 4px; }
+.path-steps { margin: 0 0 4px; padding-left: 1.6em; }
+.path-steps li { margin: 3px 0; }
+.step-name { font-weight: 650; }
+.phase-chip { display: inline-block; padding: 1px 6px; border-radius: 5px; background: var(--rp-neutral-bg); color: var(--rp-neutral-fg); font-size: 0.68rem; font-weight: 700; }
+.gate { display: inline-block; min-width: 28px; padding: 1px 6px; border-radius: 999px; background: var(--rp-gate-bg); color: var(--rp-gate-fg); font-size: 0.66rem; font-weight: 800; text-align: center; }
+.path-outcome { margin: 0; }
+.path-figure { margin: 12px 0 0; }
+.path-figure-scroll { overflow-x: auto; border: 1px solid var(--rp-border); border-radius: 8px; background: var(--rp-subtle); }
+.path-figure figcaption { margin-top: 5px; color: var(--rp-muted); font-size: 0.74rem; }
+
+/* Path diagram (inline SVG; the same layout the app draws with Cytoscape). */
+.path-diagram { display: block; width: 100%; min-width: 720px; max-width: 100%; height: auto; font-family: inherit; }
+.path-diagram .pd-node rect { stroke-width: 1.6; }
+.path-diagram .pd-step rect { fill: var(--rp-step-bg); stroke: var(--rp-step-line); }
+.path-diagram .pd-gate rect { fill: var(--rp-gate-bg); stroke: var(--rp-gate-bg); }
+.path-diagram .pd-gate .pd-text { fill: var(--rp-gate-fg); font-weight: 800; }
+.path-diagram .pd-threat rect { fill: var(--rp-threat-bg); stroke: var(--rp-threat-line); stroke-width: 2.2; }
+.path-diagram .pd-damage rect { fill: var(--rp-damage-bg); stroke: var(--rp-damage-line); }
+.path-diagram .pd-mitigation rect { fill: var(--rp-mit-bg); stroke: var(--rp-mit-line); }
+.path-diagram .pd-target rect { fill: var(--rp-target-bg); stroke: var(--rp-target-line); }
+.path-diagram .pd-caption { fill: var(--rp-muted); font-size: 10.5px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
+.path-diagram .pd-text { fill: var(--rp-text); font-size: 13px; font-weight: 600; }
+.path-diagram .pd-edge path { fill: none; stroke: var(--rp-edge); stroke-width: 1.7; }
+.path-diagram .pd-edge-mitigates path { stroke: var(--rp-mit-line); stroke-dasharray: 6 4; }
+.path-diagram .pd-edge-targets path { stroke: var(--rp-target-line); stroke-dasharray: 2 3; }
+.path-diagram .pd-arrow { fill: var(--rp-edge); }
+.path-diagram .pd-edge path { stroke-linejoin: round; }
+.path-diagram .pd-edge-label-bg { fill: var(--rp-subtle); }
+.path-diagram .pd-edge-label { fill: var(--rp-muted); font-size: 11px; font-weight: 700; }
+.path-diagram .pd-edge-label-group.pd-edge-mitigates .pd-edge-label { fill: var(--rp-mit-line); }
+.path-diagram .pd-edge-label-group.pd-edge-targets .pd-edge-label { fill: var(--rp-target-line); }
+.path-diagram.pd-status-rejected .pd-step rect { stroke: var(--rp-bad-line); stroke-dasharray: 7 4; }
+.path-diagram.pd-status-changes_requested .pd-step rect { stroke: var(--rp-warn-line); stroke-dasharray: 7 4; }
+.path-diagram.pd-threat-status-rejected .pd-threat rect { stroke: var(--rp-bad-line); stroke-dasharray: 7 4; }
+.path-diagram.pd-threat-status-changes_requested .pd-threat rect { stroke: var(--rp-warn-line); stroke-dasharray: 7 4; }
+.path-diagram.pd-threat-status-proposed .pd-threat rect,
+.path-diagram.pd-threat-status-not_reviewed .pd-threat rect { stroke: var(--rp-hyp-line); stroke-dasharray: 7 4; }
+
+@media (max-width: 720px) {
+  .report-header, .report-section { padding: 14px; }
+  .report-table tbody th { min-width: 140px; }
+  .path-card-status { align-items: flex-start; }
+}
+
+@media (prefers-color-scheme: dark) {
+  .model-report {
+    --rp-text: #e5e7eb;
+    --rp-muted: #a3b0c2;
+    --rp-faint: #7c879a;
+    --rp-surface: #111827;
+    --rp-subtle: #172033;
+    --rp-border: #334155;
+    --rp-accent: #a5b4fc;
+    --rp-ok-bg: #0f2e1d; --rp-ok-fg: #86efac; --rp-ok-line: #22c55e;
+    --rp-bad-bg: #3f1818; --rp-bad-fg: #fecaca; --rp-bad-line: #f87171;
+    --rp-warn-bg: #3b2312; --rp-warn-fg: #fdba74; --rp-warn-line: #fb923c;
+    --rp-hyp-bg: #3b2f12; --rp-hyp-fg: #fde68a; --rp-hyp-line: #f59e0b;
+    --rp-neutral-bg: #243147; --rp-neutral-fg: #cbd5e1;
+    --rp-step-bg: #241d3d; --rp-step-line: #a78bfa;
+    --rp-threat-bg: #3a1622; --rp-threat-line: #fb7185;
+    --rp-damage-bg: #3a2414; --rp-damage-line: #fb923c;
+    --rp-mit-bg: #102a1c; --rp-mit-line: #4ade80;
+    --rp-target-bg: #132544; --rp-target-line: #60a5fa;
+    --rp-gate-bg: #e2e8f0; --rp-gate-fg: #0f172a;
+    --rp-edge: #94a3b8;
+  }
+  .example-banner { border-color: #8a671b; background: #3b2f12; color: #fde68a; }
+  .report-warning { border-color: #7f1d1d; background: #2b1414; color: #fecaca; }
+  .model-report .warning-note { color: #fca5a5; }
+}
+
+
+.model-report {
+  --rp-text: #1a1916; --rp-muted: #5c574e; --rp-faint: #8a8377;
+  --rp-surface: #fffcf7; --rp-subtle: #f6f3ec; --rp-border: #e2dcd0; --rp-accent: #1e4d3a;
+  --rp-ok-bg: #e5efe8; --rp-ok-fg: #1e4d3a; --rp-ok-line: #6f9c80;
+  --rp-bad-bg: #f6e4dc; --rp-bad-fg: #7f1d1d; --rp-bad-line: #c27a6a;
+  --rp-warn-bg: #ffedd5; --rp-warn-fg: #9a3412; --rp-warn-line: #ea580c;
+  --rp-hyp-bg: #f3ead3; --rp-hyp-fg: #6b4e16; --rp-hyp-line: #c99a3a;
+  --rp-neutral-bg: #ece6da; --rp-neutral-fg: #5c574e;
+  --rp-step-bg: #f5f3ff; --rp-step-line: #7c3aed;
+  --rp-threat-bg: #fff1f2; --rp-threat-line: #be123c;
+  --rp-damage-bg: #fff7ed; --rp-damage-line: #c2410c;
+  --rp-mit-bg: #f0fdf4; --rp-mit-line: #15803d;
+  --rp-target-bg: #eff6ff; --rp-target-line: #2563eb;
+  --rp-gate-bg: #1a1916; --rp-gate-fg: #ffffff;
+  --rp-edge: #6b665c;
+}
+.example-banner { border-color: #e0cfa3; background: #f3ead3; color: #6b4e16; }
+.report-warning { border-color: #e3b5a8; background: #f6e4dc; color: #7f1d1d; }
+.model-report .warning-note { color: #991b1b; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../index.html">tmodel</a><nav aria-label="Site"><a href="../index.html">Home</a><a href="../bibliography/index.html">Bibliography</a><a href="../reports/index.html">Reports</a></nav></div></header>
+<main class="model-page">
+<p class="breadcrumb"><a href="index.html">Example models</a> › OWASP Juice Shop</p>
+<article class="model-report" aria-labelledby="report-title">
+<header class="report-header">
+  <p class="eyebrow">Example threat model · Proposal example (AI-drafted, unreviewed)</p>
+  <h2 id="report-title">OWASP Juice Shop</h2>
+  <p class="report-scope">A web shop for fruit juice with accounts, a basket, orders, a search page and an administration section, built to be insecure for training. Modeled at v20.4.0, run locally (Node.js, or its Docker image).</p>
+  <p class="example-banner" role="note"><strong>Example data.</strong> This model was drafted by AI from published sources about a real product, to exercise tmodel&#39;s object model. It is not a verified security assessment of the product it names. No human review is recorded in it, so every threat and attack path in it is a hypothesis.</p>
+
+  <div class="threat-summary" aria-label="Threats by attack-path assertion review status">
+    <p class="summary-total"><strong>5 threats</strong>, 5 of them AI-proposed</p>
+    <ul class="summary-chips"><li class="summary-chip rs-proposed"><strong>1</strong> proposed, not reviewed</li><li class="summary-chip rs-not_reviewed"><strong>4</strong> not reviewed</li></ul>
+    <p class="summary-reviewers">No human review is recorded in this model.</p>
+  </div>
+  <p class="cell-note">Counts use the review status of the assertion linking each threat to its attack path.</p>
+  <nav class="report-contents" aria-label="Report sections"><ol><li><a href="#report-components">Assets and components</a></li><li><a href="#report-damage">Damage scenarios</a></li><li><a href="#report-threats">Threats</a></li><li><a href="#report-catalog">Vulnerabilities and catalog records</a></li><li><a href="#report-paths">Attack paths</a></li><li><a href="#report-mitigations">Mitigations</a></li><li><a href="#report-risk">Risk</a></li><li><a href="#report-requirements">Requirements</a></li></ol></nav>
+</header>
+<section class="report-section" id="report-components" aria-labelledby="report-components-title">
+<h3 id="report-components-title"><span class="section-number">1</span> Assets and components</h3>
+<div class="report-table-scroll" role="region" aria-label="Assets: what is worth protecting" tabindex="0">
+<table class="report-table">
+<caption>Assets: what is worth protecting</caption>
+<thead><tr><th scope="col">Asset</th><th scope="col">Security properties</th><th scope="col">Handled by</th><th scope="col">Description</th></tr></thead>
+<tbody><tr>
+<th scope="row">Customer and administrator accounts (e-mail, password hash, role)</th>
+<td>Confidentiality, Integrity, Authenticity</td>
+<td><span class="ref">Node.js and Express server with the REST API</span></td>
+<td><span class="missing">No description</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>asset:user-accounts</dd></div><div><dt>Object type</dt><dd>Asset</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">Shopping baskets</th>
+<td>Confidentiality, Integrity</td>
+<td><span class="ref">Node.js and Express server with the REST API</span></td>
+<td><span class="missing">No description</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>asset:baskets</dd></div><div><dt>Object type</dt><dd>Asset</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">The store&#39;s administration section</th>
+<td>Authorization</td>
+<td><span class="ref">Angular storefront</span>, <span class="ref">Node.js and Express server with the REST API</span></td>
+<td><span class="missing">No description</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>asset:admin-section</dd></div><div><dt>Object type</dt><dd>Asset</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">Business documents left in the /ftp folder</th>
+<td>Confidentiality</td>
+<td><span class="missing">None</span></td>
+<td><span class="missing">No description</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>asset:shop-documents</dd></div><div><dt>Object type</dt><dd>Asset</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">Login tokens (JWTs) that say who a request comes from</th>
+<td>Authenticity, Integrity</td>
+<td><span class="ref">Node.js and Express server with the REST API</span>, <span class="ref">jsonwebtoken 0.4.0</span></td>
+<td><span class="missing">No description</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>asset:login-tokens</dd></div><div><dt>Object type</dt><dd>Asset</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">The shopper&#39;s logged-in browser session on the shop</th>
+<td>Integrity, Confidentiality</td>
+<td><span class="ref">Angular storefront</span></td>
+<td><span class="missing">No description</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>asset:shopper-session</dd></div><div><dt>Object type</dt><dd>Asset</dd></div></dl></details></td>
+</tr></tbody>
+</table>
+</div><div class="report-table-scroll" role="region" aria-label="Products and components" tabindex="0">
+<table class="report-table">
+<caption>Products and components</caption>
+<thead><tr><th scope="col">Name</th><th scope="col">Kind</th><th scope="col">Structure</th><th scope="col">Description</th></tr></thead>
+<tbody><tr>
+<th scope="row">OWASP Juice Shop</th>
+<td>Product</td>
+<td><div>Contains <span class="ref">Angular storefront</span>, <span class="ref">Node.js and Express server with the REST API</span>, <span class="ref">SQLite database</span>, <span class="ref">Public /ftp folder with directory browsing</span>, <span class="ref">jsonwebtoken 0.4.0</span></div></td>
+<td>A web shop for fruit juice with accounts, a basket, orders, a search page and an administration section, built to be insecure for training. Modeled at v20.4.0, run locally (Node.js, or its Docker image).<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>product:juice-shop</dd></div><div><dt>Object type</dt><dd>Product</dd></div><div><dt>Identifiers</dt><dd>pkg:github/juice-shop/juice-shop@v20.4.0</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">Angular storefront</th>
+<td>Component</td>
+<td><div>Part of <span class="ref">OWASP Juice Shop</span></div></td>
+<td>The single-page web front end; runs in the shopper&#39;s browser.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>component:storefront</dd></div><div><dt>Object type</dt><dd>Component</dd></div><div><dt>Component kind</dt><dd>application</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">Node.js and Express server with the REST API</th>
+<td>Component</td>
+<td><div>Part of <span class="ref">OWASP Juice Shop</span></div><div>Uses <span class="ref">jsonwebtoken 0.4.0</span></div></td>
+<td>Login, basket, search and the other shop functions.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>component:shop-api</dd></div><div><dt>Object type</dt><dd>Component</dd></div><div><dt>Component kind</dt><dd>service</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">SQLite database</th>
+<td>Component</td>
+<td><div>Part of <span class="ref">OWASP Juice Shop</span></div></td>
+<td>Users, baskets and orders, reached through the Sequelize library.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>component:shop-database</dd></div><div><dt>Object type</dt><dd>Component</dd></div><div><dt>Component kind</dt><dd>data</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">Public /ftp folder with directory browsing</th>
+<td>Component</td>
+<td><div>Part of <span class="ref">OWASP Juice Shop</span></div></td>
+<td>Serves a folder of files and a browsable listing of it (server.ts).<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>component:ftp-browser</dd></div><div><dt>Object type</dt><dd>Component</dd></div><div><dt>Component kind</dt><dd>service</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">jsonwebtoken 0.4.0</th>
+<td>Component</td>
+<td><div>Part of <span class="ref">OWASP Juice Shop</span></div></td>
+<td><span class="missing">Modelling note only; see details</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>component:jsonwebtoken-lib</dd></div><div><dt>Object type</dt><dd>Component</dd></div><div><dt>Full description</dt><dd>The npm library that signs and checks the login tokens (package.json).</dd></div><div><dt>Component kind</dt><dd>library</dd></div><div><dt>Identifiers</dt><dd>pkg:npm/jsonwebtoken@0.4.0</dd></div></dl></details></td>
+</tr></tbody>
+</table>
+</div>
+</section><section class="report-section" id="report-damage" aria-labelledby="report-damage-title">
+<h3 id="report-damage-title"><span class="section-number">2</span> Damage scenarios</h3>
+<div class="report-table-scroll" role="region" aria-label="Damage scenarios: what could go wrong for the stakeholder" tabindex="0">
+<table class="report-table">
+<caption>Damage scenarios: what could go wrong for the stakeholder</caption>
+<thead><tr><th scope="col">Damage scenario</th><th scope="col">Assets damaged</th><th scope="col">Threats leading to it</th><th scope="col">Impact</th><th scope="col">Description</th></tr></thead>
+<tbody><tr>
+<th scope="row">An outsider logs in as the administrator and reaches the administration section</th>
+<td><span class="ref">Customer and administrator accounts (e-mail, password hash, role)</span>, <span class="ref">The store&#39;s administration section</span><div class="cell-note">Compromised: Authenticity, Authorization</div></td>
+<td><span class="ref">Log in as the administrator through SQL injection in the login form</span></td>
+<td><span class="missing">Not rated</span></td>
+<td><span class="missing">No description</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>damage-scenario:admin-takeover</dd></div><div><dt>Object type</dt><dd>DamageScenario</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">A customer sees another customer&#39;s basket</th>
+<td><span class="ref">Shopping baskets</span><div class="cell-note">Compromised: Confidentiality</div></td>
+<td><span class="ref">Read another customer&#39;s basket by changing the basket number</span></td>
+<td><span class="missing">Not rated</span></td>
+<td><span class="missing">No description</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>damage-scenario:basket-exposed</dd></div><div><dt>Object type</dt><dd>DamageScenario</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">A script the attacker chose runs in a shopper&#39;s session on the shop&#39;s page</th>
+<td><span class="ref">The shopper&#39;s logged-in browser session on the shop</span><div class="cell-note">Compromised: Integrity, Confidentiality</div></td>
+<td><span class="ref">Run a script in a shopper&#39;s session through the search page</span></td>
+<td><span class="missing">Not rated</span></td>
+<td><span class="missing">No description</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>damage-scenario:script-in-session</dd></div><div><dt>Object type</dt><dd>DamageScenario</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">Anyone can read business documents left in /ftp</th>
+<td><span class="ref">Business documents left in the /ftp folder</span><div class="cell-note">Compromised: Confidentiality</div></td>
+<td><span class="ref">Find and download confidential documents from the /ftp listing</span></td>
+<td><span class="missing">Not rated</span></td>
+<td><span class="missing">No description</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>damage-scenario:documents-read</dd></div><div><dt>Object type</dt><dd>DamageScenario</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">The shop accepts a login token for an identity the attacker chose</th>
+<td><span class="ref">Login tokens (JWTs) that say who a request comes from</span>, <span class="ref">Customer and administrator accounts (e-mail, password hash, role)</span><div class="cell-note">Compromised: Authenticity</div></td>
+<td><span class="ref">Forge a login token that the old jsonwebtoken library accepts</span></td>
+<td><span class="missing">Not rated</span></td>
+<td><span class="missing">No description</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>damage-scenario:forged-identity</dd></div><div><dt>Object type</dt><dd>DamageScenario</dd></div></dl></details></td>
+</tr></tbody>
+</table>
+</div>
+</section><section class="report-section" id="report-threats" aria-labelledby="report-threats-title">
+<h3 id="report-threats-title"><span class="section-number">3</span> Threats</h3>
+<div class="report-table-scroll" role="region" aria-label="Threats and their review status" tabindex="0">
+<table class="report-table">
+<caption>Threats and their review status</caption>
+<thead><tr><th scope="col">Threat</th><th scope="col">Source</th><th scope="col">Attack-path assertion review</th><th scope="col">Damage</th><th scope="col">Attack paths</th><th scope="col">Mitigations</th></tr></thead>
+<tbody><tr class="row-status-proposed">
+<th scope="row">Log in as the administrator through SQL injection in the login form<div class="cell-note">Violates: S authenticity; E authorization</div></th>
+<td>AI-drafted</td>
+<td><div class="cell-note">Status of the assertion linking this threat to its path</div><span class="status-badge rs-proposed">AI-proposed, not reviewed</span></td>
+<td><span class="ref">An outsider logs in as the administrator and reaches the administration section</span></td>
+<td><span class="ref">Login form to administration section</span></td>
+<td><span class="ref">Build database queries with bound parameters</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>threat-instance:login-sqli</dd></div><div><dt>Object type</dt><dd>ThreatInstance</dd></div><div><dt>Assertion status</dt><dd>proposed</dd></div><div><dt>Assertions</dt><dd>assertion:admin-path-realizes</dd></div></dl></details></td>
+</tr><tr class="row-status-not_reviewed">
+<th scope="row">Read another customer&#39;s basket by changing the basket number<div class="cell-note">Violates: I confidentiality; E authorization</div></th>
+<td>AI-drafted</td>
+<td><div class="cell-note">Status of the assertion linking this threat to its path</div><span class="status-badge rs-not_reviewed">AI-proposed, not reviewed</span></td>
+<td><span class="ref">A customer sees another customer&#39;s basket</span></td>
+<td><span class="ref">Own account to another customer&#39;s basket</span></td>
+<td><span class="ref">Return a basket only to its owner</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>threat-instance:basket-idor</dd></div><div><dt>Object type</dt><dd>ThreatInstance</dd></div></dl></details></td>
+</tr><tr class="row-status-not_reviewed">
+<th scope="row">Run a script in a shopper&#39;s session through the search page<div class="cell-note">Violates: T integrity; I confidentiality</div></th>
+<td>AI-drafted</td>
+<td><div class="cell-note">Status of the assertion linking this threat to its path</div><span class="status-badge rs-not_reviewed">AI-proposed, not reviewed</span></td>
+<td><span class="ref">A script the attacker chose runs in a shopper&#39;s session on the shop&#39;s page</span></td>
+<td><span class="ref">Crafted search link to script in the shopper&#39;s session</span></td>
+<td><span class="ref">Keep Angular&#39;s sanitizing on for text from the URL</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>threat-instance:search-dom-xss</dd></div><div><dt>Object type</dt><dd>ThreatInstance</dd></div></dl></details></td>
+</tr><tr class="row-status-not_reviewed">
+<th scope="row">Find and download confidential documents from the /ftp listing<div class="cell-note">Violates: I confidentiality</div></th>
+<td>AI-drafted</td>
+<td><div class="cell-note">Status of the assertion linking this threat to its path</div><span class="status-badge rs-not_reviewed">AI-proposed, not reviewed</span></td>
+<td><span class="ref">Anyone can read business documents left in /ftp</span></td>
+<td><span class="ref">robots.txt to confidential document</span></td>
+<td><span class="ref">Turn off directory browsing and keep internal documents off the public server</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>threat-instance:ftp-listing</dd></div><div><dt>Object type</dt><dd>ThreatInstance</dd></div></dl></details></td>
+</tr><tr class="row-status-not_reviewed">
+<th scope="row">Forge a login token that the old jsonwebtoken library accepts<div class="cell-note">Violates: S authenticity</div></th>
+<td>AI-drafted</td>
+<td><div class="cell-note">Status of the assertion linking this threat to its path</div><span class="status-badge rs-not_reviewed">AI-proposed, not reviewed</span></td>
+<td><span class="ref">The shop accepts a login token for an identity the attacker chose</span></td>
+<td><span class="ref">Forged token to chosen identity</span></td>
+<td><span class="ref">Upgrade jsonwebtoken to 4.2.2 or later and fix the accepted algorithm</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>threat-instance:jwt-forgery</dd></div><div><dt>Object type</dt><dd>ThreatInstance</dd></div></dl></details></td>
+</tr></tbody>
+</table>
+</div>
+</section><section class="report-section" id="report-catalog" aria-labelledby="report-catalog-title">
+<h3 id="report-catalog-title"><span class="section-number">4</span> Vulnerabilities and catalog records</h3>
+<div class="report-table-scroll" role="region" aria-label="Vulnerabilities" tabindex="0">
+<table class="report-table">
+<caption>Vulnerabilities</caption>
+<thead><tr><th scope="col">Vulnerability</th><th scope="col">Catalog reference</th><th scope="col">Affects</th><th scope="col">Weakness class</th><th scope="col">Description</th></tr></thead>
+<tbody><tr>
+<th scope="row">jsonwebtoken before 4.2.2 accepts a token signed with the wrong kind of algorithm</th>
+<td>CVE-2015-9235</td>
+<td><span class="ref">OWASP Juice Shop</span>, <span class="ref">jsonwebtoken 0.4.0</span></td>
+<td><span class="ref">Use of a Broken or Risky Cryptographic Algorithm (CWE-327)</span>, <span class="ref">Improper Input Validation (CWE-20)</span></td>
+<td>NVD: a token meant to be checked with an asymmetric key (RS or ES) is accepted when the attacker signs it with a symmetric (HS) algorithm instead.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>vulnerability:cve-2015-9235</dd></div><div><dt>Object type</dt><dd>Vulnerability</dd></div><div><dt>Full description</dt><dd>NVD: a token meant to be checked with an asymmetric key (RS or ES) is accepted when the attacker signs it with a symmetric (HS) algorithm instead. Juice Shop pins jsonwebtoken 0.4.0 (package.json), which is before the fixed version.</dd></div></dl></details></td>
+</tr></tbody>
+</table>
+</div><div class="report-table-scroll" role="region" aria-label="Weaknesses" tabindex="0">
+<table class="report-table">
+<caption>Weaknesses</caption>
+<thead><tr><th scope="col">Weakness</th><th scope="col">Catalog reference</th><th scope="col">Vulnerabilities</th><th scope="col">Attack patterns</th><th scope="col">Description</th></tr></thead>
+<tbody><tr>
+<th scope="row">Improper Neutralization of Special Elements used in an SQL Command (&#39;SQL Injection&#39;)</th>
+<td>CWE-89</td>
+<td><span class="missing">None recorded</span></td>
+<td><span class="ref">SQL Injection (CAPEC-66)</span></td>
+<td>The login query is built by pasting in the form&#39;s e-mail text (routes/login.ts, line 34).<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>weakness:cwe-89</dd></div><div><dt>Object type</dt><dd>Weakness</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">Improper Neutralization of Input During Web Page Generation (&#39;Cross-site Scripting&#39;)</th>
+<td>CWE-79</td>
+<td><span class="missing">None recorded</span></td>
+<td><span class="ref">DOM-Based XSS (CAPEC-588)</span></td>
+<td>The search page writes the search text into the page with Angular&#39;s sanitizing switched off (search-result.component.ts, line 146).<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>weakness:cwe-79</dd></div><div><dt>Object type</dt><dd>Weakness</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">Authorization Bypass Through User-Controlled Key</th>
+<td>CWE-639</td>
+<td><span class="missing">None recorded</span></td>
+<td><span class="missing">None recorded</span></td>
+<td>The basket API returns whichever basket number the request names, with no owner check (routes/basket.ts, lines 18 and 19).<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>weakness:cwe-639</dd></div><div><dt>Object type</dt><dd>Weakness</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">Exposure of Information Through Directory Listing</th>
+<td>CWE-548</td>
+<td><span class="missing">None recorded</span></td>
+<td><span class="ref">Directory Indexing (CAPEC-127)</span></td>
+<td>The /ftp folder is served with a browsable listing (server.ts, line 294).<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>weakness:cwe-548</dd></div><div><dt>Object type</dt><dd>Weakness</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">Use of a Broken or Risky Cryptographic Algorithm</th>
+<td>CWE-327</td>
+<td><span class="ref">jsonwebtoken before 4.2.2 accepts a token signed with the wrong kind of algorithm (CVE-2015-9235)</span></td>
+<td><span class="missing">None recorded</span></td>
+<td>One of the two CWEs NVD gives for CVE-2015-9235.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>weakness:cwe-327</dd></div><div><dt>Object type</dt><dd>Weakness</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">Improper Input Validation</th>
+<td>CWE-20</td>
+<td><span class="ref">jsonwebtoken before 4.2.2 accepts a token signed with the wrong kind of algorithm (CVE-2015-9235)</span></td>
+<td><span class="missing">None recorded</span></td>
+<td>The other CWE NVD gives for CVE-2015-9235.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>weakness:cwe-20</dd></div><div><dt>Object type</dt><dd>Weakness</dd></div></dl></details></td>
+</tr></tbody>
+</table>
+</div><div class="report-table-scroll" role="region" aria-label="Attack patterns" tabindex="0">
+<table class="report-table">
+<caption>Attack patterns</caption>
+<thead><tr><th scope="col">Attack pattern</th><th scope="col">Catalog reference</th><th scope="col">Related weaknesses</th><th scope="col">Description</th></tr></thead>
+<tbody><tr>
+<th scope="row">SQL Injection</th>
+<td>CAPEC-66</td>
+<td><span class="ref">Improper Neutralization of Special Elements used in an SQL Command (&#39;SQL Injection&#39;) (CWE-89)</span></td>
+<td><span class="missing">No description</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>attack-pattern:capec-66</dd></div><div><dt>Object type</dt><dd>AttackPattern</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">DOM-Based XSS</th>
+<td>CAPEC-588</td>
+<td><span class="ref">Improper Neutralization of Input During Web Page Generation (&#39;Cross-site Scripting&#39;) (CWE-79)</span></td>
+<td><span class="missing">No description</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>attack-pattern:capec-588</dd></div><div><dt>Object type</dt><dd>AttackPattern</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">Directory Indexing</th>
+<td>CAPEC-127</td>
+<td><span class="ref">Exposure of Information Through Directory Listing (CWE-548)</span></td>
+<td><span class="missing">No description</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>attack-pattern:capec-127</dd></div><div><dt>Object type</dt><dd>AttackPattern</dd></div></dl></details></td>
+</tr></tbody>
+</table>
+</div>
+</section><section class="report-section" id="report-paths" aria-labelledby="report-paths-title">
+<h3 id="report-paths-title"><span class="section-number">5</span> Attack paths</h3>
+<div class="report-table-scroll" role="region" aria-label="Attack paths: how each threat could be carried out" tabindex="0">
+<table class="report-table">
+<caption>Attack paths: how each threat could be carried out</caption>
+<thead><tr><th scope="col">Attack path</th><th scope="col">Threat</th><th scope="col">Steps, in order</th><th scope="col">Feasibility</th><th scope="col">Review status</th></tr></thead>
+<tbody><tr class="row-status-proposed">
+<th scope="row"><a class="path-link" href="#path-attack-path-admin-via-sqli">Login form to administration section</a></th>
+<td>Log in as the administrator through SQL injection in the login form</td>
+<td><ol class="table-steps"><li value="1">Put SQL into the login form&#39;s e-mail field so the password check is skipped</li><li value="2">Find the administration page&#39;s address in the storefront&#39;s JavaScript</li><li value="3">Open the administration section with the administrator&#39;s login token</li></ol></td>
+<td><span class="missing">Not rated</span></td>
+<td><span class="status-badge rs-proposed">AI-proposed, not reviewed</span></td>
+</tr><tr class="row-status-not_reviewed">
+<th scope="row"><a class="path-link" href="#path-attack-path-basket-idor">Own account to another customer&#39;s basket</a></th>
+<td>Read another customer&#39;s basket by changing the basket number</td>
+<td><ol class="table-steps"><li value="1">Log in with an ordinary customer account</li><li value="2">Ask the API for a basket with another customer&#39;s basket number</li></ol></td>
+<td><span class="missing">Not rated</span></td>
+<td><span class="status-badge rs-not_reviewed">AI-proposed, not reviewed</span></td>
+</tr><tr class="row-status-not_reviewed">
+<th scope="row"><a class="path-link" href="#path-attack-path-search-xss">Crafted search link to script in the shopper&#39;s session</a></th>
+<td>Run a script in a shopper&#39;s session through the search page</td>
+<td><ol class="table-steps"><li value="1">Build a search link whose search text is HTML that runs a script</li><li value="2">A shopper opens the link and the storefront writes the search text into the page</li></ol></td>
+<td><span class="missing">Not rated</span></td>
+<td><span class="status-badge rs-not_reviewed">AI-proposed, not reviewed</span></td>
+</tr><tr class="row-status-not_reviewed">
+<th scope="row"><a class="path-link" href="#path-attack-path-ftp-documents">robots.txt to confidential document</a></th>
+<td>Find and download confidential documents from the /ftp listing</td>
+<td><ol class="table-steps"><li value="1">Read robots.txt, which names /ftp</li><li value="2">Browse the /ftp directory listing</li><li value="3">Download a confidential document from the listing</li></ol></td>
+<td><span class="missing">Not rated</span></td>
+<td><span class="status-badge rs-not_reviewed">AI-proposed, not reviewed</span></td>
+</tr><tr class="row-status-not_reviewed">
+<th scope="row"><a class="path-link" href="#path-attack-path-jwt-forgery">Forged token to chosen identity</a></th>
+<td>Forge a login token that the old jsonwebtoken library accepts</td>
+<td><ol class="table-steps"><li value="1">Sign a token with a symmetric algorithm instead of the shop&#39;s RSA key</li><li value="2">Send API requests with the forged token as the chosen identity</li></ol></td>
+<td><span class="missing">Not rated</span></td>
+<td><span class="status-badge rs-not_reviewed">AI-proposed, not reviewed</span></td>
+</tr></tbody>
+</table>
+</div>
+<p class="section-help">Each path in detail, below: its steps in order, and where two branches join, whether the step needs all of them (AND) or any one (OR).</p>
+<article class="path-card row-status-proposed" id="path-attack-path-admin-via-sqli" aria-labelledby="path-attack-path-admin-via-sqli-title">
+<header class="path-card-header">
+  <div>
+    <h4 id="path-attack-path-admin-via-sqli-title">Login form to administration section</h4>
+    <p class="cell-note">Realizes Log in as the administrator through SQL injection in the login form · Feasibility: <span class="missing">Not rated</span></p>
+  </div>
+  <div class="path-card-status"><span class="status-badge rs-proposed">AI-proposed, not reviewed</span></div>
+</header>
+
+<div class="path-story">
+  <ol class="path-steps"><li value="1" data-step="attack-step:inject-login"><span class="step-name">Put SQL into the login form&#39;s e-mail field so the password check is skipped</span> <span class="phase-chip">Exploitation</span></li><li value="2" data-step="attack-step:find-admin-route"><span class="step-name">Find the administration page&#39;s address in the storefront&#39;s JavaScript</span> <span class="phase-chip">Reconnaissance</span></li><li value="3" data-step="attack-step:open-admin"><span class="step-name">Open the administration section with the administrator&#39;s login token</span> <span class="phase-chip">Actions on objectives</span> <span class="gate gate-and">AND</span> <span class="cell-note">needs all of steps 1 and 2</span></li></ol>
+
+  <p class="path-outcome"><span>Realizes the threat <strong>Log in as the administrator through SQL injection in the login form</strong></span><span>, which leads to <strong><span class="ref">An outsider logs in as the administrator and reaches the administration section</span></strong></span>.</p>
+  <p class="path-outcome">Mitigated by <span class="ref">Build database queries with bound parameters</span>.</p>
+  <p class="path-outcome">Targets <span class="ref">Node.js and Express server with the REST API</span>, <span class="ref">Storefront sends the login form to the API</span>.</p>
+</div>
+<figure class="path-figure">
+  <div class="path-figure-scroll"><svg class="path-diagram pd-status-proposed pd-threat-status-not_reviewed" viewBox="0 0 1080 568" width="1080" height="568" role="img" aria-label="Attack path diagram: Login form to administration section, AI-proposed, not reviewed" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrow-attack-path-admin-via-sqli" viewBox="0 0 10 10" refX="9.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" class="pd-arrow"/></marker></defs><g class="pd-edge pd-edge-joins"><path d="M198,211 L218,211 Q224,211 224,217 L224,278 Q224,284 230,284 L238,284" marker-end="url(#arrow-attack-path-admin-via-sqli)"/></g><g class="pd-edge pd-edge-joins"><path d="M198,348 L218,348 Q224,348 224,342 L224,290 Q224,284 230,284 L238,284" marker-end="url(#arrow-attack-path-admin-via-sqli)"/></g><g class="pd-edge pd-edge-then"><path d="M288,284 L338,284" marker-end="url(#arrow-attack-path-admin-via-sqli)"/></g><g class="pd-edge pd-edge-realizes"><path d="M516,284 L596,284" marker-end="url(#arrow-attack-path-admin-via-sqli)"/></g><g class="pd-edge pd-edge-leads_to"><path d="M788,284 L868,284" marker-end="url(#arrow-attack-path-admin-via-sqli)"/></g><g class="pd-edge pd-edge-mitigates"><path d="M692,458 L692,346" marker-end="url(#arrow-attack-path-admin-via-sqli)"/></g><g class="pd-edge pd-edge-targets"><path d="M692,222 L692,140 Q692,134 686,134 L594,134 Q588,134 588,128 L588,110" marker-end="url(#arrow-attack-path-admin-via-sqli)"/></g><g class="pd-edge pd-edge-targets"><path d="M692,222 L692,140 Q692,134 698,134 L790,134 Q796,134 796,128 L796,102" marker-end="url(#arrow-attack-path-admin-via-sqli)"/></g><g class="pd-node pd-step"><title>Step 1 · Exploitation: Put SQL into the login form&#39;s e-mail field so the password check is skipped</title><rect x="20" y="158" width="178" height="106" rx="8"/><text class="pd-caption" x="30" y="179">Step 1 · Exploitation</text><text class="pd-text" text-anchor="start"><tspan x="30" y="199">Put SQL into the</tspan><tspan x="30" y="215">login form&#39;s e-mail</tspan><tspan x="30" y="231">field so the password</tspan><tspan x="30" y="247">check is skipped</tspan></text></g><g class="pd-node pd-step"><title>Step 2 · Reconnaissance: Find the administration page&#39;s address in the storefront&#39;s JavaScript</title><rect x="20" y="286" width="178" height="124" rx="8"/><text class="pd-caption" x="30" y="307">Step 2 ·</text><text class="pd-caption" x="30" y="325">Reconnaissance</text><text class="pd-text" text-anchor="start"><tspan x="30" y="345">Find the</tspan><tspan x="30" y="361">administration page&#39;s</tspan><tspan x="30" y="377">address in the</tspan><tspan x="30" y="393">storefront&#39;s…</tspan></text></g><g class="pd-node pd-step"><title>Step 3 · Actions on objectives: Open the administration section with the administrator&#39;s login token</title><rect x="338" y="222" width="178" height="124" rx="8"/><text class="pd-caption" x="348" y="243">Step 3 · Actions on</text><text class="pd-caption" x="348" y="261">objectives</text><text class="pd-text" text-anchor="start"><tspan x="348" y="281">Open the</tspan><tspan x="348" y="297">administration</tspan><tspan x="348" y="313">section with the</tspan><tspan x="348" y="329">administrator&#39;s logi…</tspan></text></g><g class="pd-node pd-gate"><title>AND: step 3 needs all of steps 1, 2</title><rect x="238" y="269" width="50" height="30" rx="15"/><text class="pd-text" text-anchor="middle"><tspan x="263" y="289">AND</tspan></text></g><g class="pd-node pd-threat"><title>Threat · AI-proposed, not reviewed: Log in as the administrator through SQL injection in the login form</title><rect x="596" y="222" width="192" height="124" rx="8"/><text class="pd-caption" x="606" y="243">Threat · AI-proposed,</text><text class="pd-caption" x="606" y="261">not reviewed</text><text class="pd-text" text-anchor="start"><tspan x="606" y="281">Log in as the</tspan><tspan x="606" y="297">administrator through</tspan><tspan x="606" y="313">SQL injection in the</tspan><tspan x="606" y="329">login form</tspan></text></g><g class="pd-node pd-damage"><title>Damage scenario: An outsider logs in as the administrator and reaches the administration section</title><rect x="868" y="231" width="192" height="106" rx="8"/><text class="pd-caption" x="878" y="252">Damage scenario</text><text class="pd-text" text-anchor="start"><tspan x="878" y="272">An outsider logs in as</tspan><tspan x="878" y="288">the administrator and</tspan><tspan x="878" y="304">reaches the</tspan><tspan x="878" y="320">administration section</tspan></text></g><g class="pd-node pd-mitigation"><title>Mitigation: Build database queries with bound parameters</title><rect x="599" y="458" width="186" height="90" rx="8"/><text class="pd-caption" x="609" y="479">Mitigation</text><text class="pd-text" text-anchor="start"><tspan x="609" y="499">Build database</tspan><tspan x="609" y="515">queries with bound</tspan><tspan x="609" y="531">parameters</tspan></text></g><g class="pd-node pd-target"><title>Targeted: Node.js and Express server with the REST API</title><rect x="495" y="20" width="186" height="90" rx="8"/><text class="pd-caption" x="505" y="41">Targeted</text><text class="pd-text" text-anchor="start"><tspan x="505" y="61">Node.js and Express</tspan><tspan x="505" y="77">server with the REST</tspan><tspan x="505" y="93">API</tspan></text></g><g class="pd-node pd-target"><title>Targeted: Storefront sends the login form to the API</title><rect x="703" y="28" width="186" height="74" rx="8"/><text class="pd-caption" x="713" y="49">Targeted</text><text class="pd-text" text-anchor="start"><tspan x="713" y="69">Storefront sends the</tspan><tspan x="713" y="85">login form to the API</tspan></text></g><g class="pd-edge-label-group pd-edge-then"><rect class="pd-edge-label-bg" x="296" y="267" width="34" height="16" rx="4"/><text class="pd-edge-label" x="313" y="279" text-anchor="middle">then</text></g><g class="pd-edge-label-group pd-edge-realizes"><rect class="pd-edge-label-bg" x="527" y="267" width="58" height="16" rx="4"/><text class="pd-edge-label" x="556" y="279" text-anchor="middle">realizes</text></g><g class="pd-edge-label-group pd-edge-leads_to"><rect class="pd-edge-label-bg" x="799" y="267" width="58" height="16" rx="4"/><text class="pd-edge-label" x="828" y="279" text-anchor="middle">leads to</text></g><g class="pd-edge-label-group pd-edge-mitigates"><rect class="pd-edge-label-bg" x="698" y="382" width="64" height="16" rx="4"/><text class="pd-edge-label" x="730" y="394" text-anchor="middle">mitigates</text></g><g class="pd-edge-label-group pd-edge-targets"><rect class="pd-edge-label-bg" x="698" y="170" width="52" height="16" rx="4"/><text class="pd-edge-label" x="724" y="182" text-anchor="middle">targets</text></g></svg></div>
+  <figcaption>Steps run left to right. AND/OR marks where branches join; the threat, its damage and its mitigations follow.</figcaption>
+</figure>
+<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>attack-path:admin-via-sqli</dd></div><div><dt>Object type</dt><dd>AttackPath</dd></div><div><dt>Assertion status</dt><dd>proposed</dd></div><div><dt>Assertions</dt><dd>assertion:admin-path-realizes</dd></div></dl></details>
+</article><article class="path-card row-status-not_reviewed" id="path-attack-path-basket-idor" aria-labelledby="path-attack-path-basket-idor-title">
+<header class="path-card-header">
+  <div>
+    <h4 id="path-attack-path-basket-idor-title">Own account to another customer&#39;s basket</h4>
+    <p class="cell-note">Realizes Read another customer&#39;s basket by changing the basket number · Feasibility: <span class="missing">Not rated</span></p>
+  </div>
+  <div class="path-card-status"><span class="status-badge rs-not_reviewed">AI-proposed, not reviewed</span></div>
+</header>
+
+<div class="path-story">
+  <ol class="path-steps"><li value="1" data-step="attack-step:own-login"><span class="step-name">Log in with an ordinary customer account</span> <span class="phase-chip">Delivery</span></li><li value="2" data-step="attack-step:change-basket-number"><span class="step-name">Ask the API for a basket with another customer&#39;s basket number</span> <span class="phase-chip">Actions on objectives</span> <span class="cell-note">after step 1</span></li></ol>
+
+  <p class="path-outcome"><span>Realizes the threat <strong>Read another customer&#39;s basket by changing the basket number</strong></span><span>, which leads to <strong><span class="ref">A customer sees another customer&#39;s basket</span></strong></span>.</p>
+  <p class="path-outcome">Mitigated by <span class="ref">Return a basket only to its owner</span>.</p>
+  <p class="path-outcome">Targets <span class="ref">Node.js and Express server with the REST API</span>, <span class="ref">Storefront asks the API for a basket by its number</span>.</p>
+</div>
+<figure class="path-figure">
+  <div class="path-figure-scroll"><svg class="path-diagram pd-status-not_reviewed pd-threat-status-not_reviewed" viewBox="0 0 998 424" width="998" height="424" role="img" aria-label="Attack path diagram: Own account to another customer&#39;s basket, AI-proposed, not reviewed" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrow-attack-path-basket-idor" viewBox="0 0 10 10" refX="9.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" class="pd-arrow"/></marker></defs><g class="pd-edge pd-edge-then"><path d="M198,220 L256,220" marker-end="url(#arrow-attack-path-basket-idor)"/></g><g class="pd-edge pd-edge-realizes"><path d="M434,220 L514,220" marker-end="url(#arrow-attack-path-basket-idor)"/></g><g class="pd-edge pd-edge-leads_to"><path d="M706,220 L786,220" marker-end="url(#arrow-attack-path-basket-idor)"/></g><g class="pd-edge pd-edge-mitigates"><path d="M610,330 L610,282" marker-end="url(#arrow-attack-path-basket-idor)"/></g><g class="pd-edge pd-edge-targets"><path d="M610,158 L610,140 Q610,134 604,134 L512,134 Q506,134 506,128 L506,110" marker-end="url(#arrow-attack-path-basket-idor)"/></g><g class="pd-edge pd-edge-targets"><path d="M610,158 L610,140 Q610,134 616,134 L708,134 Q714,134 714,128 L714,110" marker-end="url(#arrow-attack-path-basket-idor)"/></g><g class="pd-node pd-step"><title>Step 1 · Delivery: Log in with an ordinary customer account</title><rect x="20" y="175" width="178" height="90" rx="8"/><text class="pd-caption" x="30" y="196">Step 1 · Delivery</text><text class="pd-text" text-anchor="start"><tspan x="30" y="216">Log in with an</tspan><tspan x="30" y="232">ordinary customer</tspan><tspan x="30" y="248">account</tspan></text></g><g class="pd-node pd-step"><title>Step 2 · Actions on objectives: Ask the API for a basket with another customer&#39;s basket number</title><rect x="256" y="158" width="178" height="124" rx="8"/><text class="pd-caption" x="266" y="179">Step 2 · Actions on</text><text class="pd-caption" x="266" y="197">objectives</text><text class="pd-text" text-anchor="start"><tspan x="266" y="217">Ask the API for a</tspan><tspan x="266" y="233">basket with another</tspan><tspan x="266" y="249">customer&#39;s basket</tspan><tspan x="266" y="265">number</tspan></text></g><g class="pd-node pd-threat"><title>Threat · AI-proposed, not reviewed: Read another customer&#39;s basket by changing the basket number</title><rect x="514" y="158" width="192" height="124" rx="8"/><text class="pd-caption" x="524" y="179">Threat · AI-proposed,</text><text class="pd-caption" x="524" y="197">not reviewed</text><text class="pd-text" text-anchor="start"><tspan x="524" y="217">Read another</tspan><tspan x="524" y="233">customer&#39;s basket by</tspan><tspan x="524" y="249">changing the basket</tspan><tspan x="524" y="265">number</tspan></text></g><g class="pd-node pd-damage"><title>Damage scenario: A customer sees another customer&#39;s basket</title><rect x="786" y="175" width="192" height="90" rx="8"/><text class="pd-caption" x="796" y="196">Damage scenario</text><text class="pd-text" text-anchor="start"><tspan x="796" y="216">A customer sees</tspan><tspan x="796" y="232">another customer&#39;s</tspan><tspan x="796" y="248">basket</tspan></text></g><g class="pd-node pd-mitigation"><title>Mitigation: Return a basket only to its owner</title><rect x="517" y="330" width="186" height="74" rx="8"/><text class="pd-caption" x="527" y="351">Mitigation</text><text class="pd-text" text-anchor="start"><tspan x="527" y="371">Return a basket only</tspan><tspan x="527" y="387">to its owner</tspan></text></g><g class="pd-node pd-target"><title>Targeted: Node.js and Express server with the REST API</title><rect x="413" y="20" width="186" height="90" rx="8"/><text class="pd-caption" x="423" y="41">Targeted</text><text class="pd-text" text-anchor="start"><tspan x="423" y="61">Node.js and Express</tspan><tspan x="423" y="77">server with the REST</tspan><tspan x="423" y="93">API</tspan></text></g><g class="pd-node pd-target"><title>Targeted: Storefront asks the API for a basket by its number</title><rect x="621" y="20" width="186" height="90" rx="8"/><text class="pd-caption" x="631" y="41">Targeted</text><text class="pd-text" text-anchor="start"><tspan x="631" y="61">Storefront asks the</tspan><tspan x="631" y="77">API for a basket by</tspan><tspan x="631" y="93">its number</tspan></text></g><g class="pd-edge-label-group pd-edge-then"><rect class="pd-edge-label-bg" x="210" y="203" width="34" height="16" rx="4"/><text class="pd-edge-label" x="227" y="215" text-anchor="middle">then</text></g><g class="pd-edge-label-group pd-edge-realizes"><rect class="pd-edge-label-bg" x="445" y="203" width="58" height="16" rx="4"/><text class="pd-edge-label" x="474" y="215" text-anchor="middle">realizes</text></g><g class="pd-edge-label-group pd-edge-leads_to"><rect class="pd-edge-label-bg" x="717" y="203" width="58" height="16" rx="4"/><text class="pd-edge-label" x="746" y="215" text-anchor="middle">leads to</text></g><g class="pd-edge-label-group pd-edge-mitigates"><rect class="pd-edge-label-bg" x="616" y="286" width="64" height="16" rx="4"/><text class="pd-edge-label" x="648" y="298" text-anchor="middle">mitigates</text></g><g class="pd-edge-label-group pd-edge-targets"><rect class="pd-edge-label-bg" x="616" y="138" width="52" height="16" rx="4"/><text class="pd-edge-label" x="642" y="150" text-anchor="middle">targets</text></g></svg></div>
+  <figcaption>Steps run left to right. AND/OR marks where branches join; the threat, its damage and its mitigations follow.</figcaption>
+</figure>
+<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>attack-path:basket-idor</dd></div><div><dt>Object type</dt><dd>AttackPath</dd></div></dl></details>
+</article><article class="path-card row-status-not_reviewed" id="path-attack-path-search-xss" aria-labelledby="path-attack-path-search-xss-title">
+<header class="path-card-header">
+  <div>
+    <h4 id="path-attack-path-search-xss-title">Crafted search link to script in the shopper&#39;s session</h4>
+    <p class="cell-note">Realizes Run a script in a shopper&#39;s session through the search page · Feasibility: <span class="missing">Not rated</span></p>
+  </div>
+  <div class="path-card-status"><span class="status-badge rs-not_reviewed">AI-proposed, not reviewed</span></div>
+</header>
+
+<div class="path-story">
+  <ol class="path-steps"><li value="1" data-step="attack-step:craft-search-link"><span class="step-name">Build a search link whose search text is HTML that runs a script</span> <span class="phase-chip">Weaponization</span></li><li value="2" data-step="attack-step:shopper-opens-link"><span class="step-name">A shopper opens the link and the storefront writes the search text into the page</span> <span class="phase-chip">Exploitation</span> <span class="cell-note">after step 1</span></li></ol>
+
+  <p class="path-outcome"><span>Realizes the threat <strong>Run a script in a shopper&#39;s session through the search page</strong></span><span>, which leads to <strong><span class="ref">A script the attacker chose runs in a shopper&#39;s session on the shop&#39;s page</span></strong></span>.</p>
+  <p class="path-outcome">Mitigated by <span class="ref">Keep Angular&#39;s sanitizing on for text from the URL</span>.</p>
+  <p class="path-outcome">Targets <span class="ref">Angular storefront</span>.</p>
+</div>
+<figure class="path-figure">
+  <div class="path-figure-scroll"><svg class="path-diagram pd-status-not_reviewed pd-threat-status-not_reviewed" viewBox="0 0 998 408" width="998" height="408" role="img" aria-label="Attack path diagram: Crafted search link to script in the shopper&#39;s session, AI-proposed, not reviewed" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrow-attack-path-search-xss" viewBox="0 0 10 10" refX="9.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" class="pd-arrow"/></marker></defs><g class="pd-edge pd-edge-then"><path d="M198,188 L256,188" marker-end="url(#arrow-attack-path-search-xss)"/></g><g class="pd-edge pd-edge-realizes"><path d="M434,188 L514,188" marker-end="url(#arrow-attack-path-search-xss)"/></g><g class="pd-edge pd-edge-leads_to"><path d="M706,188 L786,188" marker-end="url(#arrow-attack-path-search-xss)"/></g><g class="pd-edge pd-edge-mitigates"><path d="M610,298 L610,250" marker-end="url(#arrow-attack-path-search-xss)"/></g><g class="pd-edge pd-edge-targets"><path d="M610,126 L610,78" marker-end="url(#arrow-attack-path-search-xss)"/></g><g class="pd-node pd-step"><title>Step 1 · Weaponization: Build a search link whose search text is HTML that runs a script</title><rect x="20" y="126" width="178" height="124" rx="8"/><text class="pd-caption" x="30" y="147">Step 1 ·</text><text class="pd-caption" x="30" y="165">Weaponization</text><text class="pd-text" text-anchor="start"><tspan x="30" y="185">Build a search link</tspan><tspan x="30" y="201">whose search text is</tspan><tspan x="30" y="217">HTML that runs a</tspan><tspan x="30" y="233">script</tspan></text></g><g class="pd-node pd-step"><title>Step 2 · Exploitation: A shopper opens the link and the storefront writes the search text into the page</title><rect x="256" y="135" width="178" height="106" rx="8"/><text class="pd-caption" x="266" y="156">Step 2 · Exploitation</text><text class="pd-text" text-anchor="start"><tspan x="266" y="176">A shopper opens the</tspan><tspan x="266" y="192">link and the</tspan><tspan x="266" y="208">storefront writes the</tspan><tspan x="266" y="224">search text into the…</tspan></text></g><g class="pd-node pd-threat"><title>Threat · AI-proposed, not reviewed: Run a script in a shopper&#39;s session through the search page</title><rect x="514" y="126" width="192" height="124" rx="8"/><text class="pd-caption" x="524" y="147">Threat · AI-proposed,</text><text class="pd-caption" x="524" y="165">not reviewed</text><text class="pd-text" text-anchor="start"><tspan x="524" y="185">Run a script in a</tspan><tspan x="524" y="201">shopper&#39;s session</tspan><tspan x="524" y="217">through the search</tspan><tspan x="524" y="233">page</tspan></text></g><g class="pd-node pd-damage"><title>Damage scenario: A script the attacker chose runs in a shopper&#39;s session on the shop&#39;s page</title><rect x="786" y="135" width="192" height="106" rx="8"/><text class="pd-caption" x="796" y="156">Damage scenario</text><text class="pd-text" text-anchor="start"><tspan x="796" y="176">A script the attacker</tspan><tspan x="796" y="192">chose runs in a</tspan><tspan x="796" y="208">shopper&#39;s session on</tspan><tspan x="796" y="224">the shop&#39;s page</tspan></text></g><g class="pd-node pd-mitigation"><title>Mitigation: Keep Angular&#39;s sanitizing on for text from the URL</title><rect x="517" y="298" width="186" height="90" rx="8"/><text class="pd-caption" x="527" y="319">Mitigation</text><text class="pd-text" text-anchor="start"><tspan x="527" y="339">Keep Angular&#39;s</tspan><tspan x="527" y="355">sanitizing on for</tspan><tspan x="527" y="371">text from the URL</tspan></text></g><g class="pd-node pd-target"><title>Targeted: Angular storefront</title><rect x="517" y="20" width="186" height="58" rx="8"/><text class="pd-caption" x="527" y="41">Targeted</text><text class="pd-text" text-anchor="start"><tspan x="527" y="61">Angular storefront</tspan></text></g><g class="pd-edge-label-group pd-edge-then"><rect class="pd-edge-label-bg" x="210" y="171" width="34" height="16" rx="4"/><text class="pd-edge-label" x="227" y="183" text-anchor="middle">then</text></g><g class="pd-edge-label-group pd-edge-realizes"><rect class="pd-edge-label-bg" x="445" y="171" width="58" height="16" rx="4"/><text class="pd-edge-label" x="474" y="183" text-anchor="middle">realizes</text></g><g class="pd-edge-label-group pd-edge-leads_to"><rect class="pd-edge-label-bg" x="717" y="171" width="58" height="16" rx="4"/><text class="pd-edge-label" x="746" y="183" text-anchor="middle">leads to</text></g><g class="pd-edge-label-group pd-edge-mitigates"><rect class="pd-edge-label-bg" x="616" y="254" width="64" height="16" rx="4"/><text class="pd-edge-label" x="648" y="266" text-anchor="middle">mitigates</text></g><g class="pd-edge-label-group pd-edge-targets"><rect class="pd-edge-label-bg" x="616" y="106" width="52" height="16" rx="4"/><text class="pd-edge-label" x="642" y="118" text-anchor="middle">targets</text></g></svg></div>
+  <figcaption>Steps run left to right. AND/OR marks where branches join; the threat, its damage and its mitigations follow.</figcaption>
+</figure>
+<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>attack-path:search-xss</dd></div><div><dt>Object type</dt><dd>AttackPath</dd></div></dl></details>
+</article><article class="path-card row-status-not_reviewed" id="path-attack-path-ftp-documents" aria-labelledby="path-attack-path-ftp-documents-title">
+<header class="path-card-header">
+  <div>
+    <h4 id="path-attack-path-ftp-documents-title">robots.txt to confidential document</h4>
+    <p class="cell-note">Realizes Find and download confidential documents from the /ftp listing · Feasibility: <span class="missing">Not rated</span></p>
+  </div>
+  <div class="path-card-status"><span class="status-badge rs-not_reviewed">AI-proposed, not reviewed</span></div>
+</header>
+
+<div class="path-story">
+  <ol class="path-steps"><li value="1" data-step="attack-step:read-robots"><span class="step-name">Read robots.txt, which names /ftp</span> <span class="phase-chip">Reconnaissance</span></li><li value="2" data-step="attack-step:browse-ftp"><span class="step-name">Browse the /ftp directory listing</span> <span class="phase-chip">Reconnaissance</span> <span class="cell-note">after step 1</span></li><li value="3" data-step="attack-step:download-document"><span class="step-name">Download a confidential document from the listing</span> <span class="phase-chip">Actions on objectives</span> <span class="cell-note">after step 2</span></li></ol>
+
+  <p class="path-outcome"><span>Realizes the threat <strong>Find and download confidential documents from the /ftp listing</strong></span><span>, which leads to <strong><span class="ref">Anyone can read business documents left in /ftp</span></strong></span>.</p>
+  <p class="path-outcome">Mitigated by <span class="ref">Turn off directory browsing and keep internal documents off the public server</span>.</p>
+  <p class="path-outcome">Targets <span class="ref">Public /ftp folder with directory browsing</span>, <span class="ref">Browser lists and downloads files from /ftp</span>.</p>
+</div>
+<figure class="path-figure">
+  <div class="path-figure-scroll"><svg class="path-diagram pd-status-not_reviewed pd-threat-status-not_reviewed" viewBox="0 0 1234 440" width="1234" height="440" role="img" aria-label="Attack path diagram: robots.txt to confidential document, AI-proposed, not reviewed" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrow-attack-path-ftp-documents" viewBox="0 0 10 10" refX="9.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" class="pd-arrow"/></marker></defs><g class="pd-edge pd-edge-then"><path d="M198,212 L256,212" marker-end="url(#arrow-attack-path-ftp-documents)"/></g><g class="pd-edge pd-edge-then"><path d="M434,212 L492,212" marker-end="url(#arrow-attack-path-ftp-documents)"/></g><g class="pd-edge pd-edge-realizes"><path d="M670,212 L750,212" marker-end="url(#arrow-attack-path-ftp-documents)"/></g><g class="pd-edge pd-edge-leads_to"><path d="M942,212 L1022,212" marker-end="url(#arrow-attack-path-ftp-documents)"/></g><g class="pd-edge pd-edge-mitigates"><path d="M846,314 L846,266" marker-end="url(#arrow-attack-path-ftp-documents)"/></g><g class="pd-edge pd-edge-targets"><path d="M846,158 L846,140 Q846,134 840,134 L748,134 Q742,134 742,128 L742,110" marker-end="url(#arrow-attack-path-ftp-documents)"/></g><g class="pd-edge pd-edge-targets"><path d="M846,158 L846,140 Q846,134 852,134 L944,134 Q950,134 950,128 L950,110" marker-end="url(#arrow-attack-path-ftp-documents)"/></g><g class="pd-node pd-step"><title>Step 1 · Reconnaissance: Read robots.txt, which names /ftp</title><rect x="20" y="166" width="178" height="92" rx="8"/><text class="pd-caption" x="30" y="187">Step 1 ·</text><text class="pd-caption" x="30" y="205">Reconnaissance</text><text class="pd-text" text-anchor="start"><tspan x="30" y="225">Read robots.txt,</tspan><tspan x="30" y="241">which names /ftp</tspan></text></g><g class="pd-node pd-step"><title>Step 2 · Reconnaissance: Browse the /ftp directory listing</title><rect x="256" y="166" width="178" height="92" rx="8"/><text class="pd-caption" x="266" y="187">Step 2 ·</text><text class="pd-caption" x="266" y="205">Reconnaissance</text><text class="pd-text" text-anchor="start"><tspan x="266" y="225">Browse the /ftp</tspan><tspan x="266" y="241">directory listing</tspan></text></g><g class="pd-node pd-step"><title>Step 3 · Actions on objectives: Download a confidential document from the listing</title><rect x="492" y="158" width="178" height="108" rx="8"/><text class="pd-caption" x="502" y="179">Step 3 · Actions on</text><text class="pd-caption" x="502" y="197">objectives</text><text class="pd-text" text-anchor="start"><tspan x="502" y="217">Download a</tspan><tspan x="502" y="233">confidential document</tspan><tspan x="502" y="249">from the listing</tspan></text></g><g class="pd-node pd-threat"><title>Threat · AI-proposed, not reviewed: Find and download confidential documents from the /ftp listing</title><rect x="750" y="158" width="192" height="108" rx="8"/><text class="pd-caption" x="760" y="179">Threat · AI-proposed,</text><text class="pd-caption" x="760" y="197">not reviewed</text><text class="pd-text" text-anchor="start"><tspan x="760" y="217">Find and download</tspan><tspan x="760" y="233">confidential documents</tspan><tspan x="760" y="249">from the /ftp listing</tspan></text></g><g class="pd-node pd-damage"><title>Damage scenario: Anyone can read business documents left in /ftp</title><rect x="1022" y="167" width="192" height="90" rx="8"/><text class="pd-caption" x="1032" y="188">Damage scenario</text><text class="pd-text" text-anchor="start"><tspan x="1032" y="208">Anyone can read</tspan><tspan x="1032" y="224">business documents</tspan><tspan x="1032" y="240">left in /ftp</tspan></text></g><g class="pd-node pd-mitigation"><title>Mitigation: Turn off directory browsing and keep internal documents off the public server</title><rect x="753" y="314" width="186" height="106" rx="8"/><text class="pd-caption" x="763" y="335">Mitigation</text><text class="pd-text" text-anchor="start"><tspan x="763" y="355">Turn off directory</tspan><tspan x="763" y="371">browsing and keep</tspan><tspan x="763" y="387">internal documents</tspan><tspan x="763" y="403">off the public server</tspan></text></g><g class="pd-node pd-target"><title>Targeted: Public /ftp folder with directory browsing</title><rect x="649" y="20" width="186" height="90" rx="8"/><text class="pd-caption" x="659" y="41">Targeted</text><text class="pd-text" text-anchor="start"><tspan x="659" y="61">Public /ftp folder</tspan><tspan x="659" y="77">with directory</tspan><tspan x="659" y="93">browsing</tspan></text></g><g class="pd-node pd-target"><title>Targeted: Browser lists and downloads files from /ftp</title><rect x="857" y="20" width="186" height="90" rx="8"/><text class="pd-caption" x="867" y="41">Targeted</text><text class="pd-text" text-anchor="start"><tspan x="867" y="61">Browser lists and</tspan><tspan x="867" y="77">downloads files from</tspan><tspan x="867" y="93">/ftp</tspan></text></g><g class="pd-edge-label-group pd-edge-then"><rect class="pd-edge-label-bg" x="210" y="195" width="34" height="16" rx="4"/><text class="pd-edge-label" x="227" y="207" text-anchor="middle">then</text></g><g class="pd-edge-label-group pd-edge-then"><rect class="pd-edge-label-bg" x="446" y="195" width="34" height="16" rx="4"/><text class="pd-edge-label" x="463" y="207" text-anchor="middle">then</text></g><g class="pd-edge-label-group pd-edge-realizes"><rect class="pd-edge-label-bg" x="681" y="195" width="58" height="16" rx="4"/><text class="pd-edge-label" x="710" y="207" text-anchor="middle">realizes</text></g><g class="pd-edge-label-group pd-edge-leads_to"><rect class="pd-edge-label-bg" x="953" y="195" width="58" height="16" rx="4"/><text class="pd-edge-label" x="982" y="207" text-anchor="middle">leads to</text></g><g class="pd-edge-label-group pd-edge-mitigates"><rect class="pd-edge-label-bg" x="852" y="270" width="64" height="16" rx="4"/><text class="pd-edge-label" x="884" y="282" text-anchor="middle">mitigates</text></g><g class="pd-edge-label-group pd-edge-targets"><rect class="pd-edge-label-bg" x="852" y="138" width="52" height="16" rx="4"/><text class="pd-edge-label" x="878" y="150" text-anchor="middle">targets</text></g></svg></div>
+  <figcaption>Steps run left to right. AND/OR marks where branches join; the threat, its damage and its mitigations follow.</figcaption>
+</figure>
+<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>attack-path:ftp-documents</dd></div><div><dt>Object type</dt><dd>AttackPath</dd></div></dl></details>
+</article><article class="path-card row-status-not_reviewed" id="path-attack-path-jwt-forgery" aria-labelledby="path-attack-path-jwt-forgery-title">
+<header class="path-card-header">
+  <div>
+    <h4 id="path-attack-path-jwt-forgery-title">Forged token to chosen identity</h4>
+    <p class="cell-note">Realizes Forge a login token that the old jsonwebtoken library accepts · Feasibility: <span class="missing">Not rated</span></p>
+  </div>
+  <div class="path-card-status"><span class="status-badge rs-not_reviewed">AI-proposed, not reviewed</span></div>
+</header>
+
+<div class="path-story">
+  <ol class="path-steps"><li value="1" data-step="attack-step:sign-wrong-algorithm"><span class="step-name">Sign a token with a symmetric algorithm instead of the shop&#39;s RSA key</span> <span class="phase-chip">Weaponization</span></li><li value="2" data-step="attack-step:use-forged-token"><span class="step-name">Send API requests with the forged token as the chosen identity</span> <span class="phase-chip">Actions on objectives</span> <span class="cell-note">after step 1</span></li></ol>
+
+  <p class="path-outcome"><span>Realizes the threat <strong>Forge a login token that the old jsonwebtoken library accepts</strong></span><span>, which leads to <strong><span class="ref">The shop accepts a login token for an identity the attacker chose</span></strong></span>.</p>
+  <p class="path-outcome">Mitigated by <span class="ref">Upgrade jsonwebtoken to 4.2.2 or later and fix the accepted algorithm</span>.</p>
+  <p class="path-outcome">Targets <span class="ref">jsonwebtoken 0.4.0</span>, <span class="ref">Every API request carries the login token</span>.</p>
+</div>
+<figure class="path-figure">
+  <div class="path-figure-scroll"><svg class="path-diagram pd-status-not_reviewed pd-threat-status-not_reviewed" viewBox="0 0 998 456" width="998" height="456" role="img" aria-label="Attack path diagram: Forged token to chosen identity, AI-proposed, not reviewed" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrow-attack-path-jwt-forgery" viewBox="0 0 10 10" refX="9.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" class="pd-arrow"/></marker></defs><g class="pd-edge pd-edge-then"><path d="M198,220 L256,220" marker-end="url(#arrow-attack-path-jwt-forgery)"/></g><g class="pd-edge pd-edge-realizes"><path d="M434,220 L514,220" marker-end="url(#arrow-attack-path-jwt-forgery)"/></g><g class="pd-edge pd-edge-leads_to"><path d="M706,220 L786,220" marker-end="url(#arrow-attack-path-jwt-forgery)"/></g><g class="pd-edge pd-edge-mitigates"><path d="M610,330 L610,282" marker-end="url(#arrow-attack-path-jwt-forgery)"/></g><g class="pd-edge pd-edge-targets"><path d="M610,158 L610,140 Q610,134 604,134 L512,134 Q506,134 506,128 L506,94" marker-end="url(#arrow-attack-path-jwt-forgery)"/></g><g class="pd-edge pd-edge-targets"><path d="M610,158 L610,140 Q610,134 616,134 L708,134 Q714,134 714,128 L714,110" marker-end="url(#arrow-attack-path-jwt-forgery)"/></g><g class="pd-node pd-step"><title>Step 1 · Weaponization: Sign a token with a symmetric algorithm instead of the shop&#39;s RSA key</title><rect x="20" y="158" width="178" height="124" rx="8"/><text class="pd-caption" x="30" y="179">Step 1 ·</text><text class="pd-caption" x="30" y="197">Weaponization</text><text class="pd-text" text-anchor="start"><tspan x="30" y="217">Sign a token with a</tspan><tspan x="30" y="233">symmetric algorithm</tspan><tspan x="30" y="249">instead of the shop&#39;s</tspan><tspan x="30" y="265">RSA key</tspan></text></g><g class="pd-node pd-step"><title>Step 2 · Actions on objectives: Send API requests with the forged token as the chosen identity</title><rect x="256" y="158" width="178" height="124" rx="8"/><text class="pd-caption" x="266" y="179">Step 2 · Actions on</text><text class="pd-caption" x="266" y="197">objectives</text><text class="pd-text" text-anchor="start"><tspan x="266" y="217">Send API requests</tspan><tspan x="266" y="233">with the forged token</tspan><tspan x="266" y="249">as the chosen</tspan><tspan x="266" y="265">identity</tspan></text></g><g class="pd-node pd-threat"><title>Threat · AI-proposed, not reviewed: Forge a login token that the old jsonwebtoken library accepts</title><rect x="514" y="158" width="192" height="124" rx="8"/><text class="pd-caption" x="524" y="179">Threat · AI-proposed,</text><text class="pd-caption" x="524" y="197">not reviewed</text><text class="pd-text" text-anchor="start"><tspan x="524" y="217">Forge a login token</tspan><tspan x="524" y="233">that the old</tspan><tspan x="524" y="249">jsonwebtoken library</tspan><tspan x="524" y="265">accepts</tspan></text></g><g class="pd-node pd-damage"><title>Damage scenario: The shop accepts a login token for an identity the attacker chose</title><rect x="786" y="167" width="192" height="106" rx="8"/><text class="pd-caption" x="796" y="188">Damage scenario</text><text class="pd-text" text-anchor="start"><tspan x="796" y="208">The shop accepts a</tspan><tspan x="796" y="224">login token for an</tspan><tspan x="796" y="240">identity the attacker</tspan><tspan x="796" y="256">chose</tspan></text></g><g class="pd-node pd-mitigation"><title>Mitigation: Upgrade jsonwebtoken to 4.2.2 or later and fix the accepted algorithm</title><rect x="517" y="330" width="186" height="106" rx="8"/><text class="pd-caption" x="527" y="351">Mitigation</text><text class="pd-text" text-anchor="start"><tspan x="527" y="371">Upgrade jsonwebtoken</tspan><tspan x="527" y="387">to 4.2.2 or later and</tspan><tspan x="527" y="403">fix the accepted</tspan><tspan x="527" y="419">algorithm</tspan></text></g><g class="pd-node pd-target"><title>Targeted: jsonwebtoken 0.4.0</title><rect x="413" y="36" width="186" height="58" rx="8"/><text class="pd-caption" x="423" y="57">Targeted</text><text class="pd-text" text-anchor="start"><tspan x="423" y="77">jsonwebtoken 0.4.0</tspan></text></g><g class="pd-node pd-target"><title>Targeted: Every API request carries the login token</title><rect x="621" y="20" width="186" height="90" rx="8"/><text class="pd-caption" x="631" y="41">Targeted</text><text class="pd-text" text-anchor="start"><tspan x="631" y="61">Every API request</tspan><tspan x="631" y="77">carries the login</tspan><tspan x="631" y="93">token</tspan></text></g><g class="pd-edge-label-group pd-edge-then"><rect class="pd-edge-label-bg" x="210" y="203" width="34" height="16" rx="4"/><text class="pd-edge-label" x="227" y="215" text-anchor="middle">then</text></g><g class="pd-edge-label-group pd-edge-realizes"><rect class="pd-edge-label-bg" x="445" y="203" width="58" height="16" rx="4"/><text class="pd-edge-label" x="474" y="215" text-anchor="middle">realizes</text></g><g class="pd-edge-label-group pd-edge-leads_to"><rect class="pd-edge-label-bg" x="717" y="203" width="58" height="16" rx="4"/><text class="pd-edge-label" x="746" y="215" text-anchor="middle">leads to</text></g><g class="pd-edge-label-group pd-edge-mitigates"><rect class="pd-edge-label-bg" x="616" y="286" width="64" height="16" rx="4"/><text class="pd-edge-label" x="648" y="298" text-anchor="middle">mitigates</text></g><g class="pd-edge-label-group pd-edge-targets"><rect class="pd-edge-label-bg" x="616" y="138" width="52" height="16" rx="4"/><text class="pd-edge-label" x="642" y="150" text-anchor="middle">targets</text></g></svg></div>
+  <figcaption>Steps run left to right. AND/OR marks where branches join; the threat, its damage and its mitigations follow.</figcaption>
+</figure>
+<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>attack-path:jwt-forgery</dd></div><div><dt>Object type</dt><dd>AttackPath</dd></div></dl></details>
+</article>
+</section><section class="report-section" id="report-mitigations" aria-labelledby="report-mitigations-title">
+<h3 id="report-mitigations-title"><span class="section-number">6</span> Mitigations</h3>
+<div class="report-table-scroll" role="region" aria-label="Mitigations: what is done about the threats" tabindex="0">
+<table class="report-table">
+<caption>Mitigations: what is done about the threats</caption>
+<thead><tr><th scope="col">Mitigation</th><th scope="col">Against threats</th><th scope="col">Status</th><th scope="col">Owner</th><th scope="col">Lifecycle phases</th><th scope="col">Description</th></tr></thead>
+<tbody><tr>
+<th scope="row">Build database queries with bound parameters</th>
+<td><span class="ref">Log in as the administrator through SQL injection in the login form</span></td>
+<td>Accepted risk</td>
+<td>OWASP</td>
+<td>Implementation</td>
+<td>Left out on purpose, since Juice Shop is a training target. The challenge links OWASP&#39;s SQL Injection Prevention Cheat Sheet as the fix.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>mitigation:parameterized-queries</dd></div><div><dt>Object type</dt><dd>Mitigation</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">Return a basket only to its owner</th>
+<td><span class="ref">Read another customer&#39;s basket by changing the basket number</span></td>
+<td>Accepted risk</td>
+<td>OWASP</td>
+<td>Implementation</td>
+<td>Left out on purpose. The challenge links OWASP&#39;s Authorization Cheat Sheet.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>mitigation:basket-owner-check</dd></div><div><dt>Object type</dt><dd>Mitigation</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">Keep Angular&#39;s sanitizing on for text from the URL</th>
+<td><span class="ref">Run a script in a shopper&#39;s session through the search page</span></td>
+<td>Accepted risk</td>
+<td>OWASP</td>
+<td>Implementation</td>
+<td>Left out on purpose. The challenge links OWASP&#39;s DOM based XSS Prevention Cheat Sheet.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>mitigation:keep-angular-sanitizing</dd></div><div><dt>Object type</dt><dd>Mitigation</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">Turn off directory browsing and keep internal documents off the public server</th>
+<td><span class="ref">Find and download confidential documents from the /ftp listing</span></td>
+<td>Accepted risk</td>
+<td>OWASP</td>
+<td>Deployment</td>
+<td>Left out on purpose; a model suggestion (the challenge names no fix).<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>mitigation:no-public-ftp-listing</dd></div><div><dt>Object type</dt><dd>Mitigation</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">Upgrade jsonwebtoken to 4.2.2 or later and fix the accepted algorithm</th>
+<td><span class="ref">Forge a login token that the old jsonwebtoken library accepts</span></td>
+<td>Accepted risk</td>
+<td>OWASP</td>
+<td>Implementation</td>
+<td>Left out on purpose; NVD gives 4.2.2 as the first fixed version.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>mitigation:upgrade-jsonwebtoken</dd></div><div><dt>Object type</dt><dd>Mitigation</dd></div></dl></details></td>
+</tr></tbody>
+</table>
+</div>
+</section><section class="report-section" id="report-risk" aria-labelledby="report-risk-title">
+<h3 id="report-risk-title"><span class="section-number">7</span> Risk</h3>
+<div class="report-table-scroll" role="region" aria-label="Risk: how likely and how bad, per threat" tabindex="0">
+<table class="report-table">
+<caption>Risk: how likely and how bad, per threat</caption>
+<thead><tr><th scope="col">Threat</th><th scope="col">Damage</th><th scope="col">Feasibility</th><th scope="col">Impact</th><th scope="col">Risk</th><th scope="col">Mitigation status</th></tr></thead>
+<tbody><tr class="row-not-assessed">
+<th scope="row">Log in as the administrator through SQL injection in the login form</th>
+<td>An outsider logs in as the administrator and reaches the administration section</td>
+<td colspan="4"><span class="missing">Not assessed: the model records no risk score for this threat.</span></td>
+</tr><tr class="row-not-assessed">
+<th scope="row">Read another customer&#39;s basket by changing the basket number</th>
+<td>A customer sees another customer&#39;s basket</td>
+<td colspan="4"><span class="missing">Not assessed: the model records no risk score for this threat.</span></td>
+</tr><tr class="row-not-assessed">
+<th scope="row">Run a script in a shopper&#39;s session through the search page</th>
+<td>A script the attacker chose runs in a shopper&#39;s session on the shop&#39;s page</td>
+<td colspan="4"><span class="missing">Not assessed: the model records no risk score for this threat.</span></td>
+</tr><tr class="row-not-assessed">
+<th scope="row">Find and download confidential documents from the /ftp listing</th>
+<td>Anyone can read business documents left in /ftp</td>
+<td colspan="4"><span class="missing">Not assessed: the model records no risk score for this threat.</span></td>
+</tr><tr class="row-not-assessed">
+<th scope="row">Forge a login token that the old jsonwebtoken library accepts</th>
+<td>The shop accepts a login token for an identity the attacker chose</td>
+<td colspan="4"><span class="missing">Not assessed: the model records no risk score for this threat.</span></td>
+</tr></tbody>
+</table>
+</div>
+</section><section class="report-section" id="report-requirements" aria-labelledby="report-requirements-title">
+<h3 id="report-requirements-title"><span class="section-number">8</span> Requirements</h3>
+<p class="empty-note">No requirements are recorded in this model.</p>
+</section>
+</article>
+<footer class="model-page-footer">
+<p>Built by the tmodel engine from <code>spec/vectors/pv-03-owasp-juice-shop.yaml</code> (<a href="https://github.com/Threat-Radar/tmodel/blob/main/spec/vectors/pv-03-owasp-juice-shop.yaml">view the model source</a>). The same renderer draws the report in the tmodel app. Model ids and raw values are under each row's Details.</p>
+</footer>
+</main>
+</body>
+</html>

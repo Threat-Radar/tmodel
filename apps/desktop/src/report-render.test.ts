@@ -280,7 +280,7 @@ describe("renderer fixes from the #208 review", () => {
 
   it("tells a proposal drafted from a published attack apart from an illustrative model", () => {
     const proposal = exampleNotice({ model: { ...buildModelReport(MVP02).model, kind: "proposal" }, reviewers: [] });
-    expect(proposal).toContain("drafted by AI from the published write-up of a real automotive attack");
+    expect(proposal).toContain("drafted by AI from published sources about a real product");
     expect(proposal).toContain("not a verified security assessment of the product it names");
     expect(proposal).toContain("No human review is recorded in it");
     expect(proposal).not.toContain("not a security assessment of a real product");

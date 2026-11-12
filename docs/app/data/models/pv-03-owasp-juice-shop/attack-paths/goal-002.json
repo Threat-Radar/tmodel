@@ -1,0 +1,20 @@
+{
+  "file": "pv-03-owasp-juice-shop.yaml",
+  "goal": "threat-instance:ftp-listing",
+  "paths": [
+    {
+      "authored_path": "attack-path:ftp-documents",
+      "goal_step": "attack-step:download-document",
+      "review": {
+        "assertion_status": null,
+        "review_status": null,
+        "reviewed": false
+      },
+      "steps": [
+        "attack-step:read-robots",
+        "attack-step:browse-ftp",
+        "attack-step:download-document"
+      ]
+    }
+  ]
+}

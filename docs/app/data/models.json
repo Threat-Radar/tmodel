@@ -1,5 +1,5 @@
 {
-  "count": 8,
+  "count": 9,
   "models": [
     {
       "counts": {
@@ -152,6 +152,25 @@
       "kind_label": "Proposal example (AI-drafted, unreviewed)",
       "reviewed_threats": 0,
       "title": "Kia vehicle with remote services"
+    },
+    {
+      "counts": {
+        "assets": 6,
+        "attack_paths": 5,
+        "components": 5,
+        "damage_scenarios": 5,
+        "mitigations": 5,
+        "requirements": 0,
+        "risk_scores": 0,
+        "threats": 5
+      },
+      "description": "A web shop for fruit juice with accounts, a basket, orders, a search page and an administration section, built to be insecure for training. Modeled at v20.4.0, run locally (Node.js, or its Docker image).",
+      "file": "pv-03-owasp-juice-shop.yaml",
+      "id": "pv-03-owasp-juice-shop",
+      "kind": "proposal",
+      "kind_label": "Proposal example (AI-drafted, unreviewed)",
+      "reviewed_threats": 0,
+      "title": "OWASP Juice Shop"
     }
   ],
   "problems": []

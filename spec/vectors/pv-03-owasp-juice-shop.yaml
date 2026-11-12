@@ -1,0 +1,519 @@
+# PROPOSAL VECTOR 3 (DL-0049): OWASP Juice Shop, a web shop that is insecure on purpose
+#
+# A software example built from a published, documented target instead of a product
+# someone has to buy. OWASP Juice Shop is a training web shop that OWASP keeps insecure
+# on purpose, for teaching and for testing security tools.
+#
+# Source: OWASP Juice Shop v20.4.0 (released 2026-11-08), commit
+# 266448aba68cd8ba5915f526a128da4fa7bc3f9f, MIT licence,
+# https://github.com/juice-shop/juice-shop. Read at that commit on 2026-11-09:
+# data/static/challenges.yml (118 challenges; SHA-256
+# 09e98ee2b10d10cc7ec3e749c4e251928f935db51dd6fc9e94fe40f8ce012c92), routes/login.ts,
+# routes/basket.ts, server.ts, frontend/src/app/search-result/search-result.component.ts,
+# frontend/src/app/app.routing.ts, frontend/src/app/app.guard.ts and package.json.
+# CVE-2015-9235 and its CWEs are from its NVD record. CWE and CAPEC names are from
+# MITRE (CWE 5.0, CAPEC 3.9).
+#
+# Answer key: each threat below matches a Juice Shop challenge (Login Admin, Admin
+# Section, View Basket, DOM XSS, Confidential Document, Forged Signed JWT), and Juice
+# Shop marks the code lines that cause it. A reviewer can check every attack path
+# against both.
+#
+# AI-DRAFTED, NOT REVIEWED. Every Assertion is `proposed` and no Review is recorded
+# (CLAUDE.md, R-018). Feasibility and impact are human inputs and are left unset.
+# Run Juice Shop only on your own machine; it is insecure on purpose.
+#
+# Validate:
+#   linkml-validate -s spec/vectors/example-container-proposed.linkml.yaml \
+#     -C ExampleModelProposed spec/vectors/pv-03-owasp-juice-shop.yaml
+
+parties:
+  - id: party:owasp
+    name: OWASP
+    description: Open Worldwide Application Security Project; publishes Juice Shop.
+    party_kind: organization
+    classifications: [maintainer]
+  - id: party:shop-customer
+    name: Shop customer
+    description: Whose account, basket and browser session the attacks reach (role, not a person).
+    party_kind: person
+  - id: party:ai-drafter
+    name: AI model drafter
+    description: The AI agent that drafted this file and proposed its links (DL-0049).
+    party_kind: software_agent
+
+products:
+  - id: product:juice-shop
+    name: OWASP Juice Shop
+    description: >-
+      A web shop for fruit juice with accounts, a basket, orders, a search page and an
+      administration section, built to be insecure for training. Modeled at v20.4.0, run
+      locally (Node.js, or its Docker image).
+    composed_of:
+      - component:storefront
+      - component:shop-api
+      - component:shop-database
+      - component:ftp-browser
+      - component:jsonwebtoken-lib
+    manufactured_by: party:owasp
+    identifiers: ["pkg:github/juice-shop/juice-shop@v20.4.0"]
+
+components:
+  - id: component:storefront
+    name: Angular storefront
+    description: The single-page web front end; runs in the shopper's browser.
+    component_kind: application
+    in_trust_zone: trust-boundary:shopper-browser
+  - id: component:shop-api
+    name: Node.js and Express server with the REST API
+    description: Login, basket, search and the other shop functions.
+    component_kind: service
+    in_trust_zone: trust-boundary:shop-server
+    uses_component: [component:jsonwebtoken-lib]
+  - id: component:shop-database
+    name: SQLite database
+    description: Users, baskets and orders, reached through the Sequelize library.
+    component_kind: data
+    in_trust_zone: trust-boundary:shop-server
+  - id: component:ftp-browser
+    name: Public /ftp folder with directory browsing
+    description: Serves a folder of files and a browsable listing of it (server.ts).
+    component_kind: service
+    in_trust_zone: trust-boundary:shop-server
+  - id: component:jsonwebtoken-lib
+    name: jsonwebtoken 0.4.0
+    description: The npm library that signs and checks the login tokens (package.json).
+    component_kind: library
+    in_trust_zone: trust-boundary:shop-server
+    identifiers: ["pkg:npm/jsonwebtoken@0.4.0"]
+
+assets:
+  - id: asset:user-accounts
+    name: Customer and administrator accounts (e-mail, password hash, role)
+    security_properties: [confidentiality, integrity, authenticity]
+    stored_in: [component:shop-database]
+    processed_by: [component:shop-api]
+    owned_by: party:shop-customer
+  - id: asset:baskets
+    name: Shopping baskets
+    security_properties: [confidentiality, integrity]
+    stored_in: [component:shop-database]
+    processed_by: [component:shop-api]
+    owned_by: party:shop-customer
+  - id: asset:admin-section
+    name: The store's administration section
+    security_properties: [authorization]
+    processed_by: [component:storefront, component:shop-api]
+  - id: asset:shop-documents
+    name: Business documents left in the /ftp folder
+    security_properties: [confidentiality]
+    stored_in: [component:ftp-browser]
+  - id: asset:login-tokens
+    name: Login tokens (JWTs) that say who a request comes from
+    security_properties: [authenticity, integrity]
+    processed_by: [component:shop-api, component:jsonwebtoken-lib]
+  - id: asset:shopper-session
+    name: The shopper's logged-in browser session on the shop
+    security_properties: [integrity, confidentiality]
+    processed_by: [component:storefront]
+    owned_by: party:shop-customer
+
+trust_boundaries:
+  - id: trust-boundary:shopper-browser
+    name: The shopper's browser
+  - id: trust-boundary:shop-server
+    name: The Juice Shop server and its files
+
+data_flows:
+  - id: data-flow:login-request
+    name: Storefront sends the login form to the API
+    flow_from: component:storefront
+    flow_to: component:shop-api
+    carries: [asset:user-accounts]
+    crosses_boundary: [trust-boundary:shopper-browser, trust-boundary:shop-server]
+  - id: data-flow:basket-request
+    name: Storefront asks the API for a basket by its number
+    flow_from: component:storefront
+    flow_to: component:shop-api
+    carries: [asset:baskets]
+    crosses_boundary: [trust-boundary:shopper-browser, trust-boundary:shop-server]
+  - id: data-flow:token-on-request
+    name: Every API request carries the login token
+    flow_from: component:storefront
+    flow_to: component:shop-api
+    carries: [asset:login-tokens]
+    crosses_boundary: [trust-boundary:shopper-browser, trust-boundary:shop-server]
+  - id: data-flow:ftp-download
+    name: Browser lists and downloads files from /ftp
+    flow_from: component:ftp-browser
+    flow_to: component:storefront
+    carries: [asset:shop-documents]
+    crosses_boundary: [trust-boundary:shop-server, trust-boundary:shopper-browser]
+
+weaknesses:
+  - id: weakness:cwe-89
+    name: "Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+    description: The login query is built by pasting in the form's e-mail text (routes/login.ts, line 34).
+    catalog_ref: "CWE-89"
+  - id: weakness:cwe-79
+    name: "Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+    description: The search page writes the search text into the page with Angular's sanitizing switched off (search-result.component.ts, line 146).
+    catalog_ref: "CWE-79"
+  - id: weakness:cwe-639
+    name: Authorization Bypass Through User-Controlled Key
+    description: The basket API returns whichever basket number the request names, with no owner check (routes/basket.ts, lines 18 and 19).
+    catalog_ref: "CWE-639"
+  - id: weakness:cwe-548
+    name: Exposure of Information Through Directory Listing
+    description: The /ftp folder is served with a browsable listing (server.ts, line 294).
+    catalog_ref: "CWE-548"
+  - id: weakness:cwe-327
+    name: Use of a Broken or Risky Cryptographic Algorithm
+    description: One of the two CWEs NVD gives for CVE-2015-9235.
+    catalog_ref: "CWE-327"
+  - id: weakness:cwe-20
+    name: Improper Input Validation
+    description: The other CWE NVD gives for CVE-2015-9235.
+    catalog_ref: "CWE-20"
+
+vulnerabilities:
+  - id: vulnerability:cve-2015-9235
+    name: jsonwebtoken before 4.2.2 accepts a token signed with the wrong kind of algorithm
+    description: >-
+      NVD: a token meant to be checked with an asymmetric key (RS or ES) is accepted when
+      the attacker signs it with a symmetric (HS) algorithm instead. Juice Shop pins
+      jsonwebtoken 0.4.0 (package.json), which is before the fixed version.
+    catalog_ref: "CVE-2015-9235"
+    affects: [product:juice-shop]
+
+attack_patterns:
+  - id: attack-pattern:capec-66
+    name: SQL Injection
+    catalog_ref: "CAPEC-66"
+  - id: attack-pattern:capec-588
+    name: DOM-Based XSS
+    catalog_ref: "CAPEC-588"
+  - id: attack-pattern:capec-127
+    name: Directory Indexing
+    catalog_ref: "CAPEC-127"
+
+damage_scenarios:
+  - id: damage-scenario:admin-takeover
+    name: An outsider logs in as the administrator and reaches the administration section
+    damages_asset: [asset:user-accounts, asset:admin-section]
+    compromised_property: [authenticity, authorization]
+  - id: damage-scenario:basket-exposed
+    name: A customer sees another customer's basket
+    damages_asset: [asset:baskets]
+    compromised_property: [confidentiality]
+  - id: damage-scenario:script-in-session
+    name: A script the attacker chose runs in a shopper's session on the shop's page
+    damages_asset: [asset:shopper-session]
+    compromised_property: [integrity, confidentiality]
+  - id: damage-scenario:documents-read
+    name: Anyone can read business documents left in /ftp
+    damages_asset: [asset:shop-documents]
+    compromised_property: [confidentiality]
+  - id: damage-scenario:forged-identity
+    name: The shop accepts a login token for an identity the attacker chose
+    damages_asset: [asset:login-tokens, asset:user-accounts]
+    compromised_property: [authenticity]
+
+threat_instances:
+  - id: threat-instance:login-sqli
+    name: Log in as the administrator through SQL injection in the login form
+    realizes_damage: damage-scenario:admin-takeover
+    method_facet: [stride]
+    source_method: "published challenge (Login Admin, Admin Section), modeled from Juice Shop's source (AI-drafted, unreviewed)"
+    violates_property: "S authenticity; E authorization"
+    applies_in_phase: [lifecycle-phase:operation]
+    targets_element: [component:shop-api, data-flow:login-request]
+  - id: threat-instance:basket-idor
+    name: Read another customer's basket by changing the basket number
+    realizes_damage: damage-scenario:basket-exposed
+    method_facet: [stride]
+    source_method: "published challenge (View Basket), modeled from Juice Shop's source (AI-drafted, unreviewed)"
+    violates_property: "I confidentiality; E authorization"
+    applies_in_phase: [lifecycle-phase:operation]
+    targets_element: [component:shop-api, data-flow:basket-request]
+  - id: threat-instance:search-dom-xss
+    name: Run a script in a shopper's session through the search page
+    realizes_damage: damage-scenario:script-in-session
+    method_facet: [stride]
+    source_method: "published challenge (DOM XSS), modeled from Juice Shop's source (AI-drafted, unreviewed)"
+    violates_property: "T integrity; I confidentiality"
+    applies_in_phase: [lifecycle-phase:operation]
+    targets_element: [component:storefront]
+  - id: threat-instance:ftp-listing
+    name: Find and download confidential documents from the /ftp listing
+    realizes_damage: damage-scenario:documents-read
+    method_facet: [stride]
+    source_method: "published challenge (Confidential Document), modeled from Juice Shop's source (AI-drafted, unreviewed)"
+    violates_property: "I confidentiality"
+    applies_in_phase: [lifecycle-phase:operation]
+    targets_element: [component:ftp-browser, data-flow:ftp-download]
+  - id: threat-instance:jwt-forgery
+    name: Forge a login token that the old jsonwebtoken library accepts
+    realizes_damage: damage-scenario:forged-identity
+    method_facet: [stride]
+    source_method: "published challenge (Forged Signed JWT) and CVE-2015-9235, modeled from Juice Shop's source and NVD (AI-drafted, unreviewed)"
+    violates_property: "S authenticity"
+    applies_in_phase: [lifecycle-phase:operation]
+    targets_element: [component:jsonwebtoken-lib, data-flow:token-on-request]
+
+attack_steps:
+  - id: attack-step:inject-login
+    name: Put SQL into the login form's e-mail field so the password check is skipped
+    description: The query matches an account without the right password; Login Admin uses it to log in as the administrator.
+    kill_chain_phase: exploitation
+    precedes: [attack-step:open-admin]
+  - id: attack-step:find-admin-route
+    name: Find the administration page's address in the storefront's JavaScript
+    description: The route is declared in the front end (app.routing.ts, line 80), so anyone can read it.
+    kill_chain_phase: reconnaissance
+    precedes: [attack-step:open-admin]
+  - id: attack-step:open-admin
+    name: Open the administration section with the administrator's login token
+    description: Needs the address AND an administrator token, an AND gate; the page's guard checks the token's role (app.guard.ts).
+    gate: and_gate
+    kill_chain_phase: actions_on_objectives
+  - id: attack-step:own-login
+    name: Log in with an ordinary customer account
+    kill_chain_phase: delivery
+    precedes: [attack-step:change-basket-number]
+  - id: attack-step:change-basket-number
+    name: Ask the API for a basket with another customer's basket number
+    kill_chain_phase: actions_on_objectives
+  - id: attack-step:craft-search-link
+    name: Build a search link whose search text is HTML that runs a script
+    kill_chain_phase: weaponization
+    precedes: [attack-step:shopper-opens-link]
+  - id: attack-step:shopper-opens-link
+    name: A shopper opens the link and the storefront writes the search text into the page
+    kill_chain_phase: exploitation
+  - id: attack-step:read-robots
+    name: Read robots.txt, which names /ftp
+    description: server.ts, line 231, adds a robots.txt rule that lists /ftp.
+    kill_chain_phase: reconnaissance
+    precedes: [attack-step:browse-ftp]
+  - id: attack-step:browse-ftp
+    name: Browse the /ftp directory listing
+    kill_chain_phase: reconnaissance
+    precedes: [attack-step:download-document]
+  - id: attack-step:download-document
+    name: Download a confidential document from the listing
+    description: The file route serves .md and .pdf files (routes/fileServer.ts).
+    kill_chain_phase: actions_on_objectives
+  - id: attack-step:sign-wrong-algorithm
+    name: Sign a token with a symmetric algorithm instead of the shop's RSA key
+    kill_chain_phase: weaponization
+    precedes: [attack-step:use-forged-token]
+  - id: attack-step:use-forged-token
+    name: Send API requests with the forged token as the chosen identity
+    kill_chain_phase: actions_on_objectives
+
+attack_paths:
+  - id: attack-path:admin-via-sqli
+    name: Login form to administration section
+    steps: [attack-step:inject-login, attack-step:find-admin-route, attack-step:open-admin]
+    realizes_threat: threat-instance:login-sqli
+  - id: attack-path:basket-idor
+    name: Own account to another customer's basket
+    steps: [attack-step:own-login, attack-step:change-basket-number]
+    realizes_threat: threat-instance:basket-idor
+  - id: attack-path:search-xss
+    name: Crafted search link to script in the shopper's session
+    steps: [attack-step:craft-search-link, attack-step:shopper-opens-link]
+    realizes_threat: threat-instance:search-dom-xss
+  - id: attack-path:ftp-documents
+    name: robots.txt to confidential document
+    steps: [attack-step:read-robots, attack-step:browse-ftp, attack-step:download-document]
+    realizes_threat: threat-instance:ftp-listing
+  - id: attack-path:jwt-forgery
+    name: Forged token to chosen identity
+    steps: [attack-step:sign-wrong-algorithm, attack-step:use-forged-token]
+    realizes_threat: threat-instance:jwt-forgery
+
+mitigations:
+  - id: mitigation:parameterized-queries
+    name: Build database queries with bound parameters
+    description: >-
+      Left out on purpose, since Juice Shop is a training target. The challenge links
+      OWASP's SQL Injection Prevention Cheat Sheet as the fix.
+    mitigates: [threat-instance:login-sqli]
+    applies_in_phase: [lifecycle-phase:implementation]
+    implementation_owner: party:owasp
+    mitigation_status: accepted_risk
+  - id: mitigation:basket-owner-check
+    name: Return a basket only to its owner
+    description: Left out on purpose. The challenge links OWASP's Authorization Cheat Sheet.
+    mitigates: [threat-instance:basket-idor]
+    applies_in_phase: [lifecycle-phase:implementation]
+    implementation_owner: party:owasp
+    mitigation_status: accepted_risk
+  - id: mitigation:keep-angular-sanitizing
+    name: Keep Angular's sanitizing on for text from the URL
+    description: Left out on purpose. The challenge links OWASP's DOM based XSS Prevention Cheat Sheet.
+    mitigates: [threat-instance:search-dom-xss]
+    applies_in_phase: [lifecycle-phase:implementation]
+    implementation_owner: party:owasp
+    mitigation_status: accepted_risk
+  - id: mitigation:no-public-ftp-listing
+    name: Turn off directory browsing and keep internal documents off the public server
+    description: Left out on purpose; a model suggestion (the challenge names no fix).
+    mitigates: [threat-instance:ftp-listing]
+    applies_in_phase: [lifecycle-phase:deployment]
+    implementation_owner: party:owasp
+    mitigation_status: accepted_risk
+  - id: mitigation:upgrade-jsonwebtoken
+    name: Upgrade jsonwebtoken to 4.2.2 or later and fix the accepted algorithm
+    description: Left out on purpose; NVD gives 4.2.2 as the first fixed version.
+    mitigates: [threat-instance:jwt-forgery]
+    applies_in_phase: [lifecycle-phase:implementation]
+    implementation_owner: party:owasp
+    mitigation_status: accepted_risk
+
+assertions:
+  - id: assertion:inject-login-exploits-cwe-89
+    name: The login-injection step exploits CWE-89 (AI-proposed)
+    subject: attack-step:inject-login
+    predicate: exploits
+    object: weakness:cwe-89
+    confidence: high
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-09T00:00:00Z"
+    generated_by: "AI-drafted from Juice Shop v20.4.0's source and challenge list (DL-0049)"
+    evidence: ["https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/login.ts#L34"]
+  - id: assertion:basket-step-exploits-cwe-639
+    name: The basket-number step exploits CWE-639 (AI-proposed)
+    subject: attack-step:change-basket-number
+    predicate: exploits
+    object: weakness:cwe-639
+    confidence: high
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-09T00:00:00Z"
+    generated_by: "AI-drafted from Juice Shop v20.4.0's source and challenge list (DL-0049)"
+    evidence: ["https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/basket.ts#L18-L19"]
+  - id: assertion:search-step-exploits-cwe-79
+    name: The search-link step exploits CWE-79 (AI-proposed)
+    subject: attack-step:shopper-opens-link
+    predicate: exploits
+    object: weakness:cwe-79
+    confidence: high
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-09T00:00:00Z"
+    generated_by: "AI-drafted from Juice Shop v20.4.0's source and challenge list (DL-0049)"
+    evidence: ["https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/frontend/src/app/search-result/search-result.component.ts#L146"]
+  - id: assertion:ftp-step-exploits-cwe-548
+    name: The /ftp browsing step exploits CWE-548 (AI-proposed)
+    subject: attack-step:browse-ftp
+    predicate: exploits
+    object: weakness:cwe-548
+    confidence: high
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-09T00:00:00Z"
+    generated_by: "AI-drafted from Juice Shop v20.4.0's source and challenge list (DL-0049)"
+    evidence: ["https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/server.ts#L294"]
+  - id: assertion:forge-step-exploits-cve-2015-9235
+    name: The token-forging step exploits CVE-2015-9235 (AI-proposed)
+    subject: attack-step:sign-wrong-algorithm
+    predicate: exploits
+    object: vulnerability:cve-2015-9235
+    confidence: medium
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-09T00:00:00Z"
+    generated_by: "AI-drafted from Juice Shop v20.4.0's source, challenge list and NVD (DL-0049)"
+    evidence: ["https://nvd.nist.gov/vuln/detail/CVE-2015-9235", "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/package.json#L123"]
+  - id: assertion:cve-2015-9235-propagates-to-jsonwebtoken
+    name: CVE-2015-9235 is in the jsonwebtoken 0.4.0 component (AI-proposed)
+    subject: vulnerability:cve-2015-9235
+    predicate: propagates_to
+    object: component:jsonwebtoken-lib
+    confidence: high
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-09T00:00:00Z"
+    generated_by: "AI-drafted from NVD and Juice Shop's package.json (DL-0049)"
+    evidence: ["https://nvd.nist.gov/vuln/detail/CVE-2015-9235", "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/package.json#L123"]
+  - id: assertion:cve-2015-9235-instance-of-cwe-327
+    name: CVE-2015-9235 is an instance of CWE-327 (from NVD)
+    subject: vulnerability:cve-2015-9235
+    predicate: instance_of
+    object: weakness:cwe-327
+    confidence: high
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-09T00:00:00Z"
+    generated_by: "AI-drafted from NVD (DL-0049)"
+    evidence: ["https://nvd.nist.gov/vuln/detail/CVE-2015-9235"]
+  - id: assertion:cve-2015-9235-instance-of-cwe-20
+    name: CVE-2015-9235 is an instance of CWE-20 (from NVD)
+    subject: vulnerability:cve-2015-9235
+    predicate: instance_of
+    object: weakness:cwe-20
+    confidence: high
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-09T00:00:00Z"
+    generated_by: "AI-drafted from NVD (DL-0049)"
+    evidence: ["https://nvd.nist.gov/vuln/detail/CVE-2015-9235"]
+  - id: assertion:cwe-89-exploited-by-capec-66
+    name: CWE-89 is exploited by CAPEC-66 (AI-proposed)
+    subject: weakness:cwe-89
+    predicate: exploited_by
+    object: attack-pattern:capec-66
+    confidence: medium
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-09T00:00:00Z"
+    generated_by: "AI-drafted (DL-0049)"
+    evidence: ["https://capec.mitre.org/data/definitions/66.html"]
+  - id: assertion:cwe-79-exploited-by-capec-588
+    name: CWE-79 is exploited by CAPEC-588 (AI-proposed)
+    subject: weakness:cwe-79
+    predicate: exploited_by
+    object: attack-pattern:capec-588
+    confidence: medium
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-09T00:00:00Z"
+    generated_by: "AI-drafted (DL-0049)"
+    evidence: ["https://capec.mitre.org/data/definitions/588.html"]
+  - id: assertion:cwe-548-exploited-by-capec-127
+    name: CWE-548 is exploited by CAPEC-127 (AI-proposed)
+    subject: weakness:cwe-548
+    predicate: exploited_by
+    object: attack-pattern:capec-127
+    confidence: medium
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-09T00:00:00Z"
+    generated_by: "AI-drafted (DL-0049)"
+    evidence: ["https://capec.mitre.org/data/definitions/127.html"]
+  - id: assertion:admin-path-realizes
+    name: The login-form path realizes the administrator-login threat
+    subject: attack-path:admin-via-sqli
+    predicate: realizes_threat
+    object: threat-instance:login-sqli
+    confidence: high
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-09T00:00:00Z"
+    generated_by: "AI-drafted from Juice Shop v20.4.0's challenge list (DL-0049)"
+    evidence: ["https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml"]
+
+lifecycle_phases:
+  - id: lifecycle-phase:implementation
+    name: Implementation
+    code: implementation
+  - id: lifecycle-phase:deployment
+    name: Deployment
+    code: deployment
+  - id: lifecycle-phase:operation
+    name: Operation / use
+    code: operation

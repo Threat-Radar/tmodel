@@ -1,0 +1,12 @@
+{
+  "file": "pv-03-owasp-juice-shop.yaml",
+  "reviewed_threats": [],
+  "steps": 12,
+  "threats": [
+    "threat-instance:basket-idor",
+    "threat-instance:ftp-listing",
+    "threat-instance:jwt-forgery",
+    "threat-instance:login-sqli",
+    "threat-instance:search-dom-xss"
+  ]
+}

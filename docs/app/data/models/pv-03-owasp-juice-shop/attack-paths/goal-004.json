@@ -1,0 +1,20 @@
+{
+  "file": "pv-03-owasp-juice-shop.yaml",
+  "goal": "threat-instance:login-sqli",
+  "paths": [
+    {
+      "authored_path": "attack-path:admin-via-sqli",
+      "goal_step": "attack-step:open-admin",
+      "review": {
+        "assertion_status": "proposed",
+        "review_status": null,
+        "reviewed": false
+      },
+      "steps": [
+        "attack-step:inject-login",
+        "attack-step:find-admin-route",
+        "attack-step:open-admin"
+      ]
+    }
+  ]
+}

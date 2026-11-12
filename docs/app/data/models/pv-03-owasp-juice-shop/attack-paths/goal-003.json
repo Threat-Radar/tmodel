@@ -1,0 +1,19 @@
+{
+  "file": "pv-03-owasp-juice-shop.yaml",
+  "goal": "threat-instance:jwt-forgery",
+  "paths": [
+    {
+      "authored_path": "attack-path:jwt-forgery",
+      "goal_step": "attack-step:use-forged-token",
+      "review": {
+        "assertion_status": null,
+        "review_status": null,
+        "reviewed": false
+      },
+      "steps": [
+        "attack-step:sign-wrong-algorithm",
+        "attack-step:use-forged-token"
+      ]
+    }
+  ]
+}
