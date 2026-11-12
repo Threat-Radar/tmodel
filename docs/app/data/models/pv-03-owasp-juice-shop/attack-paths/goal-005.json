@@ -1,0 +1,19 @@
+{
+  "file": "pv-03-owasp-juice-shop.yaml",
+  "goal": "threat-instance:search-dom-xss",
+  "paths": [
+    {
+      "authored_path": "attack-path:search-xss",
+      "goal_step": "attack-step:shopper-opens-link",
+      "review": {
+        "assertion_status": null,
+        "review_status": null,
+        "reviewed": false
+      },
+      "steps": [
+        "attack-step:craft-search-link",
+        "attack-step:shopper-opens-link"
+      ]
+    }
+  ]
+}

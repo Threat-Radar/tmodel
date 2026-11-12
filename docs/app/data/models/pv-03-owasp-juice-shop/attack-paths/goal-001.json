@@ -1,0 +1,19 @@
+{
+  "file": "pv-03-owasp-juice-shop.yaml",
+  "goal": "threat-instance:basket-idor",
+  "paths": [
+    {
+      "authored_path": "attack-path:basket-idor",
+      "goal_step": "attack-step:change-basket-number",
+      "review": {
+        "assertion_status": null,
+        "review_status": null,
+        "reviewed": false
+      },
+      "steps": [
+        "attack-step:own-login",
+        "attack-step:change-basket-number"
+      ]
+    }
+  ]
+}

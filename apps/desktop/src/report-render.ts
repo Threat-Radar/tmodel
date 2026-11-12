@@ -50,11 +50,12 @@ export const REPORT_SECTIONS = [
 ] as const;
 
 // What kind of example a model is, in the words spec/vectors/README.md uses for
-// each family. A proposal model (`pv-*`) is drafted by AI from the published
-// write-up of a real automotive attack and names the real product; the others
-// are illustrative models written to exercise the object model.
+// each family. A proposal model (`pv-*`) is drafted by AI from published sources
+// about a real product (an attack write-up, or the product's own code) and names
+// the real product; the others are illustrative models written to exercise the
+// object model.
 const EXAMPLE_KIND_NOTICES: Readonly<Record<string, string>> = {
-  proposal: "This model was drafted by AI from the published write-up of a real automotive attack, "
+  proposal: "This model was drafted by AI from published sources about a real product, "
     + "to exercise tmodel's object model. It is not a verified security assessment of the product it names.",
 };
 const DEFAULT_KIND_NOTICE = "This is an illustrative threat model written for the tmodel project to exercise "
@@ -72,9 +73,9 @@ export function exampleNotice(report: Pick<ModelReport, "model" | "reviewers">):
 
 /** The banner for a list of example models of every kind (the Pages index). */
 export const MODEL_LIST_NOTICE = "These models were written to exercise tmodel's object model; none of them is a "
-  + "security assessment. The proposal examples were drafted by AI from published write-ups of real automotive "
-  + "attacks and name the real products. AI-proposed threats and paths are hypotheses until a human reviewer "
-  + "accepts them.";
+  + "security assessment. The proposal examples were drafted by AI from published sources about real products, "
+  + "such as attack write-ups, and name those products. AI-proposed threats and paths are hypotheses until a "
+  + "human reviewer accepts them.";
 
 export function renderModelReport(report: ModelReport, options: ReportRenderOptions = {}): string {
   // One anchor per path, unique within the report even when two ids slug alike.
