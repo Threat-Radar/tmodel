@@ -6,6 +6,7 @@ import type {
   GraphEdge,
   GraphNode,
   GraphProperties,
+  GraphProviderMetadata,
   GraphResponse,
 } from "./graph-types";
 import type { AttackPathResults, EngineGraphEdge, EngineGraphResponse } from "./model-types";
@@ -26,6 +27,8 @@ export interface EngineGraphProviderOptions {
    * (#208); a model without threats falls back to "neighborhood".
    */
   initialView?: "neighborhood" | "threats";
+  /** Override the source label for an API-compatible static response set. */
+  metadata?: GraphProviderMetadata;
 }
 
 
@@ -34,7 +37,7 @@ export interface EngineGraphProviderOptions {
  * caches it, and derives one-hop pages until #65 supplies a storage façade.
  */
 export class EngineGraphDataProvider implements GraphDataProvider {
-  readonly metadata;
+  readonly metadata: GraphProviderMetadata;
   private graphPromise?: Promise<EngineGraphResponse>;
 
   constructor(
@@ -43,7 +46,7 @@ export class EngineGraphDataProvider implements GraphDataProvider {
     private readonly fetchImpl: typeof fetch = (input, init) => globalThis.fetch(input, init),
     private readonly options: EngineGraphProviderOptions = {},
   ) {
-    this.metadata = {
+    this.metadata = options.metadata ?? {
       source: "engine" as const,
       label: "Engine model data",
       notice: `Engine model data from ${fileName(modelFile)}`,
@@ -57,13 +60,13 @@ export class EngineGraphDataProvider implements GraphDataProvider {
       if (threats.length > 0) {
         const ids = new Set<string>();
         for (const threat of threats) for (const id of neighborhoodIds(graph, threat.id)) ids.add(id);
-        return graphResponse(graph, ids, threats[0].id, this.metadata.notice);
+        return graphResponse(graph, ids, threats[0].id, this.metadata.notice, this.metadata.source);
       }
     }
     const focusId = graph.nodes.find((node) => node.domain_type === "Component")?.id
       ?? graph.nodes[0]?.id;
-    if (!focusId) return graphResponse(graph, new Set(), undefined, this.metadata.notice);
-    return graphResponse(graph, neighborhoodIds(graph, focusId), focusId, this.metadata.notice);
+    if (!focusId) return graphResponse(graph, new Set(), undefined, this.metadata.notice, this.metadata.source);
+    return graphResponse(graph, neighborhoodIds(graph, focusId), focusId, this.metadata.notice, this.metadata.source);
   }
 
   /** Every visible node of the model, for "Show whole model". */
@@ -73,7 +76,8 @@ export class EngineGraphDataProvider implements GraphDataProvider {
       graph,
       new Set(graph.nodes.map((node) => node.id)),
       undefined,
-      `Engine model data from ${fileName(graph.file)}`,
+      this.metadata.notice,
+      this.metadata.source,
     );
   }
 
@@ -83,7 +87,8 @@ export class EngineGraphDataProvider implements GraphDataProvider {
       graph,
       neighborhoodIds(graph, nodeId),
       nodeId,
-      `Engine model data from ${fileName(graph.file)}`,
+      this.metadata.notice,
+      this.metadata.source,
     );
   }
 
@@ -189,6 +194,7 @@ export function mapEngineGraphResponse(response: EngineGraphResponse): GraphResp
     new Set(response.nodes.map((node) => node.id)),
     undefined,
     `Engine model data from ${fileName(response.file)}`,
+    "engine",
   );
 }
 
@@ -207,6 +213,7 @@ function graphResponse(
   ids: ReadonlySet<string>,
   focusId: string | undefined,
   notice: string,
+  source: GraphResponse["source"],
 ): GraphResponse {
   const adjacency = adjacencyByNode(graph.edges);
   const nodes: GraphNode[] = graph.nodes
@@ -227,7 +234,7 @@ function graphResponse(
       relationshipType: edge.relationship_type,
       properties: cloneProperties(edge.properties),
     }));
-  return { source: "engine", notice, focusId, nodes, edges };
+  return { source, notice, focusId, nodes, edges };
 }
 
 function adjacencyByNode(edges: readonly EngineGraphEdge[]): Map<string, Set<string>> {

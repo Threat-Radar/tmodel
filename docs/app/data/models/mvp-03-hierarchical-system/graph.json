@@ -1,0 +1,1172 @@
+{
+  "edges": [
+    {
+      "id": "relationship:product:connected-vehicle-system|composed_of|component:in-vehicle-platform",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "product:connected-vehicle-system",
+      "target": "component:in-vehicle-platform"
+    },
+    {
+      "id": "relationship:product:connected-vehicle-system|composed_of|component:cloud-backend",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "product:connected-vehicle-system",
+      "target": "component:cloud-backend"
+    },
+    {
+      "id": "relationship:product:connected-vehicle-system|manufactured_by|party:system-integrator",
+      "properties": {},
+      "relationship_type": "manufactured_by",
+      "source": "product:connected-vehicle-system",
+      "target": "party:system-integrator"
+    },
+    {
+      "id": "relationship:product:connected-vehicle-system|owned_by|party:fleet-owner",
+      "properties": {},
+      "relationship_type": "owned_by",
+      "source": "product:connected-vehicle-system",
+      "target": "party:fleet-owner"
+    },
+    {
+      "id": "relationship:product-instance:cvs-release-2026-3|current_phase|lifecycle-phase:operation",
+      "properties": {},
+      "relationship_type": "current_phase",
+      "source": "product-instance:cvs-release-2026-3",
+      "target": "lifecycle-phase:operation"
+    },
+    {
+      "id": "relationship:product-instance:cvs-release-2026-3|of_product|product:connected-vehicle-system",
+      "properties": {},
+      "relationship_type": "of_product",
+      "source": "product-instance:cvs-release-2026-3",
+      "target": "product:connected-vehicle-system"
+    },
+    {
+      "id": "relationship:product-instance:cvs-release-2026-3|owned_by|party:fleet-owner",
+      "properties": {},
+      "relationship_type": "owned_by",
+      "source": "product-instance:cvs-release-2026-3",
+      "target": "party:fleet-owner"
+    },
+    {
+      "id": "relationship:component:in-vehicle-platform|composed_of|component:gateway-ecu",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "component:in-vehicle-platform",
+      "target": "component:gateway-ecu"
+    },
+    {
+      "id": "relationship:component:in-vehicle-platform|composed_of|component:brake-ecu",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "component:in-vehicle-platform",
+      "target": "component:brake-ecu"
+    },
+    {
+      "id": "relationship:component:in-vehicle-platform|owned_by|party:fleet-owner",
+      "properties": {},
+      "relationship_type": "owned_by",
+      "source": "component:in-vehicle-platform",
+      "target": "party:fleet-owner"
+    },
+    {
+      "id": "relationship:component:cloud-backend|composed_of|component:ingest-api",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "component:cloud-backend",
+      "target": "component:ingest-api"
+    },
+    {
+      "id": "relationship:component:cloud-backend|composed_of|component:fleet-datastore",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "component:cloud-backend",
+      "target": "component:fleet-datastore"
+    },
+    {
+      "id": "relationship:component:cloud-backend|owned_by|party:fleet-owner",
+      "properties": {},
+      "relationship_type": "owned_by",
+      "source": "component:cloud-backend",
+      "target": "party:fleet-owner"
+    },
+    {
+      "id": "relationship:component:gateway-ecu|uses_component|component:can-stack-lib",
+      "properties": {},
+      "relationship_type": "uses_component",
+      "source": "component:gateway-ecu",
+      "target": "component:can-stack-lib"
+    },
+    {
+      "id": "relationship:component:ingest-api|uses_component|component:jwt-lib",
+      "properties": {},
+      "relationship_type": "uses_component",
+      "source": "component:ingest-api",
+      "target": "component:jwt-lib"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2026-52001|affects|product:connected-vehicle-system",
+      "properties": {},
+      "relationship_type": "affects",
+      "source": "vulnerability:cve-2026-52001",
+      "target": "product:connected-vehicle-system"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2026-52001|assigned_by|party:cna-auto",
+      "properties": {},
+      "relationship_type": "assigned_by",
+      "source": "vulnerability:cve-2026-52001",
+      "target": "party:cna-auto"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2026-52001|reported_by|party:sys-reviewer",
+      "properties": {},
+      "relationship_type": "reported_by",
+      "source": "vulnerability:cve-2026-52001",
+      "target": "party:sys-reviewer"
+    },
+    {
+      "id": "relationship:threat-instance:gateway-default-creds|applies_in_phase|lifecycle-phase:operation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "threat-instance:gateway-default-creds",
+      "target": "lifecycle-phase:operation"
+    },
+    {
+      "id": "relationship:threat-instance:gateway-default-creds|realizes_damage|damage-scenario:fleet-wide-compromise",
+      "properties": {},
+      "relationship_type": "realizes_damage",
+      "source": "threat-instance:gateway-default-creds",
+      "target": "damage-scenario:fleet-wide-compromise"
+    },
+    {
+      "id": "relationship:threat-instance:cloud-jwt-bypass|applies_in_phase|lifecycle-phase:operation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "threat-instance:cloud-jwt-bypass",
+      "target": "lifecycle-phase:operation"
+    },
+    {
+      "id": "relationship:threat-instance:cloud-jwt-bypass|realizes_damage|damage-scenario:fleet-wide-compromise",
+      "properties": {},
+      "relationship_type": "realizes_damage",
+      "source": "threat-instance:cloud-jwt-bypass",
+      "target": "damage-scenario:fleet-wide-compromise"
+    },
+    {
+      "id": "relationship:threat-instance:cross-subsystem-chain|applies_in_phase|lifecycle-phase:operation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "threat-instance:cross-subsystem-chain",
+      "target": "lifecycle-phase:operation"
+    },
+    {
+      "id": "relationship:threat-instance:cross-subsystem-chain|realizes_damage|damage-scenario:fleet-wide-compromise",
+      "properties": {},
+      "relationship_type": "realizes_damage",
+      "source": "threat-instance:cross-subsystem-chain",
+      "target": "damage-scenario:fleet-wide-compromise"
+    },
+    {
+      "id": "relationship:attack-step:reach-gateway-service|precedes|attack-step:actuate-via-can",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:reach-gateway-service",
+      "target": "attack-step:actuate-via-can"
+    },
+    {
+      "id": "relationship:attack-step:use-default-creds|precedes|attack-step:actuate-via-can",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:use-default-creds",
+      "target": "attack-step:actuate-via-can"
+    },
+    {
+      "id": "relationship:attack-step:forge-jwt-none-alg|precedes|attack-step:call-fleet-api",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:forge-jwt-none-alg",
+      "target": "attack-step:call-fleet-api"
+    },
+    {
+      "id": "relationship:attack-step:forge-jwt-weak-key|precedes|attack-step:call-fleet-api",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:forge-jwt-weak-key",
+      "target": "attack-step:call-fleet-api"
+    },
+    {
+      "id": "relationship:attack-step:call-fleet-api|precedes|attack-step:chain-to-in-vehicle",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:call-fleet-api",
+      "target": "attack-step:chain-to-in-vehicle"
+    },
+    {
+      "id": "relationship:attack-path:in-vehicle-actuation|realizes_threat|threat-instance:gateway-default-creds",
+      "properties": {},
+      "relationship_type": "realizes_threat",
+      "source": "attack-path:in-vehicle-actuation",
+      "target": "threat-instance:gateway-default-creds"
+    },
+    {
+      "id": "relationship:attack-path:in-vehicle-actuation|steps|attack-step:reach-gateway-service",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:in-vehicle-actuation",
+      "target": "attack-step:reach-gateway-service"
+    },
+    {
+      "id": "relationship:attack-path:in-vehicle-actuation|steps|attack-step:use-default-creds",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:in-vehicle-actuation",
+      "target": "attack-step:use-default-creds"
+    },
+    {
+      "id": "relationship:attack-path:in-vehicle-actuation|steps|attack-step:actuate-via-can",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:in-vehicle-actuation",
+      "target": "attack-step:actuate-via-can"
+    },
+    {
+      "id": "relationship:attack-path:cloud-jwt-forgery|realizes_threat|threat-instance:cloud-jwt-bypass",
+      "properties": {},
+      "relationship_type": "realizes_threat",
+      "source": "attack-path:cloud-jwt-forgery",
+      "target": "threat-instance:cloud-jwt-bypass"
+    },
+    {
+      "id": "relationship:attack-path:cloud-jwt-forgery|steps|attack-step:forge-jwt-none-alg",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:cloud-jwt-forgery",
+      "target": "attack-step:forge-jwt-none-alg"
+    },
+    {
+      "id": "relationship:attack-path:cloud-jwt-forgery|steps|attack-step:forge-jwt-weak-key",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:cloud-jwt-forgery",
+      "target": "attack-step:forge-jwt-weak-key"
+    },
+    {
+      "id": "relationship:attack-path:cloud-jwt-forgery|steps|attack-step:call-fleet-api",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:cloud-jwt-forgery",
+      "target": "attack-step:call-fleet-api"
+    },
+    {
+      "id": "relationship:attack-path:cross-subsystem-chain|pivots_to|attack-path:in-vehicle-actuation",
+      "properties": {},
+      "relationship_type": "pivots_to",
+      "source": "attack-path:cross-subsystem-chain",
+      "target": "attack-path:in-vehicle-actuation"
+    },
+    {
+      "id": "relationship:attack-path:cross-subsystem-chain|realizes_threat|threat-instance:cross-subsystem-chain",
+      "properties": {
+        "assertion_ids": [
+          "assertion:ai-cross-subsystem"
+        ],
+        "assertion_status": "proposed",
+        "confidence": "low",
+        "review_ids": [
+          "review:ai-cross-subsystem"
+        ],
+        "review_status": "changes_requested"
+      },
+      "relationship_type": "realizes_threat",
+      "source": "attack-path:cross-subsystem-chain",
+      "target": "threat-instance:cross-subsystem-chain"
+    },
+    {
+      "id": "relationship:attack-path:cross-subsystem-chain|steps|attack-step:call-fleet-api",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:cross-subsystem-chain",
+      "target": "attack-step:call-fleet-api"
+    },
+    {
+      "id": "relationship:attack-path:cross-subsystem-chain|steps|attack-step:chain-to-in-vehicle",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:cross-subsystem-chain",
+      "target": "attack-step:chain-to-in-vehicle"
+    },
+    {
+      "id": "relationship:mitigation:enforce-unique-creds|applies_in_phase|lifecycle-phase:production",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "mitigation:enforce-unique-creds",
+      "target": "lifecycle-phase:production"
+    },
+    {
+      "id": "relationship:mitigation:enforce-unique-creds|applies_in_phase|lifecycle-phase:deployment",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "mitigation:enforce-unique-creds",
+      "target": "lifecycle-phase:deployment"
+    },
+    {
+      "id": "relationship:mitigation:enforce-unique-creds|implementation_owner|party:system-integrator",
+      "properties": {},
+      "relationship_type": "implementation_owner",
+      "source": "mitigation:enforce-unique-creds",
+      "target": "party:system-integrator"
+    },
+    {
+      "id": "relationship:mitigation:enforce-unique-creds|mitigates|threat-instance:gateway-default-creds",
+      "properties": {},
+      "relationship_type": "mitigates",
+      "source": "mitigation:enforce-unique-creds",
+      "target": "threat-instance:gateway-default-creds"
+    },
+    {
+      "id": "relationship:mitigation:pin-jwt-alg-and-rotate|applies_in_phase|lifecycle-phase:implementation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "mitigation:pin-jwt-alg-and-rotate",
+      "target": "lifecycle-phase:implementation"
+    },
+    {
+      "id": "relationship:mitigation:pin-jwt-alg-and-rotate|implementation_owner|party:system-integrator",
+      "properties": {},
+      "relationship_type": "implementation_owner",
+      "source": "mitigation:pin-jwt-alg-and-rotate",
+      "target": "party:system-integrator"
+    },
+    {
+      "id": "relationship:mitigation:pin-jwt-alg-and-rotate|mitigates|threat-instance:cloud-jwt-bypass",
+      "properties": {},
+      "relationship_type": "mitigates",
+      "source": "mitigation:pin-jwt-alg-and-rotate",
+      "target": "threat-instance:cloud-jwt-bypass"
+    },
+    {
+      "id": "relationship:risk-score:fleet-wide-system|attack_paths|attack-path:in-vehicle-actuation",
+      "properties": {},
+      "relationship_type": "attack_paths",
+      "source": "risk-score:fleet-wide-system",
+      "target": "attack-path:in-vehicle-actuation"
+    },
+    {
+      "id": "relationship:risk-score:fleet-wide-system|attack_paths|attack-path:cloud-jwt-forgery",
+      "properties": {},
+      "relationship_type": "attack_paths",
+      "source": "risk-score:fleet-wide-system",
+      "target": "attack-path:cloud-jwt-forgery"
+    },
+    {
+      "id": "relationship:risk-score:fleet-wide-system|damage_scenario|damage-scenario:fleet-wide-compromise",
+      "properties": {},
+      "relationship_type": "damage_scenario",
+      "source": "risk-score:fleet-wide-system",
+      "target": "damage-scenario:fleet-wide-compromise"
+    },
+    {
+      "id": "relationship:risk-score:fleet-wide-system|for_stakeholder|party:fleet-owner",
+      "properties": {},
+      "relationship_type": "for_stakeholder",
+      "source": "risk-score:fleet-wide-system",
+      "target": "party:fleet-owner"
+    },
+    {
+      "id": "relationship:risk-score:fleet-wide-system|threat|threat-instance:cloud-jwt-bypass",
+      "properties": {},
+      "relationship_type": "threat",
+      "source": "risk-score:fleet-wide-system",
+      "target": "threat-instance:cloud-jwt-bypass"
+    },
+    {
+      "id": "relationship:review:vuln-prop|reviewer|party:sys-reviewer",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:vuln-prop",
+      "target": "party:sys-reviewer"
+    },
+    {
+      "id": "relationship:review:vuln-prop|reviews|assertion:vuln-propagation",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:vuln-prop",
+      "target": "assertion:vuln-propagation"
+    },
+    {
+      "id": "relationship:review:cve-cwe|reviewer|party:sys-reviewer",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:cve-cwe",
+      "target": "party:sys-reviewer"
+    },
+    {
+      "id": "relationship:review:cve-cwe|reviews|assertion:cve-cwe-instance",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:cve-cwe",
+      "target": "assertion:cve-cwe-instance"
+    },
+    {
+      "id": "relationship:review:cwe-capec|reviewer|party:sys-reviewer",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:cwe-capec",
+      "target": "party:sys-reviewer"
+    },
+    {
+      "id": "relationship:review:cwe-capec|reviews|assertion:cwe-capec-map",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:cwe-capec",
+      "target": "assertion:cwe-capec-map"
+    },
+    {
+      "id": "relationship:review:rollup-in-vehicle|reviewer|party:sys-reviewer",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:rollup-in-vehicle",
+      "target": "party:sys-reviewer"
+    },
+    {
+      "id": "relationship:review:rollup-in-vehicle|reviews|assertion:rollup-in-vehicle",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:rollup-in-vehicle",
+      "target": "assertion:rollup-in-vehicle"
+    },
+    {
+      "id": "relationship:review:rollup-cloud|reviewer|party:sys-reviewer",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:rollup-cloud",
+      "target": "party:sys-reviewer"
+    },
+    {
+      "id": "relationship:review:rollup-cloud|reviews|assertion:rollup-cloud",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:rollup-cloud",
+      "target": "assertion:rollup-cloud"
+    },
+    {
+      "id": "relationship:review:ai-cross-subsystem|reviewer|party:sys-reviewer",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:ai-cross-subsystem",
+      "target": "party:sys-reviewer"
+    },
+    {
+      "id": "relationship:review:ai-cross-subsystem|reviews|assertion:ai-cross-subsystem",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:ai-cross-subsystem",
+      "target": "assertion:ai-cross-subsystem"
+    },
+    {
+      "id": "relationship:assertion:vuln-propagation|object|component:ingest-api",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:vuln-propagation",
+      "target": "component:ingest-api"
+    },
+    {
+      "id": "relationship:assertion:vuln-propagation|subject|vulnerability:cve-2026-52001",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:vuln-propagation",
+      "target": "vulnerability:cve-2026-52001"
+    },
+    {
+      "id": "relationship:assertion:cve-cwe-instance|object|weakness:cwe-347",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:cve-cwe-instance",
+      "target": "weakness:cwe-347"
+    },
+    {
+      "id": "relationship:assertion:cve-cwe-instance|subject|vulnerability:cve-2026-52001",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:cve-cwe-instance",
+      "target": "vulnerability:cve-2026-52001"
+    },
+    {
+      "id": "relationship:assertion:cwe-capec-map|object|attack-pattern:capec-114",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:cwe-capec-map",
+      "target": "attack-pattern:capec-114"
+    },
+    {
+      "id": "relationship:assertion:cwe-capec-map|subject|weakness:cwe-347",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:cwe-capec-map",
+      "target": "weakness:cwe-347"
+    },
+    {
+      "id": "relationship:assertion:rollup-in-vehicle|object|damage-scenario:fleet-wide-compromise",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:rollup-in-vehicle",
+      "target": "damage-scenario:fleet-wide-compromise"
+    },
+    {
+      "id": "relationship:assertion:rollup-in-vehicle|subject|threat-instance:gateway-default-creds",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:rollup-in-vehicle",
+      "target": "threat-instance:gateway-default-creds"
+    },
+    {
+      "id": "relationship:assertion:rollup-cloud|object|damage-scenario:fleet-wide-compromise",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:rollup-cloud",
+      "target": "damage-scenario:fleet-wide-compromise"
+    },
+    {
+      "id": "relationship:assertion:rollup-cloud|subject|threat-instance:cloud-jwt-bypass",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:rollup-cloud",
+      "target": "threat-instance:cloud-jwt-bypass"
+    },
+    {
+      "id": "relationship:assertion:ai-cross-subsystem|object|threat-instance:cross-subsystem-chain",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:ai-cross-subsystem",
+      "target": "threat-instance:cross-subsystem-chain"
+    },
+    {
+      "id": "relationship:assertion:ai-cross-subsystem|subject|attack-path:cross-subsystem-chain",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:ai-cross-subsystem",
+      "target": "attack-path:cross-subsystem-chain"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2026-52001|propagates_to|component:ingest-api",
+      "properties": {
+        "assertion_ids": [
+          "assertion:vuln-propagation"
+        ],
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "review_ids": [
+          "review:vuln-prop"
+        ],
+        "review_status": "accepted"
+      },
+      "relationship_type": "propagates_to",
+      "source": "vulnerability:cve-2026-52001",
+      "target": "component:ingest-api"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2026-52001|instance_of|weakness:cwe-347",
+      "properties": {
+        "assertion_ids": [
+          "assertion:cve-cwe-instance"
+        ],
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "review_ids": [
+          "review:cve-cwe"
+        ],
+        "review_status": "accepted"
+      },
+      "relationship_type": "instance_of",
+      "source": "vulnerability:cve-2026-52001",
+      "target": "weakness:cwe-347"
+    },
+    {
+      "id": "relationship:weakness:cwe-347|exploited_by|attack-pattern:capec-114",
+      "properties": {
+        "assertion_ids": [
+          "assertion:cwe-capec-map"
+        ],
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "review_ids": [
+          "review:cwe-capec"
+        ],
+        "review_status": "accepted"
+      },
+      "relationship_type": "exploited_by",
+      "source": "weakness:cwe-347",
+      "target": "attack-pattern:capec-114"
+    },
+    {
+      "id": "relationship:threat-instance:gateway-default-creds|rolls_up_to|damage-scenario:fleet-wide-compromise",
+      "properties": {
+        "assertion_ids": [
+          "assertion:rollup-in-vehicle"
+        ],
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "review_ids": [
+          "review:rollup-in-vehicle"
+        ],
+        "review_status": "accepted"
+      },
+      "relationship_type": "rolls_up_to",
+      "source": "threat-instance:gateway-default-creds",
+      "target": "damage-scenario:fleet-wide-compromise"
+    },
+    {
+      "id": "relationship:threat-instance:cloud-jwt-bypass|rolls_up_to|damage-scenario:fleet-wide-compromise",
+      "properties": {
+        "assertion_ids": [
+          "assertion:rollup-cloud"
+        ],
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "review_ids": [
+          "review:rollup-cloud"
+        ],
+        "review_status": "accepted"
+      },
+      "relationship_type": "rolls_up_to",
+      "source": "threat-instance:cloud-jwt-bypass",
+      "target": "damage-scenario:fleet-wide-compromise"
+    }
+  ],
+  "file": "mvp-03-hierarchical-system.yaml",
+  "nodes": [
+    {
+      "domain_type": "Party",
+      "id": "party:system-integrator",
+      "label": "System integrator",
+      "properties": {
+        "classifications": [
+          "manufacturer"
+        ],
+        "description": "Assembles and manufactures the connected-vehicle system (role identity, §2b).",
+        "party_kind": "organization"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:fleet-owner",
+      "label": "Fleet owner",
+      "properties": {
+        "classifications": [
+          "asset-owner"
+        ],
+        "description": "Owns the deployed system; the stakeholder impact is reported for.",
+        "party_kind": "organization"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:cna-auto",
+      "label": "Automotive CVE Numbering Authority",
+      "properties": {
+        "classifications": [
+          "cna"
+        ],
+        "party_kind": "organization"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:sys-reviewer",
+      "label": "@sys-reviewer",
+      "properties": {
+        "description": "Human system-security reviewer (github id, role identity).",
+        "party_kind": "person"
+      }
+    },
+    {
+      "domain_type": "Product",
+      "id": "product:connected-vehicle-system",
+      "label": "Connected-Vehicle System",
+      "properties": {
+        "description": "A SYSTEM product (ADR-0002) that hierarchically composes an in-vehicle platform subsystem and a cloud-backend subsystem. Recursive `composed_of` is the structural layer (§3).",
+        "identifiers": [
+          "pkg:generic/connected-vehicle-system@2026.3"
+        ]
+      }
+    },
+    {
+      "domain_type": "ProductInstance",
+      "id": "product-instance:cvs-release-2026-3",
+      "label": "Connected-Vehicle System release 2026.3",
+      "properties": {
+        "description": "A released system configuration. System instance identity is an SBOM/manifest digest over its subsystems (ADR-0002 \"system\" per-type identity), opaque.",
+        "identifiers": [
+          "manifest:cvs@2026.3",
+          "sha256:aa11bb22cc33dd44ee55ff6677889900aabbccddeeff00112233445566778899"
+        ],
+        "valid_from": "2026-08-01T00:00:00Z"
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:in-vehicle-platform",
+      "label": "In-vehicle platform subsystem",
+      "properties": {
+        "description": "The vehicle-side subsystem; composed of two ECUs (§3 recursive composition).",
+        "identifiers": [
+          "subsystem:in-vehicle-platform"
+        ]
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:cloud-backend",
+      "label": "Cloud backend subsystem",
+      "properties": {
+        "description": "The cloud-side subsystem; composed of the ingest API and the fleet datastore.",
+        "identifiers": [
+          "subsystem:cloud-backend"
+        ]
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:gateway-ecu",
+      "label": "CAN gateway ECU",
+      "properties": {
+        "description": "Routes between the telematics path and the safety CAN bus.",
+        "identifiers": [
+          "cpe:2.3:o:acme_auto:gw_ecu:-:*:*:*:*:*:*:*"
+        ]
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:brake-ecu",
+      "label": "Brake ECU",
+      "properties": {
+        "description": "Safety-critical braking control unit on the in-vehicle CAN.",
+        "identifiers": [
+          "cpe:2.3:o:acme_auto:brake_ecu:-:*:*:*:*:*:*:*"
+        ]
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:can-stack-lib",
+      "label": "CAN protocol-stack library",
+      "properties": {
+        "description": "Shared firmware library along which a finding propagates (§5).",
+        "identifiers": [
+          "swid:can-stack@3.0.1"
+        ]
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:ingest-api",
+      "label": "Telemetry ingest API",
+      "properties": {
+        "description": "Cloud service receiving vehicle telemetry; software component.",
+        "identifiers": [
+          "pkg:oci/fleet/ingest-api@sha256:c0ffee11"
+        ]
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:fleet-datastore",
+      "label": "Fleet datastore",
+      "properties": {
+        "description": "Backend datastore holding fleet records.",
+        "identifiers": [
+          "pkg:oci/fleet/datastore@sha256:d0cada11"
+        ]
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:jwt-lib",
+      "label": "jwt-verify library (transitive dependency)",
+      "properties": {
+        "description": "Vulnerable OSS JWT dependency used by the ingest API.",
+        "identifiers": [
+          "pkg:npm/jwt-verify@2.1.0",
+          "cpe:2.3:a:jwt_verify:jwt_verify:2.1.0:*:*:*:*:*:*:*"
+        ]
+      }
+    },
+    {
+      "domain_type": "Weakness",
+      "id": "weakness:cwe-347",
+      "label": "Improper Verification of Cryptographic Signature",
+      "properties": {
+        "catalog_ref": "CWE-347",
+        "description": "Generic weakness class (CWE) — the cloud JWT verification flaw."
+      }
+    },
+    {
+      "domain_type": "Weakness",
+      "id": "weakness:cwe-1188",
+      "label": "Insecure Default Initialization of Resource",
+      "properties": {
+        "catalog_ref": "CWE-1188",
+        "description": "Generic weakness class (CWE) — the in-vehicle gateway default-credentials flaw."
+      }
+    },
+    {
+      "domain_type": "Vulnerability",
+      "id": "vulnerability:cve-2026-52001",
+      "label": "JWT signature-verification bypass in jwt-verify (illustrative)",
+      "properties": {
+        "catalog_ref": "CVE-2026-52001",
+        "description": "Cloud-subsystem finding; propagation to the ingest API is a reviewed Assertion (§5)."
+      }
+    },
+    {
+      "domain_type": "AttackPattern",
+      "id": "attack-pattern:capec-115",
+      "label": "Authentication Bypass",
+      "properties": {
+        "catalog_ref": "CAPEC-115"
+      }
+    },
+    {
+      "domain_type": "AttackPattern",
+      "id": "attack-pattern:capec-114",
+      "label": "Authentication Abuse",
+      "properties": {
+        "catalog_ref": "CAPEC-114"
+      }
+    },
+    {
+      "domain_type": "ThreatInstance",
+      "id": "threat-instance:gateway-default-creds",
+      "label": "In-vehicle — gateway default credentials allow CAN actuation",
+      "properties": {
+        "description": "Human-elicited threat at the in-vehicle platform subsystem (rolls up).",
+        "method_facet": [
+          "stride"
+        ],
+        "source_method": "stride + iso21434-TARA (human-elicited, reviewed)",
+        "violates_property": "S authentication / E authorization"
+      }
+    },
+    {
+      "domain_type": "ThreatInstance",
+      "id": "threat-instance:cloud-jwt-bypass",
+      "label": "Cloud — JWT verification bypass grants fleet-wide API access",
+      "properties": {
+        "description": "Human-elicited threat at the cloud-backend subsystem (rolls up).",
+        "method_facet": [
+          "stride"
+        ],
+        "source_method": "stride-dfd (human-elicited, reviewed)",
+        "violates_property": "S authentication / I confidentiality"
+      }
+    },
+    {
+      "domain_type": "ThreatInstance",
+      "id": "threat-instance:cross-subsystem-chain",
+      "label": "AI-proposed — chain the cloud bypass into in-vehicle actuation",
+      "properties": {
+        "description": "AI-PROPOSED hypothesis that the cloud foothold chains down into the in-vehicle subsystem. `proposed` Assertion + a Review that requests changes; not accepted.",
+        "method_facet": [
+          "stride"
+        ],
+        "source_method": "ai:llm-threat-proposer (hypothesis, unreviewed)",
+        "violates_property": "E authorization"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:reach-gateway-service",
+      "label": "Reach the gateway management service",
+      "properties": {
+        "kill_chain_phase": "delivery"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:use-default-creds",
+      "label": "Authenticate with unchanged default credentials",
+      "properties": {}
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:actuate-via-can",
+      "label": "Send an actuation command onto the safety CAN bus",
+      "properties": {
+        "description": "Requires BOTH reachability AND default creds — an AND gate (§2a).",
+        "gate": "and_gate",
+        "kill_chain_phase": "exploitation"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:forge-jwt-none-alg",
+      "label": "Forge a JWT using the alg=none bypass",
+      "properties": {}
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:forge-jwt-weak-key",
+      "label": "Forge a JWT using a leaked weak signing key",
+      "properties": {}
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:call-fleet-api",
+      "label": "Call the fleet API with a forged token",
+      "properties": {
+        "description": "Either the alg=none bypass OR a weak-key forgery suffices — an OR gate (§2a).",
+        "gate": "or_gate",
+        "kill_chain_phase": "exploitation"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:chain-to-in-vehicle",
+      "label": "Use fleet API access to push a command to a target vehicle",
+      "properties": {
+        "kill_chain_phase": "lateral_movement"
+      }
+    },
+    {
+      "domain_type": "AttackPath",
+      "id": "attack-path:in-vehicle-actuation",
+      "label": "In-vehicle default-credential actuation path",
+      "properties": {
+        "attack_feasibility": "medium",
+        "description": "Human-reviewed subsystem path; feasibility human-rated (§3)."
+      }
+    },
+    {
+      "domain_type": "AttackPath",
+      "id": "attack-path:cloud-jwt-forgery",
+      "label": "Cloud JWT-forgery path",
+      "properties": {
+        "attack_feasibility": "high",
+        "description": "Human-reviewed subsystem path; feasibility human-rated (§3)."
+      }
+    },
+    {
+      "domain_type": "AttackPath",
+      "id": "attack-path:cross-subsystem-chain",
+      "label": "Cloud-to-in-vehicle cross-subsystem chain (AI-proposed)",
+      "properties": {
+        "attack_feasibility": "low",
+        "description": "AI-PROPOSED path pivoting from the cloud path into the in-vehicle path. `pivots_to` the in-vehicle path; realizing edge is a `proposed` Assertion."
+      }
+    },
+    {
+      "domain_type": "DamageScenario",
+      "id": "damage-scenario:fleet-wide-compromise",
+      "label": "Fleet-wide compromise — unsafe actuation and mass telemetry breach",
+      "properties": {
+        "description": "System-level damage the subsystem threats ROLL UP to (§8 V3). Impact categories live on the system RiskScore (§3), reduced worst-path across subsystems."
+      }
+    },
+    {
+      "domain_type": "Mitigation",
+      "id": "mitigation:enforce-unique-creds",
+      "label": "Enforce unique provisioned credentials; disable defaults",
+      "properties": {
+        "catalog_ref": "D3FEND:D3-SPP",
+        "description": "Control for the in-vehicle default-credential threat (§5).",
+        "mitigation_status": "complete"
+      }
+    },
+    {
+      "domain_type": "Mitigation",
+      "id": "mitigation:pin-jwt-alg-and-rotate",
+      "label": "Pin JWT algorithm; verify signatures; rotate keys",
+      "properties": {
+        "catalog_ref": "D3FEND:D3-CH",
+        "description": "Control for the cloud JWT-bypass threat; still being rolled out.",
+        "external_refs": [
+          "JIRA-CVS-77"
+        ],
+        "mitigation_status": "in_progress"
+      }
+    },
+    {
+      "domain_type": "RiskScore",
+      "id": "risk-score:fleet-wide-system",
+      "label": "Risk — fleet-wide system compromise (rolled up)",
+      "properties": {
+        "description": "SYSTEM-level composite vector (ADR-0006). Reduces WORST-PATH across the two reviewed subsystem attack paths (in-vehicle + cloud). This is the §8 vector-3 roll-up; per-S/F/O/P cross-subsystem aggregation with a human override is NOT a core class (reported limit). No Environment parameter (§8 MVP).",
+        "feasibility": "high",
+        "impact": "{\"financial\": \"severe\", \"operational\": \"severe\", \"privacy\": \"major\", \"safety\": \"severe\"}",
+        "mitigation_status": "in_progress",
+        "risk": "safety 5 / financial 5 / operational 5 / privacy 4 (worst-path over subsystems, high feasibility; 1–5 per 21434 M(I,F))"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:vuln-prop",
+      "label": "Review — accept vuln propagation",
+      "properties": {
+        "justification": "jwt-lib is a dependency of the ingest API; signature bypass reachable.",
+        "priority": "high",
+        "review_status": "accepted"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:cve-cwe",
+      "label": "Review, accept the CVE-to-CWE link",
+      "properties": {
+        "justification": "The CWE in the CVE record (illustrative) matches the root cause; jwt-verify accepts tokens whose signature it does not check.",
+        "priority": "medium",
+        "review_status": "accepted"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:cwe-capec",
+      "label": "Review — accept CWE↔CAPEC mapping",
+      "properties": {
+        "justification": "Authentication-abuse pattern matches the signature-verification weakness.",
+        "priority": "medium",
+        "review_status": "accepted"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:rollup-in-vehicle",
+      "label": "Review — accept in-vehicle roll-up",
+      "properties": {
+        "justification": "Subsystem threat contributes to the fleet-wide system damage; roll-up confirmed.",
+        "priority": "high",
+        "review_status": "accepted"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:rollup-cloud",
+      "label": "Review — accept cloud roll-up",
+      "properties": {
+        "justification": "Cloud subsystem threat contributes to the fleet-wide system damage; roll-up confirmed.",
+        "priority": "high",
+        "review_status": "accepted"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:ai-cross-subsystem",
+      "label": "Review — AI-proposed cross-subsystem chain (changes requested)",
+      "properties": {
+        "description": "Human triage of the AI hypothesis; NOT accepted.",
+        "justification": "AI-proposed chain. The push-to-vehicle step assumes a command path the fleet API does not expose; needs evidence before acceptance. Keep as a flagged hypothesis, do not treat as reviewed.",
+        "priority": "medium",
+        "review_status": "changes_requested"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:vuln-propagation",
+      "label": "CVE propagates to the ingest API along uses_component",
+      "properties": {
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "description": "Reviewed propagation edge (§5), reified so a Review can point at it.",
+        "predicate": "propagates_to"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:cve-cwe-instance",
+      "label": "CVE-2026-52001 is an instance of CWE-347",
+      "properties": {
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "description": "The CVE-to-CWE step of the ADR-0002 backbone (CVE, CWE, CAPEC, ATT&CK). Vulnerability has no Weakness slot, so the link is reified, with the predicate ARCH-0001 §3 and PLAN-0002 §5 name (RPT-0004 mapping.md, finding 7). In a real import the CWE comes from the CVE record and stays proposed until a human reviews it (R-018).",
+        "predicate": "instance_of"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:cwe-capec-map",
+      "label": "CWE-347 is exploited by CAPEC-114",
+      "properties": {
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "description": "Human-reviewed CWE↔CAPEC mapping (§2).",
+        "predicate": "exploited_by"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:rollup-in-vehicle",
+      "label": "In-vehicle threat rolls up to the system damage scenario",
+      "properties": {
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "description": "Reviewed roll-up edge from a subsystem threat to the system-level damage (§8 V3).",
+        "predicate": "rolls_up_to"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:rollup-cloud",
+      "label": "Cloud threat rolls up to the system damage scenario",
+      "properties": {
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "predicate": "rolls_up_to"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:ai-cross-subsystem",
+      "label": "AI-proposed — cloud access chains into in-vehicle actuation",
+      "properties": {
+        "assertion_status": "proposed",
+        "confidence": "low",
+        "description": "AI-PROPOSED edge. assertion_status `proposed` (NOT accepted); a hypothesis until a human accepts it. The paired Review requests changes.",
+        "predicate": "realizes_threat"
+      }
+    },
+    {
+      "domain_type": "LifecyclePhase",
+      "id": "lifecycle-phase:implementation",
+      "label": "Implementation",
+      "properties": {
+        "code": "implementation"
+      }
+    },
+    {
+      "domain_type": "LifecyclePhase",
+      "id": "lifecycle-phase:production",
+      "label": "Production / manufacturing",
+      "properties": {
+        "code": "production"
+      }
+    },
+    {
+      "domain_type": "LifecyclePhase",
+      "id": "lifecycle-phase:deployment",
+      "label": "Deployment / commissioning",
+      "properties": {
+        "code": "deployment"
+      }
+    },
+    {
+      "domain_type": "LifecyclePhase",
+      "id": "lifecycle-phase:operation",
+      "label": "Operation / use",
+      "properties": {
+        "code": "operation"
+      }
+    },
+    {
+      "domain_type": "View",
+      "id": "view:cvs-system-graph",
+      "label": "Connected-Vehicle System attack-path graph",
+      "properties": {
+        "description": "Interactive-graph-able lens over the system KG (§10, R-014): projection `graph`, opened from a bounded focus query spanning both subsystems. Core View.",
+        "focus_query": "product:connected-vehicle-system -> composed_of* -> threat_instances -> attack_paths",
+        "projection": "graph"
+      }
+    }
+  ]
+}

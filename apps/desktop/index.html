@@ -10,6 +10,7 @@
   </head>
   <body>
     <main class="app-shell">
+      <div id="preview-banner" class="preview-banner" role="note" hidden>Example data, read-only preview</div>
       <header class="app-header">
         <div class="app-header-copy">
           <p class="eyebrow">Threat Radar</p>
@@ -18,10 +19,10 @@
         </div>
         <div class="model-picker">
           <label for="model-select">Example model</label>
-          <select id="model-select" disabled><option value="">Waiting for the local engine…</option></select>
+          <select id="model-select" disabled><option value="">Loading example models…</option></select>
           <p id="model-picker-status" class="hint" role="status" aria-live="polite"></p>
         </div>
-        <div class="engine-panel"><div id="engine-status" class="status status-pending" role="status" aria-live="polite">checking local engine…</div><p id="engine-hint" class="hint"></p></div>
+        <div id="engine-panel" class="engine-panel"><div id="engine-status" class="status status-pending" role="status" aria-live="polite">checking local engine…</div><p id="engine-hint" class="hint"></p></div>
       </header>
       <nav class="app-navigation" aria-label="Application views">
         <div class="view-tabs" role="tablist" aria-label="Application views">
@@ -35,7 +36,7 @@
 
       <section id="report-view-panel" class="view-panel" role="tabpanel" aria-labelledby="report-tab">
         <div id="report-scroll" class="report-scroll">
-          <div class="report-status-row"><p id="report-status" class="report-status is-pending" role="status" aria-live="polite">Waiting for the local engine…</p><button id="report-retry" class="retry-button" type="button" hidden>Retry</button></div>
+          <div class="report-status-row"><p id="report-status" class="report-status is-pending" role="status" aria-live="polite">Loading model data…</p><button id="report-retry" class="retry-button" type="button" hidden>Retry</button></div>
           <div id="report-content" class="report-content"></div>
         </div>
       </section>
@@ -92,7 +93,7 @@
             <p class="eyebrow">Selected document</p><h2 id="library-detail-title">Select a document</h2>
             <div class="library-detail-badges"><span id="library-detail-type" class="type-chip" hidden></span><span id="library-detail-record-status" class="status-chip" hidden></span></div>
             <div class="library-detail-id"><span>Document ID</span><code id="library-detail-id" class="stable-id"></code></div>
-            <p id="library-detail-status" class="direction-help" role="status" aria-live="polite">Choose a row to inspect its full library record.</p>
+            <p id="library-detail-status" class="direction-help" role="status" aria-live="polite">Choose a row to inspect its document details.</p>
             <dl id="library-detail-list" class="property-list"></dl>
             <section id="library-detail-evidence" class="inspector-section library-detail-section" hidden><h3>Evidence &amp; Extraction</h3><p id="library-detail-evidence-summary" class="library-detail-summary"></p></section>
             <section id="library-detail-assessment" class="inspector-section library-detail-section" hidden><h3>Research assessment</h3><dl id="library-detail-assessment-list" class="property-list"></dl></section>
@@ -110,7 +111,7 @@
           <section class="graph-panel" aria-label="Interactive graph">
             <div class="graph-toolbar"><div><p class="eyebrow">Explore graph · for model developers</p><h2>Model graph</h2><div class="graph-options"><label class="bookkeeping-toggle"><input id="graph-show-bookkeeping" type="checkbox" /> Show bookkeeping records (assertions, reviews, parties, phases, views)</label><button id="graph-show-all" class="show-all-button" type="button" hidden disabled>Show whole model</button></div></div><div class="graph-toolbar-status"><span id="graph-loading" class="graph-loading" role="status" aria-live="polite" hidden></span><p>Opens on the threats and their neighbours; Expand neighborhood loads more · Scroll to zoom · drag background to pan · drag nodes to position</p></div></div>
             <div class="path-toolbar"><label for="attack-path-select">Highlight attack path</label><select id="attack-path-select"><option value="">Choose an attack path…</option></select><button id="clear-attack-path" type="button" disabled>Clear highlight</button><span id="attack-path-status" class="path-status" role="status" aria-live="polite"></span></div>
-            <div class="path-toolbar view-toolbar"><label for="saved-view-select">Saved view</label><select id="saved-view-select" disabled><option value="">No saved views</option></select><button id="clear-saved-view" type="button" disabled>Show all</button><span id="saved-view-status" class="path-status" role="status" aria-live="polite"></span></div>
+            <div id="saved-view-toolbar" class="path-toolbar view-toolbar"><label for="saved-view-select">Saved view</label><select id="saved-view-select" disabled><option value="">No saved views</option></select><button id="clear-saved-view" type="button" disabled>Show all</button><span id="saved-view-status" class="path-status" role="status" aria-live="polite"></span></div>
             <details id="graph-proposals" class="graph-proposals"><summary id="graph-proposals-summary">Pending proposals (0)</summary><p class="direction-help">Agent proposals for this model (tmodel propose). Read-only here; the sponsor decides each one with tmodel accept in a pull request (PROC-0002).</p><ul id="graph-proposals-list" class="graph-proposals-list"></ul></details>
             <div id="graph-canvas" class="graph-canvas"></div>
             <div class="graph-legend"><ul id="type-legend" class="type-legend" aria-label="Node type legend"></ul><ul id="relationship-legend" class="type-legend relationship-legend" aria-label="Relationship review-status legend"></ul></div>

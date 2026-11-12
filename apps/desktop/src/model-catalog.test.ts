@@ -8,6 +8,7 @@ import {
   modelSummaryLine,
   readRememberedModel,
   rememberModel,
+  syncModelUrl,
 } from "./model-catalog";
 import type { ModelListResponse, ModelSummary } from "./model-types";
 
@@ -73,6 +74,19 @@ describe("remembering the model", () => {
     expect(() => rememberModel("x.yaml", broken)).not.toThrow();
     expect(readRememberedModel(broken)).toBeNull();
     expect(readRememberedModel(undefined)).toBeNull();
+  });
+});
+
+describe("shareable model URLs", () => {
+  it("writes the stable model id, preserves other parameters and removes the developer file switch", () => {
+    const history = { replaceState: vi.fn() };
+    const href = syncModelUrl(
+      MODELS[1],
+      "https://threat-radar.github.io/tmodel/app/?file=old.yaml&graphSource=fixture",
+      history,
+    );
+    expect(href).toBe("https://threat-radar.github.io/tmodel/app/?graphSource=fixture&model=mvp-02-automotive-ecu");
+    expect(history.replaceState).toHaveBeenCalledWith(null, "", new URL(href));
   });
 });
 

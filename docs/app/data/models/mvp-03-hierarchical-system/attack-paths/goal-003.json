@@ -1,0 +1,20 @@
+{
+  "file": "mvp-03-hierarchical-system.yaml",
+  "goal": "threat-instance:gateway-default-creds",
+  "paths": [
+    {
+      "authored_path": "attack-path:in-vehicle-actuation",
+      "goal_step": "attack-step:actuate-via-can",
+      "review": {
+        "assertion_status": null,
+        "review_status": null,
+        "reviewed": false
+      },
+      "steps": [
+        "attack-step:reach-gateway-service",
+        "attack-step:use-default-creds",
+        "attack-step:actuate-via-can"
+      ]
+    }
+  ]
+}

@@ -30,6 +30,12 @@ whole-library counts.
 
 `GET /library?id=<record id>` returns one record in full, for a details view.
 
+The published browser preview does not use this 12-record development fixture.
+`docs/publishing/render_app.py` writes the complete public table to
+`docs/app/data/library/table.json`; the browser filters, searches, sorts and
+builds bounded row-derived document details without publishing local record
+paths or the full library records.
+
 ## Weakness table (#144)
 
 `weakness-table.json` is the engine's answer to `GET /weaknesses/table`, with no

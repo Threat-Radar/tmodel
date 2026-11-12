@@ -1,0 +1,8 @@
+{
+  "file": "pv-01-can-injection-theft.yaml",
+  "reviewed_threats": [],
+  "steps": 5,
+  "threats": [
+    "threat-instance:spoofed-key-validated"
+  ]
+}

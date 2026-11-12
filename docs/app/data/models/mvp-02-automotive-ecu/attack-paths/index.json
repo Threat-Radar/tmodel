@@ -1,0 +1,11 @@
+{
+  "file": "mvp-02-automotive-ecu.yaml",
+  "reviewed_threats": [
+    "threat-instance:remote-diag-injection"
+  ],
+  "steps": 7,
+  "threats": [
+    "threat-instance:infotainment-pivot",
+    "threat-instance:remote-diag-injection"
+  ]
+}
