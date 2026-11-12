@@ -157,7 +157,7 @@
       "counts": {
         "assets": 6,
         "attack_paths": 5,
-        "components": 5,
+        "components": 6,
         "damage_scenarios": 5,
         "mitigations": 5,
         "requirements": 0,

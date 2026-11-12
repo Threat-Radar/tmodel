@@ -97,7 +97,7 @@ source code and challenge list; no reviewer is assigned to it yet.
 |---|---|---|---|
 | `pv-01-can-injection-theft.yaml` | keyless car theft by CAN injection (Toyota RAV4, CVE-2023-29389) | Canis Automotive Labs write-up, 2023-04-03; CVE record | Asset, nested TrustBoundary zones, DataFlows on two CAN buses, `instance_of` with a CVE whose CWE came from CISA-ADP (Assertion with `asserted_by`) |
 | `pv-02-dealer-portal-owner-data.yaml` | theft of owners' personal data and silent takeover through a dealer portal (Kia, 2024) | Curry et al. write-up, 2024 | Assets with confidentiality, a dealer-only zone, DataFlows that carry personal data, a Weakness without a CVE (an `exploits` Assertion by a `software_agent` Party) |
-| `pv-03-owasp-juice-shop.yaml` | five attacks on a training web shop: SQL-injection admin login, another customer's basket, DOM XSS, a confidential document in /ftp, a forged login token (CVE-2015-9235) | OWASP Juice Shop v20.4.0 source and challenge list; NVD | a software product with a CVE on a pinned library (purl), CWE and CAPEC links, an AND-gate step; each path matches a Juice Shop challenge (DL-0049) |
+| `pv-03-owasp-juice-shop.yaml` | five attacks on a training web shop: SQL-injection admin login, another customer's basket, DOM XSS, a confidential document in /ftp, a forged login token (CVE-2015-9235) | OWASP Juice Shop v20.4.0 source and challenge list; NVD | a software product with a CVE on a pinned library (purl), CWE and CAPEC links, an AND-gate step, and a source for every step (an Assertion with evidence); each path matches a Juice Shop challenge (DL-0049) |
 
 ```sh
 for v in pv-01-can-injection-theft pv-02-dealer-portal-owner-data pv-03-owasp-juice-shop; do

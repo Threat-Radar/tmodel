@@ -11,6 +11,7 @@
         "reviewed": false
       },
       "steps": [
+        "attack-step:get-public-key",
         "attack-step:sign-wrong-algorithm",
         "attack-step:use-forged-token"
       ]

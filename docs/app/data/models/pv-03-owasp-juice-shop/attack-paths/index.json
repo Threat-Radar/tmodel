@@ -1,7 +1,7 @@
 {
   "file": "pv-03-owasp-juice-shop.yaml",
   "reviewed_threats": [],
-  "steps": 12,
+  "steps": 13,
   "threats": [
     "threat-instance:basket-idor",
     "threat-instance:ftp-listing",

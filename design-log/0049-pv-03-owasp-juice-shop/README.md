@@ -4,9 +4,9 @@ id: DL-0049
 title: "Proposal vector pv-03: OWASP Juice Shop, a software product to test the app on"
 type: process
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 date: "2026-11-09"
-updated: "2026-11-11"
+updated: "2026-11-12"
 record: DL-0049
 bears_on: [DEC-001a]
 defers_to: ARCH-0001
@@ -24,16 +24,16 @@ OWASP Juice Shop fits: it is a web shop that OWASP keeps insecure on purpose for
 
 ## What was produced
 
-- **`spec/vectors/pv-03-owasp-juice-shop.yaml`**, modeled at Juice Shop v20.4.0 (commit `266448aba68cd8ba5915f526a128da4fa7bc3f9f`): 1 product, 5 components, 6 assets, 2 trust boundaries, 4 data flows, 6 weaknesses, 1 vulnerability, 3 attack patterns, 5 damage scenarios, 5 threats, 12 attack steps, 5 attack paths, 5 mitigations and 12 Assertions. Every Assertion is `proposed`, and no Review is recorded.
+- **`spec/vectors/pv-03-owasp-juice-shop.yaml`**, modeled at Juice Shop v20.4.0 (commit `266448aba68cd8ba5915f526a128da4fa7bc3f9f`): 1 product, 6 components, 6 assets, 2 trust boundaries, 4 data flows, 6 weaknesses, 1 vulnerability, 3 attack patterns, 5 damage scenarios, 5 threats, 13 attack steps, 5 attack paths, 5 mitigations and 20 Assertions. Every attack step has an Assertion whose evidence links the code lines or the challenge it rests on. Every Assertion is `proposed`, and no Review is recorded.
 - **Five threats,** each matching a Juice Shop challenge and the code Juice Shop marks for it:
 
   | Threat | Juice Shop challenge | Code at v20.4.0 | Weakness |
   |---|---|---|---|
   | Log in as the administrator through SQL injection | Login Admin, then Admin Section | `routes/login.ts` line 34; `frontend/src/app/app.routing.ts` line 80 | CWE-89 |
-  | Read another customer's basket | View Basket | `routes/basket.ts` lines 18 and 19 | CWE-639 |
+  | Read another customer's basket | View Basket | `routes/basket.ts` lines 18 and 19; `server.ts` lines 388 and 431 (the basket API needs a login) | CWE-639 |
   | Run a script in a shopper's session through the search page | DOM XSS | `frontend/src/app/search-result/search-result.component.ts` line 146 | CWE-79 |
-  | Download confidential documents from /ftp | Confidential Document | `server.ts` lines 231 and 294 | CWE-548 |
-  | Forge a login token | Forged Signed JWT | `package.json` line 123 (jsonwebtoken 0.4.0) | CVE-2015-9235 (CWE-327, CWE-20) |
+  | Download confidential documents from /ftp | Confidential Document | `server.ts` lines 231 and 294; `routes/fileServer.ts` lines 26 to 29 | CWE-548 |
+  | Forge a login token | Forged Signed JWT | `server.ts` lines 301 to 303 (the public key's folder); `lib/insecurity.ts` lines 20 and 52; `package.json` line 123 (jsonwebtoken 0.4.0) | CVE-2015-9235 (CWE-327, CWE-20) |
 
 - **`docs/models/pv-03-owasp-juice-shop.html`** and the models index, regenerated with `render_models.py`.
 - **The browser preview's data** (`docs/app/`, DL-0051), regenerated with `render_app.py`, so the preview lists nine models and opens this one at `app/?model=pv-03-owasp-juice-shop`.
@@ -43,13 +43,13 @@ OWASP Juice Shop fits: it is a web shop that OWASP keeps insecure on purpose for
 ## How it was checked
 
 - `linkml-validate` against the proposed container (`ExampleModelProposed`): no issues.
-- `design-log/0024-schema-proposal-g13/check-refs.py` across all nine vectors: every reference resolves (pv-03: 78 objects, 147 references).
+- `design-log/0024-schema-proposal-g13/check-refs.py` across all nine vectors: every reference resolves (pv-03: 88 objects, 175 references).
 - `tmodel models`: nine example models, pv-03 listed as a proposal example with 5 threats, 0 reviewed. The app's model picker reads this list, so pv-03 appears there with no code change.
-- `tmodel paths --goal` for each threat: one path each, matching the challenge's steps, and all marked not reviewed.
-- Engine tests: 331 passed, 5 skipped. Frontend: `npm run typecheck` clean, `vitest` 375 passed in 30 files, including the published-page tests over all nine model pages.
+- `tmodel paths --goal` for each threat: one path each, matching the challenge's steps, 13 steps in all, and all marked not reviewed.
+- Engine tests: 331 passed and 5 skipped locally. CI's engine jobs show 329 passed and 7 skipped: they don't check out the library submodule, so the two tests that read it skip. Frontend: `npm run typecheck` clean, `vitest` 375 passed in 30 files, including the published-page tests over all nine model pages.
 - `render_models.py --check` (10 pages) and `render_app.py --check` (9 models, 550 library records): up to date. `check_links.py` (436 pages) and `check_identities.py` (487 files): clean.
 - In a browser: with `docs/` served at `/tmodel/`, headless Chrome opens `app/?model=pv-03-owasp-juice-shop` on this model's report, with nine models in the picker and "5 threats, 0 with an accepted review, 5 attack paths".
-- Facts: the release, commit and challenge list come from GitHub; the code lines from the pinned commit; CVE-2015-9235, its CWEs and its fixed version (4.2.2) from NVD; the CWE and CAPEC names from MITRE (CWE 5.0, CAPEC 3.9).
+- Facts: the release, commit and challenge list come from GitHub; the code lines, and the Forged Signed JWT hint that calls the public key mandatory (`challenges.yml` line 466), from the pinned commit; CVE-2015-9235, its CWEs and its fixed version (4.2.2) from NVD; the CWE and CAPEC names from MITRE (CWE 5.0, CAPEC 3.9).
 
 ## Choices the agent made, open to review
 
@@ -59,16 +59,30 @@ OWASP Juice Shop fits: it is a web shop that OWASP keeps insecure on purpose for
 - **Mitigations are `accepted_risk`.** Juice Shop leaves them out on purpose. Each names the control that the challenge's mitigation link describes, or is marked as a model suggestion where the challenge gives none.
 - **The product id is the GitHub package URL of the release tag.** No Docker image digest is recorded, because no image was pulled.
 - **Feasibility and impact are unset.** They are human inputs.
+- **Each step's source is an Assertion.** AttackStep has no evidence slot, and an Assertion's predicate is not a closed list. The five steps that exploit a weakness keep `exploits`. The eight others get `targets_element`, the name ThreatInstance's slot already has (ADR-0011), for the component, data flow or asset the step acts on, with the code lines and the challenge as evidence.
+- **A component for the /encryptionkeys folder,** beside the one for /ftp, since the token-forging path starts by reading it.
 - **One notice for every proposal model, worded more generally,** rather than a notice per model: the renderer chooses the notice by the model's kind, and "published sources about a real product" is true of all three proposal models.
 
 ## What a human accepted
 
-Nothing yet. All 12 Assertions are `proposed`, and no Review is recorded.
+- @Clovier, 2026-11-12: make the changes the review of #237 asked for (below).
+
+Nothing in the model is accepted yet. All 20 Assertions are `proposed`, and no Review is recorded.
 
 ## What was rejected, and why
 
 - **No human rejections yet.**
 - **The agent's own choices:** the other 112 challenges are not modeled; CAPEC ids are not guessed where no entry clearly fits; no Docker image digest is recorded without pulling the image.
+- **Dropping the login step from the basket path,** which the review suggested might not be needed: the basket API answers only requests that carry a login token (`server.ts` lines 388 and 431), and View Basket counts only for a logged-in user (`routes/basket.ts` lines 21 to 24). The step stays, and its description now gives the reason.
+
+## Changes after review (2026-11-12)
+
+@kriishnaa-18 reviewed #237 on 2026-11-12 and asked for two changes before approving. Both are made:
+
+- **The forged-token path lacked a step.** Algorithm confusion needs the shop's RSA public key, and Juice Shop's own hint for Forged Signed JWT calls getting it mandatory. The path now starts with `attack-step:get-public-key`: the server lists `/encryptionkeys` and serves its files (`server.ts` lines 301 to 303), and the token checks use the key kept there (`lib/insecurity.ts` lines 20 and 52). The signing step names the trick, an HS256 token signed with the public key, and the last step cites the challenge's check (`routes/verify.ts` lines 90 to 91 and 116 to 133).
+- **Seven of the twelve steps had no evidence-bearing Assertion,** which #230 asks of every step. Each of the eight steps without one, the new step included, now has a `targets_element` Assertion whose evidence links the code lines and, where there is one, the challenge.
+
+The engine test counts above now say which run they come from. Validating the proposal vectors in CI, also suggested, is left for its own change: CI's schema job checks the mvp, tv and sdl vectors but no pv ones, and the workflow is under `.github/`, which CODEOWNERS gives to @nymble.
 
 ## Next steps
 

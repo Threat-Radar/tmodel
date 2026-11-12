@@ -10,7 +10,10 @@
 # data/static/challenges.yml (118 challenges; SHA-256
 # 09e98ee2b10d10cc7ec3e749c4e251928f935db51dd6fc9e94fe40f8ce012c92), routes/login.ts,
 # routes/basket.ts, server.ts, frontend/src/app/search-result/search-result.component.ts,
-# frontend/src/app/app.routing.ts, frontend/src/app/app.guard.ts and package.json.
+# frontend/src/app/app.routing.ts, frontend/src/app/app.guard.ts and package.json; and on
+# 2026-11-12, after review, routes/fileServer.ts, routes/verify.ts and lib/insecurity.ts.
+# Every attack step has an Assertion whose evidence links the code lines or the
+# challenge it rests on.
 # CVE-2015-9235 and its CWEs are from its NVD record. CWE and CAPEC names are from
 # MITRE (CWE 5.0, CAPEC 3.9).
 #
@@ -54,6 +57,7 @@ products:
       - component:shop-api
       - component:shop-database
       - component:ftp-browser
+      - component:key-folder
       - component:jsonwebtoken-lib
     manufactured_by: party:owasp
     identifiers: ["pkg:github/juice-shop/juice-shop@v20.4.0"]
@@ -78,6 +82,13 @@ components:
   - id: component:ftp-browser
     name: Public /ftp folder with directory browsing
     description: Serves a folder of files and a browsable listing of it (server.ts).
+    component_kind: service
+    in_trust_zone: trust-boundary:shop-server
+  - id: component:key-folder
+    name: Public /encryptionkeys folder with directory browsing
+    description: >-
+      Serves the shop's key files and a browsable listing of them (server.ts, lines 301 to
+      303), among them jwt.pub, the RSA public key that checks login tokens.
     component_kind: service
     in_trust_zone: trust-boundary:shop-server
   - id: component:jsonwebtoken-lib
@@ -279,13 +290,22 @@ attack_steps:
     kill_chain_phase: actions_on_objectives
   - id: attack-step:own-login
     name: Log in with an ordinary customer account
+    description: >-
+      The basket API answers only requests that carry a login token (server.ts, lines 388
+      and 431), so the attacker needs an account; any customer account will do.
     kill_chain_phase: delivery
     precedes: [attack-step:change-basket-number]
   - id: attack-step:change-basket-number
     name: Ask the API for a basket with another customer's basket number
+    description: >-
+      The basket route looks the basket up by the number in the address alone and never
+      checks it against the token's own basket (routes/basket.ts, lines 18 to 19).
     kill_chain_phase: actions_on_objectives
   - id: attack-step:craft-search-link
     name: Build a search link whose search text is HTML that runs a script
+    description: >-
+      The search page takes its text from the link's q parameter
+      (search-result.component.ts, line 139); the DOM XSS challenge names the payload.
     kill_chain_phase: weaponization
     precedes: [attack-step:shopper-opens-link]
   - id: attack-step:shopper-opens-link
@@ -304,12 +324,28 @@ attack_steps:
     name: Download a confidential document from the listing
     description: The file route serves .md and .pdf files (routes/fileServer.ts).
     kill_chain_phase: actions_on_objectives
+  - id: attack-step:get-public-key
+    name: Download the shop's public key, jwt.pub, from the /encryptionkeys listing
+    description: >-
+      The server lists /encryptionkeys and serves its files (server.ts, lines 301 to 303),
+      and the token checks use the public key kept there (lib/insecurity.ts, line 20).
+      Juice Shop's own hint for Forged Signed JWT calls getting this key mandatory.
+    kill_chain_phase: reconnaissance
+    precedes: [attack-step:sign-wrong-algorithm]
   - id: attack-step:sign-wrong-algorithm
-    name: Sign a token with a symmetric algorithm instead of the shop's RSA key
+    name: Sign a token with HS256, using the shop's public key as the secret
+    description: >-
+      jsonwebtoken 0.4.0 checks a token with whatever algorithm its header names
+      (CVE-2015-9235), so an HS256 token signed with the public key passes a check that
+      expects RS256.
     kill_chain_phase: weaponization
     precedes: [attack-step:use-forged-token]
   - id: attack-step:use-forged-token
     name: Send API requests with the forged token as the chosen identity
+    description: >-
+      The API checks every login token with the public key (lib/insecurity.ts, line 52),
+      so it takes the forged one. Forged Signed JWT counts as solved when an HS256 token
+      for rsa_lord@juice-sh.op passes that check (routes/verify.ts, lines 90 to 91).
     kill_chain_phase: actions_on_objectives
 
 attack_paths:
@@ -331,7 +367,7 @@ attack_paths:
     realizes_threat: threat-instance:ftp-listing
   - id: attack-path:jwt-forgery
     name: Forged token to chosen identity
-    steps: [attack-step:sign-wrong-algorithm, attack-step:use-forged-token]
+    steps: [attack-step:get-public-key, attack-step:sign-wrong-algorithm, attack-step:use-forged-token]
     realizes_threat: threat-instance:jwt-forgery
 
 mitigations:
@@ -429,6 +465,102 @@ assertions:
     asserted_at: "2026-11-09T00:00:00Z"
     generated_by: "AI-drafted from Juice Shop v20.4.0's source, challenge list and NVD (DL-0049)"
     evidence: ["https://nvd.nist.gov/vuln/detail/CVE-2015-9235", "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/package.json#L123"]
+  - id: assertion:find-route-targets-storefront
+    name: The route-finding step reads the storefront's code (AI-proposed)
+    description: The storefront declares the administration route (app.routing.ts, line 80), the line Juice Shop marks for Admin Section.
+    subject: attack-step:find-admin-route
+    predicate: targets_element
+    object: component:storefront
+    confidence: high
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-12T00:00:00Z"
+    generated_by: "AI-drafted from Juice Shop v20.4.0's source and challenge list, after review (DL-0049)"
+    evidence: ["https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/frontend/src/app/app.routing.ts#L80", "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L51-L67"]
+  - id: assertion:open-admin-targets-admin-section
+    name: The administration step opens the administration section (AI-proposed)
+    description: The route's AdminGuard lets a token through only when its role is admin (app.guard.ts, lines 52 to 60).
+    subject: attack-step:open-admin
+    predicate: targets_element
+    object: asset:admin-section
+    confidence: high
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-12T00:00:00Z"
+    generated_by: "AI-drafted from Juice Shop v20.4.0's source and challenge list, after review (DL-0049)"
+    evidence: ["https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/frontend/src/app/app.routing.ts#L79-L83", "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/frontend/src/app/app.guard.ts#L52-L60", "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L51-L67"]
+  - id: assertion:own-login-targets-login-request
+    name: The own-login step uses the login request (AI-proposed)
+    description: The basket API requires a login token (server.ts, lines 388 and 431), and View Basket counts only for a logged-in user whose own basket differs (routes/basket.ts, lines 21 to 24).
+    subject: attack-step:own-login
+    predicate: targets_element
+    object: data-flow:login-request
+    confidence: high
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-12T00:00:00Z"
+    generated_by: "AI-drafted from Juice Shop v20.4.0's source and challenge list, after review (DL-0049)"
+    evidence: ["https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/server.ts#L388", "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/server.ts#L431", "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/basket.ts#L21-L24", "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L1224-L1239"]
+  - id: assertion:craft-link-targets-storefront
+    name: The link-crafting step aims at the storefront's search page (AI-proposed)
+    description: The search page reads its text from the link's q parameter (line 139), and the DOM XSS challenge gives the iframe payload.
+    subject: attack-step:craft-search-link
+    predicate: targets_element
+    object: component:storefront
+    confidence: high
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-12T00:00:00Z"
+    generated_by: "AI-drafted from Juice Shop v20.4.0's source and challenge list, after review (DL-0049)"
+    evidence: ["https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/frontend/src/app/search-result/search-result.component.ts#L139", "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L265-L279"]
+  - id: assertion:read-robots-targets-shop-api
+    name: The robots.txt step reads the server's robots.txt (AI-proposed)
+    description: The server's robots.txt disallows /ftp (server.ts, lines 230 to 231), which names the folder.
+    subject: attack-step:read-robots
+    predicate: targets_element
+    object: component:shop-api
+    confidence: high
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-12T00:00:00Z"
+    generated_by: "AI-drafted from Juice Shop v20.4.0's source and challenge list, after review (DL-0049)"
+    evidence: ["https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/server.ts#L230-L231"]
+  - id: assertion:download-targets-ftp-download
+    name: The download step uses the /ftp download (AI-proposed)
+    description: The file route serves any .md or .pdf file in /ftp, and Confidential Document counts as solved when acquisitions.md is fetched (routes/fileServer.ts, lines 26 to 29).
+    subject: attack-step:download-document
+    predicate: targets_element
+    object: data-flow:ftp-download
+    confidence: high
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-12T00:00:00Z"
+    generated_by: "AI-drafted from Juice Shop v20.4.0's source and challenge list, after review (DL-0049)"
+    evidence: ["https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/fileServer.ts#L26-L29", "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/fileServer.ts#L56-L57", "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L253-L264"]
+  - id: assertion:get-key-targets-key-folder
+    name: The public-key step reads the /encryptionkeys folder (AI-proposed)
+    description: The server lists /encryptionkeys (server.ts, lines 301 to 303), the token checks load jwt.pub from it (lib/insecurity.ts, line 20), and the challenge's hint calls the key mandatory (challenges.yml, line 466).
+    subject: attack-step:get-public-key
+    predicate: targets_element
+    object: component:key-folder
+    confidence: high
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-12T00:00:00Z"
+    generated_by: "AI-drafted from Juice Shop v20.4.0's source and challenge list, after review (DL-0049)"
+    evidence: ["https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/server.ts#L301-L303", "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/lib/insecurity.ts#L20", "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L466"]
+  - id: assertion:forged-token-targets-token-flow
+    name: The forged-token step sends the token on API requests (AI-proposed)
+    description: The API checks tokens with the public key (lib/insecurity.ts, line 52), and the challenge is solved by an HS256 token for rsa_lord that passes that check (routes/verify.ts, lines 90 to 91 and 116 to 133).
+    subject: attack-step:use-forged-token
+    predicate: targets_element
+    object: data-flow:token-on-request
+    confidence: medium
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-12T00:00:00Z"
+    generated_by: "AI-drafted from Juice Shop v20.4.0's source and challenge list, after review (DL-0049)"
+    evidence: ["https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/lib/insecurity.ts#L52", "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/verify.ts#L90-L91", "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/verify.ts#L116-L133", "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L455-L472"]
   - id: assertion:cve-2015-9235-propagates-to-jsonwebtoken
     name: CVE-2015-9235 is in the jsonwebtoken 0.4.0 component (AI-proposed)
     subject: vulnerability:cve-2015-9235

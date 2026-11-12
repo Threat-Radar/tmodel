@@ -29,6 +29,13 @@
       "target": "component:ftp-browser"
     },
     {
+      "id": "relationship:product:juice-shop|composed_of|component:key-folder",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "product:juice-shop",
+      "target": "component:key-folder"
+    },
+    {
       "id": "relationship:product:juice-shop|composed_of|component:jsonwebtoken-lib",
       "properties": {},
       "relationship_type": "composed_of",
@@ -75,6 +82,13 @@
       "properties": {},
       "relationship_type": "in_trust_zone",
       "source": "component:ftp-browser",
+      "target": "trust-boundary:shop-server"
+    },
+    {
+      "id": "relationship:component:key-folder|in_trust_zone|trust-boundary:shop-server",
+      "properties": {},
+      "relationship_type": "in_trust_zone",
+      "source": "component:key-folder",
       "target": "trust-boundary:shop-server"
     },
     {
@@ -267,6 +281,13 @@
       "target": "attack-step:download-document"
     },
     {
+      "id": "relationship:attack-step:get-public-key|precedes|attack-step:sign-wrong-algorithm",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:get-public-key",
+      "target": "attack-step:sign-wrong-algorithm"
+    },
+    {
       "id": "relationship:attack-step:sign-wrong-algorithm|precedes|attack-step:use-forged-token",
       "properties": {},
       "relationship_type": "precedes",
@@ -383,6 +404,13 @@
       "relationship_type": "realizes_threat",
       "source": "attack-path:jwt-forgery",
       "target": "threat-instance:jwt-forgery"
+    },
+    {
+      "id": "relationship:attack-path:jwt-forgery|steps|attack-step:get-public-key",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:jwt-forgery",
+      "target": "attack-step:get-public-key"
     },
     {
       "id": "relationship:attack-path:jwt-forgery|steps|attack-step:sign-wrong-algorithm",
@@ -656,6 +684,174 @@
       "relationship_type": "subject",
       "source": "assertion:forge-step-exploits-cve-2015-9235",
       "target": "attack-step:sign-wrong-algorithm"
+    },
+    {
+      "id": "relationship:assertion:find-route-targets-storefront|asserted_by|party:ai-drafter",
+      "properties": {},
+      "relationship_type": "asserted_by",
+      "source": "assertion:find-route-targets-storefront",
+      "target": "party:ai-drafter"
+    },
+    {
+      "id": "relationship:assertion:find-route-targets-storefront|object|component:storefront",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:find-route-targets-storefront",
+      "target": "component:storefront"
+    },
+    {
+      "id": "relationship:assertion:find-route-targets-storefront|subject|attack-step:find-admin-route",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:find-route-targets-storefront",
+      "target": "attack-step:find-admin-route"
+    },
+    {
+      "id": "relationship:assertion:open-admin-targets-admin-section|asserted_by|party:ai-drafter",
+      "properties": {},
+      "relationship_type": "asserted_by",
+      "source": "assertion:open-admin-targets-admin-section",
+      "target": "party:ai-drafter"
+    },
+    {
+      "id": "relationship:assertion:open-admin-targets-admin-section|object|asset:admin-section",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:open-admin-targets-admin-section",
+      "target": "asset:admin-section"
+    },
+    {
+      "id": "relationship:assertion:open-admin-targets-admin-section|subject|attack-step:open-admin",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:open-admin-targets-admin-section",
+      "target": "attack-step:open-admin"
+    },
+    {
+      "id": "relationship:assertion:own-login-targets-login-request|asserted_by|party:ai-drafter",
+      "properties": {},
+      "relationship_type": "asserted_by",
+      "source": "assertion:own-login-targets-login-request",
+      "target": "party:ai-drafter"
+    },
+    {
+      "id": "relationship:assertion:own-login-targets-login-request|object|data-flow:login-request",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:own-login-targets-login-request",
+      "target": "data-flow:login-request"
+    },
+    {
+      "id": "relationship:assertion:own-login-targets-login-request|subject|attack-step:own-login",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:own-login-targets-login-request",
+      "target": "attack-step:own-login"
+    },
+    {
+      "id": "relationship:assertion:craft-link-targets-storefront|asserted_by|party:ai-drafter",
+      "properties": {},
+      "relationship_type": "asserted_by",
+      "source": "assertion:craft-link-targets-storefront",
+      "target": "party:ai-drafter"
+    },
+    {
+      "id": "relationship:assertion:craft-link-targets-storefront|object|component:storefront",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:craft-link-targets-storefront",
+      "target": "component:storefront"
+    },
+    {
+      "id": "relationship:assertion:craft-link-targets-storefront|subject|attack-step:craft-search-link",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:craft-link-targets-storefront",
+      "target": "attack-step:craft-search-link"
+    },
+    {
+      "id": "relationship:assertion:read-robots-targets-shop-api|asserted_by|party:ai-drafter",
+      "properties": {},
+      "relationship_type": "asserted_by",
+      "source": "assertion:read-robots-targets-shop-api",
+      "target": "party:ai-drafter"
+    },
+    {
+      "id": "relationship:assertion:read-robots-targets-shop-api|object|component:shop-api",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:read-robots-targets-shop-api",
+      "target": "component:shop-api"
+    },
+    {
+      "id": "relationship:assertion:read-robots-targets-shop-api|subject|attack-step:read-robots",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:read-robots-targets-shop-api",
+      "target": "attack-step:read-robots"
+    },
+    {
+      "id": "relationship:assertion:download-targets-ftp-download|asserted_by|party:ai-drafter",
+      "properties": {},
+      "relationship_type": "asserted_by",
+      "source": "assertion:download-targets-ftp-download",
+      "target": "party:ai-drafter"
+    },
+    {
+      "id": "relationship:assertion:download-targets-ftp-download|object|data-flow:ftp-download",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:download-targets-ftp-download",
+      "target": "data-flow:ftp-download"
+    },
+    {
+      "id": "relationship:assertion:download-targets-ftp-download|subject|attack-step:download-document",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:download-targets-ftp-download",
+      "target": "attack-step:download-document"
+    },
+    {
+      "id": "relationship:assertion:get-key-targets-key-folder|asserted_by|party:ai-drafter",
+      "properties": {},
+      "relationship_type": "asserted_by",
+      "source": "assertion:get-key-targets-key-folder",
+      "target": "party:ai-drafter"
+    },
+    {
+      "id": "relationship:assertion:get-key-targets-key-folder|object|component:key-folder",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:get-key-targets-key-folder",
+      "target": "component:key-folder"
+    },
+    {
+      "id": "relationship:assertion:get-key-targets-key-folder|subject|attack-step:get-public-key",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:get-key-targets-key-folder",
+      "target": "attack-step:get-public-key"
+    },
+    {
+      "id": "relationship:assertion:forged-token-targets-token-flow|asserted_by|party:ai-drafter",
+      "properties": {},
+      "relationship_type": "asserted_by",
+      "source": "assertion:forged-token-targets-token-flow",
+      "target": "party:ai-drafter"
+    },
+    {
+      "id": "relationship:assertion:forged-token-targets-token-flow|object|data-flow:token-on-request",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:forged-token-targets-token-flow",
+      "target": "data-flow:token-on-request"
+    },
+    {
+      "id": "relationship:assertion:forged-token-targets-token-flow|subject|attack-step:use-forged-token",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:forged-token-targets-token-flow",
+      "target": "attack-step:use-forged-token"
     },
     {
       "id": "relationship:assertion:cve-2015-9235-propagates-to-jsonwebtoken|asserted_by|party:ai-drafter",
@@ -1101,6 +1297,110 @@
       "target": "vulnerability:cve-2015-9235"
     },
     {
+      "id": "relationship:attack-step:find-admin-route|targets_element|component:storefront",
+      "properties": {
+        "assertion_ids": [
+          "assertion:find-route-targets-storefront"
+        ],
+        "assertion_status": "proposed",
+        "confidence": "high"
+      },
+      "relationship_type": "targets_element",
+      "source": "attack-step:find-admin-route",
+      "target": "component:storefront"
+    },
+    {
+      "id": "relationship:attack-step:open-admin|targets_element|asset:admin-section",
+      "properties": {
+        "assertion_ids": [
+          "assertion:open-admin-targets-admin-section"
+        ],
+        "assertion_status": "proposed",
+        "confidence": "high"
+      },
+      "relationship_type": "targets_element",
+      "source": "attack-step:open-admin",
+      "target": "asset:admin-section"
+    },
+    {
+      "id": "relationship:attack-step:own-login|targets_element|data-flow:login-request",
+      "properties": {
+        "assertion_ids": [
+          "assertion:own-login-targets-login-request"
+        ],
+        "assertion_status": "proposed",
+        "confidence": "high"
+      },
+      "relationship_type": "targets_element",
+      "source": "attack-step:own-login",
+      "target": "data-flow:login-request"
+    },
+    {
+      "id": "relationship:attack-step:craft-search-link|targets_element|component:storefront",
+      "properties": {
+        "assertion_ids": [
+          "assertion:craft-link-targets-storefront"
+        ],
+        "assertion_status": "proposed",
+        "confidence": "high"
+      },
+      "relationship_type": "targets_element",
+      "source": "attack-step:craft-search-link",
+      "target": "component:storefront"
+    },
+    {
+      "id": "relationship:attack-step:read-robots|targets_element|component:shop-api",
+      "properties": {
+        "assertion_ids": [
+          "assertion:read-robots-targets-shop-api"
+        ],
+        "assertion_status": "proposed",
+        "confidence": "high"
+      },
+      "relationship_type": "targets_element",
+      "source": "attack-step:read-robots",
+      "target": "component:shop-api"
+    },
+    {
+      "id": "relationship:attack-step:download-document|targets_element|data-flow:ftp-download",
+      "properties": {
+        "assertion_ids": [
+          "assertion:download-targets-ftp-download"
+        ],
+        "assertion_status": "proposed",
+        "confidence": "high"
+      },
+      "relationship_type": "targets_element",
+      "source": "attack-step:download-document",
+      "target": "data-flow:ftp-download"
+    },
+    {
+      "id": "relationship:attack-step:get-public-key|targets_element|component:key-folder",
+      "properties": {
+        "assertion_ids": [
+          "assertion:get-key-targets-key-folder"
+        ],
+        "assertion_status": "proposed",
+        "confidence": "high"
+      },
+      "relationship_type": "targets_element",
+      "source": "attack-step:get-public-key",
+      "target": "component:key-folder"
+    },
+    {
+      "id": "relationship:attack-step:use-forged-token|targets_element|data-flow:token-on-request",
+      "properties": {
+        "assertion_ids": [
+          "assertion:forged-token-targets-token-flow"
+        ],
+        "assertion_status": "proposed",
+        "confidence": "medium"
+      },
+      "relationship_type": "targets_element",
+      "source": "attack-step:use-forged-token",
+      "target": "data-flow:token-on-request"
+    },
+    {
       "id": "relationship:vulnerability:cve-2015-9235|propagates_to|component:jsonwebtoken-lib",
       "properties": {
         "assertion_ids": [
@@ -1256,6 +1556,15 @@
       "properties": {
         "component_kind": "service",
         "description": "Serves a folder of files and a browsable listing of it (server.ts)."
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:key-folder",
+      "label": "Public /encryptionkeys folder with directory browsing",
+      "properties": {
+        "component_kind": "service",
+        "description": "Serves the shop's key files and a browsable listing of them (server.ts, lines 301 to 303), among them jwt.pub, the RSA public key that checks login tokens."
       }
     },
     {
@@ -1450,6 +1759,7 @@
       "id": "attack-step:own-login",
       "label": "Log in with an ordinary customer account",
       "properties": {
+        "description": "The basket API answers only requests that carry a login token (server.ts, lines 388 and 431), so the attacker needs an account; any customer account will do.",
         "kill_chain_phase": "delivery"
       }
     },
@@ -1458,6 +1768,7 @@
       "id": "attack-step:change-basket-number",
       "label": "Ask the API for a basket with another customer's basket number",
       "properties": {
+        "description": "The basket route looks the basket up by the number in the address alone and never checks it against the token's own basket (routes/basket.ts, lines 18 to 19).",
         "kill_chain_phase": "actions_on_objectives"
       }
     },
@@ -1466,6 +1777,7 @@
       "id": "attack-step:craft-search-link",
       "label": "Build a search link whose search text is HTML that runs a script",
       "properties": {
+        "description": "The search page takes its text from the link's q parameter (search-result.component.ts, line 139); the DOM XSS challenge names the payload.",
         "kill_chain_phase": "weaponization"
       }
     },
@@ -1505,9 +1817,19 @@
     },
     {
       "domain_type": "AttackStep",
-      "id": "attack-step:sign-wrong-algorithm",
-      "label": "Sign a token with a symmetric algorithm instead of the shop's RSA key",
+      "id": "attack-step:get-public-key",
+      "label": "Download the shop's public key, jwt.pub, from the /encryptionkeys listing",
       "properties": {
+        "description": "The server lists /encryptionkeys and serves its files (server.ts, lines 301 to 303), and the token checks use the public key kept there (lib/insecurity.ts, line 20). Juice Shop's own hint for Forged Signed JWT calls getting this key mandatory.",
+        "kill_chain_phase": "reconnaissance"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:sign-wrong-algorithm",
+      "label": "Sign a token with HS256, using the shop's public key as the secret",
+      "properties": {
+        "description": "jsonwebtoken 0.4.0 checks a token with whatever algorithm its header names (CVE-2015-9235), so an HS256 token signed with the public key passes a check that expects RS256.",
         "kill_chain_phase": "weaponization"
       }
     },
@@ -1516,6 +1838,7 @@
       "id": "attack-step:use-forged-token",
       "label": "Send API requests with the forged token as the chosen identity",
       "properties": {
+        "description": "The API checks every login token with the public key (lib/insecurity.ts, line 52), so it takes the forged one. Forged Signed JWT counts as solved when an HS256 token for rsa_lord@juice-sh.op passes that check (routes/verify.ts, lines 90 to 91).",
         "kill_chain_phase": "actions_on_objectives"
       }
     },
@@ -1720,6 +2043,148 @@
         ],
         "generated_by": "AI-drafted from Juice Shop v20.4.0's source, challenge list and NVD (DL-0049)",
         "predicate": "exploits"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:find-route-targets-storefront",
+      "label": "The route-finding step reads the storefront's code (AI-proposed)",
+      "properties": {
+        "asserted_at": "2026-11-12T00:00:00Z",
+        "assertion_status": "proposed",
+        "confidence": "high",
+        "description": "The storefront declares the administration route (app.routing.ts, line 80), the line Juice Shop marks for Admin Section.",
+        "evidence": [
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/frontend/src/app/app.routing.ts#L80",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L51-L67"
+        ],
+        "generated_by": "AI-drafted from Juice Shop v20.4.0's source and challenge list, after review (DL-0049)",
+        "predicate": "targets_element"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:open-admin-targets-admin-section",
+      "label": "The administration step opens the administration section (AI-proposed)",
+      "properties": {
+        "asserted_at": "2026-11-12T00:00:00Z",
+        "assertion_status": "proposed",
+        "confidence": "high",
+        "description": "The route's AdminGuard lets a token through only when its role is admin (app.guard.ts, lines 52 to 60).",
+        "evidence": [
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/frontend/src/app/app.routing.ts#L79-L83",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/frontend/src/app/app.guard.ts#L52-L60",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L51-L67"
+        ],
+        "generated_by": "AI-drafted from Juice Shop v20.4.0's source and challenge list, after review (DL-0049)",
+        "predicate": "targets_element"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:own-login-targets-login-request",
+      "label": "The own-login step uses the login request (AI-proposed)",
+      "properties": {
+        "asserted_at": "2026-11-12T00:00:00Z",
+        "assertion_status": "proposed",
+        "confidence": "high",
+        "description": "The basket API requires a login token (server.ts, lines 388 and 431), and View Basket counts only for a logged-in user whose own basket differs (routes/basket.ts, lines 21 to 24).",
+        "evidence": [
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/server.ts#L388",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/server.ts#L431",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/basket.ts#L21-L24",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L1224-L1239"
+        ],
+        "generated_by": "AI-drafted from Juice Shop v20.4.0's source and challenge list, after review (DL-0049)",
+        "predicate": "targets_element"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:craft-link-targets-storefront",
+      "label": "The link-crafting step aims at the storefront's search page (AI-proposed)",
+      "properties": {
+        "asserted_at": "2026-11-12T00:00:00Z",
+        "assertion_status": "proposed",
+        "confidence": "high",
+        "description": "The search page reads its text from the link's q parameter (line 139), and the DOM XSS challenge gives the iframe payload.",
+        "evidence": [
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/frontend/src/app/search-result/search-result.component.ts#L139",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L265-L279"
+        ],
+        "generated_by": "AI-drafted from Juice Shop v20.4.0's source and challenge list, after review (DL-0049)",
+        "predicate": "targets_element"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:read-robots-targets-shop-api",
+      "label": "The robots.txt step reads the server's robots.txt (AI-proposed)",
+      "properties": {
+        "asserted_at": "2026-11-12T00:00:00Z",
+        "assertion_status": "proposed",
+        "confidence": "high",
+        "description": "The server's robots.txt disallows /ftp (server.ts, lines 230 to 231), which names the folder.",
+        "evidence": [
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/server.ts#L230-L231"
+        ],
+        "generated_by": "AI-drafted from Juice Shop v20.4.0's source and challenge list, after review (DL-0049)",
+        "predicate": "targets_element"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:download-targets-ftp-download",
+      "label": "The download step uses the /ftp download (AI-proposed)",
+      "properties": {
+        "asserted_at": "2026-11-12T00:00:00Z",
+        "assertion_status": "proposed",
+        "confidence": "high",
+        "description": "The file route serves any .md or .pdf file in /ftp, and Confidential Document counts as solved when acquisitions.md is fetched (routes/fileServer.ts, lines 26 to 29).",
+        "evidence": [
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/fileServer.ts#L26-L29",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/fileServer.ts#L56-L57",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L253-L264"
+        ],
+        "generated_by": "AI-drafted from Juice Shop v20.4.0's source and challenge list, after review (DL-0049)",
+        "predicate": "targets_element"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:get-key-targets-key-folder",
+      "label": "The public-key step reads the /encryptionkeys folder (AI-proposed)",
+      "properties": {
+        "asserted_at": "2026-11-12T00:00:00Z",
+        "assertion_status": "proposed",
+        "confidence": "high",
+        "description": "The server lists /encryptionkeys (server.ts, lines 301 to 303), the token checks load jwt.pub from it (lib/insecurity.ts, line 20), and the challenge's hint calls the key mandatory (challenges.yml, line 466).",
+        "evidence": [
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/server.ts#L301-L303",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/lib/insecurity.ts#L20",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L466"
+        ],
+        "generated_by": "AI-drafted from Juice Shop v20.4.0's source and challenge list, after review (DL-0049)",
+        "predicate": "targets_element"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:forged-token-targets-token-flow",
+      "label": "The forged-token step sends the token on API requests (AI-proposed)",
+      "properties": {
+        "asserted_at": "2026-11-12T00:00:00Z",
+        "assertion_status": "proposed",
+        "confidence": "medium",
+        "description": "The API checks tokens with the public key (lib/insecurity.ts, line 52), and the challenge is solved by an HS256 token for rsa_lord that passes that check (routes/verify.ts, lines 90 to 91 and 116 to 133).",
+        "evidence": [
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/lib/insecurity.ts#L52",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/verify.ts#L90-L91",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/verify.ts#L116-L133",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L455-L472"
+        ],
+        "generated_by": "AI-drafted from Juice Shop v20.4.0's source and challenge list, after review (DL-0049)",
+        "predicate": "targets_element"
       }
     },
     {
