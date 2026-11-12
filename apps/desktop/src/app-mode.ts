@@ -5,6 +5,11 @@ export function appMode(viteMode: string = import.meta.env.MODE): AppMode {
   return viteMode === "pages" ? "browser-preview" : "desktop";
 }
 
+/** A standalone Pages build is scratch output; render_app owns docs/app/. */
+export function pagesBuildOutDir(configured?: string): string {
+  return configured || "dist/pages";
+}
+
 export function staticDataBase(
   base: string = import.meta.env.BASE_URL,
   page: string = globalThis.location?.href ?? "https://tmodel.invalid/",

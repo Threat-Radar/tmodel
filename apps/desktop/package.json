@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "preview": "vite preview",
-    "preview:pages": "vite preview --mode pages",
+    "preview:pages": "vite preview --mode pages --outDir ../../docs/app",
     "tauri": "tauri"
   },
   "dependencies": {

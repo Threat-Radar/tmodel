@@ -26,6 +26,11 @@ OUT = ROOT / "docs" / "app"
 APP = ROOT / "apps" / "desktop"
 sys.path.insert(0, str(ROOT / "engine"))
 
+# Public preview generation must always use this repository's pinned library.
+# Remove an interactive-engine override before importing (and therefore
+# initializing) any engine modules.
+os.environ.pop("TMODEL_LIBRARY", None)
+
 try:
     from engine import core
 except ImportError as exc:
@@ -73,6 +78,9 @@ def _public_file(payload: dict[str, Any], file: str) -> dict[str, Any]:
 
 
 def write_data(out: Path) -> tuple[int, int]:
+    # Callers can invoke write_data after import (including tests), so enforce
+    # the publishing boundary again immediately before the engine reads data.
+    os.environ.pop("TMODEL_LIBRARY", None)
     listing = core.list_models()
     if listing["problems"]:
         detail = "; ".join(f"{p['file']}: {p['error']}" for p in listing["problems"])

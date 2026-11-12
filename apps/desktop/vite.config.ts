@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 // @ts-expect-error type error without @types/node package
 import process from "node:process";
+import { pagesBuildOutDir } from "./src/app-mode.ts";
 const host = process.env.TAURI_DEV_HOST;
 
 // https://vite.dev/config/
@@ -11,7 +12,7 @@ export default defineConfig(({ mode }) => ({
   base: mode === "pages" ? "/tmodel/app/" : "/",
   build: mode === "pages"
     ? {
-        outDir: process.env.TMODEL_APP_OUT_DIR || "../../docs/app",
+        outDir: pagesBuildOutDir(process.env.TMODEL_APP_OUT_DIR),
         emptyOutDir: true,
       }
     : undefined,

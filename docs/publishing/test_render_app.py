@@ -45,6 +45,23 @@ def test_static_data_is_byte_deterministic(tmp_path: Path) -> None:
     assert render_app._files(first) == render_app._files(second)
 
 
+def test_static_data_ignores_external_library_override(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    alternate = tmp_path / "alternate-library"
+    alternate.mkdir()
+    monkeypatch.setenv("TMODEL_LIBRARY", str(alternate))
+
+    generated = tmp_path / "generated"
+    render_app.write_data(generated)
+
+    assert "TMODEL_LIBRARY" not in render_app.os.environ
+    assert (generated / "data/library/table.json").read_bytes() == (
+        render_app.OUT / "data/library/table.json"
+    ).read_bytes()
+
+
 def test_committed_browser_bundle_is_preview_only() -> None:
     index = (render_app.OUT / "index.html").read_text()
     scripts = "\n".join(

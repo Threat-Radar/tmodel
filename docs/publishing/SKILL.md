@@ -33,7 +33,7 @@ and only after the WAVE 2 gate (#84).
 | `docs/publishing/render_report.py` | Renders archdoc markdown reports to `docs/reports/*.html` (revisioned). Stdlib only. Its index also lists the pages under `listed:` in `reports.yaml`. |
 | `docs/publishing/tara.yaml` | Manifest of **TARA pages**: an example model in `spec/vectors/`, the page to write, the library records it cites and the gaps the page lists. |
 | `docs/publishing/render_tara.py` | Renders each model as a "TARA draft (example data)" page in ISO/SAE 21434 clause 15 order (DL-0037). Reads the model through the engine, so it needs PyYAML: `engine/.venv/bin/python`. `--check` compares instead of writing. |
-| `docs/publishing/check_identities.py` | **Privacy guard.** Fails if a protected personal identity appears in published HTML or generated app JSON. Run in CI. |
+| `docs/publishing/check_identities.py` | **Privacy guard.** Fails if a protected personal identity appears in published HTML or generated app JSON, JavaScript, or CSS. Run in CI. |
 | `publishing/identities.yaml` | **Outside `docs/`** (never published): protected project identities + the `approved` allow-list. |
 | `docs/publishing/SKILL.md` | This playbook. |
 
@@ -70,9 +70,9 @@ authors of cited external standards are fine; the project's own people are not.
 - Real names are **never committed anywhere** in this repo. To also match names in the
   guard, put them in an untracked `publishing/identities.local.yaml` (gitignored);
   `check_identities.py` merges it when present.
-- `check_identities.py` scans `docs/**/*.html` and generated `docs/app/**/*.json`,
-  and **fails CI** on any protected identity not in `approved`. Run it before
-  opening a publishing PR.
+- `check_identities.py` scans `docs/**/*.html` and generated JSON, JavaScript,
+  and CSS under `docs/app/`, and **fails CI** on any protected identity not in
+  `approved`. Run it before opening a publishing PR.
 - When authoring a record/report/manifest that will be published, prefer the
   **publisher/organization** over personal author names.
 
@@ -142,13 +142,35 @@ frontend is read-only: it adapts its existing engine providers to same-origin
 JSON, hides SDL/proposal/review controls that have no static equivalent, and
 never falls back to loopback or a Tauri API. The library inspector is bounded to
 fields already present in the public table rather than publishing full records.
+Generation always reads the repository's pinned `library` submodule;
+`TMODEL_LIBRARY` is deliberately ignored for this public artifact.
 
-Run `bin/publish-site` to regenerate it, or check freshness without changing
-tracked files:
+Regenerate `docs/app/` whenever any of its inputs change: `spec/vectors/**`,
+engine behavior that shapes the model catalog, graph, attack paths, or library
+table, the pinned `library` commit, or the Pages-mode frontend. From the
+repository root, initialize the pinned submodule and local toolchains, then run:
 
 ```sh
+git submodule update --init library
+python3 -m venv engine/.venv
+engine/.venv/bin/python -m pip install -e './engine[dev]'
+npm ci --prefix apps/desktop
+engine/.venv/bin/python docs/publishing/render_app.py
 engine/.venv/bin/python docs/publishing/render_app.py --check
 ```
+
+If the environments already exist, only the final two commands are needed.
+`bin/publish-site` also regenerates the preview as part of the complete site
+pipeline. A standalone `npm run build:pages` writes scratch output under
+`apps/desktop/dist/`; it does not publish or replace `docs/app/`.
+
+On applicable pull requests and pushes to `main`, `.github/workflows/app.yml`
+rebuilds the preview in a temporary directory and byte-compares that output
+with the committed `docs/app/`. CI therefore verifies that the committed Pages
+snapshot is complete and current, which is the CI publishing contract for
+#204. It does not write regenerated files back to the branch, commit them, or
+deploy them through a separate Pages workflow; contributors must regenerate
+and commit `docs/app/` with the input change.
 
 
 ## Bibliography renderer
