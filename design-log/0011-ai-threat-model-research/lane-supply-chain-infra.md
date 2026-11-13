@@ -4,9 +4,9 @@ id: DL-0011-lane-supply-chain-infra
 title: "RPT-0014 lane supply-chain-infra: WAVE 1 calibration (S-0855, S-0166, S-0728)"
 type: process
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 date: "2026-10-29"
-updated: "2026-10-29"
+updated: "2026-11-13"
 record: DL-0011
 issue: 134
 ---
@@ -36,9 +36,7 @@ All three are `status: summarized`, `confidence: medium`, `owner: Clovier`,
 
 ## How it was run
 
-- **Agent and settings.** Claude Code in @Clovier's session, Opus model, max effort. One
-  agent, no subagents and no workflow. Token use was not metered for this task; the same
-  session did other work.
+- **Agent.** Claude Code. Token use was not metered for this task.
 - **Sources.** Each PDF was read in full as text extracted with `pdftotext`. The PDFs came
   from the local cache (`bin/fetch-pdfs`), and their sha256 digests matched
   `pdf-manifest.tsv` on 2026-10-29. No PDF is committed.

@@ -4,9 +4,9 @@ id: DL-0030
 title: "Requirement extraction, automotive and SBOM lane: ISO/SAE 21434, UNECE R155 Annex 5, BSI TR-03183-2 (#172)"
 type: process
 status: draft
-version: "0.2.0"
+version: "0.3.0"
 date: "2026-11-02"
-updated: "2026-11-03"
+updated: "2026-11-13"
 record: DL-0030
 bears_on: [DEC-001a, DEC-002, DEC-009]
 defers_to: ARCH-0001
@@ -14,7 +14,7 @@ defers_to: ARCH-0001
 
 # DL-0030: Requirement extraction, automotive and SBOM lane (#172)
 
-This is an AI-assisted design record (per `CLAUDE.md`). Claude Code (claude-opus-5-5) drafted it in @Clovier's session, as one agent with no subagents. It produced the three files in `research/0017-requirements-extraction/` and the library summaries of `unece-r155` and `bsi-tr-03183-2`. Issue: #172 (parent #168).
+This is an AI-assisted design record (per `CLAUDE.md`). Claude Code drafted it. It produced the three files in `research/0017-requirements-extraction/` and the library summaries of `unece-r155` and `bsi-tr-03183-2`. Issue: #172 (parent #168).
 
 ## Question asked
 
@@ -70,15 +70,15 @@ Stop there. A human reviews the proposed links next.
 
 | File | Requirements | Other nodes | Links (all proposed by the agent) |
 |---|---|---|---|
-| `iso-sae-21434-2021.yaml` | 42 | 1 party | 26 (`derived_from` and `refines` between provisions) |
+| `iso-sae-21434-2021.yaml` | 49 | 1 party | 43 (`derived_from` and `refines` between provisions) |
 | `unece-r155.yaml` | 26 | 23 Mitigation stubs, 70 ThreatInstance stubs, 1 party | 106 (26 `stated_as`, 78 `addresses`, 2 between statements) |
 | `bsi-tr-03183-2.yaml` | 59 | 1 Weakness stub (CWE-1395), 1 party | 26 (22 between statements, 4 `addresses`) |
 
-These are the counts after the review on tmodel#196 (see the last section). @Clovier accepted 10 links per file after checking them against the sources; 4 of the ISO ones went with the seven provisions left out on review, and @Clovier accepted 4 more in their place (see "What a human accepted").
+These are the counts after the review on tmodel#196, with the ISO row updated for tmodel#154, when the seven provisions left out on review came back (see "The seven brought back"). @Clovier accepted 10 links per file after checking them against the sources; 4 of the ISO ones went with the seven provisions left out on review, and @Clovier accepted 4 more in their place (see "What a human accepted").
 
 **Coverage, per record:**
 
-- **`iso-sae-21434-2021`:** 118 provisions in the record, 49 in scope (clauses 8, 9, 10 and 15). 42 are converted. The seven whose library text is broken were left out on review (see "Problems found in the sources"). 69 were skipped as outside this lane (clauses 5, 6, 7, 11, 12, 13 and 14).
+- **`iso-sae-21434-2021`:** 118 provisions in the record, 49 in scope (clauses 8, 9, 10 and 15). All 49 are converted: 42 after the review on tmodel#196, and the seven whose library text was broken came back for tmodel#154 (see "Problems found in the sources" and "The seven brought back"). 69 were skipped as outside this lane (clauses 5, 6, 7, 11, 12, 13 and 14).
 - **`unece-r155`:** in Parts B and C of Annex 5, all 23 numbered mitigations (M1 to M24; M17 is not used) and three more statements inside the M7 and M23 cells were converted. In Part A, all 67 examples of Table A1 became ThreatInstance stubs, plus 30.1 to 30.3, which only Table C3 lists. The regulation's paragraphs 1 to 12 and Annexes 1 to 4 are outside this lane.
 - **`bsi-tr-03183-2`:** 59 Requirements. All 52 capitalized normative statements in §3 to §7 were converted. After review, so were the six notes that state a duty, a recommendation or a permission (§3.2.8, two in §5.1, §5.2.1, two in §5.2.2), and the §3.2.5 sentence, with no keyword, that the referenced BOM's information prevails. Not converted:
   - §3.1's pointer to section 5, which the §5 requirements cover;
@@ -96,7 +96,7 @@ These are the counts after the review on tmodel#196 (see the last section). @Clo
   - **ISO/SAE 21434.** The longest run of words any `text` shares with the library's copy of the standard is 5, and those runs are defined terms such as the impact scale. One draft repeated 16 words; it was rewritten before the file was kept.
   - **R155.** No run of 8 or more words.
   - **BSI.** Only section numbers and field-name lists run to 8 or more words.
-- **Digests.** The R155 and BSI PDFs fetched on 2026-11-02 match the digests in their records. ISO/SAE 21434 was not re-read: the file rests on the record's `requirements.yaml`.
+- **Digests.** The R155 and BSI PDFs fetched on 2026-11-02 match the digests in their records. ISO/SAE 21434 was not re-read for the first 42 provisions: they rest on the record's `requirements.yaml`. The seven brought back for tmodel#154 were read from the licensed copy (see "The seven brought back").
 - **R155 pairings.** These were read from the rendered pages of Tables B1 to B8 and C1 to C3, because the text extraction drops merged cells (one mitigation for several rows). Every threat example has at least one paired mitigation.
 - **CWE-1395.** Its name was checked on cwe.mitre.org.
 
@@ -116,19 +116,19 @@ These are the counts after the review on tmodel#196 (see the last section). @Clo
 - **`derived_from` or `refines`:**
   - A provision that applies another provision's method or output is `derived_from` it. This covers explicit cross-references and "in accordance with 15.x", which points at that subclause's provision.
   - A provision that adds detail to the same obligation `refines` it.
-  - Explicit bracketed references are `high` confidence. Clause-number references and "the X" back-references are `medium`. Links that rest only on Annex H fragments are `low`.
+  - Explicit bracketed references are `high` confidence. Clause-number references and "the X" back-references are `medium`. Links that rest only on Annex H fragments are `low` (none remain since tmodel#154).
 - **Unnumbered statements in R155 cells.** The extra lines in the M7 and M23 cells became their own Requirements: `m7-data-correlation`, `m23-testing` and `m23-system-design`. Their locators name the table rows. Their `source_ref` keeps the cell's M number, and no designator was invented.
 - **BSI `source_ref`.** It points at the section number, such as `#5.2.2`. The guideline has no provision ids, and a slug could be mistaken for one.
 - **CWE-1395 links.** These are the agent's inference; the guideline names no CWE. Two are `medium`, because §1 and Table 5 tie SBOM data to vulnerability lookup. Two are `low`.
 
 ## Problems found in the sources
 
-- **The library's ISO/SAE 21434 `requirements.yaml` has broken text for 7 of the 49 provisions in scope:**
+- **The library's ISO/SAE 21434 `requirements.yaml` had broken text for 7 of the 49 provisions in scope:**
   - RQ-09-01, RQ-10-01, RQ-10-04 and RQ-15-17 are cut off partway through their lists.
   - RQ-09-03 and RQ-09-04 hold Annex H examples and the bibliography.
   - RQ-10-08 holds Annex E table text.
 
-  These seven were first kept, each with a `description` saying the text was broken. After review they are left out, with their 14 links, because a paraphrase of broken text is not source-supported. They can come back once someone checks them against a licensed copy, and the library record needs a fix from the purchased PDF.
+  These seven were first kept, each with a `description` saying the text was broken. After review they were left out, with their 14 links, because a paraphrase of broken text is not source-supported. They could come back once someone checked them against a licensed copy and the library record was fixed from the purchased PDF. Both have happened: Threat-Radar/library#47 completed the seven from the licensed copy, and they are back in `iso-sae-21434-2021.yaml` (see "The seven brought back").
 - **UNECE R155 Annex 5** (original version):
   - Table C3 cites threats 30.1 to 30.3, which Table A1 does not list.
   - Table A1 has no threat 14 and no example 22.1.
@@ -139,9 +139,9 @@ These are the counts after the review on tmodel#196 (see the last section). @Clo
 
 - **The sample.** On 2026-11-02 @Clovier checked 30 proposed links against their source passages, 10 per file, and accepted all 30.
 - **How it is recorded.** Each accepted link has a Review in its file, and its Assertion is now `accepted`. No accepted link was written into a slot; the accepted Assertion carries the decision.
-- **What the sample covers.** It mixes confidence levels. It includes the ISO link that rests on the record's Annex H text (RQ-09-03 `derived_from` RQ-15-15), and all four BSI links to CWE-1395, which are the agent's inference.
+- **What the sample covers.** It mixes confidence levels. It included the ISO link that then rested on the record's Annex H text (RQ-09-03 `derived_from` RQ-15-15), which left the sample with the seven on tmodel#196 and is back as `proposed`, now resting on the provision itself. It includes all four BSI links to CWE-1395, which are the agent's inference.
 - **After the review on tmodel#196.** Four of the ten accepted ISO links touched the seven provisions left out, so they were removed with them: RQ-09-06 `derived_from` RQ-09-03, RQ-10-05 `derived_from` RQ-10-04, RQ-08-07 `derived_from` RQ-15-17 and RQ-09-03 `derived_from` RQ-15-15. To get back to #172's 10, @Clovier checked 4 more ISO links against the source on 2026-11-03 and accepted all 4: RC-15-13 `refines` RC-15-11, RC-15-14 `refines` RC-15-11, RQ-10-10 `derived_from` RQ-10-05 and RC-15-11 `refines` RQ-15-10. Each has a Review in the file.
-- **Still unreviewed.** The other 128 links (16 ISO, 96 R155, 16 BSI) stay `proposed`, with no Review. The five new BSI links are `refines` from the note Requirements to the statements they narrow.
+- **Still unreviewed.** The other 145 links (33 ISO, 96 R155, 16 BSI) stay `proposed`, with no Review. 17 of the ISO ones arrived with the seven provisions for tmodel#154: 14 came back and 3 are new. The five new BSI links are `refines` from the note Requirements to the statements they narrow.
 
 ## What was rejected, and why
 
@@ -160,3 +160,25 @@ These are the counts after the review on tmodel#196 (see the last section). @Clo
 4. **Validation evidence.** The checks were rerun on the final files (see "How it was checked").
 
 On library#42, the BSI summary now gives the reduced field sets for logical, identified and referenced components; says that §2 does not make notes informative, and lists the notes that state duties; and says the guideline is separate from the CRA and does not claim that following it establishes conformity.
+
+## The seven brought back (tmodel#154)
+
+Threat-Radar/library#47 completed the 16 flagged entries of the library record from the licensed copy, and Threat-Radar/library#48 reworded the paraphrases that stayed close to the standard. With the source text complete, the seven provisions left out on review are back: RQ-09-01, RQ-09-03, RQ-09-04, RQ-10-01, RQ-10-04, RQ-10-08 and RQ-15-17. Claude Code drafted the changes.
+
+- **Text.** Each `text` was written for this file from the licensed copy, the PDF whose sha256 is the record's digest, and six were reworded on 2026-11-13 (see below). None is copied from the standard or from the library's paraphrase. Some of the other 42 texts share longer runs with the library's current paraphrases (up to 11 words in a row, RQ-09-11); those paraphrases came later, from Threat-Radar/library#44 (merged 2026-11-07) and #48, while this file's texts date from 2026-11-02. On 2026-11-08 the longest run any of them shared with the standard was 5 words, and those runs were step names, list names and clause numbers. Designator, locator and normativity come from the record, as for the other 42.
+- **The 14 links that left with them are back,** all `proposed`. Each basis was rechecked against the licensed copy. Three had rested on the broken record text: RQ-09-04 `derived_from` RQ-15-17 and RQ-09-03 `derived_from` RQ-15-15 cited the record's Annex H text, and RQ-08-07 `derived_from` RQ-15-17 cited the cut-off record. They now cite the provisions themselves. RQ-09-04 `derived_from` RQ-09-03 now rests on RQ-09-04's own reference to RQ-09-03 instead of on RQ-09-07 b). Three confidences rose to match the real text: RQ-09-04 `derived_from` RQ-15-17 from low to medium, RQ-09-03 `derived_from` RQ-15-15 from low to medium, and RQ-09-04 `derived_from` RQ-09-03 from medium to high.
+- **Three new links,** all `proposed`. RQ-09-03 `derived_from` RQ-09-01 and RQ-09-03 `derived_from` RQ-09-02: RQ-09-03 starts from the item definition, which §9.3.2 produces through those two provisions (WP-09-01). RQ-10-08 `derived_from` RQ-10-01: RQ-10-08 verifies the specifications that RQ-10-01 defines.
+- **A choice open to review.** RQ-09-03 runs the steps of 15.3 to 15.8. Only the 15.8 link (to RQ-15-15, which works out the risk value) is kept, because it was one of the 14. Links from RQ-09-03 to the 15.3 to 15.7 provisions are left for a reviewer to add. 15.4 holds a single provision, RQ-15-03, so RQ-09-03 `derived_from` RQ-15-03 is the clearest candidate.
+- **Reviews.** None of the 17 has a Review yet. Of the four links @Clovier accepted on 2026-11-02 that left with the seven, one (RQ-09-03 `derived_from` RQ-15-15) was accepted on the Annex H text. Their Reviews were not restored, since a Review records a check of the text as it then stood; they can be checked again against the new text. The file keeps its 10 Reviews.
+- **Reworded on 2026-11-13.** A check against the library record's paraphrases (which Threat-Radar/library#47 and #48 checked against the licensed copy), an independent agent's check and the licensed copy itself changed six texts, three bases and two confidences:
+  - RQ-09-01 now says to identify the item information, not to record it.
+  - RQ-10-01 now says to define the specifications; the earlier wording only said to base them on their inputs.
+  - RQ-09-03 says "these clause 15 steps", so it cannot be read as all of clause 15, and no longer opens with the same five words as the library's paraphrase.
+  - RQ-10-04 keeps its six criteria in wording further from the standard's list and from the library's.
+  - RQ-10-08 says verify instead of check.
+  - RQ-15-17 no longer opens with the standard's own first four words.
+  - The basis of RQ-09-06 `derived_from` RQ-09-04 says that retaining the risk counts only when it rests on assumptions in the RQ-09-03 analysis; the basis of RQ-08-07 `derived_from` RQ-15-17 says that only one of RQ-08-07's two routes uses 15.9; and the basis of RQ-09-04 `derived_from` RQ-09-03 says RQ-09-04 cites RQ-09-03 by number.
+  - RQ-10-08 `derived_from` RQ-10-01 and RQ-09-04 `derived_from` RQ-15-17 are `medium`, by the rule above: the first rests on a back-reference and the second on a clause number, like their sibling links.
+
+  The same day, the texts and bases were checked against the licensed copy again. The longest run any of them shares with the standard is 5 words, and word-sequence closeness is below 0.70 for all but RQ-09-03, whose shared words are its six step names and their clause numbers.
+- **Checks.** On the final files, `linkml-validate` (core container), `check-edges.py` and `check.py` pass for all six extraction files, and the converter's tests pass. `check-edges.py` now counts 103 objects and 106 references in the ISO file.
