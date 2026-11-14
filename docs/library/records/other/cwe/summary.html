@@ -85,30 +85,35 @@ nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font
 <p>
   <span class="badge">dataset</span>
   <span class="badge">other</span>
-  <span class="badge">summarized</span>
+  <span class="badge">distilled</span>
   <span class="badge">medium</span>
 </p>
-<p class="meta">No <code>topic</code> field; subject tags are below. Status <code>summarized</code> is how far review got, not a quality score.</p>
+<p class="meta">Topic: <strong>schema-representations</strong> (<code>record.yaml</code> topic). Status <code>distilled</code> is how far review got, not a quality score.</p>
 <h2>Bibliographic links</h2>
-<ul><li>Source: <a href="https://cwe.mitre.org/">https://cwe.mitre.org/</a></li><li>SHA-256: <span class="meta">not recorded</span></li></ul>
+<ul><li>Source: <a href="https://cwe.mitre.org/data/xml/cwec_v4.20.xml.zip">https://cwe.mitre.org/data/xml/cwec_v4.20.xml.zip</a></li><li>Identifier URL: <a href="https://cwe.mitre.org/">https://cwe.mitre.org/</a></li><li>SHA-256: <code>3976f599e5e5200219a3108bb896d06e2a88fbb293369e1883cb423a5e9d7d50</code></li></ul>
 <h2>Dataset</h2>
 <div class="callout"><strong>Catalog, not one row.</strong> This record is the enumeration itself. Retrieved is when the library looked, not an edition date. Empty authors are omitted, not missing paper metadata.</div>
-<table><tbody><tr><td>Retrieved</td><td>2026-09-26</td></tr><tr><td>Maturity</td><td>best-practice</td></tr></tbody></table>
+<table><tbody><tr><td>Retrieved</td><td>2026-10-08</td></tr><tr><td>Version</td><td>4.20 (XML schema 7.3)</td></tr><tr><td>Maturity</td><td>best-practice</td></tr><tr><td>xsd</td><td>https://cwe.mitre.org/data/xsd/cwe_schema_v7.3.xsd</td></tr><tr><td>Media type</td><td>application/zip</td></tr></tbody></table>
 <h2>Applicability</h2>
 <table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge adjacent">adjacent</span></td></tr><tr><td>This project</td><td><span class="badge core">core</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
 <h2>Tags</h2>
-<table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">cwe</span> <span class="badge">weakness</span> <span class="badge">mitre</span> <span class="badge">graph</span></td></tr></tbody></table>
+<table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">cwe</span> <span class="badge">weakness</span> <span class="badge">mitre</span> <span class="badge">graph</span> <span class="badge">xml-schema</span> <span class="badge">catalog</span></td></tr></tbody></table>
 <h2>Bears on</h2>
-<ul><li><code>DEC-001</code></li></ul>
-<h2>Usefulness</h2><p><span class="badge">useful</span> Source for tmodel&#x27;s Weakness nodes and their hierarchy; XSD validates ingestion. Ties to ARCH-0001 §3.</p><p class="meta">Assessed 2026-09-26.</p>
+<ul><li><code>DEC-001</code></li><li><code>DEC-002</code></li><li><code>DEC-008</code></li><li><code>R-010</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> Source for tmodel&#x27;s Weakness nodes and their hierarchy; XSD validates ingestion. Ties to ARCH-0001 §3.</p><p class="meta">Assessed 2026-10-08.</p>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> only — not crosswalk edges.</p><h3><code>see_also</code></h3><ul><li><a class="rec" data-id="cve-json-5" href="../../other/cve-json-5/summary.html">CVE JSON Record Format v5</a></li><li><a class="rec" data-id="capec" href="../../other/capec/summary.html">MITRE CAPEC — Common Attack Pattern Enumeration and Classification</a></li><li><a class="rec" data-id="open-threat-model" href="../../vendor/open-threat-model/summary.html">Open Threat Model specification and JSON Schema</a></li></ul>
 
-
-<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>dataset (best-practice)</td></tr><tr><td><strong>Source</strong></td><td>https://cwe.mitre.org/</td></tr></tbody></table>
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>dataset (best-practice)</td></tr><tr><td><strong>Publisher</strong></td><td>The MITRE Corporation (CWE Program)</td></tr><tr><td><strong>Version</strong></td><td>CWE List 4.20, catalog dated 2026-04-30; XML schema 7.3 (December 11, 2025), namespace <code>http://cwe.mitre.org/cwe-7</code></td></tr><tr><td><strong>Source</strong></td><td>https://cwe.mitre.org/data/xml/cwec_v4.20.xml.zip — SHA-256 <code>3976f599…5e9d7d50</code>; unzipped <code>cwec_v4.20.xml</code> <code>1f5a78bd…0912e</code></td></tr><tr><td><strong>Schema</strong></td><td>https://cwe.mitre.org/data/xsd/cwe_schema_v7.3.xsd — SHA-256 <code>690dedee…e45f98</code></td></tr><tr><td><strong>Licence</strong></td><td>CWE terms of use (https://cwe.mitre.org/about/termsofuse.html); copies of the schema must keep MITRE&#x27;s licence header</td></tr></tbody></table>
 <h2>Overview</h2>
-<p>Weakness catalog as a graph: typed relations (ChildOf/ParentOf/PeerOf/CanPrecede), Views/Categories/Pillars; XML (with XSD) + CSV.</p>
-<h2>Applicability to tmodel</h2>
-<p>Source for tmodel&#x27;s Weakness nodes and their hierarchy; XSD validates ingestion. Ties to ARCH-0001 §3.</p>
-<ul><li>Ratings — security: core · cryptography: adjacent · this project: core</li><li>Bears on: DEC-001</li><li>Gathered for RPT-0011 (Knowledge Graphs and NSF OKN), tmodel #25.</li></ul>
+<p>CWE is a catalog of software and hardware weakness types, published by MITRE as one XML file per release and validated by a closed XML Schema. Each entry has a permanent integer id (<code>CWE-79</code>) that is never reused, even after deprecation. Entries are Weaknesses (at Pillar, Class, Base, Variant or Compound abstraction; Simple, Chain or Composite structure), Categories and Views. Relations between weaknesses are typed and scoped to a view (<code>ChildOf</code> in view 1000 can differ from <code>ChildOf</code> in view 1003). Every entry also says whether it may be used to map real vulnerabilities (<code>Mapping_Notes/Usage</code>).</p>
+<h2>Applicability</h2>
+<ul><li><strong>Security: core.</strong> The common vocabulary for weakness classes; CVE records and NVD cite it.</li><li><strong>Cryptography: adjacent.</strong> Covers cryptographic weaknesses as entries; not a cryptographic specification.</li><li><strong>This project: core.</strong> The external key for tmodel&#x27;s Weakness type (ARCH-0001 §3, R-010); its typed, view-scoped relations test the edge model accepted as DEC-001a (ADR-0010); its file-per-release distribution bears on DEC-008 (mirror vs live lookup, open) and its closed XSD on DEC-002 (import formats, accepted as ADR-0007). Details in <code>distilled/design-notes.md</code>.</li></ul>
+<h2>Implementations</h2>
+<p>Not searched in this pass (2026-10-08); left for the RPT-0005 fan-out. Consumers already held in this library: CVE Record Format 5.x (<code>problemTypes[].descriptions[].cweId</code>, record <code>cve-json-5</code>) and Open Threat Model (<code>threats[].cwes</code>, record <code>open-threat-model</code>).</p>
+<h2>Artifacts in this record</h2>
+<ul><li><code>record.yaml</code> — metadata, digests, relations, FX-1 distillation block.</li><li><code>distilled/</code> — the FX-1 artifact set; <code>distilled/README.md</code> indexes each file and its coverage: normative text and requirements from the XSD, the verbatim XSD, every structure and enumeration, the entry lifecycle, test fixtures cut from the 4.20 catalog with expected results, design notes for tmodel, and the verification record.</li></ul>
+<h2>Limits</h2>
+<ul><li>The record pins the XML distribution only. CSV and HTML views, and any MITRE web API, were not examined.</li><li>The schema&#x27;s documentation contradicts its own structure in places (<code>source_defects</code> in <code>distilled/requirements.yaml</code>), and the 4.20 data departs from the documentation in a few more (invariants I15, I16 and I29 in <code>distilled/examples/catalog-stats.yaml</code>; see also <code>distilled/verification.md</code>). The XSD is treated as authoritative for structure.</li><li>MITRE&#x27;s root-cause mapping guidance (which prefers Base and Variant entries) is a separate document and not covered here.</li><li>Gathered for RPT-0011 (tmodel #25); fully extracted for RPT-0005 (tmodel #39).</li></ul>
 
 <footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
 </main>

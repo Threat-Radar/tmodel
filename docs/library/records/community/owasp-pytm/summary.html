@@ -93,7 +93,7 @@ nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font
 <ul><li>Source: <a href="https://github.com/OWASP/pytm">https://github.com/OWASP/pytm</a></li><li>SHA-256: <span class="meta">not recorded</span></li></ul>
 <h2>Repository</h2>
 <div class="callout"><strong>Implementation, not a ratified text.</strong> The primary link is the repository URL.</div>
-<table><tbody><tr><td>Maturity</td><td>implementation</td></tr><tr><td>git</td><td>https://github.com/OWASP/pytm</td></tr></tbody></table>
+<table><tbody><tr><td>Retrieved</td><td>2026-10-12</td></tr><tr><td>Maturity</td><td>implementation</td></tr><tr><td>git</td><td>https://github.com/OWASP/pytm</td></tr></tbody></table>
 <p>Open-source implementations recorded: 0. Search date: not recorded. Names stay in <code>record.yaml</code> and, when the summary was written, in the summary prose.</p>
 <h2>Applicability</h2>
 <table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge none">none</span></td></tr><tr><td>This project</td><td><span class="badge adjacent">adjacent</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
@@ -101,21 +101,21 @@ nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font
 <table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">threat-modeling</span> <span class="badge">model-as-code</span> <span class="badge">python</span> <span class="badge">owasp</span></td></tr></tbody></table>
 <h2>Bears on</h2>
 <ul><li><code>DEC-001</code></li><li><code>DEC-003</code></li><li><code>DEC-006</code></li></ul>
-<h2>Usefulness</h2><p><span class="badge">useful</span> Inspectable model-as-code precedent for a Python object model, rule-based threat generation, and generated diagrams and reports.</p><p class="meta">Assessed 2026-10-04.</p>
+<h2>Usefulness</h2><p><span class="badge">useful</span> Inspectable model-as-code precedent for a Python object model, rule-based threat generation, and generated diagrams and reports.</p><p class="meta">Assessed 2026-10-12.</p>
 
 
-<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>repo</td></tr><tr><td><strong>Maturity</strong></td><td>established OWASP implementation</td></tr><tr><td><strong>Authors</strong></td><td>OWASP pytm project</td></tr><tr><td><strong>Published</strong></td><td>not stated; reviewed 2026-09-26</td></tr><tr><td><strong>Identifier</strong></td><td>git: https://github.com/OWASP/pytm</td></tr><tr><td><strong>Source</strong></td><td>https://github.com/OWASP/pytm</td></tr><tr><td><strong>Digest</strong></td><td><code>not fetched</code></td></tr></tbody></table>
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>repo</td></tr><tr><td><strong>Maturity</strong></td><td>established OWASP implementation</td></tr><tr><td><strong>Authors</strong></td><td>OWASP pytm project</td></tr><tr><td><strong>Published</strong></td><td>v1.4.0 released 2026-07-06; reviewed 2026-10-12</td></tr><tr><td><strong>Identifier</strong></td><td>git: https://github.com/OWASP/pytm</td></tr><tr><td><strong>Source</strong></td><td>https://github.com/OWASP/pytm</td></tr><tr><td><strong>Digest</strong></td><td><code>not fetched</code></td></tr></tbody></table>
 <h2>Overview</h2>
-<p>OWASP pytm is a GPL-3.0 Python library and command-line approach for defining a threat model as code. The reviewed repository documents Python model objects, rule-based threat generation, and generated data-flow diagrams, sequence diagrams, and reports.</p>
+<p>OWASP pytm is an MIT-licensed Python library and command-line approach for defining a threat model as code. The reviewed repository documents Python model objects, rule-based threat generation, generated data-flow diagrams, sequence diagrams and reports, plus native JSON output and loading. Version 1.4.0 added <code>Data</code> decoding needed for round-trip serialization.</p>
 <h2>Applicability</h2>
 <table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td>core</td><td>Implements threat generation from a structured system model.</td></tr><tr><td>Cryptography</td><td>none</td><td>Does not define a cryptographic protocol.</td></tr><tr><td>This project</td><td>adjacent</td><td>Useful model-as-code evidence for DEC-001, DEC-003, and DEC-006.</td></tr></tbody></table>
-<p>Reviewed at commit <code>78895796f6c6f6ec3131c28b624c296810fa9797</code>.</p>
+<p>Reviewed at commit <code>381dea05c58055ba218e632510dd3a327d2bf215</code>. The object model includes <code>SetOfProcesses</code> as well as actors, assets, processes, datastores, servers, boundaries, data flows, threats, findings, assumptions and controls.</p>
 <h2>Implementations</h2>
-<table><thead><tr><th>Name</th><th>Kind</th><th>License</th><th>URL</th></tr></thead><tbody><tr><td>OWASP pytm</td><td>open-source library/CLI</td><td>GPL-3.0</td><td>https://github.com/OWASP/pytm</td></tr></tbody></table>
+<table><thead><tr><th>Name</th><th>Kind</th><th>License</th><th>URL</th></tr></thead><tbody><tr><td>OWASP pytm</td><td>open-source library/CLI</td><td>MIT</td><td>https://github.com/OWASP/pytm</td></tr></tbody></table>
 <h2>Artifacts in this record</h2>
 <table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata</td></tr></tbody></table>
 <h2>Limits</h2>
-<p>Python source is the native model representation. The reviewed source does not establish a neutral interchange round trip, built-in issue-tracker integration, or a native collaborative review lifecycle. No acceptance test was performed.</p>
+<p>The JSON format is native to pytm, not a neutral cross-tool format. The reviewed source does not establish built-in issue-tracker integration or a native collaborative review lifecycle. No acceptance test was performed.</p>
 
 <footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
 </main>

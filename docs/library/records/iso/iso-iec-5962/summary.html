@@ -99,9 +99,11 @@ nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font
 <h2>Bears on</h2>
 <p class="meta">No <code>bears_on</code> ids recorded. None were invented.</p>
 
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> only — not crosswalk edges.</p><h3><code>see_also</code></h3><ul><li><a class="rec" data-id="iso-iec-5962-2021" href="../../iso/iso-iec-5962-2021/summary.html">ISO/IEC 5962:2021</a></li></ul>
 
-
-<h2>Summary</h2><div class="callout"><strong>Summary not written.</strong> <code>summary.md</code> is still the library template (it still contains the “two to five sentences” instruction). That text is not rendered. This page is record metadata only.</div>
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><p><strong>This record is a pointer, not a reference.</strong> Same ISO standard and the same URL as <code>iso-iec-5962-2021</code>, ingested twice by the survey&#x27;s area-F batch.</p>
+<p>The id <code>iso-iec-5962</code> is kept because ids are stable forever: anything that ever cited it must not silently retarget. <strong>Do not extend this record and do not cite it.</strong> Cite <code>iso-iec-5962-2021</code> instead — that is where the metadata, summary and any extraction live.</p>
+<p><code>bin/validate</code> enforces the pointer: <code>duplicate_of</code> must name an existing record, and this record must stay a stub.</p>
 
 <footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
 </main>
