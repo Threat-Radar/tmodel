@@ -83,6 +83,6 @@ The app's "modelling note" rule hides any description sentence that holds code m
 ## Next
 
 - A model from a different attack class, such as poisoning or model theft, so that AI-1 to AI-12 are tested on more than prompt injection.
-- Route AI-8 to AI-12 in RPT-0009 §8, as G13 onward, in the report's next version. How they were found is in DL-0051.
+- Route AI-8 to AI-12 in RPT-0009 §8, as G13 onward, in the report's next version. How they were found is in DL-0053.
 - Findings A-2 to A-4 go to the renderer's owner. Whether these models move into `spec/vectors/`, so that the app and the site list them, is the sponsor's call (DL-0038 item 7 left the same question open for pv-01 and pv-02).
 - RPT-0009 §5 now places each stage of em-01 against the ETSI EN 304 223 and CISA AI-in-OT provisions, and §8 routes these gaps as G1 to G7.

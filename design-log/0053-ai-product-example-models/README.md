@@ -1,13 +1,13 @@
 ---
 schema: "archdoc/v1"
-id: DL-0051
+id: DL-0053
 title: "Two more AI product example models (Copilot agent mode, Agentforce) and an app test"
 type: research
 status: draft
 version: "0.1.0"
 date: "2026-11-09"
-updated: "2026-11-11"
-record: DL-0051
+updated: "2026-11-13"
+record: DL-0053
 defers_to: ARCH-0001
 ---
 
@@ -39,7 +39,7 @@ The example-models README (0.2.0) records the two models, gaps AI-8 to AI-12, an
   - `design-log/0024-schema-proposal-g13/check-refs.py`: every reference resolves.
   - em-01 was re-run on `main` too, with the same result.
   - `bin/validate-archdoc`: 0 errors.
-- **Number:** drafted as DL-0048 and renumbered on 2026-11-11 before the PR opened. #231 uses DL-0048, @Clovier claimed DL-0049 for the Juice Shop model (#200 review), and #233 uses DL-0050.
+- **Number:** drafted as DL-0048, renumbered to DL-0051 on 2026-11-11, and to DL-0053 on 2026-11-13. #231 merged as DL-0051, #237 uses DL-0049 and #233 DL-0050, and DL-0048 and DL-0052 are left for #200, which has been pointed at both.
 - **App test:** the engine (`tmodel serve`) and `npm run dev` were run from a local checkout of the #211 code, which differs from `main` only in a packaging requirement. The three files were copied into `spec/vectors/` for the test and not committed (finding A-1). Screenshots of the model report and attack-path views were checked by eye.
 
 ## What was decided while drafting, and why
