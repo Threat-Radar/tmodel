@@ -7,6 +7,7 @@
   tmodel paths FILE [--goal G] [--json]
                                attack paths to a step or threat in a model file;
                                without --goal, list the file's threats
+  tmodel coverage FILE --product ID [--json]  recorded requirement coverage (#170)
   tmodel library [--id I] [--type T] [--topic T] [--status S] [--json]
                                the library's records, optionally filtered; the
                                library is $TMODEL_LIBRARY or the pinned submodule
@@ -307,6 +308,30 @@ def _accept(args: argparse.Namespace) -> int:
     return 0
 
 
+def _coverage(args: argparse.Namespace) -> int:
+    file = os.path.abspath(args.file) if os.path.dirname(args.file) else args.file
+    params = {"file": file, "product": args.product}
+    payload = _call(
+        lambda: (
+            core.requirement_coverage(params)
+            if args.in_process
+            else get("/coverage", args.url, params=params)
+        )
+    )
+    if payload is None:
+        return 1
+    if args.json:
+        print(json.dumps(payload))
+    else:
+        print(f"{payload['product']}: {payload['count']} requirements")
+        for row in payload["requirements"]:
+            print(f"  [{row['status']}] {row['id']}")
+        print(f"  {len(payload['unaddressed_threats'])} unaddressed threats")
+        print(f"  {len(payload['proposed_assertions'])} proposed links (not counted)")
+        print(payload["interpretation"])
+    return 0
+
+
 def _serve(args: argparse.Namespace) -> int:
     try:
         server.serve(port=args.port, exit_with_parent=args.exit_with_parent)
@@ -345,6 +370,12 @@ def build_parser() -> argparse.ArgumentParser:
     paths.add_argument("--goal", default=None, help="step or threat id; omit to list threats")
     _add_transport(paths)
     paths.set_defaults(func=_paths)
+
+    coverage = sub.add_parser("coverage", help="recorded product requirement coverage (#170)")
+    coverage.add_argument("file", help="approved example filename or path")
+    coverage.add_argument("--product", required=True, help="Product id")
+    _add_transport(coverage)
+    coverage.set_defaults(func=_coverage)
 
     library = sub.add_parser("library", help="the library's records (#140)")
     for name in core.LIBRARY_FILTERS:

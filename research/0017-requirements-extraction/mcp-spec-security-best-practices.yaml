@@ -1,0 +1,688 @@
+# mcp-spec-security-best-practices: requirement extraction, AI-proposed, UNREVIEWED.
+# Human owner: @paria03. No human decisions are recorded by this extraction.
+# Source: library:mcp-spec-security-best-practices; library snapshot e4068272cec52a92b4414ea2a88a23b7125ce79d; read 2026-11-14.
+# Record content digest: 95beaace4d676d89e92d94751bab1ad4c9870e1458bc5f6f7eae8dd8bbc75bec.
+# Coverage: 34 uppercase MUST/SHOULD clauses / 34 converted / 0 skipped within this scope.
+# Dated-page capture sha256: 0d944ee66f3519ce2e9513d226e8849e5e0f2acd135f06f70b31cdfb014ead23 (HTML).
+# Capture differs from the record HTML digest; dated endpoint is still mutable.
+# Source has no requirement numbers; heading paths and descriptive suffixes are local locators.
+requirements:
+- id: requirement:mcp-spec-security-best-practices-confused-deputy-problem-mitigation-per-client-consent
+  name: Confused Deputy Problem > Mitigation / per-client-consent — Require each client to obtain
+    user consent at the proxy before th
+  text: Require each client to obtain user consent at the proxy before third-party authorization
+    begins.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:mcp-spec-security-best-practices#Confused Deputy Problem > Mitigation / per-client-consent
+  source_locator: Confused Deputy Problem > Mitigation
+- id: requirement:mcp-spec-security-best-practices-confused-deputy-problem-required-protections-per-client-consent-storage-consent-registry
+  name: Confused Deputy Problem > Required Protections > Per-Client Consent Storage / consent-registry
+    — Keep a securely stored per-user approved-client registry and cons
+  text: Keep a securely stored per-user approved-client registry and consult it before starting third-party
+    authorization.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:mcp-spec-security-best-practices#Confused Deputy Problem > Required Protections
+    > Per-Client Consent Storage / consent-registry
+  source_locator: Confused Deputy Problem > Required Protections > Per-Client Consent Storage
+- id: requirement:mcp-spec-security-best-practices-confused-deputy-problem-required-protections-consent-ui-requirements-consent-ui
+  name: Confused Deputy Problem > Required Protections > Consent UI Requirements / consent-ui — Show
+    the client name, API scopes and registered redirect destinat
+  text: Show the client name, API scopes and registered redirect destination on a consent screen
+    protected against CSRF and framing.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:mcp-spec-security-best-practices#Confused Deputy Problem > Required Protections
+    > Consent UI Requirements / consent-ui
+  source_locator: Confused Deputy Problem > Required Protections > Consent UI Requirements
+- id: requirement:mcp-spec-security-best-practices-confused-deputy-problem-required-protections-consent-cookie-security-consent-cookies
+  name: Confused Deputy Problem > Required Protections > Consent Cookie Security / consent-cookies
+    — When consent uses cookies, bind them to the client, use __Host- n
+  text: When consent uses cookies, bind them to the client, use __Host- names with Secure, HttpOnly
+    and SameSite=Lax, and protect decisions by signatures or server-side sessions.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:mcp-spec-security-best-practices#Confused Deputy Problem > Required Protections
+    > Consent Cookie Security / consent-cookies
+  source_locator: Confused Deputy Problem > Required Protections > Consent Cookie Security
+- id: requirement:mcp-spec-security-best-practices-confused-deputy-problem-required-protections-redirect-uri-validation-redirect-match
+  name: Confused Deputy Problem > Required Protections > Redirect URI Validation / redirect-match
+    — Match requested redirect URIs exactly to registered values and re
+  text: Match requested redirect URIs exactly to registered values and reject changed destinations
+    until re-registration.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:mcp-spec-security-best-practices#Confused Deputy Problem > Required Protections
+    > Redirect URI Validation / redirect-match
+  source_locator: Confused Deputy Problem > Required Protections > Redirect URI Validation
+- id: requirement:mcp-spec-security-best-practices-confused-deputy-problem-required-protections-oauth-state-parameter-validation-oauth-state
+  name: Confused Deputy Problem > Required Protections > OAuth State Parameter Validation / oauth-state
+    — Create a cryptographically random single-use short-lived state va
+  text: Create a cryptographically random single-use short-lived state value per request, store it
+    securely only after consent immediately before redirection, and reject callbacks unless their
+    state exactly matches the stored session value.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:mcp-spec-security-best-practices#Confused Deputy Problem > Required Protections
+    > OAuth State Parameter Validation / oauth-state
+  source_locator: Confused Deputy Problem > Required Protections > OAuth State Parameter Validation
+- id: requirement:mcp-spec-security-best-practices-confused-deputy-problem-required-protections-oauth-state-parameter-validation-no-preconsent-state
+  name: 'Confused Deputy Problem > Required Protections > OAuth State Parameter Validation / no-preconsent-state
+    — Do not create the state-bearing consent cookie or session before '
+  text: Do not create the state-bearing consent cookie or session before consent approval.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:mcp-spec-security-best-practices#Confused Deputy Problem > Required Protections
+    > OAuth State Parameter Validation / no-preconsent-state
+  source_locator: Confused Deputy Problem > Required Protections > OAuth State Parameter Validation
+- id: requirement:mcp-spec-security-best-practices-token-passthrough-mitigation-token-audience
+  name: Token Passthrough > Mitigation / token-audience — Reject tokens unless they were issued specifically
+    for this MCP s
+  text: Reject tokens unless they were issued specifically for this MCP server.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:mcp-spec-security-best-practices#Token Passthrough > Mitigation / token-audience
+  source_locator: Token Passthrough > Mitigation
+- id: requirement:mcp-spec-security-best-practices-server-side-request-forgery-ssrf-mitigation-ssrf-protection
+  name: Server-Side Request Forgery (SSRF) > Mitigation / ssrf-protection — For server-deployed clients,
+    assess SSRF exposure and protect OAu
+  text: For server-deployed clients, assess SSRF exposure and protect OAuth URL fetches with controls
+    appropriate to the network.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:mcp-spec-security-best-practices#Server-Side Request Forgery (SSRF) > Mitigation
+    / ssrf-protection
+  source_locator: Server-Side Request Forgery (SSRF) > Mitigation
+- id: requirement:mcp-spec-security-best-practices-server-side-request-forgery-ssrf-mitigation-enforce-https-oauth-https
+  name: Server-Side Request Forgery (SSRF) > Mitigation > Enforce HTTPS / oauth-https — Require HTTPS
+    for production OAuth URLs, allowing explicitly enab
+  text: Require HTTPS for production OAuth URLs, allowing explicitly enabled development exceptions
+    only for loopback HTTP URLs.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: library:mcp-spec-security-best-practices#Server-Side Request Forgery (SSRF) > Mitigation
+    > Enforce HTTPS / oauth-https
+  source_locator: Server-Side Request Forgery (SSRF) > Mitigation > Enforce HTTPS
+- id: requirement:mcp-spec-security-best-practices-server-side-request-forgery-ssrf-mitigation-block-private-ip-ranges-block-private-ips
+  name: Server-Side Request Forgery (SSRF) > Mitigation > Block Private IP Ranges / block-private-ips
+    — Block OAuth fetches to private and reserved address ranges, inclu
+  text: Block OAuth fetches to private and reserved address ranges, including loopback except when
+    explicitly allowed for development.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: library:mcp-spec-security-best-practices#Server-Side Request Forgery (SSRF) > Mitigation
+    > Block Private IP Ranges / block-private-ips
+  source_locator: Server-Side Request Forgery (SSRF) > Mitigation > Block Private IP Ranges
+- id: requirement:mcp-spec-security-best-practices-server-side-request-forgery-ssrf-mitigation-validate-redirect-targets-redirect-targets
+  name: Server-Side Request Forgery (SSRF) > Mitigation > Validate Redirect Targets / redirect-targets
+    — Reapply URL scheme and address restrictions at each redirect dest
+  text: Reapply URL scheme and address restrictions at each redirect destination instead of following
+    redirects unchecked.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: library:mcp-spec-security-best-practices#Server-Side Request Forgery (SSRF) > Mitigation
+    > Validate Redirect Targets / redirect-targets
+  source_locator: Server-Side Request Forgery (SSRF) > Mitigation > Validate Redirect Targets
+- id: requirement:mcp-spec-security-best-practices-server-side-request-forgery-ssrf-mitigation-use-egress-proxies-egress-proxy
+  name: Server-Side Request Forgery (SSRF) > Mitigation > Use Egress Proxies / egress-proxy — Evaluate
+    routing server-side OAuth discovery through an egress pr
+  text: Evaluate routing server-side OAuth discovery through an egress proxy enforcing outbound destination
+    policy.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: library:mcp-spec-security-best-practices#Server-Side Request Forgery (SSRF) > Mitigation
+    > Use Egress Proxies / egress-proxy
+  source_locator: Server-Side Request Forgery (SSRF) > Mitigation > Use Egress Proxies
+- id: requirement:mcp-spec-security-best-practices-session-hijacking-mitigation-verify-inbound
+  name: Session Hijacking > Mitigation / verify-inbound — For servers implementing authorization,
+    authenticate and authoriz
+  text: For servers implementing authorization, authenticate and authorize every inbound request.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:mcp-spec-security-best-practices#Session Hijacking > Mitigation / verify-inbound
+  source_locator: Session Hijacking > Mitigation
+- id: requirement:mcp-spec-security-best-practices-session-hijacking-mitigation-no-session-auth
+  name: Session Hijacking > Mitigation / no-session-auth — Do not treat possession of an MCP session
+    as authentication
+  text: Do not treat possession of an MCP session as authentication.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:mcp-spec-security-best-practices#Session Hijacking > Mitigation / no-session-auth
+  source_locator: Session Hijacking > Mitigation
+- id: requirement:mcp-spec-security-best-practices-session-hijacking-mitigation-unpredictable-session-id
+  name: Session Hijacking > Mitigation / unpredictable-session-id — Assign secure session identifiers
+    that cannot be predicted determ
+  text: Assign secure session identifiers that cannot be predicted deterministically.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:mcp-spec-security-best-practices#Session Hijacking > Mitigation / unpredictable-session-id
+  source_locator: Session Hijacking > Mitigation
+- id: requirement:mcp-spec-security-best-practices-session-hijacking-mitigation-random-session-id
+  name: Session Hijacking > Mitigation / random-session-id — Generate session identifiers with a
+    cryptographically secure rand
+  text: Generate session identifiers with a cryptographically secure random generator.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: library:mcp-spec-security-best-practices#Session Hijacking > Mitigation / random-session-id
+  source_locator: Session Hijacking > Mitigation
+- id: requirement:mcp-spec-security-best-practices-session-hijacking-mitigation-user-session-binding
+  name: Session Hijacking > Mitigation / user-session-binding — Bind session data to a user identity
+    derived from authenticated c
+  text: Bind session data to a user identity derived from authenticated credentials rather than client-supplied
+    user claims.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: library:mcp-spec-security-best-practices#Session Hijacking > Mitigation / user-session-binding
+  source_locator: Session Hijacking > Mitigation
+- id: requirement:mcp-spec-security-best-practices-local-mcp-server-compromise-mitigation-one-click-consent
+  name: 'Local MCP Server Compromise > Mitigation / one-click-consent — Obtain informed consent before
+    running commands supplied through '
+  text: Obtain informed consent before running commands supplied through one-click local-server configuration.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:mcp-spec-security-best-practices#Local MCP Server Compromise > Mitigation /
+    one-click-consent
+  source_locator: Local MCP Server Compromise > Mitigation
+- id: requirement:mcp-spec-security-best-practices-local-mcp-server-compromise-mitigation-pre-configuration-consent-command-consent-ui
+  name: Local MCP Server Compromise > Mitigation > Pre-Configuration Consent / command-consent-ui
+    — Before one-click configuration, display the entire command and ar
+  text: Before one-click configuration, display the entire command and arguments with a code-execution
+    risk explanation and require explicit approval while allowing cancellation.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:mcp-spec-security-best-practices#Local MCP Server Compromise > Mitigation >
+    Pre-Configuration Consent / command-consent-ui
+  source_locator: Local MCP Server Compromise > Mitigation > Pre-Configuration Consent
+- id: requirement:mcp-spec-security-best-practices-local-mcp-server-compromise-mitigation-pre-configuration-consent-client-guardrails
+  name: Local MCP Server Compromise > Mitigation > Pre-Configuration Consent / client-guardrails
+    — Warn about risky commands, sensitive paths and inherited privileg
+  text: Warn about risky commands, sensitive paths and inherited privileges, sandbox servers with
+    minimal resource access, support explicit privilege grants and maintain the sandbox protections.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: library:mcp-spec-security-best-practices#Local MCP Server Compromise > Mitigation >
+    Pre-Configuration Consent / client-guardrails
+  source_locator: Local MCP Server Compromise > Mitigation > Pre-Configuration Consent
+- id: requirement:mcp-spec-security-best-practices-local-mcp-server-compromise-mitigation-local-server-access
+  name: Local MCP Server Compromise > Mitigation / local-server-access — Protect local servers from
+    other processes by using client-confin
+  text: Protect local servers from other processes by using client-confined stdio or restricted HTTP
+    access through credentials or access-controlled IPC.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: library:mcp-spec-security-best-practices#Local MCP Server Compromise > Mitigation /
+    local-server-access
+  source_locator: Local MCP Server Compromise > Mitigation
+- id: requirement:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-url-scheme-validation-validate-schemes
+  name: OAuth Authorization URL Validation > Mitigation > URL Scheme Validation / validate-schemes
+    — Check authorization URL schemes and reject dangerous ones
+  text: Check authorization URL schemes and reject dangerous ones.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:mcp-spec-security-best-practices#OAuth Authorization URL Validation > Mitigation
+    > URL Scheme Validation / validate-schemes
+  source_locator: OAuth Authorization URL Validation > Mitigation > URL Scheme Validation
+- id: requirement:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-url-scheme-validation-scheme-allowlist
+  name: OAuth Authorization URL Validation > Mitigation > URL Scheme Validation / scheme-allowlist
+    — Permit only HTTPS or HTTP authorization URLs, limiting HTTP to lo
+  text: Permit only HTTPS or HTTP authorization URLs, limiting HTTP to loopback development use.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:mcp-spec-security-best-practices#OAuth Authorization URL Validation > Mitigation
+    > URL Scheme Validation / scheme-allowlist
+  source_locator: OAuth Authorization URL Validation > Mitigation > URL Scheme Validation
+- id: requirement:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-url-scheme-validation-production-https
+  name: OAuth Authorization URL Validation > Mitigation > URL Scheme Validation / production-https
+    — Use HTTPS for production authorization servers
+  text: Use HTTPS for production authorization servers.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:mcp-spec-security-best-practices#OAuth Authorization URL Validation > Mitigation
+    > URL Scheme Validation / production-https
+  source_locator: OAuth Authorization URL Validation > Mitigation > URL Scheme Validation
+- id: requirement:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-url-scheme-validation-reject-dangerous-schemes
+  name: OAuth Authorization URL Validation > Mitigation > URL Scheme Validation / reject-dangerous-schemes
+    — Reject executable or local-resource authorization URL schemes suc
+  text: Reject executable or local-resource authorization URL schemes such as javascript, data, file
+    and vbscript.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:mcp-spec-security-best-practices#OAuth Authorization URL Validation > Mitigation
+    > URL Scheme Validation / reject-dangerous-schemes
+  source_locator: OAuth Authorization URL Validation > Mitigation > URL Scheme Validation
+- id: requirement:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-url-scheme-validation-prefer-allowlist
+  name: OAuth Authorization URL Validation > Mitigation > URL Scheme Validation / prefer-allowlist
+    — Validate authorization URLs against permitted schemes rather than
+  text: Validate authorization URLs against permitted schemes rather than relying on a forbidden-scheme
+    list.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: library:mcp-spec-security-best-practices#OAuth Authorization URL Validation > Mitigation
+    > URL Scheme Validation / prefer-allowlist
+  source_locator: OAuth Authorization URL Validation > Mitigation > URL Scheme Validation
+- id: requirement:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-secure-url-opening-avoid-shell
+  name: OAuth Authorization URL Validation > Mitigation > Secure URL Opening / avoid-shell — Open
+    authorization URLs without invoking a shell
+  text: Open authorization URLs without invoking a shell.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:mcp-spec-security-best-practices#OAuth Authorization URL Validation > Mitigation
+    > Secure URL Opening / avoid-shell
+  source_locator: OAuth Authorization URL Validation > Mitigation > Secure URL Opening
+- id: requirement:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-secure-url-opening-no-shell-commands
+  name: OAuth Authorization URL Validation > Mitigation > Secure URL Opening / no-shell-commands
+    — Never use shell commands to launch an authorization URL
+  text: Never use shell commands to launch an authorization URL.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:mcp-spec-security-best-practices#OAuth Authorization URL Validation > Mitigation
+    > Secure URL Opening / no-shell-commands
+  source_locator: OAuth Authorization URL Validation > Mitigation > Secure URL Opening
+- id: requirement:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-secure-url-opening-native-url-opener
+  name: OAuth Authorization URL Validation > Mitigation > Secure URL Opening / native-url-opener
+    — Use the platform URL-opening facility that does not execute a she
+  text: Use the platform URL-opening facility that does not execute a shell.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: library:mcp-spec-security-best-practices#OAuth Authorization URL Validation > Mitigation
+    > Secure URL Opening / native-url-opener
+  source_locator: OAuth Authorization URL Validation > Mitigation > Secure URL Opening
+- id: requirement:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-content-security-policy-csp-web-csp
+  name: OAuth Authorization URL Validation > Mitigation > Content Security Policy (CSP) / web-csp
+    — Apply web-client content policies restricting scripts and resourc
+  text: Apply web-client content policies restricting scripts and resources to trusted origins, using
+    nonces when inline scripts are necessary.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: library:mcp-spec-security-best-practices#OAuth Authorization URL Validation > Mitigation
+    > Content Security Policy (CSP) / web-csp
+  source_locator: OAuth Authorization URL Validation > Mitigation > Content Security Policy (CSP)
+- id: requirement:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-input-sanitization-sanitize-urls
+  name: OAuth Authorization URL Validation > Mitigation > Input Sanitization / sanitize-urls — Strictly
+    parse and sanitize every server-provided URL, reject she
+  text: Strictly parse and sanitize every server-provided URL, reject shell-interpretable characters
+    and log suspicious authorization destinations.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:mcp-spec-security-best-practices#OAuth Authorization URL Validation > Mitigation
+    > Input Sanitization / sanitize-urls
+  source_locator: OAuth Authorization URL Validation > Mitigation > Input Sanitization
+- id: requirement:mcp-spec-security-best-practices-stdio-transport-security-in-proxy-scenarios-mitigation-stdio-transport-restrictions-stdio-proxy-controls
+  name: stdio Transport Security in Proxy Scenarios > Mitigation > stdio Transport Restrictions /
+    stdio-proxy-controls — Sandbox spawned servers, restrict their filesystem access, log st
+  text: Sandbox spawned servers, restrict their filesystem access, log stdio use and require further
+    authorization for dangerous commands.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: library:mcp-spec-security-best-practices#stdio Transport Security in Proxy Scenarios
+    > Mitigation > stdio Transport Restrictions / stdio-proxy-controls
+  source_locator: stdio Transport Security in Proxy Scenarios > Mitigation > stdio Transport Restrictions
+- id: requirement:mcp-spec-security-best-practices-stdio-transport-security-in-proxy-scenarios-mitigation-client-side-protections-proxy-isolation
+  name: stdio Transport Security in Proxy Scenarios > Mitigation > Client-Side Protections / proxy-isolation
+    — Isolate proxy communication and constrain proxy privileges with p
+  text: Isolate proxy communication and constrain proxy privileges with process sandboxing or a restricted
+    execution environment.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: library:mcp-spec-security-best-practices#stdio Transport Security in Proxy Scenarios
+    > Mitigation > Client-Side Protections / proxy-isolation
+  source_locator: stdio Transport Security in Proxy Scenarios > Mitigation > Client-Side Protections
+threat_instances:
+- id: threat-instance:mcp-spec-security-best-practices-confused-deputy-problem
+  name: Confused Deputy Problem
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:mcp-spec-security-best-practices-token-passthrough
+  name: Token Passthrough
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:mcp-spec-security-best-practices-server-side-request-forgery-ssrf
+  name: Server-Side Request Forgery (SSRF)
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:mcp-spec-security-best-practices-session-hijacking
+  name: Session Hijacking
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:mcp-spec-security-best-practices-local-mcp-server-compromise
+  name: Local MCP Server Compromise
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:mcp-spec-security-best-practices-oauth-authorization-url-validation
+  name: OAuth Authorization URL Validation — Arbitrary Code Execution
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:mcp-spec-security-best-practices-stdio-transport-security-in-proxy-scenarios
+  name: stdio Transport Security in Proxy Scenarios — full system compromise
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+parties:
+- id: party:paria03
+  name: '@paria03'
+  party_kind: person
+assertions:
+- id: assertion:mcp-spec-security-best-practices-confused-deputy-problem-mitigation-per-client-consent-addresses-mcp-spec-security-best-practices-confused-deputy-problem
+  subject: requirement:mcp-spec-security-best-practices-confused-deputy-problem-mitigation-per-client-consent
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-confused-deputy-problem
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Confused Deputy Problem > Mitigation;
+    control appears in the named attack section, so the link is proposed at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-confused-deputy-problem-required-protections-per-client-consent-storage-consent-registry-addresses-mcp-spec-security-best-practices-confused-deputy-problem
+  subject: requirement:mcp-spec-security-best-practices-confused-deputy-problem-required-protections-per-client-consent-storage-consent-registry
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-confused-deputy-problem
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Confused Deputy Problem > Required Protections
+    > Per-Client Consent Storage; control appears in the named attack section, so the link is proposed
+    at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-confused-deputy-problem-required-protections-consent-ui-requirements-consent-ui-addresses-mcp-spec-security-best-practices-confused-deputy-problem
+  subject: requirement:mcp-spec-security-best-practices-confused-deputy-problem-required-protections-consent-ui-requirements-consent-ui
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-confused-deputy-problem
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Confused Deputy Problem > Required Protections
+    > Consent UI Requirements; control appears in the named attack section, so the link is proposed
+    at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-confused-deputy-problem-required-protections-consent-cookie-security-consent-cookies-addresses-mcp-spec-security-best-practices-confused-deputy-problem
+  subject: requirement:mcp-spec-security-best-practices-confused-deputy-problem-required-protections-consent-cookie-security-consent-cookies
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-confused-deputy-problem
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Confused Deputy Problem > Required Protections
+    > Consent Cookie Security; control appears in the named attack section, so the link is proposed
+    at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-confused-deputy-problem-required-protections-redirect-uri-validation-redirect-match-addresses-mcp-spec-security-best-practices-confused-deputy-problem
+  subject: requirement:mcp-spec-security-best-practices-confused-deputy-problem-required-protections-redirect-uri-validation-redirect-match
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-confused-deputy-problem
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Confused Deputy Problem > Required Protections
+    > Redirect URI Validation; control appears in the named attack section, so the link is proposed
+    at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-confused-deputy-problem-required-protections-oauth-state-parameter-validation-oauth-state-addresses-mcp-spec-security-best-practices-confused-deputy-problem
+  subject: requirement:mcp-spec-security-best-practices-confused-deputy-problem-required-protections-oauth-state-parameter-validation-oauth-state
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-confused-deputy-problem
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Confused Deputy Problem > Required Protections
+    > OAuth State Parameter Validation; control appears in the named attack section, so the link
+    is proposed at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-confused-deputy-problem-required-protections-oauth-state-parameter-validation-no-preconsent-state-addresses-mcp-spec-security-best-practices-confused-deputy-problem
+  subject: requirement:mcp-spec-security-best-practices-confused-deputy-problem-required-protections-oauth-state-parameter-validation-no-preconsent-state
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-confused-deputy-problem
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Confused Deputy Problem > Required Protections
+    > OAuth State Parameter Validation; control appears in the named attack section, so the link
+    is proposed at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-token-passthrough-mitigation-token-audience-addresses-mcp-spec-security-best-practices-token-passthrough
+  subject: requirement:mcp-spec-security-best-practices-token-passthrough-mitigation-token-audience
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-token-passthrough
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Token Passthrough > Mitigation; control
+    appears in the named attack section, so the link is proposed at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-server-side-request-forgery-ssrf-mitigation-ssrf-protection-addresses-mcp-spec-security-best-practices-server-side-request-forgery-ssrf
+  subject: requirement:mcp-spec-security-best-practices-server-side-request-forgery-ssrf-mitigation-ssrf-protection
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-server-side-request-forgery-ssrf
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Server-Side Request Forgery (SSRF) >
+    Mitigation; control appears in the named attack section, so the link is proposed at that section
+    scope.'
+- id: assertion:mcp-spec-security-best-practices-server-side-request-forgery-ssrf-mitigation-enforce-https-oauth-https-addresses-mcp-spec-security-best-practices-server-side-request-forgery-ssrf
+  subject: requirement:mcp-spec-security-best-practices-server-side-request-forgery-ssrf-mitigation-enforce-https-oauth-https
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-server-side-request-forgery-ssrf
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Server-Side Request Forgery (SSRF) >
+    Mitigation > Enforce HTTPS; control appears in the named attack section, so the link is proposed
+    at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-server-side-request-forgery-ssrf-mitigation-block-private-ip-ranges-block-private-ips-addresses-mcp-spec-security-best-practices-server-side-request-forgery-ssrf
+  subject: requirement:mcp-spec-security-best-practices-server-side-request-forgery-ssrf-mitigation-block-private-ip-ranges-block-private-ips
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-server-side-request-forgery-ssrf
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Server-Side Request Forgery (SSRF) >
+    Mitigation > Block Private IP Ranges; control appears in the named attack section, so the link
+    is proposed at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-server-side-request-forgery-ssrf-mitigation-validate-redirect-targets-redirect-targets-addresses-mcp-spec-security-best-practices-server-side-request-forgery-ssrf
+  subject: requirement:mcp-spec-security-best-practices-server-side-request-forgery-ssrf-mitigation-validate-redirect-targets-redirect-targets
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-server-side-request-forgery-ssrf
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Server-Side Request Forgery (SSRF) >
+    Mitigation > Validate Redirect Targets; control appears in the named attack section, so the link
+    is proposed at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-server-side-request-forgery-ssrf-mitigation-use-egress-proxies-egress-proxy-addresses-mcp-spec-security-best-practices-server-side-request-forgery-ssrf
+  subject: requirement:mcp-spec-security-best-practices-server-side-request-forgery-ssrf-mitigation-use-egress-proxies-egress-proxy
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-server-side-request-forgery-ssrf
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Server-Side Request Forgery (SSRF) >
+    Mitigation > Use Egress Proxies; control appears in the named attack section, so the link is
+    proposed at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-session-hijacking-mitigation-verify-inbound-addresses-mcp-spec-security-best-practices-session-hijacking
+  subject: requirement:mcp-spec-security-best-practices-session-hijacking-mitigation-verify-inbound
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-session-hijacking
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Session Hijacking > Mitigation; control
+    appears in the named attack section, so the link is proposed at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-session-hijacking-mitigation-no-session-auth-addresses-mcp-spec-security-best-practices-session-hijacking
+  subject: requirement:mcp-spec-security-best-practices-session-hijacking-mitigation-no-session-auth
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-session-hijacking
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Session Hijacking > Mitigation; control
+    appears in the named attack section, so the link is proposed at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-session-hijacking-mitigation-unpredictable-session-id-addresses-mcp-spec-security-best-practices-session-hijacking
+  subject: requirement:mcp-spec-security-best-practices-session-hijacking-mitigation-unpredictable-session-id
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-session-hijacking
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Session Hijacking > Mitigation; control
+    appears in the named attack section, so the link is proposed at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-session-hijacking-mitigation-random-session-id-addresses-mcp-spec-security-best-practices-session-hijacking
+  subject: requirement:mcp-spec-security-best-practices-session-hijacking-mitigation-random-session-id
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-session-hijacking
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Session Hijacking > Mitigation; control
+    appears in the named attack section, so the link is proposed at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-session-hijacking-mitigation-user-session-binding-addresses-mcp-spec-security-best-practices-session-hijacking
+  subject: requirement:mcp-spec-security-best-practices-session-hijacking-mitigation-user-session-binding
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-session-hijacking
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Session Hijacking > Mitigation; control
+    appears in the named attack section, so the link is proposed at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-local-mcp-server-compromise-mitigation-one-click-consent-addresses-mcp-spec-security-best-practices-local-mcp-server-compromise
+  subject: requirement:mcp-spec-security-best-practices-local-mcp-server-compromise-mitigation-one-click-consent
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-local-mcp-server-compromise
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Local MCP Server Compromise > Mitigation;
+    control appears in the named attack section, so the link is proposed at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-local-mcp-server-compromise-mitigation-pre-configuration-consent-command-consent-ui-addresses-mcp-spec-security-best-practices-local-mcp-server-compromise
+  subject: requirement:mcp-spec-security-best-practices-local-mcp-server-compromise-mitigation-pre-configuration-consent-command-consent-ui
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-local-mcp-server-compromise
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Local MCP Server Compromise > Mitigation
+    > Pre-Configuration Consent; control appears in the named attack section, so the link is proposed
+    at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-local-mcp-server-compromise-mitigation-pre-configuration-consent-client-guardrails-addresses-mcp-spec-security-best-practices-local-mcp-server-compromise
+  subject: requirement:mcp-spec-security-best-practices-local-mcp-server-compromise-mitigation-pre-configuration-consent-client-guardrails
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-local-mcp-server-compromise
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Local MCP Server Compromise > Mitigation
+    > Pre-Configuration Consent; control appears in the named attack section, so the link is proposed
+    at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-local-mcp-server-compromise-mitigation-local-server-access-addresses-mcp-spec-security-best-practices-local-mcp-server-compromise
+  subject: requirement:mcp-spec-security-best-practices-local-mcp-server-compromise-mitigation-local-server-access
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-local-mcp-server-compromise
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Local MCP Server Compromise > Mitigation;
+    control appears in the named attack section, so the link is proposed at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-url-scheme-validation-validate-schemes-addresses-mcp-spec-security-best-practices-oauth-authorization-url-validation
+  subject: requirement:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-url-scheme-validation-validate-schemes
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-oauth-authorization-url-validation
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: OAuth Authorization URL Validation >
+    Mitigation > URL Scheme Validation; control appears in the named attack section, so the link
+    is proposed at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-url-scheme-validation-scheme-allowlist-addresses-mcp-spec-security-best-practices-oauth-authorization-url-validation
+  subject: requirement:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-url-scheme-validation-scheme-allowlist
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-oauth-authorization-url-validation
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: OAuth Authorization URL Validation >
+    Mitigation > URL Scheme Validation; control appears in the named attack section, so the link
+    is proposed at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-url-scheme-validation-production-https-addresses-mcp-spec-security-best-practices-oauth-authorization-url-validation
+  subject: requirement:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-url-scheme-validation-production-https
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-oauth-authorization-url-validation
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: OAuth Authorization URL Validation >
+    Mitigation > URL Scheme Validation; control appears in the named attack section, so the link
+    is proposed at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-url-scheme-validation-reject-dangerous-schemes-addresses-mcp-spec-security-best-practices-oauth-authorization-url-validation
+  subject: requirement:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-url-scheme-validation-reject-dangerous-schemes
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-oauth-authorization-url-validation
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: OAuth Authorization URL Validation >
+    Mitigation > URL Scheme Validation; control appears in the named attack section, so the link
+    is proposed at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-url-scheme-validation-prefer-allowlist-addresses-mcp-spec-security-best-practices-oauth-authorization-url-validation
+  subject: requirement:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-url-scheme-validation-prefer-allowlist
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-oauth-authorization-url-validation
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: OAuth Authorization URL Validation >
+    Mitigation > URL Scheme Validation; control appears in the named attack section, so the link
+    is proposed at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-secure-url-opening-avoid-shell-addresses-mcp-spec-security-best-practices-oauth-authorization-url-validation
+  subject: requirement:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-secure-url-opening-avoid-shell
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-oauth-authorization-url-validation
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: OAuth Authorization URL Validation >
+    Mitigation > Secure URL Opening; control appears in the named attack section, so the link is
+    proposed at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-secure-url-opening-no-shell-commands-addresses-mcp-spec-security-best-practices-oauth-authorization-url-validation
+  subject: requirement:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-secure-url-opening-no-shell-commands
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-oauth-authorization-url-validation
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: OAuth Authorization URL Validation >
+    Mitigation > Secure URL Opening; control appears in the named attack section, so the link is
+    proposed at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-secure-url-opening-native-url-opener-addresses-mcp-spec-security-best-practices-oauth-authorization-url-validation
+  subject: requirement:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-secure-url-opening-native-url-opener
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-oauth-authorization-url-validation
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: OAuth Authorization URL Validation >
+    Mitigation > Secure URL Opening; control appears in the named attack section, so the link is
+    proposed at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-content-security-policy-csp-web-csp-addresses-mcp-spec-security-best-practices-oauth-authorization-url-validation
+  subject: requirement:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-content-security-policy-csp-web-csp
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-oauth-authorization-url-validation
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: OAuth Authorization URL Validation >
+    Mitigation > Content Security Policy (CSP); control appears in the named attack section, so the
+    link is proposed at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-input-sanitization-sanitize-urls-addresses-mcp-spec-security-best-practices-oauth-authorization-url-validation
+  subject: requirement:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-input-sanitization-sanitize-urls
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-oauth-authorization-url-validation
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: OAuth Authorization URL Validation >
+    Mitigation > Input Sanitization; control appears in the named attack section, so the link is
+    proposed at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-stdio-transport-security-in-proxy-scenarios-mitigation-stdio-transport-restrictions-stdio-proxy-controls-addresses-mcp-spec-security-best-practices-stdio-transport-security-in-proxy-scenarios
+  subject: requirement:mcp-spec-security-best-practices-stdio-transport-security-in-proxy-scenarios-mitigation-stdio-transport-restrictions-stdio-proxy-controls
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-stdio-transport-security-in-proxy-scenarios
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: stdio Transport Security in Proxy Scenarios
+    > Mitigation > stdio Transport Restrictions; control appears in the named attack section, so
+    the link is proposed at that section scope.'
+- id: assertion:mcp-spec-security-best-practices-stdio-transport-security-in-proxy-scenarios-mitigation-client-side-protections-proxy-isolation-addresses-mcp-spec-security-best-practices-stdio-transport-security-in-proxy-scenarios
+  subject: requirement:mcp-spec-security-best-practices-stdio-transport-security-in-proxy-scenarios-mitigation-client-side-protections-proxy-isolation
+  predicate: addresses
+  object: threat-instance:mcp-spec-security-best-practices-stdio-transport-security-in-proxy-scenarios
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: stdio Transport Security in Proxy Scenarios
+    > Mitigation > Client-Side Protections; control appears in the named attack section, so the link
+    is proposed at that section scope.'

@@ -1,0 +1,65 @@
+# Undecided human review sample for #170
+
+Owner: @paria03. **No review has been performed or recorded here.** Select an actual accepting or rejecting decision only after checking each linked provision in the source and the rationale in the Assertion. Empty decision cells are intentional; do not treat this checklist as a Review.
+
+The sample is deterministic and spread across each source’s proposed links. These are 40 review targets, not 40 accepted links. See [coverage and provenance](agentic-coverage.md).
+
+## csa-maestro-2025
+
+| Assertion / source locator | Proposed target | Human decision and reason |
+|---|---|---|
+| `assertion:csa-maestro-2025-layer-1-foundation-models-addresses-csa-maestro-2025-layer-1-adversarial-examples`<br>§3.2 A, Layer 1: Foundation Models; §3.2 C, Layer-Specific Mitigations | `threat-instance:csa-maestro-2025-layer-1-adversarial-examples` | |
+| `assertion:csa-maestro-2025-layer-4-deployment-and-infrastructure-addresses-csa-maestro-2025-layer-4-compromised-container-images`<br>§3.2 A, Layer 4: Deployment and Infrastructure; §3.2 C, Layer-Specific Mitigations | `threat-instance:csa-maestro-2025-layer-4-compromised-container-images` | |
+| `assertion:csa-maestro-2025-layer-6-security-and-compliance-addresses-csa-maestro-2025-layer-6-compromised-security-ai-agents`<br>§3.2 A, Layer 6: Security and Compliance; §3.2 C, Layer-Specific Mitigations | `threat-instance:csa-maestro-2025-layer-6-compromised-security-ai-agents` | |
+| `assertion:csa-maestro-2025-secure-inter-layer-communication-addresses-csa-maestro-2025-lateral-movement`<br>§3.2 C, Mitigation Strategies > Secure Inter-Layer Communication | `threat-instance:csa-maestro-2025-lateral-movement` | |
+| `assertion:csa-maestro-2025-incident-response-plan-addresses-csa-maestro-2025-goal-misalignment-cascades`<br>§3.2 C, Mitigation Strategies > Incident Response Plan | `threat-instance:csa-maestro-2025-goal-misalignment-cascades` | |
+| `assertion:csa-maestro-2025-explainable-ai-xai-addresses-csa-maestro-2025-repudiation`<br>§3.2 C, Mitigation Strategies > Explainable AI (XAI) | `threat-instance:csa-maestro-2025-repudiation` | |
+| `assertion:csa-maestro-2025-safety-monitoring-addresses-csa-maestro-2025-agent-tool-misuse`<br>§3.2 C, Mitigation Strategies > Safety Monitoring | `threat-instance:csa-maestro-2025-agent-tool-misuse` | |
+| `assertion:csa-maestro-2025-unconstrained-conversational-autonomy-addresses-csa-maestro-2025-unconstrained-conversational-autonomy-prompt-injection-jailbreaking`<br>§4, Unconstrained Conversational Autonomy > Mitigations | `threat-instance:csa-maestro-2025-unconstrained-conversational-autonomy-prompt-injection-jailbreaking` | |
+| `assertion:csa-maestro-2025-hierarchical-agent-pattern-addresses-csa-maestro-2025-hierarchical-agent-pattern-compromise-of-a-higher-level-agent-to-control-subordinates`<br>§4, Hierarchical Agent Pattern > Mitigations | `threat-instance:csa-maestro-2025-hierarchical-agent-pattern-compromise-of-a-higher-level-agent-to-control-subordinates` | |
+| `assertion:csa-maestro-2025-self-learning-and-adaptive-agents-addresses-csa-maestro-2025-self-learning-and-adaptive-agents-data-poisoning-through-backdoor-trigger-injection`<br>§4, Self-Learning and Adaptive Agents > Mitigations | `threat-instance:csa-maestro-2025-self-learning-and-adaptive-agents-data-poisoning-through-backdoor-trigger-injection` | |
+
+## sp-800-218a
+
+| Assertion / source locator | Proposed target | Human decision and reason |
+|---|---|---|
+| `assertion:sp-800-218a-po-5-1-r1-addresses-sp-800-218a-resource-exhaustion`<br>Table 1 (§3), PO.5.1 Recommendations/Considerations/Notes, R1, p. 10 | `threat-instance:sp-800-218a-resource-exhaustion` | |
+| `assertion:sp-800-218a-po-5-1-r6-addresses-sp-800-218a-disclosure`<br>Table 1 (§3), PO.5.1 Recommendations/Considerations/Notes, R6, p. 11 | `threat-instance:sp-800-218a-disclosure` | |
+| `assertion:sp-800-218a-ps-1-1-r2-addresses-sp-800-218a-weight-theft`<br>Table 1 (§3), PS.1.1 Recommendations/Considerations/Notes, R2, p. 11 | `threat-instance:sp-800-218a-weight-theft` | |
+| `assertion:sp-800-218a-ps-1-3-r4-addresses-sp-800-218a-weight-theft`<br>Table 1 (§3), PS.1.3 Recommendations/Considerations/Notes, R4, p. 12 | `threat-instance:sp-800-218a-weight-theft` | |
+| `assertion:sp-800-218a-pw-3-1-addresses-sp-800-218a-poisoning`<br>Table 1 (§3), PW.3.1, p. 14 | `threat-instance:sp-800-218a-poisoning` | |
+| `assertion:sp-800-218a-pw-3-1-r1-addresses-sp-800-218a-poisoning`<br>Table 1 (§3), PW.3.1 Recommendations/Considerations/Notes, R1, p. 14 | `threat-instance:sp-800-218a-poisoning` | |
+| `assertion:sp-800-218a-pw-3-1-r2-addresses-sp-800-218a-poisoning`<br>Table 1 (§3), PW.3.1 Recommendations/Considerations/Notes, R2, p. 15 | `threat-instance:sp-800-218a-poisoning` | |
+| `assertion:sp-800-218a-pw-4-4-r2-addresses-sp-800-218a-supply-chain`<br>Table 1 (§3), PW.4.4 Recommendations/Considerations/Notes, R2, p. 16 | `threat-instance:sp-800-218a-supply-chain` | |
+| `assertion:sp-800-218a-pw-5-1-r2-addresses-sp-800-218a-injected-content`<br>Table 1 (§3), PW.5.1 Recommendations/Considerations/Notes, R2, p. 16 | `threat-instance:sp-800-218a-injected-content` | |
+| `assertion:sp-800-218a-pw-5-1-r3-addresses-sp-800-218a-injected-content`<br>Table 1 (§3), PW.5.1 Recommendations/Considerations/Notes, R3, p. 16 | `threat-instance:sp-800-218a-injected-content` | |
+
+## owasp-agentic-threats-mitigations-v1-1
+
+| Assertion / source locator | Proposed target | Human decision and reason |
+|---|---|---|
+| `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-1-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t6`<br>Mitigation Strategies > Playbook 1 > Step 1 > top-level bullet 1 (printed p. 35; PDF page 36) | `threat-instance:owasp-agentic-threats-mitigations-v1-1-t6` | |
+| `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-2-addresses-owasp-agentic-threats-mitigations-v1-1-t1`<br>Mitigation Strategies > Playbook 2 > Step 1 > top-level bullet 2 (printed p. 36; PDF page 37) | `threat-instance:owasp-agentic-threats-mitigations-v1-1-t1` | |
+| `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t1`<br>Mitigation Strategies > Playbook 2 > Step 2 > top-level bullet 5 (printed p. 36; PDF page 37) | `threat-instance:owasp-agentic-threats-mitigations-v1-1-t1` | |
+| `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t4`<br>Mitigation Strategies > Playbook 3 > Step 1 > top-level bullet 5 (printed p. 38; PDF page 39) | `threat-instance:owasp-agentic-threats-mitigations-v1-1-t4` | |
+| `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t4`<br>Mitigation Strategies > Playbook 3 > Step 3 > top-level bullet 1 (printed p. 38; PDF page 39) | `threat-instance:owasp-agentic-threats-mitigations-v1-1-t4` | |
+| `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-6-addresses-owasp-agentic-threats-mitigations-v1-1-t3`<br>Mitigation Strategies > Playbook 4 > Step 1 > top-level bullet 6 (printed p. 39; PDF page 40) | `threat-instance:owasp-agentic-threats-mitigations-v1-1-t3` | |
+| `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t9`<br>Mitigation Strategies > Playbook 4 > Step 3 > top-level bullet 5 (printed p. 39; PDF page 40) | `threat-instance:owasp-agentic-threats-mitigations-v1-1-t9` | |
+| `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-3-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t15`<br>Mitigation Strategies > Playbook 5 > Step 3 > top-level bullet 1 (printed p. 40; PDF page 41) | `threat-instance:owasp-agentic-threats-mitigations-v1-1-t15` | |
+| `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-8-addresses-owasp-agentic-threats-mitigations-v1-1-t12`<br>Mitigation Strategies > Playbook 6 > Step 1 > top-level bullet 8 (printed p. 41; PDF page 42) | `threat-instance:owasp-agentic-threats-mitigations-v1-1-t12` | |
+| `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-3-bullet-6-addresses-owasp-agentic-threats-mitigations-v1-1-t12`<br>Mitigation Strategies > Playbook 6 > Step 3 > top-level bullet 6 (printed p. 42; PDF page 43) | `threat-instance:owasp-agentic-threats-mitigations-v1-1-t12` | |
+
+## mcp-spec-security-best-practices
+
+| Assertion / source locator | Proposed target | Human decision and reason |
+|---|---|---|
+| `assertion:mcp-spec-security-best-practices-confused-deputy-problem-mitigation-per-client-consent-addresses-mcp-spec-security-best-practices-confused-deputy-problem`<br>Confused Deputy Problem > Mitigation | `threat-instance:mcp-spec-security-best-practices-confused-deputy-problem` | |
+| `assertion:mcp-spec-security-best-practices-confused-deputy-problem-required-protections-redirect-uri-validation-redirect-match-addresses-mcp-spec-security-best-practices-confused-deputy-problem`<br>Confused Deputy Problem > Required Protections > Redirect URI Validation | `threat-instance:mcp-spec-security-best-practices-confused-deputy-problem` | |
+| `assertion:mcp-spec-security-best-practices-token-passthrough-mitigation-token-audience-addresses-mcp-spec-security-best-practices-token-passthrough`<br>Token Passthrough > Mitigation | `threat-instance:mcp-spec-security-best-practices-token-passthrough` | |
+| `assertion:mcp-spec-security-best-practices-server-side-request-forgery-ssrf-mitigation-validate-redirect-targets-redirect-targets-addresses-mcp-spec-security-best-practices-server-side-request-forgery-ssrf`<br>Server-Side Request Forgery (SSRF) > Mitigation > Validate Redirect Targets | `threat-instance:mcp-spec-security-best-practices-server-side-request-forgery-ssrf` | |
+| `assertion:mcp-spec-security-best-practices-session-hijacking-mitigation-unpredictable-session-id-addresses-mcp-spec-security-best-practices-session-hijacking`<br>Session Hijacking > Mitigation | `threat-instance:mcp-spec-security-best-practices-session-hijacking` | |
+| `assertion:mcp-spec-security-best-practices-local-mcp-server-compromise-mitigation-one-click-consent-addresses-mcp-spec-security-best-practices-local-mcp-server-compromise`<br>Local MCP Server Compromise > Mitigation | `threat-instance:mcp-spec-security-best-practices-local-mcp-server-compromise` | |
+| `assertion:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-url-scheme-validation-validate-schemes-addresses-mcp-spec-security-best-practices-oauth-authorization-url-validation`<br>OAuth Authorization URL Validation > Mitigation > URL Scheme Validation | `threat-instance:mcp-spec-security-best-practices-oauth-authorization-url-validation` | |
+| `assertion:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-url-scheme-validation-prefer-allowlist-addresses-mcp-spec-security-best-practices-oauth-authorization-url-validation`<br>OAuth Authorization URL Validation > Mitigation > URL Scheme Validation | `threat-instance:mcp-spec-security-best-practices-oauth-authorization-url-validation` | |
+| `assertion:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-secure-url-opening-native-url-opener-addresses-mcp-spec-security-best-practices-oauth-authorization-url-validation`<br>OAuth Authorization URL Validation > Mitigation > Secure URL Opening | `threat-instance:mcp-spec-security-best-practices-oauth-authorization-url-validation` | |
+| `assertion:mcp-spec-security-best-practices-stdio-transport-security-in-proxy-scenarios-mitigation-client-side-protections-proxy-isolation-addresses-mcp-spec-security-best-practices-stdio-transport-security-in-proxy-scenarios`<br>stdio Transport Security in Proxy Scenarios > Mitigation > Client-Side Protections | `threat-instance:mcp-spec-security-best-practices-stdio-transport-security-in-proxy-scenarios` | |
