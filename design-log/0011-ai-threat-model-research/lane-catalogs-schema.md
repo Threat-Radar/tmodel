@@ -4,9 +4,9 @@ id: DL-0011-lane-catalogs-schema
 title: "RPT-0014 lane catalogs-schema: WAVE 1 calibration (S-0855, S-0166, S-0728)"
 type: process
 status: draft
-version: "0.2.0"
+version: "0.2.1"
 date: "2026-11-08"
-updated: "2026-11-10"
+updated: "2026-11-13"
 record: DL-0011
 issue: 79
 ---
@@ -33,12 +33,14 @@ Each `summary.md` has the six `summarize` sections, the RPT-0014 applicability t
 
 ## How it was run
 
-- **Tooling:** Claude Code (Opus 5.5) on the lane owner's account, in one interactive session on 2026-11-08 and a second on 2026-11-10 for the review fixes. No `rpt0014-extract` or `rpt0014-sweep` workflow was run (those are WAVE 2), and no subagents.
-- **Token and effort settings:** the session's default effort, with no `effort` override, since no workflow was run. Tokens were not metered per unit; the work used part of two interactive sessions.
+- **Tooling:** Claude Code (Opus 5.5) on the lane owner's account, in one interactive session on 2026-11-08, with the review fixes on 2026-11-10 and 2026-11-13. No `rpt0014-extract` or `rpt0014-sweep` workflow was run (those are WAVE 2), and no subagents.
+- **Token and effort settings:** the session's default effort, with no `effort` override, since no workflow was run. Tokens were not metered per unit; the work used part of three interactive sessions.
+
+**Tool versions for the BIML re-check (2026-11-13):** `pypdf` 5.4.0 on the PDF whose SHA-256 matches the manifest, plus a short script that lists every `[component:n:descriptor]` in the text, separates risk definitions from controls labels, and finds component+descriptor pairs that carry more than one number.
 - **Sources:** fetched from the `pdf-manifest.tsv` URLs, except NIST, which came from the direct `nvlpubs.nist.gov` PDF that the manifest's DOI resolves to. All three SHA-256 digests match the manifest.
 - **Reading:** text extracted with `pypdf` 5.4.0, then targeted reading. Each summary's *Limits* section names the sections read. Greshake et al. was read nearly in full; NIST (127 pp.) and BIML (42 pp.) were read in part, hence `confidence: medium`.
 - **Ids:** linked ids were taken from `attack-catalog.yaml`, `threat-models.md` and `report.md` §1 (A- and C- ids) on `main` at `59ae9ba`. `DEC-*` and `R-*` ids come from ARCH-0001.
-- **Validation:** the three records were copied into a scratch checkout of library `main` (`e5efcb5`), with NIST replacing the existing stub, and `bin/validate` reported 0 errors and no new warnings. After the review fixes, it was re-run on library `main` at `20399c2`: 687 records, 0 errors, and the same 99 warnings as `main` alone. Nothing was committed to the library.
+- **Validation:** the three records were copied into a scratch checkout of library `main` (`e5efcb5`), with NIST replacing the existing stub, and `bin/validate` reported 0 errors and no new warnings. After the review fixes, it was re-run on library `main` at `20399c2` (2026-11-10) and at `c0cc26e` (2026-11-13): each time 687 records, 0 errors, and the same 99 warnings as `main` alone. Nothing was committed to the library.
 
 ## Facts checked against primary sources
 
@@ -61,7 +63,7 @@ Each `summary.md` has the six `summarize` sections, the RPT-0014 applicability t
 
 1. **AIT entries missing S-0166.** Greshake et al. demonstrate a self-spreading email worm (§4.2.3), persistence through a memory tool (§4.2.4) and availability attacks (§4.2.6). Yet AIT-108, AIT-102 and AIT-111 do not list S-0166 in `sources`; only AIT-064 does. It is the earliest demonstration for all three. AIT-111 is the sharper case: it carries `NISTAML.017`, for which NIST's only source is S-0166. The same holds for AIT-088, which carries `.016`. (The first version named AIT-112 here, but §4.2.6's time-consuming tasks are `.017`, which the catalog files under AIT-111.)
 2. **The NISTAML hierarchy is a DAG, not a tree, and the index is not the id list.** A catalog schema that derives the objective from an id's prefix (`NISTAML.015` → `.01` availability) will mis-file `.012`, `.013`, `.015`, `.018` and `.023`, so store the violated objective as its own field. An importer that reads ids from the index will miss `.016` and `.017`. Both are points for #74's record shape.
-3. **BIML ids mix attacks and design flaws, and are unique only as full strings.** Overfitting, reproducibility and encoding integrity are weaknesses with no attacker. A schema that only has `AttackPattern` cannot hold them; one with `Weakness` can. Two numbers each name two risks (`data:4`, `inference:3`), and three cross-references use the wrong number, so a BIML id has to be stored and matched as the full `component:n:descriptor` string.
+3. **BIML ids mix attacks and design flaws, and the number does not identify a risk.** Overfitting, reproducibility and encoding integrity are weaknesses with no attacker. A schema that only has `AttackPattern` cannot hold them; one with `Weakness` can. One number names two risks (`inference:3`, so 79 entries carry the stated 78 numbers), and four references use the wrong number. A BIML id should be stored as written but matched on component and descriptor, which is unique for every risk and resolves all four.
 4. **The NIST library record exists, with a different `bears_on` and topic** (`sagai`). Whichever version wins, the record should carry both RPT-0009 and RPT-0014 use.
 
 ## Corrected after review (2026-11-10)
@@ -75,10 +77,18 @@ Each `summary.md` has the six `summarize` sections, the RPT-0014 applicability t
 | 3 | NIST cryptography rated `none`, "only as a contrast" | §§2.1.2, 3.2.3 and 4.2.1 were not read | Rated `adjacent`, naming the three cryptographic mitigations |
 | 4 | PyRIT called archived, and §3.6 said to list no tools | The redirect notice was missed; §3.6 was misread | PyRIT listed at `microsoft/PyRIT`; §3.6 names Garak and PyRIT |
 | 5 | BIML's "already present" list wrong for three entries, and only 4 of 12 missing references found | BIML's reference list was not compared with `sources.md` title by title | All 35 references checked by title and author: 12 present, 12 missing and in scope |
-| opt. | BIML ids not unique | The id format was assumed sound | Recorded in BIML's Limits and calibration point 3. Two more cases than the review named were found (`data:4`; `[inference:3:hosting]`) |
+| opt. | BIML ids not unique | The id format was assumed sound | Recorded in BIML's Limits and calibration point 3. One more wrong reference than the review named was found (`[inference:3:hosting]`). The `data:4` case first added here was itself wrong (see below) |
 | opt. | Token and effort settings missing | Omitted | Added under "How it was run" |
 
 Errors 1 and 5 share a cause: a list built from a partial read was presented as complete. The NIST summary now says which sections were read, and the BIML expansion now covers every reference.
+
+## Corrected after the second review (2026-11-13)
+
+@Clovier's second review on #228 confirmed the five fixes and found one new error, which was introduced by the first round of fixes.
+
+| Error | Root cause | Fix |
+|---|---|---|
+| `data:4` counted as a second number given to two risks, and the advice to key on the full id | `[data:4:disimilarity]` on p. 15 was read as a risk. It is a label in that page's "Associated controls" list, whose labels "refer to the original risks (above)", and it points at `[data:3:disimilarity]` (p. 14). Keying on the full id followed the first review's advice without testing it against the wrong references | Re-checked against the PDF (same digest) with a script over every `[component:n:descriptor]` in the text. One number names two risks (`inference:3`), four references use the wrong number, and component plus descriptor is unique per risk and resolves all four. BIML's *Limits*, its two applicability rows, `usefulness.reason` and calibration point 3 now say so |
 
 ## Human review
 

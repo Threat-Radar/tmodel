@@ -3,7 +3,7 @@ schema: "library-summary/v1"
 id: biml-ara-ml-2020
 record: biml-ara-ml-2020
 type: summary
-updated: "2026-11-10"
+updated: "2026-11-13"
 lane: catalogs-schema
 reviewed_by: ""
 ---
@@ -36,7 +36,7 @@ The paper argues that ML security in 2020 was repeating software security's "pen
 |---|---|---|
 | Security | core | A published threat model and risk catalogue for ML systems, organised the way an architect would use it. |
 | Cryptography | none | No cryptographic content. |
-| This project | adjacent | The closest prior art to tmodel's own approach. It maps generic risks onto system components, which is **DEC-009**. Its `component:n:descriptor` ids are another external catalog that a `Weakness` or `AttackPattern` could cite (**DEC-001a**), keyed on the full id because the number alone is not unique (see Limits). It covers classic ML only, not LLMs or agents. |
+| This project | adjacent | The closest prior art to tmodel's own approach. It maps generic risks onto system components, which is **DEC-009**. Its `component:n:descriptor` ids are another external catalog that a `Weakness` or `AttackPattern` could cite (**DEC-001a**), matched on component and descriptor because the number is not reliable (see Limits). It covers classic ML only, not LLMs or agents. |
 
 ## Implementations
 
@@ -55,7 +55,7 @@ Searched 2026-11-08: none found. The paper is an analysis with no tooling. BIML'
 |---|---|---|---|
 | Published attacks | adjacent | — | The six attack categories (data manipulation, input manipulation, model manipulation, data extraction, input extraction, model extraction) survey known research attacks with citations. The paper reports no attacks of its own, so it is not evidence of any AIT entry. |
 | Existing AI threat models | core | TM-014 | It *is* TM-014: a component-based threat model with a top ten and 78 component risks plus system-wide risks. |
-| Weakness enumerations | core | `[component:n:descriptor]` ids, for example `[data:1:poisoning]`, `[input:1:adversarial examples]`, `[model:2:Trojan]` | It has its own id scheme with no crosswalk to CWE, ATLAS or NISTAML: it predates ATLAS and AI 100-2. Component and number do not identify a risk on their own, because two numbers are each given to two risks, so a parser has to key on the full id. Several entries are design flaws (overfitting, reproducibility), not attacks, which a weakness catalogue can hold but an attack catalogue cannot. |
+| Weakness enumerations | core | `[component:n:descriptor]` ids, for example `[data:1:poisoning]`, `[input:1:adversarial examples]`, `[model:2:Trojan]` | It has its own id scheme with no crosswalk to CWE, ATLAS or NISTAML: it predates ATLAS and AI 100-2. Component and number do not identify a risk on their own: one number is given to two risks, and four references use the wrong number. So a parser has to match on component and descriptor. Several entries are design flaws (overfitting, reproducibility), not attacks, which a weakness catalogue can hold but an attack catalogue cannot. |
 | Attack → asset mapping | core | C01, C02, C03, C05, C17; A01, A02, A03, A07 | Every risk is attached to a component. Mapped to RPT-0014: raw data → C01; assembly and datasets → C02; learning algorithm and evaluation → C03; inputs, model and inference algorithm → C05; outputs → C17. The confidentiality risks put A01 and A07 at stake, model theft A02, and integrity risks A03. |
 
 ## Reference expansion
@@ -113,12 +113,13 @@ All 35 references were checked against `sources.md` on 2026-11-10, by title and 
 - **Generic by design.** The nine-component model is the paper's strength and its limit: the risks must be re-derived for each specific system, and the paper offers no likelihood or severity ranking beyond the top ten's ordering.
 - **Not peer reviewed**, and the top ten is the authors' judgement, not derived from data.
 - **Ids are not unique by component and number.**
-  - **Two risks share a number.** `[data:4:storage]` and `[data:4:disimilarity]` are both defined on PDF p. 15, and `[inference:3:hyperparameters]` and `[inference:3:confidence scores]` on p. 20.
-  - **Three cross-references use the wrong number:**
+  - **One number is given to two risks.** `[inference:3:hyperparameters]` and `[inference:3:confidence scores]` are both defined on PDF p. 20. So the list has 79 entries, though its numbers add up to the "78 risks" it states (p. 5); an importer that expects exactly 78 will trip.
+  - **Four references use the wrong number:**
+    - `[data:4:disimilarity]` on p. 15, a label in that page's "Associated controls" list, means `[data:3:disimilarity]` (p. 14);
     - `[data:6:online]` on p. 18 means `[data:7:online]`;
     - `[eval:4:catastrophic forgetting]` on p. 19 means `eval:5`;
-    - `[inference:3:hosting]` on p. 21 means `[inference:4:hosting]`.
+    - `[inference:3:hosting]` on p. 21, also a controls label, means `[inference:4:hosting]`.
 
-  A parser has to key on the full id, descriptor included.
+  A parser has to match on component and descriptor. That pair is unique for every risk and resolves all four wrong references, where neither the number nor the full id does. (The 2026-11-10 version counted `data:4` as a second shared number and said to key on the full id. @Clovier's second review on #228 found that `[data:4:disimilarity]` is a controls label, and that no risk has that full id.)
 - **Its comparison with NIST is with the 2019 draft** (NISTIR 8269), not with AI 100-2. It positions BIML's taxonomy as simpler and practitioner-focused rather than contradicting NIST.
 - **Read in part.** This summary rests on the front matter, the motivation, the generic model, the top ten, the format and opening entries of the component risks, the attack taxonomy, the attack surface, the system-wide risks and the close. Not every one of the 78 risk entries was read, so `confidence: medium`.
