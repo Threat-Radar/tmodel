@@ -70,17 +70,25 @@ def collect(doc: Mapping[str, Any], product: str) -> dict[str, Any]:
     def verdicts(assertion: Mapping[str, Any]) -> list[Mapping[str, Any]]:
         return [r for r in reviews if r.get("reviews") == assertion["id"]]
 
+    def human_accepts(review: Mapping[str, Any]) -> bool:
+        reviewer = review.get("reviewer")
+        justification = review.get("justification")
+        if not isinstance(reviewer, str) or not isinstance(justification, str):
+            return False
+        kind, party = records.get(reviewer, (None, {}))
+        return (
+            review.get("review_status") == "accepted"
+            and bool(justification.strip())
+            and kind == "Party"
+            and party.get("party_kind") == "person"
+        )
+
     def accepted(assertion: Mapping[str, Any]) -> bool:
         checked = verdicts(assertion)
         return (
             assertion.get("assertion_status") == "accepted"
             and bool(checked)
-            and all(
-                r.get("review_status") == "accepted"
-                and bool(str(r.get("justification", "")).strip())
-                and records.get(r.get("reviewer"), (None, {}))[1].get("party_kind") == "person"
-                for r in checked
-            )
+            and all(human_accepts(review) for review in checked)
         )
 
     pending = []

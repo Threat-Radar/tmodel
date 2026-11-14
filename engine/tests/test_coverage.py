@@ -239,3 +239,20 @@ def test_empty_cli_coverage_is_usage_error_and_bad_product_is_error(capsys):
     assert error.value.code == 2
     assert cli.main(["coverage", FILE, "--product", "product:missing", "--in-process"]) == 1
     assert "unknown product" in capsys.readouterr().err
+
+
+@pytest.mark.parametrize("justification", [None, "", "  ", 7, False, {}])
+def test_malformed_justification_cannot_accept_an_assertion(doc, justification):
+    a = doc["assertions"][-1]
+    accept(doc, a)
+    doc["reviews"][-1]["justification"] = justification
+    assert collect(doc, PRODUCT)["unaddressed_threats"]
+
+
+def test_only_a_party_can_be_a_human_reviewer(doc):
+    a = doc["assertions"][-1]
+    accept(doc, a)
+    component = doc["components"][0]
+    component["party_kind"] = "person"
+    doc["reviews"][-1]["reviewer"] = component["id"]
+    assert collect(doc, PRODUCT)["unaddressed_threats"]
