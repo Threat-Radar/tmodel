@@ -16,6 +16,7 @@ from typing import Any
 from engine import __version__
 from engine import propose as proposals
 from engine import sdl as sdl_view
+from engine import tara as tara_view
 from engine.graph import AttackGraph, GraphError
 from engine.load.library import (
     Library,
@@ -293,6 +294,16 @@ def risk_assessments(file: str, matrix: str, goal: str | None = None) -> dict[st
     except GraphError as exc:
         raise GraphError(_sanitized_model_error(path, exc)) from exc
     return {"file": path.name, **result}
+
+
+def collect_tara(file: str, matrix: str) -> dict[str, Any]:
+    """Read-only, whole-model TARA intermediate from an approved example (#181)."""
+    path = _approved_vector_path(file)
+    try:
+        result = tara_view.collect_document(load_vector_document(path), matrix=matrix)
+    except GraphError as exc:
+        raise GraphError(_sanitized_model_error(path, exc)) from exc
+    return {"source": {"file": path.name, "example_data": True}, **result}
 
 
 def model_graph(file: str) -> dict[str, Any]:
