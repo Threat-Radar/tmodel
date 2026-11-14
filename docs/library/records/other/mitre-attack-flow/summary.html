@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Attack Flow — Language (STIX 2.1 extension 2.0.0)</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px 40px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); line-height: 1.15; letter-spacing: -0.03em; margin: 20px 0 6px; }
+h2 { font-size: 1.15rem; margin: 1.25em 0 0.3em; padding-top: 0.6em; border-top: 1px solid var(--line); }
+h3 { font-size: 1rem; margin: 1em 0 0.2em; }
+.kicker { margin: 18px 0 0; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.4em 0 0.8em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 6px 10px; font-size: 0.93rem; }
+table.kv { background: transparent; }
+table.kv td { border-bottom: none; padding: 2px 12px 2px 0; }
+td.rowhead { color: var(--muted); font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; width: 1%; padding-top: 6px; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../../../../index.html">tmodel</a><nav aria-label="Site"><a href="../../../../index.html">Home</a><a href="../../../../bibliography/index.html" aria-current="page">Bibliography</a><a href="../../../../reports/index.html">Reports</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">Library record · mitre-attack-flow</p>
+<h1>Attack Flow — Language (STIX 2.1 extension 2.0.0)</h1>
+<p class="lede">Attack Flow</p>
+<p>
+  <span class="badge">spec</span>
+  <span class="badge">other</span>
+  <span class="badge">distilled</span>
+  <span class="badge">high</span>
+</p>
+<p class="meta">Topic: <strong>threat-model-frameworks</strong> (<code>record.yaml</code> topic). Status <code>distilled</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://raw.githubusercontent.com/center-for-threat-informed-defense/attack-flow/v4.1.0/docs/language.rst">https://raw.githubusercontent.com/center-for-threat-informed-defense/attack-flow/v4.1.0/docs/language.rst</a></li><li>Identifier URL: <a href="https://center-for-threat-informed-defense.github.io/attack-flow/language/">https://center-for-threat-informed-defense.github.io/attack-flow/language/</a></li><li>SHA-256: <code>85ae7b7f367b57c935328276a412e5b2f051e4d48f2ab622276359d49615fa49</code></li></ul>
+<h2>Specification</h2>
+<table><tbody><tr><td>Authors</td><td>MITRE Center for Threat-Informed Defense</td></tr><tr><td>Date</td><td>2022-08-02</td></tr><tr><td>Publisher</td><td>MITRE Center for Threat-Informed Defense</td></tr><tr><td>Version</td><td>extension labelled 2.0.0 (defined 2022-08-02, released 2022-10-27; schema widened in place since); read from the sources at tag v4.1.0 (2026-10-14)</td></tr><tr><td>repo</td><td>https://github.com/center-for-threat-informed-defense/attack-flow</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge not-assessed">not assessed</span></td></tr><tr><td>Cryptography</td><td><span class="badge not-assessed">not assessed</span></td></tr><tr><td>This project</td><td><span class="badge not-assessed">not assessed</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
+<h2>Tags</h2>
+<table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">threat-modeling</span> <span class="badge">mitre</span> <span class="badge">attack</span> <span class="badge">attack-path</span> <span class="badge">stix</span></td></tr><tr><td class="rowhead">Role</td><td><span class="badge">method</span></td></tr></tbody></table>
+<h2>Bears on</h2>
+<ul><li><code>DEC-001</code></li><li><code>DEC-005</code></li></ul>
+
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> only — not crosswalk edges.</p><h3><code>see_also</code></h3><ul><li><a class="rec" data-id="mitre-attack" href="../../other/mitre-attack/summary.html">MITRE ATT&amp;CK (knowledge base + STIX 2.1 data)</a></li><li><a class="rec" data-id="mitre-attack-design-philosophy" href="../../other/mitre-attack-design-philosophy/summary.html">MITRE ATT&amp;CK: Design and Philosophy</a></li><li><a class="rec" data-id="schneier-attack-trees-1999" href="../../other/schneier-attack-trees-1999/summary.html">Attack Trees</a></li></ul>
+
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec (a STIX 2.1 extension, plus open-source tools)</td></tr><tr><td><strong>Maturity</strong></td><td><code>best-practice</code> — maintained open project with a published schema; not a standards-body specification</td></tr><tr><td><strong>Authors</strong></td><td>MITRE Center for Threat-Informed Defense</td></tr><tr><td><strong>Published</strong></td><td>Extension labelled 2.0.0: defined 2022-08-02, released with the tools&#x27; v2.0 on 2022-10-27; the schema has since been widened in place. Read at tag v4.1.0 (2026-10-14)</td></tr><tr><td><strong>Identifier</strong></td><td>https://center-for-threat-informed-defense.github.io/attack-flow/language/</td></tr><tr><td><strong>Source</strong></td><td>https://raw.githubusercontent.com/center-for-threat-informed-defense/attack-flow/v4.1.0/docs/language.rst</td></tr><tr><td><strong>Digest</strong></td><td><code>85ae7b7f367b57c935328276a412e5b2f051e4d48f2ab622276359d49615fa49</code> (the raw <code>docs/language.rst</code> source at tag v4.1.0, retrieved 2026-10-22; the rendered page at the identifier differs, because its object section is regenerated from the schema). Also read: <code>docs/introduction.rst</code> (<code>0325405cc98e764ca836e6647df70637cb2e3e7e3cc106d9fd401c20a4f32588</code>) and <code>stix/attack-flow-schema-2.0.0.json</code> (<code>fff896f5e1bdc39d9b387c0d3571307037cf9be1059de9cd94d066d1da2997cc</code>), same tag</td></tr></tbody></table>
+<h2>Overview</h2>
+<p>Attack Flow is a machine-readable language for <strong>how adversary actions combine into an attack</strong>, defined as an extension to <strong>STIX 2.1</strong> so that flows interoperate with existing threat-intelligence tools. A flow document has exactly one <strong><code>attack-flow</code></strong> object (name, description, <code>start_refs</code>, and a <code>scope</code> label). Its building blocks, as defined in the JSON schema, are:</p>
+<ul><li><strong><code>attack-action</code></strong>: one execution of a behavior (<code>name</code> is the only required action-specific property; the common properties are still required; usually <code>technique_id</code> and <code>tactic_id</code>, optional refs to the ATT&amp;CK objects, <code>execution_start</code> / <code>execution_end</code>, a command, the assets it touches), linked to what follows through <strong><code>effect_refs</code></strong>;</li><li><strong><code>attack-condition</code></strong>: a state or outcome after an action, with an optional (experimental) detection pattern of any type, branching with <strong><code>on_true_refs</code> / <code>on_false_refs</code></strong>;</li><li><strong><code>attack-operator</code></strong>: <strong><code>AND</code></strong> (all incoming paths must succeed) or <strong><code>OR</code></strong> (any one is enough);</li><li><strong><code>attack-asset</code></strong>: the subject or target of an action.</li></ul>
+<p>An arrow from one action to another is a <strong>dependency</strong>: &quot;the second action cannot be executed until the first action completes successfully&quot; (<code>introduction.rst</code>), which the documentation calls a more powerful concept than one action happening before another. An acyclic graph therefore gives a partial order; independent branches stay unordered, and timestamps are optional.</p>
+<p><code>scope</code> values in the schema: <code>incident</code>, <code>campaign</code>, <code>threat-actor</code>, <code>malware</code>, <code>emulation-plan</code>, <code>attack-tree</code>, <code>other</code> (<code>attack-tree</code> added in 2024 and <code>emulation-plan</code> in 2025 without a version change; <code>language.rst</code> still lists five). Attack trees are drawn with the same blocks: goals as actions without techniques, joined bottom-up through operators. Flows can be hypothetical (emulation plans, attack trees, &quot;what-if&quot; scenarios at the &quot;Speculation&quot; confidence level) as well as observed. Techniques usually come from ATT&amp;CK, but Workbench collections, other knowledge bases (e.g. VERIS) and ad-hoc actions are allowed.</p>
+<p>The tools (Attack Flow Builder, visualisations, a corpus of example flows) added ATLAS, D3FEND and Fight Fraud in v3.1 (April 2026), AI-assisted drafting from incident reports, technique recommendations and tags in v4.0, and D3FEND countermeasures and red-team tests in v4.1 (October 2026).</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td>core</td><td>MITRE&#x27;s format for how ATT&amp;CK techniques combine into attacks.</td></tr><tr><td>Cryptography</td><td>none</td><td>Not about cryptography.</td></tr><tr><td>This project</td><td>core</td><td>The closest existing format to tmodel&#x27;s AttackStep/AttackPath: actions, AND/OR operators, dependency, shared steps, hypothetical flows (RPT-0002 §9; #63).</td></tr></tbody></table>
+<p>Bears on <strong>DEC-001</strong> (object model — attack steps, gates, dependency vs order) and <strong>DEC-005</strong> (MVP scope — the attack-path graph). A STIX 2.1 import is already committed by ADR-0007, so Attack Flow documents are a candidate interchange.</p>
+<h3>Applicability to tmodel&#x27;s graph</h3>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Object model</td><td>core</td><td>Actions, assets, dependency edges, conditions and operators provide a concrete import crosswalk candidate; they are not a replacement for the accepted schema.</td></tr><tr><td>Provenance / attribution</td><td>partial</td><td>Common STIX fields preserve creator, creation/modification time and external references, but provenance still needs mapping to tmodel assertions.</td></tr><tr><td>Human review / audit</td><td>insufficient alone</td><td>Confidence and timestamps do not record a separate human acceptance or impact judgment.</td></tr><tr><td>Federation</td><td>partial</td><td>A published STIX extension can carry shared graphs; consumers must understand the extension, and the schema must be pinned because its version label was reused.</td></tr><tr><td>AI grounding</td><td>useful with limits</td><td>Pinned source/schema artifacts can ground proposed imports; source contradictions and confidence conventions require explicit handling, never automatic review acceptance.</td></tr></tbody></table>
+<h2>Implementations</h2>
+<p>Searched 2026-10-22.</p>
+<table><thead><tr><th>Name</th><th>Kind</th><th>License</th><th>URL</th></tr></thead><tbody><tr><td>Attack Flow (language, Builder, corpus)</td><td>open-source format + tools</td><td>Apache-2.0 (bundled ATT&amp;CK content under the ATT&amp;CK Terms of Use)</td><td>https://github.com/center-for-threat-informed-defense/attack-flow</td></tr><tr><td>JSON schema (labelled 2.0.0)</td><td>schema</td><td>Apache-2.0</td><td>https://github.com/center-for-threat-informed-defense/attack-flow/blob/v4.1.0/stix/attack-flow-schema-2.0.0.json</td></tr></tbody></table>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata</td></tr><tr><td><code>summary.md</code></td><td>this summary</td></tr><tr><td><code>distilled/README.md</code></td><td>full extraction index, source discrepancies and automated validation; human artifact review pending</td></tr></tbody></table>
+<h2>Limits</h2>
+<ul><li><strong>Review boundary:</strong> full FX-1 artifacts are available in <code>distilled/</code>. Automated extraction and checking do not constitute human acceptance; each artifact keeps <code>reviewed_by</code> blank until a person signs it. See the extraction index for the pinned-source scope, normative count and known source defects.</li><li><strong>Describes attacks, not systems:</strong> no DFD, components or trust boundaries, and no risk scoring.</li><li><strong>Schema versioning:</strong> the schema labelled 2.0.0 was widened in place, so an older copy rejects newer flows; its published URL (<code>$id</code> and the extension&#x27;s <code>schema</code> field) currently returns 404.</li><li><strong>Builder conventions outside the schema:</strong> detections, mitigations, countermeasures and red-team tests are custom <code>x-</code> objects linked by generic <code>related-to</code> relationships (the language page documents <code>x-detection</code> and <code>x-mitigation</code> only), and published flows carry an undefined <code>ttp_frameworks</code> property; a STIX importer must allow custom objects, read <code>related-to</code> edges as well as <code>effect_refs</code>, and cannot learn the ATT&amp;CK version from a flow.</li><li><strong>Confidence:</strong> the Builder&#x27;s v4 scale adds &quot;AI Generated&quot; at 0 and moves &quot;Speculative&quot; to 10 and &quot;Very Doubtful&quot; to 20, while the documented scale has &quot;Speculation&quot; at 0 and &quot;Very Doubtful&quot; at 10; nothing in a flow says which scale it used. The generation guide has analysts validate AI drafts by updating confidence. That convention does not supply tmodel&#x27;s separate, auditable human-review record or establish that a generated action was accepted.</li></ul>
+
+<footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
+</main>
+</body>
+</html>

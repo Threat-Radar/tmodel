@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>PILLAR: an AI-Powered Privacy Threat Modeling Tool</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px 40px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); line-height: 1.15; letter-spacing: -0.03em; margin: 20px 0 6px; }
+h2 { font-size: 1.15rem; margin: 1.25em 0 0.3em; padding-top: 0.6em; border-top: 1px solid var(--line); }
+h3 { font-size: 1rem; margin: 1em 0 0.2em; }
+.kicker { margin: 18px 0 0; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.4em 0 0.8em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 6px 10px; font-size: 0.93rem; }
+table.kv { background: transparent; }
+table.kv td { border-bottom: none; padding: 2px 12px 2px 0; }
+td.rowhead { color: var(--muted); font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; width: 1%; padding-top: 6px; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../../../../index.html">tmodel</a><nav aria-label="Site"><a href="../../../../index.html">Home</a><a href="../../../../bibliography/index.html" aria-current="page">Bibliography</a><a href="../../../../reports/index.html">Reports</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">Library record · pillar-2024</p>
+<h1>PILLAR: an AI-Powered Privacy Threat Modeling Tool</h1>
+<p class="lede">PILLAR</p>
+<p>
+  <span class="badge">paper</span>
+  <span class="badge">academic</span>
+  <span class="badge">summarized</span>
+  <span class="badge">high</span>
+</p>
+<p class="meta">Topic: <strong>ai-threat-model-ml-risk-assets</strong> (<code>record.yaml</code> topic). Status <code>summarized</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://arxiv.org/pdf/2410.08755v1">https://arxiv.org/pdf/2410.08755v1</a></li><li>Identifier URL: <a href="https://arxiv.org/abs/2410.08755">https://arxiv.org/abs/2410.08755</a></li><li>SHA-256: <code>ac066c325ca2354ed5d33a9414f0aef56a86187bc55afdaa34421610e858da06</code></li></ul>
+<h2>Paper</h2>
+<p class="meta">Authors and date are whatever the record states. This page does not add a venue.</p>
+<table><tbody><tr><td>Authors</td><td>Majid Mollaeefar, Andrea Bissoli, Silvio Ranise</td></tr><tr><td>Date</td><td>2024-10-11</td></tr><tr><td>Publisher</td><td>arXiv preprint (FBK Center for Cybersecurity and University of Trento)</td></tr><tr><td>Version</td><td>arXiv v1; matches the RPT-0014 pdf-manifest digest</td></tr><tr><td>arxiv</td><td>2410.08755</td></tr><tr><td>Pages</td><td>10</td></tr><tr><td>Media type</td><td>application/pdf</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge adjacent">adjacent</span></td></tr><tr><td>Cryptography</td><td><span class="badge none">none</span></td></tr><tr><td>This project</td><td><span class="badge core">core</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
+<h2>Tags</h2>
+<table class="kv"><tbody><tr><td class="rowhead">Role</td><td><span class="badge">prior-art</span> <span class="badge">method</span></td></tr></tbody></table>
+<h2>Bears on</h2>
+<ul><li><code>R-018</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> An LLM tool that automates LINDDUN privacy threat modeling from a text description (DFD generation, LINDDUN GO and PRO, impact and controls); a direct comparator for tmodel&#x27;s own AI-generated threat models, but it reports no evaluation.</p><p class="meta">Assessed 2026-11-03.</p>
+
+<h2>Document cites</h2><p class="meta">From <code>cites</code> — what the source references.</p><ul><li><a class="rec" data-id="deng-linddun-2011" href="../../academic/deng-linddun-2011/summary.html">A privacy threat analysis framework: supporting the elicitation and fulfillment of privacy requirements</a></li><li><a class="rec" data-id="linddun-org" href="../../academic/linddun-org/summary.html">LINDDUN privacy threat modeling framework (linddun.org)</a></li><li><a class="rec" data-id="stride-gpt" href="../../community/stride-gpt/summary.html">STRIDE GPT</a></li><li>Guo et al. 2024, LLM-based multi-agent systems survey (cited for the multi-agent design) <span class="meta">cited, no library record</span></li><li>AttackGen (LLM incident-response scenario generator) <span class="meta">cited, no library record</span></li></ul>
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>paper (a preprint describing a tool)</td></tr><tr><td><strong>Maturity</strong></td><td>_unset_. A preprint; no peer-reviewed version found and no standing asserted</td></tr><tr><td><strong>Authors</strong></td><td>Majid Mollaeefar, Andrea Bissoli, Silvio Ranise (FBK Center for Cybersecurity; University of Trento)</td></tr><tr><td><strong>Published</strong></td><td>arXiv preprint, v1 2024-10-11, the only version</td></tr><tr><td><strong>Identifier</strong></td><td>arXiv:2410.08755</td></tr><tr><td><strong>Source</strong></td><td>https://arxiv.org/pdf/2410.08755v1</td></tr><tr><td><strong>Digest</strong></td><td><code>sha256:ac066c325ca2354ed5d33a9414f0aef56a86187bc55afdaa34421610e858da06</code> (198,009 bytes, 10 pages, retrieved 2026-11-03). This matches the RPT-0014 <code>pdf-manifest.tsv</code> entry for S-0959</td></tr></tbody></table>
+<h2>Overview</h2>
+<p><strong>What PILLAR is.</strong> PILLAR applies LLMs to LINDDUN privacy threat modeling. It is not a model of threats to AI.</p>
+<p><strong>What it does (§3, Fig. 1).</strong> From a plain-language system description, it can:</p>
+<ul><li>generate or import a data-flow diagram (DFD);</li><li>run three threat-elicitation modes:</li><li>a quick, single-prompt LINDDUN threat list;</li><li>a simulation of LINDDUN GO, the card-game method, in which several LLM &quot;experts&quot; discuss over several rounds and a judge LLM gives the verdict;</li><li>LINDDUN PRO, per DFD edge, using LINDDUN&#x27;s mapping table and threat trees;</li><li>generate impact assessments and suggest controls drawn from privacy patterns;</li><li>produce a PDF report.</li></ul>
+<p><strong>Implementation.</strong> A Streamlit web app over the OpenAI, Gemini and Mistral APIs, with code on GitHub.</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td><code>adjacent</code></td><td>Privacy threat modeling: a security-adjacent method, not an attack or defence</td></tr><tr><td>Cryptography</td><td><code>none</code></td><td>No cryptographic content</td></tr><tr><td>This project</td><td><code>core</code></td><td>A direct comparator for tmodel. It turns a system description into DFD-based threats with LLMs, which is what tmodel&#x27;s generation pipeline does. RPT-0014 lists it as TM-036</td></tr></tbody></table>
+<p><strong>What it bears on.</strong> <strong>R-018</strong> (attach a human review to any element; nothing machine-proposed is final without it). ARCH-0001 §2 treats an AI-generated threat model as a set of hypotheses.</p>
+<ul><li>PILLAR lets users edit LLM-generated assessments and choose which threats go into the report (§3.2.3–3.2.4), but records no review trail.</li><li>It publishes no evaluation of its outputs&#x27; accuracy.</li></ul>
+<p>That illustrates why the traceability requirement matters.</p>
+<h2>RPT-0014 applicability</h2>
+<table><thead><tr><th>Topic of interest</th><th>Rating</th><th>Linked ids</th><th>Why</th></tr></thead><tbody><tr><td>Published attacks</td><td>none</td><td>—</td><td>It describes no attack</td></tr><tr><td>Existing AI threat models</td><td>adjacent</td><td>TM-036</td><td>RPT-0014&#x27;s TM-036 is this tool. It is an LLM-assisted threat-modeling method, LINDDUN on DFDs, rather than a threat model of AI systems, hence adjacent</td></tr><tr><td>Weakness enumerations</td><td>none</td><td>—</td><td>LINDDUN&#x27;s privacy threat categories are a threat taxonomy, not one of RPT-0014&#x27;s weakness enumerations (CWE, NISTAML, ATLAS, OWASP)</td></tr><tr><td>Attack → asset mapping</td><td>adjacent</td><td>—</td><td>The LINDDUN PRO mode maps each threat category to the source, data flow and destination of a chosen DFD edge (§3.2.2). That is a threat-to-component mapping method, but for privacy threats, with no AI attacks and no RPT-0014 ids</td></tr></tbody></table>
+<h2>Implementations</h2>
+<p>Searched 2026-11-03. PILLAR is released at https://github.com/stfbk/PILLAR under Apache-2.0, still maintained (last push 2026-08). It needs an OpenAI, Gemini or Mistral API key.</p>
+<table><thead><tr><th>Name</th><th>Kind</th><th>License</th><th>URL</th></tr></thead><tbody><tr><td>PILLAR</td><td>open source, authors&#x27; tool</td><td>Apache-2.0</td><td>https://github.com/stfbk/PILLAR</td></tr></tbody></table>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>Metadata. <code>cites</code> points to LINDDUN (<code>deng-linddun-2011</code>, <code>linddun-org</code>) and STRIDE-GPT (<code>stride-gpt</code>), records this library already holds</td></tr><tr><td><code>summary.md</code></td><td>This document</td></tr></tbody></table>
+<p><strong>Reference expansion.</strong> The references were screened with the Batch 1 rule. LINDDUN and STRIDE-GPT are already library records, cited by id. The other references are general LLM-for-security surveys and tools outside RPT-0014&#x27;s attack scope. AttackGen is a GitHub tool, which would be an <code>implementations</code> entry, not a record. <strong>No stubs are proposed.</strong></p>
+<h2>Limits</h2>
+<ul><li><strong>No evaluation, despite the claim.</strong> §1 says &quot;Section 4 presents our case studies and evaluation results&quot;. Section 4 is Related Work, and the paper has no case study or evaluation. Its claims of improved accuracy and efficiency (Abstract, §5) are therefore unsupported in this paper. This is a confirmed defect.</li><li><strong>The outline is garbled.</strong> §1 says related work and the conclusion are both in &quot;Section 4&quot;; the conclusion is Section 5.</li><li><strong>A preprint.</strong> No peer review was found, and there is only one arXiv version.</li><li><strong>Privacy only.</strong> The tool covers LINDDUN privacy threats, not security threats such as STRIDE, and not AI-specific threats.</li><li><strong>Depends on external LLM APIs</strong>, with the cost, data-sharing and reproducibility issues that brings. The output varies with the provider chosen (§3.1.2).</li></ul>
+
+<footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
+</main>
+</body>
+</html>

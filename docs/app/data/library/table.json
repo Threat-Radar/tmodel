@@ -1,13 +1,16 @@
 {
   "contextual_facets": {
     "status": {
-      "distilled": 44,
+      "distilled": 52,
       "fetched": 56,
-      "queued": 19,
-      "stub": 296,
-      "summarized": 135
+      "queued": 15,
+      "stub": 356,
+      "summarized": 206
     },
     "topic": {
+      "ai-threat-model-agentic-mcp": 19,
+      "ai-threat-model-ml-risk-assets": 48,
+      "ai-threat-model-supply-chain-infra": 20,
       "algorithm-bindings": 6,
       "artifact-statements": 17,
       "authorization-reduction": 3,
@@ -21,41 +24,46 @@
       "nist-cryptography": 16,
       "post-quantum-migration": 12,
       "predicate-rendering": 17,
-      "product-composition": 86,
-      "rpt-0003-threat-modeling-products": 40,
-      "rpt-0006-knowledge-graph-visualization": 9,
-      "sagai": 8,
+      "product-composition": 92,
+      "rpt-0003-threat-modeling-products": 39,
+      "rpt-0006-knowledge-graph-visualization": 15,
+      "sagai": 24,
       "sbom": 6,
+      "schema-representations": 13,
       "sdl": 38,
       "signature-foundations": 18,
       "supply-chain-attestation": 34,
+      "threat-model-frameworks": 1,
       "uptake-failure": 17
     },
     "type": {
-      "article": 5,
-      "book": 2,
+      "article": 23,
+      "book": 3,
       "consortium": 2,
-      "dataset": 25,
+      "dataset": 30,
       "draft": 19,
-      "hierarchy": 1,
+      "hierarchy": 2,
       "note": 1,
-      "paper": 76,
-      "repo": 33,
-      "rfc": 99,
-      "spec": 200,
-      "web": 87
+      "paper": 155,
+      "repo": 38,
+      "rfc": 101,
+      "spec": 217,
+      "web": 94
     }
   },
-  "count": 550,
+  "count": 685,
   "facets": {
     "status": {
-      "distilled": 44,
+      "distilled": 52,
       "fetched": 56,
-      "queued": 19,
-      "stub": 296,
-      "summarized": 135
+      "queued": 15,
+      "stub": 356,
+      "summarized": 206
     },
     "topic": {
+      "ai-threat-model-agentic-mcp": 19,
+      "ai-threat-model-ml-risk-assets": 48,
+      "ai-threat-model-supply-chain-infra": 20,
       "algorithm-bindings": 6,
       "artifact-statements": 17,
       "authorization-reduction": 3,
@@ -69,34 +77,36 @@
       "nist-cryptography": 16,
       "post-quantum-migration": 12,
       "predicate-rendering": 17,
-      "product-composition": 86,
-      "rpt-0003-threat-modeling-products": 40,
-      "rpt-0006-knowledge-graph-visualization": 9,
-      "sagai": 8,
+      "product-composition": 92,
+      "rpt-0003-threat-modeling-products": 39,
+      "rpt-0006-knowledge-graph-visualization": 15,
+      "sagai": 24,
       "sbom": 6,
+      "schema-representations": 13,
       "sdl": 38,
       "signature-foundations": 18,
       "supply-chain-attestation": 34,
+      "threat-model-frameworks": 1,
       "uptake-failure": 17
     },
     "type": {
-      "article": 5,
-      "book": 2,
+      "article": 23,
+      "book": 3,
       "consortium": 2,
-      "dataset": 25,
+      "dataset": 30,
       "draft": 19,
-      "hierarchy": 1,
+      "hierarchy": 2,
       "note": 1,
-      "paper": 76,
-      "repo": 33,
-      "rfc": 99,
-      "spec": 200,
-      "web": 87
+      "paper": 155,
+      "repo": 38,
+      "rfc": 101,
+      "spec": 217,
+      "web": 94
     }
   },
   "library": {
-    "count": 550,
-    "digest": "74d7b55064fb31fdb665a07b986b6b4d234427bdd4acc9bcfa886468a70d9a3b",
+    "count": 685,
+    "digest": "91bb625bd1d2e7dc486a641815761fc39325290cff6243535a184e40ce6a6ca2",
     "problems": []
   },
   "query": {
@@ -124,6 +134,84 @@
       "topic": "uptake-failure",
       "type": "web",
       "url": "https://www.aclu.org/documents/fahrenheit-4512-cyberspace-burning"
+    },
+    {
+      "artifacts": 0,
+      "date": "2026-05-18",
+      "id": "agent-security-systems-problem",
+      "maturity": null,
+      "profile": null,
+      "publisher": null,
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [
+        "agent-security",
+        "prompt-injection",
+        "ai-security"
+      ],
+      "title": "Agent Security is a Systems Problem",
+      "topic": "sagai",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2605.18991v2"
+    },
+    {
+      "artifacts": 0,
+      "date": "2026-04-15",
+      "id": "agentic-reverse-engineering-challenges",
+      "maturity": null,
+      "profile": null,
+      "publisher": null,
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [
+        "agent-security",
+        "ai-security"
+      ],
+      "title": "Challenges and Future Directions in Agentic Reverse Engineering Systems",
+      "topic": "sagai",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2604.14317v1"
+    },
+    {
+      "artifacts": 0,
+      "date": "2021-07",
+      "id": "aiken-2021-neural-network-laundering",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Elsevier, Computers & Security, vol. 106, article 102277",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "Neural network laundering: Removing black-box backdoor watermarks from deep neural networks",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://doi.org/10.1016/j.cose.2021.102277"
+    },
+    {
+      "artifacts": 0,
+      "date": "2025-06",
+      "id": "aim-labs-echoleak-disclosure",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Aim Security",
+      "reviewed_artifacts": 0,
+      "shelf": "vendor",
+      "short_title": null,
+      "status": "stub",
+      "tags": [
+        "prompt-injection",
+        "ai-security"
+      ],
+      "title": "EchoLeak Vulnerability Found in Microsoft 365 Copilot",
+      "topic": "sagai",
+      "type": "web",
+      "url": "https://www.aim.security/lp/aim-labs-echoleak-m365"
     },
     {
       "artifacts": 0,
@@ -226,6 +314,27 @@
     },
     {
       "artifacts": 0,
+      "date": null,
+      "id": "antv-g6",
+      "maturity": null,
+      "profile": null,
+      "publisher": "AntV",
+      "reviewed_artifacts": 0,
+      "shelf": "community",
+      "short_title": null,
+      "status": "summarized",
+      "tags": [
+        "graph-visualization",
+        "graph-layout",
+        "prior-art"
+      ],
+      "title": "AntV G6",
+      "topic": "rpt-0006-knowledge-graph-visualization",
+      "type": "repo",
+      "url": "https://github.com/antvis/G6"
+    },
+    {
+      "artifacts": 0,
       "date": "2020-06-26",
       "id": "anwar-2020-cleaning-nvd",
       "maturity": null,
@@ -281,6 +390,46 @@
       "topic": "device-attestation",
       "type": "web",
       "url": "https://developer.apple.com/documentation/devicecheck"
+    },
+    {
+      "artifacts": 0,
+      "date": "2022-02-07",
+      "id": "apruzzese-2022-realistic-nids-attacks",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Association for Computing Machinery (ACM), Digital Threats: Research and Practice, vol. 3, no. 3, pp. 1-19",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "Modeling Realistic Adversarial Attacks against Network Intrusion Detection Systems",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://doi.org/10.1145/3469659"
+    },
+    {
+      "artifacts": 0,
+      "date": "2023-02",
+      "id": "apruzzese-2023-real-attackers",
+      "maturity": null,
+      "profile": null,
+      "publisher": "IEEE, 2023 IEEE Conference on Secure and Trustworthy Machine Learning (SaTML), pp. 339-364",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": "Real Attackers Don't Compute Gradients",
+      "status": "summarized",
+      "tags": [
+        "evidence",
+        "method",
+        "evasion",
+        "ai-threat-model",
+        "ai-incident"
+      ],
+      "title": "\"Real Attackers Don't Compute Gradients\": Bridging the Gap Between Adversarial ML Research and Practice",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2212.14315v1"
     },
     {
       "artifacts": 0,
@@ -425,6 +574,27 @@
     },
     {
       "artifacts": 0,
+      "date": "2025-09-02",
+      "id": "aws-threat-composer-genai-chatbot",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Amazon Web Services (AWS Labs, threat-composer repository)",
+      "reviewed_artifacts": 0,
+      "shelf": "vendor",
+      "short_title": "Threat Composer GenAI chatbot example",
+      "status": "summarized",
+      "tags": [
+        "ai-threat-model",
+        "rag-security",
+        "prior-art"
+      ],
+      "title": "Sample Generative AI Chatbot Application (Threat Composer example threat model)",
+      "topic": "ai-threat-model-supply-chain-infra",
+      "type": "dataset",
+      "url": "https://raw.githubusercontent.com/awslabs/threat-composer/3d4ed92f96a29605a74795d8df103e068f11ed70/packages/threat-composer/src/data/workspaceExamples/GenAIChatbot.tc.json"
+    },
+    {
+      "artifacts": 0,
       "date": "2024-09-10",
       "id": "benedetti-2024-sbom-python",
       "maturity": null,
@@ -446,6 +616,28 @@
     },
     {
       "artifacts": 0,
+      "date": "2025-06-27",
+      "id": "beurer-kellner-2025-design-patterns",
+      "maturity": null,
+      "profile": null,
+      "publisher": "arXiv",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "summarized",
+      "tags": [
+        "academic",
+        "method",
+        "prompt-injection",
+        "agent-security"
+      ],
+      "title": "Design Patterns for Securing LLM Agents against Prompt Injections",
+      "topic": "ai-threat-model-agentic-mcp",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2506.08837"
+    },
+    {
+      "artifacts": 0,
       "date": null,
       "id": "biscuit-spec-3-3",
       "maturity": null,
@@ -460,6 +652,28 @@
       "topic": "capability-delegation",
       "type": "spec",
       "url": "https://doc.biscuitsec.org/reference/specifications.html"
+    },
+    {
+      "artifacts": 0,
+      "date": "2025-07-17",
+      "id": "bowen-2025-scaling-trends-data-poisoning",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Authors at FAR.AI, UC Berkeley, University of Cambridge and McGill University / Mila (arXiv) / AAAI Press (AAAI-25 proceedings)",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "summarized",
+      "tags": [
+        "data-poisoning",
+        "backdoor",
+        "jailbreak",
+        "evidence"
+      ],
+      "title": "Scaling Trends for Data Poisoning in LLMs",
+      "topic": "ai-threat-model-supply-chain-infra",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2408.02946v6"
     },
     {
       "artifacts": 0,
@@ -479,28 +693,32 @@
       "url": "https://eprint.iacr.org/2004/205"
     },
     {
-      "artifacts": 0,
-      "date": null,
+      "artifacts": 1,
+      "date": "2020-10-01",
       "id": "bron",
       "maturity": "white-paper",
       "profile": null,
-      "publisher": null,
+      "publisher": "arXiv",
       "reviewed_artifacts": 0,
       "shelf": "academic",
-      "short_title": null,
-      "status": "summarized",
+      "short_title": "BRON (Hemberg et al., 2020)",
+      "status": "distilled",
       "tags": [
         "bron",
         "attack",
         "capec",
         "cwe",
         "cve",
-        "backbone"
+        "backbone",
+        "knowledge-graph",
+        "vulnerability-data",
+        "prior-art",
+        "evidence"
       ],
-      "title": "BRON — Linking ATT&CK, CAPEC, CWE, CVE, CPE (Hemberg et al., 2020)",
+      "title": "Linking Threat Tactics, Techniques, and Patterns with Defensive Weaknesses, Vulnerabilities and Affected Platform Configurations for Cyber Hunting",
       "topic": null,
       "type": "paper",
-      "url": "https://arxiv.org/abs/2010.00533"
+      "url": "https://arxiv.org/pdf/2010.00533v2"
     },
     {
       "artifacts": 9,
@@ -539,11 +757,12 @@
       "reviewed_artifacts": 0,
       "shelf": "regulator",
       "short_title": "BSI TR-03183-2",
-      "status": "stub",
+      "status": "summarized",
       "tags": [
         "sbom",
         "regulation",
         "supply-chain",
+        "normative",
         "evidence"
       ],
       "title": "Technical Guideline BSI TR-03183: Cyber Resilience Requirements for Manufacturers and Products, Part 2: Software Bill of Materials (SBOM)",
@@ -745,6 +964,27 @@
     },
     {
       "artifacts": 0,
+      "date": "2026-05-28",
+      "id": "cacheprobe-prompt-cache-isolation",
+      "maturity": null,
+      "profile": null,
+      "publisher": null,
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [
+        "ai-security",
+        "privacy",
+        "side-channel"
+      ],
+      "title": "CacheProbe: Auditing Prompt Cache Isolation in Gateway APIs",
+      "topic": "sagai",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2605.30613v1"
+    },
+    {
+      "artifacts": 0,
       "date": null,
       "id": "cairis",
       "maturity": null,
@@ -766,11 +1006,11 @@
     },
     {
       "artifacts": 0,
-      "date": null,
+      "date": "2023-01-24",
       "id": "capec",
       "maturity": "best-practice",
       "profile": null,
-      "publisher": null,
+      "publisher": "The MITRE Corporation",
       "reviewed_artifacts": 0,
       "shelf": "other",
       "short_title": null,
@@ -784,7 +1024,28 @@
       "title": "MITRE CAPEC — Common Attack Pattern Enumeration and Classification",
       "topic": null,
       "type": "dataset",
-      "url": "https://capec.mitre.org/"
+      "url": "https://capec.mitre.org/data/xml/capec_v3.9.xml"
+    },
+    {
+      "artifacts": 0,
+      "date": "2022-03-28",
+      "id": "carlini-2022-contrastive-poisoning",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Authors at Google (arXiv) / ICLR 2022 (OpenReview.net)",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "summarized",
+      "tags": [
+        "data-poisoning",
+        "backdoor",
+        "evidence"
+      ],
+      "title": "Poisoning and Backdooring Contrastive Learning",
+      "topic": "ai-threat-model-supply-chain-infra",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2106.09667v2"
     },
     {
       "artifacts": 0,
@@ -844,6 +1105,40 @@
     },
     {
       "artifacts": 0,
+      "date": "2020-11-19",
+      "id": "ceschin-2020-mlsec-xor-evasion",
+      "maturity": null,
+      "profile": null,
+      "publisher": "ACM, Reversing and Offensive-oriented Trends Symposium, pp. 13-22",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "No Need to Teach New Tricks to Old Malware: Winning an Evasion Challenge with XOR-based Adversarial Samples",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://doi.org/10.1145/3433667.3433669"
+    },
+    {
+      "artifacts": 0,
+      "date": "2021-05",
+      "id": "chen-2021-real-bob",
+      "maturity": null,
+      "profile": null,
+      "publisher": "IEEE, 2021 IEEE Symposium on Security and Privacy (SP), pp. 694-711",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "Who is Real Bob? Adversarial Attacks on Speaker Recognition Systems",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://doi.org/10.1109/SP40001.2021.00004"
+    },
+    {
+      "artifacts": 0,
       "date": null,
       "id": "chung-2018-must-staple",
       "maturity": null,
@@ -879,6 +1174,28 @@
       "topic": "product-composition",
       "type": "paper",
       "url": "https://arxiv.org/pdf/2503.14388v3"
+    },
+    {
+      "artifacts": 0,
+      "date": "2023-03-09",
+      "id": "cina-2023-wild-patterns-reloaded-poisoning",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Authors at Ca' Foscari University of Venice, EPFL, University of Cagliari, Software Competence Center Hagenberg, Northeastern University, University of Genoa and Pluribus One (arXiv) / ACM (Computing Surveys)",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": "Wild Patterns Reloaded",
+      "status": "summarized",
+      "tags": [
+        "data-poisoning",
+        "backdoor",
+        "ai-threat-model",
+        "prior-art"
+      ],
+      "title": "Wild Patterns Reloaded: A Survey of Machine Learning Security against Training Data Poisoning",
+      "topic": "ai-threat-model-supply-chain-infra",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2205.01992v3"
     },
     {
       "artifacts": 1,
@@ -963,16 +1280,16 @@
       "url": "https://www.cisa.gov/resources-tools/resources/2026-minimum-elements-software-bill-materials-sbom"
     },
     {
-      "artifacts": 0,
+      "artifacts": 6,
       "date": "2025-12-03",
       "id": "cisa-ai-in-ot-principles",
       "maturity": "best-practice",
-      "profile": null,
+      "profile": "full",
       "publisher": "Cybersecurity and Infrastructure Security Agency",
       "reviewed_artifacts": 0,
       "shelf": "regulator",
       "short_title": "CISA AI in OT",
-      "status": "summarized",
+      "status": "distilled",
       "tags": [
         "regulation",
         "ai-security",
@@ -1216,6 +1533,27 @@
     },
     {
       "artifacts": 0,
+      "date": "2024-02-04",
+      "id": "cnn-2024-deepfake-cfo-hong-kong",
+      "maturity": null,
+      "profile": null,
+      "publisher": "CNN",
+      "reviewed_artifacts": 0,
+      "shelf": "other",
+      "short_title": "Hong Kong deepfake CFO fraud",
+      "status": "summarized",
+      "tags": [
+        "ai-incident",
+        "ai-enabled-offense",
+        "evidence"
+      ],
+      "title": "Finance worker pays out $25 million after video call with deepfake 'chief financial officer'",
+      "topic": "ai-threat-model-supply-chain-infra",
+      "type": "article",
+      "url": "https://www.cnn.com/2024/02/04/asia/deepfake-cfo-scam-hong-kong-intl-hnk"
+    },
+    {
+      "artifacts": 0,
       "date": null,
       "id": "cnsa-2-0",
       "maturity": null,
@@ -1247,6 +1585,44 @@
       "topic": "supply-chain-attestation",
       "type": "web",
       "url": "https://research.swtch.com/xz-timeline"
+    },
+    {
+      "artifacts": 0,
+      "date": "2020-11-21",
+      "id": "croce-hein-2020-autoattack",
+      "maturity": null,
+      "profile": null,
+      "publisher": "PMLR, Proceedings of the 37th International Conference on Machine Learning (ICML 2020), PMLR vol. 119, pp. 2206-2216",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": "AutoAttack",
+      "status": "summarized",
+      "tags": [
+        "evidence",
+        "evasion",
+        "ai-benchmark"
+      ],
+      "title": "Reliable evaluation of adversarial robustness with an ensemble of diverse parameter-free attacks",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://proceedings.mlr.press/v119/croce20b/croce20b.pdf"
+    },
+    {
+      "artifacts": 0,
+      "date": "2020-11-21",
+      "id": "croce-hein-2020-fab",
+      "maturity": null,
+      "profile": null,
+      "publisher": "PMLR, Proceedings of the 37th International Conference on Machine Learning, PMLR vol. 119, pp. 2196-2205",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "Minimally distorted Adversarial Examples with a Fast Adaptive Boundary Attack",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://proceedings.mlr.press/v119/croce20a/croce20a.pdf"
     },
     {
       "artifacts": 0,
@@ -1290,6 +1666,27 @@
     },
     {
       "artifacts": 0,
+      "date": "2022-11-18",
+      "id": "csaf-2-0",
+      "maturity": "standard",
+      "profile": null,
+      "publisher": "OASIS Open (CSAF TC)",
+      "reviewed_artifacts": 0,
+      "shelf": "oasis",
+      "short_title": null,
+      "status": "stub",
+      "tags": [
+        "csaf",
+        "vex",
+        "advisory"
+      ],
+      "title": "Common Security Advisory Framework Version 2.0",
+      "topic": "schema-representations",
+      "type": "spec",
+      "url": "https://docs.oasis-open.org/csaf/csaf/v2.0/os/csaf-v2.0-os.md"
+    },
+    {
+      "artifacts": 0,
       "date": null,
       "id": "cscw-2023-provenance-trust",
       "maturity": null,
@@ -1328,6 +1725,30 @@
     },
     {
       "artifacts": 0,
+      "date": "2025-08-05",
+      "id": "cursor-curxecute-mcpoison-2025",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Tenable",
+      "reviewed_artifacts": 0,
+      "shelf": "vendor",
+      "short_title": "Cursor CurXecute and MCPoison",
+      "status": "summarized",
+      "tags": [
+        "vendor",
+        "evidence",
+        "mcp",
+        "prompt-injection",
+        "agent-security",
+        "ai-incident"
+      ],
+      "title": "CVE-2025-54135, CVE-2025-54136: Frequently Asked Questions About Vulnerabilities in Cursor IDE (CurXecute and MCPoison)",
+      "topic": "ai-threat-model-agentic-mcp",
+      "type": "article",
+      "url": "https://www.tenable.com/blog/faq-cve-2025-54135-cve-2025-54136-vulnerabilities-in-cursor-curxecute-mcpoison"
+    },
+    {
+      "artifacts": 0,
       "date": null,
       "id": "cve-2019-13050",
       "maturity": null,
@@ -1362,24 +1783,24 @@
     },
     {
       "artifacts": 0,
-      "date": null,
+      "date": "2025-10-29",
       "id": "cve-json-5",
       "maturity": "standard",
       "profile": null,
-      "publisher": null,
+      "publisher": "CVE Program",
       "reviewed_artifacts": 0,
       "shelf": "other",
       "short_title": null,
-      "status": "summarized",
+      "status": "stub",
       "tags": [
         "cve",
         "schema",
         "vulnerability"
       ],
       "title": "CVE JSON Record Format v5",
-      "topic": null,
+      "topic": "schema-representations",
       "type": "spec",
-      "url": "https://cveproject.github.io/cve-schema/schema/docs/"
+      "url": "https://raw.githubusercontent.com/CVEProject/cve-schema/5533f6038cc0434e544e69240c704906d591de46/schema/CVE_Record_Format.json"
     },
     {
       "artifacts": 0,
@@ -1403,26 +1824,50 @@
       "url": "https://github.com/CVEProject/cvelistV5/releases/download/cve_2026-10-08_1700Z/2026-10-08_all_CVEs_at_midnight.zip.zip"
     },
     {
-      "artifacts": 0,
-      "date": null,
+      "artifacts": 7,
+      "date": "2026-04-30",
       "id": "cwe",
       "maturity": "best-practice",
-      "profile": null,
-      "publisher": null,
-      "reviewed_artifacts": 0,
+      "profile": "full",
+      "publisher": "The MITRE Corporation",
+      "reviewed_artifacts": 7,
       "shelf": "other",
       "short_title": null,
-      "status": "summarized",
+      "status": "distilled",
       "tags": [
         "cwe",
         "weakness",
         "mitre",
-        "graph"
+        "graph",
+        "xml-schema",
+        "catalog"
       ],
       "title": "MITRE CWE — Common Weakness Enumeration",
-      "topic": null,
+      "topic": "schema-representations",
       "type": "dataset",
-      "url": "https://cwe.mitre.org/"
+      "url": "https://cwe.mitre.org/data/xml/cwec_v4.20.xml.zip"
+    },
+    {
+      "artifacts": 0,
+      "date": "2024-07-16",
+      "id": "cwe-1426-genai-output-validation",
+      "maturity": null,
+      "profile": null,
+      "publisher": "MITRE (CWE)",
+      "reviewed_artifacts": 0,
+      "shelf": "other",
+      "short_title": "CWE-1426",
+      "status": "summarized",
+      "tags": [
+        "normative",
+        "ai-weakness-catalog",
+        "prompt-injection",
+        "agent-security"
+      ],
+      "title": "CWE-1426: Improper Validation of Generative AI Output",
+      "topic": "ai-threat-model-agentic-mcp",
+      "type": "web",
+      "url": "https://cwe.mitre.org/data/definitions/1426.html"
     },
     {
       "artifacts": 0,
@@ -1495,7 +1940,7 @@
       "id": "cytoscape-js",
       "maturity": null,
       "profile": null,
-      "publisher": null,
+      "publisher": "Cytoscape.js project",
       "reviewed_artifacts": 0,
       "shelf": "community",
       "short_title": null,
@@ -1516,7 +1961,7 @@
       "id": "d3-js",
       "maturity": null,
       "profile": null,
-      "publisher": null,
+      "publisher": "D3.js project",
       "reviewed_artifacts": 0,
       "shelf": "community",
       "short_title": null,
@@ -1533,11 +1978,11 @@
     },
     {
       "artifacts": 0,
-      "date": null,
+      "date": "2026-08-31",
       "id": "d3fend",
       "maturity": "recommendation",
       "profile": null,
-      "publisher": null,
+      "publisher": "The MITRE Corporation",
       "reviewed_artifacts": 0,
       "shelf": "other",
       "short_title": null,
@@ -1552,7 +1997,7 @@
       "title": "MITRE D3FEND — defensive countermeasures knowledge graph (OWL)",
       "topic": null,
       "type": "spec",
-      "url": "https://d3fend.mitre.org/"
+      "url": "https://d3fend.mitre.org/ontologies/d3fend.ttl"
     },
     {
       "artifacts": 0,
@@ -1574,6 +2019,29 @@
       "topic": "product-composition",
       "type": "paper",
       "url": "https://sse.cs.tu-dortmund.de/storages/sse-cs/r/Publications/Preprints/dphpb21-tse-achilles.pdf"
+    },
+    {
+      "artifacts": 0,
+      "date": "2024-11-24",
+      "id": "debenedetti-2024-agentdojo",
+      "maturity": null,
+      "profile": null,
+      "publisher": "NeurIPS 2024 Datasets and Benchmarks Track (arXiv preprint)",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": "AgentDojo",
+      "status": "summarized",
+      "tags": [
+        "academic",
+        "evidence",
+        "prompt-injection",
+        "agent-security",
+        "ai-benchmark"
+      ],
+      "title": "AgentDojo: A Dynamic Environment to Evaluate Prompt Injection Attacks and Defenses for LLM Agents",
+      "topic": "ai-threat-model-agentic-mcp",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2406.13352"
     },
     {
       "artifacts": 0,
@@ -2233,6 +2701,26 @@
     },
     {
       "artifacts": 0,
+      "date": "2025-09-06",
+      "id": "echoleak-zero-click-prompt-injection",
+      "maturity": null,
+      "profile": null,
+      "publisher": null,
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": "EchoLeak",
+      "status": "stub",
+      "tags": [
+        "prompt-injection",
+        "ai-security"
+      ],
+      "title": "EchoLeak: The First Real-World Zero-Click Prompt Injection Exploit in a Production LLM System",
+      "topic": "sagai",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2509.10540v1"
+    },
+    {
+      "artifacts": 0,
       "date": null,
       "id": "ecma-424",
       "maturity": null,
@@ -2247,6 +2735,29 @@
       "topic": "supply-chain-attestation",
       "type": "spec",
       "url": "https://ecma-international.org/publications-and-standards/standards/ecma-424/"
+    },
+    {
+      "artifacts": 7,
+      "date": "2025-12",
+      "id": "ecma-427",
+      "maturity": "standard",
+      "profile": "full",
+      "publisher": "Ecma International (TC54)",
+      "reviewed_artifacts": 0,
+      "shelf": "other",
+      "short_title": "ECMA-427 purl, 1st ed.",
+      "status": "distilled",
+      "tags": [
+        "sbom",
+        "supply-chain",
+        "naming",
+        "normative",
+        "purl"
+      ],
+      "title": "ECMA-427 Package-URL (PURL) specification, 1st edition",
+      "topic": "product-composition",
+      "type": "spec",
+      "url": "https://ecma-international.org/wp-content/uploads/ECMA-427_1st_edition_december_2025.pdf"
     },
     {
       "artifacts": 0,
@@ -2398,6 +2909,23 @@
       "url": "https://www.govinfo.gov/content/pkg/FR-2025-06-11/pdf/2025-10804.pdf"
     },
     {
+      "artifacts": 0,
+      "date": "2013-09",
+      "id": "erdogmus-2013-3d-mask-spoofing",
+      "maturity": null,
+      "profile": null,
+      "publisher": "IEEE, 2013 IEEE Sixth International Conference on Biometrics: Theory, Applications and Systems (BTAS), pp. 1-6",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "Spoofing in 2D face recognition with 3D masks and anti-spoofing with Kinect",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://doi.org/10.1109/BTAS.2013.6712688"
+    },
+    {
       "artifacts": 5,
       "date": "2022-08",
       "id": "esf-sscs-developers-2022",
@@ -2424,11 +2952,11 @@
       "url": "https://media.defense.gov/2022/Sep/01/2003068942/-1/-1/0/ESF_SECURING_THE_SOFTWARE_SUPPLY_CHAIN_DEVELOPERS.PDF"
     },
     {
-      "artifacts": 3,
+      "artifacts": 6,
       "date": "2025-12",
       "id": "etsi-en-304-223",
       "maturity": "standard",
-      "profile": null,
+      "profile": "full",
       "publisher": "ETSI",
       "reviewed_artifacts": 0,
       "shelf": "other",
@@ -2446,20 +2974,83 @@
     },
     {
       "artifacts": 0,
-      "date": null,
+      "date": "2025-01",
+      "id": "etsi-tr-104-048",
+      "maturity": "informational",
+      "profile": null,
+      "publisher": "ETSI",
+      "reviewed_artifacts": 0,
+      "shelf": "other",
+      "short_title": "ETSI TR 104 048",
+      "status": "stub",
+      "tags": [
+        "ai-security",
+        "supply-chain"
+      ],
+      "title": "Securing Artificial Intelligence (SAI); Data Supply Chain Security",
+      "topic": "sagai",
+      "type": "spec",
+      "url": "https://www.etsi.org/deliver/etsi_tr/104000_104099/104048/01.01.01_60/tr_104048v010101p.pdf"
+    },
+    {
+      "artifacts": 0,
+      "date": "2025-05",
+      "id": "etsi-tr-104-128",
+      "maturity": "informational",
+      "profile": null,
+      "publisher": "ETSI",
+      "reviewed_artifacts": 0,
+      "shelf": "other",
+      "short_title": "ETSI TR 104 128",
+      "status": "stub",
+      "tags": [
+        "ai-security"
+      ],
+      "title": "Securing Artificial Intelligence (SAI); Guide to Cyber Security for AI Models and Systems",
+      "topic": "sagai",
+      "type": "spec",
+      "url": "https://www.etsi.org/deliver/etsi_tr/104100_104199/104128/01.01.01_60/tr_104128v010101p.pdf"
+    },
+    {
+      "artifacts": 0,
+      "date": "2025-02",
       "id": "etsi-ts-102-165-1",
       "maturity": null,
       "profile": null,
-      "publisher": null,
+      "publisher": "ETSI (TC CYBER)",
       "reviewed_artifacts": 0,
       "shelf": "other",
-      "short_title": null,
-      "status": "queued",
-      "tags": [],
-      "title": "ETSI TS 102 165-1, CYBER; Methods and protocols; Part 1: Method and proforma for Threat, Vulnerability, Risk Analysis (TVRA)",
+      "short_title": "ETSI TVRA (TS 102 165-1)",
+      "status": "summarized",
+      "tags": [
+        "method",
+        "evidence"
+      ],
+      "title": "ETSI TS 102 165-1 V5.3.1, Cyber Security (CYBER); Methods and protocols; Part 1: Method and pro forma for Threat, Vulnerability, Risk Analysis (TVRA)",
       "topic": null,
       "type": "spec",
-      "url": "https://www.etsi.org/deliver/etsi_ts/102100_102199/10216501/"
+      "url": "https://www.etsi.org/deliver/etsi_ts/102100_102199/10216501/05.03.01_60/ts_10216501v050301p.pdf"
+    },
+    {
+      "artifacts": 0,
+      "date": "2025-03",
+      "id": "etsi-ts-104-050",
+      "maturity": null,
+      "profile": null,
+      "publisher": "ETSI",
+      "reviewed_artifacts": 0,
+      "shelf": "other",
+      "short_title": "ETSI TS 104 050",
+      "status": "stub",
+      "tags": [
+        "ai-security",
+        "threat-modeling",
+        "ontology"
+      ],
+      "title": "Securing Artificial Intelligence (SAI); AI Threat Ontology and definitions",
+      "topic": "sagai",
+      "type": "spec",
+      "url": "https://www.etsi.org/deliver/etsi_ts/104000_104099/104050/01.01.01_60/ts_104050v010101p.pdf"
     },
     {
       "artifacts": 9,
@@ -2488,6 +3079,26 @@
       "topic": "sdl",
       "type": "spec",
       "url": "https://www.etsi.org/deliver/etsi_ts/104200_104299/104219/01.01.01_60/ts_104219v010101p.pdf"
+    },
+    {
+      "artifacts": 0,
+      "date": "2025-04",
+      "id": "etsi-ts-104-223",
+      "maturity": null,
+      "profile": null,
+      "publisher": "ETSI",
+      "reviewed_artifacts": 0,
+      "shelf": "other",
+      "short_title": "ETSI TS 104 223",
+      "status": "stub",
+      "tags": [
+        "ai-security",
+        "normative"
+      ],
+      "title": "Securing Artificial Intelligence (SAI); Baseline Cyber Security Requirements for AI Models and Systems",
+      "topic": "sagai",
+      "type": "spec",
+      "url": "https://www.etsi.org/deliver/etsi_ts/104200_104299/104223/01.01.01_60/ts_104223v010101p.pdf"
     },
     {
       "artifacts": 0,
@@ -2608,6 +3219,43 @@
       "url": "https://doi.org/10.5281/zenodo.1188418"
     },
     {
+      "artifacts": 0,
+      "date": "2026-10",
+      "id": "fang-2024-model-inversion-survey",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Springer, International Journal of Computer Vision 134(10)",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": "Model inversion survey",
+      "status": "summarized",
+      "tags": [
+        "evidence",
+        "model-inversion"
+      ],
+      "title": "Privacy Leakage on DNNs: A Survey of Model Inversion Attacks and Defenses",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2402.04013v3"
+    },
+    {
+      "artifacts": 0,
+      "date": "2015",
+      "id": "fawzi-2015-fundamental-limits-adversarial-robustness",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Proceedings of ICML 2015, Workshop on Deep Learning (Lille, France); copyright the authors",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "Fundamental limits on adversarial robustness",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://www.epfl.ch/labs/lts4/wp-content/uploads/2018/10/icml2015a.pdf"
+    },
+    {
       "artifacts": 8,
       "date": "2026-02-03",
       "id": "fda-premarket-cybersecurity-guidance",
@@ -2631,6 +3279,23 @@
       "topic": "sdl",
       "type": "spec",
       "url": "https://www.fda.gov/media/119933/download"
+    },
+    {
+      "artifacts": 0,
+      "date": "2013-10-21",
+      "id": "feng-2013-fashion-camouflage",
+      "maturity": null,
+      "profile": null,
+      "publisher": "ACM, Proceedings of the 21st ACM International Conference on Multimedia (MM '13), pp. 793-802",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "Facilitating fashion camouflage art",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://doi.org/10.1145/2502081.2502121"
     },
     {
       "artifacts": 0,
@@ -2938,15 +3603,18 @@
       "id": "first-cvss",
       "maturity": null,
       "profile": null,
-      "publisher": null,
+      "publisher": "FIRST (CVSS Special Interest Group)",
       "reviewed_artifacts": 0,
       "shelf": "community",
-      "short_title": null,
-      "status": "queued",
-      "tags": [],
-      "title": "FIRST, Common Vulnerability Scoring System (CVSS)",
+      "short_title": "CVSS (FIRST)",
+      "status": "summarized",
+      "tags": [
+        "vulnerability-data",
+        "evidence"
+      ],
+      "title": "FIRST, Common Vulnerability Scoring System (CVSS) — specification family",
       "topic": null,
-      "type": "spec",
+      "type": "hierarchy",
       "url": "https://www.first.org/cvss/"
     },
     {
@@ -2994,6 +3662,26 @@
     {
       "artifacts": 0,
       "date": null,
+      "id": "first-epss",
+      "maturity": null,
+      "profile": null,
+      "publisher": "FIRST (EPSS SIG)",
+      "reviewed_artifacts": 0,
+      "shelf": "community",
+      "short_title": null,
+      "status": "stub",
+      "tags": [
+        "epss",
+        "exploitation-evidence"
+      ],
+      "title": "Exploit Prediction Scoring System (EPSS)",
+      "topic": "schema-representations",
+      "type": "dataset",
+      "url": "https://www.first.org/epss/"
+    },
+    {
+      "artifacts": 0,
+      "date": null,
       "id": "foxit-2012-black-tulip",
       "maturity": null,
       "profile": null,
@@ -3007,6 +3695,23 @@
       "topic": "namespace-governance",
       "type": "article",
       "url": "https://www.enisa.europa.eu/sites/default/files/all_files/Operation_Black_Tulip_v2.pdf"
+    },
+    {
+      "artifacts": 0,
+      "date": "2025",
+      "id": "fraunhofer-iese-sagai",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Fraunhofer IESE",
+      "reviewed_artifacts": 0,
+      "shelf": "other",
+      "short_title": "SAGAI (software architecture, ICSA)",
+      "status": "stub",
+      "tags": [],
+      "title": "SAGAI: International Workshop on Software Architecture and Generative AI (Fraunhofer IESE, at IEEE ICSA)",
+      "topic": "sagai",
+      "type": "web",
+      "url": "https://www.iese.fraunhofer.de/en/events/sagai.html"
     },
     {
       "artifacts": 0,
@@ -3050,6 +3755,44 @@
     },
     {
       "artifacts": 0,
+      "date": "2025-09-11",
+      "id": "ftc-2025-companion-chatbots-6b",
+      "maturity": null,
+      "profile": null,
+      "publisher": "U.S. Federal Trade Commission",
+      "reviewed_artifacts": 0,
+      "shelf": "regulator",
+      "short_title": "FTC 6(b) inquiry: companion chatbots",
+      "status": "summarized",
+      "tags": [
+        "evidence",
+        "regulation",
+        "ai-governance"
+      ],
+      "title": "FTC Launches Inquiry into AI Chatbots Acting as Companions",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "article",
+      "url": "https://web.archive.org/web/20250912065107id_/https://www.ftc.gov/news-events/news/press-releases/2025/09/ftc-launches-inquiry-ai-chatbots-acting-companions"
+    },
+    {
+      "artifacts": 0,
+      "date": "2025-09-11",
+      "id": "ftc-2025-companion-chatbots-6b-orders",
+      "maturity": null,
+      "profile": null,
+      "publisher": "U.S. Federal Trade Commission",
+      "reviewed_artifacts": 0,
+      "shelf": "regulator",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "6(b) Orders to File Special Report Regarding Advertising, Safety, and Data Handling Practices by Companies Offering Generative Artificial Intelligence (“AI”) Companion Products or Services",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "web",
+      "url": "https://www.ftc.gov/reports/6b-orders-file-special-report-regarding-advertising-safety-data-handling-practices-companies"
+    },
+    {
+      "artifacts": 0,
       "date": "2026-05-12",
       "id": "g7-sbom-for-ai-2026",
       "maturity": "best-practice",
@@ -3072,11 +3815,28 @@
     },
     {
       "artifacts": 0,
+      "date": "2010-03",
+      "id": "galbally-2010-hill-climbing-face",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Elsevier, Pattern Recognition 43(3), pp. 1027-1038",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "On the vulnerability of face verification systems to hill-climbing attacks",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://doi.org/10.1016/j.patcog.2009.08.022"
+    },
+    {
+      "artifacts": 0,
       "date": null,
       "id": "gephi",
       "maturity": null,
       "profile": null,
-      "publisher": null,
+      "publisher": "Gephi Consortium",
       "reviewed_artifacts": 0,
       "shelf": "community",
       "short_title": null,
@@ -3107,6 +3867,23 @@
       "topic": "supply-chain-attestation",
       "type": "web",
       "url": "https://github.com/advisories/GHSA-mh6f-8j2x-4483"
+    },
+    {
+      "artifacts": 0,
+      "date": "2018-07-18",
+      "id": "gilmer-2018-rules-of-the-game",
+      "maturity": null,
+      "profile": null,
+      "publisher": "arXiv preprint",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "Motivating the Rules of the Game for Adversarial Example Research",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://arxiv.org/abs/1807.06732"
     },
     {
       "artifacts": 0,
@@ -3250,6 +4027,27 @@
     },
     {
       "artifacts": 0,
+      "date": "2021-03-31",
+      "id": "goldblum-2022-dataset-security-survey",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Authors at University of Maryland, MIT, University of Illinois Urbana-Champaign and UC Berkeley (arXiv) / IEEE (TPAMI)",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": "Dataset Security for Machine Learning",
+      "status": "summarized",
+      "tags": [
+        "data-poisoning",
+        "backdoor",
+        "prior-art"
+      ],
+      "title": "Dataset Security for Machine Learning: Data Poisoning, Backdoor Attacks, and Defenses",
+      "topic": "ai-threat-model-supply-chain-infra",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2012.10544v4"
+    },
+    {
+      "artifacts": 0,
       "date": null,
       "id": "google-2016-wosign",
       "maturity": null,
@@ -3281,6 +4079,49 @@
       "topic": "namespace-governance",
       "type": "web",
       "url": "https://security.googleblog.com/2017/09/chromes-plan-to-distrust-symantec.html"
+    },
+    {
+      "artifacts": 0,
+      "date": "2024-05-30",
+      "id": "google-2024-ai-overviews-satire-retrieval",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Google",
+      "reviewed_artifacts": 0,
+      "shelf": "vendor",
+      "short_title": "Google AI Overviews post-mortem",
+      "status": "summarized",
+      "tags": [
+        "vendor",
+        "evidence",
+        "rag-security",
+        "ai-incident"
+      ],
+      "title": "AI Overviews: About last week",
+      "topic": "ai-threat-model-agentic-mcp",
+      "type": "article",
+      "url": "https://blog.google/products/search/ai-overviews-update-may-2024/"
+    },
+    {
+      "artifacts": 0,
+      "date": "2025-11-05",
+      "id": "google-2025-gtig-ai-threat-tracker",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Google (Google Threat Intelligence Group; Google Cloud Blog)",
+      "reviewed_artifacts": 0,
+      "shelf": "vendor",
+      "short_title": "GTIG AI Threat Tracker (November 2025)",
+      "status": "summarized",
+      "tags": [
+        "ai-incident",
+        "ai-enabled-offense",
+        "evidence"
+      ],
+      "title": "GTIG AI Threat Tracker: Advances in Threat Actor Usage of AI Tools",
+      "topic": "ai-threat-model-supply-chain-infra",
+      "type": "article",
+      "url": "https://services.google.com/fh/files/misc/advances-in-threat-actor-usage-of-ai-tools-en.pdf"
     },
     {
       "artifacts": 0,
@@ -3322,6 +4163,26 @@
     },
     {
       "artifacts": 0,
+      "date": "2025-03-31",
+      "id": "google-photos-model-extraction-2025",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Skyld",
+      "reviewed_artifacts": 0,
+      "shelf": "vendor",
+      "short_title": "Google Photos model extraction",
+      "status": "summarized",
+      "tags": [
+        "evidence",
+        "model-extraction"
+      ],
+      "title": "Google Photos' AI Models: The Secret Sauce That Can Be Stolen",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "article",
+      "url": "https://skyld.io/google-photos-model-extraction"
+    },
+    {
+      "artifacts": 0,
       "date": null,
       "id": "gram",
       "maturity": null,
@@ -3344,6 +4205,28 @@
     {
       "artifacts": 0,
       "date": null,
+      "id": "graphology",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Graphology project",
+      "reviewed_artifacts": 0,
+      "shelf": "community",
+      "short_title": null,
+      "status": "summarized",
+      "tags": [
+        "graph-model",
+        "graph-algorithms",
+        "graph-visualization",
+        "prior-art"
+      ],
+      "title": "Graphology",
+      "topic": "rpt-0006-knowledge-graph-visualization",
+      "type": "repo",
+      "url": "https://github.com/graphology/graphology"
+    },
+    {
+      "artifacts": 0,
+      "date": null,
       "id": "graphrag-ms",
       "maturity": "implementation",
       "profile": null,
@@ -3362,6 +4245,27 @@
       "topic": null,
       "type": "repo",
       "url": "https://github.com/microsoft/graphrag"
+    },
+    {
+      "artifacts": 0,
+      "date": "2025-01-29",
+      "id": "gtig-adversarial-misuse-2025",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Google Threat Intelligence Group (GTIG), Google Cloud",
+      "reviewed_artifacts": 0,
+      "shelf": "google",
+      "short_title": "GTIG: adversarial misuse of Gemini",
+      "status": "summarized",
+      "tags": [
+        "evidence",
+        "ai-enabled-offense",
+        "ai-incident"
+      ],
+      "title": "Adversarial Misuse of Generative AI",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://services.google.com/fh/files/misc/adversarial-misuse-generative-ai.pdf"
     },
     {
       "artifacts": 0,
@@ -3422,6 +4326,50 @@
     },
     {
       "artifacts": 0,
+      "date": "2025-05-02",
+      "id": "habler-a2a-maestro-2025",
+      "maturity": null,
+      "profile": null,
+      "publisher": "arXiv",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "summarized",
+      "tags": [
+        "academic",
+        "evidence",
+        "agent-security",
+        "ai-threat-model",
+        "mcp",
+        "agent-identity"
+      ],
+      "title": "Building A Secure Agentic AI Application Leveraging Google's A2A Protocol",
+      "topic": "ai-threat-model-agentic-mcp",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2504.16902"
+    },
+    {
+      "artifacts": 0,
+      "date": "2024-04-09",
+      "id": "hajipour-2024-codelmsec",
+      "maturity": null,
+      "profile": null,
+      "publisher": "IEEE, 2024 IEEE Conference on Secure and Trustworthy Machine Learning (SaTML), pp. 684-709",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": "CodeLMSec",
+      "status": "summarized",
+      "tags": [
+        "evidence",
+        "ai-benchmark"
+      ],
+      "title": "CodeLMSec Benchmark: Systematically Evaluating and Finding Security Vulnerabilities in Black-Box Code Language Models",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2302.04012v2"
+    },
+    {
+      "artifacts": 0,
       "date": null,
       "id": "hardy-1988-confused-deputy",
       "maturity": null,
@@ -3458,6 +4406,44 @@
       "topic": null,
       "type": "paper",
       "url": "https://aidanhogan.com/docs/knowledge-graphs-computing-surveys.pdf"
+    },
+    {
+      "artifacts": 0,
+      "date": "2026-06-23",
+      "id": "huang-2024-harmful-finetuning-survey",
+      "maturity": null,
+      "profile": null,
+      "publisher": "ACM, ACM Computing Surveys 58(13), pp. 1-39",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": "Harmful fine-tuning survey",
+      "status": "summarized",
+      "tags": [
+        "evidence",
+        "data-poisoning",
+        "jailbreak"
+      ],
+      "title": "Harmful Fine-tuning Attacks and Defenses for Large Language Models: A Survey",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2409.18169v6"
+    },
+    {
+      "artifacts": 0,
+      "date": "2024-02-02",
+      "id": "huang-2024-vaccine",
+      "maturity": null,
+      "profile": null,
+      "publisher": "arXiv preprint",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "Vaccine: Perturbation-aware Alignment for Large Language Models against Harmful Fine-tuning Attack",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://arxiv.org/abs/2402.01109"
     },
     {
       "artifacts": 0,
@@ -4033,37 +5019,43 @@
     },
     {
       "artifacts": 0,
-      "date": null,
+      "date": "2022-11",
       "id": "iso-iec-15408",
       "maturity": null,
       "profile": null,
-      "publisher": null,
+      "publisher": "ISO/IEC JTC 1/SC 27 (ISO/IEC 15408-1..5:2022); republished free by the CCRA as CC:2022 Release 1",
       "reviewed_artifacts": 0,
       "shelf": "iso",
-      "short_title": null,
-      "status": "queued",
-      "tags": [],
-      "title": "ISO/IEC 15408 (all parts), Evaluation criteria for IT security (Common Criteria)",
+      "short_title": "ISO/IEC 15408 / CC:2022",
+      "status": "summarized",
+      "tags": [
+        "evidence",
+        "normative"
+      ],
+      "title": "ISO/IEC 15408:2022 (all parts), Evaluation criteria for IT security (Common Criteria, CC:2022)",
       "topic": null,
       "type": "spec",
-      "url": "https://www.iso.org/"
+      "url": "https://www.commoncriteriaportal.org/files/ccfiles/CC2022PART1R1.pdf"
     },
     {
       "artifacts": 0,
-      "date": null,
+      "date": "2022-11",
       "id": "iso-iec-18045",
       "maturity": null,
       "profile": null,
-      "publisher": null,
+      "publisher": "ISO/IEC JTC 1/SC 27 (ISO/IEC 18045:2022); republished free by the CCRA as CEM:2022 Release 1",
       "reviewed_artifacts": 0,
       "shelf": "iso",
-      "short_title": null,
-      "status": "queued",
-      "tags": [],
-      "title": "ISO/IEC 18045, Methodology for IT security evaluation (attack potential)",
+      "short_title": "ISO/IEC 18045 / CEM:2022 (attack potential)",
+      "status": "summarized",
+      "tags": [
+        "evidence",
+        "normative"
+      ],
+      "title": "ISO/IEC 18045:2022, Information security, cybersecurity and privacy protection — Evaluation criteria for IT security — Methodology for IT security evaluation (CEM:2022)",
       "topic": null,
       "type": "spec",
-      "url": "https://www.iso.org/"
+      "url": "https://www.commoncriteriaportal.org/files/ccfiles/CEM2022R1.pdf"
     },
     {
       "artifacts": 0,
@@ -4465,6 +5457,87 @@
     },
     {
       "artifacts": 0,
+      "date": "2025-07-07",
+      "id": "jones-2025-cua-sok",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Microsoft",
+      "reviewed_artifacts": 0,
+      "shelf": "vendor",
+      "short_title": null,
+      "status": "summarized",
+      "tags": [
+        "vendor",
+        "evidence",
+        "agent-security",
+        "prompt-injection",
+        "ai-threat-model"
+      ],
+      "title": "A Systematization of Security Vulnerabilities in Computer Use Agents",
+      "topic": "ai-threat-model-agentic-mcp",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2507.05445"
+    },
+    {
+      "artifacts": 0,
+      "date": "2022-03-03",
+      "id": "kahla-2022-brepmi",
+      "maturity": null,
+      "profile": null,
+      "publisher": "arXiv preprint",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "Label-Only Model Inversion Attacks via Boundary Repulsion",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://arxiv.org/abs/2203.01925"
+    },
+    {
+      "artifacts": 0,
+      "date": "2025-05-01",
+      "id": "kang-2024-advwave",
+      "maturity": null,
+      "profile": null,
+      "publisher": "ICLR 2025 conference proceedings (proceedings.iclr.cc), pp. 27819-27835",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": "AdvWave",
+      "status": "summarized",
+      "tags": [
+        "evidence",
+        "jailbreak"
+      ],
+      "title": "AdvWave: Stealthy Adversarial Jailbreak Attack against Large Audio-Language Models",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://proceedings.iclr.cc/paper_files/paper/2025/file/45673dbf3f331fbd911b0689872de396-Paper-Conference.pdf"
+    },
+    {
+      "artifacts": 0,
+      "date": "2014-03",
+      "id": "karpati-2014-attack-trees-misuse-cases",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Elsevier",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [
+        "threat-modeling",
+        "attack-trees",
+        "empirical"
+      ],
+      "title": "Comparing attack trees and misuse cases in an industrial setting",
+      "topic": null,
+      "type": "paper",
+      "url": "https://doi.org/10.1016/j.infsof.2013.10.004"
+    },
+    {
+      "artifacts": 0,
       "date": null,
       "id": "keys-openpgp-org-faq",
       "maturity": null,
@@ -4479,6 +5552,29 @@
       "topic": "uptake-failure",
       "type": "web",
       "url": "https://keys.openpgp.org/about/faq"
+    },
+    {
+      "artifacts": 0,
+      "date": "2026-04-29",
+      "id": "khodayari-2026-ipi-in-the-wild",
+      "maturity": null,
+      "profile": null,
+      "publisher": "arXiv",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "summarized",
+      "tags": [
+        "academic",
+        "evidence",
+        "prompt-injection",
+        "agent-security",
+        "ai-incident"
+      ],
+      "title": "Indirect Prompt Injection in the Wild: An Empirical Study of Prevalence, Techniques, and Objectives",
+      "topic": "ai-threat-model-agentic-mcp",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2604.27202"
     },
     {
       "artifacts": 0,
@@ -4502,11 +5598,33 @@
     },
     {
       "artifacts": 0,
+      "date": "1999-04-01",
+      "id": "kohnfelder-garg-1999-threats-to-our-products",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Microsoft",
+      "reviewed_artifacts": 0,
+      "shelf": "vendor",
+      "short_title": null,
+      "status": "summarized",
+      "tags": [
+        "threat-modeling",
+        "stride",
+        "microsoft",
+        "method"
+      ],
+      "title": "The threats to our products",
+      "topic": null,
+      "type": "article",
+      "url": "https://shostack.org/files/microsoft/The-Threats-To-Our-Products.docx"
+    },
+    {
+      "artifacts": 0,
       "date": null,
       "id": "kuzu",
       "maturity": null,
       "profile": null,
-      "publisher": null,
+      "publisher": "Kùzu project",
       "reviewed_artifacts": 0,
       "shelf": "community",
       "short_title": null,
@@ -4528,7 +5646,7 @@
       "id": "kuzu-explorer",
       "maturity": null,
       "profile": null,
-      "publisher": null,
+      "publisher": "Kùzu project",
       "reviewed_artifacts": 0,
       "shelf": "community",
       "short_title": null,
@@ -4543,6 +5661,27 @@
       "topic": "rpt-0006-knowledge-graph-visualization",
       "type": "repo",
       "url": "https://github.com/kuzudb/explorer"
+    },
+    {
+      "artifacts": 0,
+      "date": "2018-05",
+      "id": "lallie-2018-attack-graphs-fault-trees",
+      "maturity": null,
+      "profile": null,
+      "publisher": "IEEE",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [
+        "threat-modeling",
+        "attack-graphs",
+        "empirical"
+      ],
+      "title": "An Empirical Evaluation of the Effectiveness of Attack Graphs and Fault Trees in Cyber-Attack Perception",
+      "topic": null,
+      "type": "paper",
+      "url": "https://doi.org/10.1109/TIFS.2017.2771238"
     },
     {
       "artifacts": 0,
@@ -4614,6 +5753,27 @@
     },
     {
       "artifacts": 0,
+      "date": "2025-08-18",
+      "id": "lenovo-lena-xss-2025",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Cybernews",
+      "reviewed_artifacts": 0,
+      "shelf": "other",
+      "short_title": "Lenovo Lena XSS",
+      "status": "summarized",
+      "tags": [
+        "evidence",
+        "prompt-injection",
+        "ai-incident"
+      ],
+      "title": "Critical flaw plagues Lenovo AI chatbot: attackers can run malicious code and steal cookies",
+      "topic": "ai-threat-model-agentic-mcp",
+      "type": "article",
+      "url": "https://cybernews.com/security/lenovo-chatbot-lena-plagued-by-critical-vulnerabilities/"
+    },
+    {
+      "artifacts": 0,
       "date": null,
       "id": "letsencrypt-ocsp-eol",
       "maturity": null,
@@ -4649,6 +5809,84 @@
       "topic": "product-composition",
       "type": "paper",
       "url": "https://www.linuxfoundation.org/hubfs/LF%20Research/lfr_spdx_aibom_102524a.pdf"
+    },
+    {
+      "artifacts": 0,
+      "date": "2014-06-04",
+      "id": "li-2014-osn-facial-disclosure",
+      "maturity": null,
+      "profile": null,
+      "publisher": "ACM, Proceedings of the 9th ACM Symposium on Information, Computer and Communications Security (ASIA CCS '14), pp. 413-424",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "Understanding OSN-based facial disclosure against face authentication systems",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://doi.org/10.1145/2590296.2590315"
+    },
+    {
+      "artifacts": 0,
+      "date": "2022-02-16",
+      "id": "li-2022-backdoor-learning-survey",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Authors at Tsinghua University, Peng Cheng Laboratory and Tencent (arXiv) / IEEE (TNNLS)",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "summarized",
+      "tags": [
+        "backdoor",
+        "data-poisoning",
+        "ai-supply-chain",
+        "prior-art"
+      ],
+      "title": "Backdoor Learning: A Survey",
+      "topic": "ai-threat-model-supply-chain-infra",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2007.08745v5"
+    },
+    {
+      "artifacts": 0,
+      "date": "2016-04-11",
+      "id": "liang-2016-cracking-classifiers-evasion",
+      "maturity": null,
+      "profile": null,
+      "publisher": "International World Wide Web Conferences Steering Committee, Proceedings of the 25th International Conference on World Wide Web (WWW '16), pp. 345-356",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "Cracking Classifiers for Evasion: A Case Study on the Google's Phishing Pages Filter",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://doi.org/10.1145/2872427.2883060"
+    },
+    {
+      "artifacts": 0,
+      "date": "2024-08",
+      "id": "lin-2024-malla",
+      "maturity": null,
+      "profile": null,
+      "publisher": "USENIX Association, Proceedings of the 33rd USENIX Security Symposium (USENIX Security 24), pp. 4693-4710",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": "Malla",
+      "status": "summarized",
+      "tags": [
+        "evidence",
+        "jailbreak",
+        "ai-enabled-offense",
+        "ai-incident"
+      ],
+      "title": "Malla: Demystifying Real-world Large Language Model Integrated Malicious Services",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://www.usenix.org/system/files/usenixsecurity24-lin-zilong.pdf"
     },
     {
       "artifacts": 0,
@@ -4713,6 +5951,52 @@
     },
     {
       "artifacts": 0,
+      "date": "2024-10-30",
+      "id": "liu-2024-mm-safetybench",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Springer, Computer Vision - ECCV 2024, Lecture Notes in Computer Science, pp. 386-403",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": "MM-SafetyBench",
+      "status": "summarized",
+      "tags": [
+        "evidence",
+        "jailbreak",
+        "ai-benchmark"
+      ],
+      "title": "MM-SafetyBench: A Benchmark for Safety Evaluation of Multimodal Large Language Models",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2311.17600v5"
+    },
+    {
+      "artifacts": 0,
+      "date": "2025-11",
+      "id": "liu-2025-lvlm-attack-survey",
+      "maturity": null,
+      "profile": null,
+      "publisher": "IEEE",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "summarized",
+      "tags": [
+        "academic",
+        "background",
+        "prompt-injection",
+        "jailbreak",
+        "data-poisoning",
+        "backdoor",
+        "evasion"
+      ],
+      "title": "A Survey of Attacks on Large Vision-Language Models: Resources, Advances, and Future Trends",
+      "topic": "ai-threat-model-agentic-mcp",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2407.07403"
+    },
+    {
+      "artifacts": 0,
       "date": "2023-02-11",
       "id": "llm-programmatic-dual-use",
       "maturity": null,
@@ -4755,6 +6039,47 @@
     },
     {
       "artifacts": 0,
+      "date": "2022-05",
+      "id": "lukas-2022-sok-watermark-robustness",
+      "maturity": null,
+      "profile": null,
+      "publisher": "IEEE, 2022 IEEE Symposium on Security and Privacy (SP), pp. 787-804",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": "SoK: DNN watermarking robustness",
+      "status": "summarized",
+      "tags": [
+        "evidence",
+        "model-extraction"
+      ],
+      "title": "SoK: How Robust is Image Classification Deep Neural Network Watermarking?",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2108.04974v1"
+    },
+    {
+      "artifacts": 0,
+      "date": "2024-11-24",
+      "id": "luo-2024-jailbreakv",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Conference on Language Modeling (COLM) 2024, per the paper's own header",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": "JailBreakV-28K",
+      "status": "summarized",
+      "tags": [
+        "evidence",
+        "jailbreak",
+        "ai-benchmark"
+      ],
+      "title": "JailBreakV: A Benchmark for Assessing the Robustness of MultiModal Large Language Models against Jailbreak Attacks",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2404.03027v4"
+    },
+    {
+      "artifacts": 0,
       "date": null,
       "id": "lvfs",
       "maturity": null,
@@ -4793,6 +6118,26 @@
     },
     {
       "artifacts": 0,
+      "date": "2026-04-22",
+      "id": "mandl-2026-ground-truth-vuln-detection",
+      "maturity": null,
+      "profile": null,
+      "publisher": "arXiv",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": "Ground-truth evaluation of vulnerability detection",
+      "status": "stub",
+      "tags": [
+        "scanner",
+        "evidence"
+      ],
+      "title": "A Ground-Truth-Based Evaluation of Vulnerability Detection Across Multiple Ecosystems",
+      "topic": "product-composition",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2604.21111v1"
+    },
+    {
+      "artifacts": 0,
       "date": "2026-08-05",
       "id": "maven-version-order",
       "maturity": null,
@@ -4810,6 +6155,28 @@
       "topic": "product-composition",
       "type": "spec",
       "url": "https://raw.githubusercontent.com/apache/maven-site/15c4fdd29825c316056b20b07d9da4653ffe8e3b/content/markdown/pom.md"
+    },
+    {
+      "artifacts": 0,
+      "date": "2024-04",
+      "id": "mbaka-tuma-2024-stride-replication",
+      "maturity": null,
+      "profile": null,
+      "publisher": "World Scientific",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "summarized",
+      "tags": [
+        "threat-modeling",
+        "stride",
+        "empirical",
+        "replication"
+      ],
+      "title": "On the Measures of Success in Replication of Controlled Experiments with STRIDE",
+      "topic": null,
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2208.01524"
     },
     {
       "artifacts": 0,
@@ -4836,11 +6203,95 @@
     },
     {
       "artifacts": 0,
+      "date": "2025-11-25",
+      "id": "mcp-spec-security-best-practices",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Model Context Protocol (modelcontextprotocol.io)",
+      "reviewed_artifacts": 0,
+      "shelf": "community",
+      "short_title": "MCP Security Best Practices",
+      "status": "summarized",
+      "tags": [
+        "community",
+        "normative",
+        "mcp",
+        "agent-security",
+        "authorization"
+      ],
+      "title": "Model Context Protocol — Security Best Practices",
+      "topic": "ai-threat-model-agentic-mcp",
+      "type": "spec",
+      "url": "https://modelcontextprotocol.io/docs/2025-11-25/tutorials/security/security_best_practices"
+    },
+    {
+      "artifacts": 0,
+      "date": "2026-09-12",
+      "id": "mecca-2026-skillsecurer",
+      "maturity": null,
+      "profile": null,
+      "publisher": "arXiv",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": "SkillSecurer",
+      "status": "summarized",
+      "tags": [
+        "academic",
+        "evidence",
+        "prompt-injection",
+        "agent-security",
+        "ai-supply-chain"
+      ],
+      "title": "SkillSecurer: Detecting and Patching Prompt-Injection Vulnerabilities in AI Agent Skills",
+      "topic": "ai-threat-model-agentic-mcp",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2609.14079"
+    },
+    {
+      "artifacts": 0,
+      "date": "2024-02-14",
+      "id": "meeus-2024-copyright-traps",
+      "maturity": null,
+      "profile": null,
+      "publisher": "arXiv preprint",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "Copyright Traps for Large Language Models",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://arxiv.org/abs/2402.09363"
+    },
+    {
+      "artifacts": 0,
+      "date": "2025-04-09",
+      "id": "meeus-2024-sok-mia-llms",
+      "maturity": null,
+      "profile": null,
+      "publisher": "IEEE, 2025 IEEE Conference on Secure and Trustworthy Machine Learning (SaTML), pp. 385-401",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": "SoK: MIAs on LLMs",
+      "status": "summarized",
+      "tags": [
+        "evidence",
+        "membership-inference",
+        "method"
+      ],
+      "title": "SoK: Membership Inference Attacks on LLMs are Rushing Nowhere (and How to Fix It)",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2406.17975v3"
+    },
+    {
+      "artifacts": 0,
       "date": null,
       "id": "memgraph-lab",
       "maturity": null,
       "profile": null,
-      "publisher": null,
+      "publisher": "Memgraph Ltd.",
       "reviewed_artifacts": 0,
       "shelf": "vendor",
       "short_title": null,
@@ -4905,6 +6356,47 @@
       "topic": "signature-foundations",
       "type": "paper",
       "url": "https://doi.org/10.1007/0-387-34805-0_21"
+    },
+    {
+      "artifacts": 0,
+      "date": "2016-03-25",
+      "id": "microsoft-2016-learning-from-tay",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Microsoft (Official Microsoft Blog)",
+      "reviewed_artifacts": 0,
+      "shelf": "vendor",
+      "short_title": "Learning from Tay",
+      "status": "summarized",
+      "tags": [
+        "ai-incident",
+        "evidence"
+      ],
+      "title": "Learning from Tay's introduction",
+      "topic": "ai-threat-model-supply-chain-infra",
+      "type": "article",
+      "url": "https://blogs.microsoft.com/blog/2016/03/25/learning-tays-introduction/"
+    },
+    {
+      "artifacts": 0,
+      "date": "2020-06-10",
+      "id": "microsoft-2020-kubeflow-cryptomining",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Microsoft (Microsoft Security Blog; Azure Security Center, now Microsoft Defender for Cloud)",
+      "reviewed_artifacts": 0,
+      "shelf": "vendor",
+      "short_title": "Kubeflow cryptomining campaign",
+      "status": "summarized",
+      "tags": [
+        "ai-infrastructure",
+        "ai-incident",
+        "evidence"
+      ],
+      "title": "Misconfigured Kubeflow workloads are a security risk",
+      "topic": "ai-threat-model-supply-chain-infra",
+      "type": "article",
+      "url": "https://www.microsoft.com/en-us/security/blog/2020/06/10/misconfigured-kubeflow-workloads-are-a-security-risk/"
     },
     {
       "artifacts": 7,
@@ -5041,11 +6533,31 @@
     },
     {
       "artifacts": 0,
-      "date": null,
+      "date": "2026-09-15",
+      "id": "mitre-atlas",
+      "maturity": "best-practice",
+      "profile": null,
+      "publisher": "The MITRE Corporation",
+      "reviewed_artifacts": 0,
+      "shelf": "other",
+      "short_title": "MITRE ATLAS",
+      "status": "stub",
+      "tags": [
+        "ai-security",
+        "taxonomy"
+      ],
+      "title": "MITRE ATLAS (Adversarial Threat Landscape for AI Systems) data",
+      "topic": "sagai",
+      "type": "dataset",
+      "url": "https://raw.githubusercontent.com/mitre-atlas/atlas-data/v2026.09/dist/v6/ATLAS-2026.09.yaml"
+    },
+    {
+      "artifacts": 0,
+      "date": "2026-10-13",
       "id": "mitre-attack",
       "maturity": "best-practice",
       "profile": null,
-      "publisher": null,
+      "publisher": "The MITRE Corporation",
       "reviewed_artifacts": 0,
       "shelf": "other",
       "short_title": null,
@@ -5059,7 +6571,7 @@
       "title": "MITRE ATT&CK (knowledge base + STIX 2.1 data)",
       "topic": null,
       "type": "dataset",
-      "url": "https://attack.mitre.org/"
+      "url": "https://raw.githubusercontent.com/mitre-attack/attack-stix-data/master/enterprise-attack/enterprise-attack-20.0.json"
     },
     {
       "artifacts": 0,
@@ -5082,6 +6594,50 @@
       "topic": null,
       "type": "paper",
       "url": "https://attack.mitre.org/docs/ATTACK_Design_and_Philosophy_March_2020.pdf"
+    },
+    {
+      "artifacts": 8,
+      "date": "2022-08-02",
+      "id": "mitre-attack-flow",
+      "maturity": null,
+      "profile": "full",
+      "publisher": "MITRE Center for Threat-Informed Defense",
+      "reviewed_artifacts": 0,
+      "shelf": "other",
+      "short_title": "Attack Flow",
+      "status": "distilled",
+      "tags": [
+        "threat-modeling",
+        "mitre",
+        "attack",
+        "attack-path",
+        "stix",
+        "method"
+      ],
+      "title": "Attack Flow — Language (STIX 2.1 extension 2.0.0)",
+      "topic": "threat-model-frameworks",
+      "type": "spec",
+      "url": "https://raw.githubusercontent.com/center-for-threat-informed-defense/attack-flow/v4.1.0/docs/language.rst"
+    },
+    {
+      "artifacts": 0,
+      "date": "2023-03-24",
+      "id": "mlflow-2023-path-traversal-cves",
+      "maturity": null,
+      "profile": null,
+      "publisher": "CVE Program (CVE List V5), mirrored and scored by NIST's National Vulnerability Database",
+      "reviewed_artifacts": 0,
+      "shelf": "nist",
+      "short_title": "MLflow CVE-2023-1177 and CVE-2023-6831",
+      "status": "summarized",
+      "tags": [
+        "ai-infrastructure",
+        "evidence"
+      ],
+      "title": "MLflow path traversal: CVE-2023-1177 and CVE-2023-6831",
+      "topic": "ai-threat-model-supply-chain-infra",
+      "type": "dataset",
+      "url": "https://raw.githubusercontent.com/CVEProject/cvelistV5/525d93ce211bce7b0f832d198dfad7a9aa4471c1/cves/2023/1xxx/CVE-2023-1177.json"
     },
     {
       "artifacts": 0,
@@ -5153,11 +6709,11 @@
     },
     {
       "artifacts": 0,
-      "date": null,
+      "date": "2005-08",
       "id": "mulval",
       "maturity": "white-paper",
       "profile": null,
-      "publisher": null,
+      "publisher": "USENIX Security Symposium 2005",
       "reviewed_artifacts": 0,
       "shelf": "academic",
       "short_title": null,
@@ -5175,11 +6731,31 @@
     },
     {
       "artifacts": 0,
+      "date": "2023-11-27",
+      "id": "ncsc-secure-ai-guidelines-2023",
+      "maturity": "best-practice",
+      "profile": null,
+      "publisher": "UK National Cyber Security Centre (NCSC), with CISA and international partner agencies",
+      "reviewed_artifacts": 0,
+      "shelf": "regulator",
+      "short_title": "NCSC/CISA secure AI guidelines",
+      "status": "stub",
+      "tags": [
+        "ai-security",
+        "regulation"
+      ],
+      "title": "Guidelines for secure AI system development",
+      "topic": "sagai",
+      "type": "spec",
+      "url": "https://www.ncsc.gov.uk/files/Guidelines-for-secure-AI-system-development.pdf"
+    },
+    {
+      "artifacts": 0,
       "date": null,
       "id": "neo4j-bloom",
       "maturity": null,
       "profile": null,
-      "publisher": null,
+      "publisher": "Neo4j, Inc.",
       "reviewed_artifacts": 0,
       "shelf": "vendor",
       "short_title": null,
@@ -5193,6 +6769,26 @@
       "topic": "rpt-0006-knowledge-graph-visualization",
       "type": "web",
       "url": "https://neo4j.com/docs/bloom-user-guide/current/"
+    },
+    {
+      "artifacts": 0,
+      "date": "2025-03",
+      "id": "nist-ai-100-2-e2025",
+      "maturity": null,
+      "profile": null,
+      "publisher": "National Institute of Standards and Technology (NIST)",
+      "reviewed_artifacts": 0,
+      "shelf": "nist",
+      "short_title": "NIST AI 100-2 E2025",
+      "status": "stub",
+      "tags": [
+        "ai-security",
+        "taxonomy"
+      ],
+      "title": "Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations",
+      "topic": "sagai",
+      "type": "spec",
+      "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-2e2025.pdf"
     },
     {
       "artifacts": 1,
@@ -5380,20 +6976,20 @@
       "url": "https://csrc.nist.gov/pubs/sp/800/160/"
     },
     {
-      "artifacts": 0,
+      "artifacts": 7,
       "date": "2011-08",
       "id": "nistir-7695",
       "maturity": null,
-      "profile": null,
+      "profile": "full",
       "publisher": "National Institute of Standards and Technology (NIST), Computer Security Division",
       "reviewed_artifacts": 0,
       "shelf": "nist",
       "short_title": "NIST IR 7695 (CPE Naming 2.3)",
-      "status": "stub",
+      "status": "distilled",
       "tags": [
         "naming",
         "cpe",
-        "prior-art"
+        "normative"
       ],
       "title": "Common Platform Enumeration: Naming Specification Version 2.3",
       "topic": "product-composition",
@@ -5684,6 +7280,49 @@
     },
     {
       "artifacts": 0,
+      "date": null,
+      "id": "nvd-cve-api-2-0",
+      "maturity": null,
+      "profile": null,
+      "publisher": "National Institute of Standards and Technology (NIST), National Vulnerability Database",
+      "reviewed_artifacts": 0,
+      "shelf": "nist",
+      "short_title": null,
+      "status": "stub",
+      "tags": [
+        "nvd",
+        "cve",
+        "vulnerability-data"
+      ],
+      "title": "NVD CVE API 2.0",
+      "topic": "schema-representations",
+      "type": "dataset",
+      "url": "https://services.nvd.nist.gov/rest/json/cves/2.0"
+    },
+    {
+      "artifacts": 0,
+      "date": null,
+      "id": "oasis-stix-visualizer",
+      "maturity": null,
+      "profile": null,
+      "publisher": "OASIS Open / Cyber Threat Intelligence Technical Committee",
+      "reviewed_artifacts": 0,
+      "shelf": "oasis",
+      "short_title": null,
+      "status": "summarized",
+      "tags": [
+        "stix",
+        "cti",
+        "graph-visualization",
+        "prior-art"
+      ],
+      "title": "OASIS STIX Visualizer",
+      "topic": "rpt-0006-knowledge-graph-visualization",
+      "type": "repo",
+      "url": "https://github.com/oasis-open/cti-stix-visualization"
+    },
+    {
+      "artifacts": 0,
       "date": "2025-01-29",
       "id": "oci-distribution-spec-1-1-1",
       "maturity": null,
@@ -5744,6 +7383,28 @@
       "topic": "product-composition",
       "type": "paper",
       "url": "https://fdn.montana.edu/cyber/products/Impacts%20of%20Software%20Bill%20of%20Materials%20-%20SBOM%20-%20Generation%20on%20Vulnerability%20Detection%20Final%20Version.pdf"
+    },
+    {
+      "artifacts": 0,
+      "date": null,
+      "id": "ogma-accessibility-example",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Linkurious SAS",
+      "reviewed_artifacts": 0,
+      "shelf": "vendor",
+      "short_title": null,
+      "status": "summarized",
+      "tags": [
+        "graph-visualization",
+        "accessibility",
+        "commercial",
+        "prior-art"
+      ],
+      "title": "Ogma accessibility example",
+      "topic": "rpt-0006-knowledge-graph-visualization",
+      "type": "web",
+      "url": "https://doc.linkurious.com/ogma/latest/examples/accessibility.html"
     },
     {
       "artifacts": 0,
@@ -5886,26 +7547,48 @@
       "url": "https://raw.githubusercontent.com/omnibor/spec/03cd41e6faffcdb7b54dc99e2ba1ec54456b2866/spec/SPEC.md"
     },
     {
-      "artifacts": 0,
-      "date": null,
+      "artifacts": 8,
+      "date": "2025-12-11",
       "id": "open-threat-model",
-      "maturity": "specification",
-      "profile": null,
-      "publisher": null,
-      "reviewed_artifacts": 0,
+      "maturity": "draft",
+      "profile": "full",
+      "publisher": "IriusRisk",
+      "reviewed_artifacts": 8,
       "shelf": "vendor",
       "short_title": null,
-      "status": "summarized",
+      "status": "distilled",
       "tags": [
         "threat-modeling",
         "interchange",
         "json-schema",
-        "otm"
+        "otm",
+        "yaml"
       ],
       "title": "Open Threat Model specification and JSON Schema",
-      "topic": "rpt-0003-threat-modeling-products",
+      "topic": "schema-representations",
       "type": "repo",
-      "url": "https://github.com/iriusrisk/OpenThreatModel"
+      "url": "https://raw.githubusercontent.com/iriusrisk/OpenThreatModel/c88c5a7b4115f0f025e28d5682a2b0d790b389e4/otm_schema.json"
+    },
+    {
+      "artifacts": 0,
+      "date": "2023-03-24",
+      "id": "openai-2023-chatgpt-redis-outage",
+      "maturity": null,
+      "profile": null,
+      "publisher": "OpenAI (OpenAI blog)",
+      "reviewed_artifacts": 0,
+      "shelf": "vendor",
+      "short_title": "ChatGPT redis-py data exposure",
+      "status": "summarized",
+      "tags": [
+        "ai-incident",
+        "ai-supply-chain",
+        "evidence"
+      ],
+      "title": "March 20 ChatGPT outage: Here's what happened",
+      "topic": "ai-threat-model-supply-chain-infra",
+      "type": "article",
+      "url": "https://web.archive.org/web/20230326020730id_/https://openai.com/blog/march-20-chatgpt-outage"
     },
     {
       "artifacts": 3,
@@ -5999,6 +7682,45 @@
     },
     {
       "artifacts": 0,
+      "date": null,
+      "id": "openvex-0-2-0",
+      "maturity": null,
+      "profile": null,
+      "publisher": "OpenVEX project",
+      "reviewed_artifacts": 0,
+      "shelf": "community",
+      "short_title": null,
+      "status": "stub",
+      "tags": [
+        "vex"
+      ],
+      "title": "OpenVEX Specification v0.2.0",
+      "topic": "schema-representations",
+      "type": "spec",
+      "url": "https://raw.githubusercontent.com/openvex/spec/v0.2.0/OPENVEX-SPEC.md"
+    },
+    {
+      "artifacts": 0,
+      "date": "2026-08-07",
+      "id": "oscal-1-2-3",
+      "maturity": null,
+      "profile": null,
+      "publisher": "National Institute of Standards and Technology (NIST)",
+      "reviewed_artifacts": 0,
+      "shelf": "nist",
+      "short_title": null,
+      "status": "stub",
+      "tags": [
+        "oscal",
+        "controls"
+      ],
+      "title": "Open Security Controls Assessment Language (OSCAL) 1.2.3",
+      "topic": "schema-representations",
+      "type": "spec",
+      "url": "https://github.com/usnistgov/OSCAL/releases/tag/v1.2.3"
+    },
+    {
+      "artifacts": 0,
       "date": "2024-02-21",
       "id": "osfw-firmware-embedded-sbom-0-10",
       "maturity": "draft",
@@ -6041,26 +7763,51 @@
       "url": "https://storage.googleapis.com/osv-vulnerabilities/Alpine/all.zip"
     },
     {
-      "artifacts": 0,
-      "date": null,
+      "artifacts": 8,
+      "date": "2026-10-13",
       "id": "osv-schema",
       "maturity": "best-practice",
-      "profile": null,
-      "publisher": null,
+      "profile": "full",
+      "publisher": "OpenSSF (Open Source Security Foundation)",
       "reviewed_artifacts": 0,
       "shelf": "openssf",
-      "short_title": null,
-      "status": "summarized",
+      "short_title": "OSV Schema 1.9.2",
+      "status": "distilled",
       "tags": [
         "osv",
         "vulnerability",
         "openssf",
-        "package"
+        "package",
+        "supply-chain",
+        "normative"
       ],
       "title": "OSV Schema (OpenSSF)",
-      "topic": null,
+      "topic": "product-composition",
       "type": "spec",
-      "url": "https://ossf.github.io/osv-schema/"
+      "url": "https://raw.githubusercontent.com/ossf/osv-schema/v1.9.2/docs/schema.md"
+    },
+    {
+      "artifacts": 0,
+      "date": "2025-12",
+      "id": "owasp-agentic-threats-mitigations-v1-1",
+      "maturity": null,
+      "profile": null,
+      "publisher": "OWASP GenAI Security Project",
+      "reviewed_artifacts": 0,
+      "shelf": "community",
+      "short_title": "OWASP ASI Threats and Mitigations v1.1",
+      "status": "summarized",
+      "tags": [
+        "community",
+        "ai-threat-model",
+        "agent-security",
+        "ai-weakness-catalog",
+        "mcp"
+      ],
+      "title": "Agentic AI - Threats and Mitigations",
+      "topic": "ai-threat-model-agentic-mcp",
+      "type": "paper",
+      "url": "https://genai.owasp.org/download/45674/"
     },
     {
       "artifacts": 10,
@@ -6130,6 +7877,29 @@
       "topic": "sdl",
       "type": "spec",
       "url": "https://github.com/devsecopsmaturitymodel/DevSecOps-MaturityModel-data/blob/v5.1.0/generated/model.yaml"
+    },
+    {
+      "artifacts": 0,
+      "date": "2025",
+      "id": "owasp-mcp-top10-2025",
+      "maturity": null,
+      "profile": null,
+      "publisher": "OWASP Foundation",
+      "reviewed_artifacts": 0,
+      "shelf": "community",
+      "short_title": "OWASP MCP Top 10 (2025, beta)",
+      "status": "summarized",
+      "tags": [
+        "community",
+        "ai-weakness-catalog",
+        "mcp",
+        "agent-security",
+        "ai-supply-chain"
+      ],
+      "title": "OWASP MCP Top 10",
+      "topic": "ai-threat-model-agentic-mcp",
+      "type": "web",
+      "url": "https://owasp.org/www-project-mcp-top-10/"
     },
     {
       "artifacts": 0,
@@ -6332,6 +8102,40 @@
     },
     {
       "artifacts": 0,
+      "date": "2021-09",
+      "id": "pajola-2021-fall-of-giants",
+      "maturity": null,
+      "profile": null,
+      "publisher": "IEEE, 2021 IEEE European Symposium on Security and Privacy (EuroS&P), pp. 198-211",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "Fall of Giants: How popular text-based MLaaS fall against a simple evasion attack",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://doi.org/10.1109/EuroSP51992.2021.00023"
+    },
+    {
+      "artifacts": 0,
+      "date": "2016-05",
+      "id": "papernot-2016-defensive-distillation",
+      "maturity": null,
+      "profile": null,
+      "publisher": "IEEE, 2016 IEEE Symposium on Security and Privacy (SP), pp. 582-597",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "Distillation as a Defense to Adversarial Perturbations Against Deep Neural Networks",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://doi.org/10.1109/SP.2016.41"
+    },
+    {
+      "artifacts": 0,
       "date": "2015-05",
       "id": "pasta-risk-centric-threat-modeling",
       "maturity": null,
@@ -6374,6 +8178,27 @@
       "topic": "sdl",
       "type": "spec",
       "url": "https://blog.pcisecuritystandards.org/pci-ssc-releases-version-2.0-of-the-secure-software-lifecycle-standard"
+    },
+    {
+      "artifacts": 0,
+      "date": "2026-05-26",
+      "id": "pentest-lessons-agent-systems",
+      "maturity": null,
+      "profile": null,
+      "publisher": null,
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [
+        "agent-security",
+        "prompt-injection",
+        "ai-security"
+      ],
+      "title": "Lessons from Penetration Tests on Large-Scale Agent Systems",
+      "topic": "sagai",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2605.27042v1"
     },
     {
       "artifacts": 0,
@@ -6442,6 +8267,49 @@
       "topic": "predicate-rendering",
       "type": "spec",
       "url": "https://www.w3.org/TR/1998/REC-DSig-label-19980527/"
+    },
+    {
+      "artifacts": 0,
+      "date": "2024-10-11",
+      "id": "pillar-2024",
+      "maturity": null,
+      "profile": null,
+      "publisher": "arXiv preprint (FBK Center for Cybersecurity and University of Trento)",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": "PILLAR",
+      "status": "summarized",
+      "tags": [
+        "prior-art",
+        "method"
+      ],
+      "title": "PILLAR: an AI-Powered Privacy Threat Modeling Tool",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2410.08755v1"
+    },
+    {
+      "artifacts": 0,
+      "date": "2025-03-18",
+      "id": "pillar-2025-rules-file-backdoor",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Pillar Security",
+      "reviewed_artifacts": 0,
+      "shelf": "vendor",
+      "short_title": "Rules File Backdoor",
+      "status": "summarized",
+      "tags": [
+        "vendor",
+        "evidence",
+        "prompt-injection",
+        "ai-supply-chain",
+        "ai-incident"
+      ],
+      "title": "New Vulnerability in GitHub Copilot and Cursor: How Hackers Can Weaponize Code Agents",
+      "topic": "ai-threat-model-agentic-mcp",
+      "type": "article",
+      "url": "https://www.pillar.security/blog/new-vulnerability-in-github-copilot-and-cursor-how-hackers-can-weaponize-code-agents"
     },
     {
       "artifacts": 0,
@@ -6615,6 +8483,27 @@
     },
     {
       "artifacts": 0,
+      "date": "2022-12-31",
+      "id": "pytorch-2022-torchtriton-dependency-confusion",
+      "maturity": null,
+      "profile": null,
+      "publisher": "PyTorch Foundation (PyTorch blog)",
+      "reviewed_artifacts": 0,
+      "shelf": "community",
+      "short_title": "PyTorch-nightly torchtriton compromise",
+      "status": "summarized",
+      "tags": [
+        "ai-supply-chain",
+        "ai-incident",
+        "evidence"
+      ],
+      "title": "Compromised PyTorch-nightly dependency chain between December 25th and December 30th, 2022.",
+      "topic": "ai-threat-model-supply-chain-infra",
+      "type": "article",
+      "url": "https://pytorch.org/blog/compromised-nightly-dependency/"
+    },
+    {
+      "artifacts": 0,
       "date": null,
       "id": "rabin-1979-tr212",
       "maturity": null,
@@ -6651,6 +8540,28 @@
       "topic": null,
       "type": "spec",
       "url": "https://www.w3.org/TR/rdf11-concepts/"
+    },
+    {
+      "artifacts": 0,
+      "date": null,
+      "id": "react-flow",
+      "maturity": null,
+      "profile": null,
+      "publisher": "xyflow",
+      "reviewed_artifacts": 0,
+      "shelf": "community",
+      "short_title": null,
+      "status": "summarized",
+      "tags": [
+        "graph-visualization",
+        "node-editor",
+        "accessibility",
+        "prior-art"
+      ],
+      "title": "React Flow",
+      "topic": "rpt-0006-knowledge-graph-visualization",
+      "type": "repo",
+      "url": "https://github.com/xyflow/xyflow"
     },
     {
       "artifacts": 0,
@@ -6714,6 +8625,26 @@
       "topic": "product-composition",
       "type": "web",
       "url": "https://reproducible-builds.org/docs/definition/"
+    },
+    {
+      "artifacts": 0,
+      "date": "2016-07",
+      "id": "reqif-1-2",
+      "maturity": "standard",
+      "profile": null,
+      "publisher": "Object Management Group (OMG)",
+      "reviewed_artifacts": 0,
+      "shelf": "other",
+      "short_title": null,
+      "status": "stub",
+      "tags": [
+        "reqif",
+        "requirements"
+      ],
+      "title": "Requirements Interchange Format (ReqIF) Version 1.2",
+      "topic": "schema-representations",
+      "type": "spec",
+      "url": "https://www.omg.org/spec/ReqIF/1.2/PDF"
     },
     {
       "artifacts": 0,
@@ -7376,6 +9307,25 @@
       "topic": "algorithm-bindings",
       "type": "rfc",
       "url": "https://www.rfc-editor.org/rfc/rfc8439.txt"
+    },
+    {
+      "artifacts": 0,
+      "date": "2019-03",
+      "id": "rfc-8520",
+      "maturity": "standard",
+      "profile": null,
+      "publisher": "IETF",
+      "reviewed_artifacts": 0,
+      "shelf": "ietf",
+      "short_title": "RFC 8520",
+      "status": "stub",
+      "tags": [
+        "background"
+      ],
+      "title": "Manufacturer Usage Description Specification",
+      "topic": "product-composition",
+      "type": "rfc",
+      "url": "https://www.rfc-editor.org/rfc/rfc8520.txt"
     },
     {
       "artifacts": 0,
@@ -8106,6 +10056,27 @@
     },
     {
       "artifacts": 0,
+      "date": "2023-10",
+      "id": "rfc-9472",
+      "maturity": "standard",
+      "profile": null,
+      "publisher": "IETF",
+      "reviewed_artifacts": 0,
+      "shelf": "ietf",
+      "short_title": "RFC 9472",
+      "status": "stub",
+      "tags": [
+        "sbom",
+        "supply-chain",
+        "prior-art"
+      ],
+      "title": "A YANG Data Model for Reporting Software Bills of Materials (SBOMs) and Vulnerability Information",
+      "topic": "product-composition",
+      "type": "rfc",
+      "url": "https://www.rfc-editor.org/rfc/rfc9472.txt"
+    },
+    {
+      "artifacts": 0,
       "date": "2024-03",
       "id": "rfc-9528",
       "maturity": "standard",
@@ -8610,6 +10581,45 @@
     },
     {
       "artifacts": 0,
+      "date": "2024-05-23",
+      "id": "rosati-2024-repnoise",
+      "maturity": null,
+      "profile": null,
+      "publisher": "arXiv preprint",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "Representation Noising: A Defence Mechanism Against Harmful Finetuning",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://arxiv.org/abs/2405.14577"
+    },
+    {
+      "artifacts": 0,
+      "date": "2021-03-13",
+      "id": "rosenberg-2021-adversarial-ml-cybersecurity-survey",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Authors at Ben-Gurion University of the Negev (arXiv) / ACM (Computing Surveys)",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "summarized",
+      "tags": [
+        "evasion",
+        "data-poisoning",
+        "ai-threat-model",
+        "prior-art"
+      ],
+      "title": "Adversarial Machine Learning Attacks and Defense Methods in the Cyber Security Domain",
+      "topic": "ai-threat-model-supply-chain-infra",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2007.02407v3"
+    },
+    {
+      "artifacts": 0,
       "date": "2025-12-19",
       "id": "rosso-2026-svs-test",
       "maturity": null,
@@ -8665,6 +10675,46 @@
       "topic": "signature-foundations",
       "type": "paper",
       "url": "https://doi.org/10.1145/359340.359342"
+    },
+    {
+      "artifacts": 0,
+      "date": "2024-06-26",
+      "id": "russinovich-2024-skeleton-key",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Microsoft, Microsoft Security Blog",
+      "reviewed_artifacts": 0,
+      "shelf": "vendor",
+      "short_title": "Skeleton Key",
+      "status": "summarized",
+      "tags": [
+        "evidence",
+        "jailbreak"
+      ],
+      "title": "Mitigating Skeleton Key, a new type of generative AI jailbreak technique",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "article",
+      "url": "https://www.microsoft.com/en-us/security/blog/2024/06/26/mitigating-skeleton-key-a-new-type-of-generative-ai-jailbreak-technique/"
+    },
+    {
+      "artifacts": 0,
+      "date": "2023-10",
+      "id": "sacm-2-3",
+      "maturity": "standard",
+      "profile": null,
+      "publisher": "Object Management Group (OMG)",
+      "reviewed_artifacts": 0,
+      "shelf": "other",
+      "short_title": null,
+      "status": "stub",
+      "tags": [
+        "sacm",
+        "assurance-case"
+      ],
+      "title": "Structured Assurance Case Metamodel (SACM) Version 2.3",
+      "topic": "schema-representations",
+      "type": "spec",
+      "url": "https://www.omg.org/spec/SACM/2.3/PDF"
     },
     {
       "artifacts": 0,
@@ -8749,6 +10799,28 @@
     },
     {
       "artifacts": 0,
+      "date": "2015-06",
+      "id": "scandariato-2015-stride-descriptive-study",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Springer",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "summarized",
+      "tags": [
+        "threat-modeling",
+        "stride",
+        "empirical",
+        "method"
+      ],
+      "title": "A descriptive study of Microsoft's threat modeling technique",
+      "topic": null,
+      "type": "paper",
+      "url": "https://lirias.kuleuven.be/retrieve/245643"
+    },
+    {
+      "artifacts": 0,
       "date": "1999-12",
       "id": "schneier-attack-trees-1999",
       "maturity": null,
@@ -8801,6 +10873,29 @@
       "topic": "signature-foundations",
       "type": "paper",
       "url": "https://doi.org/10.1007/BF00196725"
+    },
+    {
+      "artifacts": 0,
+      "date": "2024-03-03",
+      "id": "schulhoff-2023-hackaprompt",
+      "maturity": null,
+      "profile": null,
+      "publisher": "arXiv",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": "HackAPrompt",
+      "status": "summarized",
+      "tags": [
+        "academic",
+        "evidence",
+        "prompt-injection",
+        "jailbreak",
+        "ai-benchmark"
+      ],
+      "title": "Ignore This Title and HackAPrompt: Exposing Systemic Vulnerabilities of LLMs through a Global Scale Prompt Hacking Competition",
+      "topic": "ai-threat-model-agentic-mcp",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2311.16119"
     },
     {
       "artifacts": 0,
@@ -8971,6 +11066,26 @@
     },
     {
       "artifacts": 0,
+      "date": "2024-05-21",
+      "id": "securing-future-genai-policy-technology",
+      "maturity": null,
+      "profile": null,
+      "publisher": null,
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [
+        "ai-security",
+        "regulation"
+      ],
+      "title": "Securing the Future of GenAI: Policy and Technology",
+      "topic": "sagai",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2407.12999v1"
+    },
+    {
+      "artifacts": 0,
       "date": null,
       "id": "security-compass-platform",
       "maturity": null,
@@ -9056,6 +11171,26 @@
     },
     {
       "artifacts": 0,
+      "date": "2026-01-29",
+      "id": "sentinelone-2026-silent-brothers-ollama",
+      "maturity": null,
+      "profile": null,
+      "publisher": "SentinelOne (SentinelLABS), with Censys",
+      "reviewed_artifacts": 0,
+      "shelf": "vendor",
+      "short_title": "Silent Brothers (exposed Ollama hosts)",
+      "status": "summarized",
+      "tags": [
+        "ai-infrastructure",
+        "evidence"
+      ],
+      "title": "Silent Brothers | Ollama Hosts Form Anonymous AI Network Beyond Platform Guardrails",
+      "topic": "ai-threat-model-supply-chain-infra",
+      "type": "article",
+      "url": "https://web.archive.org/web/20260302174036id_/https://www.sentinelone.com/labs/silent-brothers-ollama-hosts-form-anonymous-ai-network-beyond-platform-guardrails/"
+    },
+    {
+      "artifacts": 0,
       "date": null,
       "id": "sev-snp-primer-2026",
       "maturity": null,
@@ -9095,6 +11230,65 @@
     },
     {
       "artifacts": 0,
+      "date": "2022",
+      "id": "shan-2022-poison-forensics",
+      "maturity": null,
+      "profile": null,
+      "publisher": "USENIX Association, 31st USENIX Security Symposium (USENIX Security 22), pp. 3575-3592 (proceedings ISBN 978-1-939133-31-1)",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "Poison Forensics: Traceback of Data Poisoning Attacks in Neural Networks",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://www.usenix.org/system/files/sec22-shan.pdf"
+    },
+    {
+      "artifacts": 0,
+      "date": "2016-10-24",
+      "id": "sharif-2016-accessorize-to-a-crime",
+      "maturity": null,
+      "profile": null,
+      "publisher": "ACM, Proceedings of the 2016 ACM SIGSAC Conference on Computer and Communications Security (CCS '16), pp. 1528-1540",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": "Accessorize to a Crime",
+      "status": "summarized",
+      "tags": [
+        "evidence",
+        "evasion"
+      ],
+      "title": "Accessorize to a Crime: Real and Stealthy Attacks on State-of-the-Art Face Recognition",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://users.ece.cmu.edu/~lbauer/papers/2016/ccs2016-face-recognition.pdf"
+    },
+    {
+      "artifacts": 0,
+      "date": "2023-12",
+      "id": "shavit-2023-openai-governing-agentic",
+      "maturity": null,
+      "profile": null,
+      "publisher": "OpenAI",
+      "reviewed_artifacts": 0,
+      "shelf": "vendor",
+      "short_title": null,
+      "status": "summarized",
+      "tags": [
+        "vendor",
+        "method",
+        "agent-security",
+        "ai-governance"
+      ],
+      "title": "Practices for Governing Agentic AI Systems",
+      "topic": "ai-threat-model-agentic-mcp",
+      "type": "paper",
+      "url": "https://cdn.openai.com/papers/practices-for-governing-agentic-ai-systems.pdf"
+    },
+    {
+      "artifacts": 0,
       "date": null,
       "id": "shor-1994",
       "maturity": null,
@@ -9129,11 +11323,55 @@
     },
     {
       "artifacts": 0,
+      "date": "2008-11-03",
+      "id": "shostack-2008-experiences-threat-modeling-microsoft",
+      "maturity": null,
+      "profile": null,
+      "publisher": "CEUR-WS.org",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "summarized",
+      "tags": [
+        "threat-modeling",
+        "stride",
+        "microsoft",
+        "sdl",
+        "method"
+      ],
+      "title": "Experiences Threat Modeling at Microsoft",
+      "topic": null,
+      "type": "paper",
+      "url": "https://ceur-ws.org/Vol-413/paper12.pdf"
+    },
+    {
+      "artifacts": 0,
+      "date": "2014-02",
+      "id": "shostack-threat-modeling-2014",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Wiley",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [
+        "threat-modeling",
+        "stride",
+        "book"
+      ],
+      "title": "Threat Modeling: Designing for Security",
+      "topic": null,
+      "type": "book",
+      "url": "https://www.wiley.com/en-us/Threat+Modeling%3A+Designing+for+Security-p-9781118809990"
+    },
+    {
+      "artifacts": 0,
       "date": null,
       "id": "sigma-js",
       "maturity": null,
       "profile": null,
-      "publisher": null,
+      "publisher": "Sigma.js project",
       "reviewed_artifacts": 0,
       "shelf": "community",
       "short_title": null,
@@ -9736,11 +11974,48 @@
     },
     {
       "artifacts": 0,
+      "date": "2014-05",
+      "id": "srndic-2014-practical-evasion",
+      "maturity": null,
+      "profile": null,
+      "publisher": "IEEE, 2014 IEEE Symposium on Security and Privacy (SP), pp. 197-211",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "Practical Evasion of a Learning-Based Classifier: A Case Study",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://doi.org/10.1109/SP.2014.20"
+    },
+    {
+      "artifacts": 0,
       "date": null,
+      "id": "ssvc",
+      "maturity": null,
+      "profile": null,
+      "publisher": "CERT/CC, Software Engineering Institute, Carnegie Mellon University",
+      "reviewed_artifacts": 0,
+      "shelf": "other",
+      "short_title": null,
+      "status": "stub",
+      "tags": [
+        "ssvc",
+        "vulnerability-prioritization"
+      ],
+      "title": "Stakeholder-Specific Vulnerability Categorization (SSVC), SelectionList 2.0.0 schema",
+      "topic": "schema-representations",
+      "type": "spec",
+      "url": "https://raw.githubusercontent.com/CERTCC/SSVC/8b2f8269e09dcacecca2cb4a1114d261f6d8779c/data/schema/v2/SelectionList_2_0_0.schema.json"
+    },
+    {
+      "artifacts": 0,
+      "date": "2021-06-10",
       "id": "stix-2-1",
       "maturity": "standard",
       "profile": null,
-      "publisher": null,
+      "publisher": "OASIS Cyber Threat Intelligence (CTI) TC",
       "reviewed_artifacts": 0,
       "shelf": "oasis",
       "short_title": null,
@@ -9799,6 +12074,23 @@
       "topic": "rpt-0003-threat-modeling-products",
       "type": "repo",
       "url": "https://github.com/mrwadams/stride-gpt"
+    },
+    {
+      "artifacts": 0,
+      "date": "2022-01-28",
+      "id": "struppek-2022-plug-and-play-mi",
+      "maturity": null,
+      "profile": null,
+      "publisher": "arXiv preprint",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "Plug & Play Attacks: Towards Robust and Flexible Model Inversion Attacks",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://arxiv.org/abs/2201.12179"
     },
     {
       "artifacts": 0,
@@ -9862,6 +12154,26 @@
     },
     {
       "artifacts": 0,
+      "date": null,
+      "id": "sysml-2-0",
+      "maturity": "standard",
+      "profile": null,
+      "publisher": "Object Management Group (OMG)",
+      "reviewed_artifacts": 0,
+      "shelf": "other",
+      "short_title": null,
+      "status": "stub",
+      "tags": [
+        "sysml",
+        "requirements"
+      ],
+      "title": "OMG Systems Modeling Language (SysML) Version 2.0, Part 1: Language",
+      "topic": "schema-representations",
+      "type": "spec",
+      "url": "https://www.omg.org/spec/SysML/2.0/Language/PDF"
+    },
+    {
+      "artifacts": 0,
       "date": "2025-12-01",
       "id": "systems-security-agentic-computing",
       "maturity": null,
@@ -9881,6 +12193,46 @@
       "topic": "sagai",
       "type": "paper",
       "url": "https://arxiv.org/pdf/2512.01295v2"
+    },
+    {
+      "artifacts": 0,
+      "date": "2014-02-19",
+      "id": "szegedy-2013-intriguing-properties",
+      "maturity": null,
+      "profile": null,
+      "publisher": "ICLR 2014 (conference track; papers published on arXiv)",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": "Intriguing properties (adversarial examples)",
+      "status": "summarized",
+      "tags": [
+        "evidence",
+        "evasion"
+      ],
+      "title": "Intriguing properties of neural networks",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/1312.6199v4"
+    },
+    {
+      "artifacts": 0,
+      "date": "2021-06-10",
+      "id": "taxii-2-1",
+      "maturity": "standard",
+      "profile": null,
+      "publisher": "OASIS Open (CTI TC)",
+      "reviewed_artifacts": 0,
+      "shelf": "oasis",
+      "short_title": null,
+      "status": "stub",
+      "tags": [
+        "taxii",
+        "cti"
+      ],
+      "title": "TAXII Version 2.1 (OASIS Standard)",
+      "topic": "schema-representations",
+      "type": "spec",
+      "url": "https://docs.oasis-open.org/cti/taxii/v2.1/taxii-v2.1.html"
     },
     {
       "artifacts": 0,
@@ -10456,6 +12808,68 @@
     },
     {
       "artifacts": 0,
+      "date": "2023-11-02",
+      "id": "toyer-2023-tensor-trust",
+      "maturity": null,
+      "profile": null,
+      "publisher": "arXiv",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": "Tensor Trust",
+      "status": "summarized",
+      "tags": [
+        "academic",
+        "evidence",
+        "prompt-injection",
+        "ai-benchmark"
+      ],
+      "title": "Tensor Trust: Interpretable Prompt Injection Attacks from an Online Game",
+      "topic": "ai-threat-model-agentic-mcp",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2311.01011"
+    },
+    {
+      "artifacts": 0,
+      "date": "2025-07-28",
+      "id": "tracebit-2025-gemini-cli-hijack",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Tracebit",
+      "reviewed_artifacts": 0,
+      "shelf": "vendor",
+      "short_title": "Gemini CLI hijack",
+      "status": "summarized",
+      "tags": [
+        "vendor",
+        "evidence",
+        "prompt-injection",
+        "agent-security",
+        "ai-incident"
+      ],
+      "title": "Code Execution Through Deception: Gemini AI CLI Hijack",
+      "topic": "ai-threat-model-agentic-mcp",
+      "type": "article",
+      "url": "https://tracebit.com/blog/code-exec-deception-gemini-ai-cli-hijack"
+    },
+    {
+      "artifacts": 0,
+      "date": "2019-11-06",
+      "id": "tramer-2019-adversarial-ad-blocking",
+      "maturity": null,
+      "profile": null,
+      "publisher": "ACM, Proceedings of the 2019 ACM SIGSAC Conference on Computer and Communications Security, pp. 2005-2021",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "AdVersarial: Perceptual Ad Blocking meets Adversarial Machine Learning",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://doi.org/10.1145/3319535.3354222"
+    },
+    {
+      "artifacts": 0,
       "date": "2005-07-13",
       "id": "trike-v1-2005",
       "maturity": null,
@@ -10546,6 +12960,28 @@
     },
     {
       "artifacts": 0,
+      "date": "2018-10",
+      "id": "tuma-2018-threat-analysis-slr",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Elsevier",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "summarized",
+      "tags": [
+        "threat-modeling",
+        "survey",
+        "slr",
+        "method"
+      ],
+      "title": "Threat analysis of software systems: A systematic literature review",
+      "topic": null,
+      "type": "paper",
+      "url": "https://research.chalmers.se/publication/520907/file/520907_Fulltext.pdf"
+    },
+    {
+      "artifacts": 0,
       "date": null,
       "id": "tutamantic-services",
       "maturity": null,
@@ -10626,6 +13062,23 @@
     },
     {
       "artifacts": 0,
+      "date": "2017-06-06",
+      "id": "uchida-2017-embedding-watermarks",
+      "maturity": null,
+      "profile": null,
+      "publisher": "ACM, Proceedings of the 2017 ACM on International Conference on Multimedia Retrieval, pp. 269-277",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "Embedding Watermarks into Deep Neural Networks",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://doi.org/10.1145/3078971.3078974"
+    },
+    {
+      "artifacts": 0,
       "date": "2023-10-04",
       "id": "uefi-firmware-sbom-proposal-2023",
       "maturity": null,
@@ -10644,6 +13097,26 @@
       "topic": "product-composition",
       "type": "article",
       "url": "https://uefi.org/blog/firmware-sbom-proposal"
+    },
+    {
+      "artifacts": 0,
+      "date": "2025-01-31",
+      "id": "uk-ai-cyber-security-code-2025",
+      "maturity": null,
+      "profile": null,
+      "publisher": "UK Department for Science, Innovation and Technology (DSIT)",
+      "reviewed_artifacts": 0,
+      "shelf": "regulator",
+      "short_title": "UK AI Cyber Security Code of Practice",
+      "status": "stub",
+      "tags": [
+        "ai-security",
+        "regulation"
+      ],
+      "title": "Code of Practice for the Cyber Security of AI",
+      "topic": "sagai",
+      "type": "spec",
+      "url": "https://www.gov.uk/government/publications/ai-cyber-security-code-of-practice/code-of-practice-for-the-cyber-security-of-ai"
     },
     {
       "artifacts": 8,
@@ -10697,10 +13170,11 @@
       "reviewed_artifacts": 0,
       "shelf": "regulator",
       "short_title": "UN R155 (cyber security, CSMS)",
-      "status": "stub",
+      "status": "summarized",
       "tags": [
         "regulation",
         "automotive",
+        "normative",
         "evidence"
       ],
       "title": "UN Regulation No. 155: Uniform provisions concerning the approval of vehicles with regards to cyber security and cyber security management system",
@@ -10754,6 +13228,67 @@
     },
     {
       "artifacts": 0,
+      "date": "2024-10-23",
+      "id": "unit42-2024-deceptive-delight",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Palo Alto Networks Unit 42",
+      "reviewed_artifacts": 0,
+      "shelf": "vendor",
+      "short_title": "Deceptive Delight",
+      "status": "summarized",
+      "tags": [
+        "evidence",
+        "jailbreak"
+      ],
+      "title": "Deceptive Delight: Jailbreak LLMs Through Camouflage and Distraction",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "article",
+      "url": "https://unit42.paloaltonetworks.com/jailbreak-llms-through-camouflage-distraction/"
+    },
+    {
+      "artifacts": 0,
+      "date": "2025-05-30",
+      "id": "vero-2025-baxbench",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Authors at ETH Zurich, LogicStar.ai, UC Berkeley and INSAIT (arXiv) / PMLR (ICML 2025 proceedings)",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": "BaxBench",
+      "status": "summarized",
+      "tags": [
+        "ai-benchmark",
+        "evidence"
+      ],
+      "title": "BaxBench: Can LLMs Generate Correct and Secure Backends?",
+      "topic": "ai-threat-model-supply-chain-infra",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2502.11844v3"
+    },
+    {
+      "artifacts": 0,
+      "date": "2024-08",
+      "id": "verreydt-2024-threat-modeling-practice",
+      "maturity": null,
+      "profile": null,
+      "publisher": "USENIX Association",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "summarized",
+      "tags": [
+        "threat-modeling",
+        "empirical",
+        "practice"
+      ],
+      "title": "Threat modeling state of practice in Dutch organizations",
+      "topic": null,
+      "type": "paper",
+      "url": "https://www.usenix.org/system/files/soups2024-verreydt.pdf"
+    },
+    {
+      "artifacts": 0,
       "date": "2026-10-07",
       "id": "vers-spec",
       "maturity": "draft",
@@ -10789,6 +13324,27 @@
       "topic": "capability-delegation",
       "type": "paper",
       "url": "https://arxiv.org/abs/2609.06500"
+    },
+    {
+      "artifacts": 0,
+      "date": null,
+      "id": "vis-network",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Vis.js community",
+      "reviewed_artifacts": 0,
+      "shelf": "community",
+      "short_title": null,
+      "status": "summarized",
+      "tags": [
+        "graph-visualization",
+        "force-layout",
+        "prior-art"
+      ],
+      "title": "vis-network",
+      "topic": "rpt-0006-knowledge-graph-visualization",
+      "type": "repo",
+      "url": "https://github.com/visjs/vis-network"
     },
     {
       "artifacts": 0,
@@ -10981,6 +13537,28 @@
     },
     {
       "artifacts": 0,
+      "date": "2024-09-06",
+      "id": "wan-2024-cyberseceval3",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Meta",
+      "reviewed_artifacts": 0,
+      "shelf": "vendor",
+      "short_title": "CyberSecEval 3",
+      "status": "summarized",
+      "tags": [
+        "ai-enabled-offense",
+        "ai-benchmark",
+        "prompt-injection",
+        "evidence"
+      ],
+      "title": "CYBERSECEVAL 3: Advancing the Evaluation of Cybersecurity Risks and Capabilities in Large Language Models",
+      "topic": "ai-threat-model-supply-chain-infra",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2408.01605v2"
+    },
+    {
+      "artifacts": 0,
       "date": null,
       "id": "wang-2006-reducing-spki",
       "maturity": null,
@@ -10995,6 +13573,63 @@
       "topic": "uptake-failure",
       "type": "paper",
       "url": "https://doi.org/10.1007/11863908_11"
+    },
+    {
+      "artifacts": 0,
+      "date": "2026-09-29",
+      "id": "wikipedia-gpt-4o",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Wikipedia (Wikimedia Foundation), English Wikipedia",
+      "reviewed_artifacts": 0,
+      "shelf": "other",
+      "short_title": "Wikipedia: GPT-4o (rev. 1377388811)",
+      "status": "summarized",
+      "tags": [
+        "background"
+      ],
+      "title": "GPT-4o",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "web",
+      "url": "https://en.wikipedia.org/w/index.php?title=GPT-4o&oldid=1377388811&action=raw"
+    },
+    {
+      "artifacts": 0,
+      "date": "2023-10-03",
+      "id": "wired-2023-slovakia-election-deepfakes",
+      "maturity": null,
+      "profile": null,
+      "publisher": "WIRED",
+      "reviewed_artifacts": 0,
+      "shelf": "other",
+      "short_title": "Slovakia's election deepfakes",
+      "status": "summarized",
+      "tags": [
+        "ai-incident",
+        "ai-enabled-offense",
+        "evidence"
+      ],
+      "title": "Slovakia's Election Deepfakes Show AI Is a Danger to Democracy",
+      "topic": "ai-threat-model-supply-chain-infra",
+      "type": "article",
+      "url": "https://www.wired.com/story/slovakias-election-deepfakes-show-ai-is-a-danger-to-democracy/"
+    },
+    {
+      "artifacts": 0,
+      "date": "2004-07",
+      "id": "wittel-2004-attacking-statistical-spam-filters",
+      "maturity": null,
+      "profile": null,
+      "publisher": "First Conference on Email and Anti-Spam (CEAS 2004), Mountain View, California, 30-31 July 2004",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "On Attacking Statistical Spam Filters",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://web.archive.org/web/20041221141549/http://www.ceas.cc:80/papers-2004/170.pdf"
     },
     {
       "artifacts": 0,
@@ -11015,6 +13650,61 @@
       "topic": "library-construction",
       "type": "paper",
       "url": "https://doi.org/10.1145/2601248.2601268"
+    },
+    {
+      "artifacts": 0,
+      "date": "2019",
+      "id": "xiao-2019-image-scaling-camouflage",
+      "maturity": null,
+      "profile": null,
+      "publisher": "USENIX Association, 28th USENIX Security Symposium (USENIX Security 19), pp. 443-460 (proceedings ISBN 978-1-939133-06-9)",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "Seeing is Not Believing: Camouflage Attacks on Image Scaling Algorithms",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://www.usenix.org/system/files/sec19-xiao.pdf"
+    },
+    {
+      "artifacts": 0,
+      "date": "2019-07",
+      "id": "xiong-2019-threat-modeling-slr",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Elsevier",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [
+        "threat-modeling",
+        "survey",
+        "slr"
+      ],
+      "title": "Threat modeling – A systematic literature review",
+      "topic": null,
+      "type": "paper",
+      "url": "https://doi.org/10.1016/j.cose.2019.03.010"
+    },
+    {
+      "artifacts": 0,
+      "date": "2013-10",
+      "id": "yamada-2013-privacy-visor",
+      "maturity": null,
+      "profile": null,
+      "publisher": "IEEE, 2013 IEEE International Conference on Systems, Man, and Cybernetics (SMC 2013), pp. 1572-1577",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "Privacy Visor: Method Based on Light Absorbing and Reflecting Properties for Preventing Face Image Detection",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://doi.org/10.1109/SMC.2013.271"
     },
     {
       "artifacts": 0,
@@ -11043,7 +13733,7 @@
       "id": "yfiles-html",
       "maturity": null,
       "profile": null,
-      "publisher": null,
+      "publisher": "yWorks GmbH",
       "reviewed_artifacts": 0,
       "shelf": "vendor",
       "short_title": null,
@@ -11094,6 +13784,86 @@
     },
     {
       "artifacts": 0,
+      "date": "2025-04-12",
+      "id": "zhang-2024-cybench",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Authors at Stanford University (arXiv) / ICLR 2025 (OpenReview.net)",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": "Cybench",
+      "status": "summarized",
+      "tags": [
+        "ai-enabled-offense",
+        "ai-benchmark",
+        "evidence"
+      ],
+      "title": "Cybench: A Framework for Evaluating Cybersecurity Capabilities and Risks of Language Models",
+      "topic": "ai-threat-model-supply-chain-infra",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2408.08926v4"
+    },
+    {
+      "artifacts": 0,
+      "date": "2024-09-14",
+      "id": "zhao-2024-models-are-codes-malhug",
+      "maturity": null,
+      "profile": null,
+      "publisher": "Authors at Huazhong University of Science and Technology and MYbank, Ant Group (arXiv) / ACM (ASE '24 proceedings)",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": "Models Are Codes",
+      "status": "summarized",
+      "tags": [
+        "ai-supply-chain",
+        "supply-chain",
+        "evidence"
+      ],
+      "title": "Models Are Codes: Towards Measuring Malicious Code Poisoning Attacks on Pre-trained Model Hubs",
+      "topic": "ai-threat-model-supply-chain-infra",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2409.09368v1"
+    },
+    {
+      "artifacts": 0,
+      "date": "2021-11-12",
+      "id": "zheng-2021-commercial-speech-platforms",
+      "maturity": null,
+      "profile": null,
+      "publisher": "ACM, Proceedings of the 2021 ACM SIGSAC Conference on Computer and Communications Security, pp. 86-107",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": null,
+      "status": "stub",
+      "tags": [],
+      "title": "Black-box Adversarial Attacks on Commercial Speech Platforms with Minimal Information",
+      "topic": "ai-threat-model-ml-risk-assets",
+      "type": "paper",
+      "url": "https://doi.org/10.1145/3460120.3485383"
+    },
+    {
+      "artifacts": 0,
+      "date": "2026-04-17",
+      "id": "zhou-2025-sbom-reality-check",
+      "maturity": null,
+      "profile": null,
+      "publisher": "arXiv; ACM (CODASPY '26)",
+      "reviewed_artifacts": 0,
+      "shelf": "academic",
+      "short_title": "Reality check on SBOM vulnerability management",
+      "status": "stub",
+      "tags": [
+        "scanner",
+        "sbom",
+        "evidence"
+      ],
+      "title": "A Reality Check on SBOM-based Vulnerability Management: An Empirical Study and A Path Forward",
+      "topic": "product-composition",
+      "type": "paper",
+      "url": "https://arxiv.org/pdf/2511.20313v2"
+    },
+    {
+      "artifacts": 0,
       "date": null,
       "id": "zooko-2001-names",
       "maturity": null,
@@ -11127,5 +13897,5 @@
       "url": "https://blog.zoom.us/zoom-acquires-keybase-and-announces-goal-of-developing-the-most-broadly-used-enterprise-end-to-end-encryption-offering/"
     }
   ],
-  "total": 550
+  "total": 685
 }

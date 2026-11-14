@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Sample Generative AI Chatbot Application (Threat Composer example threat model)</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px 40px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); line-height: 1.15; letter-spacing: -0.03em; margin: 20px 0 6px; }
+h2 { font-size: 1.15rem; margin: 1.25em 0 0.3em; padding-top: 0.6em; border-top: 1px solid var(--line); }
+h3 { font-size: 1rem; margin: 1em 0 0.2em; }
+.kicker { margin: 18px 0 0; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.4em 0 0.8em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 6px 10px; font-size: 0.93rem; }
+table.kv { background: transparent; }
+table.kv td { border-bottom: none; padding: 2px 12px 2px 0; }
+td.rowhead { color: var(--muted); font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; width: 1%; padding-top: 6px; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../../../../index.html">tmodel</a><nav aria-label="Site"><a href="../../../../index.html">Home</a><a href="../../../../bibliography/index.html" aria-current="page">Bibliography</a><a href="../../../../reports/index.html">Reports</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">Library record · aws-threat-composer-genai-chatbot</p>
+<h1>Sample Generative AI Chatbot Application (Threat Composer example threat model)</h1>
+<p class="lede">Threat Composer GenAI chatbot example</p>
+<p>
+  <span class="badge">dataset</span>
+  <span class="badge">vendor</span>
+  <span class="badge">summarized</span>
+  <span class="badge">medium</span>
+</p>
+<p class="meta">Topic: <strong>ai-threat-model-supply-chain-infra</strong> (<code>record.yaml</code> topic). Status <code>summarized</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://raw.githubusercontent.com/awslabs/threat-composer/3d4ed92f96a29605a74795d8df103e068f11ed70/packages/threat-composer/src/data/workspaceExamples/GenAIChatbot.tc.json">https://raw.githubusercontent.com/awslabs/threat-composer/3d4ed92f96a29605a74795d8df103e068f11ed70/packages/threat-composer/src/data/workspaceExamples/GenAIChatbot.tc.json</a></li><li>Identifier URL: <a href="https://github.com/awslabs/threat-composer/blob/3d4ed92f96a29605a74795d8df103e068f11ed70/packages/threat-composer/src/data/workspaceExamples/GenAIChatbot.tc.json">https://github.com/awslabs/threat-composer/blob/3d4ed92f96a29605a74795d8df103e068f11ed70/packages/threat-composer/src/data/workspaceExamples/GenAIChatbot.tc.json</a></li><li>SHA-256: <code>604bc44003fa894b0397b61f17fc491892ab1b01c2bd6b1b4e5fa1d73e129912</code></li></ul>
+<h2>Dataset</h2>
+<div class="callout"><strong>Catalog, not one row.</strong> This record is the enumeration itself. Retrieved is when the library looked, not an edition date. Empty authors are omitted, not missing paper metadata.</div>
+<table><tbody><tr><td>Retrieved</td><td>2026-11-02</td></tr><tr><td>Version</td><td>file last changed in commit 8af3a1f99765 (2025-09-02)</td></tr><tr><td>Media type</td><td>application/json</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge none">none</span></td></tr><tr><td>This project</td><td><span class="badge core">core</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
+<h2>Tags</h2>
+<table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">ai-threat-model</span> <span class="badge">rag-security</span></td></tr><tr><td class="rowhead">Role</td><td><span class="badge">prior-art</span></td></tr></tbody></table>
+<h2>Bears on</h2>
+<ul><li><code>DEC-001a</code></li><li><code>R-005</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> A complete, machine-readable threat model of an LLM retrieval chatbot (37 threats, 84 mitigations, 13 assumptions, all linked) in a published JSON format; it is RPT-0014&#x27;s TM-026 and a ready import test.</p><p class="meta">Assessed 2026-11-02.</p>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> only — not crosswalk edges.</p><h3><code>see_also</code></h3><ul><li><a class="rec" data-id="aws-threat-composer" href="../../vendor/aws-threat-composer/summary.html">AWS Threat Composer</a></li></ul>
+
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>dataset (one JSON workspace file)</td></tr><tr><td><strong>Maturity</strong></td><td>_unset_ (an example published in an open-source repository; no maturity level applies)</td></tr><tr><td><strong>Authors</strong></td><td>Amazon Web Services</td></tr><tr><td><strong>Published</strong></td><td>added to the repository 2023-11-22; updated 2024-02-14, 2025-04-02 and 2025-09-02 (the content summarized here); pinned at repository commit 3d4ed92f96a2 (2026-09-23)</td></tr><tr><td><strong>Identifier</strong></td><td>git: https://github.com/awslabs/threat-composer, file <code>packages/threat-composer/src/data/workspaceExamples/GenAIChatbot.tc.json</code></td></tr><tr><td><strong>Source</strong></td><td>https://raw.githubusercontent.com/awslabs/threat-composer/3d4ed92f96a29605a74795d8df103e068f11ed70/packages/threat-composer/src/data/workspaceExamples/GenAIChatbot.tc.json</td></tr><tr><td><strong>Digest</strong></td><td><code>sha256:604bc44003fa894b0397b61f17fc491892ab1b01c2bd6b1b4e5fa1d73e129912</code> (425,849 bytes)</td></tr></tbody></table>
+<h2>Overview</h2>
+<p>This is the example threat model AWS ships with Threat Composer, for a retrieval-augmented chatbot on Amazon Bedrock. One JSON workspace holds the application description, a reference architecture and a data-flow model. The architecture covers data preparation with S3, Lambda and Titan embeddings; a front end behind Cognito, WAF and a load balancer; OpenSearch Serverless as the vector store; and Bedrock with Guardrails. The data-flow model has nine entities, nine flows (DF1 to DF9, each listing the assets it carries) and six trust boundaries (TB1 to TB6). On top of that sit 13 assumptions, 37 threat statements and 84 mitigations. Each threat is written in Threat Composer&#x27;s grammar (source, prerequisites, action, impact, impacted goal and assets) and tagged with an OWASP Top 10 for LLM Applications 2025 category, STRIDE letters and a priority. Every threat links to at least one mitigation, and 95 further links tie assumptions to threats and mitigations. The disclaimer presents it as an informational starting point: a hypothetical operator ranks confidentiality of the retrieval data first, integrity of answers second and availability last, and readers should set their own priorities.</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td><code>core</code></td><td>A complete worked threat model of an LLM retrieval application: architecture, data flows, trust boundaries, threats, assumptions and mitigations</td></tr><tr><td>Cryptography</td><td><code>none</code></td><td>Only two one-line mitigations touch it: encryption mechanisms (M-83) and code signing on training tools (M-24)</td></tr><tr><td>This project</td><td><code>core</code></td><td>A real threat model in a published, machine-readable format, with typed links between threats, mitigations and assumptions: a ready input for testing an import and for checking that the core types can carry these statements</td></tr></tbody></table>
+<p><code>bears_on: DEC-001a</code> (the core type system, accepted in ADR-0010) and <code>R-005</code> (import at least one existing threat-model format, with a round-trip vector). ADR-0007 commits tmodel to importing OTM and STIX 2.1, not Threat Composer&#x27;s format, so this file would test an additional importer or a conversion.</p>
+<h2>Implementations</h2>
+<p>Searched on 2026-11-02.</p>
+<table><thead><tr><th>Name</th><th>Kind</th><th>License</th><th>URL</th></tr></thead><tbody><tr><td>awslabs/threat-composer</td><td>the open-source tool that opens and edits this workspace; the library&#x27;s <code>aws-threat-composer</code> record covers it</td><td>Apache-2.0</td><td>https://github.com/awslabs/threat-composer</td></tr></tbody></table>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata</td></tr><tr><td><code>summary.md</code></td><td>this document</td></tr></tbody></table>
+<h2>Limits</h2>
+<ul><li><strong>An example, by its own disclaimer.</strong> It is informational, provided as is, a proof of concept for one reference architecture, and not a complete end-to-end solution.</li><li><strong>Nothing is validated.</strong> All 37 threats are in the identified state and all 84 mitigations in the identified state; none is marked resolved or tested.</li><li><strong>Assets are free text.</strong> The impacted assets have no controlled vocabulary, as RPT-0014&#x27;s TM-026 entry also notes.</li><li><strong>Some tags look misassigned.</strong> T-14, a supplier providing poisoned training data, carries STRIDE E and R rather than T, and T-15, a deprecated inference API, carries E and S. The text has small errors (&quot;can can&quot;, &quot;egitimate&quot;, &quot;leads to leads to&quot;), and the numbering skips T-8 and T-27.</li><li><strong>Specific to AWS services.</strong> Bedrock, OpenSearch Serverless, Cognito and the rest are named throughout; mapping the model to another stack is left to the reader.</li><li><strong>A file that changes.</strong> Earlier versions differ, for example before the 2025-04-02 update; the digest pins this content.</li></ul>
+<h2>RPT-0014 applicability</h2>
+<table><thead><tr><th>Topic of interest</th><th>Rating</th><th>Linked ids</th><th>Why</th></tr></thead><tbody><tr><td>Published attacks</td><td>adjacent</td><td>AIT-063, AIT-064, AIT-068, AIT-072, AIT-017, AIT-026, AIT-112, AIT-037, AIT-048, AIT-046, AIT-101, AIT-114, AIT-116, AIT-055, AIT-084, AIT-086, AIT-050, AIT-083, AIT-033, AIT-052</td><td>Names threats but demonstrates none, and no AIT entry cites S-0950. The mapping is ours, by threat statement: direct, indirect and multimodal prompt injection (AIT-063 T-1, AIT-064 T-2, AIT-068 T-33); output reaching classic sinks (AIT-072, T-4 to T-6); poisoning by insiders or data suppliers (AIT-017 T-7, T-14; AIT-026 T-9); cost and denial-of-wallet attacks (AIT-112, T-10 to T-12); compromised open-source dependencies (AIT-037, T-13); training-data leakage and membership inference (AIT-048, AIT-046, T-16 to T-18); over-privileged tools (AIT-101, T-21) and excessive agency (AIT-114, T-22, T-24); acting on wrong outputs (AIT-116, T-23, T-25, T-26); model and data exfiltration (AIT-055, T-28, T-29); sensitive retrieval (AIT-084, T-30); knowledge-base poisoning (AIT-086, T-31); embedding inversion (AIT-050, T-34); system-prompt extraction (AIT-083, T-36); backdoored adapters and model merging (AIT-033, T-37, T-38); and distillation (AIT-052, T-39)</td></tr><tr><td>Existing AI threat models</td><td>core</td><td>TM-026</td><td>It is TM-026. The counts in threat-models.md (13 assumptions, 37 threats, 84 mitigations, 95 and 122 links) match the file at this commit</td></tr><tr><td>Weakness enumerations</td><td>adjacent</td><td>LLM01:2025, LLM02:2025, LLM03:2025, LLM04:2025, LLM05:2025, LLM06:2025, LLM07:2025, LLM08:2025, LLM09:2025, LLM10:2025</td><td>Every threat carries an OWASP Top 10 for LLM Applications 2025 tag, and all ten categories are used (six threats each under LLM02, LLM03 and LLM06), with STRIDE letters as extra metadata. It uses no CWE or ATLAS ids, and neither NIST AI 100-2e2025 nor ATLAS 2026.09 cites it</td></tr><tr><td>Attack → asset mapping</td><td>core</td><td>C12, C07, C11, C06, C13, C19, C02</td><td>Its data flows list the assets each carries, and its trust boundaries sit between named entities. Our mapping: users (C12); the web app, API gateway, Lambda functions and Guardrail (C07); Cognito (C11); OpenSearch Serverless and the embedding pipeline (C06); Bedrock as the model provider (C13); DynamoDB holding questions, answers and audit logs (C19); and the S3 knowledge-base store (C02)</td></tr></tbody></table>
+
+<footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
+</main>
+</body>
+</html>

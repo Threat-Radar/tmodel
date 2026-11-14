@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="no-referrer">
-<title>FIRST, Common Vulnerability Scoring System (CVSS)</title>
+<title>FIRST, Common Vulnerability Scoring System (CVSS) — specification family</title>
 <style>
 :root {
   --ink: #1a1916;
@@ -80,28 +80,42 @@ nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font
 <main class="wrap">
 
 <p class="kicker">Library record · first-cvss</p>
-<h1>FIRST, Common Vulnerability Scoring System (CVSS)</h1>
-<p class="lede"></p>
+<h1>FIRST, Common Vulnerability Scoring System (CVSS) — specification family</h1>
+<p class="lede">CVSS (FIRST)</p>
 <p>
-  <span class="badge">spec</span>
+  <span class="badge">hierarchy</span>
   <span class="badge">community</span>
-  <span class="badge">queued</span>
-  <span class="badge">low</span>
+  <span class="badge">summarized</span>
+  <span class="badge">medium</span>
 </p>
-<p class="meta">No <code>topic</code> field and no subject tag yet. Status <code>queued</code> is how far review got, not a quality score.</p>
+<p class="meta">No <code>topic</code> field; subject tags are below. Status <code>summarized</code> is how far review got, not a quality score.</p>
 <h2>Bibliographic links</h2>
-<ul><li>Source: <a href="https://www.first.org/cvss/">https://www.first.org/cvss/</a></li><li>SHA-256: <span class="meta">not recorded</span></li></ul>
-<h2>Specification</h2>
+<ul><li>Source: <a href="https://www.first.org/cvss/">https://www.first.org/cvss/</a></li><li>SHA-256: <code>8ee54bdaf17941f9329407c96f402c46a61743d0ae03e5d13df2c436d9239b4d</code></li></ul>
+<h2>Hierarchy</h2>
+<table><tbody><tr><td>Media type</td><td>text/html</td></tr></tbody></table>
 <h2>Applicability</h2>
-<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge not-assessed">not assessed</span></td></tr><tr><td>Cryptography</td><td><span class="badge not-assessed">not assessed</span></td></tr><tr><td>This project</td><td><span class="badge not-assessed">not assessed</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge none">none</span></td></tr><tr><td>This project</td><td><span class="badge core">core</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
 <h2>Tags</h2>
-<p class="meta">No tags recorded.</p>
+<table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">vulnerability-data</span></td></tr><tr><td class="rowhead">Role</td><td><span class="badge">evidence</span></td></tr></tbody></table>
 <h2>Bears on</h2>
 <ul><li><code>DEC-003</code></li><li><code>R-011</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> Parent for the CVSS version records; records what ADR-0006 does and does not take from CVSS.</p><p class="meta">Assessed 2026-10-25.</p>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> only — not crosswalk edges.</p><h3><code>see_also</code></h3><ul><li><a class="rec" data-id="first-cvss-v3-1" href="../../community/first-cvss-v3-1/summary.html">FIRST, Common Vulnerability Scoring System v3.1: Specification Document</a></li><li><a class="rec" data-id="first-cvss-v4-0" href="../../community/first-cvss-v4-0/summary.html">FIRST, Common Vulnerability Scoring System v4.0: Specification Document</a></li><li><a class="rec" data-id="iso-iec-18045" href="../../iso/iso-iec-18045/summary.html">ISO/IEC 18045 / CEM:2022 (attack potential)</a></li><li><a class="rec" data-id="bron" href="../../academic/bron/summary.html">BRON (Hemberg et al., 2020)</a></li></ul>
 
-
-
-<h2>Summary</h2><div class="callout"><strong>Summary not written.</strong> <code>summary.md</code> is still the library template (it still contains the “two to five sentences” instruction). That text is not rendered. This page is record metadata only.</div>
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>hierarchy (one record for the family; versions are their own records)</td></tr><tr><td><strong>Maturity</strong></td><td>_unset — do not guess_</td></tr><tr><td><strong>Authors</strong></td><td>FIRST CVSS Special Interest Group</td></tr><tr><td><strong>Published</strong></td><td>v4.0 announced November 2023 (FIRST CVSS page); v3.1, v3.0, v2 and v1 archived on the same site</td></tr><tr><td><strong>Identifier</strong></td><td>https://www.first.org/cvss/</td></tr><tr><td><strong>Source</strong></td><td>https://www.first.org/cvss/ (web page; retrieved 2026-10-25; can change)</td></tr><tr><td><strong>Digest</strong></td><td><code>8ee54bdaf17941f9329407c96f402c46a61743d0ae03e5d13df2c436d9239b4d</code> (HTML bytes as retrieved; the page changes)</td></tr></tbody></table>
+<h2>Overview</h2>
+<p>The FIRST CVSS SIG maintains the Common Vulnerability Scoring System. On 2026-10-25 its landing page said CVSS &quot;is currently at version 4.0&quot; and that the SIG keeps revising the v4.0 user guide, FAQ and examples. It listed archives for v3.1, v3.0, v2 and v1 and announced a new CVSS <strong>Consumer Implementation Guide</strong> on tailoring scores to deployment environments. The version texts tmodel holds are <code>first-cvss-v3-1</code> and <code>first-cvss-v4-0</code>. This record is their family parent, because a CVSS score only means something together with its version.</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td>core</td><td>The de facto severity score on CVE/NVD records.</td></tr><tr><td>Cryptography</td><td>none</td><td>—</td></tr><tr><td>This project</td><td>core</td><td>Every imported Vulnerability carries CVSS. ADR-0006 refuses CVSS as the risk number, so tmodel must say exactly where CVSS appears.</td></tr></tbody></table>
+<p>Bears on <strong>DEC-003 / ADR-0006</strong> and <strong>R-011</strong>.</p>
+<p><strong>What tmodel takes from CVSS (from ADR-0006 and the version records; our position, not FIRST&#x27;s):</strong></p>
+<ul><li><strong>Display and evidence only.</strong> A Vulnerability&#x27;s CVSS vector and score are shown with their version and source (CNA or NVD/ADP; see <code>cve-json-5</code>). They are never the RiskScore and never folded into it (ADR-0006 scope guard).</li><li><strong>Not feasibility by default.</strong> ISO/SAE 21434 Annex G allows a CVSS-based feasibility rating written for v3.1 (RPT-0007). <code>first-cvss-v4-0</code> records that v4.0 defines no exploitability subscore, so that route does not carry over to v4.0 vectors as they stand. ADR-0006 rates feasibility with Table-1 and a human, not CVSS.</li><li><strong>Do not sum.</strong> <code>bron</code> shows how summed CVSS ranks products by version count. NVD assigns 10 to CVEs with no information (bron §5.1.1). Aggregate views must not add scores.</li></ul>
+<h2>Implementations</h2>
+<p>FIRST publishes official calculators for v4.0 and v3.1 (landing-page links). They were not reviewed. Nothing else was searched.</p>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata; <code>see_also</code> to the version records</td></tr><tr><td><code>summary.md</code></td><td>this summary</td></tr></tbody></table>
+<h2>Limits</h2>
+<ul><li>A landing page, not a specification. All technical detail belongs to the version records.</li><li>The version records (<code>first-cvss-v3-1</code>, <code>first-cvss-v4-0</code>) are stubs by another contributor and were not edited here. Linking them back with <code>part_of</code> is left to their owner.</li><li>EPSS and SSVC (other FIRST/CISA prioritisation schemes) are separate records (<code>first-epss</code>, <code>ssvc</code>), currently in library#21.</li></ul>
 
 <footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
 </main>

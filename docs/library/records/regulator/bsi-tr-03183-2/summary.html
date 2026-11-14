@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Technical Guideline BSI TR-03183: Cyber Resilience Requirements for Manufacturers and Products, Part 2: Software Bill of Materials (SBOM)</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px 40px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); line-height: 1.15; letter-spacing: -0.03em; margin: 20px 0 6px; }
+h2 { font-size: 1.15rem; margin: 1.25em 0 0.3em; padding-top: 0.6em; border-top: 1px solid var(--line); }
+h3 { font-size: 1rem; margin: 1em 0 0.2em; }
+.kicker { margin: 18px 0 0; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.4em 0 0.8em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 6px 10px; font-size: 0.93rem; }
+table.kv { background: transparent; }
+table.kv td { border-bottom: none; padding: 2px 12px 2px 0; }
+td.rowhead { color: var(--muted); font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; width: 1%; padding-top: 6px; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../../../../index.html">tmodel</a><nav aria-label="Site"><a href="../../../../index.html">Home</a><a href="../../../../bibliography/index.html" aria-current="page">Bibliography</a><a href="../../../../reports/index.html">Reports</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">Library record · bsi-tr-03183-2</p>
+<h1>Technical Guideline BSI TR-03183: Cyber Resilience Requirements for Manufacturers and Products, Part 2: Software Bill of Materials (SBOM)</h1>
+<p class="lede">BSI TR-03183-2</p>
+<p>
+  <span class="badge">spec</span>
+  <span class="badge">regulator</span>
+  <span class="badge">summarized</span>
+  <span class="badge">medium</span>
+</p>
+<p class="meta">Topic: <strong>product-composition</strong> (<code>record.yaml</code> topic). Status <code>summarized</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Publications/TechGuidelines/TR03183/BSI-TR-03183-2_v2_1_0.pdf?__blob=publicationFile">https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Publications/TechGuidelines/TR03183/BSI-TR-03183-2_v2_1_0.pdf?__blob=publicationFile</a></li><li>Identifier URL: <a href="https://bsi.bund.de/dok/TR-03183-en">https://bsi.bund.de/dok/TR-03183-en</a></li><li>SHA-256: <code>dda0ccd9b6148571d1d12241a1618b30027f22bc15e24248fdd21a011e62845c</code></li></ul>
+<h2>Specification</h2>
+<table><tbody><tr><td>Authors</td><td>Bundesamt für Sicherheit in der Informationstechnik (BSI)</td></tr><tr><td>Date</td><td>2025-08-20</td></tr><tr><td>Publisher</td><td>Bundesamt für Sicherheit in der Informationstechnik (BSI) / Federal Office for Information Security</td></tr><tr><td>Version</td><td>2.1.0</td></tr><tr><td>Maturity</td><td>best-practice</td></tr><tr><td>bsi</td><td>TR-03183-2</td></tr><tr><td>Pages</td><td>37</td></tr><tr><td>Media type</td><td>application/pdf</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge adjacent">adjacent</span></td></tr><tr><td>Cryptography</td><td><span class="badge adjacent">adjacent</span></td></tr><tr><td>This project</td><td><span class="badge core">core</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
+<h2>Tags</h2>
+<table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">sbom</span> <span class="badge">regulation</span> <span class="badge">supply-chain</span></td></tr><tr><td class="rowhead">Role</td><td><span class="badge">normative</span> <span class="badge">evidence</span></td></tr></tbody></table>
+<h2>Bears on</h2>
+<ul><li><code>DEC-001a</code></li><li><code>DEC-002</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> A precise, testable SBOM content baseline (formats, depth, required fields, licence identifiers) that RPT-0004 cites and tmodel#172 converts into Requirements.</p><p class="meta">Assessed 2026-11-02.</p>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> only — not crosswalk edges.</p><h3><code>see_also</code></h3><ul><li><a class="rec" data-id="bsi-tr-03183-1" href="../../regulator/bsi-tr-03183-1/summary.html">BSI TR-03183-1</a></li><li><a class="rec" data-id="eu-cra-2024-2847" href="../../regulator/eu-cra-2024-2847/summary.html">Cyber Resilience Act (CRA)</a></li><li><a class="rec" data-id="cyclonedx-1-7" href="../../community/cyclonedx-1-7/summary.html">CycloneDX 1.7 / ECMA-424</a></li><li><a class="rec" data-id="spdx-3-0-1" href="../../community/spdx-3-0-1/summary.html">SPDX 3.0.1</a></li><li><a class="rec" data-id="cyclonedx-property-taxonomy" href="../../community/cyclonedx-property-taxonomy/summary.html">CycloneDX property taxonomy</a></li></ul>
+
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec</td></tr><tr><td><strong>Maturity</strong></td><td><code>best-practice</code></td></tr><tr><td><strong>Authors</strong></td><td>Bundesamt für Sicherheit in der Informationstechnik (BSI)</td></tr><tr><td><strong>Published</strong></td><td>2025-08-20 (version 2.1.0)</td></tr><tr><td><strong>Identifier</strong></td><td>bsi: TR-03183-2</td></tr><tr><td><strong>Source</strong></td><td>https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Publications/TechGuidelines/TR03183/BSI-TR-03183-2_v2_1_0.pdf?__blob=publicationFile</td></tr><tr><td><strong>Digest</strong></td><td><code>dda0ccd9b6148571d1d12241a1618b30027f22bc15e24248fdd21a011e62845c</code></td></tr></tbody></table>
+<h2>Overview</h2>
+<p>BSI TR-03183-2 sets the formal and technical requirements for a software bill of materials (SBOM). It is written to help manufacturers meet the EU Cyber Resilience Act (§1). It is a technical guideline, not part of the Act: it notes that the CRA makes an SBOM mandatory (§1), uses its own terminology rather than the CRA&#x27;s (§3.2.9), and nowhere claims that following it establishes conformity with the CRA.</p>
+<ul><li><strong>Format.</strong> An SBOM must be a JSON or XML document, valid under an officially released CycloneDX 1.6 or later, or SPDX 3.0.1 or later (§4).</li><li><strong>One per version, no vulnerability data.</strong> Each software version gets its own SBOM. It carries no vulnerability information, which belongs in security advisories such as CSAF or VEX (§1, §3.1).</li><li><strong>Depth.</strong> Dependencies are resolved recursively, from every delivered component down to the first component outside the scope of delivery (§5.1).</li><li><strong>Fields</strong> (§5.2):</li><li>each SBOM carries its creator and a timestamp;</li><li>each fully described component carries its creator, name, version, filename, dependencies with a completeness flag, distribution licences, a SHA-512 hash, and three properties (executable, archive, structured);</li><li>other components carry fewer, decided in the order referenced, identified, fully described (§5.1):</li><li>a logical component: creator, name, version, dependencies, distribution licences, its other licence fields, other unique identifiers and the security.txt URL, but no filename, hash or file properties (§3.2.2);</li><li>a component that only has to be identified: creator, name, version and other unique identifiers (§3.2.4);</li><li>a component recorded in another BOM: its creator, name and version beside the reference, and nothing more (§3.2.5);</li><li>a required field that the way a component was assembled makes unavailable, such as its hash or filename, is left out (§3.2.1);</li><li>further fields are required when they exist.</li><li><strong>Licences.</strong> They are named by SPDX identifier, then from the ScanCode LicenseDB, then by the inventorying party&#x27;s own LicenseRef (§6.1).</li></ul>
+<p>Version 2.1.0 raised the minimum formats from CycloneDX 1.5 and SPDX 2.2.1. It also introduced logical and identified components, and added an informative mapping of every field to CycloneDX and SPDX (Table 1, §8.2).</p>
+<h2>Applicability</h2>
+<ul><li><strong>Security: adjacent.</strong> SBOM data supports vulnerability handling, because a product&#x27;s component list can be compared with vulnerability data (§1). But the guideline sets no security controls, and it keeps vulnerability statements out of the SBOM.</li><li><strong>Cryptography: adjacent.</strong> Its one cryptographic requirement is a SHA-512 hash of each deployable component (§5.2.2). The optional source-code hash has no defined method yet (§5.2.5).</li><li><strong>This project: core.</strong> It is the national SBOM baseline in RPT-0004 (product composition). Its fields bear on component identity in the core object model (DEC-001a), and its format floor bears on which SBOM formats and versions tmodel imports (DEC-002). tmodel#172 extracts its requirements, including those stated in notes, into <code>research/0017-requirements-extraction/bsi-tr-03183-2.yaml</code> (59 Requirements).</li></ul>
+<h2>Implementations</h2>
+<p><strong>Open source</strong>, checked 2026-11-02. None was run here.</p>
+<table><thead><tr><th>Tool</th><th>What it does</th><th>Licence</th></tr></thead><tbody><tr><td>sbomqs (Interlynk)</td><td>Compliance mode for TR-03183-2 v2.1.0, v2.0 and v1.1, per its README</td><td>Apache-2.0</td></tr><tr><td>CycloneDX.CRA.Validator</td><td>Validates CycloneDX SBOMs against v2.1.0, per its repository description</td><td>Apache-2.0</td></tr><tr><td>TR-03183 CycloneDX property taxonomy (the tr-03183 organisation)</td><td>CycloneDX property names for the guideline&#x27;s fields</td><td>Apache-2.0</td></tr></tbody></table>
+<p>The library&#x27;s <code>cyclonedx-property-taxonomy</code> record is CycloneDX&#x27;s own taxonomy, not this one.</p>
+<p><strong>Commercial:</strong> not surveyed.</p>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata</td></tr><tr><td><code>summary.md</code></td><td>this summary</td></tr></tbody></table>
+<h2>Limits</h2>
+<ul><li><strong>One version.</strong> Only version 2.1.0 was read. Versions 1.0, 1.1 and 2.0.0 were compared only through the document history (Table 1), and Part 1 (<code>bsi-tr-03183-1</code>) was not compared.</li><li><strong>Appendix not checked.</strong> Sections 1 to 7 were read in full. The informative appendix (§8: explanations, the field mapping, levels of detail and SBOM classifications) was read only by its contents, so its mapping was not checked field by field against CycloneDX or SPDX.</li><li><strong>Not every requirement can be checked mechanically:</strong></li><li>fields required only &quot;if it exists&quot; (§5.2.3, §5.2.4);</li><li>the source-code hash, whose method is not yet defined (§5.2.5);</li><li>the rule that an SBOM holds the same information as was available at build time (§5.1).</li><li><strong>Notes and lowercase wording.</strong> §2 says only that the capitalised BCP 14 keywords carry their BCP 14 meaning. It does not say that notes are informative. Most notes explain, but six state a duty, a recommendation or a permission in lowercase words: identifying the first dependencies outside the scope of delivery and letting the SBOM&#x27;s filename name its primary component (§5.1), setting the effective licence anew when SBOMs are merged (§3.2.8), using UTC timestamps (§5.2.1), and, for a component, giving its name as it was at integration or its creator&#x27;s current name (§5.2.2). Their force is plain English, not BCP 14; tmodel#172&#x27;s extraction lists each one and says how it was read.</li></ul>
+
+<footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
+</main>
+</body>
+</html>
