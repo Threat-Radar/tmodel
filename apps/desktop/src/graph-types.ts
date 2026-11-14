@@ -29,7 +29,7 @@ export interface GraphRelationship {
 }
 
 export interface GraphResponse {
-  source: "development-fixture" | "engine";
+  source: "development-fixture" | "engine" | "static-preview";
   notice?: string;
   focusId?: string;
   nodes: readonly GraphNode[];
@@ -49,6 +49,11 @@ export interface GraphDataProvider {
   // Each item remains one unmodified PR #132 response for one goal. Providers
   // may aggregate several goal requests for presentation in a single selector.
   getAttackPaths(): Promise<readonly AttackPathResponse[]>;
+  /**
+   * Every object the provider would show, for the Explore graph's "Show whole
+   * model" (#208). Optional: a provider without it offers neighbourhoods only.
+   */
+  getWholeGraph?(): Promise<GraphResponse>;
 }
 
 // Transport types for the engine response merged in PR #132. Path computation

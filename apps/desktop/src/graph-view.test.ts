@@ -8,7 +8,7 @@ import {
   type GraphLoadResult,
 } from "./graph-loader";
 import type { GraphState } from "./graph-model";
-import type { GraphDataProvider, GraphResponse } from "./graph-types";
+import type { AttackPathResponse, GraphDataProvider, GraphResponse } from "./graph-types";
 import { KnowledgeGraphView } from "./graph-view";
 
 const EMPTY_RESULT: GraphLoadResult = {
@@ -722,6 +722,142 @@ describe("manual graph retry after automatic attempts are used up", () => {
     return { view, notice, retryButton, startup, graphRequests, failGraph, click };
   }
 
+  it("keeps a replaced model's late attack paths out of the new model's controls (#208 model switch)", async () => {
+    // The race the review reproduced: switch models while the old model's
+    // attack paths are still loading; they arrive after the new model's.
+    const shared = new FakeDocument(DOM_VIEW_IDS);
+    const late = deferred<readonly AttackPathResponse[]>();
+    const { view: oldView } = createDomView({ getAttackPaths: () => late.promise }, shared);
+    const oldStart = oldView.start();
+    // The old view has drawn its graph and is now waiting for its attack paths.
+    await waitFor(() => shared.byId("inspector-label").textContent === "IMDS pivot path");
+    disposeView(oldView);
+    const { view: newView } = createDomView({
+      getAttackPaths: async () => [goalPaths("threat-instance:new-model", "new.yaml")],
+    }, shared);
+    await newView.start();
+    const select = shared.byId("attack-path-select");
+    const newOptions = select.children.map((option) => option.textContent);
+    const newHandler = select.onchange;
+
+    late.resolve([goalPaths("threat-instance:old-model", "old.yaml")]);
+    await oldStart;
+
+    expect(newOptions.some((label) => label.includes("New Model"))).toBe(true);
+    expect(select.children.map((option) => option.textContent)).toEqual(newOptions);
+    expect(select.onchange).toBe(newHandler);
+    expect(shared.byId("attack-path-status").textContent).not.toContain("old.yaml");
+  });
+
+  it("empties the shared controls and drops its handlers when disposed (#208)", async () => {
+    const shared = new FakeDocument(DOM_VIEW_IDS);
+    const { view } = createDomView({
+      getAttackPaths: async () => [goalPaths("threat-instance:old-model", "old.yaml")],
+    }, shared);
+    await view.start();
+    // This harness does not draw the node list, so stand in one entry for it.
+    shared.byId("node-list").append(shared.createElement("li"));
+    expect(shared.byId("inspector-label").textContent).toBe("IMDS pivot path");
+    expect(shared.byId("attack-path-select").onchange).not.toBeNull();
+
+    disposeView(view);
+
+    expect(shared.byId("node-list").children).toHaveLength(0);
+    expect(shared.byId("node-count").textContent).toBe("0");
+    const select = shared.byId("attack-path-select");
+    expect(select.children.map((option) => option.textContent)).toEqual(["Choose an attack path…"]);
+    expect(select).toMatchObject({ onchange: null, disabled: true });
+    expect(shared.byId("expand-node")).toMatchObject({ onclick: null, disabled: true });
+    expect(shared.byId("clear-attack-path")).toMatchObject({ onclick: null, disabled: true });
+    expect(shared.byId("inspector-label").textContent).toBe("Select a node");
+    expect(shared.byId("data-source-notice").textContent).toBe("");
+    // A handler the old view registered earlier does nothing now.
+    view.handleSelection("threat-instance:imds-pivot");
+    expect(shared.byId("inspector-label").textContent).toBe("Select a node");
+  });
+
+  it("does not report a replaced view's late graph failure (#208)", async () => {
+    const pending = rejectedDeferred<GraphResponse>();
+    const shared = new FakeDocument(DOM_VIEW_IDS);
+    const { view } = createDomView({ getInitialGraph: () => pending.promise }, shared);
+    const started = view.start();
+    disposeView(view);
+    pending.reject(new Error("Engine request failed: cannot read model"));
+    await expect(started).resolves.toBeUndefined();
+    expect(shared.byId("data-source-notice").classList.contains("is-error")).toBe(false);
+  });
+
+  it("stops filling the node list when disposed between two graph batches (#208)", async () => {
+    const shared = new FakeDocument(DOM_VIEW_IDS);
+    const { view } = createDomView({}, shared);
+    const gate = deferred<void>();
+    const seen: { signal?: AbortSignal } = {};
+    // A loader that ignores cancellation, so the view's own guard is what is tested.
+    const loader = {
+      async load(graph: GraphResponse, onBatch: (batch: GraphLoadBatch) => void, signal?: AbortSignal) {
+        seen.signal = signal;
+        await gate.promise;
+        onBatch({ nodes: [...graph.nodes], edges: [], processed: 1, total: 1, pendingEdges: 0 });
+        return { ...EMPTY_RESULT, insertedNodes: graph.nodes.length };
+      },
+    };
+    const internals = view as unknown as {
+      loader: typeof loader;
+      cy: unknown;
+      loadGraphResponse(graph: GraphResponse): Promise<GraphLoadResult | undefined>;
+    };
+    Object.defineProperty(internals, "loader", { value: loader });
+    internals.cy = { ...fakeCytoscape(), destroy: () => undefined };
+    const load = KnowledgeGraphView.prototype["loadGraphResponse"].call(internals, startupGraph());
+    await waitFor(() => seen.signal !== undefined);
+    disposeView(view);
+    expect(seen.signal?.aborted).toBe(true);
+    gate.resolve();
+    await expect(load).resolves.toMatchObject({ canceled: true });
+    expect(shared.byId("node-list").children).toHaveLength(0);
+    expect(shared.byId("node-count").textContent).toBe("0");
+  });
+
+  it("offers Show whole model when the provider can list the whole model (#208)", async () => {
+    const whole: GraphResponse = {
+      ...startupGraph(),
+      focusId: undefined,
+      nodes: [
+        ...startupGraph().nodes,
+        { id: "attack-step:extra", domainType: "AttackStep", label: "Extra step", properties: {} },
+      ],
+    };
+    const getWholeGraph = vi.fn(async () => whole);
+    const { view, document } = createDomView({ getWholeGraph });
+    await view.start();
+    const button = document.byId("graph-show-all");
+    expect(button).toMatchObject({ hidden: false, disabled: false, textContent: "Show whole model" });
+
+    await (button.onclick as () => Promise<void>)();
+    await waitFor(() => button.textContent === "Whole model shown");
+
+    expect(getWholeGraph).toHaveBeenCalledTimes(1);
+    expect(view.state.nodes.map((item) => item.id)).toContain("attack-step:extra");
+    expect(button.disabled).toBe(true);
+  });
+
+  it("hides Show whole model for a provider that only offers neighbourhoods", async () => {
+    const { view, document } = createDomView();
+    await view.start();
+    expect(document.byId("graph-show-all")).toMatchObject({ hidden: true, disabled: true, onclick: null });
+  });
+
+  it("draws nothing when disposed while its first graph is still loading (#208 model switch)", async () => {
+    let release!: (graph: GraphResponse) => void;
+    const pending = new Promise<GraphResponse>((resolve) => { release = resolve; });
+    const { view } = createDomView({ getInitialGraph: () => pending });
+    const started = view.start();
+    disposeView(view);
+    release(response("component:old"));
+    await started;
+    expect(view.renderGraphCalls).toBe(0);
+  });
+
   it("recovers on Retry graph without a reload, once, and cleans up the error state", async () => {
     const { view, notice, retryButton, startup, graphRequests, failGraph, click } = recoveryHarness();
     failGraph(MAX_GRAPH_START_ATTEMPTS);
@@ -1166,6 +1302,22 @@ interface DomViewHarness {
   renderAttackPathStatus(option?: AttackPathOption): void;
 }
 
+function disposeView(view: unknown): void {
+  (view as { dispose(): void }).dispose();
+}
+
+function goalPaths(goal: string, file: string): AttackPathResponse {
+  return {
+    file,
+    goal,
+    paths: [{
+      steps: ["attack-path:imds-pivot"],
+      goal_step: "attack-path:imds-pivot",
+      review: { reviewed: false, assertion_status: "proposed", review_status: null },
+    }],
+  };
+}
+
 function startupGraph(): GraphResponse {
   return {
     source: "engine",
@@ -1191,13 +1343,17 @@ function startupGraph(): GraphResponse {
   };
 }
 
-function createDomView(overrides: Partial<GraphDataProvider> = {}) {
-  const document = new FakeDocument([
-    "data-source-notice", "type-legend", "relationship-legend", "graph-canvas", "node-list",
-    "node-count", "graph-loading", "attack-path-select", "clear-attack-path", "attack-path-status",
-    "inspector-label", "inspector-type", "inspector-id", "expand-node", "property-list",
-    "relationship-list",
-  ]);
+const DOM_VIEW_IDS = [
+  "data-source-notice", "type-legend", "relationship-legend", "graph-canvas", "node-list",
+  "node-count", "graph-loading", "attack-path-select", "clear-attack-path", "attack-path-status",
+  "inspector-label", "inspector-type", "inspector-id", "expand-node", "property-list",
+  "relationship-list", "graph-show-all",
+];
+
+function createDomView(
+  overrides: Partial<GraphDataProvider> = {},
+  document: FakeDocument = new FakeDocument(DOM_VIEW_IDS),
+) {
   const provider: GraphDataProvider = {
     metadata: { source: "engine", label: "Engine model data", notice: "Engine model data" },
     getInitialGraph: async () => startupGraph(),
@@ -1217,6 +1373,7 @@ function createDomView(overrides: Partial<GraphDataProvider> = {}) {
     view.cy = {
       getElementById: () => ({ select: () => undefined, unselect: () => undefined }),
       elements: () => ({ removeClass: () => undefined }),
+      destroy: () => undefined,
     };
   };
   view.loadGraphResponse = async (graph) => {

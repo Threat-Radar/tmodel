@@ -5,6 +5,7 @@
   tmodel version [--json]      ask the running engine for its version
   tmodel risk FILE --matrix annex-h-table-h8 [--goal G] [--json]
                                derive risk from recorded path ratings (#63)
+  tmodel models [--json]       the example models the app can open
   tmodel paths FILE [--goal G] [--json]
                                attack paths to a step or threat in a model file;
                                without --goal, list the file's threats
@@ -30,7 +31,8 @@ By default these go through the local API, exactly like the desktop app
 (APP-0001 A-030, A-060). `--in-process` calls the engine code directly
 instead, for scripts that do not want a server.
 
-Exit codes: 0 ok · 1 engine unreachable, unhealthy or an engine error · 2 usage error.
+Exit codes: 0 ok · 1 engine unreachable, unhealthy, an engine error, or incomplete
+risk inputs · 2 usage error.
 """
 
 from __future__ import annotations
@@ -128,6 +130,32 @@ def _paths(args: argparse.Namespace) -> int:
         print(json.dumps(payload))
     else:
         _print_paths(payload)
+    return 0
+
+
+def _print_models(payload: dict[str, Any]) -> None:
+    models = payload["models"]
+    print(f"{payload['count']} example model{'s' if payload['count'] != 1 else ''}")
+    width = max((len(m["file"]) for m in models), default=0)
+    for m in models:
+        threats = m["counts"]["threats"]
+        noun = "threat" if threats == 1 else "threats"
+        print(
+            f"  {m['file']:<{width}}  {m['title']}"
+            f"  ({m['kind_label']}; {threats} {noun}, {m['reviewed_threats']} reviewed)"
+        )
+    for problem in payload["problems"]:
+        print(f"  {problem['file']}: not loaded ({problem['error']})")
+
+
+def _models(args: argparse.Namespace) -> int:
+    payload = _call(lambda: core.list_models() if args.in_process else get("/models", args.url))
+    if payload is None:
+        return 1
+    if args.json:
+        print(json.dumps(payload))
+    else:
+        _print_models(payload)
     return 0
 
 
@@ -349,6 +377,10 @@ def build_parser() -> argparse.ArgumentParser:
         cmd = sub.add_parser(name, help=text)
         _add_transport(cmd)
         cmd.set_defaults(func=_query)
+
+    models = sub.add_parser("models", help="the example models the app can open (#208)")
+    _add_transport(models)
+    models.set_defaults(func=_models)
 
     paths = sub.add_parser("paths", help="attack paths in a model file (#63)")
     paths.add_argument(

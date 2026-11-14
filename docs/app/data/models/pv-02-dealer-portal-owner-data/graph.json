@@ -1,0 +1,929 @@
+{
+  "edges": [
+    {
+      "id": "relationship:product:kia-connected-vehicle|composed_of|component:owners-portal",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "product:kia-connected-vehicle",
+      "target": "component:owners-portal"
+    },
+    {
+      "id": "relationship:product:kia-connected-vehicle|composed_of|component:dealer-portal",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "product:kia-connected-vehicle",
+      "target": "component:dealer-portal"
+    },
+    {
+      "id": "relationship:product:kia-connected-vehicle|composed_of|component:dealer-api",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "product:kia-connected-vehicle",
+      "target": "component:dealer-api"
+    },
+    {
+      "id": "relationship:product:kia-connected-vehicle|composed_of|component:telematics-backend",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "product:kia-connected-vehicle",
+      "target": "component:telematics-backend"
+    },
+    {
+      "id": "relationship:product:kia-connected-vehicle|composed_of|component:vehicle-telematics-unit",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "product:kia-connected-vehicle",
+      "target": "component:vehicle-telematics-unit"
+    },
+    {
+      "id": "relationship:product:kia-connected-vehicle|manufactured_by|party:kia",
+      "properties": {},
+      "relationship_type": "manufactured_by",
+      "source": "product:kia-connected-vehicle",
+      "target": "party:kia"
+    },
+    {
+      "id": "relationship:component:owners-portal|in_trust_zone|trust-boundary:manufacturer-cloud",
+      "properties": {},
+      "relationship_type": "in_trust_zone",
+      "source": "component:owners-portal",
+      "target": "trust-boundary:manufacturer-cloud"
+    },
+    {
+      "id": "relationship:component:dealer-portal|in_trust_zone|trust-boundary:manufacturer-cloud",
+      "properties": {},
+      "relationship_type": "in_trust_zone",
+      "source": "component:dealer-portal",
+      "target": "trust-boundary:manufacturer-cloud"
+    },
+    {
+      "id": "relationship:component:dealer-api|in_trust_zone|trust-boundary:dealer-functions",
+      "properties": {},
+      "relationship_type": "in_trust_zone",
+      "source": "component:dealer-api",
+      "target": "trust-boundary:dealer-functions"
+    },
+    {
+      "id": "relationship:component:telematics-backend|in_trust_zone|trust-boundary:manufacturer-cloud",
+      "properties": {},
+      "relationship_type": "in_trust_zone",
+      "source": "component:telematics-backend",
+      "target": "trust-boundary:manufacturer-cloud"
+    },
+    {
+      "id": "relationship:component:vehicle-telematics-unit|in_trust_zone|trust-boundary:vehicle",
+      "properties": {},
+      "relationship_type": "in_trust_zone",
+      "source": "component:vehicle-telematics-unit",
+      "target": "trust-boundary:vehicle"
+    },
+    {
+      "id": "relationship:threat-instance:owner-data-harvest|applies_in_phase|lifecycle-phase:operation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "threat-instance:owner-data-harvest",
+      "target": "lifecycle-phase:operation"
+    },
+    {
+      "id": "relationship:threat-instance:owner-data-harvest|realizes_damage|damage-scenario:owner-data-disclosed",
+      "properties": {},
+      "relationship_type": "realizes_damage",
+      "source": "threat-instance:owner-data-harvest",
+      "target": "damage-scenario:owner-data-disclosed"
+    },
+    {
+      "id": "relationship:threat-instance:owner-data-harvest|targets_element|component:dealer-api",
+      "properties": {},
+      "relationship_type": "targets_element",
+      "source": "threat-instance:owner-data-harvest",
+      "target": "component:dealer-api"
+    },
+    {
+      "id": "relationship:threat-instance:owner-data-harvest|targets_element|data-flow:owner-lookup",
+      "properties": {},
+      "relationship_type": "targets_element",
+      "source": "threat-instance:owner-data-harvest",
+      "target": "data-flow:owner-lookup"
+    },
+    {
+      "id": "relationship:threat-instance:silent-account-takeover|applies_in_phase|lifecycle-phase:operation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "threat-instance:silent-account-takeover",
+      "target": "lifecycle-phase:operation"
+    },
+    {
+      "id": "relationship:threat-instance:silent-account-takeover|realizes_damage|damage-scenario:silent-takeover",
+      "properties": {},
+      "relationship_type": "realizes_damage",
+      "source": "threat-instance:silent-account-takeover",
+      "target": "damage-scenario:silent-takeover"
+    },
+    {
+      "id": "relationship:threat-instance:silent-account-takeover|targets_element|component:dealer-api",
+      "properties": {},
+      "relationship_type": "targets_element",
+      "source": "threat-instance:silent-account-takeover",
+      "target": "component:dealer-api"
+    },
+    {
+      "id": "relationship:threat-instance:silent-account-takeover|targets_element|data-flow:account-change",
+      "properties": {},
+      "relationship_type": "targets_element",
+      "source": "threat-instance:silent-account-takeover",
+      "target": "data-flow:account-change"
+    },
+    {
+      "id": "relationship:threat-instance:silent-account-takeover|targets_element|asset:account-roles",
+      "properties": {},
+      "relationship_type": "targets_element",
+      "source": "threat-instance:silent-account-takeover",
+      "target": "asset:account-roles"
+    },
+    {
+      "id": "relationship:attack-step:plate-to-vin|precedes|attack-step:owner-lookup",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:plate-to-vin",
+      "target": "attack-step:owner-lookup"
+    },
+    {
+      "id": "relationship:attack-step:dealer-token|precedes|attack-step:owner-lookup",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:dealer-token",
+      "target": "attack-step:owner-lookup"
+    },
+    {
+      "id": "relationship:attack-step:owner-lookup|precedes|attack-step:demote-owner",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:owner-lookup",
+      "target": "attack-step:demote-owner"
+    },
+    {
+      "id": "relationship:attack-step:demote-owner|precedes|attack-step:add-attacker",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:demote-owner",
+      "target": "attack-step:add-attacker"
+    },
+    {
+      "id": "relationship:attack-step:add-attacker|precedes|attack-step:command-vehicle",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:add-attacker",
+      "target": "attack-step:command-vehicle"
+    },
+    {
+      "id": "relationship:attack-path:owner-data|realizes_threat|threat-instance:owner-data-harvest",
+      "properties": {},
+      "relationship_type": "realizes_threat",
+      "source": "attack-path:owner-data",
+      "target": "threat-instance:owner-data-harvest"
+    },
+    {
+      "id": "relationship:attack-path:owner-data|steps|attack-step:plate-to-vin",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:owner-data",
+      "target": "attack-step:plate-to-vin"
+    },
+    {
+      "id": "relationship:attack-path:owner-data|steps|attack-step:dealer-token",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:owner-data",
+      "target": "attack-step:dealer-token"
+    },
+    {
+      "id": "relationship:attack-path:owner-data|steps|attack-step:owner-lookup",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:owner-data",
+      "target": "attack-step:owner-lookup"
+    },
+    {
+      "id": "relationship:attack-path:takeover|realizes_threat|threat-instance:silent-account-takeover",
+      "properties": {
+        "assertion_ids": [
+          "assertion:takeover-realizes"
+        ],
+        "assertion_status": "proposed",
+        "confidence": "medium"
+      },
+      "relationship_type": "realizes_threat",
+      "source": "attack-path:takeover",
+      "target": "threat-instance:silent-account-takeover"
+    },
+    {
+      "id": "relationship:attack-path:takeover|steps|attack-step:plate-to-vin",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:takeover",
+      "target": "attack-step:plate-to-vin"
+    },
+    {
+      "id": "relationship:attack-path:takeover|steps|attack-step:dealer-token",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:takeover",
+      "target": "attack-step:dealer-token"
+    },
+    {
+      "id": "relationship:attack-path:takeover|steps|attack-step:owner-lookup",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:takeover",
+      "target": "attack-step:owner-lookup"
+    },
+    {
+      "id": "relationship:attack-path:takeover|steps|attack-step:demote-owner",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:takeover",
+      "target": "attack-step:demote-owner"
+    },
+    {
+      "id": "relationship:attack-path:takeover|steps|attack-step:add-attacker",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:takeover",
+      "target": "attack-step:add-attacker"
+    },
+    {
+      "id": "relationship:attack-path:takeover|steps|attack-step:command-vehicle",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:takeover",
+      "target": "attack-step:command-vehicle"
+    },
+    {
+      "id": "relationship:damage-scenario:owner-data-disclosed|damages_asset|asset:owner-personal-data",
+      "properties": {},
+      "relationship_type": "damages_asset",
+      "source": "damage-scenario:owner-data-disclosed",
+      "target": "asset:owner-personal-data"
+    },
+    {
+      "id": "relationship:damage-scenario:silent-takeover|damages_asset|asset:vehicle-location",
+      "properties": {},
+      "relationship_type": "damages_asset",
+      "source": "damage-scenario:silent-takeover",
+      "target": "asset:vehicle-location"
+    },
+    {
+      "id": "relationship:damage-scenario:silent-takeover|damages_asset|asset:account-roles",
+      "properties": {},
+      "relationship_type": "damages_asset",
+      "source": "damage-scenario:silent-takeover",
+      "target": "asset:account-roles"
+    },
+    {
+      "id": "relationship:damage-scenario:silent-takeover|damages_asset|asset:remote-commands",
+      "properties": {},
+      "relationship_type": "damages_asset",
+      "source": "damage-scenario:silent-takeover",
+      "target": "asset:remote-commands"
+    },
+    {
+      "id": "relationship:mitigation:dealer-role-check|applies_in_phase|lifecycle-phase:operation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "mitigation:dealer-role-check",
+      "target": "lifecycle-phase:operation"
+    },
+    {
+      "id": "relationship:mitigation:dealer-role-check|implementation_owner|party:kia",
+      "properties": {},
+      "relationship_type": "implementation_owner",
+      "source": "mitigation:dealer-role-check",
+      "target": "party:kia"
+    },
+    {
+      "id": "relationship:mitigation:dealer-role-check|mitigates|threat-instance:owner-data-harvest",
+      "properties": {},
+      "relationship_type": "mitigates",
+      "source": "mitigation:dealer-role-check",
+      "target": "threat-instance:owner-data-harvest"
+    },
+    {
+      "id": "relationship:mitigation:dealer-role-check|mitigates|threat-instance:silent-account-takeover",
+      "properties": {},
+      "relationship_type": "mitigates",
+      "source": "mitigation:dealer-role-check",
+      "target": "threat-instance:silent-account-takeover"
+    },
+    {
+      "id": "relationship:mitigation:notify-role-change|applies_in_phase|lifecycle-phase:operation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "mitigation:notify-role-change",
+      "target": "lifecycle-phase:operation"
+    },
+    {
+      "id": "relationship:mitigation:notify-role-change|implementation_owner|party:kia",
+      "properties": {},
+      "relationship_type": "implementation_owner",
+      "source": "mitigation:notify-role-change",
+      "target": "party:kia"
+    },
+    {
+      "id": "relationship:mitigation:notify-role-change|mitigates|threat-instance:silent-account-takeover",
+      "properties": {},
+      "relationship_type": "mitigates",
+      "source": "mitigation:notify-role-change",
+      "target": "threat-instance:silent-account-takeover"
+    },
+    {
+      "id": "relationship:assertion:token-step-exploits|asserted_by|party:ai-drafter",
+      "properties": {},
+      "relationship_type": "asserted_by",
+      "source": "assertion:token-step-exploits",
+      "target": "party:ai-drafter"
+    },
+    {
+      "id": "relationship:assertion:token-step-exploits|object|weakness:cwe-862",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:token-step-exploits",
+      "target": "weakness:cwe-862"
+    },
+    {
+      "id": "relationship:assertion:token-step-exploits|subject|attack-step:dealer-token",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:token-step-exploits",
+      "target": "attack-step:dealer-token"
+    },
+    {
+      "id": "relationship:assertion:takeover-realizes|asserted_by|party:ai-drafter",
+      "properties": {},
+      "relationship_type": "asserted_by",
+      "source": "assertion:takeover-realizes",
+      "target": "party:ai-drafter"
+    },
+    {
+      "id": "relationship:assertion:takeover-realizes|object|threat-instance:silent-account-takeover",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:takeover-realizes",
+      "target": "threat-instance:silent-account-takeover"
+    },
+    {
+      "id": "relationship:assertion:takeover-realizes|subject|attack-path:takeover",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:takeover-realizes",
+      "target": "attack-path:takeover"
+    },
+    {
+      "id": "relationship:asset:owner-personal-data|owned_by|party:vehicle-owner",
+      "properties": {},
+      "relationship_type": "owned_by",
+      "source": "asset:owner-personal-data",
+      "target": "party:vehicle-owner"
+    },
+    {
+      "id": "relationship:asset:owner-personal-data|processed_by|component:dealer-api",
+      "properties": {},
+      "relationship_type": "processed_by",
+      "source": "asset:owner-personal-data",
+      "target": "component:dealer-api"
+    },
+    {
+      "id": "relationship:asset:owner-personal-data|stored_in|component:telematics-backend",
+      "properties": {},
+      "relationship_type": "stored_in",
+      "source": "asset:owner-personal-data",
+      "target": "component:telematics-backend"
+    },
+    {
+      "id": "relationship:asset:vehicle-location|owned_by|party:vehicle-owner",
+      "properties": {},
+      "relationship_type": "owned_by",
+      "source": "asset:vehicle-location",
+      "target": "party:vehicle-owner"
+    },
+    {
+      "id": "relationship:asset:vehicle-location|processed_by|component:telematics-backend",
+      "properties": {},
+      "relationship_type": "processed_by",
+      "source": "asset:vehicle-location",
+      "target": "component:telematics-backend"
+    },
+    {
+      "id": "relationship:asset:vehicle-location|processed_by|component:vehicle-telematics-unit",
+      "properties": {},
+      "relationship_type": "processed_by",
+      "source": "asset:vehicle-location",
+      "target": "component:vehicle-telematics-unit"
+    },
+    {
+      "id": "relationship:asset:account-roles|stored_in|component:telematics-backend",
+      "properties": {},
+      "relationship_type": "stored_in",
+      "source": "asset:account-roles",
+      "target": "component:telematics-backend"
+    },
+    {
+      "id": "relationship:asset:remote-commands|processed_by|component:telematics-backend",
+      "properties": {},
+      "relationship_type": "processed_by",
+      "source": "asset:remote-commands",
+      "target": "component:telematics-backend"
+    },
+    {
+      "id": "relationship:asset:remote-commands|processed_by|component:vehicle-telematics-unit",
+      "properties": {},
+      "relationship_type": "processed_by",
+      "source": "asset:remote-commands",
+      "target": "component:vehicle-telematics-unit"
+    },
+    {
+      "id": "relationship:trust-boundary:dealer-functions|within_boundary|trust-boundary:manufacturer-cloud",
+      "properties": {},
+      "relationship_type": "within_boundary",
+      "source": "trust-boundary:dealer-functions",
+      "target": "trust-boundary:manufacturer-cloud"
+    },
+    {
+      "id": "relationship:data-flow:owner-lookup|carries|asset:owner-personal-data",
+      "properties": {},
+      "relationship_type": "carries",
+      "source": "data-flow:owner-lookup",
+      "target": "asset:owner-personal-data"
+    },
+    {
+      "id": "relationship:data-flow:owner-lookup|flow_from|component:dealer-api",
+      "properties": {},
+      "relationship_type": "flow_from",
+      "source": "data-flow:owner-lookup",
+      "target": "component:dealer-api"
+    },
+    {
+      "id": "relationship:data-flow:owner-lookup|flow_to|component:dealer-portal",
+      "properties": {},
+      "relationship_type": "flow_to",
+      "source": "data-flow:owner-lookup",
+      "target": "component:dealer-portal"
+    },
+    {
+      "id": "relationship:data-flow:account-change|carries|asset:account-roles",
+      "properties": {},
+      "relationship_type": "carries",
+      "source": "data-flow:account-change",
+      "target": "asset:account-roles"
+    },
+    {
+      "id": "relationship:data-flow:account-change|flow_from|component:dealer-portal",
+      "properties": {},
+      "relationship_type": "flow_from",
+      "source": "data-flow:account-change",
+      "target": "component:dealer-portal"
+    },
+    {
+      "id": "relationship:data-flow:account-change|flow_to|component:dealer-api",
+      "properties": {},
+      "relationship_type": "flow_to",
+      "source": "data-flow:account-change",
+      "target": "component:dealer-api"
+    },
+    {
+      "id": "relationship:data-flow:remote-command|carries|asset:remote-commands",
+      "properties": {},
+      "relationship_type": "carries",
+      "source": "data-flow:remote-command",
+      "target": "asset:remote-commands"
+    },
+    {
+      "id": "relationship:data-flow:remote-command|crosses_boundary|trust-boundary:manufacturer-cloud",
+      "properties": {},
+      "relationship_type": "crosses_boundary",
+      "source": "data-flow:remote-command",
+      "target": "trust-boundary:manufacturer-cloud"
+    },
+    {
+      "id": "relationship:data-flow:remote-command|crosses_boundary|trust-boundary:vehicle",
+      "properties": {},
+      "relationship_type": "crosses_boundary",
+      "source": "data-flow:remote-command",
+      "target": "trust-boundary:vehicle"
+    },
+    {
+      "id": "relationship:data-flow:remote-command|flow_from|component:telematics-backend",
+      "properties": {},
+      "relationship_type": "flow_from",
+      "source": "data-flow:remote-command",
+      "target": "component:telematics-backend"
+    },
+    {
+      "id": "relationship:data-flow:remote-command|flow_to|component:vehicle-telematics-unit",
+      "properties": {},
+      "relationship_type": "flow_to",
+      "source": "data-flow:remote-command",
+      "target": "component:vehicle-telematics-unit"
+    },
+    {
+      "id": "relationship:data-flow:location-report|carries|asset:vehicle-location",
+      "properties": {},
+      "relationship_type": "carries",
+      "source": "data-flow:location-report",
+      "target": "asset:vehicle-location"
+    },
+    {
+      "id": "relationship:data-flow:location-report|crosses_boundary|trust-boundary:vehicle",
+      "properties": {},
+      "relationship_type": "crosses_boundary",
+      "source": "data-flow:location-report",
+      "target": "trust-boundary:vehicle"
+    },
+    {
+      "id": "relationship:data-flow:location-report|crosses_boundary|trust-boundary:manufacturer-cloud",
+      "properties": {},
+      "relationship_type": "crosses_boundary",
+      "source": "data-flow:location-report",
+      "target": "trust-boundary:manufacturer-cloud"
+    },
+    {
+      "id": "relationship:data-flow:location-report|flow_from|component:vehicle-telematics-unit",
+      "properties": {},
+      "relationship_type": "flow_from",
+      "source": "data-flow:location-report",
+      "target": "component:vehicle-telematics-unit"
+    },
+    {
+      "id": "relationship:data-flow:location-report|flow_to|component:telematics-backend",
+      "properties": {},
+      "relationship_type": "flow_to",
+      "source": "data-flow:location-report",
+      "target": "component:telematics-backend"
+    },
+    {
+      "id": "relationship:attack-step:dealer-token|exploits|weakness:cwe-862",
+      "properties": {
+        "assertion_ids": [
+          "assertion:token-step-exploits"
+        ],
+        "assertion_status": "proposed",
+        "confidence": "low"
+      },
+      "relationship_type": "exploits",
+      "source": "attack-step:dealer-token",
+      "target": "weakness:cwe-862"
+    }
+  ],
+  "file": "pv-02-dealer-portal-owner-data.yaml",
+  "nodes": [
+    {
+      "domain_type": "Party",
+      "id": "party:kia",
+      "label": "Kia",
+      "properties": {
+        "classifications": [
+          "manufacturer"
+        ],
+        "description": "Vehicle manufacturer; operates the owner and dealer web services.",
+        "party_kind": "organization"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:vehicle-owner",
+      "label": "Vehicle owner",
+      "properties": {
+        "description": "Whose personal data and vehicle access the attack takes (role, not a person).",
+        "party_kind": "person"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:ai-drafter",
+      "label": "AI model drafter",
+      "properties": {
+        "description": "The AI agent that drafted this file and proposed its CWE mapping (DL-0024).",
+        "party_kind": "software_agent"
+      }
+    },
+    {
+      "domain_type": "Product",
+      "id": "product:kia-connected-vehicle",
+      "label": "Kia vehicle with remote services",
+      "properties": {
+        "description": "A Kia vehicle with the telematics hardware, and the web services that control it (the write-up's table lists affected models from 2014 to 2025)."
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:owners-portal",
+      "label": "Owners website (owners.kia.com)",
+      "properties": {
+        "component_kind": "service"
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:dealer-portal",
+      "label": "Dealer website (kiaconnect.kdealer.com)",
+      "properties": {
+        "component_kind": "service",
+        "description": "Where dealers enroll a sold vehicle to its owner's account."
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:dealer-api",
+      "label": "Dealer API gateway",
+      "properties": {
+        "component_kind": "service",
+        "description": "Backend calls for dealer functions (vehicle and account lookup, enroll, unenroll)."
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:telematics-backend",
+      "label": "Remote-service backend",
+      "properties": {
+        "component_kind": "service",
+        "description": "Relays owner commands to the vehicle and its location back."
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:vehicle-telematics-unit",
+      "label": "Vehicle telematics unit",
+      "properties": {
+        "component_kind": "device"
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:plate-to-vin-service",
+      "label": "Third-party licence-plate-to-VIN lookup",
+      "properties": {
+        "component_kind": "service",
+        "description": "Not part of the product; the attack's first step uses it."
+      }
+    },
+    {
+      "domain_type": "Weakness",
+      "id": "weakness:cwe-862",
+      "label": "Missing Authorization",
+      "properties": {
+        "catalog_ref": "CWE-862",
+        "description": "AI-proposed mapping (the write-up names no CWE); see assertion:token-step-exploits."
+      }
+    },
+    {
+      "domain_type": "ThreatInstance",
+      "id": "threat-instance:owner-data-harvest",
+      "label": "Harvest owner personal data through the dealer API",
+      "properties": {
+        "method_facet": [
+          "stride"
+        ],
+        "source_method": "published attack, modeled from the cited write-up (AI-drafted, unreviewed)",
+        "violates_property": "E authorization; I confidentiality"
+      }
+    },
+    {
+      "domain_type": "ThreatInstance",
+      "id": "threat-instance:silent-account-takeover",
+      "label": "Demote the owner and add the attacker as primary account holder",
+      "properties": {
+        "method_facet": [
+          "stride"
+        ],
+        "source_method": "published attack, modeled from the cited write-up (AI-drafted, unreviewed)",
+        "violates_property": "E authorization; T integrity"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:plate-to-vin",
+      "label": "Resolve the licence plate to a VIN with a third-party service",
+      "properties": {
+        "kill_chain_phase": "reconnaissance"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:dealer-token",
+      "label": "Register on the dealer website and obtain a dealer access token",
+      "properties": {}
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:owner-lookup",
+      "label": "Look up the vehicle by VIN through the dealer API",
+      "properties": {
+        "description": "Needs the VIN AND a dealer token, an AND gate; returns the owner's contact details.",
+        "gate": "and_gate"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:demote-owner",
+      "label": "Demote the owner using the e-mail address just obtained",
+      "properties": {}
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:add-attacker",
+      "label": "Add the attacker's account as primary holder",
+      "properties": {}
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:command-vehicle",
+      "label": "Locate the vehicle and send remote commands",
+      "properties": {
+        "kill_chain_phase": "actions_on_objectives"
+      }
+    },
+    {
+      "domain_type": "AttackPath",
+      "id": "attack-path:owner-data",
+      "label": "Plate to owner data",
+      "properties": {}
+    },
+    {
+      "domain_type": "AttackPath",
+      "id": "attack-path:takeover",
+      "label": "Plate to silent takeover",
+      "properties": {
+        "description": "Shares its first three steps with the owner-data path."
+      }
+    },
+    {
+      "domain_type": "DamageScenario",
+      "id": "damage-scenario:owner-data-disclosed",
+      "label": "A stranger learns the owner's identity and contact details from a licence plate",
+      "properties": {
+        "compromised_property": [
+          "confidentiality"
+        ]
+      }
+    },
+    {
+      "domain_type": "DamageScenario",
+      "id": "damage-scenario:silent-takeover",
+      "label": "A stranger silently tracks and controls the vehicle",
+      "properties": {
+        "compromised_property": [
+          "confidentiality",
+          "integrity",
+          "authorization"
+        ],
+        "description": "The owner gets no notice that account roles changed."
+      }
+    },
+    {
+      "domain_type": "Mitigation",
+      "id": "mitigation:dealer-role-check",
+      "label": "Only provisioned dealer accounts reach dealer functions",
+      "properties": {
+        "description": "The control the attack shows was missing. The write-up reports Kia remediated the issue (2024-08-14) without saying how; this names the needed control, not Kia's fix.",
+        "mitigation_status": "complete"
+      }
+    },
+    {
+      "domain_type": "Mitigation",
+      "id": "mitigation:notify-role-change",
+      "label": "Notify the owner when account holders change",
+      "properties": {
+        "description": "The write-up notes the victim got no notification; a model suggestion, status not published.",
+        "mitigation_status": "planned"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:token-step-exploits",
+      "label": "The dealer-token step exploits CWE-862 (AI-proposed)",
+      "properties": {
+        "asserted_at": "2026-10-18T00:00:00Z",
+        "assertion_status": "proposed",
+        "confidence": "low",
+        "description": "No source names a CWE; this mapping is the AI drafter's hypothesis.",
+        "evidence": [
+          "https://samcurry.net/hacking-kia"
+        ],
+        "generated_by": "AI-drafted from the cited write-up (DL-0024)",
+        "predicate": "exploits"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:takeover-realizes",
+      "label": "The takeover path realizes the silent-takeover threat",
+      "properties": {
+        "assertion_status": "proposed",
+        "confidence": "medium",
+        "evidence": [
+          "https://samcurry.net/hacking-kia"
+        ],
+        "generated_by": "AI-drafted from the cited write-up (DL-0024)",
+        "predicate": "realizes_threat"
+      }
+    },
+    {
+      "domain_type": "LifecyclePhase",
+      "id": "lifecycle-phase:operation",
+      "label": "Operation / use",
+      "properties": {
+        "code": "operation"
+      }
+    },
+    {
+      "domain_type": "Asset",
+      "id": "asset:owner-personal-data",
+      "label": "Owner's name, phone number, e-mail and physical address",
+      "properties": {
+        "security_properties": [
+          "confidentiality"
+        ]
+      }
+    },
+    {
+      "domain_type": "Asset",
+      "id": "asset:vehicle-location",
+      "label": "Vehicle location",
+      "properties": {
+        "security_properties": [
+          "confidentiality"
+        ]
+      }
+    },
+    {
+      "domain_type": "Asset",
+      "id": "asset:account-roles",
+      "label": "Who is the vehicle's primary account holder",
+      "properties": {
+        "description": "Decides who may send remote commands.",
+        "security_properties": [
+          "integrity",
+          "authorization"
+        ]
+      }
+    },
+    {
+      "domain_type": "Asset",
+      "id": "asset:remote-commands",
+      "label": "Remote lock, unlock, start, stop, horn and lights",
+      "properties": {
+        "security_properties": [
+          "authorization",
+          "integrity"
+        ]
+      }
+    },
+    {
+      "domain_type": "TrustBoundary",
+      "id": "trust-boundary:manufacturer-cloud",
+      "label": "Manufacturer web services",
+      "properties": {}
+    },
+    {
+      "domain_type": "TrustBoundary",
+      "id": "trust-boundary:dealer-functions",
+      "label": "Dealer-only functions",
+      "properties": {
+        "description": "Meant for dealership staff only. The flaw: the dealer website accepted the owners-site registration request, so anyone could get a dealer access token."
+      }
+    },
+    {
+      "domain_type": "TrustBoundary",
+      "id": "trust-boundary:vehicle",
+      "label": "The vehicle",
+      "properties": {}
+    },
+    {
+      "domain_type": "DataFlow",
+      "id": "data-flow:owner-lookup",
+      "label": "Dealer API returns the owner's record for a VIN",
+      "properties": {
+        "protocol": "HTTPS"
+      }
+    },
+    {
+      "domain_type": "DataFlow",
+      "id": "data-flow:account-change",
+      "label": "Dealer portal changes the vehicle's account holders",
+      "properties": {
+        "protocol": "HTTPS"
+      }
+    },
+    {
+      "domain_type": "DataFlow",
+      "id": "data-flow:remote-command",
+      "label": "Backend sends a remote command to the vehicle",
+      "properties": {}
+    },
+    {
+      "domain_type": "DataFlow",
+      "id": "data-flow:location-report",
+      "label": "Vehicle reports its location",
+      "properties": {}
+    }
+  ]
+}

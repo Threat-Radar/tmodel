@@ -1,0 +1,32 @@
+{
+  "file": "mvp-18-shared-vuln-vex-override.yaml",
+  "goal": "threat-instance:side-channel-seed-leak",
+  "paths": [
+    {
+      "authored_path": "attack-path:side-channel-seed",
+      "goal_step": "attack-step:recover-seed",
+      "review": {
+        "assertion_status": "proposed",
+        "review_status": "changes_requested",
+        "reviewed": false
+      },
+      "steps": [
+        "attack-step:power-side-channel",
+        "attack-step:recover-seed"
+      ]
+    },
+    {
+      "authored_path": "attack-path:side-channel-seed",
+      "goal_step": "attack-step:recover-seed",
+      "review": {
+        "assertion_status": "proposed",
+        "review_status": "changes_requested",
+        "reviewed": false
+      },
+      "steps": [
+        "attack-step:emi-side-channel",
+        "attack-step:recover-seed"
+      ]
+    }
+  ]
+}

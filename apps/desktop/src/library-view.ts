@@ -250,7 +250,7 @@ export class LibraryDocumentsView {
 
   private renderRowDetails(row: LibraryTableRow, loading: boolean): void {
     this.renderDetailIdentity(row.title, row.type, row.status, row.id);
-    this.elements.detailStatus.textContent = loading ? "Loading full record details…" : "";
+    this.elements.detailStatus.textContent = loading ? "Loading document details…" : "";
     this.renderDetailList([
       ["Topic", row.topic],
       ["Date", row.date],
@@ -379,7 +379,7 @@ export class LibraryDocumentsView {
     this.elements.detailRecordStatus.textContent = "";
     this.elements.detailRecordStatus.hidden = true;
     this.elements.detailId.textContent = "";
-    this.elements.detailStatus.textContent = "Choose a row to inspect its full library record.";
+    this.elements.detailStatus.textContent = "Choose a row to inspect its document details.";
     this.elements.detailList.replaceChildren();
     this.renderEvidence(0, 0);
     this.renderAssessment(null, {});

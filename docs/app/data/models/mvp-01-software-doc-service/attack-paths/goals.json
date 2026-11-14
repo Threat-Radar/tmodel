@@ -1,0 +1,12 @@
+{
+  "goals": [
+    {
+      "file": "goal-001.json",
+      "goal": "threat-instance:imds-pivot"
+    },
+    {
+      "file": "goal-002.json",
+      "goal": "threat-instance:xxe-file-read"
+    }
+  ]
+}

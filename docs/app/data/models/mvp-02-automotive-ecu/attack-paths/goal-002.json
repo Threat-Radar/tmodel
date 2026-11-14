@@ -1,0 +1,20 @@
+{
+  "file": "mvp-02-automotive-ecu.yaml",
+  "goal": "threat-instance:remote-diag-injection",
+  "paths": [
+    {
+      "authored_path": "attack-path:remote-diag-injection",
+      "goal_step": "attack-step:inject-can-frame",
+      "review": {
+        "assertion_status": "accepted",
+        "review_status": "accepted",
+        "reviewed": true
+      },
+      "steps": [
+        "attack-step:reach-modem-over-cellular",
+        "attack-step:bypass-diag-auth",
+        "attack-step:inject-can-frame"
+      ]
+    }
+  ]
+}

@@ -4,9 +4,9 @@ id: DL-0037
 title: "TARA draft v0 for mvp-02: the #184 fixes and a clause 15 page (#202 item 3)"
 type: process
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 date: "2026-11-04"
-updated: "2026-11-04"
+updated: "2026-11-10"
 record: DL-0037
 bears_on: [DEC-001a, DEC-003]
 defers_to: ARCH-0001
@@ -14,8 +14,8 @@ defers_to: ARCH-0001
 
 # DL-0037: TARA draft v0 for mvp-02 (#202 item 3)
 
-This is an AI-assisted design record (per `CLAUDE.md`). Claude Code (claude-opus-5-5) drafted it in
-@Clovier's session, as one agent with no subagents. It produced the mvp-02 changes, the core
+This is an AI-assisted design record (per `CLAUDE.md`). Claude Code drafted it.
+It produced the mvp-02 changes, the core
 container's `assets` collection, the wider reference check and the TARA page builder. @Clovier made
 the two rating calls recorded below. **Proposal only.** No `DEC-*` is accepted here, and the page is
 not the governed TARA of DL-0027.
@@ -76,7 +76,8 @@ is paraphrased from RPT-0007 and cited by clause, provision and table ids only (
   plain data, section by section; `render()` only formats it.
 - **No judgement of its own.** Every rating, risk value and decision is read from the model. The
   build fails where a reason names a different level from the rating beside it. Nothing is computed
-  from Table H.8, which would pick a risk metric (DEC-003 is open).
+  from Table H.8: the page shows only what the model records, and calculating risk belongs in the
+  engine (#63). See the correction at the end.
 - **Sections in clause order:** item and scope (9.3), assets and damage scenarios (15.3), threat
   scenarios (15.4), impact (15.5), attack paths with the CVE to CWE to CAPEC chain (15.6),
   feasibility (15.7), risk values (15.8), treatment (15.9), and the requirements the TARA produced,
@@ -128,7 +129,7 @@ is paraphrased from RPT-0007 and cited by clause, provision and table ids only (
 
 ## What a human accepted
 
-- @Clovier, 2026-11-04, in the session: V3, **High by attack vector**, which #184 offered against
+- @Clovier, 2026-11-04: V3, **High by attack vector**, which #184 offered against
   keeping medium with attack-potential inputs.
 - @Clovier, 2026-11-04: **the impact ratings follow the Annex F examples** (RPT-0007 §3.1).
   Operational goes from major to severe, since braking is a core vehicle function behaving
@@ -146,8 +147,9 @@ human reviews them on the PR.
 - **Medium feasibility with attack-potential inputs** (V3's other option): not chosen by @Clovier;
   #184 notes High changes fewer lines.
 - **The site's stdlib YAML reader** for the builder: it misreads the vectors (above).
-- **Computing risk values in the builder** from Table H.8: that would select a risk metric while
-  DEC-003 is open, and copy the standard's table into code.
+- **Computing risk values in the builder** from Table H.8: the page shows only what the model
+  records, and this would copy the standard's table into code. (Reason corrected on 2026-11-10; see
+  the end.)
 - **Projecting Assets in the engine's `/graph`**: an engine change outside this item. The engine's
   collection map does not include `assets` yet, so the app's Graph tab does not show them.
 - **A gateway Component** added to mvp-02 just to give the requirement an `applies_to`.
@@ -166,3 +168,12 @@ human reviews them on the PR.
 
 `bin/validate-archdoc` clean. LinkML validation, `check-edges.py`, the engine tests, `render_tara.py
 --check`, `check_links.py` and `check_identities.py` pass.
+
+## Correction (2026-11-10)
+
+"The page" and "What was rejected" first said that computing risk values from Table H.8 "would
+select a risk metric while DEC-003 is open". That was out of date: ADR-0006 had accepted DEC-003 on
+2026-10-08, and it says to derive risk by the 21434 table. The repo's `CLAUDE.md` also still says
+every `DEC-*` is open. Both lines now give the reason that holds: the page shows only what the model
+records, and calculating risk belongs in the engine (#63 Part 2). The page and its builder are
+unchanged. Found while reviewing #229.

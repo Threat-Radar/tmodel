@@ -2,16 +2,25 @@ import { describe, expect, it } from "vitest";
 import fixture from "./fixtures/proposals-mvp-01.json";
 import { EngineProposalsDataProvider, parseProposals } from "./engine-proposals-provider";
 import {
+  savedViewFile,
   savedViewLabel,
   savedViewPresentation,
   SavedViewsPanel,
   type SavedViewElements,
 } from "./graph-saved-views";
-import type { ProposalsResponse, SavedView } from "./proposal-types";
+import type { ProposalsDataProvider, ProposalsResponse, SavedView } from "./proposal-types";
 
 const DATA = parseProposals(fixture);
 
 describe("saved KG views on the Graph tab (DL-0046)", () => {
+  it("follows the active model picker choice instead of the startup URL", () => {
+    expect(savedViewFile("mvp-02-automotive-ecu.yaml", "mvp-01-software-doc-service.yaml"))
+      .toBe("mvp-02-automotive-ecu.yaml");
+    expect(savedViewFile(undefined, "mvp-03-hierarchical-system.yaml"))
+      .toBe("mvp-03-hierarchical-system.yaml");
+    expect(savedViewFile()).toBe("mvp-01-software-doc-service.yaml");
+  });
+
   it("lists the model's views, then proposed ones marked proposed in the label", async () => {
     const { panel, elements } = harness();
     await panel.load();
@@ -59,6 +68,22 @@ describe("saved KG views on the Graph tab (DL-0046)", () => {
     expect(elements.status.textContent).toContain("Saved views unavailable: boom");
   });
 
+  it("does not let an older model's pending response reclaim the shared toolbar", async () => {
+    let resolve!: (data: ProposalsResponse) => void;
+    const provider: ProposalsDataProvider = {
+      getProposals: () => new Promise((done) => { resolve = done; }),
+    };
+    const { panel, elements } = harness(DATA, false, provider);
+    const loading = panel.load();
+    panel.dispose();
+    resolve(DATA);
+    await loading;
+    expect(elements.select.disabled).toBe(true);
+    expect(elements.select.children.map((child) => child.textContent)).toEqual(["No saved views"]);
+    expect(elements.summary.textContent).toBe("Pending proposals (0)");
+    expect(elements.list.children).toHaveLength(0);
+  });
+
   it("dims what is outside the view", () => {
     const p = savedViewPresentation({
       nodes: [node("a"), node("b"), node("c")],
@@ -96,7 +121,11 @@ describe("engine proposals provider", () => {
   });
 });
 
-function harness(data: ProposalsResponse = DATA, fail = false) {
+function harness(
+  data: ProposalsResponse = DATA,
+  fail = false,
+  provider?: ProposalsDataProvider,
+) {
   const focused: (readonly string[] | undefined)[] = [];
   const doc = { createElement: (tag: string) => new FakeElement(tag) } as unknown as Document;
   const elements = {
@@ -107,7 +136,7 @@ function harness(data: ProposalsResponse = DATA, fail = false) {
     list: new FakeElement("ul"),
   };
   const panel = new SavedViewsPanel(
-    { getProposals: async () => { if (fail) throw new Error("boom"); return data; } },
+    provider ?? { getProposals: async () => { if (fail) throw new Error("boom"); return data; } },
     "mvp-01-software-doc-service.yaml",
     elements as unknown as SavedViewElements,
     async (ids) => { focused.push(ids); },

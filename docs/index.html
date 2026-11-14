@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>tmodel — threat modeling</title>
-  <meta name="description" content="tmodel is a knowledge-graph threat-modeling application. This page is a static distribution mock. No binary is published.">
+  <meta name="description" content="tmodel is a knowledge-graph threat-modeling application. Read example threat models, their attack paths and a TARA draft, and get the development build.">
   <meta name="referrer" content="no-referrer">
   <style>
     :root {
@@ -17,6 +17,12 @@
       --accent-ink: #f4f7f5;
       --warn: #6b4e16;
       --warn-bg: #f3ead3;
+      --ok: #14532d;
+      --ok-bg: #e3f3e8;
+      --no: #7f1d1d;
+      --no-bg: #fbe7e7;
+      --open: #6b4e00;
+      --open-bg: #fbf3d6;
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -49,7 +55,7 @@
       color: var(--ink);
       text-decoration: none;
     }
-    nav { display: flex; gap: 18px; font-size: 0.92rem; }
+    nav { display: flex; flex-wrap: wrap; gap: 18px; font-size: 0.92rem; }
     nav a { color: var(--muted); text-decoration: none; }
     nav a:hover { color: var(--ink); }
     .hero { padding: 56px 0 28px; }
@@ -68,7 +74,7 @@
       letter-spacing: -0.035em;
       font-weight: 640;
     }
-    .lede { margin: 0; max-width: 38rem; color: var(--muted); font-size: 1.08rem; }
+    .lede { margin: 0; max-width: 40rem; color: var(--muted); font-size: 1.08rem; }
     .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
     .btn {
       display: inline-block;
@@ -103,7 +109,7 @@
     }
     .grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 14px;
     }
     .card {
@@ -111,25 +117,97 @@
       border: 1px solid var(--line);
       border-radius: 12px;
       padding: 16px 16px 14px;
+      display: flex;
+      flex-direction: column;
     }
     .card h3 { margin: 0 0 4px; font-size: 1.05rem; }
+    .card p { margin: 0 0 12px; font-size: 0.95rem; }
+    .card .go { margin-top: auto; font-weight: 600; font-size: 0.95rem; }
     .meta { margin: 0 0 12px; color: var(--muted); font-size: 0.88rem; }
-    .card .btn { width: 100%; text-align: center; }
+    figure { margin: 0; }
+    .shot {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px;
+    }
+    .shot a { display: block; }
+    .shot img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+    }
+    .shot figcaption { padding: 10px 4px 2px; font-size: 0.92rem; color: var(--muted); }
+    .shot figcaption b { color: var(--ink); }
+    .shots { display: grid; gap: 14px; }
+    .shots .pair { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .table-scroll { overflow-x: auto; }
+    table.models {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      font-size: 0.93rem;
+    }
+    table.models th, table.models td {
+      text-align: left;
+      vertical-align: top;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    table.models th {
+      font-size: 0.76rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 650;
+    }
+    table.models tr:last-child td { border-bottom: 0; }
+    table.models tr.group th {
+      padding-top: 14px;
+      background: var(--paper);
+      color: var(--accent);
+    }
+    .tag {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      line-height: 1.5;
+      border-radius: 999px;
+      padding: 0 8px;
+      margin: 0 4px 4px 0;
+      white-space: nowrap;
+    }
+    .tag.ok { color: var(--ok); background: var(--ok-bg); }
+    .tag.no { color: var(--no); background: var(--no-bg); }
+    .tag.open { color: var(--open); background: var(--open-bg); }
     .facts {
       display: grid;
       grid-template-columns: 8.5rem 1fr;
       gap: 6px 12px;
-      margin: 18px 0 0;
+      margin: 0 0 12px;
       font-size: 0.92rem;
     }
     .facts dt { color: var(--muted); }
     .facts dd { margin: 0; }
-    .steps { margin: 8px 0 0; padding-left: 1.1rem; }
-    .steps li { margin: 6px 0; }
     code, .path {
       font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
       font-size: 0.88em;
     }
+    pre {
+      margin: 0 0 12px;
+      background: #efebe2;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px 14px;
+      overflow-x: auto;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    pre .c { color: var(--muted); }
     .about { display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 28px; }
     .about p { margin: 0 0 12px; }
     .side {
@@ -151,8 +229,17 @@
     }
     footer p { margin: 0 0 6px; }
     @media (max-width: 760px) {
-      .grid, .about { grid-template-columns: 1fr; }
+      .grid, .about, .shots .pair { grid-template-columns: 1fr; }
       .bar { flex-direction: column; align-items: flex-start; }
+      .facts { grid-template-columns: 1fr; gap: 0 12px; }
+      .facts dd { margin-bottom: 6px; }
+      table.models thead { display: none; }
+      table.models tr.group th { display: block; }
+      table.models, table.models tbody, table.models tr, table.models td { display: block; width: 100%; }
+      table.models td { border-bottom: 0; padding: 4px 12px; }
+      table.models td:first-child { padding-top: 12px; font-weight: 600; }
+      table.models td:last-child { padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+      table.models tr:last-child td:last-child { border-bottom: 0; }
     }
   </style>
 </head>
@@ -161,10 +248,11 @@
     <div class="wrap bar">
       <a class="mark" href="./">tmodel</a>
       <nav>
-        <a href="#download">Download</a>
-        <a href="#install">Install</a>
-        <a href="bibliography/index.html">Bibliography</a>
+        <a href="app/?model=mvp-02-automotive-ecu">Try the app</a>
+        <a href="models/index.html">Example models</a>
         <a href="reports/index.html">Reports</a>
+        <a href="bibliography/index.html">Bibliography</a>
+        <a href="#get">Get tmodel</a>
         <a href="#about">About</a>
       </nav>
     </div>
@@ -174,76 +262,178 @@
     <div class="wrap hero">
       <p class="kicker">Threat-Radar</p>
       <h1>Threat models you can review.</h1>
-      <p class="lede">tmodel is a desktop application for building a knowledge-graph threat model: assets, weaknesses, attack paths, mitigations, and a human verdict on every claim an assistant proposes.</p>
+      <p class="lede">tmodel builds a threat model as a knowledge graph: products and components, weaknesses, threats, attack paths, damage scenarios and mitigations. Anything an assistant proposes stays a hypothesis until a person accepts it, and every view shows which is which.</p>
       <div class="actions">
-        <a class="btn btn-primary" href="#download">Get the app</a>
-        <a class="btn btn-quiet" href="#about">Project summary</a>
+        <a class="btn btn-primary" href="app/?model=mvp-02-automotive-ecu">Try the browser preview</a>
+        <a class="btn btn-quiet" href="models/index.html">Read an example threat model</a>
+        <a class="btn btn-quiet" href="#get">Get tmodel</a>
       </div>
     </div>
 
-    <section id="download">
+    <section id="see-it">
       <div class="wrap">
-        <h2>Download</h2>
-        <p class="section-lead">Product-grade installers will be listed here. This page is the mock: the buttons do not fetch a file.</p>
-        <p class="notice" id="not-a-release">Mock only. No binary, disk image, archive, or installer is published from this repository. There is no checksum to verify because there is no artifact.</p>
-        <div class="grid">
-          <article class="card">
-            <h3>macOS</h3>
-            <p class="meta">Apple silicon and Intel · mock</p>
-            <a class="btn btn-primary" href="#not-a-release">Download for macOS</a>
-          </article>
-          <article class="card">
-            <h3>Linux</h3>
-            <p class="meta">x86_64 · mock</p>
-            <a class="btn btn-primary" href="#not-a-release">Download for Linux</a>
-          </article>
-          <article class="card">
-            <h3>Windows</h3>
-            <p class="meta">64-bit · mock</p>
-            <a class="btn btn-primary" href="#not-a-release">Download for Windows</a>
-          </article>
+        <h2>What it looks like</h2>
+        <p class="section-lead">The desktop app with the automotive example, a telematics control unit, loaded. The same report renderer writes the example pages on this site.</p>
+        <div class="shots">
+          <figure class="shot">
+            <a href="img/app-model-report.png"><img src="img/app-model-report.png" width="1280" height="800" alt="The tmodel Model report view for the Telematics Control Unit example: an example-data banner, a count of two threats with one accepted and one rejected, and a table of products and components."></a>
+            <figcaption><b>Model report.</b> A threat model read in the order a TARA reads it: assets and components, damage scenarios, threats, attack paths, mitigations and risk. Review counts sit at the top.</figcaption>
+          </figure>
+          <div class="pair">
+            <figure class="shot">
+              <a href="img/app-attack-path.png"><img src="img/app-attack-path.png" width="1280" height="800" loading="lazy" alt="The Attack paths view: four steps joined by an OR gate lead to a threat, a damage scenario and a mitigation. A red banner says the path was rejected by the reviewer."></a>
+              <figcaption><b>Attack path.</b> Steps run left to right, with AND/OR where branches join, then the threat, its damage and its mitigations. This AI-proposed path was rejected, and the view says so.</figcaption>
+            </figure>
+            <figure class="shot">
+              <a href="img/app-explore-graph.png"><img src="img/app-explore-graph.png" width="1280" height="800" loading="lazy" alt="The Explore graph view: a list of loaded objects, a node-and-edge graph coloured by type and review status, and the properties of the selected threat."></a>
+              <figcaption><b>Explore graph.</b> For model developers: every object and relationship, coloured by type, with the review status on each edge.</figcaption>
+            </figure>
+          </div>
         </div>
-        <dl class="facts">
-          <dt>Version</dt>
-          <dd>0.0.0-mock</dd>
-          <dt>Channel</dt>
-          <dd>none — not a release</dd>
-          <dt>Integrity</dt>
-          <dd>sha256 will be printed beside a real build</dd>
-        </dl>
       </div>
     </section>
 
-    <section id="install">
+    <section id="produces">
       <div class="wrap">
-        <h2>Install</h2>
-        <p class="section-lead">The steps below are the intended flow. They are not instructions for a file you can obtain today.</p>
+        <h2>What tmodel produces</h2>
+        <p class="section-lead">Everything below is published from the repository and regenerated from its sources. All of it is readable without installing anything.</p>
         <div class="grid">
           <article class="card">
-            <h3>macOS</h3>
-            <ol class="steps">
-              <li>Open the disk image when one is published.</li>
-              <li>Move tmodel into Applications.</li>
-              <li>Launch it and confirm the build stamp matches the checksum on this page.</li>
-            </ol>
+            <h3>Interactive browser preview</h3>
+            <p>Open every example model in the app without installing anything. Switch models and use the report, attack-path, graph and reference-library views with published read-only data.</p>
+            <a class="go" href="app/?model=mvp-02-automotive-ecu">Try the app →</a>
           </article>
           <article class="card">
-            <h3>Linux</h3>
-            <ol class="steps">
-              <li>Unpack the archive when one is published.</li>
-              <li>Place the binary on <span class="path">PATH</span>.</li>
-              <li>Run <code>tmodel --version</code> and compare it with the stamp on this page.</li>
-            </ol>
+            <h3>Threat-model reports</h3>
+            <p>One page per example model: components, damage scenarios, threats, attack paths, mitigations, risk and requirements, as tables. Every threat and path carries its review status.</p>
+            <a class="go" href="models/index.html">Browse the example models →</a>
           </article>
           <article class="card">
-            <h3>Windows</h3>
-            <ol class="steps">
-              <li>Run the installer when one is published.</li>
-              <li>Accept only the local, per-user defaults. No telemetry switch exists.</li>
-              <li>Start tmodel and confirm the build stamp.</li>
-            </ol>
+            <h3>A TARA draft</h3>
+            <p>The telematics example laid out in ISO/SAE 21434 clause 15 order: assets and damage scenarios, impact ratings, threat scenarios, attack feasibility, risk values and a treatment decision per risk. Example data; standard text is paraphrased.</p>
+            <a class="go" href="reports/tara-mvp-02.html">Read the TARA draft →</a>
+          </article>
+          <article class="card">
+            <h3>Research reports</h3>
+            <p>The reviewed research behind the design, such as the secure development lifecycle report and its object model. Each page states its revision and date.</p>
+            <a class="go" href="reports/index.html">Read the reports →</a>
+          </article>
+          <article class="card">
+            <h3>The reference library</h3>
+            <p>The standards, papers and vendor specifications the models and reports cite, each with a summary page. Browse by topic, type or publishing body, or use the crosswalk.</p>
+            <a class="go" href="bibliography/index.html">Open the bibliography →</a>
+          </article>
+          <article class="card">
+            <h3>A secure development lifecycle</h3>
+            <p>tmodel's own SDL as an example: the requirement sets it could follow, the practices it has done, has in progress or lacks, and the evidence for each. Every selection waits for a human decision.</p>
+            <a class="go" href="sdl/index.html">Read the SDL page →</a>
+          </article>
+          <article class="card">
+            <h3>The models as data</h3>
+            <p>Every page here is generated from YAML files in the repository, checked against the project's LinkML schema. Read them, or load them into the engine yourself.</p>
+            <a class="go" href="https://github.com/Threat-Radar/tmodel/tree/main/spec/vectors">Browse the YAML →</a>
           </article>
         </div>
+      </div>
+    </section>
+
+    <section id="examples">
+      <div class="wrap">
+        <h2>Example threat models</h2>
+        <p class="section-lead">All eight examples, as the app's model picker lists them. Each was written to exercise the object model, so none is a security assessment. The proposal examples are AI drafts from published write-ups of real attacks, and name the real products.</p>
+        <div class="table-scroll">
+          <table class="models">
+            <thead>
+              <tr><th>Model</th><th>What it shows</th><th>Review</th></tr>
+            </thead>
+            <tbody>
+              <tr class="group"><th colspan="3">Core examples</th></tr>
+              <tr>
+                <td><a href="models/mvp-02-automotive-ecu.html">Telematics Control Unit (TCU)</a></td>
+                <td>An automotive ECU bridging the cellular network and the in-vehicle CAN. A reviewer accepted one threat and rejected the other. The TARA draft is built from it.</td>
+                <td><span class="tag ok">accepted</span><span class="tag no">rejected</span></td>
+              </tr>
+              <tr>
+                <td><a href="models/mvp-01-software-doc-service.html">Papermill Document Service</a></td>
+                <td>The same model shape in a second domain: an open-source document-rendering microservice.</td>
+                <td><span class="tag ok">accepted</span><span class="tag open">changes requested</span></td>
+              </tr>
+              <tr>
+                <td><a href="models/mvp-03-hierarchical-system.html">Connected-Vehicle System</a></td>
+                <td>A system built from subsystems, an in-vehicle platform and a cloud backend, composed level by level.</td>
+                <td><span class="tag open">changes requested</span><span class="tag open">not reviewed</span></td>
+              </tr>
+              <tr>
+                <td><a href="models/mvp-18-shared-vuln-vex-override.html">Crypto Server Appliance and Edge Sensor</a></td>
+                <td>One vulnerable chip in two products: one is affected, the other is not, and a VEX statement records why.</td>
+                <td><span class="tag open">changes requested</span><span class="tag open">not reviewed</span></td>
+              </tr>
+              <tr class="group"><th colspan="3">Worked examples with governance</th></tr>
+              <tr>
+                <td><a href="models/tv-hardware-brake-ecu.html">Brake ECU</a></td>
+                <td>A safety-critical brake ECU: a physical glitching attack beside the software one, a lifecycle phase, and a governed snapshot of the threat model.</td>
+                <td><span class="tag open">not reviewed</span></td>
+              </tr>
+              <tr>
+                <td><a href="models/tv-software-auth-service.html">Acme Auth Service</a></td>
+                <td>The same governance in software: an open-source authentication and token-refresh service.</td>
+                <td><span class="tag open">changes requested</span><span class="tag open">not reviewed</span></td>
+              </tr>
+              <tr class="group"><th colspan="3">Proposal examples (AI-drafted, unreviewed)</th></tr>
+              <tr>
+                <td><a href="models/pv-01-can-injection-theft.html">Toyota RAV4 (2021): CAN injection theft</a></td>
+                <td>Keyless car theft by injecting messages onto the CAN bus, drafted by AI from the published write-up of the attack.</td>
+                <td><span class="tag open">not reviewed</span></td>
+              </tr>
+              <tr>
+                <td><a href="models/pv-02-dealer-portal-owner-data.html">Kia vehicle with remote services</a></td>
+                <td>Theft of owners' private data through a dealer web portal, drafted by AI from the published write-up of the attack.</td>
+                <td><span class="tag open">not reviewed</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="meta" style="margin-top:12px"><a href="models/index.html">The example models index →</a></p>
+      </div>
+    </section>
+
+    <section id="get">
+      <div class="wrap">
+        <h2>Get tmodel</h2>
+        <p class="section-lead">There is no stable release yet. You can run a development build on a Mac, or build from source anywhere.</p>
+        <div class="grid">
+          <article class="card">
+            <h3>macOS development build</h3>
+            <p class="meta">Apple silicon · built from the main branch · not signed with an Apple Developer ID</p>
+            <p>Rebuilt whenever the app or engine changes on main. macOS blocks the first launch: open System Settings › Privacy &amp; Security and click Open Anyway.</p>
+            <p class="meta">To check the download, the <a href="https://github.com/Threat-Radar/tmodel/releases/tag/latest-main">release page</a> has its SHA-256 checksum and build-provenance attestation.</p>
+            <a class="btn btn-primary" href="https://github.com/Threat-Radar/tmodel/releases/download/latest-main/tmodel_macos_aarch64.dmg">Download for macOS (.dmg)</a>
+          </article>
+          <article class="card">
+            <h3>Build from source</h3>
+            <p class="meta">macOS or Linux · Python 3.11–3.13 · Node.js 22</p>
+            <p>Linux and Windows builds are not published yet, and Windows is untested. The engine and the app run from a checkout in a few minutes; the steps are below.</p>
+            <a class="btn btn-quiet" href="#source">Build from source</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="source">
+      <div class="wrap">
+        <h2>Try it from source</h2>
+        <p class="section-lead">The local engine and the app in a browser tab, with no Rust or native build. The engine listens on 127.0.0.1 only. In a first terminal:</p>
+<pre><code>git clone --recurse-submodules https://github.com/Threat-Radar/tmodel
+cd tmodel
+python3.13 -m venv engine/.venv
+engine/.venv/bin/python -m pip install -e ./engine
+(cd apps/desktop &amp;&amp; npm ci)
+engine/.venv/bin/tmodel serve</code></pre>
+        <p class="section-lead">Leave it running. In a second terminal, from the same folder, start the app and open <code>http://localhost:1420/</code>:</p>
+<pre><code>(cd apps/desktop &amp;&amp; npm run dev)
+<span class="c"># or list attack paths in the terminal</span>
+engine/.venv/bin/tmodel paths spec/vectors/mvp-02-automotive-ecu.yaml</code></pre>
+        <p class="meta">Python 3.11 or 3.12 work too; change <code>python3.13</code> to match. These are the README's <a href="https://github.com/Threat-Radar/tmodel#try-it-in-five-minutes">tested quickstart</a> steps. The native desktop window also needs Rust: <a href="https://github.com/Threat-Radar/tmodel/blob/main/CONTRIBUTING.md#10-the-desktop-app-and-engine--toolchain">CONTRIBUTING §10</a>.</p>
       </div>
     </section>
 
@@ -251,17 +441,17 @@
       <div class="wrap about">
         <div>
           <h2>About this project</h2>
-          <p>tmodel tracks vulnerabilities, threats, weaknesses, assets, attack paths, and mitigations as linked, reviewable nodes, then maps generic threats onto products over a design lifecycle.</p>
+          <p>tmodel tracks vulnerabilities, threats, weaknesses, assets, attack paths and mitigations as linked, reviewable nodes, then maps generic threats onto products over a design lifecycle.</p>
           <p>An attack path from a model or an assistant is a hypothesis until a person with domain knowledge accepts it. Review and annotation are part of the product, not a later export.</p>
-          <p> The architecture and open decisions live in the repository, not on this page.</p>
+          <p>The architecture and open decisions live in the repository, not on this page.</p>
         </div>
         <aside class="side">
-          <h3>This page</h3>
+          <h3>In the repository</h3>
           <ul>
-            <li>Static HTML and CSS only.</li>
-            <li>No scripts, trackers, or remote assets.</li>
-            <li>Publishing rules: <a href="publishing/SKILL.md">skill</a></li>
-            <li>Example input: <a href="publishing/manifest.example.yaml">manifest</a></li>
+            <li><a href="https://github.com/Threat-Radar/tmodel">Source code</a></li>
+            <li><a href="https://github.com/Threat-Radar/tmodel/tree/main/spec/vectors">Example models as YAML</a></li>
+            <li><a href="https://github.com/Threat-Radar/tmodel/tree/main/design-log">Design log</a></li>
+            <li><a href="https://github.com/Threat-Radar/tmodel/issues">Issues</a></li>
           </ul>
         </aside>
       </div>
@@ -270,8 +460,8 @@
 
   <footer>
     <div class="wrap">
-      <p>tmodel · Threat-Radar · distribution mock for GitHub Pages.</p>
-      <p>Source and issues: <a href="https://github.com/Threat-Radar/tmodel">github.com/Threat-Radar/tmodel</a></p>
+      <p>tmodel · Threat-Radar. The example models on this site are illustrative data, not security assessments.</p>
+      <p>This landing page is static HTML and CSS. The app preview uses only same-site scripts and data; neither page has trackers or remote assets.</p>
     </div>
   </footer>
 </body>

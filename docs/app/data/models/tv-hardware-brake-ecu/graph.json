@@ -1,0 +1,832 @@
+{
+  "edges": [
+    {
+      "id": "relationship:product:brake-ecu|composed_of|component:ecu-soc",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "product:brake-ecu",
+      "target": "component:ecu-soc"
+    },
+    {
+      "id": "relationship:product:brake-ecu|composed_of|component:ecu-firmware",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "product:brake-ecu",
+      "target": "component:ecu-firmware"
+    },
+    {
+      "id": "relationship:product:brake-ecu|manufactured_by|party:tier1-supplier",
+      "properties": {},
+      "relationship_type": "manufactured_by",
+      "source": "product:brake-ecu",
+      "target": "party:tier1-supplier"
+    },
+    {
+      "id": "relationship:product:brake-ecu|owned_by|party:fleet-operator",
+      "properties": {},
+      "relationship_type": "owned_by",
+      "source": "product:brake-ecu",
+      "target": "party:fleet-operator"
+    },
+    {
+      "id": "relationship:product:brake-ecu|supplied_by|party:tier1-supplier",
+      "properties": {},
+      "relationship_type": "supplied_by",
+      "source": "product:brake-ecu",
+      "target": "party:tier1-supplier"
+    },
+    {
+      "id": "relationship:product-instance:brake-ecu-unit-00a3|current_phase|lifecycle-phase:operation",
+      "properties": {},
+      "relationship_type": "current_phase",
+      "source": "product-instance:brake-ecu-unit-00a3",
+      "target": "lifecycle-phase:operation"
+    },
+    {
+      "id": "relationship:product-instance:brake-ecu-unit-00a3|of_product|product:brake-ecu",
+      "properties": {},
+      "relationship_type": "of_product",
+      "source": "product-instance:brake-ecu-unit-00a3",
+      "target": "product:brake-ecu"
+    },
+    {
+      "id": "relationship:product-instance:brake-ecu-unit-00a3|owned_by|party:fleet-operator",
+      "properties": {},
+      "relationship_type": "owned_by",
+      "source": "product-instance:brake-ecu-unit-00a3",
+      "target": "party:fleet-operator"
+    },
+    {
+      "id": "relationship:component:ecu-soc|composed_of|component:core-application",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "component:ecu-soc",
+      "target": "component:core-application"
+    },
+    {
+      "id": "relationship:component:ecu-soc|composed_of|component:core-safety",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "component:ecu-soc",
+      "target": "component:core-safety"
+    },
+    {
+      "id": "relationship:threat-instance:fw-tamper|applies_in_phase|lifecycle-phase:maintenance",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "threat-instance:fw-tamper",
+      "target": "lifecycle-phase:maintenance"
+    },
+    {
+      "id": "relationship:threat-instance:fw-tamper|applies_in_phase|lifecycle-phase:operation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "threat-instance:fw-tamper",
+      "target": "lifecycle-phase:operation"
+    },
+    {
+      "id": "relationship:threat-instance:fw-tamper|realizes_damage|damage-scenario:unsafe-braking",
+      "properties": {},
+      "relationship_type": "realizes_damage",
+      "source": "threat-instance:fw-tamper",
+      "target": "damage-scenario:unsafe-braking"
+    },
+    {
+      "id": "relationship:attack-step:gain-physical-access|precedes|attack-step:connect-debug-probe",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:gain-physical-access",
+      "target": "attack-step:connect-debug-probe"
+    },
+    {
+      "id": "relationship:attack-step:connect-debug-probe|precedes|attack-step:bypass-readout-protection",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:connect-debug-probe",
+      "target": "attack-step:bypass-readout-protection"
+    },
+    {
+      "id": "relationship:attack-step:connect-debug-probe|precedes|attack-step:inject-voltage-glitch",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:connect-debug-probe",
+      "target": "attack-step:inject-voltage-glitch"
+    },
+    {
+      "id": "relationship:attack-step:bypass-readout-protection|precedes|attack-step:extract-and-modify-firmware",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:bypass-readout-protection",
+      "target": "attack-step:extract-and-modify-firmware"
+    },
+    {
+      "id": "relationship:attack-step:inject-voltage-glitch|precedes|attack-step:extract-and-modify-firmware",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:inject-voltage-glitch",
+      "target": "attack-step:extract-and-modify-firmware"
+    },
+    {
+      "id": "relationship:attack-step:extract-and-modify-firmware|precedes|attack-step:reflash-unit",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:extract-and-modify-firmware",
+      "target": "attack-step:reflash-unit"
+    },
+    {
+      "id": "relationship:attack-path:fw-tamper-physical|realizes_threat|threat-instance:fw-tamper",
+      "properties": {},
+      "relationship_type": "realizes_threat",
+      "source": "attack-path:fw-tamper-physical",
+      "target": "threat-instance:fw-tamper"
+    },
+    {
+      "id": "relationship:attack-path:fw-tamper-physical|steps|attack-step:gain-physical-access",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:fw-tamper-physical",
+      "target": "attack-step:gain-physical-access"
+    },
+    {
+      "id": "relationship:attack-path:fw-tamper-physical|steps|attack-step:connect-debug-probe",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:fw-tamper-physical",
+      "target": "attack-step:connect-debug-probe"
+    },
+    {
+      "id": "relationship:attack-path:fw-tamper-physical|steps|attack-step:bypass-readout-protection",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:fw-tamper-physical",
+      "target": "attack-step:bypass-readout-protection"
+    },
+    {
+      "id": "relationship:attack-path:fw-tamper-physical|steps|attack-step:inject-voltage-glitch",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:fw-tamper-physical",
+      "target": "attack-step:inject-voltage-glitch"
+    },
+    {
+      "id": "relationship:attack-path:fw-tamper-physical|steps|attack-step:extract-and-modify-firmware",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:fw-tamper-physical",
+      "target": "attack-step:extract-and-modify-firmware"
+    },
+    {
+      "id": "relationship:attack-path:fw-tamper-physical|steps|attack-step:reflash-unit",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:fw-tamper-physical",
+      "target": "attack-step:reflash-unit"
+    },
+    {
+      "id": "relationship:mitigation:secure-boot|applies_in_phase|lifecycle-phase:design",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "mitigation:secure-boot",
+      "target": "lifecycle-phase:design"
+    },
+    {
+      "id": "relationship:mitigation:secure-boot|applies_in_phase|lifecycle-phase:implementation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "mitigation:secure-boot",
+      "target": "lifecycle-phase:implementation"
+    },
+    {
+      "id": "relationship:mitigation:secure-boot|implementation_owner|party:tier1-supplier",
+      "properties": {},
+      "relationship_type": "implementation_owner",
+      "source": "mitigation:secure-boot",
+      "target": "party:tier1-supplier"
+    },
+    {
+      "id": "relationship:mitigation:secure-boot|mitigates|threat-instance:fw-tamper",
+      "properties": {},
+      "relationship_type": "mitigates",
+      "source": "mitigation:secure-boot",
+      "target": "threat-instance:fw-tamper"
+    },
+    {
+      "id": "relationship:mitigation:disable-jtag-production|applies_in_phase|lifecycle-phase:production",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "mitigation:disable-jtag-production",
+      "target": "lifecycle-phase:production"
+    },
+    {
+      "id": "relationship:mitigation:disable-jtag-production|implementation_owner|party:tier1-supplier",
+      "properties": {},
+      "relationship_type": "implementation_owner",
+      "source": "mitigation:disable-jtag-production",
+      "target": "party:tier1-supplier"
+    },
+    {
+      "id": "relationship:mitigation:disable-jtag-production|mitigates|threat-instance:fw-tamper",
+      "properties": {},
+      "relationship_type": "mitigates",
+      "source": "mitigation:disable-jtag-production",
+      "target": "threat-instance:fw-tamper"
+    },
+    {
+      "id": "relationship:risk-score:fw-tamper|attack_paths|attack-path:fw-tamper-physical",
+      "properties": {},
+      "relationship_type": "attack_paths",
+      "source": "risk-score:fw-tamper",
+      "target": "attack-path:fw-tamper-physical"
+    },
+    {
+      "id": "relationship:risk-score:fw-tamper|damage_scenario|damage-scenario:unsafe-braking",
+      "properties": {},
+      "relationship_type": "damage_scenario",
+      "source": "risk-score:fw-tamper",
+      "target": "damage-scenario:unsafe-braking"
+    },
+    {
+      "id": "relationship:risk-score:fw-tamper|for_stakeholder|party:fleet-operator",
+      "properties": {},
+      "relationship_type": "for_stakeholder",
+      "source": "risk-score:fw-tamper",
+      "target": "party:fleet-operator"
+    },
+    {
+      "id": "relationship:risk-score:fw-tamper|threat|threat-instance:fw-tamper",
+      "properties": {},
+      "relationship_type": "threat",
+      "source": "risk-score:fw-tamper",
+      "target": "threat-instance:fw-tamper"
+    },
+    {
+      "id": "relationship:review:hw-map|reviewer|party:hw-lead",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:hw-map",
+      "target": "party:hw-lead"
+    },
+    {
+      "id": "relationship:review:hw-map|reviews|assertion:fw-weakness-map",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:hw-map",
+      "target": "assertion:fw-weakness-map"
+    },
+    {
+      "id": "relationship:review:ai-glitch|reviewer|party:hw-lead",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:ai-glitch",
+      "target": "party:hw-lead"
+    },
+    {
+      "id": "relationship:review:ai-glitch|reviews|assertion:ai-glitch-step",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:ai-glitch",
+      "target": "assertion:ai-glitch-step"
+    },
+    {
+      "id": "relationship:review:tm-hw-approval|reviewer|party:hw-lead",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:tm-hw-approval",
+      "target": "party:hw-lead"
+    },
+    {
+      "id": "relationship:review:tm-hw-approval|reviews|assertion:tm-hw-scope",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:tm-hw-approval",
+      "target": "assertion:tm-hw-scope"
+    },
+    {
+      "id": "relationship:assertion:fw-weakness-map|object|attack-pattern:capec-401",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:fw-weakness-map",
+      "target": "attack-pattern:capec-401"
+    },
+    {
+      "id": "relationship:assertion:fw-weakness-map|subject|weakness:cwe-1191",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:fw-weakness-map",
+      "target": "weakness:cwe-1191"
+    },
+    {
+      "id": "relationship:assertion:ai-glitch-step|object|attack-path:fw-tamper-physical",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:ai-glitch-step",
+      "target": "attack-path:fw-tamper-physical"
+    },
+    {
+      "id": "relationship:assertion:ai-glitch-step|subject|attack-step:inject-voltage-glitch",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:ai-glitch-step",
+      "target": "attack-step:inject-voltage-glitch"
+    },
+    {
+      "id": "relationship:assertion:tm-hw-scope|object|product:brake-ecu",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:tm-hw-scope",
+      "target": "product:brake-ecu"
+    },
+    {
+      "id": "relationship:assertion:tm-hw-scope|subject|threat-model:brake-ecu-v1",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:tm-hw-scope",
+      "target": "threat-model:brake-ecu-v1"
+    },
+    {
+      "id": "relationship:deployment:brake-ecu-field|environment|environment:vehicle-field",
+      "properties": {},
+      "relationship_type": "environment",
+      "source": "deployment:brake-ecu-field",
+      "target": "environment:vehicle-field"
+    },
+    {
+      "id": "relationship:deployment:brake-ecu-field|product_instance|product-instance:brake-ecu-unit-00a3",
+      "properties": {},
+      "relationship_type": "product_instance",
+      "source": "deployment:brake-ecu-field",
+      "target": "product-instance:brake-ecu-unit-00a3"
+    },
+    {
+      "id": "relationship:threat-model:brake-ecu-v1|approved_by|review:tm-hw-approval",
+      "properties": {},
+      "relationship_type": "approved_by",
+      "source": "threat-model:brake-ecu-v1",
+      "target": "review:tm-hw-approval"
+    },
+    {
+      "id": "relationship:threat-model:brake-ecu-v1|members|threat-instance:fw-tamper",
+      "properties": {},
+      "relationship_type": "members",
+      "source": "threat-model:brake-ecu-v1",
+      "target": "threat-instance:fw-tamper"
+    },
+    {
+      "id": "relationship:threat-model:brake-ecu-v1|members|attack-path:fw-tamper-physical",
+      "properties": {},
+      "relationship_type": "members",
+      "source": "threat-model:brake-ecu-v1",
+      "target": "attack-path:fw-tamper-physical"
+    },
+    {
+      "id": "relationship:threat-model:brake-ecu-v1|members|component:ecu-soc",
+      "properties": {},
+      "relationship_type": "members",
+      "source": "threat-model:brake-ecu-v1",
+      "target": "component:ecu-soc"
+    },
+    {
+      "id": "relationship:threat-model:brake-ecu-v1|members|component:ecu-firmware",
+      "properties": {},
+      "relationship_type": "members",
+      "source": "threat-model:brake-ecu-v1",
+      "target": "component:ecu-firmware"
+    },
+    {
+      "id": "relationship:threat-model:brake-ecu-v1|members|product:brake-ecu",
+      "properties": {},
+      "relationship_type": "members",
+      "source": "threat-model:brake-ecu-v1",
+      "target": "product:brake-ecu"
+    },
+    {
+      "id": "relationship:threat-model:brake-ecu-v1|owner|party:hw-lead",
+      "properties": {},
+      "relationship_type": "owner",
+      "source": "threat-model:brake-ecu-v1",
+      "target": "party:hw-lead"
+    },
+    {
+      "id": "relationship:weakness:cwe-1191|exploited_by|attack-pattern:capec-401",
+      "properties": {
+        "assertion_ids": [
+          "assertion:fw-weakness-map"
+        ],
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "review_ids": [
+          "review:hw-map"
+        ],
+        "review_status": "accepted"
+      },
+      "relationship_type": "exploited_by",
+      "source": "weakness:cwe-1191",
+      "target": "attack-pattern:capec-401"
+    },
+    {
+      "id": "relationship:attack-step:inject-voltage-glitch|contributes_to|attack-path:fw-tamper-physical",
+      "properties": {
+        "assertion_ids": [
+          "assertion:ai-glitch-step"
+        ],
+        "assertion_status": "proposed",
+        "confidence": "low",
+        "review_ids": [
+          "review:ai-glitch"
+        ],
+        "review_status": "changes_requested"
+      },
+      "relationship_type": "contributes_to",
+      "source": "attack-step:inject-voltage-glitch",
+      "target": "attack-path:fw-tamper-physical"
+    },
+    {
+      "id": "relationship:threat-model:brake-ecu-v1|scope_approved|product:brake-ecu",
+      "properties": {
+        "assertion_ids": [
+          "assertion:tm-hw-scope"
+        ],
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "review_ids": [
+          "review:tm-hw-approval"
+        ],
+        "review_status": "accepted"
+      },
+      "relationship_type": "scope_approved",
+      "source": "threat-model:brake-ecu-v1",
+      "target": "product:brake-ecu"
+    }
+  ],
+  "file": "tv-hardware-brake-ecu.yaml",
+  "nodes": [
+    {
+      "domain_type": "Party",
+      "id": "party:ecu-oem",
+      "label": "Vehicle OEM",
+      "properties": {
+        "classifications": [
+          "manufacturer"
+        ],
+        "party_kind": "organization"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:tier1-supplier",
+      "label": "Tier-1 ECU supplier",
+      "properties": {
+        "classifications": [
+          "supplier"
+        ],
+        "party_kind": "organization"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:fleet-operator",
+      "label": "Fleet operator",
+      "properties": {
+        "classifications": [
+          "asset-owner"
+        ],
+        "description": "Owns deployed units; the stakeholder safety impact is reported for.",
+        "party_kind": "organization"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:hw-lead",
+      "label": "@hw-lead",
+      "properties": {
+        "description": "Human hardware-security reviewer / threat-model owner (github id, role).",
+        "party_kind": "person"
+      }
+    },
+    {
+      "domain_type": "Product",
+      "id": "product:brake-ecu",
+      "label": "Brake ECU",
+      "properties": {
+        "description": "Safety-critical braking electronic control unit.",
+        "identifiers": [
+          "cpe:2.3:o:acme_auto:brake_ecu:-:*:*:*:*:*:*:*",
+          "oem-part:ECU-BRK-0042"
+        ]
+      }
+    },
+    {
+      "domain_type": "ProductInstance",
+      "id": "product-instance:brake-ecu-unit-00a3",
+      "label": "Brake ECU unit 00A3",
+      "properties": {
+        "description": "A fielded unit. Hardware instance identity is the firmware image digest + a hardware part/serial — the HBOM/firmware form of ADR-0002 instance identity, carried as opaque `identifiers`.",
+        "identifiers": [
+          "swid:brake-ecu-fw-2.4.1",
+          "sha256:9f2c1a7e4d6b9c0f1a2b3c4d5e6f70819a2b3c4d5e6f7081a2b3c4d5e6f70819",
+          "hw-serial:BRK-00A3-2026W24"
+        ],
+        "valid_from": "2026-06-15T00:00:00Z"
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:ecu-soc",
+      "label": "ECU system-on-chip",
+      "properties": {
+        "description": "Dual-core SoC; compute cores are structural sub-components (§3).",
+        "identifiers": [
+          "cpe:2.3:h:chipco:soc_x200:-:*:*:*:*:*:*:*"
+        ]
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:core-application",
+      "label": "Application core",
+      "properties": {
+        "description": "General-purpose compute core.",
+        "identifiers": [
+          "hw-core:soc_x200.app"
+        ]
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:core-safety",
+      "label": "Lockstep safety core",
+      "properties": {
+        "description": "Redundant lockstep core for ASIL-rated functions.",
+        "identifiers": [
+          "hw-core:soc_x200.safety"
+        ]
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:ecu-firmware",
+      "label": "ECU firmware image",
+      "properties": {
+        "description": "The signed firmware artifact; its digest is the instance identity above.",
+        "identifiers": [
+          "swid:brake-ecu-fw-2.4.1",
+          "sha256:9f2c1a7e4d6b9c0f1a2b3c4d5e6f70819a2b3c4d5e6f7081a2b3c4d5e6f70819"
+        ]
+      }
+    },
+    {
+      "domain_type": "Weakness",
+      "id": "weakness:cwe-1191",
+      "label": "On-Chip Debug and Test Interface With Improper Access Control",
+      "properties": {
+        "catalog_ref": "CWE-1191"
+      }
+    },
+    {
+      "domain_type": "AttackPattern",
+      "id": "attack-pattern:capec-401",
+      "label": "Physically Hacking Hardware",
+      "properties": {
+        "catalog_ref": "CAPEC-401"
+      }
+    },
+    {
+      "domain_type": "ThreatInstance",
+      "id": "threat-instance:fw-tamper",
+      "label": "Unauthenticated firmware replacement via exposed debug interface",
+      "properties": {
+        "description": "Human-reviewed STRIDE + hardware-TARA threat.",
+        "method_facet": [
+          "stride"
+        ],
+        "source_method": "stride + hw-TARA (human-elicited, reviewed)",
+        "violates_property": "S authentication / T integrity"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:gain-physical-access",
+      "label": "Gain physical access to the ECU",
+      "properties": {
+        "kill_chain_phase": "access"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:connect-debug-probe",
+      "label": "Connect a debug/JTAG probe",
+      "properties": {}
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:bypass-readout-protection",
+      "label": "Bypass firmware readout protection",
+      "properties": {}
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:inject-voltage-glitch",
+      "label": "Inject a voltage glitch to defeat the secure-boot check",
+      "properties": {}
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:extract-and-modify-firmware",
+      "label": "Extract and modify the firmware image",
+      "properties": {
+        "description": "Requires BOTH readout bypass AND a successful glitch — an AND gate (§2a).",
+        "gate": "and_gate"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:reflash-unit",
+      "label": "Reflash the unit with malicious firmware",
+      "properties": {
+        "kill_chain_phase": "installation"
+      }
+    },
+    {
+      "domain_type": "AttackPath",
+      "id": "attack-path:fw-tamper-physical",
+      "label": "Physical firmware-tamper path",
+      "properties": {
+        "attack_feasibility": "low",
+        "description": "A different, physical/glitch path (vs the software deserialization path)."
+      }
+    },
+    {
+      "domain_type": "DamageScenario",
+      "id": "damage-scenario:unsafe-braking",
+      "label": "Malicious firmware disables ABS → unsafe braking",
+      "properties": {
+        "description": "Safety-relevant damage; S/F/O/P impact lives on RiskScore."
+      }
+    },
+    {
+      "domain_type": "Mitigation",
+      "id": "mitigation:secure-boot",
+      "label": "Verified secure boot",
+      "properties": {
+        "catalog_ref": "D3FEND:D3-BA",
+        "description": "Reject unsigned firmware at boot.",
+        "mitigation_status": "complete"
+      }
+    },
+    {
+      "domain_type": "Mitigation",
+      "id": "mitigation:disable-jtag-production",
+      "label": "Disable/lock JTAG in production",
+      "properties": {
+        "catalog_ref": "D3FEND:D3-DI",
+        "external_refs": [
+          "JIRA-ECU-77"
+        ],
+        "mitigation_status": "in_progress"
+      }
+    },
+    {
+      "domain_type": "RiskScore",
+      "id": "risk-score:fw-tamper",
+      "label": "Risk — firmware tamper",
+      "properties": {
+        "description": "Composite vector (ADR-0006); safety-dominated, low feasibility.",
+        "feasibility": "low",
+        "impact": "{\"financial\": \"moderate\", \"operational\": \"major\", \"privacy\": \"negligible\", \"safety\": \"severe\"}",
+        "mitigation_status": "in_progress",
+        "risk": "safety 4 (severe impact, low feasibility; 1–5 per 21434 M(I,F)); shown with its inputs"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:hw-map",
+      "label": "Review — accept CWE↔CAPEC mapping",
+      "properties": {
+        "justification": "Debug-interface weakness maps to the physical-hardware attack pattern.",
+        "priority": "high",
+        "review_status": "accepted"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:ai-glitch",
+      "label": "Review — AI-proposed glitch step (changes requested)",
+      "properties": {
+        "justification": "AI-proposed step; glitch feasibility against this SoC revision is unconfirmed. Keep as a flagged hypothesis — do NOT present as reviewed.",
+        "priority": "medium",
+        "review_status": "changes_requested"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:tm-hw-approval",
+      "label": "Review — approve Brake-ECU threat model v1",
+      "properties": {
+        "justification": "Scope reviewed; secure-boot complete, JTAG-lockdown in progress and tracked.",
+        "priority": "high",
+        "review_status": "accepted"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:fw-weakness-map",
+      "label": "CWE-1191 is exploited by CAPEC-401",
+      "properties": {
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "predicate": "exploited_by"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:ai-glitch-step",
+      "label": "AI-proposed — voltage-glitch step belongs to the tamper path",
+      "properties": {
+        "assertion_status": "proposed",
+        "confidence": "low",
+        "description": "AI-PROPOSED edge. assertion_status `proposed`; a hypothesis until a human confirms it in the lab. The paired Review requests changes, not acceptance.",
+        "predicate": "contributes_to"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:tm-hw-scope",
+      "label": "Brake-ECU threat model scope approved",
+      "properties": {
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "predicate": "scope_approved"
+      }
+    },
+    {
+      "domain_type": "Deployment",
+      "id": "deployment:brake-ecu-field",
+      "label": "Brake ECU field deployment",
+      "properties": {}
+    },
+    {
+      "domain_type": "Environment",
+      "id": "environment:vehicle-field",
+      "label": "In-field vehicle",
+      "properties": {
+        "connectivity": "CAN bus + OBD-II; no direct internet",
+        "operational_context": "safety-critical in-field operation",
+        "physical_security": "owner-accessible when parked; OBD-II reachable"
+      }
+    },
+    {
+      "domain_type": "LifecyclePhase",
+      "id": "lifecycle-phase:design",
+      "label": "Design",
+      "properties": {
+        "code": "design"
+      }
+    },
+    {
+      "domain_type": "LifecyclePhase",
+      "id": "lifecycle-phase:implementation",
+      "label": "Implementation",
+      "properties": {
+        "code": "implementation"
+      }
+    },
+    {
+      "domain_type": "LifecyclePhase",
+      "id": "lifecycle-phase:production",
+      "label": "Production / manufacturing",
+      "properties": {
+        "code": "production"
+      }
+    },
+    {
+      "domain_type": "LifecyclePhase",
+      "id": "lifecycle-phase:operation",
+      "label": "Operation / use",
+      "properties": {
+        "code": "operation"
+      }
+    },
+    {
+      "domain_type": "LifecyclePhase",
+      "id": "lifecycle-phase:maintenance",
+      "label": "Maintenance / update",
+      "properties": {
+        "code": "maintenance"
+      }
+    },
+    {
+      "domain_type": "ThreatModel",
+      "id": "threat-model:brake-ecu-v1",
+      "label": "Brake ECU threat model (rev 1)",
+      "properties": {
+        "approval_digest": "sha256:PLACEHOLDER-brake-ecu-v1-pinned-to-kg-commit",
+        "approval_status": "approved",
+        "created": "2026-07-01T00:00:00Z",
+        "description": "Governed, versioned snapshot over the hardware KG scope (§3c R-043).",
+        "governance_status": "approved",
+        "revision": "1",
+        "updated": "2026-10-09T00:00:00Z"
+      }
+    }
+  ]
+}

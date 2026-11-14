@@ -1,11 +1,10 @@
 // Client for the tmodel engine's local API (loopback only, ADR-0003).
 // The GUI only displays; all logic lives in the Python engine (APP-0001 A-030).
 
-import { invoke, isTauri } from "@tauri-apps/api/core";
-
 export const ENGINE_PORT = 47811;
 export const DEFAULT_ENGINE_URL: string =
-  import.meta.env?.VITE_TMODEL_ENGINE_URL ?? `http://127.0.0.1:${ENGINE_PORT}`;
+  import.meta.env?.VITE_TMODEL_ENGINE_URL
+  ?? (import.meta.env.MODE === "pages" ? "https://static-preview.invalid/" : `http://127.0.0.1:${ENGINE_PORT}`);
 
 export interface Health {
   status: string;
@@ -50,6 +49,9 @@ export async function checkEngine(
 }
 
 export async function engineProcess(): Promise<EngineProcess> {
+  // The Pages build never calls this function, so it never loads or invokes a
+  // Tauri API. The desktop build retains the existing sidecar inspection.
+  const { invoke, isTauri } = await import("@tauri-apps/api/core");
   if (!isTauri()) return null;
   try {
     return await invoke<EngineProcess>("engine_process");

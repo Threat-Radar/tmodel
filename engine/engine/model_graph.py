@@ -49,6 +49,11 @@ COLLECTION_DOMAIN_TYPES = {
     "sdl_practices": "SdlPractice",
     "evidence_items": "Evidence",
     "requirement_sources": "RequirementSource",
+    # ADR-0011 (accepted 2026-10-22) added these classes to the core; the proposal
+    # container lists them.
+    "assets": "Asset",
+    "trust_boundaries": "TrustBoundary",
+    "data_flows": "DataFlow",
 }
 
 # Sponsor-approved slots whose ranges are model classes. ``impact`` is omitted:
@@ -61,6 +66,19 @@ RELATIONSHIP_SLOTS = frozenset(
         "manufactured_by",
         "supplied_by",
         "owned_by",
+        "build_composed_of",
+        "instance_of",
+        "asserted_by",
+        "stored_in",
+        "processed_by",
+        "in_trust_zone",
+        "within_boundary",
+        "flow_from",
+        "flow_to",
+        "carries",
+        "crosses_boundary",
+        "damages_asset",
+        "targets_element",
         "of_product",
         "current_phase",
         "affects",

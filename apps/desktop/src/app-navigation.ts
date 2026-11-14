@@ -1,8 +1,6 @@
-// The application's views as tabs, kept in step with the URL hash (#library,
-// #graph, #sdl). The first view is the default. Same shape as #211 (#208), so the two
-// merge by adding views to one list.
-
-export type AppView = "library" | "graph" | "sdl";
+// Application tabs, synchronized with the URL hash.
+// The Model Report is the default view.
+export type AppView = "report" | "paths" | "graph" | "library" | "sdl";
 
 export interface NavigationView {
   view: AppView;

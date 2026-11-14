@@ -1,0 +1,32 @@
+{
+  "file": "mvp-03-hierarchical-system.yaml",
+  "goal": "threat-instance:cloud-jwt-bypass",
+  "paths": [
+    {
+      "authored_path": "attack-path:cloud-jwt-forgery",
+      "goal_step": "attack-step:call-fleet-api",
+      "review": {
+        "assertion_status": null,
+        "review_status": null,
+        "reviewed": false
+      },
+      "steps": [
+        "attack-step:forge-jwt-none-alg",
+        "attack-step:call-fleet-api"
+      ]
+    },
+    {
+      "authored_path": "attack-path:cloud-jwt-forgery",
+      "goal_step": "attack-step:call-fleet-api",
+      "review": {
+        "assertion_status": null,
+        "review_status": null,
+        "reviewed": false
+      },
+      "steps": [
+        "attack-step:forge-jwt-weak-key",
+        "attack-step:call-fleet-api"
+      ]
+    }
+  ]
+}

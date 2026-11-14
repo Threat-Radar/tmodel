@@ -1,0 +1,113 @@
+{
+ "description": "Assertion and Review status combinations and how they are shown (#208). Read by engine/tests/test_graph.py (ReviewState.reviewed) and apps/desktop/src/review-status.test.ts (reviewStatePresentation), so the picker's accepted-review count and the report's review state cannot disagree. Only kind 'accepted' counts as reviewed.",
+ "cases": [
+  {
+   "assertion_status": "accepted",
+   "review_status": null,
+   "kind": "accepted",
+   "why": "accepted Assertion, no Review recorded"
+  },
+  {
+   "assertion_status": "accepted",
+   "review_status": "accepted",
+   "kind": "accepted",
+   "why": "accepted Assertion, accepting Review"
+  },
+  {
+   "assertion_status": "ACCEPTED",
+   "review_status": " Accepted ",
+   "kind": "accepted",
+   "why": "case and spacing do not matter"
+  },
+  {
+   "assertion_status": "accepted",
+   "review_status": "rejected",
+   "kind": "rejected",
+   "why": "contradiction: a rejecting Review wins"
+  },
+  {
+   "assertion_status": "accepted",
+   "review_status": "changes_requested",
+   "kind": "changes_requested",
+   "why": "contradiction: a Review asking for changes wins"
+  },
+  {
+   "assertion_status": "accepted",
+   "review_status": "Changes Requested",
+   "kind": "changes_requested",
+   "why": "the same, written with spaces"
+  },
+  {
+   "assertion_status": "accepted",
+   "review_status": "changes-requested",
+   "kind": "changes_requested",
+   "why": "the same, written with a hyphen"
+  },
+  {
+   "assertion_status": "accepted",
+   "review_status": "proposed",
+   "kind": "unknown",
+   "why": "transitional: the Review is still open"
+  },
+  {
+   "assertion_status": "accepted",
+   "review_status": "pending",
+   "kind": "unknown",
+   "why": "transitional: a Review verdict neither side recognises"
+  },
+  {
+   "assertion_status": "proposed",
+   "review_status": null,
+   "kind": "proposed",
+   "why": "proposed Assertion, no Review yet"
+  },
+  {
+   "assertion_status": "proposed",
+   "review_status": "accepted",
+   "kind": "proposed",
+   "why": "a Review cannot accept a proposed Assertion on its own"
+  },
+  {
+   "assertion_status": "proposed",
+   "review_status": "rejected",
+   "kind": "rejected",
+   "why": "proposed and rejected"
+  },
+  {
+   "assertion_status": "proposed",
+   "review_status": "changes_requested",
+   "kind": "changes_requested",
+   "why": "proposed, changes requested"
+  },
+  {
+   "assertion_status": "rejected",
+   "review_status": "accepted",
+   "kind": "rejected",
+   "why": "contradiction: a rejected Assertion stays rejected"
+  },
+  {
+   "assertion_status": "changes_requested",
+   "review_status": "accepted",
+   "kind": "changes_requested",
+   "why": "contradiction: changes requested on the Assertion"
+  },
+  {
+   "assertion_status": "rejected",
+   "review_status": "changes_requested",
+   "kind": "rejected",
+   "why": "rejected outranks changes requested"
+  },
+  {
+   "assertion_status": null,
+   "review_status": null,
+   "kind": "unknown",
+   "why": "nothing recorded"
+  },
+  {
+   "assertion_status": null,
+   "review_status": "accepted",
+   "kind": "unknown",
+   "why": "a Review with no Assertion status"
+  }
+ ]
+}

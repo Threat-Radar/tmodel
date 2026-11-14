@@ -25,13 +25,15 @@ and only after the WAVE 2 gate (#84).
 | `docs/publishing/render_bibliography.py` | Local generator. Stdlib only. Writes `docs/bibliography/` and copies library record pages to `docs/library/records/`. |
 | `docs/publishing/site.yaml` | Site map: top nav for every generated page, and which manifest builds which path under `docs/`. |
 | `docs/publishing/site_nav.py` | Shared site nav, read from `site.yaml`. |
+| `docs/publishing/render_models.py` | Example-model pages under `docs/models/` (#208): the engine collects each model in `spec/vectors/`, and the app's report renderer writes the HTML through Node (22.6 or newer). Run with the engine's Python; it refuses to write a page whose default view shows an id or schema name, and `--check` fails if the pages are out of date. Not stdlib-only. |
+| `docs/publishing/render_app.py` | Browser preview under `docs/app/` (#204): builds the existing frontend in Pages mode and writes path-sanitised static engine responses for every example model plus the complete public library table. Run with the engine's Python after `npm ci`; `--check` fails on any byte of drift. |
 | `docs/publishing/check_links.py` | Fails if a relative link under `docs/` does not resolve. Runs in CI. |
 | `bin/publish-site` | Rebuilds every generated page, then runs the identity and link checks. |
 | `docs/publishing/reports.yaml` | Manifest of **report pages** (md → static HTML). |
 | `docs/publishing/render_report.py` | Renders archdoc markdown reports to `docs/reports/*.html` (revisioned). Stdlib only. Its index also lists the pages under `listed:` in `reports.yaml`. |
 | `docs/publishing/tara.yaml` | Manifest of **TARA pages**: an example model in `spec/vectors/`, the page to write, the library records it cites and the gaps the page lists. |
 | `docs/publishing/render_tara.py` | Renders each model as a "TARA draft (example data)" page in ISO/SAE 21434 clause 15 order (DL-0037). Reads the model through the engine, so it needs PyYAML: `engine/.venv/bin/python`. `--check` compares instead of writing. |
-| `docs/publishing/check_identities.py` | **Privacy guard.** Fails if a protected personal identity appears in any published page. Run in CI. |
+| `docs/publishing/check_identities.py` | **Privacy guard.** Fails if a protected personal identity appears in published HTML or generated app JSON, JavaScript, or CSS. Run in CI. |
 | `publishing/identities.yaml` | **Outside `docs/`** (never published): protected project identities + the `approved` allow-list. |
 | `docs/publishing/SKILL.md` | This playbook. |
 
@@ -68,8 +70,9 @@ authors of cited external standards are fine; the project's own people are not.
 - Real names are **never committed anywhere** in this repo. To also match names in the
   guard, put them in an untracked `publishing/identities.local.yaml` (gitignored);
   `check_identities.py` merges it when present.
-- `check_identities.py` scans `docs/**/*.html` and **fails CI** on any protected
-  identity not in `approved`. Run it before opening a publishing PR.
+- `check_identities.py` scans `docs/**/*.html` and generated JSON, JavaScript,
+  and CSS under `docs/app/`, and **fails CI** on any protected identity not in
+  `approved`. Run it before opening a publishing PR.
 - When authoring a record/report/manifest that will be published, prefer the
   **publisher/organization** over personal author names.
 
@@ -77,7 +80,7 @@ authors of cited external standards are fine; the project's own people are not.
 > exposes the publishing tooling under `/docs/publishing/`. That is harmless (no
 > personal data in the scripts/manifests — `identities.yaml` is github-ids-only and
 > holds no real names). A future improvement is to publish only a built
-> subtree (`docs/bibliography/` + `docs/reports/`). Tracked, not done here.
+> subtree. Tracked, not done here.
 
 ## Security bar
 
@@ -88,7 +91,7 @@ rows this pipeline is written to satisfy:
 |---|---|
 | 2 Security requirements | A manifest states audience, inputs, and what must not ship (secrets, trackers, unreleased data). |
 | 3 Threat modeling | The publish surface is static hosting plus a reviewed git commit. No account, no upload endpoint, no telemetry. |
-| 4 Secure design | Defense in depth: no remote scripts, no remote fonts, no third-party pixels. |
+| 4 Secure design | Defense in depth: no remote scripts, no remote fonts, no third-party pixels. The app bundle and JSON are same-site committed assets. |
 | 8 Approved toolchain | HTML is authored in-repo. PDF rendering, when built, runs with local tools only. |
 | 13 Release integrity | A real binary later carries sha256, version, and the manifest id. A mock must not ship a file that pretends to be a binary. |
 | 14 Secure defaults | Pages are public-read and otherwise inert. No optional analytics flag. |
@@ -123,12 +126,51 @@ See [manifest.example.yaml](manifest.example.yaml).
 ## HTML pipeline (v0)
 
 1. Copy `manifest.example.yaml` to a real manifest name when the page leaves mock status. Keep the example.
-2. Edit the template (`docs/index.html` or a new file under `docs/`). One self-contained HTML file per page: CSS in the file, no `<script>`, no remote URL in `src` or `@import`.
+2. Edit the template (`docs/index.html` or a new file under `docs/`). One self-contained HTML file per content page: CSS in the file, no `<script>`, no remote URL in `src` or `@import`. `docs/app/` is the deliberate exception: it is generated by `render_app.py` from the local Vite app and may load only its generated same-site script, stylesheet and JSON assets.
 3. Point `outputs[].path` at that file. Relative links only, so the page works at the Pages root (`/docs` served as `/`) and in the GitHub blob view.
 4. Open the file in a browser from disk. Confirm the distribution block cannot download a binary.
 5. Open a PR. State which manifest and which bibliography records (if any) changed. Do not mark a `DEC-*` accepted.
 
 The landing page is still hand-authored. The bibliography is the first generated item; see below. Do not add a Pages deploy workflow in the same change.
+
+## Browser app preview
+
+`render_app.py` is the sole owner of `docs/app/`. It fails instead of silently
+omitting a model or an incomplete library, sorts JSON keys, strips engine-local
+model paths, and refuses known local-path or credential markers. The Pages-mode
+frontend is read-only: it adapts its existing engine providers to same-origin
+JSON, hides SDL/proposal/review controls that have no static equivalent, and
+never falls back to loopback or a Tauri API. The library inspector is bounded to
+fields already present in the public table rather than publishing full records.
+Generation always reads the repository's pinned `library` submodule;
+`TMODEL_LIBRARY` is deliberately ignored for this public artifact.
+
+Regenerate `docs/app/` whenever any of its inputs change: `spec/vectors/**`,
+engine behavior that shapes the model catalog, graph, attack paths, or library
+table, the pinned `library` commit, or the Pages-mode frontend. From the
+repository root, initialize the pinned submodule and local toolchains, then run:
+
+```sh
+git submodule update --init library
+python3 -m venv engine/.venv
+engine/.venv/bin/python -m pip install -e './engine[dev]'
+npm ci --prefix apps/desktop
+engine/.venv/bin/python docs/publishing/render_app.py
+engine/.venv/bin/python docs/publishing/render_app.py --check
+```
+
+If the environments already exist, only the final two commands are needed.
+`bin/publish-site` also regenerates the preview as part of the complete site
+pipeline. A standalone `npm run build:pages` writes scratch output under
+`apps/desktop/dist/`; it does not publish or replace `docs/app/`.
+
+On applicable pull requests and pushes to `main`, `.github/workflows/app.yml`
+rebuilds the preview in a temporary directory and byte-compares that output
+with the committed `docs/app/`. CI therefore verifies that the committed Pages
+snapshot is complete and current, which is the CI publishing contract for
+#204. It does not write regenerated files back to the branch, commit them, or
+deploy them through a separate Pages workflow; contributors must regenerate
+and commit `docs/app/` with the input change.
 
 
 ## Bibliography renderer
