@@ -1,0 +1,64 @@
+# RPT-0014 WAVE 1 calibration, lane catalogs-schema (tmodel #79), written
+# independently of the other lanes (LANES.md Step 1). Not yet a library record.
+schema: "library-record/v1"
+id: greshake-2023-indirect-prompt-injection
+body: academic
+type: paper
+title: "Not What You've Signed Up For: Compromising Real-World LLM-Integrated Applications with Indirect Prompt Injection"
+short_title: "Greshake et al. 2023, indirect prompt injection"
+authors:
+  - "Kai Greshake"
+  - "Sahar Abdelnabi"
+  - "Shailesh Mishra"
+  - "Christoph Endres"
+  - "Thorsten Holz"
+  - "Mario Fritz"
+date: "2023-11-26"
+publisher: "ACM (Proceedings of the 16th ACM Workshop on Artificial Intelligence and Security, AISec '23), pp. 79-90"
+version: "arXiv v2 (2023-05-05)"
+identifiers:
+  doi: "10.1145/3605764.3623985"
+  arxiv: "2302.12173"
+  url: https://arxiv.org/abs/2302.12173
+content:
+  url: https://arxiv.org/pdf/2302.12173
+  sha256: "428e23e8c7e4f89310e113e38d082b3f65548a8b887188ebc536099061800e81"
+  retrieved: "2026-11-08"
+  local: false
+  media_type: application/pdf
+relations:
+  supersedes: []
+  superseded_by: []
+  see_also:
+    - mitre-atlas
+  cited_by:
+    - nist-ai-100-2-e2025
+    - spotlighting-indirect-prompt-injection
+  implements_concept: []
+bears_on:
+  - R-018
+  - DEC-009
+applicability:
+  security: core
+  cryptography: none
+  this_project: adjacent
+implementations:
+  open_source:
+    - "greshake/llm-security (the paper's demonstrations and prompts), MIT, https://github.com/greshake/llm-security"
+    - "garak (probes include indirect prompt injection), Apache-2.0, https://github.com/NVIDIA/garak"
+  commercial: []
+  searched: "2026-11-08"
+usefulness:
+  verdict: useful
+  reason: "The paper that named indirect prompt injection; its threat taxonomy (data theft, worming, persistence, manipulated content, availability) is the root of AIT-064 and its neighbours."
+  assessed: "2026-11-08"
+topic: ai-threat-model-catalogs-schema
+tags:
+  - prompt-injection
+  - rag-security
+  - agent-security
+  - ai-threat-model
+  - evidence
+status: summarized
+confidence: high
+owner: Maimcghee
