@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acme Auth Service: example threat model · tmodel</title>
+<meta name="description" content="Example data. This is an illustrative threat model written for the tmodel project to exercise its object model. It is not a security assessment of a real product. AI-proposed threats and paths are hypotheses until a human reviewer accepts them.">
+<style>
+:root { --ink: #1a1916; --muted: #5c574e; --line: #e2dcd0; --paper: #f6f3ec; --card: #fffcf7; --accent: #1e4d3a; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
+.model-page { max-width: 920px; margin: 0 auto; padding: 22px 24px 40px; }
+.breadcrumb { margin: 0 0 12px; font-size: 0.85rem; color: var(--muted); }
+.breadcrumb a, .model-page-footer a, .model-index a { color: var(--accent); }
+.model-page-footer { margin-top: 32px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.8rem; }
+.model-page-footer code { font-size: 0.78rem; }
+.model-index h1 { margin: 6px 0 6px; font-size: clamp(1.7rem, 3vw, 2.3rem); letter-spacing: -0.03em; }
+.model-index .lead { max-width: 75ch; margin: 0 0 14px; color: var(--muted); font-size: 1.05rem; }
+.model-list { display: grid; gap: 12px; margin: 16px 0 0; padding: 0; list-style: none; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+.model-list li { padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+.model-list h2 { margin: 2px 0 6px; font-size: 1.05rem; }
+.model-list p { margin: 0 0 6px; font-size: 0.88rem; }
+.model-list .meta { color: var(--muted); font-size: 0.8rem; }
+.model-list .kind { color: var(--accent); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+.problems { margin-top: 16px; color: #991b1b; font-size: 0.85rem; }
+
+/* Model report styles (#208). One stylesheet for both outputs: the app imports
+   it, and the static Pages build inlines it into each model page. */
+
+.model-report {
+  --rp-text: #172033;
+  --rp-muted: #5b6678;
+  --rp-faint: #8792a5;
+  --rp-surface: #ffffff;
+  --rp-subtle: #f6f8fb;
+  --rp-border: #dde3ec;
+  --rp-accent: #3730a3;
+  --rp-ok-bg: #dcfce7; --rp-ok-fg: #166534; --rp-ok-line: #16a34a;
+  --rp-bad-bg: #fee2e2; --rp-bad-fg: #991b1b; --rp-bad-line: #dc2626;
+  --rp-warn-bg: #ffedd5; --rp-warn-fg: #9a3412; --rp-warn-line: #ea580c;
+  --rp-hyp-bg: #fef3c7; --rp-hyp-fg: #854d0e; --rp-hyp-line: #d97706;
+  --rp-neutral-bg: #e8edf5; --rp-neutral-fg: #475569;
+  --rp-step-bg: #f5f3ff; --rp-step-line: #7c3aed;
+  --rp-threat-bg: #fff1f2; --rp-threat-line: #be123c;
+  --rp-damage-bg: #fff7ed; --rp-damage-line: #c2410c;
+  --rp-mit-bg: #f0fdf4; --rp-mit-line: #15803d;
+  --rp-target-bg: #eff6ff; --rp-target-line: #2563eb;
+  --rp-gate-bg: #1e293b; --rp-gate-fg: #ffffff;
+  --rp-edge: #64748b;
+  color: var(--rp-text);
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.model-report h2 { margin: 0 0 6px; font-size: 1.55rem; letter-spacing: -0.02em; }
+.model-report h3 { display: flex; align-items: center; gap: 9px; margin: 0 0 12px; font-size: 1.02rem; letter-spacing: 0; text-transform: none; }
+.model-report h4 { margin: 0 0 3px; font-size: 0.98rem; }
+.model-report .eyebrow { margin: 0 0 4px; color: var(--rp-muted); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+.section-number { display: inline-grid; width: 24px; height: 24px; place-items: center; border-radius: 50%; background: var(--rp-neutral-bg); color: var(--rp-neutral-fg); font-size: 0.74rem; }
+
+.report-header { margin-bottom: 18px; padding: 18px 20px; border: 1px solid var(--rp-border); border-radius: 12px; background: var(--rp-surface); }
+.report-scope { max-width: 72ch; margin: 0 0 12px; color: var(--rp-muted); }
+.example-banner { max-width: 90ch; margin: 0 0 14px; padding: 9px 12px; border: 1px solid #f3c969; border-left-width: 5px; border-radius: 8px; background: #fffbeb; color: #713f12; }
+.report-scope-details { margin: -6px 0 12px; }
+.report-scope + .report-scope { margin-top: -6px; }
+.model-report .table-steps { margin: 0; padding-left: 20px; }
+.model-report .table-steps li { margin: 0 0 2px; }
+.model-report .path-link { color: inherit; text-decoration: underline; text-decoration-color: var(--rp-border); text-underline-offset: 3px; }
+.model-report .path-link:hover { text-decoration-color: currentColor; }
+.model-report .step-button { margin: 0; padding: 0; border: 0; border-radius: 3px; background: none; color: inherit; font: inherit; font-weight: 650; text-align: left; cursor: pointer; }
+.model-report .step-button:hover { text-decoration: underline; text-underline-offset: 3px; }
+.model-report .step-button:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; }
+.report-warning { max-width: 90ch; margin: 0 0 14px; padding: 9px 12px; border: 1px solid #fca5a5; border-left-width: 5px; border-radius: 8px; background: #fef2f2; color: #991b1b; }
+.report-warning p, .report-warning ul { margin: 0; }
+.report-warning ul { margin-top: 4px; padding-left: 18px; }
+.model-report .warning-note { color: #991b1b; }
+.threat-summary { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; }
+.threat-summary p { margin: 0; }
+.summary-total { font-size: 0.95rem; }
+.summary-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.summary-chip { padding: 3px 9px; border-radius: 999px; font-size: 0.78rem; }
+.summary-reviewers { color: var(--rp-muted); font-size: 0.8rem; }
+.report-contents ol { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 14px 0 0; padding: 0; list-style: none; counter-reset: rc; font-size: 0.82rem; }
+.report-contents li { counter-increment: rc; }
+.report-contents li::before { content: counter(rc) ". "; color: var(--rp-faint); }
+.report-contents a { color: var(--rp-accent); }
+
+.report-section { margin-bottom: 18px; padding: 16px 20px 18px; border: 1px solid var(--rp-border); border-radius: 12px; background: var(--rp-surface); scroll-margin-top: 12px; }
+.section-help, .empty-note { margin: 0 0 10px; color: var(--rp-muted); }
+.empty-note { padding: 10px 12px; border: 1px dashed var(--rp-border); border-radius: 8px; background: var(--rp-subtle); }
+
+.report-table-scroll { max-width: 100%; margin-bottom: 14px; overflow-x: auto; }
+.report-table-scroll:last-child { margin-bottom: 0; }
+.report-table { width: 100%; border-collapse: collapse; }
+.report-table caption { padding: 0 0 7px; color: var(--rp-muted); font-size: 0.76rem; font-weight: 700; text-align: left; }
+.report-table th, .report-table td { padding: 9px 10px; border-top: 1px solid var(--rp-border); text-align: left; vertical-align: top; }
+.report-table thead th { border-top: 0; border-bottom: 1px solid var(--rp-border); background: var(--rp-subtle); color: var(--rp-muted); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+.report-table tbody th { min-width: 170px; font-weight: 650; }
+.report-table td { min-width: 110px; }
+.cell-note { margin-top: 3px; color: var(--rp-muted); font-size: 0.76rem; font-weight: 400; }
+.missing { color: var(--rp-faint); font-style: italic; }
+.ref { white-space: normal; }
+.impact-list { display: grid; grid-template-columns: auto auto; gap: 0 8px; width: fit-content; margin: 0; padding: 0; list-style: none; }
+.impact-list li { display: contents; }
+.impact-list span { color: var(--rp-muted); }
+.handle { white-space: nowrap; }
+
+.status-badge { display: inline-block; padding: 2px 8px; border: 1px solid transparent; border-radius: 999px; font-size: 0.74rem; font-weight: 750; white-space: nowrap; }
+.rs-accepted { border-color: var(--rp-ok-line); background: var(--rp-ok-bg); color: var(--rp-ok-fg); }
+.rs-rejected { border-color: var(--rp-bad-line); background: var(--rp-bad-bg); color: var(--rp-bad-fg); }
+.rs-changes_requested { border-color: var(--rp-warn-line); background: var(--rp-warn-bg); color: var(--rp-warn-fg); }
+.rs-proposed, .rs-not_reviewed { border-color: var(--rp-hyp-line); border-style: dashed; background: var(--rp-hyp-bg); color: var(--rp-hyp-fg); }
+.rs-unknown, .rs-mixed { border-color: var(--rp-neutral-fg); border-style: dotted; background: var(--rp-neutral-bg); color: var(--rp-neutral-fg); }
+.row-status-rejected > th:first-child { box-shadow: inset 4px 0 0 var(--rp-bad-line); }
+.row-status-changes_requested > th:first-child { box-shadow: inset 4px 0 0 var(--rp-warn-line); }
+.row-not-assessed th, .row-not-assessed td { background: var(--rp-subtle); }
+
+.row-details { margin-top: 6px; font-size: 0.74rem; }
+.row-details summary { width: fit-content; color: var(--rp-accent); cursor: pointer; font-weight: 650; }
+.row-details dl { display: grid; gap: 4px; margin: 6px 0 0; padding: 8px 10px; border-radius: 7px; background: var(--rp-subtle); }
+.row-details dl > div { display: grid; grid-template-columns: minmax(90px, 0.35fr) 1fr; gap: 8px; }
+.row-details dt { color: var(--rp-muted); font-weight: 700; }
+.row-details dd { margin: 0; overflow-wrap: anywhere; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.72rem; }
+
+.path-card { margin-bottom: 16px; padding: 14px 16px; border: 1px solid var(--rp-border); border-radius: 10px; background: var(--rp-surface); }
+.path-card:last-child { margin-bottom: 0; }
+.path-card.row-status-rejected { border: 2px dashed var(--rp-bad-line); }
+.path-card.row-status-changes_requested { border: 2px dashed var(--rp-warn-line); }
+.path-card-header { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 8px 16px; margin-bottom: 8px; }
+.path-card-header p { margin: 0; }
+.path-card-status { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.open-path-button { padding: 5px 10px; border: 1px solid var(--rp-accent); border-radius: 7px; background: var(--rp-surface); color: var(--rp-accent); font: inherit; font-size: 0.76rem; font-weight: 700; cursor: pointer; }
+.open-path-button:focus-visible { outline: 2px solid var(--rp-accent); outline-offset: 2px; }
+.status-callout { margin: 0 0 10px; padding: 8px 11px; border-left: 4px solid; border-radius: 6px; }
+.path-story { display: grid; gap: 4px; }
+.path-steps { margin: 0 0 4px; padding-left: 1.6em; }
+.path-steps li { margin: 3px 0; }
+.step-name { font-weight: 650; }
+.phase-chip { display: inline-block; padding: 1px 6px; border-radius: 5px; background: var(--rp-neutral-bg); color: var(--rp-neutral-fg); font-size: 0.68rem; font-weight: 700; }
+.gate { display: inline-block; min-width: 28px; padding: 1px 6px; border-radius: 999px; background: var(--rp-gate-bg); color: var(--rp-gate-fg); font-size: 0.66rem; font-weight: 800; text-align: center; }
+.path-outcome { margin: 0; }
+.path-figure { margin: 12px 0 0; }
+.path-figure-scroll { overflow-x: auto; border: 1px solid var(--rp-border); border-radius: 8px; background: var(--rp-subtle); }
+.path-figure figcaption { margin-top: 5px; color: var(--rp-muted); font-size: 0.74rem; }
+
+/* Path diagram (inline SVG; the same layout the app draws with Cytoscape). */
+.path-diagram { display: block; width: 100%; min-width: 720px; max-width: 100%; height: auto; font-family: inherit; }
+.path-diagram .pd-node rect { stroke-width: 1.6; }
+.path-diagram .pd-step rect { fill: var(--rp-step-bg); stroke: var(--rp-step-line); }
+.path-diagram .pd-gate rect { fill: var(--rp-gate-bg); stroke: var(--rp-gate-bg); }
+.path-diagram .pd-gate .pd-text { fill: var(--rp-gate-fg); font-weight: 800; }
+.path-diagram .pd-threat rect { fill: var(--rp-threat-bg); stroke: var(--rp-threat-line); stroke-width: 2.2; }
+.path-diagram .pd-damage rect { fill: var(--rp-damage-bg); stroke: var(--rp-damage-line); }
+.path-diagram .pd-mitigation rect { fill: var(--rp-mit-bg); stroke: var(--rp-mit-line); }
+.path-diagram .pd-target rect { fill: var(--rp-target-bg); stroke: var(--rp-target-line); }
+.path-diagram .pd-caption { fill: var(--rp-muted); font-size: 10.5px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
+.path-diagram .pd-text { fill: var(--rp-text); font-size: 13px; font-weight: 600; }
+.path-diagram .pd-edge path { fill: none; stroke: var(--rp-edge); stroke-width: 1.7; }
+.path-diagram .pd-edge-mitigates path { stroke: var(--rp-mit-line); stroke-dasharray: 6 4; }
+.path-diagram .pd-edge-targets path { stroke: var(--rp-target-line); stroke-dasharray: 2 3; }
+.path-diagram .pd-arrow { fill: var(--rp-edge); }
+.path-diagram .pd-edge path { stroke-linejoin: round; }
+.path-diagram .pd-edge-label-bg { fill: var(--rp-subtle); }
+.path-diagram .pd-edge-label { fill: var(--rp-muted); font-size: 11px; font-weight: 700; }
+.path-diagram .pd-edge-label-group.pd-edge-mitigates .pd-edge-label { fill: var(--rp-mit-line); }
+.path-diagram .pd-edge-label-group.pd-edge-targets .pd-edge-label { fill: var(--rp-target-line); }
+.path-diagram.pd-status-rejected .pd-step rect { stroke: var(--rp-bad-line); stroke-dasharray: 7 4; }
+.path-diagram.pd-status-changes_requested .pd-step rect { stroke: var(--rp-warn-line); stroke-dasharray: 7 4; }
+.path-diagram.pd-threat-status-rejected .pd-threat rect { stroke: var(--rp-bad-line); stroke-dasharray: 7 4; }
+.path-diagram.pd-threat-status-changes_requested .pd-threat rect { stroke: var(--rp-warn-line); stroke-dasharray: 7 4; }
+.path-diagram.pd-threat-status-proposed .pd-threat rect,
+.path-diagram.pd-threat-status-not_reviewed .pd-threat rect { stroke: var(--rp-hyp-line); stroke-dasharray: 7 4; }
+
+@media (max-width: 720px) {
+  .report-header, .report-section { padding: 14px; }
+  .report-table tbody th { min-width: 140px; }
+  .path-card-status { align-items: flex-start; }
+}
+
+@media (prefers-color-scheme: dark) {
+  .model-report {
+    --rp-text: #e5e7eb;
+    --rp-muted: #a3b0c2;
+    --rp-faint: #7c879a;
+    --rp-surface: #111827;
+    --rp-subtle: #172033;
+    --rp-border: #334155;
+    --rp-accent: #a5b4fc;
+    --rp-ok-bg: #0f2e1d; --rp-ok-fg: #86efac; --rp-ok-line: #22c55e;
+    --rp-bad-bg: #3f1818; --rp-bad-fg: #fecaca; --rp-bad-line: #f87171;
+    --rp-warn-bg: #3b2312; --rp-warn-fg: #fdba74; --rp-warn-line: #fb923c;
+    --rp-hyp-bg: #3b2f12; --rp-hyp-fg: #fde68a; --rp-hyp-line: #f59e0b;
+    --rp-neutral-bg: #243147; --rp-neutral-fg: #cbd5e1;
+    --rp-step-bg: #241d3d; --rp-step-line: #a78bfa;
+    --rp-threat-bg: #3a1622; --rp-threat-line: #fb7185;
+    --rp-damage-bg: #3a2414; --rp-damage-line: #fb923c;
+    --rp-mit-bg: #102a1c; --rp-mit-line: #4ade80;
+    --rp-target-bg: #132544; --rp-target-line: #60a5fa;
+    --rp-gate-bg: #e2e8f0; --rp-gate-fg: #0f172a;
+    --rp-edge: #94a3b8;
+  }
+  .example-banner { border-color: #8a671b; background: #3b2f12; color: #fde68a; }
+  .report-warning { border-color: #7f1d1d; background: #2b1414; color: #fecaca; }
+  .model-report .warning-note { color: #fca5a5; }
+}
+
+
+.model-report {
+  --rp-text: #1a1916; --rp-muted: #5c574e; --rp-faint: #8a8377;
+  --rp-surface: #fffcf7; --rp-subtle: #f6f3ec; --rp-border: #e2dcd0; --rp-accent: #1e4d3a;
+  --rp-ok-bg: #e5efe8; --rp-ok-fg: #1e4d3a; --rp-ok-line: #6f9c80;
+  --rp-bad-bg: #f6e4dc; --rp-bad-fg: #7f1d1d; --rp-bad-line: #c27a6a;
+  --rp-warn-bg: #ffedd5; --rp-warn-fg: #9a3412; --rp-warn-line: #ea580c;
+  --rp-hyp-bg: #f3ead3; --rp-hyp-fg: #6b4e16; --rp-hyp-line: #c99a3a;
+  --rp-neutral-bg: #ece6da; --rp-neutral-fg: #5c574e;
+  --rp-step-bg: #f5f3ff; --rp-step-line: #7c3aed;
+  --rp-threat-bg: #fff1f2; --rp-threat-line: #be123c;
+  --rp-damage-bg: #fff7ed; --rp-damage-line: #c2410c;
+  --rp-mit-bg: #f0fdf4; --rp-mit-line: #15803d;
+  --rp-target-bg: #eff6ff; --rp-target-line: #2563eb;
+  --rp-gate-bg: #1a1916; --rp-gate-fg: #ffffff;
+  --rp-edge: #6b665c;
+}
+.example-banner { border-color: #e0cfa3; background: #f3ead3; color: #6b4e16; }
+.report-warning { border-color: #e3b5a8; background: #f6e4dc; color: #7f1d1d; }
+.model-report .warning-note { color: #991b1b; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../index.html">tmodel</a><nav aria-label="Site"><a href="../index.html">Home</a><a href="../bibliography/index.html">Bibliography</a><a href="../reports/index.html">Reports</a></nav></div></header>
+<main class="model-page">
+<p class="breadcrumb"><a href="index.html">Example models</a> › Acme Auth Service</p>
+<article class="model-report" aria-labelledby="report-title">
+<header class="report-header">
+  <p class="eyebrow">Example threat model · Worked example with governance</p>
+  <h2 id="report-title">Acme Auth Service</h2>
+  <p class="report-scope">OSS authentication &amp; token-refresh microservice.</p>
+  <p class="example-banner" role="note"><strong>Example data.</strong> This is an illustrative threat model written for the tmodel project to exercise its object model. It is not a security assessment of a real product. AI-proposed threats and paths are hypotheses until a human reviewer accepts them.</p>
+
+  <div class="threat-summary" aria-label="Threats by attack-path assertion review status">
+    <p class="summary-total"><strong>2 threats</strong>, 1 of them AI-proposed</p>
+    <ul class="summary-chips"><li class="summary-chip rs-changes_requested"><strong>1</strong> changes requested</li><li class="summary-chip rs-not_reviewed"><strong>1</strong> not reviewed</li></ul>
+    <p class="summary-reviewers">Human reviews recorded by @sec-lead, @sdl-owner.</p>
+  </div>
+  <p class="cell-note">Counts use the review status of the assertion linking each threat to its attack path.</p>
+  <nav class="report-contents" aria-label="Report sections"><ol><li><a href="#report-components">Assets and components</a></li><li><a href="#report-damage">Damage scenarios</a></li><li><a href="#report-threats">Threats</a></li><li><a href="#report-catalog">Vulnerabilities and catalog records</a></li><li><a href="#report-paths">Attack paths</a></li><li><a href="#report-mitigations">Mitigations</a></li><li><a href="#report-risk">Risk</a></li><li><a href="#report-requirements">Requirements</a></li></ol></nav>
+</header>
+<section class="report-section" id="report-components" aria-labelledby="report-components-title">
+<h3 id="report-components-title"><span class="section-number">1</span> Assets and components</h3>
+<p class="empty-note">No assets are recorded in this model. The components below are the parts of the system.</p><div class="report-table-scroll" role="region" aria-label="Products and components" tabindex="0">
+<table class="report-table">
+<caption>Products and components</caption>
+<thead><tr><th scope="col">Name</th><th scope="col">Kind</th><th scope="col">Structure</th><th scope="col">Description</th></tr></thead>
+<tbody><tr>
+<th scope="row">Acme Auth Service</th>
+<td>Product</td>
+<td><div>Contains <span class="ref">auth-service (service container)</span></div></td>
+<td>OSS authentication &amp; token-refresh microservice.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>product:acme-auth-service</dd></div><div><dt>Object type</dt><dd>Product</dd></div><div><dt>Identifiers</dt><dd>pkg:github/acme/auth-service, cpe:2.3:a:acme:auth_service:2.4.1:*:*:*:*:*:*:*</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">auth-service build 2.4.1</th>
+<td>Product instance</td>
+<td><span class="missing">No structure recorded</span></td>
+<td>The reviewed build; software instance identity is a build/commit/SBOM hash.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>product-instance:auth-service-2-4-1</dd></div><div><dt>Object type</dt><dd>ProductInstance</dd></div><div><dt>Full description</dt><dd>The reviewed build; software instance identity is a build/commit/SBOM hash (ADR-0002).</dd></div><div><dt>Identifiers</dt><dd>build:acme-auth@2.4.1+git.8f2c1a7, sha256:8f2c1a7e4d6b9c0f1a2b3c4d5e6f70819a2b3c4d5e6f7081a2b3c4d5e6f70819</dd></div><div><dt>Valid from</dt><dd>2026-09-01T00:00:00Z</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">auth-service (service container)</th>
+<td>Component</td>
+<td><div>Part of <span class="ref">Acme Auth Service</span></div><div>Contains <span class="ref">token-refresh module</span></div><div>Uses <span class="ref">log4j-core (transitive dependency)</span></div></td>
+<td>The deployed service artifact.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>component:auth-service-svc</dd></div><div><dt>Object type</dt><dd>Component</dd></div><div><dt>Full description</dt><dd>The deployed service artifact (§0 authoritative component, not a DFD node).</dd></div><div><dt>Identifiers</dt><dd>pkg:oci/acme/auth-service@sha256:8f2c1a7e</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">token-refresh module</th>
+<td>Component</td>
+<td><div>Part of <span class="ref">auth-service (service container)</span></div><div>Uses <span class="ref">log4j-core (transitive dependency)</span></div></td>
+<td><span class="missing">No description</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>component:token-module</dd></div><div><dt>Object type</dt><dd>Component</dd></div><div><dt>Identifiers</dt><dd>pkg:github/acme/auth-service@2.4.1#token</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">log4j-core (transitive dependency)</th>
+<td>Component</td>
+<td><span class="missing">No structure recorded</span></td>
+<td>Vulnerable OSS logging dependency along which the finding propagates.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>component:log4j-core</dd></div><div><dt>Object type</dt><dd>Component</dd></div><div><dt>Full description</dt><dd>Vulnerable OSS logging dependency along which the finding propagates (§5).</dd></div><div><dt>Identifiers</dt><dd>pkg:maven/org.apache.logging.log4j/log4j-core@2.14.1, cpe:2.3:a:apache:log4j:2.14.1:*:*:*:*:*:*:*</dd></div></dl></details></td>
+</tr></tbody>
+</table>
+</div>
+</section><section class="report-section" id="report-damage" aria-labelledby="report-damage-title">
+<h3 id="report-damage-title"><span class="section-number">2</span> Damage scenarios</h3>
+<div class="report-table-scroll" role="region" aria-label="Damage scenarios: what could go wrong for the stakeholder" tabindex="0">
+<table class="report-table">
+<caption>Damage scenarios: what could go wrong for the stakeholder</caption>
+<thead><tr><th scope="col">Damage scenario</th><th scope="col">Assets damaged</th><th scope="col">Threats leading to it</th><th scope="col">Impact</th><th scope="col">Description</th></tr></thead>
+<tbody><tr>
+<th scope="row">Forged auth tokens → cross-tenant data breach</th>
+<td><span class="missing">Not recorded</span></td>
+<td><span class="ref">RCE via unsafe deserialization in logging dependency</span>, <span class="ref">RCE via compromised upstream dependency release</span></td>
+<td><ul class="impact-list"><li><span>Safety</span> Negligible</li><li><span>Financial</span> Major</li><li><span>Operational</span> Major</li><li><span>Privacy</span> Severe</li></ul><div class="cell-note">As rated in the risk assessment</div></td>
+<td><span class="missing">Modelling note only; see details</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>damage-scenario:token-forgery</dd></div><div><dt>Object type</dt><dd>DamageScenario</dd></div><div><dt>Full description</dt><dd>The damage the RCE threat realizes; impact categories live on RiskScore (§3).</dd></div></dl></details></td>
+</tr></tbody>
+</table>
+</div>
+</section><section class="report-section" id="report-threats" aria-labelledby="report-threats-title">
+<h3 id="report-threats-title"><span class="section-number">3</span> Threats</h3>
+<div class="report-table-scroll" role="region" aria-label="Threats and their review status" tabindex="0">
+<table class="report-table">
+<caption>Threats and their review status</caption>
+<thead><tr><th scope="col">Threat</th><th scope="col">Source</th><th scope="col">Attack-path assertion review</th><th scope="col">Damage</th><th scope="col">Attack paths</th><th scope="col">Mitigations</th></tr></thead>
+<tbody><tr class="row-status-not_reviewed">
+<th scope="row">RCE via unsafe deserialization in logging dependency<div class="cell-note">Violates: E authorization / T integrity</div><div class="cell-note">Human-elicited STRIDE threat on the token-refresh flow.</div></th>
+<td>Human-elicited</td>
+<td><div class="cell-note">Status of the assertion linking this threat to its path</div><span class="status-badge rs-not_reviewed">Not reviewed</span></td>
+<td><span class="ref">Forged auth tokens → cross-tenant data breach</span></td>
+<td><span class="ref">Deserialization RCE path</span></td>
+<td><span class="ref">Disable native deserialization / use allow-listed codecs</span>, <span class="ref">Maintain a security-requirements baseline</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>threat-instance:rce-via-deser</dd></div><div><dt>Object type</dt><dd>ThreatInstance</dd></div></dl></details></td>
+</tr><tr class="row-status-changes_requested">
+<th scope="row">RCE via compromised upstream dependency release<div class="cell-note">Violates: T integrity</div></th>
+<td>AI-proposed</td>
+<td><div class="cell-note">Status of the assertion linking this threat to its path</div><span class="status-badge rs-changes_requested">Changes requested</span><div class="cell-note">Reviewer: <span class="handle">@sec-lead</span></div></td>
+<td><span class="ref">Forged auth tokens → cross-tenant data breach</span></td>
+<td><span class="ref">Upstream supply-chain compromise path</span></td>
+<td><span class="ref">Pin and verify dependencies with provenance</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>threat-instance:supply-chain-rce</dd></div><div><dt>Object type</dt><dd>ThreatInstance</dd></div><div><dt>Full description</dt><dd>AI-PROPOSED hypothesis (not reviewed/accepted). source_method records the proposing method; its realizing edge is an Assertion in `proposed` state with a Review that has NOT accepted it (CLAUDE.md: AI output is a hypothesis).</dd></div><div><dt>Assertion status</dt><dd>proposed</dd></div><div><dt>Review status</dt><dd>changes_requested</dd></div><div><dt>Assertions</dt><dd>assertion:ai-supply-chain-realizes</dd></div><div><dt>Reviews</dt><dd>review:ai-triage</dd></div><div><dt>Review justification</dt><dd>AI-proposed path. Maintainer-account-compromise step needs scoping evidence before acceptance; keep as a flagged hypothesis, do not treat as reviewed.</dd></div></dl></details></td>
+</tr></tbody>
+</table>
+</div>
+</section><section class="report-section" id="report-catalog" aria-labelledby="report-catalog-title">
+<h3 id="report-catalog-title"><span class="section-number">4</span> Vulnerabilities and catalog records</h3>
+<div class="report-table-scroll" role="region" aria-label="Vulnerabilities" tabindex="0">
+<table class="report-table">
+<caption>Vulnerabilities</caption>
+<thead><tr><th scope="col">Vulnerability</th><th scope="col">Catalog reference</th><th scope="col">Affects</th><th scope="col">Weakness class</th><th scope="col">Description</th></tr></thead>
+<tbody><tr>
+<th scope="row">log4j-core RCE via JDBC Appender (illustrative)</th>
+<td>CVE-2021-44832</td>
+<td><span class="ref">Acme Auth Service</span>, <span class="ref">auth-service (service container)</span></td>
+<td><span class="missing">None recorded</span></td>
+<td><span class="missing">Modelling note only; see details</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>vulnerability:cve-2021-44832</dd></div><div><dt>Object type</dt><dd>Vulnerability</dd></div><div><dt>Full description</dt><dd>Finding affecting the product; propagation to components is a reviewed Assertion (§5).</dd></div></dl></details></td>
+</tr></tbody>
+</table>
+</div><div class="report-table-scroll" role="region" aria-label="Weaknesses" tabindex="0">
+<table class="report-table">
+<caption>Weaknesses</caption>
+<thead><tr><th scope="col">Weakness</th><th scope="col">Catalog reference</th><th scope="col">Vulnerabilities</th><th scope="col">Attack patterns</th><th scope="col">Description</th></tr></thead>
+<tbody><tr>
+<th scope="row">Deserialization of Untrusted Data</th>
+<td>CWE-502</td>
+<td><span class="missing">None recorded</span></td>
+<td><span class="ref">Object Injection (CAPEC-586)</span></td>
+<td>Generic weakness class.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>weakness:cwe-502</dd></div><div><dt>Object type</dt><dd>Weakness</dd></div><div><dt>Full description</dt><dd>Generic weakness class (CWE, §1 layer 3).</dd></div></dl></details></td>
+</tr></tbody>
+</table>
+</div><div class="report-table-scroll" role="region" aria-label="Attack patterns" tabindex="0">
+<table class="report-table">
+<caption>Attack patterns</caption>
+<thead><tr><th scope="col">Attack pattern</th><th scope="col">Catalog reference</th><th scope="col">Related weaknesses</th><th scope="col">Description</th></tr></thead>
+<tbody><tr>
+<th scope="row">Object Injection</th>
+<td>CAPEC-586</td>
+<td><span class="ref">Deserialization of Untrusted Data (CWE-502)</span></td>
+<td>Generic attack pattern.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>attack-pattern:capec-586</dd></div><div><dt>Object type</dt><dd>AttackPattern</dd></div><div><dt>Full description</dt><dd>Generic attack pattern (CAPEC = what, §2a). The CWE↔CAPEC link is a reviewed Assertion.</dd></div></dl></details></td>
+</tr></tbody>
+</table>
+</div>
+</section><section class="report-section" id="report-paths" aria-labelledby="report-paths-title">
+<h3 id="report-paths-title"><span class="section-number">5</span> Attack paths</h3>
+<div class="report-table-scroll" role="region" aria-label="Attack paths: how each threat could be carried out" tabindex="0">
+<table class="report-table">
+<caption>Attack paths: how each threat could be carried out</caption>
+<thead><tr><th scope="col">Attack path</th><th scope="col">Threat</th><th scope="col">Steps, in order</th><th scope="col">Feasibility</th><th scope="col">Review status</th></tr></thead>
+<tbody><tr class="row-status-not_reviewed">
+<th scope="row"><a class="path-link" href="#path-attack-path-deser-rce">Deserialization RCE path</a></th>
+<td>RCE via unsafe deserialization in logging dependency</td>
+<td><ol class="table-steps"><li value="1">Enumerate the token-refresh endpoint</li><li value="2">Craft a malicious serialized payload</li><li value="3">Deliver payload via the refresh endpoint</li><li value="4">Trigger the deserialization gadget chain → RCE</li></ol></td>
+<td>Medium</td>
+<td><span class="status-badge rs-not_reviewed">Not reviewed</span></td>
+</tr><tr class="row-status-changes_requested">
+<th scope="row"><a class="path-link" href="#path-attack-path-supply-chain-swap">Upstream supply-chain compromise path</a></th>
+<td>RCE via compromised upstream dependency release</td>
+<td><ol class="table-steps"><li value="1">Compromise an upstream maintainer account</li><li value="2">Publish a typosquatted dependency</li><li value="3">Publish a malicious release downstream pulls</li><li value="4">Downstream build pulls the malicious update</li></ol></td>
+<td>Low</td>
+<td><span class="status-badge rs-changes_requested">Changes requested</span><div class="cell-note">Reviewer: <span class="handle">@sec-lead</span></div></td>
+</tr></tbody>
+</table>
+</div>
+<p class="section-help">Each path in detail, below: its steps in order, and where two branches join, whether the step needs all of them (AND) or any one (OR).</p>
+<article class="path-card row-status-not_reviewed" id="path-attack-path-deser-rce" aria-labelledby="path-attack-path-deser-rce-title">
+<header class="path-card-header">
+  <div>
+    <h4 id="path-attack-path-deser-rce-title">Deserialization RCE path</h4>
+    <p class="cell-note">Realizes RCE via unsafe deserialization in logging dependency · Feasibility: Medium</p>
+  </div>
+  <div class="path-card-status"><span class="status-badge rs-not_reviewed">Not reviewed</span></div>
+</header>
+
+<div class="path-story">
+  <ol class="path-steps"><li value="1" data-step="attack-step:enumerate-refresh-endpoint"><span class="step-name">Enumerate the token-refresh endpoint</span> <span class="phase-chip">Reconnaissance</span></li><li value="2" data-step="attack-step:craft-serialized-payload"><span class="step-name">Craft a malicious serialized payload</span> <span class="cell-note">after step 1</span></li><li value="3" data-step="attack-step:deliver-via-refresh"><span class="step-name">Deliver payload via the refresh endpoint</span></li><li value="4" data-step="attack-step:trigger-gadget-chain"><span class="step-name">Trigger the deserialization gadget chain → RCE</span> <span class="phase-chip">Exploitation</span> <span class="gate gate-and">AND</span> <span class="cell-note">needs all of steps 2 and 3</span></li></ol>
+
+  <p class="path-outcome"><span>Realizes the threat <strong>RCE via unsafe deserialization in logging dependency</strong></span><span>, which leads to <strong><span class="ref">Forged auth tokens → cross-tenant data breach</span></strong></span>.</p>
+  <p class="path-outcome">Mitigated by <span class="ref">Disable native deserialization / use allow-listed codecs</span>, <span class="ref">Maintain a security-requirements baseline</span>.</p>
+
+</div>
+<figure class="path-figure">
+  <div class="path-figure-scroll"><svg class="path-diagram pd-status-not_reviewed pd-threat-status-not_reviewed" viewBox="0 0 1316 348" width="1316" height="348" role="img" aria-label="Attack path diagram: Deserialization RCE path, Not reviewed" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrow-attack-path-deser-rce" viewBox="0 0 10 10" refX="9.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" class="pd-arrow"/></marker></defs><g class="pd-edge pd-edge-then"><path d="M198,105 L236,105 Q242,105 242,99 L242,63 Q242,57 248,57 L256,57" marker-end="url(#arrow-attack-path-deser-rce)"/></g><g class="pd-edge pd-edge-joins"><path d="M434,57 L454,57 Q460,57 460,63 L460,99 Q460,105 466,105 L474,105" marker-end="url(#arrow-attack-path-deser-rce)"/></g><g class="pd-edge pd-edge-joins"><path d="M434,153 L454,153 Q460,153 460,147 L460,111 Q460,105 466,105 L474,105" marker-end="url(#arrow-attack-path-deser-rce)"/></g><g class="pd-edge pd-edge-then"><path d="M524,105 L574,105" marker-end="url(#arrow-attack-path-deser-rce)"/></g><g class="pd-edge pd-edge-realizes"><path d="M752,105 L832,105" marker-end="url(#arrow-attack-path-deser-rce)"/></g><g class="pd-edge pd-edge-leads_to"><path d="M1024,105 L1104,105" marker-end="url(#arrow-attack-path-deser-rce)"/></g><g class="pd-edge pd-edge-mitigates"><path d="M824,238 L824,220 Q824,214 830,214 L922,214 Q928,214 928,208 L928,150" marker-end="url(#arrow-attack-path-deser-rce)"/></g><g class="pd-edge pd-edge-mitigates"><path d="M1032,238 L1032,220 Q1032,214 1026,214 L934,214 Q928,214 928,208 L928,150" marker-end="url(#arrow-attack-path-deser-rce)"/></g><g class="pd-node pd-step"><title>Step 1 · Reconnaissance: Enumerate the token-refresh endpoint</title><rect x="20" y="51" width="178" height="108" rx="8"/><text class="pd-caption" x="30" y="72">Step 1 ·</text><text class="pd-caption" x="30" y="90">Reconnaissance</text><text class="pd-text" text-anchor="start"><tspan x="30" y="110">Enumerate the</tspan><tspan x="30" y="126">token-refresh</tspan><tspan x="30" y="142">endpoint</tspan></text></g><g class="pd-node pd-step"><title>Step 2: Craft a malicious serialized payload</title><rect x="256" y="20" width="178" height="74" rx="8"/><text class="pd-caption" x="266" y="41">Step 2</text><text class="pd-text" text-anchor="start"><tspan x="266" y="61">Craft a malicious</tspan><tspan x="266" y="77">serialized payload</tspan></text></g><g class="pd-node pd-step"><title>Step 3: Deliver payload via the refresh endpoint</title><rect x="256" y="116" width="178" height="74" rx="8"/><text class="pd-caption" x="266" y="137">Step 3</text><text class="pd-text" text-anchor="start"><tspan x="266" y="157">Deliver payload via</tspan><tspan x="266" y="173">the refresh endpoint</tspan></text></g><g class="pd-node pd-step"><title>Step 4 · Exploitation: Trigger the deserialization gadget chain → RCE</title><rect x="574" y="60" width="178" height="90" rx="8"/><text class="pd-caption" x="584" y="81">Step 4 · Exploitation</text><text class="pd-text" text-anchor="start"><tspan x="584" y="101">Trigger the</tspan><tspan x="584" y="117">deserialization</tspan><tspan x="584" y="133">gadget chain → RCE</tspan></text></g><g class="pd-node pd-gate"><title>AND: step 4 needs all of steps 2, 3</title><rect x="474" y="90" width="50" height="30" rx="15"/><text class="pd-text" text-anchor="middle"><tspan x="499" y="110">AND</tspan></text></g><g class="pd-node pd-threat"><title>Threat · Not reviewed: RCE via unsafe deserialization in logging dependency</title><rect x="832" y="60" width="192" height="90" rx="8"/><text class="pd-caption" x="842" y="81">Threat · Not reviewed</text><text class="pd-text" text-anchor="start"><tspan x="842" y="101">RCE via unsafe</tspan><tspan x="842" y="117">deserialization in</tspan><tspan x="842" y="133">logging dependency</tspan></text></g><g class="pd-node pd-damage"><title>Damage scenario: Forged auth tokens → cross-tenant data breach</title><rect x="1104" y="60" width="192" height="90" rx="8"/><text class="pd-caption" x="1114" y="81">Damage scenario</text><text class="pd-text" text-anchor="start"><tspan x="1114" y="101">Forged auth tokens →</tspan><tspan x="1114" y="117">cross-tenant data</tspan><tspan x="1114" y="133">breach</tspan></text></g><g class="pd-node pd-mitigation"><title>Mitigation: Disable native deserialization / use allow-listed codecs</title><rect x="731" y="238" width="186" height="90" rx="8"/><text class="pd-caption" x="741" y="259">Mitigation</text><text class="pd-text" text-anchor="start"><tspan x="741" y="279">Disable native</tspan><tspan x="741" y="295">deserialization / use</tspan><tspan x="741" y="311">allow-listed codecs</tspan></text></g><g class="pd-node pd-mitigation"><title>Mitigation: Maintain a security-requirements baseline</title><rect x="939" y="238" width="186" height="90" rx="8"/><text class="pd-caption" x="949" y="259">Mitigation</text><text class="pd-text" text-anchor="start"><tspan x="949" y="279">Maintain a</tspan><tspan x="949" y="295">security-requirements</tspan><tspan x="949" y="311">baseline</tspan></text></g><g class="pd-edge-label-group pd-edge-then"><rect class="pd-edge-label-bg" x="203" y="88" width="34" height="16" rx="4"/><text class="pd-edge-label" x="220" y="100" text-anchor="middle">then</text></g><g class="pd-edge-label-group pd-edge-then"><rect class="pd-edge-label-bg" x="532" y="88" width="34" height="16" rx="4"/><text class="pd-edge-label" x="549" y="100" text-anchor="middle">then</text></g><g class="pd-edge-label-group pd-edge-realizes"><rect class="pd-edge-label-bg" x="763" y="88" width="58" height="16" rx="4"/><text class="pd-edge-label" x="792" y="100" text-anchor="middle">realizes</text></g><g class="pd-edge-label-group pd-edge-leads_to"><rect class="pd-edge-label-bg" x="1035" y="88" width="58" height="16" rx="4"/><text class="pd-edge-label" x="1064" y="100" text-anchor="middle">leads to</text></g><g class="pd-edge-label-group pd-edge-mitigates"><rect class="pd-edge-label-bg" x="934" y="174" width="64" height="16" rx="4"/><text class="pd-edge-label" x="966" y="186" text-anchor="middle">mitigates</text></g></svg></div>
+  <figcaption>Steps run left to right. AND/OR marks where branches join; the threat, its damage and its mitigations follow.</figcaption>
+</figure>
+<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>attack-path:deser-rce</dd></div><div><dt>Object type</dt><dd>AttackPath</dd></div><div><dt>Full description</dt><dd>Human-reviewed path realizing the deserialization threat; feasibility human-rated (§3).</dd></div></dl></details>
+</article><article class="path-card row-status-changes_requested" id="path-attack-path-supply-chain-swap" aria-labelledby="path-attack-path-supply-chain-swap-title">
+<header class="path-card-header">
+  <div>
+    <h4 id="path-attack-path-supply-chain-swap-title">Upstream supply-chain compromise path</h4>
+    <p class="cell-note">Realizes RCE via compromised upstream dependency release · Feasibility: Low</p>
+  </div>
+  <div class="path-card-status"><span class="status-badge rs-changes_requested">Changes requested</span><div class="cell-note">Reviewer: <span class="handle">@sec-lead</span></div></div>
+</header>
+<p class="status-callout rs-changes_requested" role="note"><strong>Changes requested:</strong> this path is not an accepted part of the model. Reviewer’s reason: AI-proposed path. Maintainer-account-compromise step needs scoping evidence before acceptance; keep as a flagged hypothesis, do not treat as reviewed.</p>
+<div class="path-story">
+  <ol class="path-steps"><li value="1" data-step="attack-step:compromise-maintainer-account"><span class="step-name">Compromise an upstream maintainer account</span></li><li value="2" data-step="attack-step:typosquat-dependency"><span class="step-name">Publish a typosquatted dependency</span></li><li value="3" data-step="attack-step:publish-malicious-release"><span class="step-name">Publish a malicious release downstream pulls</span> <span class="gate gate-or">OR</span> <span class="cell-note">needs any one of steps 1 or 2</span></li><li value="4" data-step="attack-step:downstream-pulls-update"><span class="step-name">Downstream build pulls the malicious update</span> <span class="phase-chip">Delivery</span> <span class="cell-note">after step 3</span></li></ol>
+  <p class="cell-note">The engine finds 2 ways through this path: steps 1 → 3 → 4; steps 2 → 3 → 4.</p>
+  <p class="path-outcome"><span>Realizes the threat <strong>RCE via compromised upstream dependency release</strong></span><span>, which leads to <strong><span class="ref">Forged auth tokens → cross-tenant data breach</span></strong></span>.</p>
+  <p class="path-outcome">Mitigated by <span class="ref">Pin and verify dependencies with provenance</span>.</p>
+
+</div>
+<figure class="path-figure">
+  <div class="path-figure-scroll"><svg class="path-diagram pd-status-changes_requested pd-threat-status-not_reviewed" viewBox="0 0 1316 380" width="1316" height="380" role="img" aria-label="Attack path diagram: Upstream supply-chain compromise path, Changes requested" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrow-attack-path-supply-chain-swap" viewBox="0 0 10 10" refX="9.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" class="pd-arrow"/></marker></defs><g class="pd-edge pd-edge-joins"><path d="M198,65 L218,65 Q224,65 224,71 L224,115 Q224,121 230,121 L238,121" marker-end="url(#arrow-attack-path-supply-chain-swap)"/></g><g class="pd-edge pd-edge-joins"><path d="M198,177 L218,177 Q224,177 224,171 L224,127 Q224,121 230,121 L238,121" marker-end="url(#arrow-attack-path-supply-chain-swap)"/></g><g class="pd-edge pd-edge-then"><path d="M288,121 L338,121" marker-end="url(#arrow-attack-path-supply-chain-swap)"/></g><g class="pd-edge pd-edge-then"><path d="M516,121 L574,121" marker-end="url(#arrow-attack-path-supply-chain-swap)"/></g><g class="pd-edge pd-edge-realizes"><path d="M752,121 L832,121" marker-end="url(#arrow-attack-path-supply-chain-swap)"/></g><g class="pd-edge pd-edge-leads_to"><path d="M1024,121 L1104,121" marker-end="url(#arrow-attack-path-supply-chain-swap)"/></g><g class="pd-edge pd-edge-mitigates"><path d="M928,270 L928,175" marker-end="url(#arrow-attack-path-supply-chain-swap)"/></g><g class="pd-node pd-step"><title>Step 1: Compromise an upstream maintainer account</title><rect x="20" y="20" width="178" height="90" rx="8"/><text class="pd-caption" x="30" y="41">Step 1</text><text class="pd-text" text-anchor="start"><tspan x="30" y="61">Compromise an</tspan><tspan x="30" y="77">upstream maintainer</tspan><tspan x="30" y="93">account</tspan></text></g><g class="pd-node pd-step"><title>Step 2: Publish a typosquatted dependency</title><rect x="20" y="132" width="178" height="90" rx="8"/><text class="pd-caption" x="30" y="153">Step 2</text><text class="pd-text" text-anchor="start"><tspan x="30" y="173">Publish a</tspan><tspan x="30" y="189">typosquatted</tspan><tspan x="30" y="205">dependency</tspan></text></g><g class="pd-node pd-step"><title>Step 3: Publish a malicious release downstream pulls</title><rect x="338" y="76" width="178" height="90" rx="8"/><text class="pd-caption" x="348" y="97">Step 3</text><text class="pd-text" text-anchor="start"><tspan x="348" y="117">Publish a malicious</tspan><tspan x="348" y="133">release downstream</tspan><tspan x="348" y="149">pulls</tspan></text></g><g class="pd-node pd-step"><title>Step 4 · Delivery: Downstream build pulls the malicious update</title><rect x="574" y="76" width="178" height="90" rx="8"/><text class="pd-caption" x="584" y="97">Step 4 · Delivery</text><text class="pd-text" text-anchor="start"><tspan x="584" y="117">Downstream build</tspan><tspan x="584" y="133">pulls the malicious</tspan><tspan x="584" y="149">update</tspan></text></g><g class="pd-node pd-gate"><title>OR: step 3 needs any one of steps 1, 2</title><rect x="238" y="106" width="50" height="30" rx="15"/><text class="pd-text" text-anchor="middle"><tspan x="263" y="126">OR</tspan></text></g><g class="pd-node pd-threat"><title>Threat · AI-proposed, not reviewed: RCE via compromised upstream dependency release</title><rect x="832" y="67" width="192" height="108" rx="8"/><text class="pd-caption" x="842" y="88">Threat · AI-proposed,</text><text class="pd-caption" x="842" y="106">not reviewed</text><text class="pd-text" text-anchor="start"><tspan x="842" y="126">RCE via compromised</tspan><tspan x="842" y="142">upstream dependency</tspan><tspan x="842" y="158">release</tspan></text></g><g class="pd-node pd-damage"><title>Damage scenario: Forged auth tokens → cross-tenant data breach</title><rect x="1104" y="76" width="192" height="90" rx="8"/><text class="pd-caption" x="1114" y="97">Damage scenario</text><text class="pd-text" text-anchor="start"><tspan x="1114" y="117">Forged auth tokens →</tspan><tspan x="1114" y="133">cross-tenant data</tspan><tspan x="1114" y="149">breach</tspan></text></g><g class="pd-node pd-mitigation"><title>Mitigation: Pin and verify dependencies with provenance</title><rect x="835" y="270" width="186" height="90" rx="8"/><text class="pd-caption" x="845" y="291">Mitigation</text><text class="pd-text" text-anchor="start"><tspan x="845" y="311">Pin and verify</tspan><tspan x="845" y="327">dependencies with</tspan><tspan x="845" y="343">provenance</tspan></text></g><g class="pd-edge-label-group pd-edge-then"><rect class="pd-edge-label-bg" x="296" y="104" width="34" height="16" rx="4"/><text class="pd-edge-label" x="313" y="116" text-anchor="middle">then</text></g><g class="pd-edge-label-group pd-edge-then"><rect class="pd-edge-label-bg" x="528" y="104" width="34" height="16" rx="4"/><text class="pd-edge-label" x="545" y="116" text-anchor="middle">then</text></g><g class="pd-edge-label-group pd-edge-realizes"><rect class="pd-edge-label-bg" x="763" y="104" width="58" height="16" rx="4"/><text class="pd-edge-label" x="792" y="116" text-anchor="middle">realizes</text></g><g class="pd-edge-label-group pd-edge-leads_to"><rect class="pd-edge-label-bg" x="1035" y="104" width="58" height="16" rx="4"/><text class="pd-edge-label" x="1064" y="116" text-anchor="middle">leads to</text></g><g class="pd-edge-label-group pd-edge-mitigates"><rect class="pd-edge-label-bg" x="934" y="202.5" width="64" height="16" rx="4"/><text class="pd-edge-label" x="966" y="214.5" text-anchor="middle">mitigates</text></g></svg></div>
+  <figcaption>Steps run left to right. AND/OR marks where branches join; the threat, its damage and its mitigations follow.</figcaption>
+</figure>
+<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>attack-path:supply-chain-swap</dd></div><div><dt>Object type</dt><dd>AttackPath</dd></div><div><dt>Full description</dt><dd>The AI-PROPOSED path; realizing edge is a `proposed` Assertion, not yet accepted.</dd></div><div><dt>Assertion status</dt><dd>proposed</dd></div><div><dt>Review status</dt><dd>changes_requested</dd></div><div><dt>Assertions</dt><dd>assertion:ai-supply-chain-realizes</dd></div><div><dt>Reviews</dt><dd>review:ai-triage</dd></div><div><dt>Review justification</dt><dd>AI-proposed path. Maintainer-account-compromise step needs scoping evidence before acceptance; keep as a flagged hypothesis, do not treat as reviewed.</dd></div></dl></details>
+</article>
+</section><section class="report-section" id="report-mitigations" aria-labelledby="report-mitigations-title">
+<h3 id="report-mitigations-title"><span class="section-number">6</span> Mitigations</h3>
+<div class="report-table-scroll" role="region" aria-label="Mitigations: what is done about the threats" tabindex="0">
+<table class="report-table">
+<caption>Mitigations: what is done about the threats</caption>
+<thead><tr><th scope="col">Mitigation</th><th scope="col">Against threats</th><th scope="col">Status</th><th scope="col">Owner</th><th scope="col">Lifecycle phases</th><th scope="col">Description</th></tr></thead>
+<tbody><tr>
+<th scope="row">Disable native deserialization / use allow-listed codecs</th>
+<td><span class="ref">RCE via unsafe deserialization in logging dependency</span></td>
+<td>Complete</td>
+<td>Acme OSS Foundation</td>
+<td>Design, Implementation</td>
+<td>Control for the deserialization threat.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>mitigation:disable-native-deser</dd></div><div><dt>Object type</dt><dd>Mitigation</dd></div><div><dt>Full description</dt><dd>Control for the deserialization threat (D3FEND-style catalog ref, §5).</dd></div><div><dt>Catalog ref</dt><dd>D3FEND:D3-HBPI</dd></div><div><dt>External refs</dt><dd>JIRA-AUTH-1234</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">Pin and verify dependencies with provenance</th>
+<td><span class="ref">RCE via compromised upstream dependency release</span></td>
+<td>In progress</td>
+<td>Acme OSS Foundation</td>
+<td>Implementation, Distribution</td>
+<td>Control for the supply-chain path; still being rolled out.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>mitigation:pin-and-verify-deps</dd></div><div><dt>Object type</dt><dd>Mitigation</dd></div><div><dt>Catalog ref</dt><dd>D3FEND:D3-SCA</dd></div><div><dt>External refs</dt><dd>SLSA-provenance, JIRA-AUTH-1300</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">Maintain a security-requirements baseline</th>
+<td><span class="ref">RCE via unsafe deserialization in logging dependency</span></td>
+<td>Complete</td>
+<td>@sdl-owner</td>
+<td><span class="missing">Not recorded</span></td>
+<td>Process control discharging the SSDF &quot;define security requirements&quot; practice.<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>mitigation:security-requirements-baseline</dd></div><div><dt>Object type</dt><dd>Mitigation</dd></div></dl></details></td>
+</tr></tbody>
+</table>
+</div>
+</section><section class="report-section" id="report-risk" aria-labelledby="report-risk-title">
+<h3 id="report-risk-title"><span class="section-number">7</span> Risk</h3>
+<div class="report-table-scroll" role="region" aria-label="Risk: how likely and how bad, per threat" tabindex="0">
+<table class="report-table">
+<caption>Risk: how likely and how bad, per threat</caption>
+<thead><tr><th scope="col">Threat</th><th scope="col">Damage</th><th scope="col">Feasibility</th><th scope="col">Impact</th><th scope="col">Risk</th><th scope="col">Mitigation status</th></tr></thead>
+<tbody><tr>
+<th scope="row">RCE via unsafe deserialization in logging dependency<div class="cell-note">Risk — RCE via deserialization</div></th>
+<td>Forged auth tokens → cross-tenant data breach<div class="cell-note">For Downstream SaaS operator</div></td>
+<td>Medium</td>
+<td><ul class="impact-list"><li><span>Safety</span> Negligible</li><li><span>Financial</span> Major</li><li><span>Operational</span> Major</li><li><span>Privacy</span> Severe</li></ul></td>
+<td>privacy 4 / operational 3 / financial 3 (worst-path, medium feasibility; 1–5 per 21434 M(I,F))</td>
+<td>In progress<details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>risk-score:rce-via-deser</dd></div><div><dt>Object type</dt><dd>RiskScore</dd></div><div><dt>Full description</dt><dd>Composite vector per ADR-0006/DEC-003: feasibility + S/F/O/P impact + mitigation-status + derived risk, shown with its inputs — never one number.</dd></div></dl></details></td>
+</tr><tr class="row-not-assessed">
+<th scope="row">RCE via compromised upstream dependency release</th>
+<td>Forged auth tokens → cross-tenant data breach</td>
+<td colspan="4"><span class="missing">Not assessed: the model records no risk score for this threat.</span></td>
+</tr></tbody>
+</table>
+</div>
+</section><section class="report-section" id="report-requirements" aria-labelledby="report-requirements-title">
+<h3 id="report-requirements-title"><span class="section-number">8</span> Requirements</h3>
+<div class="report-table-scroll" role="region" aria-label="Requirements that apply" tabindex="0">
+<table class="report-table">
+<caption>Requirements that apply</caption>
+<thead><tr><th scope="col">Requirement</th><th scope="col">Text</th><th scope="col">Kind</th><th scope="col">Addresses</th><th scope="col">Satisfied by</th></tr></thead>
+<tbody><tr>
+<th scope="row">SSDF PO.1.1 — Define security requirements</th>
+<td>Define security requirements for software development and maintain them over time.</td>
+<td><span class="missing">Not recorded</span><div class="cell-note">Mandatory</div></td>
+<td><span class="missing">None recorded</span></td>
+<td><span class="ref">Maintain a security-requirements baseline</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>requirement:ssdf-po-1-1</dd></div><div><dt>Object type</dt><dd>Requirement</dd></div><div><dt>Conformance status</dt><dd>conformant</dd></div><div><dt>Source ref</dt><dd>library:nist-sp-800-218#PO.1.1</dd></div></dl></details></td>
+</tr><tr>
+<th scope="row">SSDF PW.4.1 — Acquire well-secured components</th>
+<td>Acquire and maintain well-secured software components (e.g., pin and verify dependencies).</td>
+<td><span class="missing">Not recorded</span><div class="cell-note">Recommended</div></td>
+<td><span class="missing">None recorded</span></td>
+<td><span class="ref">Pin and verify dependencies with provenance</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>requirement:ssdf-pw-4-1</dd></div><div><dt>Object type</dt><dd>Requirement</dd></div><div><dt>Conformance status</dt><dd>partial</dd></div><div><dt>Source ref</dt><dd>library:nist-sp-800-218#PW.4.1</dd></div></dl></details></td>
+</tr></tbody>
+</table>
+</div>
+</section>
+</article>
+<footer class="model-page-footer">
+<p>Built by the tmodel engine from <code>spec/vectors/tv-software-auth-service.yaml</code> (<a href="https://github.com/Threat-Radar/tmodel/blob/main/spec/vectors/tv-software-auth-service.yaml">view the model source</a>). The same renderer draws the report in the tmodel app. Model ids and raw values are under each row's Details.</p>
+</footer>
+</main>
+</body>
+</html>

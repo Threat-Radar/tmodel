@@ -1,0 +1,963 @@
+{
+  "edges": [
+    {
+      "id": "relationship:product:papermill-doc-service|composed_of|component:papermill-api",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "product:papermill-doc-service",
+      "target": "component:papermill-api"
+    },
+    {
+      "id": "relationship:product:papermill-doc-service|manufactured_by|party:papermill-oss",
+      "properties": {},
+      "relationship_type": "manufactured_by",
+      "source": "product:papermill-doc-service",
+      "target": "party:papermill-oss"
+    },
+    {
+      "id": "relationship:product:papermill-doc-service|owned_by|party:saas-operator",
+      "properties": {},
+      "relationship_type": "owned_by",
+      "source": "product:papermill-doc-service",
+      "target": "party:saas-operator"
+    },
+    {
+      "id": "relationship:product:papermill-doc-service|supplied_by|party:papermill-oss",
+      "properties": {},
+      "relationship_type": "supplied_by",
+      "source": "product:papermill-doc-service",
+      "target": "party:papermill-oss"
+    },
+    {
+      "id": "relationship:product-instance:papermill-3-1-0|current_phase|lifecycle-phase:operation",
+      "properties": {},
+      "relationship_type": "current_phase",
+      "source": "product-instance:papermill-3-1-0",
+      "target": "lifecycle-phase:operation"
+    },
+    {
+      "id": "relationship:product-instance:papermill-3-1-0|of_product|product:papermill-doc-service",
+      "properties": {},
+      "relationship_type": "of_product",
+      "source": "product-instance:papermill-3-1-0",
+      "target": "product:papermill-doc-service"
+    },
+    {
+      "id": "relationship:product-instance:papermill-3-1-0|owned_by|party:saas-operator",
+      "properties": {},
+      "relationship_type": "owned_by",
+      "source": "product-instance:papermill-3-1-0",
+      "target": "party:saas-operator"
+    },
+    {
+      "id": "relationship:component:papermill-api|composed_of|component:render-worker",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "component:papermill-api",
+      "target": "component:render-worker"
+    },
+    {
+      "id": "relationship:component:papermill-api|owned_by|party:saas-operator",
+      "properties": {},
+      "relationship_type": "owned_by",
+      "source": "component:papermill-api",
+      "target": "party:saas-operator"
+    },
+    {
+      "id": "relationship:component:papermill-api|uses_component|component:libxml-parse",
+      "properties": {},
+      "relationship_type": "uses_component",
+      "source": "component:papermill-api",
+      "target": "component:libxml-parse"
+    },
+    {
+      "id": "relationship:component:render-worker|uses_component|component:libxml-parse",
+      "properties": {},
+      "relationship_type": "uses_component",
+      "source": "component:render-worker",
+      "target": "component:libxml-parse"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2026-30111|affects|product:papermill-doc-service",
+      "properties": {},
+      "relationship_type": "affects",
+      "source": "vulnerability:cve-2026-30111",
+      "target": "product:papermill-doc-service"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2026-30111|assigned_by|party:cna-mitre",
+      "properties": {},
+      "relationship_type": "assigned_by",
+      "source": "vulnerability:cve-2026-30111",
+      "target": "party:cna-mitre"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2026-30111|reported_by|party:reporter-01",
+      "properties": {},
+      "relationship_type": "reported_by",
+      "source": "vulnerability:cve-2026-30111",
+      "target": "party:reporter-01"
+    },
+    {
+      "id": "relationship:threat-instance:xxe-file-read|applies_in_phase|lifecycle-phase:operation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "threat-instance:xxe-file-read",
+      "target": "lifecycle-phase:operation"
+    },
+    {
+      "id": "relationship:threat-instance:xxe-file-read|realizes_damage|damage-scenario:tenant-data-exfil",
+      "properties": {},
+      "relationship_type": "realizes_damage",
+      "source": "threat-instance:xxe-file-read",
+      "target": "damage-scenario:tenant-data-exfil"
+    },
+    {
+      "id": "relationship:threat-instance:imds-pivot|applies_in_phase|lifecycle-phase:operation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "threat-instance:imds-pivot",
+      "target": "lifecycle-phase:operation"
+    },
+    {
+      "id": "relationship:threat-instance:imds-pivot|realizes_damage|damage-scenario:tenant-data-exfil",
+      "properties": {},
+      "relationship_type": "realizes_damage",
+      "source": "threat-instance:imds-pivot",
+      "target": "damage-scenario:tenant-data-exfil"
+    },
+    {
+      "id": "relationship:attack-step:upload-crafted-doc|precedes|attack-step:parser-resolves-entity",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:upload-crafted-doc",
+      "target": "attack-step:parser-resolves-entity"
+    },
+    {
+      "id": "relationship:attack-step:parser-resolves-entity|precedes|attack-step:read-internal-file",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:parser-resolves-entity",
+      "target": "attack-step:read-internal-file"
+    },
+    {
+      "id": "relationship:attack-step:coerce-file-uri|precedes|attack-step:read-internal-file",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:coerce-file-uri",
+      "target": "attack-step:read-internal-file"
+    },
+    {
+      "id": "relationship:attack-step:point-entity-at-metadata|precedes|attack-step:fetch-instance-credentials",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:point-entity-at-metadata",
+      "target": "attack-step:fetch-instance-credentials"
+    },
+    {
+      "id": "relationship:attack-step:dns-rebind-to-metadata|precedes|attack-step:fetch-instance-credentials",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:dns-rebind-to-metadata",
+      "target": "attack-step:fetch-instance-credentials"
+    },
+    {
+      "id": "relationship:attack-path:xxe-file-read|realizes_threat|threat-instance:xxe-file-read",
+      "properties": {
+        "assertion_ids": [
+          "assertion:xxe-path-realizes"
+        ],
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "review_ids": [
+          "review:xxe-path"
+        ],
+        "review_status": "accepted"
+      },
+      "relationship_type": "realizes_threat",
+      "source": "attack-path:xxe-file-read",
+      "target": "threat-instance:xxe-file-read"
+    },
+    {
+      "id": "relationship:attack-path:xxe-file-read|steps|attack-step:upload-crafted-doc",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:xxe-file-read",
+      "target": "attack-step:upload-crafted-doc"
+    },
+    {
+      "id": "relationship:attack-path:xxe-file-read|steps|attack-step:parser-resolves-entity",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:xxe-file-read",
+      "target": "attack-step:parser-resolves-entity"
+    },
+    {
+      "id": "relationship:attack-path:xxe-file-read|steps|attack-step:coerce-file-uri",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:xxe-file-read",
+      "target": "attack-step:coerce-file-uri"
+    },
+    {
+      "id": "relationship:attack-path:xxe-file-read|steps|attack-step:read-internal-file",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:xxe-file-read",
+      "target": "attack-step:read-internal-file"
+    },
+    {
+      "id": "relationship:attack-path:imds-pivot|pivots_to|attack-path:xxe-file-read",
+      "properties": {},
+      "relationship_type": "pivots_to",
+      "source": "attack-path:imds-pivot",
+      "target": "attack-path:xxe-file-read"
+    },
+    {
+      "id": "relationship:attack-path:imds-pivot|realizes_threat|threat-instance:imds-pivot",
+      "properties": {
+        "assertion_ids": [
+          "assertion:ai-imds-pivot-realizes"
+        ],
+        "assertion_status": "proposed",
+        "confidence": "low",
+        "review_ids": [
+          "review:ai-triage"
+        ],
+        "review_status": "changes_requested"
+      },
+      "relationship_type": "realizes_threat",
+      "source": "attack-path:imds-pivot",
+      "target": "threat-instance:imds-pivot"
+    },
+    {
+      "id": "relationship:attack-path:imds-pivot|steps|attack-step:point-entity-at-metadata",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:imds-pivot",
+      "target": "attack-step:point-entity-at-metadata"
+    },
+    {
+      "id": "relationship:attack-path:imds-pivot|steps|attack-step:dns-rebind-to-metadata",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:imds-pivot",
+      "target": "attack-step:dns-rebind-to-metadata"
+    },
+    {
+      "id": "relationship:attack-path:imds-pivot|steps|attack-step:fetch-instance-credentials",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:imds-pivot",
+      "target": "attack-step:fetch-instance-credentials"
+    },
+    {
+      "id": "relationship:mitigation:disable-external-entities|applies_in_phase|lifecycle-phase:design",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "mitigation:disable-external-entities",
+      "target": "lifecycle-phase:design"
+    },
+    {
+      "id": "relationship:mitigation:disable-external-entities|applies_in_phase|lifecycle-phase:implementation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "mitigation:disable-external-entities",
+      "target": "lifecycle-phase:implementation"
+    },
+    {
+      "id": "relationship:mitigation:disable-external-entities|implementation_owner|party:papermill-oss",
+      "properties": {},
+      "relationship_type": "implementation_owner",
+      "source": "mitigation:disable-external-entities",
+      "target": "party:papermill-oss"
+    },
+    {
+      "id": "relationship:mitigation:disable-external-entities|mitigates|threat-instance:xxe-file-read",
+      "properties": {},
+      "relationship_type": "mitigates",
+      "source": "mitigation:disable-external-entities",
+      "target": "threat-instance:xxe-file-read"
+    },
+    {
+      "id": "relationship:mitigation:egress-and-imdsv2|applies_in_phase|lifecycle-phase:implementation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "mitigation:egress-and-imdsv2",
+      "target": "lifecycle-phase:implementation"
+    },
+    {
+      "id": "relationship:mitigation:egress-and-imdsv2|applies_in_phase|lifecycle-phase:operation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "mitigation:egress-and-imdsv2",
+      "target": "lifecycle-phase:operation"
+    },
+    {
+      "id": "relationship:mitigation:egress-and-imdsv2|implementation_owner|party:saas-operator",
+      "properties": {},
+      "relationship_type": "implementation_owner",
+      "source": "mitigation:egress-and-imdsv2",
+      "target": "party:saas-operator"
+    },
+    {
+      "id": "relationship:mitigation:egress-and-imdsv2|mitigates|threat-instance:imds-pivot",
+      "properties": {},
+      "relationship_type": "mitigates",
+      "source": "mitigation:egress-and-imdsv2",
+      "target": "threat-instance:imds-pivot"
+    },
+    {
+      "id": "relationship:risk-score:xxe-file-read|attack_paths|attack-path:xxe-file-read",
+      "properties": {},
+      "relationship_type": "attack_paths",
+      "source": "risk-score:xxe-file-read",
+      "target": "attack-path:xxe-file-read"
+    },
+    {
+      "id": "relationship:risk-score:xxe-file-read|attack_paths|attack-path:imds-pivot",
+      "properties": {},
+      "relationship_type": "attack_paths",
+      "source": "risk-score:xxe-file-read",
+      "target": "attack-path:imds-pivot"
+    },
+    {
+      "id": "relationship:risk-score:xxe-file-read|damage_scenario|damage-scenario:tenant-data-exfil",
+      "properties": {},
+      "relationship_type": "damage_scenario",
+      "source": "risk-score:xxe-file-read",
+      "target": "damage-scenario:tenant-data-exfil"
+    },
+    {
+      "id": "relationship:risk-score:xxe-file-read|for_stakeholder|party:saas-operator",
+      "properties": {},
+      "relationship_type": "for_stakeholder",
+      "source": "risk-score:xxe-file-read",
+      "target": "party:saas-operator"
+    },
+    {
+      "id": "relationship:risk-score:xxe-file-read|threat|threat-instance:xxe-file-read",
+      "properties": {},
+      "relationship_type": "threat",
+      "source": "risk-score:xxe-file-read",
+      "target": "threat-instance:xxe-file-read"
+    },
+    {
+      "id": "relationship:review:vuln-prop|reviewer|party:sec-reviewer",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:vuln-prop",
+      "target": "party:sec-reviewer"
+    },
+    {
+      "id": "relationship:review:vuln-prop|reviews|assertion:vuln-propagation",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:vuln-prop",
+      "target": "assertion:vuln-propagation"
+    },
+    {
+      "id": "relationship:review:cve-cwe|reviewer|party:sec-reviewer",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:cve-cwe",
+      "target": "party:sec-reviewer"
+    },
+    {
+      "id": "relationship:review:cve-cwe|reviews|assertion:cve-cwe-instance",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:cve-cwe",
+      "target": "assertion:cve-cwe-instance"
+    },
+    {
+      "id": "relationship:review:cwe-capec|reviewer|party:sec-reviewer",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:cwe-capec",
+      "target": "party:sec-reviewer"
+    },
+    {
+      "id": "relationship:review:cwe-capec|reviews|assertion:cwe-capec-map",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:cwe-capec",
+      "target": "assertion:cwe-capec-map"
+    },
+    {
+      "id": "relationship:review:xxe-path|reviewer|party:sec-reviewer",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:xxe-path",
+      "target": "party:sec-reviewer"
+    },
+    {
+      "id": "relationship:review:xxe-path|reviews|assertion:xxe-path-realizes",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:xxe-path",
+      "target": "assertion:xxe-path-realizes"
+    },
+    {
+      "id": "relationship:review:ai-triage|reviewer|party:sec-reviewer",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:ai-triage",
+      "target": "party:sec-reviewer"
+    },
+    {
+      "id": "relationship:review:ai-triage|reviews|assertion:ai-imds-pivot-realizes",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:ai-triage",
+      "target": "assertion:ai-imds-pivot-realizes"
+    },
+    {
+      "id": "relationship:assertion:vuln-propagation|object|component:papermill-api",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:vuln-propagation",
+      "target": "component:papermill-api"
+    },
+    {
+      "id": "relationship:assertion:vuln-propagation|subject|vulnerability:cve-2026-30111",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:vuln-propagation",
+      "target": "vulnerability:cve-2026-30111"
+    },
+    {
+      "id": "relationship:assertion:cve-cwe-instance|object|weakness:cwe-611",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:cve-cwe-instance",
+      "target": "weakness:cwe-611"
+    },
+    {
+      "id": "relationship:assertion:cve-cwe-instance|subject|vulnerability:cve-2026-30111",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:cve-cwe-instance",
+      "target": "vulnerability:cve-2026-30111"
+    },
+    {
+      "id": "relationship:assertion:cwe-capec-map|object|attack-pattern:capec-221",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:cwe-capec-map",
+      "target": "attack-pattern:capec-221"
+    },
+    {
+      "id": "relationship:assertion:cwe-capec-map|subject|weakness:cwe-611",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:cwe-capec-map",
+      "target": "weakness:cwe-611"
+    },
+    {
+      "id": "relationship:assertion:xxe-path-realizes|object|threat-instance:xxe-file-read",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:xxe-path-realizes",
+      "target": "threat-instance:xxe-file-read"
+    },
+    {
+      "id": "relationship:assertion:xxe-path-realizes|subject|attack-path:xxe-file-read",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:xxe-path-realizes",
+      "target": "attack-path:xxe-file-read"
+    },
+    {
+      "id": "relationship:assertion:ai-imds-pivot-realizes|object|threat-instance:imds-pivot",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:ai-imds-pivot-realizes",
+      "target": "threat-instance:imds-pivot"
+    },
+    {
+      "id": "relationship:assertion:ai-imds-pivot-realizes|subject|attack-path:imds-pivot",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:ai-imds-pivot-realizes",
+      "target": "attack-path:imds-pivot"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2026-30111|propagates_to|component:papermill-api",
+      "properties": {
+        "assertion_ids": [
+          "assertion:vuln-propagation"
+        ],
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "review_ids": [
+          "review:vuln-prop"
+        ],
+        "review_status": "accepted"
+      },
+      "relationship_type": "propagates_to",
+      "source": "vulnerability:cve-2026-30111",
+      "target": "component:papermill-api"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2026-30111|instance_of|weakness:cwe-611",
+      "properties": {
+        "assertion_ids": [
+          "assertion:cve-cwe-instance"
+        ],
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "review_ids": [
+          "review:cve-cwe"
+        ],
+        "review_status": "accepted"
+      },
+      "relationship_type": "instance_of",
+      "source": "vulnerability:cve-2026-30111",
+      "target": "weakness:cwe-611"
+    },
+    {
+      "id": "relationship:weakness:cwe-611|exploited_by|attack-pattern:capec-221",
+      "properties": {
+        "assertion_ids": [
+          "assertion:cwe-capec-map"
+        ],
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "review_ids": [
+          "review:cwe-capec"
+        ],
+        "review_status": "accepted"
+      },
+      "relationship_type": "exploited_by",
+      "source": "weakness:cwe-611",
+      "target": "attack-pattern:capec-221"
+    }
+  ],
+  "file": "mvp-01-software-doc-service.yaml",
+  "nodes": [
+    {
+      "domain_type": "Party",
+      "id": "party:papermill-oss",
+      "label": "Papermill OSS project",
+      "properties": {
+        "classifications": [
+          "oss-maintainer"
+        ],
+        "description": "Upstream maintainer / manufacturer of the document service (role identity, §2b).",
+        "party_kind": "organization"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:saas-operator",
+      "label": "SaaS operator",
+      "properties": {
+        "classifications": [
+          "asset-owner"
+        ],
+        "description": "Deploys and owns a running instance; the stakeholder impact is reported for.",
+        "party_kind": "organization"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:cna-mitre",
+      "label": "CVE Numbering Authority",
+      "properties": {
+        "classifications": [
+          "cna"
+        ],
+        "party_kind": "organization"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:reporter-01",
+      "label": "@reporter-01",
+      "properties": {
+        "description": "Independent reporter of the vulnerability (github id only, §2b).",
+        "party_kind": "person"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:sec-reviewer",
+      "label": "@sec-reviewer",
+      "properties": {
+        "description": "Human security reviewer (github id, role identity).",
+        "party_kind": "person"
+      }
+    },
+    {
+      "domain_type": "Product",
+      "id": "product:papermill-doc-service",
+      "label": "Papermill Document Service",
+      "properties": {
+        "description": "OSS document-ingest & rendering microservice.",
+        "identifiers": [
+          "pkg:github/papermill/doc-service",
+          "cpe:2.3:a:papermill:doc_service:3.1.0:*:*:*:*:*:*:*"
+        ]
+      }
+    },
+    {
+      "domain_type": "ProductInstance",
+      "id": "product-instance:papermill-3-1-0",
+      "label": "doc-service build 3.1.0",
+      "properties": {
+        "description": "The reviewed build; software instance identity is a build/commit/SBOM hash (ADR-0002).",
+        "identifiers": [
+          "build:papermill-doc-service@3.1.0+git.3b9e1d2",
+          "sha256:3b9e1d2a4c6e8f0a1b2c3d4e5f60718293a4b5c6d7e8f90112233445566778899"
+        ],
+        "valid_from": "2026-09-10T00:00:00Z"
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:papermill-api",
+      "label": "papermill-api (service container)",
+      "properties": {
+        "description": "The deployed service artifact (§0 authoritative component, not a DFD node).",
+        "identifiers": [
+          "pkg:oci/papermill/doc-service@sha256:3b9e1d2a"
+        ]
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:render-worker",
+      "label": "document render worker",
+      "properties": {
+        "description": "Parses and renders uploaded documents.",
+        "identifiers": [
+          "pkg:github/papermill/doc-service@3.1.0#render"
+        ]
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:libxml-parse",
+      "label": "libxml-parse (transitive dependency)",
+      "properties": {
+        "description": "Vulnerable OSS XML-parsing dependency along which the finding propagates (§5).",
+        "identifiers": [
+          "pkg:pypi/libxml-parse@1.8.2",
+          "cpe:2.3:a:libxml_parse:libxml_parse:1.8.2:*:*:*:*:*:*:*"
+        ]
+      }
+    },
+    {
+      "domain_type": "Weakness",
+      "id": "weakness:cwe-611",
+      "label": "Improper Restriction of XML External Entity Reference",
+      "properties": {
+        "catalog_ref": "CWE-611",
+        "description": "Generic weakness class (CWE, §1 layer 3)."
+      }
+    },
+    {
+      "domain_type": "Vulnerability",
+      "id": "vulnerability:cve-2026-30111",
+      "label": "XXE in libxml-parse document loader (illustrative)",
+      "properties": {
+        "catalog_ref": "CVE-2026-30111",
+        "description": "Finding affecting the product; propagation to components is a reviewed Assertion (§5)."
+      }
+    },
+    {
+      "domain_type": "AttackPattern",
+      "id": "attack-pattern:capec-221",
+      "label": "Data Serialization External Entities Blowup",
+      "properties": {
+        "catalog_ref": "CAPEC-221",
+        "description": "Generic attack pattern (CAPEC = what, §2a). The CWE↔CAPEC link is a reviewed Assertion."
+      }
+    },
+    {
+      "domain_type": "ThreatInstance",
+      "id": "threat-instance:xxe-file-read",
+      "label": "XXE via uploaded document → internal file read",
+      "properties": {
+        "description": "Human-elicited STRIDE threat on the document-upload flow.",
+        "method_facet": [
+          "stride"
+        ],
+        "source_method": "stride-dfd (human-elicited, reviewed)",
+        "violates_property": "I confidentiality"
+      }
+    },
+    {
+      "domain_type": "ThreatInstance",
+      "id": "threat-instance:imds-pivot",
+      "label": "SSRF pivot from XXE to cloud instance-metadata credentials",
+      "properties": {
+        "description": "AI-PROPOSED hypothesis (not reviewed/accepted). source_method records the proposing method; its realizing edge is an Assertion in `proposed` state with a Review that has NOT accepted it (CLAUDE.md: AI output is a hypothesis).",
+        "method_facet": [
+          "stride"
+        ],
+        "source_method": "ai:llm-threat-proposer (hypothesis, unreviewed)",
+        "violates_property": "I confidentiality / E authorization"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:upload-crafted-doc",
+      "label": "Upload a document with a crafted external-entity reference",
+      "properties": {
+        "kill_chain_phase": "delivery"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:parser-resolves-entity",
+      "label": "Render worker resolves the external entity",
+      "properties": {
+        "description": "Requires the vulnerable parser to resolve external entities."
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:coerce-file-uri",
+      "label": "Point the entity at an internal file:// URI",
+      "properties": {}
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:read-internal-file",
+      "label": "Read an internal file and exfiltrate it in the rendered output",
+      "properties": {
+        "description": "Requires BOTH the parser resolving the entity AND a reachable file URI — an AND gate (§2a).",
+        "gate": "and_gate",
+        "kill_chain_phase": "exploitation"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:point-entity-at-metadata",
+      "label": "Point the entity at the cloud metadata endpoint",
+      "properties": {}
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:dns-rebind-to-metadata",
+      "label": "Use DNS rebinding to reach the metadata endpoint",
+      "properties": {}
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:fetch-instance-credentials",
+      "label": "Fetch instance-role credentials from the metadata service",
+      "properties": {
+        "description": "Either a direct metadata URI OR DNS rebinding suffices — an OR gate (§2a).",
+        "gate": "or_gate",
+        "kill_chain_phase": "exploitation"
+      }
+    },
+    {
+      "domain_type": "AttackPath",
+      "id": "attack-path:xxe-file-read",
+      "label": "XXE file-read path",
+      "properties": {
+        "attack_feasibility": "medium",
+        "description": "Human-reviewed path realizing the XXE threat; feasibility human-rated (§3)."
+      }
+    },
+    {
+      "domain_type": "AttackPath",
+      "id": "attack-path:imds-pivot",
+      "label": "XXE → cloud-metadata SSRF pivot path",
+      "properties": {
+        "attack_feasibility": "low",
+        "description": "The AI-PROPOSED path; realizing edge is a `proposed` Assertion, not yet accepted."
+      }
+    },
+    {
+      "domain_type": "DamageScenario",
+      "id": "damage-scenario:tenant-data-exfil",
+      "label": "XXE file read → internal credential disclosure → cross-tenant data breach",
+      "properties": {
+        "description": "The damage the XXE threat realizes; impact categories live on RiskScore (§3)."
+      }
+    },
+    {
+      "domain_type": "Mitigation",
+      "id": "mitigation:disable-external-entities",
+      "label": "Disable external-entity resolution in the XML parser",
+      "properties": {
+        "catalog_ref": "D3FEND:D3-IOPM",
+        "description": "Control for the XXE threat (D3FEND-style catalog ref, §5).",
+        "external_refs": [
+          "JIRA-PM-842"
+        ],
+        "mitigation_status": "complete"
+      }
+    },
+    {
+      "domain_type": "Mitigation",
+      "id": "mitigation:egress-and-imdsv2",
+      "label": "Egress filtering + require IMDSv2 hop-limit",
+      "properties": {
+        "catalog_ref": "D3FEND:D3-OTF",
+        "description": "Control for the AI-proposed metadata-pivot path; still being rolled out.",
+        "external_refs": [
+          "JIRA-PM-915"
+        ],
+        "mitigation_status": "in_progress"
+      }
+    },
+    {
+      "domain_type": "RiskScore",
+      "id": "risk-score:xxe-file-read",
+      "label": "Risk — XXE file read",
+      "properties": {
+        "description": "Composite vector per ADR-0006/DEC-003: feasibility + S/F/O/P impact + mitigation-status + derived risk, shown with its inputs — never one number. Computed WITHOUT an Environment parameter (§8 MVP: Environment is post-MVP).",
+        "feasibility": "medium",
+        "impact": "{\"financial\": \"major\", \"operational\": \"moderate\", \"privacy\": \"severe\", \"safety\": \"negligible\"}",
+        "mitigation_status": "in_progress",
+        "risk": "privacy 4 / financial 3 / operational 2 (worst-path, medium feasibility; 1–5 per 21434 M(I,F))"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:vuln-prop",
+      "label": "Review — accept vuln propagation",
+      "properties": {
+        "justification": "Reachable from the document-upload flow via libxml-parse; propagation confirmed.",
+        "priority": "high",
+        "review_status": "accepted"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:cve-cwe",
+      "label": "Review, accept the CVE-to-CWE link",
+      "properties": {
+        "justification": "The CWE in the CVE record (illustrative) matches the root cause; the parser resolves external entities in uploaded XML.",
+        "priority": "medium",
+        "review_status": "accepted"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:cwe-capec",
+      "label": "Review — accept CWE↔CAPEC mapping",
+      "properties": {
+        "justification": "External-entity attack pattern matches the XXE weakness class.",
+        "priority": "medium",
+        "review_status": "accepted"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:xxe-path",
+      "label": "Review — accept XXE path",
+      "properties": {
+        "justification": "Steps reproduce in a test harness; path realizes the reviewed threat.",
+        "priority": "high",
+        "review_status": "accepted"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:ai-triage",
+      "label": "Review — AI-proposed metadata-pivot path (changes requested)",
+      "properties": {
+        "description": "Human triage of the AI hypothesis; it is NOT accepted.",
+        "justification": "AI-proposed path. Metadata reachability depends on deployment specifics not yet confirmed; keep as a flagged hypothesis, do not treat as reviewed.",
+        "priority": "medium",
+        "review_status": "changes_requested"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:vuln-propagation",
+      "label": "CVE propagates to the service along uses_component",
+      "properties": {
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "description": "Reviewed propagation edge (§5) — not a facet property; reified so a Review can point at it.",
+        "predicate": "propagates_to"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:cve-cwe-instance",
+      "label": "CVE-2026-30111 is an instance of CWE-611",
+      "properties": {
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "description": "The CVE-to-CWE step of the ADR-0002 backbone (CVE, CWE, CAPEC, ATT&CK). Vulnerability has no Weakness slot, so the link is reified, with the predicate ARCH-0001 §3 and PLAN-0002 §5 name (RPT-0004 mapping.md, finding 7). In a real import the CWE comes from the CVE record and stays proposed until a human reviews it (R-018).",
+        "predicate": "instance_of"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:cwe-capec-map",
+      "label": "CWE-611 is exploited by CAPEC-221",
+      "properties": {
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "description": "The human-reviewed CWE↔CAPEC mapping the schema calls out (§2).",
+        "predicate": "exploited_by"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:xxe-path-realizes",
+      "label": "Human-reviewed — XXE path realizes the XXE threat",
+      "properties": {
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "description": "Reviewed realizing edge; accepted by a human reviewer.",
+        "predicate": "realizes_threat"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:ai-imds-pivot-realizes",
+      "label": "AI-proposed — metadata-pivot path realizes the pivot threat",
+      "properties": {
+        "assertion_status": "proposed",
+        "confidence": "low",
+        "description": "AI-PROPOSED edge. assertion_status is `proposed` (NOT accepted); it is a hypothesis until a human accepts it. The paired Review requests changes.",
+        "predicate": "realizes_threat"
+      }
+    },
+    {
+      "domain_type": "LifecyclePhase",
+      "id": "lifecycle-phase:design",
+      "label": "Design",
+      "properties": {
+        "code": "design"
+      }
+    },
+    {
+      "domain_type": "LifecyclePhase",
+      "id": "lifecycle-phase:implementation",
+      "label": "Implementation",
+      "properties": {
+        "code": "implementation"
+      }
+    },
+    {
+      "domain_type": "LifecyclePhase",
+      "id": "lifecycle-phase:operation",
+      "label": "Operation / use",
+      "properties": {
+        "code": "operation"
+      }
+    },
+    {
+      "domain_type": "View",
+      "id": "view:papermill-attack-graph",
+      "label": "Papermill attack-path graph",
+      "properties": {
+        "description": "Interactive-graph-able lens over this model (§10, R-014): projection `graph`, opened from a bounded focus query. A derived View, never written back to domain nodes; this is the core (non-governed) View class.",
+        "focus_query": "product:papermill-doc-service -> threat_instances -> attack_paths -> attack_steps",
+        "projection": "graph"
+      }
+    }
+  ]
+}

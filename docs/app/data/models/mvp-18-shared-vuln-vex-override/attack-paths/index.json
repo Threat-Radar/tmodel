@@ -1,0 +1,9 @@
+{
+  "file": "mvp-18-shared-vuln-vex-override.yaml",
+  "reviewed_threats": [],
+  "steps": 6,
+  "threats": [
+    "threat-instance:side-channel-seed-leak",
+    "threat-instance:weak-rng-key-recovery"
+  ]
+}

@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Example threat models · tmodel</title>
+<meta name="description" content="Example data. These models were written to exercise tmodel&#39;s object model; none of them is a security assessment. The proposal examples were drafted by AI from published write-ups of real automotive attacks and name the real products. AI-proposed threats and paths are hypotheses until a human reviewer accepts them.">
+<style>
+:root { --ink: #1a1916; --muted: #5c574e; --line: #e2dcd0; --paper: #f6f3ec; --card: #fffcf7; --accent: #1e4d3a; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
+.model-page { max-width: 920px; margin: 0 auto; padding: 22px 24px 40px; }
+.breadcrumb { margin: 0 0 12px; font-size: 0.85rem; color: var(--muted); }
+.breadcrumb a, .model-page-footer a, .model-index a { color: var(--accent); }
+.model-page-footer { margin-top: 32px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.8rem; }
+.model-page-footer code { font-size: 0.78rem; }
+.model-index h1 { margin: 6px 0 6px; font-size: clamp(1.7rem, 3vw, 2.3rem); letter-spacing: -0.03em; }
+.model-index .lead { max-width: 75ch; margin: 0 0 14px; color: var(--muted); font-size: 1.05rem; }
+.model-list { display: grid; gap: 12px; margin: 16px 0 0; padding: 0; list-style: none; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+.model-list li { padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+.model-list h2 { margin: 2px 0 6px; font-size: 1.05rem; }
+.model-list p { margin: 0 0 6px; font-size: 0.88rem; }
+.model-list .meta { color: var(--muted); font-size: 0.8rem; }
+.model-list .kind { color: var(--accent); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+.problems { margin-top: 16px; color: #991b1b; font-size: 0.85rem; }
+
+/* Model report styles (#208). One stylesheet for both outputs: the app imports
+   it, and the static Pages build inlines it into each model page. */
+
+.model-report {
+  --rp-text: #172033;
+  --rp-muted: #5b6678;
+  --rp-faint: #8792a5;
+  --rp-surface: #ffffff;
+  --rp-subtle: #f6f8fb;
+  --rp-border: #dde3ec;
+  --rp-accent: #3730a3;
+  --rp-ok-bg: #dcfce7; --rp-ok-fg: #166534; --rp-ok-line: #16a34a;
+  --rp-bad-bg: #fee2e2; --rp-bad-fg: #991b1b; --rp-bad-line: #dc2626;
+  --rp-warn-bg: #ffedd5; --rp-warn-fg: #9a3412; --rp-warn-line: #ea580c;
+  --rp-hyp-bg: #fef3c7; --rp-hyp-fg: #854d0e; --rp-hyp-line: #d97706;
+  --rp-neutral-bg: #e8edf5; --rp-neutral-fg: #475569;
+  --rp-step-bg: #f5f3ff; --rp-step-line: #7c3aed;
+  --rp-threat-bg: #fff1f2; --rp-threat-line: #be123c;
+  --rp-damage-bg: #fff7ed; --rp-damage-line: #c2410c;
+  --rp-mit-bg: #f0fdf4; --rp-mit-line: #15803d;
+  --rp-target-bg: #eff6ff; --rp-target-line: #2563eb;
+  --rp-gate-bg: #1e293b; --rp-gate-fg: #ffffff;
+  --rp-edge: #64748b;
+  color: var(--rp-text);
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.model-report h2 { margin: 0 0 6px; font-size: 1.55rem; letter-spacing: -0.02em; }
+.model-report h3 { display: flex; align-items: center; gap: 9px; margin: 0 0 12px; font-size: 1.02rem; letter-spacing: 0; text-transform: none; }
+.model-report h4 { margin: 0 0 3px; font-size: 0.98rem; }
+.model-report .eyebrow { margin: 0 0 4px; color: var(--rp-muted); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+.section-number { display: inline-grid; width: 24px; height: 24px; place-items: center; border-radius: 50%; background: var(--rp-neutral-bg); color: var(--rp-neutral-fg); font-size: 0.74rem; }
+
+.report-header { margin-bottom: 18px; padding: 18px 20px; border: 1px solid var(--rp-border); border-radius: 12px; background: var(--rp-surface); }
+.report-scope { max-width: 72ch; margin: 0 0 12px; color: var(--rp-muted); }
+.example-banner { max-width: 90ch; margin: 0 0 14px; padding: 9px 12px; border: 1px solid #f3c969; border-left-width: 5px; border-radius: 8px; background: #fffbeb; color: #713f12; }
+.report-scope-details { margin: -6px 0 12px; }
+.report-scope + .report-scope { margin-top: -6px; }
+.model-report .table-steps { margin: 0; padding-left: 20px; }
+.model-report .table-steps li { margin: 0 0 2px; }
+.model-report .path-link { color: inherit; text-decoration: underline; text-decoration-color: var(--rp-border); text-underline-offset: 3px; }
+.model-report .path-link:hover { text-decoration-color: currentColor; }
+.model-report .step-button { margin: 0; padding: 0; border: 0; border-radius: 3px; background: none; color: inherit; font: inherit; font-weight: 650; text-align: left; cursor: pointer; }
+.model-report .step-button:hover { text-decoration: underline; text-underline-offset: 3px; }
+.model-report .step-button:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; }
+.report-warning { max-width: 90ch; margin: 0 0 14px; padding: 9px 12px; border: 1px solid #fca5a5; border-left-width: 5px; border-radius: 8px; background: #fef2f2; color: #991b1b; }
+.report-warning p, .report-warning ul { margin: 0; }
+.report-warning ul { margin-top: 4px; padding-left: 18px; }
+.model-report .warning-note { color: #991b1b; }
+.threat-summary { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; }
+.threat-summary p { margin: 0; }
+.summary-total { font-size: 0.95rem; }
+.summary-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.summary-chip { padding: 3px 9px; border-radius: 999px; font-size: 0.78rem; }
+.summary-reviewers { color: var(--rp-muted); font-size: 0.8rem; }
+.report-contents ol { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 14px 0 0; padding: 0; list-style: none; counter-reset: rc; font-size: 0.82rem; }
+.report-contents li { counter-increment: rc; }
+.report-contents li::before { content: counter(rc) ". "; color: var(--rp-faint); }
+.report-contents a { color: var(--rp-accent); }
+
+.report-section { margin-bottom: 18px; padding: 16px 20px 18px; border: 1px solid var(--rp-border); border-radius: 12px; background: var(--rp-surface); scroll-margin-top: 12px; }
+.section-help, .empty-note { margin: 0 0 10px; color: var(--rp-muted); }
+.empty-note { padding: 10px 12px; border: 1px dashed var(--rp-border); border-radius: 8px; background: var(--rp-subtle); }
+
+.report-table-scroll { max-width: 100%; margin-bottom: 14px; overflow-x: auto; }
+.report-table-scroll:last-child { margin-bottom: 0; }
+.report-table { width: 100%; border-collapse: collapse; }
+.report-table caption { padding: 0 0 7px; color: var(--rp-muted); font-size: 0.76rem; font-weight: 700; text-align: left; }
+.report-table th, .report-table td { padding: 9px 10px; border-top: 1px solid var(--rp-border); text-align: left; vertical-align: top; }
+.report-table thead th { border-top: 0; border-bottom: 1px solid var(--rp-border); background: var(--rp-subtle); color: var(--rp-muted); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+.report-table tbody th { min-width: 170px; font-weight: 650; }
+.report-table td { min-width: 110px; }
+.cell-note { margin-top: 3px; color: var(--rp-muted); font-size: 0.76rem; font-weight: 400; }
+.missing { color: var(--rp-faint); font-style: italic; }
+.ref { white-space: normal; }
+.impact-list { display: grid; grid-template-columns: auto auto; gap: 0 8px; width: fit-content; margin: 0; padding: 0; list-style: none; }
+.impact-list li { display: contents; }
+.impact-list span { color: var(--rp-muted); }
+.handle { white-space: nowrap; }
+
+.status-badge { display: inline-block; padding: 2px 8px; border: 1px solid transparent; border-radius: 999px; font-size: 0.74rem; font-weight: 750; white-space: nowrap; }
+.rs-accepted { border-color: var(--rp-ok-line); background: var(--rp-ok-bg); color: var(--rp-ok-fg); }
+.rs-rejected { border-color: var(--rp-bad-line); background: var(--rp-bad-bg); color: var(--rp-bad-fg); }
+.rs-changes_requested { border-color: var(--rp-warn-line); background: var(--rp-warn-bg); color: var(--rp-warn-fg); }
+.rs-proposed, .rs-not_reviewed { border-color: var(--rp-hyp-line); border-style: dashed; background: var(--rp-hyp-bg); color: var(--rp-hyp-fg); }
+.rs-unknown, .rs-mixed { border-color: var(--rp-neutral-fg); border-style: dotted; background: var(--rp-neutral-bg); color: var(--rp-neutral-fg); }
+.row-status-rejected > th:first-child { box-shadow: inset 4px 0 0 var(--rp-bad-line); }
+.row-status-changes_requested > th:first-child { box-shadow: inset 4px 0 0 var(--rp-warn-line); }
+.row-not-assessed th, .row-not-assessed td { background: var(--rp-subtle); }
+
+.row-details { margin-top: 6px; font-size: 0.74rem; }
+.row-details summary { width: fit-content; color: var(--rp-accent); cursor: pointer; font-weight: 650; }
+.row-details dl { display: grid; gap: 4px; margin: 6px 0 0; padding: 8px 10px; border-radius: 7px; background: var(--rp-subtle); }
+.row-details dl > div { display: grid; grid-template-columns: minmax(90px, 0.35fr) 1fr; gap: 8px; }
+.row-details dt { color: var(--rp-muted); font-weight: 700; }
+.row-details dd { margin: 0; overflow-wrap: anywhere; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.72rem; }
+
+.path-card { margin-bottom: 16px; padding: 14px 16px; border: 1px solid var(--rp-border); border-radius: 10px; background: var(--rp-surface); }
+.path-card:last-child { margin-bottom: 0; }
+.path-card.row-status-rejected { border: 2px dashed var(--rp-bad-line); }
+.path-card.row-status-changes_requested { border: 2px dashed var(--rp-warn-line); }
+.path-card-header { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 8px 16px; margin-bottom: 8px; }
+.path-card-header p { margin: 0; }
+.path-card-status { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.open-path-button { padding: 5px 10px; border: 1px solid var(--rp-accent); border-radius: 7px; background: var(--rp-surface); color: var(--rp-accent); font: inherit; font-size: 0.76rem; font-weight: 700; cursor: pointer; }
+.open-path-button:focus-visible { outline: 2px solid var(--rp-accent); outline-offset: 2px; }
+.status-callout { margin: 0 0 10px; padding: 8px 11px; border-left: 4px solid; border-radius: 6px; }
+.path-story { display: grid; gap: 4px; }
+.path-steps { margin: 0 0 4px; padding-left: 1.6em; }
+.path-steps li { margin: 3px 0; }
+.step-name { font-weight: 650; }
+.phase-chip { display: inline-block; padding: 1px 6px; border-radius: 5px; background: var(--rp-neutral-bg); color: var(--rp-neutral-fg); font-size: 0.68rem; font-weight: 700; }
+.gate { display: inline-block; min-width: 28px; padding: 1px 6px; border-radius: 999px; background: var(--rp-gate-bg); color: var(--rp-gate-fg); font-size: 0.66rem; font-weight: 800; text-align: center; }
+.path-outcome { margin: 0; }
+.path-figure { margin: 12px 0 0; }
+.path-figure-scroll { overflow-x: auto; border: 1px solid var(--rp-border); border-radius: 8px; background: var(--rp-subtle); }
+.path-figure figcaption { margin-top: 5px; color: var(--rp-muted); font-size: 0.74rem; }
+
+/* Path diagram (inline SVG; the same layout the app draws with Cytoscape). */
+.path-diagram { display: block; width: 100%; min-width: 720px; max-width: 100%; height: auto; font-family: inherit; }
+.path-diagram .pd-node rect { stroke-width: 1.6; }
+.path-diagram .pd-step rect { fill: var(--rp-step-bg); stroke: var(--rp-step-line); }
+.path-diagram .pd-gate rect { fill: var(--rp-gate-bg); stroke: var(--rp-gate-bg); }
+.path-diagram .pd-gate .pd-text { fill: var(--rp-gate-fg); font-weight: 800; }
+.path-diagram .pd-threat rect { fill: var(--rp-threat-bg); stroke: var(--rp-threat-line); stroke-width: 2.2; }
+.path-diagram .pd-damage rect { fill: var(--rp-damage-bg); stroke: var(--rp-damage-line); }
+.path-diagram .pd-mitigation rect { fill: var(--rp-mit-bg); stroke: var(--rp-mit-line); }
+.path-diagram .pd-target rect { fill: var(--rp-target-bg); stroke: var(--rp-target-line); }
+.path-diagram .pd-caption { fill: var(--rp-muted); font-size: 10.5px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
+.path-diagram .pd-text { fill: var(--rp-text); font-size: 13px; font-weight: 600; }
+.path-diagram .pd-edge path { fill: none; stroke: var(--rp-edge); stroke-width: 1.7; }
+.path-diagram .pd-edge-mitigates path { stroke: var(--rp-mit-line); stroke-dasharray: 6 4; }
+.path-diagram .pd-edge-targets path { stroke: var(--rp-target-line); stroke-dasharray: 2 3; }
+.path-diagram .pd-arrow { fill: var(--rp-edge); }
+.path-diagram .pd-edge path { stroke-linejoin: round; }
+.path-diagram .pd-edge-label-bg { fill: var(--rp-subtle); }
+.path-diagram .pd-edge-label { fill: var(--rp-muted); font-size: 11px; font-weight: 700; }
+.path-diagram .pd-edge-label-group.pd-edge-mitigates .pd-edge-label { fill: var(--rp-mit-line); }
+.path-diagram .pd-edge-label-group.pd-edge-targets .pd-edge-label { fill: var(--rp-target-line); }
+.path-diagram.pd-status-rejected .pd-step rect { stroke: var(--rp-bad-line); stroke-dasharray: 7 4; }
+.path-diagram.pd-status-changes_requested .pd-step rect { stroke: var(--rp-warn-line); stroke-dasharray: 7 4; }
+.path-diagram.pd-threat-status-rejected .pd-threat rect { stroke: var(--rp-bad-line); stroke-dasharray: 7 4; }
+.path-diagram.pd-threat-status-changes_requested .pd-threat rect { stroke: var(--rp-warn-line); stroke-dasharray: 7 4; }
+.path-diagram.pd-threat-status-proposed .pd-threat rect,
+.path-diagram.pd-threat-status-not_reviewed .pd-threat rect { stroke: var(--rp-hyp-line); stroke-dasharray: 7 4; }
+
+@media (max-width: 720px) {
+  .report-header, .report-section { padding: 14px; }
+  .report-table tbody th { min-width: 140px; }
+  .path-card-status { align-items: flex-start; }
+}
+
+@media (prefers-color-scheme: dark) {
+  .model-report {
+    --rp-text: #e5e7eb;
+    --rp-muted: #a3b0c2;
+    --rp-faint: #7c879a;
+    --rp-surface: #111827;
+    --rp-subtle: #172033;
+    --rp-border: #334155;
+    --rp-accent: #a5b4fc;
+    --rp-ok-bg: #0f2e1d; --rp-ok-fg: #86efac; --rp-ok-line: #22c55e;
+    --rp-bad-bg: #3f1818; --rp-bad-fg: #fecaca; --rp-bad-line: #f87171;
+    --rp-warn-bg: #3b2312; --rp-warn-fg: #fdba74; --rp-warn-line: #fb923c;
+    --rp-hyp-bg: #3b2f12; --rp-hyp-fg: #fde68a; --rp-hyp-line: #f59e0b;
+    --rp-neutral-bg: #243147; --rp-neutral-fg: #cbd5e1;
+    --rp-step-bg: #241d3d; --rp-step-line: #a78bfa;
+    --rp-threat-bg: #3a1622; --rp-threat-line: #fb7185;
+    --rp-damage-bg: #3a2414; --rp-damage-line: #fb923c;
+    --rp-mit-bg: #102a1c; --rp-mit-line: #4ade80;
+    --rp-target-bg: #132544; --rp-target-line: #60a5fa;
+    --rp-gate-bg: #e2e8f0; --rp-gate-fg: #0f172a;
+    --rp-edge: #94a3b8;
+  }
+  .example-banner { border-color: #8a671b; background: #3b2f12; color: #fde68a; }
+  .report-warning { border-color: #7f1d1d; background: #2b1414; color: #fecaca; }
+  .model-report .warning-note { color: #fca5a5; }
+}
+
+
+.model-report {
+  --rp-text: #1a1916; --rp-muted: #5c574e; --rp-faint: #8a8377;
+  --rp-surface: #fffcf7; --rp-subtle: #f6f3ec; --rp-border: #e2dcd0; --rp-accent: #1e4d3a;
+  --rp-ok-bg: #e5efe8; --rp-ok-fg: #1e4d3a; --rp-ok-line: #6f9c80;
+  --rp-bad-bg: #f6e4dc; --rp-bad-fg: #7f1d1d; --rp-bad-line: #c27a6a;
+  --rp-warn-bg: #ffedd5; --rp-warn-fg: #9a3412; --rp-warn-line: #ea580c;
+  --rp-hyp-bg: #f3ead3; --rp-hyp-fg: #6b4e16; --rp-hyp-line: #c99a3a;
+  --rp-neutral-bg: #ece6da; --rp-neutral-fg: #5c574e;
+  --rp-step-bg: #f5f3ff; --rp-step-line: #7c3aed;
+  --rp-threat-bg: #fff1f2; --rp-threat-line: #be123c;
+  --rp-damage-bg: #fff7ed; --rp-damage-line: #c2410c;
+  --rp-mit-bg: #f0fdf4; --rp-mit-line: #15803d;
+  --rp-target-bg: #eff6ff; --rp-target-line: #2563eb;
+  --rp-gate-bg: #1a1916; --rp-gate-fg: #ffffff;
+  --rp-edge: #6b665c;
+}
+.example-banner { border-color: #e0cfa3; background: #f3ead3; color: #6b4e16; }
+.report-warning { border-color: #e3b5a8; background: #f6e4dc; color: #7f1d1d; }
+.model-report .warning-note { color: #991b1b; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../index.html">tmodel</a><nav aria-label="Site"><a href="../index.html">Home</a><a href="../bibliography/index.html">Bibliography</a><a href="../reports/index.html">Reports</a></nav></div></header>
+<main class="model-page model-index">
+<h1>Example threat models</h1>
+<p class="lead">Worked examples of what tmodel produces: each page is a threat-model report, in the order a TARA reads it, with every threat and attack path marked with its review status.</p>
+<div class="model-report"><p class="example-banner" role="note"><strong>Example data.</strong> These models were written to exercise tmodel&#39;s object model; none of them is a security assessment. The proposal examples were drafted by AI from published write-ups of real automotive attacks and name the real products. AI-proposed threats and paths are hypotheses until a human reviewer accepts them.</p></div>
+<ul class="model-list"><li>
+<p class="kind">Core example</p>
+<h2><a href="mvp-01-software-doc-service.html">Papermill Document Service</a></h2>
+<p>OSS document-ingest &amp; rendering microservice.</p>
+<p class="meta">2 threats, 1 with an accepted human review · 2 attack paths</p>
+</li><li>
+<p class="kind">Core example</p>
+<h2><a href="mvp-02-automotive-ecu.html">Telematics Control Unit (TCU)</a></h2>
+<p>Cellular-connected telematics ECU bridging the mobile network and the in-vehicle CAN.</p>
+<p class="meta">2 threats, 1 with an accepted human review · 2 attack paths</p>
+</li><li>
+<p class="kind">Core example</p>
+<h2><a href="mvp-03-hierarchical-system.html">Connected-Vehicle System</a></h2>
+<p>A SYSTEM product that hierarchically composes an in-vehicle platform subsystem and a cloud-backend subsystem.</p>
+<p class="meta">3 threats, 0 with an accepted human review · 3 attack paths</p>
+</li><li>
+<p class="kind">Core example</p>
+<h2><a href="mvp-18-shared-vuln-vex-override.html">Crypto Server Appliance and Edge Sensor</a></h2>
+<p>Crypto Server Appliance: Product A — a TLS-terminating server appliance that embeds the SoC. AFFECTED. Edge Sensor: Product X — an edge sensor that embeds the SAME SoC/IP core, but is VEX NOT_AFFECTED: the vulnerable RNG path is not on its execute path.</p>
+<p class="meta">2 threats, 0 with an accepted human review · 2 attack paths</p>
+</li><li>
+<p class="kind">Worked example with governance</p>
+<h2><a href="tv-hardware-brake-ecu.html">Brake ECU</a></h2>
+<p>Safety-critical braking electronic control unit.</p>
+<p class="meta">1 threat, 0 with an accepted human review · 1 attack path</p>
+</li><li>
+<p class="kind">Worked example with governance</p>
+<h2><a href="tv-software-auth-service.html">Acme Auth Service</a></h2>
+<p>OSS authentication &amp; token-refresh microservice.</p>
+<p class="meta">2 threats, 0 with an accepted human review · 2 attack paths</p>
+</li><li>
+<p class="kind">Proposal example (AI-drafted, unreviewed)</p>
+<h2><a href="pv-01-can-injection-theft.html">Toyota RAV4 (2021)</a></h2>
+<p>The vehicle model CVE-2023-29389 names.</p>
+<p class="meta">1 threat, 0 with an accepted human review · 1 attack path</p>
+</li><li>
+<p class="kind">Proposal example (AI-drafted, unreviewed)</p>
+<h2><a href="pv-02-dealer-portal-owner-data.html">Kia vehicle with remote services</a></h2>
+<p>A Kia vehicle with the telematics hardware, and the web services that control it (the write-up&#39;s table lists affected models from 2014 to 2025).</p>
+<p class="meta">2 threats, 0 with an accepted human review · 2 attack paths</p>
+</li></ul>
+
+</main>
+</body>
+</html>

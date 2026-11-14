@@ -1,0 +1,8 @@
+{
+  "file": "tv-hardware-brake-ecu.yaml",
+  "reviewed_threats": [],
+  "steps": 6,
+  "threats": [
+    "threat-instance:fw-tamper"
+  ]
+}

@@ -1,0 +1,1129 @@
+{
+  "edges": [
+    {
+      "id": "relationship:product:server-appliance|composed_of|component:appliance-firmware",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "product:server-appliance",
+      "target": "component:appliance-firmware"
+    },
+    {
+      "id": "relationship:product:server-appliance|composed_of|component:soc-chip",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "product:server-appliance",
+      "target": "component:soc-chip"
+    },
+    {
+      "id": "relationship:product:server-appliance|manufactured_by|party:appliance-vendor",
+      "properties": {},
+      "relationship_type": "manufactured_by",
+      "source": "product:server-appliance",
+      "target": "party:appliance-vendor"
+    },
+    {
+      "id": "relationship:product:server-appliance|owned_by|party:operator",
+      "properties": {},
+      "relationship_type": "owned_by",
+      "source": "product:server-appliance",
+      "target": "party:operator"
+    },
+    {
+      "id": "relationship:product:server-appliance|supplied_by|party:appliance-vendor",
+      "properties": {},
+      "relationship_type": "supplied_by",
+      "source": "product:server-appliance",
+      "target": "party:appliance-vendor"
+    },
+    {
+      "id": "relationship:product:edge-sensor|composed_of|component:sensor-firmware",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "product:edge-sensor",
+      "target": "component:sensor-firmware"
+    },
+    {
+      "id": "relationship:product:edge-sensor|composed_of|component:soc-chip",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "product:edge-sensor",
+      "target": "component:soc-chip"
+    },
+    {
+      "id": "relationship:product:edge-sensor|manufactured_by|party:sensor-vendor",
+      "properties": {},
+      "relationship_type": "manufactured_by",
+      "source": "product:edge-sensor",
+      "target": "party:sensor-vendor"
+    },
+    {
+      "id": "relationship:product:edge-sensor|owned_by|party:operator",
+      "properties": {},
+      "relationship_type": "owned_by",
+      "source": "product:edge-sensor",
+      "target": "party:operator"
+    },
+    {
+      "id": "relationship:product:edge-sensor|supplied_by|party:sensor-vendor",
+      "properties": {},
+      "relationship_type": "supplied_by",
+      "source": "product:edge-sensor",
+      "target": "party:sensor-vendor"
+    },
+    {
+      "id": "relationship:product-instance:server-appliance-4-0|current_phase|lifecycle-phase:operation",
+      "properties": {},
+      "relationship_type": "current_phase",
+      "source": "product-instance:server-appliance-4-0",
+      "target": "lifecycle-phase:operation"
+    },
+    {
+      "id": "relationship:product-instance:server-appliance-4-0|of_product|product:server-appliance",
+      "properties": {},
+      "relationship_type": "of_product",
+      "source": "product-instance:server-appliance-4-0",
+      "target": "product:server-appliance"
+    },
+    {
+      "id": "relationship:product-instance:server-appliance-4-0|owned_by|party:operator",
+      "properties": {},
+      "relationship_type": "owned_by",
+      "source": "product-instance:server-appliance-4-0",
+      "target": "party:operator"
+    },
+    {
+      "id": "relationship:product-instance:edge-sensor-1-2|current_phase|lifecycle-phase:operation",
+      "properties": {},
+      "relationship_type": "current_phase",
+      "source": "product-instance:edge-sensor-1-2",
+      "target": "lifecycle-phase:operation"
+    },
+    {
+      "id": "relationship:product-instance:edge-sensor-1-2|of_product|product:edge-sensor",
+      "properties": {},
+      "relationship_type": "of_product",
+      "source": "product-instance:edge-sensor-1-2",
+      "target": "product:edge-sensor"
+    },
+    {
+      "id": "relationship:product-instance:edge-sensor-1-2|owned_by|party:operator",
+      "properties": {},
+      "relationship_type": "owned_by",
+      "source": "product-instance:edge-sensor-1-2",
+      "target": "party:operator"
+    },
+    {
+      "id": "relationship:component:soc-chip|composed_of|component:crypto-ip-core",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "component:soc-chip",
+      "target": "component:crypto-ip-core"
+    },
+    {
+      "id": "relationship:component:appliance-firmware|uses_component|component:soc-chip",
+      "properties": {},
+      "relationship_type": "uses_component",
+      "source": "component:appliance-firmware",
+      "target": "component:soc-chip"
+    },
+    {
+      "id": "relationship:component:sensor-firmware|uses_component|component:soc-chip",
+      "properties": {},
+      "relationship_type": "uses_component",
+      "source": "component:sensor-firmware",
+      "target": "component:soc-chip"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2026-60333|affects|product:server-appliance",
+      "properties": {},
+      "relationship_type": "affects",
+      "source": "vulnerability:cve-2026-60333",
+      "target": "product:server-appliance"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2026-60333|assigned_by|party:cna-mitre",
+      "properties": {},
+      "relationship_type": "assigned_by",
+      "source": "vulnerability:cve-2026-60333",
+      "target": "party:cna-mitre"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2026-60333|reported_by|party:psirt-reviewer",
+      "properties": {},
+      "relationship_type": "reported_by",
+      "source": "vulnerability:cve-2026-60333",
+      "target": "party:psirt-reviewer"
+    },
+    {
+      "id": "relationship:threat-instance:weak-rng-key-recovery|applies_in_phase|lifecycle-phase:operation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "threat-instance:weak-rng-key-recovery",
+      "target": "lifecycle-phase:operation"
+    },
+    {
+      "id": "relationship:threat-instance:weak-rng-key-recovery|realizes_damage|damage-scenario:tls-session-compromise",
+      "properties": {},
+      "relationship_type": "realizes_damage",
+      "source": "threat-instance:weak-rng-key-recovery",
+      "target": "damage-scenario:tls-session-compromise"
+    },
+    {
+      "id": "relationship:threat-instance:side-channel-seed-leak|applies_in_phase|lifecycle-phase:operation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "threat-instance:side-channel-seed-leak",
+      "target": "lifecycle-phase:operation"
+    },
+    {
+      "id": "relationship:threat-instance:side-channel-seed-leak|realizes_damage|damage-scenario:tls-session-compromise",
+      "properties": {},
+      "relationship_type": "realizes_damage",
+      "source": "threat-instance:side-channel-seed-leak",
+      "target": "damage-scenario:tls-session-compromise"
+    },
+    {
+      "id": "relationship:attack-step:observe-rng-outputs|precedes|attack-step:derive-session-key",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:observe-rng-outputs",
+      "target": "attack-step:derive-session-key"
+    },
+    {
+      "id": "relationship:attack-step:capture-tls-handshake|precedes|attack-step:derive-session-key",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:capture-tls-handshake",
+      "target": "attack-step:derive-session-key"
+    },
+    {
+      "id": "relationship:attack-step:power-side-channel|precedes|attack-step:recover-seed",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:power-side-channel",
+      "target": "attack-step:recover-seed"
+    },
+    {
+      "id": "relationship:attack-step:emi-side-channel|precedes|attack-step:recover-seed",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:emi-side-channel",
+      "target": "attack-step:recover-seed"
+    },
+    {
+      "id": "relationship:attack-path:weak-rng-key-recovery|realizes_threat|threat-instance:weak-rng-key-recovery",
+      "properties": {},
+      "relationship_type": "realizes_threat",
+      "source": "attack-path:weak-rng-key-recovery",
+      "target": "threat-instance:weak-rng-key-recovery"
+    },
+    {
+      "id": "relationship:attack-path:weak-rng-key-recovery|steps|attack-step:observe-rng-outputs",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:weak-rng-key-recovery",
+      "target": "attack-step:observe-rng-outputs"
+    },
+    {
+      "id": "relationship:attack-path:weak-rng-key-recovery|steps|attack-step:capture-tls-handshake",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:weak-rng-key-recovery",
+      "target": "attack-step:capture-tls-handshake"
+    },
+    {
+      "id": "relationship:attack-path:weak-rng-key-recovery|steps|attack-step:derive-session-key",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:weak-rng-key-recovery",
+      "target": "attack-step:derive-session-key"
+    },
+    {
+      "id": "relationship:attack-path:side-channel-seed|realizes_threat|threat-instance:side-channel-seed-leak",
+      "properties": {
+        "assertion_ids": [
+          "assertion:ai-side-channel-realizes"
+        ],
+        "assertion_status": "proposed",
+        "confidence": "low",
+        "review_ids": [
+          "review:ai-side-channel"
+        ],
+        "review_status": "changes_requested"
+      },
+      "relationship_type": "realizes_threat",
+      "source": "attack-path:side-channel-seed",
+      "target": "threat-instance:side-channel-seed-leak"
+    },
+    {
+      "id": "relationship:attack-path:side-channel-seed|steps|attack-step:power-side-channel",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:side-channel-seed",
+      "target": "attack-step:power-side-channel"
+    },
+    {
+      "id": "relationship:attack-path:side-channel-seed|steps|attack-step:emi-side-channel",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:side-channel-seed",
+      "target": "attack-step:emi-side-channel"
+    },
+    {
+      "id": "relationship:attack-path:side-channel-seed|steps|attack-step:recover-seed",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:side-channel-seed",
+      "target": "attack-step:recover-seed"
+    },
+    {
+      "id": "relationship:mitigation:firmware-rng-reseed|applies_in_phase|lifecycle-phase:implementation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "mitigation:firmware-rng-reseed",
+      "target": "lifecycle-phase:implementation"
+    },
+    {
+      "id": "relationship:mitigation:firmware-rng-reseed|applies_in_phase|lifecycle-phase:maintenance",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "mitigation:firmware-rng-reseed",
+      "target": "lifecycle-phase:maintenance"
+    },
+    {
+      "id": "relationship:mitigation:firmware-rng-reseed|implementation_owner|party:appliance-vendor",
+      "properties": {},
+      "relationship_type": "implementation_owner",
+      "source": "mitigation:firmware-rng-reseed",
+      "target": "party:appliance-vendor"
+    },
+    {
+      "id": "relationship:mitigation:firmware-rng-reseed|mitigates|threat-instance:weak-rng-key-recovery",
+      "properties": {},
+      "relationship_type": "mitigates",
+      "source": "mitigation:firmware-rng-reseed",
+      "target": "threat-instance:weak-rng-key-recovery"
+    },
+    {
+      "id": "relationship:risk-score:weak-rng|attack_paths|attack-path:weak-rng-key-recovery",
+      "properties": {},
+      "relationship_type": "attack_paths",
+      "source": "risk-score:weak-rng",
+      "target": "attack-path:weak-rng-key-recovery"
+    },
+    {
+      "id": "relationship:risk-score:weak-rng|damage_scenario|damage-scenario:tls-session-compromise",
+      "properties": {},
+      "relationship_type": "damage_scenario",
+      "source": "risk-score:weak-rng",
+      "target": "damage-scenario:tls-session-compromise"
+    },
+    {
+      "id": "relationship:risk-score:weak-rng|for_stakeholder|party:operator",
+      "properties": {},
+      "relationship_type": "for_stakeholder",
+      "source": "risk-score:weak-rng",
+      "target": "party:operator"
+    },
+    {
+      "id": "relationship:risk-score:weak-rng|threat|threat-instance:weak-rng-key-recovery",
+      "properties": {},
+      "relationship_type": "threat",
+      "source": "risk-score:weak-rng",
+      "target": "threat-instance:weak-rng-key-recovery"
+    },
+    {
+      "id": "relationship:review:propagate-core-to-chip|reviewer|party:psirt-reviewer",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:propagate-core-to-chip",
+      "target": "party:psirt-reviewer"
+    },
+    {
+      "id": "relationship:review:propagate-core-to-chip|reviews|assertion:propagate-core-to-chip",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:propagate-core-to-chip",
+      "target": "assertion:propagate-core-to-chip"
+    },
+    {
+      "id": "relationship:review:propagate-chip-to-server|reviewer|party:psirt-reviewer",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:propagate-chip-to-server",
+      "target": "party:psirt-reviewer"
+    },
+    {
+      "id": "relationship:review:propagate-chip-to-server|reviews|assertion:propagate-chip-to-server",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:propagate-chip-to-server",
+      "target": "assertion:propagate-chip-to-server"
+    },
+    {
+      "id": "relationship:review:vex-not-affected-product-x|reviewer|party:psirt-reviewer",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:vex-not-affected-product-x",
+      "target": "party:psirt-reviewer"
+    },
+    {
+      "id": "relationship:review:vex-not-affected-product-x|reviews|assertion:vex-not-affected-product-x",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:vex-not-affected-product-x",
+      "target": "assertion:vex-not-affected-product-x"
+    },
+    {
+      "id": "relationship:review:chip-vendor-makes-core|reviewer|party:psirt-reviewer",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:chip-vendor-makes-core",
+      "target": "party:psirt-reviewer"
+    },
+    {
+      "id": "relationship:review:chip-vendor-makes-core|reviews|assertion:chip-vendor-makes-core",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:chip-vendor-makes-core",
+      "target": "assertion:chip-vendor-makes-core"
+    },
+    {
+      "id": "relationship:review:cve-cwe|reviewer|party:psirt-reviewer",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:cve-cwe",
+      "target": "party:psirt-reviewer"
+    },
+    {
+      "id": "relationship:review:cve-cwe|reviews|assertion:cve-cwe-instance",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:cve-cwe",
+      "target": "assertion:cve-cwe-instance"
+    },
+    {
+      "id": "relationship:review:cwe-capec|reviewer|party:psirt-reviewer",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:cwe-capec",
+      "target": "party:psirt-reviewer"
+    },
+    {
+      "id": "relationship:review:cwe-capec|reviews|assertion:cwe-capec-map",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:cwe-capec",
+      "target": "assertion:cwe-capec-map"
+    },
+    {
+      "id": "relationship:review:ai-side-channel|reviewer|party:psirt-reviewer",
+      "properties": {},
+      "relationship_type": "reviewer",
+      "source": "review:ai-side-channel",
+      "target": "party:psirt-reviewer"
+    },
+    {
+      "id": "relationship:review:ai-side-channel|reviews|assertion:ai-side-channel-realizes",
+      "properties": {},
+      "relationship_type": "reviews",
+      "source": "review:ai-side-channel",
+      "target": "assertion:ai-side-channel-realizes"
+    },
+    {
+      "id": "relationship:assertion:propagate-core-to-chip|object|component:soc-chip",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:propagate-core-to-chip",
+      "target": "component:soc-chip"
+    },
+    {
+      "id": "relationship:assertion:propagate-core-to-chip|subject|vulnerability:cve-2026-60333",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:propagate-core-to-chip",
+      "target": "vulnerability:cve-2026-60333"
+    },
+    {
+      "id": "relationship:assertion:propagate-chip-to-server|object|component:appliance-firmware",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:propagate-chip-to-server",
+      "target": "component:appliance-firmware"
+    },
+    {
+      "id": "relationship:assertion:propagate-chip-to-server|subject|vulnerability:cve-2026-60333",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:propagate-chip-to-server",
+      "target": "vulnerability:cve-2026-60333"
+    },
+    {
+      "id": "relationship:assertion:vex-not-affected-product-x|object|product:edge-sensor",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:vex-not-affected-product-x",
+      "target": "product:edge-sensor"
+    },
+    {
+      "id": "relationship:assertion:vex-not-affected-product-x|subject|vulnerability:cve-2026-60333",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:vex-not-affected-product-x",
+      "target": "vulnerability:cve-2026-60333"
+    },
+    {
+      "id": "relationship:assertion:chip-vendor-makes-core|object|party:chip-vendor",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:chip-vendor-makes-core",
+      "target": "party:chip-vendor"
+    },
+    {
+      "id": "relationship:assertion:chip-vendor-makes-core|subject|component:crypto-ip-core",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:chip-vendor-makes-core",
+      "target": "component:crypto-ip-core"
+    },
+    {
+      "id": "relationship:assertion:cve-cwe-instance|object|weakness:cwe-1240",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:cve-cwe-instance",
+      "target": "weakness:cwe-1240"
+    },
+    {
+      "id": "relationship:assertion:cve-cwe-instance|subject|vulnerability:cve-2026-60333",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:cve-cwe-instance",
+      "target": "vulnerability:cve-2026-60333"
+    },
+    {
+      "id": "relationship:assertion:cwe-capec-map|object|attack-pattern:capec-97",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:cwe-capec-map",
+      "target": "attack-pattern:capec-97"
+    },
+    {
+      "id": "relationship:assertion:cwe-capec-map|subject|weakness:cwe-1240",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:cwe-capec-map",
+      "target": "weakness:cwe-1240"
+    },
+    {
+      "id": "relationship:assertion:ai-side-channel-realizes|object|threat-instance:side-channel-seed-leak",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:ai-side-channel-realizes",
+      "target": "threat-instance:side-channel-seed-leak"
+    },
+    {
+      "id": "relationship:assertion:ai-side-channel-realizes|subject|attack-path:side-channel-seed",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:ai-side-channel-realizes",
+      "target": "attack-path:side-channel-seed"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2026-60333|propagates_to|component:soc-chip",
+      "properties": {
+        "assertion_ids": [
+          "assertion:propagate-core-to-chip"
+        ],
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "review_ids": [
+          "review:propagate-core-to-chip"
+        ],
+        "review_status": "accepted"
+      },
+      "relationship_type": "propagates_to",
+      "source": "vulnerability:cve-2026-60333",
+      "target": "component:soc-chip"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2026-60333|propagates_to|component:appliance-firmware",
+      "properties": {
+        "assertion_ids": [
+          "assertion:propagate-chip-to-server"
+        ],
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "review_ids": [
+          "review:propagate-chip-to-server"
+        ],
+        "review_status": "accepted"
+      },
+      "relationship_type": "propagates_to",
+      "source": "vulnerability:cve-2026-60333",
+      "target": "component:appliance-firmware"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2026-60333|vex_not_affected|product:edge-sensor",
+      "properties": {
+        "assertion_ids": [
+          "assertion:vex-not-affected-product-x"
+        ],
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "review_ids": [
+          "review:vex-not-affected-product-x"
+        ],
+        "review_status": "accepted"
+      },
+      "relationship_type": "vex_not_affected",
+      "source": "vulnerability:cve-2026-60333",
+      "target": "product:edge-sensor"
+    },
+    {
+      "id": "relationship:component:crypto-ip-core|manufactured_by|party:chip-vendor",
+      "properties": {
+        "assertion_ids": [
+          "assertion:chip-vendor-makes-core"
+        ],
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "review_ids": [
+          "review:chip-vendor-makes-core"
+        ],
+        "review_status": "accepted"
+      },
+      "relationship_type": "manufactured_by",
+      "source": "component:crypto-ip-core",
+      "target": "party:chip-vendor"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2026-60333|instance_of|weakness:cwe-1240",
+      "properties": {
+        "assertion_ids": [
+          "assertion:cve-cwe-instance"
+        ],
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "review_ids": [
+          "review:cve-cwe"
+        ],
+        "review_status": "accepted"
+      },
+      "relationship_type": "instance_of",
+      "source": "vulnerability:cve-2026-60333",
+      "target": "weakness:cwe-1240"
+    },
+    {
+      "id": "relationship:weakness:cwe-1240|exploited_by|attack-pattern:capec-97",
+      "properties": {
+        "assertion_ids": [
+          "assertion:cwe-capec-map"
+        ],
+        "assertion_status": "accepted",
+        "confidence": "medium",
+        "review_ids": [
+          "review:cwe-capec"
+        ],
+        "review_status": "accepted"
+      },
+      "relationship_type": "exploited_by",
+      "source": "weakness:cwe-1240",
+      "target": "attack-pattern:capec-97"
+    }
+  ],
+  "file": "mvp-18-shared-vuln-vex-override.yaml",
+  "nodes": [
+    {
+      "domain_type": "Party",
+      "id": "party:chip-vendor",
+      "label": "Chip vendor",
+      "properties": {
+        "classifications": [
+          "manufacturer"
+        ],
+        "description": "Manufactures the crypto IP core and the SoC (role identity, §2b).",
+        "party_kind": "organization"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:appliance-vendor",
+      "label": "Appliance vendor",
+      "properties": {
+        "classifications": [
+          "manufacturer"
+        ],
+        "description": "Manufactures the server appliance (product A, affected).",
+        "party_kind": "organization"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:sensor-vendor",
+      "label": "Sensor vendor",
+      "properties": {
+        "classifications": [
+          "manufacturer"
+        ],
+        "description": "Manufactures the edge sensor (product X, VEX not_affected).",
+        "party_kind": "organization"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:operator",
+      "label": "Appliance operator",
+      "properties": {
+        "classifications": [
+          "asset-owner"
+        ],
+        "description": "Owns the deployed server appliance; the stakeholder impact is reported for.",
+        "party_kind": "organization"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:cna-mitre",
+      "label": "CVE Numbering Authority",
+      "properties": {
+        "classifications": [
+          "cna"
+        ],
+        "party_kind": "organization"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:psirt-reviewer",
+      "label": "@psirt-reviewer",
+      "properties": {
+        "description": "Human PSIRT reviewer who rules on propagation and the VEX status (github id, role).",
+        "party_kind": "person"
+      }
+    },
+    {
+      "domain_type": "Product",
+      "id": "product:server-appliance",
+      "label": "Crypto Server Appliance",
+      "properties": {
+        "description": "Product A — a TLS-terminating server appliance that embeds the SoC. AFFECTED.",
+        "identifiers": [
+          "cpe:2.3:o:applianceco:crypto_server:4.0:*:*:*:*:*:*:*"
+        ]
+      }
+    },
+    {
+      "domain_type": "Product",
+      "id": "product:edge-sensor",
+      "label": "Edge Sensor",
+      "properties": {
+        "description": "Product X — an edge sensor that embeds the SAME SoC/IP core, but is VEX NOT_AFFECTED: the vulnerable RNG path is not on its execute path.",
+        "identifiers": [
+          "cpe:2.3:o:sensorco:edge_sensor:1.2:*:*:*:*:*:*:*"
+        ]
+      }
+    },
+    {
+      "domain_type": "ProductInstance",
+      "id": "product-instance:server-appliance-4-0",
+      "label": "Crypto Server Appliance 4.0",
+      "properties": {
+        "description": "Fielded affected unit; instance identity is a firmware digest (ADR-0002), opaque.",
+        "identifiers": [
+          "swid:crypto-server-fw-4.0",
+          "sha256:11223344556677889900aabbccddeeff00112233445566778899aabbccddeeff"
+        ],
+        "valid_from": "2026-07-01T00:00:00Z"
+      }
+    },
+    {
+      "domain_type": "ProductInstance",
+      "id": "product-instance:edge-sensor-1-2",
+      "label": "Edge Sensor 1.2",
+      "properties": {
+        "description": "Fielded not_affected unit embedding the same chip; opaque instance identity.",
+        "identifiers": [
+          "swid:edge-sensor-fw-1.2",
+          "sha256:99887766554433221100ffeeddccbbaa99887766554433221100ffeeddccbbaa"
+        ],
+        "valid_from": "2026-07-01T00:00:00Z"
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:crypto-ip-core",
+      "label": "Crypto IP core (hardware RNG block)",
+      "properties": {
+        "description": "The low-level hardware IP core carrying the finding; shared across both products (§5). Component has no `manufactured_by` slot (that is a Product-only role edge), so the chip-vendor supply relationship reifies as an Assertion (§4).",
+        "identifiers": [
+          "hw-core:cryptoip_r3",
+          "cpe:2.3:h:chipco:cryptoip:r3:*:*:*:*:*:*:*"
+        ]
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:soc-chip",
+      "label": "SoC (embeds the crypto IP core)",
+      "properties": {
+        "description": "System-on-chip embedding the crypto IP core; used by both products (§3 composition).",
+        "identifiers": [
+          "cpe:2.3:h:chipco:soc_s900:-:*:*:*:*:*:*:*"
+        ]
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:appliance-firmware",
+      "label": "Appliance firmware / TLS service",
+      "properties": {
+        "description": "Product A firmware whose TLS stack draws key material from the chip RNG (§5 use edge).",
+        "identifiers": [
+          "swid:crypto-server-fw-4.0"
+        ]
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:sensor-firmware",
+      "label": "Sensor firmware",
+      "properties": {
+        "description": "Product X firmware; embeds the chip but uses a different entropy source (not_affected).",
+        "identifiers": [
+          "swid:edge-sensor-fw-1.2"
+        ]
+      }
+    },
+    {
+      "domain_type": "Weakness",
+      "id": "weakness:cwe-1240",
+      "label": "Use of a Cryptographic Primitive with a Risky Implementation",
+      "properties": {
+        "catalog_ref": "CWE-1240",
+        "description": "Generic weakness class (CWE) — the weak hardware RNG primitive."
+      }
+    },
+    {
+      "domain_type": "Vulnerability",
+      "id": "vulnerability:cve-2026-60333",
+      "label": "Predictable RNG output in crypto IP core (illustrative)",
+      "properties": {
+        "catalog_ref": "CVE-2026-60333",
+        "description": "Finding in the shared IP core. It `affects` product A; for product X a reviewed VEX `not_affected` Assertion records that the vulnerable path is unreachable (§5)."
+      }
+    },
+    {
+      "domain_type": "AttackPattern",
+      "id": "attack-pattern:capec-97",
+      "label": "Cryptanalysis",
+      "properties": {
+        "catalog_ref": "CAPEC-97"
+      }
+    },
+    {
+      "domain_type": "ThreatInstance",
+      "id": "threat-instance:weak-rng-key-recovery",
+      "label": "Session-key recovery via predictable chip RNG",
+      "properties": {
+        "description": "Human-elicited threat on product A's TLS stack.",
+        "method_facet": [
+          "stride"
+        ],
+        "source_method": "stride + crypto-review (human-elicited, reviewed)",
+        "violates_property": "I confidentiality"
+      }
+    },
+    {
+      "domain_type": "ThreatInstance",
+      "id": "threat-instance:side-channel-seed-leak",
+      "label": "AI-proposed — recover RNG seed via a power side channel",
+      "properties": {
+        "description": "AI-PROPOSED hypothesis. `proposed` Assertion + a Review that requests changes; not accepted (CLAUDE.md: AI output is a hypothesis).",
+        "method_facet": [
+          "stride"
+        ],
+        "source_method": "ai:llm-threat-proposer (hypothesis, unreviewed)",
+        "violates_property": "I confidentiality"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:observe-rng-outputs",
+      "label": "Observe RNG outputs exposed by the appliance",
+      "properties": {
+        "kill_chain_phase": "reconnaissance"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:capture-tls-handshake",
+      "label": "Capture a target TLS handshake",
+      "properties": {}
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:derive-session-key",
+      "label": "Derive the session key from predicted RNG state",
+      "properties": {
+        "description": "Requires BOTH observed RNG bias AND a captured handshake — an AND gate (§2a).",
+        "gate": "and_gate",
+        "kill_chain_phase": "exploitation"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:power-side-channel",
+      "label": "Collect a power side-channel trace during seeding",
+      "properties": {}
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:emi-side-channel",
+      "label": "Collect an EM side-channel trace during seeding",
+      "properties": {}
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:recover-seed",
+      "label": "Recover the RNG seed from a side-channel trace",
+      "properties": {
+        "description": "Either a power OR an EM trace suffices — an OR gate (§2a).",
+        "gate": "or_gate",
+        "kill_chain_phase": "exploitation"
+      }
+    },
+    {
+      "domain_type": "AttackPath",
+      "id": "attack-path:weak-rng-key-recovery",
+      "label": "Weak-RNG session-key recovery path",
+      "properties": {
+        "attack_feasibility": "medium",
+        "description": "Human-reviewed path on product A; feasibility human-rated (§3)."
+      }
+    },
+    {
+      "domain_type": "AttackPath",
+      "id": "attack-path:side-channel-seed",
+      "label": "Side-channel seed-recovery path (AI-proposed)",
+      "properties": {
+        "attack_feasibility": "low",
+        "description": "The AI-PROPOSED path; realizing edge is a `proposed` Assertion."
+      }
+    },
+    {
+      "domain_type": "DamageScenario",
+      "id": "damage-scenario:tls-session-compromise",
+      "label": "Predictable session keys → TLS interception on the appliance",
+      "properties": {
+        "description": "Damage on product A; impact categories live on RiskScore (§3)."
+      }
+    },
+    {
+      "domain_type": "Mitigation",
+      "id": "mitigation:firmware-rng-reseed",
+      "label": "Reseed from a vetted entropy source in firmware",
+      "properties": {
+        "catalog_ref": "D3FEND:D3-CH",
+        "description": "Control for the weak-RNG threat on product A (§5).",
+        "external_refs": [
+          "JIRA-APP-21"
+        ],
+        "mitigation_status": "in_progress"
+      }
+    },
+    {
+      "domain_type": "RiskScore",
+      "id": "risk-score:weak-rng",
+      "label": "Risk — weak-RNG key recovery (product A)",
+      "properties": {
+        "description": "Composite vector per ADR-0006 for product A. No Environment parameter (§8 MVP). Product X is not_affected (see the VEX Assertion), so it carries no comparable risk from this finding.",
+        "feasibility": "medium",
+        "impact": "{\"financial\": \"major\", \"operational\": \"moderate\", \"privacy\": \"severe\", \"safety\": \"negligible\"}",
+        "mitigation_status": "in_progress",
+        "risk": "privacy 4 / financial 3 / operational 2 (worst-path, medium feasibility; 1–5 per 21434 M(I,F))"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:propagate-core-to-chip",
+      "label": "Review — accept core→chip propagation",
+      "properties": {
+        "justification": "The IP core is composed into the SoC; the RNG block ships in the chip.",
+        "priority": "high",
+        "review_status": "accepted"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:propagate-chip-to-server",
+      "label": "Review — accept chip→server propagation",
+      "properties": {
+        "justification": "The appliance TLS stack draws key material from the chip RNG; exploitable on product A.",
+        "priority": "high",
+        "review_status": "accepted"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:vex-not-affected-product-x",
+      "label": "Review — accept product X not_affected (VEX)",
+      "properties": {
+        "justification": "VEX justification vulnerable_code_not_in_execute_path: the sensor firmware seeds from a separate vetted entropy source and never invokes the chip RNG block, so product X is not_affected despite embedding the same chip.",
+        "priority": "high",
+        "review_status": "accepted"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:chip-vendor-makes-core",
+      "label": "Review — accept chip-vendor supply relationship",
+      "properties": {
+        "justification": "HBOM confirms the crypto IP core is the chip vendor's block.",
+        "priority": "low",
+        "review_status": "accepted"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:cve-cwe",
+      "label": "Review, accept the CVE-to-CWE link",
+      "properties": {
+        "justification": "The CWE in the CVE record (illustrative) matches the root cause; the RNG block is a risky implementation of a cryptographic primitive.",
+        "priority": "medium",
+        "review_status": "accepted"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:cwe-capec",
+      "label": "Review — accept CWE↔CAPEC mapping",
+      "properties": {
+        "justification": "Cryptanalysis pattern matches the risky-crypto-primitive weakness.",
+        "priority": "medium",
+        "review_status": "accepted"
+      }
+    },
+    {
+      "domain_type": "Review",
+      "id": "review:ai-side-channel",
+      "label": "Review — AI-proposed side-channel path (changes requested)",
+      "properties": {
+        "description": "Human triage of the AI hypothesis; NOT accepted.",
+        "justification": "AI-proposed path. Side-channel feasibility against this packaging is unconfirmed; keep as a flagged hypothesis, do not present as reviewed.",
+        "priority": "low",
+        "review_status": "changes_requested"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:propagate-core-to-chip",
+      "label": "Finding propagates from the IP core to the SoC chip",
+      "properties": {
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "description": "Reviewed propagation edge along composed_of (§5).",
+        "predicate": "propagates_to"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:propagate-chip-to-server",
+      "label": "Finding propagates from the SoC chip to the appliance TLS service",
+      "properties": {
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "description": "Reviewed propagation edge along uses_component (§5) — completes core → chip → server.",
+        "predicate": "propagates_to"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:vex-not-affected-product-x",
+      "label": "VEX — product X (edge sensor) is not_affected",
+      "properties": {
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "description": "Per-product VEX override (§5), reified as an Assertion so a Review can own the determination. Product X embeds the same chip but the vulnerable RNG path is not on its execute path. predicate/object carry the VEX status; justification is on the Review.",
+        "predicate": "vex_not_affected"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:chip-vendor-makes-core",
+      "label": "Chip vendor manufactures the crypto IP core",
+      "properties": {
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "description": "`manufactured_by` is a Product-only role edge; for a Component the supply relationship reifies here as an Assertion (§4), keeping the IDs stable (ADR-0004).",
+        "predicate": "manufactured_by"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:cve-cwe-instance",
+      "label": "CVE-2026-60333 is an instance of CWE-1240",
+      "properties": {
+        "assertion_status": "accepted",
+        "confidence": "high",
+        "description": "The CVE-to-CWE step of the ADR-0002 backbone (CVE, CWE, CAPEC, ATT&CK). Vulnerability has no Weakness slot, so the link is reified, with the predicate ARCH-0001 §3 and PLAN-0002 §5 name (RPT-0004 mapping.md, finding 7). In a real import the CWE comes from the CVE record and stays proposed until a human reviews it (R-018).",
+        "predicate": "instance_of"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:cwe-capec-map",
+      "label": "CWE-1240 is exploited by CAPEC-97",
+      "properties": {
+        "assertion_status": "accepted",
+        "confidence": "medium",
+        "description": "Human-reviewed CWE↔CAPEC mapping (§2).",
+        "predicate": "exploited_by"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:ai-side-channel-realizes",
+      "label": "AI-proposed — side-channel path realizes the seed-leak threat",
+      "properties": {
+        "assertion_status": "proposed",
+        "confidence": "low",
+        "description": "AI-PROPOSED edge. assertion_status `proposed` (NOT accepted); a hypothesis until a human accepts it. The paired Review requests changes.",
+        "predicate": "realizes_threat"
+      }
+    },
+    {
+      "domain_type": "LifecyclePhase",
+      "id": "lifecycle-phase:implementation",
+      "label": "Implementation",
+      "properties": {
+        "code": "implementation"
+      }
+    },
+    {
+      "domain_type": "LifecyclePhase",
+      "id": "lifecycle-phase:maintenance",
+      "label": "Maintenance / update",
+      "properties": {
+        "code": "maintenance"
+      }
+    },
+    {
+      "domain_type": "LifecyclePhase",
+      "id": "lifecycle-phase:operation",
+      "label": "Operation / use",
+      "properties": {
+        "code": "operation"
+      }
+    },
+    {
+      "domain_type": "View",
+      "id": "view:shared-vuln-graph",
+      "label": "Shared-vuln propagation graph",
+      "properties": {
+        "description": "Interactive-graph-able lens (§10, R-014): projection `graph`, focused on the finding and its propagation across both products including the VEX override.",
+        "focus_query": "vulnerability:cve-2026-60333 -> propagates_to* ; products with vex status",
+        "projection": "graph"
+      }
+    }
+  ]
+}

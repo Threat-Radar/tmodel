@@ -1,0 +1,9 @@
+{
+  "file": "tv-software-auth-service.yaml",
+  "reviewed_threats": [],
+  "steps": 8,
+  "threats": [
+    "threat-instance:rce-via-deser",
+    "threat-instance:supply-chain-rce"
+  ]
+}

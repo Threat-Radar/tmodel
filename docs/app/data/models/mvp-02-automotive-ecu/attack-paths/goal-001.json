@@ -1,0 +1,34 @@
+{
+  "file": "mvp-02-automotive-ecu.yaml",
+  "goal": "threat-instance:infotainment-pivot",
+  "paths": [
+    {
+      "authored_path": "attack-path:infotainment-pivot",
+      "goal_step": "attack-step:pivot-to-can",
+      "review": {
+        "assertion_status": "proposed",
+        "review_status": "rejected",
+        "reviewed": false
+      },
+      "steps": [
+        "attack-step:compromise-companion-app",
+        "attack-step:gain-infotainment-foothold",
+        "attack-step:pivot-to-can"
+      ]
+    },
+    {
+      "authored_path": "attack-path:infotainment-pivot",
+      "goal_step": "attack-step:pivot-to-can",
+      "review": {
+        "assertion_status": "proposed",
+        "review_status": "rejected",
+        "reviewed": false
+      },
+      "steps": [
+        "attack-step:malicious-ota",
+        "attack-step:gain-infotainment-foothold",
+        "attack-step:pivot-to-can"
+      ]
+    }
+  ]
+}

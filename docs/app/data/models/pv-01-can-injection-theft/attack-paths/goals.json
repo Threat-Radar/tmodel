@@ -1,0 +1,8 @@
+{
+  "goals": [
+    {
+      "file": "goal-001.json",
+      "goal": "threat-instance:spoofed-key-validated"
+    }
+  ]
+}

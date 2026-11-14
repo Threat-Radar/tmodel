@@ -1,0 +1,23 @@
+{
+  "file": "tv-hardware-brake-ecu.yaml",
+  "goal": "threat-instance:fw-tamper",
+  "paths": [
+    {
+      "authored_path": "attack-path:fw-tamper-physical",
+      "goal_step": "attack-step:reflash-unit",
+      "review": {
+        "assertion_status": null,
+        "review_status": null,
+        "reviewed": false
+      },
+      "steps": [
+        "attack-step:gain-physical-access",
+        "attack-step:connect-debug-probe",
+        "attack-step:bypass-readout-protection",
+        "attack-step:inject-voltage-glitch",
+        "attack-step:extract-and-modify-firmware",
+        "attack-step:reflash-unit"
+      ]
+    }
+  ]
+}

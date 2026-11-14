@@ -1,0 +1,852 @@
+{
+  "edges": [
+    {
+      "id": "relationship:product:rav4-2021|composed_of|component:headlight-ecu",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "product:rav4-2021",
+      "target": "component:headlight-ecu"
+    },
+    {
+      "id": "relationship:product:rav4-2021|composed_of|component:smart-key-ecu",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "product:rav4-2021",
+      "target": "component:smart-key-ecu"
+    },
+    {
+      "id": "relationship:product:rav4-2021|composed_of|component:door-ecu",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "product:rav4-2021",
+      "target": "component:door-ecu"
+    },
+    {
+      "id": "relationship:product:rav4-2021|composed_of|component:gateway-ecu",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "product:rav4-2021",
+      "target": "component:gateway-ecu"
+    },
+    {
+      "id": "relationship:product:rav4-2021|composed_of|component:engine-ecu",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "product:rav4-2021",
+      "target": "component:engine-ecu"
+    },
+    {
+      "id": "relationship:product:rav4-2021|composed_of|component:control-can",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "product:rav4-2021",
+      "target": "component:control-can"
+    },
+    {
+      "id": "relationship:product:rav4-2021|composed_of|component:powertrain-can",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "product:rav4-2021",
+      "target": "component:powertrain-can"
+    },
+    {
+      "id": "relationship:product:rav4-2021|manufactured_by|party:toyota",
+      "properties": {},
+      "relationship_type": "manufactured_by",
+      "source": "product:rav4-2021",
+      "target": "party:toyota"
+    },
+    {
+      "id": "relationship:product-instance:parked-rav4|current_phase|lifecycle-phase:operation",
+      "properties": {},
+      "relationship_type": "current_phase",
+      "source": "product-instance:parked-rav4",
+      "target": "lifecycle-phase:operation"
+    },
+    {
+      "id": "relationship:product-instance:parked-rav4|of_product|product:rav4-2021",
+      "properties": {},
+      "relationship_type": "of_product",
+      "source": "product-instance:parked-rav4",
+      "target": "product:rav4-2021"
+    },
+    {
+      "id": "relationship:product-instance:parked-rav4|owned_by|party:vehicle-owner",
+      "properties": {},
+      "relationship_type": "owned_by",
+      "source": "product-instance:parked-rav4",
+      "target": "party:vehicle-owner"
+    },
+    {
+      "id": "relationship:component:headlight-ecu|in_trust_zone|trust-boundary:control-domain",
+      "properties": {},
+      "relationship_type": "in_trust_zone",
+      "source": "component:headlight-ecu",
+      "target": "trust-boundary:control-domain"
+    },
+    {
+      "id": "relationship:component:smart-key-ecu|in_trust_zone|trust-boundary:control-domain",
+      "properties": {},
+      "relationship_type": "in_trust_zone",
+      "source": "component:smart-key-ecu",
+      "target": "trust-boundary:control-domain"
+    },
+    {
+      "id": "relationship:component:door-ecu|in_trust_zone|trust-boundary:control-domain",
+      "properties": {},
+      "relationship_type": "in_trust_zone",
+      "source": "component:door-ecu",
+      "target": "trust-boundary:control-domain"
+    },
+    {
+      "id": "relationship:component:gateway-ecu|in_trust_zone|trust-boundary:vehicle-perimeter",
+      "properties": {},
+      "relationship_type": "in_trust_zone",
+      "source": "component:gateway-ecu",
+      "target": "trust-boundary:vehicle-perimeter"
+    },
+    {
+      "id": "relationship:component:engine-ecu|in_trust_zone|trust-boundary:powertrain-domain",
+      "properties": {},
+      "relationship_type": "in_trust_zone",
+      "source": "component:engine-ecu",
+      "target": "trust-boundary:powertrain-domain"
+    },
+    {
+      "id": "relationship:component:control-can|in_trust_zone|trust-boundary:control-domain",
+      "properties": {},
+      "relationship_type": "in_trust_zone",
+      "source": "component:control-can",
+      "target": "trust-boundary:control-domain"
+    },
+    {
+      "id": "relationship:component:powertrain-can|in_trust_zone|trust-boundary:powertrain-domain",
+      "properties": {},
+      "relationship_type": "in_trust_zone",
+      "source": "component:powertrain-can",
+      "target": "trust-boundary:powertrain-domain"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2023-29389|affects|product:rav4-2021",
+      "properties": {},
+      "relationship_type": "affects",
+      "source": "vulnerability:cve-2023-29389",
+      "target": "product:rav4-2021"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2023-29389|assigned_by|party:mitre-cna",
+      "properties": {},
+      "relationship_type": "assigned_by",
+      "source": "vulnerability:cve-2023-29389",
+      "target": "party:mitre-cna"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2023-29389|instance_of|weakness:cwe-74",
+      "properties": {
+        "assertion_ids": [
+          "assertion:cve-cwe-instance"
+        ],
+        "assertion_status": "proposed",
+        "confidence": "medium"
+      },
+      "relationship_type": "instance_of",
+      "source": "vulnerability:cve-2023-29389",
+      "target": "weakness:cwe-74"
+    },
+    {
+      "id": "relationship:threat-instance:spoofed-key-validated|applies_in_phase|lifecycle-phase:operation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "threat-instance:spoofed-key-validated",
+      "target": "lifecycle-phase:operation"
+    },
+    {
+      "id": "relationship:threat-instance:spoofed-key-validated|realizes_damage|damage-scenario:vehicle-stolen",
+      "properties": {},
+      "relationship_type": "realizes_damage",
+      "source": "threat-instance:spoofed-key-validated",
+      "target": "damage-scenario:vehicle-stolen"
+    },
+    {
+      "id": "relationship:threat-instance:spoofed-key-validated|targets_element|data-flow:key-validated-to-gateway",
+      "properties": {},
+      "relationship_type": "targets_element",
+      "source": "threat-instance:spoofed-key-validated",
+      "target": "data-flow:key-validated-to-gateway"
+    },
+    {
+      "id": "relationship:threat-instance:spoofed-key-validated|targets_element|data-flow:unlock-to-door",
+      "properties": {},
+      "relationship_type": "targets_element",
+      "source": "threat-instance:spoofed-key-validated",
+      "target": "data-flow:unlock-to-door"
+    },
+    {
+      "id": "relationship:threat-instance:spoofed-key-validated|targets_element|asset:key-validated-message",
+      "properties": {},
+      "relationship_type": "targets_element",
+      "source": "threat-instance:spoofed-key-validated",
+      "target": "asset:key-validated-message"
+    },
+    {
+      "id": "relationship:attack-step:reach-control-can|precedes|attack-step:inject-key-validated",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:reach-control-can",
+      "target": "attack-step:inject-key-validated"
+    },
+    {
+      "id": "relationship:attack-step:inject-key-validated|precedes|attack-step:immobilizer-off",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:inject-key-validated",
+      "target": "attack-step:immobilizer-off"
+    },
+    {
+      "id": "relationship:attack-step:inject-key-validated|precedes|attack-step:doors-unlocked",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:inject-key-validated",
+      "target": "attack-step:doors-unlocked"
+    },
+    {
+      "id": "relationship:attack-step:immobilizer-off|precedes|attack-step:drive-away",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:immobilizer-off",
+      "target": "attack-step:drive-away"
+    },
+    {
+      "id": "relationship:attack-step:doors-unlocked|precedes|attack-step:drive-away",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:doors-unlocked",
+      "target": "attack-step:drive-away"
+    },
+    {
+      "id": "relationship:attack-path:headlight-can-injection|realizes_threat|threat-instance:spoofed-key-validated",
+      "properties": {
+        "assertion_ids": [
+          "assertion:path-realizes-threat"
+        ],
+        "assertion_status": "proposed",
+        "confidence": "medium"
+      },
+      "relationship_type": "realizes_threat",
+      "source": "attack-path:headlight-can-injection",
+      "target": "threat-instance:spoofed-key-validated"
+    },
+    {
+      "id": "relationship:attack-path:headlight-can-injection|steps|attack-step:reach-control-can",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:headlight-can-injection",
+      "target": "attack-step:reach-control-can"
+    },
+    {
+      "id": "relationship:attack-path:headlight-can-injection|steps|attack-step:inject-key-validated",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:headlight-can-injection",
+      "target": "attack-step:inject-key-validated"
+    },
+    {
+      "id": "relationship:attack-path:headlight-can-injection|steps|attack-step:immobilizer-off",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:headlight-can-injection",
+      "target": "attack-step:immobilizer-off"
+    },
+    {
+      "id": "relationship:attack-path:headlight-can-injection|steps|attack-step:doors-unlocked",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:headlight-can-injection",
+      "target": "attack-step:doors-unlocked"
+    },
+    {
+      "id": "relationship:attack-path:headlight-can-injection|steps|attack-step:drive-away",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:headlight-can-injection",
+      "target": "attack-step:drive-away"
+    },
+    {
+      "id": "relationship:damage-scenario:vehicle-stolen|damages_asset|asset:vehicle",
+      "properties": {},
+      "relationship_type": "damages_asset",
+      "source": "damage-scenario:vehicle-stolen",
+      "target": "asset:vehicle"
+    },
+    {
+      "id": "relationship:mitigation:authenticate-key-message|applies_in_phase|lifecycle-phase:design",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "mitigation:authenticate-key-message",
+      "target": "lifecycle-phase:design"
+    },
+    {
+      "id": "relationship:mitigation:authenticate-key-message|applies_in_phase|lifecycle-phase:maintenance",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "mitigation:authenticate-key-message",
+      "target": "lifecycle-phase:maintenance"
+    },
+    {
+      "id": "relationship:mitigation:authenticate-key-message|implementation_owner|party:toyota",
+      "properties": {},
+      "relationship_type": "implementation_owner",
+      "source": "mitigation:authenticate-key-message",
+      "target": "party:toyota"
+    },
+    {
+      "id": "relationship:mitigation:authenticate-key-message|mitigates|threat-instance:spoofed-key-validated",
+      "properties": {},
+      "relationship_type": "mitigates",
+      "source": "mitigation:authenticate-key-message",
+      "target": "threat-instance:spoofed-key-validated"
+    },
+    {
+      "id": "relationship:mitigation:gateway-error-check|applies_in_phase|lifecycle-phase:maintenance",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "mitigation:gateway-error-check",
+      "target": "lifecycle-phase:maintenance"
+    },
+    {
+      "id": "relationship:mitigation:gateway-error-check|implementation_owner|party:toyota",
+      "properties": {},
+      "relationship_type": "implementation_owner",
+      "source": "mitigation:gateway-error-check",
+      "target": "party:toyota"
+    },
+    {
+      "id": "relationship:mitigation:gateway-error-check|mitigates|threat-instance:spoofed-key-validated",
+      "properties": {},
+      "relationship_type": "mitigates",
+      "source": "mitigation:gateway-error-check",
+      "target": "threat-instance:spoofed-key-validated"
+    },
+    {
+      "id": "relationship:assertion:cve-cwe-instance|asserted_by|party:cisa-adp",
+      "properties": {},
+      "relationship_type": "asserted_by",
+      "source": "assertion:cve-cwe-instance",
+      "target": "party:cisa-adp"
+    },
+    {
+      "id": "relationship:assertion:cve-cwe-instance|object|weakness:cwe-74",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:cve-cwe-instance",
+      "target": "weakness:cwe-74"
+    },
+    {
+      "id": "relationship:assertion:cve-cwe-instance|subject|vulnerability:cve-2023-29389",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:cve-cwe-instance",
+      "target": "vulnerability:cve-2023-29389"
+    },
+    {
+      "id": "relationship:assertion:path-realizes-threat|object|threat-instance:spoofed-key-validated",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:path-realizes-threat",
+      "target": "threat-instance:spoofed-key-validated"
+    },
+    {
+      "id": "relationship:assertion:path-realizes-threat|subject|attack-path:headlight-can-injection",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:path-realizes-threat",
+      "target": "attack-path:headlight-can-injection"
+    },
+    {
+      "id": "relationship:asset:vehicle|owned_by|party:vehicle-owner",
+      "properties": {},
+      "relationship_type": "owned_by",
+      "source": "asset:vehicle",
+      "target": "party:vehicle-owner"
+    },
+    {
+      "id": "relationship:asset:key-validated-message|processed_by|component:smart-key-ecu",
+      "properties": {},
+      "relationship_type": "processed_by",
+      "source": "asset:key-validated-message",
+      "target": "component:smart-key-ecu"
+    },
+    {
+      "id": "relationship:asset:key-validated-message|processed_by|component:gateway-ecu",
+      "properties": {},
+      "relationship_type": "processed_by",
+      "source": "asset:key-validated-message",
+      "target": "component:gateway-ecu"
+    },
+    {
+      "id": "relationship:asset:key-validated-message|processed_by|component:engine-ecu",
+      "properties": {},
+      "relationship_type": "processed_by",
+      "source": "asset:key-validated-message",
+      "target": "component:engine-ecu"
+    },
+    {
+      "id": "relationship:asset:key-validated-message|processed_by|component:door-ecu",
+      "properties": {},
+      "relationship_type": "processed_by",
+      "source": "asset:key-validated-message",
+      "target": "component:door-ecu"
+    },
+    {
+      "id": "relationship:trust-boundary:control-domain|within_boundary|trust-boundary:vehicle-perimeter",
+      "properties": {},
+      "relationship_type": "within_boundary",
+      "source": "trust-boundary:control-domain",
+      "target": "trust-boundary:vehicle-perimeter"
+    },
+    {
+      "id": "relationship:trust-boundary:powertrain-domain|within_boundary|trust-boundary:vehicle-perimeter",
+      "properties": {},
+      "relationship_type": "within_boundary",
+      "source": "trust-boundary:powertrain-domain",
+      "target": "trust-boundary:vehicle-perimeter"
+    },
+    {
+      "id": "relationship:data-flow:key-validated-to-gateway|carries|asset:key-validated-message",
+      "properties": {},
+      "relationship_type": "carries",
+      "source": "data-flow:key-validated-to-gateway",
+      "target": "asset:key-validated-message"
+    },
+    {
+      "id": "relationship:data-flow:key-validated-to-gateway|flow_from|component:smart-key-ecu",
+      "properties": {},
+      "relationship_type": "flow_from",
+      "source": "data-flow:key-validated-to-gateway",
+      "target": "component:smart-key-ecu"
+    },
+    {
+      "id": "relationship:data-flow:key-validated-to-gateway|flow_to|component:gateway-ecu",
+      "properties": {},
+      "relationship_type": "flow_to",
+      "source": "data-flow:key-validated-to-gateway",
+      "target": "component:gateway-ecu"
+    },
+    {
+      "id": "relationship:data-flow:key-validated-to-engine|carries|asset:key-validated-message",
+      "properties": {},
+      "relationship_type": "carries",
+      "source": "data-flow:key-validated-to-engine",
+      "target": "asset:key-validated-message"
+    },
+    {
+      "id": "relationship:data-flow:key-validated-to-engine|crosses_boundary|trust-boundary:control-domain",
+      "properties": {},
+      "relationship_type": "crosses_boundary",
+      "source": "data-flow:key-validated-to-engine",
+      "target": "trust-boundary:control-domain"
+    },
+    {
+      "id": "relationship:data-flow:key-validated-to-engine|crosses_boundary|trust-boundary:powertrain-domain",
+      "properties": {},
+      "relationship_type": "crosses_boundary",
+      "source": "data-flow:key-validated-to-engine",
+      "target": "trust-boundary:powertrain-domain"
+    },
+    {
+      "id": "relationship:data-flow:key-validated-to-engine|flow_from|component:gateway-ecu",
+      "properties": {},
+      "relationship_type": "flow_from",
+      "source": "data-flow:key-validated-to-engine",
+      "target": "component:gateway-ecu"
+    },
+    {
+      "id": "relationship:data-flow:key-validated-to-engine|flow_to|component:engine-ecu",
+      "properties": {},
+      "relationship_type": "flow_to",
+      "source": "data-flow:key-validated-to-engine",
+      "target": "component:engine-ecu"
+    },
+    {
+      "id": "relationship:data-flow:unlock-to-door|carries|asset:key-validated-message",
+      "properties": {},
+      "relationship_type": "carries",
+      "source": "data-flow:unlock-to-door",
+      "target": "asset:key-validated-message"
+    },
+    {
+      "id": "relationship:data-flow:unlock-to-door|flow_from|component:smart-key-ecu",
+      "properties": {},
+      "relationship_type": "flow_from",
+      "source": "data-flow:unlock-to-door",
+      "target": "component:smart-key-ecu"
+    },
+    {
+      "id": "relationship:data-flow:unlock-to-door|flow_to|component:door-ecu",
+      "properties": {},
+      "relationship_type": "flow_to",
+      "source": "data-flow:unlock-to-door",
+      "target": "component:door-ecu"
+    }
+  ],
+  "file": "pv-01-can-injection-theft.yaml",
+  "nodes": [
+    {
+      "domain_type": "Party",
+      "id": "party:toyota",
+      "label": "Toyota",
+      "properties": {
+        "classifications": [
+          "manufacturer"
+        ],
+        "description": "Manufacturer of the vehicle model in CVE-2023-29389.",
+        "party_kind": "organization"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:mitre-cna",
+      "label": "MITRE (CNA)",
+      "properties": {
+        "classifications": [
+          "cna"
+        ],
+        "description": "Assigned CVE-2023-29389; its CNA container gives no CWE (\"n/a\").",
+        "party_kind": "organization"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:cisa-adp",
+      "label": "CISA ADP Vulnrichment",
+      "properties": {
+        "classifications": [
+          "adp"
+        ],
+        "description": "Authorized Data Publisher (orgId 134c704f-9b21-4f2e-91b3-4a467353bcc0) that added CWE-74 to the CVE record.",
+        "party_kind": "organization"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:vehicle-owner",
+      "label": "Vehicle owner",
+      "properties": {
+        "description": "The stakeholder who loses the vehicle (role, not a person).",
+        "party_kind": "person"
+      }
+    },
+    {
+      "domain_type": "Product",
+      "id": "product:rav4-2021",
+      "label": "Toyota RAV4 (2021)",
+      "properties": {
+        "description": "The vehicle model CVE-2023-29389 names."
+      }
+    },
+    {
+      "domain_type": "ProductInstance",
+      "id": "product-instance:parked-rav4",
+      "label": "A RAV4 parked on the street",
+      "properties": {
+        "description": "The instance the attack runs against; no build identity is published for it."
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:headlight-ecu",
+      "label": "Light-control ECU",
+      "properties": {
+        "component_kind": "device",
+        "description": "Controls the headlights; its connector, behind the bumper, is the easiest reach into the control CAN bus."
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:smart-key-ecu",
+      "label": "Smart-key receiver ECU",
+      "properties": {
+        "component_kind": "device",
+        "description": "Talks to the key by radio and announces on the control CAN bus when the key is validated."
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:door-ecu",
+      "label": "Door ECU",
+      "properties": {
+        "component_kind": "device",
+        "description": "Unlocks the doors on a valid key message."
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:gateway-ecu",
+      "label": "Gateway ECU",
+      "properties": {
+        "component_kind": "device",
+        "description": "Copies certain CAN messages between the control and powertrain buses."
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:engine-ecu",
+      "label": "Engine control ECU",
+      "properties": {
+        "component_kind": "device",
+        "description": "Deactivates the immobilizer when it sees a key-validated message."
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:control-can",
+      "label": "Control CAN bus",
+      "properties": {
+        "component_kind": "interconnect",
+        "description": "Joins the headlight, door, telematics and smart-key ECUs."
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:powertrain-can",
+      "label": "Powertrain CAN bus",
+      "properties": {
+        "component_kind": "interconnect",
+        "description": "Joins engine, hybrid battery and motor control."
+      }
+    },
+    {
+      "domain_type": "Weakness",
+      "id": "weakness:cwe-74",
+      "label": "Improper Neutralization of Special Elements in Output Used by a Downstream Component ('Injection')",
+      "properties": {
+        "catalog_ref": "CWE-74",
+        "description": "The CWE CISA-ADP assigned to CVE-2023-29389 (the CNA gave none)."
+      }
+    },
+    {
+      "domain_type": "Vulnerability",
+      "id": "vulnerability:cve-2023-29389",
+      "label": "RAV4 2021 ECUs trust forged \"Key is validated\" CAN messages",
+      "properties": {
+        "catalog_ref": "CVE-2023-29389",
+        "description": "CVE record, paraphrased: Toyota RAV4 2021 vehicles trust messages from other ECUs on a CAN bus, so a physically present attacker who reaches the control CAN bus at the headlight connector can send forged \"Key is validated\" messages and drive away."
+      }
+    },
+    {
+      "domain_type": "ThreatInstance",
+      "id": "threat-instance:spoofed-key-validated",
+      "label": "Spoofed \"key validated\" frames injected on the control CAN bus",
+      "properties": {
+        "description": "A device on the control bus impersonates the smart-key ECU; the gateway forwards its frames and the engine ECU deactivates the immobilizer.",
+        "method_facet": [
+          "stride"
+        ],
+        "source_method": "published attack, modeled from the cited write-up (AI-drafted, unreviewed)",
+        "violates_property": "S authentication (of the key-validated message)"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:reach-control-can",
+      "label": "Pull the bumper away and reach the control CAN bus at the headlight connector",
+      "properties": {
+        "kill_chain_phase": "delivery"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:inject-key-validated",
+      "label": "Send forged \"key validated\" frames while blocking the bus's other transmitters",
+      "properties": {
+        "description": "The write-up's device also suppresses the real ECUs' frames so the forgeries are not contradicted.",
+        "kill_chain_phase": "exploitation"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:immobilizer-off",
+      "label": "Gateway forwards the forgery; the engine ECU deactivates the immobilizer",
+      "properties": {}
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:doors-unlocked",
+      "label": "A second forged message unlocks the doors",
+      "properties": {}
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:drive-away",
+      "label": "Enter and drive the vehicle away",
+      "properties": {
+        "description": "Needs both the immobilizer off AND the doors open, an AND gate.",
+        "gate": "and_gate",
+        "kill_chain_phase": "actions_on_objectives"
+      }
+    },
+    {
+      "domain_type": "AttackPath",
+      "id": "attack-path:headlight-can-injection",
+      "label": "Headlight CAN-injection theft path",
+      "properties": {
+        "description": "Feasibility is left for a human to rate (ISO/SAE 21434 Table 1)."
+      }
+    },
+    {
+      "domain_type": "DamageScenario",
+      "id": "damage-scenario:vehicle-stolen",
+      "label": "The vehicle is driven away without its key",
+      "properties": {
+        "compromised_property": [
+          "availability"
+        ],
+        "description": "The owner loses the vehicle (ISO/SAE 21434 damage scenario; impact rating is a human input)."
+      }
+    },
+    {
+      "domain_type": "Mitigation",
+      "id": "mitigation:authenticate-key-message",
+      "label": "Cryptographically authenticate the key-validated message",
+      "properties": {
+        "description": "The write-up's permanent fix: receivers stop trusting the message without proof of origin (message authentication codes, per-vehicle keys, an HSM or its software emulation). Status in the field is not published.",
+        "mitigation_status": "planned"
+      }
+    },
+    {
+      "domain_type": "Mitigation",
+      "id": "mitigation:gateway-error-check",
+      "label": "Gateway forwards the key message only after a clean recent bus history",
+      "properties": {
+        "description": "The write-up's stop-gap: refuse to forward if the bus has recently shown the rare error pattern the injection device causes. It notes this can be worked around.",
+        "mitigation_status": "planned"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:cve-cwe-instance",
+      "label": "CVE-2023-29389 is an instance of CWE-74",
+      "properties": {
+        "asserted_at": "2025-02-12T16:12:07Z",
+        "assertion_status": "proposed",
+        "confidence": "medium",
+        "description": "As the CVE record states it, in CISA-ADP's container; the CNA's container gives no CWE.",
+        "evidence": [
+          "https://cveawg.mitre.org/api/cve/CVE-2023-29389"
+        ],
+        "generated_by": "CVE record CVE-2023-29389, ADP container CISA-ADP (dateUpdated 2025-02-12)",
+        "predicate": "instance_of"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:path-realizes-threat",
+      "label": "The headlight path realizes the spoofed-message threat",
+      "properties": {
+        "assertion_status": "proposed",
+        "confidence": "medium",
+        "description": "AI-drafted from the write-up; awaits a human Review.",
+        "evidence": [
+          "https://kentindell.github.io/2023/04/03/can-injection/"
+        ],
+        "generated_by": "AI-drafted from the cited write-up (DL-0024)",
+        "predicate": "realizes_threat"
+      }
+    },
+    {
+      "domain_type": "LifecyclePhase",
+      "id": "lifecycle-phase:design",
+      "label": "Design",
+      "properties": {
+        "code": "design"
+      }
+    },
+    {
+      "domain_type": "LifecyclePhase",
+      "id": "lifecycle-phase:operation",
+      "label": "Operation / use",
+      "properties": {
+        "code": "operation"
+      }
+    },
+    {
+      "domain_type": "LifecyclePhase",
+      "id": "lifecycle-phase:maintenance",
+      "label": "Maintenance (software update)",
+      "properties": {
+        "code": "maintenance"
+      }
+    },
+    {
+      "domain_type": "Asset",
+      "id": "asset:vehicle",
+      "label": "The vehicle",
+      "properties": {
+        "description": "The asset the theft takes from its owner.",
+        "security_properties": [
+          "availability"
+        ]
+      }
+    },
+    {
+      "domain_type": "Asset",
+      "id": "asset:key-validated-message",
+      "label": "The \"key validated\" signal",
+      "properties": {
+        "description": "The CAN message that tells the immobilizer and doors a genuine key is present. The receivers trust it without proof of origin, which is the weakness the attack uses.",
+        "security_properties": [
+          "authenticity",
+          "integrity"
+        ]
+      }
+    },
+    {
+      "domain_type": "TrustBoundary",
+      "id": "trust-boundary:vehicle-perimeter",
+      "label": "Vehicle body (physical access)",
+      "properties": {
+        "description": "The outer zone: the gateway sits in it directly, the rest through the two nested domains. Anything reachable from the edge of the car is exposed to a thief at the kerb, and the control CAN bus reaches the edge at the headlight connector. No slot can say that yet (DL-0024, finding P1), so the exposure is only described here."
+      }
+    },
+    {
+      "domain_type": "TrustBoundary",
+      "id": "trust-boundary:control-domain",
+      "label": "Control CAN domain",
+      "properties": {
+        "description": "ECUs on the control bus, including the light-control ECU whose wiring is reachable from outside."
+      }
+    },
+    {
+      "domain_type": "TrustBoundary",
+      "id": "trust-boundary:powertrain-domain",
+      "label": "Powertrain CAN domain",
+      "properties": {
+        "description": "Engine and drive ECUs behind the gateway."
+      }
+    },
+    {
+      "domain_type": "DataFlow",
+      "id": "data-flow:key-validated-to-gateway",
+      "label": "Smart-key ECU announces \"key validated\" on the control bus",
+      "properties": {
+        "protocol": "CAN (control bus)"
+      }
+    },
+    {
+      "domain_type": "DataFlow",
+      "id": "data-flow:key-validated-to-engine",
+      "label": "Gateway forwards \"key validated\" to the engine ECU",
+      "properties": {
+        "protocol": "CAN (powertrain bus)"
+      }
+    },
+    {
+      "domain_type": "DataFlow",
+      "id": "data-flow:unlock-to-door",
+      "label": "Key-valid unlock request to the door ECU",
+      "properties": {
+        "protocol": "CAN (control bus)"
+      }
+    }
+  ]
+}

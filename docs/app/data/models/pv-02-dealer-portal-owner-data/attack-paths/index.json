@@ -1,0 +1,9 @@
+{
+  "file": "pv-02-dealer-portal-owner-data.yaml",
+  "reviewed_threats": [],
+  "steps": 6,
+  "threats": [
+    "threat-instance:owner-data-harvest",
+    "threat-instance:silent-account-takeover"
+  ]
+}

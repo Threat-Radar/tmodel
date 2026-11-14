@@ -29,7 +29,7 @@ export class FixtureLibraryDataProvider implements LibraryDataProvider {
   }
 }
 
-function detailsFromRow(row: LibraryTableRow): LibraryRecordDetails {
+export function detailsFromRow(row: LibraryTableRow, kind = "fixture"): LibraryRecordDetails {
   return {
     id: row.id,
     title: row.title,
@@ -48,10 +48,10 @@ function detailsFromRow(row: LibraryTableRow): LibraryRecordDetails {
     artifacts: Array.from({ length: row.artifacts }, (_unused, index) => {
       const reviewed = index < row.reviewed_artifacts;
       return {
-        kind: "fixture",
-        path: `fixture-artifact-${index + 1}`,
+        kind,
+        path: "",
         coverage: "",
-        reviewed_by: reviewed ? "fixture-reviewer" : "",
+        reviewed_by: "",
         generated_from: null,
         reviewed,
       };
