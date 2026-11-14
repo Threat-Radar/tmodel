@@ -74,6 +74,22 @@ def test_relocated_engine_serves_bundled_graph_without_checkout(
         assert len(paths) == 2
         assert all(p["review"]["review_status"] == review_status for p in paths)
         assert all(not p["review"]["reviewed"] for p in paths)
+        if filename == "mvp-02-automotive-ecu.yaml":
+            risk = get_json(
+                base,
+                "risk",
+                file=str(model),
+                goal="threat-instance:remote-diag-injection",
+                matrix="annex-h-table-h8",
+            )["assessments"][0]
+            assert risk["complete"]
+            assert risk["derived_risk"] == {
+                "safety": 5,
+                "financial": 4,
+                "operational": 5,
+                "privacy": 1,
+            }
+            assert risk["mitigation_status"] == "in_progress"
         for outside in (str(MODEL), "../outside.yaml"):
             with pytest.raises(urllib.error.HTTPError) as error:
                 get_json(base, "graph", file=outside)

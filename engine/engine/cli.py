@@ -3,6 +3,8 @@
   tmodel serve                 start the local engine (loopback only)
   tmodel health [--json]       ask the running engine whether it is healthy
   tmodel version [--json]      ask the running engine for its version
+  tmodel risk FILE --matrix annex-h-table-h8 [--goal G] [--json]
+                               derive risk from recorded path ratings (#63)
   tmodel models [--json]       the example models the app can open
   tmodel paths FILE [--goal G] [--json]
                                attack paths to a step or threat in a model file;
@@ -29,7 +31,8 @@ By default these go through the local API, exactly like the desktop app
 (APP-0001 A-030, A-060). `--in-process` calls the engine code directly
 instead, for scripts that do not want a server.
 
-Exit codes: 0 ok · 1 engine unreachable, unhealthy or an engine error · 2 usage error.
+Exit codes: 0 ok · 1 engine unreachable, unhealthy, an engine error, or incomplete
+risk inputs · 2 usage error.
 """
 
 from __future__ import annotations
@@ -157,6 +160,47 @@ def _models(args: argparse.Namespace) -> int:
 
 
 LIBRARY_TIMEOUT_S = 60.0  # the engine's first request loads every record
+
+
+def _risk(args: argparse.Namespace) -> int:
+    # Basenames are convenient for bundled examples; paths are relative to the caller.
+    file = os.path.abspath(args.file) if os.path.dirname(args.file) else args.file
+    params = {"file": file, "matrix": args.matrix}
+    if args.goal is not None:
+        params["goal"] = args.goal
+    payload = _call(
+        lambda: (
+            core.risk_assessments(file, args.matrix, args.goal)
+            if args.in_process
+            else get("/risk", args.url, timeout=PATHS_TIMEOUT_S, params=params)
+        )
+    )
+    if payload is None:
+        return 1
+    if args.json:
+        print(json.dumps(payload))
+    else:
+        print(f"{payload['file']} · matrix {payload['matrix']}")
+        for assessment in payload["assessments"]:
+            state = "complete" if assessment["complete"] else "incomplete"
+            print(f"  {assessment['threat']} [{state}]")
+            print(f"    feasibility: {assessment['feasibility'] or 'not assessed'}")
+            for category, value in assessment["derived_risk"].items():
+                impact = assessment["impact"][category] or "not rated"
+                print(f"    {category}: impact {impact}; risk {value if value else 'not assessed'}")
+            print(f"    mitigation status: {assessment['mitigation_status'] or 'not recorded'}")
+            for index, route in enumerate(assessment["routes"], 1):
+                sources = ", ".join(route["rating_paths"]) or "no matching rating"
+                rating = route["feasibility"] or "not assessed"
+                vector = ", ".join(
+                    f"{category}={value if value is not None else 'not assessed'}"
+                    for category, value in route["derived_risk"].items()
+                )
+                print(f"    route {index} ({sources}): feasibility {rating}; {vector}")
+            for problem in assessment["problems"]:
+                print(f"    needs input: {problem}")
+    # JSON is still emitted for incomplete data, while scripts can detect it.
+    return 0 if all(item["complete"] for item in payload["assessments"]) else 1
 
 
 def _print_library(payload: dict[str, Any]) -> None:
@@ -345,6 +389,13 @@ def build_parser() -> argparse.ArgumentParser:
     paths.add_argument("--goal", default=None, help="step or threat id; omit to list threats")
     _add_transport(paths)
     paths.set_defaults(func=_paths)
+
+    risk = sub.add_parser("risk", help="derive a risk vector from recorded path ratings (#63)")
+    risk.add_argument("file", help="approved model filename or path below spec/vectors")
+    risk.add_argument("--matrix", required=True, help="explicit profile: annex-h-table-h8")
+    risk.add_argument("--goal", default=None, help="only this threat-instance id")
+    _add_transport(risk)
+    risk.set_defaults(func=_risk)
 
     library = sub.add_parser("library", help="the library's records (#140)")
     for name in core.LIBRARY_FILTERS:

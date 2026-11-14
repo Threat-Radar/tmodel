@@ -27,6 +27,7 @@ from engine.load.library import (
 from engine.load.vector import MODEL_SUFFIXES, load_vector, load_vector_document
 from engine.model_graph import project_model_graph
 from engine.paths import enumerate_paths
+from engine.risk import assess_document
 
 ENGINE_NAME = "tmodel-engine"
 # PyInstaller unpacks the one-file sidecar and its data below _MEIPASS. In a
@@ -282,6 +283,16 @@ def attack_paths(file: str, goal: str | None = None) -> dict[str, Any]:
         "goal": goal,
         "paths": [p.to_dict() for p in enumerate_paths(graph, goal)],
     }
+
+
+def risk_assessments(file: str, matrix: str, goal: str | None = None) -> dict[str, Any]:
+    """Derived risk for approved example-model files; ratings remain authored inputs."""
+    path = _approved_vector_path(file)
+    try:
+        result = assess_document(load_vector_document(path), matrix=matrix, goal=goal)
+    except GraphError as exc:
+        raise GraphError(_sanitized_model_error(path, exc)) from exc
+    return {"file": path.name, **result}
 
 
 def model_graph(file: str) -> dict[str, Any]:
