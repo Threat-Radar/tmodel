@@ -49,6 +49,15 @@ def _risk(query: dict[str, str]) -> dict[str, Any]:
     return core.risk_assessments(query["file"], query["matrix"], query.get("goal"))
 
 
+def _tara(query: dict[str, str]) -> dict[str, Any]:
+    if set(query) - {"file", "matrix"}:
+        raise ValueError("tara: only file and matrix query parameters are supported")
+    for parameter in ("file", "matrix"):
+        if parameter not in query:
+            raise ValueError(f"missing query parameter: {parameter}")
+    return core.collect_tara(query["file"], query["matrix"])
+
+
 def _graph(query: dict[str, str]) -> dict[str, Any]:
     if "file" not in query:
         raise ValueError("missing query parameter: file")
@@ -64,6 +73,7 @@ ROUTES: dict[str, Callable[[dict[str, str]], dict[str, Any]]] = {
     "/graph": _graph,
     "/attack-paths": _attack_paths,
     "/risk": _risk,  # explicit matrix profile, with unresolved/missing ratings visible (#63)
+    "/tara": _tara,  # read-only collection; file writes happen only in the CLI (#181)
     "/library": core.library_records,  # filters: id, type, topic, status (#140)
     "/library/table": core.library_table,  # rows for the table views (#141, #58)
     "/sdl": core.sdl,  # SDL program view; no file = list SDL models (DL-0043)

@@ -6,6 +6,8 @@
   tmodel risk FILE --matrix annex-h-table-h8 [--goal G] [--json]
                                derive risk from recorded path ratings (#63)
   tmodel models [--json]       the example models the app can open
+  tmodel tara FILE --matrix annex-h-table-h8 [--output FILE]
+                               collect a repeatable JSON TARA intermediate (#181)
   tmodel paths FILE [--goal G] [--json]
                                attack paths to a step or threat in a model file;
                                without --goal, list the file's threats
@@ -41,12 +43,15 @@ import argparse
 import json
 import os
 import sys
+import tempfile
 from collections.abc import Callable
+from pathlib import Path
 from typing import Any
 
 from engine import core
 from engine.api import server
 from engine.client import EngineError, EngineTimeout, EngineUnreachable, get
+from engine.tara import serialize as serialize_tara
 
 LOCAL: dict[str, Callable[[], dict[str, Any]]] = {"health": core.health, "version": core.version}
 
@@ -160,6 +165,51 @@ def _models(args: argparse.Namespace) -> int:
 
 
 LIBRARY_TIMEOUT_S = 60.0  # the engine's first request loads every record
+
+
+def _tara(args: argparse.Namespace) -> int:
+    file = os.path.abspath(args.file) if os.path.dirname(args.file) else args.file
+    payload = _call(
+        lambda: (
+            core.collect_tara(file, args.matrix)
+            if args.in_process
+            else get(
+                "/tara",
+                args.url,
+                timeout=PATHS_TIMEOUT_S,
+                params={"file": file, "matrix": args.matrix},
+            )
+        )
+    )
+    if payload is None:
+        return 1
+    temporary: str | None = None
+    try:
+        text = serialize_tara(payload)
+        if args.output is None:
+            print(text, end="")
+        else:
+            output = Path(args.output)
+            # Prevent overwriting an input model, including an alias/symlink.
+            if output.suffix.lower() != ".json":
+                raise ValueError("tara: --output must name a .json file")
+            if output.resolve() == Path(file).resolve():
+                raise ValueError("tara: output must not replace the input model")
+            with tempfile.NamedTemporaryFile(
+                mode="w", encoding="utf-8", newline="\n", dir=output.parent, delete=False
+            ) as stream:
+                temporary = stream.name
+                stream.write(text)
+            os.replace(temporary, output)
+            temporary = None
+    except (OSError, ValueError) as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+    finally:
+        if temporary is not None:
+            Path(temporary).unlink(missing_ok=True)
+    # Incomplete/unreviewed assessment inputs belong in a successful draft export.
+    return 0
 
 
 def _risk(args: argparse.Namespace) -> int:
@@ -396,6 +446,13 @@ def build_parser() -> argparse.ArgumentParser:
     risk.add_argument("--goal", default=None, help="only this threat-instance id")
     _add_transport(risk)
     risk.set_defaults(func=_risk)
+
+    tara = sub.add_parser("tara", help="collect a draft TARA intermediate as JSON (#181)")
+    tara.add_argument("file", help="approved model filename or path below spec/vectors")
+    tara.add_argument("--matrix", required=True, help="explicit profile: annex-h-table-h8")
+    tara.add_argument("--output", default=None, help="write a .json file instead of stdout")
+    _add_transport(tara)
+    tara.set_defaults(func=_tara)
 
     library = sub.add_parser("library", help="the library's records (#140)")
     for name in core.LIBRARY_FILTERS:
