@@ -4,7 +4,7 @@ from copy import deepcopy
 from itertools import product
 
 import pytest
-from test_risk import assessment, branching_model
+from test_risk import assessment, branching_model, model
 
 from engine.risk import CATEGORIES, FEASIBILITIES, MATRIX_ID, assess_document
 
@@ -109,6 +109,35 @@ def test_conflicting_duplicate_ratings_stay_unresolved():
     assert not out["complete"]
     assert out["routes"][0]["problems"] == ["conflicting_route_ratings"]
     assert out["derived_risk"]["safety"] is None
+
+
+@pytest.mark.parametrize("reverse", [False, True])
+@pytest.mark.parametrize("full_rating", ["low", None, "high"])
+def test_full_and_single_route_legacy_records_both_own_their_rating(full_rating, reverse):
+    # The old partial record and the full record describe the same route.
+    # A full record must not silently hide a higher rating or borrow a missing one.
+    doc = model(("high",))
+    doc["attack_steps"].insert(0, {"id": "step:pre", "precedes": ["step:0"]})
+    full = deepcopy(doc["attack_paths"][0])
+    full.update(id="path:full", steps=["step:pre", "step:0"], attack_feasibility=full_rating)
+    doc["attack_paths"].append(full)
+    doc["risk_scores"][0]["attack_paths"].append("path:full")
+    if reverse:
+        doc["attack_paths"].reverse()
+    out = assessment(doc)
+    route = out["routes"][0]
+    assert set(route["rating_paths"]) == {"path:0", "path:full"}
+    assert all(path["used_for_ratings"] for path in out["paths"])
+    if full_rating == "high":
+        assert out["complete"]
+        assert route["feasibility"] == "high"
+        assert out["derived_risk"]["safety"] == 5
+    else:
+        assert not out["complete"]
+        assert route["feasibility"] is None
+        assert route["problems"] == ["conflicting_route_ratings"]
+        assert out["feasibility"] is None
+        assert all(value is None for value in out["derived_risk"].values())
 
 
 def test_same_rating_on_both_routes_still_keeps_individual_results():

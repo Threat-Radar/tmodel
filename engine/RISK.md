@@ -101,8 +101,11 @@ The risk assessment's `attack_paths` list must include both records.
 
 Matching uses the complete step set, not a list index or a heuristic overlap.
 Legacy partial-step records remain usable only when they enumerate exactly one
-route. An older broad OR record cannot supply or override an alternative's
-rating. If two records for the same route disagree, the route reports
+route. Both an exact record and an unambiguous legacy record remain rating
+sources for that route; the exact record does not hide the older rating or
+borrow it when its own rating is missing. An older broad OR record cannot
+supply or override an alternative's rating. If two records for the same route
+disagree, the route reports
 `conflicting_route_ratings`; the engine does not choose one by file order.
 Identical ratings can be recorded on two different routes, but each route's
 result stays visible.
@@ -123,8 +126,10 @@ rating, the aggregate feasibility and derived risk stay `null`; showing only
 the rated subset could understate the worst risk. Known category risks can
 still appear when other impact categories are missing. Missing damage,
 mitigation status, or a mismatch between the assessment's path/damage scope
-and its threat is listed under `problems`. Scope mismatches suppress the
-aggregate risk rather than silently dropping or mixing paths.
+and its threat is listed under `problems`. Missing damage and scope mismatches
+suppress the aggregate risk rather than silently dropping or mixing paths.
+Missing mitigation status makes the assessment incomplete but does not change
+the numeric risk: mitigation remains a peer field.
 
 Existing example OR paths that carry only one aggregate rating remain
 incomplete until humans author their route-specific records. Enumeration still
@@ -139,13 +144,39 @@ schema. It does not mark any DEC accepted or close #63's remaining integration
 and human-review work.
 
 The API returns structured partial data with HTTP 200 and `complete: false`.
-Here `complete` refers only to calculation inputs, never human approval.
+Here `complete` means required assessment inputs are present and consistent,
+including mitigation status; it never means human approval.
 Malformed data or requests return HTTP 400. The CLI emits the same JSON but
 exits 1 for incomplete assessments; an assessment with all required inputs
 exits 0. Omitting `--goal` includes threats without a RiskScore as incomplete
 rows, so absent assessments do not disappear.
 
 ## Verification
+
+### Current example-model results
+
+Of the six authored RiskScore records in the current examples, three calculate
+complete results. The other three (`mvp-01`, `mvp-03`, and
+`tv-software-auth-service`) include a path realizing a different threat in their
+assessment scope, so the calculator reports `attack_path_scope_mismatch` and no
+aggregate. This remains conservative pending sponsor clarification of whether
+cross-threat pivots or subsystem roll-ups belong in a single assessment. The
+engine does not rewrite the examples or silently widen that scope.
+
+`tv-hardware-brake-ecu` calculates safety **3** (Severe impact, Low feasibility),
+although its authored text says safety 4. The table gives 3. The original text
+stays under `recorded`; the desktop report still displays that authored text.
+`mvp-02`'s diagnostic scenario calculates **5/4/5/1**, and `mvp-18` calculates
+**1/3/2/4**. These calculations validate input handling, not human approval of
+the examples. Threats without a RiskScore and unrated OR alternatives also
+remain visible as incomplete assessments.
+
+The separate-route policy implements the project owner's requested choice:
+one AttackPath per route when difficulty differs (option (a) discussed in
+[#63](https://github.com/Threat-Radar/tmodel/issues/63#issuecomment-6328856124)).
+It uses existing schema fields and does not claim a new sponsor decision.
+
+### Automated checks
 
 Tests cover all 16 table cells, worst-path and 1–5 invariants, mitigation
 independence, separate OR ratings with a shared join, missing or conflicting

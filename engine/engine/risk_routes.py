@@ -30,14 +30,18 @@ def rated_routes(
     results = []
     for route in enumerate_paths(graph, threat):
         steps = frozenset(route.steps)
-        exact = [path for path in paths if frozenset(path.steps) == steps]
-        # Exact, separately authored routes take precedence even if their
-        # rating is missing. An older aggregate must not fill that gap.
-        owners = exact or [
+        # Keep every unambiguous owner, including partial legacy records.
+        # Exact records must neither hide a conflicting legacy rating nor
+        # borrow one when their own rating is missing. Broad OR records still
+        # cannot donate a rating to an arbitrary alternative.
+        owners = [
             path
             for path in paths
-            if len(alternatives[path.id]) == 1
-            and frozenset(alternatives[path.id][0].steps) == steps
+            if frozenset(path.steps) == steps
+            or (
+                len(alternatives[path.id]) == 1
+                and frozenset(alternatives[path.id][0].steps) == steps
+            )
         ]
         feasibility, problems = _rating(owners, ratings)
         results.append(
