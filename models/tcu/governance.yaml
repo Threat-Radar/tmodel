@@ -1,0 +1,148 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Governed record for the TCU TARA (DL-0027 pilot, #180; DL-0054).
+#
+# The source of truth for who reviewed and approved which version of the TARA over
+# spec/vectors/mvp-02-automotive-ecu.yaml (DL-0027 "The governed record"). It sits
+# beside the vector, not inside it, so mvp-02 stays core-only.
+#
+# EXAMPLE DATA. mvp-02 is example data, so this record is too: version 1 is a
+# DRAFT, nothing here is an approval, and the published TARA keeps its example-data
+# label. Parties are roles, not people (GitHub ids or roles only, #180).
+#
+# Validate:  python docs/publishing/check_governance.py models/tcu/governance.yaml
+# Schema:    spec/vectors/example-container-governance.linkml.yaml (ExampleModelGovernance),
+#            which holds the DEC-001b changes this record needs as a PROPOSAL (#64).
+#            Nothing in it is accepted.
+#
+# Not here yet: the input digest and the publish gate (#183), and the published
+# vN/ pages (#181, #182). `approval_digest` stays empty until a version is approved.
+# ─────────────────────────────────────────────────────────────────────────────
+
+governs: spec/vectors/mvp-02-automotive-ecu.yaml
+
+parties:
+  - id: party:tara-owner
+    name: TARA owner (role)
+    description: The person who owns the TCU TARA and its content (DL-0027). A role, not a named person.
+    party_kind: person
+  - id: party:tara-assessor
+    name: TARA assessor (role)
+    description: The person who checks the TARA against ISO/SAE 21434 clause 15. A role, not a named person.
+    party_kind: person
+  - id: party:tara-approver
+    name: TARA approver (role)
+    description: The person who gives final sign-off (DL-0027 decision 2). A role, not a named person.
+    party_kind: person
+  - id: party:claude-code
+    name: Claude Code
+    description: Anthropic's coding agent. Its reviews are recorded but never fill a role or count as approval (DL-0027 rule 1).
+    party_kind: software_agent
+
+threat_models:
+  - id: threat-model:tcu-tara-v1
+    name: TCU TARA, version 1
+    description: >-
+      The first governed version of the TARA for the Telematics Control Unit: the
+      mvp-02 objects behind each ISO/SAE 21434 clause 15 work product, as the TARA
+      draft page (DL-0037) shows them. A draft until a person in each required role
+      reviews it.
+    members:
+      - product:telematics-control-unit
+      - asset:safety-can-commands
+      - asset:diagnostic-service
+      - damage-scenario:unauthorized-can-actuation
+      - threat-instance:remote-diag-injection
+      - threat-instance:infotainment-pivot
+      - attack-path:remote-diag-injection
+      - attack-path:infotainment-pivot
+      - risk-score:remote-diag-injection
+      - mitigation:authenticate-diag-service
+      - mitigation:domain-gateway-firewall
+      - requirement:tcu-diag-authentication
+      - requirement:gateway-filter-safety-can
+    owner: party:tara-owner
+    revision: "1"
+    required_review_roles: [owner, assessor, approver]
+    approval_status: pending
+    governance_status: draft
+    created: "2026-11-13T00:00:00Z"
+    updated: "2026-11-13T00:00:00Z"
+
+reviews:
+  - id: review:tcu-tara-v1-claude-code
+    name: AI review of TCU TARA version 1
+    reviews: threat-model:tcu-tara-v1
+    reviewer: party:claude-code
+    reviewed_at: "2026-11-13T00:00:00Z"
+    review_outcome: changes_requested
+    agent_model: claude-opus-5-5
+    agent_run_id: e2ba3d5e-c56b-4193-9a73-ad0c79ec27c1
+    justification: >-
+      Checked the version's members against mvp-02 and the TARA draft page's clause 15
+      sections and gaps (docs/publishing/tara.yaml). One change requested, logged as
+      comment:tcu-tara-v1-dec-003. An AI review: recorded, but it fills no role and
+      does not count as approval.
+  - id: review:tcu-tara-v1-owner-example
+    name: Example owner review of TCU TARA version 1
+    reviews: threat-model:tcu-tara-v1
+    reviewer: party:tara-owner
+    reviewer_role: owner
+    reviewed_at: "2026-11-13T00:00:00Z"
+    review_outcome: comment
+    justification: >-
+      EXAMPLE ENTRY for #180, not a real review: it shows the shape of a person's
+      review. Replace it with the owner's own review before version 1 leaves draft.
+
+review_comments:
+  - id: comment:tcu-tara-v1-assets
+    name: "15.3: no assets, so no cybersecurity properties"
+    description: >-
+      The clause 15 gap table found that mvp-02 had no assets, so the damage scenario
+      had no cybersecurity property to compromise (15.3 row, items V1 and A1). Raised on
+      the draft that version 1 is built from; #209 added the two Assets.
+    comment_on: threat-model:tcu-tara-v1
+    comment_locator: https://github.com/Threat-Radar/tmodel/issues/184#issuecomment-6540395465
+    comment_status: resolved
+    resolved_by: https://github.com/Threat-Radar/tmodel/pull/209
+  - id: comment:tcu-tara-v1-dec-003
+    name: "15.8 gap says the risk metric is open; ADR-0006 accepted it"
+    description: >-
+      The TARA page's clause 15.8 gap says "the risk metric is still open (DEC-003,
+      #184 F4)" (docs/publishing/tara.yaml). ADR-0006 accepted DEC-003 on 2026-10-08,
+      and mvp-02's own risk score cites ADR-0006 and reads its values from Table H.8,
+      so the page contradicts the model it renders. #232 corrected the same claim in
+      DL-0037 but not on the page.
+    comment_on: review:tcu-tara-v1-claude-code
+    comment_status: open
+
+requirements:
+  - id: requirement:tcu-approved-tara
+    name: An approved TARA for each TCU release
+    text: >-
+      Before each release of the TCU, a version of its TARA shall be approved by a
+      person in the approver role, with every required role reviewed and no review
+      comment open.
+    text_origin: authored
+    requirement_kind: process
+    normativity: mandatory
+    applies_to: [product:telematics-control-unit]
+
+sdl_practices:
+  - id: sdl-practice:tcu-threat-modeling
+    name: TCU threat modeling (the TARA)
+    description: The practice that produces the TCU TARA and discharges the approved-TARA requirement.
+    practice_key: threat-modeling
+    owner: party:tara-owner
+    mitigation_status: in_progress
+    implements: [requirement:tcu-approved-tara]
+    produces: [evidence:tcu-tara-v1]
+
+evidence_items:
+  - id: evidence:tcu-tara-v1
+    name: TCU TARA version 1
+    description: The governed version as evidence. It meets requirement:tcu-approved-tara only once version 1 is approved.
+    evidence_kind: model
+    evidence_nature: work_product
+    locator: models/tcu/governance.yaml
+    about_version: "1"
+    evidence_of: threat-model:tcu-tara-v1
