@@ -4,15 +4,18 @@ id: RPT-0002-sources
 title: "RPT-0002 source log"
 type: research
 status: draft
-version: "0.2.1"
+version: "0.2.2"
 date: "2026-09-28"
-updated: "2026-11-09"
+updated: "2026-11-14"
 record: RPT-0002
 ---
 
 # RPT-0002 — source log
 
-A source is not "in the report" until it is a `library/` record.
+A source is not "in the report" until it is a `library/` record. This log
+resolves against `library@e4068272cec52a92b4414ea2a88a23b7125ce79d`, the merged
+Attack Flow extraction dependency (library#49). Source-reading statuses are
+unchanged by the November 14 pin update.
 
 | source | type | framework | library record id | bears_on |
 |---|---|---|---|---|

@@ -4,9 +4,9 @@ id: RPT-0002-searches
 title: "RPT-0002 search log"
 type: research
 status: draft
-version: "0.2.1"
+version: "0.2.2"
 date: "2026-09-28"
-updated: "2026-11-09"
+updated: "2026-11-14"
 record: RPT-0002
 ---
 
@@ -46,7 +46,7 @@ was ingested twice.
 | 2026-09-29 | VAST | `VAST threat modeling Agarwal ThreatModeler "Visual, Agile, and Simple Threat" application threat model operational threat model process flow diagram` | web search | vendor page → `threatmodeler-vast`; detailed vendor blog post now 404 |
 | 2026-09-29 | other (MAESTRO) | `Cloud Security Alliance MAESTRO agentic AI threat modeling framework Ken Huang 2025 seven layers` | web search | CSA blog → `csa-maestro-2025` |
 | 2026-10-22 | Attack Flow | `center-for-threat-informed-defense/attack-flow`: repository metadata and releases (GitHub API) | GitHub | Apache-2.0; tools v4.1.0 and v4.0.0 (2026-10-14), v3.0.0 (2025-07-07) |
-| 2026-10-22 | Attack Flow | `docs/language.rst`, `docs/introduction.rst`, `docs/changelog.rst` at tag v4.1.0 | direct (raw.githubusercontent.com) | `mitre-attack-flow` — language spec (digest of `language.rst`); dependency implies partial order for acyclic flows (corrected after independent review, DL-0047); v4 changes |
+| 2026-10-22 | Attack Flow | `docs/language.rst`, `docs/introduction.rst`, `docs/changelog.rst` at tag v4.1.0 | direct (raw.githubusercontent.com) | `mitre-attack-flow` — language spec (digest of `language.rst`); dependency implies partial order for acyclic flows (corrected after independent review, DL-0048); v4 changes |
 | 2026-10-22 | Attack Flow | `stix/attack-flow-schema-2.0.0.json`, `stix/attack-flow-extension-2.0.0.json` at tag v4.1.0 | direct (raw.githubusercontent.com) | object types and properties; `operator` enum `AND`/`OR`; `scope` includes `attack-tree`; extension created 2022-08-02 |
 | 2026-10-22 | Attack Flow | language page and `ctid.io/flow` short link | direct | both resolve; the short link opens the Builder (`/attack-flow/ui/`) |
 | 2026-10-22 | surveys (peer-reviewed) | research agent: 19 web searches (e.g. `"threat modeling" systematic literature review Computers & Security`, `systematic literature review automated threat modeling tools`, `SoK threat modeling methods`) plus Crossref, OpenAlex and Semantic Scholar lookups | web search + APIs | candidates: Xiong & Lagerström 2019, Tuma et al. 2018, Tatam et al. 2021, Granata & Rak 2024, Huang et al. 2026, Tran et al. 2026; chosen: `tuma-2018-threat-analysis-slr` (open via the thesis reprint), `xiong-2019-threat-modeling-slr` (stub) |
@@ -59,6 +59,7 @@ was ingested twice.
 | 2026-11-09 | review corrections | Verreydt SOUPS 2024 PDF, §3.3 / RQ3.1, p. 477; original SHA-256 rechecked | USENIX primary PDF | Reassessment varies; none used CI/CD to trigger it. Corrected both report passages; no claim that all seven never reassess. |
 | 2026-11-09 | FX-1 extraction | Attack Flow `docs/language.rst` and both `stix/` schema/extension files at tag v4.1.0; transitive OASIS schema dependencies pinned separately | primary GitHub sources | Full artifact extraction and independent checks in `mitre-attack-flow/distilled/`; source differences kept explicit. |
 | 2026-11-09 | architecture baseline | ARCH-0001, ADR-0011/0012/0013, MAP-0002 and current PR #229 | repository | Keep October 22 gaps as a dated snapshot; identify later accepted additions and the route-rating PR separately. |
+| 2026-11-14 | merge and gap routes | library#49 merge `e406827`; ADR-0011 Consequences; PR #229 review | repository | Attack Flow artifact tree unchanged from the reviewed branch; G2 remains deferred; G1 core classes accepted, G5 business impact still deferred, G4 implementation under review. |
 
 **Coverage notes.**
 

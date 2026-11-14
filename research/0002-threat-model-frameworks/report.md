@@ -7,9 +7,9 @@ description: "Survey of threat-modeling frameworks/methodologies (STRIDE, PASTA,
 type: research
 category: security
 status: draft
-version: "0.2.1"
+version: "0.2.2"
 date: "2026-09-28"
-updated: "2026-11-09"
+updated: "2026-11-14"
 authors:
   - role: student
     id: paria03
@@ -24,7 +24,7 @@ reviewers:
 needs_review: true
 reviewed: false
 canonical_path: research/0002-threat-model-frameworks/report.md
-library_commit: "a04e8899138a49c2dec7aaf4b8c3356c4c430d27"
+library_commit: "e4068272cec52a92b4414ea2a88a23b7125ce79d"
 issue: "Threat-Radar/tmodel#6 (v0.1); Threat-Radar/tmodel#36 (v0.2)"
 informs: [DEC-001a, DEC-002, DEC-003, DEC-005]
 open_decisions: []
@@ -41,16 +41,20 @@ open_decisions: []
 > **Architecture baseline:** the comparison and G1–G6 describe the accepted
 > core at `e1ae8c3` (2026-10-22), not the current application. ADR-0011 has since
 > added `Asset`, `TrustBoundary` and `DataFlow`; ADR-0012 added `Requirement`,
-> and ADR-0013 added the secure development lifecycle (SDL) classes. G1 and G5 therefore describe historical
-> gaps, not a claim that these classes are still missing. The separate-route
-> rating implementation for G4 is under review in #229. This correction keeps
-> the research snapshot stable rather than treating proposals as accepted work.
+> and ADR-0013 added the secure development lifecycle (SDL) classes. ADR-0011
+> closes G1's missing core classes and G5's missing asset class; G5's business-impact
+> axis remains deferred by ADR-0006. The separate-route rating implementation for
+> G4 is under review in #229. G2's `AttackStep.exploits` remains on ADR-0011's
+> deferred list. This correction keeps the research snapshot stable and names
+> later progress without treating proposals as accepted work.
 
 ## Overview
 
 Searches and tool-version observations use the October 22, 2026 cutoff. The
-November 9 revision corrects review findings and completes the pinned Attack
-Flow extraction; it is not a new survey of subsequent releases.
+November 9 revision corrected review findings and completed the pinned Attack
+Flow extraction. The November 14 revision pins its merged library dependency
+and updates the gap routes and current-status notes; neither extends the survey
+to subsequent releases.
 
 This report compares threat-modeling frameworks. It is evidence for the modeling
 requirements (#15) of tmodel, the project's threat-modeling tool. It
@@ -1058,12 +1062,13 @@ that would change an accepted decision routes to a new ADR amending it.
 
 The table lists the six gaps (G1–G6): what the field has, where this report
 covers it, what tmodel had at the baseline, the gap itself, the options, and where each
-gap routes.
+gap routes. The G2 route names ADR-0011's deferred list rather than the
+already-merged #130; this routing update does not alter the dated baseline.
 
 | # | the field has | where (this report) | tmodel at 2026-10-22 | gap | options (suggestion first) | routes to |
 |---|---|---|---|---|---|---|
 | G1 | **a system model to analyze**: DFD elements (process, data store, data flow, external entity) and trust boundaries, which STRIDE-per-element and LINDDUN work over; OTM, which tmodel must import, is built on assets, trust zones and data flows | §2, §5, item 6; Shostack 2008 | `Product`, `Component`, `Deployment`; `ThreatInstance.method_facet` (`stride`, `linddun`, `maestro`) and `violates_property`; the `View` projection list already includes `dfd`, with nothing to project. No DFD elements or trust boundaries: `Asset`, `TrustBoundary` and `DataFlow` are proposed (#130) after the sponsor's direction to add them (DL-0013), not accepted | rule-based threat generation (item 4) has no model to run over, and the committed OTM import (ADR-0007) has no target for OTM's assets, trust zones and data flows (RPT-0005 G13) | join DFD elements directly to `Component` (OTM's shape); or a separate DFD layer realized by components (#130 point 2) | #130, #64, #15, ADR-0007, RPT-0005 G13; amends ADR-0010 |
-| G2 | **steps tied to a catalog**: an Attack Flow action may name one ATT&CK technique; CAPEC's attack patterns, which tmodel's example models use; attack libraries in Trike and PASTA | §7, §9.2, §9.3, item 2 | `AttackStep` has `gate`, `precedes`, `kill_chain_phase`; `AttackPattern` (`catalog_ref`, CAPEC in every example model) and `Weakness` exist, but no step links to either (#130 lists an AttackStep-to-Weakness slot as gap P4) | a path cannot be traced to CAPEC or ATT&CK, or from a CWE to the steps it enables; which catalog a step should name is not analyzed | link `AttackStep` to `AttackPattern`; or to `Weakness` (P4); or both | #130 (P4), #63, #61; amends ADR-0010 |
+| G2 | **steps tied to a catalog**: an Attack Flow action may name one ATT&CK technique; CAPEC's attack patterns, which tmodel's example models use; attack libraries in Trike and PASTA | §7, §9.2, §9.3, item 2 | `AttackStep` has `gate`, `precedes`, `kill_chain_phase`; `AttackPattern` (`catalog_ref`, CAPEC in every example model) and `Weakness` exist, but no step links to either (#130 lists an AttackStep-to-Weakness slot as gap P4) | a path cannot be traced to CAPEC or ATT&CK, or from a CWE to the steps it enables; which catalog a step should name is not analyzed | link `AttackStep` to `AttackPattern`; or to `Weakness` (P4); or both | ADR-0011 Consequences (deferred P4, `AttackStep.exploits`), #64, #15, #61; amends ADR-0010 |
 | G3 | **dependency and branching**: Attack Flow's arrow means "needs the previous step to succeed"; conditions branch on success or failure; logical attack graphs give steps pre- and postconditions | §4, §9.3, §9.4 | `precedes` is an "explicit ordering edge"; the AND/OR gate is over a step's predecessors; no conditions; the pre- and postconditions planned in the proposal behind ADR-0010 were left out | whether `precedes` also asserts enablement is unstated (§9.4); "if this fails, try that" cannot be expressed | state the meaning of `precedes` in the schema; whether conditions belong in the minimum viable product (MVP) is a scope question | #63, #15; ADR-0010; ADR-0002 (scope) |
 | G4 | **ratings on each step or alternative**: cost or probability on attack-tree leaves (§4); confidence on each Attack Flow action | §4, §9.3 | feasibility is rated per `AttackPath` (ADR-0006, human-rated at MVP); `confidence` sits on `Assertion` | when the engine splits an authored path's OR alternatives, they share one rating, so "worst path" cannot tell them apart | author one path per alternative, each rated; or rate an authored path by its easiest alternative (raised on #63) | #63, ADR-0006 |
 | G5 | **asset value and organizational impact**: PASTA's business impact, OCTAVE's critical assets, Trike's actor–asset–action matrix | §3, §6, §7 | impact as an S/F/O/P (safety, financial, operational, privacy) vector per damage scenario (ADR-0006), where `business_impact` is a post-MVP axis that "intentionally has no slot"; `owned_by` on products and components is the schema's stand-in for an asset; no `Asset` class, so the engine cannot take an asset as a goal (#63) | prioritizing threats by the asset they endanger needs an asset | settle `Asset` (#130 part B) together with G1; business impact needs a sponsor decision amending ADR-0006 | #130, #63; amends ADR-0006 |
@@ -1123,11 +1128,15 @@ For attack paths, three properties matter: order, a concrete and shared
 vocabulary for steps, and AND/OR structure with shared steps. The Kill Chain
 gives a coarse order, ATT&CK gives concrete but unordered steps, and plain
 attack trees give AND/OR structure without order. MITRE Attack Flow combines all
-three in one published, machine-readable graph, which qualifies RPT-0005's G2.
+three in one published, machine-readable graph. This qualifies RPT-0005's G2
+claim that no released format has an ordered attack path.
 The object models of Trike v1 and PASTA overlap tmodel's October 22 accepted
 core, which then lacked an asset class, actor–action pair and use or abuse
-case. ADR-0011 has since added assets. Candidate threats
-can be generated by rule or by language models, but realism, impact and the
+case. ADR-0011 has since added assets, trust boundaries and data flows, closing
+G1's missing core classes and the asset-class part of G5. G5's separate
+business-impact axis remains deferred; #229 implements G4's separate route
+ratings but is still under review. Candidate threats can be generated by rule
+or by language models, but realism, impact and the
 choice of mitigation stay with people. Risk is where the methods differ most.
 
 The field has gaps of its own: of the methods surveyed here, only MAESTRO
@@ -1152,8 +1161,9 @@ The report takes no decision. Each gap's options route to the owner named in
 
 ## Revision history
 
-The following entry records the review corrections.
+The following entries record the review corrections.
 
 | version | date | change |
 |---|---|---|
+| 0.2.2 | 2026-11-14 | Pin the merged Attack Flow library dependency; route G2 to ADR-0011's deferred list; distinguish G1's accepted classes, G5's remaining business-impact scope and G4's implementation under review. |
 | 0.2.1 | 2026-11-09 | Correct the reassessment and interchange claims; align source-reading status; make the October architecture baseline explicit; add the full Attack Flow extraction dependency. |

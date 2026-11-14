@@ -1,16 +1,16 @@
 ---
 schema: "archdoc/v1"
-id: DL-0047
+id: DL-0048
 title: "RPT-0002 v0.2: Attack Flow, surveys, STRIDE origin, evidence, gap analysis, adversarial review"
 type: process
 status: draft
-version: "0.2.0"
+version: "0.2.1"
 date: "2026-10-22"
-updated: "2026-11-09"
-record: DL-0047
+updated: "2026-11-14"
+record: DL-0048
 ---
 
-# DL-0047: RPT-0002 v0.2, threat model frameworks
+# DL-0048: RPT-0002 v0.2, threat model frameworks
 
 AI-assisted research record for the RPT-0002 v0.2 story in #36, per `CLAUDE.md`.
 Student: @paria03. Report:
@@ -251,7 +251,8 @@ The identical untracked search-log copy was archived outside the repository.
 The research index identifies the report as draft 0.2.0, and this log initially used
 DL-0033 to avoid colliding with the existing Requirement design log DL-0025.
 That number was later taken on main; the 2026-11-09 correction renames this
-log DL-0047 after checking main and open PR file lists.
+log DL-0047 after checking main and open PR file lists; the November 14
+correction below moves it again to DL-0048 after a new collision.
 
 The substantive corrections and the clarity pass are recorded above. The larger
 analysis listed under "Deferred to the next iteration" remains deferred. Human
@@ -292,9 +293,12 @@ Address PR #200's review findings without accepting a new architecture decision.
   comparative evidence had not yet been searched.
 - Identify the October 22 architecture/search baseline prominently. Note the
   later accepted ADR-0011/0012/0013 additions and the G4 implementation under
-  review in #229; do not present historical G1/G5 as current missing classes.
-- Rename this log to DL-0047. Main already uses DL-0033 and DL-0034; main and
-  open PR file lists were checked before choosing the next free number.
+  review in #229; do not present historical missing classes as current gaps.
+  The November 14 correction distinguishes the still-deferred business-impact
+  part of G5.
+- At that revision, rename this log to DL-0047 (now DL-0048). Main already uses
+  DL-0033 and DL-0034; main and open PR file lists were checked before choosing
+  the next free number.
 - Complete the `mitre-attack-flow` extraction in the independent library
   worktree, using the repository's FX-1 skill. Separate artifact extractors
   read the primary sources; source contradictions are retained instead of
@@ -309,7 +313,7 @@ Address PR #200's review findings without accepting a new architecture decision.
 | No surveyed method defines a file format | rejected | Attack Flow defines a published STIX-based format. |
 | Calling Karpati a controlled comparison | rejected | The retained metadata does not establish its study design; the report now says comparison. |
 | Karpati abstract-only label | rejected | The recorded evidence establishes metadata, not a read abstract. |
-| Reuse DL-0034 as suggested at the time of review | rejected | It has since been merged for the release pipeline; DL-0047 is free at preparation time. |
+| Reuse DL-0034 as suggested at the time of review | rejected | It has since been merged for the release pipeline; DL-0047 was selected at preparation time, then collided with #212; see the November 14 correction. |
 | Treat published schema validation as complete language conformance | rejected | The source has prose/schema differences, custom-type fallback, and whole-flow rules outside per-object validation. |
 | Automatically mark extraction or the report human-reviewed | rejected | Automated checking is not the per-artifact human sign-off required by FX-1. |
 
@@ -385,3 +389,86 @@ Final local checks:
 Publication still follows @paria03's approval rule. The report remains draft
 0.2.1 and `reviewed: false`; teammate review and per-artifact human sign-off are
 not replaced by these automated passes.
+
+
+## Final review corrections (2026-11-14)
+
+### Question and changes
+
+Finish #36 after the #63 review fixes, addressing @Clovier's review of PR #200.
+
+- Rename this log to **DL-0048**: main now contains DL-0047 for the landing page.
+  Main and all eleven open PR file lists were checked; none uses DL-0048.
+  Historical mentions of DL-0047 above record the earlier numbering, not a
+  second current identifier. The search log points to this log's current id.
+- Route G2 to ADR-0011's explicitly deferred `AttackStep.exploits` (P4), #64 and
+  #15 instead of asking the already-merged #130 to deliver it.
+- Clarify the opening note and Conclusion: ADR-0011 supplies G1's core classes
+  and G5's asset class; G5's business-impact axis remains deferred by ADR-0006.
+  #229 implements separate route ratings for G4 but remains under review.
+- Explain RPT-0005's G2 claim in the Conclusion so it can be read on its own.
+- Advance the report and submodule to library#49's actual merge commit,
+  `e4068272cec52a92b4414ea2a88a23b7125ce79d`. The Attack Flow record's tree is
+  unchanged from `a04e889`; no extraction is redone and no library record is
+  authored in this worktree. Other records already merged into that snapshot
+  come with the deliberate pin update.
+- Move report, source log, search log and research index to draft **0.2.2**;
+  preserve the October 22 search/architecture baseline. This is an editorial
+  and integration correction, not a new literature search or design decision.
+
+### Rejections and review boundary
+
+| earlier claim or proposed shortcut | result | reason |
+|---|---|---|
+| Treat all of G5 as closed after adding Asset | corrected | ADR-0006 still defers business impact; adding a class does not accept that extra axis. |
+| Route deferred P4 to the merged #130 | corrected | ADR-0011 explicitly leaves `AttackStep.exploits` for a later iteration. |
+| Treat library#49's merge as passing CI | rejected | No checks are reported for its head, and no new Actions runs are present; merged status is separate from CI evidence. |
+| Mark the report or extraction human-reviewed | rejected | PR #200 still requires re-review; no artifact signatures or accepted decisions are created by these corrections. |
+
+The existing independent coverage/citation and clarity passes remain recorded
+above. The November 14 changes address the subsequent human review; no fresh
+independent review pass is claimed. Human re-review and merge of PR #200 remain
+separate from local completion.
+
+
+### Pinned-library publication and final validation
+
+The current publishing playbook requires a pin change to regenerate both the
+browser preview and bibliography. The preview check first detected a stale
+library table; regenerating it includes all 685 records at the deliberate pin.
+The bibliography manifest still listed 414 records, so its existing `--sync`
+appended 271 already-merged records. Seven existing entries needed their type
+or topic aligned with the current record metadata; the formerly untagged CVSS
+parent now uses its source's `vulnerability-data` tag. These are source-backed
+labels, not a new taxonomy or a claim that the summaries were reviewed.
+
+The full pipeline exposed a stale hardcoded guard: it required CycloneDX 1.7's
+summary to remain unwritten even though the library now contains a completed
+summary. The replacement checks every record's rendering invariant: an
+unwritten summary must have no rendered content. It does not suppress the new
+summary or remove the template safeguard. All 305 actual unwritten summaries
+remain suppressed, and no library source file is edited.
+
+Validation on the corrected branch:
+
+- Full engine and publishing test suites: **353 passed, 5 skipped** (the five
+  packaging checks require a built sidecar). The library loader uses the new pin.
+- Library: **685 records, 24 topics, 0 errors, 99 existing warnings**.
+- All **27 source-log ids resolve**; report metadata and gitlink both equal
+  `e4068272cec52a92b4414ea2a88a23b7125ce79d`. The Attack Flow record tree matches
+  its reviewed `a04e889` branch exactly.
+- The unchanged extraction's offline checks still pass: **14 schema documents,
+  36 references**; all ten source fixtures match; five JSON examples validate
+  and two reproduce the documented source defects.
+- The complete publishing pipeline passes: **685 bibliography records**, eight
+  example models, **749 published files** pass the identity guard and all
+  relative links in **706 HTML pages** resolve. A second complete rebuild is
+  byte-for-byte unchanged. The preview is byte-checked against the pinned data.
+- Local browser check: library search finds the distilled Attack Flow record
+  among 685 documents and shows **0 / 8 reviewed**, preserving its actual human
+  review state. No user-facing layout or example model is changed.
+- Archdoc, front-matter/version/date/pin consistency and whitespace checks pass.
+
+Local completion does not imply fresh GitHub CI. Publication remains subject to
+@paria03's saved push rule; CI must run on the newly pushed head before its
+results are reported as passing. PR #200 still needs human re-review and merge.
