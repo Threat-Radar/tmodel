@@ -4,9 +4,9 @@ id: DL-0054
 title: "Governed TARA record for the TCU, and the DEC-001b schema proposal it needs (#180, #64)"
 type: process
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 date: "2026-11-13"
-updated: "2026-11-13"
+updated: "2026-11-15"
 record: DL-0054
 bears_on: [DEC-001, R-018, R-043]
 defers_to: ARCH-0001
@@ -91,6 +91,7 @@ Nothing yet. @Maimcghee reviews the PR. @nymble decides the proposal (all five c
 
 - Input digest and the publish gate: #183. `approval_digest` stays empty while version 1 is a draft.
 - Published `vN/`, `latest/` and history pages: #181, #182.
+- **The collector reads Reviews of Assertions only.** `tmodel tara` (#181, PR #242) summarizes review evidence per Assertion, so if DEC-001b accepts change 1, a Review of a version would export as `unreviewed` until the collector reads it. Both use the same rule today: only a review whose reviewer Party is a `person` can count.
 - A `/docs/models/` CODEOWNERS rule for the approver (DL-0027 decision 2): @nymble's `.github/` change.
 - The I5 Gate check that evaluates "an approved TARA exists".
 - Fixing the TARA page's DEC-003 line (the open comment): a small separate change to `docs/publishing/tara.yaml`.
