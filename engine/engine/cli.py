@@ -10,6 +10,12 @@
   tmodel library [--id I] [--type T] [--topic T] [--status S] [--json]
                                the library's records, optionally filtered; the
                                library is $TMODEL_LIBRARY or the pinned submodule
+  tmodel weaknesses [--search S] [--abstraction A] [--structure S] [--status S]
+                [--usage U] [--sort F] [--order asc|desc] [--limit N] [--offset N] [--json]
+  tmodel weaknesses --id CWE-79 [--json]
+                               CWE weaknesses from the release the library pins,
+                               read from $TMODEL_CWE_CATALOG (#144); with --id,
+                               one entry in full
   tmodel sdl [FILE] [--program P] [--json]
                                the SDL program view of an SDL model (DL-0043);
                                without FILE, list the SDL models
@@ -196,6 +202,81 @@ def _library(args: argparse.Namespace) -> int:
     return 0
 
 
+def _print_weakness_table(payload: dict[str, Any]) -> None:
+    catalog = payload["catalog"]
+    print(
+        f"{payload['count']} of {payload['total']} matching weaknesses "
+        f"({catalog['name']} {catalog['version']}, {catalog['date']}: "
+        f"{catalog['weaknesses']} weaknesses)"
+    )
+    columns = ("id", "abstraction", "status", "usage")
+    rows = payload["rows"]
+    width = {c: max((len(r[c] or "") for r in rows), default=0) for c in columns}
+    for r in rows:
+        cells = "  ".join(f"{r[c] or '':<{width[c]}}" for c in columns)
+        print(f"  {cells}  {r['name']}")
+
+
+def _print_weakness(payload: dict[str, Any]) -> None:
+    catalog, entry = payload["catalog"], payload["entry"]
+    if entry is None:
+        print(f"{payload['id']}: not in {catalog['name']} {catalog['version']}")
+        return
+    print(f"{entry['id']}  {entry['name']}")
+    shape = "/".join(v for v in (entry["abstraction"], entry["structure"]) if v)
+    print(
+        f"  {entry['kind']}{f' ({shape})' if shape else ''}; status {entry['status']}; "
+        f"usage {entry['usage'] or 'none'}"
+    )
+    if entry["kind"] == "Weakness":
+        print(
+            f"  {len(entry['attack_patterns'])} CAPEC links, "
+            f"{len(entry['observed_examples'])} observed examples, "
+            f"{entry['mitigations']} mitigations"
+        )
+    print(f"  {entry['url']}")
+
+
+def _weaknesses(args: argparse.Namespace) -> int:
+    names = core.WEAKNESS_FILTERS + core.TABLE_OPTIONS
+    table = {n: getattr(args, n) for n in names if getattr(args, n) is not None}
+    if args.id is not None:
+        if table:  # they would be ignored, so refuse them, as GET /weaknesses does
+            given = ", ".join(f"--{n}" for n in table)
+            print(
+                f"error: --id shows one entry and takes no table options ({given})",
+                file=sys.stderr,
+            )
+            return 2
+        path, params, local = "/weaknesses", {"id": args.id}, core.weaknesses
+    else:
+        path, params, local = "/weaknesses/table", table, core.weakness_table
+    payload = _call(
+        lambda: (
+            local(params)
+            if args.in_process
+            else get(path, args.url, timeout=LIBRARY_TIMEOUT_S, params=params)
+        )
+    )
+    if payload is None:
+        return 1
+    if args.json:
+        print(json.dumps(payload))
+    elif args.id is not None:
+        _print_weakness(payload)
+    else:
+        _print_weakness_table(payload)
+    unknown = payload["catalog"]["unknown_fields"]
+    if unknown:  # kept, not dropped; say so, since the import does not map them yet
+        noun = "field" if unknown == 1 else "fields"
+        print(
+            f"warning: the catalog has {unknown} entry {noun} this reader does not know; "
+            "they are kept, and GET /weaknesses lists them",
+            file=sys.stderr,
+        )
+    return 0
+
+
 def _print_sdl(payload: dict[str, Any]) -> None:
     if "models" in payload:
         for m in payload["models"]:
@@ -351,6 +432,20 @@ def build_parser() -> argparse.ArgumentParser:
         library.add_argument(f"--{name}", default=None, help=f"only records with this {name}")
     _add_transport(library)
     library.set_defaults(func=_library)
+
+    weak = sub.add_parser("weaknesses", help="CWE weaknesses from the pinned release (#144)")
+    weak.add_argument("--id", default=None, help="one entry in full, e.g. CWE-79")
+    for name in core.WEAKNESS_FILTERS:
+        weak.add_argument(f"--{name}", default=None, help=f"only weaknesses with this {name}")
+    weak.add_argument(
+        "--search", default=None, help="text in the id, name, description or alternate terms"
+    )
+    weak.add_argument("--sort", default=None, choices=core.WEAKNESS_SORTS, help="default id")
+    weak.add_argument("--order", default=None, choices=("asc", "desc"), help="default asc")
+    weak.add_argument("--limit", default=None, help="at most this many rows")
+    weak.add_argument("--offset", default=None, help="skip this many rows first")
+    _add_transport(weak)
+    weak.set_defaults(func=_weaknesses)
 
     sdl = sub.add_parser("sdl", help="SDL program view of an SDL model (DL-0043)")
     sdl.add_argument("file", nargs="?", default=None, help="e.g. sdl-01-tmodel-desktop.yaml")
