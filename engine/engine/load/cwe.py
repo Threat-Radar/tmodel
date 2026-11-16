@@ -15,6 +15,13 @@ not know, such as one a newer schema adds. Nothing is dropped silently.
 ADR-0011): one Weakness per CWE weakness, and a proposed Assertion for each CAPEC
 and CVE link CWE gives (DL-0050).
 
+Relationships (#145, DL-0057): each relationship an entry writes, a weakness's
+Related_Weakness and a category's or view's Has_Member or Member_Of, is a
+`Relationship` tagged with its view (View_ID). `CweCatalog.relationships()` gives them
+for any list of views, with the inverses the schema declares (ParentOf, CanFollow,
+RequiredBy, MemberOf) derived. They are not objects: the accepted core has no
+Weakness-to-Weakness edge, and categories and views are not objects.
+
 Read-only and deterministic, like the library loader: the same bytes give the same
 entries in the same order, and nothing is written anywhere.
 
@@ -45,7 +52,7 @@ import stat
 import threading
 import zipfile
 from collections import Counter
-from collections.abc import Iterable, Mapping
+from collections.abc import Collection, Iterable, Mapping
 from dataclasses import dataclass, field
 from functools import cached_property
 from pathlib import Path
@@ -176,6 +183,53 @@ MAPPED: Mapping[tuple[str, str], str] = MappingProxyType(
 )
 # The organization every imported Assertion is attributed to (design notes, adapt 5).
 MITRE_PARTY = "party:mitre-cwe"
+# What an entry read from MITRE's file says it comes from; a local weakness says `local`.
+SOURCE = "mitre-cwe"
+# CWE's relationship natures (RelatedNatureEnumeration, CWE XML Schema 7.3), in schema
+# order. 4.20 writes six of them; ParentOf, CanFollow and RequiredBy are declared but
+# never written (library record `cwe`, distilled/messages.yaml).
+NATURES = (
+    "ChildOf",
+    "ParentOf",
+    "StartsWith",
+    "CanFollow",
+    "CanPrecede",
+    "RequiredBy",
+    "Requires",
+    "CanAlsoBe",
+    "PeerOf",
+)
+# Membership is a Has_Member or Member_Of element on a category or a view, not a
+# Nature. Here it is a nature of its own, spelled as the natures are.
+MEMBERSHIP: Mapping[str, str] = MappingProxyType(
+    {"Has_Member": "HasMember", "Member_Of": "MemberOf"}
+)
+# The field each kind of entry writes its relationships in, and the elements in it
+# that are relationships.
+RELATIONSHIP_FIELDS: Mapping[str, str] = MappingProxyType(
+    {"Weakness": "Related_Weaknesses", "Category": "Relationships", "View": "Members"}
+)
+RELATIONSHIP_ELEMENTS = frozenset({"Related_Weakness", *MEMBERSHIP})
+# The inverse pairs the schema declares, derived where CWE writes only one side. The
+# other natures have none: CanAlsoBe "is not necessarily reciprocal" (L973), and
+# PeerOf and StartsWith name no inverse.
+INVERSE: Mapping[str, str] = MappingProxyType(
+    {
+        "ChildOf": "ParentOf",
+        "ParentOf": "ChildOf",
+        "CanPrecede": "CanFollow",
+        "CanFollow": "CanPrecede",
+        "Requires": "RequiredBy",
+        "RequiredBy": "Requires",
+        "HasMember": "MemberOf",
+        "MemberOf": "HasMember",
+    }
+)
+# The natures the schema's text ties Ordinal and Chain_ID to (L540). MITRE's own data
+# departs from both, so a departure is reported, never refused (design notes, open
+# question 5).
+ORDINAL_NATURES = frozenset({"ChildOf"})
+CHAIN_NATURES = frozenset({"CanPrecede", "CanFollow"})
 CVE_ID = re.compile(r"CVE-[0-9]{4}-[0-9]{4,}")
 SCHEMA_FILE = re.compile(r"cwe_schema_v([0-9][0-9.]*)\.xsd$")
 WHOLE_NUMBER = re.compile(r"[0-9]+")  # ASCII digits only, so int() always accepts it
@@ -192,6 +246,39 @@ class ObservedExample:
     reference: str  # usually a CVE id
     description: str
     link: str | None = None
+
+
+@dataclass(frozen=True)
+class Relationship:
+    """One relationship in one CWE view: as an entry writes it, or a declared inverse.
+
+    `source` is the entry the relationship is written on (for a membership, the
+    category or view that has the member) and `target` the entry it names, each an id
+    such as `CWE-79` or a local `tr-weak-0001`. `view` is the View_ID, the view the
+    relationship belongs to. A `derived` relationship is the inverse the schema
+    declares for a written one (INVERSE): source and target swapped, the same view, no
+    ordinal and no chain.
+    """
+
+    source: str
+    nature: str
+    target: str
+    view: int
+    ordinal: str | None = None  # Ordinal, which is only ever Primary
+    chain: str | None = None  # Chain_ID, the named chain's id, such as CWE-692
+    derived: bool = False
+
+    def to_dict(self) -> dict[str, Any]:
+        """JSON-ready, in a fixed key order, with the view as an id."""
+        return {
+            "source": self.source,
+            "nature": self.nature,
+            "target": self.target,
+            "view": f"CWE-{self.view}",
+            "ordinal": self.ordinal,
+            "chain": self.chain,
+            "derived": self.derived,
+        }
 
 
 @dataclass(frozen=True)
@@ -217,10 +304,20 @@ class CweEntry:
     attack_patterns: tuple[str, ...] = ()  # CAPEC ids such as CAPEC-63, in file order
     observed_examples: tuple[ObservedExample, ...] = ()
     mitigations: int = 0  # Potential_Mitigations entries
+    relationships: tuple[Relationship, ...] = ()  # the ones this entry writes, in file order
 
     @property
     def id(self) -> str:
         return f"CWE-{self.number}"
+
+    @property
+    def source(self) -> str:
+        return SOURCE
+
+    @property
+    def object_id(self) -> str | None:
+        """The tmodel Weakness id, for a weakness; categories and views are not objects."""
+        return weakness_id(self.number) if self.kind == "Weakness" else None
 
     @property
     def url(self) -> str:
@@ -231,6 +328,7 @@ class CweEntry:
         return {
             "id": self.id,
             "kind": self.kind,
+            "source": self.source,
             "name": self.name,
             "status": self.status,
             "abstraction": self.abstraction,
@@ -246,6 +344,7 @@ class CweEntry:
                 for e in self.observed_examples
             ],
             "mitigations": self.mitigations,
+            "relationships": [r.to_dict() for r in self.relationships],
             "url": self.url,
             "fields": _thawed(self.fields),
         }
@@ -334,6 +433,44 @@ class CweCatalog:
         built = to_objects(self)
         return MappingProxyType({name: tuple(items) for name, items in built.items()})
 
+    @cached_property
+    def stated_relationships(self) -> tuple[Relationship, ...]:
+        """Every relationship the release writes, entry by entry in file order (#145)."""
+        entries = (*self.weaknesses, *self.categories, *self.views)
+        return tuple(r for e in entries for r in e.relationships)
+
+    @cached_property
+    def known_views(self) -> frozenset[int]:
+        """The views a query can name: the release's views, and every view a relationship is in."""
+        return frozenset(
+            {v.number for v in self.views} | {r.view for r in self.stated_relationships}
+        )
+
+    def relationships(
+        self,
+        views: Iterable[int | str] | str | None = None,
+        entry: str | int | None = None,
+        derived: bool = True,
+    ) -> list[Relationship]:
+        """The relationships in `views`, any number of them, or in every view when None.
+
+        `views` holds view ids (`CWE-1000`, `1000` or 1000) or is one text of them
+        separated by commas; ValueError for one the release does not know. With
+        `entry`, only the relationships whose source it is. With `derived`, the
+        inverses the schema declares follow the written ones (`with_inverses`).
+        """
+        source = None if entry is None else f"CWE-{cwe_number(str(entry))}"
+        return select(
+            self.stated_relationships, view_numbers(views, self.known_views), source, derived
+        )
+
+    def relationship_report(self) -> dict[str, Any]:
+        """What the release's relationships hold, and where they depart from the schema's text."""
+        entries = {e.id for e in (*self.weaknesses, *self.categories, *self.views)}
+        return relationship_report(
+            self.stated_relationships, entries, {v.number for v in self.views}
+        )
+
 
 def notice(catalog: CweCatalog) -> str:
     """MITRE's copyright designation for a release, which every copy of CWE content carries.
@@ -400,6 +537,118 @@ def cached_catalog(path: str | Path, sha256: str) -> CweCatalog:
         return catalog
 
 
+# --- relationships (#145) ---------------------------------------------------------------
+
+
+def with_inverses(stated: Iterable[Relationship]) -> tuple[Relationship, ...]:
+    """The written relationships, then the inverse the schema declares for each (INVERSE).
+
+    An inverse is `derived`: source and target swapped, the same view, no ordinal and
+    no chain. An inverse that is also written, or that two relationships give, appears
+    once.
+    """
+    stated = tuple(stated)
+    seen = {(r.source, r.nature, r.target, r.view) for r in stated}
+    derived: list[Relationship] = []
+    for r in stated:
+        nature = INVERSE.get(r.nature)
+        key = (r.target, nature, r.source, r.view)
+        if nature is None or key in seen:
+            continue
+        seen.add(key)
+        derived.append(Relationship(r.target, nature, r.source, r.view, derived=True))
+    return stated + tuple(derived)
+
+
+def view_numbers(
+    views: Iterable[int | str] | str | None, known: Collection[int]
+) -> frozenset[int] | None:
+    """The views asked for, as numbers, or None (every view) when `views` is None.
+
+    `views` holds view ids (`CWE-1000`, `1000` or 1000) or is one text of them
+    separated by commas. ValueError for a malformed id, for an empty list, and for a
+    view not in `known`.
+    """
+    if views is None:
+        return None
+    named = [v.strip() for v in views.split(",")] if isinstance(views, str) else list(views)
+    numbers = []
+    for view in named:
+        number = _number(view)
+        if number is None:
+            raise ValueError(f"a view id looks like CWE-1000, not {view!r}")
+        numbers.append(number)
+    if not numbers:
+        raise ValueError("name at least one view, such as CWE-1000")
+    unknown = sorted(set(numbers) - set(known))
+    if unknown:
+        listed = ", ".join(f"CWE-{n}" for n in unknown)
+        raise ValueError(f"not a view this catalog knows: {listed}")
+    return frozenset(numbers)
+
+
+def select(
+    stated: Iterable[Relationship],
+    views: Collection[int] | None = None,
+    source: str | None = None,
+    derived: bool = True,
+) -> list[Relationship]:
+    """The relationships in `views` (every view when None) whose source is `source` (any).
+
+    With `derived`, the declared inverses come after the written ones, so an entry's
+    relationships include the inverses of those that name it. A PeerOf, CanAlsoBe or
+    StartsWith has no declared inverse, so it is found only from the entry that
+    writes it.
+    """
+    pool = with_inverses(stated) if derived else tuple(stated)
+    return [
+        r
+        for r in pool
+        if (views is None or r.view in views) and (source is None or r.source == source)
+    ]
+
+
+def relationship_report(
+    stated: Iterable[Relationship], entries: Collection[str], views: Collection[int]
+) -> dict[str, Any]:
+    """The relationships counted, and each one that departs from the schema or the entries read.
+
+    `entries` holds the ids of the entries read and `views` the numbers of the views
+    read. Counted: the relationships written, by nature and by view, and the inverses
+    derived. Listed in full: one with a nature the schema does not declare (kept, with
+    no inverse), one whose target is not an entry read, an Ordinal or a Chain_ID on
+    another nature than the schema's text names (L540), and an entry with two Primary
+    relationships of one nature in one view (design notes, open question 2). Counted
+    by view: relationships in a view that is not a view read. None is refused.
+    """
+    stated = tuple(stated)
+    derived = with_inverses(stated)[len(stated) :]
+    declared = {*NATURES, *MEMBERSHIP.values()}
+    primaries = Counter((r.source, r.nature, r.view) for r in stated if r.ordinal == "Primary")
+    elsewhere = Counter(r.view for r in stated if r.view not in views)
+    return {
+        "stated": len(stated),
+        "derived": len(derived),
+        "natures": _by_nature(r.nature for r in stated),
+        "derived_natures": _by_nature(r.nature for r in derived),
+        "views": {f"CWE-{n}": c for n, c in sorted(Counter(r.view for r in stated).items())},
+        "undeclared_natures": [r.to_dict() for r in stated if r.nature not in declared],
+        "targets_not_read": [r.to_dict() for r in stated if r.target not in entries],
+        "views_not_read": {f"CWE-{n}": c for n, c in sorted(elsewhere.items())},
+        "ordinal_departures": [
+            r.to_dict() for r in stated if r.ordinal and r.nature not in ORDINAL_NATURES
+        ],
+        "chain_departures": [
+            r.to_dict() for r in stated if r.chain and r.nature not in CHAIN_NATURES
+        ],
+        "primary_repeated": [
+            {"source": source, "nature": nature, "view": f"CWE-{view}", "times": n}
+            for (source, nature, view), n in primaries.items()
+            if n > 1
+        ],
+    }
+
+
 # --- objects in the tmodel object model -------------------------------------------------
 
 
@@ -427,22 +676,38 @@ def to_objects(
       program: CWE states them, and no tmodel reviewer has accepted them (R-018);
     - `parties`: that program, as an organization.
 
-    Categories and views are not objects: a category is not a mapping target, and
-    the hierarchy is #145. An observed example without a CVE id stays on its entry.
+    Categories and views are not objects: a category is not a mapping target. Nor are
+    relationships (#145): the accepted core has no Weakness-to-Weakness edge, so they
+    are served by `CweCatalog.relationships()`. An observed example without a CVE id
+    stays on its entry.
     """
     wanted = set(numbers) if numbers is not None else None
     provenance = (
         f"tmodel CWE import: {catalog.name} {catalog.version} ({catalog.date}), "
         f"{catalog.file}, SHA-256 {catalog.sha256}"
     )
+    return objects_for(
+        [e for e in catalog.weaknesses if wanted is None or e.number in wanted],
+        {"id": MITRE_PARTY, "name": "MITRE CWE Program", "party_kind": "organization"},
+        provenance,
+    )
+
+
+def objects_for(
+    entries: Iterable[Any], party: Mapping[str, Any], provenance: str
+) -> dict[str, list[dict[str, Any]]]:
+    """The objects for weakness entries, CWE's or local ones (#145), as `to_objects` says.
+
+    An entry gives its `object_id`, `id`, `name`, `description`, `attack_patterns`
+    and `observed_examples`. Every Assertion is `proposed`, asserted by `party`, with
+    `provenance` as its `generated_by`.
+    """
     weaknesses: list[dict[str, Any]] = []
     patterns: dict[str, dict[str, Any]] = {}
     vulnerabilities: dict[str, dict[str, Any]] = {}
     assertions: dict[str, dict[str, Any]] = {}
-    for entry in catalog.weaknesses:
-        if wanted is not None and entry.number not in wanted:
-            continue
-        weakness = weakness_id(entry.number)
+    for entry in entries:
+        weakness = entry.object_id
         weaknesses.append(
             {
                 "id": weakness,
@@ -464,7 +729,7 @@ def to_objects(
                     "predicate": "exploited_by",
                     "object": pattern,
                     "assertion_status": "proposed",
-                    "asserted_by": MITRE_PARTY,
+                    "asserted_by": party["id"],
                     "generated_by": provenance,
                 },
             )
@@ -484,14 +749,14 @@ def to_objects(
                 "predicate": "instance_of",
                 "object": weakness,
                 "assertion_status": "proposed",
-                "asserted_by": MITRE_PARTY,
+                "asserted_by": party["id"],
                 "generated_by": provenance,
             }
             if example.link:
                 statement["evidence"] = [example.link]
             assertions.setdefault(assertion, statement)
     return {
-        "parties": [{"id": MITRE_PARTY, "name": "MITRE CWE Program", "party_kind": "organization"}],
+        "parties": [dict(party)],
         "weaknesses": weaknesses,
         "attack_patterns": sorted(patterns.values(), key=lambda p: _catalog_number(p)),
         "vulnerabilities": sorted(vulnerabilities.values(), key=lambda v: v["catalog_ref"]),
@@ -605,6 +870,14 @@ def _catalog(name: str, digest: str, root: ElementTree.Element) -> CweCatalog:
                 references.append(fields)
                 continue
             entry = _entry(name, kind, fields)
+            container = RELATIONSHIP_FIELDS[kind]
+            unknown.update(  # kept in `fields`, but not a relationship this reader knows
+                {
+                    f"{kind}/{container}/{element}"
+                    for element, _ in _relationship_elements(kind, fields)
+                    if element not in RELATIONSHIP_ELEMENTS
+                }
+            )
             if entry.number in seen:
                 raise CweError(
                     f"{name}: CWE-{entry.number} is both a {seen[entry.number]} and a {kind}"
@@ -665,7 +938,64 @@ def _entry(name: str, kind: str, fields: Mapping[str, Any]) -> CweEntry:
             for example in _items(fields, "Observed_Examples", "Observed_Example")
         ),
         mitigations=len(_items(fields, "Potential_Mitigations", "Mitigation")),
+        relationships=_relationships(name, label, kind, fields),
     )
+
+
+def _relationships(
+    name: str, label: str, kind: str, fields: Mapping[str, Any]
+) -> tuple[Relationship, ...]:
+    """The relationships an entry writes, in file order (#145).
+
+    A weakness's Related_Weakness keeps its Nature; a category's or view's Has_Member
+    and Member_Of become HasMember and MemberOf. Ordinal and Chain_ID are kept on any
+    nature, since MITRE's data puts them where the schema's text does not (L540).
+    """
+    found = []
+    for element, item in _relationship_elements(kind, fields):
+        if element not in RELATIONSHIP_ELEMENTS:
+            continue  # kept in `fields`; _catalog reports it
+        if not isinstance(item, Mapping):
+            raise CweError(f"{name}: {label} has a {element} with no attributes")
+        nature = item.get("@Nature") if element == "Related_Weakness" else MEMBERSHIP[element]
+        if not isinstance(nature, str) or not nature:
+            raise CweError(f"{name}: {label} has a {element} with no Nature")
+        target, view, chain = item.get("@CWE_ID"), item.get("@View_ID"), item.get("@Chain_ID")
+        if not _whole(target) or not _whole(view):
+            raise CweError(
+                f"{name}: a {nature} of {label} needs a whole-number CWE_ID and View_ID "
+                f"(found {target!r} and {view!r})"
+            )
+        found.append(
+            Relationship(
+                source=label,
+                nature=nature,
+                target=f"CWE-{int(target)}",
+                view=int(view),
+                ordinal=_optional(item, "@Ordinal"),
+                chain=f"CWE-{int(chain)}" if _whole(chain) else _optional(item, "@Chain_ID"),
+            )
+        )
+    return tuple(found)
+
+
+def _relationship_elements(kind: str, fields: Mapping[str, Any]) -> list[tuple[str, Any]]:
+    """The children of an entry's relationship field, as (name, value) pairs in file order."""
+    holders = fields.get(RELATIONSHIP_FIELDS[kind])
+    found: list[tuple[str, Any]] = []
+    for holder in holders if isinstance(holders, tuple) else ():
+        if not isinstance(holder, Mapping):
+            continue
+        if "#items" in holder:  # the names interleave: one-key mappings, in order
+            found += [pair for item in holder["#items"] for pair in item.items()]
+        else:
+            found += [
+                (key, value)
+                for key, values in holder.items()
+                if not key.startswith(("@", "#"))
+                for value in values
+            ]
+    return found
 
 
 # --- elements to values ---------------------------------------------------------------------
@@ -795,6 +1125,17 @@ def _number(cwe_id: str | int) -> int | None:
     if text[:4].casefold() == "cwe-":
         text = text[4:]
     return int(text) if WHOLE_NUMBER.fullmatch(text) else None
+
+
+def _whole(value: Any) -> bool:
+    return isinstance(value, str) and WHOLE_NUMBER.fullmatch(value) is not None
+
+
+def _by_nature(natures: Iterable[str]) -> dict[str, int]:
+    """Counts per nature, in schema order, then membership, then any other by name."""
+    counts = Counter(natures)
+    rank = {n: i for i, n in enumerate((*NATURES, *MEMBERSHIP.values()))}
+    return {n: counts[n] for n in sorted(counts, key=lambda n: (rank.get(n, len(rank)), n))}
 
 
 def _catalog_number(item: Mapping[str, Any]) -> int:
