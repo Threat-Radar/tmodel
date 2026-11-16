@@ -197,7 +197,11 @@ gives their relationships in one or more CWE views, with the inverses the schema
 declares (DL-0057). The project's own weakness types, `tr-weak-NNNN`, load beside
 CWE's from the YAML file named in `TMODEL_LOCAL_WEAKNESSES`, whose format the docstring
 of `engine/engine/load/local_weaknesses.py` gives; where the team keeps that file is
-not decided yet.
+not decided yet. To check that the import loses nothing from a catalog file, run
+`python -m engine.load.cwe_reconcile cwec_v4.20.xml.zip`: it prints the reconciliation
+report and exits 1 on any loss, and the `cwe` workflow runs it on MITRE's release
+(DL-0058). After a change to the import, add `--write
+design-log/0058-cwe-reconciliation/report-cwe-4.20.md` to refresh the committed report.
 
 ```sh
 curl -LO https://cwe.mitre.org/data/xml/cwec_v4.20.xml.zip   # the file the record pins

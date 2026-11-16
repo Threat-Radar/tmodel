@@ -1,0 +1,61 @@
+name: cwe
+# The CWE import's reconciliation (#146, DL-0058; PLAN-0002 §5's acceptance test):
+# import MITRE's pinned CWE release, read the same file a second time with
+# ElementTree alone, and fail on any loss, or when the committed report is not the
+# one the release gives. MITRE's file is never committed (CLAUDE.md), so the job
+# downloads it and refuses any other bytes: the URL and SHA-256 are those of the
+# library's `cwe` record (Threat-Radar/library#21). How the app gets the catalog is
+# DEC-008, still open; this fetch is for the check only. GitHub runners only
+# (APP-0001 A-043); actions pinned to full commit SHAs.
+
+on:
+  pull_request:
+    paths:
+      - "engine/engine/load/cwe.py"
+      - "engine/engine/load/cwe_reconcile.py"
+      - "engine/pyproject.toml"
+      - "design-log/0058-cwe-reconciliation/**"
+      - ".github/workflows/cwe.yml"
+  push:
+    branches: [main]
+    paths:
+      - "engine/engine/load/cwe.py"
+      - "engine/engine/load/cwe_reconcile.py"
+      - "engine/pyproject.toml"
+      - "design-log/0058-cwe-reconciliation/**"
+      - ".github/workflows/cwe.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: cwe-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  reconcile:
+    name: CWE import reconciliation
+    runs-on: ubuntu-latest
+    env:
+      CWE_URL: https://cwe.mitre.org/data/xml/cwec_v4.20.xml.zip
+      CWE_SHA256: 3976f599e5e5200219a3108bb896d06e2a88fbb293369e1883cb423a5e9d7d50
+      REPORT: design-log/0058-cwe-reconciliation/report-cwe-4.20.md
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+      - name: Install the engine
+        run: python -m pip install -e ./engine
+      - name: Download MITRE's CWE release and check its digest
+        run: |
+          curl -fsSL --retry 3 --retry-delay 10 -o "$RUNNER_TEMP/cwe.xml.zip" "$CWE_URL"
+          echo "$CWE_SHA256  $RUNNER_TEMP/cwe.xml.zip" | sha256sum -c -
+      - name: Reconcile the import with the file, and check the committed report
+        shell: bash
+        run: |
+          python -m engine.load.cwe_reconcile "$RUNNER_TEMP/cwe.xml.zip" \
+            --sha256 "$CWE_SHA256" --check "$REPORT" | tee -a "$GITHUB_STEP_SUMMARY"
