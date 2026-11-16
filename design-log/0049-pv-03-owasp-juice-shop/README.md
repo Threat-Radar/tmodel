@@ -4,9 +4,9 @@ id: DL-0049
 title: "Proposal vector pv-03: OWASP Juice Shop, a software product to test the app on"
 type: process
 status: draft
-version: "0.1.1"
+version: "0.1.2"
 date: "2026-11-09"
-updated: "2026-11-12"
+updated: "2026-11-16"
 record: DL-0049
 bears_on: [DEC-001a]
 defers_to: ARCH-0001
@@ -66,6 +66,7 @@ OWASP Juice Shop fits: it is a web shop that OWASP keeps insecure on purpose for
 ## What a human accepted
 
 - @Clovier, 2026-11-12: make the changes the review of #237 asked for (below).
+- @Clovier, 2026-11-16: make the two changes the re-review asked for (below).
 
 Nothing in the model is accepted yet. All 20 Assertions are `proposed`, and no Review is recorded.
 
@@ -83,6 +84,13 @@ Nothing in the model is accepted yet. All 20 Assertions are `proposed`, and no R
 - **Seven of the twelve steps had no evidence-bearing Assertion,** which #230 asks of every step. Each of the eight steps without one, the new step included, now has a `targets_element` Assertion whose evidence links the code lines and, where there is one, the challenge.
 
 The engine test counts above now say which run they come from. Validating the proposal vectors in CI, also suggested, is left for its own change: CI's schema job checks the mvp, tv and sdl vectors but no pv ones, and the workflow is under `.github/`, which CODEOWNERS gives to @nymble.
+
+## Changes after re-review (2026-11-16)
+
+@kriishnaa-18 re-reviewed #237 on 2026-11-16. Both changes above hold, and two more were asked for before approving. Both are made:
+
+- **The token data flow's name was too broad.** It said "Every API request carries the login token", but the shop's public endpoints need no login. It now says "Authenticated API requests carry the login token". Only the name changes: the flow's ends, what it carries and the step that targets it stay the same.
+- **The branch was behind `main`.** `main` was merged in. The only conflicts were in the generated browser preview (`docs/app/`), which #240 had rebuilt with newer Vite and Cytoscape. `render_app.py` rebuilt it from the merged code, and `render_models.py` and `render_app.py` then regenerated the pages that show the new name.
 
 ## Next steps
 

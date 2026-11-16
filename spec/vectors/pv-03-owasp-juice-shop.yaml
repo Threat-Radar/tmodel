@@ -149,7 +149,7 @@ data_flows:
     carries: [asset:baskets]
     crosses_boundary: [trust-boundary:shopper-browser, trust-boundary:shop-server]
   - id: data-flow:token-on-request
-    name: Every API request carries the login token
+    name: Authenticated API requests carry the login token
     flow_from: component:storefront
     flow_to: component:shop-api
     carries: [asset:login-tokens]

@@ -2409,7 +2409,7 @@
     {
       "domain_type": "DataFlow",
       "id": "data-flow:token-on-request",
-      "label": "Every API request carries the login token",
+      "label": "Authenticated API requests carry the login token",
       "properties": {}
     },
     {
