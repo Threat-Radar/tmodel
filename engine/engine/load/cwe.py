@@ -44,6 +44,7 @@ import re
 import stat
 import threading
 import zipfile
+import zlib
 from collections import Counter
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass, field
@@ -553,7 +554,7 @@ def _unzipped(name: str, data: bytes) -> bytes:
                 raise CweError(f"{name}: expected one .xml file in the zip, found {listed}")
             with archive.open(members[0]) as member:  # the header's size can lie; count instead
                 xml = member.read(MAX_XML_BYTES + 1)
-    except (zipfile.BadZipFile, zipfile.LargeZipFile, OSError, EOFError) as exc:
+    except (zipfile.BadZipFile, zipfile.LargeZipFile, OSError, EOFError, zlib.error) as exc:
         raise CweError(f"{name}: not a readable zip ({exc})") from exc
     if len(xml) > MAX_XML_BYTES:
         raise CweError(f"{name}: {members[0].filename} is larger than {MAX_XML_BYTES} bytes")
@@ -561,11 +562,16 @@ def _unzipped(name: str, data: bytes) -> bytes:
 
 
 def _parse(name: str, xml: bytes) -> ElementTree.Element:
-    start = xml.find(b"<Weakness_Catalog")
-    if start < 0:
+    if xml.find(b"<Weakness_Catalog") < 0:
         raise CweError(f"{name}: not a CWE catalog (no Weakness_Catalog element)")
-    if b"<!DOCTYPE" in xml[:start] or b"<!ENTITY" in xml[:start]:
-        raise CweError(f"{name}: has a DOCTYPE; a CWE catalog has none, so it is not read")
+    # A CWE catalog declares no DOCTYPE and no entities, so any declaration, wherever it
+    # is in the file, is refused before parsing: no entity is ever expanded. Looking only
+    # before the first `<Weakness_Catalog` let a comment holding those bytes hide one.
+    if b"<!DOCTYPE" in xml or b"<!ENTITY" in xml:
+        raise CweError(
+            f"{name}: has a DOCTYPE or ENTITY declaration; a CWE catalog has none, "
+            "so it is not read"
+        )
     try:
         root = ElementTree.fromstring(xml)
     except ElementTree.ParseError as exc:
