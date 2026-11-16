@@ -17,7 +17,7 @@ from engine import __version__
 from engine import propose as proposals
 from engine import sdl as sdl_view
 from engine.graph import AttackGraph, GraphError
-from engine.load import cwe
+from engine.load import capec, cwe
 from engine.load.library import (
     Library,
     LibraryError,
@@ -58,6 +58,17 @@ WEAKNESS_ORDER = {
     "status": ("Stable", "Usable", "Draft", "Incomplete", "Obsolete", "Deprecated"),
     "usage": ("Allowed", "Allowed-with-Review", "Discouraged", "Prohibited"),
     "likelihood": ("High", "Medium", "Low", "Unknown"),
+}
+# The attack-pattern table view (#244, #236): exact filters, sorts and facet counts over
+# CAPEC attack patterns, with CAPEC's own order for its enumerations (ap_schema_v3.5.xsd).
+ATTACK_PATTERN_FILTERS = ("abstraction", "status", "likelihood", "severity")
+ATTACK_PATTERN_SORTS = ("id", "name", "abstraction", "status", "likelihood", "severity")
+ATTACK_PATTERN_FACETS = ATTACK_PATTERN_FILTERS
+ATTACK_PATTERN_ORDER = {
+    "abstraction": ("Meta", "Standard", "Detailed"),
+    "status": ("Stable", "Usable", "Draft", "Incomplete", "Obsolete", "Deprecated"),
+    "likelihood": ("High", "Medium", "Low", "Unknown"),
+    "severity": ("Very High", "High", "Medium", "Low", "Very Low"),
 }
 # The example-model families, told apart by file-name prefix (spec/vectors/README.md).
 # The order is the order the model list uses.
@@ -419,17 +430,28 @@ def _weakness_searched(
 def _weakness_sorted(
     weaknesses: list[cwe.CweEntry], field: str, descending: bool
 ) -> list[cwe.CweEntry]:
-    by_number = sorted(weaknesses, key=lambda w: w.number)
+    return _entries_sorted(weaknesses, field, descending, WEAKNESS_ORDER)
+
+
+def _entries_sorted(
+    entries: list[Any], field: str, descending: bool, orders: Mapping[str, tuple[str, ...]]
+) -> list[Any]:
+    """Catalog entries by `field`: `id` by number; an enumeration in the catalog's order.
+
+    Entries without a value come last in both orders, and ties keep id order. Used by
+    the CWE and CAPEC tables, whose entries both have `number` and the sort fields.
+    """
+    by_number = sorted(entries, key=lambda e: e.number)
     if field == "id":
         return by_number[::-1] if descending else by_number
-    order = {value: rank for rank, value in enumerate(WEAKNESS_ORDER.get(field, ()))}
+    order = {value: rank for rank, value in enumerate(orders.get(field, ()))}
 
-    def key(w: cwe.CweEntry) -> tuple[int, str]:
-        value = getattr(w, field)
+    def key(e: Any) -> tuple[int, str]:
+        value = getattr(e, field)
         return (order.get(value, len(order)), value.casefold())
 
-    present = [w for w in by_number if getattr(w, field)]
-    missing = [w for w in by_number if not getattr(w, field)]
+    present = [e for e in by_number if getattr(e, field)]
+    missing = [e for e in by_number if not getattr(e, field)]
     present.sort(key=key, reverse=descending)  # stable: ties keep id order
     return present + missing
 
@@ -450,6 +472,178 @@ def _weakness_row(w: cwe.CweEntry) -> dict[str, Any]:
         "observed_examples": len(w.observed_examples),
         "mitigations": w.mitigations,
         "url": w.url,
+    }
+
+
+def _served_capec_catalog() -> capec.CapecCatalog:
+    """The CAPEC release the library pins, read from the file `$TMODEL_CAPEC_CATALOG` names."""
+    record = _served_library().get(capec.LIBRARY_RECORD)
+    pinned = record.content.sha256 if record is not None else None
+    if record is None or not pinned:
+        raise Unavailable(
+            "the library pins no CAPEC release: its capec record has no content.sha256 "
+            "(it has one from library commit 4173143 on); set TMODEL_LIBRARY to a "
+            "library checkout that has it"
+        )
+    path = capec.configured_catalog()
+    if path is None:
+        raise Unavailable(
+            f"no CAPEC catalog: download {record.content.url} (SHA-256 {pinned}) "
+            f"and set {capec.CATALOG_ENV} to that file"
+        )
+    try:
+        return capec.cached_catalog(path, pinned)
+    except capec.CapecError as exc:
+        raise Unavailable(str(exc)) from exc
+
+
+def _capec_summary(catalog: capec.CapecCatalog) -> dict[str, Any]:
+    """Which CAPEC release an answer comes from, with MITRE's notice and licence.
+
+    Every answer that holds CAPEC content carries them, as the CAPEC Terms of Use
+    require of a copy. Names no local path.
+    """
+    return {
+        "name": catalog.name,
+        "version": catalog.version,
+        "date": catalog.date,
+        "schema": catalog.schema,
+        "file": catalog.file,
+        "sha256": catalog.sha256,
+        "attack_patterns": len(catalog.attack_patterns),
+        "categories": len(catalog.categories),
+        "views": len(catalog.views),
+        "references": len(catalog.references),
+        "unknown_fields": len(catalog.unknown),
+        "notice": capec.notice(catalog),
+        "license": capec.LICENSE,
+        "terms_url": capec.TERMS_URL,
+    }
+
+
+def attack_patterns(query: Mapping[str, str] | None = None) -> dict[str, Any]:
+    """The CAPEC release the engine serves (#244): what the import found, or one entry in full.
+
+    Without parameters: the catalog; `fields`, one row per entry field with how many
+    entries carry it and where it goes in the object model (an unknown field has
+    `known` false); `links`, what became of CAPEC's links to CWE weaknesses, naming
+    each one not mapped, with counts of the links kept on the entries; and how many
+    objects of each kind the import makes. With `id` (`CAPEC-66` or `66`): that attack
+    pattern, category or view with every field, and the objects the import makes for
+    an attack pattern. An id the catalog does not have gives `entry: null`. Raises
+    ValueError for another parameter or a malformed id, and Unavailable when there is
+    no pinned catalog to read.
+    """
+    values = _values(query or {}, ("id",), "parameter")
+    catalog = _served_capec_catalog()
+    summary = {"catalog": _capec_summary(catalog)}
+    if "id" not in values:
+        return {
+            **summary,
+            "fields": catalog.report(),
+            "links": catalog.links(),
+            "objects": {name: len(items) for name, items in catalog.objects.items()},
+        }
+    number = capec.capec_number(values["id"])
+    entry = catalog.get(number)
+    pattern = entry is not None and entry.kind == "Attack_Pattern"
+    return {
+        **summary,
+        "id": f"CAPEC-{number}",
+        "entry": entry.to_dict() if entry is not None else None,
+        "objects": capec.to_objects(catalog, [number]) if pattern else None,
+    }
+
+
+def attack_pattern_table(query: Mapping[str, str] | None = None) -> dict[str, Any]:
+    """Rows for the attack-pattern table view (#244, #236): filtered, searched, sorted, paged.
+
+    Parameters, all optional, as in `weakness_table`: the ATTACK_PATTERN_FILTERS, each
+    an exact match; `search`, a text that must appear (ignoring case) in an attack
+    pattern's id, name, description, alternate terms, CWE ids or ATT&CK ids; `sort`,
+    one of ATTACK_PATTERN_SORTS (default `id`, by number), where an enumeration sorts
+    in CAPEC's own order; `order`, `asc` or `desc`; and `limit` and `offset` for
+    paging. Attack patterns without a value for the sort field come last in both
+    orders, and ties keep id order. `facets` counts the whole catalog;
+    `contextual_facets` apply the search and the other filters, each leaving out its
+    own. The payload names no local path.
+    """
+    values = _values(query or {}, ATTACK_PATTERN_FILTERS + TABLE_OPTIONS, "parameter")
+    sort = values.get("sort", "id")
+    if sort not in ATTACK_PATTERN_SORTS:
+        raise ValueError(f"cannot sort by {sort!r}: use one of {', '.join(ATTACK_PATTERN_SORTS)}")
+    order = values.get("order", "asc")
+    if order not in ("asc", "desc"):
+        raise ValueError(f"order must be asc or desc, not {order!r}")
+    limit = _whole_number(values, "limit", minimum=1)
+    offset = _whole_number(values, "offset", minimum=0) or 0
+    search = values.get("search")
+
+    catalog = _served_capec_catalog()
+    filters = {k: v for k, v in values.items() if k in ATTACK_PATTERN_FILTERS}
+    searched = _attack_pattern_searched(catalog.attack_patterns, search)
+    matched = _entries_sorted(
+        _matching(searched, filters), sort, order == "desc", ATTACK_PATTERN_ORDER
+    )
+    page = matched[offset : offset + limit if limit is not None else None]
+    return {
+        "catalog": _capec_summary(catalog),
+        "query": {
+            "filters": filters,
+            "search": search,
+            "sort": sort,
+            "order": order,
+            "limit": limit,
+            "offset": offset,
+        },
+        "total": len(matched),
+        "count": len(page),
+        "rows": [_attack_pattern_row(p) for p in page],
+        "facets": {name: _counts(catalog.attack_patterns, name) for name in ATTACK_PATTERN_FACETS},
+        "contextual_facets": {
+            name: _counts(
+                _matching(searched, {key: value for key, value in filters.items() if key != name}),
+                name,
+            )
+            for name in ATTACK_PATTERN_FACETS
+        },
+    }
+
+
+def _attack_pattern_searched(
+    patterns: Iterable[capec.CapecEntry], search: str | None
+) -> list[capec.CapecEntry]:
+    if search is None:
+        return list(patterns)
+    needle = search.casefold()
+    return [
+        p
+        for p in patterns
+        if needle
+        in " ".join(
+            (p.id, p.name, p.description, *p.alternate_terms, *p.weaknesses, *p.attack_techniques)
+        ).casefold()
+    ]
+
+
+def _attack_pattern_row(p: capec.CapecEntry) -> dict[str, Any]:
+    """One table row: what a list of attack patterns shows, plus the keys to fetch the rest."""
+    return {
+        "id": p.id,
+        "attack_pattern": capec.attack_pattern_id(p.number),
+        "name": p.name,
+        "abstraction": p.abstraction,
+        "status": p.status,
+        "likelihood": p.likelihood,
+        "severity": p.severity,
+        "description": p.description,
+        "weaknesses": list(p.weaknesses),
+        "attack_techniques": list(p.attack_techniques),
+        "related_attack_patterns": len(p.related_attack_patterns),
+        "steps": p.steps,
+        "mitigations": p.mitigations,
+        "examples": p.examples,
+        "url": p.url,
     }
 
 

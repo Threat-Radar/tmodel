@@ -1,0 +1,33 @@
+schema: "library-record/v1"
+id: capec
+body: other
+type: dataset
+maturity: best-practice
+title: "MITRE CAPEC: Common Attack Pattern Enumeration and Classification (test sample)"
+version: "3.9"
+date: "2023-01-24"
+publisher: "The MITRE Corporation"
+identifiers:
+  url: https://capec.mitre.org/
+# A test library: the real record (Threat-Radar/library, records/other/capec) pins MITRE's
+# capec_v3.9.xml. This one pins the sample beside it, engine/tests/fixtures/capec/README.md.
+content:
+  url: engine/tests/fixtures/capec/capec_v3.9-sample.xml
+  sha256: "68789138ccecf9e921e079b9ef3283f60d94632f266ae9eae611e8721abb0127"
+  retrieved: "2026-11-14"
+  local: false
+  media_type: application/xml
+relations:
+  supersedes: []
+  superseded_by: []
+  cited_by: []
+  see_also: []
+  implements_concept: []
+bears_on:
+  - DEC-008
+topic: ""
+tags:
+  - capec
+  - attack-pattern
+  - test-fixture
+status: summarized

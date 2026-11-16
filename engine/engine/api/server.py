@@ -60,6 +60,8 @@ ROUTES: dict[str, Callable[[dict[str, str]], dict[str, Any]]] = {
     "/library/table": core.library_table,  # rows for the table views (#141, #58)
     "/weaknesses": core.weaknesses,  # the pinned CWE release: import report, or one entry (#144)
     "/weaknesses/table": core.weakness_table,  # rows for the weakness table view (#144, #234)
+    "/attack-patterns": core.attack_patterns,  # the pinned CAPEC release, or one entry (#244)
+    "/attack-patterns/table": core.attack_pattern_table,  # rows for the CAPEC table view (#236)
     "/sdl": core.sdl,  # SDL program view; no file = list SDL models (DL-0043)
     "/proposals": core.pending_proposals,  # pending proposals + saved KG views (DL-0046)
 }

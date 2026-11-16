@@ -86,6 +86,53 @@ should show `catalog.notice` and link to `catalog.terms_url`. The licence in ful
 > this license in any such copy. CWE is a trademark of The MITRE Corporation. Please
 > contact cwe@mitre.org if you require further clarification on this issue.
 
+## Attack-pattern table (#244)
+
+`attack-pattern-table.json` is the engine's answer to `GET /attack-patterns/table`, with no
+parameters, over the CAPEC sample in `engine/tests/fixtures/capec/`: 13 attack patterns
+copied verbatim from CAPEC 3.9. It lets the attack-pattern table view (#236) start before
+the CAPEC import reaches a running engine (DL-0056).
+
+It is generated in the same way as the weakness fixture, and
+`engine/tests/test_attack_pattern_table.py` fails when the engine's answer no longer
+matches it. Agree a new shape on #236 first, then regenerate it from the engine folder:
+
+```sh
+cd engine && TMODEL_UPDATE_FIXTURES=1 .venv/bin/pytest tests/test_attack_pattern_table.py
+```
+
+| Key | What it holds |
+|---|---|
+| `catalog` | which CAPEC release: name, version, date, schema version, file name, SHA-256, entry counts, how many entry fields the reader does not know, and MITRE's `notice`, `license` and `terms_url` |
+| `query` | the filters (abstraction, status, likelihood, severity), search, sort, order, limit and offset the answer used |
+| `total`, `count` | matches before paging, and rows in this answer |
+| `rows` | one row per attack pattern: CAPEC id, tmodel object id, name, abstraction, status, likelihood of attack, typical severity, description, the CWE ids it relates to and the ATT&CK techniques it maps to (lists, so a view can link them), how many related attack patterns, attack steps, mitigations and examples it has, and its page on capec.mitre.org |
+| `facets` | whole-catalog counts for abstraction, status, likelihood and severity |
+| `contextual_facets` | the same counts under the active search and the other filters, each leaving out its own |
+
+`search` looks in the id, name, description, alternate terms, CWE ids and ATT&CK ids.
+`sort` takes id (by number), name, abstraction, status, likelihood or severity; the last
+four sort in CAPEC's own order (Meta, Standard, Detailed; Stable to Deprecated; High to
+Low; Very High to Very Low), not alphabetically.
+
+`GET /attack-patterns?id=CAPEC-66` returns one entry with every CAPEC field, for a details
+view, plus the tmodel objects the import makes for it. `GET /attack-patterns` without
+parameters says where each CAPEC field goes and which links the import could not map.
+
+The rows are CAPEC content. The CAPEC Terms of Use (https://capec.mitre.org/about/termsofuse.html)
+allow copies provided that each one reproduces MITRE's copyright designation and licence,
+so every answer carries them in `catalog`, and a view that shows the rows should show
+`catalog.notice` and link to `catalog.terms_url`. The licence in full:
+
+> Copyright © 2007-2023, The MITRE Corporation. CAPEC and the CAPEC logo are trademarks of
+> The MITRE Corporation.
+>
+> The MITRE Corporation (MITRE) hereby grants you a non-exclusive, royalty-free license to
+> use Common Attack Pattern Enumeration and Classification (CAPEC™) for research,
+> development, and commercial purposes. Any copy you make for such purposes is authorized
+> provided that you reproduce MITRE’s copyright designation and this license in any such
+> copy.
+
 ## Model report inputs (#208)
 
 `report-input-mvp-01.json`, `report-input-mvp-02.json` and
