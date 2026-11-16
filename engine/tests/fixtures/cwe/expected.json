@@ -1,0 +1,1376 @@
+{
+ "weakness-1093-class-allowed-with-review.xml": {
+  "file": "weakness-1093-class-allowed-with-review.xml",
+  "source": [
+   {
+    "kind": "Weakness",
+    "id": 1093,
+    "catalog_lines": [
+     9418,
+     9508
+    ],
+    "catalog_bytes": [
+     567658,
+     572415
+    ],
+    "entry_sha256": "835d7804b19f4e28acad964552de53515b236b49f79b4994bde34d2c3e56f469",
+    "entry_size": 4757,
+    "crlf": false
+   }
+  ],
+  "entries": [
+   {
+    "kind": "Weakness",
+    "id": 1093,
+    "name": "Excessively Complex Data Representation",
+    "abstraction": "Class",
+    "structure": "Simple",
+    "status": "Incomplete",
+    "child_elements": [
+     "Description",
+     "Related_Weaknesses",
+     "Weakness_Ordinalities",
+     "Applicable_Platforms",
+     "Modes_Of_Introduction",
+     "Common_Consequences",
+     "Mapping_Notes",
+     "Content_History"
+    ],
+    "related_weaknesses": [
+     {
+      "nature": "ChildOf",
+      "cwe_id": 710,
+      "view_id": 1000,
+      "ordinal": "Primary"
+     }
+    ],
+    "primary_parents": {
+     "1000": 710
+    },
+    "weakness_ordinalities": [
+     "Indirect"
+    ],
+    "taxonomy_mappings": [],
+    "related_attack_patterns": [],
+    "references_cited": [],
+    "counts": {
+     "Consequence": 2,
+     "Introduction": 2
+    },
+    "note_types": [],
+    "mapping_notes": {
+     "usage": "Allowed-with-Review",
+     "reasons": [
+      "Abstraction"
+     ],
+     "rationale": "This CWE entry is a Class and might have Base-level children that would be more appropriate",
+     "comments": "Examine children of this entry to see if there is a better fit",
+     "suggestions": []
+    },
+    "m2_mapping_decision": "under-review",
+    "content_history": {
+     "submission": {
+      "name": "CWE Content Team",
+      "organization": "MITRE",
+      "date": "2018-07-29",
+      "version": "3.2",
+      "release_date": "2019-01-03"
+     },
+     "modifications": 5,
+     "modifications_critical": [],
+     "last_modification": {
+      "date": "2025-12-11",
+      "version": "4.19",
+      "release_date": "2025-12-11"
+     },
+     "contributions": [],
+     "previous_entry_names": [],
+     "modification_dates_ascending": true
+    }
+   }
+  ]
+ },
+ "weakness-1174-variant.xml": {
+  "file": "weakness-1174-variant.xml",
+  "source": [
+   {
+    "kind": "Weakness",
+    "id": 1174,
+    "catalog_lines": [
+     16124,
+     16209
+    ],
+    "catalog_bytes": [
+     980706,
+     985215
+    ],
+    "entry_sha256": "cf22638af6e91134f032469048471dc4131dc382e075a622eb230860cc720195",
+    "entry_size": 4509,
+    "crlf": false
+   }
+  ],
+  "entries": [
+   {
+    "kind": "Weakness",
+    "id": 1174,
+    "name": "ASP.NET Misconfiguration: Improper Model Validation",
+    "abstraction": "Variant",
+    "structure": "Simple",
+    "status": "Draft",
+    "child_elements": [
+     "Description",
+     "Related_Weaknesses",
+     "Weakness_Ordinalities",
+     "Applicable_Platforms",
+     "Modes_Of_Introduction",
+     "Common_Consequences",
+     "Mapping_Notes",
+     "Content_History"
+    ],
+    "related_weaknesses": [
+     {
+      "nature": "ChildOf",
+      "cwe_id": 1173,
+      "view_id": 1000,
+      "ordinal": "Primary"
+     }
+    ],
+    "primary_parents": {
+     "1000": 1173
+    },
+    "weakness_ordinalities": [
+     "Indirect"
+    ],
+    "taxonomy_mappings": [],
+    "related_attack_patterns": [],
+    "references_cited": [],
+    "counts": {
+     "Consequence": 1,
+     "Introduction": 2
+    },
+    "note_types": [],
+    "mapping_notes": {
+     "usage": "Allowed",
+     "reasons": [
+      "Acceptable-Use"
+     ],
+     "rationale": "This CWE entry is at the Variant level of abstraction, which is a preferred level of abstraction for mapping to the root causes of vulnerabilities.",
+     "comments": "Carefully read both the name and description to ensure that this mapping is an appropriate fit. Do not try to 'force' a mapping to a lower-level Base/Variant simply to comply with this preferred level of abstraction.",
+     "suggestions": []
+    },
+    "m2_mapping_decision": "mapped",
+    "content_history": {
+     "submission": {
+      "name": "CWE Content Team",
+      "organization": "MITRE",
+      "date": "2018-12-21",
+      "version": "3.2",
+      "release_date": "2019-01-03"
+     },
+     "modifications": 5,
+     "modifications_critical": [],
+     "last_modification": {
+      "date": "2025-12-11",
+      "version": "4.19",
+      "release_date": "2025-12-11"
+     },
+     "contributions": [],
+     "previous_entry_names": [],
+     "modification_dates_ascending": true
+    }
+   }
+  ]
+ },
+ "weakness-1187-deprecated.xml": {
+  "file": "weakness-1187-deprecated.xml",
+  "source": [
+   {
+    "kind": "Weakness",
+    "id": 1187,
+    "catalog_lines": [
+     16700,
+     16736
+    ],
+    "catalog_bytes": [
+     1013685,
+     1015749
+    ],
+    "entry_sha256": "e2dea497a803f7f990377de08567f150acd2370651664de8b56d57bd2d7490a3",
+    "entry_size": 2064,
+    "crlf": false
+   }
+  ],
+  "entries": [
+   {
+    "kind": "Weakness",
+    "id": 1187,
+    "name": "DEPRECATED: Use of Uninitialized Resource",
+    "abstraction": "Base",
+    "structure": "Simple",
+    "status": "Deprecated",
+    "child_elements": [
+     "Description",
+     "Mapping_Notes",
+     "Content_History"
+    ],
+    "related_weaknesses": [],
+    "primary_parents": {},
+    "weakness_ordinalities": [],
+    "taxonomy_mappings": [],
+    "related_attack_patterns": [],
+    "references_cited": [],
+    "counts": {},
+    "note_types": [],
+    "mapping_notes": {
+     "usage": "Prohibited",
+     "reasons": [
+      "Deprecated"
+     ],
+     "rationale": "This CWE has been deprecated.",
+     "comments": "See description and name for possible suggestions of other CWEs to consider.",
+     "suggestions": []
+    },
+    "m2_mapping_decision": "rejected-prohibited",
+    "content_history": {
+     "submission": {
+      "name": "CWE Content Team",
+      "organization": "MITRE",
+      "date": "2019-03-25",
+      "version": "3.3",
+      "release_date": "2019-06-20"
+     },
+     "modifications": 2,
+     "modifications_critical": [],
+     "last_modification": {
+      "date": "2023-06-29",
+      "version": "4.12",
+      "release_date": "2023-06-29"
+     },
+     "contributions": [],
+     "previous_entry_names": [
+      {
+       "name": "Use of Uninitialized Resource",
+       "date": "2020-02-24"
+      }
+     ],
+     "modification_dates_ascending": true
+    },
+    "description": "This entry has been deprecated because it was a duplicate of CWE-908. All content has been transferred to CWE-908.",
+    "cwe_ids_named_in_prose": [
+     908
+    ],
+    "successor_machine_readable": []
+   }
+  ]
+ },
+ "weakness-373-deprecated-critical.xml": {
+  "file": "weakness-373-deprecated-critical.xml",
+  "source": [
+   {
+    "kind": "Weakness",
+    "id": 373,
+    "catalog_lines": [
+     124258,
+     124318
+    ],
+    "catalog_bytes": [
+     7933199,
+     7937031
+    ],
+    "entry_sha256": "9bb09127b8e9a0ed57e06c1b2fb1035b9c04c85fcb5c6b202485fddef3721030",
+    "entry_size": 3832,
+    "crlf": false
+   }
+  ],
+  "entries": [
+   {
+    "kind": "Weakness",
+    "id": 373,
+    "name": "DEPRECATED: State Synchronization Error",
+    "abstraction": "Base",
+    "structure": "Simple",
+    "status": "Deprecated",
+    "child_elements": [
+     "Description",
+     "Mapping_Notes",
+     "Content_History"
+    ],
+    "related_weaknesses": [],
+    "primary_parents": {},
+    "weakness_ordinalities": [],
+    "taxonomy_mappings": [],
+    "related_attack_patterns": [],
+    "references_cited": [],
+    "counts": {},
+    "note_types": [],
+    "mapping_notes": {
+     "usage": "Prohibited",
+     "reasons": [
+      "Deprecated"
+     ],
+     "rationale": "This CWE has been deprecated.",
+     "comments": "See description and name for possible suggestions of other CWEs to consider.",
+     "suggestions": []
+    },
+    "m2_mapping_decision": "rejected-prohibited",
+    "content_history": {
+     "submission": {
+      "name": "CLASP",
+      "date": "2006-07-19",
+      "version": "Draft 3",
+      "release_date": "2006-07-19"
+     },
+     "modifications": 5,
+     "modifications_critical": [
+      {
+       "date": "2010-12-12",
+       "version": "1.11",
+       "comment": "Deprecated entry"
+      }
+     ],
+     "last_modification": {
+      "date": "2023-06-29",
+      "version": "4.12",
+      "release_date": "2023-06-29"
+     },
+     "contributions": [],
+     "previous_entry_names": [
+      {
+       "name": "State Synchronization Error",
+       "date": "2010-12-13"
+      }
+     ],
+     "modification_dates_ascending": true
+    },
+    "description": "This entry was deprecated because it overlapped the same concepts as race condition (CWE-362) and Improper Synchronization (CWE-662).",
+    "cwe_ids_named_in_prose": [
+     362,
+     662
+    ],
+    "successor_machine_readable": []
+   }
+  ]
+ },
+ "weakness-689-composite.xml": {
+  "file": "weakness-689-composite.xml",
+  "source": [
+   {
+    "kind": "Weakness",
+    "id": 689,
+    "catalog_lines": [
+     201574,
+     201750
+    ],
+    "catalog_bytes": [
+     12868384,
+     12879741
+    ],
+    "entry_sha256": "f34c2cddfa57cc515f1042629145638baafd8cd424ad74915ac1b0fdeadef1ab",
+    "entry_size": 11357,
+    "crlf": false
+   }
+  ],
+  "entries": [
+   {
+    "kind": "Weakness",
+    "id": 689,
+    "name": "Permission Race Condition During Resource Copy",
+    "abstraction": "Compound",
+    "structure": "Composite",
+    "status": "Draft",
+    "child_elements": [
+     "Description",
+     "Related_Weaknesses",
+     "Weakness_Ordinalities",
+     "Applicable_Platforms",
+     "Modes_Of_Introduction",
+     "Common_Consequences",
+     "Observed_Examples",
+     "Related_Attack_Patterns",
+     "References",
+     "Mapping_Notes",
+     "Notes",
+     "Content_History"
+    ],
+    "related_weaknesses": [
+     {
+      "nature": "ChildOf",
+      "cwe_id": 362,
+      "view_id": 1000,
+      "ordinal": "Primary"
+     },
+     {
+      "nature": "Requires",
+      "cwe_id": 362,
+      "view_id": 1000
+     },
+     {
+      "nature": "Requires",
+      "cwe_id": 732,
+      "view_id": 1000
+     }
+    ],
+    "primary_parents": {
+     "1000": 362
+    },
+    "weakness_ordinalities": [
+     "Primary"
+    ],
+    "taxonomy_mappings": [],
+    "related_attack_patterns": [
+     26,
+     27
+    ],
+    "references_cited": [
+     "REF-62"
+    ],
+    "counts": {
+     "Consequence": 1,
+     "Observed_Example": 5,
+     "Introduction": 1,
+     "Note": 1
+    },
+    "note_types": [
+     "Research Gap"
+    ],
+    "mapping_notes": {
+     "usage": "Allowed",
+     "reasons": [
+      "Other"
+     ],
+     "rationale": "This is a Composite of multiple weaknesses that must all occur simultaneously.",
+     "comments": "While composites are supported in CWE, they have not been a focus of research. There is a chance that future research or CWE scope clarifications will change or deprecate them. Perform root-cause analysis to determine which weaknesses allow this issue to occur, and map to those weaknesses. For example, the delayed permission-setting in the resource copy might be intended functionality, but creation in a location with insecure permissions might not.",
+     "suggestions": []
+    },
+    "m2_mapping_decision": "mapped",
+    "content_history": {
+     "submission": {
+      "name": "CWE Content Team",
+      "organization": "MITRE",
+      "date": "2008-04-11",
+      "version": "Draft 9",
+      "release_date": "2008-04-11"
+     },
+     "modifications": 11,
+     "modifications_critical": [],
+     "last_modification": {
+      "date": "2023-06-29",
+      "version": "4.12",
+      "release_date": "2023-06-29"
+     },
+     "contributions": [],
+     "previous_entry_names": [],
+     "modification_dates_ascending": true
+    }
+   }
+  ]
+ },
+ "weakness-692-chain.xml": {
+  "file": "weakness-692-chain.xml",
+  "source": [
+   {
+    "kind": "Weakness",
+    "id": 692,
+    "catalog_lines": [
+     202592,
+     202795
+    ],
+    "catalog_bytes": [
+     12932464,
+     12944256
+    ],
+    "entry_sha256": "ad5faebea22d50b8867e68b460cfab95bf9a7733269c9d0d318d6c96418d4a65",
+    "entry_size": 11792,
+    "crlf": false
+   }
+  ],
+  "entries": [
+   {
+    "kind": "Weakness",
+    "id": 692,
+    "name": "Incomplete Denylist to Cross-Site Scripting",
+    "abstraction": "Compound",
+    "structure": "Chain",
+    "status": "Draft",
+    "child_elements": [
+     "Description",
+     "Extended_Description",
+     "Related_Weaknesses",
+     "Weakness_Ordinalities",
+     "Applicable_Platforms",
+     "Modes_Of_Introduction",
+     "Common_Consequences",
+     "Observed_Examples",
+     "Related_Attack_Patterns",
+     "References",
+     "Mapping_Notes",
+     "Content_History"
+    ],
+    "related_weaknesses": [
+     {
+      "nature": "StartsWith",
+      "cwe_id": 184,
+      "view_id": 709,
+      "chain_id": 692
+     },
+     {
+      "nature": "ChildOf",
+      "cwe_id": 184,
+      "view_id": 1000,
+      "ordinal": "Primary"
+     }
+    ],
+    "primary_parents": {
+     "1000": 184
+    },
+    "weakness_ordinalities": [
+     "Primary"
+    ],
+    "taxonomy_mappings": [],
+    "related_attack_patterns": [
+     120,
+     267,
+     71,
+     80,
+     85
+    ],
+    "references_cited": [
+     "REF-714"
+    ],
+    "counts": {
+     "Consequence": 1,
+     "Observed_Example": 3,
+     "Introduction": 1
+    },
+    "note_types": [],
+    "mapping_notes": {
+     "usage": "Discouraged",
+     "reasons": [
+      "Other"
+     ],
+     "rationale": "This CWE entry is a named chain, which combines multiple weaknesses.",
+     "comments": "Mapping to each separate weakness in the chain would be more precise.",
+     "suggestions": []
+    },
+    "m2_mapping_decision": "rejected-discouraged",
+    "content_history": {
+     "submission": {
+      "name": "CWE Content Team",
+      "organization": "MITRE",
+      "date": "2008-04-11",
+      "version": "Draft 9",
+      "release_date": "2008-04-11"
+     },
+     "modifications": 16,
+     "modifications_critical": [],
+     "last_modification": {
+      "date": "2025-12-11",
+      "version": "4.19",
+      "release_date": "2025-12-11"
+     },
+     "contributions": [],
+     "previous_entry_names": [
+      {
+       "name": "Incomplete Blacklist to Cross-Site Scripting",
+       "date": "2020-02-26"
+      }
+     ],
+     "modification_dates_ascending": true
+    }
+   }
+  ]
+ },
+ "weakness-710-pillar.xml": {
+  "file": "weakness-710-pillar.xml",
+  "source": [
+   {
+    "kind": "Weakness",
+    "id": 710,
+    "catalog_lines": [
+     206511,
+     206705
+    ],
+    "catalog_bytes": [
+     13179279,
+     13189738
+    ],
+    "entry_sha256": "c00b1645ba885d87a22a326ae1595f770a82243be3cfbe619015c3c9bbbcb45b",
+    "entry_size": 10459,
+    "crlf": false
+   }
+  ],
+  "entries": [
+   {
+    "kind": "Weakness",
+    "id": 710,
+    "name": "Improper Adherence to Coding Standards",
+    "abstraction": "Pillar",
+    "structure": "Simple",
+    "status": "Incomplete",
+    "child_elements": [
+     "Description",
+     "Weakness_Ordinalities",
+     "Applicable_Platforms",
+     "Modes_Of_Introduction",
+     "Common_Consequences",
+     "Detection_Methods",
+     "Potential_Mitigations",
+     "Mapping_Notes",
+     "Content_History"
+    ],
+    "related_weaknesses": [],
+    "primary_parents": {},
+    "weakness_ordinalities": [
+     "Primary",
+     "Indirect"
+    ],
+    "taxonomy_mappings": [],
+    "related_attack_patterns": [],
+    "references_cited": [],
+    "counts": {
+     "Consequence": 1,
+     "Detection_Method": 1,
+     "Mitigation": 2,
+     "Introduction": 2
+    },
+    "note_types": [],
+    "mapping_notes": {
+     "usage": "Discouraged",
+     "reasons": [
+      "Abstraction"
+     ],
+     "rationale": "This CWE entry is extremely high-level, a Pillar.",
+     "comments": "Consider children or descendants of this entry instead.",
+     "suggestions": []
+    },
+    "m2_mapping_decision": "rejected-discouraged",
+    "content_history": {
+     "submission": {
+      "name": "CWE Content Team",
+      "organization": "MITRE",
+      "date": "2008-09-09",
+      "version": "1.0",
+      "release_date": "2008-09-09"
+     },
+     "modifications": 16,
+     "modifications_critical": [],
+     "last_modification": {
+      "date": "2025-12-11",
+      "version": "4.19",
+      "release_date": "2025-12-11"
+     },
+     "contributions": [],
+     "previous_entry_names": [
+      {
+       "name": "Coding Standards Violation",
+       "date": "2017-11-08"
+      }
+     ],
+     "modification_dates_ascending": true
+    }
+   }
+  ]
+ },
+ "weakness-769-deprecated-suggestion.xml": {
+  "file": "weakness-769-deprecated-suggestion.xml",
+  "source": [
+   {
+    "kind": "Weakness",
+    "id": 769,
+    "catalog_lines": [
+     214110,
+     214198
+    ],
+    "catalog_bytes": [
+     13687364,
+     13692799
+    ],
+    "entry_sha256": "b90ddd963afa61420b66d0fdc2c4a06b82e166d68ba106a63a877450c7a15253",
+    "entry_size": 5435,
+    "crlf": false
+   }
+  ],
+  "entries": [
+   {
+    "kind": "Weakness",
+    "id": 769,
+    "name": "DEPRECATED: Uncontrolled File Descriptor Consumption",
+    "abstraction": "Base",
+    "structure": "Simple",
+    "status": "Deprecated",
+    "child_elements": [
+     "Description",
+     "Mapping_Notes",
+     "Content_History"
+    ],
+    "related_weaknesses": [],
+    "primary_parents": {},
+    "weakness_ordinalities": [],
+    "taxonomy_mappings": [],
+    "related_attack_patterns": [],
+    "references_cited": [],
+    "counts": {},
+    "note_types": [],
+    "mapping_notes": {
+     "usage": "Prohibited",
+     "reasons": [
+      "Deprecated"
+     ],
+     "rationale": "This CWE has been deprecated.",
+     "comments": "See description and name for possible suggestions of other CWEs to consider.",
+     "suggestions": [
+      {
+       "cwe_id": 774,
+       "comment": "Allocation of File Descriptors or Handles Without Limits or Throttling"
+      }
+     ]
+    },
+    "m2_mapping_decision": "rejected-prohibited",
+    "content_history": {
+     "submission": {
+      "name": "CWE Content Team",
+      "organization": "MITRE",
+      "date": "2009-05-08",
+      "version": "1.4",
+      "release_date": "2009-05-27"
+     },
+     "modifications": 8,
+     "modifications_critical": [],
+     "last_modification": {
+      "date": "2023-06-29",
+      "version": "4.12",
+      "release_date": "2023-06-29"
+     },
+     "contributions": [],
+     "previous_entry_names": [
+      {
+       "name": "File Descriptor Exhaustion",
+       "date": "2017-11-08"
+      },
+      {
+       "name": "Uncontrolled File Descriptor Consumption",
+       "date": "2019-01-03"
+      }
+     ],
+     "modification_dates_ascending": true
+    },
+    "description": "This entry has been deprecated because it was a duplicate of CWE-774. All content has been transferred to CWE-774.",
+    "cwe_ids_named_in_prose": [
+     774
+    ],
+    "successor_machine_readable": [
+     774
+    ]
+   }
+  ]
+ },
+ "weakness-79-base-allowed.xml": {
+  "file": "weakness-79-base-allowed.xml",
+  "source": [
+   {
+    "kind": "Weakness",
+    "id": 79,
+    "catalog_lines": [
+     221591,
+     222480
+    ],
+    "catalog_bytes": [
+     14213467,
+     14288988
+    ],
+    "entry_sha256": "8a40837f7573c0be50d69ba0442a6cf721c0e164ab059faa8955649d7747d3a0",
+    "entry_size": 75521,
+    "crlf": false
+   }
+  ],
+  "entries": [
+   {
+    "kind": "Weakness",
+    "id": 79,
+    "name": "Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')",
+    "abstraction": "Base",
+    "structure": "Simple",
+    "status": "Stable",
+    "diagram": "/data/images/CWE-79-Diagram.png",
+    "child_elements": [
+     "Description",
+     "Extended_Description",
+     "Related_Weaknesses",
+     "Weakness_Ordinalities",
+     "Applicable_Platforms",
+     "Background_Details",
+     "Alternate_Terms",
+     "Modes_Of_Introduction",
+     "Likelihood_Of_Exploit",
+     "Common_Consequences",
+     "Detection_Methods",
+     "Potential_Mitigations",
+     "Demonstrative_Examples",
+     "Observed_Examples",
+     "Taxonomy_Mappings",
+     "Related_Attack_Patterns",
+     "References",
+     "Mapping_Notes",
+     "Notes",
+     "Content_History"
+    ],
+    "related_weaknesses": [
+     {
+      "nature": "ChildOf",
+      "cwe_id": 74,
+      "view_id": 1000,
+      "ordinal": "Primary"
+     },
+     {
+      "nature": "ChildOf",
+      "cwe_id": 74,
+      "view_id": 1003,
+      "ordinal": "Primary"
+     },
+     {
+      "nature": "CanPrecede",
+      "cwe_id": 494,
+      "view_id": 1000
+     },
+     {
+      "nature": "PeerOf",
+      "cwe_id": 352,
+      "view_id": 1000
+     }
+    ],
+    "primary_parents": {
+     "1000": 74,
+     "1003": 74
+    },
+    "weakness_ordinalities": [
+     "Resultant"
+    ],
+    "taxonomy_mappings": [
+     {
+      "taxonomy_name": "PLOVER",
+      "entry_name": "Cross-site scripting (XSS)"
+     },
+     {
+      "taxonomy_name": "7 Pernicious Kingdoms",
+      "entry_name": "Cross-site Scripting"
+     },
+     {
+      "taxonomy_name": "CLASP",
+      "entry_name": "Cross-site scripting"
+     },
+     {
+      "taxonomy_name": "OWASP Top Ten 2007",
+      "entry_id": "A1",
+      "entry_name": "Cross Site Scripting (XSS)",
+      "mapping_fit": "Exact"
+     },
+     {
+      "taxonomy_name": "OWASP Top Ten 2004",
+      "entry_id": "A1",
+      "entry_name": "Unvalidated Input",
+      "mapping_fit": "CWE More Specific"
+     },
+     {
+      "taxonomy_name": "OWASP Top Ten 2004",
+      "entry_id": "A4",
+      "entry_name": "Cross-Site Scripting (XSS) Flaws",
+      "mapping_fit": "Exact"
+     },
+     {
+      "taxonomy_name": "WASC",
+      "entry_id": "8",
+      "entry_name": "Cross-site Scripting"
+     },
+     {
+      "taxonomy_name": "Software Fault Patterns",
+      "entry_id": "SFP24",
+      "entry_name": "Tainted input to command"
+     },
+     {
+      "taxonomy_name": "OMG ASCSM",
+      "entry_id": "ASCSM-CWE-79"
+     }
+    ],
+    "related_attack_patterns": [
+     209,
+     588,
+     591,
+     592,
+     63,
+     85
+    ],
+    "references_cited": [
+     "REF-709",
+     "REF-44",
+     "REF-712",
+     "REF-7",
+     "REF-714",
+     "REF-715",
+     "REF-716",
+     "REF-45",
+     "REF-718",
+     "REF-719",
+     "REF-720",
+     "REF-721",
+     "REF-722",
+     "REF-723",
+     "REF-724",
+     "REF-725",
+     "REF-726",
+     "REF-62",
+     "REF-956",
+     "REF-962",
+     "REF-1481",
+     "REF-1482"
+    ],
+    "counts": {
+     "Consequence": 3,
+     "Detection_Method": 2,
+     "Mitigation": 12,
+     "Demonstrative_Example": 6,
+     "Observed_Example": 20,
+     "Introduction": 1,
+     "Alternate_Term": 6,
+     "Note": 5
+    },
+    "note_types": [
+     "Other",
+     "Other",
+     "Other",
+     "Relationship",
+     "Applicable Platform"
+    ],
+    "mapping_notes": {
+     "usage": "Allowed",
+     "reasons": [
+      "Acceptable-Use"
+     ],
+     "rationale": "This CWE entry is at the Base level of abstraction, which is a preferred level of abstraction for mapping to the root causes of vulnerabilities.",
+     "comments": "Carefully read both the name and description to ensure that this mapping is an appropriate fit. Do not try to 'force' a mapping to a lower-level Base/Variant simply to comply with this preferred level of abstraction.",
+     "suggestions": []
+    },
+    "m2_mapping_decision": "mapped",
+    "content_history": {
+     "submission": {
+      "name": "PLOVER",
+      "date": "2006-07-19",
+      "version": "Draft 3",
+      "release_date": "2006-07-19"
+     },
+     "modifications": 46,
+     "modifications_critical": [],
+     "last_modification": {
+      "date": "2026-04-30",
+      "version": "4.20",
+      "release_date": "2026-04-30"
+     },
+     "contributions": [
+      {
+       "type": "Content",
+       "date": "2025-03-10",
+       "version": "4.17"
+      }
+     ],
+     "previous_entry_names": [
+      {
+       "name": "Cross-site Scripting (XSS)",
+       "date": "2008-04-11"
+      },
+      {
+       "name": "Failure to Sanitize Directives in a Web Page (aka 'Cross-site scripting' (XSS))",
+       "date": "2009-01-12"
+      },
+      {
+       "name": "Failure to Preserve Web Page Structure (aka 'Cross-site Scripting')",
+       "date": "2009-05-27"
+      },
+      {
+       "name": "Failure to Preserve Web Page Structure ('Cross-site Scripting')",
+       "date": "2010-06-21"
+      }
+     ],
+     "modification_dates_ascending": true
+    }
+   }
+  ]
+ },
+ "category-411.xml": {
+  "file": "category-411.xml",
+  "source": [
+   {
+    "kind": "Category",
+    "id": 411,
+    "catalog_lines": [
+     261828,
+     261893
+    ],
+    "catalog_bytes": [
+     16780682,
+     16784276
+    ],
+    "entry_sha256": "8c70112fb9e58c9204b65459902a1b276debc54432cd0184b499a98d4de919b1",
+    "entry_size": 3594,
+    "crlf": false
+   }
+  ],
+  "entries": [
+   {
+    "kind": "Category",
+    "id": 411,
+    "name": "Resource Locking Problems",
+    "status": "Draft",
+    "child_elements": [
+     "Summary",
+     "Relationships",
+     "Taxonomy_Mappings",
+     "Mapping_Notes",
+     "Content_History"
+    ],
+    "summary": "Weaknesses in this category are related to improper handling of locks that are used to control access to resources.",
+    "members": [
+     {
+      "relation": "Has_Member",
+      "cwe_id": 412,
+      "view_id": 699
+     },
+     {
+      "relation": "Has_Member",
+      "cwe_id": 413,
+      "view_id": 699
+     },
+     {
+      "relation": "Has_Member",
+      "cwe_id": 414,
+      "view_id": 699
+     },
+     {
+      "relation": "Has_Member",
+      "cwe_id": 609,
+      "view_id": 699
+     },
+     {
+      "relation": "Has_Member",
+      "cwe_id": 764,
+      "view_id": 699
+     },
+     {
+      "relation": "Has_Member",
+      "cwe_id": 765,
+      "view_id": 699
+     },
+     {
+      "relation": "Has_Member",
+      "cwe_id": 832,
+      "view_id": 699
+     },
+     {
+      "relation": "Has_Member",
+      "cwe_id": 833,
+      "view_id": 699
+     }
+    ],
+    "taxonomy_mappings": [
+     {
+      "taxonomy_name": "PLOVER",
+      "entry_name": "Resource Locking problems"
+     }
+    ],
+    "references_cited": [],
+    "mapping_notes": {
+     "usage": "Prohibited",
+     "reasons": [
+      "Category"
+     ],
+     "rationale": "This entry is a Category. Using categories for mapping has been discouraged since 2019. Categories are informal organizational groupings of weaknesses that can help CWE users with data aggregation, navigation, and browsing. However, they are not weaknesses in themselves.",
+     "comments": "See member weaknesses of this category.",
+     "suggestions": []
+    },
+    "m2_mapping_decision": "rejected-prohibited",
+    "content_history": {
+     "submission": {
+      "name": "PLOVER",
+      "date": "2006-07-19",
+      "version": "Draft 3",
+      "release_date": "2006-07-19"
+     },
+     "modifications": 4,
+     "modifications_critical": [],
+     "last_modification": {
+      "date": "2023-06-29",
+      "version": "4.12",
+      "release_date": "2023-06-29"
+     },
+     "contributions": [],
+     "previous_entry_names": [],
+     "modification_dates_ascending": true
+    }
+   }
+  ]
+ },
+ "category-811-obsolete.xml": {
+  "file": "category-811-obsolete.xml",
+  "source": [
+   {
+    "kind": "Category",
+    "id": 811,
+    "catalog_lines": [
+     267269,
+     267318
+    ],
+    "catalog_bytes": [
+     17107751,
+     17110436
+    ],
+    "entry_sha256": "9890b98610eaac8e311b682cb57fa8a6509205bd84df780da8005c5d83d9745f",
+    "entry_size": 2685,
+    "crlf": false
+   }
+  ],
+  "entries": [
+   {
+    "kind": "Category",
+    "id": 811,
+    "name": "OWASP Top Ten 2010 Category A2 - Cross-Site Scripting (XSS)",
+    "status": "Obsolete",
+    "child_elements": [
+     "Summary",
+     "Relationships",
+     "References",
+     "Mapping_Notes",
+     "Content_History"
+    ],
+    "summary": "Weaknesses in this category are related to the A2 category in the OWASP Top Ten 2010.",
+    "members": [
+     {
+      "relation": "Has_Member",
+      "cwe_id": 79,
+      "view_id": 809
+     }
+    ],
+    "taxonomy_mappings": [],
+    "references_cited": [
+     "REF-762"
+    ],
+    "mapping_notes": {
+     "usage": "Prohibited",
+     "reasons": [
+      "Category"
+     ],
+     "rationale": "This entry is a Category. Using categories for mapping has been discouraged since 2019. Categories are informal organizational groupings of weaknesses that can help CWE users with data aggregation, navigation, and browsing. However, they are not weaknesses in themselves.",
+     "comments": "See member weaknesses of this category.",
+     "suggestions": []
+    },
+    "m2_mapping_decision": "rejected-prohibited",
+    "content_history": {
+     "submission": {
+      "name": "CWE Content Team",
+      "organization": "MITRE",
+      "date": "2010-06-17",
+      "version": "1.9",
+      "release_date": "2010-06-21"
+     },
+     "modifications": 3,
+     "modifications_critical": [],
+     "last_modification": {
+      "date": "2025-09-09",
+      "version": "4.18",
+      "release_date": "2025-09-09"
+     },
+     "contributions": [],
+     "previous_entry_names": [],
+     "modification_dates_ascending": true
+    }
+   }
+  ]
+ },
+ "view-709-implicit-filter.xml": {
+  "file": "view-709-implicit-filter.xml",
+  "source": [
+   {
+    "kind": "View",
+    "id": 709,
+    "catalog_lines": [
+     277991,
+     278027
+    ],
+    "catalog_bytes": [
+     17720768,
+     17722827
+    ],
+    "entry_sha256": "d5bdad4a98035df26cdafb0c94dc1e432db00b8ba9a137ba09e405b342268fb8",
+    "entry_size": 2059,
+    "crlf": false
+   }
+  ],
+  "entries": [
+   {
+    "kind": "View",
+    "id": 709,
+    "name": "Named Chains",
+    "type": "Implicit",
+    "status": "Incomplete",
+    "child_elements": [
+     "Objective",
+     "Filter",
+     "Mapping_Notes",
+     "Content_History"
+    ],
+    "objective": "This view displays Named Chains and their components.",
+    "filter": "/Weakness_Catalog/Weaknesses/Weakness[@Structure='Chain']",
+    "members": [],
+    "audience": [],
+    "mapping_notes": {
+     "usage": "Prohibited",
+     "reasons": [
+      "View"
+     ],
+     "rationale": "This entry is a View. Views are not weaknesses and therefore inappropriate to describe the root causes of vulnerabilities.",
+     "comments": "Use this View or other Views to search and navigate for the appropriate weakness.",
+     "suggestions": []
+    },
+    "m2_mapping_decision": "rejected-prohibited",
+    "content_history": {
+     "submission": {
+      "name": "CWE Content Team",
+      "organization": "MITRE",
+      "date": "2008-09-09",
+      "version": "1.0",
+      "release_date": "2008-09-09"
+     },
+     "modifications": 2,
+     "modifications_critical": [],
+     "last_modification": {
+      "date": "2023-06-29",
+      "version": "4.12",
+      "release_date": "2023-06-29"
+     },
+     "contributions": [],
+     "previous_entry_names": [],
+     "modification_dates_ascending": true
+    }
+   }
+  ]
+ },
+ "external-references-REF-7-44-726.xml": {
+  "file": "external-references-REF-7-44-726.xml",
+  "source": [
+   {
+    "kind": "External_Reference",
+    "id": "REF-7",
+    "catalog_lines": [
+     279311,
+     279321
+    ],
+    "catalog_bytes": [
+     17796849,
+     17797333
+    ],
+    "entry_sha256": "9138c37d179698748033a64419aed00e20d7b97b6c879857367621e19610b02c",
+    "entry_size": 484,
+    "crlf": true
+   },
+   {
+    "kind": "External_Reference",
+    "id": "REF-44",
+    "catalog_lines": [
+     279561,
+     279568
+    ],
+    "catalog_bytes": [
+     17808216,
+     17808530
+    ],
+    "entry_sha256": "5889976f7bfb22327c567d12b5c28a697263475e54debb2441a1c370c5af16f1",
+    "entry_size": 314,
+    "crlf": true
+   },
+   {
+    "kind": "External_Reference",
+    "id": "REF-726",
+    "catalog_lines": [
+     281840,
+     281849
+    ],
+    "catalog_bytes": [
+     17919622,
+     17920105
+    ],
+    "entry_sha256": "c334fc00c53f063fa6da58d0c3a6957458c9e67f88896745acfc66b1991136c9",
+    "entry_size": 483,
+    "crlf": true
+   }
+  ],
+  "entries": [
+   {
+    "kind": "External_Reference",
+    "reference_id": "REF-7",
+    "authors": [
+     "Michael Howard",
+     "David LeBlanc"
+    ],
+    "title": "Writing Secure Code",
+    "edition": "2nd Edition",
+    "publication_year": "2002",
+    "publication_month": "--12",
+    "publication_day": "---04",
+    "publisher": "Microsoft Press",
+    "url": "https://www.microsoftpressstore.com/store/writing-secure-code-9780735617223",
+    "child_elements": [
+     "Author",
+     "Author",
+     "Title",
+     "Edition",
+     "Publication_Year",
+     "Publication_Month",
+     "Publication_Day",
+     "Publisher",
+     "URL"
+    ]
+   },
+   {
+    "kind": "External_Reference",
+    "reference_id": "REF-44",
+    "authors": [
+     "Michael Howard",
+     "David LeBlanc",
+     "John Viega"
+    ],
+    "title": "24 Deadly Sins of Software Security",
+    "publication": "McGraw-Hill",
+    "publication_year": "2010",
+    "child_elements": [
+     "Author",
+     "Author",
+     "Author",
+     "Title",
+     "Publication",
+     "Publication_Year"
+    ]
+   },
+   {
+    "kind": "External_Reference",
+    "reference_id": "REF-726",
+    "authors": [
+     "Jason Lam"
+    ],
+    "title": "Top 25 series - Rank 1 - Cross Site Scripting",
+    "publication_year": "2010",
+    "publication_month": "--02",
+    "publication_day": "---22",
+    "publisher": "SANS Software Security Institute",
+    "url": "https://www.sans.org/blog/top-25-series-rank-1-cross-site-scripting/",
+    "url_date": "2023-04-07",
+    "child_elements": [
+     "Author",
+     "Title",
+     "Publication_Year",
+     "Publication_Month",
+     "Publication_Day",
+     "Publisher",
+     "URL",
+     "URL_Date"
+    ]
+   }
+  ]
+ }
+}
