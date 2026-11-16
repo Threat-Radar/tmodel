@@ -70,6 +70,14 @@ Allowed to Prohibited; High to Low), not alphabetically.
 view, plus the tmodel objects the import makes for it. `GET /weaknesses` without
 parameters says where each CWE field goes and which links the import could not map.
 
+The desktop app uses this fixture only when opened with
+`?weaknessSource=fixture`; its normal source is the local engine and the complete
+pinned catalog. The GitHub Pages build uses the same nine-row fixture because a
+static page has no local engine or catalog. Fixture selection shows the complete
+row summary but deliberately does not fabricate the full `GET /weaknesses?id=…`
+payload: the inspector explains that full catalog fields and proposed
+relationships require the live engine.
+
 The rows are CWE content. The CWE Terms of Use (https://cwe.mitre.org/about/termsofuse.html)
 allow copies on the condition that each one reproduces MITRE's copyright designation
 and licence, so every answer carries them in `catalog`, and a view that shows the rows
