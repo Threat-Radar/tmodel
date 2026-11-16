@@ -20,11 +20,28 @@ describe("CWE field presentation", () => {
       .toBe("const x = 1;\nalert(x);\nignored()");
   });
 
-  it("allows only HTTP and HTTPS links", () => {
+  it("allows HTTP and HTTPS links", () => {
     expect(safeHttpUrl("https://cwe.mitre.org/data/definitions/79.html"))
       .toBe("https://cwe.mitre.org/data/definitions/79.html");
     expect(safeHttpUrl("http://example.test/path")).toBe("http://example.test/path");
-    expect(safeHttpUrl("javascript:alert(1)")).toBeUndefined();
+  });
+
+  it.each([
+    "javascript:alert(1)",
+    "data:text/html,<script>alert(1)</script>",
+    "vbscript:msgbox(1)",
+    "file:///etc/passwd",
+    "blob:https://example.test/identifier",
+    "custom-scheme://example.test/path",
+    "JaVaScRiPt:alert(1)",
+    " \t\r\nJaVaScRiPt:alert(1)",
+    "java\tscript:alert(1)",
+    "java\nscript:alert(1)",
+  ])("rejects a non-HTTP URL: %s", (value) => {
+    expect(safeHttpUrl(value)).toBeUndefined();
+  });
+
+  it("rejects malformed URLs", () => {
     expect(safeHttpUrl("not a URL")).toBeUndefined();
   });
 });
