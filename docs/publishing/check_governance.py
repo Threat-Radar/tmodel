@@ -19,7 +19,7 @@ Two passes:
      only by people's `approved` reviews of that version.
 
 The publish gate (a required role unfilled, an open comment, YAML and PR approvals
-disagreeing) and the input digest are #183, not this check.
+disagreeing) is check_publish.py, and the input digest input_digest.py (#183, DL-0059).
 
     python docs/publishing/check_governance.py                     # every models/*/governance.yaml
     python docs/publishing/check_governance.py models/tcu/governance.yaml

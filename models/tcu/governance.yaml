@@ -14,8 +14,10 @@
 #            which holds the DEC-001b changes this record needs as a PROPOSAL (#64).
 #            Nothing in it is accepted.
 #
-# Not here yet: the input digest and the publish gate (#183), and the published
-# vN/ pages (#181, #182). `approval_digest` stays empty until a version is approved.
+# Publish gate:  python docs/publishing/check_publish.py (#183, DL-0059), in CI as tara.yml.
+# Digest:        python docs/publishing/input_digest.py prints each version's input digest.
+#                `approval_digest` stays empty until a version is approved, then holds it.
+# Not here yet:  the published vN/ pages (#181, #182).
 # ─────────────────────────────────────────────────────────────────────────────
 
 governs: spec/vectors/mvp-02-automotive-ecu.yaml
