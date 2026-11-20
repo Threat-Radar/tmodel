@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Scaling Trends for Data Poisoning in LLMs</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px 40px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); line-height: 1.15; letter-spacing: -0.03em; margin: 20px 0 6px; }
+h2 { font-size: 1.15rem; margin: 1.25em 0 0.3em; padding-top: 0.6em; border-top: 1px solid var(--line); }
+h3 { font-size: 1rem; margin: 1em 0 0.2em; }
+.kicker { margin: 18px 0 0; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.4em 0 0.8em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 6px 10px; font-size: 0.93rem; }
+table.kv { background: transparent; }
+table.kv td { border-bottom: none; padding: 2px 12px 2px 0; }
+td.rowhead { color: var(--muted); font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; width: 1%; padding-top: 6px; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../../../../index.html">tmodel</a><nav aria-label="Site"><a href="../../../../index.html">Home</a><a href="../../../../bibliography/index.html" aria-current="page">Bibliography</a><a href="../../../../reports/index.html">Reports</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">Library record · bowen-2025-scaling-trends-data-poisoning</p>
+<h1>Scaling Trends for Data Poisoning in LLMs</h1>
+<p class="lede"></p>
+<p>
+  <span class="badge">paper</span>
+  <span class="badge">academic</span>
+  <span class="badge">summarized</span>
+  <span class="badge">medium</span>
+</p>
+<p class="meta">Topic: <strong>ai-threat-model-supply-chain-infra</strong> (<code>record.yaml</code> topic). Status <code>summarized</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://arxiv.org/pdf/2408.02946v6">https://arxiv.org/pdf/2408.02946v6</a></li><li>Identifier URL: <a href="https://arxiv.org/abs/2408.02946">https://arxiv.org/abs/2408.02946</a></li><li>SHA-256: <code>07339ee65b26bb383ab87fe2dc9d594d4b21962bc54a8168f94b5f454db9fff3</code></li></ul>
+<h2>Paper</h2>
+<p class="meta">Authors and date are whatever the record states. This page does not add a venue.</p>
+<table><tbody><tr><td>Authors</td><td>Dillon Bowen, Brendan Murphy, Will Cai, David Khachaturov, Adam Gleave, Kellin Pelrine</td></tr><tr><td>Date</td><td>2025-07-17</td></tr><tr><td>Publisher</td><td>Authors at FAR.AI, UC Berkeley, University of Cambridge and McGill University / Mila (arXiv) / AAAI Press (AAAI-25 proceedings)</td></tr><tr><td>Version</td><td>v6</td></tr><tr><td>arxiv</td><td>2408.02946</td></tr><tr><td>doi</td><td><a href="https://doi.org/10.1609/aaai.v39i26.34929">10.1609/aaai.v39i26.34929</a></td></tr><tr><td>Pages</td><td>22</td></tr><tr><td>Media type</td><td>application/pdf</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge none">none</span></td></tr><tr><td>This project</td><td><span class="badge adjacent">adjacent</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
+<h2>Tags</h2>
+<table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">data-poisoning</span> <span class="badge">backdoor</span> <span class="badge">jailbreak</span></td></tr><tr><td class="rowhead">Role</td><td><span class="badge">evidence</span></td></tr></tbody></table>
+<h2>Bears on</h2>
+<ul><li><code>DEC-001a</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> Measures how poisoning susceptibility grows with model size across 24 open models, and shows 2% disguised poison passing OpenAI&#x27;s fine-tuning moderation; AIT-017 and AIT-081 cite it and NIST AI 100-2e2025 cites it as [46].</p><p class="meta">Assessed 2026-11-01.</p>
+
+
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>paper</td></tr><tr><td><strong>Maturity</strong></td><td>_unset_ (peer-reviewed conference paper; no maturity level applies)</td></tr><tr><td><strong>Authors</strong></td><td>Dillon Bowen, Brendan Murphy, Will Cai, David Khachaturov, Adam Gleave, Kellin Pelrine (FAR.AI, UC Berkeley, University of Cambridge, McGill University and Mila)</td></tr><tr><td><strong>Published</strong></td><td>arXiv v1 2024-08-06 as &quot;Scaling Laws for Data Poisoning in LLMs&quot; (the title NIST cites); v4 and v5 as &quot;Data Poisoning in LLMs: Jailbreak-Tuning and Scaling Laws&quot;; v6 2025-07-17 under the current title (summarized here), after the jailbreak-tuning study moved to arXiv:2507.11630; AAAI-25, pp. 27206-27214 (Crossref date 2025-04-11)</td></tr><tr><td><strong>Identifier</strong></td><td>arXiv:2408.02946; DOI 10.1609/aaai.v39i26.34929 (AAAI version of record, not read)</td></tr><tr><td><strong>Source</strong></td><td>https://arxiv.org/pdf/2408.02946v6</td></tr><tr><td><strong>Digest</strong></td><td><code>sha256:07339ee65b26bb383ab87fe2dc9d594d4b21962bc54a8168f94b5f454db9fff3</code> (arXiv v6, 22 pages)</td></tr></tbody></table>
+<h2>Overview</h2>
+<p>The paper asks whether data poisoning gets worse as language models grow, and finds that it does for most model families. It mixes a small share (0.5% to 2%) of harmful examples into 5,000-example fine-tuning sets for three threat models: malicious fine-tuning that strips refusals (Harmful QA); imperfect curation that skews political sentiment with no attacker involved (Sentiment Steering); and deliberate contamination that plants a sleeper-agent backdoor, code with a cross-site scripting flaw whenever the prompt says the year is 2025 (Code Backdoor) (§3, §4). Across 24 open-weight models from 8 families, 1.5 to 72 billion parameters, fine-tuned with 4-bit QLoRA, larger models learn the poisoned behaviour faster. The trend is statistically significant for Harmful QA, and for Sentiment Steering after four or five epochs; it points the same way for Code Backdoor, while Gemma-2 likely scales the other way (§7). On OpenAI&#x27;s fine-tuning API, every GPT model tested learned harmful behaviour from Harmful QA, though moderation then disabled the GPT-4o and GPT-4o mini versions. A 2% share of harmful examples rewritten with the Skeleton Key jailbreak passed moderation and produced a GPT-4o that refused 4% of StrongREJECT prompts, against 94% before (§6, §6.1).</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td><code>core</code></td><td>Shows that moderation on a commercial fine-tuning API can be bypassed with 2% disguised poison, and that larger open models learn poisoned behaviour faster (§6.1, §7)</td></tr><tr><td>Cryptography</td><td><code>none</code></td><td>No cryptographic content</td></tr><tr><td>This project</td><td><code>adjacent</code></td><td>A fine-tuning API puts a provider&#x27;s moderation between a customer&#x27;s data and the model. The object model has to show that safeguard as a Mitigation that can fail, on the provider boundary (TB5)</td></tr></tbody></table>
+<p><code>bears_on: DEC-001a</code> (the core type system, accepted in ADR-0010).</p>
+<h2>Implementations</h2>
+<p>Searched on 2026-11-01.</p>
+<table><thead><tr><th>Name</th><th>Kind</th><th>License</th><th>URL</th></tr></thead><tbody><tr><td>AlignmentResearch/scaling-poisoning</td><td>the paper&#x27;s code (first-page footnote)</td><td>none stated</td><td>https://github.com/AlignmentResearch/scaling-poisoning</td></tr><tr><td>alexandrasouly/strongreject</td><td>StrongREJECT, the harmfulness evaluator used for Harmful QA (§5.3)</td><td>MIT</td><td>https://github.com/alexandrasouly/strongreject</td></tr></tbody></table>
+<p>The fine-tuned models are not released (Safeguards section). Two of the harmful datasets were already public: Harmful SafeRLHF, drawn from PKU-SafeRLHF, and the vulnerable-code set adapted from the sleeper-agents work. The biased news set was generated with Claude 3 (§4.2).</p>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata</td></tr><tr><td><code>summary.md</code></td><td>this document</td></tr></tbody></table>
+<h2>Limits</h2>
+<ul><li><strong>The poisoning rates are high for the web threat.</strong> The lowest rate tested is 0.5% of a 5,000-example set. Poison planted on the web would be orders of magnitude rarer, and the check that the trend holds at lower rates is exploratory (§8, Appendix F).</li><li><strong>LoRA, not full fine-tuning.</strong> Every open-weight run uses 4-bit QLoRA at rank 16. The authors expect full fine-tuning to agree but did not test it (Appendix G).</li><li><strong>Model judges and string matching do the scoring.</strong> GPT-4o mini scores harmfulness and bias through StrongREJECT-style rubrics, and a code answer counts as vulnerable if it contains autoescape=False (Appendix B).</li><li><strong>The bias experiment is simulated.</strong> Its news articles are Claude 3 imitating a commentator&#x27;s answers to 150 questions about one politician (§4.2).</li><li><strong>The moderation results are a 2024 snapshot.</strong> OpenAI&#x27;s moderation blocked inconsistently, including runs with no poison at all, and its internals are not public (Appendix C, Table 5).</li><li><strong>No pretraining poisoning, and no safety training afterwards.</strong> The contamination threat model is motivated by scraped web content and by sleeper agents, but the experiments only fine-tune, and persistence through later safety training is cited, not tested (§4, §8).</li><li><strong>Narrower than earlier versions.</strong> v6 drops the jailbreak-tuning study that v4 and v5 carried (now arXiv:2507.11630). NIST cites the paper under its v1 to v3 title, for a point v6 still makes.</li></ul>
+<h2>RPT-0014 applicability</h2>
+<table><thead><tr><th>Topic of interest</th><th>Rating</th><th>Linked ids</th><th>Why</th></tr></thead><tbody><tr><td>Published attacks</td><td>core</td><td>AIT-081, AIT-017, AIT-020</td><td>Demonstrates harmful fine-tuning through a commercial API, including a moderation bypass that left GPT-4o refusing 4% of harmful prompts (AIT-081, §6.1); poisoned fine-tuning sets that steer sentiment or plant a trigger (AIT-017, §4, §7); and a year-triggered backdoor that makes models write code with a cross-site scripting flaw, learned moderately by GPT-4o mini at 2% (AIT-020, §4.3, §6). AIT-014 also cites it but is not linked: the paper never poisons pretraining data or tests a fixed number of documents. Persistence through safety training (AIT-019) is cited from earlier work, not tested</td></tr><tr><td>Existing AI threat models</td><td>adjacent</td><td>none</td><td>Figure 1 and §4 define three threat models for poisoning, one of them with no adversary (imperfect curation). threat-models.md does not list it</td></tr><tr><td>Weakness enumerations</td><td>adjacent</td><td>NISTAML.05, AML.T0020, AML.T0018.000, AML.T0054, LLM04:2025, NISTAML.013</td><td>NIST AI 100-2e2025 cites it as reference [46] in §3.2.1 (data poisoning, under supply-chain attacks, NISTAML.05) for poisoning that needs only a small part of the dataset. ATLAS 2026.09 does not cite it (searched 2026-11-01). The other ids are RPT-0014&#x27;s mapping in sources.md</td></tr><tr><td>Attack → asset mapping</td><td>adjacent</td><td>C03, C13, C01, C02</td><td>Our mapping: poisoned examples enter a fine-tuning job (C03), either through a provider&#x27;s fine-tuning API, where the provider&#x27;s moderation is the only check (C13, TB5, §6, Appendix C), or through scraped web content (C01) and imperfect curation (C02, §4). What changes is model behaviour (A03): refusals, political sentiment and the safety of generated code</td></tr></tbody></table>
+
+<footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
+</main>
+</body>
+</html>
