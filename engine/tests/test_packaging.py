@@ -69,6 +69,13 @@ def test_relocated_engine_serves_bundled_graph_without_checkout(
         assert graph["nodes"] and graph["edges"]
         if filename == MODEL.name:
             assert (len(graph["nodes"]), len(graph["edges"])) == (42, 69)
+        if filename == "mvp-02-automotive-ecu.yaml":
+            coverage = get_json(
+                base, "coverage", file=filename, product="product:telematics-control-unit"
+            )
+            assert coverage["count"] == 5
+            assert coverage["counts"]["satisfied"] == 2
+            assert len(coverage["proposed_assertions"]) == 1
         # The GUI passes /graph's resolved filename back to /attack-paths.
         paths = get_json(base, "attack-paths", file=str(model), goal=goal)["paths"]
         assert len(paths) == 2

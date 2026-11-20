@@ -62,6 +62,7 @@ ROUTES: dict[str, Callable[[dict[str, str]], dict[str, Any]]] = {
     "/version": lambda _q: core.version(),
     "/models": lambda _q: core.list_models(),  # the example models a reader can open (#208)
     "/graph": _graph,
+    "/coverage": core.requirement_coverage,
     "/attack-paths": _attack_paths,
     "/risk": _risk,  # explicit matrix profile, with unresolved/missing ratings visible (#63)
     "/library": core.library_records,  # filters: id, type, topic, status (#140)
