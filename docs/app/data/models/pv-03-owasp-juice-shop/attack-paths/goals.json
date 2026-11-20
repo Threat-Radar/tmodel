@@ -1,0 +1,24 @@
+{
+  "goals": [
+    {
+      "file": "goal-001.json",
+      "goal": "threat-instance:basket-idor"
+    },
+    {
+      "file": "goal-002.json",
+      "goal": "threat-instance:ftp-listing"
+    },
+    {
+      "file": "goal-003.json",
+      "goal": "threat-instance:jwt-forgery"
+    },
+    {
+      "file": "goal-004.json",
+      "goal": "threat-instance:login-sqli"
+    },
+    {
+      "file": "goal-005.json",
+      "goal": "threat-instance:search-dom-xss"
+    }
+  ]
+}
