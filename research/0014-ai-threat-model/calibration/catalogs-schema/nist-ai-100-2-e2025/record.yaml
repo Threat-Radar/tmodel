@@ -1,0 +1,70 @@
+# RPT-0014 WAVE 1 calibration, lane catalogs-schema (tmodel #79), written
+# independently of the other lanes (LANES.md Step 1). The library already holds
+# a stub with this id (records/nist/nist-ai-100-2-e2025, from tmodel #189); this
+# is the calibration version, not an edit of it.
+schema: "library-record/v1"
+id: nist-ai-100-2-e2025
+body: nist
+type: spec
+title: "Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations"
+short_title: "NIST AI 100-2 E2025"
+authors:
+  - "Apostol Vassilev"
+  - "Alina Oprea"
+  - "Alie Fordyce"
+  - "Hyrum Anderson"
+  - "Xander Davies"
+  - "Maia Hamin"
+date: "2025-03"
+publisher: "National Institute of Standards and Technology (NIST)"
+version: "E2025"
+identifiers:
+  doi: "10.6028/NIST.AI.100-2e2025"
+  url: https://csrc.nist.gov/pubs/ai/100/2/e2025/final
+content:
+  url: https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-2e2025.pdf
+  sha256: "4811fb6ad73f9c9121843ab77e029b5adc6f2c86d33c2fc5b2099ef133847646"
+  retrieved: "2026-11-08"
+  local: false
+  media_type: application/pdf
+relations:
+  supersedes: []
+  superseded_by: []
+  see_also:
+    - mitre-atlas
+    - etsi-en-304-223
+    - biml-ara-ml-2020
+  cited_by: []
+  implements_concept: []
+bears_on:
+  - DEC-001a
+  - DEC-009
+applicability:
+  security: core
+  cryptography: adjacent
+  this_project: adjacent
+implementations:
+  open_source:
+    - "Adversarial Robustness Toolbox (ART), MIT, https://github.com/Trusted-AI/adversarial-robustness-toolbox"
+    - "garak (LLM vulnerability scanner), Apache-2.0, https://github.com/NVIDIA/garak"
+    - "PyRIT (GenAI red-teaming toolkit), MIT, https://github.com/microsoft/PyRIT"
+  commercial: []
+  searched: "2026-11-10"
+usefulness:
+  verdict: useful
+  reason: "The NISTAML.* id scheme carried by 98 of RPT-0014's 146 attack-catalog entries, and the attacker-model axes TM-004 records."
+  assessed: "2026-11-08"
+topic: ai-threat-model-catalogs-schema
+tags:
+  - ai-weakness-catalog
+  - ai-threat-model
+  - evasion
+  - data-poisoning
+  - backdoor
+  - membership-inference
+  - model-extraction
+  - prompt-injection
+  - normative
+status: summarized
+confidence: medium
+owner: Maimcghee
