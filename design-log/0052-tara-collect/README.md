@@ -4,9 +4,9 @@ id: DL-0052
 title: "TARA collect phase: deterministic engine intermediate for mvp-02"
 type: process
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 date: "2026-11-14"
-updated: "2026-11-14"
+updated: "2026-11-20"
 record: DL-0052
 issue: "Threat-Radar/tmodel#181"
 defers_to: ARCH-0001
@@ -24,9 +24,10 @@ governance proposals or #182's HTML publishing work.
 
 ## Implementation
 
-The branch starts at PR #229's `a1e97c3` because collection needs the #63 risk
-calculator. #229 remains a dependency until accepted and merged; no sponsor
-decision or human review is inferred from that implementation. The library
+The branch originally started at PR #229's `a1e97c3` because collection needs
+the #63 risk calculator. #229 merged on 2026-11-20 as `df5fb01`; this branch
+now incorporates that `main`. No sponsor decision or human review is inferred
+from the calculator implementation. The library
 gitlink stays at `a28a013`; no library record or example vector changes.
 
 The storage-neutral `engine.tara.collect_document` reads a mapping, validates
@@ -73,7 +74,7 @@ independence, person versus software-agent reviewers, requirement traces,
 invalid inputs, non-destructive output errors and confinement. An opt-in
 packaging check collects the model through a relocated bundled engine.
 
-Local validation completed:
+Original implementation validation (2026-11-14):
 
 - Full engine and publishing suites: **481 passed, 5 skipped**. The five opt-in
   packaging checks were then run against the rebuilt standalone engine and
@@ -91,7 +92,31 @@ Local validation completed:
   Its four requirement traces retain their source identities. The diagnostic
   scenario derives S/F/O/P 5/4/5/1; the rejected hypothesis remains incomplete.
 
-No human acceptance is claimed by this log. The implementation is prepared
-locally; publication requires @paria03's saved push approval and fresh CI on
-the published head. PR #229 and this work require human review. Main and open
-PR file lists were checked before choosing DL-0052.
+## Main integration (2026-11-20)
+
+After #229 merged, @paria03 requested updating #242 with `main`, retargeting
+it to `main`, pushing the update and checking fresh CI. The integration keeps
+both the TARA adapters and the new CWE API/CLI functionality. Four files had
+conflicts because the squashed risk branch did not include the TARA additions;
+those additions and the existing packaged-TARA regression are preserved.
+The collector's behavior and output contract are unchanged.
+
+Integration validation on Python 3.13: **546 engine tests passed, 6 skipped**
+(five opt-in packaging tests and one full-catalog CWE test). Rebuilding the
+sidecar and running the isolated packaged-engine tests gave **five passes**.
+The frontend's 373 tests, typecheck and production build, four Rust tests plus
+fmt/clippy, 14 publishing tests, archdoc, browser-preview freshness and identity/
+link guards passed. The pinned library remains at 550 records, zero errors and
+122 existing warnings. The TCU JSON is byte-identical to the original sample
+(SHA-256 `4238a573a546db95ea48d4adf584d2746fd40debdfc33dbfe105810f17213712`).
+
+The local Python 3.14 installation could not load its XML parser and its fresh
+venv setup failed; these checks were rerun on a working Python 3.13 rather than
+changing the application or the system installation to mask that environment
+problem.
+
+#242 had an approving review on `037b56e` before this integration. The current
+head's validation and review status are recorded on the PR; the earlier counts
+above describe the original implementation. No object, link or whole-TARA human
+acceptance is inferred from a code review. Main and open PR file lists were
+checked before choosing DL-0052.
