@@ -3,6 +3,8 @@
   tmodel serve                 start the local engine (loopback only)
   tmodel health [--json]       ask the running engine whether it is healthy
   tmodel version [--json]      ask the running engine for its version
+  tmodel risk FILE --matrix annex-h-table-h8 [--goal G] [--json]
+                               derive risk from recorded path ratings (#63)
   tmodel models [--json]       the example models the app can open
   tmodel paths FILE [--goal G] [--json]
                                attack paths to a step or threat in a model file;
@@ -11,6 +13,12 @@
   tmodel library [--id I] [--type T] [--topic T] [--status S] [--json]
                                the library's records, optionally filtered; the
                                library is $TMODEL_LIBRARY or the pinned submodule
+  tmodel weaknesses [--search S] [--abstraction A] [--structure S] [--status S]
+                [--usage U] [--sort F] [--order asc|desc] [--limit N] [--offset N] [--json]
+  tmodel weaknesses --id CWE-79 [--json]
+                               CWE weaknesses from the release the library pins,
+                               read from $TMODEL_CWE_CATALOG (#144); with --id,
+                               one entry in full
   tmodel sdl [FILE] [--program P] [--json]
                                the SDL program view of an SDL model (DL-0043);
                                without FILE, list the SDL models
@@ -30,7 +38,8 @@ By default these go through the local API, exactly like the desktop app
 (APP-0001 A-030, A-060). `--in-process` calls the engine code directly
 instead, for scripts that do not want a server.
 
-Exit codes: 0 ok · 1 engine unreachable, unhealthy or an engine error · 2 usage error.
+Exit codes: 0 ok · 1 engine unreachable, unhealthy, an engine error, or incomplete
+risk inputs · 2 usage error.
 """
 
 from __future__ import annotations
@@ -160,6 +169,47 @@ def _models(args: argparse.Namespace) -> int:
 LIBRARY_TIMEOUT_S = 60.0  # the engine's first request loads every record
 
 
+def _risk(args: argparse.Namespace) -> int:
+    # Basenames are convenient for bundled examples; paths are relative to the caller.
+    file = os.path.abspath(args.file) if os.path.dirname(args.file) else args.file
+    params = {"file": file, "matrix": args.matrix}
+    if args.goal is not None:
+        params["goal"] = args.goal
+    payload = _call(
+        lambda: (
+            core.risk_assessments(file, args.matrix, args.goal)
+            if args.in_process
+            else get("/risk", args.url, timeout=PATHS_TIMEOUT_S, params=params)
+        )
+    )
+    if payload is None:
+        return 1
+    if args.json:
+        print(json.dumps(payload))
+    else:
+        print(f"{payload['file']} · matrix {payload['matrix']}")
+        for assessment in payload["assessments"]:
+            state = "complete" if assessment["complete"] else "incomplete"
+            print(f"  {assessment['threat']} [{state}]")
+            print(f"    feasibility: {assessment['feasibility'] or 'not assessed'}")
+            for category, value in assessment["derived_risk"].items():
+                impact = assessment["impact"][category] or "not rated"
+                print(f"    {category}: impact {impact}; risk {value if value else 'not assessed'}")
+            print(f"    mitigation status: {assessment['mitigation_status'] or 'not recorded'}")
+            for index, route in enumerate(assessment["routes"], 1):
+                sources = ", ".join(route["rating_paths"]) or "no matching rating"
+                rating = route["feasibility"] or "not assessed"
+                vector = ", ".join(
+                    f"{category}={value if value is not None else 'not assessed'}"
+                    for category, value in route["derived_risk"].items()
+                )
+                print(f"    route {index} ({sources}): feasibility {rating}; {vector}")
+            for problem in assessment["problems"]:
+                print(f"    needs input: {problem}")
+    # JSON is still emitted for incomplete data, while scripts can detect it.
+    return 0 if all(item["complete"] for item in payload["assessments"]) else 1
+
+
 def _print_library(payload: dict[str, Any]) -> None:
     records, library = payload["records"], payload["library"]
     print(f"{payload['count']} of {library['count']} records in {library['root']}")
@@ -194,6 +244,81 @@ def _library(args: argparse.Namespace) -> int:
             file=sys.stderr,
         )
         return 1
+    return 0
+
+
+def _print_weakness_table(payload: dict[str, Any]) -> None:
+    catalog = payload["catalog"]
+    print(
+        f"{payload['count']} of {payload['total']} matching weaknesses "
+        f"({catalog['name']} {catalog['version']}, {catalog['date']}: "
+        f"{catalog['weaknesses']} weaknesses)"
+    )
+    columns = ("id", "abstraction", "status", "usage")
+    rows = payload["rows"]
+    width = {c: max((len(r[c] or "") for r in rows), default=0) for c in columns}
+    for r in rows:
+        cells = "  ".join(f"{r[c] or '':<{width[c]}}" for c in columns)
+        print(f"  {cells}  {r['name']}")
+
+
+def _print_weakness(payload: dict[str, Any]) -> None:
+    catalog, entry = payload["catalog"], payload["entry"]
+    if entry is None:
+        print(f"{payload['id']}: not in {catalog['name']} {catalog['version']}")
+        return
+    print(f"{entry['id']}  {entry['name']}")
+    shape = "/".join(v for v in (entry["abstraction"], entry["structure"]) if v)
+    print(
+        f"  {entry['kind']}{f' ({shape})' if shape else ''}; status {entry['status']}; "
+        f"usage {entry['usage'] or 'none'}"
+    )
+    if entry["kind"] == "Weakness":
+        print(
+            f"  {len(entry['attack_patterns'])} CAPEC links, "
+            f"{len(entry['observed_examples'])} observed examples, "
+            f"{entry['mitigations']} mitigations"
+        )
+    print(f"  {entry['url']}")
+
+
+def _weaknesses(args: argparse.Namespace) -> int:
+    names = core.WEAKNESS_FILTERS + core.TABLE_OPTIONS
+    table = {n: getattr(args, n) for n in names if getattr(args, n) is not None}
+    if args.id is not None:
+        if table:  # they would be ignored, so refuse them, as GET /weaknesses does
+            given = ", ".join(f"--{n}" for n in table)
+            print(
+                f"error: --id shows one entry and takes no table options ({given})",
+                file=sys.stderr,
+            )
+            return 2
+        path, params, local = "/weaknesses", {"id": args.id}, core.weaknesses
+    else:
+        path, params, local = "/weaknesses/table", table, core.weakness_table
+    payload = _call(
+        lambda: (
+            local(params)
+            if args.in_process
+            else get(path, args.url, timeout=LIBRARY_TIMEOUT_S, params=params)
+        )
+    )
+    if payload is None:
+        return 1
+    if args.json:
+        print(json.dumps(payload))
+    elif args.id is not None:
+        _print_weakness(payload)
+    else:
+        _print_weakness_table(payload)
+    unknown = payload["catalog"]["unknown_fields"]
+    if unknown:  # kept, not dropped; say so, since the import does not map them yet
+        noun = "field" if unknown == 1 else "fields"
+        print(
+            f"warning: the catalog has {unknown} entry {noun} this reader does not know; "
+            "they are kept, and GET /weaknesses lists them",
+            file=sys.stderr,
+        )
     return 0
 
 
@@ -377,11 +502,32 @@ def build_parser() -> argparse.ArgumentParser:
     _add_transport(coverage)
     coverage.set_defaults(func=_coverage)
 
+    risk = sub.add_parser("risk", help="derive a risk vector from recorded path ratings (#63)")
+    risk.add_argument("file", help="approved model filename or path below spec/vectors")
+    risk.add_argument("--matrix", required=True, help="explicit profile: annex-h-table-h8")
+    risk.add_argument("--goal", default=None, help="only this threat-instance id")
+    _add_transport(risk)
+    risk.set_defaults(func=_risk)
+
     library = sub.add_parser("library", help="the library's records (#140)")
     for name in core.LIBRARY_FILTERS:
         library.add_argument(f"--{name}", default=None, help=f"only records with this {name}")
     _add_transport(library)
     library.set_defaults(func=_library)
+
+    weak = sub.add_parser("weaknesses", help="CWE weaknesses from the pinned release (#144)")
+    weak.add_argument("--id", default=None, help="one entry in full, e.g. CWE-79")
+    for name in core.WEAKNESS_FILTERS:
+        weak.add_argument(f"--{name}", default=None, help=f"only weaknesses with this {name}")
+    weak.add_argument(
+        "--search", default=None, help="text in the id, name, description or alternate terms"
+    )
+    weak.add_argument("--sort", default=None, choices=core.WEAKNESS_SORTS, help="default id")
+    weak.add_argument("--order", default=None, choices=("asc", "desc"), help="default asc")
+    weak.add_argument("--limit", default=None, help="at most this many rows")
+    weak.add_argument("--offset", default=None, help="skip this many rows first")
+    _add_transport(weak)
+    weak.set_defaults(func=_weaknesses)
 
     sdl = sub.add_parser("sdl", help="SDL program view of an SDL model (DL-0043)")
     sdl.add_argument("file", nargs="?", default=None, help="e.g. sdl-01-tmodel-desktop.yaml")

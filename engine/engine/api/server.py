@@ -42,6 +42,13 @@ def _attack_paths(query: dict[str, str]) -> dict[str, Any]:
     return core.attack_paths(query["file"], query.get("goal"))
 
 
+def _risk(query: dict[str, str]) -> dict[str, Any]:
+    for parameter in ("file", "matrix"):
+        if parameter not in query:
+            raise ValueError(f"missing query parameter: {parameter}")
+    return core.risk_assessments(query["file"], query["matrix"], query.get("goal"))
+
+
 def _graph(query: dict[str, str]) -> dict[str, Any]:
     if "file" not in query:
         raise ValueError("missing query parameter: file")
@@ -57,8 +64,11 @@ ROUTES: dict[str, Callable[[dict[str, str]], dict[str, Any]]] = {
     "/graph": _graph,
     "/coverage": core.requirement_coverage,
     "/attack-paths": _attack_paths,
+    "/risk": _risk,  # explicit matrix profile, with unresolved/missing ratings visible (#63)
     "/library": core.library_records,  # filters: id, type, topic, status (#140)
     "/library/table": core.library_table,  # rows for the table views (#141, #58)
+    "/weaknesses": core.weaknesses,  # the pinned CWE release: import report, or one entry (#144)
+    "/weaknesses/table": core.weakness_table,  # rows for the weakness table view (#144, #234)
     "/sdl": core.sdl,  # SDL program view; no file = list SDL models (DL-0043)
     "/proposals": core.pending_proposals,  # pending proposals + saved KG views (DL-0046)
 }

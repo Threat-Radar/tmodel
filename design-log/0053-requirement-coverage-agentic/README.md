@@ -3,6 +3,7 @@ id: DL-0053
 title: Requirement coverage query and agentic source fragments
 status: draft
 date: 2026-11-14
+updated: 2026-11-20
 human_owner: paria03
 reviewed: false
 ---
@@ -63,6 +64,25 @@ validate all four fragments with LinkML, check-edges.py and the extraction check
 run the converter suite and schema regeneration check. Run the repository's app,
 Rust, packaging, archdoc, publishing and pinned-library checks before the PR.
 Actual results and exact-head CI status are recorded in the PR.
+
+# Main integration (2026-11-20)
+
+After #229 merged, @paria03 requested bringing this PR up to date with `main`,
+pushing it and checking fresh CI. This integration uses `main` at `df5fb01`.
+The CLI parser conflict is resolved by retaining both the coverage and risk
+commands. The new CWE API/CLI and the packaged-engine risk/coverage checks are
+also retained. No collector rules, source fragments, proposed links or human
+review records change. The PR records validation on the integrated head.
+
+Local integration validation on Python 3.13: 540 engine tests passed, six skipped
+(five opt-in packaging checks and one external full-catalog CWE test). All five
+packaged-engine checks then passed against the rebuilt sidecar. The four source
+fragments passed LinkML, all ten extraction files passed the rule/reference checks,
+and nine converter tests passed. Generated schemas and browser preview are current.
+Frontend typecheck/build and 373 tests, Rust fmt/clippy and four tests, 14 publishing
+tests, archdoc and the identity/link guards passed. The unchanged pinned library
+has 550 records, zero errors and 122 existing warnings. The 40 human sample
+reviews are still pending.
 
 # Human accepted / rejected
 
