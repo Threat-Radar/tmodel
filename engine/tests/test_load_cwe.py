@@ -13,6 +13,7 @@ import json
 import os
 import threading
 import zipfile
+import zlib
 from collections import Counter
 from collections.abc import Mapping
 from pathlib import Path
@@ -229,10 +230,46 @@ def test_a_zip_must_hold_one_xml_file(tmp_path, members, message):
         cwe.load_catalog(archive)
 
 
+def test_an_entity_hidden_behind_a_comment_is_never_expanded(tmp_path):
+    # The case from #233's review: before this check covered the whole file, the
+    # catalog loaded and CWE-79's name began with the expanded entity.
+    text = SAMPLE.read_text(encoding="utf-8")
+    sneaky = text.replace(
+        "?>", "?><!-- <Weakness_Catalog --><!DOCTYPE W [<!ENTITY e 'expanded'>]>", 1
+    ).replace('Name="Improper Neutralization', 'Name="&e; Improper Neutralization', 1)
+    bad = tmp_path / "sneaky.xml"
+    bad.write_text(sneaky, encoding="utf-8")
+    with pytest.raises(cwe.CweError, match="has a DOCTYPE or ENTITY declaration"):
+        cwe.load_catalog(bad)
+
+
+def test_corrupt_deflate_data_in_the_zip_is_a_cwe_error(tmp_path):
+    buffer = io.BytesIO()
+    with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as z:
+        z.writestr("cwec_v4.20.xml", SAMPLE.read_bytes())
+    data = bytearray(buffer.getvalue())
+    start = 30 + len("cwec_v4.20.xml")  # the local file header, then the compressed data
+    data[start + 100 : start + 200] = b"\xff" * 100
+    archive = tmp_path / "corrupt.zip"
+    archive.write_bytes(bytes(data))
+    with pytest.raises(cwe.CweError, match="not a readable zip") as caught:
+        cwe.load_catalog(archive)
+    assert isinstance(caught.value.__cause__, zlib.error)  # what escaped before (#233 review)
+
+
 @pytest.mark.parametrize(
     "change, message",
     [
         (lambda t: t.replace("?>", "?><!DOCTYPE x [<!ENTITY a 'b'>]>", 1), "DOCTYPE"),
+        # a comment holding the root's name no longer hides a DOCTYPE behind it (#233 review)
+        (
+            lambda t: t.replace(
+                "?>", "?><!-- <Weakness_Catalog --><!DOCTYPE W [<!ENTITY e 'x'>]>", 1
+            ),
+            "DOCTYPE or ENTITY",
+        ),
+        # and a declaration is refused wherever it is in the file
+        (lambda t: t.replace("<Weaknesses>", "<Weaknesses><!-- <!ENTITY e 'x'> -->", 1), "ENTITY"),
         (lambda t: t.replace("cwe.mitre.org/cwe-7", "cwe.mitre.org/cwe-8", 1), "Schema 7"),
         (lambda t: "<root/>", "no Weakness_Catalog"),
         (lambda t: t[: len(t) // 2], "not well-formed"),
