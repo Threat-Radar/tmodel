@@ -68,7 +68,14 @@ ADDABLE_SDL = (
     "views",
 )
 ADDABLE_THREAT = (
-    *(c for c in COLLECTION_DOMAIN_TYPES if c not in ("reviews", "assertions")),
+    # Reading additional object types in the graph adapter must not expand
+    # the collections a threat-model proposal is allowed to change.
+    *(
+        c
+        for c in COLLECTION_DOMAIN_TYPES
+        if c
+        not in ("reviews", "assertions", "sdl_practices", "evidence_items", "requirement_sources")
+    ),
     # Accepted via ADR-0011 (DL-0024); not yet in the graph adapter's map.
     "assets",
     "trust_boundaries",
