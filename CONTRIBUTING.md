@@ -199,6 +199,18 @@ curl -LO https://cwe.mitre.org/data/xml/cwec_v4.20.xml.zip   # the file the reco
 export TMODEL_CWE_CATALOG="$PWD/cwec_v4.20.xml.zip"
 ```
 
+The CAPEC attack patterns (#244) work the same way, from the CAPEC release that the
+library's `capec` record pins (3.9), read from the path in `TMODEL_CAPEC_CATALOG`. The
+pinned submodule's `capec` record has no digest yet (it has one from library commit
+`4173143` on), so until the pin moves, also point `TMODEL_LIBRARY` at a library checkout
+that has it. `tmodel attack-patterns` lists the attack patterns, and
+`tmodel attack-patterns --id CAPEC-66` shows one with every field (DL-0056).
+
+```sh
+curl -LO https://capec.mitre.org/data/xml/capec_v3.9.xml   # the file the record pins
+export TMODEL_CAPEC_CATALOG="$PWD/capec_v3.9.xml"
+```
+
 **Prerequisites (macOS)**
 
 | tool | version | install |
