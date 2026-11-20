@@ -68,6 +68,7 @@ ROUTES: dict[str, Callable[[dict[str, str]], dict[str, Any]]] = {
     "/library/table": core.library_table,  # rows for the table views (#141, #58)
     "/weaknesses": core.weaknesses,  # the pinned CWE release: import report, or one entry (#144)
     "/weaknesses/table": core.weakness_table,  # rows for the weakness table view (#144, #234)
+    "/weaknesses/relationships": core.weakness_relationships,  # by view, with inverses (#145)
     "/sdl": core.sdl,  # SDL program view; no file = list SDL models (DL-0043)
     "/proposals": core.pending_proposals,  # pending proposals + saved KG views (DL-0046)
 }
