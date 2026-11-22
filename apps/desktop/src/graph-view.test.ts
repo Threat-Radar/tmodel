@@ -9,7 +9,12 @@ import {
 } from "./graph-loader";
 import type { GraphState } from "./graph-model";
 import type { AttackPathResponse, GraphDataProvider, GraphResponse } from "./graph-types";
-import { KnowledgeGraphView } from "./graph-view";
+import {
+  AUTHORED_EDGE_SELECTOR,
+  AUTHORED_EDGE_STYLE,
+  KnowledgeGraphView,
+  REVIEW_STATE_EDGE_STYLES,
+} from "./graph-view";
 
 const EMPTY_RESULT: GraphLoadResult = {
   canceled: false,
@@ -597,6 +602,55 @@ describe("knowledge-graph startup and recovery", () => {
     expect(item.textContent).toContain("assertion:ai-imds-pivot-realizes · review:ai-triage");
   });
 
+  it("shows authored provenance and each Assertion without merging their verdicts", async () => {
+    const base = startupGraph();
+    const graph: GraphResponse = { ...base, edges: [{
+      ...base.edges[0],
+      authored: true,
+      assertions: [
+        {
+          id: "assertion:first",
+          assertion_status: "proposed",
+          confidence: "low",
+          description: "First basis.",
+          evidence: ["evidence:first"],
+          reviews: [{
+            id: "review:first",
+            review_status: "changes_requested",
+            reviewer: "party:human",
+            justification: "Needs more evidence.",
+          }],
+        },
+        {
+          id: "assertion:second",
+          assertion_status: "accepted",
+          confidence: "high",
+          description: "Second basis.",
+          evidence: ["evidence:second"],
+          reviews: [{
+            id: "review:second",
+            review_status: "accepted",
+            reviewer: "party:human",
+            justification: "Sufficient evidence.",
+          }],
+        },
+      ],
+      // Exact top-level provenance must stand on its own. The inspector must
+      // not depend on a lossy aggregate verdict in legacy properties.
+      properties: {},
+    }] };
+    const { view, document } = createDomView({ getInitialGraph: async () => graph });
+    await view.start();
+
+    const text = document.byId("relationship-list").children[0].textContent;
+    expect(text).toContain("Direct authored relationship remains established.");
+    expect(text).not.toContain("Unknown Status");
+    expect(text).toContain("assertion:first · Changes Requested · confidence: low");
+    expect(text).toContain("Review review:first · changes_requested · Needs more evidence.");
+    expect(text).toContain("assertion:second · Accepted · confidence: high");
+    expect(text).toContain("Review review:second · accepted · Sufficient evidence.");
+  });
+
   it("leaves structural relationships in the inspector without review badges", async () => {
     const { view, document } = createDomView({
       getInitialGraph: async () => ({
@@ -616,6 +670,7 @@ describe("knowledge-graph startup and recovery", () => {
     view.renderLegend();
 
     expect(document.byId("type-legend").textContent).toContain("Other types");
+    expect(document.byId("type-legend").textContent).toContain("Requirement");
     const relationshipLegend = document.byId("relationship-legend");
     expect(relationshipLegend.textContent).toBe(
       "StructuralAcceptedProposedChanges RequestedRejectedUnknown Status",
@@ -633,6 +688,18 @@ describe("knowledge-graph startup and recovery", () => {
       "Relationship review status: Rejected",
       "Relationship review status: Unknown Status",
     ]);
+  });
+
+  it("keeps authored canvas edges solid after all Assertion review-state rules", () => {
+    expect(AUTHORED_EDGE_SELECTOR).toBe("edge[?authored]");
+    expect(AUTHORED_EDGE_STYLE).toMatchObject({
+      "line-style": "solid",
+      "line-color": "#94a3b8",
+      "target-arrow-color": "#64748b",
+    });
+    expect(REVIEW_STATE_EDGE_STYLES.proposed.dashPattern).toEqual([7, 4]);
+    expect(REVIEW_STATE_EDGE_STYLES.rejected.dashPattern).toEqual([2, 3]);
+    expect(REVIEW_STATE_EDGE_STYLES.accepted.dashPattern).toBeUndefined();
   });
 
   it("never gives a rejected or changes-requested path the reviewed banner style", async () => {

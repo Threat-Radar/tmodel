@@ -4,9 +4,9 @@ id: DL-0061
 title: "Product-side requirement extraction: ASVS 5, EU CRA Annex I and IEC 62443-4-1 (#171)"
 type: process
 status: draft
-version: "0.4.0"
+version: "0.7.0"
 date: "2026-11-16"
-updated: "2026-11-21"
+updated: "2026-11-22"
 record: DL-0061
 bears_on: [DEC-001a, DEC-002, DEC-009, R-018]
 defers_to: ARCH-0001
@@ -182,6 +182,58 @@ All IEC rows below inherit the limitation that clause identities come from the I
 | `assertion:iec-svv-3-known--refines--svv-3` | SVV-3.known → `refines` → SVV-3 | §9.4.1; SDLA-312 p.17 | Specifies the information source used for known-vulnerability testing. | Library split id; secondary wording. | ACCEPT | ACCEPT | Specifies the use of established vulnerability-information sources. |
 | `assertion:iec-svv-3-d--refines--svv-3` | SVV-3.d → `refines` → SVV-3 | §9.4.1; SDLA-312 p.17 | Makes executable software-composition analysis part of SVV-3. | Library split id; secondary wording. | ACCEPT | ACCEPT | Specifies executable software-composition analysis as part of vulnerability testing. |
 | `assertion:iec-dm-6-annual--refines--dm-6` | DM-6.annual → `refines` → DM-6 | §10.7.1; SDLA-312 p.21 | Adds the annual minimum frequency to the periodic DM-6 review. | Library split id; secondary wording. | ACCEPT | ACCEPT | Adds a minimum annual review frequency to the broader periodic process-review requirement. |
+
+## GUI implementation
+
+The second #171 delivery adds a dedicated Requirements view without changing any extraction object or human Review. It was implemented after rebasing the extraction commit onto `856886fa2adb86ecc8a9573e46c710d8d29642ec`, with the repository library gitlink still at `e4068272cec52a92b4414ea2a88a23b7125ce79d`.
+
+### Requirements table and inspector
+
+The frontend reads the existing storage-neutral `/graph` response and derives a Requirement catalog for the selected example model. The table exposes stable id and name, kind, normativity, source reference and locator, applicable product, and recorded satisfaction. Search includes ids, names, statements and source fields; kind and product filters, deterministic column sorting, page sizes and next/previous controls operate client-side over that model graph.
+
+Applicability is shown only from an authored relationship, a justified human-accepted Assertion, or a recorded `applies_to_family` match against the Product classification. Satisfaction is shown only from established `satisfied_by` links and the target Mitigation's recorded status. A proposed scope or satisfaction Assertion is visible in the inspector but does not affect the table result. Requirements with no applicable Product or no satisfying Mitigation say “Not recorded” rather than receiving an inferred value.
+
+The accessible row inspector preserves the full statement, description, text origin, source identity and locator, scope, Product matches, Mitigation evidence, directed relationships, Assertion ids/status/confidence/evidence, and available Review ids/status/justification. Loading, empty, error and retry states use the established Library-view patterns; the navigation remains keyboard-operable and URL-hash-addressable.
+
+### Knowledge-graph projection
+
+The engine projection now treats all ADR-0012 Requirement references as edges: `addresses`, `stated_as`, `satisfied_by`, `refines`, `derived_from`, `conflicts_with`, `maps_to`, and `applies_to`. This removes those reference slots from node properties while retaining their schema direction. Every graph edge has an explicit `authored` provenance flag and an ordered `assertions` collection. Each collection entry preserves that Assertion's own status, confidence, description, evidence and Reviews, so coalescing equal subject/predicate/object triples cannot overwrite one Assertion with another or present an aggregate verdict as every Assertion's verdict. Legacy summary properties remain only for conservative graph styling; a multi-Assertion edge deliberately has no singular assertion or Review status.
+
+Authored provenance and Assertion provenance are independent. A directly authored triple remains established if a proposed or rejected Assertion names the same triple. An Assertion-only triple becomes established only when its own Assertion is accepted and every recorded human Review accepts it with a nonblank justification. The frontend fallback and Requirement catalog use these rules independently per Assertion; hypothetical results are calculated from the authored-plus-validly-accepted baseline.
+
+Requirement nodes have a distinct cyan node color and a legend entry. Existing relationship review-state rendering remains authoritative: structural and accepted links are solid, while proposed, changes-requested, rejected and unknown links use their distinct dashed styles. The graph and Requirements inspector display the status and provenance but never mutate an Assertion or populate a direct slot.
+
+### Coverage contract and interim fallback
+
+The coverage client implements the exact response shape documented and tested by open PR #243: product scope, Requirement rows and counts, Mitigation evidence, unaddressed threats, excluded Assertions, separate proposals, and individual and joint `if_accepted` hypotheticals. A valid `/coverage` response is parsed before display. Any malformed response or non-404 engine failure stays visible.
+
+Because #243 is not merged, only HTTP 404 activates the temporary read-only frontend fallback. The fallback applies #243's conservative rules to the same graph: scope closure from Product composition, family applicability, complete/in-progress Mitigation status, and accepted Assertion use only when a human Party has an accepting Review with a nonblank justification. Proposed links are held apart and evaluated as counterfactual additions, never established coverage. Both the panel and response interpretation state that this is recorded evidence, not verified regulatory compliance.
+
+The Pages build uses `StaticPreviewApi`; `/coverage` intentionally returns 404 there and the fallback reads the already-published model graph, so it makes no localhost request. The desktop uses the live endpoint as soon as #243 lands without a frontend branch change. Removing the fallback can be considered after the published preview gains a generated coverage snapshot.
+
+### Integration and tradeoffs
+
+- The view reuses the current navigation, table, status-chip, inspector, responsive and dark-mode styles rather than importing PR #250's branch or creating another design system. This minimizes semantic conflicts, though #250 will conflict mechanically around `index.html`, `main.ts`, navigation tests and shared table CSS when it is merged.
+- PR #243 will add the real backend route and may conflict only if its response contract changes. The provider deliberately does not copy that backend implementation; it can be switched from fallback to the endpoint by merging #243 unchanged under the inspected contract.
+- The published graph JSON for every example changes because direct Requirement references and richer Assertion/Review provenance are now projected consistently. These are generated artifacts owned by `docs/publishing/render_app.py`, not hand edits.
+- Coverage is model-local. The three research extraction fragments remain standalone evidence and are not silently assigned to a Product or inserted into an example model.
+
+### Final independent-review corrections
+
+The final independent review found three presentation-layer defects; no extraction object, Assertion decision, Review, or library pin changed while correcting them:
+
+- A direct authored graph relationship now keeps its neutral solid primary line even when proposed, rejected, disputed, or mixed-state Assertions name the same triple. The inspector continues to display every Assertion and Review independently. Assertion-only edges retain their accepted, proposed, rejected, changes-requested and unknown styling. Multiple Assertions with the same state receive a count label without borrowing one Assertion's raw status fields; differing states are explicitly labelled mixed.
+- Successful `/coverage` responses are rejected when their totals contradict `count`, their status counts contradict the Requirement rows, Requirement or proposal ids repeat, any individual or joint hypothetical is inconsistent, or the returned Product/model filename does not match the request. Such failures remain visible and never trigger the 404-only fallback. The valid response produced by PR #243 remains accepted without adding mandatory fields.
+- The Requirements inspector now prefers structured per-Assertion provenance and uses legacy summary fields only when structured provenance is absent. Descriptions, evidence and Reviews therefore appear once, while reviewer ids and justifications remain visible and multiple Assertions stay separate.
+
+Fourteen regression cases cover the three corrections, including actual Cytoscape edge data and style precedence, authored-plus-proposed/rejected triples, Assertion-only states, mixed and matching multi-Assertion edges, contradictory baseline and hypothetical coverage answers, duplicate ids, response identity, and single/multiple inspector provenance.
+
+### GUI verification
+
+- Frontend: TypeScript typecheck passed; 406 tests passed across 33 files; the production Vite build passed. Tests cover table querying and pagination, product/missing-scope behavior, selection and source attribution, loading/error/retry, proposed-link isolation, authored-plus-Assertion provenance, multiple Assertions per edge, justified human-acceptance gating, conflicting Reviews, semantic endpoint validation, response identity, 404 fallback, non-404 failure, static-preview behavior, Requirement legend rendering and relationship-state styling.
+- Engine: Ruff check and format check passed; 522 tests passed and 6 packaging-dependent tests skipped. Projection tests cover every ADR-0012 direct relationship, authored provenance, independent evidence for multiple Assertions sharing an edge, and both accepted and proposed Assertion-backed relationships with source/Review metadata.
+- Publishing: `render_app.py --check` passed for 8 models and 685 library records; its 23 tests passed; 706-page relative-link validation passed; the identity guard checked 749 files with 6 protected identities enforced; architecture-document validation found 28 documents and 0 errors.
+- Both desktop and Pages builds emit the existing non-failing warning that the main JavaScript chunk exceeds Vite's 500 kB recommendation. No new dependency or remote asset was introduced.
 
 ## Validation
 
