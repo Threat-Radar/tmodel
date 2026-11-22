@@ -24,6 +24,16 @@
 #   NO case study for this attack, so unlike em-01 every step-to-technique link below is the
 #   AI drafter's mapping, not ATLAS's (README.md, gap AI-8).
 #
+# Re-checked 2026-11-22:
+# - The CVE record is unchanged (same digest; dateUpdated 2026-02-26). NVD has since analyzed the
+#   CVE (last modified 2026-06-17), with the same CVSS 3.1 7.8 and CWE-77.
+# - ATLAS 2026.10 (2026-10-28) keeps every id used here. One mitigation is renamed: AML.M0028 is
+#   now "Enforce Access Controls for AI Agent Tools" (in 2026.09, "AI Agent Tools Permissions
+#   Configuration"). The ids stay pinned to 2026.09.
+# - A related later case: CVE-2025-64321 (2025-11-04), a prompt injection in Salesforce's Agentforce
+#   Vibes Extension that manipulates writeable configuration files. It is the same class as this
+#   model's settings-file step.
+#
 # AI-DRAFTED, NOT REVIEWED. Every Assertion is `proposed` and no Review is recorded
 # (CLAUDE.md, R-018). Feasibility and impact are human inputs and are left unset.
 #

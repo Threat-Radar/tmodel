@@ -62,6 +62,15 @@ Not yet reviewed:
 - The attack paths wait for a reviewer, as pv-01 and pv-02 do.
 - Until both are done, every Assertion stays `proposed` (R-018).
 
+## Currency check (2026-11-22)
+
+Both models' sources were re-checked.
+- **CVE-2025-53773:** the record is unchanged (same digest). NVD's analysis (2026-06-17) agrees on CVSS 7.8 and CWE-77.
+- **ForcedLeak:** still has no CVE. Salesforce's November 2025 Agentforce CVEs are for the Vibes coding extension.
+- **ATLAS 2026.10:** keeps all 31 ids the two models use. AML.M0028 is renamed, which em-02's header records.
+
+The models stay pinned to ATLAS 2026.09, which em-01 uses.
+
 ## Open
 
 1. **Where the models live.** They stay under RPT-0009 for now. Moving them into `spec/vectors/` would list them in the app and on the site. That needs the sponsor's call, which DL-0038 item 7 also left open for pv-01 and pv-02.

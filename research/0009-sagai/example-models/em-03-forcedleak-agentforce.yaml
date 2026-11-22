@@ -26,6 +26,12 @@
 # No CVE is recorded for ForcedLeak, so its weaknesses enter through AI-proposed `exploits`
 # Assertions, as in pv-02.
 #
+# Re-checked 2026-11-22:
+# - Still no CVE for ForcedLeak. Salesforce's Agentforce CVEs (CVE-2025-64320, -64321 and -64322,
+#   published 2025-11-04) are for the Agentforce Vibes Extension, a coding tool, not this issue.
+# - ATLAS 2026.10 (2026-10-28) keeps every id used here, with the same names. The ids stay pinned
+#   to 2026.09.
+#
 # AI-DRAFTED, NOT REVIEWED. Every Assertion is `proposed` and no Review is recorded
 # (CLAUDE.md, R-018). Feasibility and impact are human inputs and are left unset.
 #
