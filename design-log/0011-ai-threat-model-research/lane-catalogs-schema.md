@@ -90,6 +90,15 @@ Errors 1 and 5 share a cause: a list built from a partial read was presented as 
 |---|---|---|
 | `data:4` counted as a second number given to two risks, and the advice to key on the full id | `[data:4:disimilarity]` on p. 15 was read as a risk. It is a label in that page's "Associated controls" list, whose labels "refer to the original risks (above)", and it points at `[data:3:disimilarity]` (p. 14). Keying on the full id followed the first review's advice without testing it against the wrong references | Re-checked against the PDF (same digest) with a script over every `[component:n:descriptor]` in the text. One number names two risks (`inference:3`), four references use the wrong number, and component plus descriptor is unique per risk and resolves all four. BIML's *Limits*, its two applicability rows, `usefulness.reason` and calibration point 3 now say so |
 
+## Currency check (2026-11-22)
+
+All three sources were re-checked against their live origins.
+- **Greshake et al.:** arXiv v2 (2023-05-05) is still the latest; same digest.
+- **BIML:** `ara.pdf` has the same digest. BIML's newer *No Security Meter for AI* (2026-05-13) is noted in Limits, not assessed.
+- **NIST AI 100-2 E2025:** same digest. NIST's planning note (a corrected upload on 2025-04-01, and an error on page x flagged on 2025-06-03 for a future revision) is now in Limits. No revision had appeared.
+
+The lane's 20 WAVE 1 sources had the same check in Threat-Radar/library#51. FSF v3.1 and Anthropic's Risk Reports were the out-of-date cases, so TM-100 and TM-101 should follow them.
+
 ## Human review
 
 @Clovier checked the three records against the sources on 2026-11-09 (#228). Not yet signed. @paria03 (review partner per LANES.md) reads at least three entries per record against the source, then signs `reviewed_by` in each `summary.md`. Until then each record is a hypothesis (R-018).

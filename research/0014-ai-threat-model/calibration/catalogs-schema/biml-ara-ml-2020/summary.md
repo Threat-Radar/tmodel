@@ -3,7 +3,7 @@ schema: "library-summary/v1"
 id: biml-ara-ml-2020
 record: biml-ara-ml-2020
 type: summary
-updated: "2026-11-13"
+updated: "2026-11-22"
 lane: catalogs-schema
 reviewed_by: ""
 ---
@@ -110,6 +110,7 @@ All 35 references were checked against `sources.md` on 2026-11-10, by title and 
 ## Limits
 
 - **Classic ML, 2020.** No LLMs, retrieval, tools or agents, so prompt injection and the agentic risks that dominate RPT-0014 are absent. Use S-0739 for those.
+- **Still the current version** (re-checked 2026-11-22: same digest at the same URL). BIML has since published *No Security Meter for AI* (2026-05-13), which isn't in `sources.md` and isn't assessed here.
 - **Generic by design.** The nine-component model is the paper's strength and its limit: the risks must be re-derived for each specific system, and the paper offers no likelihood or severity ranking beyond the top ten's ordering.
 - **Not peer reviewed**, and the top ten is the authors' judgement, not derived from data.
 - **Ids are not unique by component and number.**

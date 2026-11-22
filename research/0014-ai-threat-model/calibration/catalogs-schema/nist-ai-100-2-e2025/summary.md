@@ -3,7 +3,7 @@ schema: "library-summary/v1"
 id: nist-ai-100-2-e2025
 record: nist-ai-100-2-e2025
 type: summary
-updated: "2026-11-10"
+updated: "2026-11-22"
 lane: catalogs-schema
 reviewed_by: ""
 ---
@@ -77,6 +77,7 @@ Not completed in this calibration pass. The report has 449 references, and a pro
 
 ## Limits
 
+- **Corrected once, with a revision pending.** NIST's planning note says a corrected PDF was uploaded on 2025-04-01 (author affiliations and figure alt text). On 2025-06-03 it flagged an error on page x for "a future update or revision". The pinned digest matches the file NIST served on 2026-11-22, and no revision had appeared by then. Re-check before citing page x.
 - **Taxonomy, not threat model.** It says what attacks exist and what they violate, not which apply to a given system or how likely they are. §4.2.5 says outright that it leaves risk-management decisions aside.
 - **Adversarial ML only.** Platform and infrastructure attacks (exposed model stores, compromised MLOps tooling, credential theft from AI gateways) are out of scope by design (§1), yet many RPT-0014 entries are of exactly that kind. An entry with a NISTAML id covers only its ML part.
 - **The id hierarchy is not a tree.** The same leaf id appears under several objectives, so tools that treat `NISTAML.0xy` as having a single parent `NISTAML.0x` will mis-file it.
