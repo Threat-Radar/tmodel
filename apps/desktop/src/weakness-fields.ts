@@ -61,19 +61,9 @@ export function richTextToText(markup: string): string {
 export function richTextToCode(markup: string): string {
   if (typeof DOMParser !== "undefined") {
     const parsed = new DOMParser().parseFromString(markup, "text/html");
-    for (const lineBreak of parsed.body.querySelectorAll("br")) {
-      lineBreak.replaceWith(parsed.createTextNode("\n"));
-    }
-    for (const block of parsed.body.querySelectorAll("div, p, pre")) {
-      block.append(parsed.createTextNode("\n"));
-    }
-    return normalizeCode(parsed.body.textContent ?? "");
+    return normalizeCode(codeFromDom(parsed.body));
   }
-  const withLines = markup
-    .replace(/<br\s*\/?>/giu, "\n")
-    .replace(/<\/(?:div|p|pre)>/giu, "\n")
-    .replace(/<[^>]*>/gu, " ");
-  return normalizeCode(decodeEntities(withLines));
+  return normalizeCode(codeFromMarkup(markup));
 }
 
 export function safeHttpUrl(value: string | null | undefined): string | undefined {
@@ -104,12 +94,163 @@ function normalize(value: string): string {
 }
 
 function normalizeCode(value: string): string {
-  return value
-    .replace(/\r\n?/gu, "\n")
-    .replace(/[ \t]+\n/gu, "\n")
-    .replace(/\n[ \t]+/gu, "\n")
-    .replace(/\n{3,}/gu, "\n\n")
-    .trim();
+  const lines = value.replace(/\r\n?/gu, "\n").split("\n");
+  while (lines.length && !lines[0].trim()) lines.shift();
+  while (lines.length && !lines[lines.length - 1].trim()) lines.pop();
+  const content = lines.filter((line) => line.trim());
+  if (content.length > 1) {
+    const common = commonIndent(content.map((line) => line.match(/^[ \t]*/u)?.[0] ?? ""));
+    if (common) {
+      for (let index = 0; index < lines.length; index += 1) {
+        if (lines[index].startsWith(common)) lines[index] = lines[index].slice(common.length);
+      }
+    }
+  }
+  return lines.map((line) => line.trim() ? line : "").join("\n");
+}
+
+const CODE_BLOCK_ELEMENTS = new Set(["address", "article", "aside", "blockquote", "dd", "div",
+  "dl", "dt", "figcaption", "figure", "footer", "header", "li", "main", "nav", "ol", "p",
+  "pre", "section", "table", "tbody", "td", "tfoot", "th", "thead", "tr", "ul"]);
+const CODE_INDENT_SPACES = 4;
+
+class CodeText {
+  private readonly lines = [""];
+  private pendingWhitespace = "";
+  private pendingBlockBreak = false;
+
+  text(value: string, indent: number): void {
+    const normalized = value.replace(/\r\n?/gu, "\n");
+    if (!normalized.trim()) {
+      if (!normalized.includes("\n")) this.pendingWhitespace += normalized;
+      return;
+    }
+    const parts = normalized.split("\n");
+    let first = 0;
+    let last = parts.length - 1;
+    while (first <= last && !parts[first].trim()) first += 1;
+    while (last >= first && !parts[last].trim()) last -= 1;
+    for (let index = first; index <= last; index += 1) {
+      if (index > first) this.breakLine(true);
+      this.write(parts[index], indent);
+    }
+  }
+
+  breakLine(force = false): void {
+    this.pendingWhitespace = "";
+    const lineHasContent = this.lines[this.lines.length - 1] !== "";
+    if (force || lineHasContent) this.lines.push("");
+    this.pendingBlockBreak = false;
+  }
+
+  explicitBreak(): void {
+    this.pendingWhitespace = "";
+    this.lines.push("");
+    this.pendingBlockBreak = false;
+  }
+
+  endBlock(): void {
+    if (this.lines[this.lines.length - 1] !== "") this.pendingBlockBreak = true;
+  }
+
+  value(): string {
+    return this.lines.join("\n");
+  }
+
+  private write(value: string, indent: number): void {
+    if (!value) return;
+    if (this.pendingBlockBreak) this.breakLine();
+    const text = this.pendingWhitespace + value;
+    this.pendingWhitespace = "";
+    const line = this.lines.length - 1;
+    if (!this.lines[line] && text.trim()) this.lines[line] = " ".repeat(indent);
+    this.lines[line] += text;
+  }
+}
+
+function codeFromDom(root: ParentNode): string {
+  const output = new CodeText();
+  for (const child of Array.from(root.childNodes)) renderCodeNode(child, output, 0);
+  return output.value();
+}
+
+function renderCodeNode(node: Node, output: CodeText, indent: number): void {
+  if (node.nodeType === 3) {
+    output.text(node.textContent ?? "", indent);
+    return;
+  }
+  if (node.nodeType !== 1) return;
+  const element = node as Element;
+  const name = (element.localName || element.tagName).toLowerCase();
+  if (name === "br") {
+    output.explicitBreak();
+    return;
+  }
+  if (CODE_BLOCK_ELEMENTS.has(name)) output.breakLine();
+  const childIndent = indent + indentationFromStyle(element.getAttribute("style"));
+  for (const child of Array.from(element.childNodes)) renderCodeNode(child, output, childIndent);
+  if (CODE_BLOCK_ELEMENTS.has(name)) output.endBlock();
+}
+
+function codeFromMarkup(markup: string): string {
+  const output = new CodeText();
+  const stack: Array<{ name: string; indent: number }> = [];
+  let indent = 0;
+  const tokens = markup.match(/<!--[\s\S]*?-->|<\/?[^>]+>|[^<]+/gu) ?? [];
+  for (const token of tokens) {
+    if (token.startsWith("<!--")) continue;
+    if (!token.startsWith("<")) {
+      output.text(decodeEntities(token), indent);
+      continue;
+    }
+    const tag = token.match(/^<\s*(\/?)\s*([a-zA-Z0-9:-]+)/u);
+    if (!tag) continue;
+    const closing = Boolean(tag[1]);
+    const name = tag[2].split(":").pop()!.toLowerCase();
+    if (closing) {
+      for (let index = stack.length - 1; index >= 0; index -= 1) {
+        const removed = stack.pop()!;
+        indent -= removed.indent;
+        if (CODE_BLOCK_ELEMENTS.has(removed.name)) output.endBlock();
+        if (removed.name === name) break;
+      }
+      continue;
+    }
+    if (name === "br") {
+      output.explicitBreak();
+      continue;
+    }
+    if (CODE_BLOCK_ELEMENTS.has(name)) output.breakLine();
+    const addedIndent = indentationFromStyle(attributeValue(token, "style"));
+    indent += addedIndent;
+    if (!/\/\s*>$/u.test(token)) stack.push({ name, indent: addedIndent });
+    else if (CODE_BLOCK_ELEMENTS.has(name)) output.endBlock();
+  }
+  return output.value();
+}
+
+function indentationFromStyle(style: string | null): number {
+  const match = style?.match(/(?:^|;)\s*margin-left\s*:\s*([0-9]*\.?[0-9]+)\s*(em|rem|px|%)?/iu);
+  if (!match) return 0;
+  const amount = Number(match[1]);
+  if (!Number.isFinite(amount) || amount <= 0) return 0;
+  const levels = match[2]?.toLowerCase() === "px" ? amount / 16
+    : match[2] === "%" ? amount / 100 : amount;
+  return Math.max(1, Math.round(levels)) * CODE_INDENT_SPACES;
+}
+
+function attributeValue(tag: string, name: string): string | null {
+  const match = tag.match(new RegExp(`\\s${name}\\s*=\\s*(?:"([^"]*)"|'([^']*)')`, "iu"));
+  return match?.[1] ?? match?.[2] ?? null;
+}
+
+function commonIndent(indents: readonly string[]): string {
+  if (!indents.length) return "";
+  let prefix = indents[0];
+  for (const indent of indents.slice(1)) {
+    while (prefix && !indent.startsWith(prefix)) prefix = prefix.slice(0, -1);
+  }
+  return prefix;
 }
 
 function displayKey(value: string): string {
@@ -119,9 +260,19 @@ function displayKey(value: string): string {
 
 function decodeEntities(value: string): string {
   return value
-    .replace(/&lt;/gu, "<")
-    .replace(/&gt;/gu, ">")
-    .replace(/&quot;/gu, "\"")
-    .replace(/&#39;|&apos;/gu, "'")
-    .replace(/&amp;/gu, "&");
+    .replace(/&#(x[0-9a-f]+|[0-9]+);/giu, (entity, encoded: string) => {
+      const codePoint = encoded[0].toLowerCase() === "x"
+        ? Number.parseInt(encoded.slice(1), 16) : Number.parseInt(encoded, 10);
+      try {
+        return String.fromCodePoint(codePoint);
+      } catch {
+        return entity;
+      }
+    })
+    .replace(/&lt;/giu, "<")
+    .replace(/&gt;/giu, ">")
+    .replace(/&quot;/giu, "\"")
+    .replace(/&#39;|&apos;/giu, "'")
+    .replace(/&nbsp;/giu, " ")
+    .replace(/&amp;/giu, "&");
 }

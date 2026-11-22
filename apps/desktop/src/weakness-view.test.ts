@@ -10,6 +10,24 @@ import type {
 import { WeaknessesView, type WeaknessViewElements } from "./weakness-view";
 
 const fixtureResponse = parseWeaknessTableResponse(fixture);
+const CWE_1229_PYTHON = `<div>def validate_password(actual_pw, typed_pw):
+\t\t <div style="margin-left:1em;">
+                   <div>if len(actual_pw) &lt;&gt; len(typed_pw):
+\t\t   <div style="margin-left:1em;">return 0</div>
+                   <br/>for i in len(actual_pw):
+\t\t   <div style="margin-left:1em;">if actual_pw[i] &lt;&gt; typed_pw[i]:
+\t\t   <div style="margin-left:1em;">return 0</div>
+                   </div>
+                   <br/>return 1</div>
+                 </div>
+                 </div>`;
+const CWE_1229_RENDERED = `def validate_password(actual_pw, typed_pw):
+    if len(actual_pw) <> len(typed_pw):
+        return 0
+    for i in len(actual_pw):
+        if actual_pw[i] <> typed_pw[i]:
+            return 0
+    return 1`;
 
 afterEach(() => vi.useRealTimers());
 
@@ -128,6 +146,12 @@ describe("weaknesses view", () => {
     expect(detailText).toContain("Use a vetted framework.");
     expect(detailText).toContain("Nature: Bad · Language: JavaScript");
     expect(detailText).toContain("const unsafe = input;\nrender(unsafe);");
+    expect(detailText).toContain("Nature: Bad · Language: Python");
+    expect(detailText).toContain(CWE_1229_RENDERED);
+    const python = descendantsByTag(elements.detailSections, "code")
+      .find((code) => code.textContent.startsWith("def validate_password"));
+    expect(python?.textContent).toBe(CWE_1229_RENDERED);
+    expect(python?.parentElement?.tagName).toBe("pre");
     expect(detailText).toContain("Updated examples");
     expect(detailText).toContain("Previous Entry Name");
     expect(detailText).toContain("Proposed — not human-reviewed");
@@ -398,6 +422,13 @@ function detailResponse(): WeaknessDetailResponse {
                   "@Nature": "Bad",
                   "@Language": "JavaScript",
                   "#xhtml": "<div>const unsafe = input;<br/>render(unsafe);</div>",
+                },
+              },
+              {
+                Example_Code: {
+                  "@Nature": "Bad",
+                  "@Language": "Python",
+                  "#xhtml": CWE_1229_PYTHON,
                 },
               },
               { Body_Text: "The browser interprets the untrusted value." },
