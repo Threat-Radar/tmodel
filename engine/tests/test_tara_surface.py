@@ -2,6 +2,7 @@
 
 import json
 import os
+import stat
 import subprocess
 import sys
 import threading
@@ -82,6 +83,56 @@ def test_two_processes_with_different_hash_seeds_write_identical_files(tmp_path)
     assert outputs[0] == outputs[1]
     assert str(ROOT).encode() not in outputs[0]
     assert json.loads(outputs[0])["source"]["file"] == MODEL
+
+
+@pytest.mark.skipif(os.name != "posix", reason="POSIX umask permissions")
+@pytest.mark.parametrize(("mask", "mode"), [(0o022, 0o644), (0o077, 0o600)])
+def test_output_respects_the_callers_umask_without_leaving_staging_files(tmp_path, mask, mode):
+    path = tmp_path / "tara.json"
+    subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "engine",
+            "tara",
+            MODEL,
+            "--matrix",
+            MATRIX_ID,
+            "--in-process",
+            "--output",
+            str(path),
+        ],
+        env={**os.environ, "PYTHONPATH": str(ROOT / "engine")},
+        cwd=tmp_path,
+        umask=mask,
+        capture_output=True,
+        text=True,
+        check=True,
+        timeout=20,
+    )
+    assert stat.S_IMODE(path.stat().st_mode) == mode
+    assert json.loads(path.read_text())["format"] == "tmodel.tara-collection/v1"
+    assert list(tmp_path.iterdir()) == [path]
+
+
+def test_failed_atomic_replace_keeps_the_previous_export_and_cleans_staging(
+    tmp_path, monkeypatch, capsys
+):
+    output = tmp_path / "tara.json"
+    output.write_text("previous export\n")
+
+    def fail_replace(source, destination):
+        assert Path(source).parent.parent == output.parent
+        assert destination == output
+        raise OSError("replacement refused")
+
+    monkeypatch.setattr(os, "replace", fail_replace)
+    assert (
+        main(["tara", MODEL, "--matrix", MATRIX_ID, "--in-process", "--output", str(output)]) == 1
+    )
+    assert "replacement refused" in capsys.readouterr().err
+    assert output.read_text() == "previous export\n"
+    assert list(tmp_path.iterdir()) == [output]
 
 
 @pytest.mark.parametrize(

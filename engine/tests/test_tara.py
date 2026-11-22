@@ -140,6 +140,45 @@ def test_accepted_assertion_without_review_is_not_presented_as_human_reviewed():
     assert state["assertions"][0]["assertion_status"] == "accepted"
 
 
+@pytest.mark.parametrize("justification", [None, "", " \n\t", False, ["An explanation"]])
+def test_person_acceptance_requires_a_nonblank_text_justification(justification):
+    doc = minimal()
+    # A second, complete review must not hide incomplete human evidence.
+    doc["reviews"].append(
+        {**doc["reviews"][0], "id": "review:incomplete", "justification": justification}
+    )
+    before = deepcopy(doc)
+    out = collect_document(doc, matrix=MATRIX_ID)
+    state = item(out, "assertions", "assertion:path")["review_state"]
+    assert state["status"] == "unreviewed"
+    assert not state["reviewed"]
+    assert state["review_ids"] == ["review:accept", "review:incomplete"]
+    assert item(out, "reviews", "review:incomplete")["data"]["justification"] == justification
+    assert doc == before
+
+
+@pytest.mark.parametrize("verdict", ["accepted", "rejected", "changes_requested", None])
+def test_agent_reviews_neither_grant_nor_veto_human_acceptance(verdict):
+    doc = minimal()
+    doc["parties"].append({"id": "party:agent", "party_kind": "software_agent"})
+    doc["reviews"].append(
+        {
+            **doc["reviews"][0],
+            "id": "review:agent",
+            "reviewer": "party:agent",
+            "review_status": verdict,
+            "justification": "",
+        }
+    )
+    out = collect_document(doc, matrix=MATRIX_ID)
+    state = item(out, "assertions", "assertion:path")["review_state"]
+    assert state["status"] == "accepted"
+    assert state["reviewed"]
+    assert state["review_ids"] == ["review:accept", "review:agent"]
+    assert state["assertions"][0]["human_review_ids"] == ["review:accept"]
+    assert item(out, "reviews", "review:agent")["data"]["review_status"] == verdict
+
+
 def test_proposed_assertion_is_not_promoted_by_an_accepted_review():
     doc = minimal()
     doc["assertions"][0]["assertion_status"] = "proposed"

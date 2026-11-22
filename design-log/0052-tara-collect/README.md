@@ -4,9 +4,9 @@ id: DL-0052
 title: "TARA collect phase: deterministic engine intermediate for mvp-02"
 type: process
 status: draft
-version: "0.1.1"
+version: "0.1.2"
 date: "2026-11-14"
-updated: "2026-11-20"
+updated: "2026-11-21"
 record: DL-0052
 issue: "Threat-Radar/tmodel#181"
 defers_to: ARCH-0001
@@ -120,3 +120,42 @@ head's validation and review status are recorded on the PR; the earlier counts
 above describe the original implementation. No object, link or whole-TARA human
 acceptance is inferred from a code review. Main and open PR file lists were
 checked before choosing DL-0052.
+
+## Review fixes (2026-11-21)
+
+@Clovier identified that blank justifications could count as human acceptance
+here, while #243 required justification but allowed a non-person Review to veto
+human acceptance. @Maimcghee recommended retaining person-only verdicts and
+sharing that rule. `engine.review.assertion_review_state` now implements the
+storage-neutral rule: an accepted Assertion needs at least one person Review;
+all person Reviews must accept it with nonblank text justifications. Contrary
+person verdicts take precedence, including when their justification is missing.
+Every Review remains visible; non-person Reviews neither grant nor veto human
+acceptance. The helper retains the existing case/whitespace/hyphen normalization
+for verdict strings, which the core schema keeps open. A matching local update
+to #243 consumes the identical helper, avoiding two implementations. That
+companion update is separate from #243's outstanding source-review work.
+
+The CLI now stages a normally created file inside a private temporary directory,
+then atomically replaces the destination. This respects the caller's umask
+instead of unconditionally leaving mode 0600, as @Maimcghee observed, without
+changing the process umask. Failed replacement retains the previous export and
+removes staging files. TARA.md also identifies where a renderer finds `addresses`
+slots and Assertions, separately from the requirement/mitigation trace list.
+
+Regression tests cover missing/blank/non-text human justifications, human plus
+agent reviews (including contrary agent verdicts), review targeting/order,
+contrary human evidence, umasks 022/077 and failed atomic replacement. These
+changes do not record human acceptance, widen Review targets or implement
+the pending TARA-version governance proposals.
+
+Local validation: **562 engine tests passed, six skipped** (five opt-in packaged
+checks and the external full-catalog CWE test); all **five packaged checks passed**
+against a rebuilt Python 3.13 sidecar. Frontend typecheck/build and 373 tests,
+Rust fmt/clippy and four tests, 14 publishing tests, archdoc and publishing
+guards passed. The browser preview is current; the unchanged pinned library
+still has 550 records, zero errors and 122 existing warnings. Cross-consumer
+checks cover 12 review scenarios and both review orders, with identical answers
+and no input mutation. The mvp-02 JSON remains byte-identical to the prior export
+with SHA-256 `4238a573a546db95ea48d4adf584d2746fd40debdfc33dbfe105810f17213712`.
+Remote CI must be checked after pushing these review fixes.

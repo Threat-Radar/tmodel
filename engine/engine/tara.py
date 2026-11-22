@@ -8,13 +8,13 @@ from __future__ import annotations
 
 import json
 import math
-import re
 from collections.abc import Mapping
 from datetime import date, datetime
 from typing import Any
 
 from engine.graph import GraphError
 from engine.model_graph import COLLECTION_DOMAIN_TYPES, project_model_graph
+from engine.review import assertion_review_state
 from engine.risk import assess_document
 
 FORMAT = "tmodel.tara-collection/v1"
@@ -84,10 +84,6 @@ def _json_value(value: Any) -> Any:
     raise GraphError("tara: model records must contain JSON-compatible values")
 
 
-def _status(value: Any) -> str:
-    return re.sub(r"[\s-]+", "_", value.strip().lower()) if isinstance(value, str) else ""
-
-
 class _Evidence:
     def __init__(self, records: Mapping[str, list[Mapping[str, Any]]]) -> None:
         self.assertions = records["assertions"]
@@ -95,37 +91,7 @@ class _Evidence:
         self.parties = {party["id"]: party for party in records["parties"]}
 
     def assertion(self, assertion: Mapping[str, Any]) -> dict[str, Any]:
-        if assertion.get("assertion_status") is not None and not isinstance(
-            assertion["assertion_status"], str
-        ):
-            raise GraphError(f"{assertion['id']}: assertion_status must be a string")
-        reviews = [r for r in self.reviews if r.get("reviews") == assertion["id"]]
-        human = [
-            r
-            for r in reviews
-            if isinstance(r.get("reviewer"), str)
-            and self.parties.get(r["reviewer"], {}).get("party_kind") == "person"
-        ]
-        verdicts = {_status(r.get("review_status")) for r in human}
-        recorded = _status(assertion.get("assertion_status"))
-        if "rejected" in verdicts:
-            state = "rejected"
-        elif "changes_requested" in verdicts:
-            state = "changes_requested"
-        elif recorded == "accepted" and verdicts == {"accepted"}:
-            state = "accepted"
-        elif recorded in {"proposed", "rejected", "changes_requested"}:
-            state = recorded
-        else:
-            state = "unreviewed"
-        return {
-            "id": assertion["id"],
-            "assertion_status": assertion.get("assertion_status"),
-            "status": state,
-            "reviewed": state == "accepted",
-            "review_ids": [r["id"] for r in reviews],
-            "human_review_ids": [r["id"] for r in human],
-        }
+        return assertion_review_state(assertion, self.reviews, self.parties)
 
     def summarize(self, assertions: list[Mapping[str, Any]], *, scope: str) -> dict[str, Any]:
         states = [self.assertion(a) for a in assertions]

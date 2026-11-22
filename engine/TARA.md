@@ -32,6 +32,9 @@ only the CLI writes files on the caller's machine. Output filenames must end in
 `.json`; a temporary file in the destination directory is replaced atomically
 only after successful collection and serialization. A bad input leaves a
 previous export untouched. The destination directory must already exist.
+The output has normal creation permissions filtered by the caller's umask
+(for example, 0644 under umask 022 or 0600 under umask 077). Staging uses a
+private directory on the same filesystem, which is removed on success or error.
 
 Exit 0 means the collection succeeded, including when some assessment inputs
 are missing. Those incomplete rows and hypotheses are part of the requested
@@ -87,6 +90,11 @@ mitigations/treatment descriptions; requirements and their links. The source
 RiskScore descriptions remain available for authored treatment reasoning. The
 collector does not parse prose into a new treatment-decision schema or turn
 requirement links into a conformance verdict (#170).
+`requirement_links` is specifically the requirement/mitigation trace list.
+For threats addressed by a requirement, read `records.requirements[].data.addresses`
+and the `addresses` claims in `records.assertions[].data`, keeping their own
+`review_state` and slot-versus-Assertion origin. Collection does not promote an
+`addresses` proposal into an authored requirement slot.
 
 ## Reading review state correctly
 
@@ -100,10 +108,13 @@ The collector keeps every review and does not choose the last one in file
 order. Only a Review whose reviewer is recorded as a `Party` of kind `person`
 can contribute to human acceptance. The Assertion must also be recorded as
 `accepted`, at least one such review must say `accepted`, and all recorded
-person reviews must agree. Rejection and changes requested take precedence;
-unknown/missing verdicts cannot establish acceptance. A proposed Assertion
-stays proposed even if a review says accepted. Non-person reviews remain in
-the export and cannot supply human approval. This reads recorded provenance;
+person reviews must agree and each must include a nonblank text justification.
+The storage-neutral `engine.review.assertion_review_state` implements this rule
+for reuse by the coverage collector (#243). Rejection and changes requested
+take precedence; unknown/missing verdicts cannot establish acceptance. A proposed
+Assertion stays proposed even if a review says accepted. Non-person reviews remain in
+the export and neither grant nor veto human acceptance. Missing justification
+does not erase a contrary human verdict. This reads recorded provenance;
 it does not authenticate a person's identity or implement the approval gate.
 
 A record touching claims in different states is `mixed`. The individual claim

@@ -189,7 +189,6 @@ def _tara(args: argparse.Namespace) -> int:
     )
     if payload is None:
         return 1
-    temporary: str | None = None
     try:
         text = serialize_tara(payload)
         if args.output is None:
@@ -201,19 +200,16 @@ def _tara(args: argparse.Namespace) -> int:
                 raise ValueError("tara: --output must name a .json file")
             if output.resolve() == Path(file).resolve():
                 raise ValueError("tara: output must not replace the input model")
-            with tempfile.NamedTemporaryFile(
-                mode="w", encoding="utf-8", newline="\n", dir=output.parent, delete=False
-            ) as stream:
-                temporary = stream.name
-                stream.write(text)
-            os.replace(temporary, output)
-            temporary = None
+            # Keep staging private while creating the file with normal umask
+            # permissions for a subsequent renderer. The rename stays atomic.
+            with tempfile.TemporaryDirectory(prefix=".tmodel-tara-", dir=output.parent) as staging:
+                temporary = Path(staging) / output.name
+                with temporary.open("x", encoding="utf-8", newline="\n") as stream:
+                    stream.write(text)
+                os.replace(temporary, output)
     except (OSError, ValueError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
-    finally:
-        if temporary is not None:
-            Path(temporary).unlink(missing_ok=True)
     # Incomplete/unreviewed assessment inputs belong in a successful draft export.
     return 0
 
