@@ -1,6 +1,6 @@
 # Human review packet for #170
 
-Owner: @paria03. **All 40 decisions are pending.** This packet expands the exact targets in [the sample](agentic-review-sample.md). It records no acceptance, rejection or Review.
+Owner: @paria03. **10 accepted; 30 pending.** This packet expands the exact targets in [the sample](agentic-review-sample.md). Completed cards mirror the actual Reviews recorded in the extraction YAML.
 
 For each card, open the source at the stated locator, check that the proposed Requirement is a fair paraphrase (including its strength), then decide whether it addresses the named threat. The mapping rationale is an automated proposal, not a source quotation or a human judgment. Accepting a link does not approve a product, verify a mitigation or certify a standard.
 
@@ -30,9 +30,9 @@ Scope check: the seven authored layer controls instantiate one general umbrella 
 
 **Specific scope question:** Does this general layer-control instruction justify this one named threat link? The proposal is not an exhaustive mapping of the layer. A rejection can record that the specific edge is not supported without rejecting the general control itself.
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** The source identifies adversarial examples in this layer and recommends controls for its listed threats. I accept this as a general relationship.
 
 ### M02 · Layer 4 — Deployment and Infrastructure — Tailor security controls for the deployment and infrastructure…
 
@@ -50,9 +50,9 @@ Scope check: the seven authored layer controls instantiate one general umbrella 
 
 **Specific scope question:** Does this general layer-control instruction justify this one named threat link? The proposal is not an exhaustive mapping of the layer. A rejection can record that the specific edge is not supported without rejecting the general control itself.
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as a general layer-specific relationship: the source lists compromised container images among deployment threats and recommends tailored controls. This is a partial mapping, not evidence that a control is implemented.
 
 ### M03 · Layer 6 — Security and Compliance — Tailor security controls for the security and compliance layer…
 
@@ -70,9 +70,9 @@ Scope check: the seven authored layer controls instantiate one general umbrella 
 
 **Specific scope question:** Does this general layer-control instruction justify this one named threat link? The proposal is not an exhaustive mapping of the layer. A rejection can record that the specific edge is not supported without rejecting the general control itself.
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as a general layer-specific relationship: the source identifies compromised security AI agents in the security and compliance layer and recommends tailored controls. This is a partial mapping, not evidence that a control is implemented.
 
 ### M04 · Secure Inter-Layer Communication — Protect communication between architecture layers with secure…
 
@@ -88,9 +88,9 @@ Scope check: the seven authored layer controls instantiate one general umbrella 
 
 **Assertion:** `assertion:csa-maestro-2025-secure-inter-layer-communication-addresses-csa-maestro-2025-lateral-movement`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as an inferred relationship: protected inter-layer communication is relevant to lateral movement. This does not establish that communication protection alone stops such movement.
 
 ### M05 · Incident Response Plan — Prepare a response plan for incidents affecting multiple…
 
@@ -106,9 +106,9 @@ Scope check: the seven authored layer controls instantiate one general umbrella 
 
 **Assertion:** `assertion:csa-maestro-2025-incident-response-plan-addresses-csa-maestro-2025-goal-misalignment-cascades`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as an inferred response relationship: a cross-layer incident plan is relevant to cascading goal changes. This supports incident response, not a finding that the cascade is prevented.
 
 ### M06 · Explainable AI (XAI) — Make agent decisions sufficiently transparent to support…
 
@@ -124,9 +124,9 @@ Scope check: the seven authored layer controls instantiate one general umbrella 
 
 **Assertion:** `assertion:csa-maestro-2025-explainable-ai-xai-addresses-csa-maestro-2025-repudiation`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as an inferred accountability relationship: transparent decisions support auditing when agents deny their actions. Explainability alone does not provide a complete audit trail.
 
 ### M07 · Safety Monitoring — Observe agent behavior during execution to detect unsafe…
 
@@ -142,9 +142,9 @@ Scope check: the seven authored layer controls instantiate one general umbrella 
 
 **Assertion:** `assertion:csa-maestro-2025-safety-monitoring-addresses-csa-maestro-2025-agent-tool-misuse`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as an inferred detection relationship: runtime monitoring can help identify unsafe tool use. This is not a prevention or effectiveness finding.
 
 ### M08 · Unconstrained Conversational Autonomy — Validate conversational input and apply safety filters tailored…
 
@@ -160,9 +160,9 @@ Scope check: the seven authored layer controls instantiate one general umbrella 
 
 **Assertion:** `assertion:csa-maestro-2025-unconstrained-conversational-autonomy-addresses-csa-maestro-2025-unconstrained-conversational-autonomy-prompt-injection-jailbreaking`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted because the source explicitly pairs input validation and conversation-specific safety filters with prompt injection and jailbreaking in the Unconstrained Conversational Autonomy pattern.
 
 ### M09 · Hierarchical Agent Pattern — Protect agent communication, constrain access and routinely…
 
@@ -178,9 +178,9 @@ Scope check: the seven authored layer controls instantiate one general umbrella 
 
 **Assertion:** `assertion:csa-maestro-2025-hierarchical-agent-pattern-addresses-csa-maestro-2025-hierarchical-agent-pattern-compromise-of-a-higher-level-agent-to-control-subordinates`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted because the source explicitly pairs secure agent communication, access controls and monitoring with takeover of a higher-level agent in the Hierarchical Agent pattern.
 
 ### M10 · Self-Learning and Adaptive Agents — Clean and validate data used to train adaptive agents.
 
@@ -196,9 +196,9 @@ Scope check: the seven authored layer controls instantiate one general umbrella 
 
 **Assertion:** `assertion:csa-maestro-2025-self-learning-and-adaptive-agents-addresses-csa-maestro-2025-self-learning-and-adaptive-agents-data-poisoning-through-backdoor-trigger-injection`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted because the source explicitly pairs training-data sanitization and validation with poisoning through a hidden backdoor trigger in the Self-Learning and Adaptive Agents pattern.
 
 ## NIST SP 800-218A
 

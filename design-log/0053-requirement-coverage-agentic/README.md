@@ -3,7 +3,7 @@ id: DL-0053
 title: Requirement coverage query and agentic source fragments
 status: draft
 date: 2026-11-14
-updated: 2026-11-21
+updated: 2026-11-22
 human_owner: paria03
 reviewed: false
 ---
@@ -139,8 +139,9 @@ mechanical issues and prepares the evidence for those decisions.
 A semantic comparison with the prior files confirms that all 244 full texts,
 IDs, source locators, kinds and normativity values, all 175 proposed Assertions
 and their targets/confidence, and every Party/Review collection are unchanged.
-The packet has the exact original 40 Assertion IDs, ten per source, with all
-decisions still pending. No human approval or rejection is inferred from these
+At the source-formatting step, the packet had the exact original 40 Assertion
+IDs, ten per source, with all decisions pending; subsequent human decisions are
+recorded below. No human approval or rejection is inferred from these
 formatting, validation or documentation fixes.
 
 Local validation: **550 engine tests passed, five opt-in packaging checks
@@ -157,10 +158,14 @@ pushing this local update.
 
 # Human accepted / rejected
 
-**Pending. No human acceptance or rejection recorded by this change.**
-The owner must review at least ten proposed links per source (40 total), recording
-each actual decision and its justification as a Review. The prepared sample is
-undecided. The issue remains open until that acceptance criterion is fulfilled.
+**10 accepted; 30 pending.** @paria03 completed the MAESTRO sample on
+2026-11-22. M01–M03 were accepted as general layer relationships; M04–M07 as
+interpreted links with the stated response, detection and accountability limits;
+M08–M10 follow the source's explicit control/threat pairings. Each actual decision
+has a person Review with its agreed justification. No acceptance establishes
+implementation, effectiveness or exhaustive threat coverage. Across the four
+fragments, ten Assertions are accepted and the other 165 remain proposed.
+The issue remains open until ten actual decisions per source are recorded.
 
 # Limits
 
