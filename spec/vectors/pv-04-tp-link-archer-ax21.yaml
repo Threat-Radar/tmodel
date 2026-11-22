@@ -1,0 +1,310 @@
+# PROPOSAL VECTOR 4 (DL-0061): TP-Link Archer AX21, a home Wi-Fi router with a known exploited flaw
+#
+# The hardware and firmware example beside pv-03's software one (#230). The TP-Link Archer
+# AX21 (AX1800) is a home Wi-Fi 6 router. Its firmware before 1.1.4 Build 20230219 lets anyone
+# on the home network run commands on it as root without logging in (CVE-2023-1389), and
+# CISA lists the flaw as exploited in the wild.
+#
+# Pinned: hardware version 3 (US) with firmware 1.1.3 Build 20221125 (published 2022-12-02),
+# the last numbered V3 release before the fix, 1.1.4 Build 20230219 (published 2023-03-17).
+# Sources, read on 2026-11-13: NVD's CVE-2023-1389 record (CVSS 3.1 8.8, AV:A; CWE-77), the
+# CVE record (CNA: Tenable), CISA's Known Exploited Vulnerabilities catalog (added
+# 2023-05-01), ZDI-23-451, the ZDI blog of 2023-04-24, and TP-Link's statement and V3
+# firmware page. NVD and CISA re-read from the saved copies on 2026-11-22. CWE and CAPEC
+# names are from MITRE (CWE 4.20, CAPEC 3.9).
+#
+# Advisory level, on purpose: the model says what the flaw lets an attacker do and cites the
+# public records. It gives no request, address, payload or step-by-step procedure. The
+# attack path ends where the attacker runs commands as root; what botnets then do with a
+# router is recorded as harm, not as attack steps (DL-0061). Only the home-network flaw is
+# modeled; the internet-side race (CVE-2023-27359) is left out (DL-0061).
+#
+# Answer key: NVD's record and CISA's catalog entry. A reviewer can check the path, the
+# affected versions and the fix against both.
+#
+# AI-DRAFTED, NOT REVIEWED. Every Assertion is `proposed` and no Review is recorded
+# (CLAUDE.md, R-018). Feasibility and impact are human inputs and are left unset.
+#
+# Validate:
+#   linkml-validate -s spec/vectors/example-container-proposed.linkml.yaml \
+#     -C ExampleModelProposed spec/vectors/pv-04-tp-link-archer-ax21.yaml
+
+parties:
+  - id: party:tp-link
+    name: TP-Link
+    description: Makes the Archer AX21 and publishes its firmware.
+    party_kind: organization
+    classifications: [maintainer]
+  - id: party:router-owner
+    name: Router owner
+    description: The household whose router and home network the attack reaches (role, not a person).
+    party_kind: person
+  - id: party:ai-drafter
+    name: AI model drafter
+    description: The AI agent that drafted this file and proposed its links (DL-0061).
+    party_kind: software_agent
+
+products:
+  - id: product:archer-ax21-v3
+    name: TP-Link Archer AX21 (AX1800), hardware version 3 (US)
+    description: >-
+      A home Wi-Fi 6 router with a web management interface for its settings. Modeled with
+      firmware 1.1.3 Build 20221125, the last numbered V3 release before the fix.
+    composed_of:
+      - component:web-management
+      - component:router-firmware
+    manufactured_by: party:tp-link
+    identifiers: ["cpe:2.3:h:tp-link:archer_ax21:3.0:*:*:*:*:*:*:*"]
+
+components:
+  - id: component:home-device
+    name: A device on the home network
+    description: >-
+      Any phone, laptop or smart-home device on the router's LAN or Wi-Fi. The flaw needs
+      one: NVD rates it adjacent-network (CVSS AV:A).
+    component_kind: device
+    in_trust_zone: trust-boundary:home-network
+  - id: component:web-management
+    name: Web management interface
+    description: The router's settings pages and the API behind them, reachable from the home network.
+    component_kind: service
+    in_trust_zone: trust-boundary:router
+    uses_component: [component:router-firmware]
+  - id: component:router-firmware
+    name: Firmware 1.1.3 Build 20221125
+    description: >-
+      The router's software: routing, Wi-Fi, the firewall and the back end of the web
+      management interface. NVD: commands injected through the flaw run as root.
+    component_kind: firmware
+    in_trust_zone: trust-boundary:router
+
+assets:
+  - id: asset:router-control
+    name: Control of the router (its settings and the commands it runs)
+    security_properties: [confidentiality, integrity, authorization]
+    processed_by: [component:web-management, component:router-firmware]
+    owned_by: party:router-owner
+  - id: asset:home-connectivity
+    name: The household's internet connection and Wi-Fi
+    security_properties: [availability]
+    processed_by: [component:router-firmware]
+    owned_by: party:router-owner
+  - id: asset:others-services
+    name: Other people's online services, which a botnet can flood
+    security_properties: [availability]
+
+trust_boundaries:
+  - id: trust-boundary:home-network
+    name: The home network (LAN and Wi-Fi)
+  - id: trust-boundary:router
+    name: The router and its administration
+
+data_flows:
+  - id: data-flow:admin-requests
+    name: Devices on the home network send requests to the web management interface
+    flow_from: component:home-device
+    flow_to: component:web-management
+    carries: [asset:router-control]
+    crosses_boundary: [trust-boundary:home-network, trust-boundary:router]
+
+weaknesses:
+  - id: weakness:cwe-77
+    name: "Improper Neutralization of Special Elements used in a Command ('Command Injection')"
+    description: NVD's weakness for CVE-2023-1389, and the one CISA's catalog entry names.
+    catalog_ref: "CWE-77"
+
+vulnerabilities:
+  - id: vulnerability:cve-2023-1389
+    name: Archer AX21 firmware before 1.1.4 Build 20230219 runs commands an attacker on the home network injects, as root
+    description: >-
+      NVD: a command injection in the web management interface. No login is needed, and the
+      injected commands run as root. CVSS 3.1 8.8 (AV:A, adjacent network). CISA added it to
+      the Known Exploited Vulnerabilities catalog on 2023-05-01, with the required action
+      "Apply updates per vendor instructions." Fixed in 1.1.4 Build 20230219.
+    catalog_ref: "CVE-2023-1389"
+    affects: [product:archer-ax21-v3]
+
+attack_patterns:
+  - id: attack-pattern:capec-248
+    name: Command Injection
+    catalog_ref: "CAPEC-248"
+
+damage_scenarios:
+  - id: damage-scenario:router-takeover
+    name: An attacker takes over the router, and with it the household's connection, and can use it against others
+    damages_asset: [asset:router-control, asset:home-connectivity, asset:others-services]
+    compromised_property: [confidentiality, integrity, availability]
+
+threat_instances:
+  - id: threat-instance:lan-command-injection
+    name: Run commands as root on the router from the home network, without logging in
+    realizes_damage: damage-scenario:router-takeover
+    method_facet: [stride]
+    source_method: "published advisory (NVD, CISA KEV) for CVE-2023-1389, modeled from the public records (AI-drafted, unreviewed)"
+    violates_property: "E authorization; T integrity"
+    applies_in_phase: [lifecycle-phase:operation]
+    targets_element: [component:web-management, data-flow:admin-requests]
+
+attack_steps:
+  - id: attack-step:reach-admin-interface
+    name: Reach the router's web management interface from a device on the home network
+    description: >-
+      The flaw is rated adjacent-network (CVSS AV:A): the attacker needs a device on the
+      router's LAN or Wi-Fi, such as an already compromised device or someone who has the
+      Wi-Fi password.
+    kill_chain_phase: delivery
+    precedes: [attack-step:inject-command]
+  - id: attack-step:inject-command
+    name: Exploit the unauthenticated command injection in the web management interface (CVE-2023-1389)
+    description: >-
+      No login is needed (NVD). This model stays at advisory level: how the flaw is
+      triggered is in the cited advisories and is not repeated here.
+    kill_chain_phase: exploitation
+    precedes: [attack-step:run-as-root]
+  - id: attack-step:run-as-root
+    name: The router runs the attacker's commands as root
+    description: >-
+      The attacker then controls the router: its settings, the traffic through it and what
+      software it runs (NVD rates confidentiality, integrity and availability all High).
+      Botnets have used this flaw to enlist routers that then flood other networks (ZDI,
+      2023-04-24); this model stops here and records that as harm, not as steps.
+    kill_chain_phase: actions_on_objectives
+
+attack_paths:
+  - id: attack-path:lan-to-root
+    name: Home-network device to root on the router
+    steps: [attack-step:reach-admin-interface, attack-step:inject-command, attack-step:run-as-root]
+    realizes_threat: threat-instance:lan-command-injection
+
+mitigations:
+  - id: mitigation:vendor-fix
+    name: TP-Link's fix in firmware 1.1.4 Build 20230219
+    description: >-
+      Published 2023-03-17 with the note "Fixed some security issues" on TP-Link's V3
+      firmware page; NVD's affected range ends before it.
+    mitigates: [threat-instance:lan-command-injection]
+    applies_in_phase: [lifecycle-phase:implementation]
+    implementation_owner: party:tp-link
+    mitigation_status: complete
+  - id: mitigation:update-firmware
+    name: Update the router to firmware 1.1.4 Build 20230219 or later
+    description: >-
+      CISA's required action: apply updates per vendor instructions. The pinned firmware,
+      1.1.3 Build 20221125, does not have the fix.
+    mitigates: [threat-instance:lan-command-injection]
+    applies_in_phase: [lifecycle-phase:operation]
+    implementation_owner: party:router-owner
+    mitigation_status: planned
+  - id: mitigation:keep-updating
+    name: Keep the router's firmware up to date from now on
+    description: TP-Link's statement on CVE-2023-1389 asks owners to update to the latest firmware.
+    mitigates: [threat-instance:lan-command-injection]
+    applies_in_phase: [lifecycle-phase:operation]
+    implementation_owner: party:router-owner
+    mitigation_status: planned
+  - id: mitigation:fewer-untrusted-devices
+    name: Until the router is updated, keep untrusted devices off the home network
+    description: >-
+      A model suggestion, not the vendor's: the flaw needs a device on the home network
+      (AV:A), so every untrusted device there is one more way in.
+    mitigates: [threat-instance:lan-command-injection]
+    applies_in_phase: [lifecycle-phase:operation]
+    implementation_owner: party:router-owner
+    mitigation_status: planned
+
+assertions:
+  - id: assertion:reach-step-targets-admin-requests
+    name: The reach step uses the home network's requests to the web management interface (AI-proposed)
+    description: NVD and the CNA rate the flaw adjacent-network (CVSS 3.1 AV:A), so it needs a device on the router's LAN or Wi-Fi.
+    subject: attack-step:reach-admin-interface
+    predicate: targets_element
+    object: data-flow:admin-requests
+    confidence: high
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-22T00:00:00Z"
+    generated_by: "AI-drafted from NVD's record for CVE-2023-1389 (DL-0061)"
+    evidence: ["https://nvd.nist.gov/vuln/detail/CVE-2023-1389"]
+  - id: assertion:inject-step-exploits-cve-2023-1389
+    name: The injection step exploits CVE-2023-1389 (AI-proposed)
+    description: NVD describes an unauthenticated command injection in the web management interface; CISA lists it as exploited in the wild (added 2023-05-01).
+    subject: attack-step:inject-command
+    predicate: exploits
+    object: vulnerability:cve-2023-1389
+    confidence: high
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-22T00:00:00Z"
+    generated_by: "AI-drafted from NVD, the CVE record, CISA KEV and ZDI-23-451 (DL-0061)"
+    evidence: ["https://nvd.nist.gov/vuln/detail/CVE-2023-1389", "https://www.cve.org/CVERecord?id=CVE-2023-1389", "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2023-1389", "https://www.zerodayinitiative.com/advisories/ZDI-23-451/"]
+  - id: assertion:root-step-targets-router-control
+    name: The last step takes control of the router (AI-proposed)
+    description: >-
+      NVD: the injected commands run as root, with confidentiality, integrity and availability
+      all rated High. ZDI-23-451 also gives root. ZDI's blog reports botnets using the flaw
+      to enlist routers.
+    subject: attack-step:run-as-root
+    predicate: targets_element
+    object: asset:router-control
+    confidence: high
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-22T00:00:00Z"
+    generated_by: "AI-drafted from NVD, ZDI-23-451 and the ZDI blog (DL-0061)"
+    evidence: ["https://nvd.nist.gov/vuln/detail/CVE-2023-1389", "https://www.zerodayinitiative.com/advisories/ZDI-23-451/", "https://www.zerodayinitiative.com/blog/2023/4/21/tp-link-wan-side-vulnerability-cve-2023-1389-added-to-the-mirai-botnet-arsenal"]
+  - id: assertion:cve-2023-1389-propagates-to-firmware
+    name: CVE-2023-1389 is in the pinned firmware (AI-proposed)
+    description: >-
+      NVD's range is firmware before 1.1.4 Build 20230219. The pinned 1.1.3 Build 20221125
+      is inside it, and TP-Link's V3 page lists 1.1.4 Build 20230219 as the next release.
+    subject: vulnerability:cve-2023-1389
+    predicate: propagates_to
+    object: component:router-firmware
+    confidence: high
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-22T00:00:00Z"
+    generated_by: "AI-drafted from NVD and TP-Link's V3 firmware page (DL-0061)"
+    evidence: ["https://nvd.nist.gov/vuln/detail/CVE-2023-1389", "https://www.tp-link.com/us/support/download/archer-ax21/v3/"]
+  - id: assertion:cve-2023-1389-instance-of-cwe-77
+    name: CVE-2023-1389 is an instance of CWE-77 (from NVD)
+    subject: vulnerability:cve-2023-1389
+    predicate: instance_of
+    object: weakness:cwe-77
+    confidence: high
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-22T00:00:00Z"
+    generated_by: "AI-drafted from NVD and CISA KEV (DL-0061)"
+    evidence: ["https://nvd.nist.gov/vuln/detail/CVE-2023-1389", "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2023-1389"]
+  - id: assertion:cwe-77-exploited-by-capec-248
+    name: CWE-77 is exploited by CAPEC-248 (AI-proposed)
+    description: CWE 4.20 links CWE-77 to CAPEC-248, and CAPEC 3.9 links CAPEC-248 back to CWE-77.
+    subject: weakness:cwe-77
+    predicate: exploited_by
+    object: attack-pattern:capec-248
+    confidence: medium
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-22T00:00:00Z"
+    generated_by: "AI-drafted from MITRE's CWE 4.20 and CAPEC 3.9 (DL-0061)"
+    evidence: ["https://cwe.mitre.org/data/definitions/77.html", "https://capec.mitre.org/data/definitions/248.html"]
+  - id: assertion:lan-path-realizes
+    name: The home-network path realizes the router-takeover threat
+    subject: attack-path:lan-to-root
+    predicate: realizes_threat
+    object: threat-instance:lan-command-injection
+    confidence: high
+    assertion_status: proposed
+    asserted_by: party:ai-drafter
+    asserted_at: "2026-11-22T00:00:00Z"
+    generated_by: "AI-drafted from NVD and CISA KEV (DL-0061)"
+    evidence: ["https://nvd.nist.gov/vuln/detail/CVE-2023-1389", "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2023-1389"]
+
+lifecycle_phases:
+  - id: lifecycle-phase:implementation
+    name: Implementation
+    code: implementation
+  - id: lifecycle-phase:operation
+    name: Operation / use
+    code: operation

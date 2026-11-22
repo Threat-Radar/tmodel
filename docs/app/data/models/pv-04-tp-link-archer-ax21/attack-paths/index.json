@@ -1,0 +1,8 @@
+{
+  "file": "pv-04-tp-link-archer-ax21.yaml",
+  "reviewed_threats": [],
+  "steps": 3,
+  "threats": [
+    "threat-instance:lan-command-injection"
+  ]
+}
