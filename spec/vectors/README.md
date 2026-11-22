@@ -90,14 +90,17 @@ container plus collections for the proposed classes. **AI-drafted and unreviewed
 every Assertion is `proposed`, no Review is recorded, and feasibility and impact are
 left for a human. They stay so until @paria03 reviews their attack paths (ADR-0011,
 decision 4); @Maimcghee has checked their sources.
+`pv-03` (DL-0049) adds a software target, OWASP Juice Shop, built the same way from its own
+source code and challenge list; no reviewer is assigned to it yet.
 
 | File | Attack | Source | Exercises |
 |---|---|---|---|
 | `pv-01-can-injection-theft.yaml` | keyless car theft by CAN injection (Toyota RAV4, CVE-2023-29389) | Canis Automotive Labs write-up, 2023-04-03; CVE record | Asset, nested TrustBoundary zones, DataFlows on two CAN buses, `instance_of` with a CVE whose CWE came from CISA-ADP (Assertion with `asserted_by`) |
 | `pv-02-dealer-portal-owner-data.yaml` | theft of owners' personal data and silent takeover through a dealer portal (Kia, 2024) | Curry et al. write-up, 2024 | Assets with confidentiality, a dealer-only zone, DataFlows that carry personal data, a Weakness without a CVE (an `exploits` Assertion by a `software_agent` Party) |
+| `pv-03-owasp-juice-shop.yaml` | five attacks on a training web shop: SQL-injection admin login, another customer's basket, DOM XSS, a confidential document in /ftp, a forged login token (CVE-2015-9235) | OWASP Juice Shop v20.4.0 source and challenge list; NVD | a software product with a CVE on a pinned library (purl), CWE and CAPEC links, an AND-gate step, and a source for every step (an Assertion with evidence); each path matches a Juice Shop challenge (DL-0049) |
 
 ```sh
-for v in pv-01-can-injection-theft pv-02-dealer-portal-owner-data; do
+for v in pv-01-can-injection-theft pv-02-dealer-portal-owner-data pv-03-owasp-juice-shop; do
   linkml-validate -s spec/vectors/example-container-proposed.linkml.yaml \
     -C ExampleModelProposed spec/vectors/$v.yaml
 done

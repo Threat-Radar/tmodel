@@ -42,7 +42,7 @@ taras:
       - clause: "15.7"
         text: "The rating method and its inputs are text in the path's description, not fields (RC-15-11 to RC-15-14, #184 F3)."
       - clause: "15.8"
-        text: "Risk values are one text field, not numbers per category; the risk metric is still open (DEC-003, #184 F4)."
+        text: "Risk values are one text field, not numbers per category. ADR-0006 accepted the metric (DEC-003) and derives risk per category from the 21434 table, but the schema has no field for each value (#184 F4)."
       - clause: "15.9"
         text: "The treatment decision is text in the risk score's description; there is no field for the four options or for the cybersecurity claims behind retaining or sharing a risk (#184 F5)."
       - clause: "DL-0027"

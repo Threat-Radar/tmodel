@@ -81,28 +81,45 @@ nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font
 
 <p class="kicker">Library record · iana-cose-algorithms</p>
 <h1>IANA COSE Algorithms registry</h1>
-<p class="lede"></p>
+<p class="lede">IANA COSE Algorithms</p>
 <p>
   <span class="badge">dataset</span>
   <span class="badge">iso</span>
-  <span class="badge">stub</span>
-  <span class="badge">low</span>
+  <span class="badge">summarized</span>
+  <span class="badge">medium</span>
 </p>
-<p class="meta">Topic: <strong>namespace-governance</strong> (<code>record.yaml</code> topic). Status <code>stub</code> is how far review got, not a quality score.</p>
+<p class="meta">Topic: <strong>namespace-governance</strong> (<code>record.yaml</code> topic). Status <code>summarized</code> is how far review got, not a quality score.</p>
 <h2>Bibliographic links</h2>
-<ul><li>Source: <a href="https://www.iana.org/assignments/cose/cose.xhtml">https://www.iana.org/assignments/cose/cose.xhtml</a></li><li>SHA-256: <span class="meta">not recorded</span></li></ul>
+<ul><li>Source: <a href="https://www.iana.org/assignments/cose/algorithms.csv">https://www.iana.org/assignments/cose/algorithms.csv</a></li><li>Identifier URL: <a href="https://www.iana.org/assignments/cose/cose.xhtml">https://www.iana.org/assignments/cose/cose.xhtml</a></li><li>SHA-256: <code>4dc4c64f84e6020a05403862219b66b0bfd9cc853245d87b82ed00f6d77600f3</code></li></ul>
 <h2>Dataset</h2>
 <div class="callout"><strong>Catalog, not one row.</strong> This record is the enumeration itself. Retrieved is when the library looked, not an edition date. Empty authors are omitted, not missing paper metadata.</div>
+<table><tbody><tr><td>Retrieved</td><td>2026-10-03</td></tr><tr><td>Version</td><td>snapshot 2026-10-03</td></tr><tr><td>Media type</td><td>text/csv</td></tr></tbody></table>
 <h2>Applicability</h2>
-<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge not-assessed">not assessed</span></td></tr><tr><td>Cryptography</td><td><span class="badge not-assessed">not assessed</span></td></tr><tr><td>This project</td><td><span class="badge not-assessed">not assessed</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge adjacent">adjacent</span></td></tr><tr><td>This project</td><td><span class="badge adjacent">adjacent</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
 <h2>Tags</h2>
-<table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">namespace-governance</span></td></tr><tr><td class="rowhead">Role</td><td><span class="badge">evidence</span></td></tr></tbody></table>
+<table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">namespace-governance</span></td></tr><tr><td class="rowhead">Body</td><td><span class="badge">ietf</span></td></tr><tr><td class="rowhead">Role</td><td><span class="badge">evidence</span></td></tr></tbody></table>
 <h2>Bears on</h2>
 <ul><li><code>R-M-12</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> The authoritative list of what a COSE alg value may be. The RFCs each register a slice; only the registry says what is actually assigned, and checking it caught a stale code point in draft-ietf-cose-sphincs-plus.</p><p class="meta">Assessed 2026-10-03.</p>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> only — not crosswalk edges.</p><h3><code>see_also</code></h3><ul><li><a class="rec" data-id="rfc-9053" href="../../ietf/rfc-9053/summary.html">CBOR Object Signing and Encryption (COSE): Initial Algorithms</a></li><li><a class="rec" data-id="rfc-9964" href="../../ietf/rfc-9964/summary.html">ML-DSA for JSON Object Signing and Encryption (JOSE) and CBOR Object Signing and Encryption (COSE)</a></li><li><a class="rec" data-id="rfc-9864" href="../../ietf/rfc-9864/summary.html">Fully-Specified Algorithms for JSON Object Signing and Encryption (JOSE) and CBOR Object Signing and Encryption (COSE)</a></li><li><a class="rec" data-id="iana-jose-algorithms" href="../../iso/iana-jose-algorithms/summary.html">IANA JOSE Algorithms</a></li><li><a class="rec" data-id="draft-ietf-cose-sphincs-plus" href="../../ietf/draft-ietf-cose-sphincs-plus/summary.html">draft-ietf-cose-sphincs-plus</a></li></ul>
 
-
-
-<h2>Summary</h2><div class="callout"><strong>Summary not written.</strong> <code>summary.md</code> is still the library template (it still contains the “two to five sentences” instruction). That text is not rendered. This page is record metadata only.</div>
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>dataset — a living registry</td></tr><tr><td><strong>Maturity</strong></td><td>_unset_ — a living allocation table has no RFC 2026 standing</td></tr><tr><td><strong>Publisher</strong></td><td>IANA</td></tr><tr><td><strong>Snapshot</strong></td><td><strong>2026-10-03</strong> (96 entries)</td></tr><tr><td><strong>Identifier</strong></td><td>https://www.iana.org/assignments/cose/cose.xhtml</td></tr><tr><td><strong>Source</strong></td><td>https://www.iana.org/assignments/cose/algorithms.csv</td></tr><tr><td><strong>Digest</strong></td><td><code>sha256:4dc4c64f84e6020a05403862219b66b0bfd9cc853245d87b82ed00f6d77600f3</code></td></tr></tbody></table>
+<h2>Overview</h2>
+<p>The authoritative list of <strong>COSE <code>alg</code> values</strong>. Each RFC registers a slice — <code>rfc-9053</code> the initial set, <code>rfc-9964</code> the ML-DSA set, <code>rfc-9864</code> the fully-specified ECDSA and EdDSA algorithms — but only the registry says what is actually assigned at a given moment.</p>
+<p>The snapshot taken 2026-10-03 holds <strong>96 entries</strong>:</p>
+<table><thead><tr><th>Recommended</th><th>Count</th></tr></thead><tbody><tr><td>Yes</td><td>59</td></tr><tr><td>No</td><td>16</td></tr><tr><td><strong>Deprecated</strong></td><td><strong>11</strong></td></tr><tr><td>Filter Only</td><td>2</td></tr><tr><td>(blank / Unassigned / Reserved)</td><td>8</td></tr></tbody></table>
+<p>The post-quantum neighbourhood as of this snapshot:</p>
+<table><thead><tr><th>Value</th><th>Name</th><th>Reference</th><th>Recommended</th></tr></thead><tbody><tr><td>-48</td><td>ML-DSA-44</td><td>RFC 9964</td><td>Yes</td></tr><tr><td>-49</td><td>ML-DSA-65</td><td>RFC 9964</td><td>Yes</td></tr><tr><td>-50</td><td>ML-DSA-87</td><td>RFC 9964</td><td>Yes</td></tr><tr><td>-51</td><td><strong>ESP384</strong></td><td>RFC 9864 §2.1</td><td>Yes</td></tr><tr><td>-52</td><td><strong>ESP512</strong></td><td>RFC 9864 §2.1</td><td>Yes</td></tr><tr><td>-53</td><td>Ed448</td><td>RFC 9864 §2.2</td><td>Yes</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td><code>core</code></td><td>What a verifier may legitimately encounter in an <code>alg</code> header</td></tr><tr><td>Cryptography</td><td><code>adjacent</code></td><td>An allocation table, not a specification</td></tr><tr><td>This project</td><td><code>adjacent</code></td><td>Bears on R-M-12; the suite itself is deferred by NG3</td></tr></tbody></table>
+<p>Bears on <strong>R-M-12</strong>. This is the governed namespace an exported COSE statement would draw its algorithm identifier from — relevant to D-3&#x27;s &quot;COSE as export only&quot; option, because what we export has to be a value in this table.</p>
+<h2>Implementations</h2>
+<p>Not applicable — a registry, not software. Searched for tooling that consumes it programmatically on <strong>2026-10-03</strong>: the CSV is the machine-readable form IANA publishes, and COSE libraries generally hard-code the subset they support rather than reading it.</p>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata, with the snapshot digest</td></tr><tr><td><code>summary.md</code></td><td>this document</td></tr></tbody></table>
+<p><strong>No committed copy of the registry.</strong> <code>library/CLAUDE.md</code> forbids committing third-party documents, and the sibling records <code>iana-cbor-tags</code> and <code>iana-cbor-simple-values</code> set the same pattern: digest and URL only. The CSV is cached in <code>.cache/</code>, which is gitignored.</p>
+<h2>Limits</h2>
+<ul><li><strong>It is a living document, so the digest dates rather than fixes it.</strong> Unlike an RFC, this record&#x27;s <code>sha256</code> identifies <em>a snapshot</em>, not a work. Any claim here is true as of 2026-10-03 and should be re-checked, not cited as settled. This is the one record in the lane where the digest means something weaker than usual.</li><li><strong>Checking it caught a real error elsewhere.</strong> <code>draft-ietf-cose-sphincs-plus-10</code> (July 2026) proposes <code>TBD1 (-51)</code> and <code>TBD2 (-52)</code> for SLH-DSA, but <strong>both values are already assigned</strong> to ESP384 and ESP512 by RFC 9864. The draft&#x27;s suggested code points must move. This is exactly the kind of thing only the registry reveals, and the argument for holding it as a record rather than trusting the RFCs.</li><li><strong>Eleven entries are Deprecated and still listed.</strong> RS1, and the other SHA-1 and legacy constructions, remain in the table. Presence in the registry is not approval, and a verifier that accepts anything registered accepts deprecated algorithms.</li><li><strong>&quot;Recommended: Yes&quot; is IETF consensus, not a cryptographic verdict</strong>, and it is per-entry with no stated review cadence. It tells you what the WG thought at registration time.</li><li><strong>There is no SLH-DSA entry at all.</strong> Post-quantum COSE today means ML-DSA. The hash-based hedge has no code point, which is the registry&#x27;s own confirmation of the gap recorded in <code>fips-205</code>.</li></ul>
 
 <footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
 </main>

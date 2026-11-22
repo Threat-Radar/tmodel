@@ -45,6 +45,10 @@ COLLECTION_DOMAIN_TYPES = {
     "checkpoints": "Checkpoint",
     "requirements": "Requirement",
     "governed_views": "GovernedView",
+    # ADR-0013: mixed SDL/threat models may reference these from Assertions.
+    "sdl_practices": "SdlPractice",
+    "evidence_items": "Evidence",
+    "requirement_sources": "RequirementSource",
     # ADR-0011 (accepted 2026-10-22) added these classes to the core; the proposal
     # container lists them.
     "assets": "Asset",

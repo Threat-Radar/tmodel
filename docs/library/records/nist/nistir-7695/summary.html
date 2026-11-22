@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Common Platform Enumeration: Naming Specification Version 2.3</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px 40px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); line-height: 1.15; letter-spacing: -0.03em; margin: 20px 0 6px; }
+h2 { font-size: 1.15rem; margin: 1.25em 0 0.3em; padding-top: 0.6em; border-top: 1px solid var(--line); }
+h3 { font-size: 1rem; margin: 1em 0 0.2em; }
+.kicker { margin: 18px 0 0; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.4em 0 0.8em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 6px 10px; font-size: 0.93rem; }
+table.kv { background: transparent; }
+table.kv td { border-bottom: none; padding: 2px 12px 2px 0; }
+td.rowhead { color: var(--muted); font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; width: 1%; padding-top: 6px; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../../../../index.html">tmodel</a><nav aria-label="Site"><a href="../../../../index.html">Home</a><a href="../../../../bibliography/index.html" aria-current="page">Bibliography</a><a href="../../../../reports/index.html">Reports</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">Library record · nistir-7695</p>
+<h1>Common Platform Enumeration: Naming Specification Version 2.3</h1>
+<p class="lede">NIST IR 7695 (CPE Naming 2.3)</p>
+<p>
+  <span class="badge">spec</span>
+  <span class="badge">nist</span>
+  <span class="badge">distilled</span>
+  <span class="badge">medium</span>
+</p>
+<p class="meta">Topic: <strong>product-composition</strong> (<code>record.yaml</code> topic). Status <code>distilled</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://nvlpubs.nist.gov/nistpubs/Legacy/IR/nistir7695.pdf">https://nvlpubs.nist.gov/nistpubs/Legacy/IR/nistir7695.pdf</a></li><li>Identifier URL: <a href="https://csrc.nist.gov/pubs/ir/7695/final">https://csrc.nist.gov/pubs/ir/7695/final</a></li><li>SHA-256: <code>01553a4638b21eda10018690b71162e91605d78eb15850f881bd0b2b691ac3f6</code></li></ul>
+<h2>Specification</h2>
+<table><tbody><tr><td>Authors</td><td>Brant A. Cheikes, David Waltermire, Karen Scarfone</td></tr><tr><td>Date</td><td>2011-08</td></tr><tr><td>Publisher</td><td>National Institute of Standards and Technology (NIST), Computer Security Division</td></tr><tr><td>Version</td><td>2.3</td></tr><tr><td>doi</td><td><a href="https://doi.org/10.6028/NIST.IR.7695">10.6028/NIST.IR.7695</a></td></tr><tr><td>nist</td><td>NIST IR 7695</td></tr><tr><td>Pages</td><td>49</td></tr><tr><td>Media type</td><td>application/pdf</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge none">none</span></td></tr><tr><td>This project</td><td><span class="badge core">core</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
+<h2>Tags</h2>
+<table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">naming</span> <span class="badge">cpe</span></td></tr><tr><td class="rowhead">Role</td><td><span class="badge">normative</span></td></tr></tbody></table>
+<h2>Bears on</h2>
+<ul><li><code>DEC-001a</code></li><li><code>DEC-002</code></li><li><code>DEC-005</code></li><li><code>DEC-008</code></li><li><code>DEC-009</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> CPE is the name NVD keys its applicability data on and one of the strings tmodel&#x27;s accepted identifiers slot carries, so it is the bridge from a Component to a CVE where no ecosystem or distribution advisory covers the package.</p><p class="meta">Assessed 2026-10-19.</p>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> only — not crosswalk edges.</p><h3><code>see_also</code></h3><ul><li><a class="rec" data-id="nistir-7696" href="../../nist/nistir-7696/summary.html">NIST IR 7696 (CPE Name Matching 2.3)</a></li><li><a class="rec" data-id="nistir-7697" href="../../nist/nistir-7697/summary.html">NIST IR 7697 (CPE Dictionary 2.3)</a></li><li><a class="rec" data-id="nistir-7698" href="../../nist/nistir-7698/summary.html">NIST IR 7698 (CPE Applicability Language 2.3)</a></li><li><a class="rec" data-id="nvd-cpe-apis" href="../../nist/nvd-cpe-apis/summary.html">NVD CPE APIs 2.0</a></li></ul>
+
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec</td></tr><tr><td><strong>Maturity</strong></td><td>_unset_: a NIST Interagency Report, not a NIST SP or a ratified standard</td></tr><tr><td><strong>Authors</strong></td><td>Brant A. Cheikes (The MITRE Corporation), David Waltermire (NIST), Karen Scarfone (Scarfone Cybersecurity), as named in the Acknowledgments</td></tr><tr><td><strong>Publisher</strong></td><td>National Institute of Standards and Technology (NIST), Computer Security Division</td></tr><tr><td><strong>Published</strong></td><td>2011-08 (August 2011, 49 pages)</td></tr><tr><td><strong>Identifier</strong></td><td>nist: NIST IR 7695; doi: 10.6028/NIST.IR.7695</td></tr><tr><td><strong>Source</strong></td><td>https://nvlpubs.nist.gov/nistpubs/Legacy/IR/nistir7695.pdf</td></tr><tr><td><strong>Digest</strong></td><td><code>01553a4638b21eda10018690b71162e91605d78eb15850f881bd0b2b691ac3f6</code></td></tr><tr><td><strong>Licence</strong></td><td>No copyright or licence notice in the document. NIST&#x27;s employees&#x27; works are not subject to U.S. copyright, but two of the three authors were not NIST staff. &quot;CPE is a trademark of The MITRE Corporation.&quot; (p. iii)</td></tr></tbody></table>
+<h2>Overview</h2>
+<p>NIST IR 7695 defines CPE 2.3 naming. Its logical model is the well-formed CPE name (WFN): an unordered set of attribute-value pairs over eleven attributes (<code>part</code>, <code>vendor</code>, <code>product</code>, <code>version</code>, <code>update</code>, <code>edition</code>, <code>language</code>, <code>sw_edition</code>, <code>target_sw</code>, <code>target_hw</code>, <code>other</code>), whose values are restricted strings or the logical values ANY and NA. The WFN has two string bindings, a URI binding kept compatible with CPE 2.2 (<code>cpe:/a:...</code>) and the formatted string binding (<code>cpe:2.3:a:...</code>), and the document gives pseudocode to bind, unbind and convert between them, plus conformance rules for products that produce or consume CPE names (§4). A CPE names a class of products, never an instance (§5), and the specification governs only syntax: rules for which values are &quot;correct&quot; or &quot;valid&quot; for an attribute are out of scope (§5), so a well-formed CPE can still be a guess. Matching (NIST IR 7696), the dictionary (NIST IR 7697) and the applicability language (NIST IR 7698) are separate specifications with their own records.</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td>core</td><td>NVD keys its vulnerability applicability data on CPE names, so a CPE is how a component reaches a CVE wherever no ecosystem or distribution advisory covers it. SBOM generators such as Syft emit CPE candidates, and scanners such as Dependency-Check identify dependencies by CPE.</td></tr><tr><td>Cryptography</td><td>none</td><td>No signatures, digests or keys.</td></tr><tr><td>This project</td><td>core</td><td>tmodel&#x27;s accepted <code>identifiers</code> slot (DEC-001a, ADR-0010) carries CPE strings: the LinkML example and 16 strings in the example vectors. Because a CPE names a class, it is never instance identity (DEC-005, ADR-0002). It bears most on the open DEC-009 (where a CPE&#x27;s provenance lives, the comparison profile, the forms for Product and Component) and DEC-008 (which NVD data to mirror), and on RPT-0004&#x27;s candidate rules R-ID-2, R-ID-3, R-MATCH-1 and R-MERGE-2.</td></tr></tbody></table>
+<p>Bears on DEC-001a, DEC-002 and DEC-005 (accepted) and DEC-008 and DEC-009 (open). Kept as a stub for RPT-0004 (product composition, tmodel #38), then extracted to FX-1 for it. <code>distilled/design-notes.md</code> gives 6 adopt, 6 adapt and 6 reject items, 21 source defects and 20 open questions.</p>
+<h2>Implementations</h2>
+<p>Searched 2026-10-19: GitHub&#x27;s REST API for the repositories below (licences and latest releases). Commercial products were not surveyed.</p>
+<table><thead><tr><th>Name</th><th>Kind</th><th>License</th><th>URL</th></tr></thead><tbody><tr><td>CPE-Parser 3.0.1 (<code>us.springett:cpe-parser</code>)</td><td>Java library: validates and parses CPE 2.2 and 2.3 names</td><td>Apache-2.0</td><td>https://github.com/stevespringett/CPE-Parser</td></tr><tr><td><code>cpe</code> 1.3.1</td><td>Python library</td><td>LGPL-3.0</td><td>https://github.com/nilp0inter/cpe</td></tr><tr><td>go-cpe (no tagged release)</td><td>Go library for CPE 2.3</td><td>MIT</td><td>https://github.com/knqyf263/go-cpe</td></tr><tr><td>nvdtools v0.1.5, <code>wfn</code> package</td><td>Go tools for NVD feeds and the CPE dictionary (repository archived)</td><td>Apache-2.0</td><td>https://github.com/facebookincubator/nvdtools</td></tr><tr><td>Syft v1.54.1</td><td>SBOM generator that emits CPE candidates for each package (library record <code>anchore-syft</code>)</td><td>Apache-2.0</td><td>https://github.com/anchore/syft</td></tr><tr><td>Dependency-Check v13.0.0</td><td>scanner that identifies a dependency by CPE and links it to CVEs</td><td>Apache-2.0</td><td>https://github.com/dependency-check/DependencyCheck</td></tr></tbody></table>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata, labels and relations, and the FX-1 <code>distillation</code> block</td></tr><tr><td><code>distilled/README.md</code></td><td>index of the extracted artifacts and what each one covers</td></tr><tr><td><code>distilled/normative.md</code></td><td>the specification&#x27;s normative statements, ABNF rules, pseudocode steps and table rows, verbatim, with locators</td></tr><tr><td><code>distilled/requirements.yaml</code></td><td>one entry per requirement (<code>nistir-7695#R-NNNN</code>), reconciled against <code>bin/bcp14-count</code> and the lowercase forms by line</td></tr><tr><td><code>distilled/schema/</code></td><td>the four ABNF figures verbatim, a repaired <code>.derived.</code> grammar beside each, a derived JSON Schema for a WFN, and NIST&#x27;s CPE naming XML schema</td></tr><tr><td><code>distilled/messages.yaml</code></td><td>the WFN, its values and both bindings field by field: type, whether required, allowed characters, encoding and locators</td></tr><tr><td><code>distilled/examples/</code></td><td>the specification&#x27;s examples as fixtures plus derived positives and negatives, with expected results and a reference implementation of the §5 to §7 pseudocode</td></tr><tr><td><code>distilled/design-notes.md</code></td><td>what tmodel adopts, adapts or rejects, mapped to its decisions; a WFN-to-tmodel mapping; source defects; open questions</td></tr><tr><td><code>distilled/verification.md</code></td><td>the verify and cross-check record (passes 2 and 3)</td></tr></tbody></table>
+<p>Protocol and state machine are not applicable; the reasons are in <code>record.yaml</code>.</p>
+<h2>Limits</h2>
+<ul><li><strong>Syntax, not truth.</strong> The document defines how a name is spelled, not which vendor, product or version string is right; that is left to dictionaries (NIST IR 7697) and to whoever writes the name.</li><li><strong>A class, not an instance.</strong> &quot;WFNs are used solely for product classes. They cannot identify product instances&quot; (§5).</li><li><strong>The printed grammars and pseudocode are defective.</strong> None of the four ABNF figures is valid RFC 2234 ABNF as printed (<code>/=</code> where ABNF writes <code>=/</code>, continuation lines that begin with <code>=</code>, a small tilde U+02DC in Figure 6-1, <code>LANGTAG = cf. [RFC5646]</code>). <code>process_quoted_chars</code> as printed turns <code>8\.0\.6001</code> into <code>8..001</code>, against the document&#x27;s own examples. §6.1.1 says consumers MUST accept every Figure 6-1 URI, but <code>decode()</code> rejects some of them, and §7&#x27;s round-trip claim fails for uppercase names and unencoded tildes. The extraction keeps the literal text and records a repaired reading beside it.</li><li><strong>The model and its bindings disagree in places.</strong> Unbinding a URI lowercases values while unbinding a formatted string keeps case; a lone <code>?</code> is a valid WFN value that neither binding&#x27;s grammar (Figures 6-2 and 6-3) can express; NA for <code>part</code> or <code>language</code> binds to <code>-</code>, which the URI grammar rejects; and §5.2 says an attribute not used in a WFN &quot;SHALL default to the logical value ANY&quot;, while §5.3.1 says NA &quot;SHOULD be assigned&quot; when an attribute &quot;is not used as part of the description&quot;.</li><li><strong>Old.</strong> Published in August 2011. Whether NIST or NVD published errata for these defects is an open question in <code>distilled/design-notes.md</code>.</li></ul>
+
+<footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
+</main>
+</body>
+</html>

@@ -4,9 +4,9 @@ id: DL-0037
 title: "TARA draft v0 for mvp-02: the #184 fixes and a clause 15 page (#202 item 3)"
 type: process
 status: draft
-version: "0.1.1"
+version: "0.1.2"
 date: "2026-11-04"
-updated: "2026-11-10"
+updated: "2026-11-15"
 record: DL-0037
 bears_on: [DEC-001a, DEC-003]
 defers_to: ARCH-0001
@@ -177,3 +177,13 @@ select a risk metric while DEC-003 is open". That was out of date: ADR-0006 had 
 every `DEC-*` is open. Both lines now give the reason that holds: the page shows only what the model
 records, and calculating risk belongs in the engine (#63 Part 2). The page and its builder are
 unchanged. Found while reviewing #229.
+
+## Correction (2026-11-15)
+
+The page's clause 15.8 gap still said "the risk metric is still open (DEC-003)", the same out-of-date
+claim the 2026-11-10 correction fixed in this log. It now says ADR-0006 accepted the metric and
+derives risk per category from the 21434 table, and keeps the gap that holds: `RiskScore.risk` is
+one text field, with no field per category. Only `docs/publishing/tara.yaml` and the regenerated
+`docs/reports/tara-mvp-02.html` change. Found by the AI review recorded in the TCU governance record
+(DL-0054, `comment:tcu-tara-v1-dec-003`). `RiskScore`'s description in `spec/schema/` also still
+says "DEC-003 OPEN"; that is the sponsor's file (CODEOWNERS `/spec/`), so it is left for them.
