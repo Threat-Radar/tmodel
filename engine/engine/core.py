@@ -105,7 +105,9 @@ def _values(query: Mapping[str, str], allowed: tuple[str, ...], noun: str) -> di
     values: dict[str, str] = {}
     for name, value in query.items():
         if name not in allowed:
-            known = ", ".join(allowed[:-1]) + " or " + allowed[-1]
+            known = (
+                allowed[0] if len(allowed) == 1 else ", ".join(allowed[:-1]) + " or " + allowed[-1]
+            )
             raise ValueError(f"unknown {noun} {name!r}: use {known}")
         if not isinstance(value, str) or not value.strip():
             raise ValueError(f"{noun} {name!r} needs a value")
