@@ -116,10 +116,11 @@ function isCatalog(value: unknown): value is WeaknessCatalog {
 
 function isTableRow(value: unknown): value is WeaknessTableRow {
   return isObject(value)
-    && ["id", "weakness", "name", "status", "description", "url"]
+    && ["id", "weakness", "name", "status", "description"]
       .every((key) => typeof value[key] === "string")
     && optionalString(value.abstraction) && optionalString(value.structure)
     && optionalString(value.usage) && optionalString(value.likelihood)
+    && optionalString(value.url)
     && ["attack_patterns", "observed_examples", "mitigations"]
       .every((key) => isNonnegativeInteger(value[key]));
 }
@@ -132,11 +133,12 @@ function isFacets(value: unknown): value is WeaknessFacets {
 
 function isEntry(value: unknown): value is WeaknessEntry {
   return isObject(value)
-    && ["id", "kind", "name", "status", "description", "url"]
+    && ["id", "kind", "name", "status", "description"]
       .every((key) => typeof value[key] === "string")
     && optionalString(value.abstraction) && optionalString(value.structure)
     && optionalString(value.view_type) && optionalString(value.usage)
     && optionalString(value.likelihood) && isStringArray(value.alternate_terms)
+    && optionalString(value.url)
     && isStringArray(value.attack_patterns)
     && Array.isArray(value.observed_examples)
     && value.observed_examples.every((example) => isObject(example)

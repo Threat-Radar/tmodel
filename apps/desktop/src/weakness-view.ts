@@ -824,7 +824,12 @@ function rangeText(response: WeaknessTableResponse): string {
   return `${start}–${end} of ${response.total} matching ${response.total === 1 ? "weakness" : "weaknesses"}`;
 }
 
-function safeLinkRows(root: Document, label: string, value: string, linkLabel = value): HTMLElement[] {
+function safeLinkRows(
+  root: Document,
+  label: string,
+  value: string | null | undefined,
+  linkLabel: string,
+): HTMLElement[] {
   const url = safeHttpUrl(value);
   if (!url) return [];
   const wrapper = root.createElement("div");

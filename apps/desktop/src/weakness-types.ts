@@ -69,7 +69,7 @@ export interface WeaknessTableRow {
   attack_patterns: number;
   observed_examples: number;
   mitigations: number;
-  url: string;
+  url: string | null;
 }
 
 export interface WeaknessFacets {
@@ -125,7 +125,7 @@ export interface WeaknessEntry {
   attack_patterns: readonly string[];
   observed_examples: readonly WeaknessObservedExample[];
   mitigations: number;
-  url: string;
+  url: string | null;
   fields: Readonly<Record<string, CweFieldValue>>;
 }
 

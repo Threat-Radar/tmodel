@@ -1,13 +1,13 @@
 ---
 schema: "archdoc/v1"
-id: DL-0052
+id: DL-0060
 title: "CWE weaknesses table and full-entry inspector"
 type: process
 status: draft
 version: "0.1.0"
 date: "2026-11-15"
 updated: "2026-11-15"
-record: DL-0052
+record: DL-0060
 bears_on: [APP-0001, DL-0050, DL-0051]
 defers_to: ARCH-0001
 ---

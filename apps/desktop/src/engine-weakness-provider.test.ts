@@ -65,7 +65,91 @@ describe("engine weakness provider", () => {
     expect(() => parseWeaknessDetailResponse({ ...detail, objects: { assertions: "yes" } }))
       .toThrow("malformed weakness detail response");
   });
+
+  it("accepts PR #248 local table rows and detail entries with null URLs", () => {
+    const localTable = localTableResponse();
+    const localDetail = localDetailResponse();
+
+    expect(parseWeaknessTableResponse(localTable).rows[0]).toMatchObject({
+      id: "tr-weak-0001",
+      url: null,
+    });
+    expect(parseWeaknessDetailResponse(localDetail).entry).toMatchObject({
+      id: "tr-weak-0001",
+      url: null,
+    });
+  });
+
+  it("continues to accept CWE HTTPS URLs and rejects invalid URL types", () => {
+    expect(parseWeaknessTableResponse(fixture).rows[0].url)
+      .toBe("https://cwe.mitre.org/data/definitions/79.html");
+    expect(parseWeaknessDetailResponse(detailResponse()).entry?.url)
+      .toBe("https://cwe.mitre.org/data/definitions/79.html");
+
+    for (const url of [42, true, {}, []]) {
+      expect(() => parseWeaknessTableResponse(localTableResponse(url)))
+        .toThrow("malformed weakness table response");
+
+      expect(() => parseWeaknessDetailResponse(localDetailResponse(url)))
+        .toThrow("malformed weakness detail response");
+    }
+  });
 });
+
+function localTableResponse(url: unknown = null) {
+  return {
+    ...fixture,
+    total: 1,
+    count: 1,
+    rows: [{
+      id: "tr-weak-0001",
+      weakness: "weakness:tr-weak-0001",
+      name: "Sample local weakness one",
+      abstraction: "Class",
+      structure: "Simple",
+      status: "Draft",
+      usage: null,
+      likelihood: null,
+      description: "Not a real weakness type. It sits under CWE-710.",
+      attack_patterns: 1,
+      observed_examples: 0,
+      mitigations: 0,
+      url,
+    }],
+  };
+}
+
+function localDetailResponse(url: unknown = null) {
+  return {
+    ...detailResponse(),
+    id: "tr-weak-0001",
+    entry: {
+      ...detailResponse().entry,
+      id: "tr-weak-0001",
+      name: "Sample local weakness one",
+      status: "Draft",
+      abstraction: "Class",
+      structure: "Simple",
+      usage: null,
+      likelihood: null,
+      description: "Not a real weakness type. It sits under CWE-710.",
+      alternate_terms: ["first sample"],
+      attack_patterns: ["CAPEC-1"],
+      observed_examples: [],
+      mitigations: 0,
+      url,
+      fields: {
+        relationships: [{
+          nature: "ChildOf",
+          target: "CWE-710",
+          view: "CWE-1000",
+          ordinal: "Primary",
+        }],
+        extensions: { note: "an extension is kept as written" },
+      },
+    },
+  };
+}
 
 function detailResponse() {
   return {

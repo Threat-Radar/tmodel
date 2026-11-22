@@ -43,5 +43,6 @@ describe("CWE field presentation", () => {
 
   it("rejects malformed URLs", () => {
     expect(safeHttpUrl("not a URL")).toBeUndefined();
+    expect(safeHttpUrl(null)).toBeUndefined();
   });
 });

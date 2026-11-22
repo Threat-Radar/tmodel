@@ -83,6 +83,31 @@ describe("weaknesses view", () => {
     expect(data.getWeakness).not.toHaveBeenCalled();
   });
 
+  it("does not render an external link for a local weakness with a null URL", async () => {
+    const localRow = {
+      ...fixtureResponse.rows[0],
+      id: "tr-weak-0001",
+      weakness: "weakness:tr-weak-0001",
+      name: "Sample local weakness one",
+      status: "Draft",
+      url: null,
+    };
+    const data = provider(undefined, "row-only");
+    data.getTable = vi.fn(async () => ({
+      ...fixtureResponse,
+      total: 1,
+      count: 1,
+      rows: [localRow],
+    }));
+    const { view, elements } = viewHarness(data);
+    view.activate();
+    await settle();
+    await view.selectWeakness("tr-weak-0001");
+
+    expect(descendantsByTag(elements.detailList, "a")).toHaveLength(0);
+    expect(descendantText(elements.detailList)).not.toContain("Official definition");
+  });
+
   it("renders full detail fields as text and labels imported assertions as unreviewed proposals", async () => {
     const data = provider();
     data.getWeakness = vi.fn(async () => detailResponse());
