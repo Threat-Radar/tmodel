@@ -158,17 +158,22 @@ pushing this local update.
 
 # Human accepted / rejected
 
-**20 accepted; 20 pending.** @paria03 completed the MAESTRO and NIST samples on
+**29 accepted; 1 rejected; 10 pending.** @paria03 completed the MAESTRO, NIST and OWASP samples on
 2026-11-22. M01–M03 were accepted as general layer relationships; M04–M07 as
 interpreted links with the stated response, detection and accountability limits;
 M08–M10 follow the source's explicit control/threat pairings. Each actual decision
 has a person Review with its agreed justification. No acceptance establishes
 implementation, effectiveness or exhaustive threat coverage. Across the four
-fragments, 20 Assertions are accepted and the other 155 remain proposed.
+fragments, 29 Assertions are accepted and the other 146 remain proposed. One
+of those proposed Assertions has a rejecting human Review (O09).
 The N01–N10 acceptances retain the presented model-development scope and
 control-specific limits. They accept proposed relationships, not a NIST-approved
 crosswalk or evidence of implemented controls. The other two NIST Assertions
-remain proposed. OWASP and MCP sample decisions remain pending.
+remain proposed. The nine OWASP acceptances retain the presented partial,
+detection, recovery and investigation limits. O09 is rejected because quotas
+limit flooding without establishing message truth or integrity. Its rejecting
+Review is preserved, its Assertion stays proposed, and no replacement link is
+authored. Only the ten MCP sample decisions remain pending.
 The issue remains open until ten actual decisions per source are recorded.
 
 # Limits

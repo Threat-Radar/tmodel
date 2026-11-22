@@ -1,6 +1,6 @@
 # Human review packet for #170
 
-Owner: @paria03. **20 accepted; 20 pending.** This packet expands the exact targets in [the sample](agentic-review-sample.md). Completed cards mirror the actual Reviews recorded in the extraction YAML.
+Owner: @paria03. **29 accepted; 1 rejected; 10 pending.** This packet expands the exact targets in [the sample](agentic-review-sample.md). Completed cards mirror the actual Reviews recorded in the extraction YAML.
 
 For each card, open the source at the stated locator, check that the proposed Requirement is a fair paraphrase (including its strength), then decide whether it addresses the named threat. The mapping rationale is an automated proposal, not a source quotation or a human judgment. Accepting a link does not approve a product, verify a mitigation or certify a standard.
 
@@ -406,9 +406,9 @@ Access/version check: locate the December 2025 v1.1 playbook and printed page, n
 
 **Assertion:** `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-1-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t6`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as an interpreted relationship: restricting available tools reduces opportunities for goal manipulation. This is partial protection, not proof that manipulation is prevented.
 
 ### O02 · Playbook 2 / Step 1 / bullet 2 — Record access to agent memory.
 
@@ -424,9 +424,9 @@ Access/version check: locate the December 2025 v1.1 playbook and printed page, n
 
 **Assertion:** `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-2-addresses-owasp-agentic-threats-mitigations-v1-1-t1`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as an interpreted investigation relationship: memory access logs support investigation of memory poisoning. Logging does not prevent poisoning.
 
 ### O03 · Playbook 2 / Step 2 / bullet 5 — Capture agent-memory snapshots that support forensic…
 
@@ -442,9 +442,9 @@ Access/version check: locate the December 2025 v1.1 playbook and printed page, n
 
 **Assertion:** `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t1`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as an interpreted recovery relationship: memory snapshots support recovery from memory poisoning if a trustworthy snapshot exists.
 
 ### O04 · Playbook 3 / Step 1 / bullet 5 — Limit request rates for APIs and expensive computations.
 
@@ -460,9 +460,9 @@ Access/version check: locate the December 2025 v1.1 playbook and printed page, n
 
 **Assertion:** `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t4`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as an interpreted relationship: limiting expensive requests directly limits excessive consumption associated with resource overload.
 
 ### O05 · Playbook 3 / Step 3 / bullet 1 — Detect excessive agent workloads as requests arrive.
 
@@ -478,9 +478,9 @@ Access/version check: locate the December 2025 v1.1 playbook and printed page, n
 
 **Assertion:** `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t4`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as an interpreted detection relationship: detecting excessive workloads helps identify resource overload. A response is required to stop the overload.
 
 ### O06 · Playbook 4 / Step 1 / bullet 6 — Authenticate both participants before allowing agent-to-agent…
 
@@ -496,9 +496,9 @@ Access/version check: locate the December 2025 v1.1 playbook and printed page, n
 
 **Assertion:** `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-6-addresses-owasp-agentic-threats-mitigations-v1-1-t3`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as an interpreted relationship: authenticating communicating agents helps block unauthorized participants relevant to privilege compromise. Authentication alone does not enforce permissions.
 
 ### O07 · Playbook 4 / Step 3 / bullet 5 — Flag identity-related behavior inconsistent with the agent's…
 
@@ -514,9 +514,9 @@ Access/version check: locate the December 2025 v1.1 playbook and printed page, n
 
 **Assertion:** `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t9`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as an interpreted detection relationship: unusual identity behavior can help detect impersonation. Anomalies are not proof of impersonation.
 
 ### O08 · Playbook 5 / Step 3 / bullet 1 — Make decision audit records cryptographically protected and…
 
@@ -532,9 +532,9 @@ Access/version check: locate the December 2025 v1.1 playbook and printed page, n
 
 **Assertion:** `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-3-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t15`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as an indirect investigation relationship: protected decision audit logs support investigation of human manipulation. They do not prevent deceptive persuasion.
 
 ### O09 · Playbook 6 / Step 1 / bullet 8 — Apply per-agent quotas and rate limits to prevent request…
 
@@ -550,9 +550,9 @@ Access/version check: locate the December 2025 v1.1 playbook and printed page, n
 
 **Assertion:** `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-8-addresses-owasp-agentic-threats-mitigations-v1-1-t12`
 
-**Your decision:** pending
+**Your decision:** rejected
 
-**What you checked and why:** ____________________
+**What you checked and why:** Rejected the current control-to-threat connection: quotas limit flooding but do not establish message truth or integrity. Without an additional rationale, this control fits resource overload more directly than communication poisoning.
 
 ### O10 · Playbook 6 / Step 3 / bullet 6 — Compare decisions in similar situations and flag unexplained…
 
@@ -568,9 +568,9 @@ Access/version check: locate the December 2025 v1.1 playbook and printed page, n
 
 **Assertion:** `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-3-bullet-6-addresses-owasp-agentic-threats-mitigations-v1-1-t12`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as an interpreted detection relationship: contradictory agent decisions may reveal manipulation associated with communication poisoning. Contradictions alone are not proof.
 
 ## MCP Security Best Practices
 

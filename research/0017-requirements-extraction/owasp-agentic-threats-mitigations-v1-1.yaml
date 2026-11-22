@@ -1,5 +1,5 @@
-# owasp-agentic-threats-mitigations-v1-1: requirement extraction, AI-proposed, UNREVIEWED.
-# Agent: automated extraction. Human owner: @paria03. No human decisions are recorded by this extraction.
+# owasp-agentic-threats-mitigations-v1-1: AI-proposed requirement extraction; recorded human decisions appear in reviews.
+# Agent: automated extraction. Human owner: @paria03.
 # Source: library:owasp-agentic-threats-mitigations-v1-1; library snapshot e4068272cec52a92b4414ea2a88a23b7125ce79d; read 2026-11-14.
 # Record content digest: 65e3bd59f99c411b055c6caf2bac96ab361dff8c010e4bef532a593ce10345ff.
 # Coverage: 105 top-level mitigation bullets / 105 converted / 0 skipped (104 distinct bullet texts).
@@ -1015,7 +1015,7 @@ assertions:
   predicate: addresses
   object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t6
   confidence: medium
-  assertion_status: proposed
+  assertion_status: accepted
   description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 1 >
     Step 1 > top-level bullet 1 (printed p. 35; PDF page 36); Playbook 1 names this threat in its
     threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
@@ -1123,7 +1123,7 @@ assertions:
   predicate: addresses
   object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t1
   confidence: medium
-  assertion_status: proposed
+  assertion_status: accepted
   description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 2 >
     Step 1 > top-level bullet 2 (printed p. 36; PDF page 37); Playbook 2 names this threat in its
     threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
@@ -1222,7 +1222,7 @@ assertions:
   predicate: addresses
   object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t1
   confidence: medium
-  assertion_status: proposed
+  assertion_status: accepted
   description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 2 >
     Step 2 > top-level bullet 5 (printed p. 36; PDF page 37); Playbook 2 names this threat in its
     threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
@@ -1330,7 +1330,7 @@ assertions:
   predicate: addresses
   object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t4
   confidence: medium
-  assertion_status: proposed
+  assertion_status: accepted
   description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 >
     Step 1 > top-level bullet 5 (printed p. 38; PDF page 39); Playbook 3 names this threat in its
     threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
@@ -1429,7 +1429,7 @@ assertions:
   predicate: addresses
   object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t4
   confidence: medium
-  assertion_status: proposed
+  assertion_status: accepted
   description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 >
     Step 3 > top-level bullet 1 (printed p. 38; PDF page 39); Playbook 3 names this threat in its
     threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
@@ -1537,7 +1537,7 @@ assertions:
   predicate: addresses
   object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t3
   confidence: medium
-  assertion_status: proposed
+  assertion_status: accepted
   description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 4 >
     Step 1 > top-level bullet 6 (printed p. 39; PDF page 40); Playbook 4 names this threat in its
     threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
@@ -1636,7 +1636,7 @@ assertions:
   predicate: addresses
   object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t9
   confidence: medium
-  assertion_status: proposed
+  assertion_status: accepted
   description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 4 >
     Step 3 > top-level bullet 5 (printed p. 39; PDF page 40); Playbook 4 names this threat in its
     threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
@@ -1744,7 +1744,7 @@ assertions:
   predicate: addresses
   object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t15
   confidence: medium
-  assertion_status: proposed
+  assertion_status: accepted
   description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 5 >
     Step 3 > top-level bullet 1 (printed p. 40; PDF page 41); Playbook 5 names this threat in its
     threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
@@ -1951,7 +1951,70 @@ assertions:
   predicate: addresses
   object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t12
   confidence: medium
-  assertion_status: proposed
+  assertion_status: accepted
   description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 6 >
     Step 3 > top-level bullet 6 (printed p. 42; PDF page 43); Playbook 6 names this threat in its
     threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+reviews:
+- id: review:paria03-owasp-agentic-threats-mitigations-v1-1-playbook-1-step-1-bullet-1
+  reviews: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-1-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t6
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as an interpreted relationship: restricting available tools reduces opportunities
+    for goal manipulation. This is partial protection, not proof that manipulation is prevented.'
+- id: review:paria03-owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-2
+  reviews: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-2-addresses-owasp-agentic-threats-mitigations-v1-1-t1
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as an interpreted investigation relationship: memory access logs support investigation
+    of memory poisoning. Logging does not prevent poisoning.'
+- id: review:paria03-owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-5
+  reviews: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t1
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as an interpreted recovery relationship: memory snapshots support recovery
+    from memory poisoning if a trustworthy snapshot exists.'
+- id: review:paria03-owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-5
+  reviews: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t4
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as an interpreted relationship: limiting expensive requests directly limits
+    excessive consumption associated with resource overload.'
+- id: review:paria03-owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-1
+  reviews: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t4
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as an interpreted detection relationship: detecting excessive workloads helps
+    identify resource overload. A response is required to stop the overload.'
+- id: review:paria03-owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-6
+  reviews: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-6-addresses-owasp-agentic-threats-mitigations-v1-1-t3
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as an interpreted relationship: authenticating communicating agents helps block
+    unauthorized participants relevant to privilege compromise. Authentication alone does not enforce
+    permissions.'
+- id: review:paria03-owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-5
+  reviews: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t9
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as an interpreted detection relationship: unusual identity behavior can help
+    detect impersonation. Anomalies are not proof of impersonation.'
+- id: review:paria03-owasp-agentic-threats-mitigations-v1-1-playbook-5-step-3-bullet-1
+  reviews: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-3-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t15
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as an indirect investigation relationship: protected decision audit logs support
+    investigation of human manipulation. They do not prevent deceptive persuasion.'
+- id: review:paria03-owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-8
+  reviews: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-8-addresses-owasp-agentic-threats-mitigations-v1-1-t12
+  reviewer: party:paria03
+  review_status: rejected
+  justification: 'Rejected the current control-to-threat connection: quotas limit flooding but do not
+    establish message truth or integrity. Without an additional rationale, this control fits resource
+    overload more directly than communication poisoning.'
+- id: review:paria03-owasp-agentic-threats-mitigations-v1-1-playbook-6-step-3-bullet-6
+  reviews: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-3-bullet-6-addresses-owasp-agentic-threats-mitigations-v1-1-t12
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as an interpreted detection relationship: contradictory agent decisions may
+    reveal manipulation associated with communication poisoning. Contradictions alone are not proof.'
