@@ -1,6 +1,6 @@
 # Human review packet for #170
 
-Owner: @paria03. **10 accepted; 30 pending.** This packet expands the exact targets in [the sample](agentic-review-sample.md). Completed cards mirror the actual Reviews recorded in the extraction YAML.
+Owner: @paria03. **20 accepted; 20 pending.** This packet expands the exact targets in [the sample](agentic-review-sample.md). Completed cards mirror the actual Reviews recorded in the extraction YAML.
 
 For each card, open the source at the stated locator, check that the proposed Requirement is a fair paraphrase (including its strength), then decide whether it addresses the named threat. The mapping rationale is an automated proposal, not a source quotation or a human judgment. Accepting a link does not approve a product, verify a mitigation or certify a standard.
 
@@ -220,9 +220,9 @@ Strength check: an R recommendation remains recommended; a C consideration asks 
 
 **Assertion:** `assertion:sp-800-218a-po-5-1-r1-addresses-sp-800-218a-resource-exhaustion`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as a proposed relationship: resource and request limits address service exhaustion by limiting excessive consumption during model development.
 
 ### N02 · PO.5.1.R6 — Continuously check development environments for exposed…
 
@@ -238,9 +238,9 @@ Strength check: an R recommendation remains recommended; a C consideration asks 
 
 **Assertion:** `assertion:sp-800-218a-po-5-1-r6-addresses-sp-800-218a-disclosure`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as a proposed relationship: monitoring for exposed secrets addresses information disclosure from leaked secrets specifically, not every form of disclosure.
 
 ### N03 · PS.1.1.R2 — Minimize direct model and model-component access regardless of…
 
@@ -256,9 +256,9 @@ Strength check: an R recommendation remains recommended; a C consideration asks 
 
 **Assertion:** `assertion:sp-800-218a-ps-1-1-r2-addresses-sp-800-218a-weight-theft`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as a proposed relationship: restricting direct model access reduces opportunities for unauthorized access and model-weight theft.
 
 ### N04 · PS.1.3.R4 — Apply protections proportionate to weight-related risk, such as…
 
@@ -274,9 +274,9 @@ Strength check: an R recommendation remains recommended; a C consideration asks 
 
 **Assertion:** `assertion:sp-800-218a-ps-1-3-r4-addresses-sp-800-218a-weight-theft`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as a proposed relationship: encryption and access controls can protect model weights from theft. Hashes alone do not prevent theft.
 
 ### N05 · PW.3.1 — Check development data for poisoning, bias, excessive…
 
@@ -292,9 +292,9 @@ Strength check: an R recommendation remains recommended; a C consideration asks 
 
 **Assertion:** `assertion:sp-800-218a-pw-3-1-addresses-sp-800-218a-poisoning`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as a proposed relationship: checking development data for poisoning and tampering directly addresses poisoned training data.
 
 ### N06 · PW.3.1.R1 — Check dataset integrity and any known provenance before using…
 
@@ -310,9 +310,9 @@ Strength check: an R recommendation remains recommended; a C consideration asks 
 
 **Assertion:** `assertion:sp-800-218a-pw-3-1-r1-addresses-sp-800-218a-poisoning`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as a proposed relationship: data provenance and integrity checks help detect changes associated with poisoned data. A known origin does not guarantee safe content.
 
 ### N07 · PW.3.1.R2 — Choose suitable dataset-analysis and modification techniques…
 
@@ -328,9 +328,9 @@ Strength check: an R recommendation remains recommended; a C consideration asks 
 
 **Assertion:** `assertion:sp-800-218a-pw-3-1-r2-addresses-sp-800-218a-poisoning`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as a proposed relationship: data analysis, filtering and cleaning can identify or remove harmful data relevant to poisoning.
 
 ### N08 · PW.4.4.R2 — Inspect and extensively test acquired models and components for…
 
@@ -346,9 +346,9 @@ Strength check: an R recommendation remains recommended; a C consideration asks 
 
 **Assertion:** `assertion:sp-800-218a-pw-4-4-r2-addresses-sp-800-218a-supply-chain`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as a proposed relationship: testing acquired models and components for malicious content addresses supply-chain attacks.
 
 ### N09 · PW.5.1.R2 — Log, analyze and contextually validate model inputs and…
 
@@ -364,9 +364,9 @@ Strength check: an R recommendation remains recommended; a C consideration asks 
 
 **Assertion:** `assertion:sp-800-218a-pw-5-1-r2-addresses-sp-800-218a-injected-content`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as a proposed relationship: contextual input and output validation and sanitization address malicious content. Logging alone does not remove content.
 
 ### N10 · PW.5.1.R3 — Encode model inputs and outputs so they cannot trigger…
 
@@ -382,9 +382,9 @@ Strength check: an R recommendation remains recommended; a C consideration asks 
 
 **Assertion:** `assertion:sp-800-218a-pw-5-1-r3-addresses-sp-800-218a-injected-content`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as a proposed relationship: input and output encoding addresses unauthorized code execution from executable content, not every harmful output.
 
 ## OWASP Agentic AI Threats and Mitigations v1.1
 

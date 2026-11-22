@@ -1,6 +1,6 @@
 # Human review sample for #170
 
-Owner: @paria03. **10 accepted; 30 pending.** M01–M10 are recorded as Reviews in `csa-maestro-2025.yaml`. Select an actual accepting or rejecting decision only after checking each linked provision in the source and the rationale in the Assertion. Empty decision cells are intentional; do not treat this checklist as a Review.
+Owner: @paria03. **20 accepted; 20 pending.** M01–M10 and N01–N10 are recorded as Reviews in `csa-maestro-2025.yaml` and `sp-800-218a.yaml`, respectively. Select an actual accepting or rejecting decision only after checking each linked provision in the source and the rationale in the Assertion. Empty decision cells are intentional; do not treat this checklist as a Review.
 
 The sample is deterministic and spread across each source’s proposed links. These are 40 review targets, not 40 accepted links. See [coverage and provenance](agentic-coverage.md) and the [expanded review packet](agentic-review-packet.md), which includes the proposed text and rationale for each target.
 
@@ -23,16 +23,16 @@ The sample is deterministic and spread across each source’s proposed links. Th
 
 | Assertion / source locator | Proposed target | Human decision and reason |
 |---|---|---|
-| `assertion:sp-800-218a-po-5-1-r1-addresses-sp-800-218a-resource-exhaustion`<br>Table 1 (§3), PO.5.1 Recommendations/Considerations/Notes, R1, p. 10 | `threat-instance:sp-800-218a-resource-exhaustion` | |
-| `assertion:sp-800-218a-po-5-1-r6-addresses-sp-800-218a-disclosure`<br>Table 1 (§3), PO.5.1 Recommendations/Considerations/Notes, R6, p. 11 | `threat-instance:sp-800-218a-disclosure` | |
-| `assertion:sp-800-218a-ps-1-1-r2-addresses-sp-800-218a-weight-theft`<br>Table 1 (§3), PS.1.1 Recommendations/Considerations/Notes, R2, p. 11 | `threat-instance:sp-800-218a-weight-theft` | |
-| `assertion:sp-800-218a-ps-1-3-r4-addresses-sp-800-218a-weight-theft`<br>Table 1 (§3), PS.1.3 Recommendations/Considerations/Notes, R4, p. 12 | `threat-instance:sp-800-218a-weight-theft` | |
-| `assertion:sp-800-218a-pw-3-1-addresses-sp-800-218a-poisoning`<br>Table 1 (§3), PW.3.1, p. 14 | `threat-instance:sp-800-218a-poisoning` | |
-| `assertion:sp-800-218a-pw-3-1-r1-addresses-sp-800-218a-poisoning`<br>Table 1 (§3), PW.3.1 Recommendations/Considerations/Notes, R1, p. 14 | `threat-instance:sp-800-218a-poisoning` | |
-| `assertion:sp-800-218a-pw-3-1-r2-addresses-sp-800-218a-poisoning`<br>Table 1 (§3), PW.3.1 Recommendations/Considerations/Notes, R2, p. 15 | `threat-instance:sp-800-218a-poisoning` | |
-| `assertion:sp-800-218a-pw-4-4-r2-addresses-sp-800-218a-supply-chain`<br>Table 1 (§3), PW.4.4 Recommendations/Considerations/Notes, R2, p. 16 | `threat-instance:sp-800-218a-supply-chain` | |
-| `assertion:sp-800-218a-pw-5-1-r2-addresses-sp-800-218a-injected-content`<br>Table 1 (§3), PW.5.1 Recommendations/Considerations/Notes, R2, p. 16 | `threat-instance:sp-800-218a-injected-content` | |
-| `assertion:sp-800-218a-pw-5-1-r3-addresses-sp-800-218a-injected-content`<br>Table 1 (§3), PW.5.1 Recommendations/Considerations/Notes, R3, p. 16 | `threat-instance:sp-800-218a-injected-content` | |
+| `assertion:sp-800-218a-po-5-1-r1-addresses-sp-800-218a-resource-exhaustion`<br>Table 1 (§3), PO.5.1 Recommendations/Considerations/Notes, R1, p. 10 | `threat-instance:sp-800-218a-resource-exhaustion` | **Accepted (N01).** Accepted as a proposed relationship: resource and request limits address service exhaustion by limiting excessive consumption during model development. |
+| `assertion:sp-800-218a-po-5-1-r6-addresses-sp-800-218a-disclosure`<br>Table 1 (§3), PO.5.1 Recommendations/Considerations/Notes, R6, p. 11 | `threat-instance:sp-800-218a-disclosure` | **Accepted (N02).** Accepted as a proposed relationship: monitoring for exposed secrets addresses information disclosure from leaked secrets specifically, not every form of disclosure. |
+| `assertion:sp-800-218a-ps-1-1-r2-addresses-sp-800-218a-weight-theft`<br>Table 1 (§3), PS.1.1 Recommendations/Considerations/Notes, R2, p. 11 | `threat-instance:sp-800-218a-weight-theft` | **Accepted (N03).** Accepted as a proposed relationship: restricting direct model access reduces opportunities for unauthorized access and model-weight theft. |
+| `assertion:sp-800-218a-ps-1-3-r4-addresses-sp-800-218a-weight-theft`<br>Table 1 (§3), PS.1.3 Recommendations/Considerations/Notes, R4, p. 12 | `threat-instance:sp-800-218a-weight-theft` | **Accepted (N04).** Accepted as a proposed relationship: encryption and access controls can protect model weights from theft. Hashes alone do not prevent theft. |
+| `assertion:sp-800-218a-pw-3-1-addresses-sp-800-218a-poisoning`<br>Table 1 (§3), PW.3.1, p. 14 | `threat-instance:sp-800-218a-poisoning` | **Accepted (N05).** Accepted as a proposed relationship: checking development data for poisoning and tampering directly addresses poisoned training data. |
+| `assertion:sp-800-218a-pw-3-1-r1-addresses-sp-800-218a-poisoning`<br>Table 1 (§3), PW.3.1 Recommendations/Considerations/Notes, R1, p. 14 | `threat-instance:sp-800-218a-poisoning` | **Accepted (N06).** Accepted as a proposed relationship: data provenance and integrity checks help detect changes associated with poisoned data. A known origin does not guarantee safe content. |
+| `assertion:sp-800-218a-pw-3-1-r2-addresses-sp-800-218a-poisoning`<br>Table 1 (§3), PW.3.1 Recommendations/Considerations/Notes, R2, p. 15 | `threat-instance:sp-800-218a-poisoning` | **Accepted (N07).** Accepted as a proposed relationship: data analysis, filtering and cleaning can identify or remove harmful data relevant to poisoning. |
+| `assertion:sp-800-218a-pw-4-4-r2-addresses-sp-800-218a-supply-chain`<br>Table 1 (§3), PW.4.4 Recommendations/Considerations/Notes, R2, p. 16 | `threat-instance:sp-800-218a-supply-chain` | **Accepted (N08).** Accepted as a proposed relationship: testing acquired models and components for malicious content addresses supply-chain attacks. |
+| `assertion:sp-800-218a-pw-5-1-r2-addresses-sp-800-218a-injected-content`<br>Table 1 (§3), PW.5.1 Recommendations/Considerations/Notes, R2, p. 16 | `threat-instance:sp-800-218a-injected-content` | **Accepted (N09).** Accepted as a proposed relationship: contextual input and output validation and sanitization address malicious content. Logging alone does not remove content. |
+| `assertion:sp-800-218a-pw-5-1-r3-addresses-sp-800-218a-injected-content`<br>Table 1 (§3), PW.5.1 Recommendations/Considerations/Notes, R3, p. 16 | `threat-instance:sp-800-218a-injected-content` | **Accepted (N10).** Accepted as a proposed relationship: input and output encoding addresses unauthorized code execution from executable content, not every harmful output. |
 
 ## owasp-agentic-threats-mitigations-v1-1
 
