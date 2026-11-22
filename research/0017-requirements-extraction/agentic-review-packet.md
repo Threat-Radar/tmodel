@@ -1,10 +1,10 @@
 # Human review packet for #170
 
-Owner: @paria03. **29 accepted; 1 rejected; 10 pending.** This packet expands the exact targets in [the sample](agentic-review-sample.md). Completed cards mirror the actual Reviews recorded in the extraction YAML.
+Owner: @paria03. **39 accepted; 1 rejected; 0 pending.** This packet expands the exact targets in [the sample](agentic-review-sample.md). Completed cards mirror the actual Reviews recorded in the extraction YAML.
 
 For each card, open the source at the stated locator, check that the proposed Requirement is a fair paraphrase (including its strength), then decide whether it addresses the named threat. The mapping rationale is an automated proposal, not a source quotation or a human judgment. Accepting a link does not approve a product, verify a mitigation or certify a standard.
 
-Use the card label when replying, for example `N01: accept — <what you checked and why>` or `N01: reject — <why the link is unsupported>`. Mixed decisions are valid. Leave a card pending if you cannot access or verify its source. Decisions are recorded as model Reviews only after the human owner actually supplies them; the blank fields below are not Review objects.
+Use the card label when replying, for example `N01: accept — <what you checked and why>` or `N01: reject — <why the link is unsupported>`. Mixed decisions are valid. Leave a card pending if you cannot access or verify its source. Decisions are recorded as model Reviews only after the human owner actually supplies them; the decision fields below mirror those actual Review objects.
 
 [Coverage, source capture differences and licensing](agentic-coverage.md) remain part of the evidence. OWASP material is adapted from the OWASP GenAI Security Project, *Agentic AI — Threats and Mitigations v1.1* (December 2025), under [CC-BY-SA-4.0](https://creativecommons.org/licenses/by-sa/4.0/). Its historical PDF digest has not been reverified; the cached download attempts are HTML, so do not treat them as a checked PDF.
 
@@ -592,9 +592,9 @@ Version check: these provisions refer to the recorded dated-page capture. Its di
 
 **Assertion:** `assertion:mcp-spec-security-best-practices-confused-deputy-problem-mitigation-per-client-consent-addresses-mcp-spec-security-best-practices-confused-deputy-problem`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as a source-section relationship: per-client consent addresses confused-deputy attacks by preventing reuse of another client's consent.
 
 ### C02 · Confused Deputy Problem > Required Protections > Redirect URI Validation / redirect-match — Match requested redirect URIs exactly to registered values and…
 
@@ -610,9 +610,9 @@ Version check: these provisions refer to the recorded dated-page capture. Its di
 
 **Assertion:** `assertion:mcp-spec-security-best-practices-confused-deputy-problem-required-protections-redirect-uri-validation-redirect-match-addresses-mcp-spec-security-best-practices-confused-deputy-problem`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as a source-section relationship: exact redirect matching blocks redirect substitution relevant to confused-deputy attacks. Other authorization checks remain necessary.
 
 ### C03 · Token Passthrough > Mitigation / token-audience — Reject tokens unless they were issued specifically for this MCP…
 
@@ -628,9 +628,9 @@ Version check: these provisions refer to the recorded dated-page capture. Its di
 
 **Assertion:** `assertion:mcp-spec-security-best-practices-token-passthrough-mitigation-token-audience-addresses-mcp-spec-security-best-practices-token-passthrough`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as a source-section relationship: accepting only tokens explicitly issued for the MCP server enforces the intended token audience and addresses token passthrough.
 
 ### C04 · Server-Side Request Forgery (SSRF) > Mitigation > Validate Redirect Targets / redirect-targets — Reapply URL scheme and address restrictions at each redirect…
 
@@ -646,9 +646,9 @@ Version check: these provisions refer to the recorded dated-page capture. Its di
 
 **Assertion:** `assertion:mcp-spec-security-best-practices-server-side-request-forgery-ssrf-mitigation-validate-redirect-targets-redirect-targets-addresses-mcp-spec-security-best-practices-server-side-request-forgery-ssrf`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as a source-section relationship: validating every redirect destination addresses SSRF by preventing redirects from bypassing destination restrictions.
 
 ### C05 · Session Hijacking > Mitigation / unpredictable-session-id — Assign secure session identifiers that cannot be predicted…
 
@@ -664,9 +664,9 @@ Version check: these provisions refer to the recorded dated-page capture. Its di
 
 **Assertion:** `assertion:mcp-spec-security-best-practices-session-hijacking-mitigation-unpredictable-session-id-addresses-mcp-spec-security-best-practices-session-hijacking`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as a source-section relationship: unpredictable session identifiers reduce guessing relevant to session hijacking. They do not protect an already stolen identifier.
 
 ### C06 · Local MCP Server Compromise > Mitigation / one-click-consent — Obtain informed consent before running commands supplied…
 
@@ -682,9 +682,9 @@ Version check: these provisions refer to the recorded dated-page capture. Its di
 
 **Assertion:** `assertion:mcp-spec-security-best-practices-local-mcp-server-compromise-mitigation-one-click-consent-addresses-mcp-spec-security-best-practices-local-mcp-server-compromise`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as a source-section relationship: informed consent before local commands adds human scrutiny relevant to local-server compromise. Consent does not prove a command safe.
 
 ### C07 · OAuth Authorization URL Validation > Mitigation > URL Scheme Validation / validate-schemes — Check authorization URL schemes and reject dangerous ones.
 
@@ -700,9 +700,9 @@ Version check: these provisions refer to the recorded dated-page capture. Its di
 
 **Assertion:** `assertion:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-url-scheme-validation-validate-schemes-addresses-mcp-spec-security-best-practices-oauth-authorization-url-validation`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as a source-section relationship: rejecting dangerous authorization URL schemes blocks code execution through dangerous URL handlers.
 
 ### C08 · OAuth Authorization URL Validation > Mitigation > URL Scheme Validation / prefer-allowlist — Validate authorization URLs against permitted schemes rather…
 
@@ -718,9 +718,9 @@ Version check: these provisions refer to the recorded dated-page capture. Its di
 
 **Assertion:** `assertion:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-url-scheme-validation-prefer-allowlist-addresses-mcp-spec-security-best-practices-oauth-authorization-url-validation`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as a source-section relationship: allowlisting authorization URL schemes reduces gaps from incomplete blocklists relevant to code execution.
 
 ### C09 · OAuth Authorization URL Validation > Mitigation > Secure URL Opening / native-url-opener — Use the platform URL-opening facility that does not execute a…
 
@@ -736,9 +736,9 @@ Version check: these provisions refer to the recorded dated-page capture. Its di
 
 **Assertion:** `assertion:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-secure-url-opening-native-url-opener-addresses-mcp-spec-security-best-practices-oauth-authorization-url-validation`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as a source-section relationship: opening URLs without a shell avoids shell-command injection through URLs.
 
 ### C10 · stdio Transport Security in Proxy Scenarios > Mitigation > Client-Side Protections / proxy-isolation — Isolate proxy communication and constrain proxy privileges with…
 
@@ -754,6 +754,6 @@ Version check: these provisions refer to the recorded dated-page capture. Its di
 
 **Assertion:** `assertion:mcp-spec-security-best-practices-stdio-transport-security-in-proxy-scenarios-mitigation-client-side-protections-proxy-isolation-addresses-mcp-spec-security-best-practices-stdio-transport-security-in-proxy-scenarios`
 
-**Your decision:** pending
+**Your decision:** accepted
 
-**What you checked and why:** ____________________
+**What you checked and why:** Accepted as a source-section relationship: isolating and restricting proxy processes limits damage from system compromise. It does not eliminate the underlying vulnerability.

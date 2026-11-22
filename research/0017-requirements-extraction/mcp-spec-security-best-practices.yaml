@@ -1,5 +1,5 @@
-# mcp-spec-security-best-practices: requirement extraction, AI-proposed, UNREVIEWED.
-# Agent: automated extraction. Human owner: @paria03. No human decisions are recorded by this extraction.
+# mcp-spec-security-best-practices: AI-proposed requirement extraction; recorded human decisions appear in reviews.
+# Agent: automated extraction. Human owner: @paria03.
 # Source: library:mcp-spec-security-best-practices; library snapshot e4068272cec52a92b4414ea2a88a23b7125ce79d; read 2026-11-14.
 # Record content digest: 95beaace4d676d89e92d94751bab1ad4c9870e1458bc5f6f7eae8dd8bbc75bec.
 # Coverage: 34 uppercase MUST/SHOULD clauses / 34 converted / 0 skipped within this scope.
@@ -333,7 +333,7 @@ assertions:
   predicate: addresses
   object: threat-instance:mcp-spec-security-best-practices-confused-deputy-problem
   confidence: medium
-  assertion_status: proposed
+  assertion_status: accepted
   description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Confused Deputy Problem > Mitigation;
     control appears in the named attack section, so the link is proposed at that section scope.'
 - id: assertion:mcp-spec-security-best-practices-confused-deputy-problem-required-protections-per-client-consent-storage-consent-registry-addresses-mcp-spec-security-best-practices-confused-deputy-problem
@@ -368,7 +368,7 @@ assertions:
   predicate: addresses
   object: threat-instance:mcp-spec-security-best-practices-confused-deputy-problem
   confidence: medium
-  assertion_status: proposed
+  assertion_status: accepted
   description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Confused Deputy Problem > Required Protections
     > Redirect URI Validation; control appears in the named attack section, so the link is proposed
     at that section scope.'
@@ -395,7 +395,7 @@ assertions:
   predicate: addresses
   object: threat-instance:mcp-spec-security-best-practices-token-passthrough
   confidence: medium
-  assertion_status: proposed
+  assertion_status: accepted
   description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Token Passthrough > Mitigation; control
     appears in the named attack section, so the link is proposed at that section scope.'
 - id: assertion:mcp-spec-security-best-practices-server-side-request-forgery-ssrf-mitigation-ssrf-protection-addresses-mcp-spec-security-best-practices-server-side-request-forgery-ssrf
@@ -430,7 +430,7 @@ assertions:
   predicate: addresses
   object: threat-instance:mcp-spec-security-best-practices-server-side-request-forgery-ssrf
   confidence: medium
-  assertion_status: proposed
+  assertion_status: accepted
   description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Server-Side Request Forgery (SSRF) >
     Mitigation > Validate Redirect Targets; control appears in the named attack section, so the link
     is proposed at that section scope.'
@@ -464,7 +464,7 @@ assertions:
   predicate: addresses
   object: threat-instance:mcp-spec-security-best-practices-session-hijacking
   confidence: medium
-  assertion_status: proposed
+  assertion_status: accepted
   description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Session Hijacking > Mitigation; control
     appears in the named attack section, so the link is proposed at that section scope.'
 - id: assertion:mcp-spec-security-best-practices-session-hijacking-mitigation-random-session-id-addresses-mcp-spec-security-best-practices-session-hijacking
@@ -488,7 +488,7 @@ assertions:
   predicate: addresses
   object: threat-instance:mcp-spec-security-best-practices-local-mcp-server-compromise
   confidence: medium
-  assertion_status: proposed
+  assertion_status: accepted
   description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Local MCP Server Compromise > Mitigation;
     control appears in the named attack section, so the link is proposed at that section scope.'
 - id: assertion:mcp-spec-security-best-practices-local-mcp-server-compromise-mitigation-pre-configuration-consent-command-consent-ui-addresses-mcp-spec-security-best-practices-local-mcp-server-compromise
@@ -522,7 +522,7 @@ assertions:
   predicate: addresses
   object: threat-instance:mcp-spec-security-best-practices-oauth-authorization-url-validation
   confidence: medium
-  assertion_status: proposed
+  assertion_status: accepted
   description: 'AI-proposed, 2026-11-14; unreviewed. Basis: OAuth Authorization URL Validation >
     Mitigation > URL Scheme Validation; control appears in the named attack section, so the link
     is proposed at that section scope.'
@@ -558,7 +558,7 @@ assertions:
   predicate: addresses
   object: threat-instance:mcp-spec-security-best-practices-oauth-authorization-url-validation
   confidence: medium
-  assertion_status: proposed
+  assertion_status: accepted
   description: 'AI-proposed, 2026-11-14; unreviewed. Basis: OAuth Authorization URL Validation >
     Mitigation > URL Scheme Validation; control appears in the named attack section, so the link
     is proposed at that section scope.'
@@ -585,7 +585,7 @@ assertions:
   predicate: addresses
   object: threat-instance:mcp-spec-security-best-practices-oauth-authorization-url-validation
   confidence: medium
-  assertion_status: proposed
+  assertion_status: accepted
   description: 'AI-proposed, 2026-11-14; unreviewed. Basis: OAuth Authorization URL Validation >
     Mitigation > Secure URL Opening; control appears in the named attack section, so the link is
     proposed at that section scope.'
@@ -621,7 +621,68 @@ assertions:
   predicate: addresses
   object: threat-instance:mcp-spec-security-best-practices-stdio-transport-security-in-proxy-scenarios
   confidence: medium
-  assertion_status: proposed
+  assertion_status: accepted
   description: 'AI-proposed, 2026-11-14; unreviewed. Basis: stdio Transport Security in Proxy Scenarios
     > Mitigation > Client-Side Protections; control appears in the named attack section, so the link
     is proposed at that section scope.'
+reviews:
+- id: review:paria03-mcp-spec-security-best-practices-confused-deputy-problem-mitigation-per-client-consent
+  reviews: assertion:mcp-spec-security-best-practices-confused-deputy-problem-mitigation-per-client-consent-addresses-mcp-spec-security-best-practices-confused-deputy-problem
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as a source-section relationship: per-client consent addresses confused-deputy
+    attacks by preventing reuse of another client''s consent.'
+- id: review:paria03-mcp-spec-security-best-practices-confused-deputy-problem-required-protections-redirect-uri-validation-redirect-match
+  reviews: assertion:mcp-spec-security-best-practices-confused-deputy-problem-required-protections-redirect-uri-validation-redirect-match-addresses-mcp-spec-security-best-practices-confused-deputy-problem
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as a source-section relationship: exact redirect matching blocks redirect substitution
+    relevant to confused-deputy attacks. Other authorization checks remain necessary.'
+- id: review:paria03-mcp-spec-security-best-practices-token-passthrough-mitigation-token-audience
+  reviews: assertion:mcp-spec-security-best-practices-token-passthrough-mitigation-token-audience-addresses-mcp-spec-security-best-practices-token-passthrough
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as a source-section relationship: accepting only tokens explicitly issued for
+    the MCP server enforces the intended token audience and addresses token passthrough.'
+- id: review:paria03-mcp-spec-security-best-practices-server-side-request-forgery-ssrf-mitigation-validate-redirect-targets-redirect-targets
+  reviews: assertion:mcp-spec-security-best-practices-server-side-request-forgery-ssrf-mitigation-validate-redirect-targets-redirect-targets-addresses-mcp-spec-security-best-practices-server-side-request-forgery-ssrf
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as a source-section relationship: validating every redirect destination addresses
+    SSRF by preventing redirects from bypassing destination restrictions.'
+- id: review:paria03-mcp-spec-security-best-practices-session-hijacking-mitigation-unpredictable-session-id
+  reviews: assertion:mcp-spec-security-best-practices-session-hijacking-mitigation-unpredictable-session-id-addresses-mcp-spec-security-best-practices-session-hijacking
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as a source-section relationship: unpredictable session identifiers reduce
+    guessing relevant to session hijacking. They do not protect an already stolen identifier.'
+- id: review:paria03-mcp-spec-security-best-practices-local-mcp-server-compromise-mitigation-one-click-consent
+  reviews: assertion:mcp-spec-security-best-practices-local-mcp-server-compromise-mitigation-one-click-consent-addresses-mcp-spec-security-best-practices-local-mcp-server-compromise
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as a source-section relationship: informed consent before local commands adds
+    human scrutiny relevant to local-server compromise. Consent does not prove a command safe.'
+- id: review:paria03-mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-url-scheme-validation-validate-schemes
+  reviews: assertion:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-url-scheme-validation-validate-schemes-addresses-mcp-spec-security-best-practices-oauth-authorization-url-validation
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as a source-section relationship: rejecting dangerous authorization URL schemes
+    blocks code execution through dangerous URL handlers.'
+- id: review:paria03-mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-url-scheme-validation-prefer-allowlist
+  reviews: assertion:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-url-scheme-validation-prefer-allowlist-addresses-mcp-spec-security-best-practices-oauth-authorization-url-validation
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as a source-section relationship: allowlisting authorization URL schemes reduces
+    gaps from incomplete blocklists relevant to code execution.'
+- id: review:paria03-mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-secure-url-opening-native-url-opener
+  reviews: assertion:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-secure-url-opening-native-url-opener-addresses-mcp-spec-security-best-practices-oauth-authorization-url-validation
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as a source-section relationship: opening URLs without a shell avoids shell-command
+    injection through URLs.'
+- id: review:paria03-mcp-spec-security-best-practices-stdio-transport-security-in-proxy-scenarios-mitigation-client-side-protections-proxy-isolation
+  reviews: assertion:mcp-spec-security-best-practices-stdio-transport-security-in-proxy-scenarios-mitigation-client-side-protections-proxy-isolation-addresses-mcp-spec-security-best-practices-stdio-transport-security-in-proxy-scenarios
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as a source-section relationship: isolating and restricting proxy processes
+    limits damage from system compromise. It does not eliminate the underlying vulnerability.'

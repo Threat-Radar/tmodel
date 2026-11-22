@@ -158,13 +158,13 @@ pushing this local update.
 
 # Human accepted / rejected
 
-**29 accepted; 1 rejected; 10 pending.** @paria03 completed the MAESTRO, NIST and OWASP samples on
+**39 accepted; 1 rejected; 0 pending.** @paria03 completed all four source samples on
 2026-11-22. M01–M03 were accepted as general layer relationships; M04–M07 as
 interpreted links with the stated response, detection and accountability limits;
 M08–M10 follow the source's explicit control/threat pairings. Each actual decision
 has a person Review with its agreed justification. No acceptance establishes
 implementation, effectiveness or exhaustive threat coverage. Across the four
-fragments, 29 Assertions are accepted and the other 146 remain proposed. One
+fragments, 39 Assertions are accepted and the other 136 remain proposed. One
 of those proposed Assertions has a rejecting human Review (O09).
 The N01–N10 acceptances retain the presented model-development scope and
 control-specific limits. They accept proposed relationships, not a NIST-approved
@@ -173,8 +173,19 @@ remain proposed. The nine OWASP acceptances retain the presented partial,
 detection, recovery and investigation limits. O09 is rejected because quotas
 limit flooding without establishing message truth or integrity. Its rejecting
 Review is preserved, its Assertion stays proposed, and no replacement link is
-authored. Only the ten MCP sample decisions remain pending.
-The issue remains open until ten actual decisions per source are recorded.
+authored. The ten MCP acceptances retain their source-section scope and the
+presented consent, session, authorization and damage-limitation caveats. The
+source capture/version limits remain unchanged. All 40 sample decisions are
+recorded; unsampled links remain proposed. PR review and CI after publication
+remain separate steps; this local completion does not close the issue.
+
+Final local review validation: all four fragments pass LinkML, reference integrity
+(512 objects, 430 references) and extraction rules (244 Requirements). The 40
+sample targets each have exactly one matching person Review and agreed rationale;
+39 are accepted and O09 is rejected. Source texts, IDs, locators, targets and
+confidence are unchanged from the published source-fix head. The review and
+coverage suites pass **30 tests**; archdoc passes with zero errors. These checks
+do not stand in for CI after pushing the human-review commits.
 
 # Limits
 
