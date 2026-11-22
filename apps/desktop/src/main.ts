@@ -26,6 +26,8 @@ import { SdlProgramView, sdlViewElements } from "./sdl-view";
 import { StaticPreviewApi } from "./static-api";
 import { StaticLibraryDataProvider } from "./static-library-provider";
 import { configurePreviewChrome, openInitialModel } from "./preview-bootstrap";
+import { createWeaknessProvider } from "./weakness-provider";
+import { weaknessViewElements, WeaknessesView } from "./weakness-view";
 
 const POLL_MS = 2000;
 // Vite replaces MODE at build time; the Pages bundle can therefore eliminate
@@ -140,6 +142,12 @@ window.addEventListener("DOMContentLoaded", () => {
     : new EngineLibraryDataProvider();
   const libraryUsesEngine = libraryProvider.metadata.source === "engine";
   const libraryView = new LibraryDocumentsView(libraryProvider, libraryViewElements());
+  // The published Pages app deliberately carries the small table fixture, while
+  // desktop uses the complete locally configured catalog unless explicitly
+  // switched to the development fixture.
+  const weaknessProvider = createWeaknessProvider(preview, parameters);
+  const weaknessUsesEngine = weaknessProvider.metadata.source === "engine";
+  const weaknessView = new WeaknessesView(weaknessProvider, weaknessViewElements());
 
   let lastEngineState: EngineState | undefined;
   let visibleView: string | undefined;
@@ -290,6 +298,15 @@ window.addEventListener("DOMContentLoaded", () => {
         libraryView.activate();
       },
     },
+    {
+      view: "weaknesses",
+      button: required("weakness-tab"),
+      panel: required("weakness-view-panel"),
+      activated: () => {
+        show("weaknesses");
+        weaknessView.activate();
+      },
+    },
     ...(!preview ? [{
       view: "sdl" as const,
       button: required<HTMLButtonElement>("sdl-tab"),
@@ -316,6 +333,7 @@ window.addEventListener("DOMContentLoaded", () => {
       lastEngineState = await refresh();
       void catalogStartup.engineStateChanged(lastEngineState);
       if (libraryUsesEngine) void libraryView.engineStateChanged(lastEngineState);
+      if (weaknessUsesEngine) void weaknessView.engineStateChanged(lastEngineState);
       if (visibleView === "graph" && explore?.usesEngine) void explore.startup.engineStateChanged(lastEngineState);
       if (visibleView === "sdl") void sdlView.engineStateChanged(lastEngineState);
     };
