@@ -45,10 +45,13 @@ loading or the graph/proposal permission allowlist.
    not an inferred inventory of verified threats to that product.
 5. Authored slot values form the baseline. Assertions for the seven typed link
    predicates listed in `coverage.LINKS` contribute only when their status is
-   `accepted`, at least one Review targets that Assertion, and every such Review
-   accepts it with a nonblank justification and a reviewer Party of kind `person`.
-   Missing, contrary or software-agent reviews exclude the Assertion. A human
-   review must accompany AI acceptance under ADR-0012; an accepted flag alone is
+   `accepted`, at least one recorded person Review targets that Assertion, and
+   every person Review accepts it with a nonblank text justification. Missing or
+   contrary human evidence excludes the Assertion. Non-person reviews neither
+   grant nor veto human acceptance; they remain recorded evidence. This uses
+   `engine.review.assertion_review_state`, the same helper as the TARA collector
+   in #242. A human review must accompany AI acceptance under ADR-0012;
+   an accepted flag alone is
    insufficient. Reviews are not last-wins. Slots already authored in the model
    remain baseline; this query does not revoke them or reconcile disputed models.
 6. Proposed Assertions never contribute to baseline counts. `proposed_assertions`

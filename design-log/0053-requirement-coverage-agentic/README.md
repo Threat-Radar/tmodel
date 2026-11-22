@@ -3,7 +3,7 @@ id: DL-0053
 title: Requirement coverage query and agentic source fragments
 status: draft
 date: 2026-11-14
-updated: 2026-11-20
+updated: 2026-11-21
 human_owner: paria03
 reviewed: false
 ---
@@ -83,6 +83,30 @@ Frontend typecheck/build and 373 tests, Rust fmt/clippy and four tests, 14 publi
 tests, archdoc and the identity/link guards passed. The unchanged pinned library
 has 550 records, zero errors and 122 existing warnings. The 40 human sample
 reviews are still pending.
+
+# Shared review rule (2026-11-21)
+
+The #242 review from @Clovier and @Maimcghee identified differing human-acceptance
+rules between TARA and coverage. This local companion fix uses the identical
+`engine.review.assertion_review_state` helper introduced by #242. Accepted
+Assertions need at least one person Review, with all person Reviews accepting
+and giving nonblank text justifications. Contrary human evidence still blocks
+acceptance; non-person Reviews neither grant nor veto it. Every source Review
+remains intact. The helper retains TARA's normalization of open verdict strings.
+Tests check agent verdicts added to a human acceptance and normalized accepted
+strings, alongside the existing missing-human, blank-justification and contrary-
+human cases. This is a query fix, not a human review or a decision on the pending
+version-governance proposals. No source fragment or sample decision changes.
+
+Local validation on Python 3.13: **549 engine tests passed, six skipped** (the
+five opt-in packaging checks and external full-catalog CWE test); a rebuilt
+sidecar then passed all **five packaged-engine tests**, including coverage after
+relocation. Frontend typecheck/build and 373 tests, Rust fmt/clippy and four
+tests, 14 publishing tests, archdoc, current browser preview and the publishing
+guards passed. Cross-consumer checks with #242 agreed on 12 evidence scenarios
+and both review orders, without changing the input. The helper and its unit
+tests are byte-identical on both branches. Fresh CI remains to be checked after
+pushing this local commit. The 40 human sample reviews remain pending.
 
 # Human accepted / rejected
 

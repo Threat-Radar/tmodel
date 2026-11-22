@@ -5,6 +5,7 @@ from typing import Any
 
 from engine.graph import GraphError
 from engine.model_graph import COLLECTION_DOMAIN_TYPES, project_model_graph
+from engine.review import assertion_review_state
 
 # Typed traversal only: dependencies and generic requirement derivation do not confer scope.
 LINKS = {
@@ -66,30 +67,13 @@ def collect(doc: Mapping[str, Any], product: str) -> dict[str, Any]:
 
     assertions = doc.get("assertions") or []
     reviews = doc.get("reviews") or []
+    parties = {party["id"]: party for party in doc.get("parties") or []}
 
     def verdicts(assertion: Mapping[str, Any]) -> list[Mapping[str, Any]]:
         return [r for r in reviews if r.get("reviews") == assertion["id"]]
 
-    def human_accepts(review: Mapping[str, Any]) -> bool:
-        reviewer = review.get("reviewer")
-        justification = review.get("justification")
-        if not isinstance(reviewer, str) or not isinstance(justification, str):
-            return False
-        kind, party = records.get(reviewer, (None, {}))
-        return (
-            review.get("review_status") == "accepted"
-            and bool(justification.strip())
-            and kind == "Party"
-            and party.get("party_kind") == "person"
-        )
-
     def accepted(assertion: Mapping[str, Any]) -> bool:
-        checked = verdicts(assertion)
-        return (
-            assertion.get("assertion_status") == "accepted"
-            and bool(checked)
-            and all(human_accepts(review) for review in checked)
-        )
+        return assertion_review_state(assertion, reviews, parties)["reviewed"]
 
     pending = []
     excluded = []

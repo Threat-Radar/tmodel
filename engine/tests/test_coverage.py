@@ -101,6 +101,33 @@ def test_acceptance_needs_human_and_no_contrary_review(doc):
     assert collect(doc, PRODUCT)["unaddressed_threats"]
 
 
+@pytest.mark.parametrize("verdict", ["accepted", "rejected", "changes_requested", None])
+def test_non_person_review_does_not_override_a_justified_human_acceptance(doc, verdict):
+    assertion = next(a for a in doc["assertions"] if a["id"] == "assertion:ai-req-addresses-pivot")
+    accept(doc, assertion)
+    expected = collect(doc, PRODUCT)
+    assert expected["unaddressed_threats"] == []
+    doc["parties"].append({"id": "party:agent", "party_kind": "software_agent"})
+    doc["reviews"].append(
+        {
+            "id": "review:agent",
+            "reviews": assertion["id"],
+            "reviewer": "party:agent",
+            "review_status": verdict,
+        }
+    )
+    assert collect(doc, PRODUCT) == expected
+
+
+def test_normalized_person_acceptance_matches_tara_review_rule(doc):
+    assertion = next(a for a in doc["assertions"] if a["id"] == "assertion:ai-req-addresses-pivot")
+    accept(doc, assertion)
+    expected = collect(doc, PRODUCT)
+    assertion["assertion_status"] = " Accepted "
+    doc["reviews"][-1]["review_status"] = " ACCEPTED "
+    assert collect(doc, PRODUCT) == expected
+
+
 def test_accepted_scope_and_satisfaction_assertions(doc):
     a = {
         "id": "assertion:scope",
