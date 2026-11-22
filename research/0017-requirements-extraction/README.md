@@ -5,9 +5,9 @@ title: "Requirement extraction: library provisions as core Requirements (ADR-001
 short_title: "Requirement extraction"
 type: research
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 date: "2026-11-03"
-updated: "2026-11-03"
+updated: "2026-11-21"
 bears_on: [DEC-001a, DEC-002, DEC-009]
 defers_to: ARCH-0001
 ---
@@ -46,7 +46,7 @@ requirements:
     text_origin: paraphrase        # paraphrase | verbatim (only if the licence allows) | authored
     requirement_kind: technical    # technical | process | audit | documentation | organizational | other
     normativity: mandatory         # mandatory | recommended | optional | informative | conditional
-    source_ref: "library:<record-id>#<designator>"
+    source_ref: "library:<record-id>#<encoded-designator>"
     source_locator: "<designator> (§x.y)"
     applies_to_family: ["family:<family>"]   # only if the source states the scope
 weaknesses: []        # stub nodes, only for targets a proposed link points at
@@ -74,6 +74,7 @@ reviews:              # one per link a human checked
 - **Allowed predicates:** `addresses`, `stated_as`, `satisfied_by`, and, between provisions of the same source, `refines`, `derived_from` and `conflicts_with`. Links between two sources (`maps_to`) belong to MAP-0001 (#67), not here.
 - **Licensed text is paraphrase only.** ISO, IEC, SAE and other paid standards get our own one-sentence paraphrase, with the clause in `source_locator`. Their wording is never copied, not even from a library `requirements.yaml` that holds it. Free sources (EU law, UNECE, NIST, CISA, OWASP, ETSI) may be `verbatim`, but a one-line paraphrase is preferred.
 - **Never invent.** Every Requirement points at a real designator or locator in the source. Do not make up ids, clauses, or CWE or CAPEC numbers. If unsure, leave the link out.
+- **Portable references.** `source_ref` uses a nonempty URI fragment: a source designator with reserved characters percent-encoded, or an explicitly local slug where the source has no designators. Keep the human-readable heading/clause path unchanged in `source_locator`; a local key is not a claimed website anchor or native clause number. Names must end at whole words; abbreviated display titles use an ellipsis rather than a cut word.
 - **GitHub ids only**, never real names.
 
 ## Workflow for a lane
@@ -103,7 +104,7 @@ It needs Python 3 and PyYAML, and reads `record.yaml` and `distilled/requirement
 | `text`, `text_origin` | Licensed source: empty, with `paraphrase`. Free source: the library's verbatim text, whitespace normalized, with `verbatim`; `--empty-text` leaves it empty instead. |
 | `normativity` | See the first table below. |
 | `requirement_kind` | A default, marked `# REVIEW:`; see the second table below. |
-| `source_ref` | `library:<record-id>#<designator>` |
+| `source_ref` | `library:<record-id>#<percent-encoded-designator>`; simple native keys such as `RQ-09-01` stay unchanged |
 | `source_locator` | The library's `locator`. When the designator is not already a word in it, it becomes `<designator> (<locator>)`. |
 | Header | The digest from `record.yaml` (`content.sha256`), the library commit, the read date, and the coverage, with every skip and its reason. |
 
@@ -141,7 +142,7 @@ python3 research/0017-requirements-extraction/check.py research/0017-requirement
 ```
 
 `linkml-validate` checks the shape against the core container, and `check-edges.py` checks that every reference resolves. `check.py` checks the rules above:
-- the five required fields, an id and `source_ref` that name the file's record, and no `verbatim` for a licensed record;
+- the five required fields, an id and `source_ref` that name the file's record, a valid nonempty URI fragment, and no `verbatim` for a licensed record;
 - no filled link slot, and only the allowed predicates, with `refines`, `derived_from` and `conflicts_with` staying in the file;
 - a `Basis:` in every Assertion's description;
 - `accepted` only with an accepting Review by a person, and `proposed` with none;
@@ -156,3 +157,7 @@ The `schema` workflow (`.github/workflows/schema.yml`) runs all three on every `
 - `requirement_kind` is a default from two library fields, not a reading of the provision. On the 49 ISO/SAE 21434 provisions in #196, it matched the lane's own choice for 45. The other 4 are judgement calls, which is why every kind is marked for review.
 - The converter reads the raw library v2 file. It does not use the library's v3 normalization loader (`bin/_requirements.py`), so that tmodel keeps to ADR-0012's reference-only rule. A record whose fields differ from the ones above needs a hand check.
 - The licence test is a heuristic. #154 owns the library-side decision on licensed text.
+
+## Changelog
+
+- **0.1.1 (2026-11-21):** Check portable URI fragments, percent-encode reserved native designator characters during conversion, and document whole-word display titles. The source locator remains human-readable; local extraction keys are not claimed source-issued clause numbers.

@@ -1,5 +1,5 @@
 # csa-maestro-2025: requirement extraction, AI-proposed, UNREVIEWED.
-# Human owner: @paria03. No human decisions are recorded by this extraction.
+# Agent: automated extraction. Human owner: @paria03. No human decisions are recorded by this extraction.
 # Source: library:csa-maestro-2025; library snapshot e4068272cec52a92b4414ea2a88a23b7125ce79d; read 2026-11-14.
 # Record content digest: (not recorded).
 # Coverage: 18 mitigation blocks / all 18 represented as 24 Requirements / 0 mitigation blocks skipped.
@@ -7,208 +7,196 @@
 # Seven layer Requirements are AUTHORED instantiations of one umbrella instruction.
 requirements:
 - id: requirement:csa-maestro-2025-layer-1-foundation-models
-  name: Layer 1 — Foundation Models — Tailor security controls for the foundation models layer to
-    its i
+  name: "Layer 1 — Foundation Models — Tailor security controls for the foundation models layer to its…"
   text: Tailor security controls for the foundation models layer to its identified threats.
   text_origin: authored
   requirement_kind: technical
   normativity: recommended
-  source_ref: library:csa-maestro-2025#Layer 1 — Foundation Models
+  source_ref: "library:csa-maestro-2025#layer-1-foundation-models"
   source_locator: '§3.2 A, Layer 1: Foundation Models; §3.2 C, Layer-Specific Mitigations'
 - id: requirement:csa-maestro-2025-layer-2-data-operations
-  name: Layer 2 — Data Operations — Tailor security controls for the data operations layer to its
-    ide
+  name: "Layer 2 — Data Operations — Tailor security controls for the data operations layer to its…"
   text: Tailor security controls for the data operations layer to its identified threats.
   text_origin: authored
   requirement_kind: technical
   normativity: recommended
-  source_ref: library:csa-maestro-2025#Layer 2 — Data Operations
+  source_ref: "library:csa-maestro-2025#layer-2-data-operations"
   source_locator: '§3.2 A, Layer 2: Data Operations; §3.2 C, Layer-Specific Mitigations'
 - id: requirement:csa-maestro-2025-layer-3-agent-frameworks
-  name: Layer 3 — Agent Frameworks — Tailor security controls for the agent frameworks layer to its
-    id
+  name: "Layer 3 — Agent Frameworks — Tailor security controls for the agent frameworks layer to its…"
   text: Tailor security controls for the agent frameworks layer to its identified threats.
   text_origin: authored
   requirement_kind: technical
   normativity: recommended
-  source_ref: library:csa-maestro-2025#Layer 3 — Agent Frameworks
+  source_ref: "library:csa-maestro-2025#layer-3-agent-frameworks"
   source_locator: '§3.2 A, Layer 3: Agent Frameworks; §3.2 C, Layer-Specific Mitigations'
 - id: requirement:csa-maestro-2025-layer-4-deployment-and-infrastructure
-  name: Layer 4 — Deployment and Infrastructure — Tailor security controls for the deployment and
-    infrastructure la
+  name: "Layer 4 — Deployment and Infrastructure — Tailor security controls for the deployment and infrastructure…"
   text: Tailor security controls for the deployment and infrastructure layer to its identified threats.
   text_origin: authored
   requirement_kind: technical
   normativity: recommended
-  source_ref: library:csa-maestro-2025#Layer 4 — Deployment and Infrastructure
+  source_ref: "library:csa-maestro-2025#layer-4-deployment-and-infrastructure"
   source_locator: '§3.2 A, Layer 4: Deployment and Infrastructure; §3.2 C, Layer-Specific Mitigations'
 - id: requirement:csa-maestro-2025-layer-5-evaluation-and-observability
-  name: Layer 5 — Evaluation and Observability — Tailor security controls for the evaluation and
-    observability lay
+  name: "Layer 5 — Evaluation and Observability — Tailor security controls for the evaluation and observability…"
   text: Tailor security controls for the evaluation and observability layer to its identified threats.
   text_origin: authored
   requirement_kind: technical
   normativity: recommended
-  source_ref: library:csa-maestro-2025#Layer 5 — Evaluation and Observability
+  source_ref: "library:csa-maestro-2025#layer-5-evaluation-and-observability"
   source_locator: '§3.2 A, Layer 5: Evaluation and Observability; §3.2 C, Layer-Specific Mitigations'
 - id: requirement:csa-maestro-2025-layer-6-security-and-compliance
-  name: Layer 6 — Security and Compliance — Tailor security controls for the security and compliance
-    layer to
+  name: "Layer 6 — Security and Compliance — Tailor security controls for the security and compliance layer…"
   text: Tailor security controls for the security and compliance layer to its identified threats.
   text_origin: authored
   requirement_kind: technical
   normativity: recommended
-  source_ref: library:csa-maestro-2025#Layer 6 — Security and Compliance
+  source_ref: "library:csa-maestro-2025#layer-6-security-and-compliance"
   source_locator: '§3.2 A, Layer 6: Security and Compliance; §3.2 C, Layer-Specific Mitigations'
 - id: requirement:csa-maestro-2025-layer-7-agent-ecosystem
-  name: Layer 7 — Agent Ecosystem — Tailor security controls for the agent ecosystem layer to its
-    ide
+  name: "Layer 7 — Agent Ecosystem — Tailor security controls for the agent ecosystem layer to its…"
   text: Tailor security controls for the agent ecosystem layer to its identified threats.
   text_origin: authored
   requirement_kind: technical
   normativity: recommended
-  source_ref: library:csa-maestro-2025#Layer 7 — Agent Ecosystem
+  source_ref: "library:csa-maestro-2025#layer-7-agent-ecosystem"
   source_locator: '§3.2 A, Layer 7: Agent Ecosystem; §3.2 C, Layer-Specific Mitigations'
 - id: requirement:csa-maestro-2025-defense-in-depth
-  name: Defense in Depth — Use several protective layers across the system
+  name: "Defense in Depth — Use several protective layers across the system."
   text: Use several protective layers across the system.
   text_origin: paraphrase
   requirement_kind: technical
   normativity: recommended
-  source_ref: library:csa-maestro-2025#Defense in Depth
+  source_ref: "library:csa-maestro-2025#defense-in-depth"
   source_locator: §3.2 C, Mitigation Strategies > Defense in Depth
 - id: requirement:csa-maestro-2025-secure-inter-layer-communication
-  name: Secure Inter-Layer Communication — Protect communication between architecture layers with
-    secure pro
+  name: "Secure Inter-Layer Communication — Protect communication between architecture layers with secure…"
   text: Protect communication between architecture layers with secure protocols.
   text_origin: paraphrase
   requirement_kind: technical
   normativity: recommended
-  source_ref: library:csa-maestro-2025#Secure Inter-Layer Communication
+  source_ref: "library:csa-maestro-2025#secure-inter-layer-communication"
   source_locator: §3.2 C, Mitigation Strategies > Secure Inter-Layer Communication
 - id: requirement:csa-maestro-2025-system-wide-monitoring
-  name: System-Wide Monitoring — Detect unusual behavior across the complete agent system
+  name: "System-Wide Monitoring — Detect unusual behavior across the complete agent system."
   text: Detect unusual behavior across the complete agent system.
   text_origin: paraphrase
   requirement_kind: technical
   normativity: recommended
-  source_ref: library:csa-maestro-2025#System-Wide Monitoring
+  source_ref: "library:csa-maestro-2025#system-wide-monitoring"
   source_locator: §3.2 C, Mitigation Strategies > System-Wide Monitoring
 - id: requirement:csa-maestro-2025-incident-response-plan
-  name: Incident Response Plan — Prepare a response plan for incidents affecting multiple architec
+  name: "Incident Response Plan — Prepare a response plan for incidents affecting multiple…"
   text: Prepare a response plan for incidents affecting multiple architecture layers.
   text_origin: paraphrase
   requirement_kind: process
   normativity: recommended
-  source_ref: library:csa-maestro-2025#Incident Response Plan
+  source_ref: "library:csa-maestro-2025#incident-response-plan"
   source_locator: §3.2 C, Mitigation Strategies > Incident Response Plan
 - id: requirement:csa-maestro-2025-adversarial-training
-  name: Adversarial Training — Train agents against adversarial inputs to improve their resilien
+  name: "Adversarial Training — Train agents against adversarial inputs to improve their…"
   text: Train agents against adversarial inputs to improve their resilience.
   text_origin: paraphrase
   requirement_kind: process
   normativity: recommended
-  source_ref: library:csa-maestro-2025#Adversarial Training
+  source_ref: "library:csa-maestro-2025#adversarial-training"
   source_locator: §3.2 C, Mitigation Strategies > Adversarial Training
 - id: requirement:csa-maestro-2025-formal-verification
-  name: Formal Verification — Use formal specifications and verification to check agent behavio
+  name: "Formal Verification — Use formal specifications and verification to check agent…"
   text: Use formal specifications and verification to check agent behavior and goal alignment.
   text_origin: paraphrase
   requirement_kind: process
   normativity: recommended
-  source_ref: library:csa-maestro-2025#Formal Verification
+  source_ref: "library:csa-maestro-2025#formal-verification"
   source_locator: §3.2 C, Mitigation Strategies > Formal Verification
 - id: requirement:csa-maestro-2025-explainable-ai-xai
-  name: Explainable AI (XAI) — Make agent decisions sufficiently transparent to support auditing
+  name: "Explainable AI (XAI) — Make agent decisions sufficiently transparent to support…"
   text: Make agent decisions sufficiently transparent to support auditing.
   text_origin: paraphrase
   requirement_kind: technical
   normativity: recommended
-  source_ref: library:csa-maestro-2025#Explainable AI (XAI)
+  source_ref: "library:csa-maestro-2025#explainable-ai-xai"
   source_locator: §3.2 C, Mitigation Strategies > Explainable AI (XAI)
 - id: requirement:csa-maestro-2025-red-teaming
-  name: Red Teaming — Exercise agent systems with simulated attacks to discover vulnera
+  name: "Red Teaming — Exercise agent systems with simulated attacks to discover…"
   text: Exercise agent systems with simulated attacks to discover vulnerabilities.
   text_origin: paraphrase
   requirement_kind: process
   normativity: recommended
-  source_ref: library:csa-maestro-2025#Red Teaming
+  source_ref: "library:csa-maestro-2025#red-teaming"
   source_locator: §3.2 C, Mitigation Strategies > Red Teaming
 - id: requirement:csa-maestro-2025-safety-monitoring
-  name: Safety Monitoring — Observe agent behavior during execution to detect unsafe actions
+  name: "Safety Monitoring — Observe agent behavior during execution to detect unsafe…"
   text: Observe agent behavior during execution to detect unsafe actions.
   text_origin: paraphrase
   requirement_kind: technical
   normativity: recommended
-  source_ref: library:csa-maestro-2025#Safety Monitoring
+  source_ref: "library:csa-maestro-2025#safety-monitoring"
   source_locator: §3.2 C, Mitigation Strategies > Safety Monitoring
 - id: requirement:csa-maestro-2025-single-agent-pattern
-  name: Single-Agent Pattern — Validate agent input and restrict modification of internal parame
+  name: "Single-Agent Pattern — Validate agent input and restrict modification of internal…"
   text: Validate agent input and restrict modification of internal parameters.
   text_origin: paraphrase
   requirement_kind: technical
   normativity: recommended
-  source_ref: library:csa-maestro-2025#Single-Agent Pattern
+  source_ref: "library:csa-maestro-2025#single-agent-pattern"
   source_locator: §4, Single-Agent Pattern > Mitigation
 - id: requirement:csa-maestro-2025-multi-agent-pattern
-  name: Multi-Agent Pattern — Validate inter-agent input and use protected communication with m
+  name: "Multi-Agent Pattern — Validate inter-agent input and use protected communication with…"
   text: Validate inter-agent input and use protected communication with mutual authentication.
   text_origin: paraphrase
   requirement_kind: technical
   normativity: recommended
-  source_ref: library:csa-maestro-2025#Multi-Agent Pattern
+  source_ref: "library:csa-maestro-2025#multi-agent-pattern"
   source_locator: §4, Multi-Agent Pattern > Mitigations
 - id: requirement:csa-maestro-2025-unconstrained-conversational-autonomy
-  name: Unconstrained Conversational Autonomy — Validate conversational input and apply safety filters
-    tailored t
+  name: "Unconstrained Conversational Autonomy — Validate conversational input and apply safety filters tailored…"
   text: Validate conversational input and apply safety filters tailored to the interaction.
   text_origin: paraphrase
   requirement_kind: technical
   normativity: recommended
-  source_ref: library:csa-maestro-2025#Unconstrained Conversational Autonomy
+  source_ref: "library:csa-maestro-2025#unconstrained-conversational-autonomy"
   source_locator: §4, Unconstrained Conversational Autonomy > Mitigations
 - id: requirement:csa-maestro-2025-task-oriented-agent-pattern
-  name: Task-Oriented Agent Pattern — Protect API-based agents with request-rate controls and load
-    bala
+  name: "Task-Oriented Agent Pattern — Protect API-based agents with request-rate controls and load…"
   text: Protect API-based agents with request-rate controls and load balancing.
   text_origin: paraphrase
   requirement_kind: technical
   normativity: recommended
-  source_ref: library:csa-maestro-2025#Task-Oriented Agent Pattern
+  source_ref: "library:csa-maestro-2025#task-oriented-agent-pattern"
   source_locator: §4, Task-Oriented Agent Pattern > Mitigations
 - id: requirement:csa-maestro-2025-hierarchical-agent-pattern
-  name: Hierarchical Agent Pattern — Protect agent communication, constrain access and routinely
-    monit
+  name: "Hierarchical Agent Pattern — Protect agent communication, constrain access and routinely…"
   text: Protect agent communication, constrain access and routinely monitor hierarchical agents.
   text_origin: paraphrase
   requirement_kind: technical
   normativity: recommended
-  source_ref: library:csa-maestro-2025#Hierarchical Agent Pattern
+  source_ref: "library:csa-maestro-2025#hierarchical-agent-pattern"
   source_locator: §4, Hierarchical Agent Pattern > Mitigations
 - id: requirement:csa-maestro-2025-distributed-agent-ecosystem
-  name: Distributed Agent Ecosystem — Distinguish legitimate agents using strong identity management
-    an
+  name: "Distributed Agent Ecosystem — Distinguish legitimate agents using strong identity management…"
   text: Distinguish legitimate agents using strong identity management and reputation mechanisms.
   text_origin: paraphrase
   requirement_kind: technical
   normativity: recommended
-  source_ref: library:csa-maestro-2025#Distributed Agent Ecosystem
+  source_ref: "library:csa-maestro-2025#distributed-agent-ecosystem"
   source_locator: §4, Distributed Agent Ecosystem > Mitigations
 - id: requirement:csa-maestro-2025-human-in-the-loop-collaboration
-  name: 'Human-in-the-Loop Collaboration — Validate human input and retain auditable records of human-agent '
+  name: "Human-in-the-Loop Collaboration — Validate human input and retain auditable records of…"
   text: Validate human input and retain auditable records of human-agent interactions.
   text_origin: paraphrase
   requirement_kind: technical
   normativity: recommended
-  source_ref: library:csa-maestro-2025#Human-in-the-Loop Collaboration
+  source_ref: "library:csa-maestro-2025#human-in-the-loop-collaboration"
   source_locator: §4, Human-in-the-Loop Collaboration > Mitigations
 - id: requirement:csa-maestro-2025-self-learning-and-adaptive-agents
-  name: Self-Learning and Adaptive Agents — Clean and validate data used to train adaptive agents
+  name: "Self-Learning and Adaptive Agents — Clean and validate data used to train adaptive agents."
   text: Clean and validate data used to train adaptive agents.
   text_origin: paraphrase
   requirement_kind: technical
   normativity: recommended
-  source_ref: library:csa-maestro-2025#Self-Learning and Adaptive Agents
+  source_ref: "library:csa-maestro-2025#self-learning-and-adaptive-agents"
   source_locator: §4, Self-Learning and Adaptive Agents > Mitigations
 threat_instances:
 - id: threat-instance:csa-maestro-2025-layer-1-adversarial-examples

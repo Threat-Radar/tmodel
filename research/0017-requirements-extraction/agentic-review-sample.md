@@ -2,7 +2,7 @@
 
 Owner: @paria03. **No review has been performed or recorded here.** Select an actual accepting or rejecting decision only after checking each linked provision in the source and the rationale in the Assertion. Empty decision cells are intentional; do not treat this checklist as a Review.
 
-The sample is deterministic and spread across each source’s proposed links. These are 40 review targets, not 40 accepted links. See [coverage and provenance](agentic-coverage.md).
+The sample is deterministic and spread across each source’s proposed links. These are 40 review targets, not 40 accepted links. See [coverage and provenance](agentic-coverage.md) and the [expanded review packet](agentic-review-packet.md), which includes the proposed text and rationale for each target.
 
 ## csa-maestro-2025
 

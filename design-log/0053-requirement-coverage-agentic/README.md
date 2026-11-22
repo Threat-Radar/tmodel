@@ -35,8 +35,9 @@ invent source designators or catalog mappings. Push and open a PR, then check CI
   and an undecided human sample accompany them. Every assertion remains proposed;
   no Review, product assessment or family applicability is manufactured.
 - New library records are read at merged library snapshot
-  `e4068272cec52a92b4414ea2a88a23b7125ce79d`. The existing application pin remains
-  `a28a01375814accc5fe10cb2f5e7083c7d0401a5`; publication refresh belongs to #200.
+  `e4068272cec52a92b4414ea2a88a23b7125ce79d`. The original application pin was
+  `a28a01375814accc5fe10cb2f5e7083c7d0401a5`. After #200 merged, this branch
+  inherited `e406827` and its publication refresh from `main`.
 - Preserve the sparse declared scope in MVP-02: the gateway requirement is outside
   scope, matching #170's expected five. Derivation does not grant applicability.
 - Require actual human review evidence before an accepted Assertion contributes;
@@ -107,6 +108,52 @@ guards passed. Cross-consumer checks with #242 agreed on 12 evidence scenarios
 and both review orders, without changing the input. The helper and its unit
 tests are byte-identical on both branches. Fresh CI remains to be checked after
 pushing this local commit. The 40 human sample reviews remain pending.
+
+# Source review fixes (2026-11-21)
+
+@Maimcghee found display names cut inside words and invalid URI fragments in
+the new source files. @Clovier also identified the outdated library accounting
+and the missing actual human sample decisions. This update addresses the
+mechanical issues and prepares the evidence for those decisions.
+
+- Merge `main` at `18512e3`, including #200's `e406827` library pin and existing
+  publication refresh. All four source records now resolve in the pinned
+  submodule. The old `a28a013` lacked two records (MCP and OWASP), not three.
+- Give all 244 Requirements whole-word display titles, with an ellipsis for
+  abbreviation. Keep hyphenated terms intact. Replace 163 non-native reference
+  fragments with the local slug from each existing Requirement ID; leave NIST's
+  native designators unchanged. Source heading paths stay in `source_locator`.
+  These local slugs are not claimed website anchors or source-issued clauses.
+- Add URI-fragment checks and converter percent-encoding so schema validation
+  cannot silently allow spaces, angle brackets or malformed percent escapes in
+  future references. Regression tests cover both invalid fragments and encoded
+  locators while retaining readable locator text and stable object IDs.
+- Expand the same 40 sample targets into `agentic-review-packet.md`, with the
+  proposed text, target, locator, rationale and blank human decision/reason.
+  Flag MAESTRO's partial layer mappings, missing Identity Attack link, and
+  explicit-versus-interpreted associations for the human scope check. No
+  proposal is deleted to avoid that review. Source-version and access limits
+  remain visible; the cached OWASP download attempts are HTML, not evidence
+  that the historical PDF digest was checked.
+
+A semantic comparison with the prior files confirms that all 244 full texts,
+IDs, source locators, kinds and normativity values, all 175 proposed Assertions
+and their targets/confidence, and every Party/Review collection are unchanged.
+The packet has the exact original 40 Assertion IDs, ten per source, with all
+decisions still pending. No human approval or rejection is inferred from these
+formatting, validation or documentation fixes.
+
+Local validation: **550 engine tests passed, five opt-in packaging checks
+skipped**, with the full pinned 969-weakness CWE release enabled. Rebuilding
+the sidecar and running those packaging checks gave **five passes**. All ten
+extraction files passed LinkML, reference-integrity and extraction-rule checks;
+the converter/checker suite passed **12 tests**, and generated schemas are
+current. Frontend typecheck/build and 373 tests, Rust fmt/clippy and four tests,
+14 publishing tests, archdoc (28 documents, zero errors), preview freshness,
+published links and identity guards passed. The inherited library pin has
+685 records, zero errors and 99 existing warnings. Review-packet relative links
+and all four library references resolve. Fresh remote CI must be checked after
+pushing this local update.
 
 # Human accepted / rejected
 
