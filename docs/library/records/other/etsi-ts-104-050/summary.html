@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Securing Artificial Intelligence (SAI); AI Threat Ontology and definitions</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px 40px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); line-height: 1.15; letter-spacing: -0.03em; margin: 20px 0 6px; }
+h2 { font-size: 1.15rem; margin: 1.25em 0 0.3em; padding-top: 0.6em; border-top: 1px solid var(--line); }
+h3 { font-size: 1rem; margin: 1em 0 0.2em; }
+.kicker { margin: 18px 0 0; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.4em 0 0.8em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 6px 10px; font-size: 0.93rem; }
+table.kv { background: transparent; }
+table.kv td { border-bottom: none; padding: 2px 12px 2px 0; }
+td.rowhead { color: var(--muted); font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; width: 1%; padding-top: 6px; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../../../../index.html">tmodel</a><nav aria-label="Site"><a href="../../../../index.html">Home</a><a href="../../../../bibliography/index.html" aria-current="page">Bibliography</a><a href="../../../../reports/index.html">Reports</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">Library record · etsi-ts-104-050</p>
+<h1>Securing Artificial Intelligence (SAI); AI Threat Ontology and definitions</h1>
+<p class="lede">ETSI TS 104 050</p>
+<p>
+  <span class="badge">spec</span>
+  <span class="badge">other</span>
+  <span class="badge">stub</span>
+  <span class="badge">medium</span>
+</p>
+<p class="meta">Topic: <strong>sagai</strong> (<code>record.yaml</code> topic). Status <code>stub</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://www.etsi.org/deliver/etsi_ts/104000_104099/104050/01.01.01_60/ts_104050v010101p.pdf">https://www.etsi.org/deliver/etsi_ts/104000_104099/104050/01.01.01_60/ts_104050v010101p.pdf</a></li><li>SHA-256: <code>7a49a0c77b9bf766d2b198f5adac420d364de10c23a7cf69b208d98ffb0485c4</code></li></ul>
+<h2>Specification</h2>
+<table><tbody><tr><td>Authors</td><td>ETSI Technical Committee Securing Artificial Intelligence (SAI)</td></tr><tr><td>Date</td><td>2025-03</td></tr><tr><td>Publisher</td><td>ETSI</td></tr><tr><td>Version</td><td>V1.1.1</td></tr><tr><td>etsi</td><td>TS 104 050 V1.1.1</td></tr><tr><td>Media type</td><td>application/pdf</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge none">none</span></td></tr><tr><td>This project</td><td><span class="badge core">core</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
+<h2>Tags</h2>
+<table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">ai-security</span> <span class="badge">threat-modeling</span> <span class="badge">ontology</span></td></tr></tbody></table>
+<h2>Bears on</h2>
+<ul><li><code>DEC-001</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> ETSI&#x27;s ontology of AI threats (threats, threat agents, assets and their relationships), with AI as both threat agent and attack target: direct evidence for what a threat-model schema must represent.</p><p class="meta">Assessed 2026-11-02.</p>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> only — not crosswalk edges.</p><h3><code>see_also</code></h3><ul><li><a class="rec" data-id="etsi-en-304-223" href="../../other/etsi-en-304-223/summary.html">ETSI EN 304 223</a></li><li><a class="rec" data-id="etsi-tr-104-128" href="../../other/etsi-tr-104-128/summary.html">ETSI TR 104 128</a></li></ul>
+
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec (ETSI Technical Specification); <strong>stub</strong>: pinned, not extracted</td></tr><tr><td><strong>Publisher</strong></td><td>ETSI, TC Securing Artificial Intelligence (SAI)</td></tr><tr><td><strong>Version</strong></td><td>V1.1.1, 2025-03 (first published January 2022 as ETSI GR SAI 001)</td></tr><tr><td><strong>Source</strong></td><td>https://www.etsi.org/deliver/etsi_ts/104000_104099/104050/01.01.01_60/ts_104050v010101p.pdf</td></tr><tr><td><strong>Digest</strong></td><td><code>7a49a0c77b9bf766d2b198f5adac420d364de10c23a7cf69b208d98ffb0485c4</code></td></tr></tbody></table>
+<h2>Overview</h2>
+<p>ETSI&#x27;s definition of an AI threat. Its scope (clause 1) says it &quot;defines what an Artificial Intelligence (AI) threat is and defines how it can be distinguished from any non-AI threat&quot;, and presents the model &quot;in the form of an ontology to give a view of the relationships between actors representing threats, threat agents, assets and so forth&quot;. The ontology extends the threat and threat-agent taxonomy of ETSI TS 102 165-1, and it &quot;applies to AI both as a threat agent and as an attack target&quot; (clause 1, NOTE 1). The outline covers the move from taxonomy to ontology (clause 4), a threat landscape with adversarial goals, attack surface and a trust model (clause 5), and the core SAI ontology relationships (clause 6).</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td><code>core</code></td><td>A standards body&#x27;s model of AI threats and threat agents</td></tr><tr><td>Cryptography</td><td><code>none</code></td><td></td></tr><tr><td>This project</td><td><code>core</code></td><td>Evidence for what tmodel&#x27;s object model must represent for AI threats, including AI used as a tool by an attacker</td></tr></tbody></table>
+<p><code>bears_on: DEC-001</code>.</p>
+<h2>Status</h2>
+<p>A stub for tmodel #189 (2026-11-02), added because the RPT-0009 Phase 4 review (finding F-08) found it missing. Its History table gives two publications, &quot;V1.1.1 January 2022 Publication as ETSI GR SAI 001&quot; and &quot;V1.1.1 March 2025 Publication&quot;, and the Foreword says it &quot;updates and extends ETSI GR SAI 001&quot;. The library holds no GR SAI 001 record, so no <code>supersedes</code> link is made. Only the scope, foreword, history and outline were read.</p>
+<h2>Limits</h2>
+<ul><li>Not extracted. Its ontology has not been compared with tmodel&#x27;s object model or with RPT-0009&#x27;s gaps G1 to G10.</li><li>It points to ETSI TR 104 221 (problem statement) and TR 104 222 (mitigation strategies) as essential to its scope. Neither is held.</li></ul>
+
+<footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
+</main>
+</body>
+</html>

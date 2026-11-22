@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Recommendation for Block Cipher Modes of Operation: Methods for Key Wrapping</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px 40px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); line-height: 1.15; letter-spacing: -0.03em; margin: 20px 0 6px; }
+h2 { font-size: 1.15rem; margin: 1.25em 0 0.3em; padding-top: 0.6em; border-top: 1px solid var(--line); }
+h3 { font-size: 1rem; margin: 1em 0 0.2em; }
+.kicker { margin: 18px 0 0; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.4em 0 0.8em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 6px 10px; font-size: 0.93rem; }
+table.kv { background: transparent; }
+table.kv td { border-bottom: none; padding: 2px 12px 2px 0; }
+td.rowhead { color: var(--muted); font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; width: 1%; padding-top: 6px; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../../../../index.html">tmodel</a><nav aria-label="Site"><a href="../../../../index.html">Home</a><a href="../../../../bibliography/index.html" aria-current="page">Bibliography</a><a href="../../../../reports/index.html">Reports</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">Library record · sp-800-38f</p>
+<h1>Recommendation for Block Cipher Modes of Operation: Methods for Key Wrapping</h1>
+<p class="lede">SP 800-38F</p>
+<p>
+  <span class="badge">spec</span>
+  <span class="badge">nist</span>
+  <span class="badge">summarized</span>
+  <span class="badge">medium</span>
+</p>
+<p class="meta">Topic: <strong>nist-cryptography</strong> (<code>record.yaml</code> topic). Status <code>summarized</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38f.pdf">https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38f.pdf</a></li><li>Identifier URL: <a href="https://csrc.nist.gov/pubs/sp/800/38/f/final">https://csrc.nist.gov/pubs/sp/800/38/f/final</a></li><li>SHA-256: <code>b8b1052755448e5ff3913ea09dc9b5ae47a97886752525a0cccfa024fb072fa8</code></li></ul>
+<h2>Specification</h2>
+<table><tbody><tr><td>Authors</td><td>Morris Dworkin</td></tr><tr><td>Date</td><td>2012-12</td></tr><tr><td>Publisher</td><td>NIST</td></tr><tr><td>Version</td><td>800-38F</td></tr><tr><td>Maturity</td><td>best-practice</td></tr><tr><td>doi</td><td><a href="https://doi.org/10.6028/NIST.SP.800-38F">10.6028/NIST.SP.800-38F</a></td></tr><tr><td>nist</td><td>SP 800-38F</td></tr><tr><td>Media type</td><td>application/pdf</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge core">core</span></td></tr><tr><td>This project</td><td><span class="badge none">none</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
+<h2>Tags</h2>
+<table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">key-management</span></td></tr><tr><td class="rowhead">Body</td><td><span class="badge">nist</span></td></tr><tr><td class="rowhead">Role</td><td><span class="badge">background</span></td></tr></tbody></table>
+<h2>Bears on</h2>
+<p class="meta">No <code>bears_on</code> ids recorded. None were invented.</p>
+<h2>Usefulness</h2><p><span class="badge">useful</span> AES Key Wrap is the KW half of JOSE A128KW/A192KW/A256KW and of every ML-KEM+AxxxKW composite in draft-ietf-jose-pqc-kem. #8 lists it as ingest-if-needed; the post-quantum KEM draft is the path that needs it.</p><p class="meta">Assessed 2026-10-03.</p>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> only — not crosswalk edges.</p><h3><code>see_also</code></h3><ul><li><a class="rec" data-id="fips-197" href="../../nist/fips-197/summary.html">FIPS 197</a></li><li><a class="rec" data-id="rfc-7518" href="../../ietf/rfc-7518/summary.html">RFC 7518</a></li><li><a class="rec" data-id="draft-ietf-jose-pqc-kem" href="../../ietf/draft-ietf-jose-pqc-kem/summary.html">draft-ietf-jose-pqc-kem</a></li><li><a class="rec" data-id="sp-800-38d" href="../../nist/sp-800-38d/summary.html">SP 800-38D</a></li></ul>
+
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec</td></tr><tr><td><strong>Maturity</strong></td><td><code>best-practice</code> — a NIST Special Publication, not a FIPS</td></tr><tr><td><strong>Authors</strong></td><td>Morris Dworkin</td></tr><tr><td><strong>Published</strong></td><td>2012-12</td></tr><tr><td><strong>Identifier</strong></td><td>SP 800-38F · DOI 10.6028/NIST.SP.800-38F</td></tr><tr><td><strong>Source</strong></td><td>https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38f.pdf</td></tr><tr><td><strong>Digest</strong></td><td><code>sha256:b8b1052755448e5ff3913ea09dc9b5ae47a97886752525a0cccfa024fb072fa8</code></td></tr></tbody></table>
+<h2>Overview</h2>
+<p>Specifies the approved methods for <strong>key wrapping</strong> — protecting the confidentiality <em>and integrity</em> of cryptographic keys, as distinct from protecting ordinary data. It defines two AES modes, <strong>KW</strong> (AES Key Wrap) and <strong>KWP</strong> (Key Wrap With Padding), plus <strong>TKW</strong>, the Triple-DES analogue retained for legacy use.</p>
+<p>The document&#x27;s own framing is the point: KW and KWP are <strong>deterministic authenticated-encryption modes</strong>. Deterministic, because a key-wrapping operation has no safe place to put a nonce and no reliable source of one — which is exactly the constraint that makes GCM unsuitable for the job and this document necessary.</p>
+<p>#8 lists SP 800-38F as optional, to be ingested &quot;if the JOSE/COSE key-wrap path needs it&quot;. It does: <code>rfc-7518</code> registers <code>A128KW</code>/<code>A192KW</code>/<code>A256KW</code>, and every composite algorithm in <code>draft-ietf-jose-pqc-kem</code> — <code>ML-KEM-512+A128KW</code>, <code>ML-KEM-768+A192KW</code>, <code>ML-KEM-1024+A256KW</code> — wraps the encapsulated secret with exactly this mode.</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td><code>core</code></td><td>Key wrapping is its own problem with its own failure modes</td></tr><tr><td>Cryptography</td><td><code>core</code></td><td>Normative for KW/KWP</td></tr><tr><td>This project</td><td><code>none</code></td><td>We sign statements; we do not distribute keys</td></tr></tbody></table>
+<p><strong><code>bears_on</code> is empty, deliberately</strong> — as for the rest of the symmetric set. No ARCH-0001 requirement turns on key wrapping.</p>
+<p>Held to complete the post-quantum COSE picture: <code>draft-ietf-jose-pqc-kem</code>&#x27;s composites are half ML-KEM (<code>fips-203</code>) and half this document, and the library previously held only the first half.</p>
+<h2>Implementations</h2>
+<p>Searched <strong>2026-10-03</strong>. Well supported where JOSE/COSE key management is, and absent from Go&#x27;s standard library.</p>
+<table><thead><tr><th>Name</th><th>Kind</th><th>License</th><th>URL</th></tr></thead><tbody><tr><td>OpenSSL</td><td>open source</td><td>Apache-2.0</td><td>https://openssl.org</td></tr><tr><td>BouncyCastle</td><td>open source</td><td>MIT</td><td>https://bouncycastle.org</td></tr><tr><td>RustCrypto <code>aes-kw</code></td><td>open source</td><td>MIT / Apache-2.0</td><td>https://github.com/RustCrypto/key-wraps</td></tr></tbody></table>
+<p><strong>We use a vetted library. We do not implement these.</strong></p>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata</td></tr><tr><td><code>summary.md</code></td><td>this document</td></tr></tbody></table>
+<p>No <code>distilled.md</code>. Reference data we cite, not requirements we discharge.</p>
+<h2>Limits</h2>
+<ul><li><strong>Deterministic means no nonce, and therefore no nonce-reuse cliff</strong> — the opposite trade from <code>sp-800-38d</code>. Wrapping the same key twice under the same KEK yields identical ciphertext, which leaks <em>that fact</em> and nothing more. For key wrapping that is an acceptable leak; for messages it would not be, and KW must not be repurposed as a general AEAD.</li><li><strong>It is slow by construction.</strong> KW makes six passes over the data. That is deliberate — it buys security without a nonce — but it makes the mode a poor choice for anything but short key material.</li><li><strong>TKW is Triple-DES and should be treated as dead.</strong> It is specified here for legacy support; Triple-DES is disallowed for new use under current NIST transition guidance. Its presence in an approved document is not approval for new designs — the same trap as ECB in <code>sp-800-38a</code>.</li><li><strong>KW&#x27;s input must be a multiple of 8 bytes; KWP exists only to lift that.</strong> Choosing between them is an encoding decision, not a security one, and neither <code>rfc-7518</code> nor the PQ KEM draft is explicit that <code>AxxxKW</code> means KW rather than KWP.</li><li><strong>Key wrapping assumes the key-encryption key arrived safely.</strong> This document protects a key in transit under another key; where <em>that</em> key comes from is <code>sp-800-56ar3</code>, <code>fips-203</code>, or something outside the standards entirely. It is one link, not a chain.</li></ul>
+
+<footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
+</main>
+</body>
+</html>
