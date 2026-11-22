@@ -4,7 +4,7 @@ id: DL-0061
 title: "Product-side requirement extraction: ASVS 5, EU CRA Annex I and IEC 62443-4-1 (#171)"
 type: process
 status: draft
-version: "0.7.0"
+version: "0.8.0"
 date: "2026-11-16"
 updated: "2026-11-22"
 record: DL-0061
@@ -213,7 +213,9 @@ The Pages build uses `StaticPreviewApi`; `/coverage` intentionally returns 404 t
 
 ### Integration and tradeoffs
 
-- The view reuses the current navigation, table, status-chip, inspector, responsive and dark-mode styles rather than importing PR #250's branch or creating another design system. This minimizes semantic conflicts, though #250 will conflict mechanically around `index.html`, `main.ts`, navigation tests and shared table CSS when it is merged.
+- The three signed-off #171 commits were rebased onto `c29f9e99f83cb0c2542ef8128e08fe085a8b1c70`, which contains merged PR #250. Conflicts in `index.html`, `app-navigation.ts`, `app-navigation.test.ts`, `main.ts` and `styles.css` were resolved by retaining both independently initialized table views, both URL-hash routes and engine-state paths, and both responsive/dark-mode style sets. The combined `AppView` union and navigation tests include both `requirements` and `weaknesses`.
+- PR #250 and #171 had each supplied one side of an alternative HTML panel block. Retaining both alternatives initially left their shared closing tags ambiguous; the integration correction closes the Weaknesses inspector/workspace/panel before opening the Requirements panel. A focused application-shell regression checks both reciprocal tab/panel ARIA mappings, their sibling boundary, and uniqueness of every HTML id.
+- Generated Pages HTML, JavaScript and CSS conflicts were used only as temporary rebase placeholders. `docs/publishing/render_app.py` then removed obsolete assets and generated one bundle from the integrated source with all nine current example models and both table views.
 - PR #243 will add the real backend route and may conflict only if its response contract changes. The provider deliberately does not copy that backend implementation; it can be switched from fallback to the endpoint by merging #243 unchanged under the inspected contract.
 - The published graph JSON for every example changes because direct Requirement references and richer Assertion/Review provenance are now projected consistently. These are generated artifacts owned by `docs/publishing/render_app.py`, not hand edits.
 - Coverage is model-local. The three research extraction fragments remain standalone evidence and are not silently assigned to a Product or inserted into an example model.
@@ -230,9 +232,9 @@ Fourteen regression cases cover the three corrections, including actual Cytoscap
 
 ### GUI verification
 
-- Frontend: TypeScript typecheck passed; 406 tests passed across 33 files; the production Vite build passed. Tests cover table querying and pagination, product/missing-scope behavior, selection and source attribution, loading/error/retry, proposed-link isolation, authored-plus-Assertion provenance, multiple Assertions per edge, justified human-acceptance gating, conflicting Reviews, semantic endpoint validation, response identity, 404 fallback, non-404 failure, static-preview behavior, Requirement legend rendering and relationship-state styling.
-- Engine: Ruff check and format check passed; 522 tests passed and 6 packaging-dependent tests skipped. Projection tests cover every ADR-0012 direct relationship, authored provenance, independent evidence for multiple Assertions sharing an edge, and both accepted and proposed Assertion-backed relationships with source/Review metadata.
-- Publishing: `render_app.py --check` passed for 8 models and 685 library records; its 23 tests passed; 706-page relative-link validation passed; the identity guard checked 749 files with 6 protected identities enforced; architecture-document validation found 28 documents and 0 errors.
+- Frontend after PR #250 integration: TypeScript typecheck passed; 456 tests passed across 40 files; the production Vite 8.3.8 build passed. The combined suite includes the Requirements behavior below, PR #250's Weaknesses contract/view/indentation/accessibility regressions, navigation between both routes, and the two application-shell coexistence checks.
+- Engine: Ruff check and format check passed; 614 tests passed and 7 packaging-dependent tests skipped. Projection tests cover every ADR-0012 direct relationship, authored provenance, independent evidence for multiple Assertions sharing an edge, and both accepted and proposed Assertion-backed relationships with source/Review metadata.
+- Publishing: the 14 app publishing/link/identity tests passed; `render_app.py --check` passed for 9 models and 685 library records; 707-page relative-link validation passed; the identity guard checked 758 files with 6 protected identities enforced; architecture-document validation found 28 documents and 0 errors.
 - Both desktop and Pages builds emit the existing non-failing warning that the main JavaScript chunk exceeds Vite's 500 kB recommendation. No new dependency or remote asset was introduced.
 
 ## Validation
