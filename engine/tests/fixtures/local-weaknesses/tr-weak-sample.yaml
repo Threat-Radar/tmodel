@@ -1,0 +1,52 @@
+# Two local weakness types for the loader's tests (#145). Neither is a real weakness
+# type: they exist so the tests can load tr-weak entries and link them to entries in
+# the CWE sample (fixtures/cwe/), the way a CWE weakness links. The format is in the
+# docstring of engine/load/local_weaknesses.py.
+catalog:
+  name: tmodel local weakness sample
+  version: "0.1"
+  maintainer:
+    id: party:tmodel-test-fixture
+    name: tmodel test fixture
+weaknesses:
+  - id: tr-weak-0001
+    name: Sample local weakness one
+    description: >-
+      Not a real weakness type. It sits under CWE-710 in the Research Concepts view
+      and can precede the second sample, so the tests see both kinds of edge.
+    status: Draft
+    abstraction: Class
+    structure: Simple
+    alternate_terms: [first sample]
+    relationships:
+      - nature: ChildOf
+        target: CWE-710
+        view: CWE-1000
+        ordinal: Primary
+      - nature: CanPrecede
+        target: tr-weak-0002
+        view: CWE-1000
+    attack_patterns: [CAPEC-1]
+    extensions:
+      note: an extension is kept as written
+  - id: tr-weak-0002
+    name: Sample local weakness two
+    description: >-
+      Not a real weakness type. A child of the first sample, and a member of the
+      sample's CWE-411 category in the Software Development view.
+    status: Draft
+    abstraction: Base
+    relationships:
+      - nature: ChildOf
+        target: tr-weak-0001
+        view: CWE-1000
+        ordinal: Primary
+      - nature: MemberOf
+        target: CWE-411
+        view: CWE-699
+    observed_examples:
+      - reference: CVE-0000-0000
+        description: >-
+          Not a real CVE: an id in the CVE form, so the tests see an observed example
+          become a Vulnerability, as one of a CWE weakness does.
+        link: https://example.org/not-a-real-advisory

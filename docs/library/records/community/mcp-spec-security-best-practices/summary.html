@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Model Context Protocol — Security Best Practices</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px 40px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); line-height: 1.15; letter-spacing: -0.03em; margin: 20px 0 6px; }
+h2 { font-size: 1.15rem; margin: 1.25em 0 0.3em; padding-top: 0.6em; border-top: 1px solid var(--line); }
+h3 { font-size: 1rem; margin: 1em 0 0.2em; }
+.kicker { margin: 18px 0 0; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.4em 0 0.8em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 6px 10px; font-size: 0.93rem; }
+table.kv { background: transparent; }
+table.kv td { border-bottom: none; padding: 2px 12px 2px 0; }
+td.rowhead { color: var(--muted); font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; width: 1%; padding-top: 6px; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../../../../index.html">tmodel</a><nav aria-label="Site"><a href="../../../../index.html">Home</a><a href="../../../../bibliography/index.html" aria-current="page">Bibliography</a><a href="../../../../reports/index.html">Reports</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">Library record · mcp-spec-security-best-practices</p>
+<h1>Model Context Protocol — Security Best Practices</h1>
+<p class="lede">MCP Security Best Practices</p>
+<p>
+  <span class="badge">spec</span>
+  <span class="badge">community</span>
+  <span class="badge">summarized</span>
+  <span class="badge">high</span>
+</p>
+<p class="meta">Topic: <strong>ai-threat-model-agentic-mcp</strong> (<code>record.yaml</code> topic). Status <code>summarized</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://modelcontextprotocol.io/docs/2025-11-25/tutorials/security/security_best_practices">https://modelcontextprotocol.io/docs/2025-11-25/tutorials/security/security_best_practices</a></li><li>Identifier URL: <a href="https://modelcontextprotocol.io/specification/2025-11-25/basic/security_best_practices">https://modelcontextprotocol.io/specification/2025-11-25/basic/security_best_practices</a></li><li>SHA-256: <code>95beaace4d676d89e92d94751bab1ad4c9870e1458bc5f6f7eae8dd8bbc75bec</code></li></ul>
+<h2>Specification</h2>
+<table><tbody><tr><td>Authors</td><td>Model Context Protocol maintainers</td></tr><tr><td>Date</td><td>2025-11-25</td></tr><tr><td>Publisher</td><td>Model Context Protocol (modelcontextprotocol.io)</td></tr><tr><td>Version</td><td>2025-11-25 release (the release files this page under docs/tutorials/security)</td></tr><tr><td>Media type</td><td>text/html</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge adjacent">adjacent</span></td></tr><tr><td>This project</td><td><span class="badge core">core</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
+<h2>Tags</h2>
+<table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">mcp</span> <span class="badge">agent-security</span> <span class="badge">authorization</span></td></tr><tr><td class="rowhead">Body</td><td><span class="badge">community</span></td></tr><tr><td class="rowhead">Role</td><td><span class="badge">normative</span></td></tr></tbody></table>
+<h2>Bears on</h2>
+<ul><li><code>DEC-001</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> The MCP project&#x27;s own catalog of protocol-level attacks (confused deputy, token passthrough, SSRF, session hijacking, local server compromise) with normative mitigations — the authoritative source for MCP authorization threats.</p><p class="meta">Assessed 2026-10-13.</p>
+
+
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec (security best-practices page of the MCP 2025-11-25 release, which files it under docs/tutorials rather than the specification tree)</td></tr><tr><td><strong>Maturity</strong></td><td>_unset — do not guess_</td></tr><tr><td><strong>Authors</strong></td><td>Model Context Protocol maintainers</td></tr><tr><td><strong>Published</strong></td><td>MCP 2025-11-25 release; retrieved 2026-10-21 (first read as the living draft page on 2026-10-13)</td></tr><tr><td><strong>Identifier</strong></td><td>modelcontextprotocol.io — specification/2025-11-25/basic/security_best_practices</td></tr><tr><td><strong>Source</strong></td><td>https://modelcontextprotocol.io/docs/2025-11-25/tutorials/security/security_best_practices</td></tr><tr><td><strong>Digest</strong></td><td><code>95beaace4d676d89e92d94751bab1ad4c9870e1458bc5f6f7eae8dd8bbc75bec</code> (HTML of the dated 2025-11-25 page; identical on two fetches)</td></tr></tbody></table>
+<h2>Overview</h2>
+<p>The security companion to the <strong>MCP Authorization</strong> specification, for developers of MCP authorization flows, server operators and security reviewers. It describes <strong>attacks on MCP implementations</strong> and their mitigations: the <strong>confused-deputy problem</strong> in MCP proxy servers (static client ids, dynamic client registration and consent cookies letting an attacker obtain tokens without the user&#x27;s consent), <strong>token passthrough</strong> (servers accepting tokens not issued for them), <strong>server-side request forgery</strong> through OAuth metadata discovery (including against authorization servers), <strong>session hijacking</strong>, <strong>local MCP server compromise</strong> (malicious startup commands), <strong>OAuth authorization-URL validation</strong>, <strong>stdio transport security in proxy setups</strong>, and <strong>scope minimization</strong>. Mitigations are normative — the page contains about 21 <strong>MUST</strong> statements (a rough count; FX-1 extraction will give the exact one) (e.g. per-client consent storage, consent-page requirements, redirect-URI and OAuth state validation).</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td>core</td><td>The authoritative MCP threat catalog.</td></tr><tr><td>Cryptography</td><td>adjacent</td><td>Adjacent: relies on OAuth 2.0, tokens and cookie security.</td></tr><tr><td>This project</td><td>core</td><td>Gives tmodel MCP-specific attack steps and mitigations for the agentic lane.</td></tr></tbody></table>
+<p>Bears on <strong>DEC-001</strong> (object model — MCP components, authorization trust boundaries). <strong>Summary bar only:</strong> this <code>spec</code> record is summarised, not extracted; FX-1 extraction belongs to WAVE 2 (#84).</p>
+<h2>RPT-0014 applicability</h2>
+<table><thead><tr><th>Topic of interest</th><th>Rating</th><th>Linked ids</th><th>Why</th></tr></thead><tbody><tr><td>Published attacks</td><td>core</td><td>AIT-099</td><td>Agent-protocol authorization flaws (confused deputy, token passthrough, SSRF via OAuth metadata)</td></tr><tr><td>Existing AI threat models</td><td>core</td><td>TM-088</td><td>A protocol-level threat model with attack flows</td></tr><tr><td>Weakness enumerations</td><td>core</td><td>CWE-441, CWE-918, CWE-352, CWE-79, CWE-78, AML.T0083, ASI03, ASI04</td><td>Confused deputy, SSRF, CSRF, injection classes as catalogued</td></tr><tr><td>Attack → asset mapping</td><td>core</td><td>C09, C11, C13</td><td>MCP servers and clients, OAuth tokens and delegation, third-party APIs</td></tr></tbody></table>
+<h2>Implementations</h2>
+<p>Applies to all MCP SDKs and servers; not assessed here. Searched 2026-10-13.</p>
+<table><thead><tr><th>Name</th><th>Kind</th><th>License</th><th>URL</th></tr></thead><tbody></tbody></table>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata</td></tr><tr><td><code>summary.md</code></td><td>this summary</td></tr></tbody></table>
+<h2>Limits</h2>
+<ul><li><strong>Dated release, not the draft:</strong> pinned to the 2025-11-25 page. The living draft has since moved on (it adds mix-up attacks, localhost redirect-URI impersonation and CIMD trust policies, and has a &quot;state handle hijacking&quot; section where the release has &quot;session hijacking&quot;); a later release needs a new record or an update.</li><li><strong>Authorization-centric:</strong> tool-description poisoning and prompt injection through tools are mostly out of its scope.</li><li><strong>Not FX-1 extracted</strong> (its MUSTs are not yet extracted as requirements) — WAVE 2.</li></ul>
+
+<footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
+</main>
+</body>
+</html>

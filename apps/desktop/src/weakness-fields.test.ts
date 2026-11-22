@@ -23,6 +23,68 @@ const CWE_1229_RENDERED = `def validate_password(actual_pw, typed_pw):
             return 0
     return 1`;
 
+// CWE 4.20, CWE-1389's first Python example, after the engine removes the
+// xhtml namespace prefix. The tabs align the XML source and must not become
+// code indentation; the styled divs carry the actual Python block structure.
+const CWE_1389_PYTHON = `<div>
+\t\t\t\t\t  import subprocess<br/>
+\t\t\t\t\t  <br/>
+\t\t\t\t\t  def validate_ip(ip: str):<br/>
+\t\t\t\t\t  <div style="margin-left:1em;">
+\t\t\t\t\t    split_ip = ip.split('.')<br/>
+\t\t\t\t\t\tif len(split_ip) &gt; 4 or len(split_ip) == 0:<br/>
+\t\t\t\t\t\t<div style="margin-left:1em;">
+\t\t\t\t\t\t  raise ValueError("Invalid IP length")<br/>
+\t\t\t\t\t\t</div>
+\t\t\t\t\t\t<br/>
+\t\t\t\t\t\tfor octet in split_ip:<br/>
+\t\t\t\t\t\t<div style="margin-left:1em;">
+\t\t\t\t\t\t  try:<br/>
+\t\t\t\t\t\t  <div style="margin-left:1em;">
+\t\t\t\t\t\t    int(octet, 10)<br/>
+\t\t\t\t\t\t  </div>
+\t\t\t\t\t\t  except ValueError as e:<br/>
+\t\t\t\t\t\t  <div style="margin-left:1em;">
+\t\t\t\t\t\t    raise ValueError(f"Cannot convert IP octet to int - {e}")<br/>
+\t\t\t\t\t\t  </div>
+\t\t\t\t\t\t</div>
+\t\t\t\t\t\t<br/>
+\t\t\t\t\t\t<i># Returns original IP after ensuring no exceptions are raised</i><br/>
+\t\t\t\t\t\treturn ip<br/>
+
+\t\t\t\t\t  </div>
+\t\t\t\t\t  <br/>
+\t\t\t\t\t  def run_ping(ip: str):<br/>
+\t\t\t\t\t  <div style="margin-left:1em;">
+\t\t\t\t\t    validated = validate_ip(ip)<br/>
+\t\t\t\t\t\t<i># The ping command treats zero-prepended IP addresses as octal</i><br/>
+\t\t\t\t\t\tresult = subprocess.call(["ping", validated])<br/>
+\t\t\t\t\t\tprint(result)<br/>
+\t\t\t\t\t  </div>
+\t\t\t\t\t</div>`;
+
+const CWE_1389_RENDERED = `import subprocess
+
+def validate_ip(ip: str):
+    split_ip = ip.split('.')
+    if len(split_ip) > 4 or len(split_ip) == 0:
+        raise ValueError("Invalid IP length")
+
+    for octet in split_ip:
+        try:
+            int(octet, 10)
+        except ValueError as e:
+            raise ValueError(f"Cannot convert IP octet to int - {e}")
+
+    # Returns original IP after ensuring no exceptions are raised
+    return ip
+
+def run_ping(ip: str):
+    validated = validate_ip(ip)
+    # The ping command treats zero-prepended IP addresses as octal
+    result = subprocess.call(["ping", validated])
+    print(result)`;
+
 afterEach(() => vi.unstubAllGlobals());
 
 describe("CWE field presentation", () => {
@@ -48,6 +110,10 @@ describe("CWE field presentation", () => {
     expect(richTextToCode(CWE_1229_PYTHON)).toBe(CWE_1229_RENDERED);
   });
 
+  it("removes CWE-1389's XML formatting tabs before reconstructing Python blocks", () => {
+    expect(richTextToCode(CWE_1389_PYTHON)).toBe(CWE_1389_RENDERED);
+  });
+
   it("preserves literal indentation, tabs, blank lines, entities, and line breaks", () => {
     expect(richTextToCode(`<pre>
     if x &lt; y:
@@ -59,6 +125,8 @@ describe("CWE field presentation", () => {
 
 return &mask`);
     expect(richTextToCode("root\n\tchild<br/>  sibling")).toBe("root\n\tchild\n  sibling");
+    expect(richTextToCode("<div>\n\t\tbase\n\t\t    child\n</div>"))
+      .toBe("base\n    child");
     expect(richTextToCode("one<br/><br/>two")).toBe("one\n\ntwo");
     expect(richTextToCode("return value &amp; mask")).toBe("return value & mask");
   });

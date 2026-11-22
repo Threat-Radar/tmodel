@@ -4,9 +4,9 @@ id: DL-0060
 title: "CWE weaknesses table and full-entry inspector"
 type: process
 status: draft
-version: "0.1.0"
+version: "0.2.0"
 date: "2026-11-15"
-updated: "2026-11-15"
+updated: "2026-11-21"
 record: DL-0060
 bears_on: [APP-0001, DL-0050, DL-0051]
 defers_to: ARCH-0001
@@ -65,6 +65,16 @@ extract text and is assigned through `textContent`; no catalog value reaches
 `innerHTML`. Links are emitted only when their parsed protocol is HTTP or HTTPS,
 and external links use `noopener noreferrer`. The engine remains responsible
 for its pinned digest and bounded XML/ZIP import described by DL-0050.
+
+**Code indentation follows the example, not the XML document.** Review against
+the digest-matched CWE 4.20 catalog found two distinct sources of whitespace:
+styled nested `div` elements express relative code blocks, while tabs before
+code on a formatted XML source line only align the XML. The renderer now removes
+that per-text-node XML padding before applying `margin-left` indentation. It
+does not globally trim literal code indentation. Regressions use the real nested
+Python examples from CWE-1229 and CWE-1389; the latter mixes XML tabs, styled
+blocks and inline comment elements, so it covers the failure that a common
+dedent could not repair.
 
 **Truthful fixture and Pages behavior.** `?weaknessSource=fixture` selects the
 nine table rows generated from the sample catalog. Pages selects that same
@@ -154,6 +164,14 @@ Python publishing guard tests were not rerun for this update because neither
 available Python environment has pytest; their prior passing result remains the
 evidence recorded above. Native inspection of the updated full-entry disclosure
 layout remains the human review step before the branch is submitted.
+
+On 2026-11-21, after merging current `main` and adding the CWE-1389 formatted-
+source regression, all 421 frontend tests passed with typecheck and the
+production build. The focused weakness-engine suite passed 179 tests with 2
+catalog-dependent skips. The 14 publishing tests, architecture validation,
+published-link check and identity check passed. Regenerating `docs/app/` from
+the merged source and updated pinned library produced 9 models and 685 library
+records; a clean `render_app.py --check` reproduced it byte for byte.
 
 ## Proposed choices open to review
 

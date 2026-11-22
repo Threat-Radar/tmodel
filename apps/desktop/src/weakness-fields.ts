@@ -130,9 +130,22 @@ class CodeText {
     let last = parts.length - 1;
     while (first <= last && !parts[first].trim()) first += 1;
     while (last >= first && !parts[last].trim()) last -= 1;
+    const xmlLinePadding = first > 0 ? commonIndent(
+      parts.slice(first, last + 1)
+        .filter((part) => part.trim())
+        .map((part) => part.match(/^[ \t]*/u)?.[0] ?? ""),
+    ) : "";
+    const hasXmlLinePadding = xmlLinePadding.includes("\t");
     for (let index = first; index <= last; index += 1) {
       if (index > first) this.breakLine(true);
-      this.write(parts[index], indent);
+      // CWE's formatted XML puts tabs before code that shares a source line
+      // with a tag. Those tabs describe the XML document, not the example.
+      // Strip them before adding margin-left indentation. Text that starts on
+      // the first line (and literal space indentation, such as <pre> content)
+      // remains unchanged.
+      const text = hasXmlLinePadding && parts[index].startsWith(xmlLinePadding)
+        ? parts[index].slice(xmlLinePadding.length) : parts[index];
+      this.write(text, indent);
     }
   }
 
