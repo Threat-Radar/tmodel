@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Compromised PyTorch-nightly dependency chain between December 25th and December 30th, 2022.</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px 40px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); line-height: 1.15; letter-spacing: -0.03em; margin: 20px 0 6px; }
+h2 { font-size: 1.15rem; margin: 1.25em 0 0.3em; padding-top: 0.6em; border-top: 1px solid var(--line); }
+h3 { font-size: 1rem; margin: 1em 0 0.2em; }
+.kicker { margin: 18px 0 0; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.4em 0 0.8em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 6px 10px; font-size: 0.93rem; }
+table.kv { background: transparent; }
+table.kv td { border-bottom: none; padding: 2px 12px 2px 0; }
+td.rowhead { color: var(--muted); font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; width: 1%; padding-top: 6px; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../../../../index.html">tmodel</a><nav aria-label="Site"><a href="../../../../index.html">Home</a><a href="../../../../bibliography/index.html" aria-current="page">Bibliography</a><a href="../../../../reports/index.html">Reports</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">Library record · pytorch-2022-torchtriton-dependency-confusion</p>
+<h1>Compromised PyTorch-nightly dependency chain between December 25th and December 30th, 2022.</h1>
+<p class="lede">PyTorch-nightly torchtriton compromise</p>
+<p>
+  <span class="badge">article</span>
+  <span class="badge">community</span>
+  <span class="badge">summarized</span>
+  <span class="badge">medium</span>
+</p>
+<p class="meta">Topic: <strong>ai-threat-model-supply-chain-infra</strong> (<code>record.yaml</code> topic). Status <code>summarized</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://pytorch.org/blog/compromised-nightly-dependency/">https://pytorch.org/blog/compromised-nightly-dependency/</a></li><li>SHA-256: <code>4932f467ece6724163d0a6990f45446db7fbc4d70c561053d931d9ef181f18ee</code></li></ul>
+<h2>Article</h2>
+<table><tbody><tr><td>Authors</td><td>PyTorch Foundation</td></tr><tr><td>Date</td><td>2022-12-31</td></tr><tr><td>Version</td><td>page shows a later modified date, 2024-11-14</td></tr><tr><td>Media type</td><td>text/html</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge none">none</span></td></tr><tr><td>This project</td><td><span class="badge adjacent">adjacent</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
+<h2>Tags</h2>
+<table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">ai-supply-chain</span> <span class="badge">ai-incident</span></td></tr><tr><td class="rowhead">Role</td><td><span class="badge">evidence</span></td></tr></tbody></table>
+<h2>Bears on</h2>
+<ul><li><code>DEC-001a</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> The maintainers&#x27; own notice of the best-known dependency-confusion attack on an ML framework, with what the malicious binary collected and how it sent it out; it is the primary source for INC-023, is cited by AIT-037 and is the first reference of ATLAS case study AML.CS0015.</p><p class="meta">Assessed 2026-11-02.</p>
+
+
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>article (security notice on the project blog)</td></tr><tr><td><strong>Maturity</strong></td><td>_unset_ (an incident notice; no maturity level applies)</td></tr><tr><td><strong>Authors</strong></td><td>PyTorch Foundation</td></tr><tr><td><strong>Published</strong></td><td>2022-12-31 (the page also shows a modified date, 2024-11-14)</td></tr><tr><td><strong>Identifier</strong></td><td>URL only</td></tr><tr><td><strong>Source</strong></td><td>https://pytorch.org/blog/compromised-nightly-dependency/</td></tr><tr><td><strong>Digest</strong></td><td><code>sha256:4932f467ece6724163d0a6990f45446db7fbc4d70c561053d931d9ef181f18ee</code> (the live HTML page on 2026-11-02, 179,800 bytes, including current site navigation)</td></tr></tbody></table>
+<h2>Overview</h2>
+<p>PyTorch tells users who installed PyTorch-nightly on Linux with pip between 25 and 30 December 2022 to uninstall it and <code>torchtriton</code> at once. Someone had uploaded a package named <code>torchtriton</code> to PyPI, the same name as a dependency PyTorch ships on its own nightly index. Because pip gives PyPI precedence over the extra index, it installed the attacker&#x27;s package instead: the post calls this a supply chain attack on dependencies hosted on public indices. The package carried a malicious <code>triton</code> binary, whose SHA-256 the post gives. When run, it collected system information (nameservers, hostname, user name, working directory, environment variables) and read <code>/etc/hosts</code>, <code>/etc/passwd</code>, <code>$HOME/.gitconfig</code>, the files in <code>$HOME/.ssh</code> and the first 1,000 files in <code>$HOME</code>. It uploaded all of it, files only if under 99,999 bytes, through encrypted DNS queries to a domain under <code>h4ck[.]cfd</code>. The binary ran only when code imported <code>triton</code>, which PyTorch does not do by default, and stable releases were not affected. The post gives a one-line check for the binary. It lists the response: the dependency renamed to <code>pytorch-triton</code> (pytorch/pytorch#91539), a placeholder <code>torchtriton</code> registered on PyPI, the affected nightlies removed from download.pytorch.org, and a request to PyPI&#x27;s security team for ownership of the name and deletion of the malicious version.</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td><code>core</code></td><td>An in-the-wild dependency-confusion attack on an ML framework&#x27;s dependency, with the payload&#x27;s behaviour described</td></tr><tr><td>Cryptography</td><td><code>none</code></td><td>Only incidental: the binary used encrypted DNS queries to exfiltrate, and the response was a rename and a placeholder package</td></tr><tr><td>This project</td><td><code>adjacent</code></td><td>The object model has to represent a dependency resolved across two package indexes, a name collision between them, and a payload that runs only on import</td></tr></tbody></table>
+<p><code>bears_on: DEC-001a</code> (the core type system, accepted in ADR-0010).</p>
+<h2>Implementations</h2>
+<p>Searched on 2026-11-02. None applies: this is an incident notice. The fix it describes is in PyTorch itself (pytorch/pytorch#91539, which renamed the dependency to <code>pytorch-triton</code>).</p>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata</td></tr><tr><td><code>summary.md</code></td><td>this document</td></tr></tbody></table>
+<h2>Limits</h2>
+<ul><li><strong>Written the day after discovery.</strong> It gives no count of affected installs, no attribution and no timeline of the package&#x27;s upload.</li><li><strong>Narrower than &quot;installed&quot;.</strong> By the post&#x27;s own account the binary ran only if code imported <code>triton</code>; how often that happened is not stated.</li><li><strong>Only the pip route on Linux</strong> is described; other installation routes are not discussed.</li><li><strong>A live page.</strong> The digest covers today&#x27;s HTML, which wraps the 2022 text in current site navigation, so it will not match a capture from another day.</li></ul>
+<h2>RPT-0014 applicability</h2>
+<table><thead><tr><th>Topic of interest</th><th>Rating</th><th>Linked ids</th><th>Why</th></tr></thead><tbody><tr><td>Published attacks</td><td>core</td><td>AIT-037</td><td>AIT-037 cites it, and it is the primary source for INC-023: a malicious <code>torchtriton</code> on PyPI took precedence over PyTorch&#x27;s own nightly index. INC-023 says installs &quot;ran a malicious binary&quot;, as the post&#x27;s opening does; the post&#x27;s detail is that the binary ran only when <code>triton</code> was imported</td></tr><tr><td>Existing AI threat models</td><td>none</td><td>none</td><td>An incident notice; it models nothing. threat-models.md does not list it</td></tr><tr><td>Weakness enumerations</td><td>adjacent</td><td>AML.CS0015, AML.T0010.001, AML.T0011.001, LLM03:2025, ML06, CWE-427, CWE-829, NISTAML.05</td><td>ATLAS 2026.09&#x27;s case study AML.CS0015 (Compromised PyTorch Dependency Chain) cites it as the first of two references; ATLAS dates the announcement 2022-12-30, while the post is dated 2022-12-31. NIST AI 100-2e2025 does not cite it (searched 2026-11-02). The ids are RPT-0014&#x27;s mapping in sources.md</td></tr><tr><td>Attack → asset mapping</td><td>core</td><td>C04, C14, A09, A08, A10</td><td>Traces the path: a public package index (PyPI) shadowing the project&#x27;s own index, pip&#x27;s resolution, the installed package (C04: ML libraries and packages), and the Linux host that imports it (C14 in AIT-037&#x27;s mapping), from which it takes SSH keys and environment variables (A09), <code>.gitconfig</code> (A08) and host and home-directory files (A10). The component and asset mapping is ours</td></tr></tbody></table>
+
+<footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
+</main>
+</body>
+</html>

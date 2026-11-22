@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>SLH-DSA for JOSE and COSE</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px 40px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); line-height: 1.15; letter-spacing: -0.03em; margin: 20px 0 6px; }
+h2 { font-size: 1.15rem; margin: 1.25em 0 0.3em; padding-top: 0.6em; border-top: 1px solid var(--line); }
+h3 { font-size: 1rem; margin: 1em 0 0.2em; }
+.kicker { margin: 18px 0 0; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.4em 0 0.8em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 6px 10px; font-size: 0.93rem; }
+table.kv { background: transparent; }
+table.kv td { border-bottom: none; padding: 2px 12px 2px 0; }
+td.rowhead { color: var(--muted); font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; width: 1%; padding-top: 6px; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../../../../index.html">tmodel</a><nav aria-label="Site"><a href="../../../../index.html">Home</a><a href="../../../../bibliography/index.html" aria-current="page">Bibliography</a><a href="../../../../reports/index.html">Reports</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">Library record · draft-ietf-cose-sphincs-plus</p>
+<h1>SLH-DSA for JOSE and COSE</h1>
+<p class="lede">draft-ietf-cose-sphincs-plus</p>
+<p>
+  <span class="badge">draft</span>
+  <span class="badge">ietf</span>
+  <span class="badge">summarized</span>
+  <span class="badge">medium</span>
+</p>
+<p class="meta">Topic: <strong>algorithm-bindings</strong> (<code>record.yaml</code> topic). Status <code>summarized</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://www.ietf.org/archive/id/draft-ietf-cose-sphincs-plus-10.txt">https://www.ietf.org/archive/id/draft-ietf-cose-sphincs-plus-10.txt</a></li><li>Identifier URL: <a href="https://datatracker.ietf.org/doc/draft-ietf-cose-sphincs-plus/">https://datatracker.ietf.org/doc/draft-ietf-cose-sphincs-plus/</a></li><li>SHA-256: <code>f6b882a07aec9834e02e5bd8b0576a0474e70874582ea120b8aa47c0f82758a5</code></li></ul>
+<h2>Internet-Draft</h2>
+<div class="callout"><strong>Not a standard.</strong> An Internet-Draft is not an RFC. Maturity below is the record's own field, not a ratification this page inferred.</div>
+<table><tbody><tr><td>Authors</td><td>M. Prorock, O. Steele, H. Tschofenig</td></tr><tr><td>Date</td><td>2026-07-28</td></tr><tr><td>Publisher</td><td>IETF</td></tr><tr><td>Version</td><td>-10</td></tr><tr><td>Maturity</td><td>draft</td></tr><tr><td>draft</td><td>draft-ietf-cose-sphincs-plus-10</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge adjacent">adjacent</span></td></tr><tr><td>This project</td><td><span class="badge adjacent">adjacent</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
+<h2>Tags</h2>
+<table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">post-quantum</span> <span class="badge">signatures</span></td></tr><tr><td class="rowhead">Body</td><td><span class="badge">ietf</span></td></tr></tbody></table>
+<h2>Bears on</h2>
+<p class="meta">No <code>bears_on</code> ids recorded. None were invented.</p>
+<h2>Usefulness</h2><p><span class="badge">useful</span> The only wire binding for SLH-DSA. Answers what fips-205 could not: what an SLH-DSA signature looks like in COSE - and that only two of twelve parameter sets are registered.</p><p class="meta">Assessed 2026-10-03.</p>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> only — not crosswalk edges.</p><h3><code>see_also</code></h3><ul><li><a class="rec" data-id="fips-205" href="../../nist/fips-205/summary.html">FIPS 205</a></li><li><a class="rec" data-id="rfc-9964" href="../../ietf/rfc-9964/summary.html">ML-DSA for JSON Object Signing and Encryption (JOSE) and CBOR Object Signing and Encryption (COSE)</a></li><li><a class="rec" data-id="rfc-9053" href="../../ietf/rfc-9053/summary.html">CBOR Object Signing and Encryption (COSE): Initial Algorithms</a></li></ul><h3><code>part_of</code></h3><ul><li><a class="rec" data-id="ietf-cose-wg" href="../../ietf/ietf-cose-wg/summary.html">IETF CBOR Object Signing and Encryption (COSE) Working Group</a></li></ul>
+
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>draft</td></tr><tr><td><strong>Maturity</strong></td><td><code>draft</code> — IETF COSE WG, intended status Standards Track; expires 2027-01-29</td></tr><tr><td><strong>Authors</strong></td><td>M. Prorock (mesur.io), O. Steele (Tradeverifyd), H. Tschofenig (UniBw M.)</td></tr><tr><td><strong>Published</strong></td><td>2026-07-28 (<strong>revision -10</strong>)</td></tr><tr><td><strong>Identifier</strong></td><td>draft-ietf-cose-sphincs-plus-10</td></tr><tr><td><strong>Source</strong></td><td>https://www.ietf.org/archive/id/draft-ietf-cose-sphincs-plus-10.txt</td></tr><tr><td><strong>Digest</strong></td><td><code>sha256:f6b882a07aec9834e02e5bd8b0576a0474e70874582ea120b8aa47c0f82758a5</code></td></tr></tbody></table>
+<h2>Overview</h2>
+<p>The wire binding for <strong>FIPS 205 SLH-DSA</strong> in JOSE and COSE — algorithm identifiers, signatures, public keys and private keys. It is the SLH-DSA counterpart to <code>rfc-9964</code>, and it is the document <code>fips-205</code>&#x27;s Limits section named as missing.</p>
+<p>The headline finding is <strong>how little of FIPS 205 it binds</strong>. FIPS 205 defines twelve parameter sets; this draft registers <strong>two</strong>:</p>
+<table><thead><tr><th>Name</th><th>JOSE <code>alg</code></th><th>COSE <code>alg</code></th></tr></thead><tbody><tr><td>SLH-DSA-SHA2-128s</td><td><code>SLH-DSA-SHA2-128s</code></td><td><strong>TBD1 (-51)</strong></td></tr><tr><td>SLH-DSA-SHAKE-128s</td><td><code>SLH-DSA-SHAKE-128s</code></td><td><strong>TBD2 (-52)</strong></td></tr></tbody></table>
+<p>The draft states its own reasoning plainly: both are NIST <strong>Category 1</strong>, both are the <strong>&quot;small&quot;</strong> variant, one per hash family, and</p>
+<p>&gt; Limiting the initial registration to a small, symmetric set is intended to &gt; maximize interoperability among early implementations and to keep the JOSE &gt; and COSE registries focused.</p>
+<p>It is also candid about the expected constituency — deployments that specifically need a stateless hash-based scheme or want algorithmic diversity as a fallback, with <strong>firmware signing</strong> named as the primary use case — and adds that registration &quot;does not imply that every general-purpose JOSE or COSE implementation is expected to support them.&quot;</p>
+<p>As with <code>rfc-9964</code> and <code>rfc-9053</code>, the registered algorithms identify <strong>pure</strong> SLH-DSA (<code>slh_sign</code> / <code>slh_verify</code>, FIPS 205 §§10.2.1 and 10.3). No pre-hash variant is registered.</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td><code>core</code></td><td>The only way to carry a hash-based post-quantum signature in COSE</td></tr><tr><td>Cryptography</td><td><code>adjacent</code></td><td>A binding, not a primitive — the primitive is FIPS 205</td></tr><tr><td>This project</td><td><code>adjacent</code></td><td>NG3 defers the suite; this is the hedge&#x27;s only wire form</td></tr></tbody></table>
+<p>Bears on no <code>DEC-*</code>. It closes a gap this lane recorded rather than opening a decision: <code>fips-205</code> could not say what an SLH-DSA signature looks like on the wire, and now it can.</p>
+<h2>Implementations</h2>
+<p>Searched <strong>2026-10-03</strong>. <strong>None found.</strong> The FIPS 205 primitives exist (liboqs, BouncyCastle, the SPHINCS+ reference implementation), but no COSE or JOSE library was found implementing <em>this binding</em> — unsurprising for a draft whose code points are still TBD. That is a result, not an omission.</p>
+<table><thead><tr><th>Name</th><th>Kind</th><th>License</th><th>URL</th></tr></thead><tbody><tr><td>—</td><td>—</td><td>—</td><td>none found on 2026-10-03</td></tr></tbody></table>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata</td></tr><tr><td><code>summary.md</code></td><td>this document</td></tr></tbody></table>
+<p>No <code>distilled.md</code>. It is a draft with unassigned code points; extracting requirements from text that will change is work we would redo.</p>
+<h2>Limits</h2>
+<ul><li><strong>Two parameter sets out of twelve, and both are Category 1.</strong> There is no registered way to carry SLH-DSA at Category 3 or 5 in COSE, and no <code>f</code> (fast-signing) variant at all. A deployment wanting category-5 hash-based signatures — the conservative choice, for the most conservative reason — cannot express it. Read with <code>fips-205</code>, which specifies all twelve.</li><li><strong>The suggested code points are already taken.</strong> The draft proposes <code>TBD1 (-51)</code> and <code>TBD2 (-52)</code>, but in the live IANA COSE Algorithms registry (snapshot 2026-10-03, <code>iana-cose-algorithms</code>) <strong>-51 is ESP384 and -52 is ESP512</strong>, both assigned by <strong>RFC 9864 §2.1</strong> and both <code>Recommended: Yes</code>. RFC 9864 is held in this library. So the draft&#x27;s parenthetical values are stale and must change before publication — they are suggestions, not assignments, and nothing should be implemented against them. Checked against the registry rather than assumed.</li><li><strong><code>128s</code> means the 7 856-byte signature.</strong> The smallest SLH-DSA signature is still roughly 123× an Ed25519 signature. Registering only the <code>s</code> variants means COSE&#x27;s SLH-DSA is the slow-signing, smaller-signature corner of FIPS 205 — a reasonable choice for firmware, and a poor fit for a system signing many small statements. The constraint recorded in <code>fips-205</code>&#x27;s Limits is not relieved by this binding; it is fixed in place.</li><li><strong>It is a draft and expires 2027-01-29.</strong> Revision <code>-10</code> is recorded in <code>version</code> and <code>identifiers.draft</code>; a new revision is a re-ingest, not an edit in place.</li><li><strong>No implementations exist to check it against.</strong> Everything above is read from the draft text, not verified against running code.</li></ul>
+
+<footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
+</main>
+</body>
+</html>

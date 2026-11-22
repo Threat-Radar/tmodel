@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Deceptive Delight: Jailbreak LLMs Through Camouflage and Distraction</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px 40px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); line-height: 1.15; letter-spacing: -0.03em; margin: 20px 0 6px; }
+h2 { font-size: 1.15rem; margin: 1.25em 0 0.3em; padding-top: 0.6em; border-top: 1px solid var(--line); }
+h3 { font-size: 1rem; margin: 1em 0 0.2em; }
+.kicker { margin: 18px 0 0; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.4em 0 0.8em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 6px 10px; font-size: 0.93rem; }
+table.kv { background: transparent; }
+table.kv td { border-bottom: none; padding: 2px 12px 2px 0; }
+td.rowhead { color: var(--muted); font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; width: 1%; padding-top: 6px; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../../../../index.html">tmodel</a><nav aria-label="Site"><a href="../../../../index.html">Home</a><a href="../../../../bibliography/index.html" aria-current="page">Bibliography</a><a href="../../../../reports/index.html">Reports</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">Library record · unit42-2024-deceptive-delight</p>
+<h1>Deceptive Delight: Jailbreak LLMs Through Camouflage and Distraction</h1>
+<p class="lede">Deceptive Delight</p>
+<p>
+  <span class="badge">article</span>
+  <span class="badge">vendor</span>
+  <span class="badge">summarized</span>
+  <span class="badge">medium</span>
+</p>
+<p class="meta">Topic: <strong>ai-threat-model-ml-risk-assets</strong> (<code>record.yaml</code> topic). Status <code>summarized</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://unit42.paloaltonetworks.com/jailbreak-llms-through-camouflage-distraction/">https://unit42.paloaltonetworks.com/jailbreak-llms-through-camouflage-distraction/</a></li><li>SHA-256: <code>351f07007f500397cb063a4cd5baf41781fad8658cf308a46800d426c77dcf64</code></li></ul>
+<h2>Article</h2>
+<table><tbody><tr><td>Authors</td><td>Royce Lu</td></tr><tr><td>Date</td><td>2024-10-23</td></tr><tr><td>Version</td><td>web page as served on 2026-11-03</td></tr><tr><td>Media type</td><td>text/html</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge none">none</span></td></tr><tr><td>This project</td><td><span class="badge adjacent">adjacent</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
+<h2>Tags</h2>
+<table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">jailbreak</span></td></tr><tr><td class="rowhead">Role</td><td><span class="badge">evidence</span></td></tr></tbody></table>
+<h2>Bears on</h2>
+<p class="meta">No <code>bears_on</code> ids recorded. None were invented.</p>
+<h2>Usefulness</h2><p><span class="badge">useful</span> Vendor research on a two-to-three-turn jailbreak that hides an unsafe topic among benign ones; 64.6% average success over 8,000 cases on eight anonymized models with content filters disabled.</p><p class="meta">Assessed 2026-11-03.</p>
+
+<h2>Document cites</h2><p class="meta">From <code>cites</code> — what the source references.</p><ul><li>Russinovich et al., Crescendo (RPT-0014 S-0310) <span class="meta">cited, no library record</span></li><li>Sun et al., Multi-Turn Context Jailbreak Attack on LLMs From First Principles (Context Fusion Attack; screened 2026-11-03; not created) <span class="meta">cited, no library record</span></li><li>Chao et al., JailbreakBench (RPT-0014 S-0920) <span class="meta">cited, no library record</span></li><li>Bavaresco et al., LLMs instead of Human Judges? (Judge-Bench) <span class="meta">cited, no library record</span></li></ul>
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>article (vendor threat research)</td></tr><tr><td><strong>Maturity</strong></td><td>_unset_. A vendor research post; no standing is asserted</td></tr><tr><td><strong>Authors</strong></td><td>Royce Lu (Palo Alto Networks Unit 42)</td></tr><tr><td><strong>Published</strong></td><td>Unit 42 Threat Research Center, 2024-10-23 (byline and page metadata)</td></tr><tr><td><strong>Identifier</strong></td><td>https://unit42.paloaltonetworks.com/jailbreak-llms-through-camouflage-distraction/</td></tr><tr><td><strong>Source</strong></td><td>Same URL, fetched as HTML on 2026-11-03</td></tr><tr><td><strong>Digest</strong></td><td><code>sha256:351f07007f500397cb063a4cd5baf41781fad8658cf308a46800d426c77dcf64</code> (301,888 bytes). This is the page as served, so the digest will change when the page template changes</td></tr></tbody></table>
+<h2>Overview</h2>
+<p><strong>The technique.</strong> Deceptive Delight is a short multi-turn jailbreak.</p>
+<ul><li><em>Turn 1:</em> ask the model for a story linking two benign topics and one unsafe topic.</li><li><em>Turn 2:</em> ask it to expand on each topic.</li><li><em>Turn 3 (optional):</em> ask it to expand on the unsafe one.</li></ul>
+<p>The author attributes success to the model&#x27;s limited &quot;attention&quot; being drawn to the benign content.</p>
+<p><strong>Evaluation.</strong></p>
+<ul><li><em>Setup:</em> 40 hand-written unsafe topics in six categories, 5 variants each, 5 repeats, on 8 anonymized models: 8,000 cases.</li><li><em>Filters:</em> the providers&#x27; content filters were disabled.</li><li><em>Judge:</em> an unnamed LLM scored harmfulness and quality from 0 to 5. A case counts as a success when both scores are at least 3.</li></ul>
+<p><strong>Results.</strong></p>
+<ul><li>Average success rises from 5.8% with no jailbreak to 64.6% with it.</li><li>Success peaks at turn 3.</li><li>Violence topics succeed most, sexual and hate topics least.</li></ul>
+<p><strong>Mitigations.</strong> Content filters and system-prompt hardening.</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td><code>core</code></td><td>A primary description and measurement of a multi-turn jailbreak</td></tr><tr><td>Cryptography</td><td><code>none</code></td><td>No cryptographic content</td></tr><tr><td>This project</td><td><code>adjacent</code></td><td>Evidence for RPT-0014&#x27;s multi-turn jailbreak class. Not a threat-modeling source</td></tr></tbody></table>
+<p><code>bears_on: none yet.</code> The post informs no ARCH-0001 decision or requirement. It is <code>summarized</code> because LANES.md requires full summaries for subset-1 sources; no relevance is claimed.</p>
+<h2>RPT-0014 applicability</h2>
+<table><thead><tr><th>Topic of interest</th><th>Rating</th><th>Linked ids</th><th>Why</th></tr></thead><tbody><tr><td>Published attacks</td><td>core</td><td>AIT-075</td><td><strong>AIT-075 (multi-turn escalation and context-poisoning jailbreaks):</strong> a two-to-three-turn camouflage jailbreak measured over 8,000 cases. RPT-0014&#x27;s catalog lists S-1003 here. It is research on anonymized models with their filters off, not observed abuse</td></tr><tr><td>Existing AI threat models</td><td>none</td><td>—</td><td>No threat model</td></tr><tr><td>Weakness enumerations</td><td>adjacent</td><td>AML.T0054; NISTAML.018; OWASP LLM01:2025 — <strong>concept-level, our mapping</strong></td><td>Neither ATLAS release 2026.09 nor NIST AI 100-2e2025 cites the post (checked 2026-11-03)</td></tr><tr><td>Attack → asset mapping</td><td>none</td><td>—</td><td>It maps no attack to assets. Our catalog&#x27;s AIT-075 assigns A03, C07 and C13; that assignment is not the post&#x27;s</td></tr></tbody></table>
+<h2>Implementations</h2>
+<p>Searched 2026-11-03. No code or dataset is released. The post lists commercial and open content filters as mitigations: OpenAI Moderation, Azure, Vertex AI, Bedrock Guardrails, Llama Guard and NeMo Guardrails.</p>
+<table><thead><tr><th>Name</th><th>Kind</th><th>License</th><th>URL</th></tr></thead><tbody></tbody></table>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>Metadata. <code>cites</code> lists the multi-turn jailbreak and judge work the post builds on</td></tr><tr><td><code>summary.md</code></td><td>This document</td></tr></tbody></table>
+<p><strong>Reference expansion.</strong> The post&#x27;s references were screened with the Batch 1 rule. Crescendo (S-0310) and JailbreakBench (S-0920) are already in <code>sources.md</code>. The judge-selection study (arXiv:2406.18403) is evaluation background and is not proposed.</p>
+<p><em>Reference-expansion candidates</em> (1; arXiv id checked 2026-11-03; outcome of the 2026-11-03 review):</p>
+<table><thead><tr><th>Work</th><th>Locator</th><th>Outcome</th></tr></thead><tbody><tr><td>Sun et al. 2024, Multi-Turn Context Jailbreak Attack from first principles (the &quot;Context Fusion Attack&quot;)</td><td>arXiv:2408.04686</td><td>not created</td></tr></tbody></table>
+<p>The candidates above were excluded in the consolidated review of 2026-11-03 as unnecessary for RPT-0014: niche, or their attack class is already covered. No stub was created from this source.</p>
+<h2>Limits</h2>
+<ul><li><strong>Filters were off.</strong> Content filters were deliberately disabled, so the 64.6% figure measures model alignment alone, not deployed products.</li><li><strong>Models are anonymized and the judge is unnamed.</strong> Results cannot be tied to products or reproduced. The judge is justified by citing other studies, not validated here.</li><li><strong>Hand-written topics.</strong> The authors say category results may be biased by the 40 topics they wrote.</li><li><strong>Small inconsistencies.</strong> The summary says the judge scores &quot;on a scale of one to five&quot;, but the metric section uses 0–5. The method is described as unfolding over two turns, but the headline counts three.</li></ul>
+
+<footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
+</main>
+</body>
+</html>

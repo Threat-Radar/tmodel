@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="no-referrer">
-<title>FIPS 205: Stateless Hash-Based Digital Signature Standard (SLH-DSA)</title>
+<title>Stateless Hash-Based Digital Signature Standard</title>
 <style>
 :root {
   --ink: #1a1916;
@@ -80,28 +80,48 @@ nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font
 <main class="wrap">
 
 <p class="kicker">Library record · fips-205</p>
-<h1>FIPS 205: Stateless Hash-Based Digital Signature Standard (SLH-DSA)</h1>
-<p class="lede"></p>
+<h1>Stateless Hash-Based Digital Signature Standard</h1>
+<p class="lede">FIPS 205</p>
 <p>
   <span class="badge">spec</span>
   <span class="badge">nist</span>
-  <span class="badge">stub</span>
-  <span class="badge">low</span>
+  <span class="badge">summarized</span>
+  <span class="badge">medium</span>
 </p>
-<p class="meta">Topic: <strong>post-quantum-migration</strong> (<code>record.yaml</code> topic). Status <code>stub</code> is how far review got, not a quality score.</p>
+<p class="meta">Topic: <strong>nist-cryptography</strong> (<code>record.yaml</code> topic). Status <code>summarized</code> is how far review got, not a quality score.</p>
 <h2>Bibliographic links</h2>
-<ul><li>Source: <a href="https://doi.org/10.6028/NIST.FIPS.205">https://doi.org/10.6028/NIST.FIPS.205</a></li><li>SHA-256: <span class="meta">not recorded</span></li></ul>
+<ul><li>Source: <a href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.205.pdf">https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.205.pdf</a></li><li>Identifier URL: <a href="https://csrc.nist.gov/pubs/fips/205/final">https://csrc.nist.gov/pubs/fips/205/final</a></li><li>SHA-256: <code>8ef34228276f3386d23cb0da8c14592b8cfb0db3358016bba64df7a004f8d13d</code></li></ul>
 <h2>Specification</h2>
+<table><tbody><tr><td>Authors</td><td>National Institute of Standards and Technology</td></tr><tr><td>Date</td><td>2024-08-13</td></tr><tr><td>Publisher</td><td>NIST</td></tr><tr><td>Version</td><td>205</td></tr><tr><td>Maturity</td><td>standard</td></tr><tr><td>doi</td><td><a href="https://doi.org/10.6028/NIST.FIPS.205">10.6028/NIST.FIPS.205</a></td></tr><tr><td>nist</td><td>FIPS 205</td></tr><tr><td>Media type</td><td>application/pdf</td></tr></tbody></table>
 <h2>Applicability</h2>
-<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge not-assessed">not assessed</span></td></tr><tr><td>Cryptography</td><td><span class="badge not-assessed">not assessed</span></td></tr><tr><td>This project</td><td><span class="badge not-assessed">not assessed</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge core">core</span></td></tr><tr><td>This project</td><td><span class="badge adjacent">adjacent</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
 <h2>Tags</h2>
-<p class="meta">No tags recorded.</p>
+<table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">post-quantum</span> <span class="badge">signatures</span></td></tr><tr><td class="rowhead">Body</td><td><span class="badge">nist</span></td></tr><tr><td class="rowhead">Role</td><td><span class="badge">normative</span></td></tr></tbody></table>
 <h2>Bears on</h2>
-<p class="meta">No <code>bears_on</code> ids recorded. None were invented.</p>
+<ul><li><code>R-M-02</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> The conservative post-quantum signature fallback: its security rests only on hash functions, with no lattice assumption. Held as the hedge against ML-DSA, and as the record that shows what signature size a hash-based scheme actually costs.</p><p class="meta">Assessed 2026-10-03.</p>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> only — not crosswalk edges.</p><h3><code>see_also</code></h3><ul><li><a class="rec" data-id="fips-202" href="../../nist/fips-202/summary.html">FIPS 202</a></li><li><a class="rec" data-id="fips-180-4" href="../../nist/fips-180-4/summary.html">FIPS 180-4</a></li><li><a class="rec" data-id="fips-204" href="../../nist/fips-204/summary.html">FIPS 204</a></li><li><a class="rec" data-id="sp-800-208" href="../../nist/sp-800-208/summary.html">SP 800-208</a></li></ul>
 
-
-
-<h2>Summary</h2><div class="callout"><strong>Summary not written.</strong> <code>summary.md</code> is still the library template (it still contains the “two to five sentences” instruction). That text is not rendered. This page is record metadata only.</div>
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec</td></tr><tr><td><strong>Maturity</strong></td><td><code>standard</code> — a US Federal Information Processing Standard, issued under 40 U.S.C. 11331</td></tr><tr><td><strong>Authors</strong></td><td>NIST</td></tr><tr><td><strong>Published</strong></td><td>2024-08-13</td></tr><tr><td><strong>Identifier</strong></td><td>FIPS 205 · DOI 10.6028/NIST.FIPS.205</td></tr><tr><td><strong>Source</strong></td><td>https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.205.pdf</td></tr><tr><td><strong>Digest</strong></td><td><code>sha256:8ef34228276f3386d23cb0da8c14592b8cfb0db3358016bba64df7a004f8d13d</code></td></tr></tbody></table>
+<h2>Overview</h2>
+<p>Specifies <strong>SLH-DSA</strong>, a stateless hash-based signature scheme derived from SPHINCS+. Its distinguishing claim is <strong>what it does not assume</strong>: security rests on the properties of the underlying hash function alone — no lattice, no discrete log, no factoring. It is the conservative hedge in NIST&#x27;s post-quantum portfolio, and the one whose security argument would survive a break of ML-DSA.</p>
+<p>The construction stacks three hash-based primitives: <strong>WOTS+</strong> one-time signatures, <strong>XMSS</strong> Merkle trees, assembled into a <strong>hypertree</strong> of total height <em>h</em> across <em>d</em> layers, with <strong>FORS</strong> few-time signatures at the bottom signing the actual message digest (§§5–8). &quot;Stateless&quot; is the contrast with <code>sp-800-208</code> (HSS/LMS), where the signer <strong>must</strong> track which one-time keys are spent; SLH-DSA removes that obligation, and removes with it the catastrophic failure mode of state reuse.</p>
+<p>Twelve parameter sets: <strong>SHA2</strong> and <strong>SHAKE</strong> families × 128/192/256 × <code>s</code> (small signature) / <code>f</code> (fast signing).</p>
+<table><thead><tr><th>Parameter set</th><th>Category</th><th>Public key</th><th>Signature</th></tr></thead><tbody><tr><td>SLH-DSA-{SHA2,SHAKE}-128s</td><td>1</td><td>32 B</td><td><strong>7 856 B</strong></td></tr><tr><td>SLH-DSA-{SHA2,SHAKE}-128f</td><td>1</td><td>32 B</td><td><strong>17 088 B</strong></td></tr><tr><td>SLH-DSA-{SHA2,SHAKE}-192s</td><td>3</td><td>48 B</td><td><strong>16 224 B</strong></td></tr><tr><td>SLH-DSA-{SHA2,SHAKE}-192f</td><td>3</td><td>48 B</td><td><strong>35 664 B</strong></td></tr><tr><td>SLH-DSA-{SHA2,SHAKE}-256s</td><td>5</td><td>64 B</td><td><strong>29 792 B</strong></td></tr><tr><td>SLH-DSA-{SHA2,SHAKE}-256f</td><td>5</td><td>64 B</td><td><strong>49 856 B</strong></td></tr></tbody></table>
+<p>Like ML-DSA it takes a <strong>context string of at most 255 bytes</strong>, empty by default, and defines a domain-separated pre-hash variant, <code>HashSLH-DSA</code> (§10.2.2).</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td><code>core</code></td><td>A signature standard, and the conservative post-quantum option</td></tr><tr><td>Cryptography</td><td><code>core</code></td><td>Normative for the primitive</td></tr><tr><td>This project</td><td><code>adjacent</code></td><td>ARCH-0001 NG3 defers the suite; held as the hedge, not the default</td></tr></tbody></table>
+<p>Bears on <strong>R-M-02</strong> — <em>a principal MAY be identified solely by key or key digest</em>. SLH-DSA inverts ML-DSA&#x27;s trade: the <strong>public key is tiny</strong> (32–64 bytes, comparable to Ed25519), so naming a principal by key is cheap here. The cost moves entirely into the signature.</p>
+<p>It bears on no open <code>DEC-*</code>. The suite is deferred under NG3, and SLH-DSA would in any case be a fallback rather than a default.</p>
+<h2>Implementations</h2>
+<p>Searched <strong>2026-10-03</strong>. Thinner than ML-DSA&#x27;s — SLH-DSA is implemented where post-quantum coverage is a goal in itself, and is not yet a routine default.</p>
+<table><thead><tr><th>Name</th><th>Kind</th><th>License</th><th>URL</th></tr></thead><tbody><tr><td><code>sphincs/sphincsplus</code></td><td>open source</td><td>CC0</td><td>https://github.com/sphincs/sphincsplus — reference from the submission team</td></tr><tr><td>liboqs (Open Quantum Safe)</td><td>open source</td><td>MIT</td><td>https://openquantumsafe.org</td></tr><tr><td>BouncyCastle</td><td>open source</td><td>MIT</td><td>https://bouncycastle.org</td></tr><tr><td>AWS-LC</td><td>open source</td><td>Apache-2.0 / ISC</td><td>https://github.com/aws/aws-lc</td></tr></tbody></table>
+<p>Notably <strong>absent</strong>: Go&#x27;s standard library and libsodium carry no SLH-DSA, and OpenSSL&#x27;s support lags its ML-DSA support. <strong>We use a vetted library. We do not implement these</strong> — the hypertree construction is long, parameter-heavy, and unforgiving of an indexing error.</p>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata</td></tr><tr><td><code>summary.md</code></td><td>this document</td></tr></tbody></table>
+<p>No <code>distilled.md</code>, for the same reason as <code>fips-204</code>: we hold and cite the post-quantum base, and extract only where we intend to conform.</p>
+<h2>Limits</h2>
+<ul><li><strong>The signature size is the whole story, and it is disqualifying for some designs.</strong> The <em>smallest</em> SLH-DSA signature is <strong>7 856 bytes</strong>; the largest is <strong>49 856</strong>. Against Ed25519&#x27;s 64 bytes that is a factor of 123 to 779. For a statement model where many small statements are each independently signed — which is the shape of a key-centric assertion system — this is not a tuning parameter, it is an architectural constraint. Any envelope or encoding decision that assumes signatures are &quot;small&quot; is silently assuming SLH-DSA is out of scope. <strong>This is the single most useful fact in the record.</strong></li><li><strong><code>s</code> versus <code>f</code> is a real trade and the document does not choose for you.</strong> The <code>s</code> sets roughly halve the signature at the cost of much slower signing; <code>f</code> inverts it. A system signing rarely and verifying often wants <code>s</code>; the reverse wants <code>f</code>. Both are approved, so conformance does not settle it.</li><li><strong>EUF-CMA, not SUF-CMA, and bounded at 2⁶⁴ messages per key pair.</strong> §11 states the categories hold &quot;when each key pair is used to sign at most 2⁶⁴ messages.&quot; NIST notes in a footnote that 2⁶⁴ is unreachable in practice — over 58 years at 10 billion signatures per second — so the bound is not an operational concern. The weaker <em>existential</em> rather than <em>strong</em> unforgeability target is the more meaningful difference from <code>fips-204</code>.</li><li><strong>Stateless removes a failure mode; it does not remove all of them.</strong> The contrast with <code>sp-800-208</code> is the point of the scheme, but <strong>§3.1</strong> (<em>Additional Requirements</em>) still imposes a floor on the RBG under &quot;Randomness generation&quot;: PK.seed, SK.seed and SK.prf must each be fresh, and the RBG &quot;shall have a security strength of at least 8𝑛 bits&quot;. Under &quot;Destruction of sensitive data&quot; the same section makes an unusual point for a signature standard — intermediate values of the <strong>verification</strong> algorithm may reveal information about the message, signature and public key, which matters where signatures are used as bearer tokens or sit on plaintext intended to stay confidential — and requires that such data be destroyed.</li><li><strong>It inherits the fate of whichever hash family you pick.</strong> The SHA2 sets depend on <code>fips-180-4</code>, the SHAKE sets on <code>fips-202</code>. The scheme&#x27;s selling point is that this is its <em>only</em> assumption — which also means the choice of family is the entire security surface, and the two families are not interchangeable once a key exists.</li><li><strong>The IETF binding is not held.</strong> <code>draft-ietf-cose-sphincs-plus</code> would register SLH-DSA for COSE/JOSE and give these parameter sets concrete algorithm identifiers. The library does not hold it, so this record cannot yet say what an SLH-DSA signature looks like on the wire. Named here rather than recorded as a dangling relation.</li></ul>
 
 <footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
 </main>
