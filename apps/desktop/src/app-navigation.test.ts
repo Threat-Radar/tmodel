@@ -3,14 +3,14 @@ import { AppNavigation, type AppView } from "./app-navigation";
 import type { EngineState } from "./engine";
 import { GraphStartup } from "./graph-startup";
 
-const VIEWS: readonly AppView[] = ["report", "paths", "graph", "library", "sdl"];
+const VIEWS: readonly AppView[] = ["report", "paths", "graph", "library", "weaknesses", "sdl"];
 
 describe("application navigation", () => {
   it("defaults to the model report and initializes each view only when selected", () => {
     const harness = navigationHarness("");
     harness.navigation.start();
     expect(harness.panel("report").hidden).toBe(false);
-    for (const view of ["paths", "graph", "library", "sdl"] as const) {
+    for (const view of ["paths", "graph", "library", "weaknesses", "sdl"] as const) {
       expect(harness.panel(view).hidden).toBe(true);
       expect(harness.activated(view)).not.toHaveBeenCalled();
     }
@@ -50,6 +50,10 @@ describe("application navigation", () => {
     const library = navigationHarness("#library");
     library.navigation.start();
     expect(library.panel("library").hidden).toBe(false);
+
+    const weaknesses = navigationHarness("#weaknesses");
+    weaknesses.navigation.start();
+    expect(weaknesses.panel("weaknesses").hidden).toBe(false);
 
     const sdl = navigationHarness("#sdl");
     sdl.navigation.start();
@@ -91,6 +95,9 @@ describe("application navigation", () => {
     expect(harness.button("library").focused).toBe(true);
 
     harness.button("library").keydown("ArrowRight");
+    expect(harness.button("weaknesses").focused).toBe(true);
+
+    harness.button("weaknesses").keydown("ArrowRight");
     expect(harness.button("sdl").focused).toBe(true);
 
     harness.button("sdl").keydown("ArrowRight");
