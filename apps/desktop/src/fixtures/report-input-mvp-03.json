@@ -90,6 +90,8 @@
  "graph": {
   "edges": [
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:product:connected-vehicle-system|composed_of|component:in-vehicle-platform",
     "properties": {},
     "relationship_type": "composed_of",
@@ -97,6 +99,8 @@
     "target": "component:in-vehicle-platform"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:product:connected-vehicle-system|composed_of|component:cloud-backend",
     "properties": {},
     "relationship_type": "composed_of",
@@ -104,6 +108,8 @@
     "target": "component:cloud-backend"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:product:connected-vehicle-system|manufactured_by|party:system-integrator",
     "properties": {},
     "relationship_type": "manufactured_by",
@@ -111,6 +117,8 @@
     "target": "party:system-integrator"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:product:connected-vehicle-system|owned_by|party:fleet-owner",
     "properties": {},
     "relationship_type": "owned_by",
@@ -118,6 +126,8 @@
     "target": "party:fleet-owner"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:product-instance:cvs-release-2026-3|current_phase|lifecycle-phase:operation",
     "properties": {},
     "relationship_type": "current_phase",
@@ -125,6 +135,8 @@
     "target": "lifecycle-phase:operation"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:product-instance:cvs-release-2026-3|of_product|product:connected-vehicle-system",
     "properties": {},
     "relationship_type": "of_product",
@@ -132,6 +144,8 @@
     "target": "product:connected-vehicle-system"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:product-instance:cvs-release-2026-3|owned_by|party:fleet-owner",
     "properties": {},
     "relationship_type": "owned_by",
@@ -139,6 +153,8 @@
     "target": "party:fleet-owner"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:component:in-vehicle-platform|composed_of|component:gateway-ecu",
     "properties": {},
     "relationship_type": "composed_of",
@@ -146,6 +162,8 @@
     "target": "component:gateway-ecu"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:component:in-vehicle-platform|composed_of|component:brake-ecu",
     "properties": {},
     "relationship_type": "composed_of",
@@ -153,6 +171,8 @@
     "target": "component:brake-ecu"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:component:in-vehicle-platform|owned_by|party:fleet-owner",
     "properties": {},
     "relationship_type": "owned_by",
@@ -160,6 +180,8 @@
     "target": "party:fleet-owner"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:component:cloud-backend|composed_of|component:ingest-api",
     "properties": {},
     "relationship_type": "composed_of",
@@ -167,6 +189,8 @@
     "target": "component:ingest-api"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:component:cloud-backend|composed_of|component:fleet-datastore",
     "properties": {},
     "relationship_type": "composed_of",
@@ -174,6 +198,8 @@
     "target": "component:fleet-datastore"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:component:cloud-backend|owned_by|party:fleet-owner",
     "properties": {},
     "relationship_type": "owned_by",
@@ -181,6 +207,8 @@
     "target": "party:fleet-owner"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:component:gateway-ecu|uses_component|component:can-stack-lib",
     "properties": {},
     "relationship_type": "uses_component",
@@ -188,6 +216,8 @@
     "target": "component:can-stack-lib"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:component:ingest-api|uses_component|component:jwt-lib",
     "properties": {},
     "relationship_type": "uses_component",
@@ -195,6 +225,8 @@
     "target": "component:jwt-lib"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:vulnerability:cve-2026-52001|affects|product:connected-vehicle-system",
     "properties": {},
     "relationship_type": "affects",
@@ -202,6 +234,8 @@
     "target": "product:connected-vehicle-system"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:vulnerability:cve-2026-52001|assigned_by|party:cna-auto",
     "properties": {},
     "relationship_type": "assigned_by",
@@ -209,6 +243,8 @@
     "target": "party:cna-auto"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:vulnerability:cve-2026-52001|reported_by|party:sys-reviewer",
     "properties": {},
     "relationship_type": "reported_by",
@@ -216,6 +252,8 @@
     "target": "party:sys-reviewer"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:threat-instance:gateway-default-creds|applies_in_phase|lifecycle-phase:operation",
     "properties": {},
     "relationship_type": "applies_in_phase",
@@ -223,6 +261,8 @@
     "target": "lifecycle-phase:operation"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:threat-instance:gateway-default-creds|realizes_damage|damage-scenario:fleet-wide-compromise",
     "properties": {},
     "relationship_type": "realizes_damage",
@@ -230,6 +270,8 @@
     "target": "damage-scenario:fleet-wide-compromise"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:threat-instance:cloud-jwt-bypass|applies_in_phase|lifecycle-phase:operation",
     "properties": {},
     "relationship_type": "applies_in_phase",
@@ -237,6 +279,8 @@
     "target": "lifecycle-phase:operation"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:threat-instance:cloud-jwt-bypass|realizes_damage|damage-scenario:fleet-wide-compromise",
     "properties": {},
     "relationship_type": "realizes_damage",
@@ -244,6 +288,8 @@
     "target": "damage-scenario:fleet-wide-compromise"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:threat-instance:cross-subsystem-chain|applies_in_phase|lifecycle-phase:operation",
     "properties": {},
     "relationship_type": "applies_in_phase",
@@ -251,6 +297,8 @@
     "target": "lifecycle-phase:operation"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:threat-instance:cross-subsystem-chain|realizes_damage|damage-scenario:fleet-wide-compromise",
     "properties": {},
     "relationship_type": "realizes_damage",
@@ -258,6 +306,8 @@
     "target": "damage-scenario:fleet-wide-compromise"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-step:reach-gateway-service|precedes|attack-step:actuate-via-can",
     "properties": {},
     "relationship_type": "precedes",
@@ -265,6 +315,8 @@
     "target": "attack-step:actuate-via-can"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-step:use-default-creds|precedes|attack-step:actuate-via-can",
     "properties": {},
     "relationship_type": "precedes",
@@ -272,6 +324,8 @@
     "target": "attack-step:actuate-via-can"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-step:forge-jwt-none-alg|precedes|attack-step:call-fleet-api",
     "properties": {},
     "relationship_type": "precedes",
@@ -279,6 +333,8 @@
     "target": "attack-step:call-fleet-api"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-step:forge-jwt-weak-key|precedes|attack-step:call-fleet-api",
     "properties": {},
     "relationship_type": "precedes",
@@ -286,6 +342,8 @@
     "target": "attack-step:call-fleet-api"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-step:call-fleet-api|precedes|attack-step:chain-to-in-vehicle",
     "properties": {},
     "relationship_type": "precedes",
@@ -293,6 +351,8 @@
     "target": "attack-step:chain-to-in-vehicle"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-path:in-vehicle-actuation|realizes_threat|threat-instance:gateway-default-creds",
     "properties": {},
     "relationship_type": "realizes_threat",
@@ -300,6 +360,8 @@
     "target": "threat-instance:gateway-default-creds"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-path:in-vehicle-actuation|steps|attack-step:reach-gateway-service",
     "properties": {},
     "relationship_type": "steps",
@@ -307,6 +369,8 @@
     "target": "attack-step:reach-gateway-service"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-path:in-vehicle-actuation|steps|attack-step:use-default-creds",
     "properties": {},
     "relationship_type": "steps",
@@ -314,6 +378,8 @@
     "target": "attack-step:use-default-creds"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-path:in-vehicle-actuation|steps|attack-step:actuate-via-can",
     "properties": {},
     "relationship_type": "steps",
@@ -321,6 +387,8 @@
     "target": "attack-step:actuate-via-can"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-path:cloud-jwt-forgery|realizes_threat|threat-instance:cloud-jwt-bypass",
     "properties": {},
     "relationship_type": "realizes_threat",
@@ -328,6 +396,8 @@
     "target": "threat-instance:cloud-jwt-bypass"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-path:cloud-jwt-forgery|steps|attack-step:forge-jwt-none-alg",
     "properties": {},
     "relationship_type": "steps",
@@ -335,6 +405,8 @@
     "target": "attack-step:forge-jwt-none-alg"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-path:cloud-jwt-forgery|steps|attack-step:forge-jwt-weak-key",
     "properties": {},
     "relationship_type": "steps",
@@ -342,6 +414,8 @@
     "target": "attack-step:forge-jwt-weak-key"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-path:cloud-jwt-forgery|steps|attack-step:call-fleet-api",
     "properties": {},
     "relationship_type": "steps",
@@ -349,6 +423,8 @@
     "target": "attack-step:call-fleet-api"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-path:cross-subsystem-chain|pivots_to|attack-path:in-vehicle-actuation",
     "properties": {},
     "relationship_type": "pivots_to",
@@ -356,8 +432,29 @@
     "target": "attack-path:in-vehicle-actuation"
    },
    {
+    "assertions": [
+     {
+      "assertion_status": "proposed",
+      "confidence": "low",
+      "description": "AI-PROPOSED edge. assertion_status `proposed` (NOT accepted); a hypothesis until a human accepts it. The paired Review requests changes.",
+      "evidence": [],
+      "id": "assertion:ai-cross-subsystem",
+      "reviews": [
+       {
+        "id": "review:ai-cross-subsystem",
+        "justification": "AI-proposed chain. The push-to-vehicle step assumes a command path the fleet API does not expose; needs evidence before acceptance. Keep as a flagged hypothesis, do not treat as reviewed.",
+        "review_status": "changes_requested",
+        "reviewer": "party:sys-reviewer"
+       }
+      ]
+     }
+    ],
+    "authored": true,
     "id": "relationship:attack-path:cross-subsystem-chain|realizes_threat|threat-instance:cross-subsystem-chain",
     "properties": {
+     "assertion_descriptions": [
+      "AI-PROPOSED edge. assertion_status `proposed` (NOT accepted); a hypothesis until a human accepts it. The paired Review requests changes."
+     ],
      "assertion_ids": [
       "assertion:ai-cross-subsystem"
      ],
@@ -366,13 +463,21 @@
      "review_ids": [
       "review:ai-cross-subsystem"
      ],
-     "review_status": "changes_requested"
+     "review_justifications": [
+      "AI-proposed chain. The push-to-vehicle step assumes a command path the fleet API does not expose; needs evidence before acceptance. Keep as a flagged hypothesis, do not treat as reviewed."
+     ],
+     "review_status": "changes_requested",
+     "review_statuses": [
+      "changes_requested"
+     ]
     },
     "relationship_type": "realizes_threat",
     "source": "attack-path:cross-subsystem-chain",
     "target": "threat-instance:cross-subsystem-chain"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-path:cross-subsystem-chain|steps|attack-step:call-fleet-api",
     "properties": {},
     "relationship_type": "steps",
@@ -380,6 +485,8 @@
     "target": "attack-step:call-fleet-api"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-path:cross-subsystem-chain|steps|attack-step:chain-to-in-vehicle",
     "properties": {},
     "relationship_type": "steps",
@@ -387,6 +494,8 @@
     "target": "attack-step:chain-to-in-vehicle"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:mitigation:enforce-unique-creds|applies_in_phase|lifecycle-phase:production",
     "properties": {},
     "relationship_type": "applies_in_phase",
@@ -394,6 +503,8 @@
     "target": "lifecycle-phase:production"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:mitigation:enforce-unique-creds|applies_in_phase|lifecycle-phase:deployment",
     "properties": {},
     "relationship_type": "applies_in_phase",
@@ -401,6 +512,8 @@
     "target": "lifecycle-phase:deployment"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:mitigation:enforce-unique-creds|implementation_owner|party:system-integrator",
     "properties": {},
     "relationship_type": "implementation_owner",
@@ -408,6 +521,8 @@
     "target": "party:system-integrator"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:mitigation:enforce-unique-creds|mitigates|threat-instance:gateway-default-creds",
     "properties": {},
     "relationship_type": "mitigates",
@@ -415,6 +530,8 @@
     "target": "threat-instance:gateway-default-creds"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:mitigation:pin-jwt-alg-and-rotate|applies_in_phase|lifecycle-phase:implementation",
     "properties": {},
     "relationship_type": "applies_in_phase",
@@ -422,6 +539,8 @@
     "target": "lifecycle-phase:implementation"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:mitigation:pin-jwt-alg-and-rotate|implementation_owner|party:system-integrator",
     "properties": {},
     "relationship_type": "implementation_owner",
@@ -429,6 +548,8 @@
     "target": "party:system-integrator"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:mitigation:pin-jwt-alg-and-rotate|mitigates|threat-instance:cloud-jwt-bypass",
     "properties": {},
     "relationship_type": "mitigates",
@@ -436,6 +557,8 @@
     "target": "threat-instance:cloud-jwt-bypass"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:risk-score:fleet-wide-system|attack_paths|attack-path:in-vehicle-actuation",
     "properties": {},
     "relationship_type": "attack_paths",
@@ -443,6 +566,8 @@
     "target": "attack-path:in-vehicle-actuation"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:risk-score:fleet-wide-system|attack_paths|attack-path:cloud-jwt-forgery",
     "properties": {},
     "relationship_type": "attack_paths",
@@ -450,6 +575,8 @@
     "target": "attack-path:cloud-jwt-forgery"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:risk-score:fleet-wide-system|damage_scenario|damage-scenario:fleet-wide-compromise",
     "properties": {},
     "relationship_type": "damage_scenario",
@@ -457,6 +584,8 @@
     "target": "damage-scenario:fleet-wide-compromise"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:risk-score:fleet-wide-system|for_stakeholder|party:fleet-owner",
     "properties": {},
     "relationship_type": "for_stakeholder",
@@ -464,6 +593,8 @@
     "target": "party:fleet-owner"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:risk-score:fleet-wide-system|threat|threat-instance:cloud-jwt-bypass",
     "properties": {},
     "relationship_type": "threat",
@@ -471,6 +602,8 @@
     "target": "threat-instance:cloud-jwt-bypass"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:review:vuln-prop|reviewer|party:sys-reviewer",
     "properties": {},
     "relationship_type": "reviewer",
@@ -478,6 +611,8 @@
     "target": "party:sys-reviewer"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:review:vuln-prop|reviews|assertion:vuln-propagation",
     "properties": {},
     "relationship_type": "reviews",
@@ -485,6 +620,8 @@
     "target": "assertion:vuln-propagation"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:review:cve-cwe|reviewer|party:sys-reviewer",
     "properties": {},
     "relationship_type": "reviewer",
@@ -492,6 +629,8 @@
     "target": "party:sys-reviewer"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:review:cve-cwe|reviews|assertion:cve-cwe-instance",
     "properties": {},
     "relationship_type": "reviews",
@@ -499,6 +638,8 @@
     "target": "assertion:cve-cwe-instance"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:review:cwe-capec|reviewer|party:sys-reviewer",
     "properties": {},
     "relationship_type": "reviewer",
@@ -506,6 +647,8 @@
     "target": "party:sys-reviewer"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:review:cwe-capec|reviews|assertion:cwe-capec-map",
     "properties": {},
     "relationship_type": "reviews",
@@ -513,6 +656,8 @@
     "target": "assertion:cwe-capec-map"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:review:rollup-in-vehicle|reviewer|party:sys-reviewer",
     "properties": {},
     "relationship_type": "reviewer",
@@ -520,6 +665,8 @@
     "target": "party:sys-reviewer"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:review:rollup-in-vehicle|reviews|assertion:rollup-in-vehicle",
     "properties": {},
     "relationship_type": "reviews",
@@ -527,6 +674,8 @@
     "target": "assertion:rollup-in-vehicle"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:review:rollup-cloud|reviewer|party:sys-reviewer",
     "properties": {},
     "relationship_type": "reviewer",
@@ -534,6 +683,8 @@
     "target": "party:sys-reviewer"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:review:rollup-cloud|reviews|assertion:rollup-cloud",
     "properties": {},
     "relationship_type": "reviews",
@@ -541,6 +692,8 @@
     "target": "assertion:rollup-cloud"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:review:ai-cross-subsystem|reviewer|party:sys-reviewer",
     "properties": {},
     "relationship_type": "reviewer",
@@ -548,6 +701,8 @@
     "target": "party:sys-reviewer"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:review:ai-cross-subsystem|reviews|assertion:ai-cross-subsystem",
     "properties": {},
     "relationship_type": "reviews",
@@ -555,6 +710,8 @@
     "target": "assertion:ai-cross-subsystem"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:assertion:vuln-propagation|object|component:ingest-api",
     "properties": {},
     "relationship_type": "object",
@@ -562,6 +719,8 @@
     "target": "component:ingest-api"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:assertion:vuln-propagation|subject|vulnerability:cve-2026-52001",
     "properties": {},
     "relationship_type": "subject",
@@ -569,6 +728,8 @@
     "target": "vulnerability:cve-2026-52001"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:assertion:cve-cwe-instance|object|weakness:cwe-347",
     "properties": {},
     "relationship_type": "object",
@@ -576,6 +737,8 @@
     "target": "weakness:cwe-347"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:assertion:cve-cwe-instance|subject|vulnerability:cve-2026-52001",
     "properties": {},
     "relationship_type": "subject",
@@ -583,6 +746,8 @@
     "target": "vulnerability:cve-2026-52001"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:assertion:cwe-capec-map|object|attack-pattern:capec-114",
     "properties": {},
     "relationship_type": "object",
@@ -590,6 +755,8 @@
     "target": "attack-pattern:capec-114"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:assertion:cwe-capec-map|subject|weakness:cwe-347",
     "properties": {},
     "relationship_type": "subject",
@@ -597,6 +764,8 @@
     "target": "weakness:cwe-347"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:assertion:rollup-in-vehicle|object|damage-scenario:fleet-wide-compromise",
     "properties": {},
     "relationship_type": "object",
@@ -604,6 +773,8 @@
     "target": "damage-scenario:fleet-wide-compromise"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:assertion:rollup-in-vehicle|subject|threat-instance:gateway-default-creds",
     "properties": {},
     "relationship_type": "subject",
@@ -611,6 +782,8 @@
     "target": "threat-instance:gateway-default-creds"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:assertion:rollup-cloud|object|damage-scenario:fleet-wide-compromise",
     "properties": {},
     "relationship_type": "object",
@@ -618,6 +791,8 @@
     "target": "damage-scenario:fleet-wide-compromise"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:assertion:rollup-cloud|subject|threat-instance:cloud-jwt-bypass",
     "properties": {},
     "relationship_type": "subject",
@@ -625,6 +800,8 @@
     "target": "threat-instance:cloud-jwt-bypass"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:assertion:ai-cross-subsystem|object|threat-instance:cross-subsystem-chain",
     "properties": {},
     "relationship_type": "object",
@@ -632,6 +809,8 @@
     "target": "threat-instance:cross-subsystem-chain"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:assertion:ai-cross-subsystem|subject|attack-path:cross-subsystem-chain",
     "properties": {},
     "relationship_type": "subject",
@@ -639,8 +818,29 @@
     "target": "attack-path:cross-subsystem-chain"
    },
    {
+    "assertions": [
+     {
+      "assertion_status": "accepted",
+      "confidence": "high",
+      "description": "Reviewed propagation edge (\u00a75), reified so a Review can point at it.",
+      "evidence": [],
+      "id": "assertion:vuln-propagation",
+      "reviews": [
+       {
+        "id": "review:vuln-prop",
+        "justification": "jwt-lib is a dependency of the ingest API; signature bypass reachable.",
+        "review_status": "accepted",
+        "reviewer": "party:sys-reviewer"
+       }
+      ]
+     }
+    ],
+    "authored": false,
     "id": "relationship:vulnerability:cve-2026-52001|propagates_to|component:ingest-api",
     "properties": {
+     "assertion_descriptions": [
+      "Reviewed propagation edge (\u00a75), reified so a Review can point at it."
+     ],
      "assertion_ids": [
       "assertion:vuln-propagation"
      ],
@@ -649,15 +849,42 @@
      "review_ids": [
       "review:vuln-prop"
      ],
-     "review_status": "accepted"
+     "review_justifications": [
+      "jwt-lib is a dependency of the ingest API; signature bypass reachable."
+     ],
+     "review_status": "accepted",
+     "review_statuses": [
+      "accepted"
+     ]
     },
     "relationship_type": "propagates_to",
     "source": "vulnerability:cve-2026-52001",
     "target": "component:ingest-api"
    },
    {
+    "assertions": [
+     {
+      "assertion_status": "accepted",
+      "confidence": "high",
+      "description": "The CVE-to-CWE step of the ADR-0002 backbone (CVE, CWE, CAPEC, ATT&CK). Vulnerability has no Weakness slot, so the link is reified, with the predicate ARCH-0001 \u00a73 and PLAN-0002 \u00a75 name (RPT-0004 mapping.md, finding 7). In a real import the CWE comes from the CVE record and stays proposed until a human reviews it (R-018).",
+      "evidence": [],
+      "id": "assertion:cve-cwe-instance",
+      "reviews": [
+       {
+        "id": "review:cve-cwe",
+        "justification": "The CWE in the CVE record (illustrative) matches the root cause; jwt-verify accepts tokens whose signature it does not check.",
+        "review_status": "accepted",
+        "reviewer": "party:sys-reviewer"
+       }
+      ]
+     }
+    ],
+    "authored": false,
     "id": "relationship:vulnerability:cve-2026-52001|instance_of|weakness:cwe-347",
     "properties": {
+     "assertion_descriptions": [
+      "The CVE-to-CWE step of the ADR-0002 backbone (CVE, CWE, CAPEC, ATT&CK). Vulnerability has no Weakness slot, so the link is reified, with the predicate ARCH-0001 \u00a73 and PLAN-0002 \u00a75 name (RPT-0004 mapping.md, finding 7). In a real import the CWE comes from the CVE record and stays proposed until a human reviews it (R-018)."
+     ],
      "assertion_ids": [
       "assertion:cve-cwe-instance"
      ],
@@ -666,15 +893,42 @@
      "review_ids": [
       "review:cve-cwe"
      ],
-     "review_status": "accepted"
+     "review_justifications": [
+      "The CWE in the CVE record (illustrative) matches the root cause; jwt-verify accepts tokens whose signature it does not check."
+     ],
+     "review_status": "accepted",
+     "review_statuses": [
+      "accepted"
+     ]
     },
     "relationship_type": "instance_of",
     "source": "vulnerability:cve-2026-52001",
     "target": "weakness:cwe-347"
    },
    {
+    "assertions": [
+     {
+      "assertion_status": "accepted",
+      "confidence": "high",
+      "description": "Human-reviewed CWE\u2194CAPEC mapping (\u00a72).",
+      "evidence": [],
+      "id": "assertion:cwe-capec-map",
+      "reviews": [
+       {
+        "id": "review:cwe-capec",
+        "justification": "Authentication-abuse pattern matches the signature-verification weakness.",
+        "review_status": "accepted",
+        "reviewer": "party:sys-reviewer"
+       }
+      ]
+     }
+    ],
+    "authored": false,
     "id": "relationship:weakness:cwe-347|exploited_by|attack-pattern:capec-114",
     "properties": {
+     "assertion_descriptions": [
+      "Human-reviewed CWE\u2194CAPEC mapping (\u00a72)."
+     ],
      "assertion_ids": [
       "assertion:cwe-capec-map"
      ],
@@ -683,15 +937,42 @@
      "review_ids": [
       "review:cwe-capec"
      ],
-     "review_status": "accepted"
+     "review_justifications": [
+      "Authentication-abuse pattern matches the signature-verification weakness."
+     ],
+     "review_status": "accepted",
+     "review_statuses": [
+      "accepted"
+     ]
     },
     "relationship_type": "exploited_by",
     "source": "weakness:cwe-347",
     "target": "attack-pattern:capec-114"
    },
    {
+    "assertions": [
+     {
+      "assertion_status": "accepted",
+      "confidence": "high",
+      "description": "Reviewed roll-up edge from a subsystem threat to the system-level damage (\u00a78 V3).",
+      "evidence": [],
+      "id": "assertion:rollup-in-vehicle",
+      "reviews": [
+       {
+        "id": "review:rollup-in-vehicle",
+        "justification": "Subsystem threat contributes to the fleet-wide system damage; roll-up confirmed.",
+        "review_status": "accepted",
+        "reviewer": "party:sys-reviewer"
+       }
+      ]
+     }
+    ],
+    "authored": false,
     "id": "relationship:threat-instance:gateway-default-creds|rolls_up_to|damage-scenario:fleet-wide-compromise",
     "properties": {
+     "assertion_descriptions": [
+      "Reviewed roll-up edge from a subsystem threat to the system-level damage (\u00a78 V3)."
+     ],
      "assertion_ids": [
       "assertion:rollup-in-vehicle"
      ],
@@ -700,13 +981,37 @@
      "review_ids": [
       "review:rollup-in-vehicle"
      ],
-     "review_status": "accepted"
+     "review_justifications": [
+      "Subsystem threat contributes to the fleet-wide system damage; roll-up confirmed."
+     ],
+     "review_status": "accepted",
+     "review_statuses": [
+      "accepted"
+     ]
     },
     "relationship_type": "rolls_up_to",
     "source": "threat-instance:gateway-default-creds",
     "target": "damage-scenario:fleet-wide-compromise"
    },
    {
+    "assertions": [
+     {
+      "assertion_status": "accepted",
+      "confidence": "high",
+      "description": null,
+      "evidence": [],
+      "id": "assertion:rollup-cloud",
+      "reviews": [
+       {
+        "id": "review:rollup-cloud",
+        "justification": "Cloud subsystem threat contributes to the fleet-wide system damage; roll-up confirmed.",
+        "review_status": "accepted",
+        "reviewer": "party:sys-reviewer"
+       }
+      ]
+     }
+    ],
+    "authored": false,
     "id": "relationship:threat-instance:cloud-jwt-bypass|rolls_up_to|damage-scenario:fleet-wide-compromise",
     "properties": {
      "assertion_ids": [
@@ -717,7 +1022,13 @@
      "review_ids": [
       "review:rollup-cloud"
      ],
-     "review_status": "accepted"
+     "review_justifications": [
+      "Cloud subsystem threat contributes to the fleet-wide system damage; roll-up confirmed."
+     ],
+     "review_status": "accepted",
+     "review_statuses": [
+      "accepted"
+     ]
     },
     "relationship_type": "rolls_up_to",
     "source": "threat-instance:cloud-jwt-bypass",

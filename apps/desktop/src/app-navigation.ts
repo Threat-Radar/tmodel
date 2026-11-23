@@ -1,6 +1,6 @@
 // Application tabs, synchronized with the URL hash.
 // The Model Report is the default view.
-export type AppView = "report" | "paths" | "graph" | "library" | "weaknesses" | "sdl";
+export type AppView = "report" | "paths" | "graph" | "requirements" | "library" | "weaknesses" | "sdl";
 
 export interface NavigationView {
   view: AppView;

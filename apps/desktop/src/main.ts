@@ -28,6 +28,8 @@ import { StaticLibraryDataProvider } from "./static-library-provider";
 import { configurePreviewChrome, openInitialModel } from "./preview-bootstrap";
 import { createWeaknessProvider } from "./weakness-provider";
 import { weaknessViewElements, WeaknessesView } from "./weakness-view";
+import { CompatibleCoverageProvider } from "./coverage-provider";
+import { RequirementsView, requirementsViewElements } from "./requirements-view";
 
 const POLL_MS = 2000;
 // Vite replaces MODE at build time; the Pages bundle can therefore eliminate
@@ -148,6 +150,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const weaknessProvider = createWeaknessProvider(preview, parameters);
   const weaknessUsesEngine = weaknessProvider.metadata.source === "engine";
   const weaknessView = new WeaknessesView(weaknessProvider, weaknessViewElements());
+  const requirementsView = new RequirementsView(requirementsViewElements());
 
   let lastEngineState: EngineState | undefined;
   let visibleView: string | undefined;
@@ -229,6 +232,26 @@ window.addEventListener("DOMContentLoaded", () => {
       required("report-scroll").scrollTop = 0;
       if (preview) syncModelUrl(model);
       replaceExplore(model.file);
+      const graphProvider = new EngineGraphDataProvider(
+        model.file,
+        staticApi?.engineBase,
+        staticApi?.fetch,
+      );
+      const coverageProvider = new CompatibleCoverageProvider(
+        model.file,
+        graphProvider,
+        staticApi?.engineBase,
+        staticApi?.fetch,
+      );
+      requirementsView.openModel({
+        file: model.file,
+        title: model.title,
+        notice: staticApi
+          ? `Published example requirements from ${model.file}`
+          : `Requirements from the local engine model ${model.file}`,
+        getGraph: () => graphProvider.getModelGraph(),
+        getCoverage: (product, signal) => coverageProvider.getCoverage(product, signal),
+      });
       bookkeepingToggle.disabled = false;
     },
     remember: rememberModel,
@@ -290,6 +313,15 @@ window.addEventListener("DOMContentLoaded", () => {
       },
     },
     {
+      view: "requirements",
+      button: required("requirements-tab"),
+      panel: required("requirements-view-panel"),
+      activated: () => {
+        show("requirements");
+        requirementsView.activate();
+      },
+    },
+    {
       view: "library",
       button: required("library-tab"),
       panel: required("library-view-panel"),
@@ -334,6 +366,7 @@ window.addEventListener("DOMContentLoaded", () => {
       void catalogStartup.engineStateChanged(lastEngineState);
       if (libraryUsesEngine) void libraryView.engineStateChanged(lastEngineState);
       if (weaknessUsesEngine) void weaknessView.engineStateChanged(lastEngineState);
+      if (visibleView === "requirements") void requirementsView.engineStateChanged(lastEngineState);
       if (visibleView === "graph" && explore?.usesEngine) void explore.startup.engineStateChanged(lastEngineState);
       if (visibleView === "sdl") void sdlView.engineStateChanged(lastEngineState);
     };

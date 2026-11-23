@@ -1,7 +1,11 @@
 // Engine transport types shared by the app and the static Pages renderer (#208).
 // Types only: Node's type stripping erases this module's imports entirely.
 
-import type { AttackPathResponse, GraphProperties } from "./graph-types";
+import type {
+  AttackPathResponse,
+  GraphAssertionProvenance,
+  GraphProperties,
+} from "./graph-types";
 
 /** One entry of the engine's `/models` list (engine/core.py `list_models`). */
 export interface ModelSummary {
@@ -40,6 +44,8 @@ export interface EngineGraphEdge {
   source: string;
   target: string;
   relationship_type: string;
+  authored?: boolean;
+  assertions?: readonly GraphAssertionProvenance[];
   properties: GraphProperties;
 }
 

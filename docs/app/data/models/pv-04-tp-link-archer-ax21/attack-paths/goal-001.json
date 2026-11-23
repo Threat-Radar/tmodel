@@ -1,0 +1,20 @@
+{
+  "file": "pv-04-tp-link-archer-ax21.yaml",
+  "goal": "threat-instance:lan-command-injection",
+  "paths": [
+    {
+      "authored_path": "attack-path:lan-to-root",
+      "goal_step": "attack-step:run-as-root",
+      "review": {
+        "assertion_status": "proposed",
+        "review_status": null,
+        "reviewed": false
+      },
+      "steps": [
+        "attack-step:reach-admin-interface",
+        "attack-step:inject-command",
+        "attack-step:run-as-root"
+      ]
+    }
+  ]
+}
