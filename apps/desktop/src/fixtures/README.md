@@ -116,8 +116,11 @@ four sort in CAPEC's own order (Meta, Standard, Detailed; Stable to Deprecated; 
 Low; Very High to Very Low), not alphabetically.
 
 `GET /attack-patterns?id=CAPEC-66` returns one entry with every CAPEC field, for a details
-view, plus the tmodel objects the import makes for it. `GET /attack-patterns` without
-parameters says where each CAPEC field goes and which links the import could not map.
+view, plus `references`, each reference the entry cites resolved to its title, authors,
+edition, publication, publisher, date and URL (`resolved` is false for one the release
+does not define), and the tmodel objects the import makes for it. `GET /attack-patterns`
+without parameters says where each CAPEC field goes, which links the import could not
+map, and which citations and attack-pattern links name nothing in the release.
 
 The rows are CAPEC content. The CAPEC Terms of Use (https://capec.mitre.org/about/termsofuse.html)
 allow copies provided that each one reproduces MITRE's copyright designation and licence,

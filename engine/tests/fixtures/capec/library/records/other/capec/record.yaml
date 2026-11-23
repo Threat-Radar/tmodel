@@ -13,8 +13,8 @@ identifiers:
 # capec_v3.9.xml. This one pins the sample beside it, engine/tests/fixtures/capec/README.md.
 content:
   url: engine/tests/fixtures/capec/capec_v3.9-sample.xml
-  sha256: "68789138ccecf9e921e079b9ef3283f60d94632f266ae9eae611e8721abb0127"
-  retrieved: "2026-11-14"
+  sha256: "0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
+  retrieved: "2026-11-22"
   local: false
   media_type: application/xml
 relations:

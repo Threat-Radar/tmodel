@@ -1,11 +1,11 @@
 """The CAPEC reader and its objects (#244): every field kept, the source's values found.
 
 Runs on `fixtures/capec/capec_v3.9-sample.xml`: 13 attack patterns, 3 categories, 3
-views and the 15 external references they cite, copied verbatim from MITRE's CAPEC
-3.9 and chosen so that every field, attribute value and link kind of the release
-appears. The typed values are checked against the XML read independently with
-ElementTree. Set TMODEL_CAPEC_FULL to MITRE's capec_v3.9.xml to check the whole
-release as well.
+views, the 15 external references they cite and REF-9 (for its Edition), copied
+verbatim from MITRE's CAPEC 3.9 and chosen so that every field, attribute value and
+link kind of the release appears. The typed values are checked against the XML read
+independently with ElementTree. Set TMODEL_CAPEC_FULL to MITRE's capec_v3.9.xml to
+check the whole release as well.
 """
 
 import os
@@ -21,7 +21,7 @@ from engine.load import capec, cwe
 
 FIXTURES = Path(__file__).resolve().parent / "fixtures" / "capec"
 SAMPLE = FIXTURES / "capec_v3.9-sample.xml"
-SAMPLE_SHA256 = "68789138ccecf9e921e079b9ef3283f60d94632f266ae9eae611e8721abb0127"
+SAMPLE_SHA256 = "0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
 FULL_SHA256 = "70279a2dff0cb0ad79e546adb07828335a704ad5210e047e09e986172fc9e34d"
 NS = f"{{{capec.CAPEC_NS}}}"
 SAMPLE_NUMBERS = [115, 192, 23, 273, 478, 497, 5, 602, 63, 66, 7, 701, 88]  # in file order
@@ -53,7 +53,8 @@ def test_sample_loads_with_its_pinned_digest(catalog):
     assert [p.number for p in catalog.attack_patterns] == SAMPLE_NUMBERS
     assert [c.id for c in catalog.categories] == ["CAPEC-210", "CAPEC-371", "CAPEC-684"]
     assert [v.id for v in catalog.views] == ["CAPEC-1000", "CAPEC-483", "CAPEC-703"]
-    assert len(catalog.references) == 15 and catalog.references[0]["@Reference_ID"] == "REF-1"
+    assert [r["@Reference_ID"] for r in catalog.references[:3]] == ["REF-1", "REF-9", "REF-38"]
+    assert len(catalog.references) == 16
     assert catalog.unknown == ()
 
 
@@ -142,7 +143,8 @@ def test_every_element_attribute_and_word_is_kept(catalog):
         *catalog.references,
     ]
     by_key = {(f.get("@ID") or f.get("@Reference_ID")): f for f in kept}
-    assert len(by_key) == len(entries) == 34
+    assert len(by_key) == len(entries) == 35
+    assert by_key["REF-9"]["Edition"] == ("v4",)  # the one reference field the cited 15 lack
     for element in entries:
         fields = by_key[element.get("ID") or element.get("Reference_ID")]
         assert _tally(fields) == _source_tally(element), element.get("ID")
@@ -189,11 +191,14 @@ def test_the_report_names_every_entry_field_and_where_it_goes(catalog):
     )
     assert by[("Attack_Pattern", "Mitigations")]["maps_to"] is None  # kept on the entry
     assert by[("View", "Audience")]["entries"] == 0  # in the schema, in no 3.9 view
-    assert by[("External_Reference", "Title")]["entries"] == 15
+    assert by[("External_Reference", "Title")]["entries"] == 16
+    assert by[("External_Reference", "Edition")]["entries"] == 1
 
 
-def test_links_name_what_is_not_mapped(catalog):
-    assert catalog.links() == {
+def test_links_name_what_is_not_mapped(catalog, source):
+    links = catalog.links()
+    unresolved = links.pop("attack_pattern_links_unresolved")
+    assert links == {
         "weakness_links": 25,
         "weakness_links_without_cwe_id": [],
         "weakness_links_repeated": [],
@@ -205,7 +210,120 @@ def test_links_name_what_is_not_mapped(catalog):
             "PeerOf": 1,
         },
         "taxonomy_mappings": {"ATTACK": 4, "OWASP Attacks": 3, "WASC": 4},
+        "reference_citations": 17,
+        "references_unresolved": [],
     }
+    # The sample is cut from the release, so a link to an attack pattern outside the
+    # cut names none it has: exactly those are listed, read here straight from the XML.
+    outside = [
+        {
+            "attack_pattern": f"CAPEC-{p.get('ID')}",
+            "nature": r.get("Nature"),
+            "capec_id": r.get("CAPEC_ID"),
+        }
+        for p in source.values()
+        for r in p.iter(f"{NS}Related_Attack_Pattern")
+        if int(r.get("CAPEC_ID")) not in source
+    ]
+    assert sorted(unresolved, key=str) == sorted(outside, key=str)
+    assert len(unresolved) == 19  # of 22 links; the other 3 stay inside the sample
+
+
+# --- references ----------------------------------------------------------------------------
+
+REF_1 = {
+    "id": "REF-1",
+    "section": None,
+    "resolved": True,
+    "title": "Exploiting Software: How to Break Code",
+    "authors": ["G. Hoglund", "G. McGraw"],
+    "edition": None,
+    "publication": None,
+    "publisher": "Addison-Wesley",
+    "year": "2004",
+    "month": "--02",
+    "day": None,
+    "url": None,
+    "url_date": None,
+}
+
+
+def test_each_citation_resolves_to_its_reference(catalog):
+    assert catalog.citations(catalog.get("CAPEC-23")) == [REF_1]
+    (sql,) = catalog.citations(catalog.get("CAPEC-66"))
+    assert (sql["id"], sql["section"], sql["title"]) == (
+        "REF-607",
+        "Testing for SQL Injection",
+        "OWASP Web Security Testing Guide",
+    )
+    assert sql["url"].startswith("https://owasp.org/www-project-web-security-testing-guide/")
+    assert [c["id"] for c in catalog.citations(catalog.get("CAPEC-684"))] == ["REF-718"]
+    assert catalog.citations(catalog.get("CAPEC-478")) == []  # cites nothing
+
+
+def test_a_citation_carries_the_references_edition(tmp_path):
+    changed = tmp_path / "capec.xml"
+    text = SAMPLE.read_text(encoding="utf-8")
+    changed.write_text(
+        text.replace('External_Reference_ID="REF-607"', 'External_Reference_ID="REF-9"', 1),
+        encoding="utf-8",
+    )
+    catalog = capec.load_catalog(changed)
+    (cited,) = catalog.citations(catalog.get("CAPEC-66"))
+    assert (cited["id"], cited["title"], cited["edition"], cited["year"]) == (
+        "REF-9",
+        "OWASP Testing Guide",
+        "v4",
+        "2010",
+    )
+
+
+def test_a_citation_of_an_undefined_reference_is_listed_and_kept(tmp_path):
+    # As CAPEC-244 cites REF-97 in the whole 3.9 release: reported, not refused.
+    changed = tmp_path / "capec.xml"
+    text = SAMPLE.read_text(encoding="utf-8")
+    changed.write_text(
+        text.replace('External_Reference_ID="REF-607"', 'External_Reference_ID="REF-97"', 1),
+        encoding="utf-8",
+    )
+    catalog = capec.load_catalog(changed)
+    assert catalog.links()["references_unresolved"] == [
+        {"entry": "CAPEC-66", "reference": "REF-97", "section": "Testing for SQL Injection"}
+    ]
+    (cited,) = catalog.citations(catalog.get("CAPEC-66"))
+    assert (cited["id"], cited["resolved"], cited["title"], cited["authors"]) == (
+        "REF-97",
+        False,
+        None,
+        [],
+    )
+    assert catalog.get("CAPEC-66").fields["References"]  # the citation itself is kept
+
+
+def test_a_reference_defined_twice_is_refused(tmp_path):
+    changed = tmp_path / "capec.xml"
+    text = SAMPLE.read_text(encoding="utf-8")
+    start = text.index('      <External_Reference Reference_ID="REF-9">')
+    end = text.index("</External_Reference>\n", start) + len("</External_Reference>\n")
+    changed.write_text(text[:end] + text[start:end] + text[end:], encoding="utf-8")
+    with pytest.raises(capec.CapecError, match="external reference REF-9 is defined twice"):
+        capec.load_catalog(changed)
+
+
+def test_a_link_to_an_attack_pattern_the_release_lacks_is_listed_and_kept(tmp_path):
+    changed = tmp_path / "capec.xml"
+    text = SAMPLE.read_text(encoding="utf-8")
+    link = '<Related_Attack_Pattern Nature="ChildOf" CAPEC_ID="248"/>'
+    assert link in text  # CAPEC-66 is a ChildOf CAPEC-248, which the sample does not hold
+    changed.write_text(
+        text.replace(link, '<Related_Attack_Pattern Nature="ChildOf" CAPEC_ID="66"/>' + link, 1),
+        encoding="utf-8",
+    )
+    catalog = capec.load_catalog(changed)
+    listed = catalog.links()["attack_pattern_links_unresolved"]
+    assert {"attack_pattern": "CAPEC-66", "nature": "ChildOf", "capec_id": "248"} in listed
+    assert {"attack_pattern": "CAPEC-66", "nature": "ChildOf", "capec_id": "66"} not in listed
+    assert ("ChildOf", "CAPEC-248") in catalog.get("CAPEC-66").related_attack_patterns
 
 
 def test_a_weakness_given_twice_makes_one_link_and_is_listed(tmp_path):
@@ -430,6 +548,12 @@ def test_the_whole_39_release():
     links = full.links()
     assert (links["weakness_links"], len(links["weakness_links_repeated"])) == (1214, 2)
     assert links["taxonomy_mappings"] == {"ATTACK": 272, "OWASP Attacks": 39, "WASC": 37}
+    # 3.9 defines no reference twice and links to no attack pattern it lacks, and its
+    # 754 citations resolve but one, which is listed rather than refused.
+    assert (links["reference_citations"], links["attack_pattern_links_unresolved"]) == (754, [])
+    assert links["references_unresolved"] == [
+        {"entry": "CAPEC-244", "reference": "REF-97", "section": "XSS Filter Evasion Cheat Sheet"}
+    ]
     objects = {name: len(items) for name, items in full.objects.items()}
     assert objects == {"parties": 1, "attack_patterns": 615, "weaknesses": 336, "assertions": 1212}
 

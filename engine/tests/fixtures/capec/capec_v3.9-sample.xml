@@ -1534,6 +1534,13 @@
          <Publication_Month>--02</Publication_Month>
          <Publisher>Addison-Wesley</Publisher>
       </External_Reference>
+      <External_Reference Reference_ID="REF-9">
+         <Title>OWASP Testing Guide</Title>
+         <Edition>v4</Edition>
+         <Publication_Year>2010</Publication_Year>
+         <Publisher>The Open Web Application Security Project (OWASP)</Publisher>
+         <URL>https://www.owasp.org/index.php/Testing_for_Path_Traversal_(OWASP-AZ-001)</URL>
+      </External_Reference>
       <External_Reference Reference_ID="REF-38">
          <Title>HTTP 1.1 Specification (RFC 2616)</Title>
          <Publication>IETF RFC</Publication>

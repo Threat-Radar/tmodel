@@ -285,7 +285,7 @@ def test_no_catalog_configured_is_503_naming_the_file_to_get(engine_url, monkeyp
         api(engine_url, "/attack-patterns/table", {})
     assert err.value.code == 503
     message = json.loads(err.value.read())["error"]
-    assert "set TMODEL_CAPEC_CATALOG" in message and "68789138" in message
+    assert "set TMODEL_CAPEC_CATALOG" in message and "0faa35f4" in message
 
 
 def test_a_library_that_pins_no_release_is_503(engine_url, monkeypatch):
@@ -303,7 +303,7 @@ def test_a_catalog_with_other_bytes_is_503(engine_url, monkeypatch, tmp_path):
     with pytest.raises(urllib.error.HTTPError) as err:
         api(engine_url, "/attack-patterns/table", {})
     assert err.value.code == 503
-    assert "is not the 68789138" in json.loads(err.value.read())["error"]
+    assert "is not the 0faa35f4" in json.loads(err.value.read())["error"]
 
 
 # --- GET /attack-patterns: the import report, or one entry in full ------------------------------
@@ -340,6 +340,25 @@ def test_one_entry_by_id(engine_url):
         "Attack_Pattern",
     )
     assert one["entry"]["fields"]["@Name"] == one["entry"]["name"] == "SQL Injection"
+    # Each cited reference resolved, for the details view (#236), not just its id.
+    assert [(r["id"], r["resolved"], r["title"], r["section"]) for r in one["references"]] == [
+        ("REF-607", True, "OWASP Web Security Testing Guide", "Testing for SQL Injection")
+    ]
+    assert list(one["references"][0]) == [
+        "id",
+        "section",
+        "resolved",
+        "title",
+        "authors",
+        "edition",
+        "publication",
+        "publisher",
+        "year",
+        "month",
+        "day",
+        "url",
+        "url_date",
+    ]
     assert [p["id"] for p in one["objects"]["attack_patterns"]] == ["attack-pattern:capec-66"]
     assert core.attack_patterns({"id": "66"}) == one
     status, payload = api(engine_url, "/attack-patterns", {"id": "capec-66"})
@@ -349,8 +368,14 @@ def test_one_entry_by_id(engine_url):
 def test_a_category_has_no_objects_and_an_unknown_id_no_entry():
     category = core.attack_patterns({"id": "CAPEC-210"})
     assert (category["entry"]["kind"], category["objects"]) == ("Category", None)
+    assert [r["id"] for r in core.attack_patterns({"id": "CAPEC-684"})["references"]] == ["REF-718"]
     missing = core.attack_patterns({"id": "CAPEC-99999"})
-    assert (missing["id"], missing["entry"], missing["objects"]) == ("CAPEC-99999", None, None)
+    assert (missing["id"], missing["entry"], missing["references"], missing["objects"]) == (
+        "CAPEC-99999",
+        None,
+        None,
+        None,
+    )
 
 
 @pytest.mark.parametrize(

@@ -17,6 +17,13 @@ dropped silently.
 ADR-0011): one AttackPattern per CAPEC attack pattern, and a proposed Assertion for
 each CWE weakness CAPEC relates it to (DL-0056).
 
+References: an entry cites an External_Reference by its id, and `CapecCatalog.citations`
+resolves each citation to the reference's title, authors, publication and URL, for the
+details view (#236). A reference defined twice makes the file unreadable, as an entry id
+given twice does. A citation of a reference the release does not define (in 3.9,
+CAPEC-244 cites REF-97) and a related attack pattern the release does not have are
+listed in `CapecCatalog.links()` and kept, not refused.
+
 Read-only and deterministic: the same bytes give the same entries in the same order,
 and nothing is written anywhere.
 """
@@ -266,6 +273,25 @@ class CapecCatalog:
             )
         return rows
 
+    @cached_property
+    def _references_by_id(self) -> Mapping[str, Mapping[str, Any]]:
+        return MappingProxyType({str(r.get("@Reference_ID", "")): r for r in self.references})
+
+    def citations(self, entry: CapecEntry) -> list[dict[str, Any]]:
+        """The references an entry cites, each resolved to what it is (#236's details view).
+
+        One item per Reference in the entry's References, in file order: the reference
+        id and the cited section, then the reference's title, authors, edition,
+        publication, publisher, publication date (year, month and day as CAPEC writes
+        them) and URL with the date it was accessed. Every item has every key. A
+        citation of a reference this release does not define has `resolved` false and
+        the reference's keys empty.
+        """
+        return [
+            _citation(cited, self._references_by_id.get(_cited_id(cited)))
+            for cited in cwe._items(entry.fields, "References", "Reference")
+        ]
+
     def links(self) -> dict[str, Any]:
         """What became of CAPEC's links (DL-0056), naming each one not mapped.
 
@@ -273,7 +299,9 @@ class CapecCatalog:
         whole number; the others stay on their entry and are listed here. A weakness
         CAPEC gives twice for one attack pattern becomes one Assertion, and is listed
         too. Links between attack patterns and taxonomy mappings stay on their
-        entries, and are counted by kind.
+        entries, and are counted by kind. A link to an attack pattern the release does
+        not have, and a citation of a reference it does not define, are listed: they
+        are kept on their entry, not refused.
         """
         given = [
             (p.id, str(w.get("@CWE_ID", "")))
@@ -281,6 +309,16 @@ class CapecCatalog:
             for w in cwe._items(p.fields, "Related_Weaknesses", "Related_Weakness")
         ]
         mapped = Counter((p, f"CWE-{int(raw)}") for p, raw in given if WHOLE_NUMBER.fullmatch(raw))
+        related = [
+            (p.id, str(r.get("@Nature", "")), str(r.get("@CAPEC_ID", "")))
+            for p in self.attack_patterns
+            for r in cwe._items(p.fields, "Related_Attack_Patterns", "Related_Attack_Pattern")
+        ]
+        cited = [
+            (e.id, _cited_id(c), c.get("@Section"))
+            for e in (*self.attack_patterns, *self.categories, *self.views)
+            for c in cwe._items(e.fields, "References", "Reference")
+        ]
         return {
             "weakness_links": len(given),
             "weakness_links_without_cwe_id": [
@@ -302,6 +340,17 @@ class CapecCatalog:
                     ).items()
                 )
             ),
+            "attack_pattern_links_unresolved": [
+                {"attack_pattern": p, "nature": nature, "capec_id": raw}
+                for p, nature, raw in related
+                if not self._is_attack_pattern(raw)
+            ],
+            "reference_citations": len(cited),
+            "references_unresolved": [
+                {"entry": e, "reference": ref, "section": section}
+                for e, ref, section in cited
+                if ref not in self._references_by_id
+            ],
             "taxonomy_mappings": dict(
                 sorted(
                     Counter(
@@ -312,6 +361,10 @@ class CapecCatalog:
                 )
             ),
         }
+
+    def _is_attack_pattern(self, capec_id: str) -> bool:
+        target = self.get(capec_id)
+        return target is not None and target.kind == "Attack_Pattern"
 
     @cached_property
     def objects(self) -> Mapping[str, tuple[Mapping[str, Any], ...]]:
@@ -511,6 +564,7 @@ def _catalog(name: str, digest: str, root: ElementTree.Element) -> CapecCatalog:
     counts: Counter[tuple[str, str]] = Counter()
     unknown: Counter[str] = Counter()
     seen: dict[int, str] = {}
+    defined: set[str] = set()
     for container in root:
         container_name = cwe._local(container.tag)
         kind = kinds.get(container_name) if cwe._ns(container.tag) == CAPEC_NS else None
@@ -528,6 +582,10 @@ def _catalog(name: str, digest: str, root: ElementTree.Element) -> CapecCatalog:
             counts.update((kind, key) for key in present)
             unknown.update(f"{kind}/{key}" for key in present if key not in ENTRY_FIELDS[kind])
             if kind == "External_Reference":
+                reference = str(fields.get("@Reference_ID", ""))
+                if reference in defined:  # a citation of it could not say which one it means
+                    raise CapecError(f"{name}: external reference {reference} is defined twice")
+                defined.add(reference)
                 references.append(fields)
                 continue
             entry = _entry(name, kind, fields)
@@ -604,6 +662,31 @@ def _entry(name: str, kind: str, fields: Mapping[str, Any]) -> CapecEntry:
 
 
 # --- small readers ----------------------------------------------------------------------------
+
+
+def _cited_id(cited: Mapping[str, Any]) -> str:
+    """The reference id a Reference cites, such as REF-1."""
+    return str(cited.get("@External_Reference_ID", ""))
+
+
+def _citation(cited: Mapping[str, Any], reference: Mapping[str, Any] | None) -> dict[str, Any]:
+    """One citation for the details view, with the reference it names, if defined."""
+    found = reference or {}
+    return {
+        "id": _cited_id(cited),
+        "section": cwe._optional(cited, "@Section"),
+        "resolved": reference is not None,
+        "title": cwe._text_at(found, "Title"),
+        "authors": [plain_text(author) for author in found.get("Author", ())],
+        "edition": cwe._text_at(found, "Edition"),
+        "publication": cwe._text_at(found, "Publication"),
+        "publisher": cwe._text_at(found, "Publisher"),
+        "year": cwe._text_at(found, "Publication_Year"),
+        "month": cwe._text_at(found, "Publication_Month"),
+        "day": cwe._text_at(found, "Publication_Day"),
+        "url": cwe._text_at(found, "URL"),
+        "url_date": cwe._text_at(found, "URL_Date"),
+    }
 
 
 def _count(fields: Mapping[str, Any], container: str, item: str) -> int:

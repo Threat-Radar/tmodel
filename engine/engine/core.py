@@ -652,8 +652,10 @@ def attack_patterns(query: Mapping[str, str] | None = None) -> dict[str, Any]:
     `known` false); `links`, what became of CAPEC's links to CWE weaknesses, naming
     each one not mapped, with counts of the links kept on the entries; and how many
     objects of each kind the import makes. With `id` (`CAPEC-66` or `66`): that attack
-    pattern, category or view with every field, and the objects the import makes for
-    an attack pattern. An id the catalog does not have gives `entry: null`. Raises
+    pattern, category or view with every field, `references`, each reference it cites
+    resolved to its title, authors, publication and URL (`CapecCatalog.citations`), and
+    the objects the import makes for an attack pattern. An id the catalog does not have
+    gives `entry: null` and `references: null`. Raises
     ValueError for another parameter or a malformed id, and Unavailable when there is
     no pinned catalog to read.
     """
@@ -674,6 +676,7 @@ def attack_patterns(query: Mapping[str, str] | None = None) -> dict[str, Any]:
         **summary,
         "id": f"CAPEC-{number}",
         "entry": entry.to_dict() if entry is not None else None,
+        "references": catalog.citations(entry) if entry is not None else None,
         "objects": capec.to_objects(catalog, [number]) if pattern else None,
     }
 

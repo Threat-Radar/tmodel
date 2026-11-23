@@ -4,9 +4,9 @@ id: DL-0056
 title: "CAPEC import: every CAPEC 3.9 entry read whole, mapped onto the core model, and served to the attack-pattern table (#244, #236)"
 type: process
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 date: "2026-11-14"
-updated: "2026-11-14"
+updated: "2026-11-22"
 record: DL-0056
 bears_on: [DEC-001a, DEC-008]
 defers_to: ARCH-0001
@@ -29,7 +29,7 @@ AI-assisted design record (per `CLAUDE.md`). Student: @Clovier, the Data lane ow
 | `engine/engine/load/cwe.py` | the bounded read takes a size limit and an error class, and the element reader takes a namespace, so the CAPEC reader reuses both; CWE's behaviour is unchanged |
 | `engine/engine/core.py`, `engine/engine/api/server.py` | `GET /attack-patterns` (what the import found, or one entry in full) and `GET /attack-patterns/table` (rows for the table view). The table's sort is shared with the weakness table |
 | `engine/engine/cli.py` | `tmodel attack-patterns`, and `--id` for one entry, which refuses table options as `GET /attack-patterns` does |
-| `engine/tests/test_load_capec.py`, `engine/tests/test_attack_pattern_table.py` | 91 tests, and one more that runs only when MITRE's file is at hand |
+| `engine/tests/test_load_capec.py`, `engine/tests/test_attack_pattern_table.py` | 96 tests, and one more that runs only when MITRE's file is at hand |
 | `engine/tests/fixtures/capec/` | the sample catalog and a one-record test library |
 | `apps/desktop/src/fixtures/attack-pattern-table.json` and its README | the table feed's answer over the sample, for #236 |
 | `CONTRIBUTING.md` §10 | how to point the engine at the catalog |
@@ -38,7 +38,7 @@ AI-assisted design record (per `CLAUDE.md`). Student: @Clovier, the Data lane ow
 
 The library's `capec` record pins the release: CAPEC 3.9 (2023-01-24), written to CAPEC XML Schema 3.5, as MITRE's `capec_v3.9.xml` with SHA-256 `70279a2dff0cb0ad79e546adb07828335a704ad5210e047e09e986172fc9e34d`. The engine reads that file from the path in `TMODEL_CAPEC_CATALOG`, refuses a file with any other digest, or one that is not a regular file or is larger than 64 MiB, and never downloads it itself: how the app gets catalogs is DEC-008, still open.
 
-The record has had its digest since library commit `4173143`, which is in `e406827`, the pin #200 moves to. tmodel's pin (`a28a013`) predates it, so until the pin moves, `TMODEL_LIBRARY` has to point at a library checkout that has it. Without a pinned digest or a catalog, the API answers 503 with what to set.
+The record has had its digest since library commit `4173143`, which is in `e406827`, the pin #200 moved to, so the pinned library is enough and `TMODEL_LIBRARY` is not needed. Without a pinned digest or a catalog, the API answers 503 with what to set.
 
 ### Kept whole
 
@@ -66,7 +66,7 @@ Every Assertion is `proposed`, `asserted_by` `party:mitre-capec` (an organizatio
 
 ## How it was checked
 
-- **The sample.** 13 attack patterns, 3 categories, 3 views and the 15 references they cite, cut byte for byte from MITRE's 3.9 file and chosen so that every entry field, abstraction and status value, link kind and taxonomy of the release appears. It validates against `ap_schema_v3.5.xsd` with `xmllint --nonet`, with the W3C XHTML schemas matched by digest, as the whole file does.
+- **The sample.** 13 attack patterns, 3 categories, 3 views, the 15 references they cite and REF-9 (for `Edition`, added in review), cut byte for byte from MITRE's 3.9 file and chosen so that every entry field, abstraction and status value, link kind and taxonomy of the release appears. It validates against `ap_schema_v3.5.xsd` with `xmllint --nonet`, with the W3C XHTML schemas matched by digest, as the whole file does.
 - **The values.** For every sample attack pattern, the name, abstraction, status, likelihood, severity, description, CWE ids, related attack patterns, ATT&CK techniques and the counts equal what ElementTree reads from the XML directly.
 - **Nothing lost.** Per entry, the elements, attributes and words kept equal those in the XML.
 - **The whole 3.9 release**, MITRE's file, whose digest matches the record. It has 615 attack patterns (77 Meta, 197 Standard, 341 Detailed), 78 categories, 13 views and 440 references, with 0 unknown fields, and parses in about 0.1 s.
@@ -97,6 +97,22 @@ Every Assertion is `proposed`, `asserted_by` `party:mitre-capec` (an organizatio
 11. **A 64 MiB limit.** The 3.9 file is 3.8 MB.
 12. **A copy of the sample in tmodel**, with MITRE's notice and licence beside it, because the engine CI does not check out the library.
 
+## Review changes (2026-11-22)
+
+@kriishnaa-18 reviewed the pull request and asked for two blocking changes and two small ones. Each is done:
+
+1. **The details answer resolves its references.** `GET /attack-patterns?id=CAPEC-N` used to give only the reference ids an entry cites. It now adds `references`: one item per citation, in file order, with the reference id and cited section, then the reference's title, authors, edition, publication, publisher, publication year, month and day as CAPEC writes them, URL and access date (`CapecCatalog.citations`). Every item has every key, so #236's details view can rely on the shape. A citation of a reference the release does not define has `resolved` false and empty reference keys.
+2. **The import checks its references and links.**
+   - A reference defined twice makes the file unreadable (`CapecError`), as an entry id given twice does, because a citation of it could not say which definition it means.
+   - A citation of a reference the release does not define is listed in `GET /attack-patterns` under `links.references_unresolved` and kept on its entry. In 3.9 there is exactly one: CAPEC-244 cites REF-97 (section "XSS Filter Evasion Cheat Sheet"). `links.reference_citations` counts all citations (754 in 3.9).
+   - A related attack pattern the release does not have is listed under `links.attack_pattern_links_unresolved` and kept on its entry. 3.9 has none.
+3. **`Edition` in the sample.** None of the 15 cited references has an `Edition`, so the sample adds REF-9 (OWASP Testing Guide, edition v4), byte for byte, at its place in MITRE's order. The sample is now 126,027 bytes, SHA-256 `0faa35f4…15c18b7e`, and still validates against `ap_schema_v3.5.xsd`. The tests check that `Edition` is kept and that a citation of REF-9 carries it.
+4. **CONTRIBUTING** no longer says to point `TMODEL_LIBRARY` at another checkout: the pinned library has the `capec` digest.
+
+Checked against MITRE's whole 3.9 file: 440 reference definitions with no id twice, 754 citations of which only CAPEC-244's REF-97 does not resolve, and no link to a missing attack pattern. Those numbers are now assertions in the whole-release test.
+
+**A choice open to review:** a related attack pattern the release lacks is listed, not refused. The CWE import lists the relationship targets it did not read and refuses none (#248, DL-0057), and refusing would reject a whole release for one bad link, which the review asks to avoid for references. A reference defined twice is refused because, unlike a missing target, it makes a citation ambiguous.
+
 ## What a human accepted
 
 - @Clovier, 2026-11-14: open #244 for the CAPEC import that #236 waits on, and build the importer that night, on top of #233.
@@ -113,7 +129,7 @@ The code, the mapping and the choices above are the agent's draft until a human 
 ## Follow-ups
 
 - #236: the attack-pattern table view, from `attack-pattern-table.json` now and the live feed once this merges.
-- Move tmodel's library pin past `4173143` (#200 does), so `TMODEL_LIBRARY` is not needed.
+- ~~Move tmodel's library pin past `4173143`~~: done by #200.
 - The follow-up to #233 (refuse a DOCTYPE anywhere, `zlib.error` as `CweError`, `_values`' one-name message) now covers the shared read.
 - A CVE import for #235, and the store (#65) merging the CWE and CAPEC objects, which share their ids on purpose.
 - DEC-008: how the app gets the catalogs.
