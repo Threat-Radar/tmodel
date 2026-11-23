@@ -1,5 +1,5 @@
 {
-  "count": 9,
+  "count": 10,
   "models": [
     {
       "counts": {
@@ -171,6 +171,25 @@
       "kind_label": "Proposal example (AI-drafted, unreviewed)",
       "reviewed_threats": 0,
       "title": "OWASP Juice Shop"
+    },
+    {
+      "counts": {
+        "assets": 3,
+        "attack_paths": 1,
+        "components": 3,
+        "damage_scenarios": 1,
+        "mitigations": 4,
+        "requirements": 0,
+        "risk_scores": 0,
+        "threats": 1
+      },
+      "description": "A home Wi-Fi 6 router with a web management interface for its settings. Modeled with firmware 1.1.3 Build 20221125, the last numbered V3 release before the fix.",
+      "file": "pv-04-tp-link-archer-ax21.yaml",
+      "id": "pv-04-tp-link-archer-ax21",
+      "kind": "proposal",
+      "kind_label": "Proposal example (AI-drafted, unreviewed)",
+      "reviewed_threats": 0,
+      "title": "TP-Link Archer AX21 (AX1800), hardware version 3 (US)"
     }
   ],
   "problems": []
