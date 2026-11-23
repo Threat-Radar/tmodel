@@ -1,6 +1,8 @@
 {
   "edges": [
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product:rav4-2021|composed_of|component:headlight-ecu",
       "properties": {},
       "relationship_type": "composed_of",
@@ -8,6 +10,8 @@
       "target": "component:headlight-ecu"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product:rav4-2021|composed_of|component:smart-key-ecu",
       "properties": {},
       "relationship_type": "composed_of",
@@ -15,6 +19,8 @@
       "target": "component:smart-key-ecu"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product:rav4-2021|composed_of|component:door-ecu",
       "properties": {},
       "relationship_type": "composed_of",
@@ -22,6 +28,8 @@
       "target": "component:door-ecu"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product:rav4-2021|composed_of|component:gateway-ecu",
       "properties": {},
       "relationship_type": "composed_of",
@@ -29,6 +37,8 @@
       "target": "component:gateway-ecu"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product:rav4-2021|composed_of|component:engine-ecu",
       "properties": {},
       "relationship_type": "composed_of",
@@ -36,6 +46,8 @@
       "target": "component:engine-ecu"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product:rav4-2021|composed_of|component:control-can",
       "properties": {},
       "relationship_type": "composed_of",
@@ -43,6 +55,8 @@
       "target": "component:control-can"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product:rav4-2021|composed_of|component:powertrain-can",
       "properties": {},
       "relationship_type": "composed_of",
@@ -50,6 +64,8 @@
       "target": "component:powertrain-can"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product:rav4-2021|manufactured_by|party:toyota",
       "properties": {},
       "relationship_type": "manufactured_by",
@@ -57,6 +73,8 @@
       "target": "party:toyota"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product-instance:parked-rav4|current_phase|lifecycle-phase:operation",
       "properties": {},
       "relationship_type": "current_phase",
@@ -64,6 +82,8 @@
       "target": "lifecycle-phase:operation"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product-instance:parked-rav4|of_product|product:rav4-2021",
       "properties": {},
       "relationship_type": "of_product",
@@ -71,6 +91,8 @@
       "target": "product:rav4-2021"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product-instance:parked-rav4|owned_by|party:vehicle-owner",
       "properties": {},
       "relationship_type": "owned_by",
@@ -78,6 +100,8 @@
       "target": "party:vehicle-owner"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:component:headlight-ecu|in_trust_zone|trust-boundary:control-domain",
       "properties": {},
       "relationship_type": "in_trust_zone",
@@ -85,6 +109,8 @@
       "target": "trust-boundary:control-domain"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:component:smart-key-ecu|in_trust_zone|trust-boundary:control-domain",
       "properties": {},
       "relationship_type": "in_trust_zone",
@@ -92,6 +118,8 @@
       "target": "trust-boundary:control-domain"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:component:door-ecu|in_trust_zone|trust-boundary:control-domain",
       "properties": {},
       "relationship_type": "in_trust_zone",
@@ -99,6 +127,8 @@
       "target": "trust-boundary:control-domain"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:component:gateway-ecu|in_trust_zone|trust-boundary:vehicle-perimeter",
       "properties": {},
       "relationship_type": "in_trust_zone",
@@ -106,6 +136,8 @@
       "target": "trust-boundary:vehicle-perimeter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:component:engine-ecu|in_trust_zone|trust-boundary:powertrain-domain",
       "properties": {},
       "relationship_type": "in_trust_zone",
@@ -113,6 +145,8 @@
       "target": "trust-boundary:powertrain-domain"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:component:control-can|in_trust_zone|trust-boundary:control-domain",
       "properties": {},
       "relationship_type": "in_trust_zone",
@@ -120,6 +154,8 @@
       "target": "trust-boundary:control-domain"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:component:powertrain-can|in_trust_zone|trust-boundary:powertrain-domain",
       "properties": {},
       "relationship_type": "in_trust_zone",
@@ -127,6 +163,8 @@
       "target": "trust-boundary:powertrain-domain"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:vulnerability:cve-2023-29389|affects|product:rav4-2021",
       "properties": {},
       "relationship_type": "affects",
@@ -134,6 +172,8 @@
       "target": "product:rav4-2021"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:vulnerability:cve-2023-29389|assigned_by|party:mitre-cna",
       "properties": {},
       "relationship_type": "assigned_by",
@@ -141,8 +181,27 @@
       "target": "party:mitre-cna"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "medium",
+          "description": "As the CVE record states it, in CISA-ADP's container; the CNA's container gives no CWE.",
+          "evidence": [
+            "https://cveawg.mitre.org/api/cve/CVE-2023-29389"
+          ],
+          "id": "assertion:cve-cwe-instance",
+          "reviews": []
+        }
+      ],
+      "authored": true,
       "id": "relationship:vulnerability:cve-2023-29389|instance_of|weakness:cwe-74",
       "properties": {
+        "assertion_descriptions": [
+          "As the CVE record states it, in CISA-ADP's container; the CNA's container gives no CWE."
+        ],
+        "assertion_evidence": [
+          "https://cveawg.mitre.org/api/cve/CVE-2023-29389"
+        ],
         "assertion_ids": [
           "assertion:cve-cwe-instance"
         ],
@@ -154,6 +213,8 @@
       "target": "weakness:cwe-74"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:spoofed-key-validated|applies_in_phase|lifecycle-phase:operation",
       "properties": {},
       "relationship_type": "applies_in_phase",
@@ -161,6 +222,8 @@
       "target": "lifecycle-phase:operation"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:spoofed-key-validated|realizes_damage|damage-scenario:vehicle-stolen",
       "properties": {},
       "relationship_type": "realizes_damage",
@@ -168,6 +231,8 @@
       "target": "damage-scenario:vehicle-stolen"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:spoofed-key-validated|targets_element|data-flow:key-validated-to-gateway",
       "properties": {},
       "relationship_type": "targets_element",
@@ -175,6 +240,8 @@
       "target": "data-flow:key-validated-to-gateway"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:spoofed-key-validated|targets_element|data-flow:unlock-to-door",
       "properties": {},
       "relationship_type": "targets_element",
@@ -182,6 +249,8 @@
       "target": "data-flow:unlock-to-door"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:spoofed-key-validated|targets_element|asset:key-validated-message",
       "properties": {},
       "relationship_type": "targets_element",
@@ -189,6 +258,8 @@
       "target": "asset:key-validated-message"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-step:reach-control-can|precedes|attack-step:inject-key-validated",
       "properties": {},
       "relationship_type": "precedes",
@@ -196,6 +267,8 @@
       "target": "attack-step:inject-key-validated"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-step:inject-key-validated|precedes|attack-step:immobilizer-off",
       "properties": {},
       "relationship_type": "precedes",
@@ -203,6 +276,8 @@
       "target": "attack-step:immobilizer-off"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-step:inject-key-validated|precedes|attack-step:doors-unlocked",
       "properties": {},
       "relationship_type": "precedes",
@@ -210,6 +285,8 @@
       "target": "attack-step:doors-unlocked"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-step:immobilizer-off|precedes|attack-step:drive-away",
       "properties": {},
       "relationship_type": "precedes",
@@ -217,6 +294,8 @@
       "target": "attack-step:drive-away"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-step:doors-unlocked|precedes|attack-step:drive-away",
       "properties": {},
       "relationship_type": "precedes",
@@ -224,8 +303,27 @@
       "target": "attack-step:drive-away"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "medium",
+          "description": "AI-drafted from the write-up; awaits a human Review.",
+          "evidence": [
+            "https://kentindell.github.io/2023/04/03/can-injection/"
+          ],
+          "id": "assertion:path-realizes-threat",
+          "reviews": []
+        }
+      ],
+      "authored": true,
       "id": "relationship:attack-path:headlight-can-injection|realizes_threat|threat-instance:spoofed-key-validated",
       "properties": {
+        "assertion_descriptions": [
+          "AI-drafted from the write-up; awaits a human Review."
+        ],
+        "assertion_evidence": [
+          "https://kentindell.github.io/2023/04/03/can-injection/"
+        ],
         "assertion_ids": [
           "assertion:path-realizes-threat"
         ],
@@ -237,6 +335,8 @@
       "target": "threat-instance:spoofed-key-validated"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:headlight-can-injection|steps|attack-step:reach-control-can",
       "properties": {},
       "relationship_type": "steps",
@@ -244,6 +344,8 @@
       "target": "attack-step:reach-control-can"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:headlight-can-injection|steps|attack-step:inject-key-validated",
       "properties": {},
       "relationship_type": "steps",
@@ -251,6 +353,8 @@
       "target": "attack-step:inject-key-validated"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:headlight-can-injection|steps|attack-step:immobilizer-off",
       "properties": {},
       "relationship_type": "steps",
@@ -258,6 +362,8 @@
       "target": "attack-step:immobilizer-off"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:headlight-can-injection|steps|attack-step:doors-unlocked",
       "properties": {},
       "relationship_type": "steps",
@@ -265,6 +371,8 @@
       "target": "attack-step:doors-unlocked"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:headlight-can-injection|steps|attack-step:drive-away",
       "properties": {},
       "relationship_type": "steps",
@@ -272,6 +380,8 @@
       "target": "attack-step:drive-away"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:damage-scenario:vehicle-stolen|damages_asset|asset:vehicle",
       "properties": {},
       "relationship_type": "damages_asset",
@@ -279,6 +389,8 @@
       "target": "asset:vehicle"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:authenticate-key-message|applies_in_phase|lifecycle-phase:design",
       "properties": {},
       "relationship_type": "applies_in_phase",
@@ -286,6 +398,8 @@
       "target": "lifecycle-phase:design"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:authenticate-key-message|applies_in_phase|lifecycle-phase:maintenance",
       "properties": {},
       "relationship_type": "applies_in_phase",
@@ -293,6 +407,8 @@
       "target": "lifecycle-phase:maintenance"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:authenticate-key-message|implementation_owner|party:toyota",
       "properties": {},
       "relationship_type": "implementation_owner",
@@ -300,6 +416,8 @@
       "target": "party:toyota"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:authenticate-key-message|mitigates|threat-instance:spoofed-key-validated",
       "properties": {},
       "relationship_type": "mitigates",
@@ -307,6 +425,8 @@
       "target": "threat-instance:spoofed-key-validated"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:gateway-error-check|applies_in_phase|lifecycle-phase:maintenance",
       "properties": {},
       "relationship_type": "applies_in_phase",
@@ -314,6 +434,8 @@
       "target": "lifecycle-phase:maintenance"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:gateway-error-check|implementation_owner|party:toyota",
       "properties": {},
       "relationship_type": "implementation_owner",
@@ -321,6 +443,8 @@
       "target": "party:toyota"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:gateway-error-check|mitigates|threat-instance:spoofed-key-validated",
       "properties": {},
       "relationship_type": "mitigates",
@@ -328,6 +452,8 @@
       "target": "threat-instance:spoofed-key-validated"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cve-cwe-instance|asserted_by|party:cisa-adp",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -335,6 +461,8 @@
       "target": "party:cisa-adp"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cve-cwe-instance|object|weakness:cwe-74",
       "properties": {},
       "relationship_type": "object",
@@ -342,6 +470,8 @@
       "target": "weakness:cwe-74"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cve-cwe-instance|subject|vulnerability:cve-2023-29389",
       "properties": {},
       "relationship_type": "subject",
@@ -349,6 +479,8 @@
       "target": "vulnerability:cve-2023-29389"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:path-realizes-threat|object|threat-instance:spoofed-key-validated",
       "properties": {},
       "relationship_type": "object",
@@ -356,6 +488,8 @@
       "target": "threat-instance:spoofed-key-validated"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:path-realizes-threat|subject|attack-path:headlight-can-injection",
       "properties": {},
       "relationship_type": "subject",
@@ -363,6 +497,8 @@
       "target": "attack-path:headlight-can-injection"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:asset:vehicle|owned_by|party:vehicle-owner",
       "properties": {},
       "relationship_type": "owned_by",
@@ -370,6 +506,8 @@
       "target": "party:vehicle-owner"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:asset:key-validated-message|processed_by|component:smart-key-ecu",
       "properties": {},
       "relationship_type": "processed_by",
@@ -377,6 +515,8 @@
       "target": "component:smart-key-ecu"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:asset:key-validated-message|processed_by|component:gateway-ecu",
       "properties": {},
       "relationship_type": "processed_by",
@@ -384,6 +524,8 @@
       "target": "component:gateway-ecu"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:asset:key-validated-message|processed_by|component:engine-ecu",
       "properties": {},
       "relationship_type": "processed_by",
@@ -391,6 +533,8 @@
       "target": "component:engine-ecu"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:asset:key-validated-message|processed_by|component:door-ecu",
       "properties": {},
       "relationship_type": "processed_by",
@@ -398,6 +542,8 @@
       "target": "component:door-ecu"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:trust-boundary:control-domain|within_boundary|trust-boundary:vehicle-perimeter",
       "properties": {},
       "relationship_type": "within_boundary",
@@ -405,6 +551,8 @@
       "target": "trust-boundary:vehicle-perimeter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:trust-boundary:powertrain-domain|within_boundary|trust-boundary:vehicle-perimeter",
       "properties": {},
       "relationship_type": "within_boundary",
@@ -412,6 +560,8 @@
       "target": "trust-boundary:vehicle-perimeter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:key-validated-to-gateway|carries|asset:key-validated-message",
       "properties": {},
       "relationship_type": "carries",
@@ -419,6 +569,8 @@
       "target": "asset:key-validated-message"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:key-validated-to-gateway|flow_from|component:smart-key-ecu",
       "properties": {},
       "relationship_type": "flow_from",
@@ -426,6 +578,8 @@
       "target": "component:smart-key-ecu"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:key-validated-to-gateway|flow_to|component:gateway-ecu",
       "properties": {},
       "relationship_type": "flow_to",
@@ -433,6 +587,8 @@
       "target": "component:gateway-ecu"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:key-validated-to-engine|carries|asset:key-validated-message",
       "properties": {},
       "relationship_type": "carries",
@@ -440,6 +596,8 @@
       "target": "asset:key-validated-message"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:key-validated-to-engine|crosses_boundary|trust-boundary:control-domain",
       "properties": {},
       "relationship_type": "crosses_boundary",
@@ -447,6 +605,8 @@
       "target": "trust-boundary:control-domain"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:key-validated-to-engine|crosses_boundary|trust-boundary:powertrain-domain",
       "properties": {},
       "relationship_type": "crosses_boundary",
@@ -454,6 +614,8 @@
       "target": "trust-boundary:powertrain-domain"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:key-validated-to-engine|flow_from|component:gateway-ecu",
       "properties": {},
       "relationship_type": "flow_from",
@@ -461,6 +623,8 @@
       "target": "component:gateway-ecu"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:key-validated-to-engine|flow_to|component:engine-ecu",
       "properties": {},
       "relationship_type": "flow_to",
@@ -468,6 +632,8 @@
       "target": "component:engine-ecu"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:unlock-to-door|carries|asset:key-validated-message",
       "properties": {},
       "relationship_type": "carries",
@@ -475,6 +641,8 @@
       "target": "asset:key-validated-message"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:unlock-to-door|flow_from|component:smart-key-ecu",
       "properties": {},
       "relationship_type": "flow_from",
@@ -482,6 +650,8 @@
       "target": "component:smart-key-ecu"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:unlock-to-door|flow_to|component:door-ecu",
       "properties": {},
       "relationship_type": "flow_to",

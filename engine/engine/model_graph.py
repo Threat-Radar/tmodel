@@ -118,7 +118,13 @@ RELATIONSHIP_SLOTS = frozenset(
         "offset_from",
         "renders",
         "maps_to",
+        "addresses",
+        "stated_as",
         "satisfied_by",
+        "refines",
+        "derived_from",
+        "conflicts_with",
+        "applies_to",
     }
 )
 
@@ -145,6 +151,8 @@ class ModelEdge:
     source: str
     target: str
     relationship_type: str
+    authored: bool
+    assertions: tuple[Mapping[str, Any], ...]
     properties: Mapping[str, Any]
 
     def to_dict(self) -> dict[str, Any]:
@@ -153,6 +161,8 @@ class ModelEdge:
             "source": self.source,
             "target": self.target,
             "relationship_type": self.relationship_type,
+            "authored": self.authored,
+            "assertions": [dict(assertion) for assertion in self.assertions],
             "properties": dict(self.properties),
         }
 
@@ -201,7 +211,7 @@ def project_model_graph(doc: Mapping[str, Any]) -> ModelGraph:
             for target in _references(source, slot, raw[slot]):
                 if target not in ids:
                     raise GraphError(f"{source}: {slot} references unknown object {target}")
-                _add_edge(edges, source, target, slot, {})
+                _add_edge(edges, source, target, slot, authored=True)
 
     reviews = _reviews_by_assertion(doc)
     for assertion in _collection(doc, "assertions"):
@@ -212,20 +222,32 @@ def project_model_graph(doc: Mapping[str, Any]) -> ModelGraph:
             raise GraphError(
                 f"{assertion['id']}: assertion subject, predicate, and object must be strings"
             )
-        review = reviews.get(assertion["id"])
-        properties: dict[str, Any] = {
-            "assertion_ids": [assertion["id"]],
+        assertion_reviews = reviews.get(assertion["id"], [])
+        assertion_provenance: dict[str, Any] = {
+            "id": assertion["id"],
             "assertion_status": _json_value(assertion.get("assertion_status")),
             "confidence": _json_value(assertion.get("confidence")),
+            "description": None,
+            "evidence": [],
+            "reviews": [],
         }
-        if review is not None:
-            properties.update(
+        description = assertion.get("description")
+        if isinstance(description, str) and description.strip():
+            assertion_provenance["description"] = description
+        evidence = assertion.get("evidence")
+        if isinstance(evidence, list) and all(isinstance(item, str) for item in evidence):
+            assertion_provenance["evidence"] = evidence
+        if assertion_reviews:
+            assertion_provenance["reviews"] = [
                 {
-                    "review_ids": [review["id"]],
+                    "id": review["id"],
                     "review_status": _json_value(review.get("review_status")),
+                    "reviewer": _json_value(review.get("reviewer")),
+                    "justification": _json_value(review.get("justification")),
                 }
-            )
-        _add_edge(edges, subject, object_id, predicate, properties)
+                for review in assertion_reviews
+            ]
+        _add_edge(edges, subject, object_id, predicate, assertion=assertion_provenance)
 
     return ModelGraph(nodes=nodes, edges=tuple(edges.values()))
 
@@ -257,23 +279,74 @@ def _add_edge(
     source: str,
     target: str,
     relationship_type: str,
-    properties: Mapping[str, Any],
+    *,
+    authored: bool = False,
+    assertion: Mapping[str, Any] | None = None,
 ) -> None:
     key = (source, relationship_type, target)
     previous = edges.get(key)
-    merged = dict(previous.properties) if previous else {}
-    for name, value in properties.items():
-        if name in {"assertion_ids", "review_ids"} and isinstance(value, list):
-            merged[name] = list(dict.fromkeys([*(merged.get(name) or []), *value]))
-        elif value is not None:
-            merged[name] = value
+    assertions = list(previous.assertions if previous else ())
+    if assertion is not None:
+        assertions.append(assertion)
     edges[key] = ModelEdge(
         id=_edge_id(source, relationship_type, target),
         source=source,
         target=target,
         relationship_type=relationship_type,
-        properties=merged,
+        authored=authored or bool(previous and previous.authored),
+        assertions=tuple(assertions),
+        properties=_assertion_summary(assertions),
     )
+
+
+def _assertion_summary(assertions: list[Mapping[str, Any]]) -> dict[str, Any]:
+    """Backward-compatible display properties; full provenance stays per Assertion."""
+    if not assertions:
+        return {}
+    properties: dict[str, Any] = {"assertion_ids": [item["id"] for item in assertions]}
+    reviews = [review for item in assertions for review in item.get("reviews", [])]
+    if len(assertions) > 1:
+        properties["assertion_statuses"] = [
+            item.get("assertion_status") or "not_recorded" for item in assertions
+        ]
+        properties["assertion_confidences"] = [
+            item.get("confidence") or "not_recorded" for item in assertions
+        ]
+        if reviews:
+            properties["review_ids"] = [review["id"] for review in reviews]
+            properties["review_statuses"] = [
+                review.get("review_status") or "not_recorded" for review in reviews
+            ]
+        return properties
+
+    assertion = assertions[0]
+    for name in ("assertion_status", "confidence"):
+        if assertion.get(name) is not None:
+            properties[name] = assertion[name]
+    if assertion.get("description"):
+        properties["assertion_descriptions"] = [assertion["description"]]
+    if assertion.get("evidence"):
+        properties["assertion_evidence"] = assertion["evidence"]
+    if reviews:
+        statuses = [
+            review.get("review_status")
+            for review in reviews
+            if isinstance(review.get("review_status"), str)
+        ]
+        justifications = [
+            review["justification"]
+            for review in reviews
+            if isinstance(review.get("justification"), str) and review["justification"].strip()
+        ]
+        properties.update(
+            {
+                "review_ids": [review["id"] for review in reviews],
+                "review_status": _combined_review_status(statuses),
+                "review_statuses": statuses,
+                "review_justifications": justifications,
+            }
+        )
+    return properties
 
 
 def _edge_id(source: str, relationship_type: str, target: str) -> str:
@@ -287,13 +360,25 @@ def _collection(doc: Mapping[str, Any], name: str) -> list[Mapping[str, Any]]:
     return [entry for entry in entries if isinstance(entry, Mapping)]
 
 
-def _reviews_by_assertion(doc: Mapping[str, Any]) -> dict[str, Mapping[str, Any]]:
-    result: dict[str, Mapping[str, Any]] = {}
+def _reviews_by_assertion(doc: Mapping[str, Any]) -> dict[str, list[Mapping[str, Any]]]:
+    result: dict[str, list[Mapping[str, Any]]] = {}
     for review in _collection(doc, "reviews"):
         target = review.get("reviews")
         if isinstance(target, str):
-            result[target] = review
+            result.setdefault(target, []).append(review)
     return result
+
+
+def _combined_review_status(statuses: list[Any]) -> str | None:
+    """Conservative display status when several Reviews target one Assertion."""
+    normalized = [status.strip().lower().replace("-", "_") for status in statuses]
+    if "rejected" in normalized:
+        return "rejected"
+    if "changes_requested" in normalized:
+        return "changes_requested"
+    if normalized and all(status == "accepted" for status in normalized):
+        return "accepted"
+    return normalized[0] if len(set(normalized)) == 1 else "mixed"
 
 
 def _json_value(value: Any) -> Any:

@@ -8,7 +8,7 @@ import {
   toCytoscapeEdgeElement,
   toCytoscapeElements,
 } from "./graph-model";
-import type { GraphEdge, GraphResponse } from "./graph-types";
+import type { GraphAssertionProvenance, GraphEdge, GraphResponse } from "./graph-types";
 
 const response: GraphResponse = {
   source: "development-fixture",
@@ -200,6 +200,91 @@ describe("relationship review metadata", () => {
     });
   });
 
+  it.each([
+    ["proposed", null],
+    ["proposed", "rejected"],
+  ] as const)(
+    "keeps an authored edge established with an overlapping %s / %s Assertion",
+    (assertionStatus, reviewStatus) => {
+      const edge = provenanceEdge(true, [assertion("assertion:overlay", assertionStatus, reviewStatus)]);
+      const element = toCytoscapeEdgeElement(edge);
+
+      expect(element.data).toEqual({
+        id: edge.id,
+        source: edge.source,
+        target: edge.target,
+        relationshipType: edge.relationshipType,
+        label: edge.relationshipType,
+        authored: true,
+      });
+      expect(edge.assertions?.[0]).toMatchObject({
+        id: "assertion:overlay",
+        assertion_status: assertionStatus,
+      });
+    },
+  );
+
+  it("keeps an Assertion-only proposed relationship hypothetical on the canvas", () => {
+    const element = toCytoscapeEdgeElement(
+      provenanceEdge(false, [assertion("assertion:proposal", "proposed", null)]),
+    );
+
+    expect(element.data).toMatchObject({
+      authored: false,
+      reviewState: "proposed",
+      assertionStatus: "proposed",
+      reviewStatus: null,
+      label: "realizes_threat · proposed",
+    });
+  });
+
+  it("renders an Assertion-only accepted and reviewed relationship as accepted", () => {
+    const element = toCytoscapeEdgeElement(
+      provenanceEdge(false, [assertion("assertion:accepted", "accepted", "accepted")]),
+    );
+
+    expect(element.data).toMatchObject({
+      authored: false,
+      reviewState: "accepted",
+      assertionStatus: "accepted",
+      reviewStatus: "accepted",
+      label: "realizes_threat",
+    });
+  });
+
+  it("does not collapse multiple different Assertion verdicts into one verdict", () => {
+    const edge = provenanceEdge(false, [
+      assertion("assertion:proposal", "proposed", null),
+      assertion("assertion:rejected", "proposed", "rejected"),
+    ]);
+    const element = toCytoscapeEdgeElement(edge);
+
+    expect(element.data).toMatchObject({
+      authored: false,
+      reviewState: "unknown",
+      assertionStatus: null,
+      reviewStatus: null,
+      label: "realizes_threat · mixed assertion states",
+    });
+    expect(edge.assertions?.map((item) => item.id)).toEqual([
+      "assertion:proposal", "assertion:rejected",
+    ]);
+  });
+
+  it("styles matching multi-Assertion states without exposing one Assertion as an aggregate", () => {
+    const element = toCytoscapeEdgeElement(provenanceEdge(false, [
+      assertion("assertion:first", "proposed", null),
+      assertion("assertion:second", "proposed", null),
+    ]));
+
+    expect(element.data).toMatchObject({
+      reviewState: "proposed",
+      assertionStatus: null,
+      reviewStatus: null,
+      label: "realizes_threat · 2 proposed assertions",
+    });
+  });
+
   it("exposes each relationship's own properties to the inspector", () => {
     const properties = {
       assertion_ids: ["assertion:ai-imds-pivot-realizes"],
@@ -219,4 +304,43 @@ describe("relationship review metadata", () => {
     expect(relationshipsForNode(state, "attack-path:imds-pivot")[0].properties).toEqual(properties);
     expect(relationshipsForNode(state, "threat-instance:imds-pivot")[0].properties).toEqual(properties);
   });
+
+  function assertion(
+    id: string,
+    assertionStatus: string,
+    reviewStatus: string | null,
+  ): GraphAssertionProvenance {
+    return {
+      id,
+      assertion_status: assertionStatus,
+      confidence: "medium",
+      description: `${id} basis`,
+      evidence: [`${id} evidence`],
+      reviews: reviewStatus ? [{
+        id: `review:${id}`,
+        review_status: reviewStatus,
+        reviewer: "party:human",
+        justification: `${id} human justification`,
+      }] : [],
+    };
+  }
+
+  function provenanceEdge(
+    authored: boolean,
+    assertions: readonly GraphAssertionProvenance[],
+  ): GraphEdge {
+    const single = assertions.length === 1 ? assertions[0] : undefined;
+    const singleReview = single?.reviews[0];
+    return {
+      ...assertedEdge({
+        assertion_ids: assertions.map((item) => item.id),
+        ...(single ? { assertion_status: single.assertion_status } : {
+          assertion_statuses: assertions.map((item) => item.assertion_status ?? "not_recorded"),
+        }),
+        ...(singleReview ? { review_status: singleReview.review_status } : {}),
+      }),
+      authored,
+      assertions,
+    };
+  }
 });

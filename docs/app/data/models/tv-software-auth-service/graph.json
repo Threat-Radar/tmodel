@@ -1,6 +1,8 @@
 {
   "edges": [
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product:acme-auth-service|composed_of|component:auth-service-svc",
       "properties": {},
       "relationship_type": "composed_of",
@@ -8,6 +10,8 @@
       "target": "component:auth-service-svc"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product:acme-auth-service|manufactured_by|party:acme-oss-foundation",
       "properties": {},
       "relationship_type": "manufactured_by",
@@ -15,6 +19,8 @@
       "target": "party:acme-oss-foundation"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product:acme-auth-service|owned_by|party:downstream-saas",
       "properties": {},
       "relationship_type": "owned_by",
@@ -22,6 +28,8 @@
       "target": "party:downstream-saas"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product:acme-auth-service|supplied_by|party:acme-oss-foundation",
       "properties": {},
       "relationship_type": "supplied_by",
@@ -29,6 +37,8 @@
       "target": "party:acme-oss-foundation"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product-instance:auth-service-2-4-1|current_phase|lifecycle-phase:operation",
       "properties": {},
       "relationship_type": "current_phase",
@@ -36,6 +46,8 @@
       "target": "lifecycle-phase:operation"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product-instance:auth-service-2-4-1|of_product|product:acme-auth-service",
       "properties": {},
       "relationship_type": "of_product",
@@ -43,6 +55,8 @@
       "target": "product:acme-auth-service"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product-instance:auth-service-2-4-1|owned_by|party:downstream-saas",
       "properties": {},
       "relationship_type": "owned_by",
@@ -50,6 +64,8 @@
       "target": "party:downstream-saas"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:component:auth-service-svc|composed_of|component:token-module",
       "properties": {},
       "relationship_type": "composed_of",
@@ -57,6 +73,8 @@
       "target": "component:token-module"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:component:auth-service-svc|owned_by|party:downstream-saas",
       "properties": {},
       "relationship_type": "owned_by",
@@ -64,6 +82,8 @@
       "target": "party:downstream-saas"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:component:auth-service-svc|uses_component|component:log4j-core",
       "properties": {},
       "relationship_type": "uses_component",
@@ -71,6 +91,8 @@
       "target": "component:log4j-core"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:component:token-module|uses_component|component:log4j-core",
       "properties": {},
       "relationship_type": "uses_component",
@@ -78,6 +100,8 @@
       "target": "component:log4j-core"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:vulnerability:cve-2021-44832|affects|product:acme-auth-service",
       "properties": {},
       "relationship_type": "affects",
@@ -85,6 +109,8 @@
       "target": "product:acme-auth-service"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:vulnerability:cve-2021-44832|assigned_by|party:cna-mitre",
       "properties": {},
       "relationship_type": "assigned_by",
@@ -92,6 +118,8 @@
       "target": "party:cna-mitre"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:vulnerability:cve-2021-44832|reported_by|party:researcher-01",
       "properties": {},
       "relationship_type": "reported_by",
@@ -99,6 +127,8 @@
       "target": "party:researcher-01"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:rce-via-deser|applies_in_phase|lifecycle-phase:operation",
       "properties": {},
       "relationship_type": "applies_in_phase",
@@ -106,6 +136,8 @@
       "target": "lifecycle-phase:operation"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:rce-via-deser|realizes_damage|damage-scenario:token-forgery",
       "properties": {},
       "relationship_type": "realizes_damage",
@@ -113,6 +145,8 @@
       "target": "damage-scenario:token-forgery"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:supply-chain-rce|applies_in_phase|lifecycle-phase:distribution",
       "properties": {},
       "relationship_type": "applies_in_phase",
@@ -120,6 +154,8 @@
       "target": "lifecycle-phase:distribution"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:supply-chain-rce|realizes_damage|damage-scenario:token-forgery",
       "properties": {},
       "relationship_type": "realizes_damage",
@@ -127,6 +163,8 @@
       "target": "damage-scenario:token-forgery"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-step:enumerate-refresh-endpoint|precedes|attack-step:craft-serialized-payload",
       "properties": {},
       "relationship_type": "precedes",
@@ -134,6 +172,8 @@
       "target": "attack-step:craft-serialized-payload"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-step:craft-serialized-payload|precedes|attack-step:trigger-gadget-chain",
       "properties": {},
       "relationship_type": "precedes",
@@ -141,6 +181,8 @@
       "target": "attack-step:trigger-gadget-chain"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-step:deliver-via-refresh|precedes|attack-step:trigger-gadget-chain",
       "properties": {},
       "relationship_type": "precedes",
@@ -148,6 +190,8 @@
       "target": "attack-step:trigger-gadget-chain"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-step:compromise-maintainer-account|precedes|attack-step:publish-malicious-release",
       "properties": {},
       "relationship_type": "precedes",
@@ -155,6 +199,8 @@
       "target": "attack-step:publish-malicious-release"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-step:typosquat-dependency|precedes|attack-step:publish-malicious-release",
       "properties": {},
       "relationship_type": "precedes",
@@ -162,6 +208,8 @@
       "target": "attack-step:publish-malicious-release"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-step:publish-malicious-release|precedes|attack-step:downstream-pulls-update",
       "properties": {},
       "relationship_type": "precedes",
@@ -169,6 +217,8 @@
       "target": "attack-step:downstream-pulls-update"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:deser-rce|realizes_threat|threat-instance:rce-via-deser",
       "properties": {},
       "relationship_type": "realizes_threat",
@@ -176,6 +226,8 @@
       "target": "threat-instance:rce-via-deser"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:deser-rce|steps|attack-step:enumerate-refresh-endpoint",
       "properties": {},
       "relationship_type": "steps",
@@ -183,6 +235,8 @@
       "target": "attack-step:enumerate-refresh-endpoint"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:deser-rce|steps|attack-step:craft-serialized-payload",
       "properties": {},
       "relationship_type": "steps",
@@ -190,6 +244,8 @@
       "target": "attack-step:craft-serialized-payload"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:deser-rce|steps|attack-step:deliver-via-refresh",
       "properties": {},
       "relationship_type": "steps",
@@ -197,6 +253,8 @@
       "target": "attack-step:deliver-via-refresh"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:deser-rce|steps|attack-step:trigger-gadget-chain",
       "properties": {},
       "relationship_type": "steps",
@@ -204,8 +262,29 @@
       "target": "attack-step:trigger-gadget-chain"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "low",
+          "description": "AI-PROPOSED edge. assertion_status is `proposed` (NOT accepted); it is a hypothesis until a human accepts it. The paired Review requests changes.",
+          "evidence": [],
+          "id": "assertion:ai-supply-chain-realizes",
+          "reviews": [
+            {
+              "id": "review:ai-triage",
+              "justification": "AI-proposed path. Maintainer-account-compromise step needs scoping evidence before acceptance; keep as a flagged hypothesis, do not treat as reviewed.",
+              "review_status": "changes_requested",
+              "reviewer": "party:sec-lead"
+            }
+          ]
+        }
+      ],
+      "authored": true,
       "id": "relationship:attack-path:supply-chain-swap|realizes_threat|threat-instance:supply-chain-rce",
       "properties": {
+        "assertion_descriptions": [
+          "AI-PROPOSED edge. assertion_status is `proposed` (NOT accepted); it is a hypothesis until a human accepts it. The paired Review requests changes."
+        ],
         "assertion_ids": [
           "assertion:ai-supply-chain-realizes"
         ],
@@ -214,13 +293,21 @@
         "review_ids": [
           "review:ai-triage"
         ],
-        "review_status": "changes_requested"
+        "review_justifications": [
+          "AI-proposed path. Maintainer-account-compromise step needs scoping evidence before acceptance; keep as a flagged hypothesis, do not treat as reviewed."
+        ],
+        "review_status": "changes_requested",
+        "review_statuses": [
+          "changes_requested"
+        ]
       },
       "relationship_type": "realizes_threat",
       "source": "attack-path:supply-chain-swap",
       "target": "threat-instance:supply-chain-rce"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:supply-chain-swap|steps|attack-step:compromise-maintainer-account",
       "properties": {},
       "relationship_type": "steps",
@@ -228,6 +315,8 @@
       "target": "attack-step:compromise-maintainer-account"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:supply-chain-swap|steps|attack-step:typosquat-dependency",
       "properties": {},
       "relationship_type": "steps",
@@ -235,6 +324,8 @@
       "target": "attack-step:typosquat-dependency"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:supply-chain-swap|steps|attack-step:publish-malicious-release",
       "properties": {},
       "relationship_type": "steps",
@@ -242,6 +333,8 @@
       "target": "attack-step:publish-malicious-release"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:supply-chain-swap|steps|attack-step:downstream-pulls-update",
       "properties": {},
       "relationship_type": "steps",
@@ -249,6 +342,8 @@
       "target": "attack-step:downstream-pulls-update"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:disable-native-deser|applies_in_phase|lifecycle-phase:design",
       "properties": {},
       "relationship_type": "applies_in_phase",
@@ -256,6 +351,8 @@
       "target": "lifecycle-phase:design"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:disable-native-deser|applies_in_phase|lifecycle-phase:implementation",
       "properties": {},
       "relationship_type": "applies_in_phase",
@@ -263,6 +360,8 @@
       "target": "lifecycle-phase:implementation"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:disable-native-deser|implementation_owner|party:acme-oss-foundation",
       "properties": {},
       "relationship_type": "implementation_owner",
@@ -270,6 +369,8 @@
       "target": "party:acme-oss-foundation"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:disable-native-deser|mitigates|threat-instance:rce-via-deser",
       "properties": {},
       "relationship_type": "mitigates",
@@ -277,6 +378,8 @@
       "target": "threat-instance:rce-via-deser"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:pin-and-verify-deps|applies_in_phase|lifecycle-phase:implementation",
       "properties": {},
       "relationship_type": "applies_in_phase",
@@ -284,6 +387,8 @@
       "target": "lifecycle-phase:implementation"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:pin-and-verify-deps|applies_in_phase|lifecycle-phase:distribution",
       "properties": {},
       "relationship_type": "applies_in_phase",
@@ -291,6 +396,8 @@
       "target": "lifecycle-phase:distribution"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:pin-and-verify-deps|implementation_owner|party:acme-oss-foundation",
       "properties": {},
       "relationship_type": "implementation_owner",
@@ -298,6 +405,8 @@
       "target": "party:acme-oss-foundation"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:pin-and-verify-deps|mitigates|threat-instance:supply-chain-rce",
       "properties": {},
       "relationship_type": "mitigates",
@@ -305,6 +414,8 @@
       "target": "threat-instance:supply-chain-rce"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:security-requirements-baseline|implementation_owner|party:sdl-owner",
       "properties": {},
       "relationship_type": "implementation_owner",
@@ -312,6 +423,8 @@
       "target": "party:sdl-owner"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:security-requirements-baseline|mitigates|threat-instance:rce-via-deser",
       "properties": {},
       "relationship_type": "mitigates",
@@ -319,6 +432,8 @@
       "target": "threat-instance:rce-via-deser"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:risk-score:rce-via-deser|attack_paths|attack-path:deser-rce",
       "properties": {},
       "relationship_type": "attack_paths",
@@ -326,6 +441,8 @@
       "target": "attack-path:deser-rce"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:risk-score:rce-via-deser|attack_paths|attack-path:supply-chain-swap",
       "properties": {},
       "relationship_type": "attack_paths",
@@ -333,6 +450,8 @@
       "target": "attack-path:supply-chain-swap"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:risk-score:rce-via-deser|damage_scenario|damage-scenario:token-forgery",
       "properties": {},
       "relationship_type": "damage_scenario",
@@ -340,6 +459,8 @@
       "target": "damage-scenario:token-forgery"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:risk-score:rce-via-deser|for_stakeholder|party:downstream-saas",
       "properties": {},
       "relationship_type": "for_stakeholder",
@@ -347,6 +468,8 @@
       "target": "party:downstream-saas"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:risk-score:rce-via-deser|threat|threat-instance:rce-via-deser",
       "properties": {},
       "relationship_type": "threat",
@@ -354,6 +477,8 @@
       "target": "threat-instance:rce-via-deser"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:review:vuln-prop|reviewer|party:sec-lead",
       "properties": {},
       "relationship_type": "reviewer",
@@ -361,6 +486,8 @@
       "target": "party:sec-lead"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:review:vuln-prop|reviews|assertion:vuln-propagation",
       "properties": {},
       "relationship_type": "reviews",
@@ -368,6 +495,8 @@
       "target": "assertion:vuln-propagation"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:review:cwe-capec|reviewer|party:sec-lead",
       "properties": {},
       "relationship_type": "reviewer",
@@ -375,6 +504,8 @@
       "target": "party:sec-lead"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:review:cwe-capec|reviews|assertion:cwe-capec-map",
       "properties": {},
       "relationship_type": "reviews",
@@ -382,6 +513,8 @@
       "target": "assertion:cwe-capec-map"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:review:ai-triage|reviewer|party:sec-lead",
       "properties": {},
       "relationship_type": "reviewer",
@@ -389,6 +522,8 @@
       "target": "party:sec-lead"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:review:ai-triage|reviews|assertion:ai-supply-chain-realizes",
       "properties": {},
       "relationship_type": "reviews",
@@ -396,6 +531,8 @@
       "target": "assertion:ai-supply-chain-realizes"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:review:tm-approval|reviewer|party:sec-lead",
       "properties": {},
       "relationship_type": "reviewer",
@@ -403,6 +540,8 @@
       "target": "party:sec-lead"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:review:tm-approval|reviews|assertion:tm-scope",
       "properties": {},
       "relationship_type": "reviews",
@@ -410,6 +549,8 @@
       "target": "assertion:tm-scope"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:review:sdl-approval|reviewer|party:sdl-owner",
       "properties": {},
       "relationship_type": "reviewer",
@@ -417,6 +558,8 @@
       "target": "party:sdl-owner"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:review:sdl-approval|reviews|assertion:sdl-approved",
       "properties": {},
       "relationship_type": "reviews",
@@ -424,6 +567,8 @@
       "target": "assertion:sdl-approved"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:review:design-gate|reviewer|party:sdl-owner",
       "properties": {},
       "relationship_type": "reviewer",
@@ -431,6 +576,8 @@
       "target": "party:sdl-owner"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:review:design-gate|reviews|assertion:design-gate-pass",
       "properties": {},
       "relationship_type": "reviews",
@@ -438,6 +585,8 @@
       "target": "assertion:design-gate-pass"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:vuln-propagation|object|component:auth-service-svc",
       "properties": {},
       "relationship_type": "object",
@@ -445,6 +594,8 @@
       "target": "component:auth-service-svc"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:vuln-propagation|subject|vulnerability:cve-2021-44832",
       "properties": {},
       "relationship_type": "subject",
@@ -452,6 +603,8 @@
       "target": "vulnerability:cve-2021-44832"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cwe-capec-map|object|attack-pattern:capec-586",
       "properties": {},
       "relationship_type": "object",
@@ -459,6 +612,8 @@
       "target": "attack-pattern:capec-586"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cwe-capec-map|subject|weakness:cwe-502",
       "properties": {},
       "relationship_type": "subject",
@@ -466,6 +621,8 @@
       "target": "weakness:cwe-502"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:ai-supply-chain-realizes|object|threat-instance:supply-chain-rce",
       "properties": {},
       "relationship_type": "object",
@@ -473,6 +630,8 @@
       "target": "threat-instance:supply-chain-rce"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:ai-supply-chain-realizes|subject|attack-path:supply-chain-swap",
       "properties": {},
       "relationship_type": "subject",
@@ -480,6 +639,8 @@
       "target": "attack-path:supply-chain-swap"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:tm-scope|object|product:acme-auth-service",
       "properties": {},
       "relationship_type": "object",
@@ -487,6 +648,8 @@
       "target": "product:acme-auth-service"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:tm-scope|subject|threat-model:auth-service-v3",
       "properties": {},
       "relationship_type": "subject",
@@ -494,6 +657,8 @@
       "target": "threat-model:auth-service-v3"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:sdl-approved|object|product:acme-auth-service",
       "properties": {},
       "relationship_type": "object",
@@ -501,6 +666,8 @@
       "target": "product:acme-auth-service"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:sdl-approved|subject|security-program:acme-sdl",
       "properties": {},
       "relationship_type": "subject",
@@ -508,6 +675,8 @@
       "target": "security-program:acme-sdl"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:design-gate-pass|object|product:acme-auth-service",
       "properties": {},
       "relationship_type": "object",
@@ -515,6 +684,8 @@
       "target": "product:acme-auth-service"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:design-gate-pass|subject|gate:design-review",
       "properties": {},
       "relationship_type": "subject",
@@ -522,6 +693,8 @@
       "target": "gate:design-review"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-model:auth-service-v2|owner|party:sec-lead",
       "properties": {},
       "relationship_type": "owner",
@@ -529,6 +702,8 @@
       "target": "party:sec-lead"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-model:auth-service-v3|approved_by|review:tm-approval",
       "properties": {},
       "relationship_type": "approved_by",
@@ -536,6 +711,8 @@
       "target": "review:tm-approval"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-model:auth-service-v3|members|threat-instance:rce-via-deser",
       "properties": {},
       "relationship_type": "members",
@@ -543,6 +720,8 @@
       "target": "threat-instance:rce-via-deser"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-model:auth-service-v3|members|threat-instance:supply-chain-rce",
       "properties": {},
       "relationship_type": "members",
@@ -550,6 +729,8 @@
       "target": "threat-instance:supply-chain-rce"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-model:auth-service-v3|members|attack-path:deser-rce",
       "properties": {},
       "relationship_type": "members",
@@ -557,6 +738,8 @@
       "target": "attack-path:deser-rce"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-model:auth-service-v3|members|attack-path:supply-chain-swap",
       "properties": {},
       "relationship_type": "members",
@@ -564,6 +747,8 @@
       "target": "attack-path:supply-chain-swap"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-model:auth-service-v3|members|component:auth-service-svc",
       "properties": {},
       "relationship_type": "members",
@@ -571,6 +756,8 @@
       "target": "component:auth-service-svc"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-model:auth-service-v3|members|component:log4j-core",
       "properties": {},
       "relationship_type": "members",
@@ -578,6 +765,8 @@
       "target": "component:log4j-core"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-model:auth-service-v3|members|product:acme-auth-service",
       "properties": {},
       "relationship_type": "members",
@@ -585,6 +774,8 @@
       "target": "product:acme-auth-service"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-model:auth-service-v3|owner|party:sec-lead",
       "properties": {},
       "relationship_type": "owner",
@@ -592,6 +783,8 @@
       "target": "party:sec-lead"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-model:auth-service-v3|supersedes|threat-model:auth-service-v2",
       "properties": {},
       "relationship_type": "supersedes",
@@ -599,6 +792,8 @@
       "target": "threat-model:auth-service-v2"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:security-program:acme-sdl|approved_by|review:sdl-approval",
       "properties": {},
       "relationship_type": "approved_by",
@@ -606,6 +801,8 @@
       "target": "review:sdl-approval"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:security-program:acme-sdl|governs|product:acme-auth-service",
       "properties": {},
       "relationship_type": "governs",
@@ -613,6 +810,8 @@
       "target": "product:acme-auth-service"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:security-program:acme-sdl|incorporates|requirement:ssdf-po-1-1",
       "properties": {},
       "relationship_type": "incorporates",
@@ -620,6 +819,8 @@
       "target": "requirement:ssdf-po-1-1"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:security-program:acme-sdl|incorporates|requirement:ssdf-pw-4-1",
       "properties": {},
       "relationship_type": "incorporates",
@@ -627,6 +828,8 @@
       "target": "requirement:ssdf-pw-4-1"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:security-program:acme-sdl|owner|party:sdl-owner",
       "properties": {},
       "relationship_type": "owner",
@@ -634,6 +837,8 @@
       "target": "party:sdl-owner"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:security-program:acme-sdl|program_nodes|gate:design-review",
       "properties": {},
       "relationship_type": "program_nodes",
@@ -641,6 +846,8 @@
       "target": "gate:design-review"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:security-program:acme-sdl|program_nodes|milestone:threat-model-complete",
       "properties": {},
       "relationship_type": "program_nodes",
@@ -648,6 +855,8 @@
       "target": "milestone:threat-model-complete"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:security-program:acme-sdl|program_nodes|gate:release-gate",
       "properties": {},
       "relationship_type": "program_nodes",
@@ -655,6 +864,8 @@
       "target": "gate:release-gate"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:gate:design-review|at_phase|lifecycle-phase:design",
       "properties": {},
       "relationship_type": "at_phase",
@@ -662,6 +873,8 @@
       "target": "lifecycle-phase:design"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:gate:design-review|decided_by|review:design-gate",
       "properties": {},
       "relationship_type": "decided_by",
@@ -669,6 +882,8 @@
       "target": "review:design-gate"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:gate:design-review|gated_by|requirement:ssdf-po-1-1",
       "properties": {},
       "relationship_type": "gated_by",
@@ -676,6 +891,8 @@
       "target": "requirement:ssdf-po-1-1"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:gate:design-review|owner|party:sdl-owner",
       "properties": {},
       "relationship_type": "owner",
@@ -683,6 +900,8 @@
       "target": "party:sdl-owner"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:gate:release-gate|at_phase|lifecycle-phase:verification",
       "properties": {},
       "relationship_type": "at_phase",
@@ -690,6 +909,8 @@
       "target": "lifecycle-phase:verification"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:gate:release-gate|depends_on_node|milestone:threat-model-complete",
       "properties": {},
       "relationship_type": "depends_on_node",
@@ -697,6 +918,8 @@
       "target": "milestone:threat-model-complete"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:gate:release-gate|gated_by|requirement:ssdf-pw-4-1",
       "properties": {},
       "relationship_type": "gated_by",
@@ -704,6 +927,8 @@
       "target": "requirement:ssdf-pw-4-1"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:gate:release-gate|owner|party:sdl-owner",
       "properties": {},
       "relationship_type": "owner",
@@ -711,6 +936,8 @@
       "target": "party:sdl-owner"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:gate:release-gate|validates_conformance_of|threat-model:auth-service-v3",
       "properties": {},
       "relationship_type": "validates_conformance_of",
@@ -718,6 +945,8 @@
       "target": "threat-model:auth-service-v3"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:milestone:threat-model-complete|at_phase|lifecycle-phase:implementation",
       "properties": {},
       "relationship_type": "at_phase",
@@ -725,6 +954,8 @@
       "target": "lifecycle-phase:implementation"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:milestone:threat-model-complete|depends_on_node|gate:design-review",
       "properties": {},
       "relationship_type": "depends_on_node",
@@ -732,6 +963,8 @@
       "target": "gate:design-review"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:milestone:threat-model-complete|offset_from|gate:design-review",
       "properties": {},
       "relationship_type": "offset_from",
@@ -739,6 +972,8 @@
       "target": "gate:design-review"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:milestone:threat-model-complete|owner|party:sec-lead",
       "properties": {},
       "relationship_type": "owner",
@@ -746,6 +981,8 @@
       "target": "party:sec-lead"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:requirement:ssdf-po-1-1|satisfied_by|mitigation:security-requirements-baseline",
       "properties": {},
       "relationship_type": "satisfied_by",
@@ -753,6 +990,8 @@
       "target": "mitigation:security-requirements-baseline"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:requirement:ssdf-pw-4-1|maps_to|requirement:ssdf-po-1-1",
       "properties": {},
       "relationship_type": "maps_to",
@@ -760,6 +999,8 @@
       "target": "requirement:ssdf-po-1-1"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:requirement:ssdf-pw-4-1|satisfied_by|mitigation:pin-and-verify-deps",
       "properties": {},
       "relationship_type": "satisfied_by",
@@ -767,8 +1008,29 @@
       "target": "mitigation:pin-and-verify-deps"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "accepted",
+          "confidence": "high",
+          "description": "Reviewed propagation edge (§5) — not a facet property; reified so a Review can point at it.",
+          "evidence": [],
+          "id": "assertion:vuln-propagation",
+          "reviews": [
+            {
+              "id": "review:vuln-prop",
+              "justification": "Reachable from the token-refresh flow via log4j-core; propagation confirmed.",
+              "review_status": "accepted",
+              "reviewer": "party:sec-lead"
+            }
+          ]
+        }
+      ],
+      "authored": false,
       "id": "relationship:vulnerability:cve-2021-44832|propagates_to|component:auth-service-svc",
       "properties": {
+        "assertion_descriptions": [
+          "Reviewed propagation edge (§5) — not a facet property; reified so a Review can point at it."
+        ],
         "assertion_ids": [
           "assertion:vuln-propagation"
         ],
@@ -777,15 +1039,42 @@
         "review_ids": [
           "review:vuln-prop"
         ],
-        "review_status": "accepted"
+        "review_justifications": [
+          "Reachable from the token-refresh flow via log4j-core; propagation confirmed."
+        ],
+        "review_status": "accepted",
+        "review_statuses": [
+          "accepted"
+        ]
       },
       "relationship_type": "propagates_to",
       "source": "vulnerability:cve-2021-44832",
       "target": "component:auth-service-svc"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "accepted",
+          "confidence": "medium",
+          "description": "The human-reviewed CWE↔CAPEC mapping the schema calls out (§2).",
+          "evidence": [],
+          "id": "assertion:cwe-capec-map",
+          "reviews": [
+            {
+              "id": "review:cwe-capec",
+              "justification": "Object-injection pattern matches the deserialization weakness.",
+              "review_status": "accepted",
+              "reviewer": "party:sec-lead"
+            }
+          ]
+        }
+      ],
+      "authored": false,
       "id": "relationship:weakness:cwe-502|exploited_by|attack-pattern:capec-586",
       "properties": {
+        "assertion_descriptions": [
+          "The human-reviewed CWE↔CAPEC mapping the schema calls out (§2)."
+        ],
         "assertion_ids": [
           "assertion:cwe-capec-map"
         ],
@@ -794,13 +1083,37 @@
         "review_ids": [
           "review:cwe-capec"
         ],
-        "review_status": "accepted"
+        "review_justifications": [
+          "Object-injection pattern matches the deserialization weakness."
+        ],
+        "review_status": "accepted",
+        "review_statuses": [
+          "accepted"
+        ]
       },
       "relationship_type": "exploited_by",
       "source": "weakness:cwe-502",
       "target": "attack-pattern:capec-586"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "accepted",
+          "confidence": "high",
+          "description": null,
+          "evidence": [],
+          "id": "assertion:tm-scope",
+          "reviews": [
+            {
+              "id": "review:tm-approval",
+              "justification": "All in-scope reviewed threats have an approved or in-progress mitigation; the AI-proposed supply-chain path remains flagged (changes_requested), not accepted.",
+              "review_status": "accepted",
+              "reviewer": "party:sec-lead"
+            }
+          ]
+        }
+      ],
+      "authored": false,
       "id": "relationship:threat-model:auth-service-v3|scope_approved|product:acme-auth-service",
       "properties": {
         "assertion_ids": [
@@ -811,13 +1124,37 @@
         "review_ids": [
           "review:tm-approval"
         ],
-        "review_status": "accepted"
+        "review_justifications": [
+          "All in-scope reviewed threats have an approved or in-progress mitigation; the AI-proposed supply-chain path remains flagged (changes_requested), not accepted."
+        ],
+        "review_status": "accepted",
+        "review_statuses": [
+          "accepted"
+        ]
       },
       "relationship_type": "scope_approved",
       "source": "threat-model:auth-service-v3",
       "target": "product:acme-auth-service"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "accepted",
+          "confidence": "high",
+          "description": null,
+          "evidence": [],
+          "id": "assertion:sdl-approved",
+          "reviews": [
+            {
+              "id": "review:sdl-approval",
+              "justification": "Program nodes, requirements, and gate linkage reviewed and signed off.",
+              "review_status": "accepted",
+              "reviewer": "party:sdl-owner"
+            }
+          ]
+        }
+      ],
+      "authored": false,
       "id": "relationship:security-program:acme-sdl|program_approved|product:acme-auth-service",
       "properties": {
         "assertion_ids": [
@@ -828,13 +1165,37 @@
         "review_ids": [
           "review:sdl-approval"
         ],
-        "review_status": "accepted"
+        "review_justifications": [
+          "Program nodes, requirements, and gate linkage reviewed and signed off."
+        ],
+        "review_status": "accepted",
+        "review_statuses": [
+          "accepted"
+        ]
       },
       "relationship_type": "program_approved",
       "source": "security-program:acme-sdl",
       "target": "product:acme-auth-service"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "accepted",
+          "confidence": "high",
+          "description": null,
+          "evidence": [],
+          "id": "assertion:design-gate-pass",
+          "reviews": [
+            {
+              "id": "review:design-gate",
+              "justification": "Security-requirements baseline present; design review cleared.",
+              "review_status": "accepted",
+              "reviewer": "party:sdl-owner"
+            }
+          ]
+        }
+      ],
+      "authored": false,
       "id": "relationship:gate:design-review|passed|product:acme-auth-service",
       "properties": {
         "assertion_ids": [
@@ -845,7 +1206,13 @@
         "review_ids": [
           "review:design-gate"
         ],
-        "review_status": "accepted"
+        "review_justifications": [
+          "Security-requirements baseline present; design review cleared."
+        ],
+        "review_status": "accepted",
+        "review_statuses": [
+          "accepted"
+        ]
       },
       "relationship_type": "passed",
       "source": "gate:design-review",
