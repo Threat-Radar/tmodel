@@ -4,9 +4,9 @@ id: DL-0065
 title: "Move the CWE pin to 4.21: a new library record that the engine follows"
 type: process
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 date: "2026-11-22"
-updated: "2026-11-22"
+updated: "2026-11-23"
 record: DL-0065
 bears_on: [DEC-008, DEC-002]
 defers_to: ARCH-0001
@@ -61,6 +61,17 @@ adding 5.0 later as a new library record. After seeing what 4.21 changes, @Clovi
   (CWE 4.21).
 - **The submodule** moves to the library commit that adds `cwe-4-21`. That also brings library#50
   (`iso-sae-21434-2021` FX-1, #154), merged there since the last pin.
+
+## Review changes (2026-11-23)
+
+@kriishnaa-18 found that the tripwire never ran in CI: `test_the_pinned_library_serves_cwe_4_21` skips without the library submodule, and CI's engine jobs do not check it out. The desktop job does, and it runs `engine/tests/test_packaging.py` against the built app, but that test only checked that the bundled catalog was not empty.
+
+The packaging tests now check the release the built app ships:
+
+- `test_relocated_engine_reads_bundled_cwe_release_without_checkout`: the bundled catalog is exactly CWE 4.21, `cwec_v4.21.xml.zip`, SHA-256 `5225e2b4…7e718862`.
+- `test_relocated_engine_serves_bundled_library_without_checkout`: the bundled library's `cwe-4-21` record pins that file, supersedes `cwe`, and is superseded by nothing, so it is the record the engine serves.
+
+Checked locally with an engine built from this branch by `bin/build-engine` (686 library records, CWE 4.21 with 984 entries): all 7 packaging tests pass. Against the earlier CWE 4.20 test build, both changed tests fail, as they should for any other release.
 
 ## Choices
 
