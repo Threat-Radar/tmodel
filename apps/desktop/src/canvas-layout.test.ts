@@ -77,11 +77,13 @@ function measure(): Map<number, Layout> {
   const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
   const body = /<body[^>]*>([\s\S]*)<\/body>/u.exec(html)?.[1];
   if (body === undefined) throw new Error("index.html has no <body>");
+  // The app's own script loads from <head>, so the page below runs only the probe.
+  if (/<script/iu.test(body)) throw new Error("index.html's <body> has a script; this test expects none");
   const css = ["./styles.css", "./report.css"]
     .map((file) => readFileSync(new URL(file, import.meta.url), "utf8"))
     .join("\n");
   const page = `<!doctype html><html lang="en"><head><meta charset="utf-8"><style>${css}</style></head>`
-    + `<body>${body.replace(/<script\b[\s\S]*?<\/script>/gu, "")}<script>${PROBE}</script></body></html>`;
+    + `<body>${body}<script>${PROBE}</script></body></html>`;
   const dir = mkdtempSync(join(tmpdir(), "tmodel-layout-"));
   try {
     const file = join(dir, "page.html");
