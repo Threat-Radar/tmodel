@@ -53,6 +53,7 @@ export interface RequirementsViewElements {
   previousPage: HTMLButtonElement;
   nextPage: HTMLButtonElement;
   pageStatus: HTMLElement;
+  attribution: HTMLElement;
   sortHelp: HTMLElement;
   coverageSection: HTMLElement;
   coverageStatus: HTMLElement;
@@ -324,6 +325,7 @@ export class RequirementsView {
     this.elements.sourceControl.hidden = !standards;
     this.elements.normativityControl.hidden = !standards;
     this.elements.coverageSection.hidden = standards;
+    this.elements.attribution.hidden = !standards;
     this.elements.tableCaption.textContent = standards
       ? "Requirements in the extracted standards catalog; visibility does not establish applicability or compliance"
       : "Requirements recorded in the selected model";
@@ -687,6 +689,7 @@ export function requirementsViewElements(root: Document = document): Requirement
     previousPage: required("requirements-page-previous"),
     nextPage: required("requirements-page-next"),
     pageStatus: required("requirements-page-status"),
+    attribution: required("requirements-attribution"),
     sortHelp: required("requirements-sort-help"),
     coverageSection: required("requirements-coverage"),
     coverageStatus: required("requirements-coverage-status"),

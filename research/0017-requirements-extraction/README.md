@@ -164,7 +164,7 @@ engine/.venv/bin/python docs/publishing/render_requirements_catalog.py --check
 The catalog keeps these records separate from selected-model Requirements. Catalog visibility does not
 establish product applicability, mitigation satisfaction, or compliance. Public output retains
 Assertion and Review evidence but replaces protected project-person identities with a human-reviewer
-role; the YAML here remains authoritative and unchanged. See DL-0063.
+role; the YAML here remains authoritative and unchanged. See DL-0066.
 
 ## Limits
 

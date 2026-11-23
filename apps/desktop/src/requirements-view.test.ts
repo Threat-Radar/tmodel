@@ -115,6 +115,10 @@ describe("requirements view", () => {
     expect(elements.sourceControl.hidden).toBe(false);
     expect(elements.normativityControl.hidden).toBe(false);
     expect(elements.coverageSection.hidden).toBe(true);
+    expect(elements.attribution.hidden).toBe(false);
+    expect(deepText(elements.attribution)).toContain("OWASP");
+    expect(elements.attribution.children[0]?.children[1]?.getAttribute("href"))
+      .toBe("https://creativecommons.org/licenses/by-sa/4.0/");
     expect(elements.tableCaption.textContent).toContain("does not establish applicability");
     expect(elements.requestStatus.textContent).toContain("extracted standards catalog");
     expect(getCoverage).not.toHaveBeenCalled();
@@ -279,11 +283,24 @@ function harness(
     previousPage: make("button"), nextPage: make("button"), pageStatus: make(),
     sortHelp: make(), coverageSection: make("details"), coverageStatus: make(),
     coverageContent: make(), detailTitle: make(),
+    attribution: make("aside"),
     detailId: make(), detailBadges: make(), detailText: make(), detailStatus: make(),
     detailList: make("dl"), detailRelationships: make(),
   };
   elements.modeSelect.value = "model";
   elements.pageSize.value = "25";
+  const attributionText = make("p");
+  const owaspLink = make("a");
+  owaspLink.textContent = "OWASP Application Security Verification Standard (ASVS) 5.0.0";
+  owaspLink.setAttribute(
+    "href",
+    "https://owasp.org/www-project-application-security-verification-standard/",
+  );
+  const licenseLink = make("a");
+  licenseLink.textContent = "CC BY-SA 4.0";
+  licenseLink.setAttribute("href", "https://creativecommons.org/licenses/by-sa/4.0/");
+  attributionText.append(owaspLink, licenseLink);
+  elements.attribution.append(attributionText);
   const coverage = calculateCoverageFallback(REQUIREMENTS_GRAPH, "product:tcu");
   const getCoverage = vi.fn(async () => ({
     response: coverage,
