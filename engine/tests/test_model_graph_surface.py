@@ -66,6 +66,8 @@ def test_graph_response_preserves_stable_ids_types_and_directions():
     assert edge["id"] == (
         "relationship:component:papermill-api|uses_component|component:libxml-parse"
     )
+    assert edge["authored"] is True
+    assert edge["assertions"] == []
 
 
 def test_reviewed_assertion_is_projected_as_semantic_edge():
@@ -75,12 +77,27 @@ def test_reviewed_assertion_is_projected_as_semantic_edge():
         "vulnerability:cve-2026-30111",
         "weakness:cwe-611",
     )
+    assert edge["authored"] is False
+    assert edge["assertions"][0]["id"] == "assertion:cve-cwe-instance"
+    assert edge["assertions"][0]["reviews"][0]["id"] == "review:cve-cwe"
     assert edge["properties"] == {
         "assertion_ids": ["assertion:cve-cwe-instance"],
         "assertion_status": "accepted",
         "confidence": "high",
+        "assertion_descriptions": [
+            "The CVE-to-CWE step of the ADR-0002 backbone (CVE, CWE, CAPEC, ATT&CK). "
+            "Vulnerability has no Weakness slot, so the link is reified, with the predicate "
+            "ARCH-0001 §3 and PLAN-0002 §5 name (RPT-0004 mapping.md, finding 7). In a "
+            "real import the CWE comes from the CVE record and stays proposed until a human "
+            "reviews it (R-018)."
+        ],
         "review_ids": ["review:cve-cwe"],
         "review_status": "accepted",
+        "review_statuses": ["accepted"],
+        "review_justifications": [
+            "The CWE in the CVE record (illustrative) matches the root cause; the parser "
+            "resolves external entities in uploaded XML."
+        ],
     }
 
 
@@ -92,8 +109,17 @@ def test_proposed_assertion_keeps_its_review_verdict_on_the_edge():
         "assertion_ids": ["assertion:ai-imds-pivot-realizes"],
         "assertion_status": "proposed",
         "confidence": "low",
+        "assertion_descriptions": [
+            "AI-PROPOSED edge. assertion_status is `proposed` (NOT accepted); it is a "
+            "hypothesis until a human accepts it. The paired Review requests changes."
+        ],
         "review_ids": ["review:ai-triage"],
         "review_status": "changes_requested",
+        "review_statuses": ["changes_requested"],
+        "review_justifications": [
+            "AI-proposed path. Metadata reachability depends on deployment specifics not yet "
+            "confirmed; keep as a flagged hypothesis, do not treat as reviewed."
+        ],
     }
 
 
@@ -212,6 +238,175 @@ def test_adr_0011_reference_slots_are_projected_as_edges_not_properties():
     by_id = {node.id: node for node in graph.nodes}
     for source, relationship, _target in expected:
         assert relationship not in by_id[source].properties
+
+
+def test_adr_0012_requirement_relationships_are_projected_as_edges_not_properties():
+    graph = core.project_model_graph(
+        {
+            "products": [{"id": "product:p"}],
+            "mitigations": [
+                {
+                    "id": "mitigation:m",
+                    "stated_as": "requirement:r",
+                }
+            ],
+            "threat_instances": [{"id": "threat:t"}],
+            "requirements": [
+                {
+                    "id": "requirement:r",
+                    "addresses": "threat:t",
+                    "satisfied_by": "mitigation:m",
+                    "refines": "requirement:base",
+                    "derived_from": "requirement:base",
+                    "conflicts_with": "requirement:other",
+                    "maps_to": "requirement:other",
+                    "applies_to": "product:p",
+                },
+                {"id": "requirement:base"},
+                {"id": "requirement:other"},
+            ],
+        }
+    )
+    expected = {
+        ("requirement:r", "addresses", "threat:t"),
+        ("requirement:r", "satisfied_by", "mitigation:m"),
+        ("requirement:r", "refines", "requirement:base"),
+        ("requirement:r", "derived_from", "requirement:base"),
+        ("requirement:r", "conflicts_with", "requirement:other"),
+        ("requirement:r", "maps_to", "requirement:other"),
+        ("requirement:r", "applies_to", "product:p"),
+        ("mitigation:m", "stated_as", "requirement:r"),
+    }
+    projected = {(edge.source, edge.relationship_type, edge.target) for edge in graph.edges}
+    assert expected <= projected
+
+    by_id = {node.id: node for node in graph.nodes}
+    for source, relationship, _target in expected:
+        assert relationship not in by_id[source].properties
+
+
+def test_authored_and_multiple_assertion_provenance_coexist_on_one_edge():
+    graph = core.project_model_graph(
+        {
+            "parties": [{"id": "party:human", "party_kind": "person"}],
+            "mitigations": [{"id": "mitigation:m"}],
+            "requirements": [{"id": "requirement:r", "satisfied_by": "mitigation:m"}],
+            "assertions": [
+                {
+                    "id": "assertion:first",
+                    "subject": "requirement:r",
+                    "predicate": "satisfied_by",
+                    "object": "mitigation:m",
+                    "assertion_status": "proposed",
+                    "confidence": "low",
+                    "description": "First basis.",
+                    "evidence": ["evidence:first"],
+                },
+                {
+                    "id": "assertion:second",
+                    "subject": "requirement:r",
+                    "predicate": "satisfied_by",
+                    "object": "mitigation:m",
+                    "assertion_status": "accepted",
+                    "confidence": "high",
+                    "description": "Second basis.",
+                    "evidence": ["evidence:second:a", "evidence:second:b"],
+                },
+            ],
+            "reviews": [
+                {
+                    "id": "review:first",
+                    "reviews": "assertion:first",
+                    "reviewer": "party:human",
+                    "review_status": "changes_requested",
+                    "justification": "Needs more evidence.",
+                },
+                {
+                    "id": "review:second",
+                    "reviews": "assertion:second",
+                    "reviewer": "party:human",
+                    "review_status": "accepted",
+                    "justification": "Evidence is sufficient.",
+                },
+            ],
+        }
+    )
+    edge = next(
+        item
+        for item in graph.edges
+        if item.source == "requirement:r"
+        and item.relationship_type == "satisfied_by"
+        and item.target == "mitigation:m"
+    )
+    assert edge.authored is True
+    assert edge.assertions == (
+        {
+            "id": "assertion:first",
+            "assertion_status": "proposed",
+            "confidence": "low",
+            "description": "First basis.",
+            "evidence": ["evidence:first"],
+            "reviews": [
+                {
+                    "id": "review:first",
+                    "review_status": "changes_requested",
+                    "reviewer": "party:human",
+                    "justification": "Needs more evidence.",
+                }
+            ],
+        },
+        {
+            "id": "assertion:second",
+            "assertion_status": "accepted",
+            "confidence": "high",
+            "description": "Second basis.",
+            "evidence": ["evidence:second:a", "evidence:second:b"],
+            "reviews": [
+                {
+                    "id": "review:second",
+                    "review_status": "accepted",
+                    "reviewer": "party:human",
+                    "justification": "Evidence is sufficient.",
+                }
+            ],
+        },
+    )
+    assert edge.properties == {
+        "assertion_ids": ["assertion:first", "assertion:second"],
+        "assertion_statuses": ["proposed", "accepted"],
+        "assertion_confidences": ["low", "high"],
+        "review_ids": ["review:first", "review:second"],
+        "review_statuses": ["changes_requested", "accepted"],
+    }
+    assert "assertion_status" not in edge.properties
+    assert "review_status" not in edge.properties
+    serialized = edge.to_dict()
+    assert serialized["authored"] is True
+    assert [item["id"] for item in serialized["assertions"]] == [
+        "assertion:first",
+        "assertion:second",
+    ]
+
+
+def test_assertion_only_edge_is_explicitly_not_authored():
+    graph = core.project_model_graph(
+        {
+            "mitigations": [{"id": "mitigation:m"}],
+            "requirements": [{"id": "requirement:r"}],
+            "assertions": [
+                {
+                    "id": "assertion:a",
+                    "subject": "requirement:r",
+                    "predicate": "satisfied_by",
+                    "object": "mitigation:m",
+                    "assertion_status": "proposed",
+                }
+            ],
+        }
+    )
+    edge = next(item for item in graph.edges if item.relationship_type == "satisfied_by")
+    assert edge.authored is False
+    assert [assertion["id"] for assertion in edge.assertions] == ["assertion:a"]
 
 
 def test_graph_edge_order_does_not_depend_on_string_hash_seed():

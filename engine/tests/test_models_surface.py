@@ -224,7 +224,15 @@ def report_input(file):
 
 
 NODE_KEYS = {"id", "domain_type", "label", "properties"}
-EDGE_KEYS = {"id", "source", "target", "relationship_type", "properties"}
+EDGE_KEYS = {
+    "id",
+    "source",
+    "target",
+    "relationship_type",
+    "authored",
+    "assertions",
+    "properties",
+}
 
 
 def _key_sets(items):

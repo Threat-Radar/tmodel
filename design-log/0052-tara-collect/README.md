@@ -4,9 +4,9 @@ id: DL-0052
 title: "TARA collect phase: deterministic engine intermediate for mvp-02"
 type: process
 status: draft
-version: "0.1.2"
+version: "0.1.3"
 date: "2026-11-14"
-updated: "2026-11-21"
+updated: "2026-11-22"
 record: DL-0052
 issue: "Threat-Radar/tmodel#181"
 defers_to: ARCH-0001
@@ -26,9 +26,9 @@ governance proposals or #182's HTML publishing work.
 
 The branch originally started at PR #229's `a1e97c3` because collection needs
 the #63 risk calculator. #229 merged on 2026-11-20 as `df5fb01`; this branch
-now incorporates that `main`. No sponsor decision or human review is inferred
-from the calculator implementation. The library
-gitlink stays at `a28a013`; no library record or example vector changes.
+incorporated that `main` in the first integration. No sponsor decision or human review is inferred
+from the calculator implementation. At that stage the library gitlink remained
+at `a28a013`; the current integration below inherits main's newer snapshot.
 
 The storage-neutral `engine.tara.collect_document` reads a mapping, validates
 it through the existing graph projection, preserves records and calls the
@@ -159,3 +159,39 @@ checks cover 12 review scenarios and both review orders, with identical answers
 and no input mutation. The mvp-02 JSON remains byte-identical to the prior export
 with SHA-256 `4238a573a546db95ea48d4adf584d2746fd40debdfc33dbfe105810f17213712`.
 Remote CI must be checked after pushing these review fixes.
+
+## Current-main integration (2026-11-22)
+
+@paria03 requested resolving #242's merge conflicts and pushing the update.
+Merge `main` at `8351701`, retaining the TARA serializer import alongside the
+local-weakness loader import from #145. This is the only conflicted hunk. The
+TARA API/CLI adapters, atomic output handling and shared person-review helper
+remain intact. Main's CWE relationships, local weaknesses, requirements UI and
+new example models are inherited without reimplementing them. The shared helper
+remains identical to #243's; this merge does not pull in that open PR.
+
+Inherit main's library pin `e406827` and its existing publication refresh. This
+is an intentional integration of the current main snapshot, not a library-record
+edit or a separate publication change. The earlier `a28a013` references and
+validation counts above describe prior heads.
+
+Integration validation on Python 3.13:
+
+- **659 engine tests passed, five opt-in packaging checks skipped**, with the
+  full pinned CWE release enabled. Engine lint and formatting passed.
+- Rebuilt the standalone sidecar; **all five isolated packaging tests passed**,
+  including relocated `/tara` without a source checkout or system Python.
+- Frontend typecheck/build and **456 tests passed**. Rust fmt/clippy and
+  **four tests passed**.
+- **23 publishing tests passed**; archdoc has 28 documents and zero errors.
+  Published identity/link checks pass, and the browser preview is current with
+  nine models and 685 library records. No generated page or frontend source
+  changes are needed relative to the merged main snapshot.
+- The inherited library has **685 records, zero errors and 99 existing warnings**.
+- All nine example models collect. The TCU export is byte-identical to the
+  pre-merge baseline, SHA-256
+  `4238a573a546db95ea48d4adf584d2746fd40debdfc33dbfe105810f17213712`.
+  The shared review helper is byte-identical to #243's published implementation.
+
+Fresh CI and approval status must be checked on the resulting merge commit;
+earlier approval is not inferred to apply to unreviewed changes.

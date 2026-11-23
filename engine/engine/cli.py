@@ -18,8 +18,13 @@
                 [--usage U] [--sort F] [--order asc|desc] [--limit N] [--offset N] [--json]
   tmodel weaknesses --id CWE-79 [--json]
                                CWE weaknesses from the release the library pins,
-                               read from $TMODEL_CWE_CATALOG (#144); with --id,
-                               one entry in full
+                               read from $TMODEL_CWE_CATALOG (#144), and the local
+                               tr-weak ones in $TMODEL_LOCAL_WEAKNESSES (#145); with
+                               --id, one entry in full (CWE-79 or tr-weak-0001)
+  tmodel weaknesses --relationships [--id CWE-79] [--view CWE-1000,699] [--stated-only]
+                [--limit N] [--offset N] [--json]
+                               their relationships, each in its CWE view, with the
+                               inverses the schema declares unless --stated-only (#145)
   tmodel sdl [FILE] [--program P] [--json]
                                the SDL program view of an SDL model (DL-0043);
                                without FILE, list the SDL models
@@ -57,6 +62,7 @@ from typing import Any
 from engine import core
 from engine.api import server
 from engine.client import EngineError, EngineTimeout, EngineUnreachable, get
+from engine.load import local_weaknesses
 from engine.tara import serialize as serialize_tara
 
 LOCAL: dict[str, Callable[[], dict[str, Any]]] = {"health": core.health, "version": core.version}
@@ -307,10 +313,37 @@ def _print_weakness_table(payload: dict[str, Any]) -> None:
         print(f"  {cells}  {r['name']}")
 
 
+def _relationship_line(r: dict[str, Any]) -> str:
+    """One relationship: CWE-79 ChildOf CWE-74 (CWE-1000, Primary)."""
+    notes = [r["view"], *(n for n in (r["ordinal"], r["chain"] and f"chain {r['chain']}") if n)]
+    if r["derived"]:
+        notes.append("derived")
+    return f"{r['source']} {r['nature']} {r['target']} ({', '.join(notes)})"
+
+
+def _print_relationships(payload: dict[str, Any]) -> None:
+    catalog, local, query = payload["catalog"], payload["local"], payload["query"]
+    views = ", ".join(query["views"]) if query["views"] else "every view"
+    sources = f"{catalog['name']} {catalog['version']}"
+    if local is not None:
+        sources += f" and {local['name']} {local['version']}"
+    print(f"{payload['count']} of {payload['total']} relationships in {views} ({sources})")
+    for r in payload["relationships"]:
+        print(f"  {_relationship_line(r)}")
+
+
 def _print_weakness(payload: dict[str, Any]) -> None:
     catalog, entry = payload["catalog"], payload["entry"]
     if entry is None:
-        print(f"{payload['id']}: not in {catalog['name']} {catalog['version']}")
+        where = f"{catalog['name']} {catalog['version']}"
+        if local_weaknesses.local_number(payload["id"]) is not None:
+            local = payload["local"]
+            where = (
+                f"{local['name']} {local['version']}"
+                if local is not None
+                else f"any local file ({local_weaknesses.LOCAL_ENV} is not set)"
+            )
+        print(f"{payload['id']}: not in {where}")
         return
     print(f"{entry['id']}  {entry['name']}")
     shape = "/".join(v for v in (entry["abstraction"], entry["structure"]) if v)
@@ -324,12 +357,42 @@ def _print_weakness(payload: dict[str, Any]) -> None:
             f"{len(entry['observed_examples'])} observed examples, "
             f"{entry['mitigations']} mitigations"
         )
-    print(f"  {entry['url']}")
+    if entry["url"]:
+        print(f"  {entry['url']}")
+    for r in (*entry["relationships"], *payload["derived_relationships"]):
+        print(f"  {_relationship_line(r)}")
 
 
 def _weaknesses(args: argparse.Namespace) -> int:
     names = core.WEAKNESS_FILTERS + core.TABLE_OPTIONS
     table = {n: getattr(args, n) for n in names if getattr(args, n) is not None}
+    if args.relationships:
+        refused = [n for n in table if n not in ("limit", "offset")]
+        if refused:  # they would be ignored, so refuse them, as the API does
+            given = ", ".join(f"--{n}" for n in refused)
+            print(
+                f"error: --relationships takes --id, --view, --stated-only, --limit and "
+                f"--offset, not the table's options ({given})",
+                file=sys.stderr,
+            )
+            return 2
+        params = dict(table)
+        if args.id is not None:
+            params["id"] = args.id
+        if args.view is not None:
+            params["view"] = args.view
+        if args.stated_only:
+            params["derived"] = "false"
+        return _show_weaknesses(
+            args,
+            "/weaknesses/relationships",
+            params,
+            core.weakness_relationships,
+            _print_relationships,
+        )
+    if args.view is not None or args.stated_only:
+        print("error: --view and --stated-only go with --relationships", file=sys.stderr)
+        return 2
     if args.id is not None:
         if table:  # they would be ignored, so refuse them, as GET /weaknesses does
             given = ", ".join(f"--{n}" for n in table)
@@ -338,9 +401,22 @@ def _weaknesses(args: argparse.Namespace) -> int:
                 file=sys.stderr,
             )
             return 2
-        path, params, local = "/weaknesses", {"id": args.id}, core.weaknesses
-    else:
-        path, params, local = "/weaknesses/table", table, core.weakness_table
+        return _show_weaknesses(
+            args, "/weaknesses", {"id": args.id}, core.weaknesses, _print_weakness
+        )
+    return _show_weaknesses(
+        args, "/weaknesses/table", table, core.weakness_table, _print_weakness_table
+    )
+
+
+def _show_weaknesses(
+    args: argparse.Namespace,
+    path: str,
+    params: dict[str, str],
+    local: Callable[[dict[str, str]], dict[str, Any]],
+    show: Callable[[dict[str, Any]], None],
+) -> int:
+    """Ask the engine (or, with --in-process, its code) and print its answer."""
     payload = _call(
         lambda: (
             local(params)
@@ -352,10 +428,8 @@ def _weaknesses(args: argparse.Namespace) -> int:
         return 1
     if args.json:
         print(json.dumps(payload))
-    elif args.id is not None:
-        _print_weakness(payload)
     else:
-        _print_weakness_table(payload)
+        show(payload)
     unknown = payload["catalog"]["unknown_fields"]
     if unknown:  # kept, not dropped; say so, since the import does not map them yet
         noun = "field" if unknown == 1 else "fields"
@@ -538,7 +612,20 @@ def build_parser() -> argparse.ArgumentParser:
     library.set_defaults(func=_library)
 
     weak = sub.add_parser("weaknesses", help="CWE weaknesses from the pinned release (#144)")
-    weak.add_argument("--id", default=None, help="one entry in full, e.g. CWE-79")
+    weak.add_argument("--id", default=None, help="one entry in full, e.g. CWE-79 or tr-weak-0001")
+    weak.add_argument(
+        "--relationships",
+        action="store_true",
+        help="relationships, each in its CWE view (#145); with --id, that entry's",
+    )
+    weak.add_argument(
+        "--view", default=None, help="with --relationships: only these views, e.g. CWE-1000,699"
+    )
+    weak.add_argument(
+        "--stated-only",
+        action="store_true",
+        help="with --relationships: only the written ones, no derived inverses",
+    )
     for name in core.WEAKNESS_FILTERS:
         weak.add_argument(f"--{name}", default=None, help=f"only weaknesses with this {name}")
     weak.add_argument(

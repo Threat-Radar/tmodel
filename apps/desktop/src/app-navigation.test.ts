@@ -3,14 +3,16 @@ import { AppNavigation, type AppView } from "./app-navigation";
 import type { EngineState } from "./engine";
 import { GraphStartup } from "./graph-startup";
 
-const VIEWS: readonly AppView[] = ["report", "paths", "graph", "library", "sdl"];
+const VIEWS: readonly AppView[] = [
+  "report", "paths", "graph", "requirements", "library", "weaknesses", "sdl",
+];
 
 describe("application navigation", () => {
   it("defaults to the model report and initializes each view only when selected", () => {
     const harness = navigationHarness("");
     harness.navigation.start();
     expect(harness.panel("report").hidden).toBe(false);
-    for (const view of ["paths", "graph", "library", "sdl"] as const) {
+    for (const view of ["paths", "graph", "requirements", "library", "weaknesses", "sdl"] as const) {
       expect(harness.panel(view).hidden).toBe(true);
       expect(harness.activated(view)).not.toHaveBeenCalled();
     }
@@ -51,6 +53,14 @@ describe("application navigation", () => {
     library.navigation.start();
     expect(library.panel("library").hidden).toBe(false);
 
+    const weaknesses = navigationHarness("#weaknesses");
+    weaknesses.navigation.start();
+    expect(weaknesses.panel("weaknesses").hidden).toBe(false);
+
+    const requirements = navigationHarness("#requirements");
+    requirements.navigation.start();
+    expect(requirements.panel("requirements").hidden).toBe(false);
+
     const sdl = navigationHarness("#sdl");
     sdl.navigation.start();
     expect(sdl.panel("sdl").hidden).toBe(false);
@@ -88,9 +98,15 @@ describe("application navigation", () => {
     expect(harness.panel("sdl").hidden).toBe(false);
 
     harness.button("graph").keydown("ArrowRight");
+    expect(harness.button("requirements").focused).toBe(true);
+
+    harness.button("requirements").keydown("ArrowRight");
     expect(harness.button("library").focused).toBe(true);
 
     harness.button("library").keydown("ArrowRight");
+    expect(harness.button("weaknesses").focused).toBe(true);
+
+    harness.button("weaknesses").keydown("ArrowRight");
     expect(harness.button("sdl").focused).toBe(true);
 
     harness.button("sdl").keydown("ArrowRight");

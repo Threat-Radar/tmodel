@@ -322,7 +322,10 @@ def test_a_category_has_no_objects_and_an_unknown_id_no_entry():
 
 @pytest.mark.parametrize(
     "query, message",
-    [({"id": "XSS"}, "a CWE id looks like CWE-79"), ({"name": "x"}, "unknown parameter 'name'")],
+    [
+        ({"id": "XSS"}, "a CWE id looks like CWE-79"),
+        ({"name": "x"}, "unknown parameter 'name': use id"),  # one name, no stray "or"
+    ],
 )
 def test_bad_weakness_queries_are_400(engine_url, query, message):
     with pytest.raises(urllib.error.HTTPError) as err:

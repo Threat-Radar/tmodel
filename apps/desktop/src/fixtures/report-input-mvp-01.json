@@ -57,6 +57,8 @@
  "graph": {
   "edges": [
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:product:papermill-doc-service|composed_of|component:papermill-api",
     "properties": {},
     "relationship_type": "composed_of",
@@ -64,6 +66,8 @@
     "target": "component:papermill-api"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:product:papermill-doc-service|manufactured_by|party:papermill-oss",
     "properties": {},
     "relationship_type": "manufactured_by",
@@ -71,6 +75,8 @@
     "target": "party:papermill-oss"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:product:papermill-doc-service|owned_by|party:saas-operator",
     "properties": {},
     "relationship_type": "owned_by",
@@ -78,6 +84,8 @@
     "target": "party:saas-operator"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:product:papermill-doc-service|supplied_by|party:papermill-oss",
     "properties": {},
     "relationship_type": "supplied_by",
@@ -85,6 +93,8 @@
     "target": "party:papermill-oss"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:product-instance:papermill-3-1-0|current_phase|lifecycle-phase:operation",
     "properties": {},
     "relationship_type": "current_phase",
@@ -92,6 +102,8 @@
     "target": "lifecycle-phase:operation"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:product-instance:papermill-3-1-0|of_product|product:papermill-doc-service",
     "properties": {},
     "relationship_type": "of_product",
@@ -99,6 +111,8 @@
     "target": "product:papermill-doc-service"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:product-instance:papermill-3-1-0|owned_by|party:saas-operator",
     "properties": {},
     "relationship_type": "owned_by",
@@ -106,6 +120,8 @@
     "target": "party:saas-operator"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:component:papermill-api|composed_of|component:render-worker",
     "properties": {},
     "relationship_type": "composed_of",
@@ -113,6 +129,8 @@
     "target": "component:render-worker"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:component:papermill-api|owned_by|party:saas-operator",
     "properties": {},
     "relationship_type": "owned_by",
@@ -120,6 +138,8 @@
     "target": "party:saas-operator"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:component:papermill-api|uses_component|component:libxml-parse",
     "properties": {},
     "relationship_type": "uses_component",
@@ -127,6 +147,8 @@
     "target": "component:libxml-parse"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:component:render-worker|uses_component|component:libxml-parse",
     "properties": {},
     "relationship_type": "uses_component",
@@ -134,6 +156,8 @@
     "target": "component:libxml-parse"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:vulnerability:cve-2026-30111|affects|product:papermill-doc-service",
     "properties": {},
     "relationship_type": "affects",
@@ -141,6 +165,8 @@
     "target": "product:papermill-doc-service"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:vulnerability:cve-2026-30111|assigned_by|party:cna-mitre",
     "properties": {},
     "relationship_type": "assigned_by",
@@ -148,6 +174,8 @@
     "target": "party:cna-mitre"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:vulnerability:cve-2026-30111|reported_by|party:reporter-01",
     "properties": {},
     "relationship_type": "reported_by",
@@ -155,6 +183,8 @@
     "target": "party:reporter-01"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:threat-instance:xxe-file-read|applies_in_phase|lifecycle-phase:operation",
     "properties": {},
     "relationship_type": "applies_in_phase",
@@ -162,6 +192,8 @@
     "target": "lifecycle-phase:operation"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:threat-instance:xxe-file-read|realizes_damage|damage-scenario:tenant-data-exfil",
     "properties": {},
     "relationship_type": "realizes_damage",
@@ -169,6 +201,8 @@
     "target": "damage-scenario:tenant-data-exfil"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:threat-instance:imds-pivot|applies_in_phase|lifecycle-phase:operation",
     "properties": {},
     "relationship_type": "applies_in_phase",
@@ -176,6 +210,8 @@
     "target": "lifecycle-phase:operation"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:threat-instance:imds-pivot|realizes_damage|damage-scenario:tenant-data-exfil",
     "properties": {},
     "relationship_type": "realizes_damage",
@@ -183,6 +219,8 @@
     "target": "damage-scenario:tenant-data-exfil"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-step:upload-crafted-doc|precedes|attack-step:parser-resolves-entity",
     "properties": {},
     "relationship_type": "precedes",
@@ -190,6 +228,8 @@
     "target": "attack-step:parser-resolves-entity"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-step:parser-resolves-entity|precedes|attack-step:read-internal-file",
     "properties": {},
     "relationship_type": "precedes",
@@ -197,6 +237,8 @@
     "target": "attack-step:read-internal-file"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-step:coerce-file-uri|precedes|attack-step:read-internal-file",
     "properties": {},
     "relationship_type": "precedes",
@@ -204,6 +246,8 @@
     "target": "attack-step:read-internal-file"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-step:point-entity-at-metadata|precedes|attack-step:fetch-instance-credentials",
     "properties": {},
     "relationship_type": "precedes",
@@ -211,6 +255,8 @@
     "target": "attack-step:fetch-instance-credentials"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-step:dns-rebind-to-metadata|precedes|attack-step:fetch-instance-credentials",
     "properties": {},
     "relationship_type": "precedes",
@@ -218,8 +264,29 @@
     "target": "attack-step:fetch-instance-credentials"
    },
    {
+    "assertions": [
+     {
+      "assertion_status": "accepted",
+      "confidence": "high",
+      "description": "Reviewed realizing edge; accepted by a human reviewer.",
+      "evidence": [],
+      "id": "assertion:xxe-path-realizes",
+      "reviews": [
+       {
+        "id": "review:xxe-path",
+        "justification": "Steps reproduce in a test harness; path realizes the reviewed threat.",
+        "review_status": "accepted",
+        "reviewer": "party:sec-reviewer"
+       }
+      ]
+     }
+    ],
+    "authored": true,
     "id": "relationship:attack-path:xxe-file-read|realizes_threat|threat-instance:xxe-file-read",
     "properties": {
+     "assertion_descriptions": [
+      "Reviewed realizing edge; accepted by a human reviewer."
+     ],
      "assertion_ids": [
       "assertion:xxe-path-realizes"
      ],
@@ -228,13 +295,21 @@
      "review_ids": [
       "review:xxe-path"
      ],
-     "review_status": "accepted"
+     "review_justifications": [
+      "Steps reproduce in a test harness; path realizes the reviewed threat."
+     ],
+     "review_status": "accepted",
+     "review_statuses": [
+      "accepted"
+     ]
     },
     "relationship_type": "realizes_threat",
     "source": "attack-path:xxe-file-read",
     "target": "threat-instance:xxe-file-read"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-path:xxe-file-read|steps|attack-step:upload-crafted-doc",
     "properties": {},
     "relationship_type": "steps",
@@ -242,6 +317,8 @@
     "target": "attack-step:upload-crafted-doc"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-path:xxe-file-read|steps|attack-step:parser-resolves-entity",
     "properties": {},
     "relationship_type": "steps",
@@ -249,6 +326,8 @@
     "target": "attack-step:parser-resolves-entity"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-path:xxe-file-read|steps|attack-step:coerce-file-uri",
     "properties": {},
     "relationship_type": "steps",
@@ -256,6 +335,8 @@
     "target": "attack-step:coerce-file-uri"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-path:xxe-file-read|steps|attack-step:read-internal-file",
     "properties": {},
     "relationship_type": "steps",
@@ -263,6 +344,8 @@
     "target": "attack-step:read-internal-file"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-path:imds-pivot|pivots_to|attack-path:xxe-file-read",
     "properties": {},
     "relationship_type": "pivots_to",
@@ -270,8 +353,29 @@
     "target": "attack-path:xxe-file-read"
    },
    {
+    "assertions": [
+     {
+      "assertion_status": "proposed",
+      "confidence": "low",
+      "description": "AI-PROPOSED edge. assertion_status is `proposed` (NOT accepted); it is a hypothesis until a human accepts it. The paired Review requests changes.",
+      "evidence": [],
+      "id": "assertion:ai-imds-pivot-realizes",
+      "reviews": [
+       {
+        "id": "review:ai-triage",
+        "justification": "AI-proposed path. Metadata reachability depends on deployment specifics not yet confirmed; keep as a flagged hypothesis, do not treat as reviewed.",
+        "review_status": "changes_requested",
+        "reviewer": "party:sec-reviewer"
+       }
+      ]
+     }
+    ],
+    "authored": true,
     "id": "relationship:attack-path:imds-pivot|realizes_threat|threat-instance:imds-pivot",
     "properties": {
+     "assertion_descriptions": [
+      "AI-PROPOSED edge. assertion_status is `proposed` (NOT accepted); it is a hypothesis until a human accepts it. The paired Review requests changes."
+     ],
      "assertion_ids": [
       "assertion:ai-imds-pivot-realizes"
      ],
@@ -280,13 +384,21 @@
      "review_ids": [
       "review:ai-triage"
      ],
-     "review_status": "changes_requested"
+     "review_justifications": [
+      "AI-proposed path. Metadata reachability depends on deployment specifics not yet confirmed; keep as a flagged hypothesis, do not treat as reviewed."
+     ],
+     "review_status": "changes_requested",
+     "review_statuses": [
+      "changes_requested"
+     ]
     },
     "relationship_type": "realizes_threat",
     "source": "attack-path:imds-pivot",
     "target": "threat-instance:imds-pivot"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-path:imds-pivot|steps|attack-step:point-entity-at-metadata",
     "properties": {},
     "relationship_type": "steps",
@@ -294,6 +406,8 @@
     "target": "attack-step:point-entity-at-metadata"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-path:imds-pivot|steps|attack-step:dns-rebind-to-metadata",
     "properties": {},
     "relationship_type": "steps",
@@ -301,6 +415,8 @@
     "target": "attack-step:dns-rebind-to-metadata"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:attack-path:imds-pivot|steps|attack-step:fetch-instance-credentials",
     "properties": {},
     "relationship_type": "steps",
@@ -308,6 +424,8 @@
     "target": "attack-step:fetch-instance-credentials"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:mitigation:disable-external-entities|applies_in_phase|lifecycle-phase:design",
     "properties": {},
     "relationship_type": "applies_in_phase",
@@ -315,6 +433,8 @@
     "target": "lifecycle-phase:design"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:mitigation:disable-external-entities|applies_in_phase|lifecycle-phase:implementation",
     "properties": {},
     "relationship_type": "applies_in_phase",
@@ -322,6 +442,8 @@
     "target": "lifecycle-phase:implementation"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:mitigation:disable-external-entities|implementation_owner|party:papermill-oss",
     "properties": {},
     "relationship_type": "implementation_owner",
@@ -329,6 +451,8 @@
     "target": "party:papermill-oss"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:mitigation:disable-external-entities|mitigates|threat-instance:xxe-file-read",
     "properties": {},
     "relationship_type": "mitigates",
@@ -336,6 +460,8 @@
     "target": "threat-instance:xxe-file-read"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:mitigation:egress-and-imdsv2|applies_in_phase|lifecycle-phase:implementation",
     "properties": {},
     "relationship_type": "applies_in_phase",
@@ -343,6 +469,8 @@
     "target": "lifecycle-phase:implementation"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:mitigation:egress-and-imdsv2|applies_in_phase|lifecycle-phase:operation",
     "properties": {},
     "relationship_type": "applies_in_phase",
@@ -350,6 +478,8 @@
     "target": "lifecycle-phase:operation"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:mitigation:egress-and-imdsv2|implementation_owner|party:saas-operator",
     "properties": {},
     "relationship_type": "implementation_owner",
@@ -357,6 +487,8 @@
     "target": "party:saas-operator"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:mitigation:egress-and-imdsv2|mitigates|threat-instance:imds-pivot",
     "properties": {},
     "relationship_type": "mitigates",
@@ -364,6 +496,8 @@
     "target": "threat-instance:imds-pivot"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:risk-score:xxe-file-read|attack_paths|attack-path:xxe-file-read",
     "properties": {},
     "relationship_type": "attack_paths",
@@ -371,6 +505,8 @@
     "target": "attack-path:xxe-file-read"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:risk-score:xxe-file-read|attack_paths|attack-path:imds-pivot",
     "properties": {},
     "relationship_type": "attack_paths",
@@ -378,6 +514,8 @@
     "target": "attack-path:imds-pivot"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:risk-score:xxe-file-read|damage_scenario|damage-scenario:tenant-data-exfil",
     "properties": {},
     "relationship_type": "damage_scenario",
@@ -385,6 +523,8 @@
     "target": "damage-scenario:tenant-data-exfil"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:risk-score:xxe-file-read|for_stakeholder|party:saas-operator",
     "properties": {},
     "relationship_type": "for_stakeholder",
@@ -392,6 +532,8 @@
     "target": "party:saas-operator"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:risk-score:xxe-file-read|threat|threat-instance:xxe-file-read",
     "properties": {},
     "relationship_type": "threat",
@@ -399,6 +541,8 @@
     "target": "threat-instance:xxe-file-read"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:review:vuln-prop|reviewer|party:sec-reviewer",
     "properties": {},
     "relationship_type": "reviewer",
@@ -406,6 +550,8 @@
     "target": "party:sec-reviewer"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:review:vuln-prop|reviews|assertion:vuln-propagation",
     "properties": {},
     "relationship_type": "reviews",
@@ -413,6 +559,8 @@
     "target": "assertion:vuln-propagation"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:review:cve-cwe|reviewer|party:sec-reviewer",
     "properties": {},
     "relationship_type": "reviewer",
@@ -420,6 +568,8 @@
     "target": "party:sec-reviewer"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:review:cve-cwe|reviews|assertion:cve-cwe-instance",
     "properties": {},
     "relationship_type": "reviews",
@@ -427,6 +577,8 @@
     "target": "assertion:cve-cwe-instance"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:review:cwe-capec|reviewer|party:sec-reviewer",
     "properties": {},
     "relationship_type": "reviewer",
@@ -434,6 +586,8 @@
     "target": "party:sec-reviewer"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:review:cwe-capec|reviews|assertion:cwe-capec-map",
     "properties": {},
     "relationship_type": "reviews",
@@ -441,6 +595,8 @@
     "target": "assertion:cwe-capec-map"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:review:xxe-path|reviewer|party:sec-reviewer",
     "properties": {},
     "relationship_type": "reviewer",
@@ -448,6 +604,8 @@
     "target": "party:sec-reviewer"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:review:xxe-path|reviews|assertion:xxe-path-realizes",
     "properties": {},
     "relationship_type": "reviews",
@@ -455,6 +613,8 @@
     "target": "assertion:xxe-path-realizes"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:review:ai-triage|reviewer|party:sec-reviewer",
     "properties": {},
     "relationship_type": "reviewer",
@@ -462,6 +622,8 @@
     "target": "party:sec-reviewer"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:review:ai-triage|reviews|assertion:ai-imds-pivot-realizes",
     "properties": {},
     "relationship_type": "reviews",
@@ -469,6 +631,8 @@
     "target": "assertion:ai-imds-pivot-realizes"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:assertion:vuln-propagation|object|component:papermill-api",
     "properties": {},
     "relationship_type": "object",
@@ -476,6 +640,8 @@
     "target": "component:papermill-api"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:assertion:vuln-propagation|subject|vulnerability:cve-2026-30111",
     "properties": {},
     "relationship_type": "subject",
@@ -483,6 +649,8 @@
     "target": "vulnerability:cve-2026-30111"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:assertion:cve-cwe-instance|object|weakness:cwe-611",
     "properties": {},
     "relationship_type": "object",
@@ -490,6 +658,8 @@
     "target": "weakness:cwe-611"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:assertion:cve-cwe-instance|subject|vulnerability:cve-2026-30111",
     "properties": {},
     "relationship_type": "subject",
@@ -497,6 +667,8 @@
     "target": "vulnerability:cve-2026-30111"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:assertion:cwe-capec-map|object|attack-pattern:capec-221",
     "properties": {},
     "relationship_type": "object",
@@ -504,6 +676,8 @@
     "target": "attack-pattern:capec-221"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:assertion:cwe-capec-map|subject|weakness:cwe-611",
     "properties": {},
     "relationship_type": "subject",
@@ -511,6 +685,8 @@
     "target": "weakness:cwe-611"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:assertion:xxe-path-realizes|object|threat-instance:xxe-file-read",
     "properties": {},
     "relationship_type": "object",
@@ -518,6 +694,8 @@
     "target": "threat-instance:xxe-file-read"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:assertion:xxe-path-realizes|subject|attack-path:xxe-file-read",
     "properties": {},
     "relationship_type": "subject",
@@ -525,6 +703,8 @@
     "target": "attack-path:xxe-file-read"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:assertion:ai-imds-pivot-realizes|object|threat-instance:imds-pivot",
     "properties": {},
     "relationship_type": "object",
@@ -532,6 +712,8 @@
     "target": "threat-instance:imds-pivot"
    },
    {
+    "assertions": [],
+    "authored": true,
     "id": "relationship:assertion:ai-imds-pivot-realizes|subject|attack-path:imds-pivot",
     "properties": {},
     "relationship_type": "subject",
@@ -539,8 +721,29 @@
     "target": "attack-path:imds-pivot"
    },
    {
+    "assertions": [
+     {
+      "assertion_status": "accepted",
+      "confidence": "high",
+      "description": "Reviewed propagation edge (\u00a75) \u2014 not a facet property; reified so a Review can point at it.",
+      "evidence": [],
+      "id": "assertion:vuln-propagation",
+      "reviews": [
+       {
+        "id": "review:vuln-prop",
+        "justification": "Reachable from the document-upload flow via libxml-parse; propagation confirmed.",
+        "review_status": "accepted",
+        "reviewer": "party:sec-reviewer"
+       }
+      ]
+     }
+    ],
+    "authored": false,
     "id": "relationship:vulnerability:cve-2026-30111|propagates_to|component:papermill-api",
     "properties": {
+     "assertion_descriptions": [
+      "Reviewed propagation edge (\u00a75) \u2014 not a facet property; reified so a Review can point at it."
+     ],
      "assertion_ids": [
       "assertion:vuln-propagation"
      ],
@@ -549,15 +752,42 @@
      "review_ids": [
       "review:vuln-prop"
      ],
-     "review_status": "accepted"
+     "review_justifications": [
+      "Reachable from the document-upload flow via libxml-parse; propagation confirmed."
+     ],
+     "review_status": "accepted",
+     "review_statuses": [
+      "accepted"
+     ]
     },
     "relationship_type": "propagates_to",
     "source": "vulnerability:cve-2026-30111",
     "target": "component:papermill-api"
    },
    {
+    "assertions": [
+     {
+      "assertion_status": "accepted",
+      "confidence": "high",
+      "description": "The CVE-to-CWE step of the ADR-0002 backbone (CVE, CWE, CAPEC, ATT&CK). Vulnerability has no Weakness slot, so the link is reified, with the predicate ARCH-0001 \u00a73 and PLAN-0002 \u00a75 name (RPT-0004 mapping.md, finding 7). In a real import the CWE comes from the CVE record and stays proposed until a human reviews it (R-018).",
+      "evidence": [],
+      "id": "assertion:cve-cwe-instance",
+      "reviews": [
+       {
+        "id": "review:cve-cwe",
+        "justification": "The CWE in the CVE record (illustrative) matches the root cause; the parser resolves external entities in uploaded XML.",
+        "review_status": "accepted",
+        "reviewer": "party:sec-reviewer"
+       }
+      ]
+     }
+    ],
+    "authored": false,
     "id": "relationship:vulnerability:cve-2026-30111|instance_of|weakness:cwe-611",
     "properties": {
+     "assertion_descriptions": [
+      "The CVE-to-CWE step of the ADR-0002 backbone (CVE, CWE, CAPEC, ATT&CK). Vulnerability has no Weakness slot, so the link is reified, with the predicate ARCH-0001 \u00a73 and PLAN-0002 \u00a75 name (RPT-0004 mapping.md, finding 7). In a real import the CWE comes from the CVE record and stays proposed until a human reviews it (R-018)."
+     ],
      "assertion_ids": [
       "assertion:cve-cwe-instance"
      ],
@@ -566,15 +796,42 @@
      "review_ids": [
       "review:cve-cwe"
      ],
-     "review_status": "accepted"
+     "review_justifications": [
+      "The CWE in the CVE record (illustrative) matches the root cause; the parser resolves external entities in uploaded XML."
+     ],
+     "review_status": "accepted",
+     "review_statuses": [
+      "accepted"
+     ]
     },
     "relationship_type": "instance_of",
     "source": "vulnerability:cve-2026-30111",
     "target": "weakness:cwe-611"
    },
    {
+    "assertions": [
+     {
+      "assertion_status": "accepted",
+      "confidence": "high",
+      "description": "The human-reviewed CWE\u2194CAPEC mapping the schema calls out (\u00a72).",
+      "evidence": [],
+      "id": "assertion:cwe-capec-map",
+      "reviews": [
+       {
+        "id": "review:cwe-capec",
+        "justification": "External-entity attack pattern matches the XXE weakness class.",
+        "review_status": "accepted",
+        "reviewer": "party:sec-reviewer"
+       }
+      ]
+     }
+    ],
+    "authored": false,
     "id": "relationship:weakness:cwe-611|exploited_by|attack-pattern:capec-221",
     "properties": {
+     "assertion_descriptions": [
+      "The human-reviewed CWE\u2194CAPEC mapping the schema calls out (\u00a72)."
+     ],
      "assertion_ids": [
       "assertion:cwe-capec-map"
      ],
@@ -583,7 +840,13 @@
      "review_ids": [
       "review:cwe-capec"
      ],
-     "review_status": "accepted"
+     "review_justifications": [
+      "External-entity attack pattern matches the XXE weakness class."
+     ],
+     "review_status": "accepted",
+     "review_statuses": [
+      "accepted"
+     ]
     },
     "relationship_type": "exploited_by",
     "source": "weakness:cwe-611",

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>BaxBench: Can LLMs Generate Correct and Secure Backends?</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px 40px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); line-height: 1.15; letter-spacing: -0.03em; margin: 20px 0 6px; }
+h2 { font-size: 1.15rem; margin: 1.25em 0 0.3em; padding-top: 0.6em; border-top: 1px solid var(--line); }
+h3 { font-size: 1rem; margin: 1em 0 0.2em; }
+.kicker { margin: 18px 0 0; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.4em 0 0.8em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 6px 10px; font-size: 0.93rem; }
+table.kv { background: transparent; }
+table.kv td { border-bottom: none; padding: 2px 12px 2px 0; }
+td.rowhead { color: var(--muted); font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; width: 1%; padding-top: 6px; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../../../../index.html">tmodel</a><nav aria-label="Site"><a href="../../../../index.html">Home</a><a href="../../../../bibliography/index.html" aria-current="page">Bibliography</a><a href="../../../../reports/index.html">Reports</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">Library record · vero-2025-baxbench</p>
+<h1>BaxBench: Can LLMs Generate Correct and Secure Backends?</h1>
+<p class="lede">BaxBench</p>
+<p>
+  <span class="badge">paper</span>
+  <span class="badge">academic</span>
+  <span class="badge">summarized</span>
+  <span class="badge">medium</span>
+</p>
+<p class="meta">Topic: <strong>ai-threat-model-supply-chain-infra</strong> (<code>record.yaml</code> topic). Status <code>summarized</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://arxiv.org/pdf/2502.11844v3">https://arxiv.org/pdf/2502.11844v3</a></li><li>Identifier URL: <a href="https://arxiv.org/abs/2502.11844">https://arxiv.org/abs/2502.11844</a></li><li>SHA-256: <code>fbabce80c3094bde4b10da9c2c0f557aaa41315669bd192cc78c623595c9e9ed</code></li></ul>
+<h2>Paper</h2>
+<p class="meta">Authors and date are whatever the record states. This page does not add a venue.</p>
+<table><tbody><tr><td>Authors</td><td>Mark Vero, Niels Mündler, Victor Chibotaru, Veselin Raychev, Maximilian Baader, Nikola Jovanović, Jingxuan He, Martin Vechev</td></tr><tr><td>Date</td><td>2025-05-30</td></tr><tr><td>Publisher</td><td>Authors at ETH Zurich, LogicStar.ai, UC Berkeley and INSAIT (arXiv) / PMLR (ICML 2025 proceedings)</td></tr><tr><td>Version</td><td>v3</td></tr><tr><td>arxiv</td><td>2502.11844</td></tr><tr><td>Pages</td><td>47</td></tr><tr><td>Media type</td><td>application/pdf</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge adjacent">adjacent</span></td></tr><tr><td>This project</td><td><span class="badge adjacent">adjacent</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
+<h2>Tags</h2>
+<table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">ai-benchmark</span></td></tr><tr><td class="rowhead">Role</td><td><span class="badge">evidence</span></td></tr></tbody></table>
+<h2>Bears on</h2>
+<ul><li><code>DEC-001a</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> The measured evidence behind AIT-131: on 392 backend tasks the best model is correct and secure 37% of the time, and expert exploits break about half of the correct programs, organized by CWE.</p><p class="meta">Assessed 2026-11-01.</p>
+
+
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>paper (benchmark)</td></tr><tr><td><strong>Maturity</strong></td><td>_unset_ (peer-reviewed conference paper; no maturity level applies)</td></tr><tr><td><strong>Authors</strong></td><td>Mark Vero, Niels Mündler, Victor Chibotaru, Veselin Raychev, Maximilian Baader, Nikola Jovanović, Jingxuan He, Martin Vechev (ETH Zurich, LogicStar.ai, UC Berkeley, INSAIT Sofia)</td></tr><tr><td><strong>Published</strong></td><td>arXiv v1 2025-02-17; v3 2025-05-30 (summarized here, with the ICML 2025 header); ICML 2025, PMLR 267</td></tr><tr><td><strong>Identifier</strong></td><td>arXiv:2502.11844</td></tr><tr><td><strong>Source</strong></td><td>https://arxiv.org/pdf/2502.11844v3</td></tr><tr><td><strong>Digest</strong></td><td><code>sha256:fbabce80c3094bde4b10da9c2c0f557aaa41315669bd192cc78c623595c9e9ed</code> (arXiv v3, 47 pages)</td></tr></tbody></table>
+<h2>Overview</h2>
+<p>BaxBench asks whether language models can write a whole, deployable application module, choosing web backends because they are common, take several functions and files, and face untrusted users (§1). It combines 28 scenarios specified in OpenAPI with 14 frameworks in six languages into 392 tasks, and checks each generated backend with functional tests and with expert-written end-to-end exploits, rather than static analysis, against 13 CWEs (§2, §3, Table 5). Across 11 models the best correctness is 62% (OpenAI o1) and the best rate of correct and secure code is 37% (OpenAI o3-mini); the exploits succeed against about half of the correct programs, and models do worse in less popular frameworks such as Rust-Actix and PHP-Lumen (§1, §4, Figures 1, 3 and 5). A generic security reminder helps reasoning models but not others, a reminder that names every expected vulnerability raises security at some cost to correctness, and a coding agent improves security only with that reminder (§4, Table 2).</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td><code>core</code></td><td>Measures, with working exploits, how often LLM-generated backends are insecure, across 14 frameworks and 13 CWEs (§2 to §4)</td></tr><tr><td>Cryptography</td><td><code>adjacent</code></td><td>Its CWE-522 exploits check whether generated code stores passwords and secrets unprotected, for example with a dictionary attack on the stored database (§2.1)</td></tr><tr><td>This project</td><td><code>adjacent</code></td><td>tmodel has to record a weakness that entered a product through AI-generated code, as a CWE-typed Weakness with that origin. The project is also built with AI assistance, and the finding that about half of correct generated backends are exploitable supports reviewing generated code</td></tr></tbody></table>
+<p><code>bears_on: DEC-001a</code> (the core type system, accepted in ADR-0010).</p>
+<h2>Implementations</h2>
+<p>Searched on 2026-11-01.</p>
+<table><thead><tr><th>Name</th><th>Kind</th><th>License</th><th>URL</th></tr></thead><tbody><tr><td>logic-star-ai/baxbench</td><td>the benchmark&#x27;s scenarios, functional tests and exploits; leaderboard at https://baxbench.com/</td><td>MIT</td><td>https://github.com/logic-star-ai/baxbench</td></tr></tbody></table>
+<p>Golden solutions are not released, to limit contamination (§5).</p>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata</td></tr><tr><td><code>summary.md</code></td><td>this document</td></tr></tbody></table>
+<h2>Limits</h2>
+<ul><li><strong>Security is an upper bound.</strong> A program counts as secure when none of the exploits succeeds, so the score depends on the exploit set. Compared with Snyk Code on o1&#x27;s 237 correct programs, the exploits caught 64 vulnerable programs Snyk missed, while Snyk raised 7 valid flags the exploits did not confirm (§4).</li><li><strong>Mostly single-shot generation.</strong> Ten samples per task for non-reasoning models and one for reasoning models; the only agent experiment is OpenHands with Claude 3.5 Sonnet on 351 tasks (§4).</li><li><strong>Small applications.</strong> About two endpoints per scenario; the authors present the tasks as simpler real-world backends (§3, §5).</li><li><strong>Contamination is possible</strong> once the benchmark is public, though golden solutions are withheld (§5).</li><li><strong>The numbers changed between versions.</strong> v1 reported o1 at 60% correct, more than half of correct programs exploitable and a best correct-and-secure rate of 35%; v3 reports 62%, about half and 37%. v3&#x27;s Figure 3 caption still says 35%.</li><li><strong>Early-2025 models,</strong> since superseded.</li></ul>
+<h2>RPT-0014 applicability</h2>
+<table><thead><tr><th>Topic of interest</th><th>Rating</th><th>Linked ids</th><th>Why</th></tr></thead><tbody><tr><td>Published attacks</td><td>core</td><td>AIT-131</td><td>AIT-131 cites it, and it is that entry&#x27;s measured evidence: on 392 backend tasks the best correctness is 62% (o1) and the best correct-and-secure rate 37% (o3-mini), and expert exploits succeed against about half of the correct programs (§4, Figures 1 and 3). report.md §3.14 says o1 is correct and secure about 38% of the time; in v3 o1 is about 31%, 6 points below o3-mini, and in v1 no model passed 35%, so that figure needs correcting in the next integration pass</td></tr><tr><td>Existing AI threat models</td><td>none</td><td>none</td><td>A benchmark, with no threat model beyond backends facing untrusted users (§1). threat-models.md does not list it</td></tr><tr><td>Weakness enumerations</td><td>adjacent</td><td>CWE-20, CWE-22, CWE-78, CWE-79, CWE-89, CWE-94, CWE-117, CWE-284, CWE-400, CWE-434, CWE-522, CWE-703, CWE-863, LLM09:2025, LLM05:2025</td><td>Its exploits are organized under 13 CWEs, 9 of them in the 2024 CWE Top 25 and 10 within the OWASP Top 10 web risks of 2025 (Table 5). Neither NIST AI 100-2e2025 nor ATLAS 2026.09 cites it (searched 2026-11-01). The OWASP LLM ids are RPT-0014&#x27;s mapping in sources.md, which also lists four of the CWEs</td></tr><tr><td>Attack → asset mapping</td><td>adjacent</td><td>C14, C08</td><td>The weakness originates in an AI coding assistant or agent (C14, C08), the components AIT-131 also names, and lands in application code (A08). The backends themselves sit outside RPT-0014&#x27;s AI reference architecture. The mapping is ours</td></tr></tbody></table>
+
+<footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
+</main>
+</body>
+</html>

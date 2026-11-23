@@ -42,6 +42,7 @@ import type {
   GraphEdge,
   GraphNode,
   GraphPropertyValue,
+  GraphRelationship,
   GraphResponse,
 } from "./graph-types";
 import { LatestRequestGuard } from "./request-guard";
@@ -49,6 +50,7 @@ import {
   REVIEW_STATE_KINDS,
   REVIEW_STATE_LABELS,
   relationshipReviewState,
+  reviewStatePresentation,
   type ReviewStateKind,
 } from "./review-status";
 
@@ -61,6 +63,7 @@ const TYPE_COLORS: Readonly<Record<string, string>> = {
   ThreatInstance: "#be123c",
   AttackPath: "#4f46e5",
   AttackStep: "#7c3aed",
+  Requirement: "#0891b2",
 };
 // Node types outside TYPE_COLORS are drawn with this color and share one
 // "Other types" legend entry.
@@ -74,7 +77,7 @@ const SAVED_VIEW_LOAD_LIMIT = 60;
 // Relationships backed by an Assertion are styled by their review state with
 // both a color and a line pattern. Structural relationships keep the neutral
 // default edge style.
-const REVIEW_STATE_EDGE_STYLES: Readonly<Record<ReviewStateKind, {
+export const REVIEW_STATE_EDGE_STYLES: Readonly<Record<ReviewStateKind, {
   color: string;
   dashPattern?: number[];
 }>> = {
@@ -83,6 +86,15 @@ const REVIEW_STATE_EDGE_STYLES: Readonly<Record<ReviewStateKind, {
   changes_requested: { color: "#c2410c", dashPattern: [10, 3, 2, 3] },
   rejected: { color: "#b91c1c", dashPattern: [2, 3] },
   unknown: { color: "#6b7280", dashPattern: [14, 4, 2, 4, 2, 4] },
+};
+
+export const AUTHORED_EDGE_SELECTOR = "edge[?authored]";
+export const AUTHORED_EDGE_STYLE = {
+  width: 1.7,
+  "line-color": "#94a3b8",
+  "target-arrow-color": "#64748b",
+  color: "#526078",
+  "line-style": "solid" as const,
 };
 
 export class KnowledgeGraphView {
@@ -372,6 +384,12 @@ export class KnowledgeGraphView {
             },
           };
         }),
+        {
+          // This rule deliberately follows review-state rules. If old or mixed
+          // DTO metadata also supplies reviewState, authored provenance wins.
+          selector: AUTHORED_EDGE_SELECTOR,
+          style: AUTHORED_EDGE_STYLE,
+        },
         {
           selector: "node:selected",
           style: {
@@ -942,24 +960,59 @@ export class KnowledgeGraphView {
       button.disabled = !relationship.connectedNode;
       button.addEventListener("click", () => this.handleSelection(relationship.connectedNodeId));
       item.append(button);
-      this.appendRelationshipReview(item, relationship.properties);
+      this.appendRelationshipReview(item, relationship);
       list.append(item);
     }
   }
 
   /** Shows the recorded Assertion/Review state of one relationship, if any. */
-  private appendRelationshipReview(item: HTMLElement, properties: GraphNode["properties"]): void {
-    const review = relationshipReviewState(properties);
+  private appendRelationshipReview(item: HTMLElement, relationship: GraphRelationship): void {
+    const { properties } = relationship;
+    // Structured provenance is authoritative and rendered per Assertion below;
+    // a legacy aggregate badge would misdescribe authored or mixed-state edges.
+    const review = relationship.assertions?.length
+      ? undefined
+      : relationshipReviewState(properties);
+    if (!review && !relationship.assertions?.length) return;
+    if (review) {
+      item.classList.add(`review-${review.kind}`);
+      const badge = this.textElement("span", review.label, "review-badge");
+      badge.prepend(this.lineSwatch(review.kind));
+      item.append(badge);
+    }
+    if (relationship.authored) {
+      item.append(this.textElement("span", "Direct authored relationship remains established.", "review-raw"));
+    }
+    if (relationship.assertions?.length) {
+      for (const assertion of relationship.assertions) {
+        const status = combinedReviewStatus(assertion.reviews.map((candidate) => candidate.review_status));
+        const presentation = reviewStatePresentation(assertion.assertion_status, status);
+        item.append(this.textElement(
+          "span",
+          `${assertion.id} · ${presentation.label} · confidence: ${assertion.confidence ?? "not recorded"}`,
+          "review-raw",
+        ));
+        if (assertion.description) {
+          item.append(this.textElement("span", assertion.description, "review-raw"));
+        }
+        for (const evidence of assertion.evidence) {
+          item.append(this.textElement("span", `Evidence: ${evidence}`, "review-raw"));
+        }
+        for (const assertionReview of assertion.reviews) {
+          item.append(this.textElement(
+            "span",
+            `Review ${assertionReview.id} · ${assertionReview.review_status ?? "status not recorded"}${assertionReview.justification ? ` · ${assertionReview.justification}` : ""}`,
+            "review-raw",
+          ));
+        }
+      }
+      return;
+    }
     if (!review) return;
-    item.classList.add(`review-${review.kind}`);
-    const badge = this.textElement("span", review.label, "review-badge");
-    badge.prepend(this.lineSwatch(review.kind));
-    item.append(badge);
-    const raw = [
+    item.append(this.textElement("span", [
       `assertion_status: ${review.assertionStatus ?? "not recorded"}`,
       `review_status: ${review.reviewStatus ?? "not recorded"}`,
-    ];
-    item.append(this.textElement("span", raw.join(" · "), "review-raw"));
+    ].join(" · "), "review-raw"));
     const sources = [properties.assertion_ids, properties.review_ids]
       .filter((value) => value !== undefined && value !== null)
       .map(formatValue)
@@ -1030,6 +1083,15 @@ export class KnowledgeGraphView {
     if (!element) throw new Error(`Missing required graph UI element #${id}`);
     return element as T;
   }
+}
+
+function combinedReviewStatus(statuses: readonly (string | null)[]): string | null {
+  const normalized = statuses.map((status) => status?.trim().toLowerCase().replace(/[\s-]+/g, "_"))
+    .filter((status): status is string => Boolean(status));
+  if (normalized.includes("rejected")) return "rejected";
+  if (normalized.includes("changes_requested")) return "changes_requested";
+  if (normalized.length > 0 && normalized.every((status) => status === "accepted")) return "accepted";
+  return new Set(normalized).size === 1 ? normalized[0] : normalized.length ? "mixed" : null;
 }
 
 function humanize(value: string): string {

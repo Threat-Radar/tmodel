@@ -19,7 +19,7 @@ records:
     topic: attack-pattern
   - id: cwe
     type: dataset
-    topic: weakness
+    topic: schema-representations
   - id: bron
     type: paper
     topic: attack
@@ -28,10 +28,10 @@ records:
     topic: threat-intel
   - id: osv-schema
     type: spec
-    topic: vulnerability
+    topic: product-composition
   - id: cve-json-5
     type: spec
-    topic: vulnerability
+    topic: schema-representations
   - id: guac
     type: repo
     topic: supply-chain
@@ -288,8 +288,8 @@ records:
     type: web
     topic: supply-chain-attestation
   - id: first-cvss
-    type: spec
-    topic: ~  # no topic tag on the record yet
+    type: hierarchy
+    topic: vulnerability-data
   - id: first-cvss-v3-1
     type: spec
     topic: cvss
@@ -832,10 +832,10 @@ records:
     topic: nist-cryptography
   - id: fips-204
     type: spec
-    topic: post-quantum-migration
+    topic: nist-cryptography
   - id: fips-205
     type: spec
-    topic: post-quantum-migration
+    topic: nist-cryptography
   - id: nist-sp-800-140
     type: spec
     topic: sp-800-140
@@ -1195,7 +1195,7 @@ records:
     topic: supply-chain-attestation
   - id: open-threat-model
     type: repo
-    topic: rpt-0003-threat-modeling-products
+    topic: schema-representations
   - id: ptacek-2024-macaroons
     type: web
     topic: capability-delegation
@@ -1256,6 +1256,819 @@ records:
   - id: w3c-tag-obsolete-powder
     type: web
     topic: uptake-failure
+  - id: agent-security-systems-problem
+    type: paper
+    topic: sagai
+  - id: agentic-reverse-engineering-challenges
+    type: paper
+    topic: sagai
+  - id: aiken-2021-neural-network-laundering
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: anwar-2020-cleaning-nvd
+    type: paper
+    topic: product-composition
+  - id: apruzzese-2022-realistic-nids-attacks
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: apruzzese-2023-real-attackers
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: benedetti-2024-sbom-python
+    type: paper
+    topic: product-composition
+  - id: beurer-kellner-2025-design-patterns
+    type: paper
+    topic: ai-threat-model-agentic-mcp
+  - id: bowen-2025-scaling-trends-data-poisoning
+    type: paper
+    topic: ai-threat-model-supply-chain-infra
+  - id: cacheprobe-prompt-cache-isolation
+    type: paper
+    topic: sagai
+  - id: carlini-2022-contrastive-poisoning
+    type: paper
+    topic: ai-threat-model-supply-chain-infra
+  - id: ceschin-2020-mlsec-xor-evasion
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: chen-2021-real-bob
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: churakova-2025-vexed-by-vex
+    type: paper
+    topic: product-composition
+  - id: cina-2023-wild-patterns-reloaded-poisoning
+    type: paper
+    topic: ai-threat-model-supply-chain-infra
+  - id: croce-hein-2020-autoattack
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: croce-hein-2020-fab
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: dann-2022-oss-scanners
+    type: paper
+    topic: product-composition
+  - id: debenedetti-2024-agentdojo
+    type: paper
+    topic: ai-threat-model-agentic-mcp
+  - id: dong-2019-viem
+    type: paper
+    topic: product-composition
+  - id: echoleak-zero-click-prompt-injection
+    type: paper
+    topic: sagai
+  - id: erdogmus-2013-3d-mask-spoofing
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: fang-2024-model-inversion-survey
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: fawzi-2015-fundamental-limits-adversarial-robustness
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: feng-2013-fashion-camouflage
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: galbally-2010-hill-climbing-face
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: gilmer-2018-rules-of-the-game
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: goldblum-2022-dataset-security-survey
+    type: paper
+    topic: ai-threat-model-supply-chain-infra
+  - id: habler-a2a-maestro-2025
+    type: paper
+    topic: ai-threat-model-agentic-mcp
+  - id: hajipour-2024-codelmsec
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: huang-2024-harmful-finetuning-survey
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: huang-2024-vaccine
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: imtiaz-2021-sca-comparison
+    type: paper
+    topic: product-composition
+  - id: javed-2021-container-scanners
+    type: paper
+    topic: product-composition
+  - id: kahla-2022-brepmi
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: kang-2024-advwave
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: karpati-2014-attack-trees-misuse-cases
+    type: paper
+    topic: threat-modeling
+  - id: khodayari-2026-ipi-in-the-wild
+    type: paper
+    topic: ai-threat-model-agentic-mcp
+  - id: lallie-2018-attack-graphs-fault-trees
+    type: paper
+    topic: threat-modeling
+  - id: li-2014-osn-facial-disclosure
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: li-2022-backdoor-learning-survey
+    type: paper
+    topic: ai-threat-model-supply-chain-infra
+  - id: liang-2016-cracking-classifiers-evasion
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: lin-2024-malla
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: liu-2024-mm-safetybench
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: liu-2025-lvlm-attack-survey
+    type: paper
+    topic: ai-threat-model-agentic-mcp
+  - id: lukas-2022-sok-watermark-robustness
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: luo-2024-jailbreakv
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: mandl-2026-ground-truth-vuln-detection
+    type: paper
+    topic: product-composition
+  - id: mbaka-tuma-2024-stride-replication
+    type: paper
+    topic: threat-modeling
+  - id: mecca-2026-skillsecurer
+    type: paper
+    topic: ai-threat-model-agentic-mcp
+  - id: meeus-2024-copyright-traps
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: meeus-2024-sok-mia-llms
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: nocera-2025-aibom-mlr
+    type: paper
+    topic: product-composition
+  - id: odonoghue-2024-sbom-generation
+    type: paper
+    topic: product-composition
+  - id: pajola-2021-fall-of-giants
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: papernot-2016-defensive-distillation
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: pentest-lessons-agent-systems
+    type: paper
+    topic: sagai
+  - id: pillar-2024
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: rosati-2024-repnoise
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: rosenberg-2021-adversarial-ml-cybersecurity-survey
+    type: paper
+    topic: ai-threat-model-supply-chain-infra
+  - id: rosso-2026-svs-test
+    type: paper
+    topic: product-composition
+  - id: sbomproof-2025
+    type: paper
+    topic: product-composition
+  - id: scandariato-2015-stride-descriptive-study
+    type: paper
+    topic: threat-modeling
+  - id: schulhoff-2023-hackaprompt
+    type: paper
+    topic: ai-threat-model-agentic-mcp
+  - id: securing-future-genai-policy-technology
+    type: paper
+    topic: sagai
+  - id: shan-2022-poison-forensics
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: sharif-2016-accessorize-to-a-crime
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: shostack-2008-experiences-threat-modeling-microsoft
+    type: paper
+    topic: threat-modeling
+  - id: shostack-threat-modeling-2014
+    type: book
+    topic: threat-modeling
+  - id: srndic-2014-practical-evasion
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: struppek-2022-plug-and-play-mi
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: szegedy-2013-intriguing-properties
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: toyer-2023-tensor-trust
+    type: paper
+    topic: ai-threat-model-agentic-mcp
+  - id: tramer-2019-adversarial-ad-blocking
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: tuma-2018-threat-analysis-slr
+    type: paper
+    topic: threat-modeling
+  - id: uchida-2017-embedding-watermarks
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: vero-2025-baxbench
+    type: paper
+    topic: ai-threat-model-supply-chain-infra
+  - id: verreydt-2024-threat-modeling-practice
+    type: paper
+    topic: threat-modeling
+  - id: wittel-2004-attacking-statistical-spam-filters
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: xiao-2019-image-scaling-camouflage
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: xiong-2019-threat-modeling-slr
+    type: paper
+    topic: threat-modeling
+  - id: yamada-2013-privacy-visor
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: zhang-2024-cybench
+    type: paper
+    topic: ai-threat-model-supply-chain-infra
+  - id: zhao-2024-models-are-codes-malhug
+    type: paper
+    topic: ai-threat-model-supply-chain-infra
+  - id: zheng-2021-commercial-speech-platforms
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: zhou-2025-sbom-reality-check
+    type: paper
+    topic: product-composition
+  - id: alpine-secdb
+    type: dataset
+    topic: product-composition
+  - id: antv-g6
+    type: repo
+    topic: rpt-0006-knowledge-graph-visualization
+  - id: apk-package-5
+    type: spec
+    topic: product-composition
+  - id: awesome-threat-modelling
+    type: repo
+    topic: rpt-0003-threat-modeling-products
+  - id: buildkit-attestations
+    type: spec
+    topic: product-composition
+  - id: cairis
+    type: repo
+    topic: rpt-0003-threat-modeling-products
+  - id: csl-json-schema
+    type: repo
+    topic: library-construction
+  - id: cyclonedx-bom-examples
+    type: repo
+    topic: product-composition
+  - id: cyclonedx-property-taxonomy
+    type: repo
+    topic: product-composition
+  - id: debian-policy-version
+    type: spec
+    topic: product-composition
+  - id: debian-security-tracker
+    type: dataset
+    topic: product-composition
+  - id: dependencytrack-dependency-track
+    type: repo
+    topic: product-composition
+  - id: first-epss
+    type: dataset
+    topic: schema-representations
+  - id: gram
+    type: repo
+    topic: rpt-0003-threat-modeling-products
+  - id: graphology
+    type: repo
+    topic: rpt-0006-knowledge-graph-visualization
+  - id: ipld-dag-cbor
+    type: spec
+    topic: canonical-encoding
+  - id: lf-2024-spdx3-aibom
+    type: paper
+    topic: product-composition
+  - id: lvfs
+    type: web
+    topic: product-composition
+  - id: maven-version-order
+    type: spec
+    topic: product-composition
+  - id: mcp-spec-security-best-practices
+    type: spec
+    topic: ai-threat-model-agentic-mcp
+  - id: oci-distribution-spec-1-1-1
+    type: spec
+    topic: product-composition
+  - id: oci-image-spec-1-1-1
+    type: spec
+    topic: product-composition
+  - id: omnibor-spec
+    type: spec
+    topic: product-composition
+  - id: openvex-0-2-0
+    type: spec
+    topic: schema-representations
+  - id: osfw-firmware-embedded-sbom-0-10
+    type: spec
+    topic: product-composition
+  - id: owasp-agentic-threats-mitigations-v1-1
+    type: paper
+    topic: ai-threat-model-agentic-mcp
+  - id: owasp-cyclonedx-sbom-guide
+    type: book
+    topic: product-composition
+  - id: owasp-mcp-top10-2025
+    type: web
+    topic: ai-threat-model-agentic-mcp
+  - id: owasp-threat-modeling-cheat-sheet
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: owasp-threatatlas
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: owasp-threatatlas-repository
+    type: repo
+    topic: rpt-0003-threat-modeling-products
+  - id: pypa-version-specifiers
+    type: spec
+    topic: product-composition
+  - id: pytorch-2022-torchtriton-dependency-confusion
+    type: article
+    topic: ai-threat-model-supply-chain-infra
+  - id: react-flow
+    type: repo
+    topic: rpt-0006-knowledge-graph-visualization
+  - id: reproducible-builds-definition
+    type: web
+    topic: product-composition
+  - id: rpm-version-7
+    type: spec
+    topic: product-composition
+  - id: semver-2-0-0
+    type: spec
+    topic: product-composition
+  - id: strictyaml-why
+    type: web
+    topic: canonical-encoding
+  - id: stride-gpt
+    type: repo
+    topic: rpt-0003-threat-modeling-products
+  - id: swhid-spec-1-2
+    type: spec
+    topic: product-composition
+  - id: vers-spec
+    type: spec
+    topic: product-composition
+  - id: vis-network
+    type: repo
+    topic: rpt-0006-knowledge-graph-visualization
+  - id: yaml-1-2-2
+    type: spec
+    topic: canonical-encoding
+  - id: docs-deps-dev-api-v3
+    type: web
+    topic: product-composition
+  - id: docs-deps-dev-bigquery-v1
+    type: web
+    topic: product-composition
+  - id: gtig-adversarial-misuse-2025
+    type: paper
+    topic: ai-threat-model-ml-risk-assets
+  - id: draft-ietf-cose-sphincs-plus
+    type: draft
+    topic: algorithm-bindings
+  - id: draft-ietf-jose-pqc-kem
+    type: draft
+    topic: algorithm-bindings
+  - id: draft-ietf-suit-manifest
+    type: draft
+    topic: product-composition
+  - id: rfc-6149
+    type: rfc
+    topic: product-composition
+  - id: rfc-6150
+    type: rfc
+    topic: product-composition
+  - id: rfc-7518
+    type: rfc
+    topic: algorithm-bindings
+  - id: rfc-7539
+    type: rfc
+    topic: algorithm-bindings
+  - id: rfc-8439
+    type: rfc
+    topic: algorithm-bindings
+  - id: rfc-8520
+    type: rfc
+    topic: product-composition
+  - id: rfc-8785
+    type: rfc
+    topic: canonical-encoding
+  - id: rfc-9019
+    type: rfc
+    topic: product-composition
+  - id: rfc-9124
+    type: rfc
+    topic: product-composition
+  - id: rfc-9393
+    type: rfc
+    topic: product-composition
+  - id: rfc-9472
+    type: rfc
+    topic: product-composition
+  - id: rfc-9881
+    type: rfc
+    topic: algorithm-bindings
+  - id: iana-hash-function-text-names
+    type: dataset
+    topic: product-composition
+  - id: iana-jose-algorithms
+    type: dataset
+    topic: namespace-governance
+  - id: iana-uri-schemes
+    type: dataset
+    topic: product-composition
+  - id: iso-guide-69-1999
+    type: spec
+    topic: product-composition
+  - id: iso-iec-19770-2-2015
+    type: spec
+    topic: product-composition
+  - id: iso-iec-19770-6-2024
+    type: spec
+    topic: product-composition
+  - id: iso-open-data-deliverables
+    type: dataset
+    topic: product-composition
+  - id: fips-197
+    type: spec
+    topic: nist-cryptography
+  - id: mlflow-2023-path-traversal-cves
+    type: dataset
+    topic: ai-threat-model-supply-chain-infra
+  - id: nist-ai-100-2-e2025
+    type: spec
+    topic: sagai
+  - id: nistir-7695
+    type: spec
+    topic: product-composition
+  - id: nistir-7696
+    type: spec
+    topic: product-composition
+  - id: nistir-7697
+    type: spec
+    topic: product-composition
+  - id: nistir-7698
+    type: spec
+    topic: product-composition
+  - id: nistir-8060
+    type: spec
+    topic: product-composition
+  - id: nvd-cpe-apis
+    type: dataset
+    topic: product-composition
+  - id: nvd-cve-api-2-0
+    type: dataset
+    topic: schema-representations
+  - id: oscal-1-2-3
+    type: spec
+    topic: schema-representations
+  - id: sp-800-38a
+    type: spec
+    topic: nist-cryptography
+  - id: sp-800-38c
+    type: spec
+    topic: nist-cryptography
+  - id: sp-800-38d
+    type: spec
+    topic: nist-cryptography
+  - id: sp-800-38f
+    type: spec
+    topic: nist-cryptography
+  - id: sp-800-56ar3
+    type: spec
+    topic: nist-cryptography
+  - id: csaf-2-0
+    type: spec
+    topic: schema-representations
+  - id: oasis-stix-visualizer
+    type: repo
+    topic: rpt-0006-knowledge-graph-visualization
+  - id: taxii-2-1
+    type: spec
+    topic: schema-representations
+  - id: google-osv-scanner
+    type: repo
+    topic: product-composition
+  - id: osv-dev
+    type: dataset
+    topic: product-composition
+  - id: sigstore-bundle-v0-3
+    type: spec
+    topic: product-composition
+  - id: slsa-provenance-1-2
+    type: spec
+    topic: supply-chain-attestation
+  - id: slsa-vsa-1-2
+    type: spec
+    topic: supply-chain-attestation
+  - id: auto-isac-sbom-ir-v3
+    type: paper
+    topic: product-composition
+  - id: cnn-2024-deepfake-cfo-hong-kong
+    type: article
+    topic: ai-threat-model-supply-chain-infra
+  - id: cvelistv5
+    type: dataset
+    topic: product-composition
+  - id: cwe-1426-genai-output-validation
+    type: web
+    topic: ai-threat-model-agentic-mcp
+  - id: dmtf-dsp0274-1-4-1
+    type: spec
+    topic: product-composition
+  - id: dmtf-redfish-schema-2026-2
+    type: spec
+    topic: product-composition
+  - id: ecma-427
+    type: spec
+    topic: product-composition
+  - id: etsi-tr-104-048
+    type: spec
+    topic: sagai
+  - id: etsi-tr-104-128
+    type: spec
+    topic: sagai
+  - id: etsi-ts-104-050
+    type: spec
+    topic: sagai
+  - id: etsi-ts-104-223
+    type: spec
+    topic: sagai
+  - id: fraunhofer-iese-sagai
+    type: web
+    topic: sagai
+  - id: itu-t-sg17-c548-2026
+    type: note
+    topic: product-composition
+  - id: lenovo-lena-xss-2025
+    type: article
+    topic: ai-threat-model-agentic-mcp
+  - id: mitre-atlas
+    type: dataset
+    topic: sagai
+  - id: mitre-attack-flow
+    type: spec
+    topic: threat-model-frameworks
+  - id: reqif-1-2
+    type: spec
+    topic: schema-representations
+  - id: sacm-2-3
+    type: spec
+    topic: schema-representations
+  - id: ssvc
+    type: spec
+    topic: schema-representations
+  - id: sysml-2-0
+    type: spec
+    topic: schema-representations
+  - id: tcg-component-class-registry-1-0-r14
+    type: spec
+    topic: product-composition
+  - id: tcg-dice-attestation-architecture-1-2
+    type: spec
+    topic: product-composition
+  - id: tcg-pcie-component-class-registry-1-0-r18
+    type: spec
+    topic: product-composition
+  - id: tcg-platform-certificate-profile-2-1
+    type: spec
+    topic: product-composition
+  - id: tcg-smbios-component-class-registry-1-r01
+    type: spec
+    topic: product-composition
+  - id: threat-radar-tradar
+    type: repo
+    topic: product-composition
+  - id: uefi-firmware-sbom-proposal-2023
+    type: article
+    topic: product-composition
+  - id: wikipedia-gpt-4o
+    type: web
+    topic: ai-threat-model-ml-risk-assets
+  - id: wired-2023-slovakia-election-deepfakes
+    type: article
+    topic: ai-threat-model-supply-chain-infra
+  - id: bsi-tr-03183-2
+    type: spec
+    topic: product-composition
+  - id: cert-in-2025-aibom-guidelines
+    type: spec
+    topic: product-composition
+  - id: cisa-2023-sbom-types
+    type: spec
+    topic: product-composition
+  - id: cisa-2023-vex-minimum-requirements
+    type: spec
+    topic: product-composition
+  - id: cisa-hbom-framework-2023
+    type: spec
+    topic: product-composition
+  - id: cisa-vulnrichment
+    type: dataset
+    topic: product-composition
+  - id: eu-cra-guidance-c-2026-5252
+    type: spec
+    topic: product-composition
+  - id: ftc-2025-companion-chatbots-6b
+    type: article
+    topic: ai-threat-model-ml-risk-assets
+  - id: ftc-2025-companion-chatbots-6b-orders
+    type: web
+    topic: ai-threat-model-ml-risk-assets
+  - id: g7-sbom-for-ai-2026
+    type: spec
+    topic: product-composition
+  - id: ncsc-secure-ai-guidelines-2023
+    type: spec
+    topic: sagai
+  - id: uk-ai-cyber-security-code-2025
+    type: spec
+    topic: sagai
+  - id: unece-r155
+    type: spec
+    topic: product-composition
+  - id: unece-r156
+    type: spec
+    topic: product-composition
+  - id: aim-labs-echoleak-disclosure
+    type: web
+    topic: sagai
+  - id: anchore-grype
+    type: repo
+    topic: product-composition
+  - id: anchore-nvd-data-overrides
+    type: dataset
+    topic: product-composition
+  - id: anchore-syft
+    type: repo
+    topic: product-composition
+  - id: aquasecurity-trivy
+    type: repo
+    topic: product-composition
+  - id: aws-security-agent-threat-modeling
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: aws-threat-composer-genai-chatbot
+    type: dataset
+    topic: ai-threat-model-supply-chain-infra
+  - id: cursor-curxecute-mcpoison-2025
+    type: article
+    topic: ai-threat-model-agentic-mcp
+  - id: devici-product
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: github-advisory-database
+    type: dataset
+    topic: product-composition
+  - id: google-2024-ai-overviews-satire-retrieval
+    type: article
+    topic: ai-threat-model-agentic-mcp
+  - id: google-2025-gtig-ai-threat-tracker
+    type: article
+    topic: ai-threat-model-supply-chain-infra
+  - id: google-photos-model-extraction-2025
+    type: article
+    topic: ai-threat-model-ml-risk-assets
+  - id: iriusrisk-cli
+    type: repo
+    topic: rpt-0003-threat-modeling-products
+  - id: iriusrisk-integrations
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: iriusrisk-plans
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: jones-2025-cua-sok
+    type: paper
+    topic: ai-threat-model-agentic-mcp
+  - id: kohnfelder-garg-1999-threats-to-our-products
+    type: article
+    topic: threat-modeling
+  - id: microsoft-2016-learning-from-tay
+    type: article
+    topic: ai-threat-model-supply-chain-infra
+  - id: microsoft-2020-kubeflow-cryptomining
+    type: article
+    topic: ai-threat-model-supply-chain-infra
+  - id: microsoft-threat-modeling-tool-releases
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: ogma-accessibility-example
+    type: web
+    topic: rpt-0006-knowledge-graph-visualization
+  - id: openai-2023-chatgpt-redis-outage
+    type: article
+    topic: ai-threat-model-supply-chain-infra
+  - id: pillar-2025-rules-file-backdoor
+    type: article
+    topic: ai-threat-model-agentic-mcp
+  - id: redhat-2021-oval-rpm-matching
+    type: article
+    topic: product-composition
+  - id: redhat-csaf-vex
+    type: dataset
+    topic: product-composition
+  - id: russinovich-2024-skeleton-key
+    type: article
+    topic: ai-threat-model-ml-risk-assets
+  - id: sd-elements-deployment-faq
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: sd-elements-devici-otm-export
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: sd-elements-supported-issue-trackers
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: sd-elements-supported-security-tools
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: security-compass-platform
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: sentinelone-2026-silent-brothers-ollama
+    type: article
+    topic: ai-threat-model-supply-chain-infra
+  - id: shavit-2023-openai-governing-agentic
+    type: paper
+    topic: ai-threat-model-agentic-mcp
+  - id: threatmodeler-aws-marketplace
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: threatmodeler-integrations
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: threatmodeler-nexus-platform
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: threatmodeler-secure-design-graph
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: threatmodeler-system-mapping
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: threattree-plans
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: threattree-product
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: tracebit-2025-gemini-cli-hijack
+    type: article
+    topic: ai-threat-model-agentic-mcp
+  - id: tutamantic-services
+    type: web
+    topic: rpt-0003-threat-modeling-products
+  - id: ubuntu-security-notices
+    type: dataset
+    topic: product-composition
+  - id: unit42-2024-deceptive-delight
+    type: article
+    topic: ai-threat-model-ml-risk-assets
+  - id: wan-2024-cyberseceval3
+    type: paper
+    topic: ai-threat-model-supply-chain-infra
+  - id: w3c-prov-dm
+    type: spec
+    topic: predicate-rendering
+  - id: w3c-prov-o
+    type: spec
+    topic: predicate-rendering
+  - id: w3c-rdf-canon-1-0
+    type: spec
+    topic: canonical-encoding
+  - id: w3c-shacl
+    type: spec
+    topic: predicate-rendering
 outputs:
   - path: docs/bibliography/index.html
     format: html
