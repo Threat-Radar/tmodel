@@ -29,6 +29,7 @@ on:
       - "engine/**"
       - "spec/vectors/**"
       - "apps/**"
+      - "library" # the app bundles the library and the CWE release its pin names (#259)
       - "bin/build-engine"
       - ".github/workflows/release.yml"
   workflow_dispatch: # manual run: build + attest, workflow artifact only
