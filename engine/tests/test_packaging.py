@@ -90,6 +90,16 @@ def test_relocated_engine_serves_bundled_graph_without_checkout(
                 "privacy": 1,
             }
             assert risk["mitigation_status"] == "in_progress"
+            tara = get_json(base, "tara", file=str(model), matrix="annex-h-table-h8")
+            assert tara["source"] == {"file": filename, "example_data": True}
+            assert len(tara["records"]["assets"]) == 2
+            rejected = next(
+                p
+                for p in tara["records"]["attack_paths"]
+                if p["id"] == "attack-path:infotainment-pivot"
+            )
+            assert rejected["review_state"]["status"] == "rejected"
+            assert not rejected["review_state"]["reviewed"]
         for outside in (str(MODEL), "../outside.yaml"):
             with pytest.raises(urllib.error.HTTPError) as error:
                 get_json(base, "graph", file=outside)
