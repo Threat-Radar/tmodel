@@ -16,7 +16,14 @@ describe("graph panel layout (#247)", () => {
   it("gives the canvas whatever height the rows above it leave", () => {
     expect(rule(".graph-panel")).toContain("display: flex;");
     expect(rule(".graph-panel")).toContain("flex-direction: column;");
-    expect(rule(".graph-canvas")).toContain("flex: 1 1 0;");
+    expect(rule(".graph-panel > .graph-canvas")).toContain("flex: 1 1 0;");
+  });
+
+  it("leaves the shared .graph-canvas rule without flex sizing", () => {
+    // The Attack paths canvas is a .graph-canvas too. Flex sizing on the shared rule
+    // overrode its own height and collapsed it between 721 and 1499px (#255 review).
+    // canvas-layout.test.ts measures both canvases in a real browser.
+    expect(rule(".graph-canvas")).not.toContain("flex");
   });
 
   it("does not size the panel with a fixed list of rows", () => {
