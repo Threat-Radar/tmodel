@@ -45,11 +45,54 @@ for path in files:
 print(f"bundling {len(files)} library files")
 PY
 
+# The CWE release the library pins (ADR-0014): download it, refuse it unless its SHA-256
+# matches the pin, and bundle it, so the Weaknesses tab works in the app. A copy that
+# $TMODEL_CWE_CATALOG names is used instead of the download; it must match the pin too.
+CAT="$BUILD/catalogs"
+"$VPY" - "$CAT" <<'PY'
+import hashlib
+import os
+import sys
+import time
+import urllib.request
+from pathlib import Path
+
+from engine.load.cwe import CATALOG_ENV, LIBRARY_RECORD, bundled_name
+from engine.load.library import load_library
+
+record = load_library(Path("library")).get(LIBRARY_RECORD)
+if record is None or not record.content.url or not record.content.sha256:
+    sys.exit("build-engine: the library pins no CWE release (its cwe record has no url or sha256)")
+url, pinned = record.content.url, record.content.sha256.strip().lower()
+local = os.environ.get(CATALOG_ENV, "").strip()
+if local:
+    data = Path(os.path.expanduser(local)).read_bytes()
+else:
+    for attempt in range(3):
+        try:
+            request = urllib.request.Request(url, headers={"User-Agent": "tmodel-build"})
+            with urllib.request.urlopen(request, timeout=60) as response:
+                data = response.read()
+            break
+        except OSError as exc:
+            if attempt == 2:
+                sys.exit(f"build-engine: could not download {url}: {exc}")
+            time.sleep(5)
+digest = hashlib.sha256(data).hexdigest()
+if digest != pinned:
+    sys.exit(f"build-engine: {url} has SHA-256 {digest}, but the library pins {pinned}")
+target = Path(sys.argv[1]) / bundled_name(url)
+target.parent.mkdir(parents=True, exist_ok=True)
+target.write_bytes(data)
+print(f"bundling {target.name} ({len(data)} bytes, SHA-256 {pinned[:12]})")
+PY
+
 "$VPY" -m PyInstaller --onefile --clean --noconfirm --log-level WARN \
   --name "$NAME" \
   --add-data "$PWD/spec/vectors:spec/vectors" \
   --add-data "$PWD/spec/MAP-0001.yaml:spec" \
   --add-data "$PWD/$LIB:library" \
+  --add-data "$PWD/$CAT:catalogs" \
   --distpath "$OUT" --workpath "$BUILD/work" --specpath "$BUILD" \
   engine/packaging/tmodel_engine.py
 
@@ -62,4 +105,7 @@ env -i HOME="$HOME" "$OUT/$NAME" sdl sdl-01-tmodel-desktop.yaml --in-process --j
 # The bundled library loads with no checkout and no TMODEL_LIBRARY (exits 1 on a bad record).
 env -i HOME="$HOME" "$OUT/$NAME" library --in-process --json \
   | "$VPY" -c 'import json, sys; n = json.load(sys.stdin)["library"]["count"]; assert n, "bundled library is empty"; print(f"bundled library: {n} records")'
+# The bundled CWE release loads with no TMODEL_CWE_CATALOG (ADR-0014).
+env -i HOME="$HOME" "$OUT/$NAME" weaknesses --limit 1 --in-process --json \
+  | "$VPY" -c 'import json, sys; n = json.load(sys.stdin)["total"]; assert n, "bundled CWE release is empty"; print(f"bundled CWE release: {n} entries")'
 echo "built $OUT/$NAME"

@@ -132,6 +132,23 @@ def test_relocated_engine_serves_bundled_library_without_checkout(tmp_path):
     assert not list(tmp_path.glob("_MEI*"))
 
 
+def test_relocated_engine_reads_bundled_cwe_release_without_checkout(tmp_path):
+    # The Weaknesses tab works in a downloaded app: no TMODEL_CWE_CATALOG (ADR-0014).
+    executable = tmp_path / "tmodel-engine"
+    shutil.copy2(PACKAGED_ENGINE, executable)
+    result = subprocess.run(
+        [str(executable), "weaknesses", "--limit", "1", "--in-process", "--json"],
+        cwd=tmp_path,
+        env={"HOME": str(tmp_path), "TMPDIR": str(tmp_path)},
+        capture_output=True,
+        text=True,
+        timeout=120,
+        check=True,
+    )
+    assert json.loads(result.stdout)["total"] > 0
+    assert not list(tmp_path.glob("_MEI*"))
+
+
 def test_bundled_engine_reads_model_without_system_python(tmp_path):
     result = subprocess.run(
         [
