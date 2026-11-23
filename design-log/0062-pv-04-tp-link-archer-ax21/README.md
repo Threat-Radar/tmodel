@@ -1,18 +1,18 @@
 ---
 schema: "archdoc/v1"
-id: DL-0061
+id: DL-0062
 title: "Proposal vector pv-04: TP-Link Archer AX21, a home router to test the app on"
 type: process
 status: draft
 version: "0.1.0"
 date: "2026-11-22"
 updated: "2026-11-22"
-record: DL-0061
+record: DL-0062
 bears_on: [DEC-001a]
 defers_to: ARCH-0001
 ---
 
-# DL-0061: Proposal vector pv-04, TP-Link Archer AX21
+# DL-0062: Proposal vector pv-04, TP-Link Archer AX21
 
 AI-assisted design record (per `CLAUDE.md`), drafted by Claude Code for @Clovier. **Proposal only.** Nothing in the
 model is accepted: every Assertion is `proposed`, and no Review is recorded.

@@ -92,7 +92,7 @@ left for a human. They stay so until @paria03 reviews their attack paths (ADR-00
 decision 4); @Maimcghee has checked their sources.
 `pv-03` (DL-0049) adds a software target, OWASP Juice Shop, built the same way from its own
 source code and challenge list; no reviewer is assigned to it yet.
-`pv-04` (DL-0061) adds a hardware and firmware target, the TP-Link Archer AX21 home router,
+`pv-04` (DL-0062) adds a hardware and firmware target, the TP-Link Archer AX21 home router,
 built from the public advisories for CVE-2023-1389 and kept at advisory level (no request,
 address or payload); no reviewer is assigned to it yet.
 
@@ -101,7 +101,7 @@ address or payload); no reviewer is assigned to it yet.
 | `pv-01-can-injection-theft.yaml` | keyless car theft by CAN injection (Toyota RAV4, CVE-2023-29389) | Canis Automotive Labs write-up, 2023-04-03; CVE record | Asset, nested TrustBoundary zones, DataFlows on two CAN buses, `instance_of` with a CVE whose CWE came from CISA-ADP (Assertion with `asserted_by`) |
 | `pv-02-dealer-portal-owner-data.yaml` | theft of owners' personal data and silent takeover through a dealer portal (Kia, 2024) | Curry et al. write-up, 2024 | Assets with confidentiality, a dealer-only zone, DataFlows that carry personal data, a Weakness without a CVE (an `exploits` Assertion by a `software_agent` Party) |
 | `pv-03-owasp-juice-shop.yaml` | five attacks on a training web shop: SQL-injection admin login, another customer's basket, DOM XSS, a confidential document in /ftp, a forged login token (CVE-2015-9235) | OWASP Juice Shop v20.4.0 source and challenge list; NVD | a software product with a CVE on a pinned library (purl), CWE and CAPEC links, an AND-gate step, and a source for every step (an Assertion with evidence); each path matches a Juice Shop challenge (DL-0049) |
-| `pv-04-tp-link-archer-ax21.yaml` | taking over a home router from the home network without logging in (TP-Link Archer AX21 V3, firmware 1.1.3 Build 20221125, CVE-2023-1389, in CISA KEV) | NVD and CVE records; CISA KEV; ZDI-23-451; TP-Link's statement and V3 firmware page | a firmware Component, a device Component on the home network, a CVE with `instance_of` and `propagates_to`, CWE and CAPEC links, and a vendor Mitigation marked `complete` beside the owner's `planned` ones (DL-0061) |
+| `pv-04-tp-link-archer-ax21.yaml` | taking over a home router from the home network without logging in (TP-Link Archer AX21 V3, firmware 1.1.3 Build 20221125, CVE-2023-1389, in CISA KEV) | NVD and CVE records; CISA KEV; ZDI-23-451; TP-Link's statement and V3 firmware page | a firmware Component, a device Component on the home network, a CVE with `instance_of` and `propagates_to`, CWE and CAPEC links, and a vendor Mitigation marked `complete` beside the owner's `planned` ones (DL-0062) |
 
 ```sh
 for v in pv-01-can-injection-theft pv-02-dealer-portal-owner-data pv-03-owasp-juice-shop \

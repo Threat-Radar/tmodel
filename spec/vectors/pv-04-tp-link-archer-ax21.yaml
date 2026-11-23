@@ -1,4 +1,4 @@
-# PROPOSAL VECTOR 4 (DL-0061): TP-Link Archer AX21, a home Wi-Fi router with a known exploited flaw
+# PROPOSAL VECTOR 4 (DL-0062): TP-Link Archer AX21, a home Wi-Fi router with a known exploited flaw
 #
 # The hardware and firmware example beside pv-03's software one (#230). The TP-Link Archer
 # AX21 (AX1800) is a home Wi-Fi 6 router. Its firmware before 1.1.4 Build 20230219 lets anyone
@@ -16,8 +16,8 @@
 # Advisory level, on purpose: the model says what the flaw lets an attacker do and cites the
 # public records. It gives no request, address, payload or step-by-step procedure. The
 # attack path ends where the attacker runs commands as root; what botnets then do with a
-# router is recorded as harm, not as attack steps (DL-0061). Only the home-network flaw is
-# modeled; the internet-side race (CVE-2023-27359) is left out (DL-0061).
+# router is recorded as harm, not as attack steps (DL-0062). Only the home-network flaw is
+# modeled; the internet-side race (CVE-2023-27359) is left out (DL-0062).
 #
 # Answer key: NVD's record and CISA's catalog entry. A reviewer can check the path, the
 # affected versions and the fix against both.
@@ -41,7 +41,7 @@ parties:
     party_kind: person
   - id: party:ai-drafter
     name: AI model drafter
-    description: The AI agent that drafted this file and proposed its links (DL-0061).
+    description: The AI agent that drafted this file and proposed its links (DL-0062).
     party_kind: software_agent
 
 products:
@@ -169,7 +169,7 @@ attack_steps:
       Botnets have used this flaw to enlist routers that then flood other networks (ZDI,
       2023-04-24); this model stops here and records that as harm, not as steps. ZDI's post
       calls the flaw WAN-side: at Pwn2Own, one team reached it from the internet by chaining
-      a separate race condition (CVE-2023-27359), a route this model leaves out (DL-0061).
+      a separate race condition (CVE-2023-27359), a route this model leaves out (DL-0062).
     kill_chain_phase: actions_on_objectives
 
 attack_paths:
@@ -225,7 +225,7 @@ assertions:
     assertion_status: proposed
     asserted_by: party:ai-drafter
     asserted_at: "2026-11-22T00:00:00Z"
-    generated_by: "AI-drafted from NVD's record for CVE-2023-1389 (DL-0061)"
+    generated_by: "AI-drafted from NVD's record for CVE-2023-1389 (DL-0062)"
     evidence: ["https://nvd.nist.gov/vuln/detail/CVE-2023-1389"]
   - id: assertion:inject-step-exploits-cve-2023-1389
     name: The injection step exploits CVE-2023-1389 (AI-proposed)
@@ -237,7 +237,7 @@ assertions:
     assertion_status: proposed
     asserted_by: party:ai-drafter
     asserted_at: "2026-11-22T00:00:00Z"
-    generated_by: "AI-drafted from NVD, the CVE record, CISA KEV and ZDI-23-451 (DL-0061)"
+    generated_by: "AI-drafted from NVD, the CVE record, CISA KEV and ZDI-23-451 (DL-0062)"
     evidence: ["https://nvd.nist.gov/vuln/detail/CVE-2023-1389", "https://www.cve.org/CVERecord?id=CVE-2023-1389", "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2023-1389", "https://www.zerodayinitiative.com/advisories/ZDI-23-451/"]
   - id: assertion:root-step-targets-router-control
     name: The last step takes control of the router (AI-proposed)
@@ -252,7 +252,7 @@ assertions:
     assertion_status: proposed
     asserted_by: party:ai-drafter
     asserted_at: "2026-11-22T00:00:00Z"
-    generated_by: "AI-drafted from NVD, ZDI-23-451 and the ZDI blog (DL-0061)"
+    generated_by: "AI-drafted from NVD, ZDI-23-451 and the ZDI blog (DL-0062)"
     evidence: ["https://nvd.nist.gov/vuln/detail/CVE-2023-1389", "https://www.zerodayinitiative.com/advisories/ZDI-23-451/", "https://www.zerodayinitiative.com/blog/2023/4/21/tp-link-wan-side-vulnerability-cve-2023-1389-added-to-the-mirai-botnet-arsenal"]
   - id: assertion:cve-2023-1389-propagates-to-firmware
     name: CVE-2023-1389 is in the pinned firmware (AI-proposed)
@@ -266,7 +266,7 @@ assertions:
     assertion_status: proposed
     asserted_by: party:ai-drafter
     asserted_at: "2026-11-22T00:00:00Z"
-    generated_by: "AI-drafted from NVD and TP-Link's V3 firmware page (DL-0061)"
+    generated_by: "AI-drafted from NVD and TP-Link's V3 firmware page (DL-0062)"
     evidence: ["https://nvd.nist.gov/vuln/detail/CVE-2023-1389", "https://www.tp-link.com/us/support/download/archer-ax21/v3/"]
   - id: assertion:cve-2023-1389-instance-of-cwe-77
     name: CVE-2023-1389 is an instance of CWE-77 (from NVD)
@@ -277,7 +277,7 @@ assertions:
     assertion_status: proposed
     asserted_by: party:ai-drafter
     asserted_at: "2026-11-22T00:00:00Z"
-    generated_by: "AI-drafted from NVD and CISA KEV (DL-0061)"
+    generated_by: "AI-drafted from NVD and CISA KEV (DL-0062)"
     evidence: ["https://nvd.nist.gov/vuln/detail/CVE-2023-1389", "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2023-1389"]
   - id: assertion:cwe-77-exploited-by-capec-248
     name: CWE-77 is exploited by CAPEC-248 (AI-proposed)
@@ -289,7 +289,7 @@ assertions:
     assertion_status: proposed
     asserted_by: party:ai-drafter
     asserted_at: "2026-11-22T00:00:00Z"
-    generated_by: "AI-drafted from MITRE's CWE 4.20 and CAPEC 3.9 (DL-0061)"
+    generated_by: "AI-drafted from MITRE's CWE 4.20 and CAPEC 3.9 (DL-0062)"
     evidence: ["https://cwe.mitre.org/data/definitions/77.html", "https://capec.mitre.org/data/definitions/248.html"]
   - id: assertion:lan-path-realizes
     name: The home-network path realizes the router-takeover threat
@@ -300,7 +300,7 @@ assertions:
     assertion_status: proposed
     asserted_by: party:ai-drafter
     asserted_at: "2026-11-22T00:00:00Z"
-    generated_by: "AI-drafted from NVD and CISA KEV (DL-0061)"
+    generated_by: "AI-drafted from NVD and CISA KEV (DL-0062)"
     evidence: ["https://nvd.nist.gov/vuln/detail/CVE-2023-1389", "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2023-1389"]
 
 lifecycle_phases:
