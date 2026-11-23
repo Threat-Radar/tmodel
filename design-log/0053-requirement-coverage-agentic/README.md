@@ -219,6 +219,36 @@ Local integration validation on Python 3.13:
   the browser preview is current with nine models and 685 library records.
   The unchanged library has zero errors and 99 existing warnings.
 
+# Review follow-up and merged collector integration (2026-11-23)
+
+@paria03 requested verifying @kriishnaa-18's review and updating this PR after
+merging #242. The review targeted `f5528dd`; subsequent source-formatting and
+human-review commits already address its three findings:
+
+- All 244 Requirement titles end at word boundaries when shortened. Every
+  `source_ref` has a valid fragment; detailed `source_locator` values remain.
+- Each of the four sources has ten recorded person Reviews with justifications:
+  39 acceptances and the O09 rejection. The rejected Assertion remains proposed.
+- The required source records resolve through the unchanged `e406827` library
+  pin inherited from #200. No human decision is added or inferred in this update.
+
+Merge `main` at `b14525b`, which now includes #242's collector, the CAPEC loader
+and the router example. The CLI, API and core integrations merge automatically;
+the shared review helper remains identical to main. All four source fragments,
+including the 40 Reviews, are byte-identical to the prior PR head. The TCU
+coverage result is still five Requirements: two satisfied and three unsatisfied.
+The TARA intermediate retains SHA-256
+`4238a573a546db95ea48d4adf584d2746fd40debdfc33dbfe105810f17213712`.
+
+Local verification: 782 engine tests passed, six optional tests skipped; engine
+lint and formatting passed. All 13 extraction files pass extraction rules and
+reference integrity (1,663 objects, 1,518 references); all four lane fragments
+pass LinkML. Converter/checker tests: 12 passed, with 13 subtests. Publishing:
+14 tests passed, preview freshness passes for ten models and 685 library records,
+and identity/link guards and archdoc pass. Remote CI must be verified on the
+final pushed head. The earlier change request remains for its reviewer to
+reassess; this update does not dismiss it.
+
 Fresh remote CI and review status must be checked after pushing the integration.
 No source decision or product assessment is inferred from this merge.
 

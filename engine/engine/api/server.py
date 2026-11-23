@@ -49,6 +49,15 @@ def _risk(query: dict[str, str]) -> dict[str, Any]:
     return core.risk_assessments(query["file"], query["matrix"], query.get("goal"))
 
 
+def _tara(query: dict[str, str]) -> dict[str, Any]:
+    if set(query) - {"file", "matrix"}:
+        raise ValueError("tara: only file and matrix query parameters are supported")
+    for parameter in ("file", "matrix"):
+        if parameter not in query:
+            raise ValueError(f"missing query parameter: {parameter}")
+    return core.collect_tara(query["file"], query["matrix"])
+
+
 def _graph(query: dict[str, str]) -> dict[str, Any]:
     if "file" not in query:
         raise ValueError("missing query parameter: file")
@@ -65,11 +74,14 @@ ROUTES: dict[str, Callable[[dict[str, str]], dict[str, Any]]] = {
     "/coverage": core.requirement_coverage,
     "/attack-paths": _attack_paths,
     "/risk": _risk,  # explicit matrix profile, with unresolved/missing ratings visible (#63)
+    "/tara": _tara,  # read-only collection; file writes happen only in the CLI (#181)
     "/library": core.library_records,  # filters: id, type, topic, status (#140)
     "/library/table": core.library_table,  # rows for the table views (#141, #58)
     "/weaknesses": core.weaknesses,  # the pinned CWE release: import report, or one entry (#144)
     "/weaknesses/table": core.weakness_table,  # rows for the weakness table view (#144, #234)
     "/weaknesses/relationships": core.weakness_relationships,  # by view, with inverses (#145)
+    "/attack-patterns": core.attack_patterns,  # the pinned CAPEC release, or one entry (#244)
+    "/attack-patterns/table": core.attack_pattern_table,  # rows for the CAPEC table view (#236)
     "/sdl": core.sdl,  # SDL program view; no file = list SDL models (DL-0043)
     "/proposals": core.pending_proposals,  # pending proposals + saved KG views (DL-0046)
 }
