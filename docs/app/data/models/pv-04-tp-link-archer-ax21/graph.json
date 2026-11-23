@@ -1,0 +1,911 @@
+{
+  "edges": [
+    {
+      "id": "relationship:product:archer-ax21-v3|composed_of|component:web-management",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "product:archer-ax21-v3",
+      "target": "component:web-management"
+    },
+    {
+      "id": "relationship:product:archer-ax21-v3|composed_of|component:router-firmware",
+      "properties": {},
+      "relationship_type": "composed_of",
+      "source": "product:archer-ax21-v3",
+      "target": "component:router-firmware"
+    },
+    {
+      "id": "relationship:product:archer-ax21-v3|manufactured_by|party:tp-link",
+      "properties": {},
+      "relationship_type": "manufactured_by",
+      "source": "product:archer-ax21-v3",
+      "target": "party:tp-link"
+    },
+    {
+      "id": "relationship:component:home-device|in_trust_zone|trust-boundary:home-network",
+      "properties": {},
+      "relationship_type": "in_trust_zone",
+      "source": "component:home-device",
+      "target": "trust-boundary:home-network"
+    },
+    {
+      "id": "relationship:component:web-management|in_trust_zone|trust-boundary:router",
+      "properties": {},
+      "relationship_type": "in_trust_zone",
+      "source": "component:web-management",
+      "target": "trust-boundary:router"
+    },
+    {
+      "id": "relationship:component:web-management|uses_component|component:router-firmware",
+      "properties": {},
+      "relationship_type": "uses_component",
+      "source": "component:web-management",
+      "target": "component:router-firmware"
+    },
+    {
+      "id": "relationship:component:router-firmware|in_trust_zone|trust-boundary:router",
+      "properties": {},
+      "relationship_type": "in_trust_zone",
+      "source": "component:router-firmware",
+      "target": "trust-boundary:router"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2023-1389|affects|product:archer-ax21-v3",
+      "properties": {},
+      "relationship_type": "affects",
+      "source": "vulnerability:cve-2023-1389",
+      "target": "product:archer-ax21-v3"
+    },
+    {
+      "id": "relationship:threat-instance:lan-command-injection|applies_in_phase|lifecycle-phase:operation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "threat-instance:lan-command-injection",
+      "target": "lifecycle-phase:operation"
+    },
+    {
+      "id": "relationship:threat-instance:lan-command-injection|realizes_damage|damage-scenario:router-takeover",
+      "properties": {},
+      "relationship_type": "realizes_damage",
+      "source": "threat-instance:lan-command-injection",
+      "target": "damage-scenario:router-takeover"
+    },
+    {
+      "id": "relationship:threat-instance:lan-command-injection|targets_element|component:web-management",
+      "properties": {},
+      "relationship_type": "targets_element",
+      "source": "threat-instance:lan-command-injection",
+      "target": "component:web-management"
+    },
+    {
+      "id": "relationship:threat-instance:lan-command-injection|targets_element|data-flow:admin-requests",
+      "properties": {},
+      "relationship_type": "targets_element",
+      "source": "threat-instance:lan-command-injection",
+      "target": "data-flow:admin-requests"
+    },
+    {
+      "id": "relationship:attack-step:reach-admin-interface|precedes|attack-step:inject-command",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:reach-admin-interface",
+      "target": "attack-step:inject-command"
+    },
+    {
+      "id": "relationship:attack-step:inject-command|precedes|attack-step:run-as-root",
+      "properties": {},
+      "relationship_type": "precedes",
+      "source": "attack-step:inject-command",
+      "target": "attack-step:run-as-root"
+    },
+    {
+      "id": "relationship:attack-path:lan-to-root|realizes_threat|threat-instance:lan-command-injection",
+      "properties": {
+        "assertion_ids": [
+          "assertion:lan-path-realizes"
+        ],
+        "assertion_status": "proposed",
+        "confidence": "high"
+      },
+      "relationship_type": "realizes_threat",
+      "source": "attack-path:lan-to-root",
+      "target": "threat-instance:lan-command-injection"
+    },
+    {
+      "id": "relationship:attack-path:lan-to-root|steps|attack-step:reach-admin-interface",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:lan-to-root",
+      "target": "attack-step:reach-admin-interface"
+    },
+    {
+      "id": "relationship:attack-path:lan-to-root|steps|attack-step:inject-command",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:lan-to-root",
+      "target": "attack-step:inject-command"
+    },
+    {
+      "id": "relationship:attack-path:lan-to-root|steps|attack-step:run-as-root",
+      "properties": {},
+      "relationship_type": "steps",
+      "source": "attack-path:lan-to-root",
+      "target": "attack-step:run-as-root"
+    },
+    {
+      "id": "relationship:damage-scenario:router-takeover|damages_asset|asset:router-control",
+      "properties": {},
+      "relationship_type": "damages_asset",
+      "source": "damage-scenario:router-takeover",
+      "target": "asset:router-control"
+    },
+    {
+      "id": "relationship:damage-scenario:router-takeover|damages_asset|asset:home-connectivity",
+      "properties": {},
+      "relationship_type": "damages_asset",
+      "source": "damage-scenario:router-takeover",
+      "target": "asset:home-connectivity"
+    },
+    {
+      "id": "relationship:damage-scenario:router-takeover|damages_asset|asset:others-services",
+      "properties": {},
+      "relationship_type": "damages_asset",
+      "source": "damage-scenario:router-takeover",
+      "target": "asset:others-services"
+    },
+    {
+      "id": "relationship:mitigation:vendor-fix|applies_in_phase|lifecycle-phase:implementation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "mitigation:vendor-fix",
+      "target": "lifecycle-phase:implementation"
+    },
+    {
+      "id": "relationship:mitigation:vendor-fix|implementation_owner|party:tp-link",
+      "properties": {},
+      "relationship_type": "implementation_owner",
+      "source": "mitigation:vendor-fix",
+      "target": "party:tp-link"
+    },
+    {
+      "id": "relationship:mitigation:vendor-fix|mitigates|threat-instance:lan-command-injection",
+      "properties": {},
+      "relationship_type": "mitigates",
+      "source": "mitigation:vendor-fix",
+      "target": "threat-instance:lan-command-injection"
+    },
+    {
+      "id": "relationship:mitigation:update-firmware|applies_in_phase|lifecycle-phase:operation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "mitigation:update-firmware",
+      "target": "lifecycle-phase:operation"
+    },
+    {
+      "id": "relationship:mitigation:update-firmware|implementation_owner|party:router-owner",
+      "properties": {},
+      "relationship_type": "implementation_owner",
+      "source": "mitigation:update-firmware",
+      "target": "party:router-owner"
+    },
+    {
+      "id": "relationship:mitigation:update-firmware|mitigates|threat-instance:lan-command-injection",
+      "properties": {},
+      "relationship_type": "mitigates",
+      "source": "mitigation:update-firmware",
+      "target": "threat-instance:lan-command-injection"
+    },
+    {
+      "id": "relationship:mitigation:keep-updating|applies_in_phase|lifecycle-phase:operation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "mitigation:keep-updating",
+      "target": "lifecycle-phase:operation"
+    },
+    {
+      "id": "relationship:mitigation:keep-updating|implementation_owner|party:router-owner",
+      "properties": {},
+      "relationship_type": "implementation_owner",
+      "source": "mitigation:keep-updating",
+      "target": "party:router-owner"
+    },
+    {
+      "id": "relationship:mitigation:keep-updating|mitigates|threat-instance:lan-command-injection",
+      "properties": {},
+      "relationship_type": "mitigates",
+      "source": "mitigation:keep-updating",
+      "target": "threat-instance:lan-command-injection"
+    },
+    {
+      "id": "relationship:mitigation:fewer-untrusted-devices|applies_in_phase|lifecycle-phase:operation",
+      "properties": {},
+      "relationship_type": "applies_in_phase",
+      "source": "mitigation:fewer-untrusted-devices",
+      "target": "lifecycle-phase:operation"
+    },
+    {
+      "id": "relationship:mitigation:fewer-untrusted-devices|implementation_owner|party:router-owner",
+      "properties": {},
+      "relationship_type": "implementation_owner",
+      "source": "mitigation:fewer-untrusted-devices",
+      "target": "party:router-owner"
+    },
+    {
+      "id": "relationship:mitigation:fewer-untrusted-devices|mitigates|threat-instance:lan-command-injection",
+      "properties": {},
+      "relationship_type": "mitigates",
+      "source": "mitigation:fewer-untrusted-devices",
+      "target": "threat-instance:lan-command-injection"
+    },
+    {
+      "id": "relationship:assertion:reach-step-targets-admin-requests|asserted_by|party:ai-drafter",
+      "properties": {},
+      "relationship_type": "asserted_by",
+      "source": "assertion:reach-step-targets-admin-requests",
+      "target": "party:ai-drafter"
+    },
+    {
+      "id": "relationship:assertion:reach-step-targets-admin-requests|object|data-flow:admin-requests",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:reach-step-targets-admin-requests",
+      "target": "data-flow:admin-requests"
+    },
+    {
+      "id": "relationship:assertion:reach-step-targets-admin-requests|subject|attack-step:reach-admin-interface",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:reach-step-targets-admin-requests",
+      "target": "attack-step:reach-admin-interface"
+    },
+    {
+      "id": "relationship:assertion:inject-step-exploits-cve-2023-1389|asserted_by|party:ai-drafter",
+      "properties": {},
+      "relationship_type": "asserted_by",
+      "source": "assertion:inject-step-exploits-cve-2023-1389",
+      "target": "party:ai-drafter"
+    },
+    {
+      "id": "relationship:assertion:inject-step-exploits-cve-2023-1389|object|vulnerability:cve-2023-1389",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:inject-step-exploits-cve-2023-1389",
+      "target": "vulnerability:cve-2023-1389"
+    },
+    {
+      "id": "relationship:assertion:inject-step-exploits-cve-2023-1389|subject|attack-step:inject-command",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:inject-step-exploits-cve-2023-1389",
+      "target": "attack-step:inject-command"
+    },
+    {
+      "id": "relationship:assertion:root-step-targets-router-control|asserted_by|party:ai-drafter",
+      "properties": {},
+      "relationship_type": "asserted_by",
+      "source": "assertion:root-step-targets-router-control",
+      "target": "party:ai-drafter"
+    },
+    {
+      "id": "relationship:assertion:root-step-targets-router-control|object|asset:router-control",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:root-step-targets-router-control",
+      "target": "asset:router-control"
+    },
+    {
+      "id": "relationship:assertion:root-step-targets-router-control|subject|attack-step:run-as-root",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:root-step-targets-router-control",
+      "target": "attack-step:run-as-root"
+    },
+    {
+      "id": "relationship:assertion:cve-2023-1389-propagates-to-firmware|asserted_by|party:ai-drafter",
+      "properties": {},
+      "relationship_type": "asserted_by",
+      "source": "assertion:cve-2023-1389-propagates-to-firmware",
+      "target": "party:ai-drafter"
+    },
+    {
+      "id": "relationship:assertion:cve-2023-1389-propagates-to-firmware|object|component:router-firmware",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:cve-2023-1389-propagates-to-firmware",
+      "target": "component:router-firmware"
+    },
+    {
+      "id": "relationship:assertion:cve-2023-1389-propagates-to-firmware|subject|vulnerability:cve-2023-1389",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:cve-2023-1389-propagates-to-firmware",
+      "target": "vulnerability:cve-2023-1389"
+    },
+    {
+      "id": "relationship:assertion:cve-2023-1389-instance-of-cwe-77|asserted_by|party:ai-drafter",
+      "properties": {},
+      "relationship_type": "asserted_by",
+      "source": "assertion:cve-2023-1389-instance-of-cwe-77",
+      "target": "party:ai-drafter"
+    },
+    {
+      "id": "relationship:assertion:cve-2023-1389-instance-of-cwe-77|object|weakness:cwe-77",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:cve-2023-1389-instance-of-cwe-77",
+      "target": "weakness:cwe-77"
+    },
+    {
+      "id": "relationship:assertion:cve-2023-1389-instance-of-cwe-77|subject|vulnerability:cve-2023-1389",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:cve-2023-1389-instance-of-cwe-77",
+      "target": "vulnerability:cve-2023-1389"
+    },
+    {
+      "id": "relationship:assertion:cwe-77-exploited-by-capec-248|asserted_by|party:ai-drafter",
+      "properties": {},
+      "relationship_type": "asserted_by",
+      "source": "assertion:cwe-77-exploited-by-capec-248",
+      "target": "party:ai-drafter"
+    },
+    {
+      "id": "relationship:assertion:cwe-77-exploited-by-capec-248|object|attack-pattern:capec-248",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:cwe-77-exploited-by-capec-248",
+      "target": "attack-pattern:capec-248"
+    },
+    {
+      "id": "relationship:assertion:cwe-77-exploited-by-capec-248|subject|weakness:cwe-77",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:cwe-77-exploited-by-capec-248",
+      "target": "weakness:cwe-77"
+    },
+    {
+      "id": "relationship:assertion:lan-path-realizes|asserted_by|party:ai-drafter",
+      "properties": {},
+      "relationship_type": "asserted_by",
+      "source": "assertion:lan-path-realizes",
+      "target": "party:ai-drafter"
+    },
+    {
+      "id": "relationship:assertion:lan-path-realizes|object|threat-instance:lan-command-injection",
+      "properties": {},
+      "relationship_type": "object",
+      "source": "assertion:lan-path-realizes",
+      "target": "threat-instance:lan-command-injection"
+    },
+    {
+      "id": "relationship:assertion:lan-path-realizes|subject|attack-path:lan-to-root",
+      "properties": {},
+      "relationship_type": "subject",
+      "source": "assertion:lan-path-realizes",
+      "target": "attack-path:lan-to-root"
+    },
+    {
+      "id": "relationship:asset:router-control|owned_by|party:router-owner",
+      "properties": {},
+      "relationship_type": "owned_by",
+      "source": "asset:router-control",
+      "target": "party:router-owner"
+    },
+    {
+      "id": "relationship:asset:router-control|processed_by|component:web-management",
+      "properties": {},
+      "relationship_type": "processed_by",
+      "source": "asset:router-control",
+      "target": "component:web-management"
+    },
+    {
+      "id": "relationship:asset:router-control|processed_by|component:router-firmware",
+      "properties": {},
+      "relationship_type": "processed_by",
+      "source": "asset:router-control",
+      "target": "component:router-firmware"
+    },
+    {
+      "id": "relationship:asset:home-connectivity|owned_by|party:router-owner",
+      "properties": {},
+      "relationship_type": "owned_by",
+      "source": "asset:home-connectivity",
+      "target": "party:router-owner"
+    },
+    {
+      "id": "relationship:asset:home-connectivity|processed_by|component:router-firmware",
+      "properties": {},
+      "relationship_type": "processed_by",
+      "source": "asset:home-connectivity",
+      "target": "component:router-firmware"
+    },
+    {
+      "id": "relationship:data-flow:admin-requests|carries|asset:router-control",
+      "properties": {},
+      "relationship_type": "carries",
+      "source": "data-flow:admin-requests",
+      "target": "asset:router-control"
+    },
+    {
+      "id": "relationship:data-flow:admin-requests|crosses_boundary|trust-boundary:home-network",
+      "properties": {},
+      "relationship_type": "crosses_boundary",
+      "source": "data-flow:admin-requests",
+      "target": "trust-boundary:home-network"
+    },
+    {
+      "id": "relationship:data-flow:admin-requests|crosses_boundary|trust-boundary:router",
+      "properties": {},
+      "relationship_type": "crosses_boundary",
+      "source": "data-flow:admin-requests",
+      "target": "trust-boundary:router"
+    },
+    {
+      "id": "relationship:data-flow:admin-requests|flow_from|component:home-device",
+      "properties": {},
+      "relationship_type": "flow_from",
+      "source": "data-flow:admin-requests",
+      "target": "component:home-device"
+    },
+    {
+      "id": "relationship:data-flow:admin-requests|flow_to|component:web-management",
+      "properties": {},
+      "relationship_type": "flow_to",
+      "source": "data-flow:admin-requests",
+      "target": "component:web-management"
+    },
+    {
+      "id": "relationship:attack-step:reach-admin-interface|targets_element|data-flow:admin-requests",
+      "properties": {
+        "assertion_ids": [
+          "assertion:reach-step-targets-admin-requests"
+        ],
+        "assertion_status": "proposed",
+        "confidence": "high"
+      },
+      "relationship_type": "targets_element",
+      "source": "attack-step:reach-admin-interface",
+      "target": "data-flow:admin-requests"
+    },
+    {
+      "id": "relationship:attack-step:inject-command|exploits|vulnerability:cve-2023-1389",
+      "properties": {
+        "assertion_ids": [
+          "assertion:inject-step-exploits-cve-2023-1389"
+        ],
+        "assertion_status": "proposed",
+        "confidence": "high"
+      },
+      "relationship_type": "exploits",
+      "source": "attack-step:inject-command",
+      "target": "vulnerability:cve-2023-1389"
+    },
+    {
+      "id": "relationship:attack-step:run-as-root|targets_element|asset:router-control",
+      "properties": {
+        "assertion_ids": [
+          "assertion:root-step-targets-router-control"
+        ],
+        "assertion_status": "proposed",
+        "confidence": "high"
+      },
+      "relationship_type": "targets_element",
+      "source": "attack-step:run-as-root",
+      "target": "asset:router-control"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2023-1389|propagates_to|component:router-firmware",
+      "properties": {
+        "assertion_ids": [
+          "assertion:cve-2023-1389-propagates-to-firmware"
+        ],
+        "assertion_status": "proposed",
+        "confidence": "high"
+      },
+      "relationship_type": "propagates_to",
+      "source": "vulnerability:cve-2023-1389",
+      "target": "component:router-firmware"
+    },
+    {
+      "id": "relationship:vulnerability:cve-2023-1389|instance_of|weakness:cwe-77",
+      "properties": {
+        "assertion_ids": [
+          "assertion:cve-2023-1389-instance-of-cwe-77"
+        ],
+        "assertion_status": "proposed",
+        "confidence": "high"
+      },
+      "relationship_type": "instance_of",
+      "source": "vulnerability:cve-2023-1389",
+      "target": "weakness:cwe-77"
+    },
+    {
+      "id": "relationship:weakness:cwe-77|exploited_by|attack-pattern:capec-248",
+      "properties": {
+        "assertion_ids": [
+          "assertion:cwe-77-exploited-by-capec-248"
+        ],
+        "assertion_status": "proposed",
+        "confidence": "medium"
+      },
+      "relationship_type": "exploited_by",
+      "source": "weakness:cwe-77",
+      "target": "attack-pattern:capec-248"
+    }
+  ],
+  "file": "pv-04-tp-link-archer-ax21.yaml",
+  "nodes": [
+    {
+      "domain_type": "Party",
+      "id": "party:tp-link",
+      "label": "TP-Link",
+      "properties": {
+        "classifications": [
+          "maintainer"
+        ],
+        "description": "Makes the Archer AX21 and publishes its firmware.",
+        "party_kind": "organization"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:router-owner",
+      "label": "Router owner",
+      "properties": {
+        "description": "The household whose router and home network the attack reaches (role, not a person).",
+        "party_kind": "person"
+      }
+    },
+    {
+      "domain_type": "Party",
+      "id": "party:ai-drafter",
+      "label": "AI model drafter",
+      "properties": {
+        "description": "The AI agent that drafted this file and proposed its links (DL-0062).",
+        "party_kind": "software_agent"
+      }
+    },
+    {
+      "domain_type": "Product",
+      "id": "product:archer-ax21-v3",
+      "label": "TP-Link Archer AX21 (AX1800), hardware version 3 (US)",
+      "properties": {
+        "description": "A home Wi-Fi 6 router with a web management interface for its settings. Modeled with firmware 1.1.3 Build 20221125, the last numbered V3 release before the fix.",
+        "identifiers": [
+          "cpe:2.3:h:tp-link:archer_ax21:3.0:*:*:*:*:*:*:*"
+        ]
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:home-device",
+      "label": "A device on the home network",
+      "properties": {
+        "component_kind": "device",
+        "description": "Any phone, laptop or smart-home device on the router's LAN or Wi-Fi. The flaw needs one: NVD rates it adjacent-network (CVSS AV:A)."
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:web-management",
+      "label": "Web management interface",
+      "properties": {
+        "component_kind": "service",
+        "description": "The router's settings pages and the API behind them, reachable from the home network."
+      }
+    },
+    {
+      "domain_type": "Component",
+      "id": "component:router-firmware",
+      "label": "Firmware 1.1.3 Build 20221125",
+      "properties": {
+        "component_kind": "firmware",
+        "description": "The router's software: routing, Wi-Fi, the firewall and the back end of the web management interface. NVD: commands injected through the flaw run as root."
+      }
+    },
+    {
+      "domain_type": "Weakness",
+      "id": "weakness:cwe-77",
+      "label": "Improper Neutralization of Special Elements used in a Command ('Command Injection')",
+      "properties": {
+        "catalog_ref": "CWE-77",
+        "description": "NVD's weakness for CVE-2023-1389, and the one CISA's catalog entry names."
+      }
+    },
+    {
+      "domain_type": "Vulnerability",
+      "id": "vulnerability:cve-2023-1389",
+      "label": "Archer AX21 firmware before 1.1.4 Build 20230219 runs commands an attacker on the home network injects, as root",
+      "properties": {
+        "catalog_ref": "CVE-2023-1389",
+        "description": "NVD: a command injection in the web management interface. No login is needed, and the injected commands run as root. CVSS 3.1 8.8 (AV:A, adjacent network). CISA added it to the Known Exploited Vulnerabilities catalog on 2023-05-01, with the required action \"Apply updates per vendor instructions.\" Fixed in 1.1.4 Build 20230219."
+      }
+    },
+    {
+      "domain_type": "AttackPattern",
+      "id": "attack-pattern:capec-248",
+      "label": "Command Injection",
+      "properties": {
+        "catalog_ref": "CAPEC-248"
+      }
+    },
+    {
+      "domain_type": "ThreatInstance",
+      "id": "threat-instance:lan-command-injection",
+      "label": "Run commands as root on the router from the home network, without logging in",
+      "properties": {
+        "method_facet": [
+          "stride"
+        ],
+        "source_method": "published advisory (NVD, CISA KEV) for CVE-2023-1389, modeled from the public records (AI-drafted, unreviewed)",
+        "violates_property": "E authorization; T integrity"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:reach-admin-interface",
+      "label": "Reach the router's web management interface from a device on the home network",
+      "properties": {
+        "description": "The flaw is rated adjacent-network (CVSS AV:A): the attacker needs a device on the router's LAN or Wi-Fi, such as an already compromised device or someone who has the Wi-Fi password.",
+        "kill_chain_phase": "delivery"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:inject-command",
+      "label": "Exploit the unauthenticated command injection in the web management interface (CVE-2023-1389)",
+      "properties": {
+        "description": "No login is needed (NVD). This model stays at advisory level: how the flaw is triggered is in the cited advisories and is not repeated here.",
+        "kill_chain_phase": "exploitation"
+      }
+    },
+    {
+      "domain_type": "AttackStep",
+      "id": "attack-step:run-as-root",
+      "label": "The router runs the attacker's commands as root",
+      "properties": {
+        "description": "The attacker then controls the router: its settings, the traffic through it and what software it runs (NVD rates confidentiality, integrity and availability all High). Botnets have used this flaw to enlist routers that then flood other networks (ZDI, 2023-04-24); this model stops here and records that as harm, not as steps. ZDI's post calls the flaw WAN-side: at Pwn2Own, one team reached it from the internet by chaining a separate race condition (CVE-2023-27359), a route this model leaves out (DL-0062).",
+        "kill_chain_phase": "actions_on_objectives"
+      }
+    },
+    {
+      "domain_type": "AttackPath",
+      "id": "attack-path:lan-to-root",
+      "label": "Home-network device to root on the router",
+      "properties": {}
+    },
+    {
+      "domain_type": "DamageScenario",
+      "id": "damage-scenario:router-takeover",
+      "label": "An attacker takes over the router, and with it the household's connection, and can use it against others",
+      "properties": {
+        "compromised_property": [
+          "confidentiality",
+          "integrity",
+          "availability"
+        ]
+      }
+    },
+    {
+      "domain_type": "Mitigation",
+      "id": "mitigation:vendor-fix",
+      "label": "TP-Link's fix in firmware 1.1.4 Build 20230219",
+      "properties": {
+        "description": "Published 2023-03-17 with the note \"Fixed some security issues\" on TP-Link's V3 firmware page; NVD's affected range ends before it.",
+        "mitigation_status": "complete"
+      }
+    },
+    {
+      "domain_type": "Mitigation",
+      "id": "mitigation:update-firmware",
+      "label": "Update the router to firmware 1.1.4 Build 20230219 or later",
+      "properties": {
+        "description": "CISA's required action: apply updates per vendor instructions. The pinned firmware, 1.1.3 Build 20221125, does not have the fix.",
+        "mitigation_status": "planned"
+      }
+    },
+    {
+      "domain_type": "Mitigation",
+      "id": "mitigation:keep-updating",
+      "label": "Keep the router's firmware up to date from now on",
+      "properties": {
+        "description": "TP-Link's statement on CVE-2023-1389 asks owners to update to the latest firmware.",
+        "mitigation_status": "planned"
+      }
+    },
+    {
+      "domain_type": "Mitigation",
+      "id": "mitigation:fewer-untrusted-devices",
+      "label": "Until the router is updated, keep untrusted devices off the home network",
+      "properties": {
+        "description": "A model suggestion, not the vendor's: the flaw needs a device on the home network (AV:A), so every untrusted device there is one more way in.",
+        "mitigation_status": "planned"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:reach-step-targets-admin-requests",
+      "label": "The reach step uses the home network's requests to the web management interface (AI-proposed)",
+      "properties": {
+        "asserted_at": "2026-11-22T00:00:00Z",
+        "assertion_status": "proposed",
+        "confidence": "high",
+        "description": "NVD and CISA rate the flaw adjacent-network (CVSS 3.1 AV:A), so it needs a device on the router's LAN or Wi-Fi; the CNA's CVE record gives no score.",
+        "evidence": [
+          "https://nvd.nist.gov/vuln/detail/CVE-2023-1389"
+        ],
+        "generated_by": "AI-drafted from NVD's record for CVE-2023-1389 (DL-0062)",
+        "predicate": "targets_element"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:inject-step-exploits-cve-2023-1389",
+      "label": "The injection step exploits CVE-2023-1389 (AI-proposed)",
+      "properties": {
+        "asserted_at": "2026-11-22T00:00:00Z",
+        "assertion_status": "proposed",
+        "confidence": "high",
+        "description": "NVD describes an unauthenticated command injection in the web management interface; CISA lists it as exploited in the wild (added 2023-05-01).",
+        "evidence": [
+          "https://nvd.nist.gov/vuln/detail/CVE-2023-1389",
+          "https://www.cve.org/CVERecord?id=CVE-2023-1389",
+          "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2023-1389",
+          "https://www.zerodayinitiative.com/advisories/ZDI-23-451/"
+        ],
+        "generated_by": "AI-drafted from NVD, the CVE record, CISA KEV and ZDI-23-451 (DL-0062)",
+        "predicate": "exploits"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:root-step-targets-router-control",
+      "label": "The last step takes control of the router (AI-proposed)",
+      "properties": {
+        "asserted_at": "2026-11-22T00:00:00Z",
+        "assertion_status": "proposed",
+        "confidence": "high",
+        "description": "NVD: the injected commands run as root, with confidentiality, integrity and availability all rated High. ZDI-23-451 also gives root. ZDI's blog reports botnets using the flaw to enlist routers.",
+        "evidence": [
+          "https://nvd.nist.gov/vuln/detail/CVE-2023-1389",
+          "https://www.zerodayinitiative.com/advisories/ZDI-23-451/",
+          "https://www.zerodayinitiative.com/blog/2023/4/21/tp-link-wan-side-vulnerability-cve-2023-1389-added-to-the-mirai-botnet-arsenal"
+        ],
+        "generated_by": "AI-drafted from NVD, ZDI-23-451 and the ZDI blog (DL-0062)",
+        "predicate": "targets_element"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:cve-2023-1389-propagates-to-firmware",
+      "label": "CVE-2023-1389 is in the pinned firmware (AI-proposed)",
+      "properties": {
+        "asserted_at": "2026-11-22T00:00:00Z",
+        "assertion_status": "proposed",
+        "confidence": "high",
+        "description": "NVD's range is firmware before 1.1.4 Build 20230219. The pinned 1.1.3 Build 20221125 is inside it, and TP-Link's V3 page lists 1.1.4 Build 20230219 as the next release.",
+        "evidence": [
+          "https://nvd.nist.gov/vuln/detail/CVE-2023-1389",
+          "https://www.tp-link.com/us/support/download/archer-ax21/v3/"
+        ],
+        "generated_by": "AI-drafted from NVD and TP-Link's V3 firmware page (DL-0062)",
+        "predicate": "propagates_to"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:cve-2023-1389-instance-of-cwe-77",
+      "label": "CVE-2023-1389 is an instance of CWE-77 (from NVD)",
+      "properties": {
+        "asserted_at": "2026-11-22T00:00:00Z",
+        "assertion_status": "proposed",
+        "confidence": "high",
+        "evidence": [
+          "https://nvd.nist.gov/vuln/detail/CVE-2023-1389",
+          "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2023-1389"
+        ],
+        "generated_by": "AI-drafted from NVD and CISA KEV (DL-0062)",
+        "predicate": "instance_of"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:cwe-77-exploited-by-capec-248",
+      "label": "CWE-77 is exploited by CAPEC-248 (AI-proposed)",
+      "properties": {
+        "asserted_at": "2026-11-22T00:00:00Z",
+        "assertion_status": "proposed",
+        "confidence": "medium",
+        "description": "CWE 4.20 links CWE-77 to CAPEC-248, and CAPEC 3.9 links CAPEC-248 back to CWE-77.",
+        "evidence": [
+          "https://cwe.mitre.org/data/definitions/77.html",
+          "https://capec.mitre.org/data/definitions/248.html"
+        ],
+        "generated_by": "AI-drafted from MITRE's CWE 4.20 and CAPEC 3.9 (DL-0062)",
+        "predicate": "exploited_by"
+      }
+    },
+    {
+      "domain_type": "Assertion",
+      "id": "assertion:lan-path-realizes",
+      "label": "The home-network path realizes the router-takeover threat",
+      "properties": {
+        "asserted_at": "2026-11-22T00:00:00Z",
+        "assertion_status": "proposed",
+        "confidence": "high",
+        "evidence": [
+          "https://nvd.nist.gov/vuln/detail/CVE-2023-1389",
+          "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2023-1389"
+        ],
+        "generated_by": "AI-drafted from NVD and CISA KEV (DL-0062)",
+        "predicate": "realizes_threat"
+      }
+    },
+    {
+      "domain_type": "LifecyclePhase",
+      "id": "lifecycle-phase:implementation",
+      "label": "Implementation",
+      "properties": {
+        "code": "implementation"
+      }
+    },
+    {
+      "domain_type": "LifecyclePhase",
+      "id": "lifecycle-phase:operation",
+      "label": "Operation / use",
+      "properties": {
+        "code": "operation"
+      }
+    },
+    {
+      "domain_type": "Asset",
+      "id": "asset:router-control",
+      "label": "Control of the router (its settings and the commands it runs)",
+      "properties": {
+        "security_properties": [
+          "confidentiality",
+          "integrity",
+          "authorization"
+        ]
+      }
+    },
+    {
+      "domain_type": "Asset",
+      "id": "asset:home-connectivity",
+      "label": "The household's internet connection and Wi-Fi",
+      "properties": {
+        "security_properties": [
+          "availability"
+        ]
+      }
+    },
+    {
+      "domain_type": "Asset",
+      "id": "asset:others-services",
+      "label": "Other people's online services, which a botnet can flood",
+      "properties": {
+        "security_properties": [
+          "availability"
+        ]
+      }
+    },
+    {
+      "domain_type": "TrustBoundary",
+      "id": "trust-boundary:home-network",
+      "label": "The home network (LAN and Wi-Fi)",
+      "properties": {}
+    },
+    {
+      "domain_type": "TrustBoundary",
+      "id": "trust-boundary:router",
+      "label": "The router and its administration",
+      "properties": {}
+    },
+    {
+      "domain_type": "DataFlow",
+      "id": "data-flow:admin-requests",
+      "label": "Devices on the home network send requests to the web management interface",
+      "properties": {}
+    }
+  ]
+}
