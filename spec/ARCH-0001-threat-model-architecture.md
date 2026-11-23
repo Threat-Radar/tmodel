@@ -7,10 +7,10 @@ description: "The source of truth for tmodel: the logical object model, requirem
 type: architecture
 category: security
 status: draft
-version: "0.1.11"
+version: "0.1.12"
 version_policy: "semver; PATCH = editorial; MINOR = additive; MAJOR = breaking. version and updated move together (§9.5)."
 date: "2026-09-23"
-updated: "2026-11-07"
+updated: "2026-11-22"
 authors:
   - role: sponsor
     id: nymble
@@ -34,9 +34,9 @@ agent_notes: >
 
 **Status: draft. Accepted so far:** DEC-005 (ADR-0002), DEC-006 + DEC-010 (ADR-0003, engine
 split amended by ADR-0009), DEC-007 (ADR-0001), DEC-011 (ADR-0004), **DEC-002 (ADR-0007),
-DEC-003 (ADR-0006), DEC-004 (ADR-0008), DEC-001a (ADR-0010, the core object-model type system, amended by ADR-0011: composition slots, Asset, TrustBoundary, DataFlow; and by ADR-0012: Requirement in the core), DEC-001b in part (ADR-0013: SdlPractice, Evidence, RequirementSource)**.
+DEC-003 (ADR-0006), DEC-004 (ADR-0008), DEC-001a (ADR-0010, the core object-model type system, amended by ADR-0011: composition slots, Asset, TrustBoundary, DataFlow; and by ADR-0012: Requirement in the core), DEC-001b in part (ADR-0013: SdlPractice, Evidence, RequirementSource), DEC-008 (ADR-0014: external catalogs as a cached pinned mirror)**.
 **Still open:** DEC-001b (governed/program layer minus Requirement and the ADR-0013 SDL classes — held pending the proposed.14 critique, DL-0020),
-DEC-008 (CWE/NVD), DEC-009 (threat→product / mitigation-lifecycle). An `ADR-NNNN` accepts a `DEC-*`;
+DEC-009 (threat→product / mitigation-lifecycle). An `ADR-NNNN` accepts a `DEC-*`;
 nothing else does (§9).
 
 This is a **skeleton set for week 1**. Requirements and final goals are ratified
@@ -182,7 +182,7 @@ All open. An `ADR-NNNN` accepts one; nothing else does (§9).
 | **DEC-005** | MVP scope. **ACCEPTED → ADR-0002**: reviewed attack-path graph over multiple products in ≥2 domains (one deep); diverse-domain + instance-type architecture. |
 | **DEC-006** | UI stack and interaction model. **ACCEPTED → ADR-0003** (Path A — local Tauri/TS desktop; tables→graph). |
 | **DEC-007** | Relationship to `tradar`: reuse / wrap / greenfield. **ACCEPTED → ADR-0001** (radar/tmodel split). |
-| **DEC-008** | CWE/NVD integration: live lookup vs cached mirror; how automation runs. |
+| **DEC-008** | CWE/NVD integration: live lookup vs cached mirror; how automation runs. **ACCEPTED → ADR-0014** (cached pinned mirror: copies pinned by SHA-256 in the library and shipped with the app, never live; new releases by reviewed pull request; NVD records the same way). |
 | **DEC-009** | Generic-threat → product / product-family mapping and mitigation-lifecycle tracking model. |
 | **DEC-010** | Implementation stack & language. **ACCEPTED → ADR-0003** (Tauri+TS / Python engine / local IPC / shared CLI), **engine language split refined by ADR-0009** (Python brain + Rust store/hot-paths); viz lib (A-044) stays open behind adapters. |
 | **DEC-011** | Storage & edge model. **ACCEPTED → ADR-0004** (file canonical SoT + edge-rich typed edges + local embedded working store + derived export); narrows DEC-004. |
