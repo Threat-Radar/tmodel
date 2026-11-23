@@ -57,12 +57,15 @@ import time
 import urllib.request
 from pathlib import Path
 
-from engine.load.cwe import CATALOG_ENV, LIBRARY_RECORD, bundled_name
+from engine.load.cwe import CATALOG_ENV, CweError, bundled_name, served_record
 from engine.load.library import load_library
 
-record = load_library(Path("library")).get(LIBRARY_RECORD)
+try:
+    record = served_record(load_library(Path("library")))  # the newest CWE record
+except CweError as exc:
+    sys.exit(f"build-engine: {exc}")
 if record is None or not record.content.url or not record.content.sha256:
-    sys.exit("build-engine: the library pins no CWE release (its cwe record has no url or sha256)")
+    sys.exit("build-engine: the library pins no CWE release (no CWE record with a url and sha256)")
 url, pinned = record.content.url, record.content.sha256.strip().lower()
 local = os.environ.get(CATALOG_ENV, "").strip()
 if local:
@@ -84,7 +87,7 @@ if digest != pinned:
 target = Path(sys.argv[1]) / bundled_name(url)
 target.parent.mkdir(parents=True, exist_ok=True)
 target.write_bytes(data)
-print(f"bundling {target.name} ({len(data)} bytes, SHA-256 {pinned[:12]})")
+print(f"bundling {target.name} from library record {record.id} ({len(data)} bytes, SHA-256 {pinned[:12]})")
 PY
 
 "$VPY" -m PyInstaller --onefile --clean --noconfirm --log-level WARN \
@@ -107,5 +110,5 @@ env -i HOME="$HOME" "$OUT/$NAME" library --in-process --json \
   | "$VPY" -c 'import json, sys; n = json.load(sys.stdin)["library"]["count"]; assert n, "bundled library is empty"; print(f"bundled library: {n} records")'
 # The bundled CWE release loads with no TMODEL_CWE_CATALOG (ADR-0014).
 env -i HOME="$HOME" "$OUT/$NAME" weaknesses --limit 1 --in-process --json \
-  | "$VPY" -c 'import json, sys; n = json.load(sys.stdin)["total"]; assert n, "bundled CWE release is empty"; print(f"bundled CWE release: {n} entries")'
+  | "$VPY" -c 'import json, sys; d = json.load(sys.stdin); n, v = d["total"], d["catalog"]["version"]; assert n, "bundled CWE release is empty"; print(f"bundled CWE release: {v}, {n} entries")'
 echo "built $OUT/$NAME"

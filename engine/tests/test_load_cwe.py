@@ -11,6 +11,7 @@ catalog-stats.yaml as well.
 import io
 import json
 import os
+import shutil
 import sys
 import threading
 import zipfile
@@ -23,6 +24,7 @@ from xml.etree import ElementTree
 import pytest
 
 from engine.load import cwe
+from engine.load.library import load_library
 
 FIXTURES = Path(__file__).resolve().parent / "fixtures" / "cwe"
 SAMPLE = FIXTURES / "cwec_v4.20-sample.xml"
@@ -358,11 +360,30 @@ def test_configured_catalog_reads_the_variable(monkeypatch):
     assert cwe.configured_catalog() == SAMPLE
 
 
-PINNED_URL = "https://cwe.mitre.org/data/xml/cwec_v4.20.xml.zip"
+# The release the pinned library serves: its newest CWE record, cwe-4-21 (DL-0065).
+PINNED_URL = "https://cwe.mitre.org/data/xml/cwec_v4.21.xml.zip"
+PINNED_SHA256 = "5225e2b4976696b5b90b62cdad0ddab4e8898103d61350971e366a377e718862"
+PINNED_LIBRARY = Path(__file__).resolve().parents[2] / "library"
 
 
 def test_bundled_name_is_the_urls_last_segment():
-    assert cwe.bundled_name(PINNED_URL) == "cwec_v4.20.xml.zip"
+    assert cwe.bundled_name(PINNED_URL) == "cwec_v4.21.xml.zip"
+
+
+@pytest.mark.skipif(
+    not (PINNED_LIBRARY / "records").is_dir(), reason="library submodule not checked out"
+)
+def test_the_pinned_library_serves_cwe_4_21():
+    # A tripwire: a library bump that brings a newer CWE record changes what the app
+    # ships, so it fails here until the same pull request says so.
+    record = cwe.served_record(load_library(PINNED_LIBRARY))
+    assert record is not None
+    assert (record.id, record.content.url, record.content.sha256) == (
+        "cwe-4-21",
+        PINNED_URL,
+        PINNED_SHA256,
+    )
+    assert record.related("supersedes") == ("cwe",)
 
 
 def test_packaged_engine_reads_its_bundled_release(monkeypatch, tmp_path):
@@ -370,7 +391,7 @@ def test_packaged_engine_reads_its_bundled_release(monkeypatch, tmp_path):
     monkeypatch.delenv(cwe.CATALOG_ENV, raising=False)
     monkeypatch.setattr(sys, "frozen", True, raising=False)
     monkeypatch.setattr(sys, "_MEIPASS", str(tmp_path), raising=False)
-    bundled = tmp_path / cwe.BUNDLED_CATALOGS / "cwec_v4.20.xml.zip"
+    bundled = tmp_path / cwe.BUNDLED_CATALOGS / "cwec_v4.21.xml.zip"
     bundled.parent.mkdir()
     bundled.write_bytes(b"release bytes")
     assert cwe.configured_catalog(PINNED_URL) == bundled
@@ -389,6 +410,82 @@ def test_the_variable_still_wins_in_a_packaged_engine(monkeypatch, tmp_path):
     monkeypatch.setattr(sys, "frozen", True, raising=False)
     monkeypatch.setattr(sys, "_MEIPASS", str(tmp_path), raising=False)
     assert cwe.configured_catalog(PINNED_URL) == SAMPLE
+
+
+# --- which library record is served ----------------------------------------------------
+
+LINE_LIBRARY = FIXTURES / "library"  # one record: cwe, pinning the sample
+
+
+def _add_release(root: Path, record_id: str, supersedes: str) -> None:
+    """A copy of the test library's cwe record as a newer release that supersedes another."""
+    text = (LINE_LIBRARY / "records" / "other" / "cwe" / "record.yaml").read_text(encoding="utf-8")
+    text = text.replace("id: cwe\n", f"id: {record_id}\n", 1)
+    text = text.replace("  supersedes: []\n", f"  supersedes:\n    - {supersedes}\n", 1)
+    folder = root / "records" / "other" / record_id
+    folder.mkdir(parents=True)
+    (folder / "record.yaml").write_text(text, encoding="utf-8")
+
+
+def test_a_library_with_one_cwe_record_serves_it():
+    assert cwe.served_record(load_library(LINE_LIBRARY)).id == "cwe"
+
+
+def test_the_newest_release_in_the_line_is_served(tmp_path):
+    shutil.copytree(LINE_LIBRARY, tmp_path / "lib")
+    _add_release(tmp_path / "lib", "cwe-4-21", "cwe")
+    _add_release(tmp_path / "lib", "cwe-4-22", "cwe-4-21")
+    assert cwe.served_record(load_library(tmp_path / "lib")).id == "cwe-4-22"
+
+
+def test_a_line_that_forks_is_refused(tmp_path):
+    shutil.copytree(LINE_LIBRARY, tmp_path / "lib")
+    _add_release(tmp_path / "lib", "cwe-4-21", "cwe")
+    _add_release(tmp_path / "lib", "cwe-x", "cwe")
+    with pytest.raises(cwe.CweError, match="forks: cwe-4-21, cwe-x each supersede cwe"):
+        cwe.served_record(load_library(tmp_path / "lib"))
+
+
+def test_a_library_without_a_cwe_record_serves_none(tmp_path):
+    shutil.copytree(LINE_LIBRARY, tmp_path / "lib")
+    shutil.rmtree(tmp_path / "lib" / "records" / "other" / "cwe")
+    _add_release(tmp_path / "lib", "cwe-4-21", "cwe")  # superseding a record that is not there
+    assert cwe.served_record(load_library(tmp_path / "lib", strict=False)) is None
+
+
+# --- fields newer releases add ---------------------------------------------------------
+
+
+def test_the_reference_fields_cwe_4_21_carries_are_known(tmp_path):
+    # Schema 8.0 (CWE 5.0) declares these five; CWE 4.21 carries them in its 7.x file.
+    added = (
+        "<Alt_URL>https://example.org/preprint.pdf</Alt_URL>"
+        "<Alt_URL_Date>2026-10-23</Alt_URL_Date><Media_Type>PDF</Media_Type>"
+        "<Access_Restrictions>Proprietary-Subscription</Access_Restrictions>"
+        "<Rationale>Why the reference applies.</Rationale>"
+    )
+    changed = tmp_path / "cwe.xml"
+    text = SAMPLE.read_text(encoding="utf-8")
+    changed.write_text(
+        text.replace("</External_Reference>", added + "</External_Reference>", 1),
+        encoding="utf-8",
+    )
+    catalog = cwe.load_catalog(changed)
+    assert catalog.unknown == ()
+    assert catalog.references[0]["Media_Type"] == ("PDF",)
+    assert catalog.references[0]["Rationale"] == ("Why the reference applies.",)
+
+
+def test_an_undeclared_reference_field_is_still_reported(tmp_path):
+    changed = tmp_path / "cwe.xml"
+    text = SAMPLE.read_text(encoding="utf-8")
+    changed.write_text(
+        text.replace(
+            "</External_Reference>", "<Future_Field>x</Future_Field></External_Reference>", 1
+        ),
+        encoding="utf-8",
+    )
+    assert cwe.load_catalog(changed).unknown == (("External_Reference/Future_Field", 1),)
 
 
 # --- objects in the tmodel object model ------------------------------------------------
