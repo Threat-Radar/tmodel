@@ -37,7 +37,7 @@ jobs:
         shell: bash
         run: |
           gh api --paginate "repos/$REPO/pulls/$PR/files" --jq '.[].filename' > "$RUNNER_TEMP/changed.txt"
-          inputs='^(models/|docs/models/|spec/vectors/(mvp-02-automotive-ecu|example-container-governance\.linkml)\.yaml$|docs/publishing/((test_)?(check_governance|check_publish|input_digest)|render_tara)\.py$|docs/publishing/tara\.yaml$|\.github/(CODEOWNERS|workflows/tara\.yml)$)'
+          inputs='^(models/|docs/models/|prototype/185-tara-gate/|engine/(engine/(tara_gate|core)|tests/test_tara_gate)\.py$|spec/vectors/(mvp-02-automotive-ecu|example-container-governance\.linkml)\.yaml$|docs/publishing/((test_)?(check_governance|check_publish|check_tara_gate|input_digest)|render_tara)\.py$|docs/publishing/tara\.yaml$|\.github/(CODEOWNERS|workflows/tara\.yml)$)'
           if grep -qE "$inputs" "$RUNNER_TEMP/changed.txt"; then
             echo "run=true" >> "$GITHUB_OUTPUT"
           else
@@ -60,7 +60,10 @@ jobs:
         run: python docs/publishing/check_governance.py
       - if: steps.scope.outputs.run == 'true'
         name: The checks' own tests
-        run: python -m pytest -q docs/publishing/test_check_governance.py docs/publishing/test_input_digest.py docs/publishing/test_check_publish.py
+        run: |
+          PYTHONPATH=engine python -m pytest -q docs/publishing/test_check_governance.py \
+            docs/publishing/test_input_digest.py docs/publishing/test_check_publish.py \
+            docs/publishing/test_check_tara_gate.py engine/tests/test_tara_gate.py
       - if: steps.scope.outputs.run == 'true'
         name: Publish gate
         shell: bash

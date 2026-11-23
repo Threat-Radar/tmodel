@@ -13,7 +13,7 @@ from collections.abc import Iterable, Mapping
 from pathlib import Path
 from typing import Any
 
-from engine import __version__
+from engine import __version__, tara_gate
 from engine import propose as proposals
 from engine import sdl as sdl_view
 from engine.graph import AttackGraph, GraphError
@@ -851,3 +851,16 @@ def pending_proposals(query: Mapping[str, str] | None = None) -> dict[str, Any]:
         raise GraphError(_sanitized_model_error(path, exc)) from exc
     except (KeyError, TypeError) as exc:
         raise GraphError(f"{path.name}: malformed proposals ({type(exc).__name__}: {exc})") from exc
+
+
+def evaluate_tara_gate(
+    gate: Mapping[str, Any],
+    record: Mapping[str, Any],
+    *,
+    current_digest: str,
+    evidence_link: str,
+) -> dict[str, Any]:
+    """Read-only DL-0027 pilot criterion; no Gate decision or conformance verdict."""
+    return tara_gate.evaluate(
+        gate, record, current_digest=current_digest, evidence_link=evidence_link
+    )
