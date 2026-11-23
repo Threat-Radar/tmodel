@@ -664,7 +664,7 @@
       "id": "attack-step:run-as-root",
       "label": "The router runs the attacker's commands as root",
       "properties": {
-        "description": "The attacker then controls the router: its settings, the traffic through it and what software it runs (NVD rates confidentiality, integrity and availability all High). Botnets have used this flaw to enlist routers that then flood other networks (ZDI, 2023-04-24); this model stops here and records that as harm, not as steps.",
+        "description": "The attacker then controls the router: its settings, the traffic through it and what software it runs (NVD rates confidentiality, integrity and availability all High). Botnets have used this flaw to enlist routers that then flood other networks (ZDI, 2023-04-24); this model stops here and records that as harm, not as steps. ZDI's post calls the flaw WAN-side: at Pwn2Own, one team reached it from the internet by chaining a separate race condition (CVE-2023-27359), a route this model leaves out (DL-0061).",
         "kill_chain_phase": "actions_on_objectives"
       }
     },
@@ -730,7 +730,7 @@
         "asserted_at": "2026-11-22T00:00:00Z",
         "assertion_status": "proposed",
         "confidence": "high",
-        "description": "NVD and the CNA rate the flaw adjacent-network (CVSS 3.1 AV:A), so it needs a device on the router's LAN or Wi-Fi.",
+        "description": "NVD and CISA rate the flaw adjacent-network (CVSS 3.1 AV:A), so it needs a device on the router's LAN or Wi-Fi; the CNA's CVE record gives no score.",
         "evidence": [
           "https://nvd.nist.gov/vuln/detail/CVE-2023-1389"
         ],

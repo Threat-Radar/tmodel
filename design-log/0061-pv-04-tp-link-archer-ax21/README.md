@@ -69,8 +69,8 @@ The model says what the flaw lets an attacker do, cites the public records, and 
   `bin/validate-archdoc` reports 0 errors. `vitest` passes 377 tests, `npm run typecheck` and `npm run build` are clean,
   and the engine's tests give 612 passed and 7 skipped.
 - The facts come from the research notes of 2026-11-13 (sources read that day) and the saved NVD and CISA records,
-  re-read on 2026-11-22: CVSS 3.1 8.8 `AV:A/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H` from NVD and from the CNA, CWE-77, and the
-  CISA entry added 2023-05-01 with "Apply updates per vendor instructions." CWE 4.20 links CWE-77 to CAPEC-248, and
+  re-read on 2026-11-22: CVSS 3.1 8.8 `AV:A/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H` from NVD and from CISA's enrichment of the
+  CVE record (the CNA, Tenable, gives no score), CWE-77, and the CISA entry added 2023-05-01 with "Apply updates per vendor instructions." CWE 4.20 links CWE-77 to CAPEC-248, and
   CAPEC 3.9 links CAPEC-248 back to CWE-77.
 
 ## Choices the agent made, open to review
@@ -92,8 +92,10 @@ The model says what the flaw lets an attacker do, cites the public records, and 
 
 - @Clovier, 2026-11-16: the pin (1.1.3 Build 20221125) and the home-network path only.
 - @Clovier, 2026-11-22: build the model "in a safe capacity", which this record reads as advisory level.
+- @Clovier, 2026-11-22: checked the path against NVD's record, ZDI-23-451 and CISA's entry (#230's last box): OK, with
+  the two corrections listed below.
 
-Nothing in the model is accepted yet. All seven Assertions are `proposed`, and no Review is recorded.
+The model itself still records no Review: all seven Assertions stay `proposed`. The check is recorded here and on #230.
 
 ## What was rejected, and why
 
@@ -102,6 +104,9 @@ Nothing in the model is accepted yet. All seven Assertions are `proposed`, and n
 - **The first attempt (2026-11-16):** it followed the research notes' step list, including the botnet's own steps and
   the request format. It was stopped before anything was written, and the router model was parked. This version keeps
   to advisory level instead.
+- **Two statements in the first draft, corrected after @Clovier's check (2026-11-22):** the second CVSS 8.8 was
+  credited to the CNA, but it is CISA's (Tenable's CVE record gives no score); and step 3 mentioned botnets without
+  saying that ZDI's post describes reaching the flaw from the internet side (finding 4).
 
 ## Findings from the sources
 
@@ -110,9 +115,11 @@ Nothing in the model is accepted yet. All seven Assertions are `proposed`, and n
    vulnerable V2 routers.
 2. **The CVE record's fixed version has a typo:** "1.14 Build 20230219" for 1.1.4.
 3. **V3 has two firmware lines,** numbered (1.1.x) and date-named. The model pins the numbered line.
+4. **ZDI's post on the botnet calls the flaw WAN-side.** At Pwn2Own Toronto, one team used it from the home network and
+   another reached it from the internet by chaining a race condition that briefly exposes the management interface on
+   the WAN side (CVE-2023-27359). The model's one path is the home-network one, by the scope call above; step 3 says so.
 
 ## Next steps
 
-- A person checks the path, the affected versions and the fix against NVD's record and CISA's catalog entry, and
-  records the result (#230's last box).
+- Done 2026-11-22: @Clovier checked the path against the answer key (above, and on #230).
 - The sponsor decides whether pv-04 joins the examples.

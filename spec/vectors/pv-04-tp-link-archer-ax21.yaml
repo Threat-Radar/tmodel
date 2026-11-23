@@ -167,7 +167,9 @@ attack_steps:
       The attacker then controls the router: its settings, the traffic through it and what
       software it runs (NVD rates confidentiality, integrity and availability all High).
       Botnets have used this flaw to enlist routers that then flood other networks (ZDI,
-      2023-04-24); this model stops here and records that as harm, not as steps.
+      2023-04-24); this model stops here and records that as harm, not as steps. ZDI's post
+      calls the flaw WAN-side: at Pwn2Own, one team reached it from the internet by chaining
+      a separate race condition (CVE-2023-27359), a route this model leaves out (DL-0061).
     kill_chain_phase: actions_on_objectives
 
 attack_paths:
@@ -215,7 +217,7 @@ mitigations:
 assertions:
   - id: assertion:reach-step-targets-admin-requests
     name: The reach step uses the home network's requests to the web management interface (AI-proposed)
-    description: NVD and the CNA rate the flaw adjacent-network (CVSS 3.1 AV:A), so it needs a device on the router's LAN or Wi-Fi.
+    description: NVD and CISA rate the flaw adjacent-network (CVSS 3.1 AV:A), so it needs a device on the router's LAN or Wi-Fi; the CNA's CVE record gives no score.
     subject: attack-step:reach-admin-interface
     predicate: targets_element
     object: data-flow:admin-requests
