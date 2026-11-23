@@ -76,6 +76,7 @@ def test_the_sample_is_lossless(report):
     assert entries["by_kind_in_file"] == {"Weakness": 9, "Category": 2, "View": 1}
     assert entries["missing"] == entries["extra"] == entries["kind_changed"] == []
     assert (report["references"]["in_file"], report["references"]["imported"]) == (3, 3)
+    assert report["references"]["repeated_differently"] == []
     rel = report["relationships"]
     assert (rel["in_file"], rel["imported"], rel["distinct_in_file"]) == (20, 20, 20)
     assert rel["missing"] == rel["extra"] == rel["repeated_differently"] == []
@@ -260,6 +261,93 @@ def test_a_relationship_written_twice_is_counted_twice(tmp_path):
     rel = twice["relationships"]
     assert twice["lossless"] is True
     assert (rel["in_file"], rel["imported"], rel["distinct_in_file"]) == (21, 21, 20)
+
+
+# --- losses that leave every total equal (#249 review) ------------------------------------------
+
+
+def test_one_relationship_losing_a_copy_as_another_gains_one_is_a_loss(monkeypatch, tmp_path):
+    # The file writes PeerOf CWE-352 twice; the import keeps it once, and keeps CWE-79's
+    # first relationship twice. The totals, the tuples and every view still agree.
+    line = '<Related_Weakness Nature="PeerOf" CWE_ID="352" View_ID="1000"/>'
+    twice = _edited(tmp_path, line, line + line)
+    read = cwe._relationships
+
+    def offsetting(name, label, kind, fields):
+        found = read(name, label, kind, fields)
+        if label != "CWE-79":
+            return found
+        peer = [r for r in found if (r.nature, r.target) == ("PeerOf", "CWE-352")]
+        rest = [r for r in found if (r.nature, r.target) != ("PeerOf", "CWE-352")]
+        return (*rest, rest[0], *peer[1:])
+
+    monkeypatch.setattr(cwe, "_relationships", offsetting)
+    lossy = reconcile(twice)
+    rel = lossy["relationships"]
+    assert (rel["in_file"], rel["imported"], rel["missing"], rel["extra"]) == (21, 21, [], [])
+    assert rel["repeated_differently"] == [
+        {"source": "CWE-79", "nature": "ChildOf", "target": "CWE-74", "view": "CWE-1000"}
+        | {"in_file": 1, "imported": 2},
+        {"source": "CWE-79", "nature": "PeerOf", "target": "CWE-352", "view": "CWE-1000"}
+        | {"in_file": 2, "imported": 1},
+    ]
+    assert lossy["lossless"] is False
+    assert "Given a different number of times: CWE-79 ChildOf CWE-74 in CWE-1000" in to_markdown(
+        lossy
+    )
+
+
+def test_two_entries_that_trade_kinds_are_a_loss(monkeypatch):
+    # A weakness read as a category and a category read as a weakness leave the counts
+    # by kind equal. Neither carries CAPEC links or observed examples, so nothing else moves.
+    def traded(catalog):
+        weakness = next(w for w in catalog.weaknesses if w.id == "CWE-373")
+        category = next(c for c in catalog.categories if c.id == "CWE-411")
+        return dataclasses.replace(
+            catalog,
+            weaknesses=(
+                *(w for w in catalog.weaknesses if w is not weakness),
+                dataclasses.replace(category, kind="Weakness"),
+            ),
+            categories=(
+                *(c for c in catalog.categories if c is not category),
+                dataclasses.replace(weakness, kind="Category"),
+            ),
+        )
+
+    _losing(monkeypatch, traded)
+    lossy = reconcile(SAMPLE, SAMPLE_SHA256)
+    entries = lossy["entries"]
+    assert entries["by_kind_in_file"] == entries["by_kind_imported"]
+    assert (entries["missing"], entries["extra"]) == ([], [])
+    assert entries["kind_changed"] == ["CWE-373", "CWE-411"]
+    assert all(link["in_file"] == link["imported"] for link in lossy["links"].values())
+    assert lossy["lossless"] is False
+    assert "Read as another kind: CWE-373, CWE-411." in to_markdown(lossy)
+
+
+def test_a_reference_kept_fewer_times_than_the_file_defines_it_is_a_loss(monkeypatch, tmp_path):
+    # The file defines REF-7 twice; the import keeps one. The ids are the same set.
+    text = SAMPLE.read_text(encoding="utf-8")
+    start = text.rindex("\n", 0, text.index('<External_Reference Reference_ID="REF-7"')) + 1
+    end = text.index("</External_Reference>", start) + len("</External_Reference>\n")
+    doubled = tmp_path / "cwe.xml"
+    doubled.write_text(text[:end] + text[start:end] + text[end:], encoding="utf-8")
+
+    def once_each(catalog):
+        kept = {}
+        for reference in catalog.references:
+            kept.setdefault(reference["@Reference_ID"], reference)
+        return dataclasses.replace(catalog, references=tuple(kept.values()))
+
+    _losing(monkeypatch, once_each)
+    lossy = reconcile(doubled)
+    references = lossy["references"]
+    assert (references["in_file"], references["imported"]) == (4, 3)
+    assert (references["missing"], references["extra"]) == ([], [])
+    assert references["repeated_differently"] == ["REF-7"]
+    assert lossy["lossless"] is False
+    assert "Given a different number of times: REF-7." in to_markdown(lossy)
 
 
 # --- the report, the command and the committed copy -----------------------------------------

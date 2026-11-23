@@ -5,13 +5,14 @@ once more with ElementTree alone, with none of the importer's code. The two read
 are compared:
 
 - **entries**: every Weakness, Category and View in the file is imported once, with
-  its kind and id, and every External_Reference with its id. PLAN-0002 §5 named "the
+  its own kind and id, and every External_Reference id as many times as the file
+  defines it. PLAN-0002 §5 named "the
   union of entries across the views". The import reads the whole catalog (#61,
   question 1), so the report also counts the entries that no view's relationships
   reach, which a view-by-view import would drop;
 - **relationships**: the (entry, nature, target, view) tuples the file writes, as a
   Related_Weakness or a Has_Member or Member_Of, equal the ones the import keeps
-  (#145), all together and view by view;
+  (#145), each as many times as the file writes it, all together and view by view;
 - **fields**: for each entry and each of its fields, what the file holds equals what
   was kept: an attribute's value exactly, and for any other field its elements, the
   names and values of the attributes inside it, and its words, in order. A field the
@@ -169,12 +170,20 @@ def _report(catalog: cwe.CweCatalog, source: Mapping[str, Any]) -> dict[str, Any
             "imported": sum(len(w.observed_examples) for w in catalog.weaknesses),
         },
     }
+    # Equal totals are not enough on their own: one relationship can lose a copy while
+    # another gains one, and two entries can trade kinds (#249 review). So each tuple and
+    # each reference id must be kept as many times as the file gives it, and each entry
+    # with its own kind.
     lossless = (
         not any(entries[k]["missing"] or entries[k]["extra"] for k in ("entries", "references"))
         and entries["entries"]["by_kind_in_file"] == entries["entries"]["by_kind_imported"]
+        and not entries["entries"]["kind_changed"]
+        and entries["references"]["in_file"] == entries["references"]["imported"]
+        and not entries["references"]["repeated_differently"]
         and not relationships["missing"]
         and not relationships["extra"]
         and relationships["in_file"] == relationships["imported"]
+        and not relationships["repeated_differently"]
         and not fields["not_kept"]
         and all(link["in_file"] == link["imported"] for link in links.values())
     )
@@ -202,6 +211,7 @@ def _entries(
     references: list[str],
     kept_references: list[str],
 ) -> dict[str, Any]:
+    file_ids, kept_ids = Counter(references), Counter(kept_references)
     return {
         "entries": {
             "by_kind_in_file": dict(Counter(kind for kind, *_ in in_file.values())),
@@ -218,6 +228,10 @@ def _entries(
             "imported": len(kept_references),
             "missing": sorted(set(references) - set(kept_references)),
             "extra": sorted(set(kept_references) - set(references)),
+            # an id the file defines more or fewer times than the import keeps it
+            "repeated_differently": sorted(
+                i for i in set(file_ids) & set(kept_ids) if file_ids[i] != kept_ids[i]
+            ),
         },
     }
 
@@ -453,6 +467,8 @@ def to_markdown(report: Mapping[str, Any]) -> str:
     missing = _listed(e["missing"] + r["missing"])
     extra = _listed(e["extra"] + r["extra"])
     retyped = f" Read as another kind: {_listed(e['kind_changed'])}." if e["kind_changed"] else ""
+    if r["repeated_differently"]:
+        retyped += f" Given a different number of times: {_listed(r['repeated_differently'])}."
     lost = _listed([_relation(t) for t in rel["missing"]])
     added = _listed([_relation(t) for t in rel["extra"]])
     recounted = _listed([_relation(t) for t in rel["repeated_differently"]])

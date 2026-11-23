@@ -4,9 +4,9 @@ id: DL-0058
 title: "CWE import reconciliation: the file read twice, every loss named, and a CI check on MITRE's release (#146, #61)"
 type: process
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 date: "2026-11-15"
-updated: "2026-11-15"
+updated: "2026-11-23"
 record: DL-0058
 bears_on: [DEC-008]
 defers_to: ARCH-0001
@@ -75,6 +75,16 @@ The report is Markdown, and the same file always gives the same text: it names n
 6. **CI downloads MITRE's file.** It is never committed (`CLAUDE.md`), and CI has no other copy. The URL and digest are the library record's, written into the workflow because tmodel's library pin (`a28a013`) predates the record's digest. How the app gets the catalog stays DEC-008's question.
 7. **A workflow of its own,** `cwe.yml`, rather than a job in `app.yml`: it needs the network, and it runs only when the import changes. `.github/` is @nymble's in `CODEOWNERS`.
 8. **`python -m engine.load.cwe_reconcile`, not a `tmodel` command.** It is a check that reads a local file, not an answer of the engine's API (APP-0001 A-060).
+
+## Review changes (2026-11-23)
+
+@kriishnaa-18 reviewed the pull request and found that equal totals could still hide a loss. Both blocking findings and the smaller one are fixed, each with a regression test that fails on the old code:
+
+1. **A relationship that loses a copy while another gains one.** The report listed such tuples under `repeated_differently`, but `lossless` checked only the totals, which stay equal. It now requires every (entry, nature, target, view) tuple to be kept as many times as the file writes it. Test: the file writes PeerOf CWE-352 twice, and an import that keeps it once and keeps CWE-79's ChildOf CWE-74 twice is no longer lossless.
+2. **Two entries that trade kinds.** The report listed them under `kind_changed`, but `lossless` compared only the counts by kind, which stay equal. It now requires every entry to keep its own kind. Test: CWE-373 read as a category and CWE-411 as a weakness; neither carries CAPEC links or observed examples, so nothing else in the report moves.
+3. **Reference counts.** References were compared as sets of ids, so a reference the file defines twice and the import keeps once went unseen. `lossless` now requires equal totals, and the report gains `references.repeated_differently`, naming each id kept a different number of times. Test: the file defines REF-7 twice and an import that keeps one copy is named and fails.
+
+Before the fix, all three test cases came out lossless; now each one fails and names what was lost. The report's text names references kept a different number of times beside the entries read as another kind, so a lossless report reads as before: the committed report for CWE 4.20 is unchanged, and `--check` still passes on MITRE's file.
 
 ## What a human accepted
 
