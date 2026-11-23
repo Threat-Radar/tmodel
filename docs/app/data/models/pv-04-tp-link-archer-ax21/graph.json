@@ -1,6 +1,8 @@
 {
   "edges": [
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product:archer-ax21-v3|composed_of|component:web-management",
       "properties": {},
       "relationship_type": "composed_of",
@@ -8,6 +10,8 @@
       "target": "component:web-management"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product:archer-ax21-v3|composed_of|component:router-firmware",
       "properties": {},
       "relationship_type": "composed_of",
@@ -15,6 +19,8 @@
       "target": "component:router-firmware"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product:archer-ax21-v3|manufactured_by|party:tp-link",
       "properties": {},
       "relationship_type": "manufactured_by",
@@ -22,6 +28,8 @@
       "target": "party:tp-link"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:component:home-device|in_trust_zone|trust-boundary:home-network",
       "properties": {},
       "relationship_type": "in_trust_zone",
@@ -29,6 +37,8 @@
       "target": "trust-boundary:home-network"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:component:web-management|in_trust_zone|trust-boundary:router",
       "properties": {},
       "relationship_type": "in_trust_zone",
@@ -36,6 +46,8 @@
       "target": "trust-boundary:router"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:component:web-management|uses_component|component:router-firmware",
       "properties": {},
       "relationship_type": "uses_component",
@@ -43,6 +55,8 @@
       "target": "component:router-firmware"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:component:router-firmware|in_trust_zone|trust-boundary:router",
       "properties": {},
       "relationship_type": "in_trust_zone",
@@ -50,6 +64,8 @@
       "target": "trust-boundary:router"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:vulnerability:cve-2023-1389|affects|product:archer-ax21-v3",
       "properties": {},
       "relationship_type": "affects",
@@ -57,6 +73,8 @@
       "target": "product:archer-ax21-v3"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:lan-command-injection|applies_in_phase|lifecycle-phase:operation",
       "properties": {},
       "relationship_type": "applies_in_phase",
@@ -64,6 +82,8 @@
       "target": "lifecycle-phase:operation"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:lan-command-injection|realizes_damage|damage-scenario:router-takeover",
       "properties": {},
       "relationship_type": "realizes_damage",
@@ -71,6 +91,8 @@
       "target": "damage-scenario:router-takeover"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:lan-command-injection|targets_element|component:web-management",
       "properties": {},
       "relationship_type": "targets_element",
@@ -78,6 +100,8 @@
       "target": "component:web-management"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:lan-command-injection|targets_element|data-flow:admin-requests",
       "properties": {},
       "relationship_type": "targets_element",
@@ -85,6 +109,8 @@
       "target": "data-flow:admin-requests"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-step:reach-admin-interface|precedes|attack-step:inject-command",
       "properties": {},
       "relationship_type": "precedes",
@@ -92,6 +118,8 @@
       "target": "attack-step:inject-command"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-step:inject-command|precedes|attack-step:run-as-root",
       "properties": {},
       "relationship_type": "precedes",
@@ -99,8 +127,26 @@
       "target": "attack-step:run-as-root"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "high",
+          "description": null,
+          "evidence": [
+            "https://nvd.nist.gov/vuln/detail/CVE-2023-1389",
+            "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2023-1389"
+          ],
+          "id": "assertion:lan-path-realizes",
+          "reviews": []
+        }
+      ],
+      "authored": true,
       "id": "relationship:attack-path:lan-to-root|realizes_threat|threat-instance:lan-command-injection",
       "properties": {
+        "assertion_evidence": [
+          "https://nvd.nist.gov/vuln/detail/CVE-2023-1389",
+          "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2023-1389"
+        ],
         "assertion_ids": [
           "assertion:lan-path-realizes"
         ],
@@ -112,6 +158,8 @@
       "target": "threat-instance:lan-command-injection"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:lan-to-root|steps|attack-step:reach-admin-interface",
       "properties": {},
       "relationship_type": "steps",
@@ -119,6 +167,8 @@
       "target": "attack-step:reach-admin-interface"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:lan-to-root|steps|attack-step:inject-command",
       "properties": {},
       "relationship_type": "steps",
@@ -126,6 +176,8 @@
       "target": "attack-step:inject-command"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:lan-to-root|steps|attack-step:run-as-root",
       "properties": {},
       "relationship_type": "steps",
@@ -133,6 +185,8 @@
       "target": "attack-step:run-as-root"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:damage-scenario:router-takeover|damages_asset|asset:router-control",
       "properties": {},
       "relationship_type": "damages_asset",
@@ -140,6 +194,8 @@
       "target": "asset:router-control"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:damage-scenario:router-takeover|damages_asset|asset:home-connectivity",
       "properties": {},
       "relationship_type": "damages_asset",
@@ -147,6 +203,8 @@
       "target": "asset:home-connectivity"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:damage-scenario:router-takeover|damages_asset|asset:others-services",
       "properties": {},
       "relationship_type": "damages_asset",
@@ -154,6 +212,8 @@
       "target": "asset:others-services"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:vendor-fix|applies_in_phase|lifecycle-phase:implementation",
       "properties": {},
       "relationship_type": "applies_in_phase",
@@ -161,6 +221,8 @@
       "target": "lifecycle-phase:implementation"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:vendor-fix|implementation_owner|party:tp-link",
       "properties": {},
       "relationship_type": "implementation_owner",
@@ -168,6 +230,8 @@
       "target": "party:tp-link"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:vendor-fix|mitigates|threat-instance:lan-command-injection",
       "properties": {},
       "relationship_type": "mitigates",
@@ -175,6 +239,8 @@
       "target": "threat-instance:lan-command-injection"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:update-firmware|applies_in_phase|lifecycle-phase:operation",
       "properties": {},
       "relationship_type": "applies_in_phase",
@@ -182,6 +248,8 @@
       "target": "lifecycle-phase:operation"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:update-firmware|implementation_owner|party:router-owner",
       "properties": {},
       "relationship_type": "implementation_owner",
@@ -189,6 +257,8 @@
       "target": "party:router-owner"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:update-firmware|mitigates|threat-instance:lan-command-injection",
       "properties": {},
       "relationship_type": "mitigates",
@@ -196,6 +266,8 @@
       "target": "threat-instance:lan-command-injection"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:keep-updating|applies_in_phase|lifecycle-phase:operation",
       "properties": {},
       "relationship_type": "applies_in_phase",
@@ -203,6 +275,8 @@
       "target": "lifecycle-phase:operation"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:keep-updating|implementation_owner|party:router-owner",
       "properties": {},
       "relationship_type": "implementation_owner",
@@ -210,6 +284,8 @@
       "target": "party:router-owner"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:keep-updating|mitigates|threat-instance:lan-command-injection",
       "properties": {},
       "relationship_type": "mitigates",
@@ -217,6 +293,8 @@
       "target": "threat-instance:lan-command-injection"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:fewer-untrusted-devices|applies_in_phase|lifecycle-phase:operation",
       "properties": {},
       "relationship_type": "applies_in_phase",
@@ -224,6 +302,8 @@
       "target": "lifecycle-phase:operation"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:fewer-untrusted-devices|implementation_owner|party:router-owner",
       "properties": {},
       "relationship_type": "implementation_owner",
@@ -231,6 +311,8 @@
       "target": "party:router-owner"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:fewer-untrusted-devices|mitigates|threat-instance:lan-command-injection",
       "properties": {},
       "relationship_type": "mitigates",
@@ -238,6 +320,8 @@
       "target": "threat-instance:lan-command-injection"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:reach-step-targets-admin-requests|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -245,6 +329,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:reach-step-targets-admin-requests|object|data-flow:admin-requests",
       "properties": {},
       "relationship_type": "object",
@@ -252,6 +338,8 @@
       "target": "data-flow:admin-requests"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:reach-step-targets-admin-requests|subject|attack-step:reach-admin-interface",
       "properties": {},
       "relationship_type": "subject",
@@ -259,6 +347,8 @@
       "target": "attack-step:reach-admin-interface"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:inject-step-exploits-cve-2023-1389|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -266,6 +356,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:inject-step-exploits-cve-2023-1389|object|vulnerability:cve-2023-1389",
       "properties": {},
       "relationship_type": "object",
@@ -273,6 +365,8 @@
       "target": "vulnerability:cve-2023-1389"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:inject-step-exploits-cve-2023-1389|subject|attack-step:inject-command",
       "properties": {},
       "relationship_type": "subject",
@@ -280,6 +374,8 @@
       "target": "attack-step:inject-command"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:root-step-targets-router-control|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -287,6 +383,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:root-step-targets-router-control|object|asset:router-control",
       "properties": {},
       "relationship_type": "object",
@@ -294,6 +392,8 @@
       "target": "asset:router-control"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:root-step-targets-router-control|subject|attack-step:run-as-root",
       "properties": {},
       "relationship_type": "subject",
@@ -301,6 +401,8 @@
       "target": "attack-step:run-as-root"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cve-2023-1389-propagates-to-firmware|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -308,6 +410,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cve-2023-1389-propagates-to-firmware|object|component:router-firmware",
       "properties": {},
       "relationship_type": "object",
@@ -315,6 +419,8 @@
       "target": "component:router-firmware"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cve-2023-1389-propagates-to-firmware|subject|vulnerability:cve-2023-1389",
       "properties": {},
       "relationship_type": "subject",
@@ -322,6 +428,8 @@
       "target": "vulnerability:cve-2023-1389"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cve-2023-1389-instance-of-cwe-77|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -329,6 +437,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cve-2023-1389-instance-of-cwe-77|object|weakness:cwe-77",
       "properties": {},
       "relationship_type": "object",
@@ -336,6 +446,8 @@
       "target": "weakness:cwe-77"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cve-2023-1389-instance-of-cwe-77|subject|vulnerability:cve-2023-1389",
       "properties": {},
       "relationship_type": "subject",
@@ -343,6 +455,8 @@
       "target": "vulnerability:cve-2023-1389"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cwe-77-exploited-by-capec-248|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -350,6 +464,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cwe-77-exploited-by-capec-248|object|attack-pattern:capec-248",
       "properties": {},
       "relationship_type": "object",
@@ -357,6 +473,8 @@
       "target": "attack-pattern:capec-248"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cwe-77-exploited-by-capec-248|subject|weakness:cwe-77",
       "properties": {},
       "relationship_type": "subject",
@@ -364,6 +482,8 @@
       "target": "weakness:cwe-77"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:lan-path-realizes|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -371,6 +491,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:lan-path-realizes|object|threat-instance:lan-command-injection",
       "properties": {},
       "relationship_type": "object",
@@ -378,6 +500,8 @@
       "target": "threat-instance:lan-command-injection"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:lan-path-realizes|subject|attack-path:lan-to-root",
       "properties": {},
       "relationship_type": "subject",
@@ -385,6 +509,8 @@
       "target": "attack-path:lan-to-root"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:asset:router-control|owned_by|party:router-owner",
       "properties": {},
       "relationship_type": "owned_by",
@@ -392,6 +518,8 @@
       "target": "party:router-owner"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:asset:router-control|processed_by|component:web-management",
       "properties": {},
       "relationship_type": "processed_by",
@@ -399,6 +527,8 @@
       "target": "component:web-management"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:asset:router-control|processed_by|component:router-firmware",
       "properties": {},
       "relationship_type": "processed_by",
@@ -406,6 +536,8 @@
       "target": "component:router-firmware"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:asset:home-connectivity|owned_by|party:router-owner",
       "properties": {},
       "relationship_type": "owned_by",
@@ -413,6 +545,8 @@
       "target": "party:router-owner"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:asset:home-connectivity|processed_by|component:router-firmware",
       "properties": {},
       "relationship_type": "processed_by",
@@ -420,6 +554,8 @@
       "target": "component:router-firmware"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:admin-requests|carries|asset:router-control",
       "properties": {},
       "relationship_type": "carries",
@@ -427,6 +563,8 @@
       "target": "asset:router-control"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:admin-requests|crosses_boundary|trust-boundary:home-network",
       "properties": {},
       "relationship_type": "crosses_boundary",
@@ -434,6 +572,8 @@
       "target": "trust-boundary:home-network"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:admin-requests|crosses_boundary|trust-boundary:router",
       "properties": {},
       "relationship_type": "crosses_boundary",
@@ -441,6 +581,8 @@
       "target": "trust-boundary:router"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:admin-requests|flow_from|component:home-device",
       "properties": {},
       "relationship_type": "flow_from",
@@ -448,6 +590,8 @@
       "target": "component:home-device"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:admin-requests|flow_to|component:web-management",
       "properties": {},
       "relationship_type": "flow_to",
@@ -455,8 +599,27 @@
       "target": "component:web-management"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "high",
+          "description": "NVD and CISA rate the flaw adjacent-network (CVSS 3.1 AV:A), so it needs a device on the router's LAN or Wi-Fi; the CNA's CVE record gives no score.",
+          "evidence": [
+            "https://nvd.nist.gov/vuln/detail/CVE-2023-1389"
+          ],
+          "id": "assertion:reach-step-targets-admin-requests",
+          "reviews": []
+        }
+      ],
+      "authored": false,
       "id": "relationship:attack-step:reach-admin-interface|targets_element|data-flow:admin-requests",
       "properties": {
+        "assertion_descriptions": [
+          "NVD and CISA rate the flaw adjacent-network (CVSS 3.1 AV:A), so it needs a device on the router's LAN or Wi-Fi; the CNA's CVE record gives no score."
+        ],
+        "assertion_evidence": [
+          "https://nvd.nist.gov/vuln/detail/CVE-2023-1389"
+        ],
         "assertion_ids": [
           "assertion:reach-step-targets-admin-requests"
         ],
@@ -468,8 +631,33 @@
       "target": "data-flow:admin-requests"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "high",
+          "description": "NVD describes an unauthenticated command injection in the web management interface; CISA lists it as exploited in the wild (added 2023-05-01).",
+          "evidence": [
+            "https://nvd.nist.gov/vuln/detail/CVE-2023-1389",
+            "https://www.cve.org/CVERecord?id=CVE-2023-1389",
+            "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2023-1389",
+            "https://www.zerodayinitiative.com/advisories/ZDI-23-451/"
+          ],
+          "id": "assertion:inject-step-exploits-cve-2023-1389",
+          "reviews": []
+        }
+      ],
+      "authored": false,
       "id": "relationship:attack-step:inject-command|exploits|vulnerability:cve-2023-1389",
       "properties": {
+        "assertion_descriptions": [
+          "NVD describes an unauthenticated command injection in the web management interface; CISA lists it as exploited in the wild (added 2023-05-01)."
+        ],
+        "assertion_evidence": [
+          "https://nvd.nist.gov/vuln/detail/CVE-2023-1389",
+          "https://www.cve.org/CVERecord?id=CVE-2023-1389",
+          "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2023-1389",
+          "https://www.zerodayinitiative.com/advisories/ZDI-23-451/"
+        ],
         "assertion_ids": [
           "assertion:inject-step-exploits-cve-2023-1389"
         ],
@@ -481,8 +669,31 @@
       "target": "vulnerability:cve-2023-1389"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "high",
+          "description": "NVD: the injected commands run as root, with confidentiality, integrity and availability all rated High. ZDI-23-451 also gives root. ZDI's blog reports botnets using the flaw to enlist routers.",
+          "evidence": [
+            "https://nvd.nist.gov/vuln/detail/CVE-2023-1389",
+            "https://www.zerodayinitiative.com/advisories/ZDI-23-451/",
+            "https://www.zerodayinitiative.com/blog/2023/4/21/tp-link-wan-side-vulnerability-cve-2023-1389-added-to-the-mirai-botnet-arsenal"
+          ],
+          "id": "assertion:root-step-targets-router-control",
+          "reviews": []
+        }
+      ],
+      "authored": false,
       "id": "relationship:attack-step:run-as-root|targets_element|asset:router-control",
       "properties": {
+        "assertion_descriptions": [
+          "NVD: the injected commands run as root, with confidentiality, integrity and availability all rated High. ZDI-23-451 also gives root. ZDI's blog reports botnets using the flaw to enlist routers."
+        ],
+        "assertion_evidence": [
+          "https://nvd.nist.gov/vuln/detail/CVE-2023-1389",
+          "https://www.zerodayinitiative.com/advisories/ZDI-23-451/",
+          "https://www.zerodayinitiative.com/blog/2023/4/21/tp-link-wan-side-vulnerability-cve-2023-1389-added-to-the-mirai-botnet-arsenal"
+        ],
         "assertion_ids": [
           "assertion:root-step-targets-router-control"
         ],
@@ -494,8 +705,29 @@
       "target": "asset:router-control"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "high",
+          "description": "NVD's range is firmware before 1.1.4 Build 20230219. The pinned 1.1.3 Build 20221125 is inside it, and TP-Link's V3 page lists 1.1.4 Build 20230219 as the next release.",
+          "evidence": [
+            "https://nvd.nist.gov/vuln/detail/CVE-2023-1389",
+            "https://www.tp-link.com/us/support/download/archer-ax21/v3/"
+          ],
+          "id": "assertion:cve-2023-1389-propagates-to-firmware",
+          "reviews": []
+        }
+      ],
+      "authored": false,
       "id": "relationship:vulnerability:cve-2023-1389|propagates_to|component:router-firmware",
       "properties": {
+        "assertion_descriptions": [
+          "NVD's range is firmware before 1.1.4 Build 20230219. The pinned 1.1.3 Build 20221125 is inside it, and TP-Link's V3 page lists 1.1.4 Build 20230219 as the next release."
+        ],
+        "assertion_evidence": [
+          "https://nvd.nist.gov/vuln/detail/CVE-2023-1389",
+          "https://www.tp-link.com/us/support/download/archer-ax21/v3/"
+        ],
         "assertion_ids": [
           "assertion:cve-2023-1389-propagates-to-firmware"
         ],
@@ -507,8 +739,26 @@
       "target": "component:router-firmware"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "high",
+          "description": null,
+          "evidence": [
+            "https://nvd.nist.gov/vuln/detail/CVE-2023-1389",
+            "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2023-1389"
+          ],
+          "id": "assertion:cve-2023-1389-instance-of-cwe-77",
+          "reviews": []
+        }
+      ],
+      "authored": false,
       "id": "relationship:vulnerability:cve-2023-1389|instance_of|weakness:cwe-77",
       "properties": {
+        "assertion_evidence": [
+          "https://nvd.nist.gov/vuln/detail/CVE-2023-1389",
+          "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2023-1389"
+        ],
         "assertion_ids": [
           "assertion:cve-2023-1389-instance-of-cwe-77"
         ],
@@ -520,8 +770,29 @@
       "target": "weakness:cwe-77"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "medium",
+          "description": "CWE 4.20 links CWE-77 to CAPEC-248, and CAPEC 3.9 links CAPEC-248 back to CWE-77.",
+          "evidence": [
+            "https://cwe.mitre.org/data/definitions/77.html",
+            "https://capec.mitre.org/data/definitions/248.html"
+          ],
+          "id": "assertion:cwe-77-exploited-by-capec-248",
+          "reviews": []
+        }
+      ],
+      "authored": false,
       "id": "relationship:weakness:cwe-77|exploited_by|attack-pattern:capec-248",
       "properties": {
+        "assertion_descriptions": [
+          "CWE 4.20 links CWE-77 to CAPEC-248, and CAPEC 3.9 links CAPEC-248 back to CWE-77."
+        ],
+        "assertion_evidence": [
+          "https://cwe.mitre.org/data/definitions/77.html",
+          "https://capec.mitre.org/data/definitions/248.html"
+        ],
         "assertion_ids": [
           "assertion:cwe-77-exploited-by-capec-248"
         ],
