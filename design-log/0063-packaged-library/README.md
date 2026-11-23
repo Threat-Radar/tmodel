@@ -4,7 +4,7 @@ id: DL-0063
 title: "The packaged app ships the reference library and the pinned CWE release (#259)"
 type: process
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 date: "2026-11-22"
 updated: "2026-11-22"
 record: DL-0063
@@ -72,6 +72,13 @@ tabs to work in the .dmg and in PR test builds, with no environment variables se
 - **Bundling the CWE release in the first commit:** it would have decided DEC-008 in code; it waited for ADR-0014.
 - **The whole `records/` folder:** 29 MB, and it includes distilled source text.
 - **Setting `TMODEL_LIBRARY` from the Tauri app:** a Rust change and a resource path for the same result.
+
+## Review changes (2026-11-22)
+
+@kriishnaa-18 reviewed the pull request and asked for one blocking change and suggested one more. Both are done:
+
+1. **A library change now rebuilds the release.** `release.yml` builds `latest-main` on a push to `main` that touches the paths it lists, and `library` was not one of them, so a pull request that only moved the library pin would have left the downloadable app on the old library and CWE release. It now lists `library`, as `app.yml` does.
+2. **The CWE download is streamed with a limit.** `bin/build-engine` read the whole response before checking anything. It now reads in 1 MiB pieces and stops once the file passes the engine's own limit for a catalog file (`MAX_FILE_BYTES` in `engine/engine/load/cwe.py`, 256 MiB). A copy that `TMODEL_CWE_CATALOG` names gets its size checked before it is read. Tested by downloading the pinned release, by using a local copy, and, with the limit set to 1,000 bytes, by both stopping with a message and writing nothing.
 
 ## Next steps
 
