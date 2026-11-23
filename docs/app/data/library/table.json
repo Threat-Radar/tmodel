@@ -5,7 +5,7 @@
       "fetched": 56,
       "queued": 15,
       "stub": 356,
-      "summarized": 206
+      "summarized": 207
     },
     "topic": {
       "ai-threat-model-agentic-mcp": 19,
@@ -29,8 +29,8 @@
       "rpt-0006-knowledge-graph-visualization": 15,
       "sagai": 24,
       "sbom": 6,
-      "schema-representations": 13,
-      "sdl": 38,
+      "schema-representations": 14,
+      "sdl": 39,
       "signature-foundations": 18,
       "supply-chain-attestation": 34,
       "threat-model-frameworks": 1,
@@ -40,7 +40,7 @@
       "article": 23,
       "book": 3,
       "consortium": 2,
-      "dataset": 30,
+      "dataset": 31,
       "draft": 19,
       "hierarchy": 2,
       "note": 1,
@@ -51,14 +51,14 @@
       "web": 94
     }
   },
-  "count": 685,
+  "count": 686,
   "facets": {
     "status": {
       "distilled": 52,
       "fetched": 56,
       "queued": 15,
       "stub": 356,
-      "summarized": 206
+      "summarized": 207
     },
     "topic": {
       "ai-threat-model-agentic-mcp": 19,
@@ -82,8 +82,8 @@
       "rpt-0006-knowledge-graph-visualization": 15,
       "sagai": 24,
       "sbom": 6,
-      "schema-representations": 13,
-      "sdl": 38,
+      "schema-representations": 14,
+      "sdl": 39,
       "signature-foundations": 18,
       "supply-chain-attestation": 34,
       "threat-model-frameworks": 1,
@@ -93,7 +93,7 @@
       "article": 23,
       "book": 3,
       "consortium": 2,
-      "dataset": 30,
+      "dataset": 31,
       "draft": 19,
       "hierarchy": 2,
       "note": 1,
@@ -105,8 +105,8 @@
     }
   },
   "library": {
-    "count": 685,
-    "digest": "91bb625bd1d2e7dc486a641815761fc39325290cff6243535a184e40ce6a6ca2",
+    "count": 686,
+    "digest": "f804a7a0bb9a2bb1a2f70579ccac88504a9c5434374d8275357126be1090d4f2",
     "problems": []
   },
   "query": {
@@ -1868,6 +1868,30 @@
       "topic": "ai-threat-model-agentic-mcp",
       "type": "web",
       "url": "https://cwe.mitre.org/data/definitions/1426.html"
+    },
+    {
+      "artifacts": 0,
+      "date": "2026-10-28",
+      "id": "cwe-4-21",
+      "maturity": "best-practice",
+      "profile": null,
+      "publisher": "The MITRE Corporation",
+      "reviewed_artifacts": 0,
+      "shelf": "other",
+      "short_title": null,
+      "status": "summarized",
+      "tags": [
+        "cwe",
+        "weakness",
+        "mitre",
+        "graph",
+        "xml-schema",
+        "catalog"
+      ],
+      "title": "MITRE CWE: Common Weakness Enumeration 4.21",
+      "topic": "schema-representations",
+      "type": "dataset",
+      "url": "https://cwe.mitre.org/data/xml/cwec_v4.21.xml.zip"
     },
     {
       "artifacts": 0,
@@ -5308,11 +5332,11 @@
       "url": "https://www.iso.org/standard/80840.html"
     },
     {
-      "artifacts": 3,
+      "artifacts": 7,
       "date": "2021-08",
       "id": "iso-sae-21434-2021",
       "maturity": "standard",
-      "profile": null,
+      "profile": "full",
       "publisher": "ISO/SAE International",
       "reviewed_artifacts": 0,
       "shelf": "iso",
@@ -5328,7 +5352,7 @@
         "compliance"
       ],
       "title": "Road vehicles — Cybersecurity engineering",
-      "topic": null,
+      "topic": "sdl",
       "type": "spec",
       "url": "https://www.iso.org/standard/70918.html"
     },
@@ -13897,5 +13921,5 @@
       "url": "https://blog.zoom.us/zoom-acquires-keybase-and-announces-goal-of-developing-the-most-broadly-used-enterprise-end-to-end-encryption-offering/"
     }
   ],
-  "total": 685
+  "total": 686
 }
