@@ -2,6 +2,22 @@ export type GraphPropertyValue = string | number | boolean | string[] | null;
 
 export type GraphProperties = Readonly<Record<string, GraphPropertyValue>>;
 
+export interface GraphAssertionReviewProvenance {
+  id: string;
+  review_status: string | null;
+  reviewer: string | null;
+  justification: string | null;
+}
+
+export interface GraphAssertionProvenance {
+  id: string;
+  assertion_status: string | null;
+  confidence: string | null;
+  description: string | null;
+  evidence: readonly string[];
+  reviews: readonly GraphAssertionReviewProvenance[];
+}
+
 export interface GraphNode {
   id: string;
   domainType: string;
@@ -15,6 +31,8 @@ export interface GraphEdge {
   source: string;
   target: string;
   relationshipType: string;
+  authored?: boolean;
+  assertions?: readonly GraphAssertionProvenance[];
   properties: GraphProperties;
 }
 
@@ -24,6 +42,8 @@ export interface GraphRelationship {
   relationshipType: string;
   connectedNodeId: string;
   connectedNode?: GraphNode;
+  authored?: boolean;
+  assertions?: readonly GraphAssertionProvenance[];
   // The edge's own properties, including any Assertion and Review metadata.
   properties: GraphProperties;
 }

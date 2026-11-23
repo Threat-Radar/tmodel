@@ -768,27 +768,29 @@ def objects_for(
 # --- reading the file ---------------------------------------------------------------------
 
 
-def _read(path: Path) -> bytes:
-    """The bytes of `path`, a regular file of at most MAX_FILE_BYTES; CweError otherwise.
+def _read(path: Path, limit: int | None = None, error: type[ValueError] = CweError) -> bytes:
+    """The bytes of `path`, a regular file of at most `limit` bytes; `error` otherwise.
 
-    The open file's type and size are checked before anything is read, so a FIFO or
-    a device is refused rather than waited on or read without end. The read stops one
-    byte past the limit, so a file that grows after the check is refused too, and the
-    digest is never taken over more than MAX_FILE_BYTES.
+    `limit` defaults to MAX_FILE_BYTES; the CAPEC reader passes its own limit and
+    error class. The open file's type and size are checked before anything is read,
+    so a FIFO or a device is refused rather than waited on or read without end. The
+    read stops one byte past the limit, so a file that grows after the check is
+    refused too, and the digest is never taken over more than the limit.
     """
-    too_large = f"{path.name}: larger than {MAX_FILE_BYTES} bytes, so it is not read"
+    limit = MAX_FILE_BYTES if limit is None else limit
+    too_large = f"{path.name}: larger than {limit} bytes, so it is not read"
     try:
         with open(path, "rb", opener=_open_without_waiting) as handle:
             info = os.fstat(handle.fileno())
             if not stat.S_ISREG(info.st_mode):
-                raise CweError(f"{path.name}: not a regular file, so it is not read")
-            if info.st_size > MAX_FILE_BYTES:
-                raise CweError(too_large)
-            data = handle.read(MAX_FILE_BYTES + 1)
+                raise error(f"{path.name}: not a regular file, so it is not read")
+            if info.st_size > limit:
+                raise error(too_large)
+            data = handle.read(limit + 1)
     except OSError as exc:
-        raise CweError(f"{path.name}: cannot read ({exc.strerror or exc})") from exc
-    if len(data) > MAX_FILE_BYTES:  # it grew after the check
-        raise CweError(too_large)
+        raise error(f"{path.name}: cannot read ({exc.strerror or exc})") from exc
+    if len(data) > limit:  # it grew after the check
+        raise error(too_large)
     return data
 
 
@@ -1007,12 +1009,16 @@ def _relationship_elements(kind: str, fields: Mapping[str, Any]) -> list[tuple[s
 # --- elements to values ---------------------------------------------------------------------
 
 
-def _value(element: ElementTree.Element) -> Any:
-    """One element as a JSON-ready value, by the rules in the module docstring."""
+def _value(element: ElementTree.Element, ns: str = CWE_NS) -> Any:
+    """One element as a JSON-ready value, by the rules in the module docstring.
+
+    `ns` is the catalog's own namespace: a child in any other namespace (XHTML) makes
+    the element structured text. The CAPEC reader passes its namespace.
+    """
     attributes = {f"@{_attribute_name(k)}": v for k, v in element.attrib.items()}
     children = list(element)
     text = element.text or ""
-    mixed = any(_ns(c.tag) != CWE_NS for c in children) or (
+    mixed = any(_ns(c.tag) != ns for c in children) or (
         children and (text.strip() or any((c.tail or "").strip() for c in children))
     )
     if mixed:
@@ -1024,11 +1030,11 @@ def _value(element: ElementTree.Element) -> Any:
     names = [_local(c.tag) for c in children]
     runs = [n for i, n in enumerate(names) if i == 0 or names[i - 1] != n]
     if len(runs) != len(set(runs)):  # a name comes back after another: keep the order
-        items = tuple(MappingProxyType({_local(c.tag): _value(c)}) for c in children)
+        items = tuple(MappingProxyType({_local(c.tag): _value(c, ns)}) for c in children)
         return MappingProxyType({**attributes, "#items": items})
     grouped: dict[str, list[Any]] = {}
     for child in children:
-        grouped.setdefault(_local(child.tag), []).append(_value(child))
+        grouped.setdefault(_local(child.tag), []).append(_value(child, ns))
     return MappingProxyType({**attributes, **{k: tuple(v) for k, v in grouped.items()}})
 
 

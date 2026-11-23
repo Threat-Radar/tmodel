@@ -195,6 +195,20 @@ describe("engine graph provider", () => {
         source: "component:a",
         target: "component:b",
         relationship_type: "realizes_threat",
+        authored: true,
+        assertions: [{
+          id: "assertion:ai-imds-pivot-realizes",
+          assertion_status: "proposed",
+          confidence: "low",
+          description: "A distinct analytical basis.",
+          evidence: ["evidence:one"],
+          reviews: [{
+            id: "review:ai-triage",
+            review_status: "changes_requested",
+            reviewer: "party:reviewer",
+            justification: "Needs deployment evidence.",
+          }],
+        }],
         properties: {
           assertion_ids: ["assertion:ai-imds-pivot-realizes"],
           assertion_status: "proposed",
@@ -205,7 +219,10 @@ describe("engine graph provider", () => {
       }],
     };
 
-    expect(mapEngineGraphResponse(graph).edges[0].properties).toEqual(graph.edges[0].properties);
+    const mapped = mapEngineGraphResponse(graph).edges[0];
+    expect(mapped.properties).toEqual(graph.edges[0].properties);
+    expect(mapped).toMatchObject({ authored: true, assertions: graph.edges[0].assertions });
+    expect(mapped.assertions).not.toBe(graph.edges[0].assertions);
   });
 });
 

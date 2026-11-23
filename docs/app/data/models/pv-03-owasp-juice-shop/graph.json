@@ -1,6 +1,8 @@
 {
   "edges": [
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product:juice-shop|composed_of|component:storefront",
       "properties": {},
       "relationship_type": "composed_of",
@@ -8,6 +10,8 @@
       "target": "component:storefront"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product:juice-shop|composed_of|component:shop-api",
       "properties": {},
       "relationship_type": "composed_of",
@@ -15,6 +19,8 @@
       "target": "component:shop-api"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product:juice-shop|composed_of|component:shop-database",
       "properties": {},
       "relationship_type": "composed_of",
@@ -22,6 +28,8 @@
       "target": "component:shop-database"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product:juice-shop|composed_of|component:ftp-browser",
       "properties": {},
       "relationship_type": "composed_of",
@@ -29,6 +37,8 @@
       "target": "component:ftp-browser"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product:juice-shop|composed_of|component:key-folder",
       "properties": {},
       "relationship_type": "composed_of",
@@ -36,6 +46,8 @@
       "target": "component:key-folder"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product:juice-shop|composed_of|component:jsonwebtoken-lib",
       "properties": {},
       "relationship_type": "composed_of",
@@ -43,6 +55,8 @@
       "target": "component:jsonwebtoken-lib"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:product:juice-shop|manufactured_by|party:owasp",
       "properties": {},
       "relationship_type": "manufactured_by",
@@ -50,6 +64,8 @@
       "target": "party:owasp"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:component:storefront|in_trust_zone|trust-boundary:shopper-browser",
       "properties": {},
       "relationship_type": "in_trust_zone",
@@ -57,6 +73,8 @@
       "target": "trust-boundary:shopper-browser"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:component:shop-api|in_trust_zone|trust-boundary:shop-server",
       "properties": {},
       "relationship_type": "in_trust_zone",
@@ -64,6 +82,8 @@
       "target": "trust-boundary:shop-server"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:component:shop-api|uses_component|component:jsonwebtoken-lib",
       "properties": {},
       "relationship_type": "uses_component",
@@ -71,6 +91,8 @@
       "target": "component:jsonwebtoken-lib"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:component:shop-database|in_trust_zone|trust-boundary:shop-server",
       "properties": {},
       "relationship_type": "in_trust_zone",
@@ -78,6 +100,8 @@
       "target": "trust-boundary:shop-server"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:component:ftp-browser|in_trust_zone|trust-boundary:shop-server",
       "properties": {},
       "relationship_type": "in_trust_zone",
@@ -85,6 +109,8 @@
       "target": "trust-boundary:shop-server"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:component:key-folder|in_trust_zone|trust-boundary:shop-server",
       "properties": {},
       "relationship_type": "in_trust_zone",
@@ -92,6 +118,8 @@
       "target": "trust-boundary:shop-server"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:component:jsonwebtoken-lib|in_trust_zone|trust-boundary:shop-server",
       "properties": {},
       "relationship_type": "in_trust_zone",
@@ -99,6 +127,8 @@
       "target": "trust-boundary:shop-server"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:vulnerability:cve-2015-9235|affects|product:juice-shop",
       "properties": {},
       "relationship_type": "affects",
@@ -106,6 +136,8 @@
       "target": "product:juice-shop"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:login-sqli|applies_in_phase|lifecycle-phase:operation",
       "properties": {},
       "relationship_type": "applies_in_phase",
@@ -113,6 +145,8 @@
       "target": "lifecycle-phase:operation"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:login-sqli|realizes_damage|damage-scenario:admin-takeover",
       "properties": {},
       "relationship_type": "realizes_damage",
@@ -120,6 +154,8 @@
       "target": "damage-scenario:admin-takeover"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:login-sqli|targets_element|component:shop-api",
       "properties": {},
       "relationship_type": "targets_element",
@@ -127,6 +163,8 @@
       "target": "component:shop-api"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:login-sqli|targets_element|data-flow:login-request",
       "properties": {},
       "relationship_type": "targets_element",
@@ -134,6 +172,8 @@
       "target": "data-flow:login-request"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:basket-idor|applies_in_phase|lifecycle-phase:operation",
       "properties": {},
       "relationship_type": "applies_in_phase",
@@ -141,6 +181,8 @@
       "target": "lifecycle-phase:operation"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:basket-idor|realizes_damage|damage-scenario:basket-exposed",
       "properties": {},
       "relationship_type": "realizes_damage",
@@ -148,6 +190,8 @@
       "target": "damage-scenario:basket-exposed"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:basket-idor|targets_element|component:shop-api",
       "properties": {},
       "relationship_type": "targets_element",
@@ -155,6 +199,8 @@
       "target": "component:shop-api"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:basket-idor|targets_element|data-flow:basket-request",
       "properties": {},
       "relationship_type": "targets_element",
@@ -162,6 +208,8 @@
       "target": "data-flow:basket-request"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:search-dom-xss|applies_in_phase|lifecycle-phase:operation",
       "properties": {},
       "relationship_type": "applies_in_phase",
@@ -169,6 +217,8 @@
       "target": "lifecycle-phase:operation"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:search-dom-xss|realizes_damage|damage-scenario:script-in-session",
       "properties": {},
       "relationship_type": "realizes_damage",
@@ -176,6 +226,8 @@
       "target": "damage-scenario:script-in-session"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:search-dom-xss|targets_element|component:storefront",
       "properties": {},
       "relationship_type": "targets_element",
@@ -183,6 +235,8 @@
       "target": "component:storefront"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:ftp-listing|applies_in_phase|lifecycle-phase:operation",
       "properties": {},
       "relationship_type": "applies_in_phase",
@@ -190,6 +244,8 @@
       "target": "lifecycle-phase:operation"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:ftp-listing|realizes_damage|damage-scenario:documents-read",
       "properties": {},
       "relationship_type": "realizes_damage",
@@ -197,6 +253,8 @@
       "target": "damage-scenario:documents-read"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:ftp-listing|targets_element|component:ftp-browser",
       "properties": {},
       "relationship_type": "targets_element",
@@ -204,6 +262,8 @@
       "target": "component:ftp-browser"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:ftp-listing|targets_element|data-flow:ftp-download",
       "properties": {},
       "relationship_type": "targets_element",
@@ -211,6 +271,8 @@
       "target": "data-flow:ftp-download"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:jwt-forgery|applies_in_phase|lifecycle-phase:operation",
       "properties": {},
       "relationship_type": "applies_in_phase",
@@ -218,6 +280,8 @@
       "target": "lifecycle-phase:operation"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:jwt-forgery|realizes_damage|damage-scenario:forged-identity",
       "properties": {},
       "relationship_type": "realizes_damage",
@@ -225,6 +289,8 @@
       "target": "damage-scenario:forged-identity"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:jwt-forgery|targets_element|component:jsonwebtoken-lib",
       "properties": {},
       "relationship_type": "targets_element",
@@ -232,6 +298,8 @@
       "target": "component:jsonwebtoken-lib"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:threat-instance:jwt-forgery|targets_element|data-flow:token-on-request",
       "properties": {},
       "relationship_type": "targets_element",
@@ -239,6 +307,8 @@
       "target": "data-flow:token-on-request"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-step:inject-login|precedes|attack-step:open-admin",
       "properties": {},
       "relationship_type": "precedes",
@@ -246,6 +316,8 @@
       "target": "attack-step:open-admin"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-step:find-admin-route|precedes|attack-step:open-admin",
       "properties": {},
       "relationship_type": "precedes",
@@ -253,6 +325,8 @@
       "target": "attack-step:open-admin"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-step:own-login|precedes|attack-step:change-basket-number",
       "properties": {},
       "relationship_type": "precedes",
@@ -260,6 +334,8 @@
       "target": "attack-step:change-basket-number"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-step:craft-search-link|precedes|attack-step:shopper-opens-link",
       "properties": {},
       "relationship_type": "precedes",
@@ -267,6 +343,8 @@
       "target": "attack-step:shopper-opens-link"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-step:read-robots|precedes|attack-step:browse-ftp",
       "properties": {},
       "relationship_type": "precedes",
@@ -274,6 +352,8 @@
       "target": "attack-step:browse-ftp"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-step:browse-ftp|precedes|attack-step:download-document",
       "properties": {},
       "relationship_type": "precedes",
@@ -281,6 +361,8 @@
       "target": "attack-step:download-document"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-step:get-public-key|precedes|attack-step:sign-wrong-algorithm",
       "properties": {},
       "relationship_type": "precedes",
@@ -288,6 +370,8 @@
       "target": "attack-step:sign-wrong-algorithm"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-step:sign-wrong-algorithm|precedes|attack-step:use-forged-token",
       "properties": {},
       "relationship_type": "precedes",
@@ -295,8 +379,24 @@
       "target": "attack-step:use-forged-token"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "high",
+          "description": null,
+          "evidence": [
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml"
+          ],
+          "id": "assertion:admin-path-realizes",
+          "reviews": []
+        }
+      ],
+      "authored": true,
       "id": "relationship:attack-path:admin-via-sqli|realizes_threat|threat-instance:login-sqli",
       "properties": {
+        "assertion_evidence": [
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml"
+        ],
         "assertion_ids": [
           "assertion:admin-path-realizes"
         ],
@@ -308,6 +408,8 @@
       "target": "threat-instance:login-sqli"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:admin-via-sqli|steps|attack-step:inject-login",
       "properties": {},
       "relationship_type": "steps",
@@ -315,6 +417,8 @@
       "target": "attack-step:inject-login"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:admin-via-sqli|steps|attack-step:find-admin-route",
       "properties": {},
       "relationship_type": "steps",
@@ -322,6 +426,8 @@
       "target": "attack-step:find-admin-route"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:admin-via-sqli|steps|attack-step:open-admin",
       "properties": {},
       "relationship_type": "steps",
@@ -329,6 +435,8 @@
       "target": "attack-step:open-admin"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:basket-idor|realizes_threat|threat-instance:basket-idor",
       "properties": {},
       "relationship_type": "realizes_threat",
@@ -336,6 +444,8 @@
       "target": "threat-instance:basket-idor"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:basket-idor|steps|attack-step:own-login",
       "properties": {},
       "relationship_type": "steps",
@@ -343,6 +453,8 @@
       "target": "attack-step:own-login"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:basket-idor|steps|attack-step:change-basket-number",
       "properties": {},
       "relationship_type": "steps",
@@ -350,6 +462,8 @@
       "target": "attack-step:change-basket-number"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:search-xss|realizes_threat|threat-instance:search-dom-xss",
       "properties": {},
       "relationship_type": "realizes_threat",
@@ -357,6 +471,8 @@
       "target": "threat-instance:search-dom-xss"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:search-xss|steps|attack-step:craft-search-link",
       "properties": {},
       "relationship_type": "steps",
@@ -364,6 +480,8 @@
       "target": "attack-step:craft-search-link"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:search-xss|steps|attack-step:shopper-opens-link",
       "properties": {},
       "relationship_type": "steps",
@@ -371,6 +489,8 @@
       "target": "attack-step:shopper-opens-link"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:ftp-documents|realizes_threat|threat-instance:ftp-listing",
       "properties": {},
       "relationship_type": "realizes_threat",
@@ -378,6 +498,8 @@
       "target": "threat-instance:ftp-listing"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:ftp-documents|steps|attack-step:read-robots",
       "properties": {},
       "relationship_type": "steps",
@@ -385,6 +507,8 @@
       "target": "attack-step:read-robots"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:ftp-documents|steps|attack-step:browse-ftp",
       "properties": {},
       "relationship_type": "steps",
@@ -392,6 +516,8 @@
       "target": "attack-step:browse-ftp"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:ftp-documents|steps|attack-step:download-document",
       "properties": {},
       "relationship_type": "steps",
@@ -399,6 +525,8 @@
       "target": "attack-step:download-document"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:jwt-forgery|realizes_threat|threat-instance:jwt-forgery",
       "properties": {},
       "relationship_type": "realizes_threat",
@@ -406,6 +534,8 @@
       "target": "threat-instance:jwt-forgery"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:jwt-forgery|steps|attack-step:get-public-key",
       "properties": {},
       "relationship_type": "steps",
@@ -413,6 +543,8 @@
       "target": "attack-step:get-public-key"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:jwt-forgery|steps|attack-step:sign-wrong-algorithm",
       "properties": {},
       "relationship_type": "steps",
@@ -420,6 +552,8 @@
       "target": "attack-step:sign-wrong-algorithm"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:attack-path:jwt-forgery|steps|attack-step:use-forged-token",
       "properties": {},
       "relationship_type": "steps",
@@ -427,6 +561,8 @@
       "target": "attack-step:use-forged-token"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:damage-scenario:admin-takeover|damages_asset|asset:user-accounts",
       "properties": {},
       "relationship_type": "damages_asset",
@@ -434,6 +570,8 @@
       "target": "asset:user-accounts"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:damage-scenario:admin-takeover|damages_asset|asset:admin-section",
       "properties": {},
       "relationship_type": "damages_asset",
@@ -441,6 +579,8 @@
       "target": "asset:admin-section"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:damage-scenario:basket-exposed|damages_asset|asset:baskets",
       "properties": {},
       "relationship_type": "damages_asset",
@@ -448,6 +588,8 @@
       "target": "asset:baskets"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:damage-scenario:script-in-session|damages_asset|asset:shopper-session",
       "properties": {},
       "relationship_type": "damages_asset",
@@ -455,6 +597,8 @@
       "target": "asset:shopper-session"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:damage-scenario:documents-read|damages_asset|asset:shop-documents",
       "properties": {},
       "relationship_type": "damages_asset",
@@ -462,6 +606,8 @@
       "target": "asset:shop-documents"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:damage-scenario:forged-identity|damages_asset|asset:login-tokens",
       "properties": {},
       "relationship_type": "damages_asset",
@@ -469,6 +615,8 @@
       "target": "asset:login-tokens"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:damage-scenario:forged-identity|damages_asset|asset:user-accounts",
       "properties": {},
       "relationship_type": "damages_asset",
@@ -476,6 +624,8 @@
       "target": "asset:user-accounts"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:parameterized-queries|applies_in_phase|lifecycle-phase:implementation",
       "properties": {},
       "relationship_type": "applies_in_phase",
@@ -483,6 +633,8 @@
       "target": "lifecycle-phase:implementation"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:parameterized-queries|implementation_owner|party:owasp",
       "properties": {},
       "relationship_type": "implementation_owner",
@@ -490,6 +642,8 @@
       "target": "party:owasp"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:parameterized-queries|mitigates|threat-instance:login-sqli",
       "properties": {},
       "relationship_type": "mitigates",
@@ -497,6 +651,8 @@
       "target": "threat-instance:login-sqli"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:basket-owner-check|applies_in_phase|lifecycle-phase:implementation",
       "properties": {},
       "relationship_type": "applies_in_phase",
@@ -504,6 +660,8 @@
       "target": "lifecycle-phase:implementation"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:basket-owner-check|implementation_owner|party:owasp",
       "properties": {},
       "relationship_type": "implementation_owner",
@@ -511,6 +669,8 @@
       "target": "party:owasp"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:basket-owner-check|mitigates|threat-instance:basket-idor",
       "properties": {},
       "relationship_type": "mitigates",
@@ -518,6 +678,8 @@
       "target": "threat-instance:basket-idor"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:keep-angular-sanitizing|applies_in_phase|lifecycle-phase:implementation",
       "properties": {},
       "relationship_type": "applies_in_phase",
@@ -525,6 +687,8 @@
       "target": "lifecycle-phase:implementation"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:keep-angular-sanitizing|implementation_owner|party:owasp",
       "properties": {},
       "relationship_type": "implementation_owner",
@@ -532,6 +696,8 @@
       "target": "party:owasp"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:keep-angular-sanitizing|mitigates|threat-instance:search-dom-xss",
       "properties": {},
       "relationship_type": "mitigates",
@@ -539,6 +705,8 @@
       "target": "threat-instance:search-dom-xss"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:no-public-ftp-listing|applies_in_phase|lifecycle-phase:deployment",
       "properties": {},
       "relationship_type": "applies_in_phase",
@@ -546,6 +714,8 @@
       "target": "lifecycle-phase:deployment"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:no-public-ftp-listing|implementation_owner|party:owasp",
       "properties": {},
       "relationship_type": "implementation_owner",
@@ -553,6 +723,8 @@
       "target": "party:owasp"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:no-public-ftp-listing|mitigates|threat-instance:ftp-listing",
       "properties": {},
       "relationship_type": "mitigates",
@@ -560,6 +732,8 @@
       "target": "threat-instance:ftp-listing"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:upgrade-jsonwebtoken|applies_in_phase|lifecycle-phase:implementation",
       "properties": {},
       "relationship_type": "applies_in_phase",
@@ -567,6 +741,8 @@
       "target": "lifecycle-phase:implementation"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:upgrade-jsonwebtoken|implementation_owner|party:owasp",
       "properties": {},
       "relationship_type": "implementation_owner",
@@ -574,6 +750,8 @@
       "target": "party:owasp"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:mitigation:upgrade-jsonwebtoken|mitigates|threat-instance:jwt-forgery",
       "properties": {},
       "relationship_type": "mitigates",
@@ -581,6 +759,8 @@
       "target": "threat-instance:jwt-forgery"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:inject-login-exploits-cwe-89|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -588,6 +768,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:inject-login-exploits-cwe-89|object|weakness:cwe-89",
       "properties": {},
       "relationship_type": "object",
@@ -595,6 +777,8 @@
       "target": "weakness:cwe-89"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:inject-login-exploits-cwe-89|subject|attack-step:inject-login",
       "properties": {},
       "relationship_type": "subject",
@@ -602,6 +786,8 @@
       "target": "attack-step:inject-login"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:basket-step-exploits-cwe-639|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -609,6 +795,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:basket-step-exploits-cwe-639|object|weakness:cwe-639",
       "properties": {},
       "relationship_type": "object",
@@ -616,6 +804,8 @@
       "target": "weakness:cwe-639"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:basket-step-exploits-cwe-639|subject|attack-step:change-basket-number",
       "properties": {},
       "relationship_type": "subject",
@@ -623,6 +813,8 @@
       "target": "attack-step:change-basket-number"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:search-step-exploits-cwe-79|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -630,6 +822,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:search-step-exploits-cwe-79|object|weakness:cwe-79",
       "properties": {},
       "relationship_type": "object",
@@ -637,6 +831,8 @@
       "target": "weakness:cwe-79"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:search-step-exploits-cwe-79|subject|attack-step:shopper-opens-link",
       "properties": {},
       "relationship_type": "subject",
@@ -644,6 +840,8 @@
       "target": "attack-step:shopper-opens-link"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:ftp-step-exploits-cwe-548|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -651,6 +849,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:ftp-step-exploits-cwe-548|object|weakness:cwe-548",
       "properties": {},
       "relationship_type": "object",
@@ -658,6 +858,8 @@
       "target": "weakness:cwe-548"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:ftp-step-exploits-cwe-548|subject|attack-step:browse-ftp",
       "properties": {},
       "relationship_type": "subject",
@@ -665,6 +867,8 @@
       "target": "attack-step:browse-ftp"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:forge-step-exploits-cve-2015-9235|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -672,6 +876,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:forge-step-exploits-cve-2015-9235|object|vulnerability:cve-2015-9235",
       "properties": {},
       "relationship_type": "object",
@@ -679,6 +885,8 @@
       "target": "vulnerability:cve-2015-9235"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:forge-step-exploits-cve-2015-9235|subject|attack-step:sign-wrong-algorithm",
       "properties": {},
       "relationship_type": "subject",
@@ -686,6 +894,8 @@
       "target": "attack-step:sign-wrong-algorithm"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:find-route-targets-storefront|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -693,6 +903,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:find-route-targets-storefront|object|component:storefront",
       "properties": {},
       "relationship_type": "object",
@@ -700,6 +912,8 @@
       "target": "component:storefront"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:find-route-targets-storefront|subject|attack-step:find-admin-route",
       "properties": {},
       "relationship_type": "subject",
@@ -707,6 +921,8 @@
       "target": "attack-step:find-admin-route"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:open-admin-targets-admin-section|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -714,6 +930,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:open-admin-targets-admin-section|object|asset:admin-section",
       "properties": {},
       "relationship_type": "object",
@@ -721,6 +939,8 @@
       "target": "asset:admin-section"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:open-admin-targets-admin-section|subject|attack-step:open-admin",
       "properties": {},
       "relationship_type": "subject",
@@ -728,6 +948,8 @@
       "target": "attack-step:open-admin"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:own-login-targets-login-request|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -735,6 +957,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:own-login-targets-login-request|object|data-flow:login-request",
       "properties": {},
       "relationship_type": "object",
@@ -742,6 +966,8 @@
       "target": "data-flow:login-request"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:own-login-targets-login-request|subject|attack-step:own-login",
       "properties": {},
       "relationship_type": "subject",
@@ -749,6 +975,8 @@
       "target": "attack-step:own-login"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:craft-link-targets-storefront|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -756,6 +984,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:craft-link-targets-storefront|object|component:storefront",
       "properties": {},
       "relationship_type": "object",
@@ -763,6 +993,8 @@
       "target": "component:storefront"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:craft-link-targets-storefront|subject|attack-step:craft-search-link",
       "properties": {},
       "relationship_type": "subject",
@@ -770,6 +1002,8 @@
       "target": "attack-step:craft-search-link"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:read-robots-targets-shop-api|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -777,6 +1011,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:read-robots-targets-shop-api|object|component:shop-api",
       "properties": {},
       "relationship_type": "object",
@@ -784,6 +1020,8 @@
       "target": "component:shop-api"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:read-robots-targets-shop-api|subject|attack-step:read-robots",
       "properties": {},
       "relationship_type": "subject",
@@ -791,6 +1029,8 @@
       "target": "attack-step:read-robots"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:download-targets-ftp-download|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -798,6 +1038,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:download-targets-ftp-download|object|data-flow:ftp-download",
       "properties": {},
       "relationship_type": "object",
@@ -805,6 +1047,8 @@
       "target": "data-flow:ftp-download"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:download-targets-ftp-download|subject|attack-step:download-document",
       "properties": {},
       "relationship_type": "subject",
@@ -812,6 +1056,8 @@
       "target": "attack-step:download-document"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:get-key-targets-key-folder|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -819,6 +1065,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:get-key-targets-key-folder|object|component:key-folder",
       "properties": {},
       "relationship_type": "object",
@@ -826,6 +1074,8 @@
       "target": "component:key-folder"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:get-key-targets-key-folder|subject|attack-step:get-public-key",
       "properties": {},
       "relationship_type": "subject",
@@ -833,6 +1083,8 @@
       "target": "attack-step:get-public-key"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:forged-token-targets-token-flow|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -840,6 +1092,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:forged-token-targets-token-flow|object|data-flow:token-on-request",
       "properties": {},
       "relationship_type": "object",
@@ -847,6 +1101,8 @@
       "target": "data-flow:token-on-request"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:forged-token-targets-token-flow|subject|attack-step:use-forged-token",
       "properties": {},
       "relationship_type": "subject",
@@ -854,6 +1110,8 @@
       "target": "attack-step:use-forged-token"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cve-2015-9235-propagates-to-jsonwebtoken|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -861,6 +1119,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cve-2015-9235-propagates-to-jsonwebtoken|object|component:jsonwebtoken-lib",
       "properties": {},
       "relationship_type": "object",
@@ -868,6 +1128,8 @@
       "target": "component:jsonwebtoken-lib"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cve-2015-9235-propagates-to-jsonwebtoken|subject|vulnerability:cve-2015-9235",
       "properties": {},
       "relationship_type": "subject",
@@ -875,6 +1137,8 @@
       "target": "vulnerability:cve-2015-9235"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cve-2015-9235-instance-of-cwe-327|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -882,6 +1146,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cve-2015-9235-instance-of-cwe-327|object|weakness:cwe-327",
       "properties": {},
       "relationship_type": "object",
@@ -889,6 +1155,8 @@
       "target": "weakness:cwe-327"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cve-2015-9235-instance-of-cwe-327|subject|vulnerability:cve-2015-9235",
       "properties": {},
       "relationship_type": "subject",
@@ -896,6 +1164,8 @@
       "target": "vulnerability:cve-2015-9235"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cve-2015-9235-instance-of-cwe-20|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -903,6 +1173,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cve-2015-9235-instance-of-cwe-20|object|weakness:cwe-20",
       "properties": {},
       "relationship_type": "object",
@@ -910,6 +1182,8 @@
       "target": "weakness:cwe-20"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cve-2015-9235-instance-of-cwe-20|subject|vulnerability:cve-2015-9235",
       "properties": {},
       "relationship_type": "subject",
@@ -917,6 +1191,8 @@
       "target": "vulnerability:cve-2015-9235"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cwe-89-exploited-by-capec-66|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -924,6 +1200,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cwe-89-exploited-by-capec-66|object|attack-pattern:capec-66",
       "properties": {},
       "relationship_type": "object",
@@ -931,6 +1209,8 @@
       "target": "attack-pattern:capec-66"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cwe-89-exploited-by-capec-66|subject|weakness:cwe-89",
       "properties": {},
       "relationship_type": "subject",
@@ -938,6 +1218,8 @@
       "target": "weakness:cwe-89"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cwe-79-exploited-by-capec-588|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -945,6 +1227,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cwe-79-exploited-by-capec-588|object|attack-pattern:capec-588",
       "properties": {},
       "relationship_type": "object",
@@ -952,6 +1236,8 @@
       "target": "attack-pattern:capec-588"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cwe-79-exploited-by-capec-588|subject|weakness:cwe-79",
       "properties": {},
       "relationship_type": "subject",
@@ -959,6 +1245,8 @@
       "target": "weakness:cwe-79"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cwe-548-exploited-by-capec-127|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -966,6 +1254,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cwe-548-exploited-by-capec-127|object|attack-pattern:capec-127",
       "properties": {},
       "relationship_type": "object",
@@ -973,6 +1263,8 @@
       "target": "attack-pattern:capec-127"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:cwe-548-exploited-by-capec-127|subject|weakness:cwe-548",
       "properties": {},
       "relationship_type": "subject",
@@ -980,6 +1272,8 @@
       "target": "weakness:cwe-548"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:admin-path-realizes|asserted_by|party:ai-drafter",
       "properties": {},
       "relationship_type": "asserted_by",
@@ -987,6 +1281,8 @@
       "target": "party:ai-drafter"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:admin-path-realizes|object|threat-instance:login-sqli",
       "properties": {},
       "relationship_type": "object",
@@ -994,6 +1290,8 @@
       "target": "threat-instance:login-sqli"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:assertion:admin-path-realizes|subject|attack-path:admin-via-sqli",
       "properties": {},
       "relationship_type": "subject",
@@ -1001,6 +1299,8 @@
       "target": "attack-path:admin-via-sqli"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:asset:user-accounts|owned_by|party:shop-customer",
       "properties": {},
       "relationship_type": "owned_by",
@@ -1008,6 +1308,8 @@
       "target": "party:shop-customer"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:asset:user-accounts|processed_by|component:shop-api",
       "properties": {},
       "relationship_type": "processed_by",
@@ -1015,6 +1317,8 @@
       "target": "component:shop-api"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:asset:user-accounts|stored_in|component:shop-database",
       "properties": {},
       "relationship_type": "stored_in",
@@ -1022,6 +1326,8 @@
       "target": "component:shop-database"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:asset:baskets|owned_by|party:shop-customer",
       "properties": {},
       "relationship_type": "owned_by",
@@ -1029,6 +1335,8 @@
       "target": "party:shop-customer"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:asset:baskets|processed_by|component:shop-api",
       "properties": {},
       "relationship_type": "processed_by",
@@ -1036,6 +1344,8 @@
       "target": "component:shop-api"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:asset:baskets|stored_in|component:shop-database",
       "properties": {},
       "relationship_type": "stored_in",
@@ -1043,6 +1353,8 @@
       "target": "component:shop-database"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:asset:admin-section|processed_by|component:storefront",
       "properties": {},
       "relationship_type": "processed_by",
@@ -1050,6 +1362,8 @@
       "target": "component:storefront"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:asset:admin-section|processed_by|component:shop-api",
       "properties": {},
       "relationship_type": "processed_by",
@@ -1057,6 +1371,8 @@
       "target": "component:shop-api"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:asset:shop-documents|stored_in|component:ftp-browser",
       "properties": {},
       "relationship_type": "stored_in",
@@ -1064,6 +1380,8 @@
       "target": "component:ftp-browser"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:asset:login-tokens|processed_by|component:shop-api",
       "properties": {},
       "relationship_type": "processed_by",
@@ -1071,6 +1389,8 @@
       "target": "component:shop-api"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:asset:login-tokens|processed_by|component:jsonwebtoken-lib",
       "properties": {},
       "relationship_type": "processed_by",
@@ -1078,6 +1398,8 @@
       "target": "component:jsonwebtoken-lib"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:asset:shopper-session|owned_by|party:shop-customer",
       "properties": {},
       "relationship_type": "owned_by",
@@ -1085,6 +1407,8 @@
       "target": "party:shop-customer"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:asset:shopper-session|processed_by|component:storefront",
       "properties": {},
       "relationship_type": "processed_by",
@@ -1092,6 +1416,8 @@
       "target": "component:storefront"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:login-request|carries|asset:user-accounts",
       "properties": {},
       "relationship_type": "carries",
@@ -1099,6 +1425,8 @@
       "target": "asset:user-accounts"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:login-request|crosses_boundary|trust-boundary:shopper-browser",
       "properties": {},
       "relationship_type": "crosses_boundary",
@@ -1106,6 +1434,8 @@
       "target": "trust-boundary:shopper-browser"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:login-request|crosses_boundary|trust-boundary:shop-server",
       "properties": {},
       "relationship_type": "crosses_boundary",
@@ -1113,6 +1443,8 @@
       "target": "trust-boundary:shop-server"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:login-request|flow_from|component:storefront",
       "properties": {},
       "relationship_type": "flow_from",
@@ -1120,6 +1452,8 @@
       "target": "component:storefront"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:login-request|flow_to|component:shop-api",
       "properties": {},
       "relationship_type": "flow_to",
@@ -1127,6 +1461,8 @@
       "target": "component:shop-api"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:basket-request|carries|asset:baskets",
       "properties": {},
       "relationship_type": "carries",
@@ -1134,6 +1470,8 @@
       "target": "asset:baskets"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:basket-request|crosses_boundary|trust-boundary:shopper-browser",
       "properties": {},
       "relationship_type": "crosses_boundary",
@@ -1141,6 +1479,8 @@
       "target": "trust-boundary:shopper-browser"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:basket-request|crosses_boundary|trust-boundary:shop-server",
       "properties": {},
       "relationship_type": "crosses_boundary",
@@ -1148,6 +1488,8 @@
       "target": "trust-boundary:shop-server"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:basket-request|flow_from|component:storefront",
       "properties": {},
       "relationship_type": "flow_from",
@@ -1155,6 +1497,8 @@
       "target": "component:storefront"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:basket-request|flow_to|component:shop-api",
       "properties": {},
       "relationship_type": "flow_to",
@@ -1162,6 +1506,8 @@
       "target": "component:shop-api"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:token-on-request|carries|asset:login-tokens",
       "properties": {},
       "relationship_type": "carries",
@@ -1169,6 +1515,8 @@
       "target": "asset:login-tokens"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:token-on-request|crosses_boundary|trust-boundary:shopper-browser",
       "properties": {},
       "relationship_type": "crosses_boundary",
@@ -1176,6 +1524,8 @@
       "target": "trust-boundary:shopper-browser"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:token-on-request|crosses_boundary|trust-boundary:shop-server",
       "properties": {},
       "relationship_type": "crosses_boundary",
@@ -1183,6 +1533,8 @@
       "target": "trust-boundary:shop-server"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:token-on-request|flow_from|component:storefront",
       "properties": {},
       "relationship_type": "flow_from",
@@ -1190,6 +1542,8 @@
       "target": "component:storefront"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:token-on-request|flow_to|component:shop-api",
       "properties": {},
       "relationship_type": "flow_to",
@@ -1197,6 +1551,8 @@
       "target": "component:shop-api"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:ftp-download|carries|asset:shop-documents",
       "properties": {},
       "relationship_type": "carries",
@@ -1204,6 +1560,8 @@
       "target": "asset:shop-documents"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:ftp-download|crosses_boundary|trust-boundary:shop-server",
       "properties": {},
       "relationship_type": "crosses_boundary",
@@ -1211,6 +1569,8 @@
       "target": "trust-boundary:shop-server"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:ftp-download|crosses_boundary|trust-boundary:shopper-browser",
       "properties": {},
       "relationship_type": "crosses_boundary",
@@ -1218,6 +1578,8 @@
       "target": "trust-boundary:shopper-browser"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:ftp-download|flow_from|component:ftp-browser",
       "properties": {},
       "relationship_type": "flow_from",
@@ -1225,6 +1587,8 @@
       "target": "component:ftp-browser"
     },
     {
+      "assertions": [],
+      "authored": true,
       "id": "relationship:data-flow:ftp-download|flow_to|component:storefront",
       "properties": {},
       "relationship_type": "flow_to",
@@ -1232,8 +1596,24 @@
       "target": "component:storefront"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "high",
+          "description": null,
+          "evidence": [
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/login.ts#L34"
+          ],
+          "id": "assertion:inject-login-exploits-cwe-89",
+          "reviews": []
+        }
+      ],
+      "authored": false,
       "id": "relationship:attack-step:inject-login|exploits|weakness:cwe-89",
       "properties": {
+        "assertion_evidence": [
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/login.ts#L34"
+        ],
         "assertion_ids": [
           "assertion:inject-login-exploits-cwe-89"
         ],
@@ -1245,8 +1625,24 @@
       "target": "weakness:cwe-89"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "high",
+          "description": null,
+          "evidence": [
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/basket.ts#L18-L19"
+          ],
+          "id": "assertion:basket-step-exploits-cwe-639",
+          "reviews": []
+        }
+      ],
+      "authored": false,
       "id": "relationship:attack-step:change-basket-number|exploits|weakness:cwe-639",
       "properties": {
+        "assertion_evidence": [
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/basket.ts#L18-L19"
+        ],
         "assertion_ids": [
           "assertion:basket-step-exploits-cwe-639"
         ],
@@ -1258,8 +1654,24 @@
       "target": "weakness:cwe-639"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "high",
+          "description": null,
+          "evidence": [
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/frontend/src/app/search-result/search-result.component.ts#L146"
+          ],
+          "id": "assertion:search-step-exploits-cwe-79",
+          "reviews": []
+        }
+      ],
+      "authored": false,
       "id": "relationship:attack-step:shopper-opens-link|exploits|weakness:cwe-79",
       "properties": {
+        "assertion_evidence": [
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/frontend/src/app/search-result/search-result.component.ts#L146"
+        ],
         "assertion_ids": [
           "assertion:search-step-exploits-cwe-79"
         ],
@@ -1271,8 +1683,24 @@
       "target": "weakness:cwe-79"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "high",
+          "description": null,
+          "evidence": [
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/server.ts#L294"
+          ],
+          "id": "assertion:ftp-step-exploits-cwe-548",
+          "reviews": []
+        }
+      ],
+      "authored": false,
       "id": "relationship:attack-step:browse-ftp|exploits|weakness:cwe-548",
       "properties": {
+        "assertion_evidence": [
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/server.ts#L294"
+        ],
         "assertion_ids": [
           "assertion:ftp-step-exploits-cwe-548"
         ],
@@ -1284,8 +1712,26 @@
       "target": "weakness:cwe-548"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "medium",
+          "description": null,
+          "evidence": [
+            "https://nvd.nist.gov/vuln/detail/CVE-2015-9235",
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/package.json#L123"
+          ],
+          "id": "assertion:forge-step-exploits-cve-2015-9235",
+          "reviews": []
+        }
+      ],
+      "authored": false,
       "id": "relationship:attack-step:sign-wrong-algorithm|exploits|vulnerability:cve-2015-9235",
       "properties": {
+        "assertion_evidence": [
+          "https://nvd.nist.gov/vuln/detail/CVE-2015-9235",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/package.json#L123"
+        ],
         "assertion_ids": [
           "assertion:forge-step-exploits-cve-2015-9235"
         ],
@@ -1297,8 +1743,29 @@
       "target": "vulnerability:cve-2015-9235"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "high",
+          "description": "The storefront declares the administration route (app.routing.ts, line 80), the line Juice Shop marks for Admin Section.",
+          "evidence": [
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/frontend/src/app/app.routing.ts#L80",
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L51-L67"
+          ],
+          "id": "assertion:find-route-targets-storefront",
+          "reviews": []
+        }
+      ],
+      "authored": false,
       "id": "relationship:attack-step:find-admin-route|targets_element|component:storefront",
       "properties": {
+        "assertion_descriptions": [
+          "The storefront declares the administration route (app.routing.ts, line 80), the line Juice Shop marks for Admin Section."
+        ],
+        "assertion_evidence": [
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/frontend/src/app/app.routing.ts#L80",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L51-L67"
+        ],
         "assertion_ids": [
           "assertion:find-route-targets-storefront"
         ],
@@ -1310,8 +1777,31 @@
       "target": "component:storefront"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "high",
+          "description": "The route's AdminGuard lets a token through only when its role is admin (app.guard.ts, lines 52 to 60).",
+          "evidence": [
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/frontend/src/app/app.routing.ts#L79-L83",
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/frontend/src/app/app.guard.ts#L52-L60",
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L51-L67"
+          ],
+          "id": "assertion:open-admin-targets-admin-section",
+          "reviews": []
+        }
+      ],
+      "authored": false,
       "id": "relationship:attack-step:open-admin|targets_element|asset:admin-section",
       "properties": {
+        "assertion_descriptions": [
+          "The route's AdminGuard lets a token through only when its role is admin (app.guard.ts, lines 52 to 60)."
+        ],
+        "assertion_evidence": [
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/frontend/src/app/app.routing.ts#L79-L83",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/frontend/src/app/app.guard.ts#L52-L60",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L51-L67"
+        ],
         "assertion_ids": [
           "assertion:open-admin-targets-admin-section"
         ],
@@ -1323,8 +1813,33 @@
       "target": "asset:admin-section"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "high",
+          "description": "The basket API requires a login token (server.ts, lines 388 and 431), and View Basket counts only for a logged-in user whose own basket differs (routes/basket.ts, lines 21 to 24).",
+          "evidence": [
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/server.ts#L388",
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/server.ts#L431",
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/basket.ts#L21-L24",
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L1224-L1239"
+          ],
+          "id": "assertion:own-login-targets-login-request",
+          "reviews": []
+        }
+      ],
+      "authored": false,
       "id": "relationship:attack-step:own-login|targets_element|data-flow:login-request",
       "properties": {
+        "assertion_descriptions": [
+          "The basket API requires a login token (server.ts, lines 388 and 431), and View Basket counts only for a logged-in user whose own basket differs (routes/basket.ts, lines 21 to 24)."
+        ],
+        "assertion_evidence": [
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/server.ts#L388",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/server.ts#L431",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/basket.ts#L21-L24",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L1224-L1239"
+        ],
         "assertion_ids": [
           "assertion:own-login-targets-login-request"
         ],
@@ -1336,8 +1851,29 @@
       "target": "data-flow:login-request"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "high",
+          "description": "The search page reads its text from the link's q parameter (line 139), and the DOM XSS challenge gives the iframe payload.",
+          "evidence": [
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/frontend/src/app/search-result/search-result.component.ts#L139",
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L265-L279"
+          ],
+          "id": "assertion:craft-link-targets-storefront",
+          "reviews": []
+        }
+      ],
+      "authored": false,
       "id": "relationship:attack-step:craft-search-link|targets_element|component:storefront",
       "properties": {
+        "assertion_descriptions": [
+          "The search page reads its text from the link's q parameter (line 139), and the DOM XSS challenge gives the iframe payload."
+        ],
+        "assertion_evidence": [
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/frontend/src/app/search-result/search-result.component.ts#L139",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L265-L279"
+        ],
         "assertion_ids": [
           "assertion:craft-link-targets-storefront"
         ],
@@ -1349,8 +1885,27 @@
       "target": "component:storefront"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "high",
+          "description": "The server's robots.txt disallows /ftp (server.ts, lines 230 to 231), which names the folder.",
+          "evidence": [
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/server.ts#L230-L231"
+          ],
+          "id": "assertion:read-robots-targets-shop-api",
+          "reviews": []
+        }
+      ],
+      "authored": false,
       "id": "relationship:attack-step:read-robots|targets_element|component:shop-api",
       "properties": {
+        "assertion_descriptions": [
+          "The server's robots.txt disallows /ftp (server.ts, lines 230 to 231), which names the folder."
+        ],
+        "assertion_evidence": [
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/server.ts#L230-L231"
+        ],
         "assertion_ids": [
           "assertion:read-robots-targets-shop-api"
         ],
@@ -1362,8 +1917,31 @@
       "target": "component:shop-api"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "high",
+          "description": "The file route serves any .md or .pdf file in /ftp, and Confidential Document counts as solved when acquisitions.md is fetched (routes/fileServer.ts, lines 26 to 29).",
+          "evidence": [
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/fileServer.ts#L26-L29",
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/fileServer.ts#L56-L57",
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L253-L264"
+          ],
+          "id": "assertion:download-targets-ftp-download",
+          "reviews": []
+        }
+      ],
+      "authored": false,
       "id": "relationship:attack-step:download-document|targets_element|data-flow:ftp-download",
       "properties": {
+        "assertion_descriptions": [
+          "The file route serves any .md or .pdf file in /ftp, and Confidential Document counts as solved when acquisitions.md is fetched (routes/fileServer.ts, lines 26 to 29)."
+        ],
+        "assertion_evidence": [
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/fileServer.ts#L26-L29",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/fileServer.ts#L56-L57",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L253-L264"
+        ],
         "assertion_ids": [
           "assertion:download-targets-ftp-download"
         ],
@@ -1375,8 +1953,31 @@
       "target": "data-flow:ftp-download"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "high",
+          "description": "The server lists /encryptionkeys (server.ts, lines 301 to 303), the token checks load jwt.pub from it (lib/insecurity.ts, line 20), and the challenge's hint calls the key mandatory (challenges.yml, line 466).",
+          "evidence": [
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/server.ts#L301-L303",
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/lib/insecurity.ts#L20",
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L466"
+          ],
+          "id": "assertion:get-key-targets-key-folder",
+          "reviews": []
+        }
+      ],
+      "authored": false,
       "id": "relationship:attack-step:get-public-key|targets_element|component:key-folder",
       "properties": {
+        "assertion_descriptions": [
+          "The server lists /encryptionkeys (server.ts, lines 301 to 303), the token checks load jwt.pub from it (lib/insecurity.ts, line 20), and the challenge's hint calls the key mandatory (challenges.yml, line 466)."
+        ],
+        "assertion_evidence": [
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/server.ts#L301-L303",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/lib/insecurity.ts#L20",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L466"
+        ],
         "assertion_ids": [
           "assertion:get-key-targets-key-folder"
         ],
@@ -1388,8 +1989,33 @@
       "target": "component:key-folder"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "medium",
+          "description": "The API checks tokens with the public key (lib/insecurity.ts, line 52), and the challenge is solved by an HS256 token for rsa_lord that passes that check (routes/verify.ts, lines 90 to 91 and 116 to 133).",
+          "evidence": [
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/lib/insecurity.ts#L52",
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/verify.ts#L90-L91",
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/verify.ts#L116-L133",
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L455-L472"
+          ],
+          "id": "assertion:forged-token-targets-token-flow",
+          "reviews": []
+        }
+      ],
+      "authored": false,
       "id": "relationship:attack-step:use-forged-token|targets_element|data-flow:token-on-request",
       "properties": {
+        "assertion_descriptions": [
+          "The API checks tokens with the public key (lib/insecurity.ts, line 52), and the challenge is solved by an HS256 token for rsa_lord that passes that check (routes/verify.ts, lines 90 to 91 and 116 to 133)."
+        ],
+        "assertion_evidence": [
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/lib/insecurity.ts#L52",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/verify.ts#L90-L91",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/verify.ts#L116-L133",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L455-L472"
+        ],
         "assertion_ids": [
           "assertion:forged-token-targets-token-flow"
         ],
@@ -1401,8 +2027,26 @@
       "target": "data-flow:token-on-request"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "high",
+          "description": null,
+          "evidence": [
+            "https://nvd.nist.gov/vuln/detail/CVE-2015-9235",
+            "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/package.json#L123"
+          ],
+          "id": "assertion:cve-2015-9235-propagates-to-jsonwebtoken",
+          "reviews": []
+        }
+      ],
+      "authored": false,
       "id": "relationship:vulnerability:cve-2015-9235|propagates_to|component:jsonwebtoken-lib",
       "properties": {
+        "assertion_evidence": [
+          "https://nvd.nist.gov/vuln/detail/CVE-2015-9235",
+          "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/package.json#L123"
+        ],
         "assertion_ids": [
           "assertion:cve-2015-9235-propagates-to-jsonwebtoken"
         ],
@@ -1414,8 +2058,24 @@
       "target": "component:jsonwebtoken-lib"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "high",
+          "description": null,
+          "evidence": [
+            "https://nvd.nist.gov/vuln/detail/CVE-2015-9235"
+          ],
+          "id": "assertion:cve-2015-9235-instance-of-cwe-327",
+          "reviews": []
+        }
+      ],
+      "authored": false,
       "id": "relationship:vulnerability:cve-2015-9235|instance_of|weakness:cwe-327",
       "properties": {
+        "assertion_evidence": [
+          "https://nvd.nist.gov/vuln/detail/CVE-2015-9235"
+        ],
         "assertion_ids": [
           "assertion:cve-2015-9235-instance-of-cwe-327"
         ],
@@ -1427,8 +2087,24 @@
       "target": "weakness:cwe-327"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "high",
+          "description": null,
+          "evidence": [
+            "https://nvd.nist.gov/vuln/detail/CVE-2015-9235"
+          ],
+          "id": "assertion:cve-2015-9235-instance-of-cwe-20",
+          "reviews": []
+        }
+      ],
+      "authored": false,
       "id": "relationship:vulnerability:cve-2015-9235|instance_of|weakness:cwe-20",
       "properties": {
+        "assertion_evidence": [
+          "https://nvd.nist.gov/vuln/detail/CVE-2015-9235"
+        ],
         "assertion_ids": [
           "assertion:cve-2015-9235-instance-of-cwe-20"
         ],
@@ -1440,8 +2116,24 @@
       "target": "weakness:cwe-20"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "medium",
+          "description": null,
+          "evidence": [
+            "https://capec.mitre.org/data/definitions/66.html"
+          ],
+          "id": "assertion:cwe-89-exploited-by-capec-66",
+          "reviews": []
+        }
+      ],
+      "authored": false,
       "id": "relationship:weakness:cwe-89|exploited_by|attack-pattern:capec-66",
       "properties": {
+        "assertion_evidence": [
+          "https://capec.mitre.org/data/definitions/66.html"
+        ],
         "assertion_ids": [
           "assertion:cwe-89-exploited-by-capec-66"
         ],
@@ -1453,8 +2145,24 @@
       "target": "attack-pattern:capec-66"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "medium",
+          "description": null,
+          "evidence": [
+            "https://capec.mitre.org/data/definitions/588.html"
+          ],
+          "id": "assertion:cwe-79-exploited-by-capec-588",
+          "reviews": []
+        }
+      ],
+      "authored": false,
       "id": "relationship:weakness:cwe-79|exploited_by|attack-pattern:capec-588",
       "properties": {
+        "assertion_evidence": [
+          "https://capec.mitre.org/data/definitions/588.html"
+        ],
         "assertion_ids": [
           "assertion:cwe-79-exploited-by-capec-588"
         ],
@@ -1466,8 +2174,24 @@
       "target": "attack-pattern:capec-588"
     },
     {
+      "assertions": [
+        {
+          "assertion_status": "proposed",
+          "confidence": "medium",
+          "description": null,
+          "evidence": [
+            "https://capec.mitre.org/data/definitions/127.html"
+          ],
+          "id": "assertion:cwe-548-exploited-by-capec-127",
+          "reviews": []
+        }
+      ],
+      "authored": false,
       "id": "relationship:weakness:cwe-548|exploited_by|attack-pattern:capec-127",
       "properties": {
+        "assertion_evidence": [
+          "https://capec.mitre.org/data/definitions/127.html"
+        ],
         "assertion_ids": [
           "assertion:cwe-548-exploited-by-capec-127"
         ],
