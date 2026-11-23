@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>March 20 ChatGPT outage: Here&#x27;s what happened</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px 40px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); line-height: 1.15; letter-spacing: -0.03em; margin: 20px 0 6px; }
+h2 { font-size: 1.15rem; margin: 1.25em 0 0.3em; padding-top: 0.6em; border-top: 1px solid var(--line); }
+h3 { font-size: 1rem; margin: 1em 0 0.2em; }
+.kicker { margin: 18px 0 0; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.4em 0 0.8em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 6px 10px; font-size: 0.93rem; }
+table.kv { background: transparent; }
+table.kv td { border-bottom: none; padding: 2px 12px 2px 0; }
+td.rowhead { color: var(--muted); font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; width: 1%; padding-top: 6px; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../../../../index.html">tmodel</a><nav aria-label="Site"><a href="../../../../index.html">Home</a><a href="../../../../bibliography/index.html" aria-current="page">Bibliography</a><a href="../../../../reports/index.html">Reports</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">Library record · openai-2023-chatgpt-redis-outage</p>
+<h1>March 20 ChatGPT outage: Here&#x27;s what happened</h1>
+<p class="lede">ChatGPT redis-py data exposure</p>
+<p>
+  <span class="badge">article</span>
+  <span class="badge">vendor</span>
+  <span class="badge">summarized</span>
+  <span class="badge">medium</span>
+</p>
+<p class="meta">Topic: <strong>ai-threat-model-supply-chain-infra</strong> (<code>record.yaml</code> topic). Status <code>summarized</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://web.archive.org/web/20230326020730id_/https://openai.com/blog/march-20-chatgpt-outage">https://web.archive.org/web/20230326020730id_/https://openai.com/blog/march-20-chatgpt-outage</a></li><li>Identifier URL: <a href="https://openai.com/blog/march-20-chatgpt-outage">https://openai.com/blog/march-20-chatgpt-outage</a></li><li>SHA-256: <code>66b92d3b419ebbed42371af8496ed0de160136400b9e8938a351769dda086c0d</code></li></ul>
+<h2>Article</h2>
+<table><tbody><tr><td>Authors</td><td>OpenAI</td></tr><tr><td>Date</td><td>2023-03-24</td></tr><tr><td>Media type</td><td>text/html</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge none">none</span></td></tr><tr><td>This project</td><td><span class="badge adjacent">adjacent</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
+<h2>Tags</h2>
+<table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">ai-incident</span> <span class="badge">ai-supply-chain</span></td></tr><tr><td class="rowhead">Role</td><td><span class="badge">evidence</span></td></tr></tbody></table>
+<h2>Bears on</h2>
+<ul><li><code>DEC-001a</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> OpenAI&#x27;s own account of a bug in an open-source dependency (redis-py) that showed ChatGPT users other users&#x27; chat titles and some Plus subscribers&#x27; payment details; it is the primary source for INC-029, is cited by AIT-141 and is a reference of CVE-2023-28858.</p><p class="meta">Assessed 2026-11-02.</p>
+
+
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>article (vendor incident report on the company blog)</td></tr><tr><td><strong>Maturity</strong></td><td>_unset_ (an incident report; no maturity level applies)</td></tr><tr><td><strong>Authors</strong></td><td>OpenAI</td></tr><tr><td><strong>Published</strong></td><td>2023-03-24</td></tr><tr><td><strong>Identifier</strong></td><td>URL only: https://openai.com/blog/march-20-chatgpt-outage</td></tr><tr><td><strong>Source</strong></td><td>https://web.archive.org/web/20230326020730id_/https://openai.com/blog/march-20-chatgpt-outage (the Internet Archive&#x27;s copy of 2023-03-26, original bytes)</td></tr><tr><td><strong>Digest</strong></td><td><code>sha256:66b92d3b419ebbed42371af8496ed0de160136400b9e8938a351769dda086c0d</code> (that archived HTML, 68,998 bytes)</td></tr></tbody></table>
+<h2>Overview</h2>
+<p>OpenAI explains why it took ChatGPT offline on Monday, 20 March 2023. A bug in redis-py, the open-source Python client for Redis, let some users see the titles of another active user&#x27;s chat history, and possibly the first message of a new conversation. The same bug may have exposed payment details of 1.2% of ChatGPT Plus subscribers active during a nine-hour window: name, email address, payment address, the last four digits of a card number and its expiry date, though never a full card number. That could happen through subscription confirmation emails sent to the wrong users between 1 a.m. and 10 a.m. Pacific time, or on the &quot;Manage my subscription&quot; page in the same window. OpenAI caches user information in Redis Cluster and reaches it through redis-py from an asyncio Python server. The client shares a pool of connections. If a request was cancelled after it was sent but before its response was read, the connection was left corrupted, and the next, unrelated request on it could receive the leftover data. Usually that caused a server error, but sometimes the data had the expected type and was returned as valid. A server change at 1 a.m. on 20 March caused a spike in cancellations. OpenAI sent the maintainers a patch and lists its own actions: testing the fix, redundant checks that cached data belongs to the requesting user, a programmatic log review, identifying and notifying affected users, better logging, and a sturdier Redis cluster. Chat history was restored except for a few hours.</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td><code>core</code></td><td>A confidentiality failure across users of an AI service, caused by a bug in an open-source dependency, with the mechanism explained</td></tr><tr><td>Cryptography</td><td><code>none</code></td><td>No cryptographic content</td></tr><tr><td>This project</td><td><code>adjacent</code></td><td>The object model has to represent a failure with no attacker: a provider-side bug in a shared cache that hands one user&#x27;s data to another, traced to a third-party library</td></tr></tbody></table>
+<p><code>bears_on: DEC-001a</code> (the core type system, accepted in ADR-0010).</p>
+<h2>Implementations</h2>
+<p>Searched on 2026-11-02. None applies: this is an incident report. The bug was in redis-py (MIT, https://github.com/redis/redis-py). NVD tracks it as CVE-2023-28858 (redis-py before 4.5.3; releases 4.3.6, 4.4.3 and 4.5.3 changed pipeline behaviour), whose record cites this post and says it was first created in response to reports about ChatGPT, and as CVE-2023-28859 (fixed in 4.4.4 and 4.5.4), which addresses data leakage across asyncio connections in general. The post itself names no CVE or version.</p>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata</td></tr><tr><td><code>summary.md</code></td><td>this document</td></tr></tbody></table>
+<h2>Limits</h2>
+<ul><li><strong>Read from an archive.</strong> openai.com returned HTTP 403 to scripted requests on 2026-11-02. The digest is of the Internet Archive&#x27;s copy from two days after publication; the live page may have changed.</li><li><strong>Hedged numbers.</strong> OpenAI believes very few users&#x27; data &quot;was actually revealed to someone else&quot; but gives no count beyond the 1.2% share; exposure before 20 March is called possible but unconfirmed.</li><li><strong>The provider&#x27;s own account.</strong> No independent investigation is cited.</li><li><strong>&quot;Outage&quot; undersells it.</strong> The title names the downtime; the substance is a data exposure.</li></ul>
+<h2>RPT-0014 applicability</h2>
+<table><thead><tr><th>Topic of interest</th><th>Rating</th><th>Linked ids</th><th>Why</th></tr></thead><tbody><tr><td>Published attacks</td><td>core</td><td>AIT-141</td><td>AIT-141 cites it, and it is the primary source for INC-029. There was no attacker: AIT-141 covers provider bugs that expose prompts and outputs. INC-029 says cancelled requests returned another user&#x27;s data; per the post, the cancelled request corrupted the connection and the next, unrelated request received the leftover data. INC-029&#x27;s source note (&quot;fetch returned 403; content confirmed through press&quot;) can now point to the archived primary text</td></tr><tr><td>Existing AI threat models</td><td>none</td><td>none</td><td>An incident report; it models nothing. threat-models.md does not list it</td></tr><tr><td>Weakness enumerations</td><td>adjacent</td><td>LLM02:2025, LLM03:2025, CWE-362, CVE-2023-28858, CVE-2023-28859</td><td>Not an enumeration, and neither NIST AI 100-2e2025 nor ATLAS 2026.09 cites it (searched 2026-11-02). NVD&#x27;s CVE-2023-28858 cites it, and NVD classes the two CVEs as CWE-193 (off-by-one error) and CWE-459 (incomplete cleanup), where RPT-0014&#x27;s sources.md maps the incident to CWE-362 (race condition). The other ids are RPT-0014&#x27;s mapping; the CVE ids are ours</td></tr><tr><td>Attack → asset mapping</td><td>core</td><td>C07, C13, A07, A14</td><td>Traces the failure through named parts: the asyncio Python server, redis-py&#x27;s shared connection pool and the Redis Cluster cache of user information (C07 for ChatGPT as an application; C13 from a customer&#x27;s side, as in AIT-141), and lists exactly what leaked: chat titles and first messages (A07) and payment details (A14). The component and asset mapping is ours</td></tr></tbody></table>
+
+<footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
+</main>
+</body>
+</html>

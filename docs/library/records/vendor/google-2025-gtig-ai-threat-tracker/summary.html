@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>GTIG AI Threat Tracker: Advances in Threat Actor Usage of AI Tools</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px 40px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); line-height: 1.15; letter-spacing: -0.03em; margin: 20px 0 6px; }
+h2 { font-size: 1.15rem; margin: 1.25em 0 0.3em; padding-top: 0.6em; border-top: 1px solid var(--line); }
+h3 { font-size: 1rem; margin: 1em 0 0.2em; }
+.kicker { margin: 18px 0 0; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.4em 0 0.8em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 6px 10px; font-size: 0.93rem; }
+table.kv { background: transparent; }
+table.kv td { border-bottom: none; padding: 2px 12px 2px 0; }
+td.rowhead { color: var(--muted); font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; width: 1%; padding-top: 6px; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../../../../index.html">tmodel</a><nav aria-label="Site"><a href="../../../../index.html">Home</a><a href="../../../../bibliography/index.html" aria-current="page">Bibliography</a><a href="../../../../reports/index.html">Reports</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">Library record · google-2025-gtig-ai-threat-tracker</p>
+<h1>GTIG AI Threat Tracker: Advances in Threat Actor Usage of AI Tools</h1>
+<p class="lede">GTIG AI Threat Tracker (November 2025)</p>
+<p>
+  <span class="badge">article</span>
+  <span class="badge">vendor</span>
+  <span class="badge">summarized</span>
+  <span class="badge">medium</span>
+</p>
+<p class="meta">Topic: <strong>ai-threat-model-supply-chain-infra</strong> (<code>record.yaml</code> topic). Status <code>summarized</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://services.google.com/fh/files/misc/advances-in-threat-actor-usage-of-ai-tools-en.pdf">https://services.google.com/fh/files/misc/advances-in-threat-actor-usage-of-ai-tools-en.pdf</a></li><li>Identifier URL: <a href="https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools">https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools</a></li><li>SHA-256: <code>bc517904af9d5c40ad4f3a7dc1f8bba30c6b874f42ca93a1146a02ea1f86bf45</code></li></ul>
+<h2>Article</h2>
+<table><tbody><tr><td>Authors</td><td>Google Threat Intelligence Group</td></tr><tr><td>Date</td><td>2025-11-05</td></tr><tr><td>Pages</td><td>20</td></tr><tr><td>Media type</td><td>application/pdf</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge none">none</span></td></tr><tr><td>This project</td><td><span class="badge adjacent">adjacent</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
+<h2>Tags</h2>
+<table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">ai-incident</span> <span class="badge">ai-enabled-offense</span></td></tr><tr><td class="rowhead">Role</td><td><span class="badge">evidence</span></td></tr></tbody></table>
+<h2>Bears on</h2>
+<ul><li><code>DEC-001a</code></li><li><code>DEC-003</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> Google&#x27;s report of the first malware families seen querying LLMs during execution (PROMPTFLUX, PROMPTSTEAL, QUIETVAULT and others), each marked experimental or observed in operations; it is the primary source for INC-131 and is cited by AIT-123 and AIT-125.</p><p class="meta">Assessed 2026-11-02.</p>
+
+
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>article (vendor threat-intelligence report, published as a blog post and a PDF)</td></tr><tr><td><strong>Maturity</strong></td><td>_unset_ (a vendor report; no maturity level applies)</td></tr><tr><td><strong>Authors</strong></td><td>Google Threat Intelligence Group (no individual authors named)</td></tr><tr><td><strong>Published</strong></td><td>2025-11-05 (blog post date; the PDF cover says November 2025)</td></tr><tr><td><strong>Identifier</strong></td><td>URL only: https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools</td></tr><tr><td><strong>Source</strong></td><td>https://services.google.com/fh/files/misc/advances-in-threat-actor-usage-of-ai-tools-en.pdf (the report&#x27;s download link in the blog post)</td></tr><tr><td><strong>Digest</strong></td><td><code>sha256:bc517904af9d5c40ad4f3a7dc1f8bba30c6b874f42ca93a1146a02ea1f86bf45</code> (PDF, 20 pages; the same digest as RPT-0014&#x27;s <code>pdf-manifest.tsv</code>)</td></tr></tbody></table>
+<h2>Overview</h2>
+<p>Google Threat Intelligence Group (GTIG) updates its January 2025 analysis of generative-AI misuse and reports a shift: attackers now deploy malware that uses AI during execution, not only AI for productivity. Table 1 lists five families seen in 2025. PROMPTFLUX, an experimental VBScript dropper found in early June 2025, sends a hard-coded API key and a prompt to Gemini asking for antivirus-evading VBScript; one variant asks Gemini to rewrite the whole script every hour. PROMPTSTEAL, used by APT28 against Ukraine and reported by CERT-UA as LAMEHUG, queries Qwen2.5-Coder-32B-Instruct through the Hugging Face API for one-line Windows commands, which it runs blindly before sending the results out; GTIG calls it the first malware it has seen querying an LLM in live operations. PROMPTLOCK is a proof-of-concept ransomware that has an LLM write Lua scripts. QUIETVAULT steals GitHub and npm tokens and has AI command-line tools installed on the host search for other secrets. FRUITSHELL, a PowerShell reverse shell, carries prompts meant to defeat LLM-based security analysis. The rest of the report covers actors who tried to talk Gemini past its safeguards by posing as capture-the-flag players, students or researchers (a China-nexus actor got useful exploitation help this way), and state actors from China, Iran and North Korea who used Gemini at every stage of an intrusion: reconnaissance, phishing lures, exploit research, C2 development, data exfiltration and, in one case, an attempt to build an agent that turns questions into SQL over personal data. The report also covers an underground market for AI tools that almost always advertise phishing support, and North Korean deepfake lures. Most cases end with Google&#x27;s response: disabled accounts and assets, and stronger classifiers and model.</p>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th><th>Why</th></tr></thead><tbody><tr><td>Security</td><td><code>core</code></td><td>Threat-intelligence evidence of malware that calls LLMs while running, and of state actors using an LLM across intrusion stages</td></tr><tr><td>Cryptography</td><td><code>none</code></td><td>Only incidental: PROMPTLOCK encrypts files, and one actor&#x27;s script exposed its encryption key to Gemini</td></tr><tr><td>This project</td><td><code>adjacent</code></td><td>The object model has to represent AI on the attacker&#x27;s side: a hosted model API that malware calls at runtime, and AI command-line tools on a developer workstation that malware turns against their owner</td></tr></tbody></table>
+<p><code>bears_on: DEC-001a</code> (the core type system, accepted in ADR-0010) and <code>DEC-003</code> (the risk metric, accepted in ADR-0006, in which attack feasibility is one input). The DEC-003 link is ours: Table 1&#x27;s status for each family (experimental, or observed in operations) is evidence for feasibility, but the report does not discuss risk metrics.</p>
+<h2>Implementations</h2>
+<p>Searched on 2026-11-02. None applies: this is a threat-intelligence report. Table 1 links one VirusTotal sample per malware family; the samples are malware and were not downloaded.</p>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata</td></tr><tr><td><code>summary.md</code></td><td>this document</td></tr></tbody></table>
+<h2>Limits</h2>
+<ul><li><strong>Two of the five families are experimental.</strong> PROMPTFLUX&#x27;s self-modification function is commented out and GTIG says it cannot compromise a victim network or device; PROMPTLOCK is a proof of concept.</li><li><strong>Few numbers.</strong> No counts of victims, samples or prompts; the findings rest on Google&#x27;s visibility, chiefly of Gemini use.</li><li><strong>Assessments, not proof.</strong> Attribution is GTIG&#x27;s, and some claims are hedged: PROMPTSTEAL &quot;likely&quot; uses stolen API tokens, and PROMPTFLUX is unattributed, linked to financially motivated actors only through its lure file names.</li><li><strong>Unmeasured mitigations.</strong> Google says it strengthened its classifiers and the model, but gives no measurement.</li><li><strong>Two forms of one text.</strong> The blog post states that it includes the report in full. The PDF digested here also carries the text of the attack-lifecycle figures; the blog post shows PROMPTSTEAL&#x27;s two prompts as text (Figures 2 and 3), where the PDF shows them as images.</li></ul>
+<h2>RPT-0014 applicability</h2>
+<table><thead><tr><th>Topic of interest</th><th>Rating</th><th>Linked ids</th><th>Why</th></tr></thead><tbody><tr><td>Published attacks</td><td>core</td><td>AIT-123, AIT-125, AIT-130, AIT-073, AIT-113, AIT-126, AIT-127, AIT-122</td><td>AIT-123 and AIT-125 cite it, and it is the primary source for INC-131: PROMPTFLUX, PROMPTSTEAL, PROMPTLOCK and QUIETVAULT call an LLM while running (AIT-123), and QUIETVAULT has installed AI command-line tools hunt for secrets (AIT-125). The other links are ours: FRUITSHELL&#x27;s prompts aimed at LLM-powered security analysis (AIT-130); capture-the-flag, student and researcher pretexts used to get past Gemini&#x27;s guardrails, successfully in one capture-the-flag exchange (AIT-073); PROMPTSTEAL&#x27;s use of what GTIG calls likely stolen Hugging Face API tokens (AIT-113); phishing lures written with Gemini by APT42 and UNC1069 (AIT-126); UNC1069&#x27;s deepfake image and video lures (AIT-127); and exploit research by UNC4899 and a China-nexus actor (AIT-122). QUIETVAULT&#x27;s described behaviour resembles INC-118 (Nx &quot;s1ngularity&quot;), but the report does not name Nx, so INC-118 is not linked</td></tr><tr><td>Existing AI threat models</td><td>none</td><td>none</td><td>A threat-intelligence report on AI as the attacker&#x27;s tool, not a threat model of an AI system; its figures map each actor&#x27;s Gemini use onto attack-lifecycle stages. threat-models.md does not list it</td></tr><tr><td>Weakness enumerations</td><td>none</td><td>AML.T0102, AML.T0096, AML.T0112.000, AML.CS0044, NISTAML.04</td><td>Not an enumeration. ATLAS 2026.09 does not cite it, but its case study AML.CS0044 covers PROMPTSTEAL under CERT-UA&#x27;s name, LAMEHUG, citing CERT-UA, BleepingComputer and Logpoint; NIST AI 100-2e2025 predates it. The ids are RPT-0014&#x27;s mapping in sources.md: Generate Malicious Commands, AI Service API, Local AI Agent, the LAMEHUG case study and NIST&#x27;s misuse category</td></tr><tr><td>Attack → asset mapping</td><td>adjacent</td><td>C14, C13, C11, C12</td><td>Names what each family takes but models no system. Our mapping, following the catalog&#x27;s use of C14 for endpoints in AIT-123: victim endpoints and developer workstations with AI command-line tools (C14; documents A07, secrets A09, hosts A10); hosted model APIs that serve as attacker infrastructure (C13: Gemini, Hugging Face), reached with hard-coded or likely stolen keys (C11); and the people targeted by lures and deepfakes (C12; A15)</td></tr></tbody></table>
+
+<footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
+</main>
+</body>
+</html>

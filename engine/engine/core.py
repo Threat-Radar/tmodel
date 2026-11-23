@@ -17,6 +17,7 @@ from engine import __version__
 from engine import propose as proposals
 from engine import sdl as sdl_view
 from engine.graph import AttackGraph, GraphError
+from engine.load import cwe, local_weaknesses
 from engine.load.library import (
     Library,
     LibraryError,
@@ -27,6 +28,7 @@ from engine.load.library import (
 from engine.load.vector import MODEL_SUFFIXES, load_vector, load_vector_document
 from engine.model_graph import project_model_graph
 from engine.paths import enumerate_paths
+from engine.risk import assess_document
 
 ENGINE_NAME = "tmodel-engine"
 # PyInstaller unpacks the one-file sidecar and its data below _MEIPASS. In a
@@ -46,6 +48,22 @@ LIBRARY_FILTERS = ("id", "type", "topic", "status")
 TABLE_OPTIONS = ("search", "sort", "order", "limit", "offset")
 TABLE_SORTS = ("id", "title", "type", "shelf", "status", "maturity", "date", "publisher", "topic")
 TABLE_FACETS = ("type", "status", "topic")
+# The weakness table view (#144, #234): exact filters, sorts and facet counts over CWE weaknesses.
+WEAKNESS_FILTERS = ("abstraction", "structure", "status", "usage")
+WEAKNESS_SORTS = ("id", "name", "abstraction", "structure", "status", "usage", "likelihood")
+WEAKNESS_FACETS = WEAKNESS_FILTERS
+# CWE's own order for its enumerations, which a sort follows; other values come after, by name.
+WEAKNESS_ORDER = {
+    "abstraction": ("Pillar", "Class", "Base", "Variant", "Compound"),
+    "structure": ("Simple", "Chain", "Composite"),
+    "status": ("Stable", "Usable", "Draft", "Incomplete", "Obsolete", "Deprecated"),
+    "usage": ("Allowed", "Allowed-with-Review", "Discouraged", "Prohibited"),
+    "likelihood": ("High", "Medium", "Low", "Unknown"),
+}
+# The weakness relationships (#145): any list of views, one entry, inverses or not, paged.
+RELATIONSHIP_OPTIONS = ("view", "id", "derived", "limit", "offset")
+# A weakness the table and the answers serve: CWE's, or a local one (#145).
+_Weakness = cwe.CweEntry | local_weaknesses.LocalWeakness
 # The example-model families, told apart by file-name prefix (spec/vectors/README.md).
 # The order is the order the model list uses.
 MODEL_KINDS = (
@@ -91,7 +109,9 @@ def _values(query: Mapping[str, str], allowed: tuple[str, ...], noun: str) -> di
     values: dict[str, str] = {}
     for name, value in query.items():
         if name not in allowed:
-            known = ", ".join(allowed[:-1]) + " or " + allowed[-1]
+            known = (
+                allowed[0] if len(allowed) == 1 else ", ".join(allowed[:-1]) + " or " + allowed[-1]
+            )
             raise ValueError(f"unknown {noun} {name!r}: use {known}")
         if not isinstance(value, str) or not value.strip():
             raise ValueError(f"{noun} {name!r} needs a value")
@@ -259,6 +279,291 @@ def _row(r: LibraryRecord) -> dict[str, Any]:
     }
 
 
+def _served_catalog() -> cwe.CweCatalog:
+    """The CWE release the library pins, read from the file `$TMODEL_CWE_CATALOG` names."""
+    record = _served_library().get(cwe.LIBRARY_RECORD)
+    pinned = record.content.sha256 if record is not None else None
+    if record is None or not pinned:
+        raise Unavailable(
+            "the library pins no CWE release: its cwe record has no content.sha256 "
+            "(the CWE extraction is Threat-Radar/library#21); set TMODEL_LIBRARY to a "
+            "library checkout that has it"
+        )
+    path = cwe.configured_catalog()
+    if path is None:
+        raise Unavailable(
+            f"no CWE catalog: download {record.content.url} (SHA-256 {pinned}) "
+            f"and set {cwe.CATALOG_ENV} to that file"
+        )
+    try:
+        return cwe.cached_catalog(path, pinned)
+    except cwe.CweError as exc:
+        raise Unavailable(str(exc)) from exc
+
+
+def _served_local() -> local_weaknesses.LocalCatalog | None:
+    """The local weakness types `$TMODEL_LOCAL_WEAKNESSES` names, or None when it names none."""
+    path = local_weaknesses.configured_file()
+    if path is None:
+        return None
+    try:
+        return local_weaknesses.cached_local(path)
+    except local_weaknesses.LocalWeaknessError as exc:
+        raise Unavailable(f"{exc} (the file {local_weaknesses.LOCAL_ENV} names)") from exc
+
+
+def _weakness_entry_id(text: str) -> str:
+    """A weakness id as the answers write it: CWE-79, or a local tr-weak-0001."""
+    number = local_weaknesses.local_number(text)
+    if number is not None:
+        return local_weaknesses.local_id(number)
+    try:
+        return f"CWE-{cwe.cwe_number(text)}"
+    except ValueError as exc:
+        raise ValueError(f"{exc} (a local weakness id looks like tr-weak-0001)") from exc
+
+
+def _stated(
+    catalog: cwe.CweCatalog, local: local_weaknesses.LocalCatalog | None
+) -> tuple[cwe.Relationship, ...]:
+    """The relationships the CWE release and the local weaknesses write, CWE's first."""
+    return catalog.stated_relationships + (local.stated_relationships if local is not None else ())
+
+
+def _catalog_summary(catalog: cwe.CweCatalog) -> dict[str, Any]:
+    """Which CWE release an answer comes from, with MITRE's notice and licence.
+
+    Every answer that holds CWE content carries them, as the CWE Terms of Use require
+    of a copy. Names no local path.
+    """
+    return {
+        "name": catalog.name,
+        "version": catalog.version,
+        "date": catalog.date,
+        "schema": catalog.schema,
+        "file": catalog.file,
+        "sha256": catalog.sha256,
+        "weaknesses": len(catalog.weaknesses),
+        "categories": len(catalog.categories),
+        "views": len(catalog.views),
+        "references": len(catalog.references),
+        "unknown_fields": len(catalog.unknown),
+        "notice": cwe.notice(catalog),
+        "license": cwe.LICENSE,
+        "terms_url": cwe.TERMS_URL,
+    }
+
+
+def weaknesses(query: Mapping[str, str] | None = None) -> dict[str, Any]:
+    """The CWE release the engine serves (#144): what the import found, or one entry in full.
+
+    Without parameters: the catalog; `fields`, one row per entry field with how many
+    entries carry it and where it goes in the object model (an unknown field has
+    `known` false); `links`, what became of CWE's CAPEC and CVE links, naming each
+    one not mapped; and how many objects of each kind the import makes. With `id`
+    (`CWE-79` or `79`, or a local `tr-weak-0001`, #145): that weakness, category or
+    view with every field and the relationships it writes, the objects the import makes
+    for a weakness, `local` (the file of local weaknesses, when one is named), and
+    `derived_relationships`, the inverses the schema declares for relationships that
+    name it, from CWE's entries and the local ones. An id neither has gives
+    `entry: null`. Raises ValueError for another parameter or a malformed id, and
+    Unavailable when there is no pinned catalog to read or the local file cannot be read.
+    """
+    values = _values(query or {}, ("id",), "parameter")
+    catalog = _served_catalog()
+    summary = {"catalog": _catalog_summary(catalog)}
+    if "id" not in values:
+        return {
+            **summary,
+            "fields": catalog.report(),
+            "links": catalog.links(),
+            "objects": {name: len(items) for name, items in catalog.objects.items()},
+        }
+    wanted = _weakness_entry_id(values["id"])
+    local = _served_local()
+    entry: cwe.CweEntry | local_weaknesses.LocalWeakness | None
+    if local_weaknesses.local_number(wanted) is not None:
+        entry = local.get(wanted) if local is not None else None
+        objects = (
+            local_weaknesses.to_objects(local, [entry.number])
+            if local is not None and entry is not None
+            else None
+        )
+    else:
+        entry = catalog.get(wanted)
+        weakness = entry is not None and entry.kind == "Weakness"
+        objects = cwe.to_objects(catalog, [entry.number]) if weakness else None
+    derived = [r for r in cwe.select(_stated(catalog, local), source=wanted) if r.derived]
+    return {
+        **summary,
+        "local": local.summary() if local is not None else None,
+        "id": wanted,
+        "entry": entry.to_dict() if entry is not None else None,
+        "objects": objects,
+        "derived_relationships": [r.to_dict() for r in derived],
+    }
+
+
+def weakness_relationships(query: Mapping[str, str] | None = None) -> dict[str, Any]:
+    """The weakness relationships (#145): in any list of CWE views, of one entry, paged.
+
+    Every relationship the CWE release writes, a weakness's Related_Weakness and a
+    category's or view's Has_Member or Member_Of, each tagged with its view; then
+    those the local weaknesses write (`$TMODEL_LOCAL_WEAKNESSES`), and the inverses
+    the schema declares for all of them, marked `derived`. Parameters, all optional:
+    `view`, one view id or several separated by commas (`CWE-1000,699`), the views
+    whose relationships to give; `id`, an entry (`CWE-79` or `tr-weak-0001`) whose
+    relationships to give, the ones whose source it is; `derived`, `true` (the
+    default) or `false` for only the written ones; and `limit` and `offset` for
+    paging. `report` counts them all, whatever the query, and lists each one that
+    departs from the schema or names an entry or view not read. Raises ValueError
+    for a bad parameter or a view neither catalog knows, and Unavailable as
+    `weaknesses` does. The payload names no local path.
+    """
+    values = _values(query or {}, RELATIONSHIP_OPTIONS, "parameter")
+    derived = values.get("derived", "true")
+    if derived not in ("true", "false"):
+        raise ValueError(f"derived must be true or false, not {derived!r}")
+    limit = _whole_number(values, "limit", minimum=1)
+    offset = _whole_number(values, "offset", minimum=0) or 0
+    source = _weakness_entry_id(values["id"]) if "id" in values else None
+
+    catalog = _served_catalog()
+    local = _served_local()
+    stated = _stated(catalog, local)
+    known = set(catalog.known_views)
+    entries = {e.id for e in (*catalog.weaknesses, *catalog.categories, *catalog.views)}
+    if local is not None:
+        known |= {r.view for r in local.stated_relationships}
+        entries |= {w.id for w in local.weaknesses}
+    views = cwe.view_numbers(values.get("view"), known)
+    found = cwe.select(stated, views, source, derived == "true")
+    page = found[offset : offset + limit if limit is not None else None]
+    return {
+        "catalog": _catalog_summary(catalog),
+        "local": local.summary() if local is not None else None,
+        "query": {
+            "views": [f"CWE-{n}" for n in sorted(views)] if views is not None else None,
+            "id": source,
+            "derived": derived == "true",
+            "limit": limit,
+            "offset": offset,
+        },
+        "report": cwe.relationship_report(stated, entries, {v.number for v in catalog.views}),
+        "total": len(found),
+        "count": len(page),
+        "relationships": [r.to_dict() for r in page],
+    }
+
+
+def weakness_table(query: Mapping[str, str] | None = None) -> dict[str, Any]:
+    """Rows for the weakness table view (#144, #234): filtered, searched, sorted, paged.
+
+    Parameters, all optional, as in `library_table`: the WEAKNESS_FILTERS, each an
+    exact match; `search`, a text that must appear (ignoring case) in a weakness's
+    id, name, description or alternate terms; `sort`, one of WEAKNESS_SORTS (default
+    `id`, by number), where an enumeration sorts in CWE's own order; `order`, `asc`
+    or `desc`; and `limit` and `offset` for paging. Weaknesses without a value for
+    the sort field come last in both orders, and ties keep id order. `facets` counts
+    the whole catalog; `contextual_facets` apply the search and the other filters,
+    each leaving out its own. The payload names no local path.
+
+    When `$TMODEL_LOCAL_WEAKNESSES` names a file, its weaknesses are rows too (#145),
+    after CWE's in id order: a local row has its `tr-weak-` id, and no usage,
+    likelihood, mitigations or url. The row's shape is #234's, so it is unchanged.
+    """
+    values = _values(query or {}, WEAKNESS_FILTERS + TABLE_OPTIONS, "parameter")
+    sort = values.get("sort", "id")
+    if sort not in WEAKNESS_SORTS:
+        raise ValueError(f"cannot sort by {sort!r}: use one of {', '.join(WEAKNESS_SORTS)}")
+    order = values.get("order", "asc")
+    if order not in ("asc", "desc"):
+        raise ValueError(f"order must be asc or desc, not {order!r}")
+    limit = _whole_number(values, "limit", minimum=1)
+    offset = _whole_number(values, "offset", minimum=0) or 0
+    search = values.get("search")
+
+    catalog = _served_catalog()
+    local = _served_local()
+    rows: tuple[_Weakness, ...] = (
+        *catalog.weaknesses,
+        *(local.weaknesses if local is not None else ()),
+    )
+    filters = {k: v for k, v in values.items() if k in WEAKNESS_FILTERS}
+    searched = _weakness_searched(rows, search)
+    matched = _weakness_sorted(_matching(searched, filters), sort, descending=order == "desc")
+    page = matched[offset : offset + limit if limit is not None else None]
+    return {
+        "catalog": _catalog_summary(catalog),
+        "query": {
+            "filters": filters,
+            "search": search,
+            "sort": sort,
+            "order": order,
+            "limit": limit,
+            "offset": offset,
+        },
+        "total": len(matched),
+        "count": len(page),
+        "rows": [_weakness_row(w) for w in page],
+        "facets": {name: _counts(rows, name) for name in WEAKNESS_FACETS},
+        "contextual_facets": {
+            name: _counts(
+                _matching(searched, {key: value for key, value in filters.items() if key != name}),
+                name,
+            )
+            for name in WEAKNESS_FACETS
+        },
+    }
+
+
+def _weakness_searched(weaknesses: Iterable[_Weakness], search: str | None) -> list[_Weakness]:
+    if search is None:
+        return list(weaknesses)
+    needle = search.casefold()
+    return [
+        w
+        for w in weaknesses
+        if needle in " ".join((w.id, w.name, w.description, *w.alternate_terms)).casefold()
+    ]
+
+
+def _weakness_sorted(weaknesses: list[_Weakness], field: str, descending: bool) -> list[_Weakness]:
+    # id order: CWE's weaknesses by number, then the local ones by number (#145)
+    by_number = sorted(weaknesses, key=lambda w: (w.source != cwe.SOURCE, w.number))
+    if field == "id":
+        return by_number[::-1] if descending else by_number
+    order = {value: rank for rank, value in enumerate(WEAKNESS_ORDER.get(field, ()))}
+
+    def key(w: _Weakness) -> tuple[int, str]:
+        value = getattr(w, field)
+        return (order.get(value, len(order)), value.casefold())
+
+    present = [w for w in by_number if getattr(w, field)]
+    missing = [w for w in by_number if not getattr(w, field)]
+    present.sort(key=key, reverse=descending)  # stable: ties keep id order
+    return present + missing
+
+
+def _weakness_row(w: _Weakness) -> dict[str, Any]:
+    """One table row: what a list of weaknesses shows, plus the keys to fetch the rest."""
+    return {
+        "id": w.id,
+        "weakness": w.object_id,
+        "name": w.name,
+        "abstraction": w.abstraction,
+        "structure": w.structure,
+        "status": w.status,
+        "usage": w.usage,
+        "likelihood": w.likelihood,
+        "description": w.description,
+        "attack_patterns": len(w.attack_patterns),
+        "observed_examples": len(w.observed_examples),
+        "mitigations": w.mitigations,
+        "url": w.url,
+    }
+
+
 def attack_paths(file: str, goal: str | None = None) -> dict[str, Any]:
     """Attack paths to `goal` (a step or threat id) in a model file (#63).
 
@@ -282,6 +587,16 @@ def attack_paths(file: str, goal: str | None = None) -> dict[str, Any]:
         "goal": goal,
         "paths": [p.to_dict() for p in enumerate_paths(graph, goal)],
     }
+
+
+def risk_assessments(file: str, matrix: str, goal: str | None = None) -> dict[str, Any]:
+    """Derived risk for approved example-model files; ratings remain authored inputs."""
+    path = _approved_vector_path(file)
+    try:
+        result = assess_document(load_vector_document(path), matrix=matrix, goal=goal)
+    except GraphError as exc:
+        raise GraphError(_sanitized_model_error(path, exc)) from exc
+    return {"file": path.name, **result}
 
 
 def model_graph(file: str) -> dict[str, Any]:

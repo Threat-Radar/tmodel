@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Example threat models · tmodel</title>
-<meta name="description" content="Example data. These models were written to exercise tmodel&#39;s object model; none of them is a security assessment. The proposal examples were drafted by AI from published write-ups of real automotive attacks and name the real products. AI-proposed threats and paths are hypotheses until a human reviewer accepts them.">
+<meta name="description" content="Example data. These models were written to exercise tmodel&#39;s object model; none of them is a security assessment. The proposal examples were drafted by AI from published sources about real products, such as attack write-ups, and name those products. AI-proposed threats and paths are hypotheses until a human reviewer accepts them.">
 <style>
 :root { --ink: #1a1916; --muted: #5c574e; --line: #e2dcd0; --paper: #f6f3ec; --card: #fffcf7; --accent: #1e4d3a; }
 * { box-sizing: border-box; }
@@ -231,7 +231,7 @@ body { margin: 0; background: var(--paper); color: var(--ink); font-family: ui-s
 <main class="model-page model-index">
 <h1>Example threat models</h1>
 <p class="lead">Worked examples of what tmodel produces: each page is a threat-model report, in the order a TARA reads it, with every threat and attack path marked with its review status.</p>
-<div class="model-report"><p class="example-banner" role="note"><strong>Example data.</strong> These models were written to exercise tmodel&#39;s object model; none of them is a security assessment. The proposal examples were drafted by AI from published write-ups of real automotive attacks and name the real products. AI-proposed threats and paths are hypotheses until a human reviewer accepts them.</p></div>
+<div class="model-report"><p class="example-banner" role="note"><strong>Example data.</strong> These models were written to exercise tmodel&#39;s object model; none of them is a security assessment. The proposal examples were drafted by AI from published sources about real products, such as attack write-ups, and name those products. AI-proposed threats and paths are hypotheses until a human reviewer accepts them.</p></div>
 <ul class="model-list"><li>
 <p class="kind">Core example</p>
 <h2><a href="mvp-01-software-doc-service.html">Papermill Document Service</a></h2>
@@ -272,6 +272,11 @@ body { margin: 0; background: var(--paper); color: var(--ink); font-family: ui-s
 <h2><a href="pv-02-dealer-portal-owner-data.html">Kia vehicle with remote services</a></h2>
 <p>A Kia vehicle with the telematics hardware, and the web services that control it (the write-up&#39;s table lists affected models from 2014 to 2025).</p>
 <p class="meta">2 threats, 0 with an accepted human review · 2 attack paths</p>
+</li><li>
+<p class="kind">Proposal example (AI-drafted, unreviewed)</p>
+<h2><a href="pv-03-owasp-juice-shop.html">OWASP Juice Shop</a></h2>
+<p>A web shop for fruit juice with accounts, a basket, orders, a search page and an administration section, built to be insecure for training. Modeled at v20.4.0, run locally (Node.js, or its Docker image).</p>
+<p class="meta">5 threats, 0 with an accepted human review · 5 attack paths</p>
 </li></ul>
 
 </main>
