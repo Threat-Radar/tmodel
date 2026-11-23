@@ -1,4 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
+import { CompatibleCoverageProvider } from "./coverage-provider";
+import { REQUIREMENTS_GRAPH } from "./requirements-fixture.test-support";
 import { StaticPreviewApi } from "./static-api";
 
 describe("static preview API", () => {
@@ -39,6 +41,22 @@ describe("static preview API", () => {
     expect(mutation.status).toBe(405);
     expect(await mutation.json()).toEqual({ error: "browser preview data is read-only" });
     expect(escape.status).toBe(400);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("supports the Requirements coverage fallback without contacting localhost", async () => {
+    const fetchMock = vi.fn<typeof fetch>();
+    const api = new StaticPreviewApi("https://threat-radar.github.io/tmodel/app/data/", fetchMock);
+    const provider = new CompatibleCoverageProvider(
+      "mvp-02-automotive-ecu.yaml",
+      { getModelGraph: vi.fn(async () => REQUIREMENTS_GRAPH) },
+      api.engineBase,
+      api.fetch,
+    );
+
+    const result = await provider.getCoverage("product:tcu");
+    expect(result.source).toBe("frontend-fallback");
+    expect(result.response.counts).toEqual({ satisfied: 1, in_progress: 0, unsatisfied: 1 });
     expect(fetchMock).not.toHaveBeenCalled();
   });
 });

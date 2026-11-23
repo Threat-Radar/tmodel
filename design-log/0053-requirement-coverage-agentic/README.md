@@ -187,6 +187,41 @@ confidence are unchanged from the published source-fix head. The review and
 coverage suites pass **30 tests**; archdoc passes with zero errors. These checks
 do not stand in for CI after pushing the human-review commits.
 
+# Current-main integration (2026-11-22)
+
+@paria03 requested checking #243 and pushing any needed update after #242's
+integration. Merge `main` at `8351701`, including the CWE relationship/local
+weakness changes, requirements UI and nine-model browser preview. Git merges the
+coverage API, CLI and core adapters automatically; no conflicted hunk needs a
+manual resolution. This does not pull in the still-open #242 branch.
+
+Preserve the four reviewed source fragments byte for byte, including all 40
+human decisions and their limits. Keep the shared review helper identical to
+#242. Verify the pre-merge coverage output, validate all extraction files, and
+check the requirements UI's coverage parser against actual engine responses.
+Local integration validation on Python 3.13:
+
+- **646 engine tests passed, five opt-in packaging checks skipped**, with the
+  full pinned CWE release enabled. Rebuilt sidecar: **all five isolated packaging
+  tests passed**. Engine lint and formatting passed.
+- Frontend typecheck/build and **456 tests passed**; Rust fmt/clippy and
+  **four tests passed**. Converter/checker **12 tests** and **23 publishing tests**
+  passed (35 tests and 13 subtests in the combined run).
+- All **13 extraction files** pass LinkML, extraction rules and reference
+  integrity (1,663 objects, 1,518 references). Generated schemas are current.
+- The requirements UI parses actual engine responses and uses its engine branch
+  without fallback for **ten product cases across nine models**. Its conservative
+  graph fallback agrees with those engine answers.
+- Coverage JSON remains byte-identical to the pre-merge baseline. All four
+  source fragments and their 40 person Reviews remain byte-identical, with 39
+  acceptances and O09 rejected. The shared helper matches #242's published head.
+- Archdoc has 28 documents and zero errors. Published identity/link checks pass;
+  the browser preview is current with nine models and 685 library records.
+  The unchanged library has zero errors and 99 existing warnings.
+
+Fresh remote CI and review status must be checked after pushing the integration.
+No source decision or product assessment is inferred from this merge.
+
 # Limits
 
 These are source requirements and hypotheses, not validated assessments of a Kia,

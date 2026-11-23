@@ -94,7 +94,7 @@ describe("static example-model pages", () => {
 
   it("puts each model's own disclaimer on its page, and the list notice on the index", () => {
     const index = pages[0].content;
-    expect(index).toContain("The proposal examples were drafted by AI from published write-ups of real automotive attacks");
+    expect(index).toContain("The proposal examples were drafted by AI from published sources about real products");
     for (const page of pages.slice(1)) {
       expect(page.content).toContain("illustrative threat model written for the tmodel project");
     }
@@ -166,11 +166,11 @@ describe("published example-model pages (docs/models/)", () => {
     expect(content).toContain(">OR<");
   });
 
-  it("says a proposal model is drafted from a published attack, not an assessment of the real product", () => {
+  it("says a proposal model is drafted from published sources, not an assessment of the real product", () => {
     const proposals = entries.filter(([name]) => name.startsWith("pv-"));
     expect(proposals.length).toBeGreaterThan(0);
     for (const [, content] of proposals) {
-      expect(content).toContain("drafted by AI from the published write-up of a real automotive attack");
+      expect(content).toContain("drafted by AI from published sources about a real product");
       expect(content).toContain("not a verified security assessment of the product it names");
       expect(content).not.toContain("not a security assessment of a real product");
     }

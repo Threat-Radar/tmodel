@@ -1,0 +1,751 @@
+# owasp-asvs-5: requirement extraction, AI-proposed, UNREVIEWED unless a Review below says otherwise.
+# Source: library:owasp-asvs-5 (digest bcdbec214d70abcfad9284a31d4f9e5134305831d628aad3aa85d7e26626cb35), read 2026-11-16.
+# Agent: Codex (GPT-5). Human owner: @kriishnaa-18.
+# Library pin: a28a01375814accc5fe10cb2f5e7083c7d0401a5.
+#
+# Scope: 13 ASVS Level 1 authentication requirements, two Level 2 authentication-pathway
+# requirements directly relevant to CWE-306, plus requirements bearing on XML/XXE, SSRF and
+# outbound resource access, or unsafe file upload, storage and download.
+# Coverage: 461 in the source, 34 converted, 427 skipped.
+#   skipped (outside Issue #171 product-threat scope): 395 non-V6 entries outside the selected
+#     XML/XXE, SSRF/outbound-access and file-handling set.
+#   skipped (authentication depth outside the selected baseline and pathway controls): 32 V6
+#     L2/L3 entries.
+# Text: every requirement is a one-sentence paraphrase; designator, locator and normativity
+# are copied from the pinned distilled/requirements.yaml.
+# Source refs: Issue #171's library:<record>#<designator> form is retained. For V-designators,
+# the pinned row's canonical id is library:owasp-asvs-5#v5.0.0-<number>; the unique designator
+# field reconciles the alias to that row. P-10 is already the canonical row id.
+# Links: only semantically defensible CWE mappings carried by selected source rows are proposed.
+# They remain medium-confidence because the record labels them inferred legacy mappings. No CAPEC
+# mapping is proposed because the record supplies none for these entries.
+# No applies_to_family: ASVS scopes applications generally and supplies no canonical family id.
+
+requirements:
+- id: requirement:owasp-asvs-5-v1-3-6
+  name: V1.3.6 — Restrict outbound request destinations
+  text: >-
+    Before untrusted values are used to contact another service, restrict protocols, hosts, paths,
+    and ports to approved values and neutralize dangerous characters to prevent server-side request
+    forgery.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V1.3.6
+  source_locator: V1.3 Sanitization, row 1.3.6 (0x10-V1-Encoding-and-Sanitization.md; PDF p.27)
+- id: requirement:owasp-asvs-5-v1-5-1
+  name: V1.5.1 — Disable unsafe XML parser features
+  text: >-
+    Configure XML parsers restrictively and turn off external-entity resolution and other unsafe features
+    that enable XML external entity attacks.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V1.5.1
+  source_locator: V1.5 Safe Deserialization, row 1.5.1 (0x10-V1-Encoding-and-Sanitization.md; PDF
+    p.28)
+- id: requirement:owasp-asvs-5-v1-5-3
+  name: V1.5.3 — Keep equivalent parsers consistent
+  text: >-
+    Ensure parsers for the same data format apply consistent parsing and character-encoding rules
+    so discrepancies cannot be exploited for remote file inclusion or server-side request forgery.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V1.5.3
+  source_locator: V1.5 Safe Deserialization, row 1.5.3 (0x10-V1-Encoding-and-Sanitization.md; PDF
+    p.29)
+- id: requirement:owasp-asvs-5-p-10
+  name: P-10 — Disable DTD processing
+  text: >-
+    Avoid DTD validation and disable framework DTD evaluation so XML external entity processing cannot
+    be triggered through DTDs.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: library:owasp-asvs-5#P-10
+  source_locator: V2 Validation and Business Logic › V2.2 Input Validation (0x11-V2-Validation-and-Business-Logic.md)
+- id: requirement:owasp-asvs-5-v5-1-1
+  name: V5.1.1 — Document accepted file constraints
+  text: >-
+    Document each upload feature's allowed file types, extensions, and packed and unpacked size limits,
+    together with how unsafe downloads are prevented.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V5.1.1
+  source_locator: V5.1 File Handling Documentation, row 5.1.1 (0x14-V5-File-Handling.md; PDF p.42)
+- id: requirement:owasp-asvs-5-v5-2-1
+  name: V5.2.1 — Bound accepted file size
+  text: >-
+    Accept only files whose size the application can process without unacceptable performance loss
+    or denial of service.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V5.2.1
+  source_locator: V5.2 File Upload and Content, row 5.2.1 (0x14-V5-File-Handling.md; PDF p.43)
+- id: requirement:owasp-asvs-5-v5-2-2
+  name: V5.2.2 — Validate file extension and content
+  text: >-
+    For accepted files and archives, verify both that the extension is allowed and that the content
+    actually matches the claimed type.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V5.2.2
+  source_locator: V5.2 File Upload and Content, row 5.2.2 (0x14-V5-File-Handling.md; PDF p.43)
+- id: requirement:owasp-asvs-5-v5-2-3
+  name: V5.2.3 — Check archives before extraction
+  text: >-
+    Before decompressing an archive, enforce limits on its expanded size and contained-file count.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V5.2.3
+  source_locator: V5.2 File Upload and Content, row 5.2.3 (0x14-V5-File-Handling.md; PDF p.43)
+- id: requirement:owasp-asvs-5-v5-2-4
+  name: V5.2.4 — Enforce per-user file quotas
+  text: >-
+    Limit both storage volume and file count per user so one account cannot exhaust storage with numerous
+    or oversized files.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V5.2.4
+  source_locator: V5.2 File Upload and Content, row 5.2.4 (0x14-V5-File-Handling.md; PDF p.43)
+- id: requirement:owasp-asvs-5-v5-2-5
+  name: V5.2.5 — Reject unsafe archive symlinks
+  text: >-
+    Reject uploaded archives that contain symbolic links unless the feature requires them and an explicit
+    target allowlist constrains them.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V5.2.5
+  source_locator: V5.2 File Upload and Content, row 5.2.5 (0x14-V5-File-Handling.md; PDF p.43)
+- id: requirement:owasp-asvs-5-v5-3-1
+  name: V5.3.1 — Prevent uploaded files from executing
+  text: >-
+    Ensure files created from untrusted input and stored in a publicly reachable location cannot execute
+    as server-side code when requested.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V5.3.1
+  source_locator: V5.3 File Storage, row 5.3.1 (0x14-V5-File-Handling.md; PDF p.44)
+- id: requirement:owasp-asvs-5-v5-3-2
+  name: V5.3.2 — Construct file paths from trusted values
+  text: >-
+    Build file-operation paths from internal or trusted values, or strictly validate any required
+    user-supplied names or metadata to prevent traversal, file inclusion, and server-side request
+    forgery.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V5.3.2
+  source_locator: V5.3 File Storage, row 5.3.2 (0x14-V5-File-Handling.md; PDF p.44)
+- id: requirement:owasp-asvs-5-v5-3-3
+  name: V5.3.3 — Ignore archive path information
+  text: >-
+    During server-side file processing such as decompression, disregard user-controlled path components
+    so extracted content cannot escape its intended location.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V5.3.3
+  source_locator: V5.3 File Storage, row 5.3.3 (0x14-V5-File-Handling.md; PDF p.44)
+- id: requirement:owasp-asvs-5-v5-4-1
+  name: V5.4.1 — Control download filenames
+  text: >-
+    Ignore or validate user-controlled download names and set a safe filename in the response content-disposition
+    metadata.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V5.4.1
+  source_locator: V5.4 File Download, row 5.4.1 (0x14-V5-File-Handling.md; PDF p.44)
+- id: requirement:owasp-asvs-5-v5-4-2
+  name: V5.4.2 — Encode served filenames
+  text: >-
+    Encode or sanitize filenames used in response metadata or attachments so they cannot alter the
+    surrounding message structure.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V5.4.2
+  source_locator: V5.4 File Download, row 5.4.2 (0x14-V5-File-Handling.md; PDF p.44)
+- id: requirement:owasp-asvs-5-v5-4-3
+  name: V5.4.3 — Scan untrusted files for malware
+  text: >-
+    Scan files obtained from untrusted sources before serving them so known malicious content is not
+    redistributed.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V5.4.3
+  source_locator: V5.4 File Download, row 5.4.3 (0x14-V5-File-Handling.md; PDF p.44)
+- id: requirement:owasp-asvs-5-v6-1-1
+  name: V6.1.1 — Document authentication abuse controls
+  text: >-
+    Document how rate limits, automation defenses, and adaptive responses resist credential stuffing
+    and password guessing without enabling malicious account lockout.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V6.1.1
+  source_locator: V6.1 Authentication Documentation, row 6.1.1 (0x15-V6-Authentication.md; PDF p.45)
+- id: requirement:owasp-asvs-5-v6-1-3
+  name: V6.1.3 — Document every authentication pathway
+  text: >-
+    Document every authentication pathway together with the security controls and authentication
+    strength that must be enforced consistently across those pathways.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V6.1.3
+  source_locator: V6.1 Authentication Documentation, row 6.1.3 (0x15-V6-Authentication.md; PDF p.46)
+- id: requirement:owasp-asvs-5-v6-2-1
+  name: V6.2.1 — Require adequate password length
+  text: >-
+    Require user-chosen passwords to contain at least eight characters and recommend a minimum length
+    of fifteen characters.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V6.2.1
+  source_locator: V6.2 Password Security, row 6.2.1 (0x15-V6-Authentication.md; PDF p.46)
+- id: requirement:owasp-asvs-5-v6-2-2
+  name: V6.2.2 — Allow password changes
+  text: >-
+    Provide users with a way to change their password.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V6.2.2
+  source_locator: V6.2 Password Security, row 6.2.2 (0x15-V6-Authentication.md; PDF p.46)
+- id: requirement:owasp-asvs-5-v6-2-3
+  name: V6.2.3 — Authenticate password changes
+  text: >-
+    Require both the current password and the replacement password when a user changes a password.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V6.2.3
+  source_locator: V6.2 Password Security, row 6.2.3 (0x15-V6-Authentication.md; PDF p.46)
+- id: requirement:owasp-asvs-5-v6-2-4
+  name: V6.2.4 — Block common passwords
+  text: >-
+    When a password is created or changed, reject values found among at least the 3,000 most common
+    passwords that satisfy the application's length policy.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V6.2.4
+  source_locator: V6.2 Password Security, row 6.2.4 (0x15-V6-Authentication.md; PDF p.46)
+- id: requirement:owasp-asvs-5-v6-2-5
+  name: V6.2.5 — Do not impose composition rules
+  text: >-
+    Permit passwords using any character composition without requiring particular counts of uppercase,
+    lowercase, numeric, or special characters.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V6.2.5
+  source_locator: V6.2 Password Security, row 6.2.5 (0x15-V6-Authentication.md; PDF p.46)
+- id: requirement:owasp-asvs-5-v6-2-6
+  name: V6.2.6 — Mask password input
+  text: >-
+    Mask password-entry fields while allowing an optional temporary reveal of the full value or most
+    recently entered character.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V6.2.6
+  source_locator: V6.2 Password Security, row 6.2.6 (0x15-V6-Authentication.md; PDF p.46)
+- id: requirement:owasp-asvs-5-v6-2-7
+  name: V6.2.7 — Permit password managers and paste
+  text: >-
+    Allow password pasting, browser password assistance, and external password managers.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V6.2.7
+  source_locator: V6.2 Password Security, row 6.2.7 (0x15-V6-Authentication.md; PDF p.46)
+- id: requirement:owasp-asvs-5-v6-2-8
+  name: V6.2.8 — Compare passwords without transformation
+  text: >-
+    Verify passwords exactly as submitted rather than changing them through truncation, case conversion,
+    or another transformation.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V6.2.8
+  source_locator: V6.2 Password Security, row 6.2.8 (0x15-V6-Authentication.md; PDF p.47)
+- id: requirement:owasp-asvs-5-v6-3-1
+  name: V6.3.1 — Implement authentication abuse controls
+  text: >-
+    Implement the documented defenses against credential stuffing and password brute force.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V6.3.1
+  source_locator: V6.3 General Authentication Security, row 6.3.1 (0x15-V6-Authentication.md; PDF
+    p.47)
+- id: requirement:owasp-asvs-5-v6-3-2
+  name: V6.3.2 — Remove default accounts
+  text: >-
+    Remove or disable default application accounts such as administrative or root accounts.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V6.3.2
+  source_locator: V6.3 General Authentication Security, row 6.3.2 (0x15-V6-Authentication.md; PDF
+    p.47)
+- id: requirement:owasp-asvs-5-v6-3-4
+  name: V6.3.4 — Enforce controls across authentication pathways
+  text: >-
+    Ensure every authentication pathway is documented and consistently applies the required security
+    controls and authentication strength.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V6.3.4
+  source_locator: V6.3 General Authentication Security, row 6.3.4 (0x15-V6-Authentication.md; PDF
+    p.48)
+- id: requirement:owasp-asvs-5-v6-4-1
+  name: V6.4.1 — Expire generated activation secrets
+  text: >-
+    Generate initial passwords and activation codes with secure randomness, make them conform to the
+    password policy, and expire them quickly or after first use.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V6.4.1
+  source_locator: V6.4 Authentication Factor Lifecycle and Recovery, row 6.4.1 (0x15-V6-Authentication.md;
+    PDF p.49)
+- id: requirement:owasp-asvs-5-v6-4-2
+  name: V6.4.2 — Exclude password hints and secret questions
+  text: >-
+    Do not provide password hints or knowledge-based authentication questions.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V6.4.2
+  source_locator: V6.4 Authentication Factor Lifecycle and Recovery, row 6.4.2 (0x15-V6-Authentication.md;
+    PDF p.49)
+- id: requirement:owasp-asvs-5-v13-2-4
+  name: V13.2.4 — Allowlist outbound resources
+  text: >-
+    Constrain the external resources and systems available for outbound requests, data loading, and
+    file access with an allowlist enforced at one or more suitable layers.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V13.2.4
+  source_locator: V13.2 Backend Communication Configuration, row 13.2.4 (0x22-V13-Configuration.md;
+    PDF p.80)
+- id: requirement:owasp-asvs-5-v13-2-5
+  name: V13.2.5 — Allowlist server request targets
+  text: >-
+    Configure the web or application server with an allowlist of the resources and systems from which
+    it may request or load data and files.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V13.2.5
+  source_locator: V13.2 Backend Communication Configuration, row 13.2.5 (0x22-V13-Configuration.md;
+    PDF p.80)
+- id: requirement:owasp-asvs-5-v15-3-2
+  name: V15.3.2 — Do not follow unneeded outbound redirects
+  text: >-
+    When the backend calls external URLs, prevent it from following redirects unless redirect handling
+    is an intended feature.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:owasp-asvs-5#V15.3.2
+  source_locator: V15.3 Defensive Coding, row 15.3.2 (0x24-V15-Secure-Coding-and-Architecture.md;
+    PDF p.88)
+weaknesses:
+- id: weakness:cwe-918
+  name: CWE-918
+  catalog_ref: CWE-918
+- id: weakness:cwe-611
+  name: CWE-611
+  catalog_ref: CWE-611
+- id: weakness:cwe-436
+  name: CWE-436
+  catalog_ref: CWE-436
+- id: weakness:cwe-400
+  name: CWE-400
+  catalog_ref: CWE-400
+- id: weakness:cwe-434
+  name: CWE-434
+  catalog_ref: CWE-434
+- id: weakness:cwe-409
+  name: CWE-409
+  catalog_ref: CWE-409
+- id: weakness:cwe-770
+  name: CWE-770
+  catalog_ref: CWE-770
+- id: weakness:cwe-61
+  name: CWE-61
+  catalog_ref: CWE-61
+- id: weakness:cwe-73
+  name: CWE-73
+  catalog_ref: CWE-73
+- id: weakness:cwe-23
+  name: CWE-23
+  catalog_ref: CWE-23
+- id: weakness:cwe-641
+  name: CWE-641
+  catalog_ref: CWE-641
+- id: weakness:cwe-509
+  name: CWE-509
+  catalog_ref: CWE-509
+- id: weakness:cwe-307
+  name: CWE-307
+  catalog_ref: CWE-307
+- id: weakness:cwe-521
+  name: CWE-521
+  catalog_ref: CWE-521
+- id: weakness:cwe-620
+  name: CWE-620
+  catalog_ref: CWE-620
+- id: weakness:cwe-549
+  name: CWE-549
+  catalog_ref: CWE-549
+- id: weakness:cwe-306
+  name: Missing Authentication for Critical Function
+  catalog_ref: CWE-306
+- id: weakness:cwe-330
+  name: CWE-330
+  catalog_ref: CWE-330
+- id: weakness:cwe-640
+  name: CWE-640
+  catalog_ref: CWE-640
+parties:
+- id: party:kriishnaa-18
+  name: '@kriishnaa-18'
+  description: Human owner and pending reviewer of this file (GitHub id).
+  party_kind: person
+assertions:
+- id: assertion:owasp-asvs-5-v1-3-6--addresses--cwe-918
+  subject: requirement:owasp-asvs-5-v1-3-6
+  predicate: addresses
+  object: weakness:cwe-918
+  confidence: medium
+  assertion_status: accepted
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: V1.3 Sanitization, row 1.3.6 (0x10-V1-Encoding-and-Sanitization.md;
+    PDF p.27); the pinned ASVS record maps V1.3.6 to CWE-918 through its composed legacy CWE mapping
+    and labels that mapping inferred.
+- id: assertion:owasp-asvs-5-v1-5-1--addresses--cwe-611
+  subject: requirement:owasp-asvs-5-v1-5-1
+  predicate: addresses
+  object: weakness:cwe-611
+  confidence: medium
+  assertion_status: accepted
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: V1.5 Safe Deserialization, row 1.5.1 (0x10-V1-Encoding-and-Sanitization.md;
+    PDF p.28); the pinned ASVS record maps V1.5.1 to CWE-611 through its composed legacy CWE mapping
+    and labels that mapping inferred.
+- id: assertion:owasp-asvs-5-v1-5-3--addresses--cwe-436
+  subject: requirement:owasp-asvs-5-v1-5-3
+  predicate: addresses
+  object: weakness:cwe-436
+  confidence: medium
+  assertion_status: accepted
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: V1.5 Safe Deserialization, row 1.5.3 (0x10-V1-Encoding-and-Sanitization.md;
+    PDF p.29); the pinned ASVS record maps V1.5.3 to CWE-436 through its composed legacy CWE mapping
+    and labels that mapping inferred.
+- id: assertion:owasp-asvs-5-v5-2-1--addresses--cwe-400
+  subject: requirement:owasp-asvs-5-v5-2-1
+  predicate: addresses
+  object: weakness:cwe-400
+  confidence: medium
+  assertion_status: proposed
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: V5.2 File Upload and Content, row 5.2.1 (0x14-V5-File-Handling.md;
+    PDF p.43); the pinned ASVS record maps V5.2.1 to CWE-400 through its composed legacy CWE mapping
+    and labels that mapping inferred.
+- id: assertion:owasp-asvs-5-v5-2-2--addresses--cwe-434
+  subject: requirement:owasp-asvs-5-v5-2-2
+  predicate: addresses
+  object: weakness:cwe-434
+  confidence: medium
+  assertion_status: accepted
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: V5.2 File Upload and Content, row 5.2.2 (0x14-V5-File-Handling.md;
+    PDF p.43); the pinned ASVS record maps V5.2.2 to CWE-434 through its composed legacy CWE mapping
+    and labels that mapping inferred.
+- id: assertion:owasp-asvs-5-v5-2-3--addresses--cwe-409
+  subject: requirement:owasp-asvs-5-v5-2-3
+  predicate: addresses
+  object: weakness:cwe-409
+  confidence: medium
+  assertion_status: proposed
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: V5.2 File Upload and Content, row 5.2.3 (0x14-V5-File-Handling.md;
+    PDF p.43); the pinned ASVS record maps V5.2.3 to CWE-409 through its composed legacy CWE mapping
+    and labels that mapping inferred.
+- id: assertion:owasp-asvs-5-v5-2-4--addresses--cwe-770
+  subject: requirement:owasp-asvs-5-v5-2-4
+  predicate: addresses
+  object: weakness:cwe-770
+  confidence: medium
+  assertion_status: proposed
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: V5.2 File Upload and Content, row 5.2.4 (0x14-V5-File-Handling.md;
+    PDF p.43); the pinned ASVS record maps V5.2.4 to CWE-770 through its composed legacy CWE mapping
+    and labels that mapping inferred.
+- id: assertion:owasp-asvs-5-v5-2-5--addresses--cwe-61
+  subject: requirement:owasp-asvs-5-v5-2-5
+  predicate: addresses
+  object: weakness:cwe-61
+  confidence: medium
+  assertion_status: accepted
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: V5.2 File Upload and Content, row 5.2.5 (0x14-V5-File-Handling.md;
+    PDF p.43); the pinned ASVS record maps V5.2.5 to CWE-61 through its composed legacy CWE mapping
+    and labels that mapping inferred.
+- id: assertion:owasp-asvs-5-v5-3-2--addresses--cwe-73
+  subject: requirement:owasp-asvs-5-v5-3-2
+  predicate: addresses
+  object: weakness:cwe-73
+  confidence: medium
+  assertion_status: accepted
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: V5.3 File Storage, row 5.3.2 (0x14-V5-File-Handling.md;
+    PDF p.44); the pinned ASVS record maps V5.3.2 to CWE-73 through its composed legacy CWE mapping
+    and labels that mapping inferred.
+- id: assertion:owasp-asvs-5-v5-3-3--addresses--cwe-23
+  subject: requirement:owasp-asvs-5-v5-3-3
+  predicate: addresses
+  object: weakness:cwe-23
+  confidence: medium
+  assertion_status: proposed
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: V5.3 File Storage, row 5.3.3 (0x14-V5-File-Handling.md;
+    PDF p.44); the pinned ASVS record maps V5.3.3 to CWE-23 through its composed legacy CWE mapping
+    and labels that mapping inferred.
+- id: assertion:owasp-asvs-5-v5-4-1--addresses--cwe-641
+  subject: requirement:owasp-asvs-5-v5-4-1
+  predicate: addresses
+  object: weakness:cwe-641
+  confidence: medium
+  assertion_status: proposed
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: V5.4 File Download, row 5.4.1 (0x14-V5-File-Handling.md;
+    PDF p.44); the pinned ASVS record maps V5.4.1 to CWE-641 through its composed legacy CWE mapping
+    and labels that mapping inferred.
+- id: assertion:owasp-asvs-5-v5-4-3--addresses--cwe-509
+  subject: requirement:owasp-asvs-5-v5-4-3
+  predicate: addresses
+  object: weakness:cwe-509
+  confidence: medium
+  assertion_status: proposed
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: V5.4 File Download, row 5.4.3 (0x14-V5-File-Handling.md;
+    PDF p.44); the pinned ASVS record maps V5.4.3 to CWE-509 through its composed legacy CWE mapping
+    and labels that mapping inferred.
+- id: assertion:owasp-asvs-5-v6-1-3--addresses--cwe-306
+  subject: requirement:owasp-asvs-5-v6-1-3
+  predicate: addresses
+  object: weakness:cwe-306
+  confidence: medium
+  assertion_status: proposed
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: V6.1 Authentication Documentation, row 6.1.3
+    (0x15-V6-Authentication.md; PDF p.46); the pinned ASVS record maps V6.1.3 to CWE-306 through
+    its composed legacy CWE mapping and labels that mapping inferred.
+- id: assertion:owasp-asvs-5-v6-2-1--addresses--cwe-521
+  subject: requirement:owasp-asvs-5-v6-2-1
+  predicate: addresses
+  object: weakness:cwe-521
+  confidence: medium
+  assertion_status: proposed
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: V6.2 Password Security, row 6.2.1 (0x15-V6-Authentication.md;
+    PDF p.46); the pinned ASVS record maps V6.2.1 to CWE-521 through its composed legacy CWE mapping
+    and labels that mapping inferred.
+- id: assertion:owasp-asvs-5-v6-2-3--addresses--cwe-620
+  subject: requirement:owasp-asvs-5-v6-2-3
+  predicate: addresses
+  object: weakness:cwe-620
+  confidence: medium
+  assertion_status: proposed
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: V6.2 Password Security, row 6.2.3 (0x15-V6-Authentication.md;
+    PDF p.46); the pinned ASVS record maps V6.2.3 to CWE-620 through its composed legacy CWE mapping
+    and labels that mapping inferred.
+- id: assertion:owasp-asvs-5-v6-2-4--addresses--cwe-521
+  subject: requirement:owasp-asvs-5-v6-2-4
+  predicate: addresses
+  object: weakness:cwe-521
+  confidence: medium
+  assertion_status: proposed
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: V6.2 Password Security, row 6.2.4 (0x15-V6-Authentication.md;
+    PDF p.46); the pinned ASVS record maps V6.2.4 to CWE-521 through its composed legacy CWE mapping
+    and labels that mapping inferred.
+- id: assertion:owasp-asvs-5-v6-2-6--addresses--cwe-549
+  subject: requirement:owasp-asvs-5-v6-2-6
+  predicate: addresses
+  object: weakness:cwe-549
+  confidence: medium
+  assertion_status: proposed
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: V6.2 Password Security, row 6.2.6 (0x15-V6-Authentication.md;
+    PDF p.46); the pinned ASVS record maps V6.2.6 to CWE-549 through its composed legacy CWE mapping
+    and labels that mapping inferred.
+- id: assertion:owasp-asvs-5-v6-3-1--addresses--cwe-307
+  subject: requirement:owasp-asvs-5-v6-3-1
+  predicate: addresses
+  object: weakness:cwe-307
+  confidence: medium
+  assertion_status: accepted
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: V6.3 General Authentication Security, row 6.3.1
+    (0x15-V6-Authentication.md; PDF p.47); the pinned ASVS record maps V6.3.1 to CWE-307 through its
+    composed legacy CWE mapping and labels that mapping inferred.
+- id: assertion:owasp-asvs-5-v6-3-4--addresses--cwe-306
+  subject: requirement:owasp-asvs-5-v6-3-4
+  predicate: addresses
+  object: weakness:cwe-306
+  confidence: medium
+  assertion_status: accepted
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: V6.3 General Authentication Security, row 6.3.4
+    (0x15-V6-Authentication.md; PDF p.48); the pinned ASVS record maps V6.3.4 to CWE-306 through
+    its composed legacy CWE mapping and labels that mapping inferred.
+- id: assertion:owasp-asvs-5-v6-4-1--addresses--cwe-330
+  subject: requirement:owasp-asvs-5-v6-4-1
+  predicate: addresses
+  object: weakness:cwe-330
+  confidence: medium
+  assertion_status: proposed
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: V6.4 Authentication Factor Lifecycle and Recovery,
+    row 6.4.1 (0x15-V6-Authentication.md; PDF p.49); the pinned ASVS record maps V6.4.1 to CWE-330
+    through its composed legacy CWE mapping and labels that mapping inferred.
+- id: assertion:owasp-asvs-5-v6-4-2--addresses--cwe-640
+  subject: requirement:owasp-asvs-5-v6-4-2
+  predicate: addresses
+  object: weakness:cwe-640
+  confidence: medium
+  assertion_status: proposed
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: V6.4 Authentication Factor Lifecycle and Recovery,
+    row 6.4.2 (0x15-V6-Authentication.md; PDF p.49); the pinned ASVS record maps V6.4.2 to CWE-640
+    through its composed legacy CWE mapping and labels that mapping inferred.
+- id: assertion:owasp-asvs-5-v13-2-5--addresses--cwe-918
+  subject: requirement:owasp-asvs-5-v13-2-5
+  predicate: addresses
+  object: weakness:cwe-918
+  confidence: medium
+  assertion_status: accepted
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: V13.2 Backend Communication Configuration, row 13.2.5
+    (0x22-V13-Configuration.md; PDF p.80); the pinned ASVS record maps V13.2.5 to CWE-918 through
+    its composed legacy CWE mapping and labels that mapping inferred.
+reviews:
+- id: review:owasp-asvs-5-v1-3-6--addresses--cwe-918
+  name: Review, accept V1.3.6 addresses CWE-918
+  reviews: assertion:owasp-asvs-5-v1-3-6--addresses--cwe-918
+  reviewer: party:kriishnaa-18
+  review_status: accepted
+  justification: >-
+    Accepted by @kriishnaa-18 on 2026-11-16: Restricting outbound request destinations directly
+    mitigates server-side request forgery. The requirement explicitly addresses SSRF, and the
+    inferred legacy ASVS-to-CWE mapping is supported by the underlying security mechanism.
+- id: review:owasp-asvs-5-v1-5-1--addresses--cwe-611
+  name: Review, accept V1.5.1 addresses CWE-611
+  reviews: assertion:owasp-asvs-5-v1-5-1--addresses--cwe-611
+  reviewer: party:kriishnaa-18
+  review_status: accepted
+  justification: >-
+    Accepted by @kriishnaa-18 on 2026-11-16: Disabling unsafe XML external-entity processing
+    directly mitigates XXE. The requirement and weakness describe the same underlying attack
+    mechanism.
+- id: review:owasp-asvs-5-v1-5-3--addresses--cwe-436
+  name: Review, accept V1.5.3 addresses CWE-436
+  reviews: assertion:owasp-asvs-5-v1-5-3--addresses--cwe-436
+  reviewer: party:kriishnaa-18
+  review_status: accepted
+  justification: >-
+    Accepted by @kriishnaa-18 on 2026-11-16: Consistent parser interpretation reduces
+    security-relevant interpretation conflicts. This addresses the relevant subset of CWE-436
+    without claiming complete coverage of the broader weakness.
+- id: review:owasp-asvs-5-v5-2-2--addresses--cwe-434
+  name: Review, accept V5.2.2 addresses CWE-434
+  reviews: assertion:owasp-asvs-5-v5-2-2--addresses--cwe-434
+  reviewer: party:kriishnaa-18
+  review_status: accepted
+  justification: >-
+    Accepted by @kriishnaa-18 on 2026-11-16: Validating uploaded file extensions and actual file
+    contents mitigates the acceptance of dangerous or disguised file types. This represents partial
+    mitigation rather than complete elimination of CWE-434.
+- id: review:owasp-asvs-5-v5-2-5--addresses--cwe-61
+  name: Review, accept V5.2.5 addresses CWE-61 with qualifications
+  reviews: assertion:owasp-asvs-5-v5-2-5--addresses--cwe-61
+  reviewer: party:kriishnaa-18
+  review_status: accepted
+  justification: >-
+    Accepted with qualifications by @kriishnaa-18 on 2026-11-16: ASVS V5.2.5 addresses CWE-61 by
+    requiring applications to reject uploaded archives containing symbolic links unless their
+    destinations are explicitly restricted. This mitigates unsafe symbolic-link following,
+    particularly in applicable UNIX-like environments. The relationship represents a partial
+    mitigation rather than complete weakness elimination or universal platform applicability. The
+    association originates from an inferred legacy ASVS-to-CWE mapping, but the underlying security
+    mechanisms support the proposed addresses relationship.
+- id: review:owasp-asvs-5-v5-3-2--addresses--cwe-73
+  name: Review, accept V5.3.2 addresses CWE-73
+  reviews: assertion:owasp-asvs-5-v5-3-2--addresses--cwe-73
+  reviewer: party:kriishnaa-18
+  review_status: accepted
+  justification: >-
+    Accepted by @kriishnaa-18 on 2026-11-16: Trusted construction and strict validation of file
+    paths directly mitigate attacker control over filenames and paths. This is a partial mitigation
+    of CWE-73, with the inferred legacy ASVS-to-CWE mapping provenance acknowledged.
+- id: review:owasp-asvs-5-v6-1-3--addresses--cwe-306
+  name: Review, reject V6.1.3 addresses CWE-306
+  reviews: assertion:owasp-asvs-5-v6-1-3--addresses--cwe-306
+  reviewer: party:kriishnaa-18
+  review_status: rejected
+  justification: >-
+    Rejected by @kriishnaa-18 on 2026-11-16: Documenting authentication pathways supports
+    identifying missing security controls but does not independently enforce authentication. The
+    proposed addresses relationship to CWE-306 is too indirect without additional evidence. V6.3.4
+    provides a more direct implementation-focused relationship.
+- id: review:owasp-asvs-5-v6-3-4--addresses--cwe-306
+  name: Review, accept V6.3.4 addresses CWE-306
+  reviews: assertion:owasp-asvs-5-v6-3-4--addresses--cwe-306
+  reviewer: party:kriishnaa-18
+  review_status: accepted
+  justification: >-
+    Accepted by @kriishnaa-18 on 2026-11-16: Consistently enforcing authentication controls across
+    all pathways directly mitigates missing authentication, including overlooked or alternative
+    access paths. This represents partial mitigation and acknowledges the inferred legacy mapping
+    provenance.
+- id: review:owasp-asvs-5-v6-3-1--addresses--cwe-307
+  name: Review, accept V6.3.1 addresses CWE-307
+  reviews: assertion:owasp-asvs-5-v6-3-1--addresses--cwe-307
+  reviewer: party:kriishnaa-18
+  review_status: accepted
+  justification: >-
+    Accepted by @kriishnaa-18 on 2026-11-16: Implementing defenses against credential stuffing and
+    brute-force authentication attempts directly mitigates excessive authentication attempts. The
+    precise controls are application-dependent, and this relationship does not imply complete
+    prevention.
+- id: review:owasp-asvs-5-v13-2-5--addresses--cwe-918
+  name: Review, accept V13.2.5 addresses CWE-918
+  reviews: assertion:owasp-asvs-5-v13-2-5--addresses--cwe-918
+  reviewer: party:kriishnaa-18
+  review_status: accepted
+  justification: >-
+    Accepted by @kriishnaa-18 on 2026-11-16: Allowlisting server request destinations mitigates SSRF
+    by restricting where outbound requests can go. Additional safeguards may be necessary for other
+    SSRF attack mechanisms, and the mapping originates from inferred legacy ASVS data.

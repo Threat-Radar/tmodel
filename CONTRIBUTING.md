@@ -192,7 +192,12 @@ pins. The engine reads MITRE's file, unchanged, from the path in
 itself. The pinned submodule predates the CWE extraction (Threat-Radar/library#21),
 so until the pin moves, also point `TMODEL_LIBRARY` at a library checkout that has
 it. `tmodel weaknesses` lists the weaknesses, and `tmodel weaknesses --id CWE-79`
-shows one with every field (DL-0050).
+shows one with every field (DL-0050). `tmodel weaknesses --relationships --view CWE-1000`
+gives their relationships in one or more CWE views, with the inverses the schema
+declares (DL-0057). The project's own weakness types, `tr-weak-NNNN`, load beside
+CWE's from the YAML file named in `TMODEL_LOCAL_WEAKNESSES`, whose format the docstring
+of `engine/engine/load/local_weaknesses.py` gives; where the team keeps that file is
+not decided yet.
 
 ```sh
 curl -LO https://cwe.mitre.org/data/xml/cwec_v4.20.xml.zip   # the file the record pins

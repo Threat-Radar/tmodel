@@ -1,0 +1,398 @@
+# eu-cra-2024-2847: requirement extraction, AI-proposed, UNREVIEWED unless a Review below says otherwise.
+# Source: library:eu-cra-2024-2847 (digest e3ecaabddf6e321fa04097d15dfcccc7309d0fe5896240ab7625a27d74ab1b0a), read 2026-11-16.
+# Agent: Codex (GPT-5). Human owner: @kriishnaa-18.
+# Library pin: a28a01375814accc5fe10cb2f5e7083c7d0401a5.
+#
+# Scope: every extracted provision in Annex I Parts I and II.
+# Coverage: 191 in the source, 23 converted, 168 skipped.
+#   skipped (outside Annex I Parts I and II): 168 provisions from Articles and other annexes.
+# Text: every requirement is a one-sentence paraphrase; designator, locator and normativity
+# are copied from the pinned distilled/requirements.yaml. Part I point (2) applicability
+# conditions are retained in the paraphrases; the source rows remain mandatory requirements.
+# No applies_to_family: the Regulation's broad product scope is not a canonical tmodel family id.
+# All relationship candidates below are proposed Assertions; none changes an authoritative slot.
+
+requirements:
+- id: requirement:eu-cra-2024-2847-annexi-parti-1
+  name: AnnexI-PartI(1) — Provide risk-appropriate cybersecurity
+  text: >-
+    Design, develop, and produce the product so its cybersecurity level is appropriate to the risks
+    identified for it.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:eu-cra-2024-2847#AnnexI-PartI(1)
+  source_locator: Annex I, Part I, point (1)
+- id: requirement:eu-cra-2024-2847-annexi-parti-2-a
+  name: AnnexI-PartI(2)(a) — Release without known exploitable vulnerabilities
+  text: >-
+    Where the risk assessment makes this applicable, place the product on the market without known
+    exploitable vulnerabilities.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:eu-cra-2024-2847#AnnexI-PartI(2)(a)
+  source_locator: Annex I, Part I, point (2)(a)
+- id: requirement:eu-cra-2024-2847-annexi-parti-2-b
+  name: AnnexI-PartI(2)(b) — Ship securely configured by default
+  text: >-
+    Where applicable, supply a secure default configuration and a way to restore the product to its
+    original state, subject to the stated tailor-made business-product exception.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:eu-cra-2024-2847#AnnexI-PartI(2)(b)
+  source_locator: Annex I, Part I, point (2)(b)
+- id: requirement:eu-cra-2024-2847-annexi-parti-2-c
+  name: AnnexI-PartI(2)(c) — Provide timely security updates
+  text: >-
+    Where applicable, support vulnerability correction through timely security updates, default-enabled
+    automatic installation with a clear opt-out, update notices, and temporary postponement.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:eu-cra-2024-2847#AnnexI-PartI(2)(c)
+  source_locator: Annex I, Part I, point (2)(c)
+- id: requirement:eu-cra-2024-2847-annexi-parti-2-d
+  name: AnnexI-PartI(2)(d) — Control and report unauthorized access
+  text: >-
+    Where applicable, use authentication, identity, access-management, or comparable controls to prevent
+    unauthorized access and report possible unauthorized access.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:eu-cra-2024-2847#AnnexI-PartI(2)(d)
+  source_locator: Annex I, Part I, point (2)(d)
+- id: requirement:eu-cra-2024-2847-annexi-parti-2-e
+  name: AnnexI-PartI(2)(e) — Protect data confidentiality
+  text: >-
+    Where applicable, protect the confidentiality of data at rest, in transit, and during other processing
+    through current encryption or other technical safeguards.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:eu-cra-2024-2847#AnnexI-PartI(2)(e)
+  source_locator: Annex I, Part I, point (2)(e)
+- id: requirement:eu-cra-2024-2847-annexi-parti-2-f
+  name: AnnexI-PartI(2)(f) — Protect data and software integrity
+  text: >-
+    Where applicable, protect data, commands, software, and configuration from unauthorized manipulation
+    and report detected corruption.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:eu-cra-2024-2847#AnnexI-PartI(2)(f)
+  source_locator: Annex I, Part I, point (2)(f)
+- id: requirement:eu-cra-2024-2847-annexi-parti-2-g
+  name: AnnexI-PartI(2)(g) — Minimize processed data
+  text: >-
+    Where applicable, process only the data that is relevant and necessary for the product's intended
+    purpose.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:eu-cra-2024-2847#AnnexI-PartI(2)(g)
+  source_locator: Annex I, Part I, point (2)(g)
+- id: requirement:eu-cra-2024-2847-annexi-parti-2-h
+  name: AnnexI-PartI(2)(h) — Preserve essential availability
+  text: >-
+    Where applicable, preserve essential and basic functions during and after incidents, including
+    by resisting and mitigating denial-of-service attacks.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:eu-cra-2024-2847#AnnexI-PartI(2)(h)
+  source_locator: Annex I, Part I, point (2)(h)
+- id: requirement:eu-cra-2024-2847-annexi-parti-2-i
+  name: AnnexI-PartI(2)(i) — Limit harm to connected services
+  text: >-
+    Where applicable, reduce the product's and connected devices' adverse effect on the availability
+    of other devices' or networks' services.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:eu-cra-2024-2847#AnnexI-PartI(2)(i)
+  source_locator: Annex I, Part I, point (2)(i)
+- id: requirement:eu-cra-2024-2847-annexi-parti-2-j
+  name: AnnexI-PartI(2)(j) — Reduce exposed attack surface
+  text: >-
+    Where applicable, design, develop, and produce the product to minimize its attack surface, including
+    exposed interfaces.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:eu-cra-2024-2847#AnnexI-PartI(2)(j)
+  source_locator: Annex I, Part I, point (2)(j)
+- id: requirement:eu-cra-2024-2847-annexi-parti-2-k
+  name: AnnexI-PartI(2)(k) — Mitigate exploitation impact
+  text: >-
+    Where applicable, incorporate mechanisms and techniques that reduce the consequences of successful
+    exploitation or another incident.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:eu-cra-2024-2847#AnnexI-PartI(2)(k)
+  source_locator: Annex I, Part I, point (2)(k)
+- id: requirement:eu-cra-2024-2847-annexi-parti-2-l
+  name: AnnexI-PartI(2)(l) — Record security-relevant activity
+  text: >-
+    Where applicable, record and monitor relevant internal access and changes to data, services, and
+    functions while providing a user opt-out.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:eu-cra-2024-2847#AnnexI-PartI(2)(l)
+  source_locator: Annex I, Part I, point (2)(l)
+- id: requirement:eu-cra-2024-2847-annexi-parti-2-m
+  name: AnnexI-PartI(2)(m) — Support secure deletion and transfer
+  text: >-
+    Where applicable, let users permanently remove data and settings easily and securely, and protect
+    data when it is transferred to another product or system.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:eu-cra-2024-2847#AnnexI-PartI(2)(m)
+  source_locator: Annex I, Part I, point (2)(m)
+- id: requirement:eu-cra-2024-2847-annexi-partii-1
+  name: AnnexI-PartII(1) — Maintain vulnerability and component records
+  text: >-
+    Identify and document product vulnerabilities and components, including a machine-readable software
+    bill of materials that covers at least top-level dependencies.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: mandatory
+  source_ref: library:eu-cra-2024-2847#AnnexI-PartII(1)
+  source_locator: Annex I, Part II, point (1)
+- id: requirement:eu-cra-2024-2847-annexi-partii-2
+  name: AnnexI-PartII(2) — Remediate vulnerabilities promptly
+  text: >-
+    Address vulnerabilities without delay by supplying security updates and, when technically feasible,
+    keep those updates separate from feature updates.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:eu-cra-2024-2847#AnnexI-PartII(2)
+  source_locator: Annex I, Part II, point (2)
+- id: requirement:eu-cra-2024-2847-annexi-partii-3
+  name: AnnexI-PartII(3) — Test and review product security
+  text: >-
+    Perform effective security testing and reviews of the product on a regular basis.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:eu-cra-2024-2847#AnnexI-PartII(3)
+  source_locator: Annex I, Part II, point (3)
+- id: requirement:eu-cra-2024-2847-annexi-partii-4
+  name: AnnexI-PartII(4) — Publish fixed-vulnerability advisories
+  text: >-
+    After an update is available, publish enough information about each corrected vulnerability, affected
+    product, impact, severity, and remediation for users to identify and address it.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: mandatory
+  source_ref: library:eu-cra-2024-2847#AnnexI-PartII(4)
+  source_locator: Annex I, Part II, point (4)
+- id: requirement:eu-cra-2024-2847-annexi-partii-5
+  name: AnnexI-PartII(5) — Operate coordinated disclosure
+  text: >-
+    Establish and enforce a coordinated vulnerability-disclosure policy.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:eu-cra-2024-2847#AnnexI-PartII(5)
+  source_locator: Annex I, Part II, point (5)
+- id: requirement:eu-cra-2024-2847-annexi-partii-6
+  name: AnnexI-PartII(6) — Enable vulnerability reporting
+  text: >-
+    Facilitate sharing information about possible product and third-party-component vulnerabilities,
+    including by providing a vulnerability-reporting contact.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:eu-cra-2024-2847#AnnexI-PartII(6)
+  source_locator: Annex I, Part II, point (6)
+- id: requirement:eu-cra-2024-2847-annexi-partii-7
+  name: AnnexI-PartII(7) — Distribute updates securely
+  text: >-
+    Provide secure update-distribution mechanisms so vulnerabilities are fixed or mitigated promptly
+    and security updates can be automatic where appropriate.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: mandatory
+  source_ref: library:eu-cra-2024-2847#AnnexI-PartII(7)
+  source_locator: Annex I, Part II, point (7)
+- id: requirement:eu-cra-2024-2847-annexi-partii-8
+  name: AnnexI-PartII(8) — Disseminate security updates promptly
+  text: >-
+    Distribute available security updates without delay and with clear advice on required user action,
+    normally free of charge unless the manufacturer and a business user agree otherwise for a tailor-made
+    product.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:eu-cra-2024-2847#AnnexI-PartII(8)
+  source_locator: Annex I, Part II, point (8)
+- id: requirement:eu-cra-2024-2847-annexi-partii-4-delay
+  name: AnnexI-PartII(4)-delay — Delay disclosure only when justified
+  text: >-
+    A manufacturer may postpone public information about a fixed vulnerability until users can apply
+    the patch when a justified assessment finds publication risk greater than its security benefit.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: optional
+  source_ref: library:eu-cra-2024-2847#AnnexI-PartII(4)-delay
+  source_locator: Annex I, Part II, point (4), after semicolon
+weaknesses:
+- id: weakness:cwe-306
+  name: Missing Authentication for Critical Function
+  catalog_ref: CWE-306
+threat_instances:
+- id: threat-instance:remote-diag-injection
+  name: Remote unauthenticated diagnostic command injection onto CAN
+  description: Stub target from spec/vectors/mvp-02-automotive-ecu.yaml.
+parties:
+- id: party:kriishnaa-18
+  name: '@kriishnaa-18'
+  description: Human owner and pending reviewer of this file (GitHub id).
+  party_kind: person
+assertions:
+- id: assertion:cra-partii-7--refines--parti-2-c
+  subject: requirement:eu-cra-2024-2847-annexi-partii-7
+  predicate: refines
+  object: requirement:eu-cra-2024-2847-annexi-parti-2-c
+  confidence: high
+  assertion_status: accepted
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: Annex I, Part II, point (7) adds secure and timely
+    distribution details to the update capability in Part I, point (2)(c).
+- id: assertion:cra-partii-8--refines--parti-2-c
+  subject: requirement:eu-cra-2024-2847-annexi-partii-8
+  predicate: refines
+  object: requirement:eu-cra-2024-2847-annexi-parti-2-c
+  confidence: high
+  assertion_status: accepted
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: Annex I, Part II, point (8) adds timing, charge
+    and advisory obligations to the update capability in Part I, point (2)(c).
+- id: assertion:cra-partii-4-delay--refines--partii-4
+  subject: requirement:eu-cra-2024-2847-annexi-partii-4-delay
+  predicate: refines
+  object: requirement:eu-cra-2024-2847-annexi-partii-4
+  confidence: high
+  assertion_status: accepted
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: Annex I, Part II, point (4), after the semicolon,
+    defines the justified-delay exception to the same point's disclosure duty.
+- id: assertion:cra-partii-6--refines--partii-5
+  subject: requirement:eu-cra-2024-2847-annexi-partii-6
+  predicate: refines
+  object: requirement:eu-cra-2024-2847-annexi-partii-5
+  confidence: medium
+  assertion_status: accepted
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: Annex I, Part II, point (6) specifies a reporting
+    contact and information-sharing measures that operationalize the coordinated-disclosure policy
+    required by point (5).
+- id: assertion:cra-parti-2-d--addresses--cwe-306
+  subject: requirement:eu-cra-2024-2847-annexi-parti-2-d
+  predicate: addresses
+  object: weakness:cwe-306
+  confidence: high
+  assertion_status: accepted
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: Annex I, Part I, point (2)(d) expressly requires
+    authentication or comparable access controls; mvp-02 identifies CWE-306 as missing authentication
+    for a critical function.
+- id: assertion:cra-parti-2-d--addresses--remote-diag-injection
+  subject: requirement:eu-cra-2024-2847-annexi-parti-2-d
+  predicate: addresses
+  object: threat-instance:remote-diag-injection
+  confidence: medium
+  assertion_status: accepted
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: Annex I, Part I, point (2)(d) requires protection
+    from unauthorized access; the mvp-02 threat is an unauthenticated diagnostic command path.
+- id: assertion:cra-parti-2-f--addresses--remote-diag-injection
+  subject: requirement:eu-cra-2024-2847-annexi-parti-2-f
+  predicate: addresses
+  object: threat-instance:remote-diag-injection
+  confidence: medium
+  assertion_status: accepted
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: Annex I, Part I, point (2)(f) protects commands
+    and configuration from unauthorized modification; the mvp-02 threat injects unauthorized commands.
+reviews:
+- id: review:cra-partii-7--refines--parti-2-c
+  name: Review, accept Part II(7) refines Part I(2)(c)
+  reviews: assertion:cra-partii-7--refines--parti-2-c
+  reviewer: party:kriishnaa-18
+  review_status: accepted
+  justification: >-
+    Accepted by @kriishnaa-18 on 2026-11-16: Part II(7) provides more specific requirements for
+    securely distributing updates, supporting the broader security-update capability described in
+    Part I(2)(c). The refines relationship is a semantic modeling connection and does not alter
+    either provision's independent legal obligations or applicability conditions.
+- id: review:cra-partii-8--refines--parti-2-c
+  name: Review, accept Part II(8) refines Part I(2)(c)
+  reviews: assertion:cra-partii-8--refines--parti-2-c
+  reviewer: party:kriishnaa-18
+  review_status: accepted
+  justification: >-
+    Accepted by @kriishnaa-18 on 2026-11-16: Part II(8) adds specific manufacturer obligations
+    concerning prompt distribution, user guidance, and generally free security updates, subject to
+    the stated tailor-made business-product exception. This refines the shared security-update
+    objective without implying that the provisions have identical legal scope or that one legally
+    overrides the other.
+- id: review:cra-partii-4-delay--refines--partii-4
+  name: Review, accept Part II(4)-delay refines Part II(4)
+  reviews: assertion:cra-partii-4-delay--refines--partii-4
+  reviewer: party:kriishnaa-18
+  review_status: accepted
+  justification: >-
+    Accepted by @kriishnaa-18 on 2026-11-16: The delay provision expressly qualifies the
+    public-disclosure obligation within the same numbered CRA provision. Although refines is not an
+    exact substitute for an exception relationship, it represents the narrower conditional rule.
+    The delay is permitted only under the source's stated justification and timing conditions, and
+    the underlying disclosure duty remains applicable.
+- id: review:cra-partii-6--refines--partii-5
+  name: Review, accept Part II(6) refines Part II(5) with qualifications
+  reviews: assertion:cra-partii-6--refines--partii-5
+  reviewer: party:kriishnaa-18
+  review_status: accepted
+  justification: >-
+    Accepted with qualifications by @kriishnaa-18 on 2026-11-16: Providing vulnerability-reporting
+    channels and facilitating information sharing gives concrete operational detail to the
+    coordinated vulnerability-disclosure framework. Annex II point (2) and Recital 76 support the
+    connection between reporting mechanisms and disclosure policies. The refines relationship
+    represents this shared reporting purpose, not legal subordination or a claim that Part II(6) is
+    entirely contained within Part II(5). Both remain independent legal obligations.
+- id: review:cra-parti-2-d--addresses--cwe-306
+  name: Review, accept Part I(2)(d) addresses CWE-306
+  reviews: assertion:cra-parti-2-d--addresses--cwe-306
+  reviewer: party:kriishnaa-18
+  review_status: accepted
+  justification: >-
+    Accepted by @kriishnaa-18 on 2026-11-21: Authentication, identity and access controls directly
+    counter missing authentication for a critical function. This is an analytical mapping to
+    CWE-306; it does not claim that the CRA itself names that weakness or establishes product
+    compliance.
+- id: review:cra-parti-2-d--addresses--remote-diag-injection
+  name: Review, accept Part I(2)(d) addresses remote diagnostic injection
+  reviews: assertion:cra-parti-2-d--addresses--remote-diag-injection
+  reviewer: party:kriishnaa-18
+  review_status: accepted
+  justification: >-
+    Accepted by @kriishnaa-18 on 2026-11-21: Protection against unauthorized access, including
+    authentication and access management, addresses the unauthenticated diagnostic-command path in
+    the illustrative product model. This is a product-specific analytical mapping, not a claim that
+    the CRA identifies this example threat or by itself demonstrates compliance.
+- id: review:cra-parti-2-f--addresses--remote-diag-injection
+  name: Review, accept Part I(2)(f) addresses remote diagnostic injection
+  reviews: assertion:cra-parti-2-f--addresses--remote-diag-injection
+  reviewer: party:kriishnaa-18
+  review_status: accepted
+  justification: >-
+    Accepted by @kriishnaa-18 on 2026-11-21: Protecting commands and configuration against
+    unauthorized manipulation directly addresses the command-injection mechanism represented by the
+    illustrative threat. This is an analytical product mapping, not a relationship explicitly stated
+    by EU law or an automated compliance conclusion.
