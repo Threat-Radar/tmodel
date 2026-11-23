@@ -85,10 +85,10 @@ nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font
 <p>
   <span class="badge">spec</span>
   <span class="badge">community</span>
-  <span class="badge">queued</span>
+  <span class="badge">stub</span>
   <span class="badge">medium</span>
 </p>
-<p class="meta">Topic: <strong>sbom</strong> (<code>record.yaml</code> topic). Status <code>queued</code> is how far review got, not a quality score.</p>
+<p class="meta">Topic: <strong>sbom</strong> (<code>record.yaml</code> topic). Status <code>stub</code> is how far review got, not a quality score.</p>
 <h2>Bibliographic links</h2>
 <ul><li>Source: <a href="https://ecma-international.org/wp-content/uploads/ECMA-424_2nd_edition_december_2025.pdf">https://ecma-international.org/wp-content/uploads/ECMA-424_2nd_edition_december_2025.pdf</a></li><li>Identifier URL: <a href="https://tc54.org/ecma424/">https://tc54.org/ecma424/</a></li><li>SHA-256: <code>e8c55a3a968f3ef534fbcdd891c361714d3dc303b3747464f1d554f65b04c8e1</code></li></ul>
 <h2>Specification</h2>
@@ -102,7 +102,18 @@ nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font
 <h2>Usefulness</h2><p><span class="badge">unassessed</span> </p>
 <h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> only — not crosswalk edges.</p><h3><code>see_also</code></h3><ul><li><a class="rec" data-id="in-toto-attestation-v1" href="../../community/in-toto-attestation-v1/summary.html">in-toto Attestation Framework v1</a></li><li><a class="rec" data-id="secure-systems-lab-dsse" href="../../community/secure-systems-lab-dsse/summary.html">Dead Simple Signing Envelope (DSSE)</a></li></ul>
 
-<h2>Summary</h2><div class="callout"><strong>Summary not written.</strong> <code>summary.md</code> is still the library template (it still contains the “two to five sentences” instruction). That text is not rendered. This page is record metadata only.</div>
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>spec</td></tr><tr><td><strong>Maturity</strong></td><td><code>standard</code> — adopted by the Ecma General Assembly, December 2025</td></tr><tr><td><strong>Authors</strong></td><td>Jan Kowalleck, Steve Springett (Ecma TC54)</td></tr><tr><td><strong>Published</strong></td><td>2025-12 (spec 1.7 released 2025-10-21)</td></tr><tr><td><strong>Identifier</strong></td><td>ECMA-424, 2nd edition · CycloneDX 1.7</td></tr><tr><td><strong>Source</strong></td><td>https://ecma-international.org/wp-content/uploads/ECMA-424_2nd_edition_december_2025.pdf</td></tr><tr><td><strong>Digest</strong></td><td><code>e8c55a3a968f3ef534fbcdd891c361714d3dc303b3747464f1d554f65b04c8e1</code></td></tr></tbody></table>
+<h2>Overview</h2>
+<p><strong>A stub: nobody has read this specification in full or extracted it (FX-1).</strong> CycloneDX 1.7 is OWASP&#x27;s bill-of-materials format, published by Ecma as ECMA-424, 2nd edition (the same text; <code>ecma-424</code> is a duplicate pointer to this record). A CycloneDX BOM lists components, from libraries and containers to devices and firmware, with their identifiers, the dependencies between them, how complete those lists are, and optionally vulnerabilities with a VEX analysis. Kept because tmodel RPT-0004 (product composition, tmodel#8 and tmodel#38) and RPT-0005 (schema representations, tmodel#39) cite it.</p>
+<h2>Applicability</h2>
+<p>A stub. <code>bears_on</code> (R-M-07, R-M-11) and the <code>adjacent</code> ratings in <code>record.yaml</code> are the upstream <code>sbom</code> lane&#x27;s and were not re-assessed here. tmodel&#x27;s committed imports are OTM and STIX 2.1 (tmodel ADR-0007, which lets the tmodel#39 crosswalk extend that list), so tmodel does not import CycloneDX today. RPT-0004 Table 6 (tmodel#127, a draft) proposes how a CycloneDX SBOM&#x27;s fields would fill the inputs of tmodel&#x27;s core object model, and accepts nothing.</p>
+<h2>Implementations</h2>
+<p>Not searched for this record. tmodel RPT-0004 §3 covers four tools that write or read CycloneDX (Syft, Grype, Trivy, Dependency-Track). In Table 6&#x27;s run on 2026-10-18, Syft 1.52.0 wrote CycloneDX 1.7 JSON and Grype 0.119.0 read it.</p>
+<p><code>record.yaml</code> lists two implementations RPT-0004 cites after its adversarial review (tmodel#152, 2026-10-22), which get no record of their own (docs/scope.md section 3): cdxgen v13.4.0, whose <code>--spec-version</code> accepts 1.6, 1.7 and 2.0, and protobom v0.6.2, which reads and writes CycloneDX 1.4 to 1.7 JSON. Both were read from their READMEs on 2026-10-22, not run.</p>
+<h2>Artifacts in this record</h2>
+<table><thead><tr><th>File</th><th>What it is</th></tr></thead><tbody><tr><td><code>record.yaml</code></td><td>metadata</td></tr><tr><td><code>summary.md</code></td><td>this summary</td></tr></tbody></table>
+<h2>Limits</h2>
+<p>Not read in full and not extracted. RPT-0004 §1.1 describes CycloneDX&#x27;s identity, hardware, dependency, completeness and vulnerability fields, quoting their descriptions from the 1.7 JSON reference (cyclonedx.org/docs/1.7/json/). Table 6 checked every field and enum value it names against <code>schema/bom-1.7.schema.json</code> at CycloneDX/specification tag <code>1.7.2</code>, a patch release of 2026-09-17 (sha256 <code>73308edec3ab2d38bfffd993e96a042b594314143b6971a6e9ed98bbb6bd76ce</code>; the file at tag <code>1.7</code> differs). Whether this record gets an FX-1 extraction, here or in the upstream <code>sbom</code> lane, is open (tmodel#38, question 2 of 2026-10-15).</p>
 
 <footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
 </main>

@@ -51,6 +51,7 @@ import re
 import stat
 import threading
 import zipfile
+import zlib
 from collections import Counter
 from collections.abc import Collection, Iterable, Mapping
 from dataclasses import dataclass, field
@@ -767,27 +768,29 @@ def objects_for(
 # --- reading the file ---------------------------------------------------------------------
 
 
-def _read(path: Path) -> bytes:
-    """The bytes of `path`, a regular file of at most MAX_FILE_BYTES; CweError otherwise.
+def _read(path: Path, limit: int | None = None, error: type[ValueError] = CweError) -> bytes:
+    """The bytes of `path`, a regular file of at most `limit` bytes; `error` otherwise.
 
-    The open file's type and size are checked before anything is read, so a FIFO or
-    a device is refused rather than waited on or read without end. The read stops one
-    byte past the limit, so a file that grows after the check is refused too, and the
-    digest is never taken over more than MAX_FILE_BYTES.
+    `limit` defaults to MAX_FILE_BYTES; the CAPEC reader passes its own limit and
+    error class. The open file's type and size are checked before anything is read,
+    so a FIFO or a device is refused rather than waited on or read without end. The
+    read stops one byte past the limit, so a file that grows after the check is
+    refused too, and the digest is never taken over more than the limit.
     """
-    too_large = f"{path.name}: larger than {MAX_FILE_BYTES} bytes, so it is not read"
+    limit = MAX_FILE_BYTES if limit is None else limit
+    too_large = f"{path.name}: larger than {limit} bytes, so it is not read"
     try:
         with open(path, "rb", opener=_open_without_waiting) as handle:
             info = os.fstat(handle.fileno())
             if not stat.S_ISREG(info.st_mode):
-                raise CweError(f"{path.name}: not a regular file, so it is not read")
-            if info.st_size > MAX_FILE_BYTES:
-                raise CweError(too_large)
-            data = handle.read(MAX_FILE_BYTES + 1)
+                raise error(f"{path.name}: not a regular file, so it is not read")
+            if info.st_size > limit:
+                raise error(too_large)
+            data = handle.read(limit + 1)
     except OSError as exc:
-        raise CweError(f"{path.name}: cannot read ({exc.strerror or exc})") from exc
-    if len(data) > MAX_FILE_BYTES:  # it grew after the check
-        raise CweError(too_large)
+        raise error(f"{path.name}: cannot read ({exc.strerror or exc})") from exc
+    if len(data) > limit:  # it grew after the check
+        raise error(too_large)
     return data
 
 
@@ -818,7 +821,7 @@ def _unzipped(name: str, data: bytes) -> bytes:
                 raise CweError(f"{name}: expected one .xml file in the zip, found {listed}")
             with archive.open(members[0]) as member:  # the header's size can lie; count instead
                 xml = member.read(MAX_XML_BYTES + 1)
-    except (zipfile.BadZipFile, zipfile.LargeZipFile, OSError, EOFError) as exc:
+    except (zipfile.BadZipFile, zipfile.LargeZipFile, OSError, EOFError, zlib.error) as exc:
         raise CweError(f"{name}: not a readable zip ({exc})") from exc
     if len(xml) > MAX_XML_BYTES:
         raise CweError(f"{name}: {members[0].filename} is larger than {MAX_XML_BYTES} bytes")
@@ -826,11 +829,16 @@ def _unzipped(name: str, data: bytes) -> bytes:
 
 
 def _parse(name: str, xml: bytes) -> ElementTree.Element:
-    start = xml.find(b"<Weakness_Catalog")
-    if start < 0:
+    if xml.find(b"<Weakness_Catalog") < 0:
         raise CweError(f"{name}: not a CWE catalog (no Weakness_Catalog element)")
-    if b"<!DOCTYPE" in xml[:start] or b"<!ENTITY" in xml[:start]:
-        raise CweError(f"{name}: has a DOCTYPE; a CWE catalog has none, so it is not read")
+    # A CWE catalog declares no DOCTYPE and no entities, so any declaration, wherever it
+    # is in the file, is refused before parsing: no entity is ever expanded. Looking only
+    # before the first `<Weakness_Catalog` let a comment holding those bytes hide one.
+    if b"<!DOCTYPE" in xml or b"<!ENTITY" in xml:
+        raise CweError(
+            f"{name}: has a DOCTYPE or ENTITY declaration; a CWE catalog has none, "
+            "so it is not read"
+        )
     try:
         root = ElementTree.fromstring(xml)
     except ElementTree.ParseError as exc:
@@ -1001,12 +1009,16 @@ def _relationship_elements(kind: str, fields: Mapping[str, Any]) -> list[tuple[s
 # --- elements to values ---------------------------------------------------------------------
 
 
-def _value(element: ElementTree.Element) -> Any:
-    """One element as a JSON-ready value, by the rules in the module docstring."""
+def _value(element: ElementTree.Element, ns: str = CWE_NS) -> Any:
+    """One element as a JSON-ready value, by the rules in the module docstring.
+
+    `ns` is the catalog's own namespace: a child in any other namespace (XHTML) makes
+    the element structured text. The CAPEC reader passes its namespace.
+    """
     attributes = {f"@{_attribute_name(k)}": v for k, v in element.attrib.items()}
     children = list(element)
     text = element.text or ""
-    mixed = any(_ns(c.tag) != CWE_NS for c in children) or (
+    mixed = any(_ns(c.tag) != ns for c in children) or (
         children and (text.strip() or any((c.tail or "").strip() for c in children))
     )
     if mixed:
@@ -1018,11 +1030,11 @@ def _value(element: ElementTree.Element) -> Any:
     names = [_local(c.tag) for c in children]
     runs = [n for i, n in enumerate(names) if i == 0 or names[i - 1] != n]
     if len(runs) != len(set(runs)):  # a name comes back after another: keep the order
-        items = tuple(MappingProxyType({_local(c.tag): _value(c)}) for c in children)
+        items = tuple(MappingProxyType({_local(c.tag): _value(c, ns)}) for c in children)
         return MappingProxyType({**attributes, "#items": items})
     grouped: dict[str, list[Any]] = {}
     for child in children:
-        grouped.setdefault(_local(child.tag), []).append(_value(child))
+        grouped.setdefault(_local(child.tag), []).append(_value(child, ns))
     return MappingProxyType({**attributes, **{k: tuple(v) for k, v in grouped.items()}})
 
 

@@ -1,5 +1,5 @@
 {
-  "count": 8,
+  "count": 10,
   "models": [
     {
       "counts": {
@@ -152,6 +152,44 @@
       "kind_label": "Proposal example (AI-drafted, unreviewed)",
       "reviewed_threats": 0,
       "title": "Kia vehicle with remote services"
+    },
+    {
+      "counts": {
+        "assets": 6,
+        "attack_paths": 5,
+        "components": 6,
+        "damage_scenarios": 5,
+        "mitigations": 5,
+        "requirements": 0,
+        "risk_scores": 0,
+        "threats": 5
+      },
+      "description": "A web shop for fruit juice with accounts, a basket, orders, a search page and an administration section, built to be insecure for training. Modeled at v20.4.0, run locally (Node.js, or its Docker image).",
+      "file": "pv-03-owasp-juice-shop.yaml",
+      "id": "pv-03-owasp-juice-shop",
+      "kind": "proposal",
+      "kind_label": "Proposal example (AI-drafted, unreviewed)",
+      "reviewed_threats": 0,
+      "title": "OWASP Juice Shop"
+    },
+    {
+      "counts": {
+        "assets": 3,
+        "attack_paths": 1,
+        "components": 3,
+        "damage_scenarios": 1,
+        "mitigations": 4,
+        "requirements": 0,
+        "risk_scores": 0,
+        "threats": 1
+      },
+      "description": "A home Wi-Fi 6 router with a web management interface for its settings. Modeled with firmware 1.1.3 Build 20221125, the last numbered V3 release before the fix.",
+      "file": "pv-04-tp-link-archer-ax21.yaml",
+      "id": "pv-04-tp-link-archer-ax21",
+      "kind": "proposal",
+      "kind_label": "Proposal example (AI-drafted, unreviewed)",
+      "reviewed_threats": 0,
+      "title": "TP-Link Archer AX21 (AX1800), hardware version 3 (US)"
     }
   ],
   "problems": []

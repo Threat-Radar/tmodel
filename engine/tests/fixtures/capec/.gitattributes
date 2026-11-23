@@ -1,0 +1,2 @@
+# MITRE CAPEC bytes, kept verbatim: the SHA-256 the test library pins covers them (README.md).
+capec_v3.9-sample.xml -text -whitespace

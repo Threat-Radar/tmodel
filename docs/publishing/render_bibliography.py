@@ -398,8 +398,12 @@ def assert_rules(published: dict[str, dict], tag_map: dict, bear_map: dict):
         raise SystemExit("rfc-8949 type was relabeled")
     if published["draft-ietf-vcon-vcon-core-04"]["type"] != "draft":
         raise SystemExit("draft was filed as something else")
-    if published["cyclonedx-1-7"]["summary_written"]:
-        raise SystemExit("cyclonedx template was treated as a written summary")
+    # A catalog record may gain a real summary after a library pin update.
+    # Enforce the rendering invariant for every record, rather than requiring
+    # CycloneDX's once-unwritten summary to stay an empty fixture forever.
+    for record in published.values():
+        if not record["summary_written"] and record["summary_html"]:
+            raise SystemExit(f"{record['id']}: unwritten summary has rendered content")
     for banned in ("standard", "ietf", "normative", "prior-art", "nist", "iso", "openssf"):
         if banned in tag_map:
             raise SystemExit(f"crosswalk included non-topic tag {banned}")

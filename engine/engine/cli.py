@@ -3,6 +3,8 @@
   tmodel serve                 start the local engine (loopback only)
   tmodel health [--json]       ask the running engine whether it is healthy
   tmodel version [--json]      ask the running engine for its version
+  tmodel risk FILE --matrix annex-h-table-h8 [--goal G] [--json]
+                               derive risk from recorded path ratings (#63)
   tmodel models [--json]       the example models the app can open
   tmodel paths FILE [--goal G] [--json]
                                attack paths to a step or threat in a model file;
@@ -21,6 +23,13 @@
                 [--limit N] [--offset N] [--json]
                                their relationships, each in its CWE view, with the
                                inverses the schema declares unless --stated-only (#145)
+  tmodel attack-patterns [--search S] [--abstraction A] [--status S]
+                [--likelihood L] [--severity S] [--sort F] [--order asc|desc]
+                [--limit N] [--offset N] [--json]
+  tmodel attack-patterns --id CAPEC-66 [--json]
+                               CAPEC attack patterns from the release the library
+                               pins, read from $TMODEL_CAPEC_CATALOG (#244); with
+                               --id, one entry in full
   tmodel sdl [FILE] [--program P] [--json]
                                the SDL program view of an SDL model (DL-0043);
                                without FILE, list the SDL models
@@ -40,7 +49,8 @@ By default these go through the local API, exactly like the desktop app
 (APP-0001 A-030, A-060). `--in-process` calls the engine code directly
 instead, for scripts that do not want a server.
 
-Exit codes: 0 ok · 1 engine unreachable, unhealthy or an engine error · 2 usage error.
+Exit codes: 0 ok · 1 engine unreachable, unhealthy, an engine error, or incomplete
+risk inputs · 2 usage error.
 """
 
 from __future__ import annotations
@@ -169,6 +179,47 @@ def _models(args: argparse.Namespace) -> int:
 
 
 LIBRARY_TIMEOUT_S = 60.0  # the engine's first request loads every record
+
+
+def _risk(args: argparse.Namespace) -> int:
+    # Basenames are convenient for bundled examples; paths are relative to the caller.
+    file = os.path.abspath(args.file) if os.path.dirname(args.file) else args.file
+    params = {"file": file, "matrix": args.matrix}
+    if args.goal is not None:
+        params["goal"] = args.goal
+    payload = _call(
+        lambda: (
+            core.risk_assessments(file, args.matrix, args.goal)
+            if args.in_process
+            else get("/risk", args.url, timeout=PATHS_TIMEOUT_S, params=params)
+        )
+    )
+    if payload is None:
+        return 1
+    if args.json:
+        print(json.dumps(payload))
+    else:
+        print(f"{payload['file']} · matrix {payload['matrix']}")
+        for assessment in payload["assessments"]:
+            state = "complete" if assessment["complete"] else "incomplete"
+            print(f"  {assessment['threat']} [{state}]")
+            print(f"    feasibility: {assessment['feasibility'] or 'not assessed'}")
+            for category, value in assessment["derived_risk"].items():
+                impact = assessment["impact"][category] or "not rated"
+                print(f"    {category}: impact {impact}; risk {value if value else 'not assessed'}")
+            print(f"    mitigation status: {assessment['mitigation_status'] or 'not recorded'}")
+            for index, route in enumerate(assessment["routes"], 1):
+                sources = ", ".join(route["rating_paths"]) or "no matching rating"
+                rating = route["feasibility"] or "not assessed"
+                vector = ", ".join(
+                    f"{category}={value if value is not None else 'not assessed'}"
+                    for category, value in route["derived_risk"].items()
+                )
+                print(f"    route {index} ({sources}): feasibility {rating}; {vector}")
+            for problem in assessment["problems"]:
+                print(f"    needs input: {problem}")
+    # JSON is still emitted for incomplete data, while scripts can detect it.
+    return 0 if all(item["complete"] for item in payload["assessments"]) else 1
 
 
 def _print_library(payload: dict[str, Any]) -> None:
@@ -351,6 +402,88 @@ def _show_weaknesses(
     return 0
 
 
+def _print_attack_pattern_table(payload: dict[str, Any]) -> None:
+    catalog = payload["catalog"]
+    print(
+        f"{payload['count']} of {payload['total']} matching attack patterns "
+        f"({catalog['name']} {catalog['version']}, {catalog['date']}: "
+        f"{catalog['attack_patterns']} attack patterns)"
+    )
+    columns = ("id", "abstraction", "status", "severity")
+    rows = payload["rows"]
+    width = {c: max((len(r[c] or "") for r in rows), default=0) for c in columns}
+    for r in rows:
+        cells = "  ".join(f"{r[c] or '':<{width[c]}}" for c in columns)
+        print(f"  {cells}  {r['name']}")
+
+
+def _print_attack_pattern(payload: dict[str, Any]) -> None:
+    catalog, entry = payload["catalog"], payload["entry"]
+    if entry is None:
+        print(f"{payload['id']}: not in {catalog['name']} {catalog['version']}")
+        return
+    print(f"{entry['id']}  {entry['name']}")
+    shape = entry["abstraction"] or entry["view_type"]
+    rated = "; ".join(
+        f"{label} {entry[key]}"
+        for label, key in (("likelihood", "likelihood"), ("severity", "severity"))
+        if entry[key]
+    )
+    print(
+        f"  {entry['kind'].replace('_', ' ')}{f' ({shape})' if shape else ''}; "
+        f"status {entry['status']}{f'; {rated}' if rated else ''}"
+    )
+    if entry["kind"] == "Attack_Pattern":
+        counts = (
+            (len(entry["weaknesses"]), "CWE link"),
+            (len(entry["attack_techniques"]), "ATT&CK technique"),
+            (entry["steps"], "attack step"),
+            (entry["mitigations"], "mitigation"),
+        )
+        print("  " + ", ".join(f"{n} {noun}{'' if n == 1 else 's'}" for n, noun in counts))
+    print(f"  {entry['url']}")
+
+
+def _attack_patterns(args: argparse.Namespace) -> int:
+    names = core.ATTACK_PATTERN_FILTERS + core.TABLE_OPTIONS
+    table = {n: getattr(args, n) for n in names if getattr(args, n) is not None}
+    if args.id is not None:
+        if table:  # they would be ignored, so refuse them, as GET /attack-patterns does
+            given = ", ".join(f"--{n}" for n in table)
+            print(
+                f"error: --id shows one entry and takes no table options ({given})",
+                file=sys.stderr,
+            )
+            return 2
+        path, params, local = "/attack-patterns", {"id": args.id}, core.attack_patterns
+    else:
+        path, params, local = "/attack-patterns/table", table, core.attack_pattern_table
+    payload = _call(
+        lambda: (
+            local(params)
+            if args.in_process
+            else get(path, args.url, timeout=LIBRARY_TIMEOUT_S, params=params)
+        )
+    )
+    if payload is None:
+        return 1
+    if args.json:
+        print(json.dumps(payload))
+    elif args.id is not None:
+        _print_attack_pattern(payload)
+    else:
+        _print_attack_pattern_table(payload)
+    unknown = payload["catalog"]["unknown_fields"]
+    if unknown:  # kept, not dropped; say so, since the import does not map them yet
+        noun = "field" if unknown == 1 else "fields"
+        print(
+            f"warning: the catalog has {unknown} entry {noun} this reader does not know; "
+            "they are kept, and GET /attack-patterns lists them",
+            file=sys.stderr,
+        )
+    return 0
+
+
 def _print_sdl(payload: dict[str, Any]) -> None:
     if "models" in payload:
         for m in payload["models"]:
@@ -501,6 +634,13 @@ def build_parser() -> argparse.ArgumentParser:
     _add_transport(paths)
     paths.set_defaults(func=_paths)
 
+    risk = sub.add_parser("risk", help="derive a risk vector from recorded path ratings (#63)")
+    risk.add_argument("file", help="approved model filename or path below spec/vectors")
+    risk.add_argument("--matrix", required=True, help="explicit profile: annex-h-table-h8")
+    risk.add_argument("--goal", default=None, help="only this threat-instance id")
+    _add_transport(risk)
+    risk.set_defaults(func=_risk)
+
     library = sub.add_parser("library", help="the library's records (#140)")
     for name in core.LIBRARY_FILTERS:
         library.add_argument(f"--{name}", default=None, help=f"only records with this {name}")
@@ -533,6 +673,28 @@ def build_parser() -> argparse.ArgumentParser:
     weak.add_argument("--offset", default=None, help="skip this many rows first")
     _add_transport(weak)
     weak.set_defaults(func=_weaknesses)
+
+    patterns = sub.add_parser(
+        "attack-patterns", help="CAPEC attack patterns from the pinned release (#244)"
+    )
+    patterns.add_argument("--id", default=None, help="one entry in full, e.g. CAPEC-66")
+    for name in core.ATTACK_PATTERN_FILTERS:
+        patterns.add_argument(
+            f"--{name}", default=None, help=f"only attack patterns with this {name}"
+        )
+    patterns.add_argument(
+        "--search",
+        default=None,
+        help="text in the id, name, description, alternate terms, CWE or ATT&CK ids",
+    )
+    patterns.add_argument(
+        "--sort", default=None, choices=core.ATTACK_PATTERN_SORTS, help="default id"
+    )
+    patterns.add_argument("--order", default=None, choices=("asc", "desc"), help="default asc")
+    patterns.add_argument("--limit", default=None, help="at most this many rows")
+    patterns.add_argument("--offset", default=None, help="skip this many rows first")
+    _add_transport(patterns)
+    patterns.set_defaults(func=_attack_patterns)
 
     sdl = sub.add_parser("sdl", help="SDL program view of an SDL model (DL-0043)")
     sdl.add_argument("file", nargs="?", default=None, help="e.g. sdl-01-tmodel-desktop.yaml")

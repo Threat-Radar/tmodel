@@ -232,6 +232,12 @@ function graphResponse(
       source: edge.source,
       target: edge.target,
       relationshipType: edge.relationship_type,
+      authored: edge.authored,
+      assertions: edge.assertions?.map((assertion) => ({
+        ...assertion,
+        evidence: [...assertion.evidence],
+        reviews: assertion.reviews.map((review) => ({ ...review })),
+      })),
       properties: cloneProperties(edge.properties),
     }));
   return { source, notice, focusId, nodes, edges };

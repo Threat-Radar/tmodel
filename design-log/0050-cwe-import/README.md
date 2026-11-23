@@ -4,9 +4,9 @@ id: DL-0050
 title: "CWE import: every CWE 4.20 entry read whole, mapped onto the core model, and served to the table views (#144, #61, #58)"
 type: process
 status: draft
-version: "0.1.1"
+version: "0.1.2"
 date: "2026-11-11"
-updated: "2026-11-12"
+updated: "2026-11-15"
 record: DL-0050
 bears_on: [DEC-001a, DEC-008]
 defers_to: ARCH-0001
@@ -125,6 +125,16 @@ The code, the mapping and the choices above are the agent's draft until a human 
 The review's two suggestions are taken as well, open to review like the rest: `tmodel weaknesses --id` refuses table options instead of ignoring them, as `GET /weaknesses` already did with a 400; and the sample's description now tells the library's 13 example files apart from the 15 items read from them (12 entries and 3 references).
 
 #58 was closed the same day and split into one issue per table. The weakness table view is #234, so the fixture README, the test that checks the fixture and the code comments now point there.
+
+## Follow-up after merge (2026-11-15)
+
+@Maimcghee's review of #233 (2026-11-12) gave four optional notes, and all four reproduced. To avoid resetting the review, @Clovier said on #233 that the first three would be fixed in a small follow-up once #233 merged. They are fixed here, each with a test that fails on the code #233 merged:
+
+- **A DOCTYPE hidden behind a comment.** The check looked for a DOCTYPE only before the first `<Weakness_Catalog` bytes, so a comment holding those bytes ahead of a DOCTYPE got past it, and the entity expanded into CWE-79's name. Now a raw `<!DOCTYPE` or `<!ENTITY` anywhere in the file is refused before parsing, as the CAPEC reader does (#245). MITRE's 4.20 and 4.21 files contain neither, and both still read. Only a file read without a digest could reach this, since the API checks the pin first.
+- **Corrupt deflate data in a zip** raised `zlib.error` instead of `CweError`. `_unzipped` now catches it, and the `CweError` keeps the `zlib.error` as its cause.
+- **The message for a parameter that is not allowed** read "use  or file" when only one name is allowed. It now names that one, such as "use id". The helper is `core._values`, from `main`, so `/proposals`, the other route with one allowed name, gets the fix too.
+
+The fourth note, that "asc" puts High likelihood first because the sort follows CWE's own order, is the table view's call, so it stays with #234.
 
 ## Follow-ups
 
