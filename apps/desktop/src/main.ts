@@ -30,6 +30,7 @@ import { createWeaknessProvider } from "./weakness-provider";
 import { weaknessViewElements, WeaknessesView } from "./weakness-view";
 import { CompatibleCoverageProvider } from "./coverage-provider";
 import { RequirementsView, requirementsViewElements } from "./requirements-view";
+import { StaticRequirementStandardsSource } from "./requirements-catalog-provider";
 
 const POLL_MS = 2000;
 // Vite replaces MODE at build time; the Pages bundle can therefore eliminate
@@ -150,7 +151,10 @@ window.addEventListener("DOMContentLoaded", () => {
   const weaknessProvider = createWeaknessProvider(preview, parameters);
   const weaknessUsesEngine = weaknessProvider.metadata.source === "engine";
   const weaknessView = new WeaknessesView(weaknessProvider, weaknessViewElements());
-  const requirementsView = new RequirementsView(requirementsViewElements());
+  const requirementsView = new RequirementsView(
+    requirementsViewElements(),
+    new StaticRequirementStandardsSource(),
+  );
 
   let lastEngineState: EngineState | undefined;
   let visibleView: string | undefined;

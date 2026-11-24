@@ -154,9 +154,10 @@ h3 { margin-bottom: 10px; font-size: 0.84rem; text-transform: uppercase; letter-
 .weakness-pagination button { font-weight: 700; cursor: pointer; }
 .weakness-pagination select:focus-visible, .weakness-pagination button:focus-visible { outline: 2px solid #4f46e5; outline-offset: 2px; }
 .weakness-pagination button:disabled { border-color: #cbd5e1; background: #f1f5f9; color: #526078; cursor: default; opacity: 1; }
-.weakness-attribution { margin-top: 10px; padding: 9px 11px; border: 1px solid #e2e8f0; border-radius: 7px; background: #f8fafc; color: #596579; font-size: 0.68rem; line-height: 1.45; }
-.weakness-attribution p { margin: 0 0 5px; }
-.weakness-attribution a, .weakness-detail-section a, #weakness-detail-list a { color: #1d4ed8; overflow-wrap: anywhere; }
+.weakness-attribution, .requirements-attribution { margin-top: 10px; padding: 9px 11px; border: 1px solid #e2e8f0; border-radius: 7px; background: #f8fafc; color: #596579; font-size: 0.68rem; line-height: 1.45; }
+.weakness-attribution p, .requirements-attribution p { margin: 0; }
+.weakness-attribution p:not(:last-child) { margin-bottom: 5px; }
+.weakness-attribution a, .requirements-attribution a, .weakness-detail-section a, #weakness-detail-list a { color: #1d4ed8; overflow-wrap: anywhere; }
 .weakness-detail-description { color: #334155; font-size: 0.77rem; line-height: 1.5; }
 .weakness-detail-status-row { align-items: flex-start; }
 .weakness-detail-status-row .direction-help { flex: 1; }
@@ -199,7 +200,7 @@ h3 { margin-bottom: 10px; font-size: 0.84rem; text-transform: uppercase; letter-
 .weakness-assertion-provenance dd code { display: inline; margin: 0; color: inherit; font-size: inherit; }
 .weakness-proposal-note { margin: 0 0 8px; color: #854d0e; font-size: 0.7rem; font-weight: 700; line-height: 1.4; }
 /* #171: requirement table, inspector and PR #243-compatible coverage surface. */
-.requirements-controls { grid-template-columns: minmax(280px, 1fr) minmax(130px, 0.45fr) minmax(180px, 0.65fr); }
+.requirements-controls { grid-template-columns: minmax(160px, 0.55fr) minmax(260px, 1fr) repeat(3, minmax(130px, 0.5fr)); }
 .requirements-coverage { margin: 3px 0 11px; padding: 9px 11px; border: 1px solid #d8dee9; border-radius: 8px; background: #f8fafc; }
 .requirements-coverage summary { cursor: pointer; color: #334155; font-size: 0.75rem; font-weight: 800; }
 .coverage-disclaimer { margin: 7px 0 6px; color: #854d0e; font-size: 0.69rem; font-weight: 700; }
@@ -223,6 +224,7 @@ h3 { margin-bottom: 10px; font-size: 0.84rem; text-transform: uppercase; letter-
 .requirement-status-in-progress { background: #fef3c7; color: #92400e; }
 .requirement-status-unsatisfied { background: #fee2e2; color: #991b1b; }
 .requirement-status-not-recorded { background: #e2e8f0; color: #475569; }
+.requirement-status-catalog-only { background: #e0e7ff; color: #3730a3; }
 .requirements-pagination { display: flex; align-items: center; justify-content: flex-end; gap: 8px; padding-top: 8px; color: #526078; font-size: 0.68rem; }
 .requirements-pagination label { display: flex; align-items: center; gap: 5px; }
 .requirements-pagination select, .requirements-pagination button { padding: 4px 7px; border: 1px solid #cbd5e1; border-radius: 6px; background: white; color: #172033; font: inherit; }
@@ -297,7 +299,7 @@ h3 { margin-bottom: 10px; font-size: 0.84rem; text-transform: uppercase; letter-
   .library-controls { grid-template-columns: minmax(180px, 1fr) repeat(3, minmax(105px, 0.7fr)); gap: 7px; }
   .weakness-workspace { grid-template-columns: minmax(0, 1fr) minmax(260px, 0.34fr); }
   .weakness-controls { grid-template-columns: minmax(180px, 1fr) repeat(2, minmax(105px, 0.7fr)); }
-  .requirements-controls { grid-template-columns: minmax(220px, 1fr) minmax(110px, 0.45fr) minmax(155px, 0.65fr); }
+  .requirements-controls { grid-template-columns: minmax(140px, 0.55fr) minmax(220px, 1fr) repeat(3, minmax(110px, 0.5fr)); }
 }
 @media (max-width: 720px) {
   .app-shell { height: auto; min-height: 100vh; }
@@ -353,8 +355,8 @@ h3 { margin-bottom: 10px; font-size: 0.84rem; text-transform: uppercase; letter-
   .weakness-pagination select, .weakness-pagination button { border-color: #475569; background: #111827; color: #e5e7eb; }
   .weakness-pagination select:focus-visible, .weakness-pagination button:focus-visible { outline-color: #a5b4fc; }
   .weakness-pagination button:disabled { border-color: #334155; background: #172033; color: #a3b0c2; }
-  .weakness-attribution { border-color: #334155; background: #111827; color: #a3b0c2; }
-  .weakness-attribution a, .weakness-detail-section a, #weakness-detail-list a { color: #93c5fd; }
+  .weakness-attribution, .requirements-attribution { border-color: #334155; background: #111827; color: #a3b0c2; }
+  .weakness-attribution a, .requirements-attribution a, .weakness-detail-section a, #weakness-detail-list a { color: #93c5fd; }
   .weakness-detail-description, .weakness-detail-items { color: #cbd5e1; }
   .weakness-overview, .weakness-detail-section { border-color: #334155; background: #111827; }
   .weakness-detail-section > summary { color: #e5e7eb; }
@@ -382,6 +384,7 @@ h3 { margin-bottom: 10px; font-size: 0.84rem; text-transform: uppercase; letter-
   .requirement-status-in-progress { background: #713f12; color: #fde68a; }
   .requirement-status-unsatisfied { background: #7f1d1d; color: #fecaca; }
   .requirement-status-not-recorded { background: #334155; color: #cbd5e1; }
+  .requirement-status-catalog-only { background: #312e81; color: #c7d2fe; }
   .model-picker select, .path-view-toolbar select { border-color: #475569; background: #111827; color: #e5e7eb; }
   .report-status, .path-view-banner { border-color: #334155; background: #111827; color: #cbd5e1; }
   .path-workspace { border-color: #334155; background: #111827; }

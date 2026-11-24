@@ -81,6 +81,59 @@ export const REQUIREMENTS_GRAPH: EngineGraphResponse = {
   edges,
 };
 
+export function requirementsGraphWithEverySatisfactionState(): EngineGraphResponse {
+  const graph = structuredClone(REQUIREMENTS_GRAPH);
+  const additionalNodes: EngineGraphNode[] = [
+    {
+      id: "mitigation:progress",
+      domain_type: "Mitigation",
+      label: "Deploy stronger authentication",
+      properties: { mitigation_status: "in_progress" },
+    },
+    {
+      id: "mitigation:planned",
+      domain_type: "Mitigation",
+      label: "Plan independent audit",
+      properties: { mitigation_status: "planned" },
+    },
+    {
+      id: "requirement:progress",
+      domain_type: "Requirement",
+      label: "In-progress requirement",
+      properties: {
+        text: "The diagnostic service shall deploy stronger authentication.",
+        requirement_kind: "technical",
+        normativity: "mandatory",
+        source_ref: "library:test#R4",
+        source_locator: "Clause 4",
+      },
+    },
+    {
+      id: "requirement:planned",
+      domain_type: "Requirement",
+      label: "Recorded incomplete requirement",
+      properties: {
+        text: "The diagnostic service shall complete an independent audit.",
+        requirement_kind: "audit",
+        normativity: "mandatory",
+        source_ref: "library:test#R5",
+        source_locator: "Clause 5",
+      },
+    },
+  ];
+  const additionalEdges: EngineGraphEdge[] = [
+    edge("requirement:progress", "applies_to", "component:diag"),
+    edge("requirement:progress", "satisfied_by", "mitigation:progress"),
+    edge("requirement:planned", "applies_to", "component:diag"),
+    edge("requirement:planned", "satisfied_by", "mitigation:planned"),
+  ];
+  return {
+    ...graph,
+    nodes: [...graph.nodes, ...additionalNodes],
+    edges: [...graph.edges, ...additionalEdges],
+  };
+}
+
 function edge(
   source: string,
   relationship_type: string,
