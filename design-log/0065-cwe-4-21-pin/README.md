@@ -4,7 +4,7 @@ id: DL-0065
 title: "Move the CWE pin to 4.21: a new library record that the engine follows"
 type: process
 status: draft
-version: "0.1.1"
+version: "0.1.2"
 date: "2026-11-22"
 updated: "2026-11-23"
 record: DL-0065
@@ -72,6 +72,8 @@ The packaging tests now check the release the built app ships:
 - `test_relocated_engine_serves_bundled_library_without_checkout`: the bundled library's `cwe-4-21` record pins that file, supersedes `cwe`, and is superseded by nothing, so it is the record the engine serves.
 
 Checked locally with an engine built from this branch by `bin/build-engine` (686 library records, CWE 4.21 with 984 entries): all 7 packaging tests pass. Against the earlier CWE 4.20 test build, both changed tests fail, as they should for any other release.
+
+@paria03 then found that the site's bibliography still described the old pin: `docs/publishing/bibliography.yaml` listed 685 records without `cwe-4-21`, and no record page had been copied for it. `render_bibliography.py --sync` added `cwe-4-21` (type `dataset`, topic `schema-representations`, from its record). The manifest's topic for `iso-sae-21434-2021` moves from `threat-modeling` to `sdl`, because library#50 gave that record `topic: sdl` and the manifest must follow a record's own topic (`docs/publishing/SKILL.md`). Rebuilding the site with `bin/publish-site`'s steps changed only the bibliography pages (now 686 sources) and two record pages: the new `cwe-4-21` page and library#50's `iso-sae-21434-2021` page. A second run changes nothing, and the identity and link checks pass. library#52 itself merged on 2026-11-23 as a merge commit, so the pinned commit is in library main's history.
 
 ## Choices
 
