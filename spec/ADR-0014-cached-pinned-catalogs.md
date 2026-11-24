@@ -1,35 +1,43 @@
 ---
 schema: "archdoc/v1"
 id: ADR-0014
-title: "External catalogs as a cached pinned mirror (accepts DEC-008)"
+title: "External catalogs as a cached pinned mirror (DEC-008)"
 short_title: "Cached pinned catalogs (DEC-008)"
-description: "Decision (2026-11-22): tmodel reads MITRE's CWE and CAPEC, and NIST's NVD records, from pinned copies checked by SHA-256 and shipped with the app, never through live lookups; a new release arrives only by a reviewed pull request."
+description: "Proposed (2026-11-22): tmodel reads MITRE's CWE and CAPEC, and NIST's NVD records, from pinned copies checked by SHA-256 and shipped with the app, never through live lookups; a new release arrives only by a reviewed pull request. The sponsor decides DEC-008; until then the team works this way."
 type: decision
 category: security
-status: accepted
-version: "1.0.0"
+status: proposed
+version: "0.2.0"
 version_policy: "semver; an accepted ADR is 1.0.0 and only changes to record superseding"
 date: "2026-11-22"
-updated: "2026-11-22"
-decision_makers:
+updated: "2026-11-23"
+authors:
   - role: student
     id: Clovier
+decision_makers:
+  - role: sponsor
+    id: nymble
 reviewers:
   - role: drafting-agent
     id: claude-code
     kind: ai_agent
-needs_review: false
+needs_review: true
 reviewed: false
 canonical_path: spec/ADR-0014-cached-pinned-catalogs.md
-accepts: DEC-008
+bears_on: [DEC-008]
 ---
 
-# ADR-0014: External catalogs as a cached pinned mirror (accepts DEC-008)
+# ADR-0014: External catalogs as a cached pinned mirror (DEC-008)
 
 ## Status
 
-**Accepted** on 2026-11-22 by @Clovier, who proposed and decided it the same day and will tell the sponsor (@nymble).
-It accepts DEC-008 (ARCH-0001, DECISIONS-0001). The sources and the choices behind it are in DL-0064.
+**Proposed.** The sponsor (@nymble) decides DEC-008, as PROC-0001 §5 says for every `DEC-*`. @Clovier drafted this
+on 2026-11-22 and first marked it accepted, then returned it to proposed on 2026-11-23 after review (#261).
+
+**Until the sponsor decides, the team works this way** (@Clovier, 2026-11-23): the app ships the pinned copies, and a
+newer catalog release reaches the app only through a new pull request that moves its pin. If the sponsor accepts, this
+ADR becomes 1.0.0 and accepts DEC-008; if not, a later ADR records the other answer. The sources and the choices behind
+it are in DL-0064.
 
 ## Context
 
@@ -75,10 +83,10 @@ It accepts DEC-008 (ARCH-0001, DECISIONS-0001). The sources and the choices behi
 
 ## Consequences
 
-- #259's catalog half proceeds: the build fetches, checks and bundles the pinned CWE file, and CAPEC's once #245
-  merges, with MITRE's notices.
-- ARCH-0001's status banner and DEC table and DECISIONS-0001's row point here; the docstring in
-  `engine/engine/load/cwe.py` changes with #259's catalog half.
+- #259's catalog half proceeds under the team's working rule above: the build fetches, checks and bundles the pinned
+  CWE file, and CAPEC's once #245 merges, with MITRE's notices.
+- DECISIONS-0001 marks DEC-008 `proposed` and points here. ARCH-0001's status banner and DEC table change only when
+  the sponsor accepts. The docstring in `engine/engine/load/cwe.py` changes with #259's catalog half.
 - Updating a catalog becomes a routine pull request: change the library pin, rebuild, review.
 - Not decided here: weakness ids and catalog keys (the other half of PLAN-0004 Q-07), and which CWE views are
   imported (#61).
