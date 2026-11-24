@@ -3,8 +3,10 @@
 Reads docs/publishing/site.yaml. `header(depth, current)` returns the top
 navigation for a page `depth` directories below docs/. It carries its own
 <style> so it renders the same on a bibliography view, a report, or a
-library record page copied in from the submodule. Stdlib only.
+library record page copied in from the submodule. The pinned library YAML loader
+is preferred; PyYAML is only its worktree-without-submodule fallback.
 """
+
 from __future__ import annotations
 
 import html
@@ -14,7 +16,25 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 SITE_PATH = ROOT / "docs" / "publishing" / "site.yaml"
 sys.path.insert(0, str(ROOT / "library" / "bin"))
-from _record_yaml import load_yaml  # noqa: E402  (pinned library submodule)
+try:
+    from _record_yaml import load_yaml
+except ModuleNotFoundError as exc:
+    if exc.name != "_record_yaml":
+        raise
+    try:
+        import yaml
+    except ModuleNotFoundError as yaml_exc:
+        raise ModuleNotFoundError(
+            "site_nav needs the pinned library helper or PyYAML"
+        ) from yaml_exc
+
+    def load_yaml(path: Path) -> dict:
+        """Read the site map when a new worktree has not initialised the submodule."""
+        value = yaml.safe_load(path.read_text(encoding="utf-8"))
+        if not isinstance(value, dict):
+            raise TypeError(f"{path}: expected a mapping")
+        return value
+
 
 STYLE = (
     "<style>"
@@ -44,7 +64,9 @@ def header(depth: int, current: str = "") -> str:
     for item in nav_items():
         href = str(item["href"])
         cur = ' aria-current="page"' if href == current else ""
-        links.append(f'<a href="{html.escape(up + href)}"{cur}>{html.escape(str(item["label"]))}</a>')
+        links.append(
+            f'<a href="{html.escape(up + href)}"{cur}>{html.escape(str(item["label"]))}</a>'
+        )
     title = html.escape(str(load_yaml(SITE_PATH).get("title") or "tmodel"))
     return (
         f'{STYLE}<header class="site-nav"><div class="bar">'

@@ -35,6 +35,13 @@ sections:
       renderer (apps/desktop/src/report-render.ts, run by Node) writes the HTML,
       so a page and the app's Model report view cannot disagree. Linked from the
       landing page, not yet from the shared nav (adding it re-renders every page).
+  - path: docs/models/tcu/tara/
+    manifest: models/tcu/governance.yaml
+    builder: docs/publishing/render_governed_tara.py
+    note: >
+      Governed TCU TARA publications (#182), rendered from the #181 intermediate.
+      Approved vN directories are immutable; latest and history are refreshable.
+      The governance and digest inputs arrive through #180 and #183.
   - path: docs/app/
     manifest: spec/vectors/
     builder: docs/publishing/render_app.py

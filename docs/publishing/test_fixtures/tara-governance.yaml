@@ -1,0 +1,113 @@
+# Isolated #182 test fixture.  This follows #180/PR #251's governed-record
+# contract but is not production governance data and records no real approval.
+governs: spec/vectors/mvp-02-automotive-ecu.yaml
+
+parties:
+  - id: party:tara-owner
+    name: TARA owner (role)
+    party_kind: person
+  - id: party:tara-assessor
+    name: TARA assessor (role)
+    party_kind: person
+  - id: party:private-reviewer
+    name: "@private-reviewer"
+    party_kind: person
+  - id: party:fixture-ai
+    name: Fixture AI reviewer
+    party_kind: software_agent
+
+threat_models:
+  - id: threat-model:tcu-tara-v1
+    name: TCU TARA, fixture version 1
+    description: First fixture version for renderer tests.
+    members:
+      - product:telematics-control-unit
+      - asset:safety-can-commands
+      - asset:diagnostic-service
+      - damage-scenario:unauthorized-can-actuation
+      - threat-instance:remote-diag-injection
+      - threat-instance:infotainment-pivot
+      - attack-path:remote-diag-injection
+      - attack-path:infotainment-pivot
+      - risk-score:remote-diag-injection
+      - mitigation:authenticate-diag-service
+      - mitigation:domain-gateway-firewall
+      - requirement:tcu-diag-authentication
+      - requirement:gateway-filter-safety-can
+    owner: party:tara-owner
+    revision: "1"
+    required_review_roles: [owner, assessor, approver]
+    approved_by:
+      - review:tcu-v1-owner
+      - review:tcu-v1-assessor
+      - review:tcu-v1-approver
+    approval_status: approved
+    approval_digest: git-tree:1111111111111111111111111111111111111111
+    governance_status: approved
+    created: "2026-11-13T00:00:00Z"
+    updated: "2026-11-18T00:00:00Z"
+  - id: threat-model:tcu-tara-v2
+    name: TCU TARA, fixture version 2
+    description: Draft fixture version; it must never be published as approved.
+    members:
+      - product:telematics-control-unit
+    owner: party:tara-owner
+    revision: "2"
+    supersedes: threat-model:tcu-tara-v1
+    required_review_roles: [owner, assessor, approver]
+    approval_status: pending
+    governance_status: draft
+    created: "2026-11-19T00:00:00Z"
+    updated: "2026-11-19T00:00:00Z"
+
+reviews:
+  - id: review:tcu-v1-owner
+    reviews: threat-model:tcu-tara-v1
+    reviewer: party:tara-owner
+    reviewer_role: owner
+    reviewed_at: "2026-11-18T00:00:00Z"
+    review_outcome: approved
+    justification: Fixture human owner approval.
+  - id: review:tcu-v1-assessor
+    reviews: threat-model:tcu-tara-v1
+    reviewer: party:tara-assessor
+    reviewer_role: assessor
+    reviewed_at: "2026-11-18T00:00:00Z"
+    review_outcome: approved
+    justification: Fixture human assessor approval.
+  - id: review:tcu-v1-approver
+    reviews: threat-model:tcu-tara-v1
+    reviewer: party:private-reviewer
+    reviewer_role: approver
+    reviewed_at: "2026-11-18T00:00:00Z"
+    review_outcome: approved
+    justification: Fixture human final approval.
+  - id: review:tcu-v1-ai
+    reviews: threat-model:tcu-tara-v1
+    reviewer: party:fixture-ai
+    reviewed_at: "2026-11-17T00:00:00Z"
+    review_outcome: approved
+    agent_model: fixture-model
+    agent_run_id: fixture-run
+    justification: Fixture AI opinion; it does not count as human approval.
+  - id: review:tcu-v2-ai
+    reviews: threat-model:tcu-tara-v2
+    reviewer: party:fixture-ai
+    reviewed_at: "2026-11-19T00:00:00Z"
+    review_outcome: comment
+    agent_model: fixture-model
+    agent_run_id: fixture-run-2
+    justification: Fixture AI comment on a draft.
+
+review_comments:
+  - id: comment:tcu-v1-resolved
+    name: Resolved fixture review comment
+    description: The first fixture version addressed this example comment.
+    comment_on: threat-model:tcu-tara-v1
+    comment_status: resolved
+    resolved_by: https://example.invalid/fixture-resolution
+  - id: comment:tcu-v2-open
+    name: Open fixture review comment
+    description: The draft fixture version still has unresolved work.
+    comment_on: threat-model:tcu-tara-v2
+    comment_status: open
