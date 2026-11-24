@@ -13,6 +13,27 @@ python3 docs/publishing/render_report.py
 tara_py=python3
 [ -x engine/.venv/bin/python ] && tara_py=engine/.venv/bin/python
 "$tara_py" docs/publishing/render_tara.py
+# Governed TARA publication (#182) is enabled only after #180 supplies the
+# authoritative record. The render step consumes #181's intermediate and calls
+# #180/#183 for record validation, human/AI review rules, blocking comments,
+# PR/CODEOWNER approval, and its matching digest. Missing gate evidence fails closed.
+if [ -f models/tcu/governance.yaml ]; then
+  governed_tara_json=$(mktemp "${TMPDIR:-/tmp}/tmodel-tara.XXXXXX.json")
+  cleanup_governed_tara() { rm -f -- "$governed_tara_json"; }
+  trap cleanup_governed_tara EXIT
+  PYTHONPATH=engine "$tara_py" -m engine tara mvp-02-automotive-ecu.yaml \
+    --matrix annex-h-table-h8 --in-process --output "$governed_tara_json"
+  governed_tara_gate=()
+  [ -n "${TARA_BASE_REF:-}" ] && governed_tara_gate+=(--base "$TARA_BASE_REF")
+  [ -n "${TARA_PR_REVIEWS:-}" ] && governed_tara_gate+=(--pr-reviews "$TARA_PR_REVIEWS")
+  [ -n "${TARA_HEAD_SHA:-}" ] && governed_tara_gate+=(--head "$TARA_HEAD_SHA")
+  [ -n "${TARA_PR_AUTHOR:-}" ] && governed_tara_gate+=(--author "$TARA_PR_AUTHOR")
+  [ -n "${TARA_CHANGED_PATHS:-}" ] && governed_tara_gate+=(--changed "$TARA_CHANGED_PATHS")
+  "$tara_py" docs/publishing/render_governed_tara.py "$governed_tara_json" \
+    "${governed_tara_gate[@]}"
+  cleanup_governed_tara
+  trap - EXIT
+fi
 "$tara_py" docs/publishing/render_sdl.py   # tmodel SDL page (DL-0040)
 python3 docs/publishing/render_bibliography.py
 # Example-model pages (#208): the engine collects each model, which needs PyYAML
