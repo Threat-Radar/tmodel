@@ -1,22 +1,23 @@
 ---
 schema: "archdoc/v1"
-id: DL-0066
+id: DL-0067
 title: "Requirements follow-up: extracted catalog, relationship evidence audit, and satisfaction language"
 type: process
 status: draft
 version: "0.1.0"
 date: "2026-11-22"
 updated: "2026-11-22"
-record: DL-0066
+record: DL-0067
 bears_on: [DEC-001a, DEC-002, DEC-009, R-018]
 defers_to: ARCH-0001
 ---
 
-# DL-0066: Requirements follow-up (#258)
+# DL-0067: Requirements follow-up (#258)
 
 This design record addresses the three nonblocking observations in @Clovier's approving review of
 PR #258. DL-0061 remains the historical record of the extraction. DL-0062 through DL-0065 were
-already reserved by parallel work, so this follow-up uses DL-0066.
+already reserved by parallel work, and DL-0066 is reserved by the parallel
+`design-log/0066-approved-current-tara-gate` work in PR #265, so this follow-up uses DL-0067.
 
 ## Question asked
 
