@@ -4,9 +4,9 @@ id: DL-0064
 title: "ADR-0014: external catalogs as a cached pinned mirror (DEC-008)"
 type: process
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 date: "2026-11-22"
-updated: "2026-11-22"
+updated: "2026-11-23"
 record: DL-0064
 bears_on: [DEC-008]
 defers_to: ARCH-0001
@@ -57,6 +57,12 @@ DEC-008, still open. @Clovier asked for a proposal that takes the team's lean, a
 ## What was rejected, and why
 
 - Live lookups, fetching at install, and user-supplied files only: see ADR-0014's alternatives.
+
+## Review changes
+
+- 2026-11-23, @paria03's review: added the missing ARCH-0001 changelog entry for 0.1.12 (§9.5). Her other point,
+  that PROC-0001 §5 makes the sponsor the decision-maker on every DEC, waits on @Clovier: record the sponsor's
+  acceptance or delegation, or keep ADR-0014 proposed until then.
 
 ## Next steps
 

@@ -6,10 +6,10 @@ description: "Every change to ARCH-0001, newest first. §9.5 requires an entry p
 type: process
 category: security
 status: active
-version: "0.1.11"
+version: "0.1.12"
 version_policy: "tracks ARCH-0001; one entry per version bump"
 date: "2026-09-23"
-updated: "2026-11-07"
+updated: "2026-11-23"
 needs_review: false
 reviewed: true
 canonical_path: spec/ARCH-0001-CHANGELOG.md
@@ -19,6 +19,14 @@ defers_to: ARCH-0001
 # ARCH-0001 changelog
 
 Newest first. Every ARCH-0001 version bump appends a line here (§9.5).
+
+## 0.1.12 (2026-11-22)
+
+**DEC-008 accepted** via ADR-0014 (decided by @Clovier on 2026-11-22, DL-0064; the sponsor has not signed off
+yet). External catalogs come from a cached pinned mirror: one release of each, pinned by URL and SHA-256 in its
+library record and shipped with the app, never fetched live, and changed only by a reviewed pull request. NVD's
+CVE records follow the same rule through BACKLOG T-083. Updated the status banner and the DEC-008 row. Still
+open: the rest of DEC-001b, and DEC-009.
 
 ## 0.1.11 (2026-11-07)
 
