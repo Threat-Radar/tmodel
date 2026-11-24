@@ -38,6 +38,7 @@ import sys
 import zipfile
 from collections import Counter
 from collections.abc import Iterable, Mapping
+from itertools import zip_longest
 from pathlib import Path
 from typing import Any
 from xml.etree import ElementTree
@@ -301,28 +302,30 @@ def _fields(
                     )
                 continue
             file_side = _joined_signatures(_xml_signature(e) for e in in_file.get(name, []))
-            kept_side = _joined_signatures(_kept_signature(v) for v in held.get(name, []))
+            kept_side = _joined_signatures(_kept_signature(v, name) for v in held.get(name, []))
             counts = (len(in_file.get(name, [])), len(held.get(name, [])))
             differs = [
                 what
                 for what, a, b in (
                     ("values", counts[0], counts[1]),
                     ("elements", file_side[0], kept_side[0]),
+                    ("names", file_side[3], kept_side[3]),
                     ("attributes", file_side[1], kept_side[1]),
                     ("words", file_side[2], kept_side[2]),
                 )
                 if a != b
             ]
             if differs:
-                not_kept.append(
-                    {
-                        "entry": item_id,
-                        "field": name,
-                        "differs": differs,
-                        "in_file": {"values": counts[0], "tally": _tally(file_side)},
-                        "kept": {"values": counts[1], "tally": _tally(kept_side)},
-                    }
-                )
+                loss = {
+                    "entry": item_id,
+                    "field": name,
+                    "differs": differs,
+                    "in_file": {"values": counts[0], "tally": _tally(file_side)},
+                    "kept": {"values": counts[1], "tally": _tally(kept_side)},
+                }
+                if "names" in differs:
+                    loss["first_name_difference"] = _first_difference(file_side[3], kept_side[3])
+                not_kept.append(loss)
     known = {(kind, name) for kind, names in cwe.ENTRY_FIELDS.items() for name in names}
     rows = [
         {
@@ -372,52 +375,71 @@ def _kept_fields(fields: Mapping[str, Any]) -> dict[str, Any]:
     return found
 
 
-Signature = tuple[int, list[tuple[str, str]], list[str]]
+# (elements, attribute names and values, words, element paths), each in document order.
+Signature = tuple[int, list[tuple[str, str]], list[str], list[str]]
 
 
-def _xml_signature(element: ElementTree.Element) -> Signature:
-    """(elements, attribute names and values, words) under an element, in document order.
+def _xml_signature(element: ElementTree.Element, parent: str = "") -> Signature:
+    """(elements, attributes, words, element paths) under an element, in document order.
 
     Structured text (XHTML, or text between CWE elements) gives its words, as the
     importer's `#xhtml` does; any other element gives its own attributes, then its
-    children's, and its text if it holds no element.
+    children's, and its text if it holds no element. Each element also gives its path
+    from the field down (`Modes_Of_Introduction/Introduction/Phase`), so an element
+    kept under another name, or moved to another parent, does not pass as kept.
     """
+    path = element.tag.rpartition("}")[2]
+    path = f"{parent}/{path}" if parent else path
     children = list(element)
     mixed = any(not c.tag.startswith(NS) for c in children) or bool(
         children and ((element.text or "").strip() or any((c.tail or "").strip() for c in children))
     )
     attributes = sorted((_attribute(k), v) for k, v in element.attrib.items())
     if mixed or not children:
-        return 1, attributes, " ".join(element.itertext()).split()
-    elements, words = 1, []
+        return 1, attributes, " ".join(element.itertext()).split(), [path]
+    elements, words, paths = 1, [], [path]
     for child in children:
-        e, a, w = _xml_signature(child)
-        elements, attributes, words = elements + e, attributes + a, words + w
-    return elements, attributes, words
+        e, a, w, p = _xml_signature(child, path)
+        elements, attributes, words, paths = elements + e, attributes + a, words + w, paths + p
+    return elements, attributes, words, paths
 
 
-def _kept_signature(value: Any) -> Signature:
-    """The same signature, over a value the import kept."""
+def _kept_signature(value: Any, path: str) -> Signature:
+    """The same signature, over a value the import kept for the element at `path`."""
     if isinstance(value, str):
-        return 1, [], cwe.plain_text(value).split()
+        return 1, [], cwe.plain_text(value).split(), [path]
     attributes = sorted((k[1:], v) for k, v in value.items() if k.startswith("@"))
-    elements, words = 1, []
+    elements, words, paths = 1, [], [path]
     for key, item in value.items():
         if key in ("#text", "#xhtml"):
             words += cwe.plain_text({key: item}).split()
         elif not key.startswith("@"):
-            parts = (next(iter(one.values())) for one in item) if key == "#items" else item
-            for part in parts:
-                e, a, w = _kept_signature(part)
-                elements, attributes, words = elements + e, attributes + a, words + w
-    return elements, attributes, words
+            # `#items` keeps mixed children in order, one {name: value} each.
+            parts = (
+                (next(iter(one.items())) for one in item)
+                if key == "#items"
+                else ((key, one) for one in item)
+            )
+            for name, part in parts:
+                e, a, w, p = _kept_signature(part, f"{path}/{name}")
+                elements, attributes = elements + e, attributes + a
+                words, paths = words + w, paths + p
+    return elements, attributes, words, paths
 
 
 def _joined_signatures(signatures: Iterable[Signature]) -> Signature:
-    elements, attributes, words = 0, [], []
-    for e, a, w in signatures:
-        elements, attributes, words = elements + e, attributes + a, words + w
-    return elements, attributes, words
+    elements, attributes, words, paths = 0, [], [], []
+    for e, a, w, p in signatures:
+        elements, attributes, words, paths = elements + e, attributes + a, words + w, paths + p
+    return elements, attributes, words, paths
+
+
+def _first_difference(in_file: list[str], kept: list[str]) -> dict[str, str | None]:
+    """The first element path the two sides give differently, for a reader of the report."""
+    for a, b in zip_longest(in_file, kept):
+        if a != b:
+            return {"in_file": a, "kept": b}
+    return {"in_file": None, "kept": None}
 
 
 def _tally(signature: Signature) -> list[int]:

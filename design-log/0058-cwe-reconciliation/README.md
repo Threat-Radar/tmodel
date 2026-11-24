@@ -4,7 +4,7 @@ id: DL-0058
 title: "CWE import reconciliation: the file read twice, every loss named, and a CI check on MITRE's release (#146, #61)"
 type: process
 status: draft
-version: "0.1.1"
+version: "0.1.2"
 date: "2026-11-15"
 updated: "2026-11-23"
 record: DL-0058
@@ -85,6 +85,8 @@ The report is Markdown, and the same file always gives the same text: it names n
 3. **Reference counts.** References were compared as sets of ids, so a reference the file defines twice and the import keeps once went unseen. `lossless` now requires equal totals, and the report gains `references.repeated_differently`, naming each id kept a different number of times. Test: the file defines REF-7 twice and an import that keeps one copy is named and fails.
 
 Before the fix, all three test cases came out lossless; now each one fails and names what was lost. The report's text names references kept a different number of times beside the entries read as another kind, so a lossless report reads as before: the committed report for CWE 4.20 is unchanged, and `--check` still passes on MITRE's file.
+
+@paria03 then found that an element kept under another name still passed. Each side's signature counted the elements and kept their attributes and words, but not their names, so CWE-79's `Modes_Of_Introduction/Introduction/Phase` read as `Wrong_Phase` (same place, attributes and text) came out lossless. Both signatures now also carry every element's path from the field down, in document order. A field whose paths differ is not kept: the report lists it with `differs: names` and the first path that differs. Test: that rename, which came out lossless on the old code. A field dropped whole now lists `names` among its differences too. The whole CWE 4.20 release still reconciles as lossless, and the committed report is unchanged.
 
 ## What a human accepted
 

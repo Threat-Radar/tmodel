@@ -176,7 +176,7 @@ def test_a_field_not_kept_is_named_with_both_tallies(monkeypatch):
     [loss] = lossy["fields"]["not_kept"]
     assert (loss["entry"], loss["field"]) == ("CWE-79", "Notes")
     assert loss["in_file"]["values"] == 1 and loss["kept"] == {"values": 0, "tally": [0, 0, 0]}
-    assert loss["differs"] == ["values", "elements", "attributes", "words"]
+    assert loss["differs"] == ["values", "elements", "names", "attributes", "words"]
     notes = next(
         r for r in lossy["fields"]["rows"] if (r["kind"], r["field"]) == ("Weakness", "Notes")
     )
@@ -348,6 +348,34 @@ def test_a_reference_kept_fewer_times_than_the_file_defines_it_is_a_loss(monkeyp
     assert references["repeated_differently"] == ["REF-7"]
     assert lossy["lossless"] is False
     assert "Given a different number of times: REF-7." in to_markdown(lossy)
+
+
+def test_an_element_kept_under_another_name_is_a_loss(monkeypatch):
+    # CWE-79's Modes_Of_Introduction/Introduction/Phase read as Wrong_Phase: the same place,
+    # attributes and text, so only the element's name tells them apart (@paria03, #249).
+    def wrong_phase(fields):
+        (modes,) = fields["Modes_Of_Introduction"]
+        (introduction,) = modes["Introduction"]
+        wrong = {("Wrong_Phase" if k == "Phase" else k): v for k, v in introduction.items()}
+        introductions = (MappingProxyType(wrong),)
+        fields["Modes_Of_Introduction"] = (MappingProxyType({"Introduction": introductions}),)
+        return fields
+
+    _losing(monkeypatch, lambda catalog: _with_fields(catalog, "CWE-79", wrong_phase))
+    lossy = reconcile(SAMPLE, SAMPLE_SHA256)
+    (loss,) = lossy["fields"]["not_kept"]
+    assert (loss["entry"], loss["field"], loss["differs"]) == (
+        "CWE-79",
+        "Modes_Of_Introduction",
+        ["names"],
+    )
+    assert loss["in_file"] == loss["kept"]  # same counts: only the name moved
+    assert loss["first_name_difference"] == {
+        "in_file": "Modes_Of_Introduction/Introduction/Phase",
+        "kept": "Modes_Of_Introduction/Introduction/Wrong_Phase",
+    }
+    assert lossy["lossless"] is False
+    assert "Fields not kept: CWE-79 Modes_Of_Introduction." in to_markdown(lossy)
 
 
 # --- the report, the command and the committed copy -----------------------------------------
