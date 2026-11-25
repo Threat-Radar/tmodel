@@ -33,6 +33,7 @@ and only after the WAVE 2 gate (#84).
 | `docs/publishing/render_report.py` | Renders archdoc markdown reports to `docs/reports/*.html` (revisioned). Stdlib only. Its index also lists the pages under `listed:` in `reports.yaml`. |
 | `docs/publishing/tara.yaml` | Manifest of **TARA pages**: an example model in `spec/vectors/`, the page to write, the library records it cites and the gaps the page lists. |
 | `docs/publishing/render_tara.py` | Renders each model as a "TARA draft (example data)" page in ISO/SAE 21434 clause 15 order (DL-0037). Reads the model through the engine, so it needs PyYAML: `engine/.venv/bin/python`. `--check` compares instead of writing. |
+| `docs/publishing/check_governance.py` | Fails if a governed record (`models/<item>/governance.yaml`, DL-0027) is malformed: it validates against the governance container (#64's proposal), then checks the rules the schema cannot state, such as an AI review filling no role and references resolving (#180, DL-0054). Needs LinkML (`spec/schema/requirements.txt`). Not yet in CI; the publish gate is #183. |
 | `docs/publishing/check_identities.py` | **Privacy guard.** Fails if a protected personal identity appears in published HTML or generated app JSON, JavaScript, or CSS. Run in CI. |
 | `publishing/identities.yaml` | **Outside `docs/`** (never published): protected project identities + the `approved` allow-list. |
 | `docs/publishing/SKILL.md` | This playbook. |
