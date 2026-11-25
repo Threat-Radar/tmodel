@@ -11,7 +11,9 @@ export type RequirementSatisfaction = "satisfied" | "in_progress" | "unsatisfied
 export interface RequirementQuery {
   search?: string;
   kind?: string;
+  normativity?: string;
   product?: string;
+  source?: string;
   sort: RequirementSort;
   order: RequirementSortOrder;
   limit: number;
@@ -28,6 +30,13 @@ export const DEFAULT_REQUIREMENT_QUERY: RequirementQuery = {
 export interface RequirementProduct {
   id: string;
   name: string;
+}
+
+export interface RequirementCatalogSource {
+  id: string;
+  name: string;
+  version: string | null;
+  count: number;
 }
 
 export interface RequirementMitigation {
@@ -82,6 +91,7 @@ export interface RequirementRow {
   textOrigin: string | null;
   sourceRef: string | null;
   sourceLocator: string | null;
+  catalogSource: Omit<RequirementCatalogSource, "count"> | null;
   appliesTo: string[];
   appliesToFamilies: string[];
   applicableProducts: RequirementProduct[];
@@ -95,6 +105,8 @@ export interface RequirementCatalog {
   requirements: RequirementRow[];
   products: RequirementProduct[];
   kinds: Record<string, number>;
+  normativities: Record<string, number>;
+  sources: RequirementCatalogSource[];
 }
 
 export interface RequirementTableResponse {
@@ -104,6 +116,8 @@ export interface RequirementTableResponse {
   all: number;
   query: RequirementQuery;
   kinds: Record<string, number>;
+  normativities: Record<string, number>;
+  sources: RequirementCatalogSource[];
 }
 
 const REQUIREMENT_RELATIONSHIPS = new Set([
@@ -117,7 +131,10 @@ const REQUIREMENT_RELATIONSHIPS = new Set([
   "applies_to",
 ]);
 
-export function buildRequirementCatalog(graph: EngineGraphResponse): RequirementCatalog {
+export function buildRequirementCatalog(
+  graph: EngineGraphResponse,
+  catalogSource?: Omit<RequirementCatalogSource, "count">,
+): RequirementCatalog {
   const nodes = new Map(graph.nodes.map((node) => [node.id, node]));
   const products = graph.nodes.filter((node) => node.domain_type === "Product")
     .map((node) => ({ id: node.id, name: node.label }))
@@ -130,18 +147,21 @@ export function buildRequirementCatalog(graph: EngineGraphResponse): Requirement
     productScope(product.id, established),
   ]));
   const requirements = graph.nodes.filter((node) => node.domain_type === "Requirement")
-    .map((node) => requirementRow(node, graph.edges, nodes, products, scopes))
+    .map((node) => requirementRow(node, graph.edges, nodes, products, scopes, catalogSource))
     .sort((left, right) => left.id.localeCompare(right.id));
-  const kinds: Record<string, number> = {};
-  for (const requirement of requirements) {
-    if (requirement.kind) kinds[requirement.kind] = (kinds[requirement.kind] ?? 0) + 1;
+  return requirementCatalog(graph.file.split(/[\\/]/).pop() ?? graph.file, requirements, products);
+}
+
+export function combineRequirementCatalogs(
+  file: string,
+  catalogs: readonly RequirementCatalog[],
+): RequirementCatalog {
+  const requirements = catalogs.flatMap((catalog) => catalog.requirements);
+  const ids = requirements.map((requirement) => requirement.id);
+  if (new Set(ids).size !== ids.length) {
+    throw new Error("Extracted standards catalog contains duplicate Requirement ids");
   }
-  return {
-    file: graph.file.split(/[\\/]/).pop() ?? graph.file,
-    requirements,
-    products,
-    kinds,
-  };
+  return requirementCatalog(file, requirements, []);
 }
 
 export function queryRequirements(
@@ -149,23 +169,19 @@ export function queryRequirements(
   query: RequirementQuery,
 ): RequirementTableResponse {
   const needle = query.search?.trim().toLocaleLowerCase("und");
-  const filtered = catalog.requirements.filter((row) => (
-    (!needle || [row.id, row.name, row.text, row.sourceRef, row.sourceLocator]
-      .filter((value): value is string => typeof value === "string")
+  const matches = (row: RequirementRow, omit?: "kind" | "normativity" | "source"): boolean => (
+    (!needle || [
+      row.id, row.name, row.text, row.sourceRef, row.sourceLocator,
+      row.catalogSource?.name, row.catalogSource?.version,
+    ].filter((value): value is string => typeof value === "string")
       .some((value) => value.toLocaleLowerCase("und").includes(needle)))
-    && (!query.kind || row.kind === query.kind)
+    && (omit === "kind" || !query.kind || row.kind === query.kind)
+    && (omit === "normativity" || !query.normativity || row.normativity === query.normativity)
+    && (omit === "source" || !query.source || requirementSourceId(row) === query.source)
     && (!query.product || row.applicableProducts.some((product) => product.id === query.product))
-  ));
+  );
+  const filtered = catalog.requirements.filter((row) => matches(row));
   const rows = [...filtered].sort((left, right) => compareRows(left, right, query));
-  const contextualKinds: Record<string, number> = {};
-  for (const row of catalog.requirements.filter((candidate) => (
-    (!needle || [candidate.id, candidate.name, candidate.text, candidate.sourceRef, candidate.sourceLocator]
-      .filter((value): value is string => typeof value === "string")
-      .some((value) => value.toLocaleLowerCase("und").includes(needle)))
-    && (!query.product || candidate.applicableProducts.some((product) => product.id === query.product))
-  ))) {
-    if (row.kind) contextualKinds[row.kind] = (contextualKinds[row.kind] ?? 0) + 1;
-  }
   const page = rows.slice(query.offset, query.offset + query.limit);
   return {
     rows: page,
@@ -173,7 +189,12 @@ export function queryRequirements(
     count: page.length,
     all: catalog.requirements.length,
     query: { ...query },
-    kinds: contextualKinds,
+    kinds: counts(catalog.requirements.filter((row) => matches(row, "kind")), (row) => row.kind),
+    normativities: counts(
+      catalog.requirements.filter((row) => matches(row, "normativity")),
+      (row) => row.normativity,
+    ),
+    sources: sourceFacets(catalog.requirements.filter((row) => matches(row, "source"))),
   };
 }
 
@@ -187,6 +208,7 @@ function requirementRow(
   nodes: ReadonlyMap<string, EngineGraphNode>,
   products: readonly RequirementProduct[],
   scopes: ReadonlyMap<string, ReadonlySet<string>>,
+  catalogSource?: Omit<RequirementCatalogSource, "count">,
 ): RequirementRow {
   const establishedIds = new Set(edges.filter((edge) => (
     isEstablishedRelationship(edge, edges, nodes)
@@ -277,6 +299,7 @@ function requirementRow(
     textOrigin: propertyString(node, "text_origin"),
     sourceRef: propertyString(node, "source_ref"),
     sourceLocator: propertyString(node, "source_locator"),
+    catalogSource: catalogSource ?? null,
     appliesTo,
     appliesToFamilies: families,
     applicableProducts,
@@ -374,6 +397,56 @@ function compareRows(left: RequirementRow, right: RequirementRow, query: Require
   };
   const compared = value(left).localeCompare(value(right), undefined, { numeric: true });
   return (query.order === "asc" ? compared : -compared) || left.id.localeCompare(right.id);
+}
+
+function requirementCatalog(
+  file: string,
+  requirements: RequirementRow[],
+  products: RequirementProduct[],
+): RequirementCatalog {
+  return {
+    file,
+    requirements,
+    products,
+    kinds: counts(requirements, (row) => row.kind),
+    normativities: counts(requirements, (row) => row.normativity),
+    sources: sourceFacets(requirements),
+  };
+}
+
+function counts(
+  requirements: readonly RequirementRow[],
+  value: (row: RequirementRow) => string | null,
+): Record<string, number> {
+  const result: Record<string, number> = {};
+  for (const requirement of requirements) {
+    const key = value(requirement);
+    if (key) result[key] = (result[key] ?? 0) + 1;
+  }
+  return result;
+}
+
+function sourceFacets(requirements: readonly RequirementRow[]): RequirementCatalogSource[] {
+  const sources = new Map<string, RequirementCatalogSource>();
+  for (const requirement of requirements) {
+    const id = requirementSourceId(requirement);
+    if (!id) continue;
+    const previous = sources.get(id);
+    sources.set(id, {
+      id,
+      name: requirement.catalogSource?.name ?? id,
+      version: requirement.catalogSource?.version ?? null,
+      count: (previous?.count ?? 0) + 1,
+    });
+  }
+  return [...sources.values()].sort((left, right) => (
+    left.name.localeCompare(right.name) || left.id.localeCompare(right.id)
+  ));
+}
+
+function requirementSourceId(row: RequirementRow): string | undefined {
+  if (row.catalogSource) return row.catalogSource.id;
+  return row.sourceRef?.match(/^library:([^#]+)(?:#|$)/)?.[1];
 }
 
 function stringValue(edge: EngineGraphEdge, key: string): string | null {
