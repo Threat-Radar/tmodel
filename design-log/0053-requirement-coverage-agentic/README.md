@@ -252,6 +252,21 @@ reassess; this update does not dismiss it.
 Fresh remote CI and review status must be checked after pushing the integration.
 No source decision or product assessment is inferred from this merge.
 
+
+## Integration with current main (2026-11-25)
+
+Merged main through `6b8b022`, including the requirement catalog, packaged
+library, governance validator, publish guard and approved-current TARA check.
+The sole conflict was two independent additions at the end of `core.py`:
+retain both `requirement_coverage` and `evaluate_tara_gate`. The four source
+fragments and all recorded sample decisions remain unchanged from `fed259b`.
+
+Verification: 812 engine tests passed (eight opt-in tests skipped), 470 frontend
+tests passed with typechecking, and 121 publishing tests passed with the pinned
+LinkML environment. Engine lint/format and preview freshness pass (ten models,
+685 library records). Remote CI must pass on the pushed merge commit. The
+existing request for reviewer reassessment remains open.
+
 # Limits
 
 These are source requirements and hypotheses, not validated assessments of a Kia,

@@ -152,6 +152,21 @@ It reports empty `text` and `# REVIEW:` marks as notes, so a skeleton passes.
 
 The `schema` workflow (`.github/workflows/schema.yml`) runs all three on every `research/0017-requirements-extraction/*.yaml`, plus `test_convert.py`, whenever a PR touches this folder.
 
+### Application catalog
+
+The three Issue #171 fragments are also the authoritative inputs to the read-only application catalog.
+Generate or check its deterministic desktop/Pages asset with the engine environment:
+
+```sh
+engine/.venv/bin/python docs/publishing/render_requirements_catalog.py
+engine/.venv/bin/python docs/publishing/render_requirements_catalog.py --check
+```
+
+The catalog keeps these records separate from selected-model Requirements. Catalog visibility does not
+establish product applicability, mitigation satisfaction, or compliance. Public output retains
+Assertion and Review evidence but replaces protected project-person identities with a human-reviewer
+role; the YAML here remains authoritative and unchanged. See DL-0067.
+
 ## Limits
 
 - `requirement_kind` is a default from two library fields, not a reading of the provision. On the 49 ISO/SAE 21434 provisions in #196, it matched the lane's own choice for 45. The other 4 are judgement calls, which is why every kind is marked for review.

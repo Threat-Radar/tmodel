@@ -32,6 +32,7 @@ from __future__ import annotations
 import hashlib
 import os
 import re
+import sys
 import threading
 from collections.abc import Iterator, Mapping
 from dataclasses import asdict, dataclass, field
@@ -309,17 +310,20 @@ def _checkout(root: str | Path) -> Path:
 
 
 def configured_root() -> Path:
-    """The library the engine serves: `$TMODEL_LIBRARY` if set, else the pinned submodule.
+    """The library the engine serves: `$TMODEL_LIBRARY` if set, else the pinned copy.
 
-    The default is the `library/` folder at the root of this repo, which exists in a
-    source checkout. A packaged engine has no repo around it, so it needs the
-    variable (#124 decides how the app provides a library).
+    In a source checkout that is the `library/` submodule at the root of this repo.
+    A packaged engine has no repo around it, so `bin/build-engine` bundles the files
+    this module reads (RECORD_GLOB and NOTED_GLOBS) and the engine serves that copy,
+    unpacked below PyInstaller's `_MEIPASS` like the example models (#259).
     """
     configured = os.environ.get(LIBRARY_ENV, "").strip()
     if configured:
         # os.path leaves "~name" as written when there is no such user, as the shell
         # does, so it reads as no library; Path.expanduser() would raise instead.
         return Path(os.path.expanduser(configured))
+    if getattr(sys, "frozen", False):
+        return Path(sys._MEIPASS) / "library"
     return Path(__file__).resolve().parents[3] / "library"
 
 

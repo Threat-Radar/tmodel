@@ -168,16 +168,19 @@
         <div id="requirements-workspace" class="library-workspace requirements-workspace" aria-busy="false">
           <section class="library-main requirements-main">
             <div class="library-heading">
-              <div><p class="eyebrow">Recorded product evidence</p><h2>Requirements</h2></div>
+              <div><p id="requirements-heading-eyebrow" class="eyebrow">Recorded product evidence</p><h2>Requirements</h2></div>
               <span id="requirements-result-count" class="count-badge">0 requirements</span>
             </div>
             <div class="source-row"><div id="requirements-source-notice" class="data-source-notice" role="note">Open an example model to load its requirements.</div><button id="requirements-retry" class="retry-button" type="button" hidden>Retry requirements</button></div>
             <div class="library-controls requirements-controls" aria-label="Requirement search and filters">
+              <label for="requirements-mode"><span>Browse</span><select id="requirements-mode"><option value="model">Model requirements</option><option value="standards">Extracted standards catalog</option></select></label>
               <label class="search-control" for="requirements-search"><span>Search</span><input id="requirements-search" type="search" placeholder="Requirement ID, name, statement, or source" autocomplete="off" /></label>
               <label for="requirements-kind-filter"><span>Kind</span><select id="requirements-kind-filter"><option value="">All kinds</option></select></label>
-              <label for="requirements-product-filter"><span>Product</span><select id="requirements-product-filter"><option value="">All products</option></select></label>
+              <label id="requirements-normativity-control" for="requirements-normativity-filter" hidden><span>Normativity</span><select id="requirements-normativity-filter"><option value="">All normativity</option></select></label>
+              <label id="requirements-source-control" for="requirements-source-filter" hidden><span>Standard</span><select id="requirements-source-filter"><option value="">All standards</option></select></label>
+              <label id="requirements-product-control" for="requirements-product-filter"><span>Product</span><select id="requirements-product-filter"><option value="">All products</option></select></label>
             </div>
-            <details class="requirements-coverage" open>
+            <details id="requirements-coverage" class="requirements-coverage" open>
               <summary>Recorded requirement coverage</summary>
               <p class="coverage-disclaimer">Recorded model evidence only — not verified regulatory compliance or proof that a mitigation is effective.</p>
               <div id="requirements-coverage-status" class="library-request-status" role="status" aria-live="polite">Select a product to see recorded coverage.</div>
@@ -188,14 +191,14 @@
             <p id="requirements-empty" class="library-empty" hidden>No requirements match the current search and filters.</p>
             <div id="requirements-table-region" class="library-table-region requirements-table-region" role="region" aria-label="Requirements" tabindex="0" hidden>
               <table class="library-table requirements-table">
-                <caption>Requirements recorded in the selected model</caption>
+                <caption id="requirements-table-caption">Requirements recorded in the selected model</caption>
                 <thead><tr>
                   <th scope="col" aria-sort="ascending"><button type="button" data-requirement-sort data-sort="id">Requirement ID and name</button></th>
                   <th scope="col" aria-sort="none"><button type="button" data-requirement-sort data-sort="kind">Kind</button></th>
                   <th scope="col" aria-sort="none"><button type="button" data-requirement-sort data-sort="normativity">Normativity</button></th>
                   <th scope="col" aria-sort="none"><button type="button" data-requirement-sort data-sort="source">Source</button></th>
-                  <th scope="col">Applies to product</th>
-                  <th scope="col" aria-sort="none"><button type="button" data-requirement-sort data-sort="satisfaction">Recorded satisfaction</button></th>
+                  <th id="requirements-scope-heading" scope="col">Applies to product</th>
+                  <th scope="col" aria-sort="none"><button id="requirements-satisfaction-heading" type="button" data-requirement-sort data-sort="satisfaction">Recorded satisfaction</button></th>
                 </tr></thead>
                 <tbody id="requirements-table-body"></tbody>
               </table>
@@ -206,6 +209,9 @@
               <button id="requirements-page-previous" type="button" disabled>Previous</button>
               <button id="requirements-page-next" type="button" disabled>Next</button>
             </div>
+            <aside id="requirements-attribution" class="requirements-attribution" aria-label="OWASP ASVS attribution and license" hidden>
+              <p>Adapted from <a href="https://owasp.org/www-project-application-security-verification-standard/" target="_blank" rel="noopener noreferrer">OWASP Application Security Verification Standard (ASVS) 5.0.0</a>; licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>.</p>
+            </aside>
           </section>
           <aside class="panel library-inspector requirements-inspector" aria-label="Selected requirement">
             <p class="eyebrow">Selected requirement</p><h2 id="requirements-detail-title">Select a requirement</h2>

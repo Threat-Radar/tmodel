@@ -240,6 +240,12 @@ copy to pick the change up. The sidecar includes the example models from
 the sidecar's unpacked resources, independent of the working directory. In a
 source checkout it continues to read `spec/vectors/`. The examples are read-only
 inputs; they are separate from the reference library and a user's working store.
+The sidecar also bundles the reference library's records from the `library/`
+submodule (each `record.yaml`, `summary.md` and old version, not distilled source
+text), so the Library tab works in the installed app; `bin/build-engine` stops if
+the submodule is not checked out (#259). It also downloads the CWE release the
+library pins and bundles it (ADR-0014), so building needs the network unless
+`TMODEL_CWE_CATALOG` names a copy whose SHA-256 matches the pin.
 
 **Run it:**
 

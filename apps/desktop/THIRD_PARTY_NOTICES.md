@@ -33,3 +33,18 @@ SOFTWARE.
 
 Tauri includes this notice in the distributed application. On macOS it is at
 `tmodel.app/Contents/Resources/THIRD_PARTY_NOTICES.md`.
+
+# Third-party data
+
+## CWE (MITRE)
+
+- Release: CWE 4.20 (`cwec_v4.20.xml.zip`), the release the library pins (ADR-0014)
+- Project: https://cwe.mitre.org/
+- Terms of use: https://cwe.mitre.org/about/termsofuse.html
+
+The app's engine carries this release so the Weaknesses tab works without a download.
+MITRE's terms allow copies that reproduce its copyright designation and license:
+
+Copyright © 2006–2026, The MITRE Corporation.
+
+CWE™ is free to use by any organization or individual for any research, development, and/or commercial purposes, per these CWE Terms of Use. Accordingly, The MITRE Corporation hereby grants you a non-exclusive, royalty-free license to use CWE for research, development, and commercial purposes. Any copy you make for such purposes is authorized on the condition that you reproduce MITRE’s copyright designation and this license in any such copy. CWE is a trademark of The MITRE Corporation. Please contact cwe@mitre.org if you require further clarification on this issue.

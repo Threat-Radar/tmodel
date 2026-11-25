@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { buildRequirementCatalog, queryRequirements } from "./requirements-model";
-import { REQUIREMENTS_GRAPH } from "./requirements-fixture.test-support";
+import {
+  REQUIREMENTS_GRAPH,
+  requirementsGraphWithEverySatisfactionState,
+} from "./requirements-fixture.test-support";
 
 describe("requirements table model", () => {
   const catalog = buildRequirementCatalog(REQUIREMENTS_GRAPH);
@@ -58,6 +61,16 @@ describe("requirements table model", () => {
     expect(first.total).toBe(3);
     expect(first.rows.map((row) => row.name)).toEqual(["Unscoped audit", "Family requirement"]);
     expect(second.rows.map((row) => row.name)).toEqual(["Component requirement"]);
+  });
+
+  it("distinguishes every recorded satisfaction state", () => {
+    const rows = new Map(buildRequirementCatalog(requirementsGraphWithEverySatisfactionState())
+      .requirements.map((row) => [row.id, row]));
+
+    expect(rows.get("requirement:family")?.satisfaction).toBe("satisfied");
+    expect(rows.get("requirement:progress")?.satisfaction).toBe("in_progress");
+    expect(rows.get("requirement:component")?.satisfaction).toBe("not_recorded");
+    expect(rows.get("requirement:planned")?.satisfaction).toBe("unsatisfied");
   });
 
   it("does not treat a proposed applies-to Assertion as established applicability", () => {

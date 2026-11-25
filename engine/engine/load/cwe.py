@@ -49,6 +49,7 @@ import io
 import os
 import re
 import stat
+import sys
 import threading
 import zipfile
 import zlib
@@ -56,9 +57,10 @@ from collections import Counter
 from collections.abc import Collection, Iterable, Mapping
 from dataclasses import dataclass, field
 from functools import cached_property
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from types import MappingProxyType
 from typing import Any
+from urllib.parse import urlparse
 from xml.etree import ElementTree
 from xml.sax.saxutils import escape, quoteattr
 
@@ -68,6 +70,8 @@ XML_NS = "http://www.w3.org/XML/1998/namespace"
 XSI_NS = "http://www.w3.org/2001/XMLSchema-instance"
 # Names the CWE catalog file the engine reads (the library record pins its digest).
 CATALOG_ENV = "TMODEL_CWE_CATALOG"
+# Where a packaged engine finds the release that bin/build-engine bundled (ADR-0014).
+BUNDLED_CATALOGS = "catalogs"
 # The library record that pins the release: content.url and content.sha256.
 LIBRARY_RECORD = "cwe"
 # The 4.21 XML is 18.6 MB. A zip whose XML is larger than this is refused.
@@ -505,14 +509,26 @@ def load_catalog(path: str | Path, sha256: str | None = None) -> CweCatalog:
     return _from_bytes(path.name, _read(path), sha256)
 
 
-def configured_catalog() -> Path | None:
-    """The catalog file `$TMODEL_CWE_CATALOG` names, or None when it is not set.
+def configured_catalog(url: str | None = None) -> Path | None:
+    """The CWE release to read: `$TMODEL_CWE_CATALOG` if set, else a packaged engine's copy.
 
-    The engine never fetches the catalog itself: whether it is bundled, cached or
-    fetched at install is DEC-008, still open.
+    The engine never fetches a catalog itself (ADR-0014). `bin/build-engine` downloads
+    the release the library pins at `url`, checks its SHA-256 and bundles it below
+    `_MEIPASS` as `catalogs/<bundled_name(url)>`, and a packaged engine reads that copy.
+    In a source checkout there is none until the variable names a file.
     """
     configured = os.environ.get(CATALOG_ENV, "").strip()
-    return Path(os.path.expanduser(configured)) if configured else None
+    if configured:
+        return Path(os.path.expanduser(configured))
+    if url and getattr(sys, "frozen", False):
+        bundled = Path(sys._MEIPASS) / BUNDLED_CATALOGS / bundled_name(url)
+        return bundled if bundled.is_file() else None
+    return None
+
+
+def bundled_name(url: str) -> str:
+    """The file name a bundled copy of the release at `url` has: the URL's last segment."""
+    return PurePosixPath(urlparse(url).path).name
 
 
 _cache_lock = threading.Lock()

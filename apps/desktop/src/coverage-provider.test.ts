@@ -4,7 +4,10 @@ import {
   CompatibleCoverageProvider,
   parseCoverageResponse,
 } from "./coverage-provider";
-import { REQUIREMENTS_GRAPH } from "./requirements-fixture.test-support";
+import {
+  REQUIREMENTS_GRAPH,
+  requirementsGraphWithEverySatisfactionState,
+} from "./requirements-fixture.test-support";
 import type { EngineGraphEdge, EngineGraphNode } from "./model-types";
 
 describe("PR #243-compatible coverage provider", () => {
@@ -27,6 +30,27 @@ describe("PR #243-compatible coverage provider", () => {
     });
     expect(fallback.if_all_proposed_accepted.unaddressed_threats).toEqual([]);
     expect(fallback.interpretation).toContain("not verified compliance");
+  });
+
+  it("keeps the three-state API compatible across all recorded mitigation cases", () => {
+    const result = calculateCoverageFallback(
+      requirementsGraphWithEverySatisfactionState(),
+      "product:tcu",
+    );
+    const rows = new Map(result.requirements.map((row) => [row.id, row]));
+
+    expect(result.counts).toEqual({ satisfied: 1, in_progress: 1, unsatisfied: 2 });
+    expect(rows.get("requirement:family")?.status).toBe("satisfied");
+    expect(rows.get("requirement:progress")?.status).toBe("in_progress");
+    expect(rows.get("requirement:component")).toMatchObject({
+      status: "unsatisfied",
+      mitigations: [],
+    });
+    expect(rows.get("requirement:planned")).toMatchObject({
+      status: "unsatisfied",
+      mitigations: [{ id: "mitigation:planned", status: "planned" }],
+    });
+    expect(parseCoverageResponse(structuredClone(result))).toEqual(result);
   });
 
   it("accepts a valid PR #243 response and rejects malformed response shapes", () => {

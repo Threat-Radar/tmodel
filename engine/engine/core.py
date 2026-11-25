@@ -13,7 +13,7 @@ from collections.abc import Callable, Iterable, Mapping
 from pathlib import Path
 from typing import Any
 
-from engine import __version__
+from engine import __version__, tara_gate
 from engine import propose as proposals
 from engine import sdl as sdl_view
 from engine import tara as tara_view
@@ -292,7 +292,10 @@ def _row(r: LibraryRecord) -> dict[str, Any]:
 
 
 def _served_catalog() -> cwe.CweCatalog:
-    """The CWE release the library pins, read from the file `$TMODEL_CWE_CATALOG` names."""
+    """The CWE release the library pins.
+
+    The file `$TMODEL_CWE_CATALOG` names, or a packaged engine's bundled copy (ADR-0014).
+    """
     record = _served_library().get(cwe.LIBRARY_RECORD)
     pinned = record.content.sha256 if record is not None else None
     if record is None or not pinned:
@@ -301,7 +304,7 @@ def _served_catalog() -> cwe.CweCatalog:
             "(the CWE extraction is Threat-Radar/library#21); set TMODEL_LIBRARY to a "
             "library checkout that has it"
         )
-    path = cwe.configured_catalog()
+    path = cwe.configured_catalog(record.content.url)
     if path is None:
         raise Unavailable(
             f"no CWE catalog: download {record.content.url} (SHA-256 {pinned}) "
@@ -1086,3 +1089,16 @@ def requirement_coverage(query: Mapping[str, str] | None = None) -> dict[str, An
         return {"file": path.name, **collect(load_vector_document(path), values["product"])}
     except GraphError as exc:
         raise GraphError(_sanitized_model_error(path, exc)) from exc
+
+
+def evaluate_tara_gate(
+    gate: Mapping[str, Any],
+    record: Mapping[str, Any],
+    *,
+    current_digest: str,
+    evidence_link: str,
+) -> dict[str, Any]:
+    """Read-only DL-0027 pilot criterion; no Gate decision or conformance verdict."""
+    return tara_gate.evaluate(
+        gate, record, current_digest=current_digest, evidence_link=evidence_link
+    )

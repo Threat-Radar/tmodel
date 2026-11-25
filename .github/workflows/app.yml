@@ -17,11 +17,16 @@ on:
       - "docs/index.html"
       - "docs/publishing/check_links.py"
       - "docs/publishing/check_identities.py"
+      - "docs/publishing/public_data_guard.py"
       - "docs/publishing/render_app.py"
+      - "docs/publishing/render_requirements_catalog.py"
       - "docs/publishing/site.yaml"
       - "docs/publishing/test_check_links.py"
       - "docs/publishing/test_check_identities.py"
+      - "docs/publishing/test_public_data_guard.py"
       - "docs/publishing/test_render_app.py"
+      - "docs/publishing/test_render_requirements_catalog.py"
+      - "research/0017-requirements-extraction/**"
       - ".github/workflows/app.yml"
       - ".github/workflows/release.yml"
   push:
@@ -37,11 +42,16 @@ on:
       - "docs/index.html"
       - "docs/publishing/check_links.py"
       - "docs/publishing/check_identities.py"
+      - "docs/publishing/public_data_guard.py"
       - "docs/publishing/render_app.py"
+      - "docs/publishing/render_requirements_catalog.py"
       - "docs/publishing/site.yaml"
       - "docs/publishing/test_check_links.py"
       - "docs/publishing/test_check_identities.py"
+      - "docs/publishing/test_public_data_guard.py"
       - "docs/publishing/test_render_app.py"
+      - "docs/publishing/test_render_requirements_catalog.py"
+      - "research/0017-requirements-extraction/**"
       - ".github/workflows/app.yml"
       - ".github/workflows/release.yml"
 
@@ -126,7 +136,7 @@ jobs:
           python -m pip install -e "./engine[dev]"
           npm ci --prefix apps/desktop
       - name: Test publishing guards
-        run: python -m pytest -q docs/publishing/test_render_app.py docs/publishing/test_check_links.py docs/publishing/test_check_identities.py
+        run: python -m pytest -q docs/publishing/test_render_app.py docs/publishing/test_render_requirements_catalog.py docs/publishing/test_public_data_guard.py docs/publishing/test_check_links.py docs/publishing/test_check_identities.py
       - name: Check generated browser preview
         run: python docs/publishing/render_app.py --check
       - name: Check published links
@@ -144,6 +154,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          submodules: true  # bin/build-engine bundles the library's records (#259)
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
