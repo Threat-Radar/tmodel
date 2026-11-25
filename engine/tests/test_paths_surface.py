@@ -74,6 +74,22 @@ def test_api_lists_threats_without_goal(engine_url):
     assert IMDS in body["threats"]
 
 
+def test_asset_goal_api_cli_parity(engine_url, capsys):
+    model = str(Path(MVP01).with_name("mvp-02-automotive-ecu.yaml"))
+    goal = "asset:safety-can-commands"
+    status, body = api(engine_url, file=model, goal=goal)
+    assert status == 200
+    assert body == core.attack_paths(model, goal)
+    assert {p["threat"] for p in body["paths"]} == {
+        "threat-instance:remote-diag-injection",
+        "threat-instance:infotainment-pivot",
+    }
+    assert all("step_phases" in p for p in body["paths"])
+    for transport in (["--url", engine_url], ["--in-process"]):
+        assert main(["paths", model, "--goal", goal, "--json", *transport]) == 0
+        assert json.loads(capsys.readouterr().out) == body
+
+
 def test_api_missing_file_param_is_400(engine_url):
     code, body = api_error(engine_url, goal=IMDS)
     assert code == 400

@@ -132,6 +132,7 @@ def _reviews(doc: Mapping[str, Any]) -> dict[str, ReviewState]:
 class AttackGraph:
     steps: dict[str, AttackStep] = field(default_factory=dict)
     paths: dict[str, AttackPath] = field(default_factory=dict)
+    asset_threats: dict[str, tuple[str, ...]] = field(default_factory=dict)
 
     @classmethod
     def from_dict(cls, doc: Mapping[str, Any]) -> AttackGraph:
@@ -164,6 +165,10 @@ class AttackGraph:
                 raise GraphError(f"duplicate attack path id: {path.id}")
             graph.paths[path.id] = path
         graph.validate()
+        if doc.get("assets"):
+            from engine.asset_goals import asset_threats
+
+            graph.asset_threats = asset_threats(doc)
         return graph
 
     def validate(self) -> None:

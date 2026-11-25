@@ -12,6 +12,9 @@
       "review_status": "changes_requested",
       "reviewed": false
      },
+     "step_phases": {
+      "attack-step:fetch-instance-credentials": "exploitation"
+     },
      "steps": [
       "attack-step:point-entity-at-metadata",
       "attack-step:fetch-instance-credentials"
@@ -24,6 +27,9 @@
       "assertion_status": "proposed",
       "review_status": "changes_requested",
       "reviewed": false
+     },
+     "step_phases": {
+      "attack-step:fetch-instance-credentials": "exploitation"
      },
      "steps": [
       "attack-step:dns-rebind-to-metadata",
@@ -43,6 +49,10 @@
       "assertion_status": "accepted",
       "review_status": "accepted",
       "reviewed": true
+     },
+     "step_phases": {
+      "attack-step:read-internal-file": "exploitation",
+      "attack-step:upload-crafted-doc": "delivery"
      },
      "steps": [
       "attack-step:upload-crafted-doc",

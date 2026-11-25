@@ -1,0 +1,204 @@
+{
+  "assessments": [
+    {
+      "complete": false,
+      "damage_scenario": "damage-scenario:fleet-wide-compromise",
+      "derived_risk": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "feasibility": null,
+      "for_stakeholder": "party:fleet-owner",
+      "id": "risk-score:fleet-wide-system",
+      "impact": {
+        "financial": "severe",
+        "operational": "severe",
+        "privacy": "major",
+        "safety": "severe"
+      },
+      "mitigation_status": "in_progress",
+      "problems": [
+        "attack_path_scope_mismatch",
+        "route:ee5666cf8c041f2aef5c8714a1fce7405ea94f4560ea3d90e163430c5e609e27:route_rating_required",
+        "route:020ee427ad8fc9eadacdd674c86e3321db432605896bc61ac1b35acdb8314bb1:route_rating_required",
+        "attack-path:cloud-jwt-forgery:alternative_route_ratings_required"
+      ],
+      "routes": [
+        {
+          "authored_path": "attack-path:cloud-jwt-forgery",
+          "derived_risk": {
+            "financial": null,
+            "operational": null,
+            "privacy": null,
+            "safety": null
+          },
+          "feasibility": null,
+          "goal_step": "attack-step:call-fleet-api",
+          "id": "route:ee5666cf8c041f2aef5c8714a1fce7405ea94f4560ea3d90e163430c5e609e27",
+          "problems": [
+            "route_rating_required"
+          ],
+          "rating_paths": [],
+          "steps": [
+            "attack-step:forge-jwt-none-alg",
+            "attack-step:call-fleet-api"
+          ]
+        },
+        {
+          "authored_path": "attack-path:cloud-jwt-forgery",
+          "derived_risk": {
+            "financial": null,
+            "operational": null,
+            "privacy": null,
+            "safety": null
+          },
+          "feasibility": null,
+          "goal_step": "attack-step:call-fleet-api",
+          "id": "route:020ee427ad8fc9eadacdd674c86e3321db432605896bc61ac1b35acdb8314bb1",
+          "problems": [
+            "route_rating_required"
+          ],
+          "rating_paths": [],
+          "steps": [
+            "attack-step:forge-jwt-weak-key",
+            "attack-step:call-fleet-api"
+          ]
+        }
+      ],
+      "threat": "threat-instance:cloud-jwt-bypass"
+    },
+    {
+      "complete": false,
+      "damage_scenario": null,
+      "derived_risk": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "feasibility": "medium",
+      "for_stakeholder": null,
+      "id": null,
+      "impact": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "mitigation_status": null,
+      "problems": [
+        "damage_scenario_missing",
+        "impact_missing:safety",
+        "impact_missing:financial",
+        "impact_missing:operational",
+        "impact_missing:privacy",
+        "mitigation_status_missing"
+      ],
+      "routes": [
+        {
+          "authored_path": "attack-path:in-vehicle-actuation",
+          "derived_risk": {
+            "financial": null,
+            "operational": null,
+            "privacy": null,
+            "safety": null
+          },
+          "feasibility": "medium",
+          "goal_step": "attack-step:actuate-via-can",
+          "id": "route:e5aa0078bf985ee9d47c1e3c44f5a71ab399ef80c5b7574fe961e35135f87690",
+          "problems": [],
+          "rating_paths": [
+            "attack-path:in-vehicle-actuation"
+          ],
+          "steps": [
+            "attack-step:reach-gateway-service",
+            "attack-step:use-default-creds",
+            "attack-step:actuate-via-can"
+          ]
+        }
+      ],
+      "threat": "threat-instance:gateway-default-creds"
+    },
+    {
+      "complete": false,
+      "damage_scenario": null,
+      "derived_risk": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "feasibility": null,
+      "for_stakeholder": null,
+      "id": null,
+      "impact": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "mitigation_status": null,
+      "problems": [
+        "damage_scenario_missing",
+        "impact_missing:safety",
+        "impact_missing:financial",
+        "impact_missing:operational",
+        "impact_missing:privacy",
+        "mitigation_status_missing",
+        "route:f83d190faffac04df345481c2fe4f90e93ff8f763096091a6deed353a4631ac6:route_rating_required",
+        "route:2ed32acb93e7fbd75a450759b9c37ba8919203d6b2969ebccd17e75555be32a3:route_rating_required",
+        "attack-path:cross-subsystem-chain:alternative_route_ratings_required"
+      ],
+      "routes": [
+        {
+          "authored_path": "attack-path:cross-subsystem-chain",
+          "derived_risk": {
+            "financial": null,
+            "operational": null,
+            "privacy": null,
+            "safety": null
+          },
+          "feasibility": null,
+          "goal_step": "attack-step:chain-to-in-vehicle",
+          "id": "route:f83d190faffac04df345481c2fe4f90e93ff8f763096091a6deed353a4631ac6",
+          "problems": [
+            "route_rating_required"
+          ],
+          "rating_paths": [],
+          "steps": [
+            "attack-step:forge-jwt-none-alg",
+            "attack-step:call-fleet-api",
+            "attack-step:chain-to-in-vehicle"
+          ]
+        },
+        {
+          "authored_path": "attack-path:cross-subsystem-chain",
+          "derived_risk": {
+            "financial": null,
+            "operational": null,
+            "privacy": null,
+            "safety": null
+          },
+          "feasibility": null,
+          "goal_step": "attack-step:chain-to-in-vehicle",
+          "id": "route:2ed32acb93e7fbd75a450759b9c37ba8919203d6b2969ebccd17e75555be32a3",
+          "problems": [
+            "route_rating_required"
+          ],
+          "rating_paths": [],
+          "steps": [
+            "attack-step:forge-jwt-weak-key",
+            "attack-step:call-fleet-api",
+            "attack-step:chain-to-in-vehicle"
+          ]
+        }
+      ],
+      "threat": "threat-instance:cross-subsystem-chain"
+    }
+  ],
+  "count": 3,
+  "file": "mvp-03-hierarchical-system.yaml",
+  "matrix": "annex-h-table-h8"
+}

@@ -1,0 +1,55 @@
+{
+  "assessments": [
+    {
+      "complete": true,
+      "damage_scenario": "damage-scenario:unsafe-braking",
+      "derived_risk": {
+        "financial": 2,
+        "operational": 2,
+        "privacy": 1,
+        "safety": 3
+      },
+      "feasibility": "low",
+      "for_stakeholder": "party:fleet-operator",
+      "id": "risk-score:fw-tamper",
+      "impact": {
+        "financial": "moderate",
+        "operational": "major",
+        "privacy": "negligible",
+        "safety": "severe"
+      },
+      "mitigation_status": "in_progress",
+      "problems": [],
+      "routes": [
+        {
+          "authored_path": "attack-path:fw-tamper-physical",
+          "derived_risk": {
+            "financial": 2,
+            "operational": 2,
+            "privacy": 1,
+            "safety": 3
+          },
+          "feasibility": "low",
+          "goal_step": "attack-step:reflash-unit",
+          "id": "route:0a57501d181de32bb1a0da44d97c000b772e8a2d0b1652d0b20a8aecc7a2eba1",
+          "problems": [],
+          "rating_paths": [
+            "attack-path:fw-tamper-physical"
+          ],
+          "steps": [
+            "attack-step:gain-physical-access",
+            "attack-step:connect-debug-probe",
+            "attack-step:bypass-readout-protection",
+            "attack-step:inject-voltage-glitch",
+            "attack-step:extract-and-modify-firmware",
+            "attack-step:reflash-unit"
+          ]
+        }
+      ],
+      "threat": "threat-instance:fw-tamper"
+    }
+  ],
+  "count": 1,
+  "file": "tv-hardware-brake-ecu.yaml",
+  "matrix": "annex-h-table-h8"
+}

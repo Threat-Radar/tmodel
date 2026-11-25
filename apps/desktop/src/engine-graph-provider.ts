@@ -10,6 +10,7 @@ import type {
   GraphResponse,
 } from "./graph-types";
 import type { AttackPathResults, EngineGraphEdge, EngineGraphResponse } from "./model-types";
+import { parseRiskCalculation, type RiskCalculation } from "./risk-calculation";
 
 export type { EngineGraphResponse } from "./model-types";
 
@@ -131,6 +132,11 @@ export class EngineGraphDataProvider implements GraphDataProvider {
   /** The whole model as the engine returned it, with nothing hidden (the model report reads this). */
   getModelGraph(): Promise<EngineGraphResponse> {
     return this.fullGraph();
+  }
+
+  async getRiskCalculation(matrix: string): Promise<RiskCalculation> {
+    const result = await this.request<unknown>("/risk", { file: this.modelFile, matrix });
+    return parseRiskCalculation(result, this.modelFile, matrix);
   }
 
   private async visibleGraph(): Promise<EngineGraphResponse> {

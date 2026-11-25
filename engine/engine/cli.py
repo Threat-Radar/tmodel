@@ -129,6 +129,10 @@ def _print_paths(payload: dict[str, Any]) -> None:
         print(f"{payload['file']}: {payload['steps']} steps; threats:")
         for threat in payload["threats"]:
             print(f"  {threat}" + ("" if threat in reviewed else "  [not reviewed]"))
+        if payload.get("assets"):
+            print("assets:")
+            for asset in payload["assets"]:
+                print(f"  {asset}")
         return
     paths = payload["paths"]
     print(f"{payload['goal']}: {len(paths)} path{'s' if len(paths) != 1 else ''}")
@@ -676,7 +680,7 @@ def build_parser() -> argparse.ArgumentParser:
     paths.add_argument(
         "file", help="model file, e.g. spec/vectors/mvp-01-software-doc-service.yaml"
     )
-    paths.add_argument("--goal", default=None, help="step or threat id; omit to list threats")
+    paths.add_argument("--goal", default=None, help="asset, step or threat id; omit to list goals")
     _add_transport(paths)
     paths.set_defaults(func=_paths)
 

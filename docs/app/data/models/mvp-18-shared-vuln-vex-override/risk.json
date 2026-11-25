@@ -1,0 +1,126 @@
+{
+  "assessments": [
+    {
+      "complete": true,
+      "damage_scenario": "damage-scenario:tls-session-compromise",
+      "derived_risk": {
+        "financial": 3,
+        "operational": 2,
+        "privacy": 4,
+        "safety": 1
+      },
+      "feasibility": "medium",
+      "for_stakeholder": "party:operator",
+      "id": "risk-score:weak-rng",
+      "impact": {
+        "financial": "major",
+        "operational": "moderate",
+        "privacy": "severe",
+        "safety": "negligible"
+      },
+      "mitigation_status": "in_progress",
+      "problems": [],
+      "routes": [
+        {
+          "authored_path": "attack-path:weak-rng-key-recovery",
+          "derived_risk": {
+            "financial": 3,
+            "operational": 2,
+            "privacy": 4,
+            "safety": 1
+          },
+          "feasibility": "medium",
+          "goal_step": "attack-step:derive-session-key",
+          "id": "route:ecd374e45c9aabcfe6d4b603f0720deb212e062bf4d3928aa4271799464d5be0",
+          "problems": [],
+          "rating_paths": [
+            "attack-path:weak-rng-key-recovery"
+          ],
+          "steps": [
+            "attack-step:observe-rng-outputs",
+            "attack-step:capture-tls-handshake",
+            "attack-step:derive-session-key"
+          ]
+        }
+      ],
+      "threat": "threat-instance:weak-rng-key-recovery"
+    },
+    {
+      "complete": false,
+      "damage_scenario": null,
+      "derived_risk": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "feasibility": null,
+      "for_stakeholder": null,
+      "id": null,
+      "impact": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "mitigation_status": null,
+      "problems": [
+        "damage_scenario_missing",
+        "impact_missing:safety",
+        "impact_missing:financial",
+        "impact_missing:operational",
+        "impact_missing:privacy",
+        "mitigation_status_missing",
+        "route:24f78fccee360b0fa237f424797dd35041ce9231cf35f98479ca7152f2a68beb:route_rating_required",
+        "route:8b2bff4ea04435a02910454f1f18f94ea02bede54dc6746baf4b32fc41c0f869:route_rating_required",
+        "attack-path:side-channel-seed:alternative_route_ratings_required"
+      ],
+      "routes": [
+        {
+          "authored_path": "attack-path:side-channel-seed",
+          "derived_risk": {
+            "financial": null,
+            "operational": null,
+            "privacy": null,
+            "safety": null
+          },
+          "feasibility": null,
+          "goal_step": "attack-step:recover-seed",
+          "id": "route:24f78fccee360b0fa237f424797dd35041ce9231cf35f98479ca7152f2a68beb",
+          "problems": [
+            "route_rating_required"
+          ],
+          "rating_paths": [],
+          "steps": [
+            "attack-step:power-side-channel",
+            "attack-step:recover-seed"
+          ]
+        },
+        {
+          "authored_path": "attack-path:side-channel-seed",
+          "derived_risk": {
+            "financial": null,
+            "operational": null,
+            "privacy": null,
+            "safety": null
+          },
+          "feasibility": null,
+          "goal_step": "attack-step:recover-seed",
+          "id": "route:8b2bff4ea04435a02910454f1f18f94ea02bede54dc6746baf4b32fc41c0f869",
+          "problems": [
+            "route_rating_required"
+          ],
+          "rating_paths": [],
+          "steps": [
+            "attack-step:emi-side-channel",
+            "attack-step:recover-seed"
+          ]
+        }
+      ],
+      "threat": "threat-instance:side-channel-seed-leak"
+    }
+  ],
+  "count": 2,
+  "file": "mvp-18-shared-vuln-vex-override.yaml",
+  "matrix": "annex-h-table-h8"
+}

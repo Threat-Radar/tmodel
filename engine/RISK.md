@@ -3,8 +3,27 @@
 The engine can calculate the risk vector from existing model records through
 `core.risk_assessments`, `GET /risk`, and `tmodel risk`. This is the first slice
 of #63 Part 2. It does not change the canonical schema or rate an attack for a
-human. The desktop report continues to display authored risk data; it is not
-wired to this new endpoint yet.
+human. In the desktop Model report, choose the informative matrix profile in
+the Risk section and click **Calculate risk**. The app calls this endpoint and
+shows each category and route, with recorded inputs and unresolved problems.
+The authored assessments remain separately labeled. Calculate again to refresh
+the engine answer; the browser preview reads the same calculation from its
+published model snapshot and never contacts a local engine.
+
+The matrix selector starts empty. An error clears the previous calculated
+result, and an answer for an earlier model cannot replace the current model's
+view. Calculating does not write a rating, edit an Assertion or record a Review.
+
+## Asset goals and phase output
+
+`tmodel paths FILE --goal asset:ID` and `GET /attack-paths?file=FILE&goal=asset:ID`
+enumerate routes for threats with explicit `targets_element` links to the
+Asset or `realizes_damage` to a DamageScenario whose `damages_asset` names it.
+Authored slots and Assertions with justified, non-contradicted person acceptance
+count. Proposed/rejected links and an asset's component location do not count.
+Known but unlinked assets return no paths; unknown assets return an error.
+Each asset result names its threat. The response retains `step_phases` keyed by
+step id, separately from attack technique identifiers, for every goal type.
 
 ## Try the calculation
 

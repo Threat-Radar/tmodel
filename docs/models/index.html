@@ -91,6 +91,13 @@ body { margin: 0; background: var(--paper); color: var(--ink); font-family: ui-s
 
 .report-table-scroll { max-width: 100%; margin-bottom: 14px; overflow-x: auto; }
 .report-table-scroll:last-child { margin-bottom: 0; }
+.risk-calculator { margin-bottom: 18px; }
+.risk-calculator > label { display: block; margin-bottom: 6px; font-weight: 650; }
+.risk-calculator > select { max-width: 100%; min-height: 34px; margin: 0 8px 8px 0; padding: 7px; border: 1px solid var(--rp-border); border-radius: 6px; font: inherit; }
+.risk-calculator > button { min-height: 34px; padding: 7px 12px; border: 1px solid var(--rp-accent); border-radius: 6px; background: var(--rp-accent); color: white; font: inherit; cursor: pointer; }
+.risk-calculator > button:disabled { opacity: 0.6; cursor: wait; }
+.calculated-risk { margin: 14px 0; }
+.calculated-risk > details { margin: 8px 0; }
 .report-table { width: 100%; border-collapse: collapse; }
 .report-table caption { padding: 0 0 7px; color: var(--rp-muted); font-size: 0.76rem; font-weight: 700; text-align: left; }
 .report-table th, .report-table td { padding: 9px 10px; border-top: 1px solid var(--rp-border); text-align: left; vertical-align: top; }

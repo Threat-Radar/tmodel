@@ -12,6 +12,9 @@
       "review_status": null,
       "reviewed": false
      },
+     "step_phases": {
+      "attack-step:call-fleet-api": "exploitation"
+     },
      "steps": [
       "attack-step:forge-jwt-none-alg",
       "attack-step:call-fleet-api"
@@ -24,6 +27,9 @@
       "assertion_status": null,
       "review_status": null,
       "reviewed": false
+     },
+     "step_phases": {
+      "attack-step:call-fleet-api": "exploitation"
      },
      "steps": [
       "attack-step:forge-jwt-weak-key",
@@ -44,6 +50,10 @@
       "review_status": "changes_requested",
       "reviewed": false
      },
+     "step_phases": {
+      "attack-step:call-fleet-api": "exploitation",
+      "attack-step:chain-to-in-vehicle": "lateral_movement"
+     },
      "steps": [
       "attack-step:forge-jwt-none-alg",
       "attack-step:call-fleet-api",
@@ -57,6 +67,10 @@
       "assertion_status": "proposed",
       "review_status": "changes_requested",
       "reviewed": false
+     },
+     "step_phases": {
+      "attack-step:call-fleet-api": "exploitation",
+      "attack-step:chain-to-in-vehicle": "lateral_movement"
      },
      "steps": [
       "attack-step:forge-jwt-weak-key",
@@ -77,6 +91,10 @@
       "assertion_status": null,
       "review_status": null,
       "reviewed": false
+     },
+     "step_phases": {
+      "attack-step:actuate-via-can": "exploitation",
+      "attack-step:reach-gateway-service": "delivery"
      },
      "steps": [
       "attack-step:reach-gateway-service",

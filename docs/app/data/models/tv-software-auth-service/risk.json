@@ -1,0 +1,131 @@
+{
+  "assessments": [
+    {
+      "complete": false,
+      "damage_scenario": "damage-scenario:token-forgery",
+      "derived_risk": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "feasibility": "medium",
+      "for_stakeholder": "party:downstream-saas",
+      "id": "risk-score:rce-via-deser",
+      "impact": {
+        "financial": "major",
+        "operational": "major",
+        "privacy": "severe",
+        "safety": "negligible"
+      },
+      "mitigation_status": "in_progress",
+      "problems": [
+        "attack_path_scope_mismatch"
+      ],
+      "routes": [
+        {
+          "authored_path": "attack-path:deser-rce",
+          "derived_risk": {
+            "financial": 3,
+            "operational": 3,
+            "privacy": 4,
+            "safety": 1
+          },
+          "feasibility": "medium",
+          "goal_step": "attack-step:trigger-gadget-chain",
+          "id": "route:2e4f5a46a71fb366fd76d1c2326918fbf93a9d063ee9ecb2228b0cedadbc880b",
+          "problems": [],
+          "rating_paths": [
+            "attack-path:deser-rce"
+          ],
+          "steps": [
+            "attack-step:enumerate-refresh-endpoint",
+            "attack-step:craft-serialized-payload",
+            "attack-step:deliver-via-refresh",
+            "attack-step:trigger-gadget-chain"
+          ]
+        }
+      ],
+      "threat": "threat-instance:rce-via-deser"
+    },
+    {
+      "complete": false,
+      "damage_scenario": null,
+      "derived_risk": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "feasibility": null,
+      "for_stakeholder": null,
+      "id": null,
+      "impact": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "mitigation_status": null,
+      "problems": [
+        "damage_scenario_missing",
+        "impact_missing:safety",
+        "impact_missing:financial",
+        "impact_missing:operational",
+        "impact_missing:privacy",
+        "mitigation_status_missing",
+        "route:c78edbf347f97055909888da48ca32ce4ea97cd2807f1c2fc73da5cc16aa3e68:route_rating_required",
+        "route:dfd3317586826af35824300796ef664576f9ec9d9bc561ae30d904918063b0fc:route_rating_required",
+        "attack-path:supply-chain-swap:alternative_route_ratings_required"
+      ],
+      "routes": [
+        {
+          "authored_path": "attack-path:supply-chain-swap",
+          "derived_risk": {
+            "financial": null,
+            "operational": null,
+            "privacy": null,
+            "safety": null
+          },
+          "feasibility": null,
+          "goal_step": "attack-step:downstream-pulls-update",
+          "id": "route:c78edbf347f97055909888da48ca32ce4ea97cd2807f1c2fc73da5cc16aa3e68",
+          "problems": [
+            "route_rating_required"
+          ],
+          "rating_paths": [],
+          "steps": [
+            "attack-step:compromise-maintainer-account",
+            "attack-step:publish-malicious-release",
+            "attack-step:downstream-pulls-update"
+          ]
+        },
+        {
+          "authored_path": "attack-path:supply-chain-swap",
+          "derived_risk": {
+            "financial": null,
+            "operational": null,
+            "privacy": null,
+            "safety": null
+          },
+          "feasibility": null,
+          "goal_step": "attack-step:downstream-pulls-update",
+          "id": "route:dfd3317586826af35824300796ef664576f9ec9d9bc561ae30d904918063b0fc",
+          "problems": [
+            "route_rating_required"
+          ],
+          "rating_paths": [],
+          "steps": [
+            "attack-step:typosquat-dependency",
+            "attack-step:publish-malicious-release",
+            "attack-step:downstream-pulls-update"
+          ]
+        }
+      ],
+      "threat": "threat-instance:supply-chain-rce"
+    }
+  ],
+  "count": 2,
+  "file": "tv-software-auth-service.yaml",
+  "matrix": "annex-h-table-h8"
+}

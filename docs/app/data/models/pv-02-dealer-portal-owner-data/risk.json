@@ -1,0 +1,122 @@
+{
+  "assessments": [
+    {
+      "complete": false,
+      "damage_scenario": null,
+      "derived_risk": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "feasibility": null,
+      "for_stakeholder": null,
+      "id": null,
+      "impact": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "mitigation_status": null,
+      "problems": [
+        "damage_scenario_missing",
+        "impact_missing:safety",
+        "impact_missing:financial",
+        "impact_missing:operational",
+        "impact_missing:privacy",
+        "mitigation_status_missing",
+        "route:119288f5979af0359d452c597aa4aa49567ccda8c5eaa89e9243285a29d05b58:feasibility_missing",
+        "attack-path:owner-data:feasibility_missing"
+      ],
+      "routes": [
+        {
+          "authored_path": "attack-path:owner-data",
+          "derived_risk": {
+            "financial": null,
+            "operational": null,
+            "privacy": null,
+            "safety": null
+          },
+          "feasibility": null,
+          "goal_step": "attack-step:owner-lookup",
+          "id": "route:119288f5979af0359d452c597aa4aa49567ccda8c5eaa89e9243285a29d05b58",
+          "problems": [
+            "feasibility_missing"
+          ],
+          "rating_paths": [
+            "attack-path:owner-data"
+          ],
+          "steps": [
+            "attack-step:plate-to-vin",
+            "attack-step:dealer-token",
+            "attack-step:owner-lookup"
+          ]
+        }
+      ],
+      "threat": "threat-instance:owner-data-harvest"
+    },
+    {
+      "complete": false,
+      "damage_scenario": null,
+      "derived_risk": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "feasibility": null,
+      "for_stakeholder": null,
+      "id": null,
+      "impact": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "mitigation_status": null,
+      "problems": [
+        "damage_scenario_missing",
+        "impact_missing:safety",
+        "impact_missing:financial",
+        "impact_missing:operational",
+        "impact_missing:privacy",
+        "mitigation_status_missing",
+        "route:3ad75daf504f16f30dbe59182f5a7e2eecf9c8976184e7a8048e8da95d913074:feasibility_missing",
+        "attack-path:takeover:feasibility_missing"
+      ],
+      "routes": [
+        {
+          "authored_path": "attack-path:takeover",
+          "derived_risk": {
+            "financial": null,
+            "operational": null,
+            "privacy": null,
+            "safety": null
+          },
+          "feasibility": null,
+          "goal_step": "attack-step:command-vehicle",
+          "id": "route:3ad75daf504f16f30dbe59182f5a7e2eecf9c8976184e7a8048e8da95d913074",
+          "problems": [
+            "feasibility_missing"
+          ],
+          "rating_paths": [
+            "attack-path:takeover"
+          ],
+          "steps": [
+            "attack-step:plate-to-vin",
+            "attack-step:dealer-token",
+            "attack-step:owner-lookup",
+            "attack-step:demote-owner",
+            "attack-step:add-attacker",
+            "attack-step:command-vehicle"
+          ]
+        }
+      ],
+      "threat": "threat-instance:silent-account-takeover"
+    }
+  ],
+  "count": 2,
+  "file": "pv-02-dealer-portal-owner-data.yaml",
+  "matrix": "annex-h-table-h8"
+}

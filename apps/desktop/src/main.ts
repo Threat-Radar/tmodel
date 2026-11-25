@@ -192,6 +192,9 @@ window.addEventListener("DOMContentLoaded", () => {
       if (session.current) void session.open(session.current);
       else void catalogStartup.retryNow();
     },
+    calculateRisk: (file, matrix) => new EngineGraphDataProvider(
+      file, staticApi?.engineBase, staticApi?.fetch,
+    ).getRiskCalculation(matrix),
   });
   const picker = new ModelPicker(required("model-select"), required("model-picker-status"), (model) => {
     void session.open(model);

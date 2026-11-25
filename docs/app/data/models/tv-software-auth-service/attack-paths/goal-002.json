@@ -10,6 +10,9 @@
         "review_status": "changes_requested",
         "reviewed": false
       },
+      "step_phases": {
+        "attack-step:downstream-pulls-update": "delivery"
+      },
       "steps": [
         "attack-step:compromise-maintainer-account",
         "attack-step:publish-malicious-release",
@@ -23,6 +26,9 @@
         "assertion_status": "proposed",
         "review_status": "changes_requested",
         "reviewed": false
+      },
+      "step_phases": {
+        "attack-step:downstream-pulls-update": "delivery"
       },
       "steps": [
         "attack-step:typosquat-dependency",

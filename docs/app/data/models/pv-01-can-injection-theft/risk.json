@@ -1,0 +1,65 @@
+{
+  "assessments": [
+    {
+      "complete": false,
+      "damage_scenario": null,
+      "derived_risk": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "feasibility": null,
+      "for_stakeholder": null,
+      "id": null,
+      "impact": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "mitigation_status": null,
+      "problems": [
+        "damage_scenario_missing",
+        "impact_missing:safety",
+        "impact_missing:financial",
+        "impact_missing:operational",
+        "impact_missing:privacy",
+        "mitigation_status_missing",
+        "route:24319cf79e321228ba0a00ef616d54180a6b274e0fcdc22400ead4bd8eaee25a:feasibility_missing",
+        "attack-path:headlight-can-injection:feasibility_missing"
+      ],
+      "routes": [
+        {
+          "authored_path": "attack-path:headlight-can-injection",
+          "derived_risk": {
+            "financial": null,
+            "operational": null,
+            "privacy": null,
+            "safety": null
+          },
+          "feasibility": null,
+          "goal_step": "attack-step:drive-away",
+          "id": "route:24319cf79e321228ba0a00ef616d54180a6b274e0fcdc22400ead4bd8eaee25a",
+          "problems": [
+            "feasibility_missing"
+          ],
+          "rating_paths": [
+            "attack-path:headlight-can-injection"
+          ],
+          "steps": [
+            "attack-step:reach-control-can",
+            "attack-step:inject-key-validated",
+            "attack-step:immobilizer-off",
+            "attack-step:doors-unlocked",
+            "attack-step:drive-away"
+          ]
+        }
+      ],
+      "threat": "threat-instance:spoofed-key-validated"
+    }
+  ],
+  "count": 1,
+  "file": "pv-01-can-injection-theft.yaml",
+  "matrix": "annex-h-table-h8"
+}

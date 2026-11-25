@@ -21,6 +21,11 @@ def test_static_data_covers_every_model_and_the_complete_library(
         goals = json.loads((model_dir / "attack-paths/goals.json").read_text())["goals"]
         assert graph["file"] == model["file"]
         assert paths["file"] == model["file"]
+        risk = json.loads((model_dir / "risk.json").read_text())
+        assert risk["file"] == model["file"]
+        assert risk["matrix"] == "annex-h-table-h8"
+        assert risk["count"] == len(risk["assessments"])
+        assert all("paths" not in item and "recorded" not in item for item in risk["assessments"])
         assert len(goals) == len(paths["threats"])
         assert all(
             (model_dir / "attack-paths" / goal["file"]).is_file() for goal in goals

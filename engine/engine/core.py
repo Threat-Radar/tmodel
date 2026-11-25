@@ -778,7 +778,7 @@ def _attack_pattern_row(p: capec.CapecEntry) -> dict[str, Any]:
 
 
 def attack_paths(file: str, goal: str | None = None) -> dict[str, Any]:
-    """Attack paths to `goal` (a step or threat id) in a model file (#63).
+    """Attack paths to `goal` (an asset, step or threat id) in a model file (#63).
 
     Without a goal, lists the file's threats, each with whether it is reviewed,
     so a caller can pick one. Raises GraphError (a ValueError) for a bad file or
@@ -792,6 +792,7 @@ def attack_paths(file: str, goal: str | None = None) -> dict[str, Any]:
         return {
             "file": str(path),
             "threats": graph.threats(),
+            "assets": sorted(graph.asset_threats),
             "reviewed_threats": [t for t in graph.threats() if graph.threat_reviewed(t)],
             "steps": len(graph.steps),
         }

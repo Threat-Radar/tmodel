@@ -75,6 +75,18 @@ def write_data(out: Path) -> tuple[int, int]:
         local_file = graph["file"]
         _write_json(model_dir / "graph.json", _public_file(graph, file))
 
+        # Only the calculation's display fields are public. The full API retains
+        # recorded provenance; the graph already supplies the public review view.
+        risk = core.risk_assessments(file, "annex-h-table-h8")
+        risk = {
+            **risk,
+            "assessments": [
+                {key: value for key, value in item.items() if key not in {"paths", "recorded"}}
+                for item in risk["assessments"]
+            ],
+        }
+        _write_json(model_dir / "risk.json", _public_file(risk, file))
+
         index = core.attack_paths(local_file)
         _write_json(
             model_dir / "attack-paths" / "index.json", _public_file(index, file)

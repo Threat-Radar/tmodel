@@ -10,6 +10,9 @@
         "review_status": "rejected",
         "reviewed": false
       },
+      "step_phases": {
+        "attack-step:pivot-to-can": "lateral_movement"
+      },
       "steps": [
         "attack-step:compromise-companion-app",
         "attack-step:gain-infotainment-foothold",
@@ -23,6 +26,9 @@
         "assertion_status": "proposed",
         "review_status": "rejected",
         "reviewed": false
+      },
+      "step_phases": {
+        "attack-step:pivot-to-can": "lateral_movement"
       },
       "steps": [
         "attack-step:malicious-ota",

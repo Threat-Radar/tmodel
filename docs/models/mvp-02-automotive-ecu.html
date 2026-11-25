@@ -91,6 +91,13 @@ body { margin: 0; background: var(--paper); color: var(--ink); font-family: ui-s
 
 .report-table-scroll { max-width: 100%; margin-bottom: 14px; overflow-x: auto; }
 .report-table-scroll:last-child { margin-bottom: 0; }
+.risk-calculator { margin-bottom: 18px; }
+.risk-calculator > label { display: block; margin-bottom: 6px; font-weight: 650; }
+.risk-calculator > select { max-width: 100%; min-height: 34px; margin: 0 8px 8px 0; padding: 7px; border: 1px solid var(--rp-border); border-radius: 6px; font: inherit; }
+.risk-calculator > button { min-height: 34px; padding: 7px 12px; border: 1px solid var(--rp-accent); border-radius: 6px; background: var(--rp-accent); color: white; font: inherit; cursor: pointer; }
+.risk-calculator > button:disabled { opacity: 0.6; cursor: wait; }
+.calculated-risk { margin: 14px 0; }
+.calculated-risk > details { margin: 8px 0; }
 .report-table { width: 100%; border-collapse: collapse; }
 .report-table caption { padding: 0 0 7px; color: var(--rp-muted); font-size: 0.76rem; font-weight: 700; text-align: left; }
 .report-table th, .report-table td { padding: 9px 10px; border-top: 1px solid var(--rp-border); text-align: left; vertical-align: top; }
@@ -483,9 +490,9 @@ body { margin: 0; background: var(--paper); color: var(--ink); font-family: ui-s
 </div>
 </section><section class="report-section" id="report-risk" aria-labelledby="report-risk-title">
 <h3 id="report-risk-title"><span class="section-number">7</span> Risk</h3>
-<div class="report-table-scroll" role="region" aria-label="Risk: how likely and how bad, per threat" tabindex="0">
+<div class="report-table-scroll" role="region" aria-label="Recorded risk assessments" tabindex="0">
 <table class="report-table">
-<caption>Risk: how likely and how bad, per threat</caption>
+<caption>Recorded risk assessments</caption>
 <thead><tr><th scope="col">Threat</th><th scope="col">Damage</th><th scope="col">Feasibility</th><th scope="col">Impact</th><th scope="col">Risk</th><th scope="col">Mitigation status</th></tr></thead>
 <tbody><tr>
 <th scope="row">Remote unauthenticated diagnostic command injection onto CAN<div class="cell-note">Risk: remote diagnostic injection</div></th>
@@ -518,7 +525,7 @@ body { margin: 0; background: var(--paper); color: var(--ink); font-family: ui-s
 <td>Handle every identified vulnerability either by assessing and treating its risk (per clause 15.9) so no unreasonable risk remains, or by eliminating it.<div class="cell-note">Paraphrase, RQ-08-07 (§8.6.2)</div></td>
 <td>Process<div class="cell-note">Mandatory</div></td>
 <td><span class="missing">None recorded</span></td>
-<td><span class="missing">None recorded</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>requirement:iso21434-rq-08-07</dd></div><div><dt>Object type</dt><dd>Requirement</dd></div><div><dt>Applies to</dt><dd>product:telematics-control-unit</dd></div><div><dt>Source ref</dt><dd>library:iso-sae-21434-2021#RQ-08-07</dd></div></dl></details></td>
+<td><span class="missing">None recorded</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>requirement:iso21434-rq-08-07</dd></div><div><dt>Object type</dt><dd>Requirement</dd></div><div><dt>Source ref</dt><dd>library:iso-sae-21434-2021#RQ-08-07</dd></div></dl></details></td>
 </tr><tr>
 <th scope="row">ISO/SAE 21434 RQ-05-17: independent cybersecurity audit</th>
 <td>Have the organization&#39;s cybersecurity processes audited independently against the standard&#39;s objectives.<div class="cell-note">Paraphrase, RQ-05-17 (§5.4.7)</div></td>
@@ -536,7 +543,7 @@ body { margin: 0; background: var(--paper); color: var(--ink); font-family: ui-s
 <td>The TCU diagnostic-service library shall reject any diagnostic command arriving over the cellular modem unless the session is authenticated.<div class="cell-note">Authored</div></td>
 <td>Technical<div class="cell-note">Mandatory</div></td>
 <td><span class="ref">Remote unauthenticated diagnostic command injection onto CAN</span></td>
-<td><span class="ref">Require strong authentication on the diagnostic service</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>requirement:tcu-diag-authentication</dd></div><div><dt>Object type</dt><dd>Requirement</dd></div><div><dt>Applies to</dt><dd>product:telematics-control-unit, component:diag-service-lib</dd></div><div><dt>Refines</dt><dd>requirement:family-authenticated-diagnostics</dd></div></dl></details></td>
+<td><span class="ref">Require strong authentication on the diagnostic service</span><details class="row-details"><summary>Details</summary><dl><div><dt>Model id</dt><dd>requirement:tcu-diag-authentication</dd></div><div><dt>Object type</dt><dd>Requirement</dd></div></dl></details></td>
 </tr><tr>
 <th scope="row">Domain gateway: forward only allow-listed frames to the safety CAN<div class="cell-note">Derived from <span class="ref">ISO/SAE 21434 RQ-09-09: define the item&#39;s cybersecurity requirements</span></div></th>
 <td>The domain gateway shall forward to the safety CAN domain only the frames on its allow-list for the sending domain, and shall drop every other frame that arrives from the telematics or infotainment domain.<div class="cell-note">Authored</div></td>

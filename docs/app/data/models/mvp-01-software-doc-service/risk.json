@@ -1,0 +1,129 @@
+{
+  "assessments": [
+    {
+      "complete": false,
+      "damage_scenario": "damage-scenario:tenant-data-exfil",
+      "derived_risk": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "feasibility": "medium",
+      "for_stakeholder": "party:saas-operator",
+      "id": "risk-score:xxe-file-read",
+      "impact": {
+        "financial": "major",
+        "operational": "moderate",
+        "privacy": "severe",
+        "safety": "negligible"
+      },
+      "mitigation_status": "in_progress",
+      "problems": [
+        "attack_path_scope_mismatch"
+      ],
+      "routes": [
+        {
+          "authored_path": "attack-path:xxe-file-read",
+          "derived_risk": {
+            "financial": 3,
+            "operational": 2,
+            "privacy": 4,
+            "safety": 1
+          },
+          "feasibility": "medium",
+          "goal_step": "attack-step:read-internal-file",
+          "id": "route:275d7c644357e84c5c28c8259d967120ce80e4b52e618e82568ccb6928a276f6",
+          "problems": [],
+          "rating_paths": [
+            "attack-path:xxe-file-read"
+          ],
+          "steps": [
+            "attack-step:upload-crafted-doc",
+            "attack-step:parser-resolves-entity",
+            "attack-step:coerce-file-uri",
+            "attack-step:read-internal-file"
+          ]
+        }
+      ],
+      "threat": "threat-instance:xxe-file-read"
+    },
+    {
+      "complete": false,
+      "damage_scenario": null,
+      "derived_risk": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "feasibility": null,
+      "for_stakeholder": null,
+      "id": null,
+      "impact": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "mitigation_status": null,
+      "problems": [
+        "damage_scenario_missing",
+        "impact_missing:safety",
+        "impact_missing:financial",
+        "impact_missing:operational",
+        "impact_missing:privacy",
+        "mitigation_status_missing",
+        "route:9aac1cbc18238ec8d9176be4854d49f9819438b714387a75f0bf5d72145a8dad:route_rating_required",
+        "route:513511c6da4cc2a9a362a914bc6a8be3667c3153b5e85a333174765a331250e2:route_rating_required",
+        "attack-path:imds-pivot:alternative_route_ratings_required"
+      ],
+      "routes": [
+        {
+          "authored_path": "attack-path:imds-pivot",
+          "derived_risk": {
+            "financial": null,
+            "operational": null,
+            "privacy": null,
+            "safety": null
+          },
+          "feasibility": null,
+          "goal_step": "attack-step:fetch-instance-credentials",
+          "id": "route:9aac1cbc18238ec8d9176be4854d49f9819438b714387a75f0bf5d72145a8dad",
+          "problems": [
+            "route_rating_required"
+          ],
+          "rating_paths": [],
+          "steps": [
+            "attack-step:point-entity-at-metadata",
+            "attack-step:fetch-instance-credentials"
+          ]
+        },
+        {
+          "authored_path": "attack-path:imds-pivot",
+          "derived_risk": {
+            "financial": null,
+            "operational": null,
+            "privacy": null,
+            "safety": null
+          },
+          "feasibility": null,
+          "goal_step": "attack-step:fetch-instance-credentials",
+          "id": "route:513511c6da4cc2a9a362a914bc6a8be3667c3153b5e85a333174765a331250e2",
+          "problems": [
+            "route_rating_required"
+          ],
+          "rating_paths": [],
+          "steps": [
+            "attack-step:dns-rebind-to-metadata",
+            "attack-step:fetch-instance-credentials"
+          ]
+        }
+      ],
+      "threat": "threat-instance:imds-pivot"
+    }
+  ],
+  "count": 2,
+  "file": "mvp-01-software-doc-service.yaml",
+  "matrix": "annex-h-table-h8"
+}

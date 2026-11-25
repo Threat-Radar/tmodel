@@ -1,0 +1,63 @@
+{
+  "assessments": [
+    {
+      "complete": false,
+      "damage_scenario": null,
+      "derived_risk": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "feasibility": null,
+      "for_stakeholder": null,
+      "id": null,
+      "impact": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "mitigation_status": null,
+      "problems": [
+        "damage_scenario_missing",
+        "impact_missing:safety",
+        "impact_missing:financial",
+        "impact_missing:operational",
+        "impact_missing:privacy",
+        "mitigation_status_missing",
+        "route:2c907dd0b24cff427706750c28083dc79d94a425578522f7c9aab6872e42cbcb:feasibility_missing",
+        "attack-path:lan-to-root:feasibility_missing"
+      ],
+      "routes": [
+        {
+          "authored_path": "attack-path:lan-to-root",
+          "derived_risk": {
+            "financial": null,
+            "operational": null,
+            "privacy": null,
+            "safety": null
+          },
+          "feasibility": null,
+          "goal_step": "attack-step:run-as-root",
+          "id": "route:2c907dd0b24cff427706750c28083dc79d94a425578522f7c9aab6872e42cbcb",
+          "problems": [
+            "feasibility_missing"
+          ],
+          "rating_paths": [
+            "attack-path:lan-to-root"
+          ],
+          "steps": [
+            "attack-step:reach-admin-interface",
+            "attack-step:inject-command",
+            "attack-step:run-as-root"
+          ]
+        }
+      ],
+      "threat": "threat-instance:lan-command-injection"
+    }
+  ],
+  "count": 1,
+  "file": "pv-04-tp-link-archer-ax21.yaml",
+  "matrix": "annex-h-table-h8"
+}

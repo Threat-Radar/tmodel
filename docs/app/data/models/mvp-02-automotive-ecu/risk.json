@@ -1,0 +1,128 @@
+{
+  "assessments": [
+    {
+      "complete": true,
+      "damage_scenario": "damage-scenario:unauthorized-can-actuation",
+      "derived_risk": {
+        "financial": 4,
+        "operational": 5,
+        "privacy": 1,
+        "safety": 5
+      },
+      "feasibility": "high",
+      "for_stakeholder": "party:fleet-operator",
+      "id": "risk-score:remote-diag-injection",
+      "impact": {
+        "financial": "major",
+        "operational": "severe",
+        "privacy": "negligible",
+        "safety": "severe"
+      },
+      "mitigation_status": "in_progress",
+      "problems": [],
+      "routes": [
+        {
+          "authored_path": "attack-path:remote-diag-injection",
+          "derived_risk": {
+            "financial": 4,
+            "operational": 5,
+            "privacy": 1,
+            "safety": 5
+          },
+          "feasibility": "high",
+          "goal_step": "attack-step:inject-can-frame",
+          "id": "route:88372c56727e6ee2a1590e165fda4fdfc3aac6ab9031beeadca7ac658f1cdbae",
+          "problems": [],
+          "rating_paths": [
+            "attack-path:remote-diag-injection"
+          ],
+          "steps": [
+            "attack-step:reach-modem-over-cellular",
+            "attack-step:bypass-diag-auth",
+            "attack-step:inject-can-frame"
+          ]
+        }
+      ],
+      "threat": "threat-instance:remote-diag-injection"
+    },
+    {
+      "complete": false,
+      "damage_scenario": null,
+      "derived_risk": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "feasibility": null,
+      "for_stakeholder": null,
+      "id": null,
+      "impact": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "mitigation_status": null,
+      "problems": [
+        "damage_scenario_missing",
+        "impact_missing:safety",
+        "impact_missing:financial",
+        "impact_missing:operational",
+        "impact_missing:privacy",
+        "mitigation_status_missing",
+        "route:4b07101faeb38842b815bd4fb979a9833208b7f0304f06d2b875fbd7e8cff29e:route_rating_required",
+        "route:aa05eaa3f0de926e2f622dc33fa861b4ad5b75d834a080ceafe8f1102f0a5d28:route_rating_required",
+        "attack-path:infotainment-pivot:alternative_route_ratings_required"
+      ],
+      "routes": [
+        {
+          "authored_path": "attack-path:infotainment-pivot",
+          "derived_risk": {
+            "financial": null,
+            "operational": null,
+            "privacy": null,
+            "safety": null
+          },
+          "feasibility": null,
+          "goal_step": "attack-step:pivot-to-can",
+          "id": "route:4b07101faeb38842b815bd4fb979a9833208b7f0304f06d2b875fbd7e8cff29e",
+          "problems": [
+            "route_rating_required"
+          ],
+          "rating_paths": [],
+          "steps": [
+            "attack-step:compromise-companion-app",
+            "attack-step:gain-infotainment-foothold",
+            "attack-step:pivot-to-can"
+          ]
+        },
+        {
+          "authored_path": "attack-path:infotainment-pivot",
+          "derived_risk": {
+            "financial": null,
+            "operational": null,
+            "privacy": null,
+            "safety": null
+          },
+          "feasibility": null,
+          "goal_step": "attack-step:pivot-to-can",
+          "id": "route:aa05eaa3f0de926e2f622dc33fa861b4ad5b75d834a080ceafe8f1102f0a5d28",
+          "problems": [
+            "route_rating_required"
+          ],
+          "rating_paths": [],
+          "steps": [
+            "attack-step:malicious-ota",
+            "attack-step:gain-infotainment-foothold",
+            "attack-step:pivot-to-can"
+          ]
+        }
+      ],
+      "threat": "threat-instance:infotainment-pivot"
+    }
+  ],
+  "count": 2,
+  "file": "mvp-02-automotive-ecu.yaml",
+  "matrix": "annex-h-table-h8"
+}

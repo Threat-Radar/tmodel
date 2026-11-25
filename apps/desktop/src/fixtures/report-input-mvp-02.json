@@ -12,6 +12,9 @@
       "review_status": "rejected",
       "reviewed": false
      },
+     "step_phases": {
+      "attack-step:pivot-to-can": "lateral_movement"
+     },
      "steps": [
       "attack-step:compromise-companion-app",
       "attack-step:gain-infotainment-foothold",
@@ -25,6 +28,9 @@
       "assertion_status": "proposed",
       "review_status": "rejected",
       "reviewed": false
+     },
+     "step_phases": {
+      "attack-step:pivot-to-can": "lateral_movement"
      },
      "steps": [
       "attack-step:malicious-ota",
@@ -45,6 +51,10 @@
       "assertion_status": "accepted",
       "review_status": "accepted",
       "reviewed": true
+     },
+     "step_phases": {
+      "attack-step:inject-can-frame": "exploitation",
+      "attack-step:reach-modem-over-cellular": "delivery"
      },
      "steps": [
       "attack-step:reach-modem-over-cellular",

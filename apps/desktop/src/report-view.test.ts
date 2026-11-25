@@ -3,6 +3,8 @@ import mvp02 from "./fixtures/report-input-mvp-02.json";
 import { buildModelReport } from "./model-report";
 import type { ModelReportInput } from "./model-types";
 import { ModelReportView } from "./report-view";
+import riskFixture from "./fixtures/risk-mvp-02.json";
+import { parseRiskCalculation, RISK_MATRIX, type RiskCalculation } from "./risk-calculation";
 
 const input = mvp02 as unknown as ModelReportInput;
 
@@ -12,6 +14,10 @@ class FakeElement {
   hidden = false;
   innerHTML = "";
   children: unknown[] = [];
+  value = "";
+  disabled = false;
+  readonly queries = new Map<string, FakeElement>();
+  readonly attributes = new Map<string, string>();
   private readonly listeners = new Map<string, ((event: unknown) => void)[]>();
 
   addEventListener(type: string, listener: (event: unknown) => void): void {
@@ -26,9 +32,12 @@ class FakeElement {
     this.children = [];
     this.innerHTML = "";
   }
+
+  querySelector(selector: string): FakeElement | null { return this.queries.get(selector) ?? null; }
+  setAttribute(name: string, value: string): void { this.attributes.set(name, value); }
 }
 
-function harness() {
+function harness(calculateRisk?: (file: string, matrix: string) => Promise<RiskCalculation>) {
   const status = new FakeElement();
   const content = new FakeElement();
   const retry = new FakeElement();
@@ -40,9 +49,18 @@ function harness() {
       content: content as unknown as HTMLElement,
       retry: retry as unknown as HTMLButtonElement,
     },
-    { openPath, retry: retryCallback },
+    { openPath, retry: retryCallback, calculateRisk },
   );
-  return { view, status, content, retry, openPath, retryCallback };
+  const matrix = new FakeElement();
+  const result = new FakeElement();
+  const calculate = new FakeElement();
+  content.queries.set("[data-risk-matrix]", matrix);
+  content.queries.set("[data-risk-result]", result);
+  content.queries.set("[data-calculate-risk]", calculate);
+  const clickCalculate = () => content.dispatch("click", {
+    target: { closest: (selector: string) => selector === "[data-calculate-risk]" ? calculate : null },
+  });
+  return { view, status, content, retry, openPath, retryCallback, matrix, result, calculate, clickCalculate };
 }
 
 // A click target inside the report: `closest` finds the "Open in path view" button.
@@ -103,5 +121,59 @@ describe("model report view (#208)", () => {
     view.failed("Could not list the example models");
     view.waiting("Waiting for the local engine…");
     expect(retry.hidden).toBe(true);
+  });
+});
+
+describe("risk calculation controls (#63)", () => {
+  const response = parseRiskCalculation(riskFixture, input.model.file, RISK_MATRIX);
+
+  it("requires an explicit selection, then displays a fresh result on each calculation", async () => {
+    const request = vi.fn(async () => structuredClone(response));
+    const h = harness(request);
+    h.view.show(buildModelReport(input));
+    h.clickCalculate();
+    expect(request).not.toHaveBeenCalled();
+    expect(h.result.textContent).toContain("Select a matrix profile");
+    h.matrix.value = RISK_MATRIX;
+    h.clickCalculate();
+    await vi.waitFor(() => expect(h.result.innerHTML).toContain("Safety: 5"));
+    expect(request).toHaveBeenCalledWith(input.model.file, RISK_MATRIX);
+    expect(h.calculate.disabled).toBe(false);
+    expect(h.result.attributes.get("aria-busy")).toBe("false");
+    h.clickCalculate();
+    await vi.waitFor(() => expect(request).toHaveBeenCalledTimes(2));
+  });
+
+  it("clears previous scores on failure and allows retry", async () => {
+    const request = vi.fn<() => Promise<RiskCalculation>>()
+      .mockResolvedValueOnce(response).mockRejectedValueOnce(new Error("engine unavailable"))
+      .mockResolvedValueOnce(response);
+    const h = harness(request);
+    h.view.show(buildModelReport(input));
+    h.matrix.value = RISK_MATRIX;
+    h.clickCalculate();
+    await vi.waitFor(() => expect(h.result.innerHTML).toContain("Safety: 5"));
+    h.clickCalculate();
+    await vi.waitFor(() => expect(h.result.textContent).toContain("engine unavailable"));
+    expect(h.result.innerHTML).toBe("");
+    expect(h.calculate.disabled).toBe(false);
+    h.clickCalculate();
+    await vi.waitFor(() => expect(h.result.innerHTML).toContain("Safety: 5"));
+  });
+
+  it("does not display a late result after another model starts loading", async () => {
+    let resolve!: (value: RiskCalculation) => void;
+    const request = new Promise<RiskCalculation>((done) => { resolve = done; });
+    const h = harness(() => request);
+    h.view.show(buildModelReport(input));
+    h.matrix.value = RISK_MATRIX;
+    h.clickCalculate();
+    expect(h.calculate.disabled).toBe(true);
+    h.view.loading({ ...input.model, file: "other.yaml" });
+    h.result.innerHTML = "new model";
+    resolve(response);
+    await request;
+    await Promise.resolve();
+    expect(h.result.innerHTML).toBe("new model");
   });
 });

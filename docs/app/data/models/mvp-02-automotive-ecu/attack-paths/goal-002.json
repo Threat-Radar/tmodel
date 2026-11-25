@@ -10,6 +10,10 @@
         "review_status": "accepted",
         "reviewed": true
       },
+      "step_phases": {
+        "attack-step:inject-can-frame": "exploitation",
+        "attack-step:reach-modem-over-cellular": "delivery"
+      },
       "steps": [
         "attack-step:reach-modem-over-cellular",
         "attack-step:bypass-diag-auth",
