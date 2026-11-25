@@ -3,7 +3,7 @@ id: DL-0053
 title: Requirement coverage query and agentic source fragments
 status: draft
 date: 2026-11-14
-updated: 2026-11-22
+updated: 2026-11-25
 human_owner: paria03
 reviewed: false
 ---
