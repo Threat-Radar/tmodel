@@ -11,6 +11,7 @@ catalog-stats.yaml as well.
 import io
 import json
 import os
+import sys
 import threading
 import zipfile
 import zlib
@@ -355,6 +356,39 @@ def test_configured_catalog_reads_the_variable(monkeypatch):
     assert cwe.configured_catalog() is None
     monkeypatch.setenv(cwe.CATALOG_ENV, str(SAMPLE))
     assert cwe.configured_catalog() == SAMPLE
+
+
+PINNED_URL = "https://cwe.mitre.org/data/xml/cwec_v4.20.xml.zip"
+
+
+def test_bundled_name_is_the_urls_last_segment():
+    assert cwe.bundled_name(PINNED_URL) == "cwec_v4.20.xml.zip"
+
+
+def test_packaged_engine_reads_its_bundled_release(monkeypatch, tmp_path):
+    # ADR-0014: bin/build-engine bundles the pinned release below _MEIPASS/catalogs.
+    monkeypatch.delenv(cwe.CATALOG_ENV, raising=False)
+    monkeypatch.setattr(sys, "frozen", True, raising=False)
+    monkeypatch.setattr(sys, "_MEIPASS", str(tmp_path), raising=False)
+    bundled = tmp_path / cwe.BUNDLED_CATALOGS / "cwec_v4.20.xml.zip"
+    bundled.parent.mkdir()
+    bundled.write_bytes(b"release bytes")
+    assert cwe.configured_catalog(PINNED_URL) == bundled
+    assert cwe.configured_catalog() is None  # without the pinned url there is nothing to find
+
+
+def test_packaged_engine_without_a_bundled_release_has_none(monkeypatch, tmp_path):
+    monkeypatch.delenv(cwe.CATALOG_ENV, raising=False)
+    monkeypatch.setattr(sys, "frozen", True, raising=False)
+    monkeypatch.setattr(sys, "_MEIPASS", str(tmp_path), raising=False)
+    assert cwe.configured_catalog(PINNED_URL) is None
+
+
+def test_the_variable_still_wins_in_a_packaged_engine(monkeypatch, tmp_path):
+    monkeypatch.setenv(cwe.CATALOG_ENV, str(SAMPLE))
+    monkeypatch.setattr(sys, "frozen", True, raising=False)
+    monkeypatch.setattr(sys, "_MEIPASS", str(tmp_path), raising=False)
+    assert cwe.configured_catalog(PINNED_URL) == SAMPLE
 
 
 # --- objects in the tmodel object model ------------------------------------------------

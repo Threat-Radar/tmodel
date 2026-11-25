@@ -292,7 +292,10 @@ def _row(r: LibraryRecord) -> dict[str, Any]:
 
 
 def _served_catalog() -> cwe.CweCatalog:
-    """The CWE release the library pins, read from the file `$TMODEL_CWE_CATALOG` names."""
+    """The CWE release the library pins.
+
+    The file `$TMODEL_CWE_CATALOG` names, or a packaged engine's bundled copy (ADR-0014).
+    """
     record = _served_library().get(cwe.LIBRARY_RECORD)
     pinned = record.content.sha256 if record is not None else None
     if record is None or not pinned:
@@ -301,7 +304,7 @@ def _served_catalog() -> cwe.CweCatalog:
             "(the CWE extraction is Threat-Radar/library#21); set TMODEL_LIBRARY to a "
             "library checkout that has it"
         )
-    path = cwe.configured_catalog()
+    path = cwe.configured_catalog(record.content.url)
     if path is None:
         raise Unavailable(
             f"no CWE catalog: download {record.content.url} (SHA-256 {pinned}) "
