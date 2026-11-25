@@ -46,13 +46,17 @@
                 [--verdict accepted|rejected|changes_requested] [--declare-sponsor GH]
                                the sponsor decides one proposal, in a branch; always
                                in-process, never through the API (DL-0046)
+  tmodel import-sbom SBOM [--scan SCAN] -o MODEL [--report FILE] [--force]
+                               write a starter model from Syft's CycloneDX SBOM of a
+                               container image and Grype's JSON scan of it; every
+                               claim proposed (#257, DL-0068); always in-process
 
 By default these go through the local API, exactly like the desktop app
 (APP-0001 A-030, A-060). `--in-process` calls the engine code directly
 instead, for scripts that do not want a server.
 
 Exit codes: 0 ok · 1 engine unreachable, unhealthy, an engine error, or incomplete
-risk inputs · 2 usage error.
+risk inputs · 2 usage error, or an input `import-sbom` refuses.
 """
 
 from __future__ import annotations
@@ -641,6 +645,26 @@ def _accept(args: argparse.Namespace) -> int:
     return 0
 
 
+def _import_sbom(args: argparse.Namespace) -> int:
+    from engine import import_sbom  # a file-to-file step: never reachable from the API
+
+    try:
+        result = import_sbom.run(
+            args.sbom, scan=args.scan, output=args.output, report=args.report, force=args.force
+        )
+    except import_sbom.SbomImportError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+    except OSError as exc:
+        print(f"error: cannot write ({exc.strerror or exc})", file=sys.stderr)
+        return 1
+    if args.report is None:
+        print(result.report_text, end="")
+    else:
+        print(f"wrote {args.output} and the import report {args.report}")
+    return 0
+
+
 def _serve(args: argparse.Namespace) -> int:
     try:
         server.serve(port=args.port, exit_with_parent=args.exit_with_parent)
@@ -786,6 +810,26 @@ def build_parser() -> argparse.ArgumentParser:
     )
     decide.add_argument("--json", action="store_true", help="print JSON")
     decide.set_defaults(func=_accept)
+
+    imported = sub.add_parser(
+        "import-sbom",
+        help="write a starter model from an image's SBOM and its Grype scan (#257)",
+    )
+    imported.add_argument(
+        "sbom", help="Syft's CycloneDX 1.7 JSON SBOM of a container image named by digest"
+    )
+    imported.add_argument("--scan", help="Grype's JSON scan of that SBOM: grype sbom:FILE -o json")
+    imported.add_argument(
+        "-o",
+        "--output",
+        required=True,
+        help="the model file to write, e.g. spec/vectors/pv-05-NAME.yaml",
+    )
+    imported.add_argument("--report", help="write the import report here instead of printing it")
+    imported.add_argument(
+        "--force", action="store_true", help="replace the model or report if it exists"
+    )
+    imported.set_defaults(func=_import_sbom)
     return parser
 
 
