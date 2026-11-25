@@ -87,6 +87,24 @@ def test_the_sample_is_lossless(report):
     assert links["observed_examples"]["in_file"] > 0 < links["attack_pattern_links"]["in_file"]
 
 
+def test_the_three_views_plan_0002_names_are_reported_on_their_own(report):
+    # #146's criterion is the union of the entries across CWE-1000, CWE-699 and CWE-1194;
+    # the report gives it apart from the coverage across every view (#249, second review).
+    named = report["views"]["named"]
+    assert named == {
+        "views": ["CWE-1000", "CWE-699", "CWE-1194"],
+        "entries_reached": 7,
+        "imported": 7,
+        "missing": [],
+    }
+    text = to_markdown(report)
+    assert (
+        "across the three views it names, CWE-1000, CWE-699, and CWE-1194: their relationships "
+        "reach 7 entries, and the import has all of them. Across all the views, 8 entries are "
+        "reached"
+    ) in " ".join(text.split())
+
+
 def test_the_views_reach_some_entries_and_the_import_keeps_the_rest(report):
     views = report["views"]
     assert views["entries_reached"] == 8
@@ -144,14 +162,21 @@ def test_dropping_one_relationship_shows_the_loss_and_fails(monkeypatch, capsys)
     assert lossy["lossless"] is False
     rel = lossy["relationships"]
     assert rel["missing"] == [
-        {"source": "CWE-79", "nature": "ChildOf", "target": "CWE-74", "view": "CWE-1000"}
+        {
+            "source": "CWE-79",
+            "nature": "ChildOf",
+            "target": "CWE-74",
+            "view": "CWE-1000",
+            "ordinal": "Primary",
+            "chain": None,
+        }
     ]
     assert (rel["in_file"], rel["imported"]) == (20, 19)
     assert rel["by_view"]["CWE-1000"] == {"in_file": 9, "imported": 8}
     assert main([str(SAMPLE), "--sha256", SAMPLE_SHA256]) == 1
     out, err = capsys.readouterr()
     assert "**Lossless: no.**" in out
-    assert "Missing: CWE-79 ChildOf CWE-74 in CWE-1000." in out
+    assert "Missing: CWE-79 ChildOf CWE-74 in CWE-1000 (ordinal Primary)." in out
     assert "the import lost something from the file" in err
 
 
@@ -287,13 +312,14 @@ def test_one_relationship_losing_a_copy_as_another_gains_one_is_a_loss(monkeypat
     assert (rel["in_file"], rel["imported"], rel["missing"], rel["extra"]) == (21, 21, [], [])
     assert rel["repeated_differently"] == [
         {"source": "CWE-79", "nature": "ChildOf", "target": "CWE-74", "view": "CWE-1000"}
-        | {"in_file": 1, "imported": 2},
+        | {"ordinal": "Primary", "chain": None, "in_file": 1, "imported": 2},
         {"source": "CWE-79", "nature": "PeerOf", "target": "CWE-352", "view": "CWE-1000"}
-        | {"in_file": 2, "imported": 1},
+        | {"ordinal": None, "chain": None, "in_file": 2, "imported": 1},
     ]
     assert lossy["lossless"] is False
-    assert "Given a different number of times: CWE-79 ChildOf CWE-74 in CWE-1000" in to_markdown(
-        lossy
+    assert (
+        "Given a different number of times: CWE-79 ChildOf CWE-74 in CWE-1000 (ordinal Primary)"
+        in to_markdown(lossy)
     )
 
 
@@ -378,6 +404,209 @@ def test_an_element_kept_under_another_name_is_a_loss(monkeypatch):
     assert "Fields not kept: CWE-79 Modes_Of_Introduction." in to_markdown(lossy)
 
 
+# --- losses no tally or total shows (#249, second review) ---------------------------------------
+
+
+def test_text_moved_into_the_next_element_is_a_loss(monkeypatch):
+    # CWE-79's Phase text moved into the Note beside it: the same elements, names,
+    # attributes and words, in the same order, but another element holds them
+    # (@kriishnaa-18, #249).
+    def moved(fields):
+        (modes,) = fields["Modes_Of_Introduction"]
+        (introduction,) = modes["Introduction"]
+        (phase,), (note,) = introduction["Phase"], introduction["Note"]
+        changed = MappingProxyType({**introduction, "Phase": ("",), "Note": (f"{phase} {note}",)})
+        fields["Modes_Of_Introduction"] = (MappingProxyType({"Introduction": (changed,)}),)
+        return fields
+
+    _losing(monkeypatch, lambda catalog: _with_fields(catalog, "CWE-79", moved))
+    lossy = reconcile(SAMPLE, SAMPLE_SHA256)
+    assert lossy["lossless"] is False
+    (loss,) = lossy["fields"]["not_kept"]
+    assert (loss["entry"], loss["field"], loss["differs"]) == (
+        "CWE-79",
+        "Modes_Of_Introduction",
+        ["placement"],
+    )
+    assert loss["in_file"] == loss["kept"]  # every tally agrees
+    phase = "Modes_Of_Introduction/Introduction/Phase"
+    assert loss["first_difference"] == {
+        "in_file": {"path": phase, "attributes": {}, "text": ["Implementation"]},
+        "kept": {"path": phase, "attributes": {}, "text": [""]},
+    }
+
+
+def test_an_attribute_lost_inside_structured_text_is_a_loss(monkeypatch, tmp_path):
+    # An XHTML image whose src the import drops. The words and the field's own attributes
+    # are unchanged, so only the image's attributes show it (@kriishnaa-18, #249: CWE-1189).
+    image = '<xhtml:img src="images/variants.png" alt="Variants"/>'
+    old = "<xhtml:p>There are many variants"
+    edited = _edited(tmp_path, old, old.replace("<xhtml:p>", f"<xhtml:p>{image}"))
+    assert reconcile(edited)["lossless"] is True  # the import keeps the image, src and all
+
+    def without_src(fields):
+        (description,) = fields["Extended_Description"]
+        markup = description["#xhtml"].replace(' src="images/variants.png"', "", 1)
+        fields["Extended_Description"] = (MappingProxyType({**description, "#xhtml": markup}),)
+        return fields
+
+    _losing(monkeypatch, lambda catalog: _with_fields(catalog, "CWE-79", without_src))
+    lossy = reconcile(edited)
+    assert lossy["lossless"] is False
+    (loss,) = lossy["fields"]["not_kept"]
+    assert (loss["entry"], loss["field"], loss["differs"]) == (
+        "CWE-79",
+        "Extended_Description",
+        ["attributes"],
+    )
+    first = loss["first_difference"]
+    assert first["in_file"]["path"] == first["kept"]["path"] == "Extended_Description/p/img"
+    assert first["in_file"]["attributes"] == {"alt": "Variants", "src": "images/variants.png"}
+    assert first["kept"]["attributes"] == {"alt": "Variants"}
+
+
+def test_a_relationship_kept_without_its_ordinal_or_chain_is_a_loss(monkeypatch):
+    # The fields keep Ordinal and Chain_ID, but the relationships the app reads lose them,
+    # and the (entry, nature, target, view) tuples alone still agree (@kriishnaa-18, #249).
+    read = cwe._relationships
+    stripped = {"CWE-79": ("ChildOf", "CWE-74", 1000), "CWE-692": ("StartsWith", "CWE-184", 709)}
+
+    def without(name, label, kind, fields):
+        return tuple(
+            dataclasses.replace(r, ordinal=None, chain=None)
+            if (r.nature, r.target, r.view) == stripped.get(label)
+            else r
+            for r in read(name, label, kind, fields)
+        )
+
+    monkeypatch.setattr(cwe, "_relationships", without)
+    lossy = reconcile(SAMPLE, SAMPLE_SHA256)
+    assert lossy["lossless"] is False
+    rel = lossy["relationships"]
+    assert (rel["in_file"], rel["imported"]) == (20, 20)
+    chain = {"source": "CWE-692", "nature": "StartsWith", "target": "CWE-184", "view": "CWE-709"}
+    ordinal = {"source": "CWE-79", "nature": "ChildOf", "target": "CWE-74", "view": "CWE-1000"}
+    assert rel["missing"] == [
+        chain | {"ordinal": None, "chain": "CWE-692"},
+        ordinal | {"ordinal": "Primary", "chain": None},
+    ]
+    assert rel["extra"] == [
+        chain | {"ordinal": None, "chain": None},
+        ordinal | {"ordinal": None, "chain": None},
+    ]
+    assert "CWE-79 ChildOf CWE-74 in CWE-1000 (ordinal Primary)" in to_markdown(lossy)
+
+
+def test_an_observed_example_kept_with_another_reference_and_link_is_a_loss(monkeypatch):
+    # The example's fields are kept, but the observed example the app reads names another
+    # CVE and another URL, and every count agrees (@kriishnaa-18, #249).
+    def other(catalog):
+        def changed(weakness):
+            first, *rest = weakness.observed_examples
+            first = dataclasses.replace(
+                first, reference="CVE-2024-0001", link="https://example.org/"
+            )
+            return dataclasses.replace(weakness, observed_examples=(first, *rest))
+
+        weaknesses = tuple(changed(w) if w.id == "CWE-79" else w for w in catalog.weaknesses)
+        return dataclasses.replace(catalog, weaknesses=weaknesses)
+
+    _losing(monkeypatch, other)
+    lossy = reconcile(SAMPLE, SAMPLE_SHA256)
+    assert lossy["lossless"] is False
+    examples = lossy["links"]["observed_examples"]
+    assert examples["in_file"] == examples["imported"]
+    (differ,) = examples["values_differ"]
+    assert (differ["entry"], differ["number"]) == ("CWE-79", 1)
+    cve = "CVE-2024-49038"
+    assert differ["in_file"]["reference"] == cve
+    assert differ["in_file"]["link"] == f"https://www.cve.org/CVERecord?id={cve}"
+    assert (differ["imported"]["reference"], differ["imported"]["link"]) == (
+        "CVE-2024-0001",
+        "https://example.org/",
+    )
+    assert "Observed examples kept with other values: CWE-79 example 1." in to_markdown(lossy)
+
+
+def test_a_capec_link_kept_with_another_target_is_a_loss(monkeypatch):
+    # CWE-689's first CAPEC link read as another attack pattern: the fields and the
+    # count of links agree (@kriishnaa-18, #249).
+    def other(catalog):
+        weaknesses = tuple(
+            dataclasses.replace(w, attack_patterns=("CAPEC-1", *w.attack_patterns[1:]))
+            if w.id == "CWE-689"
+            else w
+            for w in catalog.weaknesses
+        )
+        return dataclasses.replace(catalog, weaknesses=weaknesses)
+
+    _losing(monkeypatch, other)
+    lossy = reconcile(SAMPLE, SAMPLE_SHA256)
+    assert lossy["lossless"] is False
+    capec = lossy["links"]["attack_pattern_links"]
+    assert capec["in_file"] == capec["imported"]
+    assert capec["values_differ"] == [
+        {
+            "entry": "CWE-689",
+            "in_file": ["CAPEC-26", "CAPEC-27"],
+            "imported": ["CAPEC-1", "CAPEC-27"],
+        }
+    ]
+    assert "CAPEC links kept with other values: CWE-689." in to_markdown(lossy)
+
+
+def test_an_entry_imported_twice_is_a_loss(monkeypatch):
+    # CWE-769 is deprecated: it writes no relationship and has no link, so a second copy
+    # moves no other count, and entries keyed by id fold the copies into one (#249).
+    def twice(catalog):
+        copy = next(w for w in catalog.weaknesses if w.id == "CWE-769")
+        return dataclasses.replace(catalog, weaknesses=(*catalog.weaknesses, copy))
+
+    _losing(monkeypatch, twice)
+    lossy = reconcile(SAMPLE, SAMPLE_SHA256)
+    assert lossy["lossless"] is False
+    entries = lossy["entries"]
+    assert entries["by_kind_imported"]["Weakness"] == entries["by_kind_in_file"]["Weakness"] + 1
+    assert (entries["missing"], entries["extra"]) == ([], [])
+    assert entries["repeated_differently"] == ["CWE-769"]
+    assert "Given a different number of times: CWE-769." in to_markdown(lossy)
+
+
+def test_a_reference_copy_kept_with_the_other_copys_content_is_a_loss(monkeypatch, tmp_path):
+    # The file defines REF-7 twice, the first copy with another title. The import keeps
+    # the second copy twice. The ids and the counts agree, and a comparison keyed by id
+    # sees only the last copy on each side (@kriishnaa-18, #249).
+    text = SAMPLE.read_text(encoding="utf-8")
+    start = text.rindex("\n", 0, text.index('<External_Reference Reference_ID="REF-7"')) + 1
+    end = text.index("</External_Reference>", start) + len("</External_Reference>\n")
+    title = "<Title>Writing Secure Code</Title>"
+    first = text[start:end].replace(title, "<Title>Writing Secure Code, a draft</Title>")
+    assert first != text[start:end]
+    doubled = tmp_path / "cwe.xml"
+    doubled.write_text(text[:start] + first + text[start:], encoding="utf-8")
+
+    def second_twice(catalog):
+        references = list(catalog.references)
+        a, b = (i for i, r in enumerate(references) if r["@Reference_ID"] == "REF-7")
+        references[a] = references[b]
+        return dataclasses.replace(catalog, references=tuple(references))
+
+    _losing(monkeypatch, second_twice)
+    lossy = reconcile(doubled)
+    assert lossy["lossless"] is False
+    references = lossy["references"]
+    assert (references["in_file"], references["imported"]) == (4, 4)
+    assert references["repeated_differently"] == []
+    (loss,) = lossy["fields"]["not_kept"]
+    assert (loss["entry"], loss["copy"], loss["field"], loss["differs"]) == (
+        "REF-7",
+        1,
+        "Title",
+        ["words"],
+    )
+    assert "Fields not kept: REF-7 (copy 1) Title." in to_markdown(lossy)
+
+
 # --- the report, the command and the committed copy -----------------------------------------
 
 
@@ -447,4 +676,16 @@ def test_the_whole_420_release_is_lossless_and_the_committed_report_is_its_repor
     assert full["views"]["entries_reached"] == 1371 and len(without) == 79
     assert sum(1 for x in without if x["status"] == "Deprecated") == 64
     assert all(x["view_type"] == "Implicit" for x in without if x["status"] != "Deprecated")
+    assert full["views"]["named"]["entries_reached"] == full["views"]["named"]["imported"] == 1000
+    for link in full["links"].values():
+        assert link["values_differ"] == []
+    assert (
+        full["links"]["attack_pattern_links"]["in_file"],
+        full["links"]["observed_examples"]["in_file"],
+    ) == (1212, 3134)
+    # two of the 17 implicit views are deprecated, so the rest are the 15 "other" ones
+    assert (
+        "the 64 deprecated entries (2 of them implicit views) and the 15 other implicit views"
+        in (to_markdown(full))
+    )
     assert to_markdown(full) == REPORT_420.read_text(encoding="utf-8")
