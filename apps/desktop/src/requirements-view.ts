@@ -1,3 +1,7 @@
+import {
+  bindClearFilters, EMPTY_INSPECTOR, LIBRARY_PAGE_SIZE, renderPagination, resetPagination,
+  type LibraryPagination,
+} from "./library-presentation";
 import type { EngineState } from "./engine";
 import type { CoverageLoadResult, CoverageRequirement } from "./coverage-provider";
 import type { EngineGraphResponse } from "./model-types";
@@ -20,13 +24,12 @@ export type RequirementViewMode = "model" | "standards";
 
 export interface RequirementModelSource {
   file: string;
-  title: string;
   notice: string;
   getGraph(signal?: AbortSignal): Promise<EngineGraphResponse>;
   getCoverage(product: string, signal?: AbortSignal): Promise<CoverageLoadResult>;
 }
 
-export interface RequirementsViewElements {
+export interface RequirementsViewElements extends LibraryPagination {
   workspace: HTMLElement;
   headingEyebrow: HTMLElement;
   sourceNotice: HTMLElement;
@@ -41,7 +44,7 @@ export interface RequirementsViewElements {
   productControl: HTMLElement;
   productFilter: HTMLSelectElement;
   sortButtons: readonly HTMLButtonElement[];
-  resultCount: HTMLElement;
+  clearFilters: HTMLButtonElement;
   requestStatus: HTMLElement;
   emptyState: HTMLElement;
   tableRegion: HTMLElement;
@@ -49,10 +52,6 @@ export interface RequirementsViewElements {
   scopeHeading: HTMLElement;
   satisfactionHeading: HTMLElement;
   tableBody: HTMLTableSectionElement;
-  pageSize: HTMLSelectElement;
-  previousPage: HTMLButtonElement;
-  nextPage: HTMLButtonElement;
-  pageStatus: HTMLElement;
   attribution: HTMLElement;
   sortHelp: HTMLElement;
   coverageSection: HTMLElement;
@@ -62,6 +61,7 @@ export interface RequirementsViewElements {
   detailId: HTMLElement;
   detailBadges: HTMLElement;
   detailText: HTMLElement;
+  detailDescription: HTMLElement;
   detailStatus: HTMLElement;
   detailList: HTMLDListElement;
   detailRelationships: HTMLElement;
@@ -75,12 +75,13 @@ export class RequirementsView {
   private modelCatalog?: RequirementCatalog;
   private standardsCatalog?: RequirementCatalog;
   private mode: RequirementViewMode = "model";
-  private query: RequirementQuery = { ...DEFAULT_REQUIREMENT_QUERY };
+  private query: RequirementQuery = { ...DEFAULT_REQUIREMENT_QUERY, limit: LIBRARY_PAGE_SIZE };
   private active = false;
   private state: "idle" | "loading" | "loaded" | "failed" = "idle";
   private selectedId?: string;
   private engineConnected?: boolean;
   private failedRequestStartedConnected = false;
+  private readonly updateClearFilters: () => void;
   private searchTimer?: ReturnType<typeof setTimeout>;
 
   constructor(
@@ -88,6 +89,17 @@ export class RequirementsView {
     private readonly standardsSource?: RequirementStandardsSource,
     private readonly documentRoot: Document = document,
   ) {
+    const { clearFilters, search, kindFilter, normativityFilter, sourceFilter, productFilter } = elements;
+    this.updateClearFilters = bindClearFilters(
+      clearFilters, search, [kindFilter, normativityFilter, sourceFilter, productFilter], () => {
+        if (this.searchTimer) clearTimeout(this.searchTimer);
+        const productChanged = this.query.product !== undefined;
+        this.query.search = this.query.kind = this.query.normativity = this.query.source = this.query.product = undefined;
+        this.query.offset = 0;
+        this.renderTable();
+        if (productChanged) this.refreshCoverage();
+      },
+    );
     this.bindControls();
     this.updateModeChrome();
     this.updateSortIndicators();
@@ -97,13 +109,16 @@ export class RequirementsView {
     this.source = source;
     this.modelCatalog = undefined;
     if (this.mode === "model") {
+      this.modelRequests.cancel();
       this.catalog = undefined;
       this.selectedId = undefined;
       this.query.product = undefined;
       this.query.offset = 0;
-      this.elements.sourceNotice.textContent = source.notice;
+      this.elements.productFilter.value = "";
+      this.updateClearFilters();
+      this.updateModeChrome();
       this.clearDetails();
-      this.clearCoverage("Select a product to see recorded coverage.");
+      this.clearTable();
       if (this.active) void this.loadCurrentMode();
     }
   }
@@ -191,8 +206,7 @@ export class RequirementsView {
       this.query.product = cleanValue(this.elements.productFilter.value);
       this.query.offset = 0;
       this.renderTable();
-      if (this.query.product) void this.loadCoverage(this.query.product);
-      else this.clearCoverage("Select a product to see recorded coverage.");
+      this.refreshCoverage();
     });
     for (const button of this.elements.sortButtons) {
       button.addEventListener("click", () => {
@@ -208,13 +222,6 @@ export class RequirementsView {
         this.renderTable();
       });
     }
-    this.elements.pageSize.addEventListener("change", () => {
-      const value = Number(this.elements.pageSize.value);
-      if (![10, 25, 50].includes(value)) return;
-      this.query.limit = value;
-      this.query.offset = 0;
-      this.renderTable();
-    });
     this.elements.previousPage.addEventListener("click", () => {
       this.query.offset = Math.max(0, this.query.offset - this.query.limit);
       this.renderTable();
@@ -243,13 +250,15 @@ export class RequirementsView {
     this.elements.normativityFilter.value = "";
     this.elements.productFilter.value = "";
     this.elements.sourceFilter.value = "";
-    this.elements.modeSelect.value = mode;
+    this.updateClearFilters();
     this.updateModeChrome();
     this.clearDetails();
     if (this.catalog) {
       this.populateControls(this.catalog);
       this.renderTable();
+      this.refreshCoverage();
       this.state = "loaded";
+      this.setLoading(false);
     } else if (this.active) void this.loadCurrentMode();
   }
 
@@ -261,7 +270,7 @@ export class RequirementsView {
     }
     const requestStartedConnected = this.engineConnected === true;
     const request = this.modelRequests.begin();
-    this.coverageRequests.cancel();
+    this.clearCoverage("");
     this.state = "loading";
     this.setLoading(true);
     try {
@@ -271,6 +280,7 @@ export class RequirementsView {
       this.catalog = this.modelCatalog;
       this.populateControls(this.catalog);
       this.renderTable();
+      this.refreshCoverage();
       this.state = "loaded";
       this.failedRequestStartedConnected = false;
     } catch (error) {
@@ -321,7 +331,7 @@ export class RequirementsView {
     this.elements.headingEyebrow.textContent = standards
       ? "Reference material · not model scope"
       : "Recorded product evidence";
-    this.elements.productControl.hidden = standards;
+    this.elements.productControl.hidden = true;
     this.elements.sourceControl.hidden = !standards;
     this.elements.normativityControl.hidden = !standards;
     this.elements.coverageSection.hidden = standards;
@@ -336,11 +346,11 @@ export class RequirementsView {
     if (standards) {
       this.elements.sourceNotice.textContent = this.standardsSource?.notice
         ?? "Extracted standards catalog is not configured.";
-      this.clearCoverage("Catalog entries are not evaluated against the selected model.");
+      this.clearCoverage("");
     } else {
       this.elements.sourceNotice.textContent = this.source?.notice
         ?? "Open an example model to load its requirements.";
-      this.clearCoverage("Select a product to see recorded coverage.");
+      this.clearCoverage("");
     }
   }
 
@@ -356,15 +366,16 @@ export class RequirementsView {
     this.populateNormativities(response.normativities);
     this.populateSources(response.sources);
     this.elements.tableBody.replaceChildren(...response.rows.map((row) => this.createRow(row)));
-    this.elements.resultCount.textContent = `${response.total} ${response.total === 1 ? "requirement" : "requirements"}`;
-    this.elements.requestStatus.textContent = response.total === 0
-      ? "No requirements match the current search and filters."
-      : `Showing ${response.query.offset + 1}–${response.query.offset + response.count} of ${response.total} matching requirements in ${this.mode === "standards" ? "the extracted standards catalog" : this.source?.title ?? "this model"}.`;
+    this.elements.tableRegion.scrollTop = 0;
+    this.elements.requestStatus.textContent = "";
     this.elements.requestStatus.className = "library-request-status";
+    this.elements.emptyState.textContent = this.catalog.requirements.length > 0
+      ? "No requirements match the current search and filters."
+      : this.mode === "model" ? "The selected model has no recorded requirements." : "No reference requirements are available.";
     this.elements.emptyState.hidden = response.total !== 0;
     this.elements.tableRegion.hidden = response.total === 0;
     this.elements.retryButton.hidden = true;
-    this.renderPagination(response.total, response.count);
+    renderPagination(this.elements, this.query.offset, response.count, response.total);
     if (this.selectedId && response.rows.some((row) => row.id === this.selectedId)) {
       this.updateSelectedRow();
     } else if (this.selectedId) this.clearDetails();
@@ -403,26 +414,21 @@ export class RequirementsView {
     this.elements.detailTitle.textContent = row.name;
     this.elements.detailId.textContent = row.id;
     this.elements.detailText.textContent = row.text ?? "No requirement statement recorded.";
-    this.elements.detailStatus.textContent = "";
-    this.elements.detailBadges.replaceChildren(...[
-      row.kind && displayValue(row.kind),
-      row.normativity && displayValue(row.normativity),
-      satisfactionLabel(row.satisfaction),
-    ].flatMap((value) => value ? [badge(this.documentRoot, value)] : []));
-    if (this.mode === "standards") {
-      this.elements.detailBadges.replaceChildren(...[
-        row.kind && displayValue(row.kind),
-        row.normativity && displayValue(row.normativity),
-        "Catalog entry only",
-      ].flatMap((value) => value ? [badge(this.documentRoot, value)] : []));
-      this.elements.detailStatus.textContent = "This extracted entry is reference material. It is not automatically applicable to, or satisfied by, the selected model.";
-    }
+    this.elements.detailDescription.textContent = row.description !== row.text ? (row.description ?? "") : "";
+    const catalogEntry = this.mode === "standards";
+    this.elements.detailBadges.replaceChildren(
+      badge(this.documentRoot, catalogEntry ? "Catalog entry only" : satisfactionLabel(row.satisfaction)),
+    );
+    this.elements.detailStatus.textContent = catalogEntry
+      ? "This extracted entry is reference material. It is not automatically applicable to, or satisfied by, the selected model."
+      : "";
     const scope = [
       ...row.appliesTo.map((id) => `Object: ${id}`),
       ...row.appliesToFamilies.map((family) => `Family: ${family}`),
     ];
     this.elements.detailList.replaceChildren(...[
-      ["Description", row.description],
+      ["Kind", row.kind && displayValue(row.kind)],
+      ["Normativity", row.normativity && displayValue(row.normativity)],
       ["Text origin", row.textOrigin && displayValue(row.textOrigin)],
       ["Source reference", row.sourceRef],
       ["Source locator", row.sourceLocator],
@@ -434,13 +440,23 @@ export class RequirementsView {
       ["Mitigation evidence", row.mitigations.length
         ? row.mitigations.map((item) => `${item.name} (${item.status ?? "status not recorded"})`).join(" · ")
         : this.mode === "standards" ? "None in the extraction; no model satisfaction is asserted" : "Not recorded"],
-    ].map(([label, value]) => detailRow(this.documentRoot, label ?? "", value ?? "Not recorded")));
+    ].flatMap(([label, value]) => label && value ? [detailRow(this.documentRoot, label, value)] : []));
     const established = row.relationships.filter((relationship) => relationship.established);
     const assertions = row.relationships.filter((relationship) => relationship.assertionIds.length > 0);
     this.elements.detailRelationships.replaceChildren(
       relationshipSection(this.documentRoot, "Established relationships", established),
       relationshipSection(this.documentRoot, "Assertion-backed relationships and Reviews", assertions),
     );
+  }
+
+  private refreshCoverage(): void {
+    if (this.mode !== "model" || !this.catalog) return;
+    const { products } = this.catalog;
+    const product = this.query.product ?? (products.length === 1 ? products[0].id : undefined);
+    if (product) void this.loadCoverage(product);
+    else this.clearCoverage(products.length
+      ? "Choose a product to see its recorded coverage."
+      : "This model has no products with recorded coverage.");
   }
 
   private async loadCoverage(product: string): Promise<void> {
@@ -452,11 +468,11 @@ export class RequirementsView {
     this.elements.coverageContent.replaceChildren();
     try {
       const result = await source.getCoverage(product, request.signal);
-      if (!this.coverageRequests.isCurrent(request) || this.query.product !== product) return;
+      if (!this.coverageRequests.isCurrent(request) || this.source !== source) return;
       this.renderCoverage(result);
     } catch (error) {
       if (!this.coverageRequests.isCurrent(request) || isAbortError(error)) return;
-      this.elements.coverageStatus.textContent = `Coverage unavailable: ${errorMessage(error)}`;
+      this.elements.coverageStatus.textContent = "Recorded coverage is unavailable for this product.";
       this.elements.coverageStatus.className = "library-request-status is-error";
       this.elements.coverageContent.replaceChildren();
     } finally {
@@ -466,23 +482,23 @@ export class RequirementsView {
 
   private renderCoverage(result: CoverageLoadResult): void {
     const coverage = result.response;
-    this.elements.coverageStatus.textContent = `${result.notice} ${coverage.interpretation}`;
+    this.elements.coverageStatus.textContent = "Unaddressed threats include hypotheses recorded in the model.";
     this.elements.coverageStatus.className = "library-request-status";
     const counts = this.documentRoot.createElement("div");
     counts.className = "coverage-counts";
-    for (const [label, value, kind] of [
-      ["Satisfied", coverage.counts.satisfied, "satisfied"],
-      ["In progress", coverage.counts.in_progress, "in-progress"],
-      ["No recorded / not satisfied", coverage.counts.unsatisfied, "unsatisfied"],
+    for (const [label, value] of [
+      ["Satisfied", coverage.counts.satisfied],
+      ["In progress", coverage.counts.in_progress],
+      ["No evidence or not satisfied", coverage.counts.unsatisfied],
     ] as const) {
-      const card = this.documentRoot.createElement("div");
-      card.className = `coverage-count coverage-${kind}`;
+      const count = this.documentRoot.createElement("div");
+      count.className = "coverage-count";
       const number = this.documentRoot.createElement("strong");
       number.textContent = String(value);
       const text = this.documentRoot.createElement("span");
       text.textContent = label;
-      card.append(number, text);
-      counts.append(card);
+      count.append(number, text);
+      counts.append(count);
     }
     const requirements = this.documentRoot.createElement("ul");
     requirements.className = "coverage-items";
@@ -501,19 +517,19 @@ export class RequirementsView {
       this.documentRoot,
       "Unaddressed threats",
       coverage.unaddressed_threats,
-      "No unaddressed ThreatInstances in this recorded result.",
+      "No unaddressed threats in the recorded results.",
     );
     const proposals = simpleList(
       this.documentRoot,
       "Proposed links — hypothetical only",
       coverage.proposed_assertions.map((proposal) => (
-        `${proposal.id} · ${proposal.effect.replace(/_/g, " ")} · if accepted: ${proposal.if_accepted.counts.satisfied} satisfied, ${proposal.if_accepted.unaddressed_threats.length} unaddressed threats`
+        `${proposal.id} · ${proposal.effect.replace(/_/g, " ")} · if accepted: ${proposal.if_accepted.counts.satisfied} satisfied, ${proposal.if_accepted.counts.in_progress} in progress, ${proposal.if_accepted.counts.unsatisfied} with no evidence or not satisfied, ${proposal.if_accepted.unaddressed_threats.length} unaddressed threats`
       )),
-      "No proposed Assertion changes this coverage result.",
+      "No proposed links affect recorded coverage.",
     );
     const joint = this.documentRoot.createElement("p");
     joint.className = "coverage-joint";
-    joint.textContent = `Joint hypothetical if all listed proposals were accepted: ${coverage.if_all_proposed_accepted.counts.satisfied} satisfied, ${coverage.if_all_proposed_accepted.counts.in_progress} in progress, ${coverage.if_all_proposed_accepted.counts.unsatisfied} with no recorded satisfaction or a recorded non-complete status; ${coverage.if_all_proposed_accepted.unaddressed_threats.length} unaddressed threats. This is not an acceptance or compliance result.`;
+    joint.textContent = `If all listed proposals were accepted: ${coverage.if_all_proposed_accepted.counts.satisfied} satisfied, ${coverage.if_all_proposed_accepted.counts.in_progress} in progress, ${coverage.if_all_proposed_accepted.counts.unsatisfied} with no evidence or not satisfied, ${coverage.if_all_proposed_accepted.unaddressed_threats.length} unaddressed threats.`;
     this.elements.coverageContent.replaceChildren(counts, requirements, gaps, proposals, joint);
   }
 
@@ -528,13 +544,8 @@ export class RequirementsView {
     this.catalog = undefined;
     this.elements.requestStatus.textContent = `Unable to load ${this.mode === "standards" ? "the extracted standards catalog" : "requirements"}: ${errorMessage(error)}`;
     this.elements.requestStatus.className = "library-request-status is-error";
-    this.elements.resultCount.textContent = "Unavailable";
-    this.elements.tableRegion.hidden = true;
-    this.elements.emptyState.hidden = true;
+    this.clearTable();
     this.elements.retryButton.hidden = false;
-    this.elements.previousPage.disabled = true;
-    this.elements.nextPage.disabled = true;
-    this.elements.pageStatus.textContent = "Unavailable";
   }
 
   private populateControls(catalog: RequirementCatalog): void {
@@ -548,6 +559,8 @@ export class RequirementsView {
       return option;
     }));
     this.elements.productFilter.value = this.query.product ?? "";
+    this.elements.productControl.hidden = this.mode !== "model" || catalog.products.length < 2;
+    this.updateClearFilters();
     this.populateKinds(catalog.kinds);
     this.populateNormativities(catalog.normativities);
     this.populateSources(catalog.sources);
@@ -603,13 +616,11 @@ export class RequirementsView {
     this.elements.sourceFilter.value = selected;
   }
 
-  private renderPagination(total: number, count: number): void {
-    const start = total === 0 ? 0 : this.query.offset + 1;
-    const end = Math.min(total, this.query.offset + count);
-    this.elements.pageStatus.textContent = count === 0 ? `0 of ${total}` : `${start}–${end} of ${total}`;
-    this.elements.previousPage.disabled = this.query.offset === 0;
-    this.elements.nextPage.disabled = end >= total;
-    this.elements.pageSize.value = String(this.query.limit);
+  private clearTable(): void {
+    this.elements.tableBody.replaceChildren();
+    this.elements.tableRegion.hidden = true;
+    this.elements.emptyState.hidden = true;
+    resetPagination(this.elements);
   }
 
   private updateSelectedRow(): void {
@@ -622,15 +633,14 @@ export class RequirementsView {
 
   private clearDetails(): void {
     this.selectedId = undefined;
-    this.elements.detailTitle.textContent = "Select a requirement";
+    this.elements.detailTitle.textContent = "";
     this.elements.detailId.textContent = "";
     this.elements.detailBadges.replaceChildren();
     this.elements.detailText.textContent = "";
+    this.elements.detailDescription.textContent = "";
     this.elements.detailList.replaceChildren();
     this.elements.detailRelationships.replaceChildren();
-    this.elements.detailStatus.textContent = this.mode === "standards"
-      ? "Choose a catalog row to inspect its statement, source locator, relationship proposals, and Review decisions."
-      : "Choose a row to inspect its full statement, provenance, scope, relationships, Assertions, and Reviews.";
+    this.elements.detailStatus.textContent = EMPTY_INSPECTOR;
   }
 
   private updateSortIndicators(): void {
@@ -647,6 +657,7 @@ export class RequirementsView {
   private setLoading(loading: boolean): void {
     this.elements.workspace.setAttribute("aria-busy", String(loading));
     if (loading) {
+      this.clearTable();
       this.elements.requestStatus.textContent = this.mode === "standards"
         ? "Loading the extracted standards catalog…"
         : "Loading requirements from the selected model…";
@@ -677,7 +688,7 @@ export function requirementsViewElements(root: Document = document): Requirement
     productControl: required("requirements-product-control"),
     productFilter: required("requirements-product-filter"),
     sortButtons: [...root.querySelectorAll<HTMLButtonElement>("[data-requirement-sort]")],
-    resultCount: required("requirements-result-count"),
+    clearFilters: required("requirements-clear-filters"),
     requestStatus: required("requirements-request-status"),
     emptyState: required("requirements-empty"),
     tableRegion: required("requirements-table-region"),
@@ -685,7 +696,6 @@ export function requirementsViewElements(root: Document = document): Requirement
     scopeHeading: required("requirements-scope-heading"),
     satisfactionHeading: required("requirements-satisfaction-heading"),
     tableBody: required("requirements-table-body"),
-    pageSize: required("requirements-page-size"),
     previousPage: required("requirements-page-previous"),
     nextPage: required("requirements-page-next"),
     pageStatus: required("requirements-page-status"),
@@ -698,6 +708,7 @@ export function requirementsViewElements(root: Document = document): Requirement
     detailId: required("requirements-detail-id"),
     detailBadges: required("requirements-detail-badges"),
     detailText: required("requirements-detail-text"),
+    detailDescription: required("requirements-detail-description"),
     detailStatus: required("requirements-detail-status"),
     detailList: required("requirements-detail-list"),
     detailRelationships: required("requirements-detail-relationships"),
@@ -711,7 +722,6 @@ function relationshipSection(
 ): HTMLElement {
   const details = root.createElement("details");
   details.className = "requirement-relationship-section";
-  details.open = title.startsWith("Established");
   const summary = root.createElement("summary");
   summary.textContent = `${title} (${relationships.length})`;
   const list = root.createElement("ul");

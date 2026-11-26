@@ -8,11 +8,8 @@ interface PreviewChrome {
   body: Pick<HTMLElement, "dataset">;
   banner: Pick<HTMLElement, "hidden">;
   enginePanel: Pick<HTMLElement, "hidden">;
-  sdlTab: Pick<HTMLElement, "hidden">;
-  sdlPanel: Pick<HTMLElement, "hidden">;
   proposals: Pick<HTMLElement, "hidden">;
   savedViews: Pick<HTMLElement, "hidden">;
-  libraryTab: Pick<HTMLElement, "hidden">;
   modelSelect: Pick<HTMLSelectElement, "disabled" | "options">;
   modelStatus: Pick<HTMLElement, "textContent">;
   reportStatus: Pick<HTMLElement, "textContent">;
@@ -22,11 +19,8 @@ interface PreviewChrome {
 export function configurePreviewChrome(elements: PreviewChrome): void {
   elements.banner.hidden = false;
   elements.enginePanel.hidden = true;
-  elements.sdlTab.hidden = true;
-  elements.sdlPanel.hidden = true;
   elements.proposals.hidden = true;
   elements.savedViews.hidden = true;
-  elements.libraryTab.hidden = false;
   elements.body.dataset.appMode = "browser-preview";
   elements.modelSelect.disabled = true;
   if (elements.modelSelect.options[0]) {

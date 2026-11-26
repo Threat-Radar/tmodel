@@ -37,8 +37,12 @@ export class StaticPreviewApi {
     if (request.pathname === "/models") return this.get("models.json", init);
 
     const file = request.searchParams.get("file");
+    if (request.pathname === "/sdl" && file === null) return this.get("sdl/models.json", init);
     const model = file ? modelId(file) : undefined;
     if (!model) return jsonError(400, "missing or invalid model file");
+    if (request.pathname === "/sdl") {
+      return this.sdlView(model, request.searchParams.get("program"), init);
+    }
     const root = `models/${encodeURIComponent(model)}/`;
     if (request.pathname === "/graph") return this.get(`${root}graph.json`, init);
     if (request.pathname === "/risk") {
@@ -55,6 +59,20 @@ export class StaticPreviewApi {
     const entry = manifest.goals.find((candidate) => candidate.goal === goal);
     if (!entry || !/^goal-[0-9]{3}\.json$/.test(entry.file)) return jsonError(404, `unknown goal: ${goal}`);
     return this.get(`${root}attack-paths/${entry.file}`, init);
+  }
+
+  private async sdlView(model: string, program: string | null, init?: RequestInit): Promise<Response> {
+    const response = await this.get(`sdl/${encodeURIComponent(model)}.json`, init);
+    if (!response.ok) return response;
+    const { views } = await response.json() as { views?: Record<string, unknown> };
+    if (!views || typeof views !== "object" || Array.isArray(views)) {
+      return jsonError(500, "malformed static SDL program data");
+    }
+    const programs = Object.keys(views);
+    if (!program && programs.length !== 1) return jsonError(400, "select an SDL program");
+    const requested = program || programs[0];
+    if (!programs.includes(requested)) return jsonError(404, "unknown SDL program");
+    return new Response(JSON.stringify(views[requested]), { headers: { "Content-Type": "application/json" } });
   }
 
   private goalManifest(model: string, root: string, init?: RequestInit): Promise<GoalManifest> {

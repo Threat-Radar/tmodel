@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import catalogArtifact from "../public/data/requirements/catalog.json";
-import { calculateCoverageFallback } from "./coverage-provider";
+import { calculateCoverageFallback, type CoverageLoadResult } from "./coverage-provider";
 import {
   REQUIREMENTS_GRAPH,
   requirementsGraphWithEverySatisfactionState,
@@ -21,7 +21,7 @@ describe("requirements view", () => {
     view.activate();
     await settle();
 
-    expect(elements.resultCount.textContent).toBe("3 requirements");
+    expect(elements.pageStatus.textContent).toBe("1–3 of 3");
     expect(elements.tableBody.children).toHaveLength(3);
     view.selectRequirement("requirement:component");
 
@@ -83,22 +83,83 @@ describe("requirements view", () => {
     expect(occurrences(text, "Review review:second")).toBe(1);
   });
 
-  it("filters by product, loads coverage, and leaves the unscoped requirement out", async () => {
+  it("loads coverage for the sole product and keeps all recorded model requirements", async () => {
     const { view, elements, getCoverage } = harness();
     view.activate();
     await settle();
 
+    expect(elements.productControl.hidden).toBe(true);
+    expect(elements.clearFilters.hidden).toBe(true);
+    expect(elements.coverageSection.open).toBe(true);
+    expect(view.currentQuery().product).toBeUndefined();
+    expect(elements.pageStatus.textContent).toBe("1–3 of 3");
+    expect(elements.nextPage.hidden).toBe(true);
+    expect(rowIds(elements.tableBody)).toContain("requirement:unscoped");
+    expect(getCoverage).toHaveBeenCalledExactlyOnceWith("product:tcu", expect.any(AbortSignal));
+    expect(elements.coverageStatus.textContent).toContain("hypotheses");
+    const coverage = deepText(elements.coverageContent);
+    expect(coverage).toContain("Proposed links — hypothetical only");
+    expect(coverage).toContain("No recorded satisfaction evidence");
+    expect(coverage).toContain("If all listed proposals were accepted");
+    expect(coverage).toContain("threat:two");
+    expect(coverage).not.toMatch(/PR #243|fallback|\/coverage/);
+  });
+
+  it("filters multi-product models and drops stale product coverage on model change", async () => {
+    const { view, elements } = harness();
+    const multi = structuredClone(REQUIREMENTS_GRAPH);
+    multi.nodes = [...multi.nodes, { id: "product:other", domain_type: "Product", label: "Other", properties: {} }];
+    let resolveCoverage!: (result: CoverageLoadResult) => void;
+    const pending = new Promise<CoverageLoadResult>((resolve) => { resolveCoverage = resolve; });
+    const getOldCoverage = vi.fn((_product: string, _signal?: AbortSignal) => pending);
+    view.openModel({ file: multi.file, notice: "", getGraph: async () => multi, getCoverage: getOldCoverage });
+    view.activate();
+    await settle();
+    expect(elements.productControl.hidden).toBe(false);
+    expect(getOldCoverage).not.toHaveBeenCalled();
+    expect(elements.coverageStatus.textContent).toContain("Choose a product");
+
     elements.productFilter.value = "product:tcu";
     elements.productFilter.dispatch("change");
-    await settle();
-
-    expect(view.currentQuery().product).toBe("product:tcu");
-    expect(elements.resultCount.textContent).toBe("2 requirements");
+    expect(elements.pageStatus.textContent).toBe("1–2 of 2");
     expect(rowIds(elements.tableBody)).not.toContain("requirement:unscoped");
-    expect(getCoverage).toHaveBeenCalledWith("product:tcu", expect.any(AbortSignal));
-    expect(elements.coverageStatus.textContent).toContain("not verified compliance");
-    expect(deepText(elements.coverageContent)).toContain("Proposed links — hypothetical only");
-    expect(deepText(elements.coverageContent)).toContain("No recorded satisfaction evidence");
+    expect(elements.clearFilters.hidden).toBe(false);
+    elements.clearFilters.dispatch("click");
+    expect(view.currentQuery().product).toBeUndefined();
+    expect(elements.pageStatus.textContent).toBe("1–3 of 3");
+    expect(elements.coverageStatus.textContent).toContain("Choose a product");
+
+    elements.productFilter.value = "product:other";
+    elements.productFilter.dispatch("change");
+    const previousSignal = getOldCoverage.mock.lastCall?.[1];
+    elements.coverageSection.open = false;
+    const second = singleRequirementGraph();
+    second.nodes = second.nodes.map((node) => node.id === "product:tcu" ? { ...node, id: "product:new" } : node);
+    second.edges = second.edges.map((edge) => ({
+      ...edge,
+      source: edge.source === "product:tcu" ? "product:new" : edge.source,
+      target: edge.target === "product:tcu" ? "product:new" : edge.target,
+    }));
+    const getCoverage = vi.fn(async () => ({
+      response: calculateCoverageFallback(second, "product:new"),
+      source: "frontend-fallback" as const, notice: "New source",
+    }));
+    view.openModel({ file: second.file, notice: "", getGraph: async () => second, getCoverage });
+    expect(elements.productControl.hidden).toBe(true);
+    expect(elements.productFilter.value).toBe("");
+    expect(elements.tableRegion.hidden).toBe(true);
+    expect(previousSignal?.aborted).toBe(true);
+    await settle();
+    expect(getCoverage).toHaveBeenCalledExactlyOnceWith("product:new", expect.any(AbortSignal));
+    expect(elements.coverageSection.open).toBe(false);
+    expect(rowIds(elements.tableBody)).toEqual(["requirement:family"]);
+    const recorded = deepText(elements.coverageContent);
+    resolveCoverage({
+      response: calculateCoverageFallback(multi, "product:tcu"),
+      source: "frontend-fallback", notice: "Old source",
+    });
+    await settle();
+    expect(deepText(elements.coverageContent)).toBe(recorded);
   });
 
   it("switches to a clearly separate standards-catalog mode without model coverage claims", async () => {
@@ -120,8 +181,8 @@ describe("requirements view", () => {
     expect(elements.attribution.children[0]?.children[1]?.getAttribute("href"))
       .toBe("https://creativecommons.org/licenses/by-sa/4.0/");
     expect(elements.tableCaption.textContent).toContain("does not establish applicability");
-    expect(elements.requestStatus.textContent).toContain("extracted standards catalog");
-    expect(getCoverage).not.toHaveBeenCalled();
+    expect(elements.requestStatus.textContent).toBe("");
+    expect(getCoverage).toHaveBeenCalledTimes(1);
 
     view.selectRequirement("requirement:component");
     expect(elements.detailStatus.textContent).toContain("not automatically applicable");
@@ -138,11 +199,11 @@ describe("requirements view", () => {
 
     elements.sourceFilter.value = ASVS_SOURCE;
     elements.sourceFilter.dispatch("change");
-    expect(elements.resultCount.textContent).toBe("34 requirements");
+    expect(elements.pageStatus.textContent).toBe("1–34 of 34");
 
     elements.search.value = "Annex I";
     elements.search.dispatch("search");
-    expect(elements.resultCount.textContent).toBe("0 requirements");
+    expect(elements.pageStatus.textContent).toBe("0 of 0");
     expect(elements.sourceFilter.value).toBe(ASVS_SOURCE);
     expect(elements.sourceFilter.children.find((option) => option.value === ASVS_SOURCE)?.textContent)
       .toContain("(0)");
@@ -150,13 +211,53 @@ describe("requirements view", () => {
     elements.search.value = "";
     elements.search.dispatch("search");
     expect(elements.sourceFilter.value).toBe(ASVS_SOURCE);
-    expect(elements.resultCount.textContent).toBe("34 requirements");
+    expect(elements.pageStatus.textContent).toBe("1–34 of 34");
 
     elements.sourceFilter.value = "";
     elements.sourceFilter.dispatch("change");
     expect(view.currentQuery().source).toBeUndefined();
     expect(elements.sourceFilter.value).toBe("");
-    expect(elements.resultCount.textContent).toBe("109 requirements");
+    expect(elements.pageStatus.textContent).toBe("1–50 of 109");
+  });
+
+  it("clears catalog search and filters on page two without switching browsing mode", async () => {
+    const { view, elements } = harness(undefined, vi.fn(async () => STANDARDS_CATALOG));
+    view.activate();
+    await settle();
+    switchMode(elements, "standards");
+    await settle();
+
+    elements.search.value = "requirement";
+    elements.search.dispatch("search");
+    elements.kindFilter.value = STANDARDS_CATALOG.requirements.find((row) => row.kind)?.kind ?? "";
+    elements.kindFilter.dispatch("change");
+    expect(elements.clearFilters.hidden).toBe(false);
+    elements.clearFilters.dispatch("click");
+    expect(elements.clearFilters.hidden).toBe(true);
+    expect(elements.pageStatus.textContent).toBe("1–50 of 109");
+
+    elements.nextPage.dispatch("click");
+    expect(elements.pageStatus.textContent).toBe("51–100 of 109");
+    elements.nextPage.dispatch("click");
+    expect(elements.pageStatus.textContent).toBe("101–109 of 109");
+    elements.search.value = "pending query";
+    elements.search.dispatch("input");
+    elements.clearFilters.dispatch("click");
+    expect(view.currentMode()).toBe("standards");
+    expect(view.currentQuery()).toMatchObject({ search: undefined, kind: undefined, offset: 0 });
+    expect(elements.pageStatus.textContent).toBe("1–50 of 109");
+  });
+
+  it("distinguishes a model without recorded requirements from no matching rows", async () => {
+    const graph = structuredClone(REQUIREMENTS_GRAPH);
+    graph.nodes = graph.nodes.filter((node) => node.domain_type === "Product");
+    graph.edges = [];
+    const { view, elements } = harness(vi.fn(async () => graph));
+    view.activate();
+    await settle();
+    expect(elements.emptyState.textContent).toBe("The selected model has no recorded requirements.");
+    expect(elements.requestStatus.textContent).toBe("");
+    expect(elements.pageStatus.textContent).toBe("0 of 0");
   });
 
   it("switches sources while the prior selected source has zero matches", async () => {
@@ -173,13 +274,13 @@ describe("requirements view", () => {
     elements.sourceFilter.dispatch("change");
     elements.search.value = "Annex I";
     elements.search.dispatch("search");
-    expect(elements.resultCount.textContent).toBe("0 requirements");
+    expect(elements.pageStatus.textContent).toBe("0 of 0");
 
     elements.sourceFilter.value = CRA_SOURCE;
     elements.sourceFilter.dispatch("change");
     expect(view.currentQuery().source).toBe(CRA_SOURCE);
     expect(elements.sourceFilter.value).toBe(CRA_SOURCE);
-    expect(elements.resultCount.textContent).toBe("23 requirements");
+    expect(elements.pageStatus.textContent).toBe("1–23 of 23");
   });
 
   it("loads a new model after catalog browsing and returns to a clean cached catalog", async () => {
@@ -199,19 +300,21 @@ describe("requirements view", () => {
     const getSecondGraph = vi.fn(async () => secondGraph);
     view.openModel({
       file: secondGraph.file,
-      title: "Second model",
       notice: "Second model requirements",
       getGraph: getSecondGraph,
       getCoverage,
     });
+    expect(elements.sourceFilter.value).toBe(ASVS_SOURCE);
+    expect(elements.pageStatus.textContent).toBe("1–34 of 34");
+    expect(view.currentSelection()).toBeDefined();
     switchMode(elements, "model");
     await settle();
 
     expect(getSecondGraph).toHaveBeenCalledTimes(1);
     expect(view.currentSelection()).toBeUndefined();
-    expect(elements.resultCount.textContent).toBe("1 requirement");
+    expect(elements.pageStatus.textContent).toBe("1–1 of 1");
     expect(elements.sourceControl.hidden).toBe(true);
-    expect(elements.productControl.hidden).toBe(false);
+    expect(elements.productControl.hidden).toBe(true);
     expect(elements.coverageSection.hidden).toBe(false);
 
     switchMode(elements, "standards");
@@ -219,7 +322,7 @@ describe("requirements view", () => {
     expect(view.currentSelection()).toBeUndefined();
     expect(view.currentQuery().source).toBeUndefined();
     expect(elements.sourceFilter.value).toBe("");
-    expect(elements.resultCount.textContent).toBe("109 requirements");
+    expect(elements.pageStatus.textContent).toBe("1–50 of 109");
   });
 
   it("renders distinct labels for all four satisfaction evidence cases", async () => {
@@ -248,7 +351,7 @@ describe("requirements view", () => {
     elements.retryButton.dispatch("click");
     await settle();
     expect(elements.retryButton.hidden).toBe(true);
-    expect(elements.resultCount.textContent).toBe("3 requirements");
+    expect(elements.pageStatus.textContent).toBe("1–3 of 3");
   });
 });
 
@@ -277,18 +380,18 @@ function harness(
     normativityControl: make("label"), normativityFilter: make("select"),
     sourceControl: make("label"), sourceFilter: make("select"),
     productControl: make("label"), productFilter: make("select"),
-    sortButtons, resultCount: make(), requestStatus: make(), emptyState: make(),
+    sortButtons, clearFilters: make("button"), requestStatus: make(), emptyState: make(),
     tableRegion: make(), tableCaption: make("caption"), scopeHeading: make("th"),
-    satisfactionHeading: make("button"), tableBody: make("tbody"), pageSize: make("select"),
+    satisfactionHeading: make("button"), tableBody: make("tbody"),
     previousPage: make("button"), nextPage: make("button"), pageStatus: make(),
     sortHelp: make(), coverageSection: make("details"), coverageStatus: make(),
     coverageContent: make(), detailTitle: make(),
     attribution: make("aside"),
-    detailId: make(), detailBadges: make(), detailText: make(), detailStatus: make(),
+    detailId: make(), detailBadges: make(), detailText: make(), detailDescription: make(), detailStatus: make(),
     detailList: make("dl"), detailRelationships: make(),
   };
   elements.modeSelect.value = "model";
-  elements.pageSize.value = "25";
+  elements.coverageSection.open = true;
   const attributionText = make("p");
   const owaspLink = make("a");
   owaspLink.textContent = "OWASP Application Security Verification Standard (ASVS) 5.0.0";
@@ -317,7 +420,6 @@ function harness(
   );
   view.openModel({
     file: REQUIREMENTS_GRAPH.file,
-    title: "TCU",
     notice: "Test model",
     getGraph,
     getCoverage,
@@ -388,6 +490,8 @@ class FakeElement {
   private controlValue = "";
   private readonly attributes = new Map<string, string>();
   private readonly listeners = new Map<string, Array<() => void>>();
+
+  focus(): void {}
 
   constructor(readonly tagName: string) {}
 

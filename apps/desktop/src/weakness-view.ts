@@ -1,3 +1,7 @@
+import {
+  bindClearFilters, EMPTY_INSPECTOR, LIBRARY_PAGE_SIZE, renderPagination, resetPagination,
+  type LibraryPagination,
+} from "./library-presentation";
 import type { EngineState } from "./engine";
 import { fieldItems, fieldValues, readableCweText, richTextToCode, safeHttpUrl } from "./weakness-fields";
 import {
@@ -22,7 +26,7 @@ interface DisclosureOptions {
   open?: boolean;
 }
 
-export interface WeaknessViewElements {
+export interface WeaknessViewElements extends LibraryPagination {
   workspace: HTMLElement;
   sourceNotice: HTMLElement;
   search: HTMLInputElement;
@@ -31,17 +35,13 @@ export interface WeaknessViewElements {
   statusFilter: HTMLSelectElement;
   usageFilter: HTMLSelectElement;
   sortButtons: readonly HTMLButtonElement[];
-  resultCount: HTMLElement;
+  clearFilters: HTMLButtonElement;
   requestStatus: HTMLElement;
   warning: HTMLElement;
   retryButton: HTMLButtonElement;
   tableRegion: HTMLElement;
   tableBody: HTMLTableSectionElement;
   emptyState: HTMLElement;
-  pageSize: HTMLSelectElement;
-  previousPage: HTMLButtonElement;
-  nextPage: HTMLButtonElement;
-  pageStatus: HTMLElement;
   sortHelp: HTMLElement;
   attributionNotice: HTMLElement;
   attributionLicense: HTMLElement;
@@ -60,7 +60,7 @@ export class WeaknessesView {
   private readonly tableRequests = new LatestRequestGuard();
   private readonly detailRequests = new LatestRequestGuard();
   private readonly rows = new Map<string, WeaknessTableRow>();
-  private query: WeaknessTableQuery = { ...DEFAULT_WEAKNESS_QUERY };
+  private query: WeaknessTableQuery = { ...DEFAULT_WEAKNESS_QUERY, limit: LIBRARY_PAGE_SIZE };
   private started = false;
   private engineConnected?: boolean;
   private tableState: "idle" | "loading" | "loaded" | "failed" = "idle";
@@ -168,18 +168,20 @@ export class WeaknessesView {
         void this.loadTable();
       });
     }
-    this.elements.pageSize.addEventListener("change", () => {
-      const value = Number(this.elements.pageSize.value);
-      if (![25, 50, 100].includes(value)) return;
-      this.query.limit = value;
+    const { clearFilters, search, abstractionFilter, structureFilter, statusFilter, usageFilter } = this.elements;
+    bindClearFilters(clearFilters, search, [abstractionFilter, structureFilter, statusFilter, usageFilter], () => {
+      if (this.searchTimer) clearTimeout(this.searchTimer);
+      this.query.search = this.query.abstraction = this.query.structure = this.query.status = this.query.usage = undefined;
       this.query.offset = 0;
       void this.loadTable();
     });
     this.elements.previousPage.addEventListener("click", () => {
+      if (this.tableState !== "loaded") return;
       this.query.offset = Math.max(0, this.query.offset - this.query.limit);
       void this.loadTable();
     });
     this.elements.nextPage.addEventListener("click", () => {
+      if (this.tableState !== "loaded") return;
       this.query.offset += this.query.limit;
       void this.loadTable();
     });
@@ -198,6 +200,13 @@ export class WeaknessesView {
     try {
       const response = await this.provider.getTable(this.query, request.signal);
       if (!this.tableRequests.isCurrent(request)) return;
+      if (response.count === 0 && response.query.offset > 0) {
+        this.query.offset = Math.max(0, Math.floor((response.total - 1) / this.query.limit) * this.query.limit);
+        if (this.query.offset < response.query.offset) {
+          await this.loadTable();
+          return;
+        }
+      }
       this.renderResponse(response);
       this.tableState = "loaded";
     } catch (error) {
@@ -243,15 +252,16 @@ export class WeaknessesView {
       response.query.order,
     );
     this.elements.tableBody.replaceChildren(...response.rows.map((row) => this.createRow(row)));
-    this.elements.resultCount.textContent = `${response.total} ${response.total === 1 ? "weakness" : "weaknesses"}`;
-    this.elements.requestStatus.textContent = response.total === 0
-      ? "No CWE weaknesses match the current search and filters."
-      : `Showing ${rangeText(response)}.`;
+    this.elements.tableRegion.scrollTop = 0;
+    this.elements.requestStatus.textContent = "";
     this.elements.requestStatus.className = "library-request-status";
+    this.elements.emptyState.textContent = response.catalog.weaknesses === 0
+      ? "No CWE weaknesses are available."
+      : "No CWE weaknesses match the current search and filters.";
     this.elements.emptyState.hidden = response.total !== 0;
     this.elements.tableRegion.hidden = response.total === 0;
     this.elements.retryButton.hidden = true;
-    this.renderPagination(response);
+    renderPagination(this.elements, response.query.offset, response.count, response.total);
     this.renderAttribution(response);
     const unknown = response.catalog.unknown_fields;
     this.elements.warning.hidden = unknown === 0;
@@ -260,17 +270,6 @@ export class WeaknessesView {
       : `${unknown} catalog ${unknown === 1 ? "field is" : "fields are"} not recognized by this importer. The raw fields remain preserved in entry details.`;
     if (this.selectedId && this.rows.has(this.selectedId)) this.updateSelectedRow();
     else if (this.selectedId) this.clearDetails();
-  }
-
-  private renderPagination(response: WeaknessTableResponse): void {
-    const start = response.total === 0 ? 0 : response.query.offset + 1;
-    const end = Math.min(response.total, response.query.offset + response.count);
-    this.elements.pageStatus.textContent = response.count === 0
-      ? `0 of ${response.total}`
-      : `${start}–${end} of ${response.total}`;
-    this.elements.previousPage.disabled = response.query.offset === 0;
-    this.elements.nextPage.disabled = end >= response.total;
-    this.elements.pageSize.value = String(this.query.limit);
   }
 
   private renderAttribution(response: WeaknessTableResponse): void {
@@ -284,14 +283,13 @@ export class WeaknessesView {
   private renderError(error: unknown): void {
     this.elements.requestStatus.textContent = `Unable to load CWE weaknesses: ${errorMessage(error)}`;
     this.elements.requestStatus.className = "library-request-status is-error";
-    this.elements.resultCount.textContent = "Unavailable";
+    this.rows.clear();
+    this.clearDetails();
     this.elements.tableRegion.hidden = true;
     this.elements.emptyState.hidden = true;
     this.elements.warning.hidden = true;
     this.elements.retryButton.hidden = false;
-    this.elements.previousPage.disabled = true;
-    this.elements.nextPage.disabled = true;
-    this.elements.pageStatus.textContent = "Unavailable";
+    resetPagination(this.elements);
   }
 
   private createRow(row: WeaknessTableRow): HTMLTableRowElement {
@@ -332,19 +330,7 @@ export class WeaknessesView {
     this.elements.detailTitle.textContent = row.name;
     this.elements.detailId.textContent = row.id;
     this.elements.detailDescription.textContent = row.description;
-    this.elements.detailBadges.replaceChildren(...[
-      row.abstraction,
-      row.structure,
-      row.status,
-      row.usage,
-      row.likelihood ? `Likelihood: ${row.likelihood}` : null,
-    ].flatMap((value) => value ? [this.badge(value)] : []));
-    this.elements.detailList.replaceChildren(
-      this.detailRow("CAPEC mappings", String(row.attack_patterns)),
-      this.detailRow("Observed examples", String(row.observed_examples)),
-      this.detailRow("Mitigations", String(row.mitigations)),
-      ...safeLinkRows(this.documentRoot, "Official definition", row.url, `View ${row.id} on cwe.mitre.org`),
-    );
+    this.renderOverview(row);
     this.elements.detailSections.replaceChildren();
     this.elements.detailRetryButton.hidden = true;
   }
@@ -355,22 +341,24 @@ export class WeaknessesView {
     this.elements.detailTitle.textContent = entry.name;
     this.elements.detailId.textContent = entry.id;
     this.elements.detailDescription.textContent = entry.description;
-    this.elements.detailBadges.replaceChildren(...[
-      entry.abstraction,
-      entry.structure,
-      entry.status,
-      entry.usage,
-      entry.likelihood ? `Likelihood: ${entry.likelihood}` : null,
-    ].flatMap((value) => value ? [this.badge(value)] : []));
+    const row = this.rows.get(entry.id);
+    if (row) this.renderOverview({
+      ...row,
+      abstraction: entry.abstraction,
+      structure: entry.structure,
+      usage: entry.usage,
+      likelihood: entry.likelihood,
+      status: entry.status,
+    });
     this.elements.detailStatus.textContent = "";
     this.elements.detailRetryButton.hidden = true;
     const sections: HTMLElement[] = [];
     sections.push(...this.fieldSection(entry, "Extended Description", "Extended_Description", { open: true }));
     sections.push(...this.alternateTerms(entry));
     sections.push(...this.backgroundAndPlatforms(entry));
-    sections.push(...this.itemSection(entry, "Modes of Introduction", "Modes_Of_Introduction", ["Introduction"], { open: true }));
-    sections.push(...this.itemSection(entry, "Common Consequences", "Common_Consequences", ["Consequence"], { open: true }));
-    sections.push(...this.itemSection(entry, "Detection Methods", "Detection_Methods", ["Detection_Method"], { open: true }));
+    sections.push(...this.itemSection(entry, "Modes of Introduction", "Modes_Of_Introduction", ["Introduction"]));
+    sections.push(...this.itemSection(entry, "Common Consequences", "Common_Consequences", ["Consequence"]));
+    sections.push(...this.itemSection(entry, "Detection Methods", "Detection_Methods", ["Detection_Method"]));
     sections.push(...this.itemSection(entry, "Potential Mitigations", "Potential_Mitigations", ["Mitigation"]));
     sections.push(...this.itemSection(entry, "Demonstrative Examples", "Demonstrative_Examples", ["Demonstrative_Example"]));
     sections.push(...this.observedExamples(entry));
@@ -380,6 +368,20 @@ export class WeaknessesView {
     sections.push(...this.additionalFields(entry));
     sections.push(...this.contentHistory(entry));
     this.elements.detailSections.replaceChildren(...sections);
+  }
+
+  private renderOverview(row: WeaknessTableRow): void {
+    this.elements.detailBadges.replaceChildren(...(row.status ? [this.badge(row.status)] : []));
+    const attributes: [string, string | null][] = [
+      ["Abstraction", row.abstraction], ["Structure", row.structure], ["Usage", row.usage], ["Likelihood", row.likelihood],
+    ];
+    this.elements.detailList.replaceChildren(
+      ...attributes.flatMap(([label, value]) => value ? [this.detailRow(label, value)] : []),
+      this.detailRow("CAPEC mappings", String(row.attack_patterns)),
+      this.detailRow("Observed examples", String(row.observed_examples)),
+      this.detailRow("Mitigations", String(row.mitigations)),
+      ...safeLinkRows(this.documentRoot, "Official definition", row.url, `View ${row.id} on cwe.mitre.org`),
+    );
   }
 
   private fieldSection(
@@ -409,7 +411,6 @@ export class WeaknessesView {
     const terms = fieldItems(entry, "Alternate_Terms", "Alternate_Term");
     return this.valuesSection("Alternate Terms", terms.length ? terms : entry.alternate_terms, {
       count: terms.length || entry.alternate_terms.length,
-      open: true,
     });
   }
 
@@ -429,7 +430,6 @@ export class WeaknessesView {
     wrapper.append(...groups);
     return [this.detailSection("Background and Applicable Platforms", wrapper, {
       count: backgroundValues.length + platformValues.length,
-      open: true,
     })];
   }
 
@@ -671,7 +671,7 @@ export class WeaknessesView {
     options: DisclosureOptions = {},
   ): HTMLElement {
     const details = this.documentRoot.createElement("details");
-    details.className = "inspector-section weakness-detail-section";
+    details.className = "weakness-detail-section";
     details.open = options.open ?? false;
     const summary = this.documentRoot.createElement("summary");
     const label = this.documentRoot.createElement("span");
@@ -713,14 +713,14 @@ export class WeaknessesView {
   private clearDetails(): void {
     this.selectedId = undefined;
     this.detailRequests.cancel();
-    this.elements.detailTitle.textContent = "Select a weakness";
+    this.elements.detailTitle.textContent = "";
     this.elements.detailId.textContent = "";
     this.elements.detailBadges.replaceChildren();
     this.elements.detailDescription.textContent = "";
     this.elements.detailList.replaceChildren();
     this.elements.detailSections.replaceChildren();
     this.elements.detailRetryButton.hidden = true;
-    this.elements.detailStatus.textContent = "Choose a row to inspect its CWE details.";
+    this.elements.detailStatus.textContent = EMPTY_INSPECTOR;
   }
 
   private populateFacet(
@@ -770,6 +770,7 @@ export class WeaknessesView {
       this.elements.requestStatus.textContent = "Loading CWE weaknesses…";
       this.elements.requestStatus.className = "library-request-status";
       this.elements.retryButton.hidden = true;
+      this.elements.emptyState.hidden = true;
     }
   }
 }
@@ -789,14 +790,13 @@ export function weaknessViewElements(root: Document = document): WeaknessViewEle
     statusFilter: required("weakness-status-filter"),
     usageFilter: required("weakness-usage-filter"),
     sortButtons: [...root.querySelectorAll<HTMLButtonElement>("[data-weakness-sort]")],
-    resultCount: required("weakness-result-count"),
+    clearFilters: required("weakness-clear-filters"),
     requestStatus: required("weakness-request-status"),
     warning: required("weakness-warning"),
     retryButton: required("weakness-retry"),
     tableRegion: required("weakness-table-region"),
     tableBody: required("weakness-table-body"),
     emptyState: required("weakness-empty"),
-    pageSize: required("weakness-page-size"),
     previousPage: required("weakness-page-previous"),
     nextPage: required("weakness-page-next"),
     pageStatus: required("weakness-page-status"),
@@ -813,15 +813,6 @@ export function weaknessViewElements(root: Document = document): WeaknessViewEle
     detailRetryButton: required("weakness-detail-retry"),
     detailSections: required("weakness-detail-sections"),
   };
-}
-
-function rangeText(response: WeaknessTableResponse): string {
-  if (response.count === 0) {
-    return `0 of ${response.total} matching ${response.total === 1 ? "weakness" : "weaknesses"}`;
-  }
-  const start = response.query.offset + 1;
-  const end = Math.min(response.total, response.query.offset + response.count);
-  return `${start}–${end} of ${response.total} matching ${response.total === 1 ? "weakness" : "weaknesses"}`;
 }
 
 function safeLinkRows(
