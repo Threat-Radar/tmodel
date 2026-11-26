@@ -46,10 +46,13 @@
                 [--verdict accepted|rejected|changes_requested] [--declare-sponsor GH]
                                the sponsor decides one proposal, in a branch; always
                                in-process, never through the API (DL-0046)
-  tmodel import-sbom SBOM [--scan SCAN] -o MODEL [--report FILE] [--force]
+  tmodel import-sbom SBOM [--scan SCAN] [--platform OS/ARCH[/VARIANT]] -o MODEL
+                [--report FILE] [--force]
                                write a starter model from Syft's CycloneDX SBOM of a
                                container image and Grype's JSON scan of it; every
-                               claim proposed (#257, DL-0068); always in-process
+                               claim proposed (#257, DL-0068); always in-process.
+                               --platform names the build (linux/arm64/v8) unless
+                               the scan records it
 
 By default these go through the local API, exactly like the desktop app
 (APP-0001 A-030, A-060). `--in-process` calls the engine code directly
@@ -650,19 +653,32 @@ def _import_sbom(args: argparse.Namespace) -> int:
 
     try:
         result = import_sbom.run(
-            args.sbom, scan=args.scan, output=args.output, report=args.report, force=args.force
+            args.sbom,
+            scan=args.scan,
+            output=args.output,
+            report=args.report,
+            force=args.force,
+            platform=args.platform,
         )
     except import_sbom.SbomImportError as exc:
         print(f"error: {exc}", file=sys.stderr)
+        _print_notes(exc)
         return 2
     except OSError as exc:
         print(f"error: cannot write ({exc.strerror or exc})", file=sys.stderr)
+        _print_notes(exc)
         return 1
     if args.report is None:
         print(result.report_text, end="")
     else:
         print(f"wrote {args.output} and the import report {args.report}")
     return 0
+
+
+def _print_notes(exc: BaseException) -> None:
+    # What a failed import kept, such as the file --force was replacing (import_sbom).
+    for note in getattr(exc, "__notes__", ()):
+        print(f"  {note}", file=sys.stderr)
 
 
 def _serve(args: argparse.Namespace) -> int:
@@ -819,6 +835,16 @@ def build_parser() -> argparse.ArgumentParser:
         "sbom", help="Syft's CycloneDX 1.7 JSON SBOM of a container image named by digest"
     )
     imported.add_argument("--scan", help="Grype's JSON scan of that SBOM: grype sbom:FILE -o json")
+    imported.add_argument(
+        "--platform",
+        metavar="OS/ARCH[/VARIANT]",
+        help=(
+            "the platform of the build the SBOM's digest names, e.g. linux/arm64/v8: the "
+            "SBOM does not say whether its digest is a platform's or an index's, which "
+            "every platform shares. Needed unless the scan records it, as Grype does when "
+            "it read the image itself (not the SBOM)"
+        ),
+    )
     imported.add_argument(
         "-o",
         "--output",

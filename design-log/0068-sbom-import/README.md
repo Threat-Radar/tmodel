@@ -4,7 +4,7 @@ id: DL-0068
 title: "SBOM import: a starter model from Syft's CycloneDX SBOM of a container image and Grype's scan of it (#257)"
 type: process
 status: draft
-version: "0.2.0"
+version: "0.3.0"
 date: "2026-11-25"
 updated: "2026-11-25"
 record: DL-0068
@@ -30,8 +30,8 @@ match predicate's name and `confidence` scale.
 ## What was produced
 
 - `engine/engine/import_sbom.py`: the import, and the command `tmodel import-sbom SBOM [--scan SCAN]
-  -o MODEL [--report FILE] [--force]` in `engine/engine/cli.py`. It runs in-process only; the API
-  has no route to it.
+  [--platform OS/ARCH[/VARIANT]] -o MODEL [--report FILE] [--force]` in `engine/engine/cli.py`. It
+  runs in-process only; the API has no route to it.
 - `engine/tests/test_import_sbom.py` and the fixture in `engine/tests/fixtures/sbom-import/`.
 - This entry.
 
@@ -46,9 +46,13 @@ Each line is one of Table 6's candidate rules or one of #257's acceptance criter
   in another registry gets another id. The id is a readable slug, so two repository URLs that
   differ only in punctuation (`ghcr.io/org/app`, `ghcr.io/org-app`) would still share one; the
   purl in `identifiers` stays the key.
-- **ProductInstance:** the scanned build, keyed by the platform manifest digest Syft records in
-  `metadata.component.version` (R-ID-1), with the versioned purl beside it; its id is made from the
-  whole digest. `build_composed_of` lists every Component (ADR-0011 A4). The SBOM never fills the
+- **ProductInstance:** the scanned build, keyed by the digest Syft records in
+  `metadata.component.version` and the build's platform (R-ID-1; decision 2 below), such as
+  `linux/arm64/v8`. The digest is in `identifiers` and `version`, beside the versioned purl with the
+  `oci` type's `arch` qualifier (`?arch=arm64&repository_url=...`, qualifiers sorted); the platform
+  is also in its name and description, and its id is made from the whole digest and the platform
+  (`product-instance:sha256-260479a1...-linux-arm64-v8`). The schema has no platform slot, so none
+  is made up. `build_composed_of` lists every Component (ADR-0011 A4). The SBOM never fills the
   design-level `composed_of` (R-EDGE-2).
 - **Component:** one per SBOM entry other than a file (R-ID-4), keyed by its purl, qualifiers and
   subpath included, normalized by the rules the purl specification gives every type (R-ID-3), with
@@ -98,16 +102,35 @@ them decides a `DEC-*`; the sponsor can change any of them.
    import writes the vector half, a model file. The field-by-field mapping stays in RPT-0004 Table 6
    and in this entry, and a `MAP-NNNN` for radar's data contract can follow if the sponsor asks
    for one.
-2. **The instance key.** R-ID-1, the platform manifest digest, stored as `sha256:<hex>` in
-   `identifiers`. So the first version reads SBOMs of container images only, and refuses any other
-   SBOM with a message saying why: a folder or a file has no digest to key its build by. An image
-   named by a version tag gives Syft no digest either (pilot.md: Syft writes the digest only for
-   `latest` or a digest reference), and the message says to name the image by digest. An image
-   named by its index digest gets that digest, which every platform of the release shares, and the
-   CycloneDX file does not say which kind it is (RPT-0004 Table 6, finding 9); so a scan must also
-   name this SBOM's root `bom-ref` as its image id, as Grype does for the SBOM it read (Review
-   changes, item 6). Whether two platforms' SBOMs always differ in that `bom-ref` is not checked
-   here.
+2. **The instance key.** R-ID-1 asks for the platform manifest digest, but the CycloneDX file holds
+   one digest, `metadata.component.version`, and does not say whether it is a platform manifest's or
+   an index's (RPT-0004 Table 6, finding 9), and an index digest is shared by every platform of a
+   release. So the key is the digest and the platform: os/architecture, and the variant when one is
+   given. An index digest and a platform name exactly one build, and a platform manifest digest and
+   its platform still name that one build. The digest is stored as `sha256:<hex>` in `identifiers`.
+   The platform comes from `--platform OS/ARCH[/VARIANT]`, or from a scan Grype made of the image
+   itself, which records it in `source.target` (`os`, `architecture`, and `architectureVariant`,
+   the name Grype gives the variant); Grype leaves those empty when it read the SBOM, as for the
+   fixture. Where both give a part, they must agree; a part only one gives is taken from it (Syft
+   1.52.0 left the variant out of its own JSON, fanout-identity.md). With neither, the import is
+   refused, with a message saying the SBOM does not record which platform its digest names and to
+   pass `--platform` (for example `--platform linux/arm64/v8`). The SBOM's own record of its CPU is
+   checked against the platform: the image's purl, when it has an `arch`, and each package purl's
+   `arch` qualifier, read through a small table of distribution names (`aarch64` is `arm64`,
+   `x86_64` is `amd64`, `i686` and `x86` are `386`, `armhf` is `arm`, `ppc64el` is `ppc64le`).
+   A package may be built for the platform's architecture or, on a 64-bit platform, for the 32-bit
+   one it also runs (multiarch and multilib); any other is refused, and so is an SBOM none of whose
+   packages is built for the platform's own. A name not in the table is listed in the report as not
+   checked, and `noarch`, `all` and `any` are skipped. This changes a documented choice: the key was
+   the digest alone (Review changes, second round, item 2), and the command line: the fixture's
+   import now needs `--platform linux/arm64/v8`. The rest stays. The first version reads SBOMs of
+   container images only, and refuses any other SBOM with a message saying why: a folder or a file
+   has no digest to key its build by. An image named by a version tag gives Syft no digest either
+   (pilot.md: Syft writes the digest only for `latest` or a digest reference), and the message says
+   to name the image by digest. A scan must also name this SBOM's root `bom-ref` as its image id
+   when Grype read an SBOM (Review changes, item 6). The platform is keyed as given, in lower case:
+   `linux/arm64` and `linux/arm64/v8`, which containerd treats as one platform, give two ids, so
+   name it as the image index lists it.
 3. **Where `dependsOn` goes.** `uses_component`, option (b) of R-EDGE-3: the edge all seven example
    models with a dependency use (none uses `depends_on`), and the one the schema defines as the edge
    "along which vuln/finding propagation is sound". The engine does not propagate findings itself today; the
@@ -130,10 +153,13 @@ them decides a `DEC-*`; the sponsor can change any of them.
   the same model. Two runs give the same bytes; a test checks it.
 - **Entries with the same normalized purl are one Component,** as when an image holds one package
   twice, and the report lists them. Entries whose purls differ in a qualifier (zlib for `aarch64`
-  and for `x86_64`) are two Components. Entries that share a purl but give different names, types
-  or versions are refused; where they give different descriptions, suppliers or manufacturers,
-  that field is left out and listed. (Changed after review, item 1 below: until then, purls that
-  differed only in qualifiers were one Component.)
+  and for `armv7`, which an arm64 image can hold side by side) are two Components. Entries that
+  share a purl but give different names, types or versions are refused, every value against every
+  other; where they give different descriptions, suppliers or manufacturers, that field is left out
+  and listed. (Changed after review, item 1 below: until then, purls that differed only in
+  qualifiers were one Component. The first round's example was zlib for `aarch64` and for
+  `x86_64`, which one build cannot hold, so since the second round's item 2 such an SBOM is
+  refused.)
 - **Only the purl rules every type shares are applied.** Which names ignore case differs by type
   and changed between purl-spec versions (DL-0015, Phase 2), so two purls that differ only in such a
   case stay two Components, and a match on one is listed, never joined to the other.
@@ -153,13 +179,23 @@ them decides a `DEC-*`; the sponsor can change any of them.
   named by its path; entries that share a purl but not a name, type or version; a scan whose source
   is not an image, names another repository, or was made from another SBOM of the same digest; an
   SBOM whose name and version give two digests; a Grype version that is not a release, a database
-  Grype marks invalid, and a database dated after the scan.
-- **Outputs:** the model and the report are written to temporary files beside their paths and moved
-  into place only when both are written, so a failed import leaves neither, and puts back any file
+  Grype marks invalid, and a database dated after the scan. Since the second round (items 2 and 5):
+  no platform, or a `--platform` that is not `OS/ARCH[/VARIANT]` or names its architecture as a
+  distribution does (`aarch64`); a `--platform` the scan's platform contradicts; packages, or the
+  image's purl, built for an architecture the platform does not run; and a time that leaves
+  Python's years 1 to 9999 when moved to UTC, which now gets the field's message instead of a
+  traceback.
+- **Outputs:** the model and the report are written to temporary files beside their paths and put
+  in place only when both are written, so a failed import leaves neither, and puts back any file
   `--force` was replacing. An existing model or report, or a dangling link at its path, is never
-  replaced without `--force`, because people edit starter models. An input is never written over,
-  whether by its own name, a link to it, a second name for the same file, or the same name in
-  another case. The model's text is read back before it is written and must give the model it was
+  replaced without `--force`, because people edit starter models: without it, each file is put in
+  place by a hard link (or, on a volume without them, an exclusive create), which fails if anything
+  is there by then, so not even a file that appears while the import runs is written over. An input
+  is never written over, whether by its own name, a link to it, a second name for the same file, or
+  the same name in another case or Unicode form (names are compared as a Mac's volume compares
+  them). Taking back a failed import removes or puts back only a file this import put there, and a
+  file `--force` was replacing that cannot be put back is kept under its second name, which the
+  command prints. The model's text is read back before it is written and must give the model it was
   made from. Input text in the model's header and the report is escaped, so a line break cannot end
   a comment. The header names the output only by its relative path, or by its name when the path is
   absolute, so no home folder lands in a committed file.
@@ -173,6 +209,11 @@ The image RPT-0004's pilot scanned: `alpine:3.24.2` for linux/arm64/v8, platform
 `sha256:260479a1cfaf304c4c20da7f8405d3ce313513dcd534bb743257bdd2fe0f3e2d` (the tag's index digest is
 `sha256:294b683cb724…`). `alpine:latest`, which the pilot named, has since moved to an image pushed
 on 2026-11-08, so the image was fetched by digest on 2026-11-25.
+
+Neither file records that platform: the CycloneDX SBOM has no field for it, and Grype, which read
+the SBOM, left `source.target.os` and `architecture` empty. So the fixture is imported with
+`--platform linux/arm64/v8`, the platform the index lists for this manifest, and its 16 packages'
+`arch=aarch64` is read as `arm64`, the platform's architecture (decision 2).
 
 - **The SBOM** (`alpine-3.24.2.cdx.json`, SHA-256 `7b655bdb7c1a…`) is Syft 1.52.0's CycloneDX 1.7
   output, unchanged: 95 entries (16 library, 1 operating-system, 78 file), as pilot.md records, and
@@ -197,15 +238,21 @@ day, which is why every Assertion records the database's build time (R-PROV-2).
   (an advisory naming one CVE, none, or several; matches sharing a CVE; an id only inside a URL;
   placeholder CWEs; a match on a part the SBOM lacks); suppliers; dependencies that are not between
   Components; entries sharing a key; every refusal, each checked to write nothing; the command line;
-  and that the same files give the same bytes. Since the review, also the regression tests listed
-  under each item below: 135 tests in all, counting each parametrized case.
-- **The fixture's numbers are unchanged by the review:** 17 Components, 24 dependency edges, 15
+  and that the same files give the same bytes. Since the reviews, also the regression tests listed
+  under each item of both rounds below: 185 tests in all (135 after the first round), counting each
+  parametrized case.
+- **The fixture's numbers are unchanged by both reviews:** 17 Components, 24 dependency edges, 15
   Vulnerabilities, 9 Weaknesses, 4 Parties and 45 Assertions (30 package matches, 15 CWE links).
   Every package has its own purl and every match its own (CVE, Component) pair, so keeping the
   qualifiers and one Assertion per match (Review changes, items 1 and 4) change no count. Only two
-  ids changed (item 6): `product:alpine` is now `product:index-docker-io-library-alpine`, and
-  `product-instance:alpine-260479a1cfaf` is now
-  `product-instance:sha256-260479a1cfaf304c4c20da7f8405d3ce313513dcd534bb743257bdd2fe0f3e2d`.
+  ids changed in the first round (item 6): `product:alpine` is now
+  `product:index-docker-io-library-alpine`, and `product-instance:alpine-260479a1cfaf` became
+  `product-instance:sha256-260479a1cfaf304c4c20da7f8405d3ce313513dcd534bb743257bdd2fe0f3e2d`. The
+  second round changes one id again (item 2), because the key now holds the platform: the
+  ProductInstance is
+  `product-instance:sha256-260479a1cfaf304c4c20da7f8405d3ce313513dcd534bb743257bdd2fe0f3e2d-linux-arm64-v8`,
+  its name ends `for linux/arm64/v8`, and its purl carries `arch=arm64`. No other object of the
+  fixture's model changes.
 - The engine lists the imported model and opens it (`core.list_models`, `core.model_graph`): 30
   `propagates_to`, 15 `instance_of`, 24 `uses_component` and 17 `build_composed_of` edges. The
   attack-graph checks pass too; the model has no paths yet.
@@ -366,6 +413,145 @@ first, and failed there, as each item says.
 The review's two other observations are follow-ups, below. `engine/engine/cli.py` and the app are
 not changed.
 
+## Review changes, second round (2026-11-25)
+
+@kriishnaa-18 re-reviewed 9207ad9 and asked for changes again: four blocking findings and one that
+is not blocking. As in the first round, each item says what was wrong, what changed (in
+`engine/engine/import_sbom.py` unless it says otherwise), and the regression tests in
+`engine/tests/test_import_sbom.py`, each of which was run on 9207ad9 first. Those runs used a copy of
+the tests whose helper `run` passes no platform, which 9207ad9 has no parameter for; so each
+failure below is the finding's, not a missing option. A few tests passed on 9207ad9, and the items
+say which and why.
+
+1. **What the import writes over (P1).** `_place` folded case only, so on a Mac a model and a report
+   named `café.yaml`, one with é as one character (U+00E9) and one with e and an accent (U+0301),
+   were two places to `_check_outputs` and one file to APFS, which compares names that way: the
+   report replaced the model without `--force`. And `_publish` checked that nothing was at a path
+   and then moved over it with `os.replace`, so a file that appeared between the two, or a name the
+   volume folds in some way `_place` does not, was written over. Its undo also removed or replaced
+   whatever was at a path by then, and when putting back a file `--force` had replaced failed, it
+   deleted the only other copy. Now `_place` compares real paths in Unicode's canonical caseless
+   form, `NFD(casefold(NFD(path)))`, everywhere outputs are compared with each other and with the
+   inputs. Without `--force`, `_place_new` puts each file in place with `os.link`, which fails if
+   anything is at the path, then removes the temporary; on a volume that cannot make hard links
+   (any other `OSError`), `_create_new` creates the file exclusively (`O_CREAT | O_EXCL`) and
+   writes the text. `FileExistsError` refuses with `SbomImportError` and takes back what this
+   import placed. `_take_back` removes or puts back a path only while it still holds the file this
+   import put there (the same device and inode), and keeps a file `--force` was replacing that it
+   cannot put back, naming it in a note that `engine/engine/cli.py` now prints. With `--force`, the
+   files are still moved with `os.replace`, with the same backups. Tests:
+   `test_names_a_mac_reads_as_one_are_one_place` (the other Unicode form, and that form in another
+   case), `test_an_input_named_in_another_unicode_form_is_never_written_over`,
+   `test_a_file_that_appears_after_the_check_is_never_written_over` (a report that appears once the
+   model is placed), `test_the_undo_never_removes_a_file_this_import_did_not_place`,
+   `test_a_forced_undo_keeps_what_it_cannot_put_back`,
+   `test_a_forced_undo_that_cannot_put_a_file_back_keeps_it`,
+   `test_a_volume_without_hard_links_is_written_by_exclusive_create`, and
+   `test_a_volume_that_reads_two_forms_as_one_name_is_not_written_over`, which runs only where the
+   test's own folder reads the two forms as one name (APFS) and is skipped elsewhere (Linux's ext4,
+   so CI); it gets past `_check_outputs` and shows the volume itself refusing the report.
+   `failing_move` now fails a hard link and an exclusive create too. On 9207ad9: neither pair of
+   names was refused (pytest: DID NOT RAISE; on APFS the report replaced the model); the report
+   that appeared was written over; the undo put the edited model back over another program's
+   file; when putting it back failed, the I/O error replaced the original one and the edited model
+   was lost, its backup deleted; and on the real volume the report was not refused either (DID NOT
+   RAISE). The input test passed on 9207ad9 on APFS, where `os.path.samefile` already caught it;
+   on a volume that tells the two forms apart it was not refused. The hard-link test passed on
+   9207ad9, which made no links; it checks the new fallback.
+2. **The build is the digest and the platform (P2).** The instance key was the digest alone, and an
+   index digest is shared by every platform of a release, so two platform builds with different
+   packages got one ProductInstance id: run on 9207ad9, the fixture's SBOM and the same SBOM with
+   every `arch=aarch64` made `arch=x86_64` both gave
+   `product-instance:sha256-260479a1cfaf304c4c20da7f8405d3ce313513dcd534bb743257bdd2fe0f3e2d`. Now
+   the key is the digest and the platform (decision 2): `parse_platform` reads `--platform`
+   (`run(platform=...)`, `engine/engine/cli.py`), `_scan_platform` reads the scan's
+   `source.target`, `_build_platform` refuses a disagreement or no platform at all, and
+   `_Builder._check_architectures` checks the image's purl and the packages' `arch` qualifiers
+   against it, through the table `ARCHITECTURES` and the 32-bit siblings in `ALSO_RUNS`, and lists
+   names it does not know. `_Builder._product` makes the id from the digest and the platform and
+   adds `arch` to the instance's purl; the model's header, the ProductInstance's name and
+   description, and the report say the platform and where it came from, and the report says what
+   the packages' architectures were checked against. The variant's field is `architectureVariant`:
+   that is the JSON name the Grype 0.119.0 binary gives Syft's image metadata field `Variant`, read
+   from the struct tags in the binary itself (the fixture's scan holds neither it nor a `variant`).
+   The packages' check allows the 32-bit architecture a 64-bit platform runs, because Debian's
+   multiarch and RPM's multilib install such packages beside the native ones (`libc6:i386` on
+   amd64); without that, a real image would be refused. This changes a documented choice and the
+   command line: the fixture's import now needs `--platform linux/arm64/v8`. Tests:
+   `test_one_digest_on_two_platforms_is_two_builds`, `test_without_a_platform_the_import_is_refused`
+   (with and without a scan), `test_a_direct_scans_platform_is_the_builds`,
+   `test_a_variant_only_one_side_gives_is_no_disagreement`,
+   `test_a_platform_the_scan_contradicts_is_refused` (os, architecture, variant),
+   `test_a_platform_the_packages_contradict_is_refused` (four cases),
+   `test_an_image_purl_for_another_architecture_is_refused`,
+   `test_package_architectures_that_are_not_the_platforms_are_reported` (a 32-bit sibling, a name
+   the table lacks, `noarch`), `test_the_platform_option_is_checked` (five cases),
+   `test_the_platform_option_is_read_in_any_case` and
+   `test_the_command_refuses_an_unnamed_platform`; `test_the_product_and_the_scanned_build_have_their_keys`
+   and `test_ids_follow_the_identity_keys` are updated for the new id and purl. Two first-round
+   tests change their example: `test_entries_whose_purls_differ_in_a_qualifier_are_two_components`
+   and `test_a_match_joins_only_the_component_with_its_purl` paired the aarch64 zlib with an x86_64
+   one, which no single build holds and which the new check refuses; they now pair it with the
+   armv7 build an arm64 image can hold beside it, and still show item 1 of the first round: two
+   Components, and a match joined only to its own build (both pass on 9207ad9 too). On 9207ad9,
+   with the platform left out of each call, each test failed on what that build lacks: an import
+   without a platform was not refused, no contradiction or malformed option was refused (pytest:
+   DID NOT RAISE; the command exited 0, not 2), and the instance's id and purl had no platform, a
+   direct scan's included.
+3. **Every version an entry gives is compared (P2).** `_component` compared each entry sharing a
+   purl with the first one only, so when the first gave no version, `1.0` and `2.0` in two later
+   entries were never compared, and one Component took `1.0`. Now it collects every name, type and
+   version all the entries give, and refuses two different ones, naming the first two entries
+   that give them; the Component takes the one value given (it took the first version given before
+   too, never the first entry's none). Names and types had no such gap, since every entry has both
+   (an entry without a name, or with an unknown type, is refused), but the same loop now covers
+   them. Tests: `test_versions_after_an_entry_with_none_must_agree` (none, `1.0` and `2.0`: refused)
+   and `test_an_entry_with_no_version_merges_with_one_that_gives_it` (none and `1.0`: one Component,
+   version `1.0`). On 9207ad9 the first failed (pytest: DID NOT RAISE); the second passed there, as
+   it guards the value the fix must keep.
+4. **The report says which values were written (P2).** A description is written only from a record
+   whose id is the match's Vulnerability, and only the one `_descriptions` picks for it, but the
+   field inventory said `Vulnerability.description` for every `matches[].vulnerability.description`
+   and `matches[].relatedVulnerabilities[].description`. So an advisory's description (a GHSA whose
+   match is written as its CVE) and a description in other words than the one written were reported
+   as written. Now `_Builder._account_for_descriptions` follows every description in the scan,
+   repeated matches too, and the inventory line of each description field says how many were
+   written and how many were left out, and why, when any was: an advisory's, whose match is written
+   as another id (most often a CVE); in other words than the one written for its Vulnerability; or
+   with a match left out whole. A new list, "Advisory descriptions left out", names each advisory
+   and the id its match is written as, and whether it is that id's alias; the list of
+   Vulnerabilities described more than one way now names the namespaces left out too. The other
+   field tables, checked for the same fault (a destination some of a field's values never reach):
+   `metadata.tools.components[].version` and `metadata.tools[].version` (only Syft's is written),
+   `components[].description`, `components[].supplier.name` and `components[].manufacturer.name`
+   (left out where entries recorded as one Component disagree), `dependencies[].dependsOn` (an edge
+   from the image, to or from an entry that is not a Component, or to itself), a record's `id` (one
+   paired with more than one Vulnerability is listed, not written), and `cwes[].cve` and
+   `cwes[].cwe` (an entry for an id that is not a Vulnerability, a placeholder, or no CWE). Each now
+   says so. Those values were already counted or listed elsewhere in the report; only the inventory
+   line claimed more. And a sentence before the inventory says that where a field went is for the
+   entries and matches the import keeps: file entries, and the matches listed as left out, are left
+   out whole. The fixture's descriptions are all written (NVD's text for each CVE), so its two
+   description lines are unchanged; this item changes ten other lines of its report. Tests:
+   `test_an_advisorys_description_that_is_not_written_is_listed`,
+   `test_a_description_in_other_words_than_the_one_written_is_listed` and
+   `test_fields_some_of_whose_values_are_left_out_say_so`. On 9207ad9 the inventory said
+   `Vulnerability.description` for both left-out descriptions, and none of the new wording was
+   there.
+5. **A time outside the range Python holds (not blocking).** `_utc` moved a time with a time zone to
+   UTC with `astimezone`, which raises `OverflowError` when the result leaves the years 1 to 9999
+   (`0001-01-01T00:00:00+14:00`, `9999-12-31T23:59:59-14:00`), so the command ended in a traceback.
+   Now `_utc` returns None for it, and the caller refuses it with the message it gives an unreadable
+   time (`metadata.timestamp`, `descriptor.timestamp`, the database's build time): exit code 2, and
+   nothing written. `_utc` also writes the time with `isoformat`, which gives the year four digits
+   on every platform, where `strftime`'s `%Y` does not on all; the build time and the scan's time
+   are compared as text. Tests: three new cases of `test_times_are_read_as_utc`,
+   `test_a_time_outside_utcs_range_is_refused_as_an_unreadable_one` (each of the three fields with
+   the two times and an unreadable one) and
+   `test_the_command_exits_2_on_a_time_outside_utcs_range`. On 9207ad9 the two times raised
+   `OverflowError` from `_utc`, out of the command too; the unreadable cases passed there, since
+   they are the comparison, and so did the four-digit year on macOS, whose `strftime` pads it.
+
 ## What a human accepted
 
 - @Clovier, 2026-11-25, after asking for each term to be explained: build #257 now, with the four
@@ -374,6 +560,8 @@ not changed.
   download a fresh Grype database.
 - @Clovier, 2026-11-25: asked for these fixes ("do all those", after @kriishnaa-18's review of
   c39f2a4); the wording and code are Claude Code's draft until the pull request review accepts them.
+- @Clovier, 2026-11-25: asked for these fixes ("fix 268", after @kriishnaa-18's re-review of
+  9207ad9); the wording and code are Claude Code's draft until the pull request review accepts them.
 
 The code, the mapping and the choices above are the agent's draft until a human reviews them on the
 pull request.
@@ -402,8 +590,19 @@ pull request.
   needs the same.
 - **More inputs:** SPDX 3.0.1 and other CycloneDX versions; SBOMs of folders and files, which need a
   key for their build; HBOMs stay out of scope (#257).
-- **R-ID-1's other identifiers:** the index digest, configuration digest, platform and tags are not
-  in Syft's CycloneDX output; Syft's own JSON has them.
+- **R-ID-1's other identifiers:** the index digest, configuration digest and tags are not in Syft's
+  CycloneDX output. Syft's own JSON has the configuration digest, and the index digest when the
+  image is named by tag or by that digest; its tags were empty in every run (RPT-0004 Table 6a).
+  The platform is not in the CycloneDX output either, which is why the key now takes it from
+  `--platform` or from a scan of the image itself (decision 2); Syft's JSON records the os and
+  architecture (not the variant), so reading it could make the option unneeded.
+- **Platform spellings:** the platform is keyed as given, in lower case, so `linux/arm64` and
+  `linux/arm64/v8`, which containerd treats as one platform, give two ids. Normalizing them as
+  containerd does would change the fixture's key to `linux/arm64`; that is for #15 and #17, with the
+  instance key.
+- **Packages for a foreign CPU:** an SBOM with packages built for an architecture the platform does
+  not run (other than the 32-bit one a 64-bit platform runs) is refused, though an image can hold
+  them for emulation; no such image is known here.
 - **Weakness names** from the pinned CWE catalog, instead of the id alone.
 - **The model list's label:** `pv-` files show as "Proposal example (AI-drafted, unreviewed)"
   (`MODEL_KINDS` in `engine/engine/core.py`); an imported one is tool-made, not AI-drafted.
@@ -413,7 +612,8 @@ pull request.
   vulnerability links apart from reviewed ones, and show a build's composition
   (`build_composed_of`). This change does not touch the app.
 - **#243 also changes `engine/engine/cli.py`** (@kriishnaa-18's review, not blocking): check the
-  `import-sbom` command when the two come together. This change does not touch `cli.py`.
+  `import-sbom` command when the two come together. The first round did not touch `cli.py`; the
+  second adds `--platform` to `import-sbom` and prints a failed import's notes.
 - **purl type rules:** apply each type's own rules (which names ignore case) once a purl-spec
   version is pinned (DL-0015), so purls that differ only in such a case join.
 

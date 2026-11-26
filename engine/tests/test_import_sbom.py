@@ -1,15 +1,17 @@
 """`tmodel import-sbom`: a starter model from Syft's SBOM and Grype's scan (#257, DL-0068).
 
-The fixture is the image RPT-0004's pilot scanned: alpine 3.24.2 for linux/arm64,
+The fixture is the image RPT-0004's pilot scanned: alpine 3.24.2 for linux/arm64/v8,
 platform manifest digest sha256:260479a1cfaf..., SBOM by Syft 1.52.0 and scan by
 Grype 0.119.0 with the database built 2026-10-08T06:33:47Z. Its numbers are the
 pilot's (pilot.md): 95 SBOM entries (16 library, 1 operating-system, 78 file), 12
 dependency entries with 24 edges, and 30 matches for 15 CVEs. The scan file is Grype's
-output with only its local paths shortened (DL-0068).
+output with only its local paths shortened (DL-0068). Neither file says which platform
+the digest names, so each import here gives it, as `--platform linux/arm64/v8` does.
 
 The sections headed "Review of c39f2a4" hold the regression tests for the eight findings
-of @kriishnaa-18's review; each failed on c39f2a4 before its fix (DL-0068, "Review
-changes").
+of @kriishnaa-18's review, and those headed "Review of 9207ad9" the tests for the five of
+the re-review; each failed before its fix (DL-0068, "Review changes" and "Review
+changes, second round").
 """
 
 from __future__ import annotations
@@ -34,9 +36,21 @@ FIXTURES = Path(__file__).parent / "fixtures" / "sbom-import"
 SBOM = FIXTURES / "alpine-3.24.2.cdx.json"
 SCAN = FIXTURES / "alpine-3.24.2.grype.json"
 DIGEST = "sha256:260479a1cfaf304c4c20da7f8405d3ce313513dcd534bb743257bdd2fe0f3e2d"
+PLATFORM = "linux/arm64/v8"  # the fixture's build, as the image index lists it
+INSTANCE = f"product-instance:{DIGEST.replace(':', '-')}-linux-arm64-v8"
 ZLIB = "pkg:apk/alpine/zlib@1.3.2-r0?arch=aarch64&distro=alpine-3.24.2"
 X86_ZLIB = ZLIB.replace("arch=aarch64", "arch=x86_64")  # the same package for another CPU
+# The same package for the 32-bit CPU an arm64 build also runs, which one image can hold
+# beside the arm64 one (multiarch), where it cannot hold an x86_64 one (finding 2 of the
+# review of 9207ad9).
+ARM32_ZLIB = ZLIB.replace("arch=aarch64", "arch=armv7")
 BUSYBOX = "pkg:apk/alpine/busybox@1.37.0-r31?arch=aarch64&distro=alpine-3.24.2"
+
+
+def run(sbom: Path, **kwargs) -> import_sbom.ImportResult:
+    """`import_sbom.run` for the fixture's platform, unless the test gives another one
+    (`platform=None` for none): the SBOM does not record it (DL-0068, decision 2)."""
+    return import_sbom.run(sbom, **{"platform": PLATFORM, **kwargs})
 
 
 def sha256(path: Path) -> str:
@@ -74,7 +88,7 @@ def folder(tmp_path: Path, name: str) -> Path:
 @pytest.fixture
 def imported(tmp_path: Path) -> tuple[Path, dict, str]:
     out = tmp_path / "pv-05-alpine.yaml"
-    result = import_sbom.run(SBOM, scan=SCAN, output=out)
+    result = run(SBOM, scan=SCAN, output=out)
     return out, load(out), result.report_text
 
 
@@ -103,7 +117,12 @@ def test_the_product_and_the_scanned_build_have_their_keys(imported) -> None:
     (instance,) = doc["product_instances"]
     assert instance["of_product"] == product["id"]
     assert instance["version"] == DIGEST
-    assert instance["identifiers"][0] == DIGEST  # R-ID-1
+    assert instance["identifiers"] == [  # R-ID-1: the digest, and the purl with its platform
+        DIGEST,
+        "pkg:oci/alpine@sha256%3A260479a1cfaf304c4c20da7f8405d3ce313513dcd534bb743257bdd2fe0f3e2d"
+        "?arch=arm64&repository_url=index.docker.io/library/alpine",
+    ]
+    assert instance["name"].endswith(f" for {PLATFORM}")
     assert sorted(instance["build_composed_of"]) == sorted(c["id"] for c in doc["components"])
     assert "composed_of" not in product  # the SBOM never fills the design level (R-EDGE-2)
 
@@ -159,8 +178,8 @@ def test_each_cwe_link_names_who_assigned_it(imported) -> None:
 def test_the_same_files_give_the_same_bytes(tmp_path: Path) -> None:
     (tmp_path / "one").mkdir()
     (tmp_path / "two").mkdir()
-    first = import_sbom.run(SBOM, scan=SCAN, output=tmp_path / "one" / "model.yaml")
-    second = import_sbom.run(SBOM, scan=SCAN, output=tmp_path / "two" / "model.yaml")
+    first = run(SBOM, scan=SCAN, output=tmp_path / "one" / "model.yaml")
+    second = run(SBOM, scan=SCAN, output=tmp_path / "two" / "model.yaml")
     model = (tmp_path / "one" / "model.yaml").read_bytes()
     assert model == (tmp_path / "two" / "model.yaml").read_bytes()
     assert model == first.model_text.encode("utf-8")
@@ -235,13 +254,13 @@ def match(vid: str, related: tuple[str, ...] = (), *, purl: str = ZLIB, cwes=(),
     return template
 
 
-def import_matches(tmp_path: Path, matches: list[dict], sbom: dict | None = None):
+def import_matches(tmp_path: Path, matches: list[dict], sbom: dict | None = None, **kwargs):
     """Import the fixture's SBOM (or `sbom`) with a scan holding only `matches`."""
     scan = scan_doc()
     scan["matches"] = matches
     sbom_path = SBOM if sbom is None else dump(tmp_path, "sbom.json", sbom)
     path = dump(tmp_path, "scan.json", scan)
-    result = import_sbom.run(sbom_path, scan=path, output=tmp_path / "model.yaml")
+    result = run(sbom_path, scan=path, output=tmp_path / "model.yaml", **kwargs)
     return load(tmp_path / "model.yaml"), result.report_text
 
 
@@ -305,7 +324,7 @@ def test_a_match_on_a_part_the_sbom_lacks_is_reported(tmp_path: Path) -> None:
 
 def import_sbom_doc(tmp_path: Path, sbom: dict, **kwargs) -> tuple[dict, str]:
     path = dump(tmp_path, "sbom.json", sbom)
-    result = import_sbom.run(path, output=tmp_path / "model.yaml", **kwargs)
+    result = run(path, output=tmp_path / "model.yaml", **kwargs)
     return load(tmp_path / "model.yaml"), result.report_text
 
 
@@ -402,9 +421,7 @@ def test_bad_inputs_are_refused_before_anything_is_written(
     mutate(sbom if which == "sbom" else scan, path, value)
     out = tmp_path / "model.yaml"
     with pytest.raises(SbomImportError, match=message):
-        import_sbom.run(
-            dump(tmp_path, "s.json", sbom), scan=dump(tmp_path, "g.json", scan), output=out
-        )
+        run(dump(tmp_path, "s.json", sbom), scan=dump(tmp_path, "g.json", scan), output=out)
     assert not out.exists()
 
 
@@ -412,22 +429,22 @@ def test_a_repeated_bom_ref_is_refused(tmp_path: Path) -> None:
     sbom = sbom_doc()
     sbom["components"][1]["bom-ref"] = sbom["components"][0]["bom-ref"]
     with pytest.raises(SbomImportError, match="appears twice"):
-        import_sbom.run(dump(tmp_path, "s.json", sbom), output=tmp_path / "model.yaml")
+        run(dump(tmp_path, "s.json", sbom), output=tmp_path / "model.yaml")
 
 
 def test_text_that_is_not_json_is_refused(tmp_path: Path) -> None:
     bad = tmp_path / "bad.json"
     bad.write_text("{ not json", encoding="utf-8")
     with pytest.raises(SbomImportError, match="not valid JSON"):
-        import_sbom.run(bad, output=tmp_path / "model.yaml")
+        run(bad, output=tmp_path / "model.yaml")
     with pytest.raises(SbomImportError, match="a JSON object at the top level"):
-        import_sbom.run(dump(tmp_path, "list.json", []), output=tmp_path / "model.yaml")
+        run(dump(tmp_path, "list.json", []), output=tmp_path / "model.yaml")
 
 
 def test_an_oversized_file_is_refused(tmp_path: Path, monkeypatch) -> None:
     monkeypatch.setattr(import_sbom, "MAX_INPUT_BYTES", 100)
     with pytest.raises(SbomImportError, match="larger than 100 bytes"):
-        import_sbom.run(SBOM, output=tmp_path / "model.yaml")
+        run(SBOM, output=tmp_path / "model.yaml")
 
 
 @pytest.mark.skipif(not hasattr(os, "mkfifo"), reason="needs a FIFO")
@@ -435,16 +452,16 @@ def test_a_fifo_is_refused_without_waiting(tmp_path: Path) -> None:
     fifo = tmp_path / "sbom.json"
     os.mkfifo(fifo)
     with pytest.raises(SbomImportError, match="not a regular file"):
-        import_sbom.run(fifo, output=tmp_path / "model.yaml")
+        run(fifo, output=tmp_path / "model.yaml")
 
 
 def test_an_existing_model_is_kept_unless_forced(tmp_path: Path) -> None:
     out = tmp_path / "model.yaml"
     out.write_text("edited by a person\n", encoding="utf-8")
     with pytest.raises(SbomImportError, match="already exists"):
-        import_sbom.run(SBOM, scan=SCAN, output=out)
+        run(SBOM, scan=SCAN, output=out)
     assert out.read_text(encoding="utf-8") == "edited by a person\n"
-    import_sbom.run(SBOM, scan=SCAN, output=out, force=True)
+    run(SBOM, scan=SCAN, output=out, force=True)
     assert load(out)["products"]
 
 
@@ -458,22 +475,20 @@ def test_an_existing_model_is_kept_unless_forced(tmp_path: Path) -> None:
 )
 def test_bad_outputs_are_refused(tmp_path: Path, output: str, report, message: str) -> None:
     with pytest.raises(SbomImportError, match=message):
-        import_sbom.run(
-            SBOM, output=tmp_path / output, report=None if report is None else tmp_path / report
-        )
+        run(SBOM, output=tmp_path / output, report=None if report is None else tmp_path / report)
 
 
 def test_an_input_is_never_written_over(tmp_path: Path) -> None:
     sbom = tmp_path / "sbom.yaml"  # an SBOM saved under a .yaml name
     shutil.copy(SBOM, sbom)
     with pytest.raises(SbomImportError, match="is an input"):
-        import_sbom.run(sbom, output=sbom, force=True)
+        run(sbom, output=sbom, force=True)
     assert sbom.read_bytes() == SBOM.read_bytes()
 
 
 def test_the_header_never_names_a_home_folder(tmp_path: Path) -> None:
     out = tmp_path / "pv-05-alpine.yaml"
-    import_sbom.run(SBOM, scan=SCAN, output=out)  # an absolute path
+    run(SBOM, scan=SCAN, output=out)  # an absolute path
     text = out.read_text(encoding="utf-8")
     assert f"-C ExampleModelProposed {out.name}\n" in text
     assert str(tmp_path) not in text
@@ -484,14 +499,24 @@ def test_the_header_never_names_a_home_folder(tmp_path: Path) -> None:
 
 def test_the_command_prints_the_report(tmp_path: Path, capsys) -> None:
     out = tmp_path / "model.yaml"
-    assert cli.main(["import-sbom", str(SBOM), "--scan", str(SCAN), "-o", str(out)]) == 0
+    argv = ["import-sbom", str(SBOM), "--scan", str(SCAN), "--platform", PLATFORM, "-o", str(out)]
+    assert cli.main(argv) == 0
     assert capsys.readouterr().out.startswith("# tmodel import-sbom report")
     assert load(out)["product_instances"][0]["version"] == DIGEST
 
 
 def test_the_command_can_write_the_report(tmp_path: Path, capsys) -> None:
     out, report = tmp_path / "model.yaml", tmp_path / "report.md"
-    argv = ["import-sbom", str(SBOM), "-o", str(out), "--report", str(report)]
+    argv = [
+        "import-sbom",
+        str(SBOM),
+        "--platform",
+        PLATFORM,
+        "-o",
+        str(out),
+        "--report",
+        str(report),
+    ]
     assert cli.main(argv) == 0
     assert capsys.readouterr().out.startswith("wrote ")
     assert report.read_text(encoding="utf-8").startswith("# tmodel import-sbom report")
@@ -499,7 +524,8 @@ def test_the_command_can_write_the_report(tmp_path: Path, capsys) -> None:
 
 def test_the_command_exits_2_on_a_refused_input(tmp_path: Path, capsys) -> None:
     bad = dump(tmp_path, "bad.json", {"bomFormat": "SPDX"})
-    assert cli.main(["import-sbom", str(bad), "-o", str(tmp_path / "model.yaml")]) == 2
+    argv = ["import-sbom", str(bad), "--platform", PLATFORM, "-o", str(tmp_path / "model.yaml")]
+    assert cli.main(argv) == 2
     assert "error: bad.json: not a CycloneDX SBOM" in capsys.readouterr().err
     assert not (tmp_path / "model.yaml").exists()
 
@@ -555,6 +581,9 @@ def test_a_components_key_is_its_normalized_purl(purl: str, key) -> None:
         ("2026-11-25T01:54:07", None),  # no time zone: not a moment
         ("yesterday", None),
         (None, None),
+        ("0001-01-01T00:00:00+14:00", None),  # in UTC, before the year 1 (review of 9207ad9)
+        ("9999-12-31T23:59:59-14:00", None),  # in UTC, after the year 9999
+        ("0001-01-02T00:00:00Z", "0001-01-02T00:00:00Z"),  # four digits on every platform
     ],
 )
 def test_times_are_read_as_utc(value, utc) -> None:
@@ -566,20 +595,20 @@ def test_times_are_read_as_utc(value, utc) -> None:
 
 def test_entries_whose_purls_differ_in_a_qualifier_are_two_components(tmp_path: Path) -> None:
     sbom = sbom_doc()
-    zlib_copy(sbom, X86_ZLIB)  # the same name and version, built for another CPU
+    zlib_copy(sbom, ARM32_ZLIB)  # the same name and version, built for another CPU
     doc, report = import_sbom_doc(tmp_path, sbom)
     assert len(doc["components"]) == 18
     zlibs = [c for c in doc["components"] if c["name"] == "zlib 1.3.2-r0"]
-    assert sorted(c["identifiers"][0] for c in zlibs) == sorted([ZLIB, X86_ZLIB])
+    assert sorted(c["identifiers"][0] for c in zlibs) == sorted([ZLIB, ARM32_ZLIB])
     assert "SBOM entries recorded as one Component" not in report
 
 
 def test_a_match_joins_only_the_component_with_its_purl(tmp_path: Path) -> None:
     sbom = sbom_doc()
-    zlib_copy(sbom, X86_ZLIB)
-    doc, _ = import_matches(tmp_path, [match("CVE-2026-0001", purl=X86_ZLIB)], sbom)
+    zlib_copy(sbom, ARM32_ZLIB)
+    doc, _ = import_matches(tmp_path, [match("CVE-2026-0001", purl=ARM32_ZLIB)], sbom)
     (link,) = [a for a in doc["assertions"] if a["predicate"] == "propagates_to"]
-    assert by_id(doc, "components")[link["object"]]["identifiers"][0] == X86_ZLIB
+    assert by_id(doc, "components")[link["object"]]["identifiers"][0] == ARM32_ZLIB
 
 
 def test_a_match_on_a_build_the_sbom_lacks_is_left_out(tmp_path: Path) -> None:
@@ -604,7 +633,7 @@ def test_entries_sharing_a_purl_but_not_a_version_are_refused(tmp_path: Path) ->
     zlib_copy(sbom)["version"] = "1.3.2-r1"
     out = tmp_path / "model.yaml"
     with pytest.raises(SbomImportError, match="give different versions"):
-        import_sbom.run(dump(tmp_path, "s.json", sbom), output=out)
+        run(dump(tmp_path, "s.json", sbom), output=out)
     assert not out.exists()
 
 
@@ -630,7 +659,7 @@ def test_a_match_whose_package_disagrees_with_the_sbom_is_left_out(tmp_path: Pat
 
 def test_a_report_named_like_the_model_in_another_case_is_refused(tmp_path: Path) -> None:
     with pytest.raises(SbomImportError, match="cannot be the same file"):
-        import_sbom.run(SBOM, output=tmp_path / "model.yaml", report=tmp_path / "MODEL.yaml")
+        run(SBOM, output=tmp_path / "model.yaml", report=tmp_path / "MODEL.yaml")
     assert list(tmp_path.iterdir()) == []
 
 
@@ -638,7 +667,7 @@ def test_an_input_named_in_another_case_is_never_written_over(tmp_path: Path) ->
     sbom = tmp_path / "sbom.yaml"
     shutil.copy(SBOM, sbom)
     with pytest.raises(SbomImportError, match="is an input"):
-        import_sbom.run(sbom, output=tmp_path / "SBOM.yaml", force=True)
+        run(sbom, output=tmp_path / "SBOM.yaml", force=True)
     assert sbom.read_bytes() == SBOM.read_bytes()
 
 
@@ -647,7 +676,7 @@ def test_a_second_name_for_an_input_is_never_written_over(tmp_path: Path) -> Non
     shutil.copy(SBOM, sbom)
     os.link(sbom, tmp_path / "model.yaml")  # a hard link: one file with two names
     with pytest.raises(SbomImportError, match="is an input"):
-        import_sbom.run(sbom, output=tmp_path / "model.yaml", force=True)
+        run(sbom, output=tmp_path / "model.yaml", force=True)
     assert sbom.read_bytes() == SBOM.read_bytes()
 
 
@@ -657,7 +686,7 @@ def test_a_dangling_link_is_an_existing_output(tmp_path: Path, which: str) -> No
     link = out if which == "model" else report
     link.symlink_to(tmp_path / "missing")
     with pytest.raises(SbomImportError, match="already exists"):
-        import_sbom.run(SBOM, output=out, report=report)
+        run(SBOM, output=out, report=report)
     assert link.is_symlink() and [p.name for p in tmp_path.iterdir()] == [link.name]
 
 
@@ -669,9 +698,7 @@ def test_a_report_that_cannot_be_written_leaves_no_model(tmp_path: Path) -> None
     locked.chmod(0o500)
     try:
         with pytest.raises(OSError):
-            import_sbom.run(
-                SBOM, scan=SCAN, output=tmp_path / "model.yaml", report=locked / "report.md"
-            )
+            run(SBOM, scan=SCAN, output=tmp_path / "model.yaml", report=locked / "report.md")
     finally:
         locked.chmod(0o700)
     assert [p.name for p in tmp_path.iterdir()] == ["locked"]
@@ -679,22 +706,24 @@ def test_a_report_that_cannot_be_written_leaves_no_model(tmp_path: Path) -> None
 
 
 def failing_move(monkeypatch, target: Path) -> None:
-    """Make moving a file onto `target` fail, as a full disk would."""
-    real = os.replace
+    """Make putting a file at `target` fail, as a full disk would: by a hard link or an
+    exclusive create (unforced) or by a move (with --force)."""
+    for name, at in (("link", 1), ("open", 0), ("replace", 1)):
+        real = getattr(os, name)
 
-    def replace(src, dst, *args, **kwargs):
-        if Path(dst) == target:
-            raise OSError(28, "No space left on device")
-        return real(src, dst, *args, **kwargs)
+        def fail(*args, real=real, at=at, **kwargs):
+            if os.fspath(args[at]) == os.fspath(target):
+                raise OSError(28, "No space left on device")
+            return real(*args, **kwargs)
 
-    monkeypatch.setattr(import_sbom.os, "replace", replace)
+        monkeypatch.setattr(import_sbom.os, name, fail)
 
 
 def test_a_failed_move_leaves_neither_file(tmp_path: Path, monkeypatch) -> None:
     out, report = tmp_path / "model.yaml", tmp_path / "report.md"
     failing_move(monkeypatch, report)
     with pytest.raises(OSError, match="No space left"):
-        import_sbom.run(SBOM, scan=SCAN, output=out, report=report)
+        run(SBOM, scan=SCAN, output=out, report=report)
     assert list(tmp_path.iterdir()) == []
 
 
@@ -704,7 +733,7 @@ def test_a_failed_forced_import_keeps_what_it_would_replace(tmp_path: Path, monk
     report.write_text("an older report\n", encoding="utf-8")
     failing_move(monkeypatch, report)
     with pytest.raises(OSError, match="No space left"):
-        import_sbom.run(SBOM, scan=SCAN, output=out, report=report, force=True)
+        run(SBOM, scan=SCAN, output=out, report=report, force=True)
     assert out.read_text(encoding="utf-8") == "edited by a person\n"
     assert report.read_text(encoding="utf-8") == "an older report\n"
     assert sorted(p.name for p in tmp_path.iterdir()) == ["model.yaml", "report.md"]
@@ -719,7 +748,7 @@ def test_input_text_cannot_escape_the_models_header(tmp_path: Path, char: str) -
     sbom["serialNumber"] = f"urn:uuid:7efb25f4{char}injected: true"
     sbom["metadata"]["tools"]["components"][0]["version"] = f"1.52.0{char}also: true"
     out = tmp_path / "model.yaml"
-    import_sbom.run(dump(tmp_path, "s.json", sbom), output=out)
+    run(dump(tmp_path, "s.json", sbom), output=out)
     text = out.read_text(encoding="utf-8")
     header = text[: text.index("\nproducts:")]
     assert all(line.startswith("#") for line in header.splitlines())
@@ -739,7 +768,7 @@ def test_a_model_that_does_not_read_back_is_not_written(tmp_path: Path, monkeypa
     for broken in ("products: [\n", "products: []\n"):  # not YAML, then the wrong data
         monkeypatch.setattr(import_sbom, "_dump", lambda doc, text=broken: text)
         with pytest.raises(SbomImportError, match="does not read back"):
-            import_sbom.run(SBOM, output=out)
+            run(SBOM, output=out)
         assert not out.exists()
 
 
@@ -837,7 +866,7 @@ def test_the_order_of_the_matches_changes_nothing(tmp_path: Path) -> None:
 def test_ids_follow_the_identity_keys(imported, tmp_path: Path) -> None:
     _, doc, _ = imported
     assert doc["products"][0]["id"] == "product:index-docker-io-library-alpine"  # R-ID-2
-    assert doc["product_instances"][0]["id"] == "product-instance:" + DIGEST.replace(":", "-")
+    assert doc["product_instances"][0]["id"] == INSTANCE  # R-ID-1: the digest and the platform
     products = set()
     for n, image in enumerate(("ghcr.io/org/app", "index.docker.io/org/app", "quay.io/org/app")):
         sbom = sbom_doc()
@@ -859,7 +888,7 @@ def test_a_scan_of_another_image_is_refused(tmp_path: Path, path: str, value, me
     scan = mutate(scan_doc(), path, value)
     out = tmp_path / "model.yaml"
     with pytest.raises(SbomImportError, match=message):
-        import_sbom.run(SBOM, scan=dump(tmp_path, "g.json", scan), output=out)
+        run(SBOM, scan=dump(tmp_path, "g.json", scan), output=out)
     assert not out.exists()
 
 
@@ -868,7 +897,7 @@ def test_a_scan_grype_made_from_the_image_itself_is_read(tmp_path: Path) -> None
     scan = scan_doc()
     scan["source"]["target"].update(userInput="alpine:3.24.2", imageID="sha256:" + "c" * 64)
     out = tmp_path / "model.yaml"
-    import_sbom.run(SBOM, scan=dump(tmp_path, "g.json", scan), output=out)
+    run(SBOM, scan=dump(tmp_path, "g.json", scan), output=out)
     assert len(load(out)["vulnerabilities"]) == 15
 
 
@@ -876,7 +905,7 @@ def test_an_sbom_naming_two_digests_is_refused(tmp_path: Path) -> None:
     sbom = sbom_doc()
     sbom["metadata"]["component"]["name"] += "@sha256:" + "0" * 64
     with pytest.raises(SbomImportError, match="names the digest"):
-        import_sbom.run(dump(tmp_path, "s.json", sbom), output=tmp_path / "model.yaml")
+        run(dump(tmp_path, "s.json", sbom), output=tmp_path / "model.yaml")
 
 
 def test_the_scans_identity_is_reported(imported, tmp_path: Path) -> None:
@@ -886,7 +915,7 @@ def test_the_scans_identity_is_reported(imported, tmp_path: Path) -> None:
     scan = scan_doc()
     scan["distro"]["version"] = "3.23.0"
     other = folder(tmp_path, "other")
-    result = import_sbom.run(SBOM, scan=dump(other, "g.json", scan), output=other / "model.yaml")
+    result = run(SBOM, scan=dump(other, "g.json", scan), output=other / "model.yaml")
     assert (
         "Grype's distro is alpine 3.23.0, but the SBOM's operating system is alpine 3.24.2"
         in result.report_text
@@ -910,7 +939,7 @@ def test_a_key_repeated_in_one_object_is_refused(tmp_path: Path, path: Path, old
     changed.write_text(text.replace(old, new), encoding="utf-8")
     sbom, scan = (changed, None) if path == SBOM else (SBOM, changed)
     with pytest.raises(SbomImportError, match="appears twice in one JSON object"):
-        import_sbom.run(sbom, scan=scan, output=tmp_path / "model.yaml")
+        run(sbom, scan=scan, output=tmp_path / "model.yaml")
 
 
 def test_the_report_lists_nested_fields_by_path(imported) -> None:
@@ -990,9 +1019,7 @@ def test_a_malformed_field_is_refused_with_its_path(
     mutate(sbom if which == "sbom" else scan, path, value)
     out = tmp_path / "model.yaml"
     with pytest.raises(SbomImportError, match=message):
-        import_sbom.run(
-            dump(tmp_path, "s.json", sbom), scan=dump(tmp_path, "g.json", scan), output=out
-        )
+        run(dump(tmp_path, "s.json", sbom), scan=dump(tmp_path, "g.json", scan), output=out)
     assert not out.exists()
 
 
@@ -1010,11 +1037,429 @@ def test_json_that_python_reads_but_is_not_sound_is_refused(tmp_path: Path, text
     bad = tmp_path / "bad.json"
     bad.write_text(text, encoding="utf-8")
     with pytest.raises(SbomImportError, match=message):
-        import_sbom.run(bad, output=tmp_path / "model.yaml")
+        run(bad, output=tmp_path / "model.yaml")
 
 
 def test_the_command_exits_2_on_a_malformed_field(tmp_path: Path, capsys) -> None:
     sbom = dump(tmp_path, "s.json", mutate(sbom_doc(), "components.0.properties", 5))
-    assert cli.main(["import-sbom", str(sbom), "-o", str(tmp_path / "model.yaml")]) == 2
+    argv = ["import-sbom", str(sbom), "--platform", PLATFORM, "-o", str(tmp_path / "model.yaml")]
+    assert cli.main(argv) == 2
     assert "components[0].properties is not a list" in capsys.readouterr().err
+    assert not (tmp_path / "model.yaml").exists()
+
+
+# Review of 9207ad9, finding 1: names a Mac reads as one, and files that appear later --
+
+NFC, NFD = "café", "café"  # one name: é as one character, or as e and an accent
+
+
+@pytest.mark.parametrize("report", [f"{NFD}.yaml", "CAFÉ.YAML"])
+def test_names_a_mac_reads_as_one_are_one_place(tmp_path: Path, report: str) -> None:
+    # APFS and HFS+ ignore both the Unicode form and the case of a name, so on a Mac the
+    # report would land on the model; Linux tells them apart, and the refusal costs nothing.
+    with pytest.raises(SbomImportError, match="cannot be the same file"):
+        run(SBOM, scan=SCAN, output=tmp_path / f"{NFC}.yaml", report=tmp_path / report)
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_an_input_named_in_another_unicode_form_is_never_written_over(tmp_path: Path) -> None:
+    sbom = tmp_path / f"{NFC}.yaml"
+    shutil.copy(SBOM, sbom)
+    with pytest.raises(SbomImportError, match="is an input"):
+        run(sbom, output=tmp_path / f"{NFD}.yaml", force=True)
+    assert sbom.read_bytes() == SBOM.read_bytes()
+    assert len(list(tmp_path.iterdir())) == 1
+
+
+def when_placed(monkeypatch, path: Path, action, *, before: bool = False) -> None:
+    """Run `action` once, just after (or just before) the import puts its file at `path`,
+    as another program writing to the same folder would."""
+    done: list[bool] = []
+    for name in ("link", "replace"):  # how a file is put in place, unforced or forced
+        real = getattr(os, name)
+
+        def place(src, dst, *args, real=real, **kwargs):
+            mine = Path(dst) == path and Path(src).name.startswith(".import-sbom-") and not done
+            if mine and before:
+                done.append(True)
+                action()
+            result = real(src, dst, *args, **kwargs)
+            if mine and not before:
+                done.append(True)
+                action()
+            return result
+
+        monkeypatch.setattr(import_sbom.os, name, place)
+
+
+def test_a_file_that_appears_after_the_check_is_never_written_over(
+    tmp_path: Path, monkeypatch
+) -> None:
+    out, report = tmp_path / "model.yaml", tmp_path / "report.md"
+    when_placed(monkeypatch, out, lambda: report.write_text("theirs\n", encoding="utf-8"))
+    with pytest.raises(SbomImportError, match="report.md: already exists"):
+        run(SBOM, scan=SCAN, output=out, report=report)
+    assert report.read_text(encoding="utf-8") == "theirs\n"
+    assert [p.name for p in tmp_path.iterdir()] == ["report.md"]  # nothing of this import's
+
+
+def test_the_undo_never_removes_a_file_this_import_did_not_place(
+    tmp_path: Path, monkeypatch
+) -> None:
+    out, report = tmp_path / "model.yaml", tmp_path / "report.md"
+
+    def another_program() -> None:  # replaces the model just written, and takes the report
+        (tmp_path / "theirs").write_text("their model\n", encoding="utf-8")
+        os.replace(tmp_path / "theirs", out)
+        report.write_text("their report\n", encoding="utf-8")
+
+    when_placed(monkeypatch, report, another_program, before=True)
+    with pytest.raises(SbomImportError, match="already exists"):
+        run(SBOM, scan=SCAN, output=out, report=report)
+    assert out.read_text(encoding="utf-8") == "their model\n"
+    assert report.read_text(encoding="utf-8") == "their report\n"
+    assert sorted(p.name for p in tmp_path.iterdir()) == ["model.yaml", "report.md"]
+
+
+def test_a_forced_undo_keeps_what_it_cannot_put_back(tmp_path: Path, monkeypatch) -> None:
+    out, report = tmp_path / "model.yaml", tmp_path / "report.md"
+    out.write_text("edited by a person\n", encoding="utf-8")
+
+    def another_program() -> None:  # replaces the model this import just put in place
+        (tmp_path / "theirs").write_text("their model\n", encoding="utf-8")
+        os.replace(tmp_path / "theirs", out)
+
+    failing_move(monkeypatch, report)  # first, so the other program acts before it fails
+    when_placed(monkeypatch, report, another_program, before=True)
+    with pytest.raises(OSError, match="No space left") as raised:
+        run(SBOM, scan=SCAN, output=out, report=report, force=True)
+    assert out.read_text(encoding="utf-8") == "their model\n"  # not replaced by the undo
+    (kept,) = [p for p in tmp_path.iterdir() if p.name.endswith(".old")]
+    assert kept.read_text(encoding="utf-8") == "edited by a person\n"
+    assert any(kept.name in note for note in raised.value.__notes__)
+
+
+def test_a_forced_undo_that_cannot_put_a_file_back_keeps_it(tmp_path: Path, monkeypatch) -> None:
+    out, report = tmp_path / "model.yaml", tmp_path / "report.md"
+    out.write_text("edited by a person\n", encoding="utf-8")
+    failing_move(monkeypatch, report)
+    real = os.replace
+
+    def replace(src, dst, *args, **kwargs):  # putting the person's file back fails too
+        if Path(src).name.endswith(".old"):
+            raise OSError(5, "Input/output error")
+        return real(src, dst, *args, **kwargs)
+
+    monkeypatch.setattr(import_sbom.os, "replace", replace)
+    with pytest.raises(OSError, match="No space left") as raised:
+        run(SBOM, scan=SCAN, output=out, report=report, force=True)
+    (kept,) = [p for p in tmp_path.iterdir() if p.name.endswith(".old")]
+    assert kept.read_text(encoding="utf-8") == "edited by a person\n"
+    assert any(kept.name in note for note in raised.value.__notes__)
+
+
+def test_a_volume_without_hard_links_is_written_by_exclusive_create(
+    tmp_path: Path, monkeypatch
+) -> None:
+    def no_links(src, dst, *args, **kwargs):  # as on FAT and exFAT
+        raise PermissionError(1, "Operation not permitted")
+
+    monkeypatch.setattr(import_sbom.os, "link", no_links)
+    out, report = tmp_path / "model.yaml", tmp_path / "report.md"
+    result = run(SBOM, scan=SCAN, output=out, report=report)
+    assert out.read_text(encoding="utf-8") == result.model_text
+    assert report.read_text(encoding="utf-8") == result.report_text
+    assert sorted(p.name for p in tmp_path.iterdir()) == ["model.yaml", "report.md"]
+
+
+def unicode_forms_are_one_name(folder: Path) -> bool:
+    probe = folder / f"probe-{NFC}"
+    probe.write_text("", encoding="utf-8")
+    try:
+        return (folder / f"probe-{NFD}").exists()
+    finally:
+        probe.unlink()
+
+
+def test_a_volume_that_reads_two_forms_as_one_name_is_not_written_over(
+    tmp_path: Path, monkeypatch
+) -> None:
+    if not unicode_forms_are_one_name(tmp_path):
+        pytest.skip("this volume tells the two forms apart (Linux's ext4 does; APFS does not)")
+    # Past the check that refuses such names, the volume itself must refuse the report.
+    monkeypatch.setattr(import_sbom, "_same_place", lambda first, second: False)
+    with pytest.raises(SbomImportError, match="already exists"):
+        run(SBOM, scan=SCAN, output=tmp_path / f"{NFC}.yaml", report=tmp_path / f"{NFD}.yaml")
+    assert list(tmp_path.iterdir()) == []
+
+
+# Review of 9207ad9, finding 2: the build is the digest and the platform ----------------
+
+
+def built_for(sbom: dict, arch: str) -> dict:
+    """`sbom` with each package's arch qualifier `arch`: another platform's build."""
+    for component in sbom["components"]:
+        if "purl" in component:
+            component["purl"] = component["purl"].replace("arch=aarch64", f"arch={arch}")
+    return sbom
+
+
+def direct_scan(**target: str) -> dict:
+    """The fixture's scan as Grype writes it when it read the image itself: named by tag,
+    with its configuration digest and the platform it pulled (source.target)."""
+    scan = scan_doc()
+    scan["source"]["target"].update(
+        userInput="alpine:3.24.2",
+        imageID="sha256:" + "c" * 64,
+        os="linux",
+        architecture="arm64",
+        architectureVariant="v8",
+    )
+    scan["source"]["target"].update(target)
+    return scan
+
+
+def test_one_digest_on_two_platforms_is_two_builds(tmp_path: Path) -> None:
+    # An index digest names every platform of a release, and the CycloneDX file does
+    # not say which kind of digest it holds (DL-0068, decision 2).
+    arm, _ = import_sbom_doc(folder(tmp_path, "arm"), sbom_doc())
+    amd, _ = import_sbom_doc(
+        folder(tmp_path, "amd"), built_for(sbom_doc(), "x86_64"), platform="linux/amd64"
+    )
+    (arm_build,), (amd_build,) = arm["product_instances"], amd["product_instances"]
+    assert arm_build["version"] == amd_build["version"] == DIGEST
+    assert arm_build["id"] == INSTANCE
+    assert amd_build["id"] == f"product-instance:{DIGEST.replace(':', '-')}-linux-amd64"
+    assert "?arch=arm64&repository_url=" in arm_build["identifiers"][1]
+    assert "?arch=amd64&repository_url=" in amd_build["identifiers"][1]
+
+
+@pytest.mark.parametrize("scan", [None, SCAN])
+def test_without_a_platform_the_import_is_refused(tmp_path: Path, scan) -> None:
+    with pytest.raises(SbomImportError, match="does not record which platform its digest names"):
+        run(SBOM, scan=scan, platform=None, output=tmp_path / "model.yaml")
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_a_direct_scans_platform_is_the_builds(tmp_path: Path) -> None:
+    out = tmp_path / "model.yaml"
+    result = run(SBOM, scan=dump(tmp_path, "g.json", direct_scan()), platform=None, output=out)
+    assert load(out)["product_instances"][0]["id"] == INSTANCE
+    assert "Platform: linux/arm64/v8, from the scan (source.target)" in result.report_text
+
+
+def test_a_variant_only_one_side_gives_is_no_disagreement(tmp_path: Path) -> None:
+    scan = direct_scan()
+    del scan["source"]["target"]["architectureVariant"]  # as Syft 1.52.0 leaves it out
+    result = run(SBOM, scan=dump(tmp_path, "g.json", scan), output=tmp_path / "model.yaml")
+    assert load(tmp_path / "model.yaml")["product_instances"][0]["id"] == INSTANCE
+    assert "Platform: linux/arm64/v8, from --platform and the scan" in result.report_text
+
+
+@pytest.mark.parametrize(
+    ("target", "message"),
+    [
+        ({"architecture": "amd64"}, "gives the architecture arm64, but the scan records amd64"),
+        ({"os": "windows"}, "gives the os linux, but the scan records windows"),
+        ({"architectureVariant": "v7"}, "gives the variant v8, but the scan records v7"),
+    ],
+)
+def test_a_platform_the_scan_contradicts_is_refused(tmp_path: Path, target, message) -> None:
+    out = tmp_path / "model.yaml"
+    with pytest.raises(SbomImportError, match=message):
+        run(SBOM, scan=dump(tmp_path, "g.json", direct_scan(**target)), output=out)
+    assert not out.exists()
+
+
+@pytest.mark.parametrize(
+    ("arch", "platform", "message"),
+    [
+        ("aarch64", "linux/amd64", r"packages are built for arm64 \(arch=aarch64\)"),
+        ("x86", "linux/amd64", "none of the SBOM's packages is built for amd64"),
+        ("armv7", "linux/arm64/v8", "none of the SBOM's packages is built for arm64"),
+        ("ppc64le", "linux/arm64/v8", r"packages are built for ppc64le \(arch=ppc64le\)"),
+    ],
+)
+def test_a_platform_the_packages_contradict_is_refused(
+    tmp_path: Path, arch: str, platform: str, message: str
+) -> None:
+    sbom = dump(tmp_path, "s.json", built_for(sbom_doc(), arch))
+    with pytest.raises(SbomImportError, match=message):
+        run(sbom, platform=platform, output=tmp_path / "model.yaml")
+    assert not (tmp_path / "model.yaml").exists()
+
+
+def test_an_image_purl_for_another_architecture_is_refused(tmp_path: Path) -> None:
+    sbom = sbom_doc()
+    sbom["metadata"]["component"]["purl"] = (
+        "pkg:oci/alpine@" + DIGEST.replace(":", "%3A") + "?arch=amd64"
+    )
+    with pytest.raises(SbomImportError, match="metadata.component.purl says arch=amd64"):
+        run(dump(tmp_path, "s.json", sbom), output=tmp_path / "model.yaml")
+
+
+@pytest.mark.parametrize(
+    ("arch", "listed"),
+    [
+        ("armhf", "1 Component built for arm (arch=armhf), which arm64 also runs"),
+        ("loongarch64", "- loongarch64: 1 Component"),
+        ("noarch", None),  # names no CPU, so there is nothing to check
+    ],
+)
+def test_package_architectures_that_are_not_the_platforms_are_reported(
+    tmp_path: Path, arch: str, listed: str | None
+) -> None:
+    sbom = sbom_doc()
+    zlib = next(c for c in sbom["components"] if c.get("name") == "zlib")
+    zlib["purl"] = zlib["purl"].replace("arch=aarch64", f"arch={arch}")
+    doc, report = import_sbom_doc(tmp_path, sbom)
+    assert doc["product_instances"][0]["id"] == INSTANCE
+    assert "15 Components built for arm64 (arch=aarch64)" in report
+    if listed is not None:
+        assert listed in report
+
+
+@pytest.mark.parametrize(
+    ("platform", "message"),
+    [
+        ("linux", "not OS/ARCH or OS/ARCH/VARIANT"),
+        ("linux/", "not OS/ARCH or OS/ARCH/VARIANT"),
+        ("linux/arm64/v8/x", "not OS/ARCH or OS/ARCH/VARIANT"),
+        ("linux/arm 64", "not OS/ARCH or OS/ARCH/VARIANT"),
+        ("linux/aarch64", "a distribution's name for arm64"),
+    ],
+)
+def test_the_platform_option_is_checked(tmp_path: Path, platform: str, message: str) -> None:
+    with pytest.raises(SbomImportError, match=message):
+        run(SBOM, platform=platform, output=tmp_path / "model.yaml")
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_the_platform_option_is_read_in_any_case(tmp_path: Path) -> None:
+    doc, _ = import_sbom_doc(tmp_path, sbom_doc(), platform="Linux/ARM64/V8")
+    assert doc["product_instances"][0]["id"] == INSTANCE
+
+
+def test_the_command_refuses_an_unnamed_platform(tmp_path: Path, capsys) -> None:
+    argv = ["import-sbom", str(SBOM), "--scan", str(SCAN), "-o", str(tmp_path / "model.yaml")]
+    assert cli.main(argv) == 2
+    err = capsys.readouterr().err
+    assert "does not record which platform" in err and "--platform linux/arm64/v8" in err
+    assert list(tmp_path.iterdir()) == []
+
+
+# Review of 9207ad9, finding 3: every version an entry gives is compared ---------------
+
+
+def test_versions_after_an_entry_with_none_must_agree(tmp_path: Path) -> None:
+    sbom = sbom_doc()
+    del next(c for c in sbom["components"] if c.get("name") == "zlib")["version"]
+    zlib_copy(sbom)["version"] = "1.0"
+    second = zlib_copy(sbom)
+    second.update({"bom-ref": second["bom-ref"] + "-2", "version": "2.0"})
+    out = tmp_path / "model.yaml"
+    with pytest.raises(SbomImportError, match=r"give different versions \('1.0' and '2.0'\)"):
+        run(dump(tmp_path, "s.json", sbom), output=out)
+    assert not out.exists()
+
+
+def test_an_entry_with_no_version_merges_with_one_that_gives_it(tmp_path: Path) -> None:
+    sbom = sbom_doc()
+    del next(c for c in sbom["components"] if c.get("name") == "zlib")["version"]
+    zlib_copy(sbom)["version"] = "1.0"
+    doc, _ = import_sbom_doc(tmp_path, sbom)
+    (merged,) = [c for c in doc["components"] if ZLIB in c.get("identifiers", [])]
+    assert (merged["name"], merged["version"]) == ("zlib 1.0", "1.0")
+    assert len(doc["components"]) == 17
+
+
+# Review of 9207ad9, finding 4: the report says which descriptions were written ---------
+
+
+def field_lines(report: str) -> dict[str, str]:
+    """The report's field inventory: each path, and where the report says it went."""
+    lines = (line.split("`", 2) for line in report.splitlines() if line.startswith("  - `"))
+    return {path: rest.split("): ", 1)[1] for _, path, rest in lines}
+
+
+def test_an_advisorys_description_that_is_not_written_is_listed(tmp_path: Path) -> None:
+    advisory = match("GHSA-aaaa-bbbb-cccc", ("CVE-2026-0001",))
+    advisory["vulnerability"]["description"] = "The advisory's words."
+    advisory["relatedVulnerabilities"][0]["description"] = "NVD's words."
+    doc, report = import_matches(tmp_path, [advisory])
+    assert vulnerabilities(doc) == {"CVE-2026-0001": ["GHSA-aaaa-bbbb-cccc"]}
+    assert doc["vulnerabilities"][0]["description"] == "NVD's words."
+    fields = field_lines(report)
+    assert fields["matches[].vulnerability.description"] == (
+        "left out: 1 an advisory's, whose match is written as another id (each listed above)"
+    )
+    assert fields["matches[].relatedVulnerabilities[].description"] == "Vulnerability.description"
+    assert (
+        "- GHSA-aaaa-bbbb-cccc: its match is written as CVE-2026-0001, and "
+        "GHSA-aaaa-bbbb-cccc as an alias of CVE-2026-0001" in report
+    )
+
+
+def test_a_description_in_other_words_than_the_one_written_is_listed(tmp_path: Path) -> None:
+    alpine = match("CVE-2026-0001")  # in the namespace alpine:distro:alpine:3.24
+    alpine["vulnerability"]["description"] = "Alpine's words."
+    nvd = match("CVE-2026-0001", purl=BUSYBOX)
+    nvd["vulnerability"].update(namespace="nvd:cpe", description="NVD's words.")
+    doc, report = import_matches(tmp_path, [alpine, nvd])
+    assert doc["vulnerabilities"][0]["description"] == "Alpine's words."
+    assert field_lines(report)["matches[].vulnerability.description"] == (
+        "Vulnerability.description, for 1; left out: 1 in other words than the one "
+        "written for its Vulnerability (each listed above)"
+    )
+    assert (
+        "- CVE-2026-0001: 2 descriptions; written: alpine:distro:alpine:3.24's; "
+        "left out: nvd:cpe's" in report
+    )
+
+
+def test_fields_some_of_whose_values_are_left_out_say_so(imported) -> None:
+    _, _, report = imported
+    fields = field_lines(report)
+    assert "the import keeps: file entries, and the matches listed above" in report
+    assert fields["metadata.tools.components[].version"].startswith("Syft's: ")
+    assert "disagree" in fields["components[].description"]
+    for party in ("supplier", "manufacturer"):  # fields the fixture does not hold
+        assert "disagree" in import_sbom.SBOM_FIELDS[f"components[].{party}.name"]
+    assert "an entry that is not a Component" in fields["dependencies[].dependsOn"]
+    assert "more than one Vulnerability" in fields["matches[].vulnerability.id"]
+    assert "not a Vulnerability here" in fields["matches[].vulnerability.cwes[].cve"]
+    assert "no CWE" in fields["matches[].vulnerability.cwes[].cwe"]
+
+
+# Review of 9207ad9, non-blocking: a time outside UTC's range --------------------------
+
+
+@pytest.mark.parametrize(
+    "value", ["0001-01-01T00:00:00+14:00", "9999-12-31T23:59:59-14:00", "yesterday"]
+)
+@pytest.mark.parametrize(
+    ("which", "path", "message"),
+    [
+        ("sbom", "metadata.timestamp", "not a date and time with a time zone"),
+        ("scan", "descriptor.timestamp", "descriptor.timestamp is missing or not a date and time"),
+        ("scan", "descriptor.db.status.built", "does not record its database's build time"),
+    ],
+)
+def test_a_time_outside_utcs_range_is_refused_as_an_unreadable_one(
+    tmp_path: Path, which: str, path: str, message: str, value: str
+) -> None:
+    sbom, scan = sbom_doc(), scan_doc()
+    mutate(sbom if which == "sbom" else scan, path, value)
+    out = tmp_path / "model.yaml"
+    with pytest.raises(SbomImportError, match=message):
+        run(dump(tmp_path, "s.json", sbom), scan=dump(tmp_path, "g.json", scan), output=out)
+    assert not out.exists()
+
+
+def test_the_command_exits_2_on_a_time_outside_utcs_range(tmp_path: Path, capsys) -> None:
+    early = "0001-01-01T00:00:00+14:00"
+    sbom = dump(tmp_path, "s.json", mutate(sbom_doc(), "metadata.timestamp", early))
+    argv = ["import-sbom", str(sbom), "--platform", PLATFORM, "-o", str(tmp_path / "model.yaml")]
+    assert cli.main(argv) == 2
+    assert "metadata.timestamp is '0001-01-01T00:00:00+14:00'" in capsys.readouterr().err
     assert not (tmp_path / "model.yaml").exists()

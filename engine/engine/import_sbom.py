@@ -1,6 +1,7 @@
 """Write a starter model from a CycloneDX SBOM and its Grype scan (#257, DL-0068).
 
-    tmodel import-sbom SBOM.json [--scan SCAN.json] -o MODEL.yaml [--report FILE] [--force]
+    tmodel import-sbom SBOM.json [--scan SCAN.json] [--platform OS/ARCH[/VARIANT]]
+        -o MODEL.yaml [--report FILE] [--force]
 
 Input is two files radar's tools write (ADR-0001, ARCH-0001 R-002): Syft's CycloneDX
 1.7 JSON SBOM of a container image, and Grype's JSON scan of that SBOM
@@ -13,10 +14,14 @@ and the engine loads, plus an import report. The mapping is RPT-0004 Table 6
 (`research/0004-product-composition/mapping.md`) and its candidate rules:
 
 - a Product keyed by the image's versionless purl (R-ID-2), and a ProductInstance for
-  the scanned build, keyed by its platform manifest digest (R-ID-1), whose
-  `build_composed_of` lists the components (ADR-0011 A4). Their ids are made from those
-  keys: the whole repository and the whole digest. The SBOM never fills the
-  design-level `composed_of` (R-EDGE-2);
+  the scanned build, keyed by the digest the SBOM records and the build's platform
+  (R-ID-1), whose `build_composed_of` lists the components (ADR-0011 A4). The SBOM does
+  not say whether its digest is a platform manifest's or an index's, which every
+  platform of a release shares, so the platform comes from `--platform` or from a scan
+  Grype made of the image itself, and is checked against the packages' `arch`
+  qualifiers. The ids are made from the keys: the whole repository, and the whole
+  digest with the platform. The SBOM never fills the design-level `composed_of`
+  (R-EDGE-2);
 - one Component per SBOM entry other than files (R-ID-4), keyed by its purl, qualifiers
   and all, normalized by the rules the purl specification gives every type (R-ID-3),
   with `version`, `component_kind` from CycloneDX's `type` (A3), and every purl and CPE
@@ -46,8 +51,10 @@ Deterministic: the same two files give the same model and report, byte for byte,
 the order of the scan's matches changes nothing but the scan's digest. Every input is
 checked before anything is written: a field the import reads that has the wrong type,
 or a scan of another image, is refused with a message naming it. The model and the
-report are written to temporary files and moved into place together, and an existing
-file is never replaced without `--force`, because people edit starter models.
+report are written to temporary files and put in place together, and an existing
+file is never replaced without `--force`, because people edit starter models: not
+even one that appears while the import runs, or one a Mac's volume reads as the same
+name in another case or Unicode form.
 """
 
 from __future__ import annotations
@@ -60,6 +67,7 @@ import secrets
 import shutil
 import stat
 import tempfile
+import unicodedata
 from collections import Counter
 from collections.abc import Iterator, Mapping
 from dataclasses import dataclass, field
@@ -96,6 +104,38 @@ PATH_SCHEME = re.compile(r"(?:sbom|dir|file|docker-archive|oci-archive|oci-dir|s
 PURL_TYPE = re.compile(r"[a-z.+-][a-z0-9.+-]*")
 QUALIFIER_KEY = re.compile(r"[a-z._-][a-z0-9._-]*")
 SURROGATE = re.compile("[\ud800-\udfff]")
+# One part of an OCI platform (linux/arm64/v8): an image index writes Go's GOOS and
+# GOARCH names, and a variant such as v7 or v8, all in lower case.
+PLATFORM_PART = re.compile(r"[a-z0-9]+(?:[._-][a-z0-9]+)*")
+PLATFORM_EXAMPLE = "linux/arm64/v8"
+
+# The names distributions write in a purl's `arch` qualifier, as the architecture an
+# OCI image index names (Go's GOARCH): Alpine's (x86_64, aarch64, x86, armhf, armv7),
+# Debian's (amd64, arm64, i386, armel, armhf, ppc64el) and RPM's (x86_64, aarch64,
+# i686), with the OCI names themselves for an `oci` purl. A name not here is listed
+# in the report as not checked; noarch, all and any (NO_ARCHITECTURE) name no CPU.
+ARCHITECTURES = {
+    "amd64": "amd64",
+    "x86_64": "amd64",
+    "arm64": "arm64",
+    "aarch64": "arm64",
+    "386": "386",
+    "i386": "386",
+    "i686": "386",
+    "x86": "386",
+    "arm": "arm",
+    "armel": "arm",
+    "armhf": "arm",
+    "armv7": "arm",
+    "ppc64le": "ppc64le",
+    "ppc64el": "ppc64le",
+    "s390x": "s390x",
+    "riscv64": "riscv64",
+}
+NO_ARCHITECTURE = frozenset({"noarch", "all", "any"})
+# A 64-bit platform runs its 32-bit sibling's packages too, which Debian's multiarch
+# and RPM's multilib install beside the native ones (libc6:i386 on amd64).
+ALSO_RUNS = {"amd64": "386", "arm64": "arm"}
 
 # CycloneDX 1.7's component types, written as ComponentKind values (ADR-0011 A3).
 COMPONENT_KINDS = {
@@ -148,6 +188,24 @@ DESCRIBED = (
     "Vulnerabilities the scan describes in more than one way (the description written "
     "is the one from the namespace first in sorted order)"
 )
+ADVISORY_WORDS = (
+    "Advisory descriptions left out (a description is written only on its own record's "
+    "Vulnerability, and these advisories' matches are written as another id, most often "
+    "a CVE)"
+)
+UNCHECKED_ARCH = (
+    "Package architectures not checked against the platform (names this import does not know)"
+)
+
+# What became of a description that is not written, by reason, for the report's field
+# inventory (`_Builder.words`).
+WORDS_ADVISORY = "an advisory's, whose match is written as another id"
+WORDS_OTHER = "in other words than the one written for its Vulnerability"
+WORDS_MATCH = "with their match"
+DESCRIPTION_PATHS = (
+    "matches[].vulnerability.description",
+    "matches[].relatedVulnerabilities[].description",
+)
 
 
 class SbomImportError(ValueError):
@@ -180,6 +238,28 @@ class SbomInfo:
 
 
 @dataclass(frozen=True)
+class Platform:
+    """An OCI platform, as an image index names one build: os/architecture, and the
+    CPU's variant when one is given (linux/arm64/v8)."""
+
+    os: str
+    architecture: str
+    variant: str | None = None
+
+    def __str__(self) -> str:
+        return "/".join(p for p in (self.os, self.architecture, self.variant) if p)
+
+
+# Each part of a platform, and where a scan Grype made of the image itself records it.
+# Grype writes Syft's image metadata there, whose variant field is architectureVariant.
+PLATFORM_FIELDS = (
+    ("os", "os"),
+    ("architecture", "architecture"),
+    ("variant", "architectureVariant"),
+)
+
+
+@dataclass(frozen=True)
 class ScanInfo:
     tool: str
     timestamp: str
@@ -189,6 +269,9 @@ class ScanInfo:
     image_id: str | None  # source.target.imageID
     also: tuple[str, ...]  # the rest of what source.target says, for the report
     distro: str | None  # the distribution Grype detected, as "name version"
+    # The platform source.target records, part by part (os, architecture, variant).
+    # Grype fills it when it read the image itself, and leaves it empty for an SBOM.
+    platform: tuple[str | None, str | None, str | None] = (None, None, None)
 
     @property
     def generated_by(self) -> str:
@@ -212,30 +295,39 @@ def run(
     output: str | Path,
     report: str | Path | None = None,
     force: bool = False,
+    platform: str | None = None,
 ) -> ImportResult:
-    """Read the inputs, write the model (and the report, when asked), and return both."""
+    """Read the inputs, write the model (and the report, when asked), and return both.
+    `platform` is the build's, as `--platform` gives it (linux/arm64/v8)."""
     out = Path(output)
     report_path = Path(report) if report is not None else None
     inputs = [Path(sbom)] + ([Path(scan)] if scan is not None else [])
     outputs = [out] + ([report_path] if report_path is not None else [])
     _check_outputs(inputs, outputs, force)
-    result = build(sbom, scan=scan, output_name=_display_path(out))
+    result = build(sbom, scan=scan, platform=platform, output_name=_display_path(out))
     texts = [result.model_text] + ([result.report_text] if report_path is not None else [])
     _publish(list(zip(outputs, texts, strict=True)), force)
     return result
 
 
 def build(
-    sbom: str | Path, *, scan: str | Path | None = None, output_name: str = "MODEL.yaml"
+    sbom: str | Path,
+    *,
+    scan: str | Path | None = None,
+    platform: str | None = None,
+    output_name: str = "MODEL.yaml",
 ) -> ImportResult:
     """The model and report texts for these inputs; nothing is written."""
+    given = parse_platform(platform) if platform is not None else None
     sbom_file, sbom_doc = _read_json(Path(sbom), "SBOM")
     info = _check_sbom(sbom_doc, _one_line(sbom_file.name))
     scan_file = scan_doc = scan_info = None
     if scan is not None:
         scan_file, scan_doc = _read_json(Path(scan), "scan")
         scan_info = _check_scan(scan_doc, _one_line(scan_file.name), info)
-    builder = _Builder(sbom_file, sbom_doc, info, scan_file, scan_doc, scan_info)
+    scan_name = _one_line(scan_file.name) if scan_file is not None else None
+    build_platform = _build_platform(given, scan_info, _one_line(sbom_file.name), scan_name)
+    builder = _Builder(sbom_file, sbom_doc, info, scan_file, scan_doc, scan_info, *build_platform)
     doc = builder.model()
     _self_check(doc)
     model_text = _header(builder, output_name) + _dump(doc)
@@ -524,7 +616,92 @@ def _check_scan(doc: Mapping[str, Any], name: str, sbom: SbomInfo) -> ScanInfo:
         image_id=image_id,
         also=_scan_target_extras(target, name),
         distro=_scan_distro(doc.get("distro"), name),
+        platform=_scan_platform(target, name),
     )
+
+
+def parse_platform(text: str) -> Platform:
+    """`--platform OS/ARCH[/VARIANT]`, as `docker --platform` takes it, in any case."""
+    parts = text.strip().lower().split("/")
+    if len(parts) not in (2, 3) or not all(_platform_part(part) for part in parts):
+        raise SbomImportError(
+            f"--platform is {text!r}, not OS/ARCH or OS/ARCH/VARIANT (for example "
+            f"{PLATFORM_EXAMPLE})"
+        )
+    _check_architecture_name(parts[1], "--platform")
+    return Platform(*parts)
+
+
+def _platform_part(text: str) -> bool:
+    return len(text) <= 20 and PLATFORM_PART.fullmatch(text) is not None
+
+
+def _check_architecture_name(arch: str, where: str) -> None:
+    """A platform names its architecture as an image index does (arm64), not as a
+    distribution does (aarch64), which would give one build two keys."""
+    oci = ARCHITECTURES.get(arch)
+    if oci is not None and oci != arch:
+        raise SbomImportError(
+            f"{where} names the architecture {arch!r}, a distribution's name for {oci}; "
+            f"give the name an image index uses, as in linux/{oci}"
+        )
+
+
+def _scan_platform(target: Mapping[str, Any], name: str) -> tuple[str | None, ...]:
+    """The platform source.target records, part by part, each None where Grype left it
+    empty, as it does when it read an SBOM rather than the image."""
+    parts = []
+    for part, key in PLATFORM_FIELDS:
+        value = _text_at(target, key, name, "source.target")
+        if value is not None:
+            value = value.lower()
+            if not _platform_part(value):
+                raise SbomImportError(
+                    f"{name}: source.target.{key} is {value!r}, not a platform's {part}"
+                )
+            if part == "architecture":
+                _check_architecture_name(value, f"{name}: source.target.{key}")
+        parts.append(value)
+    return tuple(parts)
+
+
+def _build_platform(
+    given: Platform | None, scan: ScanInfo | None, sbom_name: str, scan_name: str | None
+) -> tuple[Platform, str]:
+    """The platform of the build the SBOM's digest names, and where it came from. The
+    SBOM does not say whether its digest is a platform manifest's or an index's, which
+    every platform of a release shares (R-ID-1), so the digest names one build only with
+    a platform: `--platform`, or what a scan of the image itself records. A part both
+    give must agree; a part only one gives (often the variant) is taken from it."""
+    recorded = scan.platform if scan is not None else (None, None, None)
+    wanted = (given.os, given.architecture, given.variant) if given else (None, None, None)
+    for (part, key), mine, theirs in zip(PLATFORM_FIELDS, wanted, recorded, strict=True):
+        if mine is not None and theirs is not None and mine != theirs:
+            raise SbomImportError(
+                f"{scan_name}: --platform gives the {part} {mine}, but the scan records "
+                f"{theirs} (source.target.{key}), so they do not describe one build"
+            )
+    os_name, architecture, variant = (m or t for m, t in zip(wanted, recorded, strict=True))
+    if os_name is None or architecture is None:
+        if scan is None:
+            scanned = ""
+        elif any(recorded):
+            scanned = "; the scan records only part of it (" + (
+                "/".join(p or "?" for p in recorded) + ")"
+            )
+        else:
+            scanned = "; the scan does not either (Grype leaves it empty when it read an SBOM)"
+        raise SbomImportError(
+            f"{sbom_name}: the SBOM does not record which platform its digest names (an "
+            f"index's digest names every platform of a release){scanned}. Pass --platform "
+            f"OS/ARCH[/VARIANT], for example --platform {PLATFORM_EXAMPLE}"
+        )
+    sources = [
+        source
+        for source, parts in (("--platform", wanted), ("the scan (source.target)", recorded))
+        if any(parts)
+    ]
+    return Platform(os_name, architecture, variant), " and ".join(sources)
 
 
 def _scan_database(
@@ -594,10 +771,7 @@ def _scan_target_extras(target: Mapping[str, Any], name: str) -> tuple[str, ...]
             values.append(value)
         if values:
             also.append(f"{label} {', '.join(values)}")
-    platform = [_text_at(target, key, name, where) for key in ("os", "architecture")]
-    if any(platform):
-        also.append("platform " + "/".join(p or "?" for p in platform))
-    return tuple(also)
+    return tuple(also)  # the platform has a report line of its own (_Report.text)
 
 
 def _scan_distro(distro: Any, name: str) -> str | None:
@@ -660,6 +834,7 @@ class _Entry:
     identifiers: tuple[str, ...]
     supplier: str | None
     manufacturer: str | None
+    arch: str | None = None  # its purl's arch qualifier, which is part of its key
 
 
 @dataclass
@@ -670,6 +845,7 @@ class _Component:
     kind: str
     readable: str  # what its id is made from
     base: str | None  # its purl without qualifiers or subpath, to name near misses
+    arch: str | None = None  # the CPU its purl says it is built for
     id: str = ""
     description: str | None = None
     identifiers: list[str] = field(default_factory=list)
@@ -743,6 +919,8 @@ class _Builder:
         scan_file: InputFile | None,
         scan: Mapping[str, Any] | None,
         scan_info: ScanInfo | None,
+        platform: Platform,
+        platform_source: str,
     ) -> None:
         self.sbom_file = sbom_file
         self.sbom = sbom
@@ -750,11 +928,18 @@ class _Builder:
         self.scan_file = scan_file
         self.scan = scan
         self.scan_info = scan_info
+        self.platform = platform
+        self.platform_source = platform_source  # "--platform", the scan, or both
         self.ids: dict[str, str] = {}  # object id -> the key it was made from
         self.notes: Counter[str] = Counter()  # what was left out, by reason
         self.repeats: Counter[str] = Counter()  # what the inputs repeat, written once
         self.listed: dict[str, list[str]] = {}  # report lists, by heading
         self.types: Counter[str] = Counter()  # SBOM component entries, by CycloneDX type
+        # Components by the architecture their purl names: (OCI name, purl's name) -> n.
+        self.architectures: Counter[tuple[str, str]] = Counter()
+        # Descriptions in the scan that are not written, by field path and reason.
+        self.words: dict[str, Counter[str]] = {path: Counter() for path in DESCRIPTION_PATHS}
+        self.words_written: Counter[str] = Counter()  # and those that are, by path
         self.components: dict[str, _Component] = {}
         self.by_ref: dict[str, str] = {}  # bom-ref -> component key
         self.systems: list[str] = []  # the SBOM's operating systems, as "name version"
@@ -781,13 +966,13 @@ class _Builder:
 
     # ids
 
-    def _id(self, prefix: str, key: str, readable: str) -> str:
+    def _id(self, prefix: str, key: str, readable: str, limit: int = 80) -> str:
         """A stable id from `readable`; the same key always gets the same id."""
-        slug = _slug(readable)
+        slug = _slug(readable, limit=limit)
         candidate = f"{prefix}:{slug}"
         owner = self.ids.get(candidate)
         if owner is not None and owner != key:
-            candidate = f"{prefix}:{_slug(slug, limit=70)}-{_short_hash(key)}"
+            candidate = f"{prefix}:{_slug(slug, limit=limit - 10)}-{_short_hash(key)}"
         self.ids[candidate] = key
         return candidate
 
@@ -800,12 +985,20 @@ class _Builder:
         url = quote(self.repository_url, safe="/:")
         self.product_purl = f"pkg:oci/{purl_name}?repository_url={url}"
         digest = quote(self.info.digest, safe="")
-        self.instance_purl = f"pkg:oci/{purl_name}@{digest}?repository_url={url}"
+        arch = quote(self.platform.architecture, safe="")
+        # The oci purl type's arch qualifier, and the qualifiers sorted by key.
+        self.instance_purl = f"pkg:oci/{purl_name}@{digest}?arch={arch}&repository_url={url}"
         # Each id is made from its key, whole: the repository with its registry (R-ID-2),
-        # and the digest (R-ID-1), so another registry or path gives another id. An id is a
-        # readable slug; the purl in identifiers stays the key.
+        # and the digest with the platform (R-ID-1), since an index digest names every
+        # platform of a release and the SBOM does not say which kind it holds. So another
+        # registry, path or platform gives another id. An id is a readable slug; the purl
+        # in identifiers stays the key. A platform's parts are short (_platform_part), so
+        # the build's id keeps the whole digest and platform.
         self.product_id = self._id("product", self.product_purl, self.repository_url)
-        self.instance_id = self._id("product-instance", self.info.digest, self.info.digest)
+        self.instance_key = f"{self.info.digest} {self.platform}"
+        self.instance_id = self._id(
+            "product-instance", self.instance_key, self.instance_key, limit=160
+        )
 
     # components
 
@@ -836,6 +1029,7 @@ class _Builder:
                 self.systems.append(" ".join(p for p in (read.name, read.version) if p))
         for key in sorted(entries):
             self.components[key] = self._component(entries[key], name)
+        self._check_architectures(name)
         for component in self.components.values():  # in key order
             component.id = self._id("component", component.key, component.readable)
         named = {(c.supplier, "supplier") for c in self.components.values() if c.supplier}
@@ -876,32 +1070,37 @@ class _Builder:
             identifiers=tuple(identifiers),
             supplier=self._organization(entry, "supplier", name, where),
             manufacturer=self._organization(entry, "manufacturer", name, where),
+            arch=dict(parsed.qualifiers).get("arch") if parsed is not None else None,
         )
 
     def _component(self, entries: list[_Entry], name: str) -> _Component:
         """One Component from the entries that share a key. They must agree on what the
-        Component is; where they disagree on a description or a party, it is left out
-        and listed, so no value is picked silently."""
+        Component is: every name, type and version any of them gives, all against all,
+        so an entry that gives none cannot hide two that differ. The Component takes the
+        one value they give. Where they disagree on a description or a party, it is left
+        out and listed, so no value is picked silently."""
         first = entries[0]
-        for other in entries[1:]:
-            for label, mine, theirs in (
-                ("names", first.name, other.name),
-                ("types", first.kind, other.kind),
-                ("versions", first.version, other.version),
-            ):
-                if mine is not None and theirs is not None and mine != theirs:
-                    raise SbomImportError(
-                        f"{name}: {first.where} and {other.where} have the same purl, "
-                        f"{first.key}, but give different {label} ({mine!r} and {theirs!r}); "
-                        "the import cannot tell which package is meant (R-ID-3)"
-                    )
+        for label, slot in (("names", "name"), ("types", "kind"), ("versions", "version")):
+            given: dict[str, _Entry] = {}  # each value given, and the first entry to give it
+            for entry in entries:
+                value = getattr(entry, slot)
+                if value is not None:
+                    given.setdefault(value, entry)
+            if len(given) > 1:
+                (mine, one), (theirs, other) = list(given.items())[:2]
+                raise SbomImportError(
+                    f"{name}: {one.where} and {other.where} have the same purl, "
+                    f"{first.key}, but give different {label} ({mine!r} and {theirs!r}); "
+                    "the import cannot tell which package is meant (R-ID-3)"
+                )
         component = _Component(
             key=first.key,
             entry_name=first.name,
-            version=next((e.version for e in entries if e.version), None),
+            version=next((e.version for e in entries if e.version is not None), None),
             kind=COMPONENT_KINDS[first.kind],
             readable=first.readable,
             base=first.base,
+            arch=first.arch,
             entries=len(entries),
         )
         for slot, label in (
@@ -974,6 +1173,55 @@ class _Builder:
         key = f"organization:{name}"
         return next(pid for pid, party in self.parties.items() if party["_key"] == key)
 
+    # the platform, checked against the SBOM
+
+    def _check_architectures(self, name: str) -> None:
+        """The SBOM's own record of its CPU must fit the platform (R-ID-1): the image's
+        purl, when it has an arch, names the platform's architecture, and each package's
+        arch qualifier, read through ARCHITECTURES, names it too, or the 32-bit sibling a
+        64-bit platform also runs, with some package built for the platform's own. A name
+        not in the table is listed, not checked; noarch, all and any are skipped."""
+        platform = self.platform.architecture
+        given = f"the platform is {self.platform} (from {self.platform_source})"
+        image = _parse_purl(self.info.purl) if self.info.purl is not None else None
+        image_arch = dict(image.qualifiers).get("arch") if image is not None else None
+        # An oci purl names its arch as an image index does, so a name not in the table
+        # is compared as it is.
+        if image_arch is not None and ARCHITECTURES.get(image_arch.lower(), image_arch) != platform:
+            raise SbomImportError(
+                f"{name}: metadata.component.purl says arch={image_arch}, but {given}"
+            )
+        names: dict[str, set[str]] = {}  # OCI architecture -> the names packages give it
+        unknown: Counter[str] = Counter()
+        for component in self.components.values():
+            arch = component.arch
+            if arch is None or arch.lower() in NO_ARCHITECTURE:
+                continue
+            oci = ARCHITECTURES.get(arch.lower())
+            if oci is None:
+                unknown[arch] += 1
+                continue
+            names.setdefault(oci, set()).add(arch)
+            self.architectures[oci, arch] += 1
+        foreign = sorted(set(names) - {platform, ALSO_RUNS.get(platform)})
+        if foreign:
+            oci = foreign[0]
+            raise SbomImportError(
+                f"{name}: the SBOM's packages are built for {oci} "
+                f"(arch={', '.join(sorted(names[oci]))}), but {given}; the SBOM is not of "
+                "that build"
+            )
+        if names and platform not in names:
+            said = ", ".join(sorted(arch for found in names.values() for arch in found))
+            raise SbomImportError(
+                f"{name}: none of the SBOM's packages is built for {platform}, though {given}; "
+                f"they say arch={said}"
+            )
+        for arch, n in sorted(unknown.items()):
+            self.listed.setdefault(UNCHECKED_ARCH, []).append(
+                f"{_one_line(arch)}: {n} Component{'' if n == 1 else 's'}"
+            )
+
     # dependencies
 
     def _dependencies(self) -> None:
@@ -1016,10 +1264,12 @@ class _Builder:
     def _matches(self) -> None:
         assert self.scan is not None and self.scan_file is not None
         name = _one_line(self.scan_file.name)
+        parsed: list[_Row] = []  # every match, repeats too, to account for each description
         rows: list[_Row] = []
         fingerprints: set[str] = set()
         for index, raw in enumerate(self.scan["matches"]):
             row = _row(raw, index, name)
+            parsed.append(row)
             if row.fingerprint in fingerprints:
                 self.repeats["matches that repeat an earlier match exactly"] += 1
                 continue
@@ -1043,6 +1293,7 @@ class _Builder:
             self.vulnerabilities[ref] = _Vulnerability(ref, self._id("vulnerability", ref, ref))
         self._aliases(kept, cves_of)
         self._descriptions(kept)
+        self._account_for_descriptions(parsed, {row.fingerprint: refs for row, _, refs in kept})
         for row, key, refs in kept:
             self.scan_parts.add(key)
             self.matches.extend(_Match(ref, key, row) for ref in refs)
@@ -1125,9 +1376,41 @@ class _Builder:
             self.vulnerabilities[ref].description = text
             texts = {t for _, t in options}
             if len(texts) > 1:
+                others = sorted({ns or "no namespace" for ns, t in options if t != text})
+                left = ", ".join(f"{other}'s" for other in others)
                 self.listed.setdefault(DESCRIBED, []).append(
-                    f"{ref}: {len(texts)} descriptions; written: {namespace or 'no namespace'}'s"
+                    f"{ref}: {len(texts)} descriptions; written: "
+                    f"{namespace or 'no namespace'}'s; left out: {left}"
                 )
+
+    def _account_for_descriptions(
+        self, rows: list[_Row], refs_of: Mapping[str, tuple[str, ...]]
+    ) -> None:
+        """What became of each description in the scan, by its field, so the report never
+        says one was written that was not. A description is written only on its own
+        record's Vulnerability, and only the one picked for it (`_descriptions`); the rest
+        are left out, each listed: an advisory's whose match is written as another id
+        (most often a CVE), one in other words than the one written, or one whose match
+        is left out whole."""
+        for row in rows:
+            refs = refs_of.get(row.fingerprint)  # None when the match is left out
+            for number, record in enumerate(row.records):
+                if record.description is None:
+                    continue
+                path = DESCRIPTION_PATHS[min(number, 1)]  # its own record, or a related one
+                if refs is None:
+                    self.words[path][WORDS_MATCH] += 1
+                elif record.id not in refs:
+                    self.words[path][WORDS_ADVISORY] += 1
+                    item = f"{record.id}: its match is written as {', '.join(refs)}"
+                    aliased = [r for r in refs if record.id in self.vulnerabilities[r].aliases]
+                    if aliased:
+                        item += f", and {record.id} as an alias of {aliased[0]}"
+                    self.listed.setdefault(ADVISORY_WORDS, []).append(item)
+                elif record.description != self.vulnerabilities[record.id].description:
+                    self.words[path][WORDS_OTHER] += 1
+                else:
+                    self.words_written[path] += 1
 
     def _cwe(self, cve: str | None, cwe: str | None, source: str | None, kind: str | None) -> None:
         if cve is None or cve not in self.vulnerabilities:
@@ -1171,10 +1454,13 @@ class _Builder:
         doc["product_instances"] = [
             {
                 "id": self.instance_id,
-                "name": f"{self.info.image} at {self.info.digest[:19]}",
+                "name": f"{self.info.image} at {self.info.digest[:19]} for {self.platform}",
                 "description": (
-                    "The scanned build, keyed by the platform manifest digest the SBOM "
-                    f"records (R-ID-1). SBOM made by {self.info.tool}"
+                    "The scanned build, keyed by the digest the SBOM records and the "
+                    f"platform, {self.platform} (from {self.platform_source}): the SBOM "
+                    "does not say whether its digest is a platform manifest's or an "
+                    "index's, which every platform of a release shares (R-ID-1). SBOM "
+                    f"made by {self.info.tool}"
                     + (f" at {self.info.timestamp}" if self.info.timestamp else "")
                     + "."
                 ),
@@ -1365,6 +1651,10 @@ def _refs(row: _Row, cves_of: Mapping[str, set[str]]) -> tuple[str, ...]:
 INSIDE = "see the fields inside it"
 UNREAD = "left out: not read by this import"
 NO_SLOT = "left out: no slot"
+PLATFORM_RULE = (
+    "the platform, when not empty (Grype leaves it empty when it read an SBOM): checked "
+    "against --platform; the ProductInstance's key, id, name and purl (R-ID-1)"
+)
 
 SBOM_FIELDS = {
     "$schema": "left out: the JSON schema's URL",
@@ -1377,11 +1667,15 @@ SBOM_FIELDS = {
     "metadata.tools": INSIDE,
     "metadata.tools.components": INSIDE,
     "metadata.tools.components[].name": "checked: Syft",
-    "metadata.tools.components[].version": "the model's header and this report (R-PROV-1)",
+    "metadata.tools.components[].version": (
+        "Syft's: the model's header and this report (R-PROV-1); another tool's is left out"
+    ),
     "metadata.tools.components[].type": "left out: the tool's kind of component",
     "metadata.tools.components[].author": "left out: the tool's maker (no slot)",
     "metadata.tools[].name": "checked: Syft (the list form before CycloneDX 1.5)",
-    "metadata.tools[].version": "the model's header and this report (R-PROV-1)",
+    "metadata.tools[].version": (
+        "Syft's: the model's header and this report (R-PROV-1); another tool's is left out"
+    ),
     "metadata.tools[].vendor": "left out: the tool's maker (no slot)",
     "metadata.component": INSIDE,
     "metadata.component.type": "checked: container",
@@ -1390,7 +1684,8 @@ SBOM_FIELDS = {
         "it is checked against the version"
     ),
     "metadata.component.version": (
-        "ProductInstance.version and identifiers: the platform manifest digest (R-ID-1)"
+        "ProductInstance.version and identifiers; with the platform, the ProductInstance's "
+        "key and id (R-ID-1)"
     ),
     "metadata.component.bom-ref": "matched against dependencies[].ref and the scan's image id",
     "metadata.component.purl": (
@@ -1402,7 +1697,7 @@ SBOM_FIELDS = {
     "components[].version": "Component.version and the name, checked against the purl's version",
     "components[].purl": (
         "Component.identifiers, and the Component's key: the purl, normalized, with its "
-        "qualifiers (R-ID-3)"
+        "qualifiers (R-ID-3); its arch qualifier is checked against the platform"
     ),
     "components[].cpe": "Component.identifiers",
     "components[].properties": INSIDE,
@@ -1411,16 +1706,25 @@ SBOM_FIELDS = {
         "a syft:cpe23 value goes in Component.identifiers; the other properties are left "
         "out, counted above"
     ),
-    "components[].description": "Component.description",
+    "components[].description": (
+        "Component.description; left out where entries recorded as one Component disagree "
+        "(listed above)"
+    ),
     "components[].bom-ref": "joins dependencies to Components",
     "components[].supplier": INSIDE,
-    "components[].supplier.name": "Component.supplied_by, a Party (Table 6c)",
+    "components[].supplier.name": (
+        "Component.supplied_by, a Party (Table 6c); left out where entries recorded as one "
+        "Component disagree (listed above)"
+    ),
     "components[].supplier.url": NO_SLOT,
     "components[].supplier.contact": NO_SLOT,
     "components[].supplier.address": NO_SLOT,
     "components[].supplier.bom-ref": NO_SLOT,
     "components[].manufacturer": INSIDE,
-    "components[].manufacturer.name": "Component.manufactured_by, a Party (Table 6c)",
+    "components[].manufacturer.name": (
+        "Component.manufactured_by, a Party (Table 6c); left out where entries recorded as "
+        "one Component disagree (listed above)"
+    ),
     "components[].manufacturer.url": NO_SLOT,
     "components[].manufacturer.contact": NO_SLOT,
     "components[].manufacturer.address": NO_SLOT,
@@ -1439,7 +1743,9 @@ SBOM_FIELDS = {
     "dependencies": INSIDE,
     "dependencies[].ref": "the dependent Component",
     "dependencies[].dependsOn": (
-        "Component.uses_component, dependent to dependency (R-EDGE-1, R-EDGE-3)"
+        "Component.uses_component, dependent to dependency (R-EDGE-1, R-EDGE-3); an edge "
+        "from the image, to or from an entry that is not a Component, or from a Component "
+        "to itself is left out, counted above"
     ),
 }
 # A nested component is read as a component, so its fields count under components[].
@@ -1447,13 +1753,22 @@ SBOM_NESTED = {"components[].components": "components"}
 
 _CWE_FIELDS = {
     "cwes": INSIDE,
-    "cwes[].cve": "the Vulnerability of an instance_of Assertion (R-CWE-1)",
-    "cwes[].cwe": "the Weakness of an instance_of Assertion; placeholders are left out",
+    "cwes[].cve": (
+        "the Vulnerability of an instance_of Assertion (R-CWE-1); an entry for an id that is "
+        "not a Vulnerability here is left out, counted above"
+    ),
+    "cwes[].cwe": (
+        "the Weakness of an instance_of Assertion; placeholders, and entries that name no "
+        "CWE, are left out, counted above"
+    ),
     "cwes[].source": "the instance_of Assertion's asserted_by, a Party (R-CWE-1)",
     "cwes[].type": "the instance_of Assertion's description (NVD's Primary or Secondary)",
 }
 _RECORD_FIELDS = {
-    "id": "Vulnerability.catalog_ref (a CVE), or alias_ids beside the CVE it names",
+    "id": (
+        "Vulnerability.catalog_ref (a CVE), or alias_ids beside the CVE it names; an id the "
+        "scan pairs with more than one Vulnerability is listed above, not written"
+    ),
     "description": "Vulnerability.description",
     "namespace": (
         "picks a description when records differ; otherwise left out (the match's "
@@ -1534,8 +1849,9 @@ SCAN_FIELDS = {
     ),
     "source.target.tags": "this report (R-ID-1 keeps tags beside the digest; no slot yet)",
     "source.target.repoDigests": "this report (the index digest, when Grype read it; no slot yet)",
-    "source.target.architecture": "this report, as the platform (no slot yet)",
-    "source.target.os": "this report, as the platform (no slot yet)",
+    "source.target.architecture": PLATFORM_RULE,
+    "source.target.architectureVariant": PLATFORM_RULE,
+    "source.target.os": PLATFORM_RULE,
     "source.target.mediaType": NO_SLOT,
     "source.target.imageSize": NO_SLOT,
     "source.target.layers": "left out: content identity is post-MVP (R-ID-4)",
@@ -1574,7 +1890,13 @@ class _Report:
                 "- No scan was given, so no vulnerabilities were imported. A model without a "
                 "scan says nothing about known vulnerabilities."
             )
-        lines.append(f"- Image: {b.info.image}, platform manifest digest {b.info.digest}.")
+        lines.append(
+            f"- Image: {b.info.image}, digest {b.info.digest}. Platform: {b.platform}, from "
+            f"{b.platform_source}. The SBOM does not say whether the digest is a platform "
+            "manifest's or an index's, which every platform of a release shares, so the "
+            "build is keyed by the two (R-ID-1)."
+        )
+        lines.append(self._architectures())
         if b.scan_info is not None:
             lines += self._scan_identity(b.scan_info)
         counts = b.counts()
@@ -1625,13 +1947,15 @@ class _Report:
         lines.append(
             "Every field of each file by its path (`a.b` is field b of a, and `a[]` each item "
             "of list a), how often it occurs, and where it went. A field whose whole value is "
-            "left out is counted with the values it holds."
+            "left out is counted with the values it holds. Where it went is for the entries "
+            "and matches the import keeps: file entries, and the matches listed above as left "
+            "out, are left out whole."
         )
         lines += ["", "- SBOM:"]
         lines += _inventory(b.sbom, SBOM_FIELDS, SBOM_NESTED)
         if b.scan is not None:
             lines.append("- Scan:")
-            lines += _inventory(b.scan, SCAN_FIELDS, {})
+            lines += _inventory(b.scan, {**SCAN_FIELDS, **self._descriptions()}, {})
         lines += [
             "",
             "## Next",
@@ -1643,6 +1967,38 @@ class _Report:
         ]
         # Every line holds input text; none may break, so each prints on one line.
         return "\n".join(_one_line(line) for line in lines)
+
+    def _architectures(self) -> str:
+        """What the packages' arch qualifiers say, checked against the platform."""
+        b = self.b
+        platform = b.platform.architecture
+        if not b.architectures:
+            return (
+                "- No package's purl names an architecture this import knows, so the platform "
+                "is not checked against the packages."
+            )
+        said = []
+        native_first = sorted(b.architectures.items(), key=lambda kv: (kv[0][0] != platform, kv))
+        for (oci, arch), n in native_first:
+            text = f"{n} Component{'' if n == 1 else 's'} built for {oci} (arch={arch})"
+            if oci != platform:
+                text += f", which {platform} also runs (multiarch and multilib)"
+            said.append(text)
+        return f"- The packages fit the platform: {'; '.join(said)}."
+
+    def _descriptions(self) -> dict[str, str]:
+        """Where the scan's descriptions went, for each description field that has some
+        left out, so its line never says they were all written (`_Builder.words`)."""
+        b = self.b
+        rules = {}
+        for path, left in b.words.items():
+            if not left:
+                continue  # each one was written, as the field table says
+            reasons = ", ".join(f"{n} {why}" for why, n in sorted(left.items()))
+            text = f"left out: {reasons} (each listed above)"
+            written = b.words_written[path]
+            rules[path] = f"Vulnerability.description, for {written}; {text}" if written else text
+        return rules
 
     def _scan_identity(self, scan: ScanInfo) -> list[str]:
         b = self.b
@@ -1729,8 +2085,9 @@ def _header(builder: _Builder, output_name: str) -> str:
     lines = [
         f"# STARTER MODEL, imported by `tmodel import-sbom` (tmodel {__version__}; #257, DL-0068)",
         "#",
-        f"# Product: {b.info.image}, the image whose platform manifest digest is",
-        f"# {b.info.digest}.",
+        f"# Product: {b.info.image}. The build: digest",
+        f"# {b.info.digest}",
+        f"# for {b.platform} (from {b.platform_source}).",
         "#",
         f"# SBOM: {b.sbom_file.name}, {b.sbom_file.digest}",
         f"#   CycloneDX {CYCLONEDX_VERSION} from {b.info.tool}"
@@ -1832,7 +2189,8 @@ def _self_check(doc: Mapping[str, Any]) -> None:
 
 def _check_outputs(inputs: list[Path], outputs: list[Path], force: bool) -> None:
     """The model (first) and the report may not be an input or each other, by any name a
-    link or a case-insensitive volume gives them, and are never replaced unforced."""
+    link or a case- or normalization-insensitive volume gives them, and are never
+    replaced unforced."""
     model = outputs[0]
     if model.suffix not in MODEL_SUFFIXES:
         raise SbomImportError(
@@ -1843,15 +2201,12 @@ def _check_outputs(inputs: list[Path], outputs: list[Path], force: bool) -> None
         if any(_same_place(path, source) for source in inputs):
             raise SbomImportError(
                 f"{name}: is an input (by its own name, a link, a second name for the file, or "
-                "the same name in another case); refusing to write over it"
+                "the same name in another case or Unicode form); refusing to write over it"
             )
         if os.path.isdir(path):
             raise SbomImportError(f"{name}: is a folder")
         if os.path.lexists(path) and not force:  # a dangling link exists too
-            raise SbomImportError(
-                f"{name}: already exists; people edit starter models, so it is not "
-                "replaced without --force"
-            )
+            raise _taken(path)
         if not path.parent.is_dir():
             raise SbomImportError(f"{name}: its folder does not exist")
     if len(outputs) == 2 and _same_place(outputs[0], outputs[1]):
@@ -1860,9 +2215,9 @@ def _check_outputs(inputs: list[Path], outputs: list[Path], force: bool) -> None
 
 def _same_place(first: Path, second: Path) -> bool:
     """Whether two paths name one file: the same file when both exist (through a link or
-    a second name), or the same real path ignoring case, since a Mac's volumes usually
-    ignore it. On a volume that does not, two names that differ only in case are refused
-    too, which costs nothing."""
+    a second name), or else the same real path as a Mac's volume compares names, which
+    ignores case and Unicode normalization (é as one character, or as e and an accent).
+    On a volume that tells such names apart, they are refused too, which costs nothing."""
     try:
         if os.path.exists(first) and os.path.exists(second) and os.path.samefile(first, second):
             return True
@@ -1872,43 +2227,134 @@ def _same_place(first: Path, second: Path) -> bool:
 
 
 def _place(path: Path) -> str:
-    return os.path.normcase(os.path.realpath(path)).casefold()
+    """The real path in Unicode's canonical caseless form, NFD(casefold(NFD(text))), so
+    two paths a case- and normalization-insensitive volume (APFS, HFS+) reads as one
+    name give one text. Where a volume folds names some other way, `_publish` still
+    never writes over a file that is there."""
+    real = os.path.normcase(os.path.realpath(path))
+    return unicodedata.normalize("NFD", unicodedata.normalize("NFD", real).casefold())
+
+
+def _taken(path: Path) -> SbomImportError:
+    return SbomImportError(
+        f"{_one_line(path.name)}: already exists; people edit starter models, so it is not "
+        "replaced without --force"
+    )
+
+
+# Where this import put a file: the path, which file it put there (device and inode),
+# and the second name keeping the file --force replaced, if any.
+_Placed = tuple[Path, tuple[int, int], Path | None]
 
 
 def _publish(files: list[tuple[Path, str]], force: bool) -> None:
-    """Write each text to a temporary file beside its path, then move them all into
-    place. A failure on the way leaves none of them, and puts back any file --force was
-    replacing, so a failed import never leaves half of its output."""
+    """Write each text to a temporary file beside its path, then put them all in place.
+    Unforced, each is put where nothing is, by an operation that fails if anything is
+    there by then (`_place_new`), so a file that appeared after `_check_outputs`, or
+    one the volume reads as the same name as the other output, is never written over.
+    With --force, each is moved over its path, and a second name keeps the file it
+    replaces (`_keep`). A failure on the way takes back what this import put in place
+    and puts back what --force replaced, so a failed import never leaves half of its
+    output; and it never removes or replaces a file this import did not put there."""
     temporaries: list[Path] = []
     backups: list[Path | None] = []
+    kept: list[Path] = []  # second names whose file could not be put back
     try:
         for path, text in files:
             temporaries.append(_temporary(path, text))
-        if not force:  # nothing appeared at a path since it was checked
-            for path, _ in files:
-                if os.path.lexists(path):
-                    raise SbomImportError(
-                        f"{_one_line(path.name)}: already exists; people edit starter "
-                        "models, so it is not replaced without --force"
-                    )
-        for path, _ in files:
-            backups.append(_keep(path) if os.path.lexists(path) else None)
-        placed: list[int] = []
+        if force:
+            backups = [_keep(path) if os.path.lexists(path) else None for path, _ in files]
+        placed: list[_Placed] = []
         try:
-            for index, ((path, _), temporary) in enumerate(zip(files, temporaries, strict=True)):
+            for index, ((path, text), temporary) in enumerate(zip(files, temporaries, strict=True)):
+                if not force:
+                    _place_new(temporary, path, text, placed)
+                    continue
+                stamp = _stamp(temporary)
                 os.replace(temporary, path)  # atomic: a failed move leaves the old file
-                placed.append(index)
-        except BaseException:
-            for index in reversed(placed):
-                path, backup = files[index][0], backups[index]
+                placed.append((path, stamp, backups[index]))
+        except BaseException as exc:
+            keep, notes = _take_back(placed)
+            kept += keep
+            for note in notes:
+                exc.add_note(note)
+            raise
+    finally:
+        for leftover in [*temporaries, *(b for b in backups if b is not None and b not in kept)]:
+            leftover.unlink(missing_ok=True)  # in place already, unless something failed
+
+
+def _place_new(temporary: Path, path: Path, text: str, placed: list[_Placed]) -> None:
+    """Put the text at `path` only if nothing is there: the temporary file under a second
+    name, by a hard link, which fails if anything is at `path`, even a dangling link or a
+    name the volume reads as the same; or, on a volume without hard links, a file
+    created exclusively. Each is recorded in `placed` once it exists, so a failure can
+    take it back."""
+    stamp = _stamp(temporary)  # the file the link gives a second name
+    try:
+        os.link(temporary, path)
+    except FileExistsError:
+        raise _taken(path) from None
+    except OSError:  # a volume without hard links, such as FAT or exFAT
+        _create_new(path, text, placed)
+    else:
+        placed.append((path, stamp, None))
+    temporary.unlink()
+
+
+def _create_new(path: Path, text: str, placed: list[_Placed]) -> None:
+    """Create `path` exclusively (it must not exist, even as a link) and write the text."""
+    try:
+        fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o666)
+    except FileExistsError:
+        raise _taken(path) from None
+    with os.fdopen(fd, "w", encoding="utf-8") as handle:
+        info = os.fstat(handle.fileno())
+        placed.append((path, (info.st_dev, info.st_ino), None))
+        handle.write(text)
+        handle.flush()
+        os.fsync(handle.fileno())
+
+
+def _take_back(placed: list[_Placed]) -> tuple[list[Path], list[str]]:
+    """Undo the placements, last first: put back the file --force replaced, or remove
+    the new one, but only where the path still holds the file this import put there;
+    another program's file is left be. Returns the second names to keep, because the
+    file in them could not be put back, and a note for each path not taken back. (The
+    check and the removal are two steps: POSIX has no removal by file identity.)"""
+    keep: list[Path] = []
+    notes: list[str] = []
+    for path, stamp, backup in reversed(placed):
+        name = _one_line(path.name)
+        if not _holds(path, stamp):
+            why = "was replaced by another program while the import ran, and is left as it is"
+        else:
+            try:
                 if backup is not None:
                     os.replace(backup, path)
                 else:
-                    path.unlink(missing_ok=True)
-            raise
-    finally:
-        for leftover in [*temporaries, *(b for b in backups if b is not None)]:
-            leftover.unlink(missing_ok=True)  # moved already, unless something failed
+                    os.unlink(path)
+                continue
+            except OSError as exc:
+                why = f"could not be taken back ({exc.strerror or exc})"
+        notes.append(f"{name}: the file this import put there {why}")
+        if backup is not None:
+            keep.append(backup)
+            notes.append(f"{name}: the file --force was replacing is kept as {backup.name}")
+    return keep, [_one_line(note) for note in notes]
+
+
+def _stamp(path: Path) -> tuple[int, int]:
+    """Which file is at `path`, by its device and inode, not following a link."""
+    info = os.lstat(path)
+    return info.st_dev, info.st_ino
+
+
+def _holds(path: Path, stamp: tuple[int, int]) -> bool:
+    try:
+        return _stamp(path) == stamp
+    except OSError:  # gone, or not to be read: either way, not one to remove
+        return False
 
 
 def _temporary(path: Path, text: str) -> Path:
@@ -2196,7 +2642,9 @@ def _prose(value: Any) -> str | None:
 
 
 def _utc(value: Any) -> str | None:
-    """An RFC 3339 date and time in UTC, to the second, or None."""
+    """An RFC 3339 date and time in UTC, to the second, or None: also for a time that,
+    moved to UTC, falls outside the years 1 to 9999 Python's datetime holds, such as
+    0001-01-01T00:00:00+14:00, so the caller's message names it as for any other."""
     if not isinstance(value, str) or not value.strip():
         return None
     try:
@@ -2205,7 +2653,13 @@ def _utc(value: Any) -> str | None:
         return None
     if moment.tzinfo is None:
         return None
-    return moment.astimezone(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
+    try:
+        moment = moment.astimezone(UTC)
+    except OverflowError:
+        return None
+    # isoformat writes the year with four digits everywhere; strftime's %Y does not on
+    # every platform, and these times are compared as text (_scan_database).
+    return moment.replace(microsecond=0, tzinfo=None).isoformat() + "Z"
 
 
 def _one_line(text: str) -> str:
