@@ -1,17 +1,27 @@
 // Application tabs, synchronized with the URL hash.
 // The Model Report is the default view.
-export type AppView = "report" | "paths" | "graph" | "library" | "weaknesses" | "sdl";
+export type AppView = "report" | "paths" | "graph" | "library";
+export type LibraryView = "records" | "weaknesses" | "requirements" | "sdl";
+
+// Keep the original hashes so bookmarks and links still open the same table.
+const LIBRARY_HASHES: Record<LibraryView, string> = {
+  records: "library",
+  weaknesses: "weaknesses",
+  requirements: "requirements",
+  sdl: "sdl",
+};
 
 export interface NavigationView {
   view: AppView;
   button: HTMLButtonElement;
   panel: HTMLElement;
-  /** Called each time the view becomes the active one. */
-  activated(): void;
+  /** Called when this tab or its Library view becomes active. */
+  activated(libraryView: LibraryView): void;
 }
 
 export class AppNavigation {
   private current?: AppView;
+  private libraryView: LibraryView = "records";
 
   constructor(
     private readonly views: readonly NavigationView[],
@@ -23,33 +33,55 @@ export class AppNavigation {
       button.addEventListener("click", () => this.activate(view));
       button.addEventListener("keydown", (event) => this.handleTabKey(event, index));
     }
-    hashEvents.addEventListener("hashchange", () => this.activate(this.viewForHash(this.location.hash), false));
+    hashEvents.addEventListener("hashchange", () => this.syncFromHash());
   }
 
   get currentView(): AppView | undefined {
     return this.current;
   }
 
-  start(): void {
-    this.activate(this.viewForHash(this.location.hash), false);
+  get currentLibraryView(): LibraryView | undefined {
+    return this.current === "library" ? this.libraryView : undefined;
   }
 
-  activate(view: AppView, updateHash = true): void {
+  start(): void {
+    this.syncFromHash();
+  }
+
+  activate(view: AppView): void {
+    this.apply(view, "records", true);
+  }
+
+  activateLibrary(view: LibraryView): void {
+    this.apply("library", view, true);
+  }
+
+  private apply(view: AppView, libraryView: LibraryView, updateHash: boolean): void {
     const target = this.views.find((candidate) => candidate.view === view) ?? this.views[0];
-    const changed = this.current !== target.view;
+    const changed = this.current !== target.view
+      || (target.view === "library" && this.libraryView !== libraryView);
     this.current = target.view;
+    this.libraryView = libraryView;
     for (const candidate of this.views) {
       const active = candidate === target;
       candidate.panel.hidden = !active;
       setTabState(candidate.button, active);
     }
-    if (updateHash) this.location.hash = `#${target.view}`;
-    if (changed) target.activated();
+    const hash = target.view === "library" ? LIBRARY_HASHES[libraryView] : target.view;
+    if (updateHash) this.location.hash = `#${hash}`;
+    if (changed) target.activated(libraryView);
   }
 
-  private viewForHash(hash: string): AppView {
-    const requested = hash.replace(/^#/, "");
-    return this.views.find((candidate) => candidate.view === requested)?.view ?? this.views[0].view;
+  private syncFromHash(): void {
+    const requested = this.location.hash.replace(/^#/, "");
+    for (const libraryView of Object.keys(LIBRARY_HASHES) as LibraryView[]) {
+      if (LIBRARY_HASHES[libraryView] === requested) {
+        this.apply("library", libraryView, false);
+        return;
+      }
+    }
+    const view = this.views.find((candidate) => candidate.view === requested)?.view ?? this.views[0].view;
+    this.apply(view, "records", false);
   }
 
   private handleTabKey(event: KeyboardEvent, currentIndex: number): void {

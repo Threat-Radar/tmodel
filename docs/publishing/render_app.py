@@ -3,7 +3,8 @@
 
 The application bundle is the existing Vite frontend built in ``pages`` mode.
 The data files are exact, path-sanitised engine responses for every model that
-``GET /models`` lists, plus the complete ``GET /library/table`` response.
+``GET /models`` lists, the complete ``GET /library/table`` response, and
+read-only SDL examples from the repository vectors.
 
     engine/.venv/bin/python docs/publishing/render_app.py
     engine/.venv/bin/python docs/publishing/render_app.py --check
@@ -12,9 +13,7 @@ The data files are exact, path-sanitised engine responses for every model that
 from __future__ import annotations
 
 import argparse
-import json
 import os
-import re
 import subprocess
 import sys
 import tempfile
@@ -32,42 +31,20 @@ sys.path.insert(0, str(ROOT / "engine"))
 os.environ.pop("TMODEL_LIBRARY", None)
 
 try:
-    from engine import core
+    from engine.load.vector import load_vector_document
+
+    from engine import core, sdl
 except ImportError as exc:
     raise SystemExit(
         f"render_app: cannot import the engine ({exc}); run with engine/.venv/bin/python"
     ) from exc
 
-
-FORBIDDEN_PUBLIC_PATTERNS = (
-    re.compile(r"-----BEGIN (?:RSA |OPENSSH |EC |DSA )?PRIVATE KEY-----"),
-    re.compile(r"\b(?:ghp|github_pat)_[A-Za-z0-9_]{20,}\b"),
-    re.compile(r"\bAKIA[0-9A-Z]{16}\b"),
-    re.compile(r"\b(?:sk|rk)-(?:live|proj)-[A-Za-z0-9_-]{16,}\b"),
-    re.compile(r"\b[A-Za-z]:\\\\Users\\\\", re.IGNORECASE),
-)
+import render_requirements_catalog
+from public_data_guard import render_public_json
 
 
 def _write_json(path: Path, payload: Any) -> None:
-    text = json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
-    local_markers = (str(ROOT), "/Users/", "/home/", "/private/var/", "/var/folders/")
-    leaked = next((marker for marker in local_markers if marker in text), None)
-    if leaked:
-        raise RuntimeError(
-            f"{path.name}: generated public data contains local path marker {leaked!r}"
-        )
-    secret = next(
-        (
-            pattern.pattern
-            for pattern in FORBIDDEN_PUBLIC_PATTERNS
-            if pattern.search(text)
-        ),
-        None,
-    )
-    if secret:
-        raise RuntimeError(
-            f"{path.name}: generated public data contains credential marker {secret!r}"
-        )
+    text = render_public_json(payload, root=ROOT, context=path.name)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
 
@@ -75,6 +52,25 @@ def _write_json(path: Path, payload: Any) -> None:
 def _public_file(payload: dict[str, Any], file: str) -> dict[str, Any]:
     """Replace the engine's approved absolute model path with its public file name."""
     return {**payload, "file": file}
+
+
+def _write_sdl_data(out: Path) -> None:
+    listing = core.sdl_models()
+    xwalk = dict(load_vector_document(core.CROSSWALK_FILE))
+    for model in listing["models"]:
+        file = model["file"]
+        if model.get("error"):
+            raise RuntimeError(f"refusing to omit SDL model data: {model['error']}")
+        doc = dict(load_vector_document(core.APPROVED_VECTOR_DIRECTORY / file))
+        # Use the same collector as GET /sdl, without reading local proposal files.
+        views = {
+            program["id"]: _public_file(
+                sdl.collect(doc, xwalk, program=program["id"]), file
+            )
+            for program in model["programs"]
+        }
+        _write_json(out / f"{Path(file).stem}.json", {"views": views})
+    _write_json(out / "models.json", listing)
 
 
 def write_data(out: Path) -> tuple[int, int]:
@@ -127,6 +123,7 @@ def write_data(out: Path) -> tuple[int, int]:
             "the unfiltered library table did not contain every loaded record"
         )
     _write_json(out / "data" / "library" / "table.json", library)
+    _write_sdl_data(out / "data" / "sdl")
     return len(listing["models"]), library["count"]
 
 
@@ -139,6 +136,9 @@ def _build(out: Path) -> tuple[int, int]:
 
 def write(out: Path) -> tuple[int, int]:
     """Build completely beside ``out``, then replace only that destination."""
+    # The Vite public directory is the shared desktop/Pages catalog input.
+    # Regenerate it before the Pages bundle copies it into the staging tree.
+    render_requirements_catalog.write()
     out.parent.mkdir(parents=True, exist_ok=True)
     if out.exists() and not out.is_dir():
         raise RuntimeError(f"{out} exists but is not a directory")
@@ -174,6 +174,8 @@ def _files(root: Path) -> dict[Path, bytes]:
 
 
 def check() -> int:
+    if render_requirements_catalog.check() != 0:
+        return 1
     with tempfile.TemporaryDirectory() as tmp:
         fresh = Path(tmp) / "app"
         models, records = _build(fresh)

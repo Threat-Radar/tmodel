@@ -102,14 +102,35 @@ def md_to_html(md: str) -> str:
     return "\n".join(out)
 
 
-CSS = """body{max-width:52rem;margin:0 auto 2rem;padding:0 1rem;font:16px/1.6 -apple-system,Segoe UI,Roboto,sans-serif;color:#1a1a1a}
-h1,h2,h3,h4{line-height:1.25} h1{border-bottom:2px solid #eee;padding-bottom:.3rem}
-code{background:#f4f4f4;padding:.1em .3em;border-radius:3px;font-size:.9em}
-pre{background:#f4f4f4;padding:1rem;overflow:auto;border-radius:6px}
-table{border-collapse:collapse;width:100%;margin:1rem 0;font-size:.95em} th,td{border:1px solid #ddd;padding:.4rem .6rem;text-align:left;vertical-align:top}
-th{background:#fafafa} blockquote{border-left:4px solid #ddd;margin:1rem 0;padding:.2rem 1rem;color:#555}
-.rev{font-size:.85em;color:#666;background:#fafafa;border:1px solid #eee;border-radius:6px;padding:.5rem .8rem;margin:1rem 0}
-.rl a{margin-right:1rem} footer{margin-top:3rem;border-top:1px solid #eee;padding-top:1rem;font-size:.85em;color:#777}"""
+# The site's look (docs/index.html, the library's record pages): warm paper, one green
+# accent, cards. render_tara.py imports this too. Every top-level block under <body>
+# except the site nav is held to the reading width, so pages need no wrapper element.
+CSS = """:root{--ink:#1a1916;--muted:#5c574e;--line:#e2dcd0;--paper:#f6f3ec;--card:#fffcf7;--accent:#1e4d3a;--code:#efebe2}
+*{box-sizing:border-box}
+body{margin:0;padding-bottom:2rem;color:var(--ink);background:var(--paper);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif}
+body>:not(.site-nav){max-width:min(52rem,calc(100% - 48px));margin-left:auto;margin-right:auto}
+a{color:var(--accent)} a:hover{text-decoration:none}
+h1,h2,h3,h4{line-height:1.25;letter-spacing:-.015em}
+h1{font-size:clamp(1.7rem,3vw,2.3rem);letter-spacing:-.03em;margin-top:28px;margin-bottom:10px}
+h2{margin-top:1.6em;margin-bottom:.4em;padding-top:.6em;border-top:1px solid var(--line)}
+code{background:var(--code);padding:.1em .35em;border-radius:4px;font-size:.88em;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+pre{background:var(--code);border:1px solid var(--line);padding:12px 14px;overflow:auto;border-radius:8px} pre code{background:none;padding:0}
+table{border-collapse:collapse;width:100%;margin-top:1rem;margin-bottom:1rem;font-size:.93em;background:var(--card);border:1px solid var(--line)}
+th,td{border-bottom:1px solid var(--line);padding:.45rem .65rem;text-align:left;vertical-align:top}
+th{font-size:.78rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:650}
+blockquote{border-left:4px solid var(--line);margin-top:1rem;margin-bottom:1rem;padding:.2rem 1rem;color:var(--muted)}
+img{max-width:100%;height:auto}
+.kicker{margin-top:28px;margin-bottom:0;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:650}
+.kicker+h1{margin-top:8px}
+.lede{color:var(--muted);margin-top:0;font-size:1.05rem}
+.rev{font-size:.88em;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:.55rem .85rem;margin-top:1rem;margin-bottom:1rem}
+.rev strong{color:var(--ink)}
+.rl a{margin-right:1rem}
+ul.cards{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));gap:12px}
+ul.cards li{display:flex;flex-direction:column;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+ul.cards a{font-weight:650;font-size:1.02rem}
+ul.cards .meta{color:var(--muted);font-size:.86rem}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-top:16px;font-size:.85em;color:var(--muted)}"""
 
 
 def render(rep: dict) -> None:
@@ -137,24 +158,26 @@ def render(rep: dict) -> None:
 def render_index(done: list[dict], listed: list[dict]) -> None:
     """docs/reports/index.html: one line per report in reports.yaml, then its `listed` pages."""
     items = "".join(
-        f'<li><a href="{html.escape(Path(d["out"]).name)}">{html.escape(d["title"])}</a> '
-        f'<span class="rev">revision {html.escape(str(d["rev"]))} · updated {html.escape(str(d["updated"]))}</span></li>'
+        f'<li><a href="{html.escape(Path(d["out"]).name)}">{html.escape(d["title"])}</a>'
+        f'<span class="meta">revision {html.escape(str(d["rev"]))} · updated {html.escape(str(d["updated"]))}</span></li>'
         for d in done
     )
     others = "".join(
-        f'<li><a href="{html.escape(Path(d["out"]).name)}">{html.escape(d["title"])}</a> '
-        f'<span class="rev">{html.escape(d.get("note", ""))}</span></li>'
+        f'<li><a href="{html.escape(Path(d["out"]).name)}">{html.escape(d["title"])}</a>'
+        f'<span class="meta">{html.escape(d.get("note", ""))}</span></li>'
         for d in listed
     )
     if others:
-        others = f"<h2>Threat analyses</h2><p>Built from example models by other renderers; each page says what it was built from.</p><ul>{others}</ul>"
+        others = f'<h2>Threat analyses</h2><p class="lede">Built from example models by other renderers; each page says what it was built from.</p><ul class="cards">{others}</ul>'
     page = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Reports — tmodel</title><style>{CSS}</style></head><body>
 {site_nav.header(1, "reports/index.html")}
+<p class="kicker">Published from research/</p>
 <h1>Reports</h1>
-<p>Research reports published from <code>research/</code>. Each page is versioned by its source's front matter.</p>
-<ul>{items}</ul>
+<p class="lede">Research reports published from <code>research/</code>. Each page is versioned by its source's front matter.</p>
+<h2>Research reports</h2>
+<ul class="cards">{items}</ul>
 {others}
 <footer>Generated from <code>docs/publishing/reports.yaml</code> by <code>render_report.py</code>. Do not hand-edit.</footer>
 </body></html>"""

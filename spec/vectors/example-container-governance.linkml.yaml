@@ -1,0 +1,199 @@
+# Test-harness container for governed records (models/<item>/governance.yaml, DL-0054).
+#
+# NOT part of the domain object model and NOT normative. It holds the PROPOSAL for
+# the DEC-001b schema changes DL-0027 lists (#64), kept out of spec/schema/ as
+# DL-0040 kept its SDL proposal out, so nothing here is accepted:
+#
+#   1  Review can review a governed VERSION (ThreatModel, GovernedView), not only an
+#      Assertion                                    -> ProposedReview.reviews
+#   2  a reviewer actor kind, with model and run id -> reviewer Party.party_kind
+#      for an agent                                    (person / software_agent, A5)
+#                                                      + ProposedReview.agent_model,
+#                                                      agent_run_id, reviewed_at
+#   3  a comment log                                -> ReviewComment
+#   4  "an approved TARA exists" as evidence for a  -> ProposedEvidence.evidence_of
+#      Requirement                                     (ADR-0013 Evidence; DL-0054)
+#   5  required reviewers by role (the governed     -> ProposedThreatModel.
+#      record needs it; not in DL-0027's list)         required_review_roles,
+#                                                      ProposedReview.reviewer_role
+#
+# A container cannot change an imported class, so each changed class appears as a
+# Proposed<Class> subclass that carries the change. Accepting the proposal in a
+# DEC-001b ADR folds each one back into its parent (Review, ThreatModel, Evidence)
+# and drops the subclass. Rules the schema cannot state (an AI review fills no
+# role; a resolved comment names its fix; references resolve) are checked by
+# docs/publishing/check_governance.py.
+id: https://threat-radar.github.io/tmodel/schema/vectors/example-container-governance
+name: TmodelExampleContainerGovernance
+title: tmodel governed-record container (test harness, proposal for DEC-001b, DL-0054)
+description: >-
+  Validation-only wrapper so a governed record (the versions, reviews and comment
+  log of one governed artifact, DL-0027) validates as one file, together with the
+  DEC-001b schema changes it needs, proposed here and not accepted. Not normative;
+  not a domain class.
+version: 0.1.0
+status: draft
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+  tmodel: https://threat-radar.github.io/tmodel/schema/object-model/
+default_prefix: tmodel
+default_range: string
+
+imports:
+  - linkml:types
+  - ../schema/tmodel-object-model.linkml
+
+enums:
+  ReviewRole:
+    description: >-
+      PROPOSED (DL-0054, change 5). The role a review fills on a governed version
+      (DL-0027 "required reviewers by role"). A role is filled only by a person's
+      review; an AI agent's review fills none (DL-0027 rule 1).
+    permissible_values:
+      owner:
+        description: Owns the governed artifact and its content.
+      assessor:
+        description: Checks the artifact against the method it claims (ISO/SAE 21434 for a TARA).
+      approver:
+        description: Gives the final sign-off (DL-0027 rule 2, decision 2).
+  ReviewOutcome:
+    description: >-
+      PROPOSED (DL-0054, change 1). The outcome of a review of a governed version
+      (DL-0027). A review of an Assertion keeps using `review_status`.
+    permissible_values:
+      approved:
+        description: The reviewer approves this version.
+      changes_requested:
+        description: The reviewer asks for changes before approving.
+      comment:
+        description: The reviewer comments without approving or blocking.
+  CommentStatus:
+    description: PROPOSED (DL-0054, change 3). Where a logged review comment stands (DL-0027).
+    permissible_values:
+      open:
+        description: Raised and not yet dealt with. An open comment blocks publishing (DL-0027 rule 3).
+      resolved:
+        description: Dealt with by a change, named in `resolved_by`.
+      rejected:
+        description: Considered and not acted on; the comment's text or thread says why.
+
+classes:
+  ProposedReview:
+    is_a: Review
+    description: >-
+      PROPOSED (DL-0054, changes 1, 2 and 5). A Review as DEC-001b would widen it: it
+      can review a governed version as well as an Assertion, and it records when it
+      was given, which role it fills, its outcome, and, when the reviewer is a Party
+      of kind `software_agent`, the model and run that produced it. The reviewer's
+      actor kind is the reviewer Party's `party_kind` (`person` or
+      `software_agent`, ADR-0011 A5), so a reviewer and an asserter are the same kind
+      of identity. Folded into Review on acceptance.
+    slot_usage:
+      reviews:
+        range: Node
+        any_of:
+          - range: Assertion
+          - range: ThreatModel
+          - range: GovernedView
+        description: >-
+          The Assertion, or the governed version (ThreatModel or GovernedView revision),
+          this review is about. PROPOSED widening of Review.reviews (DL-0027 problem 6).
+    attributes:
+      reviewed_at:
+        range: datetime
+        description: PROPOSED. When the review was given (as Assertion.asserted_at, A5).
+      reviewer_role:
+        range: ReviewRole
+        description: >-
+          PROPOSED. The required role this review fills on a governed version. Only a
+          `person` reviewer fills a role.
+      review_outcome:
+        range: ReviewOutcome
+        description: PROPOSED. Outcome of a review of a governed version.
+      agent_model:
+        description: >-
+          PROPOSED. For a `software_agent` reviewer: the model that produced the review,
+          as its maker names it (e.g. `claude-opus-5-5`).
+      agent_run_id:
+        description: >-
+          PROPOSED. For a `software_agent` reviewer: the run or session id, so the review
+          can be traced to the run that produced it.
+
+  ProposedThreatModel:
+    is_a: ThreatModel
+    description: >-
+      PROPOSED (DL-0054, change 5). A ThreatModel version that names the roles whose
+      approval it needs (DL-0027 "required reviewers by role"). Folded into
+      ThreatModel on acceptance.
+    attributes:
+      required_review_roles:
+        range: ReviewRole
+        multivalued: true
+        description: PROPOSED. Roles that must each be filled by a person's review of this version.
+
+  ReviewComment:
+    is_a: Node
+    description: >-
+      PROPOSED (DL-0054, change 3). One entry in a governed artifact's comment log
+      (DL-0027): a comment on a review or on a governed version, where it was made, and
+      whether it was resolved, rejected or is still open. `description` holds the
+      comment's text or a summary of it. Comment, then change, then next version is
+      the audit trail DL-0027 asks for.
+    attributes:
+      comment_on:
+        range: Node
+        any_of:
+          - range: Review
+          - range: ThreatModel
+          - range: GovernedView
+        required: true
+        description: PROPOSED. The review or governed version the comment is about.
+      comment_locator:
+        range: uri
+        description: PROPOSED. Where the comment was made, e.g. the PR or issue comment's URL.
+      comment_status:
+        range: CommentStatus
+        required: true
+        description: PROPOSED. Open, resolved or rejected.
+      resolved_by:
+        range: uri
+        description: PROPOSED. The commit or PR that resolved the comment. Required when resolved.
+
+  ProposedEvidence:
+    is_a: Evidence
+    description: >-
+      PROPOSED (DL-0054, change 4). Evidence (ADR-0013) that is a governed version. With
+      `evidence_kind: model`, an SdlPractice that `implements` a process Requirement
+      and `produces` this Evidence gives "an approved TARA exists" (DL-0027 decision 6)
+      as a typed path: Requirement <- implements - SdlPractice - produces -> Evidence -
+      evidence_of -> ThreatModel. DL-0027 proposed a direct Requirement -> ThreatModel
+      edge instead; DL-0054 records both. Folded into Evidence on acceptance.
+    attributes:
+      evidence_of:
+        range: Node
+        any_of:
+          - range: ThreatModel
+          - range: GovernedView
+        description: PROPOSED. The governed version this work product is.
+
+  ExampleModelGovernance:
+    tree_root: true
+    description: >-
+      One governed record (DL-0027): the versions of a governed artifact, the parties
+      who review them, their reviews, the comment log, and the evidence chain to the
+      Requirement the artifact meets. `governs` names the model file the versions'
+      `members` come from, so the check can resolve them there. Flat lists; edges are
+      id references, as in the other containers.
+    attributes:
+      governs:
+        required: true
+        description: Repo path of the model file this record governs, e.g. `spec/vectors/mvp-02-automotive-ecu.yaml`.
+      parties: { range: Party, multivalued: true, inlined: true, inlined_as_list: true }
+      threat_models: { range: ProposedThreatModel, multivalued: true, inlined: true, inlined_as_list: true }
+      governed_views: { range: GovernedView, multivalued: true, inlined: true, inlined_as_list: true }
+      reviews: { range: ProposedReview, multivalued: true, inlined: true, inlined_as_list: true }
+      review_comments: { range: ReviewComment, multivalued: true, inlined: true, inlined_as_list: true }
+      requirements: { range: Requirement, multivalued: true, inlined: true, inlined_as_list: true }
+      sdl_practices: { range: SdlPractice, multivalued: true, inlined: true, inlined_as_list: true }
+      evidence_items: { range: ProposedEvidence, multivalued: true, inlined: true, inlined_as_list: true }

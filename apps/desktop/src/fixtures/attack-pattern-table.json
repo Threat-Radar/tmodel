@@ -1,0 +1,347 @@
+{
+  "catalog": {
+    "name": "CAPEC",
+    "version": "3.9",
+    "date": "2023-01-24",
+    "schema": "3.5",
+    "file": "capec_v3.9-sample.xml",
+    "sha256": "0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e",
+    "attack_patterns": 13,
+    "categories": 3,
+    "views": 3,
+    "references": 16,
+    "unknown_fields": 0,
+    "notice": "Copyright © 2007-2023, The MITRE Corporation. CAPEC and the CAPEC logo are trademarks of The MITRE Corporation.",
+    "license": "The MITRE Corporation (MITRE) hereby grants you a non-exclusive, royalty-free license to use Common Attack Pattern Enumeration and Classification (CAPEC™) for research, development, and commercial purposes. Any copy you make for such purposes is authorized provided that you reproduce MITRE’s copyright designation and this license in any such copy.",
+    "terms_url": "https://capec.mitre.org/about/termsofuse.html"
+  },
+  "query": {
+    "filters": {},
+    "search": null,
+    "sort": "id",
+    "order": "asc",
+    "limit": null,
+    "offset": 0
+  },
+  "total": 13,
+  "count": 13,
+  "rows": [
+    {
+      "id": "CAPEC-5",
+      "attack_pattern": "attack-pattern:capec-5",
+      "name": "Blue Boxing",
+      "abstraction": "Detailed",
+      "status": "Obsolete",
+      "likelihood": "Medium",
+      "severity": "Very High",
+      "description": "This type of attack against older telephone switches and trunks has been around for decades. A tone is sent by an adversary to impersonate a supervisor signal which has the effect of rerouting or usurping command of the line. While the US infrastructure proper may not contain widespread vulnerabilities to this type of attack, many companies are connected globally through call centers and business process outsourcing. These international systems may be operated in countries which have not upgraded Telco infrastructure and so are vulnerable to Blue boxing. Blue boxing is a result of failure on the part of the system to enforce strong authorization for administrative functions. While the infrastructure is different than standard current applications like web applications, there are historical lessons to be learned to upgrade the access control for administrative functions. This attack pattern is included in CAPEC for historical purposes.",
+      "weaknesses": [
+        "CWE-285"
+      ],
+      "attack_techniques": [],
+      "related_attack_patterns": 1,
+      "steps": 0,
+      "mitigations": 2,
+      "examples": 1,
+      "url": "https://capec.mitre.org/data/definitions/5.html"
+    },
+    {
+      "id": "CAPEC-7",
+      "attack_pattern": "attack-pattern:capec-7",
+      "name": "Blind SQL Injection",
+      "abstraction": "Detailed",
+      "status": "Draft",
+      "likelihood": "High",
+      "severity": "High",
+      "description": "Blind SQL Injection results from an insufficient mitigation for SQL Injection. Although suppressing database error messages are considered best practice, the suppression alone is not sufficient to prevent SQL Injection. Blind SQL Injection is a form of SQL Injection that overcomes the lack of error messages. Without the error messages that facilitate SQL Injection, the adversary constructs input strings that probe the target through simple Boolean SQL expressions. The adversary can determine if the syntax and structure of the injection was successful based on whether the query was executed or not. Applied iteratively, the adversary determines how and where the target is vulnerable to SQL Injection.",
+      "weaknesses": [
+        "CWE-89",
+        "CWE-209",
+        "CWE-74",
+        "CWE-20",
+        "CWE-697",
+        "CWE-707"
+      ],
+      "attack_techniques": [],
+      "related_attack_patterns": 1,
+      "steps": 6,
+      "mitigations": 2,
+      "examples": 2,
+      "url": "https://capec.mitre.org/data/definitions/7.html"
+    },
+    {
+      "id": "CAPEC-23",
+      "attack_pattern": "attack-pattern:capec-23",
+      "name": "File Content Injection",
+      "abstraction": "Standard",
+      "status": "Draft",
+      "likelihood": "High",
+      "severity": "Very High",
+      "description": "An adversary poisons files with a malicious payload (targeting the file systems accessible by the target software), which may be passed through by standard channels such as via email, and standard web content like PDF and multimedia files. The adversary exploits known vulnerabilities or handling routines in the target processes, in order to exploit the host's trust in executing remote content, including binary files.",
+      "weaknesses": [
+        "CWE-20"
+      ],
+      "attack_techniques": [],
+      "related_attack_patterns": 2,
+      "steps": 0,
+      "mitigations": 6,
+      "examples": 1,
+      "url": "https://capec.mitre.org/data/definitions/23.html"
+    },
+    {
+      "id": "CAPEC-63",
+      "attack_pattern": "attack-pattern:capec-63",
+      "name": "Cross-Site Scripting (XSS)",
+      "abstraction": "Standard",
+      "status": "Draft",
+      "likelihood": "High",
+      "severity": "Very High",
+      "description": "An adversary embeds malicious scripts in content that will be served to web browsers. The goal of the attack is for the target software, the client-side browser, to execute the script with the users' privilege level. An attack of this type exploits a programs' vulnerabilities that are brought on by allowing remote hosts to execute code and scripts. Web browsers, for example, have some simple security controls in place, but if a remote attacker is allowed to execute scripts (through injecting them in to user-generated content like bulletin boards) then these controls may be bypassed. Further, these attacks are very difficult for an end user to detect.",
+      "weaknesses": [
+        "CWE-79",
+        "CWE-20"
+      ],
+      "attack_techniques": [],
+      "related_attack_patterns": 2,
+      "steps": 5,
+      "mitigations": 8,
+      "examples": 1,
+      "url": "https://capec.mitre.org/data/definitions/63.html"
+    },
+    {
+      "id": "CAPEC-66",
+      "attack_pattern": "attack-pattern:capec-66",
+      "name": "SQL Injection",
+      "abstraction": "Standard",
+      "status": "Draft",
+      "likelihood": "High",
+      "severity": "High",
+      "description": "This attack exploits target software that constructs SQL statements based on user input. An attacker crafts input strings so that when the target software constructs SQL statements based on the input, the resulting SQL statement performs actions other than those the application intended. SQL Injection results from failure of the application to appropriately validate input.",
+      "weaknesses": [
+        "CWE-89",
+        "CWE-1286"
+      ],
+      "attack_techniques": [],
+      "related_attack_patterns": 1,
+      "steps": 4,
+      "mitigations": 3,
+      "examples": 1,
+      "url": "https://capec.mitre.org/data/definitions/66.html"
+    },
+    {
+      "id": "CAPEC-88",
+      "attack_pattern": "attack-pattern:capec-88",
+      "name": "OS Command Injection",
+      "abstraction": "Standard",
+      "status": "Draft",
+      "likelihood": "High",
+      "severity": "High",
+      "description": "In this type of an attack, an adversary injects operating system commands into existing application functions. An application that uses untrusted input to build command strings is vulnerable. An adversary can leverage OS command injection in an application to elevate privileges, execute arbitrary commands and compromise the underlying operating system.",
+      "weaknesses": [
+        "CWE-78",
+        "CWE-88",
+        "CWE-20",
+        "CWE-697"
+      ],
+      "attack_techniques": [],
+      "related_attack_patterns": 1,
+      "steps": 4,
+      "mitigations": 3,
+      "examples": 1,
+      "url": "https://capec.mitre.org/data/definitions/88.html"
+    },
+    {
+      "id": "CAPEC-115",
+      "attack_pattern": "attack-pattern:capec-115",
+      "name": "Authentication Bypass",
+      "abstraction": "Meta",
+      "status": "Draft",
+      "likelihood": null,
+      "severity": "Medium",
+      "description": "An attacker gains access to application, service, or device with the privileges of an authorized or privileged user by evading or circumventing an authentication mechanism. The attacker is therefore able to access protected data without authentication ever having taken place.",
+      "weaknesses": [
+        "CWE-287"
+      ],
+      "attack_techniques": [
+        "T1548"
+      ],
+      "related_attack_patterns": 0,
+      "steps": 0,
+      "mitigations": 0,
+      "examples": 0,
+      "url": "https://capec.mitre.org/data/definitions/115.html"
+    },
+    {
+      "id": "CAPEC-192",
+      "attack_pattern": "attack-pattern:capec-192",
+      "name": "Protocol Analysis",
+      "abstraction": "Meta",
+      "status": "Stable",
+      "likelihood": "Low",
+      "severity": "Low",
+      "description": "An adversary engages in activities to decipher and/or decode protocol information for a network or application communication protocol used for transmitting information between interconnected nodes or systems on a packet-switched data network. While this type of analysis involves the analysis of a networking protocol inherently, it does not require the presence of an actual or physical network.",
+      "weaknesses": [
+        "CWE-326"
+      ],
+      "attack_techniques": [],
+      "related_attack_patterns": 0,
+      "steps": 0,
+      "mitigations": 0,
+      "examples": 0,
+      "url": "https://capec.mitre.org/data/definitions/192.html"
+    },
+    {
+      "id": "CAPEC-273",
+      "attack_pattern": "attack-pattern:capec-273",
+      "name": "HTTP Response Smuggling",
+      "abstraction": "Detailed",
+      "status": "Stable",
+      "likelihood": "Medium",
+      "severity": "High",
+      "description": "An adversary manipulates and injects malicious content in the form of secret unauthorized HTTP responses, into a single HTTP response from a vulnerable or compromised back-end HTTP agent (e.g., server). See CanPrecede relationships for possible consequences.",
+      "weaknesses": [
+        "CWE-74",
+        "CWE-436",
+        "CWE-444"
+      ],
+      "attack_techniques": [],
+      "related_attack_patterns": 8,
+      "steps": 4,
+      "mitigations": 13,
+      "examples": 2,
+      "url": "https://capec.mitre.org/data/definitions/273.html"
+    },
+    {
+      "id": "CAPEC-478",
+      "attack_pattern": "attack-pattern:capec-478",
+      "name": "Modification of Windows Service Configuration",
+      "abstraction": "Detailed",
+      "status": "Usable",
+      "likelihood": "Low",
+      "severity": "High",
+      "description": "An adversary exploits a weakness in access control to modify the execution parameters of a Windows service. The goal of this attack is to execute a malicious binary in place of an existing service.",
+      "weaknesses": [
+        "CWE-284"
+      ],
+      "attack_techniques": [
+        "T1574.011",
+        "T1543.003"
+      ],
+      "related_attack_patterns": 1,
+      "steps": 3,
+      "mitigations": 1,
+      "examples": 0,
+      "url": "https://capec.mitre.org/data/definitions/478.html"
+    },
+    {
+      "id": "CAPEC-497",
+      "attack_pattern": "attack-pattern:capec-497",
+      "name": "File Discovery",
+      "abstraction": "Standard",
+      "status": "Draft",
+      "likelihood": "High",
+      "severity": "Very Low",
+      "description": "An adversary engages in probing and exploration activities to determine if common key files exists. Such files often contain configuration and security parameters of the targeted application, system or network. Using this knowledge may often pave the way for more damaging attacks.",
+      "weaknesses": [
+        "CWE-200"
+      ],
+      "attack_techniques": [
+        "T1083"
+      ],
+      "related_attack_patterns": 1,
+      "steps": 0,
+      "mitigations": 1,
+      "examples": 0,
+      "url": "https://capec.mitre.org/data/definitions/497.html"
+    },
+    {
+      "id": "CAPEC-602",
+      "attack_pattern": "attack-pattern:capec-602",
+      "name": "DEPRECATED: Degradation",
+      "abstraction": "Meta",
+      "status": "Deprecated",
+      "likelihood": null,
+      "severity": null,
+      "description": "This attack pattern has been deprecated.",
+      "weaknesses": [],
+      "attack_techniques": [],
+      "related_attack_patterns": 0,
+      "steps": 0,
+      "mitigations": 0,
+      "examples": 0,
+      "url": "https://capec.mitre.org/data/definitions/602.html"
+    },
+    {
+      "id": "CAPEC-701",
+      "attack_pattern": "attack-pattern:capec-701",
+      "name": "Browser in the Middle (BiTM)",
+      "abstraction": "Standard",
+      "status": "Draft",
+      "likelihood": "Medium",
+      "severity": "High",
+      "description": "An adversary exploits the inherent functionalities of a web browser, in order to establish an unnoticed remote desktop connection in the victim's browser to the adversary's system. The adversary must deploy a web client with a remote desktop session that the victim can access.",
+      "weaknesses": [
+        "CWE-294",
+        "CWE-345"
+      ],
+      "attack_techniques": [],
+      "related_attack_patterns": 4,
+      "steps": 3,
+      "mitigations": 1,
+      "examples": 0,
+      "url": "https://capec.mitre.org/data/definitions/701.html"
+    }
+  ],
+  "facets": {
+    "abstraction": {
+      "Detailed": 4,
+      "Meta": 3,
+      "Standard": 6
+    },
+    "status": {
+      "Deprecated": 1,
+      "Draft": 8,
+      "Obsolete": 1,
+      "Stable": 2,
+      "Usable": 1
+    },
+    "likelihood": {
+      "High": 6,
+      "Low": 2,
+      "Medium": 3
+    },
+    "severity": {
+      "High": 6,
+      "Low": 1,
+      "Medium": 1,
+      "Very High": 3,
+      "Very Low": 1
+    }
+  },
+  "contextual_facets": {
+    "abstraction": {
+      "Detailed": 4,
+      "Meta": 3,
+      "Standard": 6
+    },
+    "status": {
+      "Deprecated": 1,
+      "Draft": 8,
+      "Obsolete": 1,
+      "Stable": 2,
+      "Usable": 1
+    },
+    "likelihood": {
+      "High": 6,
+      "Low": 2,
+      "Medium": 3
+    },
+    "severity": {
+      "High": 6,
+      "Low": 1,
+      "Medium": 1,
+      "Very High": 3,
+      "Very Low": 1
+    }
+  }
+}

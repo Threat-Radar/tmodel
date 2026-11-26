@@ -1,4 +1,5 @@
-import { AppNavigation } from "./app-navigation";
+import { bindInfoDisclosures } from "./library-presentation";
+import { AppNavigation, type AppView, type LibraryView } from "./app-navigation";
 import { staticDataBase } from "./app-mode";
 import { checkEngine, describe, engineProcess, type EngineState } from "./engine";
 import { EngineGraphDataProvider } from "./engine-graph-provider";
@@ -28,6 +29,9 @@ import { StaticLibraryDataProvider } from "./static-library-provider";
 import { configurePreviewChrome, openInitialModel } from "./preview-bootstrap";
 import { createWeaknessProvider } from "./weakness-provider";
 import { weaknessViewElements, WeaknessesView } from "./weakness-view";
+import { CompatibleCoverageProvider } from "./coverage-provider";
+import { RequirementsView, requirementsViewElements } from "./requirements-view";
+import { StaticRequirementStandardsSource } from "./requirements-catalog-provider";
 
 const POLL_MS = 2000;
 // Vite replaces MODE at build time; the Pages bundle can therefore eliminate
@@ -117,16 +121,14 @@ window.addEventListener("DOMContentLoaded", () => {
     return element as T;
   };
 
+  bindInfoDisclosures(document);
   if (preview) {
     configurePreviewChrome({
       body: document.body,
       banner: required("preview-banner"),
       enginePanel: required("engine-panel"),
-      sdlTab: required("sdl-tab"),
-      sdlPanel: required("sdl-view-panel"),
       proposals: required("graph-proposals"),
       savedViews: required("saved-view-toolbar"),
-      libraryTab: required("library-tab"),
       modelSelect: required<HTMLSelectElement>("model-select"),
       modelStatus: required("model-picker-status"),
       reportStatus: required("report-status"),
@@ -148,9 +150,13 @@ window.addEventListener("DOMContentLoaded", () => {
   const weaknessProvider = createWeaknessProvider(preview, parameters);
   const weaknessUsesEngine = weaknessProvider.metadata.source === "engine";
   const weaknessView = new WeaknessesView(weaknessProvider, weaknessViewElements());
+  const requirementsView = new RequirementsView(
+    requirementsViewElements(),
+    new StaticRequirementStandardsSource(),
+  );
 
   let lastEngineState: EngineState | undefined;
-  let visibleView: string | undefined;
+  let visibleView: AppView | undefined;
   const bookkeepingToggle = required<HTMLInputElement>("graph-show-bookkeeping");
   if (preview) bookkeepingToggle.disabled = true;
   // Desktop keeps its eager engine graph so health polling behaves exactly as
@@ -186,7 +192,11 @@ window.addEventListener("DOMContentLoaded", () => {
       else void catalogStartup.retryNow();
     },
   });
-  const picker = new ModelPicker(required("model-select"), required("model-picker-status"), (model) => {
+  const picker = new ModelPicker(required("model-select"), required("model-picker-status"), {
+    disclosure: required("model-picker-info"),
+    label: required("model-review-label"),
+    summary: required("model-picker-summary"),
+  }, (model) => {
     void session.open(model);
   });
 
@@ -229,6 +239,25 @@ window.addEventListener("DOMContentLoaded", () => {
       required("report-scroll").scrollTop = 0;
       if (preview) syncModelUrl(model);
       replaceExplore(model.file);
+      const graphProvider = new EngineGraphDataProvider(
+        model.file,
+        staticApi?.engineBase,
+        staticApi?.fetch,
+      );
+      const coverageProvider = new CompatibleCoverageProvider(
+        model.file,
+        graphProvider,
+        staticApi?.engineBase,
+        staticApi?.fetch,
+      );
+      requirementsView.openModel({
+        file: model.file,
+        notice: staticApi
+          ? `Published example requirements from ${model.file}`
+          : `Requirements from the local engine model ${model.file}`,
+        getGraph: () => graphProvider.getModelGraph(),
+        getCoverage: (product, signal) => coverageProvider.getCoverage(product, signal),
+      });
       bookkeepingToggle.disabled = false;
     },
     remember: rememberModel,
@@ -261,7 +290,14 @@ window.addEventListener("DOMContentLoaded", () => {
     },
   }, !preview);
 
-  const sdlView = new SdlProgramView(new EngineSdlDataProvider(), sdlViewElements());
+  const sdlView = new SdlProgramView(
+    new EngineSdlDataProvider(staticApi?.engineBase, staticApi?.fetch),
+    sdlViewElements(),
+  );
+  const libraryPanel = required("library-view-panel");
+  const librarySelect = required<HTMLSelectElement>("library-view-select");
+  const librarySections = libraryPanel.querySelectorAll<HTMLElement>("[data-library-view]");
+  const libraryViews = { records: libraryView, weaknesses: weaknessView, requirements: requirementsView, sdl: sdlView };
 
   const navigation = new AppNavigation([
     {
@@ -292,34 +328,20 @@ window.addEventListener("DOMContentLoaded", () => {
     {
       view: "library",
       button: required("library-tab"),
-      panel: required("library-view-panel"),
-      activated: () => {
+      panel: libraryPanel,
+      activated: (view) => {
         show("library");
-        libraryView.activate();
+        librarySelect.value = view;
+        for (const section of librarySections) section.hidden = section.dataset.libraryView !== view;
+        libraryViews[view].activate();
       },
     },
-    {
-      view: "weaknesses",
-      button: required("weakness-tab"),
-      panel: required("weakness-view-panel"),
-      activated: () => {
-        show("weaknesses");
-        weaknessView.activate();
-      },
-    },
-    ...(!preview ? [{
-      view: "sdl" as const,
-      button: required<HTMLButtonElement>("sdl-tab"),
-      panel: required("sdl-view-panel"),
-      activated: () => {
-        show("sdl");
-        sdlView.activate();
-      },
-    }] : []),
   ]);
+  librarySelect.addEventListener("change", () => navigation.activateLibrary(librarySelect.value as LibraryView));
 
-  function show(view: string): void {
+  function show(view: AppView): void {
     visibleView = view;
+    librarySelect.hidden = view !== "library";
     pathView.setVisible(view === "paths");
     explore?.view.setVisible(view === "graph");
   }
@@ -334,8 +356,9 @@ window.addEventListener("DOMContentLoaded", () => {
       void catalogStartup.engineStateChanged(lastEngineState);
       if (libraryUsesEngine) void libraryView.engineStateChanged(lastEngineState);
       if (weaknessUsesEngine) void weaknessView.engineStateChanged(lastEngineState);
+      if (navigation.currentLibraryView === "requirements") void requirementsView.engineStateChanged(lastEngineState);
       if (visibleView === "graph" && explore?.usesEngine) void explore.startup.engineStateChanged(lastEngineState);
-      if (visibleView === "sdl") void sdlView.engineStateChanged(lastEngineState);
+      if (navigation.currentLibraryView === "sdl") void sdlView.engineStateChanged(lastEngineState);
     };
     void poll();
     window.setInterval(() => void poll(), POLL_MS);

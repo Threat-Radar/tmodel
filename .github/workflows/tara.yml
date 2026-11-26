@@ -1,0 +1,74 @@
+name: tara
+# The publish gate for governed TARAs (#183, DL-0059; DL-0027 rules 1 to 4 and
+# decision 1). check_governance.py validates each models/*/governance.yaml (#180,
+# DL-0054), and check_publish.py blocks a version that the record or the PR does not
+# properly approve, or whose inputs changed after approval. The gate reads the PR's
+# approvals, so it runs again when a review is submitted or dismissed. The first step
+# skips the rest when the PR changes no governed TARA or its inputs. GitHub runners
+# only (APP-0001 A-043); actions pinned to full commit SHAs.
+
+on:
+  pull_request:
+  pull_request_review:
+    types: [submitted, dismissed]
+
+concurrency:
+  group: tara-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  gate:
+    name: TARA publish gate
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+      PR: ${{ github.event.pull_request.number }}
+      HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      AUTHOR: ${{ github.event.pull_request.user.login }}
+      BASE_REF: ${{ github.event.pull_request.base.ref }}
+    steps:
+      - name: Does the PR change a governed TARA or its inputs?
+        id: scope
+        shell: bash
+        run: |
+          gh api --paginate "repos/$REPO/pulls/$PR/files" --jq '.[].filename' > "$RUNNER_TEMP/changed.txt"
+          inputs='^(models/|docs/models/|prototype/185-tara-gate/|engine/(engine/(tara_gate|core)|tests/test_tara_gate)\.py$|spec/vectors/(mvp-02-automotive-ecu|example-container-governance\.linkml)\.yaml$|docs/publishing/((test_)?(check_governance|check_publish|check_tara_gate|input_digest)|render_tara)\.py$|docs/publishing/tara\.yaml$|\.github/(CODEOWNERS|workflows/tara\.yml)$)'
+          if grep -qE "$inputs" "$RUNNER_TEMP/changed.txt"; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "This PR changes no governed TARA or its inputs, so there is nothing to gate." | tee -a "$GITHUB_STEP_SUMMARY"
+          fi
+      - if: steps.scope.outputs.run == 'true'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0 # the gate reads the record as it is on the base branch
+      - if: steps.scope.outputs.run == 'true'
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+      - if: steps.scope.outputs.run == 'true'
+        name: Install pinned tools
+        run: python -m pip install -r spec/schema/requirements.txt 'pytest>=8'
+      - if: steps.scope.outputs.run == 'true'
+        name: Governed records are well formed (#180)
+        run: python docs/publishing/check_governance.py
+      - if: steps.scope.outputs.run == 'true'
+        name: The checks' own tests
+        run: |
+          PYTHONPATH=engine python -m pytest -q docs/publishing/test_check_governance.py \
+            docs/publishing/test_input_digest.py docs/publishing/test_check_publish.py \
+            docs/publishing/test_check_tara_gate.py engine/tests/test_tara_gate.py
+      - if: steps.scope.outputs.run == 'true'
+        name: Publish gate
+        shell: bash
+        run: |
+          gh api --paginate "repos/$REPO/pulls/$PR/reviews" --jq '.[]' > "$RUNNER_TEMP/reviews.json"
+          python docs/publishing/check_publish.py --base "origin/$BASE_REF" \
+            --pr-reviews "$RUNNER_TEMP/reviews.json" --head "$HEAD_SHA" --author "$AUTHOR" \
+            --changed "$RUNNER_TEMP/changed.txt" | tee -a "$GITHUB_STEP_SUMMARY"

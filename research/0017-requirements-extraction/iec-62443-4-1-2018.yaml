@@ -1,0 +1,835 @@
+# iec-62443-4-1-2018: requirement extraction, AI-proposed, UNREVIEWED unless a Review below says otherwise.
+# Source record: library:iec-62443-4-1-2018 (IEC preview digest eb2f67981f03f944f8fe0044c6ac176b8f2422cb0473cc08c28d477cb3c52d03), read 2026-11-16.
+# Requirement wording source recorded by the library: ISASecure SDLA-312 v6.3 digest fffdf0bc281370ff68129243fd15006ffa432ae5729fd18a205fa972c07772ab.
+# Agent: Codex (GPT-5). Human owner: @kriishnaa-18.
+# Library pin: a28a01375814accc5fe10cb2f5e7083c7d0401a5.
+#
+# Scope: SR, SD, SI, SVV and DM entries that produce, implement, verify, or maintain product controls.
+# Coverage: 84 in the source, 52 converted, 32 skipped.
+#   skipped (practice outside Issue #171 scope): 31 entries from SM, SUM and SG.
+#   skipped (definition, not a Requirement): SVV-5.levels.
+# Licensed source: every text and short title below is original project wording; no standard
+# sentence or library title is reproduced. Clause numbers come from the IEC preview ToC, while
+# the library states that requirement descriptions were read through SDLA-312 v6.3.
+# Identifiers with suffixes such as SR-2.review and DM-4.residual are atomic split identifiers
+# defined by the pinned library extraction, not standalone native IEC requirement designators.
+# No applies_to_family: the record does not supply a canonical tmodel product-family identifier.
+# No stated_as link is proposed because the source supplies process requirements rather than a
+# source-supported equivalence to a specific existing generic Mitigation.
+
+requirements:
+- id: requirement:iec-62443-4-1-2018-sr-1
+  name: SR-1 — Document the product security context
+  text: >-
+    Maintain a documented description of the security context in which the product is intended to
+    operate.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SR-1
+  source_locator: IEC 62443-4-1:2018 §6.2.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.9
+- id: requirement:iec-62443-4-1-2018-sr-2
+  name: SR-2 — Maintain a scoped product threat model
+  text: >-
+    Create and maintain a threat model for every product that reflects the current development scope
+    and includes the applicable content required by this practice.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SR-2
+  source_locator: IEC 62443-4-1:2018 §6.3.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.9
+- id: requirement:iec-62443-4-1-2018-sr-2-a-e
+  name: SR-2.a-e — Model data flows and trust structure
+  text: >-
+    Include classified information flows, trust boundaries, processes, data stores, and interacting
+    external entities in the product threat model.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SR-2.a-e
+  source_locator: IEC 62443-4-1:2018 §6.3.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.9
+- id: requirement:iec-62443-4-1-2018-sr-2-f-h
+  name: SR-2.f-h — Model protocols and physical interfaces
+  text: >-
+    Record implemented communication protocols, exposed physical interfaces, and board-level debug
+    connections that could be used to attack the product.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SR-2.f-h
+  source_locator: IEC 62443-4-1:2018 §6.3.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.9
+- id: requirement:iec-62443-4-1-2018-sr-2-i-l
+  name: SR-2.i-l — Record attack paths and security issues
+  text: >-
+    Capture potential attack vectors, threats, their severity, and identified security-related issues
+    in the threat model.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SR-2.i-l
+  source_locator: IEC 62443-4-1:2018 §6.3.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.9
+- id: requirement:iec-62443-4-1-2018-sr-2-j
+  name: SR-2.j — Score potential threats
+  text: >-
+    Assign potential threats a severity using an established vulnerability-scoring method.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SR-2.j
+  source_locator: IEC 62443-4-1:2018 §6.3.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.10
+- id: requirement:iec-62443-4-1-2018-sr-2-k
+  name: SR-2.k — Record each threat disposition
+  text: >-
+    Document a mitigation or other disposition for every threat in the threat model.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SR-2.k
+  source_locator: IEC 62443-4-1:2018 §6.3.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.10
+- id: requirement:iec-62443-4-1-2018-sr-2-m
+  name: SR-2.m — Track external dependencies
+  text: >-
+    Keep the threat model current with third-party applications, drivers, and other externally developed
+    code linked into the product.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SR-2.m
+  source_locator: IEC 62443-4-1:2018 §6.3.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.10
+- id: requirement:iec-62443-4-1-2018-sr-2-periodic
+  name: SR-2.periodic — Review released-product threat models
+  text: >-
+    Review each released product's threat model at least annually and update it when emerging threats
+    require a change even if the design is unchanged.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SR-2.periodic
+  source_locator: IEC 62443-4-1:2018 §6.3.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.10
+- id: requirement:iec-62443-4-1-2018-sr-2-review
+  name: SR-2.review — Verify shared understanding of the threat model
+  text: >-
+    Have the development team review the threat model for correctness and confirm that the team understands
+    it.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SR-2.review
+  source_locator: IEC 62443-4-1:2018 §6.3.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.10
+- id: requirement:iec-62443-4-1-2018-sr-2-issues
+  name: SR-2.issues — Route threat-model issues into defect management
+  text: >-
+    Handle issues found through threat modeling through the security-issue assessment and disposition
+    processes.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SR-2.issues
+  source_locator: IEC 62443-4-1:2018 §6.3.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.10
+- id: requirement:iec-62443-4-1-2018-sr-3
+  name: SR-3 — Document lifecycle security requirements
+  text: >-
+    Document product and feature security requirements, including capabilities needed for installation,
+    operation, maintenance, and decommissioning.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SR-3
+  source_locator: IEC 62443-4-1:2018 §6.4.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.10
+- id: requirement:iec-62443-4-1-2018-sr-4
+  name: SR-4 — Define requirement scope and target level
+  text: >-
+    For each set of security requirements, document the product's physical and logical boundaries
+    and its target capability security level.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SR-4
+  source_locator: IEC 62443-4-1:2018 §6.5.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.11
+- id: requirement:iec-62443-4-1-2018-sr-5
+  name: SR-5 — Review and approve security requirements
+  text: >-
+    Review, update, and approve security requirements for clarity, validity, threat-model alignment,
+    and testability.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SR-5
+  source_locator: IEC 62443-4-1:2018 §6.6.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.11
+- id: requirement:iec-62443-4-1-2018-sr-5-2
+  name: SR-5.2 — Include required disciplines in review
+  text: >-
+    Include implementers, independent testers, a customer advocate, and a security adviser in the
+    security-requirements review.
+  text_origin: paraphrase
+  requirement_kind: organizational
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SR-5.2
+  source_locator: IEC 62443-4-1:2018 §6.6.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.11
+- id: requirement:iec-62443-4-1-2018-sd-1
+  name: SD-1 — Document secure interface design
+  text: >-
+    Document each product interface, its exposure and trust boundaries, accessible assets, roles and
+    permissions, relevant threats, safeguards, dependencies, usage, and how the design mitigates modeled
+    threats.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SD-1
+  source_locator: IEC 62443-4-1:2018 §7.2.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.12
+- id: requirement:iec-62443-4-1-2018-sd-2
+  name: SD-2 — Design layered defenses
+  text: >-
+    Use the threat model and a risk-based approach to design multiple defensive layers.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SD-2
+  source_locator: IEC 62443-4-1:2018 §7.3.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.12
+- id: requirement:iec-62443-4-1-2018-sd-2-2
+  name: SD-2.2 — Assign responsibilities to defense layers
+  text: >-
+    Assign security responsibilities to every defensive layer, apply secure design principles at each
+    layer, and aim to reduce the attack surface exposed to subsequent layers.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SD-2.2
+  source_locator: IEC 62443-4-1:2018 §7.3.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.12
+- id: requirement:iec-62443-4-1-2018-sd-3
+  name: SD-3 — Review significant secure-design revisions
+  text: >-
+    For every substantial secure-design revision, identify, characterize, and track unresolved requirements,
+    exploitable interfaces or assets, and departures from secure-design practice until closure.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SD-3
+  source_locator: IEC 62443-4-1:2018 §7.4.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.13
+- id: requirement:iec-62443-4-1-2018-sd-4
+  name: SD-4 — Maintain secure-design practices
+  text: >-
+    Document secure-design practices and require their use throughout product design.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SD-4
+  source_locator: IEC 62443-4-1:2018 §7.5.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.13
+- id: requirement:iec-62443-4-1-2018-sd-4-2
+  name: SD-4.2 — Periodically update design practices
+  text: >-
+    Regularly review and update design practices covering least privilege, proven components, simple
+    mechanisms, secure patterns, trust boundaries, and protection or removal of development interfaces.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SD-4.2
+  source_locator: IEC 62443-4-1:2018 §7.5.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.13
+- id: requirement:iec-62443-4-1-2018-sd-4-e
+  name: SD-4.e — Reduce attack surface
+  text: >-
+    Apply attack-surface reduction as a secure-design practice.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SD-4.e
+  source_locator: IEC 62443-4-1:2018 §7.5.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.13
+- id: requirement:iec-62443-4-1-2018-si-applicability
+  name: SI-applicability — Limit coding controls to relevant software
+  text: >-
+    Apply this implementation practice's system-development requirements only to software written
+    in a full-variability programming language.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SI-applicability
+  source_locator: IEC 62443-4-1:2018 §8.2 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.15
+- id: requirement:iec-62443-4-1-2018-si-1
+  name: SI-1 — Review implementation security
+  text: >-
+    Review implementations to find, characterize, and close security issues involving unmet requirements,
+    coding-standard violations, and defects detectable through static analysis.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SI-1
+  source_locator: IEC 62443-4-1:2018 §8.3.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.14
+- id: requirement:iec-62443-4-1-2018-si-1-sca-tool
+  name: SI-1.sca-tool — Use an available static-analysis tool
+  text: >-
+    Perform static source analysis with a suitable tool whenever one exists for the implementation
+    language.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SI-1.sca-tool
+  source_locator: IEC 62443-4-1:2018 §8.3.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.14
+- id: requirement:iec-62443-4-1-2018-si-1-sca-changes
+  name: SI-1.sca-changes — Analyze all source changes
+  text: >-
+    Statically analyze new and modified source code, trace implementation to planned security capabilities,
+    and assess whether threats can exploit implemented interfaces, boundaries, or assets.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SI-1.sca-changes
+  source_locator: IEC 62443-4-1:2018 §8.3.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.14
+- id: requirement:iec-62443-4-1-2018-si-2
+  name: SI-2 — Maintain secure-coding standards
+  text: >-
+    Maintain and periodically update coding standards that prohibit unsafe constructs, configure analysis
+    tools, require secure implementation techniques, validate trust-boundary inputs, and define safe
+    error handling.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SI-2
+  source_locator: IEC 62443-4-1:2018 §8.4.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.15
+- id: requirement:iec-62443-4-1-2018-svv-1
+  name: SVV-1 — Verify implemented security functions
+  text: >-
+    Test that product security functions satisfy their requirements and safely handle invalid input
+    and error conditions.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SVV-1
+  source_locator: IEC 62443-4-1:2018 §9.2.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.16
+- id: requirement:iec-62443-4-1-2018-svv-1-types
+  name: SVV-1.types — Exercise required test categories
+  text: >-
+    Test security functionality, performance and scale, edge and stress conditions, malformed input,
+    and trust-boundary requirements.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SVV-1.types
+  source_locator: IEC 62443-4-1:2018 §9.2.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.16
+- id: requirement:iec-62443-4-1-2018-svv-2
+  name: SVV-2 — Test threat mitigations
+  text: >-
+    Test whether each mitigation for a validated threat is effective.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SVV-2
+  source_locator: IEC 62443-4-1:2018 §9.3.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.16
+- id: requirement:iec-62443-4-1-2018-svv-2-activities
+  name: SVV-2.activities — Challenge every mitigation
+  text: >-
+    Plan and run tests that confirm each threat mitigation works as designed and separately attempt
+    to defeat it.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SVV-2.activities
+  source_locator: IEC 62443-4-1:2018 §9.3.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.16
+- id: requirement:iec-62443-4-1-2018-svv-3
+  name: SVV-3 — Test for product vulnerabilities
+  text: >-
+    Run tests intended to discover and characterize potential vulnerabilities in the product.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SVV-3
+  source_locator: IEC 62443-4-1:2018 §9.4.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.17
+- id: requirement:iec-62443-4-1-2018-svv-3-known
+  name: SVV-3.known — Use current public vulnerability information
+  text: >-
+    Base known-vulnerability testing on recent information from an established public industry source.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SVV-3.known
+  source_locator: IEC 62443-4-1:2018 §9.4.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.17
+- id: requirement:iec-62443-4-1-2018-svv-3-a
+  name: SVV-3.a — Test malformed and abusive inputs
+  text: >-
+    Use manual or automated abuse cases, fuzzing, and load or capacity tests against external interfaces
+    and protocols where appropriate tools exist.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SVV-3.a
+  source_locator: IEC 62443-4-1:2018 §9.4.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.17
+- id: requirement:iec-62443-4-1-2018-svv-3-b
+  name: SVV-3.b — Analyze the attack surface
+  text: >-
+    Identify ingress and egress paths and examine exposures such as weak access controls, open ports,
+    and unnecessarily privileged services.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SVV-3.b
+  source_locator: IEC 62443-4-1:2018 §9.4.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.17
+- id: requirement:iec-62443-4-1-2018-svv-3-c
+  name: SVV-3.c — Scan for known vulnerabilities
+  text: >-
+    Perform black-box scans for known vulnerabilities in product hardware, hosts, and software components.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SVV-3.c
+  source_locator: IEC 62443-4-1:2018 §9.4.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.17
+- id: requirement:iec-62443-4-1-2018-svv-3-d
+  name: SVV-3.d — Analyze delivered executable composition
+  text: >-
+    For compiled products, analyze every delivered executable and firmware image for vulnerable components
+    or libraries, security-rule violations, and unsafe compiler settings.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SVV-3.d
+  source_locator: IEC 62443-4-1:2018 §9.4.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.17
+- id: requirement:iec-62443-4-1-2018-svv-3-e
+  name: SVV-3.e — Test runtime resource management
+  text: >-
+    Where tools are available, dynamically test for handle and memory leaks, denial-of-service conditions,
+    and unauthenticated shared-memory access that static analysis may miss.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SVV-3.e
+  source_locator: IEC 62443-4-1:2018 §9.4.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.17
+- id: requirement:iec-62443-4-1-2018-svv-4
+  name: SVV-4 — Conduct product penetration testing
+  text: >-
+    Perform penetration testing that attempts to exploit product weaknesses and records the resulting
+    security defects and their characteristics.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SVV-4
+  source_locator: IEC 62443-4-1:2018 §9.5.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.18
+- id: requirement:iec-62443-4-1-2018-svv-5
+  name: SVV-5 — Keep testers independent
+  text: >-
+    Ensure the people who test the product have the required organizational independence from those
+    who designed and implemented it.
+  text_origin: paraphrase
+  requirement_kind: audit
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#SVV-5
+  source_locator: IEC 62443-4-1:2018 §9.6.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.18
+- id: requirement:iec-62443-4-1-2018-dm-1
+  name: DM-1 — Receive and track security reports
+  text: >-
+    Provide a process that receives security issues from internal and external reporters and tracks
+    each one through closure.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#DM-1
+  source_locator: IEC 62443-4-1:2018 §10.2.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.20
+- id: requirement:iec-62443-4-1-2018-dm-2
+  name: DM-2 — Investigate reported security issues
+  text: >-
+    Investigate reports promptly to determine whether they apply to the product, can be verified,
+    and identify triggering threats.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#DM-2
+  source_locator: IEC 62443-4-1:2018 §10.3.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.20
+- id: requirement:iec-62443-4-1-2018-dm-3
+  name: DM-3 — Assess valid security issues
+  text: >-
+    Assess valid issues for contextual impact, severity, affected products and versions, root cause,
+    and related issues.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#DM-3
+  source_locator: IEC 62443-4-1:2018 §10.4.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.20
+- id: requirement:iec-62443-4-1-2018-dm-3-rca
+  name: DM-3.rca — Permit a systematic root-cause method
+  text: >-
+    A systematic method such as the referenced IEC root-cause guidance may be used when analyzing
+    an issue's cause.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: optional
+  source_ref: library:iec-62443-4-1-2018#DM-3.rca
+  source_locator: IEC 62443-4-1:2018 §10.4.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.20
+- id: requirement:iec-62443-4-1-2018-dm-4
+  name: DM-4 — Disposition security issues
+  text: >-
+    Use the impact assessment to decide how each security issue will be addressed and whether it must
+    be reported.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#DM-4
+  source_locator: IEC 62443-4-1:2018 §10.5.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.20
+- id: requirement:iec-62443-4-1-2018-dm-4-residual
+  name: DM-4.residual — Apply an explicit residual-risk threshold
+  text: >-
+    Set an acceptable residual-risk level and use it to choose whether to fix, compensate for, defer,
+    disable, remove, or retain an issue, recording reasons and associated risks when resolution is deferred.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#DM-4.residual
+  source_locator: IEC 62443-4-1:2018 §10.5.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.20
+- id: requirement:iec-62443-4-1-2018-dm-4-all-cases
+  name: DM-4.all-cases — Notify affected internal and external parties
+  text: >-
+    For every disposition, inform relevant processes and product revisions and notify third parties
+    when their included source code contains the problem.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#DM-4.all-cases
+  source_locator: IEC 62443-4-1:2018 §10.5.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.20
+- id: requirement:iec-62443-4-1-2018-dm-4-prevent
+  name: DM-4.prevent — Evaluate recurrence prevention
+  text: >-
+    After resolving an issue, evaluate recommendations intended to prevent similar defects from recurring.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#DM-4.prevent
+  source_locator: IEC 62443-4-1:2018 §10.5.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.20
+- id: requirement:iec-62443-4-1-2018-dm-4-periodic
+  name: DM-4.periodic — Review open issues each release cycle
+  text: >-
+    At least once per release or iteration, review unresolved security issues to confirm that their
+    treatment remains appropriate.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#DM-4.periodic
+  source_locator: IEC 62443-4-1:2018 §10.5.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.20
+- id: requirement:iec-62443-4-1-2018-dm-5
+  name: DM-5 — Issue timely security advisories
+  text: >-
+    Notify users promptly about reportable issues in supported products, including the issue and severity,
+    affected versions, and the resolution.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#DM-5
+  source_locator: IEC 62443-4-1:2018 §10.6.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.20
+- id: requirement:iec-62443-4-1-2018-dm-6
+  name: DM-6 — Review defect-management effectiveness
+  text: >-
+    At regular intervals, assess the security-defect process for completeness, efficiency, and successful
+    closure of every issue handled since the preceding review.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#DM-6
+  source_locator: IEC 62443-4-1:2018 §10.7.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.21
+- id: requirement:iec-62443-4-1-2018-dm-6-annual
+  name: DM-6.annual — Review defect management annually
+  text: >-
+    Conduct the security-issue-management process review at least once each year.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: mandatory
+  source_ref: library:iec-62443-4-1-2018#DM-6.annual
+  source_locator: IEC 62443-4-1:2018 §10.7.1 (clause per IEC preview ToC); text read at SDLA-312 v6.3
+    p.21
+parties:
+- id: party:kriishnaa-18
+  name: '@kriishnaa-18'
+  description: Human owner and pending reviewer of this file (GitHub id).
+  party_kind: person
+assertions:
+- id: assertion:iec-sd-2--derived-from--sr-2
+  subject: requirement:iec-62443-4-1-2018-sd-2
+  predicate: derived_from
+  object: requirement:iec-62443-4-1-2018-sr-2
+  confidence: high
+  assertion_status: proposed
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: §7.3.1 explicitly bases the layered-defense design
+    on the threat model.
+- id: assertion:iec-sd-2-2--refines--sd-2
+  subject: requirement:iec-62443-4-1-2018-sd-2-2
+  predicate: refines
+  object: requirement:iec-62443-4-1-2018-sd-2
+  confidence: high
+  assertion_status: accepted
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: §7.3.1 adds responsibility assignment for every
+    defensive layer to SD-2's layered-defense obligation.
+- id: assertion:iec-sd-4-e--refines--sd-4
+  subject: requirement:iec-62443-4-1-2018-sd-4-e
+  predicate: refines
+  object: requirement:iec-62443-4-1-2018-sd-4
+  confidence: high
+  assertion_status: accepted
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: §7.5.1 lists attack-surface reduction as one of
+    the secure-design practices maintained under SD-4.
+- id: assertion:iec-si-1-sca-tool--refines--si-1
+  subject: requirement:iec-62443-4-1-2018-si-1-sca-tool
+  predicate: refines
+  object: requirement:iec-62443-4-1-2018-si-1
+  confidence: high
+  assertion_status: accepted
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: §8.3.1 adds the tool-use condition to SI-1's static-analysis
+    obligation.
+- id: assertion:iec-si-1-sca-changes--refines--si-1
+  subject: requirement:iec-62443-4-1-2018-si-1-sca-changes
+  predicate: refines
+  object: requirement:iec-62443-4-1-2018-si-1
+  confidence: high
+  assertion_status: proposed
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: §8.3.1 extends SI-1 static analysis to new and changed
+    source and adds traceability and threat checks.
+- id: assertion:iec-svv-1-types--refines--svv-1
+  subject: requirement:iec-62443-4-1-2018-svv-1-types
+  predicate: refines
+  object: requirement:iec-62443-4-1-2018-svv-1
+  confidence: high
+  assertion_status: accepted
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: §9.2.1 enumerates the testing categories used to
+    meet SVV-1.
+- id: assertion:iec-svv-2-activities--refines--svv-2
+  subject: requirement:iec-62443-4-1-2018-svv-2-activities
+  predicate: refines
+  object: requirement:iec-62443-4-1-2018-svv-2
+  confidence: high
+  assertion_status: accepted
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: §9.3.1 requires both confirmation and attempted
+    defeat of each mitigation under SVV-2.
+- id: assertion:iec-svv-3-known--refines--svv-3
+  subject: requirement:iec-62443-4-1-2018-svv-3-known
+  predicate: refines
+  object: requirement:iec-62443-4-1-2018-svv-3
+  confidence: high
+  assertion_status: accepted
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: §9.4.1 specifies the information source required
+    for SVV-3 known-vulnerability testing.
+- id: assertion:iec-svv-3-a--refines--svv-3
+  subject: requirement:iec-62443-4-1-2018-svv-3-a
+  predicate: refines
+  object: requirement:iec-62443-4-1-2018-svv-3
+  confidence: high
+  assertion_status: proposed
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: §9.4.1 makes abuse-case and malformed-input testing
+    part of SVV-3.
+- id: assertion:iec-svv-3-b--refines--svv-3
+  subject: requirement:iec-62443-4-1-2018-svv-3-b
+  predicate: refines
+  object: requirement:iec-62443-4-1-2018-svv-3
+  confidence: high
+  assertion_status: proposed
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: §9.4.1 makes attack-surface analysis part of SVV-3.
+- id: assertion:iec-svv-3-c--refines--svv-3
+  subject: requirement:iec-62443-4-1-2018-svv-3-c
+  predicate: refines
+  object: requirement:iec-62443-4-1-2018-svv-3
+  confidence: high
+  assertion_status: proposed
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: §9.4.1 makes black-box known-vulnerability scanning
+    part of SVV-3.
+- id: assertion:iec-svv-3-d--refines--svv-3
+  subject: requirement:iec-62443-4-1-2018-svv-3-d
+  predicate: refines
+  object: requirement:iec-62443-4-1-2018-svv-3
+  confidence: high
+  assertion_status: accepted
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: §9.4.1 makes executable composition analysis part
+    of SVV-3.
+- id: assertion:iec-svv-3-e--refines--svv-3
+  subject: requirement:iec-62443-4-1-2018-svv-3-e
+  predicate: refines
+  object: requirement:iec-62443-4-1-2018-svv-3
+  confidence: high
+  assertion_status: proposed
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: §9.4.1 makes dynamic resource testing part of SVV-3
+    when tools exist.
+- id: assertion:iec-dm-4--derived-from--dm-3
+  subject: requirement:iec-62443-4-1-2018-dm-4
+  predicate: derived_from
+  object: requirement:iec-62443-4-1-2018-dm-3
+  confidence: high
+  assertion_status: proposed
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: §10.5.1 explicitly bases issue disposition and reporting
+    on DM-3's impact assessment.
+- id: assertion:iec-dm-4-residual--refines--dm-4
+  subject: requirement:iec-62443-4-1-2018-dm-4-residual
+  predicate: refines
+  object: requirement:iec-62443-4-1-2018-dm-4
+  confidence: high
+  assertion_status: proposed
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: §10.5.1 defines the residual-risk threshold and
+    disposition choices used by DM-4.
+- id: assertion:iec-dm-4-periodic--refines--dm-4
+  subject: requirement:iec-62443-4-1-2018-dm-4-periodic
+  predicate: refines
+  object: requirement:iec-62443-4-1-2018-dm-4
+  confidence: high
+  assertion_status: proposed
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: §10.5.1 adds a release-cycle review of open issues
+    to DM-4.
+- id: assertion:iec-dm-6-annual--refines--dm-6
+  subject: requirement:iec-62443-4-1-2018-dm-6-annual
+  predicate: refines
+  object: requirement:iec-62443-4-1-2018-dm-6
+  confidence: high
+  assertion_status: accepted
+  description: >-
+    Proposed by Codex (GPT-5), 2026-11-16. Basis: §10.7.1 sets an annual minimum frequency for the
+    DM-6 process review.
+reviews:
+- id: review:iec-sd-2--derived-from--sr-2
+  name: Review, reject SD-2 derived from SR-2
+  reviews: assertion:iec-sd-2--derived-from--sr-2
+  reviewer: party:kriishnaa-18
+  review_status: rejected
+  justification: >-
+    Rejected by @kriishnaa-18 on 2026-11-21: SD-2 depends on threat-model output associated with
+    SR-2, but using that artifact does not establish that the SD-2 Requirement is derived from the
+    SR-2 Requirement. The evidence is limited to the pinned IEC preview and ISASecure SDLA-312
+    secondary material; the licensed normative body was not directly inspected.
+- id: review:iec-dm-4--derived-from--dm-3
+  name: Review, reject DM-4 derived from DM-3
+  reviews: assertion:iec-dm-4--derived-from--dm-3
+  reviewer: party:kriishnaa-18
+  review_status: rejected
+  justification: >-
+    Rejected by @kriishnaa-18 on 2026-11-21: DM-4 uses assessment results produced under DM-3, but
+    this operational dependency on an output does not establish Requirement-to-Requirement
+    derivation. The evidence is limited to the pinned IEC preview and ISASecure SDLA-312 secondary
+    material; the licensed normative body was not directly inspected.
+- id: review:iec-sd-2-2--refines--sd-2
+  name: Review, accept SD-2.2 refines SD-2
+  reviews: assertion:iec-sd-2-2--refines--sd-2
+  reviewer: party:kriishnaa-18
+  review_status: accepted
+  justification: >-
+    Accepted by @kriishnaa-18 on 2026-11-21: The atomic SD-2.2 statement adds responsibility
+    assignment within the broader layered-defense process represented by SD-2. This decision relies
+    on the pinned preview and SDLA-312 secondary material and does not claim direct inspection of the
+    licensed normative body.
+- id: review:iec-sd-4-e--refines--sd-4
+  name: Review, accept SD-4.e refines SD-4
+  reviews: assertion:iec-sd-4-e--refines--sd-4
+  reviewer: party:kriishnaa-18
+  review_status: accepted
+  justification: >-
+    Accepted by @kriishnaa-18 on 2026-11-21: Attack-surface reduction is a specific secure-design
+    practice within the broader SD-4 obligation to document and apply secure-design practices. This
+    decision uses the pinned preview and SDLA-312 secondary material, not direct normative-body text.
+- id: review:iec-si-1-sca-tool--refines--si-1
+  name: Review, accept SI-1.sca-tool refines SI-1
+  reviews: assertion:iec-si-1-sca-tool--refines--si-1
+  reviewer: party:kriishnaa-18
+  review_status: accepted
+  justification: >-
+    Accepted by @kriishnaa-18 on 2026-11-21: The atomic statement specifies tool-based static
+    analysis, when an appropriate tool exists, within the broader SI-1 implementation-review
+    process. This decision is based on the pinned preview and SDLA-312 secondary material.
+- id: review:iec-svv-1-types--refines--svv-1
+  name: Review, accept SVV-1.types refines SVV-1
+  reviews: assertion:iec-svv-1-types--refines--svv-1
+  reviewer: party:kriishnaa-18
+  review_status: accepted
+  justification: >-
+    Accepted by @kriishnaa-18 on 2026-11-21: The atomic statement enumerates categories of security
+    verification testing that give specific detail to the broader SVV-1 verification process. This
+    decision is based on the pinned preview and SDLA-312 secondary material.
+- id: review:iec-svv-2-activities--refines--svv-2
+  name: Review, accept SVV-2.activities refines SVV-2
+  reviews: assertion:iec-svv-2-activities--refines--svv-2
+  reviewer: party:kriishnaa-18
+  review_status: accepted
+  justification: >-
+    Accepted by @kriishnaa-18 on 2026-11-21: The atomic statement details testing activities that
+    confirm each mitigation works as designed and attempt to defeat it, refining the broader SVV-2
+    mitigation-effectiveness process. This decision uses the pinned secondary evidence.
+- id: review:iec-svv-3-known--refines--svv-3
+  name: Review, accept SVV-3.known refines SVV-3
+  reviews: assertion:iec-svv-3-known--refines--svv-3
+  reviewer: party:kriishnaa-18
+  review_status: accepted
+  justification: >-
+    Accepted by @kriishnaa-18 on 2026-11-21: The atomic statement specifies established,
+    industry-recognized vulnerability-information sources for the broader SVV-3 vulnerability-testing
+    process. This decision relies on the pinned preview and SDLA-312 secondary material.
+- id: review:iec-svv-3-d--refines--svv-3
+  name: Review, accept SVV-3.d refines SVV-3
+  reviews: assertion:iec-svv-3-d--refines--svv-3
+  reviewer: party:kriishnaa-18
+  review_status: accepted
+  justification: >-
+    Accepted by @kriishnaa-18 on 2026-11-21: Executable software-composition analysis is a specific
+    vulnerability-testing activity within the broader SVV-3 process. This decision is based on the
+    pinned preview and SDLA-312 secondary material and does not reproduce licensed wording.
+- id: review:iec-dm-6-annual--refines--dm-6
+  name: Review, accept DM-6.annual refines DM-6
+  reviews: assertion:iec-dm-6-annual--refines--dm-6
+  reviewer: party:kriishnaa-18
+  review_status: accepted
+  justification: >-
+    Accepted by @kriishnaa-18 on 2026-11-21: The atomic statement adds a minimum annual frequency to
+    the broader DM-6 requirement for periodic review of the security-issue-management process. This
+    decision relies on the pinned preview and SDLA-312 secondary material.

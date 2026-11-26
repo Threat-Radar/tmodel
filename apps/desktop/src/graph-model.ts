@@ -1,10 +1,16 @@
 import type {
+  GraphAssertionProvenance,
   GraphEdge,
   GraphNode,
   GraphRelationship,
   GraphResponse,
 } from "./graph-types";
-import { relationshipReviewState, type ReviewStateKind } from "./review-status";
+import {
+  relationshipReviewState,
+  reviewStatePresentation,
+  type ReviewStateKind,
+  type ReviewStatePresentation,
+} from "./review-status";
 
 export interface GraphState {
   nodes: GraphNode[];
@@ -25,6 +31,8 @@ export interface CytoscapeEdgeElement {
     target: string;
     relationshipType: string;
     label: string;
+    /** Direct model relationship; its primary canvas style always stays established. */
+    authored?: boolean;
     // Present only for relationships backed by an Assertion. The raw values
     // are kept as recorded; `reviewState` only selects the edge style.
     reviewState?: ReviewStateKind;
@@ -73,6 +81,8 @@ export function relationshipsForNode(
         relationshipType: edge.relationshipType,
         connectedNodeId: edge.target,
         connectedNode: nodes.get(edge.target),
+        authored: edge.authored,
+        assertions: edge.assertions,
         properties: edge.properties,
       });
     } else if (edge.target === nodeId) {
@@ -82,6 +92,8 @@ export function relationshipsForNode(
         relationshipType: edge.relationshipType,
         connectedNodeId: edge.source,
         connectedNode: nodes.get(edge.source),
+        authored: edge.authored,
+        assertions: edge.assertions,
         properties: edge.properties,
       });
     }
@@ -115,7 +127,15 @@ export function toCytoscapeEdgeElement(edge: GraphEdge): CytoscapeEdgeElement {
     relationshipType: edge.relationshipType,
     label: edge.relationshipType,
   };
-  const review = relationshipReviewState(edge.properties);
+  if (edge.authored !== undefined) data.authored = edge.authored;
+  // The primary line represents the relationship itself. Directly authored
+  // provenance remains established even when Assertions about the same triple
+  // are proposed, rejected, or disputed; those verdicts remain in the inspector.
+  if (edge.authored === true) return { group: "edges", data };
+
+  const review = edge.assertions?.length
+    ? structuredAssertionPresentation(edge.assertions)
+    : relationshipReviewState(edge.properties);
   if (review) {
     data.reviewState = review.kind;
     data.assertionStatus = review.assertionStatus;
@@ -126,12 +146,61 @@ export function toCytoscapeEdgeElement(edge: GraphEdge): CytoscapeEdgeElement {
   return { group: "edges", data };
 }
 
+function structuredAssertionPresentation(
+  assertions: readonly GraphAssertionProvenance[],
+): ReviewStatePresentation {
+  const presentations = assertions.map((assertion) => reviewStatePresentation(
+    assertion.assertion_status,
+    combinedReviewStatus(assertion.reviews.map((review) => review.review_status)),
+  ));
+  const kinds = new Set(presentations.map((presentation) => presentation.kind));
+  if (assertions.length === 1) return presentations[0];
+  if (kinds.size === 1) {
+    const presentation = presentations[0];
+    return {
+      ...presentation,
+      label: `${assertions.length} ${presentation.label} Assertions`,
+      description: `${assertions.length} Assertions independently record ${presentation.description}`,
+      assertionStatus: null,
+      reviewStatus: null,
+    };
+  }
+  return {
+    kind: "unknown",
+    label: "Mixed Assertion States",
+    description: "multiple Assertions record different states; inspect each Assertion",
+    assertionStatus: null,
+    reviewStatus: null,
+  };
+}
+
+function combinedReviewStatus(statuses: readonly (string | null)[]): string | null {
+  const values = statuses.map(normalized).filter((status): status is string => Boolean(status));
+  if (values.includes("rejected")) return "rejected";
+  if (values.includes("changes_requested")) return "changes_requested";
+  if (values.length > 0 && values.every((status) => status === "accepted")) return "accepted";
+  return new Set(values).size === 1 ? values[0] : values.length ? "mixed" : null;
+}
+
+function normalized(value: string | null): string | undefined {
+  const result = value?.trim().toLowerCase().replace(/[\s-]+/g, "_");
+  return result || undefined;
+}
+
 function cloneNode(node: GraphNode): GraphNode {
   return { ...node, properties: cloneProperties(node.properties) };
 }
 
 function cloneEdge(edge: GraphEdge): GraphEdge {
-  return { ...edge, properties: cloneProperties(edge.properties) };
+  return {
+    ...edge,
+    assertions: edge.assertions?.map((assertion) => ({
+      ...assertion,
+      evidence: [...assertion.evidence],
+      reviews: assertion.reviews.map((review) => ({ ...review })),
+    })),
+    properties: cloneProperties(edge.properties),
+  };
 }
 
 function cloneProperties(properties: GraphNode["properties"]): GraphNode["properties"] {

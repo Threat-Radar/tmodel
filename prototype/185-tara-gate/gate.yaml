@@ -1,0 +1,8 @@
+# PROPOSAL / EXAMPLE INPUT for #185, not an accepted governed model or Gate decision.
+# The evidence-link mode is deliberately supplied by the caller; the sponsor's
+# DL-0027 versus DL-0054 choice is still open. No approval is recorded here.
+id: gate:tcu-approved-tara
+name: Approved and current TCU TARA
+validates_conformance_of: threat-model:tcu-tara-v1
+gated_by: [requirement:tcu-approved-tara]
+gate_status: planned
