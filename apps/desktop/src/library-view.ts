@@ -1,3 +1,7 @@
+import {
+  bindClearFilters, EMPTY_INSPECTOR, LIBRARY_PAGE_SIZE, renderPagination, resetPagination,
+  type LibraryPagination,
+} from "./library-presentation";
 import type {
   LibraryDataProvider,
   LibraryRecordDetails,
@@ -12,7 +16,7 @@ import { LatestRequestGuard } from "./request-guard";
 
 const SEARCH_DELAY_MS = 250;
 
-export interface LibraryViewElements {
+export interface LibraryViewElements extends LibraryPagination {
   workspace: HTMLElement;
   sourceNotice: HTMLElement;
   search: HTMLInputElement;
@@ -20,7 +24,7 @@ export interface LibraryViewElements {
   statusFilter: HTMLSelectElement;
   topicFilter: HTMLSelectElement;
   sortButtons: readonly HTMLButtonElement[];
-  resultCount: HTMLElement;
+  clearFilters: HTMLButtonElement;
   requestStatus: HTMLElement;
   warning: HTMLElement;
   retryButton: HTMLButtonElement;
@@ -44,6 +48,8 @@ export class LibraryDocumentsView {
   private readonly detailRequests = new LatestRequestGuard();
   private readonly rows = new Map<string, LibraryTableRow>();
   private query: LibraryTableQuery = { ...DEFAULT_LIBRARY_QUERY };
+  private response?: LibraryTableResponse;
+  private offset = 0;
   private started = false;
   private engineConnected?: boolean;
   private tableState: "idle" | "loading" | "loaded" | "failed" = "idle";
@@ -98,6 +104,11 @@ export class LibraryDocumentsView {
   async selectRecord(id: string): Promise<void> {
     const row = this.rows.get(id);
     if (!row) return;
+    const index = this.response?.rows.indexOf(row) ?? -1;
+    if (index >= 0 && (index < this.offset || index >= this.offset + LIBRARY_PAGE_SIZE)) {
+      this.offset = Math.floor(index / LIBRARY_PAGE_SIZE) * LIBRARY_PAGE_SIZE;
+      this.renderPage();
+    }
     this.selectedId = id;
     this.updateSelectedRow();
     this.renderRowDetails(row, true);
@@ -154,7 +165,23 @@ export class LibraryDocumentsView {
         void this.loadTable();
       });
     }
+    const { clearFilters, search, typeFilter, statusFilter, topicFilter, previousPage, nextPage } = this.elements;
+    bindClearFilters(clearFilters, search, [typeFilter, statusFilter, topicFilter], () => {
+      if (this.searchTimer) clearTimeout(this.searchTimer);
+      this.query.search = this.query.type = this.query.status = this.query.topic = undefined;
+      void this.loadTable();
+    });
+    previousPage.addEventListener("click", () => this.changePage(-LIBRARY_PAGE_SIZE));
+    nextPage.addEventListener("click", () => this.changePage(LIBRARY_PAGE_SIZE));
     this.elements.retryButton.addEventListener("click", () => void this.retry());
+  }
+
+  private changePage(delta: number): void {
+    if (this.tableState !== "loaded" || !this.response) return;
+    const offset = this.offset + delta;
+    if (offset < 0 || offset >= this.response.total) return;
+    this.offset = offset;
+    this.renderPage();
   }
 
   private async loadTable(): Promise<void> {
@@ -191,12 +218,14 @@ export class LibraryDocumentsView {
       isLibrarySort(response.query.sort) ? response.query.sort : null,
       response.query.order,
     );
-    this.elements.tableBody.replaceChildren(...response.rows.map((row) => this.createRow(row)));
-    this.elements.resultCount.textContent = resultCountText(response.total, response.library.count);
-    this.elements.requestStatus.textContent = response.total === 0
-      ? "No library documents match the current search and filters."
-      : `${response.total} matching library ${response.total === 1 ? "document" : "documents"}.`;
+    this.response = response;
+    this.offset = 0;
+    this.renderPage();
+    this.elements.requestStatus.textContent = "";
     this.elements.requestStatus.className = "library-request-status";
+    this.elements.emptyState.textContent = response.library.count === 0
+      ? "No library documents are available."
+      : "No library documents match the current search and filters.";
     this.elements.emptyState.hidden = response.total !== 0;
     this.elements.tableRegion.hidden = response.total === 0;
     this.elements.retryButton.hidden = true;
@@ -204,14 +233,26 @@ export class LibraryDocumentsView {
     this.elements.warning.textContent = response.library.problems.length === 0
       ? ""
       : `${response.library.problems.length} library ${response.library.problems.length === 1 ? "record could" : "records could"} not be loaded. Showing the available documents.`;
-    if (this.selectedId && this.rows.has(this.selectedId)) this.updateSelectedRow();
+  }
+
+  private renderPage(): void {
+    const response = this.response;
+    if (!response) return;
+    const rows = response.rows.slice(this.offset, this.offset + LIBRARY_PAGE_SIZE);
+    this.elements.tableBody.replaceChildren(...rows.map((row) => this.createRow(row)));
+    this.elements.tableRegion.scrollTop = 0;
+    renderPagination(this.elements, this.offset, rows.length, response.total);
+    if (this.selectedId && rows.some((row) => row.id === this.selectedId)) this.updateSelectedRow();
     else if (this.selectedId) this.clearDetails();
   }
 
   private renderError(error: unknown): void {
     this.elements.requestStatus.textContent = `Unable to load library documents: ${errorMessage(error)}`;
     this.elements.requestStatus.className = "library-request-status is-error";
-    this.elements.resultCount.textContent = "Unavailable";
+    this.response = undefined;
+    this.rows.clear();
+    this.clearDetails();
+    resetPagination(this.elements);
     this.elements.tableRegion.hidden = true;
     this.elements.emptyState.hidden = true;
     this.elements.warning.hidden = true;
@@ -373,13 +414,13 @@ export class LibraryDocumentsView {
   private clearDetails(): void {
     this.selectedId = undefined;
     this.detailRequests.cancel();
-    this.elements.detailTitle.textContent = "Select a document";
+    this.elements.detailTitle.textContent = "";
     this.elements.detailType.textContent = "";
     this.elements.detailType.hidden = true;
     this.elements.detailRecordStatus.textContent = "";
     this.elements.detailRecordStatus.hidden = true;
     this.elements.detailId.textContent = "";
-    this.elements.detailStatus.textContent = "Choose a row to inspect its document details.";
+    this.elements.detailStatus.textContent = EMPTY_INSPECTOR;
     this.elements.detailList.replaceChildren();
     this.renderEvidence(0, 0);
     this.renderAssessment(null, {});
@@ -428,6 +469,7 @@ export class LibraryDocumentsView {
       this.elements.requestStatus.textContent = "Loading library documents…";
       this.elements.requestStatus.className = "library-request-status";
       this.elements.retryButton.hidden = true;
+      this.elements.emptyState.hidden = true;
     }
   }
 
@@ -456,7 +498,10 @@ export function libraryViewElements(root: Document = document): LibraryViewEleme
     statusFilter: required("library-status-filter"),
     topicFilter: required("library-topic-filter"),
     sortButtons: [...root.querySelectorAll<HTMLButtonElement>("[data-library-sort]")],
-    resultCount: required("library-result-count"),
+    clearFilters: required("library-clear-filters"),
+    pageStatus: required("library-page-status"),
+    previousPage: required("library-page-previous"),
+    nextPage: required("library-page-next"),
     requestStatus: required("library-request-status"),
     warning: required("library-warning"),
     retryButton: required("library-retry"),
@@ -480,12 +525,6 @@ export function reviewedArtifactsLabel(row: Pick<LibraryTableRow, "artifacts" | 
   return row.artifacts === 0
     ? "No extracted artifacts"
     : `${row.reviewed_artifacts} / ${row.artifacts} reviewed`;
-}
-
-function resultCountText(total: number, libraryCount: number): string {
-  const totalLabel = `${total} ${total === 1 ? "document" : "documents"}`;
-  if (total === libraryCount) return totalLabel;
-  return `${totalLabel} of ${libraryCount} ${libraryCount === 1 ? "document" : "documents"}`;
 }
 
 function cleanValue(value: string): string | undefined {

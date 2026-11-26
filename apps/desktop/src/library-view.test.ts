@@ -33,8 +33,11 @@ describe("library documents view", () => {
     view.activate();
     await settle();
 
-    expect(elements.resultCount.textContent).toBe("1 document");
+    expect(elements.pageStatus.textContent).toBe("1–1 of 1");
     expect(elements.tableBody.children).toHaveLength(1);
+    expect(elements.previousPage.hidden).toBe(true);
+    expect(elements.nextPage.hidden).toBe(true);
+    expect(elements.requestStatus.textContent).toBe("");
     const row = elements.tableBody.children[0] as FakeElement;
     const titleButton = (row.children[0] as FakeElement).children[0] as FakeElement;
     expect(titleButton.textContent).toBe("<img src=x onerror=alert(1)>");
@@ -74,6 +77,45 @@ describe("library documents view", () => {
       order: "desc",
     });
     expect(rowIds(elements.tableBody)).toEqual(["server-second", "server-first"]);
+  });
+
+  it("pages all matches and clears combined filters and pending search on page two", async () => {
+    vi.useFakeTimers();
+    const ids = Array.from({ length: 53 }, (_, index) => `record-${index}`);
+    const response = tableResponse(ids);
+    const data = providerFor(response);
+    data.getTable = vi.fn(data.getTable);
+    const { view, elements } = viewHarness(data);
+    view.activate();
+    await settle();
+
+    expect(elements.clearFilters.hidden).toBe(true);
+    elements.typeFilter.value = "paper";
+    elements.typeFilter.dispatch("change");
+    elements.statusFilter.value = "stub";
+    elements.statusFilter.dispatch("change");
+    await settle();
+    expect(elements.clearFilters.hidden).toBe(false);
+    expect(elements.pageStatus.textContent).toBe("1–50 of 53");
+    expect(elements.previousPage.hidden).toBe(false);
+    expect(elements.previousPage.disabled).toBe(true);
+    await view.selectRecord(ids[1]);
+    const firstPage = rowIds(elements.tableBody);
+    elements.nextPage.dispatch("click");
+    expect(elements.pageStatus.textContent).toBe("51–53 of 53");
+    expect(elements.nextPage.disabled).toBe(true);
+    expect(view.currentSelection()).toBeUndefined();
+    expect([...firstPage, ...rowIds(elements.tableBody)]).toEqual(ids);
+
+    elements.search.value = "pending search";
+    elements.search.dispatch("input");
+    elements.clearFilters.dispatch("click");
+    await vi.advanceTimersByTimeAsync(300);
+    expect(view.currentQuery()).toMatchObject({ search: undefined, type: undefined, status: undefined });
+    expect(data.getTable).toHaveBeenCalledTimes(4);
+    expect(elements.search.value).toBe("");
+    expect(elements.clearFilters.hidden).toBe(true);
+    expect(elements.pageStatus.textContent).toBe("1–50 of 53");
   });
 
   it("announces loading while the initial table request is pending", async () => {
@@ -294,6 +336,8 @@ describe("library documents view", () => {
       .toEqual(["All types", "paper (2)", "rfc (0)"]);
     expect(view.currentQuery().type).toBe("rfc");
     expect(elements.emptyState.hidden).toBe(false);
+    expect(elements.emptyState.textContent).toBe("No library documents match the current search and filters.");
+    expect(elements.pageStatus.textContent).toBe("0 of 0");
     expect(elements.tableRegion.hidden).toBe(true);
   });
 
@@ -358,6 +402,7 @@ describe("library documents view", () => {
       .mockResolvedValueOnce(tableResponse(["recovered"]));
     await view.retry();
     expect(elements.emptyState.hidden).toBe(false);
+    expect(elements.emptyState.textContent).toBe("No library documents are available.");
     expect(elements.tableRegion.hidden).toBe(true);
     await view.retry();
     expect(elements.retryButton.hidden).toBe(false);
@@ -535,7 +580,7 @@ function viewHarness(provider: LibraryDataProvider) {
     statusFilter: make("select"),
     topicFilter: make("select"),
     sortButtons,
-    resultCount: make(),
+    clearFilters: make("button"), pageStatus: make(), previousPage: make("button"), nextPage: make("button"),
     requestStatus: make(),
     warning: make(),
     retryButton: make("button"),
@@ -666,6 +711,8 @@ class FakeElement {
   tabIndex = 0;
   private readonly attributes = new Map<string, string>();
   private readonly listeners = new Map<string, Array<() => void>>();
+
+  focus(): void {}
 
   constructor(readonly tagName: string) {}
 

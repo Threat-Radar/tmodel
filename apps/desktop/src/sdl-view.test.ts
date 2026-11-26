@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import fixture from "./fixtures/sdl-01-view.json";
 import { modelOptions, safeHref, SdlProgramView, type SdlViewElements } from "./sdl-view";
 import type { SdlDataProvider, SdlView } from "./sdl-types";
@@ -13,10 +13,24 @@ describe("SDL view", () => {
 
     expect(elements.modelSelect.children).toHaveLength(1);
     expect(elements.status.textContent).toContain(`${VIEW.awaiting_review.length} selections awaiting human review`);
-    const titles = headings(elements.content);
-    expect(titles).toContain("Governing requirement sets");
-    expect(titles).toContain("Milestones and gates");
-    for (const phase of VIEW.phases) expect(titles).toContain(phase.name);
+    expect(headings(elements.content)).toEqual([
+      VIEW.program.name, "Governing requirement sets", ...VIEW.phases.map((phase) => phase.name),
+      "Milestones and gates", "Pending proposals (0)", "Open gaps",
+    ]);
+    expect(elements.content.children[0].children.map((element) => element.className))
+      .toEqual(["", "sdl-product", "sdl-banner"]);
+    const tables = find(elements.content, (node) => node.tagName === "table");
+    expect(tables.map((table) => table.children[0].children[0].children.map((header) => header.textContent)))
+      .toEqual([
+        ["Set", "Proposal", "Why", "Decision"],
+        ...VIEW.phases.map(() => ["Practice", "Status", "Owner", "Evidence", "Selection"]),
+        ["#", "Name", "Kind", "Planned", "Status", "Practices due", "Name review"],
+        ["Proposal", "By", "Adds", "Asks", "Review"],
+      ]);
+    expect(tables.map((table) => table.children[1].children.length)).toEqual([
+      VIEW.sets.length, ...VIEW.phases.map((phase) => phase.items.length), VIEW.nodes.length, 0,
+    ]);
+    expect(find(elements.content, (node) => node.tagName === "button")).toHaveLength(0);
     const chips = find(elements.content, (n) => n.className.startsWith("review-chip"));
     expect(chips.length).toBeGreaterThan(0);
     expect(chips.every((c) => c.className === "review-chip review-proposed")).toBe(true);
@@ -52,6 +66,37 @@ describe("SDL view", () => {
     expect(find(section, (n) => n.textContent === "selects_practice → sdl-practice:secrets-management")).toHaveLength(1);
   });
 
+  it("replaces the sections when the SDL model changes and ignores an earlier response", async () => {
+    let resolveEarlier!: (view: SdlView) => void;
+    const earlier = new Promise<SdlView>((resolve) => { resolveEarlier = resolve; });
+    const newer = structuredClone(VIEW);
+    newer.program.name = "Second program";
+    const getView = vi.fn<SdlDataProvider["getView"]>(async (_file, program) => {
+      if (program === "first") return earlier;
+      if (program === "second") return newer;
+      return VIEW;
+    });
+    const { view, elements } = harness(VIEW, false, {
+      listModels: async () => [
+        { file: VIEW.file },
+        { file: "other.yaml", programs: [{ id: "first", name: "First" }, { id: "second", name: "Second" }] },
+      ],
+      getView,
+    });
+    view.activate();
+    await settle();
+    for (const program of ["first", "second"]) {
+      elements.modelSelect.value = `other.yaml#${program}`;
+      elements.modelSelect.dispatchEvent(new Event("change"));
+    }
+    await settle();
+    expect(getView.mock.calls[1][2]?.aborted).toBe(true);
+    expect(headings(elements.content)[0]).toBe("Second program");
+    resolveEarlier(VIEW);
+    await settle();
+    expect(headings(elements.content)[0]).toBe("Second program");
+  });
+
   it("reports an engine error without rendering stale content", async () => {
     const { view, elements } = harness(VIEW, true);
     view.activate();
@@ -69,13 +114,14 @@ describe("SDL view", () => {
   });
 });
 
-function harness(view: SdlView = VIEW, fail = false) {
+function harness(view: SdlView = VIEW, fail = false, overrides: Partial<SdlDataProvider> = {}) {
   const provider: SdlDataProvider = {
     listModels: async () => [{ file: "sdl-01-tmodel-desktop.yaml", programs: [{ id: "security-program:tmodel-sdl", name: "tmodel SDL" }] }],
     getView: async () => {
       if (fail) throw new Error("boom");
       return view;
     },
+    ...overrides,
   };
   const doc = { createElement: (tag: string) => new FakeElement(tag) } as unknown as Document;
   const elements = {
@@ -87,14 +133,13 @@ function harness(view: SdlView = VIEW, fail = false) {
   return { view: sdl, elements };
 }
 
-class FakeElement {
+class FakeElement extends EventTarget {
   readonly children: FakeElement[] = [];
   textContent = "";
   className = "";
   value = "";
   private readonly attributes = new Map<string, string>();
-  constructor(readonly tagName: string) {}
-  addEventListener(): void {}
+  constructor(readonly tagName: string) { super(); }
   append(...nodes: FakeElement[]): void { this.children.push(...nodes); }
   replaceChildren(...nodes: FakeElement[]): void { this.children.length = 0; this.children.push(...nodes); }
   setAttribute(name: string, value: string): void { this.attributes.set(name, value); }

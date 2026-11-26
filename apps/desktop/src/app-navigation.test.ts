@@ -1,18 +1,16 @@
 import { describe, expect, it, vi } from "vitest";
-import { AppNavigation, type AppView } from "./app-navigation";
+import { AppNavigation, type AppView, type LibraryView } from "./app-navigation";
 import type { EngineState } from "./engine";
 import { GraphStartup } from "./graph-startup";
 
-const VIEWS: readonly AppView[] = [
-  "report", "paths", "graph", "requirements", "library", "weaknesses", "sdl",
-];
+const VIEWS: readonly AppView[] = ["report", "paths", "graph", "library"];
 
 describe("application navigation", () => {
   it("defaults to the model report and initializes each view only when selected", () => {
     const harness = navigationHarness("");
     harness.navigation.start();
     expect(harness.panel("report").hidden).toBe(false);
-    for (const view of ["paths", "graph", "requirements", "library", "weaknesses", "sdl"] as const) {
+    for (const view of VIEWS.slice(1)) {
       expect(harness.panel(view).hidden).toBe(true);
       expect(harness.activated(view)).not.toHaveBeenCalled();
     }
@@ -29,43 +27,29 @@ describe("application navigation", () => {
     harness.button("graph").click();
     expect(harness.activated("graph")).toHaveBeenCalledTimes(2);
     expect(harness.activated("library")).toHaveBeenCalledTimes(1);
-
-    harness.button("sdl").click();
-    expect(harness.panel("sdl").hidden).toBe(false);
-    expect(harness.panel("library").hidden).toBe(true);
-    expect(harness.activated("sdl")).toHaveBeenCalledTimes(1);
-    expect(harness.location.hash).toBe("#sdl");
-
-    harness.button("graph").click();
-    harness.button("sdl").click();
-    expect(harness.activated("sdl")).toHaveBeenCalledTimes(2);
   });
 
-  it("starts in the view the URL hash names, and in the report for an unknown hash", () => {
+  it.each([
+    ["#library", "records"],
+    ["#weaknesses", "weaknesses"],
+    ["#requirements", "requirements"],
+    ["#sdl", "sdl"],
+  ] as const)("opens deep link %s inside Library", (hash, view) => {
+    const harness = navigationHarness(hash);
+    harness.navigation.start();
+    expect(harness.panel("library").hidden).toBe(false);
+    expect(harness.panel("report").hidden).toBe(true);
+    expect(harness.button("library").getAttribute("aria-selected")).toBe("true");
+    expect(harness.navigation.currentView).toBe("library");
+    expect(harness.navigation.currentLibraryView).toBe(view);
+    expect(harness.activated("library")).toHaveBeenCalledExactlyOnceWith(view);
+    expect(harness.location.hash).toBe(hash);
+  });
+
+  it("starts on the graph for its hash and falls back to the report for unknown hashes", () => {
     const graph = navigationHarness("#graph");
     graph.navigation.start();
     expect(graph.panel("graph").hidden).toBe(false);
-    expect(graph.panel("report").hidden).toBe(true);
-    expect(graph.activated("graph")).toHaveBeenCalledTimes(1);
-    expect(graph.button("graph").getAttribute("aria-selected")).toBe("true");
-
-    const library = navigationHarness("#library");
-    library.navigation.start();
-    expect(library.panel("library").hidden).toBe(false);
-
-    const weaknesses = navigationHarness("#weaknesses");
-    weaknesses.navigation.start();
-    expect(weaknesses.panel("weaknesses").hidden).toBe(false);
-
-    const requirements = navigationHarness("#requirements");
-    requirements.navigation.start();
-    expect(requirements.panel("requirements").hidden).toBe(false);
-
-    const sdl = navigationHarness("#sdl");
-    sdl.navigation.start();
-    expect(sdl.panel("sdl").hidden).toBe(false);
-    expect(sdl.button("sdl").getAttribute("aria-selected")).toBe("true");
-    expect(sdl.navigation.currentView).toBe("sdl");
 
     const unknown = navigationHarness("#report-components");
     unknown.navigation.start();
@@ -94,59 +78,47 @@ describe("application navigation", () => {
     expect(harness.panel("paths").hidden).toBe(false);
 
     harness.button("paths").keydown("End");
-    expect(harness.button("sdl").focused).toBe(true);
-    expect(harness.panel("sdl").hidden).toBe(false);
-
-    harness.button("graph").keydown("ArrowRight");
-    expect(harness.button("requirements").focused).toBe(true);
-
-    harness.button("requirements").keydown("ArrowRight");
     expect(harness.button("library").focused).toBe(true);
+    expect(harness.panel("library").hidden).toBe(false);
 
     harness.button("library").keydown("ArrowRight");
-    expect(harness.button("weaknesses").focused).toBe(true);
-
-    harness.button("weaknesses").keydown("ArrowRight");
-    expect(harness.button("sdl").focused).toBe(true);
-
-    harness.button("sdl").keydown("ArrowRight");
     expect(harness.button("report").focused).toBe(true);
     expect(harness.panel("report").hidden).toBe(false);
 
     harness.button("report").keydown("ArrowLeft");
-    expect(harness.button("sdl").focused).toBe(true);
-
-    harness.button("sdl").keydown("Home");
+    expect(harness.button("library").focused).toBe(true);
+    harness.button("library").keydown("Home");
     expect(harness.button("report").focused).toBe(true);
     expect(harness.panel("report").hidden).toBe(false);
   });
 
-  it("synchronizes Back and Forward hash changes without writing another hash", () => {
+  it("updates history on Library switches and restores the correct view on Back and Forward", () => {
     const harness = navigationHarness("#library");
     harness.navigation.start();
-    harness.button("graph").click();
-    harness.button("library").click();
-
-    harness.hashEvents.navigate("#graph");
-    expect(harness.panel("graph").hidden).toBe(false);
-    expect(harness.button("graph").getAttribute("aria-selected")).toBe("true");
-    expect(harness.location.hash).toBe("#graph");
-    expect(harness.activated("graph")).toHaveBeenCalledTimes(2);
-
-    harness.hashEvents.navigate("#graph");
-    expect(harness.activated("graph")).toHaveBeenCalledTimes(2);
-
-    harness.hashEvents.navigate("#library");
-    expect(harness.panel("library").hidden).toBe(false);
-    expect(harness.location.hash).toBe("#library");
-    expect(harness.activated("library")).toHaveBeenCalledTimes(3);
-
-    harness.hashEvents.navigate("#sdl");
-    expect(harness.panel("sdl").hidden).toBe(false);
+    harness.navigation.activateLibrary("weaknesses");
+    expect(harness.location.hash).toBe("#weaknesses");
+    harness.navigation.activateLibrary("requirements");
+    expect(harness.location.hash).toBe("#requirements");
+    harness.navigation.activateLibrary("sdl");
     expect(harness.location.hash).toBe("#sdl");
+    expect(harness.button("library").getAttribute("aria-selected")).toBe("true");
 
+    harness.hashEvents.navigate("#requirements");
+    harness.hashEvents.navigate("#weaknesses");
+    expect(harness.navigation.currentLibraryView).toBe("weaknesses");
+    harness.hashEvents.navigate("#requirements");
     harness.hashEvents.navigate("#sdl");
-    expect(harness.activated("sdl")).toHaveBeenCalledTimes(1);
+    harness.hashEvents.navigate("#sdl");
+    expect(harness.activated("library").mock.calls.flat()).toEqual([
+      "records", "weaknesses", "requirements", "sdl", "requirements", "weaknesses", "requirements", "sdl",
+    ]);
+
+    harness.button("graph").click();
+    expect(harness.navigation.currentLibraryView).toBeUndefined();
+    expect(harness.panel("library").hidden).toBe(true);
+    harness.button("library").click();
+    expect(harness.navigation.currentLibraryView).toBe("records");
+    expect(harness.location.hash).toBe("#library");
   });
 
   it("starts the graph only once and resizes it across repeated view switches", async () => {
@@ -165,7 +137,7 @@ describe("application navigation", () => {
     await settle();
     harness.button("library").click();
     harness.button("graph").click();
-    harness.button("sdl").click();
+    harness.navigation.activateLibrary("sdl");
     harness.button("graph").click();
 
     expect(start).toHaveBeenCalledTimes(1);
@@ -211,8 +183,8 @@ function navigationHarness(
     view: entry.view,
     button: entry.button as unknown as HTMLButtonElement,
     panel: entry.panel,
-    activated: () => {
-      entry.spy();
+    activated: (libraryView: LibraryView) => {
+      entry.spy(libraryView);
       overrides[entry.view]?.();
     },
   })), location as Location, hashEvents);
