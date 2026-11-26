@@ -136,7 +136,7 @@ export function buildRequirementCatalog(
   catalogSource?: Omit<RequirementCatalogSource, "count">,
 ): RequirementCatalog {
   const nodes = new Map(graph.nodes.map((node) => [node.id, node]));
-  const products = graph.nodes.filter((node) => node.domain_type === "Product")
+  const products = [...nodes.values()].filter((node) => node.domain_type === "Product")
     .map((node) => ({ id: node.id, name: node.label }))
     .sort((left, right) => left.name.localeCompare(right.name) || left.id.localeCompare(right.id));
   const established = graph.edges.filter((edge) => (

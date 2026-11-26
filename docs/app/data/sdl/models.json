@@ -1,0 +1,13 @@
+{
+  "models": [
+    {
+      "file": "sdl-01-tmodel-desktop.yaml",
+      "programs": [
+        {
+          "id": "security-program:tmodel-sdl",
+          "name": "tmodel SDL (rev 0, draft)"
+        }
+      ]
+    }
+  ]
+}
