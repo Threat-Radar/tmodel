@@ -1,8 +1,8 @@
 """The Oxigraph adapter: the working store ADR-0008 chose, behind the façade (#65).
 
-Only this module knows the store is RDF. Ids become IRIs under one base that is
-private to the store, so changing the base never changes an id; exports (#53) choose
-their own vocabulary.
+Only this module knows the store is RDF. Ids become IRIs under one base, so changing
+the base never changes an id. The RDF exports (`engine.store.export`) are written
+from this module, with the same IRIs, and an id is the IRI's last part, decoded.
 
 - A node is a subject in its source's named graph, with `rdf:type` and one literal
   per property.
@@ -16,6 +16,12 @@ A graph is replaced in two steps: its digest and contents are removed, then the 
 contents and digest are added in one transaction. A run that stops in between leaves
 a graph with no digest, which `load` rebuilds and which is cleared when the store
 is next opened.
+
+JSON-LD cannot carry an RDF 1.2 triple term yet, so in a JSON-LD export each edge's
+reifier is written as a classic `rdf:Statement` (`rdf:subject`, `rdf:predicate`,
+`rdf:object`) with the same IRI and properties: the reified form ADR-0004 allows.
+Turtle and TriG can be written that way too (`rdf12=False`), for readers that predate
+RDF 1.2.
 """
 
 from __future__ import annotations
@@ -26,7 +32,7 @@ from pathlib import Path
 from types import MappingProxyType
 from urllib.parse import quote, unquote
 
-from pyoxigraph import DefaultGraph, Literal, NamedNode, Quad, Store, Triple
+from pyoxigraph import DefaultGraph, Literal, NamedNode, Quad, RdfFormat, Store, Triple
 
 from .facade import Edge, Node, StoreError, Value
 
@@ -40,11 +46,26 @@ _RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 _XSD = "http://www.w3.org/2001/XMLSchema#"
 _RDF_TYPE = NamedNode(_RDF + "type")
 _REIFIES = NamedNode(_RDF + "reifies")
+_STATEMENT, _SUBJECT, _PREDICATE, _OBJECT = (
+    NamedNode(_RDF + t) for t in ("Statement", "subject", "predicate", "object")
+)
 _JSON = NamedNode(_RDF + "JSON")
 _STRING, _BOOLEAN, _INTEGER, _DOUBLE = (
     NamedNode(_XSD + t) for t in ("string", "boolean", "integer", "double")
 )
 _SAFE = ":@!$&'()*+,;=/"  # kept as written; everything else is percent-encoded
+# Short names for the store's namespaces in Turtle, TriG and JSON-LD.
+PREFIXES = {
+    "tm": BASE,
+    "id": _ID,
+    "type": _TYPE,
+    "prop": _PROP,
+    "edge": _EDGE,
+    "graph": _GRAPH,
+    "rdf": _RDF,
+    "xsd": _XSD,
+}
+EXPORT_FORMATS = {"turtle": RdfFormat.TURTLE, "trig": RdfFormat.TRIG, "jsonld": RdfFormat.JSON_LD}
 
 
 def _iri(namespace: str, name: str) -> NamedNode:
@@ -118,23 +139,33 @@ class OxigraphAdapter:
     def graphs(self) -> list[str]:
         return [name for g, _ in self._digests() if (name := _decode(_GRAPH, g)) is not None]
 
+    @classmethod
+    def from_export(
+        cls, data: bytes, format: str, *, graph: str | None = None, digest: str | None = None
+    ) -> OxigraphAdapter:
+        """A store in memory holding what `dump` wrote, to check that nothing was lost.
+
+        A Turtle export holds one graph and no digest, so give both.
+        """
+        adapter, read = cls(), Store()
+        rdf = EXPORT_FORMATS[format]
+        if format == "turtle":
+            if graph is None or digest is None:
+                raise StoreError("a Turtle export holds one graph: give its graph and digest")
+            g = _iri(_GRAPH, graph)
+            read.load(data, format=rdf, to_graph=g)
+            read.add(Quad(g, _DIGEST, Literal(digest), DefaultGraph()))
+        else:
+            read.load(data, format=rdf)
+        adapter._store.extend(_reifiers(list(read)))  # either way of writing an edge
+        return adapter
+
     def replace(
         self, graph: str, digest: str, nodes: Sequence[Node], edges: Sequence[Edge]
     ) -> None:
-        g = _iri(_GRAPH, graph)
         self.drop(graph)
-        quads = [Quad(g, _DIGEST, Literal(digest), DefaultGraph())]
-        for node in nodes:
-            subject = _iri(_ID, node.id)
-            quads.append(Quad(subject, _RDF_TYPE, _iri(_TYPE, node.type), g))
-            quads.extend(_props(subject, node.properties, g))
-        for edge in edges:
-            fact = Triple(_iri(_ID, edge.source), _iri(_EDGE, edge.type), _iri(_ID, edge.target))
-            reifier = _iri(_ID, edge.id)
-            quads.append(Quad(fact.subject, fact.predicate, fact.object, g))
-            quads.append(Quad(reifier, _REIFIES, fact, g))
-            quads.extend(_props(reifier, edge.properties, g))
-        self._store.extend(quads)  # one transaction: all of it, digest included, or none
+        # One transaction: all of it, digest included, or none.
+        self._store.extend(_quads(graph, digest, nodes, edges))
 
     def drop(self, graph: str) -> None:
         g = _iri(_GRAPH, graph)
@@ -188,3 +219,88 @@ class OxigraphAdapter:
 def _props(subject: NamedNode, properties: Mapping[str, Value], graph: NamedNode) -> Iterator[Quad]:
     for key, value in properties.items():
         yield Quad(subject, _iri(_PROP, key), _literal(value), graph)
+
+
+def _quads(graph: str, digest: str, nodes: Sequence[Node], edges: Sequence[Edge]) -> list[Quad]:
+    """One source's graph as quads, with its digest in the default graph."""
+    g = _iri(_GRAPH, graph)
+    quads = [Quad(g, _DIGEST, Literal(digest), DefaultGraph())]
+    for node in nodes:
+        subject = _iri(_ID, node.id)
+        quads.append(Quad(subject, _RDF_TYPE, _iri(_TYPE, node.type), g))
+        quads.extend(_props(subject, node.properties, g))
+    for edge in edges:
+        fact = Triple(_iri(_ID, edge.source), _iri(_EDGE, edge.type), _iri(_ID, edge.target))
+        reifier = _iri(_ID, edge.id)
+        quads.append(Quad(fact.subject, fact.predicate, fact.object, g))
+        quads.append(Quad(reifier, _REIFIES, fact, g))
+        quads.extend(_props(reifier, edge.properties, g))
+    return quads
+
+
+def dump(
+    sources: Sequence[tuple[str, str, Sequence[Node], Sequence[Edge]]],
+    format: str,
+    *,
+    rdf12: bool = True,
+) -> bytes:
+    """Sources (graph, digest, nodes, edges) as Turtle, TriG or JSON-LD.
+
+    Turtle holds triples only, so it takes exactly one source and leaves its digest
+    out. TriG and JSON-LD keep every graph, and the digests in the default graph.
+    Edges are RDF 1.2 reifiers, or classic rdf:Statements when `rdf12` is false or
+    the format is JSON-LD.
+    """
+    rdf = EXPORT_FORMATS.get(format)
+    if rdf is None:
+        raise StoreError(f"cannot export {format!r}: expected one of {sorted(EXPORT_FORMATS)}")
+    if format == "turtle" and len(sources) != 1:
+        raise StoreError("Turtle holds one graph: export one source, or use TriG for several")
+    out = Store()
+    for graph, digest, nodes, edges in sources:
+        quads = _quads(graph, digest, nodes, edges)
+        if format == "turtle":
+            quads = [q for q in quads if q.predicate != _DIGEST]
+        out.extend(_statements(quads) if format == "jsonld" or not rdf12 else quads)
+    if format == "turtle":
+        return out.dump(format=rdf, from_graph=_iri(_GRAPH, sources[0][0]), prefixes=PREFIXES)
+    return out.dump(format=rdf, prefixes=PREFIXES)
+
+
+def _statements(quads: Sequence[Quad]) -> list[Quad]:
+    """Each `rdf:reifies` triple term as a classic rdf:Statement, for JSON-LD."""
+    out = []
+    for q in quads:
+        if q.predicate == _REIFIES and isinstance(q.object, Triple):
+            fact = q.object
+            out += [
+                Quad(q.subject, _RDF_TYPE, _STATEMENT, q.graph_name),
+                Quad(q.subject, _SUBJECT, fact.subject, q.graph_name),
+                Quad(q.subject, _PREDICATE, fact.predicate, q.graph_name),
+                Quad(q.subject, _OBJECT, fact.object, q.graph_name),
+            ]
+        else:
+            out.append(q)
+    return out
+
+
+def _reifiers(quads: Sequence[Quad]) -> list[Quad]:
+    """The reverse of `_statements`: each rdf:Statement back to an `rdf:reifies` triple term."""
+    parts: dict[tuple[object, object], dict[str, object]] = {}
+    for q in quads:
+        if q.predicate == _RDF_TYPE and q.object == _STATEMENT:
+            parts.setdefault((q.subject, q.graph_name), {})
+        elif q.predicate in (_SUBJECT, _PREDICATE, _OBJECT):
+            parts.setdefault((q.subject, q.graph_name), {})[q.predicate.value] = q.object
+    out = [
+        q
+        for q in quads
+        if not (q.predicate == _RDF_TYPE and q.object == _STATEMENT)
+        and q.predicate not in (_SUBJECT, _PREDICATE, _OBJECT)
+    ]
+    for (subject, graph), fact in parts.items():
+        ends = (fact.get(_SUBJECT.value), fact.get(_PREDICATE.value), fact.get(_OBJECT.value))
+        if None in ends:
+            raise StoreError(f"{subject}: an rdf:Statement needs a subject, predicate and object")
+        out.append(Quad(subject, _REIFIES, Triple(*ends), graph))
+    return out
