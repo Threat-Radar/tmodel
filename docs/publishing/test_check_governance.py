@@ -77,24 +77,22 @@ def test_an_ai_review_fills_no_role_and_names_its_run(record, model):
 
 
 def test_a_persons_review_of_a_version_fills_a_role_and_names_no_model(record, model):
-    person = by_id(record, "reviews", "review:tcu-tara-v1-owner-example")
+    person = by_id(record, "reviews", "review:tcu-tara-v1-owner")
     del person["reviewer_role"]
     person["agent_model"] = "claude-opus-5-5"
     errors = check_rules(record, model)
     assert (
-        "review:tcu-tara-v1-owner-example: "
+        "review:tcu-tara-v1-owner: "
         "a person's review of a governed version needs reviewer_role" in errors
     )
-    assert (
-        "review:tcu-tara-v1-owner-example: a person's review names no agent model or run" in errors
-    )
+    assert "review:tcu-tara-v1-owner: a person's review names no agent model or run" in errors
 
 
 def test_an_organization_cannot_review(record, model):
     record["parties"].append({"id": "party:oem", "party_kind": "organization"})
-    by_id(record, "reviews", "review:tcu-tara-v1-owner-example")["reviewer"] = "party:oem"
+    by_id(record, "reviews", "review:tcu-tara-v1-owner")["reviewer"] = "party:oem"
     assert (
-        "review:tcu-tara-v1-owner-example: reviewer's party_kind is organization; "
+        "review:tcu-tara-v1-owner: reviewer's party_kind is organization; "
         "a review is by a person or a software agent" in check_rules(record, model)
     )
 
@@ -109,16 +107,14 @@ def test_a_review_of_a_version_needs_an_outcome(record, model):
 
 def test_a_resolved_comment_names_its_fix_and_only_then(record, model):
     by_id(record, "review_comments", "comment:tcu-tara-v1-assets").pop("resolved_by")
-    by_id(record, "review_comments", "comment:tcu-tara-v1-dec-003")["resolved_by"] = (
-        "https://example.invalid/pr/1"
-    )
+    by_id(record, "review_comments", "comment:tcu-tara-v1-dec-003")["comment_status"] = "open"
     errors = check_rules(record, model)
     assert "comment:tcu-tara-v1-assets: resolved, but names no resolved_by" in errors
     assert "comment:tcu-tara-v1-dec-003: has resolved_by but is open" in errors
 
 
 def test_references_resolve_to_the_right_kind(record, model):
-    by_id(record, "reviews", "review:tcu-tara-v1-owner-example")["reviewer"] = "party:nobody"
+    by_id(record, "reviews", "review:tcu-tara-v1-owner")["reviewer"] = "party:nobody"
     by_id(record, "review_comments", "comment:tcu-tara-v1-assets")["comment_on"] = (
         "party:tara-owner"
     )
@@ -126,9 +122,7 @@ def test_references_resolve_to_the_right_kind(record, model):
         "requirement:tcu-approved-tara"
     )
     errors = check_rules(record, model)
-    assert (
-        "review:tcu-tara-v1-owner-example: reviewer 'party:nobody' is not in the record" in errors
-    )
+    assert "review:tcu-tara-v1-owner: reviewer 'party:nobody' is not in the record" in errors
     assert (
         "comment:tcu-tara-v1-assets: comment_on 'party:tara-owner' is a parties item, "
         "not one of reviews, threat_models, governed_views" in errors

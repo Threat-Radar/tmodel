@@ -6,8 +6,8 @@
 # beside the vector, not inside it, so mvp-02 stays core-only.
 #
 # EXAMPLE DATA. mvp-02 is example data, so this record is too: version 1 is a
-# DRAFT, nothing here is an approval, and the published TARA keeps its example-data
-# label. Parties are roles, not people (GitHub ids or roles only, #180).
+# DRAFT until every required role has reviewed it, and the published TARA keeps its
+# example-data label. Parties are roles or GitHub ids, never names (#180).
 #
 # Validate:  python docs/publishing/check_governance.py models/tcu/governance.yaml
 # Schema:    spec/vectors/example-container-governance.linkml.yaml (ExampleModelGovernance),
@@ -34,6 +34,10 @@ parties:
   - id: party:tara-approver
     name: TARA approver (role)
     description: The person who gives final sign-off (DL-0027 decision 2). A role, not a named person.
+    party_kind: person
+  - id: party:maimcghee
+    name: Maimcghee
+    description: A person, by GitHub id, who reviewed version 1 in the owner role.
     party_kind: person
   - id: party:claude-code
     name: Claude Code
@@ -84,16 +88,18 @@ reviews:
       sections and gaps (docs/publishing/tara.yaml). One change requested, logged as
       comment:tcu-tara-v1-dec-003. An AI review: recorded, but it fills no role and
       does not count as approval.
-  - id: review:tcu-tara-v1-owner-example
-    name: Example owner review of TCU TARA version 1
+  - id: review:tcu-tara-v1-owner
+    name: Owner review of TCU TARA version 1
     reviews: threat-model:tcu-tara-v1
-    reviewer: party:tara-owner
+    reviewer: party:maimcghee
     reviewer_role: owner
-    reviewed_at: "2026-11-13T00:00:00Z"
-    review_outcome: comment
+    reviewed_at: "2026-11-26T19:16:30Z"
+    review_outcome: approved
     justification: >-
-      EXAMPLE ENTRY for #180, not a real review: it shows the shape of a person's
-      review. Replace it with the owner's own review before version 1 leaves draft.
+      Approved as owner. The one change the AI review requested
+      (comment:tcu-tara-v1-dec-003) is fixed by #252, and the TARA page's other
+      clause 15 gaps stay listed on the page. The record passes check_governance.py.
+      Version 1 still needs the assessor's and the approver's reviews.
 
 review_comments:
   - id: comment:tcu-tara-v1-assets
@@ -115,7 +121,8 @@ review_comments:
       so the page contradicts the model it renders. #232 corrected the same claim in
       DL-0037 but not on the page.
     comment_on: review:tcu-tara-v1-claude-code
-    comment_status: open
+    comment_status: resolved
+    resolved_by: https://github.com/Threat-Radar/tmodel/pull/252
 
 requirements:
   - id: requirement:tcu-approved-tara
