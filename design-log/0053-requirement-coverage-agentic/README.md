@@ -267,6 +267,37 @@ LinkML environment. Engine lint/format and preview freshness pass (ten models,
 685 library records). Remote CI must pass on the pushed merge commit. The
 existing request for reviewer reassessment remains open.
 
+## Proposed-status review follow-up (2026-11-25)
+
+Addressed the remaining normalization finding in
+[@kriishnaa-18's updated review](https://github.com/Threat-Radar/tmodel/pull/243#pullrequestreview-6069968764).
+The review module now exposes its existing normalization as `normalize_status`;
+coverage uses the same function when selecting recorded proposals. This changes
+neither the authored status nor the effective review verdict. In particular, a
+recorded `" Proposed "` remains a proposal for hypothetical coverage even when a
+person rejected it. A rejection never enters the baseline as an acceptance.
+
+Regression tests cover whitespace, uppercase and mixed-case proposal spellings,
+TARA review-state parity, non-mutation, and the actual O09 sample. Test-only
+product scope lets O09 affect the hypothetical result while its recorded rejection
+continues to exclude it from the baseline. No production applicability is added.
+
+The coverage documentation now distinguishes the 40 sampled decisions from the
+135 unsampled proposals. All 40 sampled Assertion descriptions identify their
+original AI provenance and reference the already recorded human verdict. The
+review packet explicitly labels its quoted rationale as the original pre-review
+proposal. The Requirements, Assertions' identifiers/targets/confidence/status,
+all Party/Review records and every unsampled Assertion are preserved; no new
+human decision is authored.
+
+Validation: 820 engine tests passed, eight opt-in tests skipped; lint/format passed.
+All 13 extraction files pass the extraction rules and reference check (1,663
+objects, 1,518 references). The four edited fragments pass LinkML against
+`ExampleModelCore`. All 121 publishing tests passed. Browser-preview regeneration
+produced no changes because its catalog projection does not expose these proposal
+descriptions. Hosted CI and reviewer reassessment remain pending publication of
+this follow-up.
+
 # Limits
 
 These are source requirements and hypotheses, not validated assessments of a Kia,

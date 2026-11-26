@@ -63,6 +63,10 @@ loading or the graph/proposal permission allowlist.
    acceptances; even a rejected proposal remains hypothetical evidence. Other
    ineffective or unrelated proposals are omitted. `excluded_assertions` names
    relevant non-proposed Assertions that lack the required human acceptance.
+   Recorded statuses use the shared review helper's capitalization/whitespace
+   normalization, so `" Proposed "` is still proposed. The recorded status and
+   effective human verdict are distinct: a rejected-but-still-proposed Assertion
+   remains in the hypothetical calculation and never counts toward the baseline.
 
 Rows and ids are sorted, and querying does not mutate the input. The output
 contains no computed timestamp or local file path. `file` is the input basename.
@@ -80,8 +84,12 @@ not a TCU component. The infotainment-pivot hypothesis remains an unaddressed
 ThreatInstance. `assertion:ai-req-addresses-pivot` appears separately; accepting it
 hypothetically removes that gap without changing the actual result.
 
-The four #170 research fragments are unreviewed source material. They deliberately
-contain neither Product assessments nor inferred family classifications. A human
-must scope applicable provisions and decide proposed links before they can be used
-as accepted product evidence. See the extraction accounting and review sample in
+The four #170 research fragments originated as AI-proposed source extractions.
+Their 40 human sample decisions are recorded: 39 links accepted and O09 rejected;
+the other 135 unsampled links remain proposed. The sampled decisions review the
+specified source mappings, not whole source documents, products or mitigations.
+The fragments deliberately contain neither Product assessments nor inferred
+family classifications. A human must still determine product applicability and
+review remaining proposed links before using them as accepted product evidence.
+See the extraction accounting and review sample in
 `research/0017-requirements-extraction/agentic-coverage.md`.

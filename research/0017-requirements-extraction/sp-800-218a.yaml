@@ -715,7 +715,7 @@ assertions:
   object: threat-instance:sp-800-218a-resource-exhaustion
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PO.5.1 Recommendations/Considerations/Notes,
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Table 1 (§3), PO.5.1 Recommendations/Considerations/Notes,
     R1, p. 10; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.'
 - id: assertion:sp-800-218a-po-5-1-r6-addresses-sp-800-218a-disclosure
   subject: requirement:sp-800-218a-po-5-1-r6
@@ -723,7 +723,7 @@ assertions:
   object: threat-instance:sp-800-218a-disclosure
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PO.5.1 Recommendations/Considerations/Notes,
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Table 1 (§3), PO.5.1 Recommendations/Considerations/Notes,
     R6, p. 11; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.'
 - id: assertion:sp-800-218a-ps-1-1-r2-addresses-sp-800-218a-weight-theft
   subject: requirement:sp-800-218a-ps-1-1-r2
@@ -731,7 +731,7 @@ assertions:
   object: threat-instance:sp-800-218a-weight-theft
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PS.1.1 Recommendations/Considerations/Notes,
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Table 1 (§3), PS.1.1 Recommendations/Considerations/Notes,
     R2, p. 11; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.'
 - id: assertion:sp-800-218a-ps-1-3-r3-addresses-sp-800-218a-weight-theft
   subject: requirement:sp-800-218a-ps-1-3-r3
@@ -747,7 +747,7 @@ assertions:
   object: threat-instance:sp-800-218a-weight-theft
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PS.1.3 Recommendations/Considerations/Notes,
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Table 1 (§3), PS.1.3 Recommendations/Considerations/Notes,
     R4, p. 12; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.'
 - id: assertion:sp-800-218a-pw-3-1-addresses-sp-800-218a-poisoning
   subject: requirement:sp-800-218a-pw-3-1
@@ -755,7 +755,7 @@ assertions:
   object: threat-instance:sp-800-218a-poisoning
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PW.3.1, p. 14; safeguard
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Table 1 (§3), PW.3.1, p. 14; safeguard
     targets the named risk enumerated at Table 1, PW.1.1.R1.'
 - id: assertion:sp-800-218a-pw-3-1-r1-addresses-sp-800-218a-poisoning
   subject: requirement:sp-800-218a-pw-3-1-r1
@@ -763,7 +763,7 @@ assertions:
   object: threat-instance:sp-800-218a-poisoning
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PW.3.1 Recommendations/Considerations/Notes,
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Table 1 (§3), PW.3.1 Recommendations/Considerations/Notes,
     R1, p. 14; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.'
 - id: assertion:sp-800-218a-pw-3-1-r2-addresses-sp-800-218a-poisoning
   subject: requirement:sp-800-218a-pw-3-1-r2
@@ -771,7 +771,7 @@ assertions:
   object: threat-instance:sp-800-218a-poisoning
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PW.3.1 Recommendations/Considerations/Notes,
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Table 1 (§3), PW.3.1 Recommendations/Considerations/Notes,
     R2, p. 15; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.'
 - id: assertion:sp-800-218a-pw-4-4-r1-addresses-sp-800-218a-supply-chain
   subject: requirement:sp-800-218a-pw-4-4-r1
@@ -787,7 +787,7 @@ assertions:
   object: threat-instance:sp-800-218a-supply-chain
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PW.4.4 Recommendations/Considerations/Notes,
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Table 1 (§3), PW.4.4 Recommendations/Considerations/Notes,
     R2, p. 16; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.'
 - id: assertion:sp-800-218a-pw-5-1-r2-addresses-sp-800-218a-injected-content
   subject: requirement:sp-800-218a-pw-5-1-r2
@@ -795,7 +795,7 @@ assertions:
   object: threat-instance:sp-800-218a-injected-content
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PW.5.1 Recommendations/Considerations/Notes,
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Table 1 (§3), PW.5.1 Recommendations/Considerations/Notes,
     R2, p. 16; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.'
 - id: assertion:sp-800-218a-pw-5-1-r3-addresses-sp-800-218a-injected-content
   subject: requirement:sp-800-218a-pw-5-1-r3
@@ -803,7 +803,7 @@ assertions:
   object: threat-instance:sp-800-218a-injected-content
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PW.5.1 Recommendations/Considerations/Notes,
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Table 1 (§3), PW.5.1 Recommendations/Considerations/Notes,
     R3, p. 16; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.'
 reviews:
 - id: review:paria03-sp-800-218a-po-5-1-r1

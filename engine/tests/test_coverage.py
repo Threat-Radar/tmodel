@@ -3,17 +3,21 @@
 import copy
 import json
 import threading
+from pathlib import Path
 from urllib.error import HTTPError
 from urllib.parse import urlencode
 from urllib.request import urlopen
 
 import pytest
+import yaml
 
 from engine import cli, core
 from engine.api.server import make_server
 from engine.coverage import collect
 from engine.graph import GraphError
 from engine.load.vector import load_vector_document
+from engine.risk import MATRIX_ID
+from engine.tara import collect_document
 
 FILE = "mvp-02-automotive-ecu.yaml"
 PRODUCT = "product:telematics-control-unit"
@@ -126,6 +130,48 @@ def test_normalized_person_acceptance_matches_tara_review_rule(doc):
     assertion["assertion_status"] = " Accepted "
     doc["reviews"][-1]["review_status"] = " ACCEPTED "
     assert collect(doc, PRODUCT) == expected
+
+
+@pytest.mark.parametrize(
+    "status", ["proposed", " Proposed ", "PROPOSED", "pRoPoSeD", "\tProposed\n"]
+)
+def test_proposed_status_normalization_preserves_hypothetical_coverage(doc, status):
+    expected = collect(doc, PRODUCT)
+    assertion = next(a for a in doc["assertions"] if a["id"] == "assertion:ai-req-addresses-pivot")
+    assertion["assertion_status"] = status
+    before = copy.deepcopy(doc)
+    assert collect(doc, PRODUCT) == expected
+    exported = collect_document(doc, matrix=MATRIX_ID)
+    state = next(a for a in exported["records"]["assertions"] if a["id"] == assertion["id"])
+    assert state["review_state"]["status"] == "proposed"
+    assert doc == before
+
+
+@pytest.mark.parametrize("status", ["proposed", " Proposed ", "PROPOSED"])
+def test_rejected_o09_stays_proposed_for_hypotheticals_only(status):
+    source = Path(__file__).resolve().parents[2] / "research/0017-requirements-extraction"
+    doc = yaml.safe_load((source / "owasp-agentic-threats-mitigations-v1-1.yaml").read_text())
+    rejected = next(r for r in doc["reviews"] if r["review_status"] == "rejected")
+    assertion = next(a for a in doc["assertions"] if a["id"] == rejected["reviews"])
+    assert assertion["subject"].endswith("playbook-6-step-1-bullet-8")  # Actual O09 sample.
+    doc["products"] = [{"id": PRODUCT}]
+    requirement = next(r for r in doc["requirements"] if r["id"] == assertion["subject"])
+    requirement["applies_to"] = [PRODUCT]  # Test-only scope; no authored fragment is edited.
+    expected = collect(doc, PRODUCT)
+    assertion["assertion_status"] = status
+    before = copy.deepcopy(doc)
+    result = collect(doc, PRODUCT)
+    assert result == expected
+    assert assertion["object"] in result["unaddressed_threats"]
+    assert assertion["object"] not in result["if_all_proposed_accepted"]["unaddressed_threats"]
+    proposal = next(a for a in result["proposed_assertions"] if a["id"] == assertion["id"])
+    assert proposal["review_ids"] == [rejected["id"]]
+    assert assertion["id"] not in result["excluded_assertions"]
+    exported = collect_document(doc, matrix=MATRIX_ID)
+    state = next(a for a in exported["records"]["assertions"] if a["id"] == assertion["id"])
+    assert state["review_state"]["status"] == "rejected"
+    assert not state["review_state"]["reviewed"]
+    assert doc == before
 
 
 def test_accepted_scope_and_satisfaction_assertions(doc):

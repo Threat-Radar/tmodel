@@ -334,7 +334,7 @@ assertions:
   object: threat-instance:mcp-spec-security-best-practices-confused-deputy-problem
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Confused Deputy Problem > Mitigation;
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Confused Deputy Problem > Mitigation;
     control appears in the named attack section, so the link is proposed at that section scope.'
 - id: assertion:mcp-spec-security-best-practices-confused-deputy-problem-required-protections-per-client-consent-storage-consent-registry-addresses-mcp-spec-security-best-practices-confused-deputy-problem
   subject: requirement:mcp-spec-security-best-practices-confused-deputy-problem-required-protections-per-client-consent-storage-consent-registry
@@ -369,7 +369,7 @@ assertions:
   object: threat-instance:mcp-spec-security-best-practices-confused-deputy-problem
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Confused Deputy Problem > Required Protections
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Confused Deputy Problem > Required Protections
     > Redirect URI Validation; control appears in the named attack section, so the link is proposed
     at that section scope.'
 - id: assertion:mcp-spec-security-best-practices-confused-deputy-problem-required-protections-oauth-state-parameter-validation-oauth-state-addresses-mcp-spec-security-best-practices-confused-deputy-problem
@@ -396,7 +396,7 @@ assertions:
   object: threat-instance:mcp-spec-security-best-practices-token-passthrough
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Token Passthrough > Mitigation; control
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Token Passthrough > Mitigation; control
     appears in the named attack section, so the link is proposed at that section scope.'
 - id: assertion:mcp-spec-security-best-practices-server-side-request-forgery-ssrf-mitigation-ssrf-protection-addresses-mcp-spec-security-best-practices-server-side-request-forgery-ssrf
   subject: requirement:mcp-spec-security-best-practices-server-side-request-forgery-ssrf-mitigation-ssrf-protection
@@ -431,7 +431,7 @@ assertions:
   object: threat-instance:mcp-spec-security-best-practices-server-side-request-forgery-ssrf
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Server-Side Request Forgery (SSRF) >
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Server-Side Request Forgery (SSRF) >
     Mitigation > Validate Redirect Targets; control appears in the named attack section, so the link
     is proposed at that section scope.'
 - id: assertion:mcp-spec-security-best-practices-server-side-request-forgery-ssrf-mitigation-use-egress-proxies-egress-proxy-addresses-mcp-spec-security-best-practices-server-side-request-forgery-ssrf
@@ -465,7 +465,7 @@ assertions:
   object: threat-instance:mcp-spec-security-best-practices-session-hijacking
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Session Hijacking > Mitigation; control
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Session Hijacking > Mitigation; control
     appears in the named attack section, so the link is proposed at that section scope.'
 - id: assertion:mcp-spec-security-best-practices-session-hijacking-mitigation-random-session-id-addresses-mcp-spec-security-best-practices-session-hijacking
   subject: requirement:mcp-spec-security-best-practices-session-hijacking-mitigation-random-session-id
@@ -489,7 +489,7 @@ assertions:
   object: threat-instance:mcp-spec-security-best-practices-local-mcp-server-compromise
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Local MCP Server Compromise > Mitigation;
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Local MCP Server Compromise > Mitigation;
     control appears in the named attack section, so the link is proposed at that section scope.'
 - id: assertion:mcp-spec-security-best-practices-local-mcp-server-compromise-mitigation-pre-configuration-consent-command-consent-ui-addresses-mcp-spec-security-best-practices-local-mcp-server-compromise
   subject: requirement:mcp-spec-security-best-practices-local-mcp-server-compromise-mitigation-pre-configuration-consent-command-consent-ui
@@ -523,7 +523,7 @@ assertions:
   object: threat-instance:mcp-spec-security-best-practices-oauth-authorization-url-validation
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: OAuth Authorization URL Validation >
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: OAuth Authorization URL Validation >
     Mitigation > URL Scheme Validation; control appears in the named attack section, so the link
     is proposed at that section scope.'
 - id: assertion:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-url-scheme-validation-scheme-allowlist-addresses-mcp-spec-security-best-practices-oauth-authorization-url-validation
@@ -559,7 +559,7 @@ assertions:
   object: threat-instance:mcp-spec-security-best-practices-oauth-authorization-url-validation
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: OAuth Authorization URL Validation >
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: OAuth Authorization URL Validation >
     Mitigation > URL Scheme Validation; control appears in the named attack section, so the link
     is proposed at that section scope.'
 - id: assertion:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-secure-url-opening-avoid-shell-addresses-mcp-spec-security-best-practices-oauth-authorization-url-validation
@@ -586,7 +586,7 @@ assertions:
   object: threat-instance:mcp-spec-security-best-practices-oauth-authorization-url-validation
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: OAuth Authorization URL Validation >
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: OAuth Authorization URL Validation >
     Mitigation > Secure URL Opening; control appears in the named attack section, so the link is
     proposed at that section scope.'
 - id: assertion:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-content-security-policy-csp-web-csp-addresses-mcp-spec-security-best-practices-oauth-authorization-url-validation
@@ -622,7 +622,7 @@ assertions:
   object: threat-instance:mcp-spec-security-best-practices-stdio-transport-security-in-proxy-scenarios
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: stdio Transport Security in Proxy Scenarios
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: stdio Transport Security in Proxy Scenarios
     > Mitigation > Client-Side Protections; control appears in the named attack section, so the link
     is proposed at that section scope.'
 reviews:

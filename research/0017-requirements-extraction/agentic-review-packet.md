@@ -1,6 +1,6 @@
 # Human review packet for #170
 
-Owner: @paria03. **39 accepted; 1 rejected; 0 pending.** This packet expands the exact targets in [the sample](agentic-review-sample.md). Completed cards mirror the actual Reviews recorded in the extraction YAML.
+Owner: @paria03. **39 accepted; 1 rejected; 0 pending.** This packet expands the exact targets in [the sample](agentic-review-sample.md). Completed cards mirror the actual Reviews recorded in the extraction YAML. Each original rationale retains its pre-review wording; the decision and linked Review give the current human verdict.
 
 For each card, open the source at the stated locator, check that the proposed Requirement is a fair paraphrase (including its strength), then decide whether it addresses the named threat. The mapping rationale is an automated proposal, not a source quotation or a human judgment. Accepting a link does not approve a product, verify a mitigation or certify a standard.
 
@@ -24,7 +24,7 @@ Scope check: the seven authored layer controls instantiate one general umbrella 
 
 **Source reference:** `library:csa-maestro-2025#layer-1-foundation-models`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: §3.2 A, Layer 1: Foundation Models; §3.2 C, Layer-Specific Mitigations; layer-specific umbrella advice instantiated for this named threat, not a source-prescribed concrete control.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: §3.2 A, Layer 1: Foundation Models; §3.2 C, Layer-Specific Mitigations; layer-specific umbrella advice instantiated for this named threat, not a source-prescribed concrete control.
 
 **Assertion:** `assertion:csa-maestro-2025-layer-1-foundation-models-addresses-csa-maestro-2025-layer-1-adversarial-examples`
 
@@ -44,7 +44,7 @@ Scope check: the seven authored layer controls instantiate one general umbrella 
 
 **Source reference:** `library:csa-maestro-2025#layer-4-deployment-and-infrastructure`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: §3.2 A, Layer 4: Deployment and Infrastructure; §3.2 C, Layer-Specific Mitigations; layer-specific umbrella advice instantiated for this named threat, not a source-prescribed concrete control.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: §3.2 A, Layer 4: Deployment and Infrastructure; §3.2 C, Layer-Specific Mitigations; layer-specific umbrella advice instantiated for this named threat, not a source-prescribed concrete control.
 
 **Assertion:** `assertion:csa-maestro-2025-layer-4-deployment-and-infrastructure-addresses-csa-maestro-2025-layer-4-compromised-container-images`
 
@@ -64,7 +64,7 @@ Scope check: the seven authored layer controls instantiate one general umbrella 
 
 **Source reference:** `library:csa-maestro-2025#layer-6-security-and-compliance`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: §3.2 A, Layer 6: Security and Compliance; §3.2 C, Layer-Specific Mitigations; layer-specific umbrella advice instantiated for this named threat, not a source-prescribed concrete control.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: §3.2 A, Layer 6: Security and Compliance; §3.2 C, Layer-Specific Mitigations; layer-specific umbrella advice instantiated for this named threat, not a source-prescribed concrete control.
 
 **Assertion:** `assertion:csa-maestro-2025-layer-6-security-and-compliance-addresses-csa-maestro-2025-layer-6-compromised-security-ai-agents`
 
@@ -84,7 +84,7 @@ Scope check: the seven authored layer controls instantiate one general umbrella 
 
 **Source reference:** `library:csa-maestro-2025#secure-inter-layer-communication`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: §3.2 C, Mitigation Strategies > Secure Inter-Layer Communication; proposed relationship to the named threat at §3.2 B. Cross-Layer Threats, not an explicit source crosswalk.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: §3.2 C, Mitigation Strategies > Secure Inter-Layer Communication; proposed relationship to the named threat at §3.2 B. Cross-Layer Threats, not an explicit source crosswalk.
 
 **Assertion:** `assertion:csa-maestro-2025-secure-inter-layer-communication-addresses-csa-maestro-2025-lateral-movement`
 
@@ -102,7 +102,7 @@ Scope check: the seven authored layer controls instantiate one general umbrella 
 
 **Source reference:** `library:csa-maestro-2025#incident-response-plan`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: §3.2 C, Mitigation Strategies > Incident Response Plan; proposed relationship to the named threat at §3.2 B. Cross-Layer Threats, not an explicit source crosswalk.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: §3.2 C, Mitigation Strategies > Incident Response Plan; proposed relationship to the named threat at §3.2 B. Cross-Layer Threats, not an explicit source crosswalk.
 
 **Assertion:** `assertion:csa-maestro-2025-incident-response-plan-addresses-csa-maestro-2025-goal-misalignment-cascades`
 
@@ -120,7 +120,7 @@ Scope check: the seven authored layer controls instantiate one general umbrella 
 
 **Source reference:** `library:csa-maestro-2025#explainable-ai-xai`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: §3.2 C, Mitigation Strategies > Explainable AI (XAI); proposed relationship to the named threat at §3.2 A. Layer 7, not an explicit source crosswalk.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: §3.2 C, Mitigation Strategies > Explainable AI (XAI); proposed relationship to the named threat at §3.2 A. Layer 7, not an explicit source crosswalk.
 
 **Assertion:** `assertion:csa-maestro-2025-explainable-ai-xai-addresses-csa-maestro-2025-repudiation`
 
@@ -138,7 +138,7 @@ Scope check: the seven authored layer controls instantiate one general umbrella 
 
 **Source reference:** `library:csa-maestro-2025#safety-monitoring`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: §3.2 C, Mitigation Strategies > Safety Monitoring; proposed relationship to the named threat at §3.2 A. Layer 7, not an explicit source crosswalk.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: §3.2 C, Mitigation Strategies > Safety Monitoring; proposed relationship to the named threat at §3.2 A. Layer 7, not an explicit source crosswalk.
 
 **Assertion:** `assertion:csa-maestro-2025-safety-monitoring-addresses-csa-maestro-2025-agent-tool-misuse`
 
@@ -156,7 +156,7 @@ Scope check: the seven authored layer controls instantiate one general umbrella 
 
 **Source reference:** `library:csa-maestro-2025#unconstrained-conversational-autonomy`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: §4, Unconstrained Conversational Autonomy > Mitigations; the pattern explicitly pairs this mitigation with the named threat.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: §4, Unconstrained Conversational Autonomy > Mitigations; the pattern explicitly pairs this mitigation with the named threat.
 
 **Assertion:** `assertion:csa-maestro-2025-unconstrained-conversational-autonomy-addresses-csa-maestro-2025-unconstrained-conversational-autonomy-prompt-injection-jailbreaking`
 
@@ -174,7 +174,7 @@ Scope check: the seven authored layer controls instantiate one general umbrella 
 
 **Source reference:** `library:csa-maestro-2025#hierarchical-agent-pattern`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: §4, Hierarchical Agent Pattern > Mitigations; the pattern explicitly pairs this mitigation with the named threat.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: §4, Hierarchical Agent Pattern > Mitigations; the pattern explicitly pairs this mitigation with the named threat.
 
 **Assertion:** `assertion:csa-maestro-2025-hierarchical-agent-pattern-addresses-csa-maestro-2025-hierarchical-agent-pattern-compromise-of-a-higher-level-agent-to-control-subordinates`
 
@@ -192,7 +192,7 @@ Scope check: the seven authored layer controls instantiate one general umbrella 
 
 **Source reference:** `library:csa-maestro-2025#self-learning-and-adaptive-agents`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: §4, Self-Learning and Adaptive Agents > Mitigations; the pattern explicitly pairs this mitigation with the named threat.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: §4, Self-Learning and Adaptive Agents > Mitigations; the pattern explicitly pairs this mitigation with the named threat.
 
 **Assertion:** `assertion:csa-maestro-2025-self-learning-and-adaptive-agents-addresses-csa-maestro-2025-self-learning-and-adaptive-agents-data-poisoning-through-backdoor-trigger-injection`
 
@@ -216,7 +216,7 @@ Strength check: an R recommendation remains recommended; a C consideration asks 
 
 **Source reference:** `library:sp-800-218a#PO.5.1.R1`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PO.5.1 Recommendations/Considerations/Notes, R1, p. 10; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PO.5.1 Recommendations/Considerations/Notes, R1, p. 10; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.
 
 **Assertion:** `assertion:sp-800-218a-po-5-1-r1-addresses-sp-800-218a-resource-exhaustion`
 
@@ -234,7 +234,7 @@ Strength check: an R recommendation remains recommended; a C consideration asks 
 
 **Source reference:** `library:sp-800-218a#PO.5.1.R6`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PO.5.1 Recommendations/Considerations/Notes, R6, p. 11; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PO.5.1 Recommendations/Considerations/Notes, R6, p. 11; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.
 
 **Assertion:** `assertion:sp-800-218a-po-5-1-r6-addresses-sp-800-218a-disclosure`
 
@@ -252,7 +252,7 @@ Strength check: an R recommendation remains recommended; a C consideration asks 
 
 **Source reference:** `library:sp-800-218a#PS.1.1.R2`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PS.1.1 Recommendations/Considerations/Notes, R2, p. 11; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PS.1.1 Recommendations/Considerations/Notes, R2, p. 11; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.
 
 **Assertion:** `assertion:sp-800-218a-ps-1-1-r2-addresses-sp-800-218a-weight-theft`
 
@@ -270,7 +270,7 @@ Strength check: an R recommendation remains recommended; a C consideration asks 
 
 **Source reference:** `library:sp-800-218a#PS.1.3.R4`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PS.1.3 Recommendations/Considerations/Notes, R4, p. 12; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PS.1.3 Recommendations/Considerations/Notes, R4, p. 12; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.
 
 **Assertion:** `assertion:sp-800-218a-ps-1-3-r4-addresses-sp-800-218a-weight-theft`
 
@@ -288,7 +288,7 @@ Strength check: an R recommendation remains recommended; a C consideration asks 
 
 **Source reference:** `library:sp-800-218a#PW.3.1`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PW.3.1, p. 14; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PW.3.1, p. 14; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.
 
 **Assertion:** `assertion:sp-800-218a-pw-3-1-addresses-sp-800-218a-poisoning`
 
@@ -306,7 +306,7 @@ Strength check: an R recommendation remains recommended; a C consideration asks 
 
 **Source reference:** `library:sp-800-218a#PW.3.1.R1`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PW.3.1 Recommendations/Considerations/Notes, R1, p. 14; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PW.3.1 Recommendations/Considerations/Notes, R1, p. 14; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.
 
 **Assertion:** `assertion:sp-800-218a-pw-3-1-r1-addresses-sp-800-218a-poisoning`
 
@@ -324,7 +324,7 @@ Strength check: an R recommendation remains recommended; a C consideration asks 
 
 **Source reference:** `library:sp-800-218a#PW.3.1.R2`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PW.3.1 Recommendations/Considerations/Notes, R2, p. 15; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PW.3.1 Recommendations/Considerations/Notes, R2, p. 15; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.
 
 **Assertion:** `assertion:sp-800-218a-pw-3-1-r2-addresses-sp-800-218a-poisoning`
 
@@ -342,7 +342,7 @@ Strength check: an R recommendation remains recommended; a C consideration asks 
 
 **Source reference:** `library:sp-800-218a#PW.4.4.R2`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PW.4.4 Recommendations/Considerations/Notes, R2, p. 16; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PW.4.4 Recommendations/Considerations/Notes, R2, p. 16; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.
 
 **Assertion:** `assertion:sp-800-218a-pw-4-4-r2-addresses-sp-800-218a-supply-chain`
 
@@ -360,7 +360,7 @@ Strength check: an R recommendation remains recommended; a C consideration asks 
 
 **Source reference:** `library:sp-800-218a#PW.5.1.R2`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PW.5.1 Recommendations/Considerations/Notes, R2, p. 16; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PW.5.1 Recommendations/Considerations/Notes, R2, p. 16; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.
 
 **Assertion:** `assertion:sp-800-218a-pw-5-1-r2-addresses-sp-800-218a-injected-content`
 
@@ -378,7 +378,7 @@ Strength check: an R recommendation remains recommended; a C consideration asks 
 
 **Source reference:** `library:sp-800-218a#PW.5.1.R3`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PW.5.1 Recommendations/Considerations/Notes, R3, p. 16; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PW.5.1 Recommendations/Considerations/Notes, R3, p. 16; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.
 
 **Assertion:** `assertion:sp-800-218a-pw-5-1-r3-addresses-sp-800-218a-injected-content`
 
@@ -402,7 +402,7 @@ Access/version check: locate the December 2025 v1.1 playbook and printed page, n
 
 **Source reference:** `library:owasp-agentic-threats-mitigations-v1-1#playbook-1-step-1-bullet-1`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 1 > Step 1 > top-level bullet 1 (printed p. 35; PDF page 36); Playbook 1 names this threat in its threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 1 > Step 1 > top-level bullet 1 (printed p. 35; PDF page 36); Playbook 1 names this threat in its threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.
 
 **Assertion:** `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-1-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t6`
 
@@ -420,7 +420,7 @@ Access/version check: locate the December 2025 v1.1 playbook and printed page, n
 
 **Source reference:** `library:owasp-agentic-threats-mitigations-v1-1#playbook-2-step-1-bullet-2`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 2 > Step 1 > top-level bullet 2 (printed p. 36; PDF page 37); Playbook 2 names this threat in its threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 2 > Step 1 > top-level bullet 2 (printed p. 36; PDF page 37); Playbook 2 names this threat in its threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.
 
 **Assertion:** `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-2-addresses-owasp-agentic-threats-mitigations-v1-1-t1`
 
@@ -438,7 +438,7 @@ Access/version check: locate the December 2025 v1.1 playbook and printed page, n
 
 **Source reference:** `library:owasp-agentic-threats-mitigations-v1-1#playbook-2-step-2-bullet-5`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 2 > Step 2 > top-level bullet 5 (printed p. 36; PDF page 37); Playbook 2 names this threat in its threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 2 > Step 2 > top-level bullet 5 (printed p. 36; PDF page 37); Playbook 2 names this threat in its threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.
 
 **Assertion:** `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t1`
 
@@ -456,7 +456,7 @@ Access/version check: locate the December 2025 v1.1 playbook and printed page, n
 
 **Source reference:** `library:owasp-agentic-threats-mitigations-v1-1#playbook-3-step-1-bullet-5`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 > Step 1 > top-level bullet 5 (printed p. 38; PDF page 39); Playbook 3 names this threat in its threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 > Step 1 > top-level bullet 5 (printed p. 38; PDF page 39); Playbook 3 names this threat in its threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.
 
 **Assertion:** `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t4`
 
@@ -474,7 +474,7 @@ Access/version check: locate the December 2025 v1.1 playbook and printed page, n
 
 **Source reference:** `library:owasp-agentic-threats-mitigations-v1-1#playbook-3-step-3-bullet-1`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 > Step 3 > top-level bullet 1 (printed p. 38; PDF page 39); Playbook 3 names this threat in its threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 > Step 3 > top-level bullet 1 (printed p. 38; PDF page 39); Playbook 3 names this threat in its threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.
 
 **Assertion:** `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t4`
 
@@ -492,7 +492,7 @@ Access/version check: locate the December 2025 v1.1 playbook and printed page, n
 
 **Source reference:** `library:owasp-agentic-threats-mitigations-v1-1#playbook-4-step-1-bullet-6`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 4 > Step 1 > top-level bullet 6 (printed p. 39; PDF page 40); Playbook 4 names this threat in its threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 4 > Step 1 > top-level bullet 6 (printed p. 39; PDF page 40); Playbook 4 names this threat in its threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.
 
 **Assertion:** `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-6-addresses-owasp-agentic-threats-mitigations-v1-1-t3`
 
@@ -510,7 +510,7 @@ Access/version check: locate the December 2025 v1.1 playbook and printed page, n
 
 **Source reference:** `library:owasp-agentic-threats-mitigations-v1-1#playbook-4-step-3-bullet-5`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 4 > Step 3 > top-level bullet 5 (printed p. 39; PDF page 40); Playbook 4 names this threat in its threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 4 > Step 3 > top-level bullet 5 (printed p. 39; PDF page 40); Playbook 4 names this threat in its threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.
 
 **Assertion:** `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t9`
 
@@ -528,7 +528,7 @@ Access/version check: locate the December 2025 v1.1 playbook and printed page, n
 
 **Source reference:** `library:owasp-agentic-threats-mitigations-v1-1#playbook-5-step-3-bullet-1`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 5 > Step 3 > top-level bullet 1 (printed p. 40; PDF page 41); Playbook 5 names this threat in its threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 5 > Step 3 > top-level bullet 1 (printed p. 40; PDF page 41); Playbook 5 names this threat in its threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.
 
 **Assertion:** `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-3-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t15`
 
@@ -546,7 +546,7 @@ Access/version check: locate the December 2025 v1.1 playbook and printed page, n
 
 **Source reference:** `library:owasp-agentic-threats-mitigations-v1-1#playbook-6-step-1-bullet-8`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 6 > Step 1 > top-level bullet 8 (printed p. 41; PDF page 42); Playbook 6 names this threat in its threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 6 > Step 1 > top-level bullet 8 (printed p. 41; PDF page 42); Playbook 6 names this threat in its threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.
 
 **Assertion:** `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-8-addresses-owasp-agentic-threats-mitigations-v1-1-t12`
 
@@ -564,7 +564,7 @@ Access/version check: locate the December 2025 v1.1 playbook and printed page, n
 
 **Source reference:** `library:owasp-agentic-threats-mitigations-v1-1#playbook-6-step-3-bullet-6`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 6 > Step 3 > top-level bullet 6 (printed p. 42; PDF page 43); Playbook 6 names this threat in its threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 6 > Step 3 > top-level bullet 6 (printed p. 42; PDF page 43); Playbook 6 names this threat in its threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.
 
 **Assertion:** `assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-3-bullet-6-addresses-owasp-agentic-threats-mitigations-v1-1-t12`
 
@@ -588,7 +588,7 @@ Version check: these provisions refer to the recorded dated-page capture. Its di
 
 **Source reference:** `library:mcp-spec-security-best-practices#confused-deputy-problem-mitigation-per-client-consent`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: Confused Deputy Problem > Mitigation; control appears in the named attack section, so the link is proposed at that section scope.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: Confused Deputy Problem > Mitigation; control appears in the named attack section, so the link is proposed at that section scope.
 
 **Assertion:** `assertion:mcp-spec-security-best-practices-confused-deputy-problem-mitigation-per-client-consent-addresses-mcp-spec-security-best-practices-confused-deputy-problem`
 
@@ -606,7 +606,7 @@ Version check: these provisions refer to the recorded dated-page capture. Its di
 
 **Source reference:** `library:mcp-spec-security-best-practices#confused-deputy-problem-required-protections-redirect-uri-validation-redirect-match`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: Confused Deputy Problem > Required Protections > Redirect URI Validation; control appears in the named attack section, so the link is proposed at that section scope.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: Confused Deputy Problem > Required Protections > Redirect URI Validation; control appears in the named attack section, so the link is proposed at that section scope.
 
 **Assertion:** `assertion:mcp-spec-security-best-practices-confused-deputy-problem-required-protections-redirect-uri-validation-redirect-match-addresses-mcp-spec-security-best-practices-confused-deputy-problem`
 
@@ -624,7 +624,7 @@ Version check: these provisions refer to the recorded dated-page capture. Its di
 
 **Source reference:** `library:mcp-spec-security-best-practices#token-passthrough-mitigation-token-audience`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: Token Passthrough > Mitigation; control appears in the named attack section, so the link is proposed at that section scope.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: Token Passthrough > Mitigation; control appears in the named attack section, so the link is proposed at that section scope.
 
 **Assertion:** `assertion:mcp-spec-security-best-practices-token-passthrough-mitigation-token-audience-addresses-mcp-spec-security-best-practices-token-passthrough`
 
@@ -642,7 +642,7 @@ Version check: these provisions refer to the recorded dated-page capture. Its di
 
 **Source reference:** `library:mcp-spec-security-best-practices#server-side-request-forgery-ssrf-mitigation-validate-redirect-targets-redirect-targets`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: Server-Side Request Forgery (SSRF) > Mitigation > Validate Redirect Targets; control appears in the named attack section, so the link is proposed at that section scope.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: Server-Side Request Forgery (SSRF) > Mitigation > Validate Redirect Targets; control appears in the named attack section, so the link is proposed at that section scope.
 
 **Assertion:** `assertion:mcp-spec-security-best-practices-server-side-request-forgery-ssrf-mitigation-validate-redirect-targets-redirect-targets-addresses-mcp-spec-security-best-practices-server-side-request-forgery-ssrf`
 
@@ -660,7 +660,7 @@ Version check: these provisions refer to the recorded dated-page capture. Its di
 
 **Source reference:** `library:mcp-spec-security-best-practices#session-hijacking-mitigation-unpredictable-session-id`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: Session Hijacking > Mitigation; control appears in the named attack section, so the link is proposed at that section scope.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: Session Hijacking > Mitigation; control appears in the named attack section, so the link is proposed at that section scope.
 
 **Assertion:** `assertion:mcp-spec-security-best-practices-session-hijacking-mitigation-unpredictable-session-id-addresses-mcp-spec-security-best-practices-session-hijacking`
 
@@ -678,7 +678,7 @@ Version check: these provisions refer to the recorded dated-page capture. Its di
 
 **Source reference:** `library:mcp-spec-security-best-practices#local-mcp-server-compromise-mitigation-one-click-consent`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: Local MCP Server Compromise > Mitigation; control appears in the named attack section, so the link is proposed at that section scope.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: Local MCP Server Compromise > Mitigation; control appears in the named attack section, so the link is proposed at that section scope.
 
 **Assertion:** `assertion:mcp-spec-security-best-practices-local-mcp-server-compromise-mitigation-one-click-consent-addresses-mcp-spec-security-best-practices-local-mcp-server-compromise`
 
@@ -696,7 +696,7 @@ Version check: these provisions refer to the recorded dated-page capture. Its di
 
 **Source reference:** `library:mcp-spec-security-best-practices#oauth-authorization-url-validation-mitigation-url-scheme-validation-validate-schemes`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: OAuth Authorization URL Validation > Mitigation > URL Scheme Validation; control appears in the named attack section, so the link is proposed at that section scope.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: OAuth Authorization URL Validation > Mitigation > URL Scheme Validation; control appears in the named attack section, so the link is proposed at that section scope.
 
 **Assertion:** `assertion:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-url-scheme-validation-validate-schemes-addresses-mcp-spec-security-best-practices-oauth-authorization-url-validation`
 
@@ -714,7 +714,7 @@ Version check: these provisions refer to the recorded dated-page capture. Its di
 
 **Source reference:** `library:mcp-spec-security-best-practices#oauth-authorization-url-validation-mitigation-url-scheme-validation-prefer-allowlist`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: OAuth Authorization URL Validation > Mitigation > URL Scheme Validation; control appears in the named attack section, so the link is proposed at that section scope.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: OAuth Authorization URL Validation > Mitigation > URL Scheme Validation; control appears in the named attack section, so the link is proposed at that section scope.
 
 **Assertion:** `assertion:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-url-scheme-validation-prefer-allowlist-addresses-mcp-spec-security-best-practices-oauth-authorization-url-validation`
 
@@ -732,7 +732,7 @@ Version check: these provisions refer to the recorded dated-page capture. Its di
 
 **Source reference:** `library:mcp-spec-security-best-practices#oauth-authorization-url-validation-mitigation-secure-url-opening-native-url-opener`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: OAuth Authorization URL Validation > Mitigation > Secure URL Opening; control appears in the named attack section, so the link is proposed at that section scope.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: OAuth Authorization URL Validation > Mitigation > Secure URL Opening; control appears in the named attack section, so the link is proposed at that section scope.
 
 **Assertion:** `assertion:mcp-spec-security-best-practices-oauth-authorization-url-validation-mitigation-secure-url-opening-native-url-opener-addresses-mcp-spec-security-best-practices-oauth-authorization-url-validation`
 
@@ -750,7 +750,7 @@ Version check: these provisions refer to the recorded dated-page capture. Its di
 
 **Source reference:** `library:mcp-spec-security-best-practices#stdio-transport-security-in-proxy-scenarios-mitigation-client-side-protections-proxy-isolation`
 
-**Mapping rationale to check:** AI-proposed, 2026-11-14; unreviewed. Basis: stdio Transport Security in Proxy Scenarios > Mitigation > Client-Side Protections; control appears in the named attack section, so the link is proposed at that section scope.
+**Original AI mapping rationale (before the recorded review):** AI-proposed, 2026-11-14; unreviewed. Basis: stdio Transport Security in Proxy Scenarios > Mitigation > Client-Side Protections; control appears in the named attack section, so the link is proposed at that section scope.
 
 **Assertion:** `assertion:mcp-spec-security-best-practices-stdio-transport-security-in-proxy-scenarios-mitigation-client-side-protections-proxy-isolation-addresses-mcp-spec-security-best-practices-stdio-transport-security-in-proxy-scenarios`
 

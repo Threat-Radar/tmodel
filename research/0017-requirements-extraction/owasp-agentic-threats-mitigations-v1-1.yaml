@@ -1016,9 +1016,9 @@ assertions:
   object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t6
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 1 >
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Mitigation Strategies > Playbook 1 >
     Step 1 > top-level bullet 1 (printed p. 35; PDF page 36); Playbook 1 names this threat in its
-    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+    threat mapping (pp. 34–35); this individual control-to-threat selection originated as an AI interpretation.'
 - id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-1-bullet-2-addresses-owasp-agentic-threats-mitigations-v1-1-t6
   subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-1-bullet-2
   predicate: addresses
@@ -1124,9 +1124,9 @@ assertions:
   object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t1
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 2 >
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Mitigation Strategies > Playbook 2 >
     Step 1 > top-level bullet 2 (printed p. 36; PDF page 37); Playbook 2 names this threat in its
-    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+    threat mapping (pp. 34–35); this individual control-to-threat selection originated as an AI interpretation.'
 - id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-3-addresses-owasp-agentic-threats-mitigations-v1-1-t1
   subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-3
   predicate: addresses
@@ -1223,9 +1223,9 @@ assertions:
   object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t1
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 2 >
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Mitigation Strategies > Playbook 2 >
     Step 2 > top-level bullet 5 (printed p. 36; PDF page 37); Playbook 2 names this threat in its
-    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+    threat mapping (pp. 34–35); this individual control-to-threat selection originated as an AI interpretation.'
 - id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-6-addresses-owasp-agentic-threats-mitigations-v1-1-t1
   subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-6
   predicate: addresses
@@ -1331,9 +1331,9 @@ assertions:
   object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t4
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 >
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Mitigation Strategies > Playbook 3 >
     Step 1 > top-level bullet 5 (printed p. 38; PDF page 39); Playbook 3 names this threat in its
-    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+    threat mapping (pp. 34–35); this individual control-to-threat selection originated as an AI interpretation.'
 - id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-6-addresses-owasp-agentic-threats-mitigations-v1-1-t2
   subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-6
   predicate: addresses
@@ -1430,9 +1430,9 @@ assertions:
   object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t4
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 >
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Mitigation Strategies > Playbook 3 >
     Step 3 > top-level bullet 1 (printed p. 38; PDF page 39); Playbook 3 names this threat in its
-    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+    threat mapping (pp. 34–35); this individual control-to-threat selection originated as an AI interpretation.'
 - id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-2-addresses-owasp-agentic-threats-mitigations-v1-1-t4
   subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-2
   predicate: addresses
@@ -1538,9 +1538,9 @@ assertions:
   object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t3
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 4 >
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Mitigation Strategies > Playbook 4 >
     Step 1 > top-level bullet 6 (printed p. 39; PDF page 40); Playbook 4 names this threat in its
-    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+    threat mapping (pp. 34–35); this individual control-to-threat selection originated as an AI interpretation.'
 - id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-7-addresses-owasp-agentic-threats-mitigations-v1-1-t3
   subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-7
   predicate: addresses
@@ -1637,9 +1637,9 @@ assertions:
   object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t9
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 4 >
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Mitigation Strategies > Playbook 4 >
     Step 3 > top-level bullet 5 (printed p. 39; PDF page 40); Playbook 4 names this threat in its
-    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+    threat mapping (pp. 34–35); this individual control-to-threat selection originated as an AI interpretation.'
 - id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-6-addresses-owasp-agentic-threats-mitigations-v1-1-t9
   subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-6
   predicate: addresses
@@ -1745,9 +1745,9 @@ assertions:
   object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t15
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 5 >
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Mitigation Strategies > Playbook 5 >
     Step 3 > top-level bullet 1 (printed p. 40; PDF page 41); Playbook 5 names this threat in its
-    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+    threat mapping (pp. 34–35); this individual control-to-threat selection originated as an AI interpretation.'
 - id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-3-bullet-2-addresses-owasp-agentic-threats-mitigations-v1-1-t15
   subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-3-bullet-2
   predicate: addresses
@@ -1844,9 +1844,9 @@ assertions:
   object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t12
   confidence: medium
   assertion_status: proposed
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 6 >
+  description: 'Originally AI-proposed, 2026-11-14; human sample rejected (see recorded Review). Basis: Mitigation Strategies > Playbook 6 >
     Step 1 > top-level bullet 8 (printed p. 41; PDF page 42); Playbook 6 names this threat in its
-    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+    threat mapping (pp. 34–35); this individual control-to-threat selection originated as an AI interpretation.'
 - id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-9-addresses-owasp-agentic-threats-mitigations-v1-1-t12
   subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-9
   predicate: addresses
@@ -1952,9 +1952,9 @@ assertions:
   object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t12
   confidence: medium
   assertion_status: accepted
-  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 6 >
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Mitigation Strategies > Playbook 6 >
     Step 3 > top-level bullet 6 (printed p. 42; PDF page 43); Playbook 6 names this threat in its
-    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+    threat mapping (pp. 34–35); this individual control-to-threat selection originated as an AI interpretation.'
 reviews:
 - id: review:paria03-owasp-agentic-threats-mitigations-v1-1-playbook-1-step-1-bullet-1
   reviews: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-1-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t6

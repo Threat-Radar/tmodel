@@ -5,7 +5,7 @@ from typing import Any
 
 from engine.graph import GraphError
 from engine.model_graph import COLLECTION_DOMAIN_TYPES, project_model_graph
-from engine.review import assertion_review_state
+from engine.review import assertion_review_state, normalize_status
 
 # Typed traversal only: dependencies and generic requirement derivation do not confer scope.
 LINKS = {
@@ -84,7 +84,7 @@ def collect(doc: Mapping[str, Any], product: str) -> dict[str, Any]:
         triple = edge(assertion["subject"], predicate, assertion["object"])
         if accepted(assertion):
             edges.add(triple)
-        elif assertion.get("assertion_status") == "proposed":
+        elif normalize_status(assertion.get("assertion_status")) == "proposed":
             pending.append((assertion, triple))
         else:
             excluded.append(assertion["id"])
