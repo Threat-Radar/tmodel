@@ -4,7 +4,7 @@
 import type { ModelReport } from "./model-report";
 import type { ModelSummary } from "./model-types";
 import { renderModelReport } from "./report-render";
-import { renderRiskCalculation, type RiskCalculation } from "./risk-calculation";
+import { renderRiskCalculation, RISK_MATRIX, type RiskCalculation } from "./risk-calculation";
 
 export interface ReportViewElements {
   status: HTMLElement;
@@ -15,6 +15,7 @@ export interface ReportViewElements {
 export class ModelReportView {
   private report?: ModelReport;
   private riskRequest = 0;
+  private selectedMatrix = "";
 
   constructor(
     private readonly elements: ReportViewElements,
@@ -32,6 +33,13 @@ export class ModelReportView {
       if (calculate) void this.calculateRisk();
     });
     elements.retry.addEventListener("click", () => callbacks.retry());
+    elements.content.addEventListener("change", (event) => {
+      if ((event.target as Element | null)?.matches?.("[data-risk-matrix]")) {
+        this.rememberMatrix();
+        this.riskRequest++;
+        this.elements.content.querySelector<HTMLElement>("[data-risk-result]")?.replaceChildren();
+      }
+    });
   }
 
   get currentReport(): ModelReport | undefined {
@@ -43,6 +51,7 @@ export class ModelReportView {
   }
 
   loading(model: ModelSummary): void {
+    this.rememberMatrix();
     this.riskRequest++;
     this.report = undefined;
     this.elements.content.replaceChildren();
@@ -50,6 +59,7 @@ export class ModelReportView {
   }
 
   failed(message: string): void {
+    this.rememberMatrix();
     this.riskRequest++;
     this.report = undefined;
     this.elements.content.replaceChildren();
@@ -58,6 +68,7 @@ export class ModelReportView {
   }
 
   show(report: ModelReport): void {
+    this.rememberMatrix();
     this.riskRequest++;
     this.report = report;
     // Every model value is escaped by the shared renderer (safe-html.ts); the
@@ -67,6 +78,15 @@ export class ModelReportView {
       riskCalculation: Boolean(this.callbacks.calculateRisk),
     });
     this.setStatus("", "ready");
+    const matrix = this.elements.content.querySelector<HTMLSelectElement>("[data-risk-matrix]");
+    if (matrix) matrix.value = this.selectedMatrix;
+    if (this.selectedMatrix) void this.calculateRisk();
+  }
+
+  private rememberMatrix(): void {
+    if (!this.report) return;
+    const matrix = this.elements.content.querySelector<HTMLSelectElement>("[data-risk-matrix]");
+    if (matrix) this.selectedMatrix = matrix.value === RISK_MATRIX ? matrix.value : "";
   }
 
   private async calculateRisk(): Promise<void> {
@@ -76,9 +96,10 @@ export class ModelReportView {
     const result = this.elements.content.querySelector<HTMLElement>("[data-risk-result]");
     const button = this.elements.content.querySelector<HTMLButtonElement>("[data-calculate-risk]");
     if (!report || !calculate || !matrix || !result || !button) return;
+    this.rememberMatrix();
     const request = ++this.riskRequest;
     result.replaceChildren();
-    if (!matrix.value) {
+    if (!this.selectedMatrix) {
       result.textContent = "Select a matrix profile before calculating risk.";
       return;
     }
@@ -87,7 +108,7 @@ export class ModelReportView {
     result.setAttribute("aria-busy", "true");
     result.textContent = "Calculating risk from recorded inputs…";
     try {
-      const calculation = await calculate(report.model.file, matrix.value);
+      const calculation = await calculate(report.model.file, this.selectedMatrix);
       if (this.riskRequest !== request) return;
       result.innerHTML = renderRiskCalculation(calculation, report);
     } catch (error) {

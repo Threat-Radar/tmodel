@@ -19,6 +19,17 @@
         "safety": null
       },
       "mitigation_status": null,
+      "paths": [
+        {
+          "feasibility": null,
+          "id": "attack-path:lan-to-root",
+          "rating_source": "AttackPath.attack_feasibility",
+          "route_ids": [
+            "route:2c907dd0b24cff427706750c28083dc79d94a425578522f7c9aab6872e42cbcb"
+          ],
+          "used_for_ratings": true
+        }
+      ],
       "problems": [
         "damage_scenario_missing",
         "impact_missing:safety",
@@ -29,6 +40,10 @@
         "route:2c907dd0b24cff427706750c28083dc79d94a425578522f7c9aab6872e42cbcb:feasibility_missing",
         "attack-path:lan-to-root:feasibility_missing"
       ],
+      "recorded": {
+        "feasibility": null,
+        "risk": null
+      },
       "routes": [
         {
           "authored_path": "attack-path:lan-to-root",
@@ -54,7 +69,8 @@
           ]
         }
       ],
-      "threat": "threat-instance:lan-command-injection"
+      "threat": "threat-instance:lan-command-injection",
+      "threat_damage_scenario": "damage-scenario:router-takeover"
     }
   ],
   "count": 1,

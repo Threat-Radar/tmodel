@@ -19,7 +19,22 @@
         "safety": "severe"
       },
       "mitigation_status": "in_progress",
+      "paths": [
+        {
+          "feasibility": "low",
+          "id": "attack-path:fw-tamper-physical",
+          "rating_source": "AttackPath.attack_feasibility",
+          "route_ids": [
+            "route:0a57501d181de32bb1a0da44d97c000b772e8a2d0b1652d0b20a8aecc7a2eba1"
+          ],
+          "used_for_ratings": true
+        }
+      ],
       "problems": [],
+      "recorded": {
+        "feasibility": "low",
+        "risk": "safety 4 (severe impact, low feasibility; 1–5 per 21434 M(I,F)); shown with its inputs"
+      },
       "routes": [
         {
           "authored_path": "attack-path:fw-tamper-physical",
@@ -46,7 +61,8 @@
           ]
         }
       ],
-      "threat": "threat-instance:fw-tamper"
+      "threat": "threat-instance:fw-tamper",
+      "threat_damage_scenario": "damage-scenario:unsafe-braking"
     }
   ],
   "count": 1,

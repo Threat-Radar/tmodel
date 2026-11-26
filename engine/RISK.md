@@ -10,7 +10,10 @@ The authored assessments remain separately labeled. Calculate again to refresh
 the engine answer; the browser preview reads the same calculation from its
 published model snapshot and never contacts a local engine.
 
-The matrix selector starts empty. An error clears the previous calculated
+The matrix selector starts empty. Once deliberately chosen, the profile stays
+selected while switching models in the same application session, and each new
+model automatically refreshes its calculation. Clearing the selection stops
+automatic calculation. An error clears the previous calculated
 result, and an answer for an earlier model cannot replace the current model's
 view. Calculating does not write a rating, edit an Assertion or record a Review.
 
@@ -24,6 +27,11 @@ count. Proposed/rejected links and an asset's component location do not count.
 Known but unlinked assets return no paths; unknown assets return an error.
 Each asset result names its threat. The response retains `step_phases` keyed by
 step id, separately from attack technique identifiers, for every goal type.
+Path review evidence is scoped to the exact path-to-threat relationship. All
+matching human verdicts count, including reviews of duplicate Assertions; one
+accepted record cannot hide a rejection or request for changes. An accepted,
+justified person-reviewed Assertion can also link a path to a threat when its
+authored `realizes_threat` slot is absent.
 
 ## Try the calculation
 
@@ -75,6 +83,11 @@ risk. The original authored `RiskScore.feasibility` and free-text `risk` remain
 under `recorded`; they are not trusted as computed results. No model file is
 rewritten. The recorded inputs' human provenance must still be checked by a
 reviewer; merely reading an input is not proof that a human rated it.
+The desktop and browser preview show each conflicting rating and its source,
+distinguish an absent assessment from an incomplete one, and retain assessment,
+damage and stakeholder context. `threat_damage_scenario` preserves the threat's
+authored damage link even when no RiskScore exists; it does not create one or
+fill missing assessment inputs.
 
 The current mvp-02 diagnostic example has High feasibility and S/F/O/P impacts
 Severe/Major/Severe/Negligible. This profile derives **5/4/5/1**, with mitigation

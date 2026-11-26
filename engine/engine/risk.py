@@ -218,6 +218,7 @@ def _assessment(
         "id": score.get("id"),
         "threat": threat,
         "damage_scenario": damage,
+        "threat_damage_scenario": linked_damage,
         "for_stakeholder": stakeholder,
         "feasibility": feasibility,
         "impact": impact,

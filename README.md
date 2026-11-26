@@ -29,6 +29,8 @@ The views are read-only. In **Model report → Risk**, select the informative
 Annex H Table H.8 example profile and click **Calculate risk** to see the engine's
 per-category results, individual routes and unresolved inputs. Recorded ratings
 remain separate from calculated results; calculation does not approve a claim.
+The selected profile stays in place while switching models in the current
+session, and the calculation refreshes for the newly selected model.
 Requirement coverage and review/authoring workflows continue separately.
 
 ## Try it in five minutes

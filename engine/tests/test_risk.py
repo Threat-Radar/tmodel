@@ -155,6 +155,8 @@ def test_missing_assessment_stays_in_output_without_invented_ratings():
     doc["risk_scores"] = []
     out = assessment(doc)
     assert out["id"] is None
+    assert out["damage_scenario"] is None
+    assert out["threat_damage_scenario"] == doc["threat_instances"][0]["realizes_damage"]
     assert not out["complete"]
     assert all(value is None for value in out["derived_risk"].values())
 

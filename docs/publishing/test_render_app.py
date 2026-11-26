@@ -25,7 +25,12 @@ def test_static_data_covers_every_model_and_the_complete_library(
         assert risk["file"] == model["file"]
         assert risk["matrix"] == "annex-h-table-h8"
         assert risk["count"] == len(risk["assessments"])
-        assert all("paths" not in item and "recorded" not in item for item in risk["assessments"])
+        assert all("recorded" in item for item in risk["assessments"])
+        assert all(
+            "review_records" not in path
+            for item in risk["assessments"]
+            for path in item["paths"]
+        )
         assert len(goals) == len(paths["threats"])
         assert all(
             (model_dir / "attack-paths" / goal["file"]).is_file() for goal in goals

@@ -105,3 +105,98 @@ def test_unlinked_threat_or_component_location_does_not_establish_asset_damage()
         {"id": "threat:damage"},
     ]
     assert enumerate_paths(AttackGraph.from_dict(doc), "asset:target") == []
+
+
+def reviewed_link(doc, target="threat:damage", status="accepted"):
+    doc["parties"] = [{"id": "party:person", "party_kind": "person"}]
+    doc["assertions"] = [
+        {
+            "id": "assertion:path",
+            "subject": "path:direct",
+            "predicate": "realizes_threat",
+            "object": target,
+            "assertion_status": status,
+        }
+    ]
+    doc["reviews"] = [
+        {
+            "id": "review:accept",
+            "reviews": "assertion:path",
+            "reviewer": "party:person",
+            "review_status": "accepted",
+            "justification": "Checked this exact relationship.",
+        }
+    ]
+
+
+def test_shared_path_cannot_borrow_another_threats_review():
+    doc = model()
+    reviewed_link(doc)
+    for assertions in (doc["assertions"], list(reversed(doc["assertions"]))):
+        doc["assertions"] = assertions
+        routes = enumerate_paths(AttackGraph.from_dict(doc), "asset:target")
+        direct = [route for route in routes if route.threat == "threat:direct"]
+        secondary = [route for route in routes if route.threat == "threat:damage"]
+        assert direct and not any(route.review.reviewed for route in direct)
+        assert secondary and all(route.review.reviewed for route in secondary)
+
+
+@pytest.mark.parametrize(
+    "status,verdict,expected",
+    [
+        ("accepted", "accepted", True),
+        ("proposed", "accepted", False),
+        ("accepted", "rejected", False),
+        ("accepted", "changes_requested", False),
+    ],
+)
+def test_assertion_only_path_links_require_human_acceptance(status, verdict, expected):
+    doc = model()
+    doc["attack_paths"] = [doc["attack_paths"][0]]
+    doc["attack_paths"][0].pop("realizes_threat")
+    reviewed_link(doc, "threat:direct", status)
+    doc["reviews"][0]["review_status"] = verdict
+    graph = AttackGraph.from_dict(doc)
+    routes = enumerate_paths(graph, "asset:target")
+    assert bool(routes) is expected
+    if expected:
+        assert graph.threats() == ["threat:direct"]
+        assert all(route.threat == "threat:direct" and route.review.reviewed for route in routes)
+
+
+@pytest.mark.parametrize("same_assertion", [True, False])
+def test_all_matching_human_verdicts_count_independently_of_record_order(same_assertion):
+    doc = model()
+    reviewed_link(doc, "threat:direct")
+    if not same_assertion:
+        other = {**doc["assertions"][0], "id": "assertion:other"}
+        doc["assertions"].append(other)
+    doc["reviews"].append(
+        {
+            "id": "review:reject",
+            "reviews": "assertion:path" if same_assertion else "assertion:other",
+            "reviewer": "party:person",
+            "review_status": "rejected",
+            "justification": "Contrary evidence.",
+        }
+    )
+    for _ in range(2):
+        routes = enumerate_paths(AttackGraph.from_dict(doc), "threat:direct")
+        assert all(
+            not route.review.reviewed and route.review.review_status == "rejected"
+            for route in routes
+        )
+        doc["reviews"].reverse()
+        doc["assertions"].reverse()
+
+
+@pytest.mark.parametrize("person,reason", [(False, "Checked"), (True, "")])
+def test_path_acceptance_requires_a_person_and_rationale(person, reason):
+    doc = model()
+    reviewed_link(doc, "threat:direct")
+    doc["parties"][0]["party_kind"] = "person" if person else "software_agent"
+    doc["reviews"][0]["justification"] = reason
+    assert not any(
+        route.review.reviewed
+        for route in enumerate_paths(AttackGraph.from_dict(doc), "threat:direct")
+    )

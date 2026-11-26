@@ -19,9 +19,24 @@
         "safety": "negligible"
       },
       "mitigation_status": "in_progress",
+      "paths": [
+        {
+          "feasibility": "medium",
+          "id": "attack-path:xxe-file-read",
+          "rating_source": "AttackPath.attack_feasibility",
+          "route_ids": [
+            "route:275d7c644357e84c5c28c8259d967120ce80e4b52e618e82568ccb6928a276f6"
+          ],
+          "used_for_ratings": true
+        }
+      ],
       "problems": [
         "attack_path_scope_mismatch"
       ],
+      "recorded": {
+        "feasibility": "medium",
+        "risk": "privacy 4 / financial 3 / operational 2 (worst-path, medium feasibility; 1–5 per 21434 M(I,F))"
+      },
       "routes": [
         {
           "authored_path": "attack-path:xxe-file-read",
@@ -46,7 +61,8 @@
           ]
         }
       ],
-      "threat": "threat-instance:xxe-file-read"
+      "threat": "threat-instance:xxe-file-read",
+      "threat_damage_scenario": "damage-scenario:tenant-data-exfil"
     },
     {
       "complete": false,
@@ -67,6 +83,18 @@
         "safety": null
       },
       "mitigation_status": null,
+      "paths": [
+        {
+          "feasibility": "low",
+          "id": "attack-path:imds-pivot",
+          "rating_source": "AttackPath.attack_feasibility",
+          "route_ids": [
+            "route:9aac1cbc18238ec8d9176be4854d49f9819438b714387a75f0bf5d72145a8dad",
+            "route:513511c6da4cc2a9a362a914bc6a8be3667c3153b5e85a333174765a331250e2"
+          ],
+          "used_for_ratings": false
+        }
+      ],
       "problems": [
         "damage_scenario_missing",
         "impact_missing:safety",
@@ -78,6 +106,10 @@
         "route:513511c6da4cc2a9a362a914bc6a8be3667c3153b5e85a333174765a331250e2:route_rating_required",
         "attack-path:imds-pivot:alternative_route_ratings_required"
       ],
+      "recorded": {
+        "feasibility": null,
+        "risk": null
+      },
       "routes": [
         {
           "authored_path": "attack-path:imds-pivot",
@@ -120,7 +152,8 @@
           ]
         }
       ],
-      "threat": "threat-instance:imds-pivot"
+      "threat": "threat-instance:imds-pivot",
+      "threat_damage_scenario": "damage-scenario:tenant-data-exfil"
     }
   ],
   "count": 2,

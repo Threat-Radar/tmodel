@@ -19,6 +19,17 @@
         "safety": null
       },
       "mitigation_status": null,
+      "paths": [
+        {
+          "feasibility": null,
+          "id": "attack-path:headlight-can-injection",
+          "rating_source": "AttackPath.attack_feasibility",
+          "route_ids": [
+            "route:24319cf79e321228ba0a00ef616d54180a6b274e0fcdc22400ead4bd8eaee25a"
+          ],
+          "used_for_ratings": true
+        }
+      ],
       "problems": [
         "damage_scenario_missing",
         "impact_missing:safety",
@@ -29,6 +40,10 @@
         "route:24319cf79e321228ba0a00ef616d54180a6b274e0fcdc22400ead4bd8eaee25a:feasibility_missing",
         "attack-path:headlight-can-injection:feasibility_missing"
       ],
+      "recorded": {
+        "feasibility": null,
+        "risk": null
+      },
       "routes": [
         {
           "authored_path": "attack-path:headlight-can-injection",
@@ -56,7 +71,8 @@
           ]
         }
       ],
-      "threat": "threat-instance:spoofed-key-validated"
+      "threat": "threat-instance:spoofed-key-validated",
+      "threat_damage_scenario": "damage-scenario:vehicle-stolen"
     }
   ],
   "count": 1,

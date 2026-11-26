@@ -81,7 +81,24 @@ def write_data(out: Path) -> tuple[int, int]:
         risk = {
             **risk,
             "assessments": [
-                {key: value for key, value in item.items() if key not in {"paths", "recorded"}}
+                {
+                    **item,
+                    "paths": [
+                        {
+                            key: value
+                            for key, value in path.items()
+                            if key
+                            in {
+                                "id",
+                                "feasibility",
+                                "rating_source",
+                                "used_for_ratings",
+                                "route_ids",
+                            }
+                        }
+                        for path in item["paths"]
+                    ],
+                }
                 for item in risk["assessments"]
             ],
         }

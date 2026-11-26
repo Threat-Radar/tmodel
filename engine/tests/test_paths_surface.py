@@ -88,6 +88,10 @@ def test_asset_goal_api_cli_parity(engine_url, capsys):
     for transport in (["--url", engine_url], ["--in-process"]):
         assert main(["paths", model, "--goal", goal, "--json", *transport]) == 0
         assert json.loads(capsys.readouterr().out) == body
+    assert main(["paths", model, "--goal", goal, "--in-process"]) == 0
+    output = capsys.readouterr().out
+    assert "[threat-instance:remote-diag-injection]" in output
+    assert "[threat-instance:infotainment-pivot]" in output
 
 
 def test_api_missing_file_param_is_400(engine_url):

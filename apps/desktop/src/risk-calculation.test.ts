@@ -70,6 +70,59 @@ describe("engine risk calculation in the report (#63)", () => {
     expect(rendered).toContain("&lt;script&gt;");
   });
 
+  it("shows both conflicting ratings and their sources without choosing a winner", () => {
+    const response = parseRiskCalculation(structuredClone(fixture), file, RISK_MATRIX);
+    const item = response.assessments[0];
+    item.paths = [
+      { id: "path:one", feasibility: "high", rating_source: "AttackPath.attack_feasibility", used_for_ratings: true, route_ids: [item.routes[0].id] },
+      { id: "path:two", feasibility: "low", rating_source: "AttackPath.attack_feasibility", used_for_ratings: true, route_ids: [item.routes[0].id] },
+    ];
+    item.routes[0].rating_paths = ["path:one", "path:two"];
+    item.routes[0].feasibility = null;
+    item.routes[0].derived_risk = { safety: null, financial: null, operational: null, privacy: null };
+    item.routes[0].problems = ["conflicting_route_ratings"];
+    item.complete = false;
+    item.feasibility = null;
+    item.derived_risk = { safety: null, financial: null, operational: null, privacy: null };
+    const rendered = renderRiskCalculation(response, report);
+    expect(rendered).toContain("Conflicting recorded ratings");
+    expect(rendered).toContain("Route feasibility: Not recorded");
+    expect(rendered).toContain("Authored path: High");
+    expect(rendered).toContain("Authored path: Low");
+    expect(rendered).toContain("path:one · AttackPath.attack_feasibility");
+    expect(rendered).toContain("path:two · AttackPath.attack_feasibility");
+    expect(rendered).toContain("Safety: Not calculated");
+  });
+
+  it("distinguishes absent and incomplete assessments and retains their damage and stakeholder scope", () => {
+    const response = parseRiskCalculation(structuredClone(fixture), file, RISK_MATRIX);
+    const incomplete = response.assessments[0];
+    incomplete.complete = false;
+    incomplete.problems = ["missing_impact"];
+    incomplete.for_stakeholder = "party:one";
+    const absent = structuredClone(incomplete);
+    absent.id = null;
+    absent.damage_scenario = null;
+    absent.threat_damage_scenario = incomplete.damage_scenario;
+    absent.for_stakeholder = "party:two";
+    response.assessments = [incomplete, absent];
+    response.count = 2;
+    const rendered = renderRiskCalculation(response, report);
+    expect(rendered).toContain("Incomplete assessment");
+    expect(rendered).toContain("Not assessed: no risk assessment recorded");
+    expect(rendered).toContain("Assessment damage:");
+    expect(rendered).toContain("Threat-linked damage:");
+    expect(rendered).toContain("party:one");
+    expect(rendered).toContain("party:two");
+    expect(rendered).toContain(incomplete.id as string);
+  });
+
+  it("rejects missing rating sources rather than losing the conflict evidence", () => {
+    const response = structuredClone(fixture);
+    response.assessments[0].paths = [];
+    expect(() => parseRiskCalculation(response, file, RISK_MATRIX)).toThrow("invalid or mismatched");
+  });
+
   it("serves the same calculation through the static preview with no engine fallback", async () => {
     const fetch = vi.fn<typeof globalThis.fetch>(async () => new Response(JSON.stringify(fixture)));
     const api = new StaticPreviewApi("https://example.test/data/", fetch);

@@ -19,6 +19,17 @@
         "safety": null
       },
       "mitigation_status": null,
+      "paths": [
+        {
+          "feasibility": null,
+          "id": "attack-path:owner-data",
+          "rating_source": "AttackPath.attack_feasibility",
+          "route_ids": [
+            "route:119288f5979af0359d452c597aa4aa49567ccda8c5eaa89e9243285a29d05b58"
+          ],
+          "used_for_ratings": true
+        }
+      ],
       "problems": [
         "damage_scenario_missing",
         "impact_missing:safety",
@@ -29,6 +40,10 @@
         "route:119288f5979af0359d452c597aa4aa49567ccda8c5eaa89e9243285a29d05b58:feasibility_missing",
         "attack-path:owner-data:feasibility_missing"
       ],
+      "recorded": {
+        "feasibility": null,
+        "risk": null
+      },
       "routes": [
         {
           "authored_path": "attack-path:owner-data",
@@ -54,7 +69,8 @@
           ]
         }
       ],
-      "threat": "threat-instance:owner-data-harvest"
+      "threat": "threat-instance:owner-data-harvest",
+      "threat_damage_scenario": "damage-scenario:owner-data-disclosed"
     },
     {
       "complete": false,
@@ -75,6 +91,17 @@
         "safety": null
       },
       "mitigation_status": null,
+      "paths": [
+        {
+          "feasibility": null,
+          "id": "attack-path:takeover",
+          "rating_source": "AttackPath.attack_feasibility",
+          "route_ids": [
+            "route:3ad75daf504f16f30dbe59182f5a7e2eecf9c8976184e7a8048e8da95d913074"
+          ],
+          "used_for_ratings": true
+        }
+      ],
       "problems": [
         "damage_scenario_missing",
         "impact_missing:safety",
@@ -85,6 +112,10 @@
         "route:3ad75daf504f16f30dbe59182f5a7e2eecf9c8976184e7a8048e8da95d913074:feasibility_missing",
         "attack-path:takeover:feasibility_missing"
       ],
+      "recorded": {
+        "feasibility": null,
+        "risk": null
+      },
       "routes": [
         {
           "authored_path": "attack-path:takeover",
@@ -113,7 +144,8 @@
           ]
         }
       ],
-      "threat": "threat-instance:silent-account-takeover"
+      "threat": "threat-instance:silent-account-takeover",
+      "threat_damage_scenario": "damage-scenario:silent-takeover"
     }
   ],
   "count": 2,

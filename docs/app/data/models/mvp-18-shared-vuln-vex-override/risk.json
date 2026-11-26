@@ -19,7 +19,22 @@
         "safety": "negligible"
       },
       "mitigation_status": "in_progress",
+      "paths": [
+        {
+          "feasibility": "medium",
+          "id": "attack-path:weak-rng-key-recovery",
+          "rating_source": "AttackPath.attack_feasibility",
+          "route_ids": [
+            "route:ecd374e45c9aabcfe6d4b603f0720deb212e062bf4d3928aa4271799464d5be0"
+          ],
+          "used_for_ratings": true
+        }
+      ],
       "problems": [],
+      "recorded": {
+        "feasibility": "medium",
+        "risk": "privacy 4 / financial 3 / operational 2 (worst-path, medium feasibility; 1–5 per 21434 M(I,F))"
+      },
       "routes": [
         {
           "authored_path": "attack-path:weak-rng-key-recovery",
@@ -43,7 +58,8 @@
           ]
         }
       ],
-      "threat": "threat-instance:weak-rng-key-recovery"
+      "threat": "threat-instance:weak-rng-key-recovery",
+      "threat_damage_scenario": "damage-scenario:tls-session-compromise"
     },
     {
       "complete": false,
@@ -64,6 +80,18 @@
         "safety": null
       },
       "mitigation_status": null,
+      "paths": [
+        {
+          "feasibility": "low",
+          "id": "attack-path:side-channel-seed",
+          "rating_source": "AttackPath.attack_feasibility",
+          "route_ids": [
+            "route:24f78fccee360b0fa237f424797dd35041ce9231cf35f98479ca7152f2a68beb",
+            "route:8b2bff4ea04435a02910454f1f18f94ea02bede54dc6746baf4b32fc41c0f869"
+          ],
+          "used_for_ratings": false
+        }
+      ],
       "problems": [
         "damage_scenario_missing",
         "impact_missing:safety",
@@ -75,6 +103,10 @@
         "route:8b2bff4ea04435a02910454f1f18f94ea02bede54dc6746baf4b32fc41c0f869:route_rating_required",
         "attack-path:side-channel-seed:alternative_route_ratings_required"
       ],
+      "recorded": {
+        "feasibility": null,
+        "risk": null
+      },
       "routes": [
         {
           "authored_path": "attack-path:side-channel-seed",
@@ -117,7 +149,8 @@
           ]
         }
       ],
-      "threat": "threat-instance:side-channel-seed-leak"
+      "threat": "threat-instance:side-channel-seed-leak",
+      "threat_damage_scenario": "damage-scenario:tls-session-compromise"
     }
   ],
   "count": 2,

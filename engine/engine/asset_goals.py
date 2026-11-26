@@ -8,7 +8,7 @@ from collections.abc import Mapping
 from typing import Any
 
 from engine.model_graph import project_model_graph
-from engine.review import assertion_review_state
+from engine.review import relationship_review_states
 
 
 def asset_threats(doc: Mapping[str, Any]) -> dict[str, tuple[str, ...]]:
@@ -17,16 +17,12 @@ def asset_threats(doc: Mapping[str, Any]) -> dict[str, tuple[str, ...]]:
     targets: dict[str, set[str]] = {
         node.id: set() for node in graph.nodes if node.domain_type == "Asset"
     }
-    parties = {party["id"]: party for party in doc.get("parties") or []}
-    accepted = {
-        assertion["id"]
-        for assertion in doc.get("assertions") or []
-        if assertion_review_state(assertion, doc.get("reviews") or [], parties)["reviewed"]
-    }
+    states = relationship_review_states(doc)
     edges = [
         edge
         for edge in graph.edges
-        if edge.authored or any(a["id"] in accepted for a in edge.assertions)
+        if edge.authored
+        or states.get((edge.source, edge.relationship_type, edge.target), {}).get("reviewed", False)
     ]
     damaged: dict[str, set[str]] = {}
     for edge in edges:

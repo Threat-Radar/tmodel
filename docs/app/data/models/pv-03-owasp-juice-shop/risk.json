@@ -19,6 +19,17 @@
         "safety": null
       },
       "mitigation_status": null,
+      "paths": [
+        {
+          "feasibility": null,
+          "id": "attack-path:admin-via-sqli",
+          "rating_source": "AttackPath.attack_feasibility",
+          "route_ids": [
+            "route:f6ec6585c3fe03db59f4d8f3f95fe52cecd9bbe8044a154d7d80c748f68861eb"
+          ],
+          "used_for_ratings": true
+        }
+      ],
       "problems": [
         "damage_scenario_missing",
         "impact_missing:safety",
@@ -29,6 +40,10 @@
         "route:f6ec6585c3fe03db59f4d8f3f95fe52cecd9bbe8044a154d7d80c748f68861eb:feasibility_missing",
         "attack-path:admin-via-sqli:feasibility_missing"
       ],
+      "recorded": {
+        "feasibility": null,
+        "risk": null
+      },
       "routes": [
         {
           "authored_path": "attack-path:admin-via-sqli",
@@ -54,7 +69,8 @@
           ]
         }
       ],
-      "threat": "threat-instance:login-sqli"
+      "threat": "threat-instance:login-sqli",
+      "threat_damage_scenario": "damage-scenario:admin-takeover"
     },
     {
       "complete": false,
@@ -75,6 +91,17 @@
         "safety": null
       },
       "mitigation_status": null,
+      "paths": [
+        {
+          "feasibility": null,
+          "id": "attack-path:basket-idor",
+          "rating_source": "AttackPath.attack_feasibility",
+          "route_ids": [
+            "route:040aefd1ac3f74a64c2d705a27926a6005b4c362b5f0ee8d109b3a4a0fbd8182"
+          ],
+          "used_for_ratings": true
+        }
+      ],
       "problems": [
         "damage_scenario_missing",
         "impact_missing:safety",
@@ -85,6 +112,10 @@
         "route:040aefd1ac3f74a64c2d705a27926a6005b4c362b5f0ee8d109b3a4a0fbd8182:feasibility_missing",
         "attack-path:basket-idor:feasibility_missing"
       ],
+      "recorded": {
+        "feasibility": null,
+        "risk": null
+      },
       "routes": [
         {
           "authored_path": "attack-path:basket-idor",
@@ -109,7 +140,8 @@
           ]
         }
       ],
-      "threat": "threat-instance:basket-idor"
+      "threat": "threat-instance:basket-idor",
+      "threat_damage_scenario": "damage-scenario:basket-exposed"
     },
     {
       "complete": false,
@@ -130,6 +162,17 @@
         "safety": null
       },
       "mitigation_status": null,
+      "paths": [
+        {
+          "feasibility": null,
+          "id": "attack-path:search-xss",
+          "rating_source": "AttackPath.attack_feasibility",
+          "route_ids": [
+            "route:72d55d7533c19ae57b1f518bf22d5ffa63d2d23481eca976a7c64bdc59548b52"
+          ],
+          "used_for_ratings": true
+        }
+      ],
       "problems": [
         "damage_scenario_missing",
         "impact_missing:safety",
@@ -140,6 +183,10 @@
         "route:72d55d7533c19ae57b1f518bf22d5ffa63d2d23481eca976a7c64bdc59548b52:feasibility_missing",
         "attack-path:search-xss:feasibility_missing"
       ],
+      "recorded": {
+        "feasibility": null,
+        "risk": null
+      },
       "routes": [
         {
           "authored_path": "attack-path:search-xss",
@@ -164,7 +211,8 @@
           ]
         }
       ],
-      "threat": "threat-instance:search-dom-xss"
+      "threat": "threat-instance:search-dom-xss",
+      "threat_damage_scenario": "damage-scenario:script-in-session"
     },
     {
       "complete": false,
@@ -185,6 +233,17 @@
         "safety": null
       },
       "mitigation_status": null,
+      "paths": [
+        {
+          "feasibility": null,
+          "id": "attack-path:ftp-documents",
+          "rating_source": "AttackPath.attack_feasibility",
+          "route_ids": [
+            "route:0ea66452baa29acf8f4f30dd85b46e4648d9859f435bccc2603d7f08f807da29"
+          ],
+          "used_for_ratings": true
+        }
+      ],
       "problems": [
         "damage_scenario_missing",
         "impact_missing:safety",
@@ -195,6 +254,10 @@
         "route:0ea66452baa29acf8f4f30dd85b46e4648d9859f435bccc2603d7f08f807da29:feasibility_missing",
         "attack-path:ftp-documents:feasibility_missing"
       ],
+      "recorded": {
+        "feasibility": null,
+        "risk": null
+      },
       "routes": [
         {
           "authored_path": "attack-path:ftp-documents",
@@ -220,7 +283,8 @@
           ]
         }
       ],
-      "threat": "threat-instance:ftp-listing"
+      "threat": "threat-instance:ftp-listing",
+      "threat_damage_scenario": "damage-scenario:documents-read"
     },
     {
       "complete": false,
@@ -241,6 +305,17 @@
         "safety": null
       },
       "mitigation_status": null,
+      "paths": [
+        {
+          "feasibility": null,
+          "id": "attack-path:jwt-forgery",
+          "rating_source": "AttackPath.attack_feasibility",
+          "route_ids": [
+            "route:321cd0e8d69db3b893e0dbaf23611d48caf46a2070a1a45a584fe9a9f9154033"
+          ],
+          "used_for_ratings": true
+        }
+      ],
       "problems": [
         "damage_scenario_missing",
         "impact_missing:safety",
@@ -251,6 +326,10 @@
         "route:321cd0e8d69db3b893e0dbaf23611d48caf46a2070a1a45a584fe9a9f9154033:feasibility_missing",
         "attack-path:jwt-forgery:feasibility_missing"
       ],
+      "recorded": {
+        "feasibility": null,
+        "risk": null
+      },
       "routes": [
         {
           "authored_path": "attack-path:jwt-forgery",
@@ -276,7 +355,8 @@
           ]
         }
       ],
-      "threat": "threat-instance:jwt-forgery"
+      "threat": "threat-instance:jwt-forgery",
+      "threat_damage_scenario": "damage-scenario:forged-identity"
     }
   ],
   "count": 5,

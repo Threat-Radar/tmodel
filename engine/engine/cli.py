@@ -138,7 +138,8 @@ def _print_paths(payload: dict[str, Any]) -> None:
     print(f"{payload['goal']}: {len(paths)} path{'s' if len(paths) != 1 else ''}")
     for i, path in enumerate(paths, 1):
         steps = " -> ".join(_short(s) for s in path["steps"])
-        print(f"  {i}. {steps}{_review_note(path.get('review', {}))}")
+        threat = f" [{path['threat']}]" if path.get("threat") else ""
+        print(f"  {i}.{threat} {steps}{_review_note(path.get('review', {}))}")
 
 
 def _paths(args: argparse.Namespace) -> int:

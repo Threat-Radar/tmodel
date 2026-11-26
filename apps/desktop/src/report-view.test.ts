@@ -176,4 +176,66 @@ describe("risk calculation controls (#63)", () => {
     await Promise.resolve();
     expect(h.result.innerHTML).toBe("new model");
   });
+
+  it("keeps the chosen matrix and automatically refreshes for the next model", async () => {
+    const request = vi.fn(async () => structuredClone(response));
+    const h = harness(request);
+    h.view.show(buildModelReport(input));
+    expect(request).not.toHaveBeenCalled();
+    h.matrix.value = RISK_MATRIX;
+    h.clickCalculate();
+    await vi.waitFor(() => expect(h.result.innerHTML).toContain("Safety: 5"));
+    const next = structuredClone(input);
+    next.model.file = "other.yaml";
+    h.view.loading(next.model);
+    h.matrix.value = ""; // A new select element starts empty when the report is rebuilt.
+    h.view.show(buildModelReport(next));
+    expect(h.matrix.value).toBe(RISK_MATRIX);
+    await vi.waitFor(() => expect(request).toHaveBeenLastCalledWith("other.yaml", RISK_MATRIX));
+    expect(request).toHaveBeenCalledTimes(2);
+  });
+
+  it("remembers a selection without calculating and allows clearing it", () => {
+    const request = vi.fn(async () => structuredClone(response));
+    const h = harness(request);
+    h.view.show(buildModelReport(input));
+    const change = () => h.content.dispatch("change", {
+      target: { matches: (selector: string) => selector === "[data-risk-matrix]" },
+    });
+    h.matrix.value = RISK_MATRIX;
+    change();
+    h.view.loading(input.model);
+    h.matrix.value = "";
+    h.view.show(buildModelReport(input));
+    expect(request).toHaveBeenCalledTimes(1);
+    h.result.innerHTML = "previous calculation";
+    h.matrix.value = "";
+    change();
+    expect(h.result.innerHTML).toBe("");
+    h.view.loading(input.model);
+    h.view.show(buildModelReport(input));
+    expect(h.matrix.value).toBe("");
+    expect(request).toHaveBeenCalledTimes(1);
+  });
+
+  it("ignores the previous model's result after the automatic refresh finishes", async () => {
+    let finishOld!: (value: RiskCalculation) => void;
+    const old = new Promise<RiskCalculation>((resolve) => { finishOld = resolve; });
+    const request = vi.fn<() => Promise<RiskCalculation>>()
+      .mockReturnValueOnce(old).mockResolvedValueOnce(response);
+    const h = harness(request);
+    h.view.show(buildModelReport(input));
+    h.matrix.value = RISK_MATRIX;
+    h.clickCalculate();
+    h.view.loading(input.model);
+    h.view.show(buildModelReport(input));
+    await vi.waitFor(() => expect(h.result.innerHTML).toContain("Safety: 5"));
+    const fresh = h.result.innerHTML;
+    finishOld({ ...response, assessments: [], count: 0 });
+    await old;
+    await Promise.resolve();
+    expect(h.result.innerHTML).toBe(fresh);
+    expect(h.calculate.disabled).toBe(false);
+    expect(h.matrix.disabled).toBe(false);
+  });
 });

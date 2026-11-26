@@ -19,9 +19,24 @@
         "safety": "negligible"
       },
       "mitigation_status": "in_progress",
+      "paths": [
+        {
+          "feasibility": "medium",
+          "id": "attack-path:deser-rce",
+          "rating_source": "AttackPath.attack_feasibility",
+          "route_ids": [
+            "route:2e4f5a46a71fb366fd76d1c2326918fbf93a9d063ee9ecb2228b0cedadbc880b"
+          ],
+          "used_for_ratings": true
+        }
+      ],
       "problems": [
         "attack_path_scope_mismatch"
       ],
+      "recorded": {
+        "feasibility": "medium",
+        "risk": "privacy 4 / operational 3 / financial 3 (worst-path, medium feasibility; 1–5 per 21434 M(I,F))"
+      },
       "routes": [
         {
           "authored_path": "attack-path:deser-rce",
@@ -46,7 +61,8 @@
           ]
         }
       ],
-      "threat": "threat-instance:rce-via-deser"
+      "threat": "threat-instance:rce-via-deser",
+      "threat_damage_scenario": "damage-scenario:token-forgery"
     },
     {
       "complete": false,
@@ -67,6 +83,18 @@
         "safety": null
       },
       "mitigation_status": null,
+      "paths": [
+        {
+          "feasibility": "low",
+          "id": "attack-path:supply-chain-swap",
+          "rating_source": "AttackPath.attack_feasibility",
+          "route_ids": [
+            "route:c78edbf347f97055909888da48ca32ce4ea97cd2807f1c2fc73da5cc16aa3e68",
+            "route:dfd3317586826af35824300796ef664576f9ec9d9bc561ae30d904918063b0fc"
+          ],
+          "used_for_ratings": false
+        }
+      ],
       "problems": [
         "damage_scenario_missing",
         "impact_missing:safety",
@@ -78,6 +106,10 @@
         "route:dfd3317586826af35824300796ef664576f9ec9d9bc561ae30d904918063b0fc:route_rating_required",
         "attack-path:supply-chain-swap:alternative_route_ratings_required"
       ],
+      "recorded": {
+        "feasibility": null,
+        "risk": null
+      },
       "routes": [
         {
           "authored_path": "attack-path:supply-chain-swap",
@@ -122,7 +154,8 @@
           ]
         }
       ],
-      "threat": "threat-instance:supply-chain-rce"
+      "threat": "threat-instance:supply-chain-rce",
+      "threat_damage_scenario": "damage-scenario:token-forgery"
     }
   ],
   "count": 2,

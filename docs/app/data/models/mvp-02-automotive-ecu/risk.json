@@ -19,7 +19,22 @@
         "safety": "severe"
       },
       "mitigation_status": "in_progress",
+      "paths": [
+        {
+          "feasibility": "high",
+          "id": "attack-path:remote-diag-injection",
+          "rating_source": "AttackPath.attack_feasibility",
+          "route_ids": [
+            "route:88372c56727e6ee2a1590e165fda4fdfc3aac6ab9031beeadca7ac658f1cdbae"
+          ],
+          "used_for_ratings": true
+        }
+      ],
       "problems": [],
+      "recorded": {
+        "feasibility": "high",
+        "risk": "safety 5 / financial 4 / operational 5 / privacy 1 (one attack path, feasibility High; 1 to 5 per ISO/SAE 21434 15.8, read from the Annex H example matrix, Table H.8)"
+      },
       "routes": [
         {
           "authored_path": "attack-path:remote-diag-injection",
@@ -43,7 +58,8 @@
           ]
         }
       ],
-      "threat": "threat-instance:remote-diag-injection"
+      "threat": "threat-instance:remote-diag-injection",
+      "threat_damage_scenario": "damage-scenario:unauthorized-can-actuation"
     },
     {
       "complete": false,
@@ -64,6 +80,18 @@
         "safety": null
       },
       "mitigation_status": null,
+      "paths": [
+        {
+          "feasibility": "very_low",
+          "id": "attack-path:infotainment-pivot",
+          "rating_source": "AttackPath.attack_feasibility",
+          "route_ids": [
+            "route:4b07101faeb38842b815bd4fb979a9833208b7f0304f06d2b875fbd7e8cff29e",
+            "route:aa05eaa3f0de926e2f622dc33fa861b4ad5b75d834a080ceafe8f1102f0a5d28"
+          ],
+          "used_for_ratings": false
+        }
+      ],
       "problems": [
         "damage_scenario_missing",
         "impact_missing:safety",
@@ -75,6 +103,10 @@
         "route:aa05eaa3f0de926e2f622dc33fa861b4ad5b75d834a080ceafe8f1102f0a5d28:route_rating_required",
         "attack-path:infotainment-pivot:alternative_route_ratings_required"
       ],
+      "recorded": {
+        "feasibility": null,
+        "risk": null
+      },
       "routes": [
         {
           "authored_path": "attack-path:infotainment-pivot",
@@ -119,7 +151,8 @@
           ]
         }
       ],
-      "threat": "threat-instance:infotainment-pivot"
+      "threat": "threat-instance:infotainment-pivot",
+      "threat_damage_scenario": "damage-scenario:unauthorized-can-actuation"
     }
   ],
   "count": 2,

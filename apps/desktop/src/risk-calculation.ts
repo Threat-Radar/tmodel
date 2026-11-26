@@ -12,11 +12,20 @@ interface Route {
   feasibility: string | null;
   derived_risk: Vector<number | null>;
   problems: string[];
+  rating_paths: string[];
+}
+interface RatingSource {
+  id: string;
+  feasibility: string | null;
+  rating_source: string;
+  used_for_ratings: boolean;
+  route_ids: string[];
 }
 interface Assessment {
   id: string | null;
   threat: string;
   damage_scenario: string | null;
+  threat_damage_scenario?: string | null;
   for_stakeholder: string | null;
   feasibility: string | null;
   impact: Vector<string | null>;
@@ -25,6 +34,8 @@ interface Assessment {
   routes: Route[];
   complete: boolean;
   problems: string[];
+  paths: RatingSource[];
+  recorded: { feasibility: string | null; risk: string | null };
 }
 export interface RiskCalculation {
   file: string;
@@ -62,8 +73,10 @@ export function parseRiskCalculation(value: unknown, file: string, matrix: strin
   for (const item of value.assessments) {
     if (!record(item) || !nullableString(item.id) || typeof item.threat !== "string"
       || !nullableString(item.damage_scenario) || !nullableString(item.for_stakeholder)
+      || (item.threat_damage_scenario !== undefined && !nullableString(item.threat_damage_scenario))
       || !feasibility(item.feasibility) || typeof item.complete !== "boolean"
-      || !strings(item.problems) || !Array.isArray(item.routes)
+      || !strings(item.problems) || !Array.isArray(item.routes) || !Array.isArray(item.paths)
+      || !record(item.recorded) || !feasibility(item.recorded.feasibility) || !nullableString(item.recorded.risk)
       || !vector(item.derived_risk, risk)
       || !vector(item.impact, (rating) => rating === null
         || (typeof rating === "string" && ["negligible", "moderate", "major", "severe"].includes(rating)))
@@ -72,10 +85,18 @@ export function parseRiskCalculation(value: unknown, file: string, matrix: strin
           && ["planned", "in_progress", "complete", "accepted_risk", "not_applicable"].includes(item.mitigation_status)))) return bad();
     if (item.complete && (item.problems.length > 0 || item.feasibility === null
       || !vector(item.derived_risk, (value) => value !== null && risk(value)))) return bad();
+    const sourceIds = new Set<string>();
+    for (const source of item.paths) {
+      if (!record(source) || typeof source.id !== "string" || sourceIds.has(source.id)
+        || !feasibility(source.feasibility) || typeof source.rating_source !== "string"
+        || typeof source.used_for_ratings !== "boolean" || !strings(source.route_ids)) return bad();
+      sourceIds.add(source.id);
+    }
     for (const route of item.routes) {
       if (!record(route) || typeof route.id !== "string" || !strings(route.steps)
         || !feasibility(route.feasibility) || !vector(route.derived_risk, risk)
-        || !strings(route.problems)) return bad();
+        || !strings(route.problems) || !strings(route.rating_paths)
+        || !route.rating_paths.every((id) => sourceIds.has(id))) return bad();
     }
   }
   return value as unknown as RiskCalculation;
@@ -101,8 +122,10 @@ export function renderRiskCalculation(result: RiskCalculation, report: ModelRepo
   const names = new Map<string, string>();
   for (const item of [...report.threats, ...report.damageScenarios]) names.set(item.id, item.name);
   for (const risk of report.risks) {
+    if (risk.id) names.set(risk.id, risk.name);
     if (risk.stakeholder) names.set(risk.stakeholder.id, risk.stakeholder.label);
   }
+  for (const path of report.attackPaths) names.set(path.id, path.name);
   for (const path of report.attackPaths) for (const step of path.story.steps) names.set(step.id, step.name);
   const name = (id: string | null, fallback: string) => id === null ? fallback : names.get(id) ?? fallback;
   return html`<div class="calculated-risk">
@@ -113,15 +136,29 @@ ${result.assessments.length === 0 ? html`<p>No threats are recorded in this mode
 <div class="report-table-scroll"><table class="report-table"><caption>Calculated assessments and recorded inputs</caption>
 <thead><tr><th scope="col">Threat and damage</th><th scope="col">Feasibility</th><th scope="col">Impact</th><th scope="col">Derived risk</th><th scope="col">Mitigation</th><th scope="col">Input status</th></tr></thead>
 <tbody>${result.assessments.map((item) => html`<tr>
-<th scope="row">${name(item.threat, "Threat")}<div class="cell-note">${name(item.damage_scenario, "Damage not recorded")}</div><div class="cell-note">For ${name(item.for_stakeholder, "stakeholder not recorded")}</div><div class="cell-note">Path review: ${report.threats.find((threat) => threat.id === item.threat)?.status.label ?? "Not reviewed"}</div></th>
+<th scope="row">${name(item.threat, "Threat")}
+${item.id ? html`<div class="cell-note">Assessment: ${name(item.id, "Recorded assessment")}</div>` : ""}
+${item.damage_scenario ? html`<div class="cell-note">Assessment damage: ${name(item.damage_scenario, "Damage scenario")}</div>` : ""}
+${item.threat_damage_scenario && item.threat_damage_scenario !== item.damage_scenario ? html`<div class="cell-note">Threat-linked damage: ${name(item.threat_damage_scenario, "Damage scenario")}</div>` : ""}
+${!item.damage_scenario && !item.threat_damage_scenario ? html`<div class="cell-note">Damage not recorded</div>` : ""}
+<div class="cell-note">For ${name(item.for_stakeholder, "stakeholder not recorded")}</div><div class="cell-note">Path review: ${report.threats.find((threat) => threat.id === item.threat)?.status.label ?? "Not reviewed"}</div>
+<details><summary>Assessment identifiers</summary><dl><dt>Assessment</dt><dd>${item.id ?? "Not recorded"}</dd><dt>Damage</dt><dd>${item.damage_scenario ?? "Not recorded"}</dd><dt>Threat-linked damage</dt><dd>${item.threat_damage_scenario ?? "Not recorded"}</dd><dt>Stakeholder</dt><dd>${item.for_stakeholder ?? "Not recorded"}</dd></dl></details></th>
 <td>${label(item.feasibility)}</td><td>${values(item.impact, "Not rated")}</td><td>${values(item.derived_risk)}</td>
-<td>${label(item.mitigation_status)}</td><td>${item.complete ? "Inputs available" : "Incomplete"}${problems(item.problems)}</td>
+<td>${label(item.mitigation_status)}</td><td>${item.id === null ? "Not assessed: no risk assessment recorded" : item.complete ? "Inputs available" : "Incomplete assessment"}${problems(item.problems)}</td>
 </tr>`)}</tbody></table></div>`}
-${result.assessments.map((item) => html`<details><summary>Routes for ${name(item.threat, "threat")}</summary>
+${result.assessments.map((item) => html`<details><summary>Routes for ${name(item.threat, "threat")}${item.for_stakeholder ? html` · ${name(item.for_stakeholder, "stakeholder")}` : ""}</summary>
+<p>${item.id ? html`Assessment: ${name(item.id, "Recorded assessment")}` : "No risk assessment recorded"}. Damage: ${name(item.damage_scenario ?? item.threat_damage_scenario ?? null, "Not recorded")}.</p>
 ${item.routes.length === 0 ? html`<p>No attack routes are available.</p>` : html`<ol>${item.routes.map((route, index) => html`<li>
 <strong>Route ${index + 1}</strong>: ${route.steps.map((id) => name(id, "Attack step")).join(" → ")}
-<p>Recorded feasibility: ${label(route.feasibility)}</p>${values(route.derived_risk)}${problems(route.problems)}
+<p>Route feasibility: ${label(route.feasibility)}</p>${values(route.derived_risk)}
+${route.problems.includes("conflicting_route_ratings") ? html`<p class="warning-note">Conflicting recorded ratings. This route remains unresolved.</p>` : ""}
+<p>Rating sources:</p>${route.rating_paths.length ? html`<ul>${route.rating_paths.map((id) => html`<li>${name(id, "Authored path")}: ${label(item.paths.find((path) => path.id === id)?.feasibility ?? null)}</li>`)}</ul>` : html`<p>No unambiguous route rating is recorded.</p>`}
+${problems(route.problems)}
 </li>`)}</ol>`}</details>`)}
+${result.assessments.map((item) => html`<details><summary>Recorded ratings for ${name(item.threat, "threat")}${item.for_stakeholder ? html` · ${name(item.for_stakeholder, "stakeholder")}` : ""}</summary>
+<p>Assessment feasibility as recorded: ${label(item.recorded.feasibility)}. Recorded risk text: ${item.recorded.risk ?? "Not recorded"}.</p>
+${item.paths.length ? html`<ul>${item.paths.map((path) => html`<li><strong>${name(path.id, "Authored path")}</strong>: ${label(path.feasibility)}. ${path.used_for_ratings ? "Used for route ratings." : "Not bound to an individual route rating."}<div class="cell-note">Source: ${path.id} · ${path.rating_source}</div></li>`)}</ul>` : html`<p>No authored path ratings are available.</p>`}
+</details>`)}
 <p class="cell-note">Recorded ratings require human verification. Calculation does not approve a threat or change a review. Missing or conflicting inputs remain unresolved.</p>
 </div>`.value;
 }
