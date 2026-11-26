@@ -70,6 +70,47 @@ def test_vector_keeps_inputs_and_categories_and_does_not_trust_authored_risk():
     assert out["for_stakeholder"] == "party:user"
 
 
+@pytest.mark.parametrize(
+    ("reviews", "reviewed"),
+    [
+        ([("software_agent", "accepted")], False),
+        ([("person", "accepted"), ("person", "accepted")], True),
+        ([("person", "accepted"), ("software_agent", "rejected")], True),
+        ([("person", "accepted"), ("person", "rejected")], False),
+    ],
+)
+def test_path_review_uses_all_matching_human_evidence(reviews, reviewed):
+    doc = model(("high",))
+    doc["assertions"], doc["reviews"] = [], []
+    for index, (kind, verdict) in enumerate(reviews):
+        party = f"party:reviewer-{index}"
+        assertion = f"assertion:path-{index}"
+        doc["parties"].append({"id": party, "party_kind": kind})
+        doc["assertions"].append(
+            {
+                "id": assertion,
+                "subject": "path:0",
+                "predicate": "realizes_threat",
+                "object": "threat:t",
+                "assertion_status": "accepted",
+            }
+        )
+        doc["reviews"].append(
+            {
+                "id": f"review:{index}",
+                "reviews": assertion,
+                "reviewer": party,
+                "review_status": verdict,
+                "justification": "Test evidence for this exact statement",
+            }
+        )
+    before = deepcopy(doc)
+    out = assessment(doc)
+    assert out["path_reviewed"] is reviewed
+    assert out["derived_risk"]["safety"] == 5
+    assert doc == before
+
+
 @pytest.mark.parametrize("ratings", list(product(FEASIBILITIES, repeat=2)))
 def test_worst_path_is_at_least_each_route_for_every_category(ratings):
     out = assessment(model(ratings))

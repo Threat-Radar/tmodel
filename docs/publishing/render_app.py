@@ -76,7 +76,8 @@ def write_data(out: Path) -> tuple[int, int]:
         _write_json(model_dir / "graph.json", _public_file(graph, file))
 
         # Only the calculation's display fields are public. The full API retains
-        # recorded provenance; the graph already supplies the public review view.
+        # recorded provenance. Keep the engine's effective path_reviewed flag;
+        # raw graph status strings do not establish human acceptance.
         risk = core.risk_assessments(file, "annex-h-table-h8")
         risk = {
             **risk,

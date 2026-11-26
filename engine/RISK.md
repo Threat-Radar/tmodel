@@ -89,6 +89,18 @@ damage and stakeholder context. `threat_damage_scenario` preserves the threat's
 authored damage link even when no RiskScore exists; it does not create one or
 fill missing assessment inputs.
 
+`path_reviewed` is the engine's effective human-review result for the threat's
+complete set of path-to-threat relationships. Both desktop and browser preview
+use it for the calculated panel's path acceptance label; raw graph status text
+cannot establish acceptance. AI-only reviews do not count, while multiple
+justified human acceptances remain accepted. This flag does not approve the
+assessment or its inputs.
+
+When `damage_scenario_scope_mismatch` is reported, the panel shows the scope
+warning and withholds individual route risk values. Feasibility and source
+ratings remain inspectable. The API retains the route calculations as diagnostic
+data; they are not presented as valid risk results for a differently scoped threat.
+
 The current mvp-02 diagnostic example has High feasibility and S/F/O/P impacts
 Severe/Major/Severe/Negligible. This profile derives **5/4/5/1**, with mitigation
 status still `in_progress`.

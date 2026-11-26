@@ -19,6 +19,7 @@
         "safety": null
       },
       "mitigation_status": null,
+      "path_reviewed": false,
       "paths": [
         {
           "feasibility": null,
@@ -91,6 +92,7 @@
         "safety": null
       },
       "mitigation_status": null,
+      "path_reviewed": false,
       "paths": [
         {
           "feasibility": null,
@@ -162,6 +164,7 @@
         "safety": null
       },
       "mitigation_status": null,
+      "path_reviewed": false,
       "paths": [
         {
           "feasibility": null,
@@ -233,6 +236,7 @@
         "safety": null
       },
       "mitigation_status": null,
+      "path_reviewed": false,
       "paths": [
         {
           "feasibility": null,
@@ -305,6 +309,7 @@
         "safety": null
       },
       "mitigation_status": null,
+      "path_reviewed": false,
       "paths": [
         {
           "feasibility": null,

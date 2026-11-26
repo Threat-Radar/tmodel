@@ -19,6 +19,7 @@
         "safety": "severe"
       },
       "mitigation_status": "in_progress",
+      "path_reviewed": false,
       "paths": [
         {
           "feasibility": "high",
@@ -105,6 +106,7 @@
         "safety": null
       },
       "mitigation_status": null,
+      "path_reviewed": false,
       "paths": [
         {
           "feasibility": "medium",
@@ -173,6 +175,7 @@
         "safety": null
       },
       "mitigation_status": null,
+      "path_reviewed": false,
       "paths": [
         {
           "feasibility": "low",

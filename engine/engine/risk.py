@@ -219,6 +219,7 @@ def _assessment(
         "threat": threat,
         "damage_scenario": damage,
         "threat_damage_scenario": linked_damage,
+        "path_reviewed": graph.threat_reviewed(threat),
         "for_stakeholder": stakeholder,
         "feasibility": feasibility,
         "impact": impact,

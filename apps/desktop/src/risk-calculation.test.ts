@@ -123,6 +123,53 @@ describe("engine risk calculation in the report (#63)", () => {
     expect(() => parseRiskCalculation(response, file, RISK_MATRIX)).toThrow("invalid or mismatched");
   });
 
+  it.each([false, true])("uses the engine's effective path review (%s), not the report's status label", async (reviewed) => {
+    const response = structuredClone(fixture);
+    Object.assign(response.assessments[0], { path_reviewed: reviewed });
+    response.assessments = [response.assessments[0]];
+    response.count = 1;
+    const misleading = structuredClone(report);
+    misleading.threats.find((threat) => threat.id === response.assessments[0].threat)!.status.label = reviewed
+      ? "Not reviewed" : "Accepted";
+    const fetch = vi.fn<typeof globalThis.fetch>(async () => new Response(JSON.stringify(response)));
+    const preview = new StaticPreviewApi("https://example.test/data/", fetch);
+    for (const provider of [
+      new EngineGraphDataProvider(file, "http://engine.test", fetch),
+      new EngineGraphDataProvider(file, preview.engineBase, preview.fetch),
+    ]) {
+      const rendered = renderRiskCalculation(await provider.getRiskCalculation(RISK_MATRIX), misleading);
+      expect(rendered).toContain(`Path review: ${reviewed ? "Accepted" : "Not accepted"}`);
+      expect(rendered).not.toContain(`Path review: ${reviewed ? "Not reviewed" : "Accepted"}`);
+    }
+  });
+
+  it("rejects absent or invalid engine review evidence", () => {
+    for (const value of [undefined, null, "true", 1]) {
+      const response = structuredClone(fixture);
+      Object.assign(response.assessments[0], { path_reviewed: value });
+      expect(() => parseRiskCalculation(response, file, RISK_MATRIX)).toThrow("invalid or mismatched");
+    }
+  });
+
+  it("withholds route risk values and exposes a damage-scope warning", () => {
+    const response = structuredClone(fixture);
+    const item = response.assessments[0];
+    item.complete = false;
+    item.problems = ["damage_scenario_scope_mismatch"];
+    item.threat_damage_scenario = "damage:other";
+    item.derived_risk = { safety: null, financial: null, operational: null, privacy: null };
+    response.assessments = [item];
+    response.count = 1;
+    // The engine keeps route values for inspection, but they do not apply to this threat.
+    expect(item.routes[0].derived_risk.safety).toBe(5);
+    const rendered = renderRiskCalculation(parseRiskCalculation(response, file, RISK_MATRIX), report);
+    expect(rendered).toContain("Damage scope mismatch");
+    expect(rendered).toContain("Route risk values are withheld");
+    expect(rendered).toContain("Route feasibility: High");
+    expect(rendered).not.toContain("Safety: 5");
+    expect(rendered).toContain("Safety: Not calculated");
+  });
+
   it("serves the same calculation through the static preview with no engine fallback", async () => {
     const fetch = vi.fn<typeof globalThis.fetch>(async () => new Response(JSON.stringify(fixture)));
     const api = new StaticPreviewApi("https://example.test/data/", fetch);
