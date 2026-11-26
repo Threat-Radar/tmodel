@@ -1,22 +1,28 @@
 ---
 schema: "archdoc/v1"
 id: ADR-0015
-title: "Attack feasibility: computed Annex G vectors with reviewed-state markers (would amend ADR-0006)"
-short_title: "Feasibility vectors (proposed)"
-description: "Proposed. Path feasibility would be computed from an ISO/SAE 21434 Annex G vector (attack potential by default, CVSS exploitability or attack vector by choice per threat scenario), shown with a computed-or-reviewed state, with mandatory-rationale overrides and a not-exploitable extension that gives no risk value. Tried first on standalone pages (DL-0069); no existing model, schema, engine or app changes until this is accepted and scoped."
+title: "Attack feasibility: computed Annex G vectors with reviewed-state markers (amends ADR-0006)"
+short_title: "Feasibility vectors"
+description: "Sponsor decision (2026-11-25): path feasibility is computed from an ISO/SAE 21434 Annex G vector (attack potential by default, CVSS exploitability or attack vector by choice per threat scenario), shown with a computed-or-reviewed state, with mandatory-rationale overrides and a not-exploitable extension that gives no risk value. CVSS import accepts only the short CV:3.1 form; a full CVSS:3.1 vector is rejected. Tried first on standalone pages (DL-0069); existing models, schema, engine and app stay unchanged until the later migration is scoped."
 type: decision
 category: security
-status: proposed
-version: "0.1.0"
-version_policy: "semver; 1.0.0 on acceptance"
+status: accepted
+version: "1.0.0"
+version_policy: "semver; an accepted ADR is 1.0.0 and only changes to record superseding"
 date: "2026-11-25"
 updated: "2026-11-25"
 decision_makers:
   - role: sponsor
     id: nymble
-reviewers: []
-needs_review: true
-reviewed: false
+reviewers:
+  - role: sponsor
+    id: nymble
+    kind: human
+  - role: drafting-agent
+    id: grok-bot
+    kind: ai_agent
+needs_review: false
+reviewed: true
 canonical_path: spec/ADR-0015-attack-feasibility-vectors.md
 amends: ADR-0006
 defers_to: ARCH-0001
@@ -24,9 +30,17 @@ defers_to: ARCH-0001
 
 # ADR-0015: Attack feasibility as computed Annex G vectors
 
-**Status: proposed (2026-11-25).** Not accepted. It records the sponsor's design decisions of
-2026-11-25 (DL-0069) so the later change can be reviewed in one place. It changes nothing until it is
-accepted and the migration below is scoped.
+**Status: accepted (2026-11-25) on merge.** Decided by @nymble. It amends **ADR-0006**: path
+feasibility is computed from an Annex G vector rather than only a human-entered Table 1 label.
+Design record: DL-0069. Existing models, schema, engine and app code stay unchanged until the
+migration below is scoped.
+
+## Review
+
+| date | who | kind | verdict |
+|---|---|---|---|
+| 2026-11-25 | drafting agent | ai_agent | drafted as Proposed (DL-0069) |
+| 2026-11-25 | @nymble (sponsor) | human | **accepted**. Paraphrase of the decision: accept the ADR; CVSS import accepts only the short `CV:3.1` form, and a full `CVSS:3.1` vector is rejected. |
 
 ## Context
 
@@ -36,7 +50,7 @@ ISO/SAE 21434 offers three approaches (RC-15-11 to RC-15-14): attack potential (
 ISO/IEC 18045), CVSS exploitability (G.3) and attack vector (G.4). Each ends on the four Table 1
 ratings.
 
-## Decision (proposed)
+## Decision
 
 1. A path's feasibility is computed from a vector in one of the three Annex G methods, chosen per
    threat scenario by `feasibility_method`; attack potential is the default and methods may mix.
@@ -48,6 +62,8 @@ ratings.
    ISO/IEC 18045 "none" window. It is not summed, has no Table 1 level and gives no risk value; it
    requires a recorded basis and shows the ISO-strict equivalent.
 5. The AI hook may propose a vector; only a human accepts, changes, overrides or sets NEX.
+6. CVSS import accepts only the short form `CV:3.1/AV:/AC:/PR:/UI:`. A full `CVSS:3.1/...` vector
+   and CVSS 4.0 are rejected; the four exploitability metrics are not extracted from a longer string.
 
 ## Later change, to be scoped before any model is touched
 
@@ -61,6 +77,6 @@ ratings.
 
 ## Consequences
 
-- ADR-0006's "Common Criteria display-only" clause would be amended; the composite vector and the
+- ADR-0006's "Common Criteria display-only" clause is amended; the composite vector and the
   Table H.8 profile stay.
 - Values follow the library record of ISO/SAE 21434 Annex G; the CVSS weights are FIRST CVSS v3.1's.

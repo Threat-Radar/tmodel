@@ -79,7 +79,8 @@ check("parse: rejects", () => {
     "AP:2021/ET:2M/SE:PRO/KN:RES/WO:MOD/EQ:SPE": "ET has no level 2M",
     "AP:2021/AV:N/ET:1M/SE:PRO/KN:RES/WO:MOD/EQ:SPE": "unknown metric AV",
     "CV:3.1/AV:N/AC:L/PR:N/ui:n": "malformed token",
-    "CV:4.0/AV:N/AC:L/AT:N/PR:N/UI:N": "unknown version"
+    "CV:4.0/AV:N/AC:L/AT:N/PR:N/UI:N": "unknown version",
+    "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H": "must start with"
   };
   Object.entries(bad).forEach(([v, msg]) => { const p = F.parse(v); assert.equal(p.ok, false, v); assert.ok(p.errors.join("; ").includes(msg), v + " -> " + p.errors); });
 });

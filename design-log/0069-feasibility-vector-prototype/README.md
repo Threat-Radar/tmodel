@@ -34,8 +34,9 @@ before any existing threat model, schema, engine or app code changes.
 - `docs/feasibility/examples.js`: ten invented example threat scenarios, labelled example data.
 - `docs/feasibility/test-feasibility.js`: 16 checks, run with `node docs/feasibility/test-feasibility.js`.
   Not wired into CI.
-- `spec/ADR-0015-attack-feasibility-vectors.md`: status proposed. It records the decisions below and
-  what would change later; it changes nothing now.
+- `spec/ADR-0015-attack-feasibility-vectors.md`: status accepted (on merge of PR #270). It records
+  the decisions below and what would change later; existing models, schema, engine and app stay
+  unchanged until that later change is scoped.
 
 Nothing else in the repository changes: no model file, schema, engine, app or existing page, and no
 nav link.
@@ -50,7 +51,7 @@ One grammar for all three methods; codes name levels, numbers live in one table.
 | CVSS exploitability (G.3, Table G.8) | `CV:3.1/AV:A/AC:L/PR:N/UI:R` | E = 8.22 × AV × AC × PR × UI, Table G.8 bands |
 | Attack vector (G.4, Table G.9) | `AX:2021/AV:N` | read from Table G.9 |
 
-Total, E and rating are computed and never part of the string. CVSS 4.0 vectors are rejected.
+Total, E and rating are computed and never part of the string. CVSS import accepts only the short `CV:3.1` form; a full `CVSS:3.1/...` vector and CVSS 4.0 vectors are rejected.
 
 ## Accepted by the sponsor (2026-11-25)
 
@@ -71,11 +72,15 @@ Total, E and rating are computed and never part of the string. CVSS 4.0 vectors 
 6. The Okabe-Ito factor palette is approved. CVSS and attack-vector chips stay neutral slate. A
    single vector item can carry an exception marker (outline pattern plus corner glyph: changed by a
    reviewer, disputed, commented) with its history on hover or click.
+7. CVSS import accepts only the short `CV:3.1` form. A full `CVSS:3.1/...` vector is rejected;
+   the four exploitability metrics are not extracted from a longer string.
 
 ## Rejected, and why
 
 - **Common Criteria as display only (ADR-0006, DEC-003).** Replaced by computed ratings, through
-  ADR-0015 once accepted. Display-only numbers would leave the rating unexplained.
+  accepted ADR-0015. Display-only numbers would leave the rating unexplained.
+- **Accepting a full `CVSS:3.1/...` vector on import and keeping only AV, AC, PR, UI.** The sponsor
+  chose the short `CV:3.1` form only, so a longer string is rejected rather than silently trimmed.
 - **Mapping NEX to Very low.** A Very low rating still scores risk 2 for a severe impact under the
   Table H.8 example; the sponsor chose no risk value instead.
 - **Automatic conversion of existing human labels.** One label matches many vectors, so inventing
