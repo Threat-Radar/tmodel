@@ -161,7 +161,7 @@ describe("relationship review metadata", () => {
   }
 
   it.each([
-    ["accepted", "accepted", "accepted", "realizes_threat"],
+    ["accepted", "accepted", "unknown", "realizes_threat · not reviewed"],
     ["proposed", null, "proposed", "realizes_threat · proposed"],
     ["proposed", "changes_requested", "changes_requested", "realizes_threat · changes requested"],
     ["proposed", "rejected", "rejected", "realizes_threat · rejected"],
@@ -240,7 +240,8 @@ describe("relationship review metadata", () => {
 
   it("renders an Assertion-only accepted and reviewed relationship as accepted", () => {
     const element = toCytoscapeEdgeElement(
-      provenanceEdge(false, [assertion("assertion:accepted", "accepted", "accepted")]),
+      provenanceEdge(false, [{ ...assertion("assertion:accepted", "accepted", "accepted"),
+        human_reviewed: true, effective_status: "accepted" }]),
     );
 
     expect(element.data).toMatchObject({

@@ -7,7 +7,7 @@ from review_support import PRINCIPAL, MemoryWorkspace, review_model
 
 from engine.graph import AttackGraph
 from engine.review_service import ReviewService
-from engine.review_workspace import ReviewError, ReviewPrincipal
+from engine.review_workspace import ProjectReviewWorkspace, ReviewError, ReviewPrincipal
 from engine.risk import MATRIX_ID
 from engine.risk_routes import rated_routes
 
@@ -377,30 +377,25 @@ def test_two_concurrent_saves_have_exactly_one_winner():
     assert len(ws.versions["r2"]["reviews"]) == 1
 
 
-def test_shared_frontend_contract_examples_are_executable():
+def test_shared_frontend_contract_examples_are_executable(monkeypatch):
     import json
     from pathlib import Path
 
     import yaml
 
+    from engine import review_service
+
     examples = Path(__file__).parents[1] / "examples" / "human-review"
     contract = json.loads((examples / "contract.json").read_text())
     ws = MemoryWorkspace(yaml.safe_load((examples / "model.yaml").read_text()))
     service = ReviewService(ws)
+    monkeypatch.setattr(review_service, "uuid4", lambda: "fixture-review")
     assert (
         service.get_review_context(contract["context"]["request"], PRINCIPAL)
         == contract["context"]["response"]
     )
     out = service.save_model_changes(contract["save"]["request"], PRINCIPAL)
-    assert out["revision"] == contract["save"]["response"]["revision"]
-    assert (
-        out["risk"]["assessments"][0]["derived_risk"]
-        == contract["save"]["response"]["risk"]["assessments"][0]["derived_risk"]
-    )
-    assert (
-        out["report_data"]["model"]["counts"]
-        == contract["save"]["response"]["report_data"]["model"]["counts"]
-    )
+    assert out == contract["save"]["response"]
 
 
 def test_omitted_annotation_does_not_clear_existing_note_on_correction():
@@ -415,3 +410,95 @@ def test_omitted_annotation_does_not_clear_existing_note_on_correction():
         {**request(ws, True), "reviews": [review(review_id=review_id)]}, PRINCIPAL
     )
     assert ws.versions["r3"]["reviews"][0]["description"] == "Keep this note."
+
+
+def test_imported_model_views_do_not_require_a_reviewer_party():
+    ws = MemoryWorkspace(
+        {"components": [{"id": "component:imported", "name": "Imported part"}]}, editable=False
+    )
+    principal = ReviewPrincipal("party:host-user", PRINCIPAL.model_ids, frozenset({"read"}))
+    out = ReviewService(ws).refresh_model(
+        {
+            "model_id": "local:one",
+            "revision": "r1",
+            "matrix": MATRIX_ID,
+        },
+        principal,
+    )
+    assert out["graph"]["nodes"][0]["id"] == "component:imported"
+    assert out["risk"]["count"] == 0
+    assert out["report_data"]["model"]["kind_label"] == "Read-only local model"
+    assert "parties" not in ws.versions["r1"]
+
+
+def test_verified_host_identity_is_added_atomically_without_impersonating_model_authors():
+    ws = MemoryWorkspace()
+    principal = ReviewPrincipal(
+        "party:host-user", PRINCIPAL.model_ids, PRINCIPAL.actions, allow_party_creation=True
+    )
+    service = ReviewService(ws)
+    context = service.get_review_context(request(ws), principal)
+    assert context["reviewer_id"] == "party:host-user"
+    assert context["permitted_actions"]["submit_review"]
+    assert "party:host-user" not in {p["id"] for p in ws.versions["r1"]["parties"]}
+    service.submit_review({**request(ws, True), "reviews": [review()]}, principal)
+    saved = ws.versions["r2"]
+    assert saved["reviews"][0]["reviewer"] == "party:host-user"
+    assert saved["parties"][-1] == {
+        "id": "party:host-user",
+        "name": "Local reviewer",
+        "party_kind": "person",
+    }
+    assert saved["assertions"] == ws.versions["r1"]["assertions"]
+
+
+def test_party_provisioning_never_reclassifies_an_agent_or_bypasses_permissions():
+    ws = MemoryWorkspace()
+    agent = ReviewPrincipal(
+        "party:agent", PRINCIPAL.model_ids, PRINCIPAL.actions, allow_party_creation=True
+    )
+    with pytest.raises(ReviewError) as err:
+        ReviewService(ws).submit_review({**request(ws, True), "reviews": [review()]}, agent)
+    assert err.value.code == "permission_denied"
+    reader = ReviewPrincipal(
+        "party:host-user", PRINCIPAL.model_ids, frozenset({"read"}), allow_party_creation=True
+    )
+    with pytest.raises(ReviewError):
+        ReviewService(ws).submit_review({**request(ws, True), "reviews": [review()]}, reader)
+    assert "party:host-user" not in {p["id"] for p in ws.versions["r1"]["parties"]}
+
+
+def test_version_metadata_is_saved_in_the_same_commit_as_review_changes():
+    class VersionedWorkspace(MemoryWorkspace):
+        def save_version(self, model_id, expected_revision, document, *, description, summary):
+            revision = self.commit(model_id, expected_revision, document)
+            self.metadata = {"revision": revision, "description": description, "summary": summary}
+            return revision
+
+    ws = VersionedWorkspace()
+    service = ReviewService(ProjectReviewWorkspace(ws))
+    out = service.save_model_changes(
+        {
+            **request(ws, True),
+            "reviews": [review()],
+            "description": "Reviewed this route",
+            "feasibility": [{"attack_path_id": "path:a", "rating": "high"}],
+        },
+        PRINCIPAL,
+    )
+    assert ws.metadata["revision"] == out["revision"] == "r2"
+    assert ws.metadata["description"] == "Reviewed this route"
+    assert ws.metadata["summary"]["derived_risk"] == out["risk"]["assessments"][0]["derived_risk"]
+    assert ws.metadata["summary"]["incomplete"] == 0
+    ws.fail_save = True
+    with pytest.raises(ReviewError):
+        service.save_ratings(
+            {
+                **request(ws, True),
+                "description": "Not saved",
+                "feasibility": [{"attack_path_id": "path:a", "rating": None}],
+            },
+            PRINCIPAL,
+        )
+    assert ws.metadata["description"] == "Reviewed this route"
+    assert ws.current == "r2"

@@ -3,6 +3,7 @@
 // engine on launch and stops it on quit (#124).
 
 mod engine;
+mod project_host;
 
 use tauri::RunEvent;
 
@@ -10,8 +11,14 @@ use tauri::RunEvent;
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_dialog::init())
         .manage(engine::EngineState::default())
-        .invoke_handler(tauri::generate_handler![engine::engine_process])
+        .manage(project_host::ProjectHostState::default())
+        .invoke_handler(tauri::generate_handler![
+            engine::engine_process,
+            project_host::project_host_session,
+            project_host::project_host_step,
+        ])
         .setup(|app| {
             engine::start(app.handle());
             Ok(())

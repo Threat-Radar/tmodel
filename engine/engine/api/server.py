@@ -146,12 +146,25 @@ class EngineHandler(BaseHTTPRequestHandler):
                 or len(lengths[0]) > 6
                 or not lengths[0].isascii()
                 or not lengths[0].isdigit()
-                or not 0 < int(lengths[0]) <= MAX_BODY
+                or not 0 < int(lengths[0])
             ):
                 raise ReviewError(
                     "validation_error", "Provide a JSON body of at most 262144 bytes."
                 )
             self.connection.settimeout(5)
+            length = int(lengths[0])
+            if length > MAX_BODY:
+                # Drain only a bounded, modest oversize after authentication.
+                # Closing with unread bytes can reset the TCP connection before
+                # the frontend receives the structured validation error.
+                if length <= 2 * MAX_BODY:
+                    try:
+                        self.rfile.read(length)
+                    except OSError:
+                        pass
+                raise ReviewError(
+                    "validation_error", "Provide a JSON body of at most 262144 bytes."
+                )
             body = self.rfile.read(int(lengths[0]))
             if len(body) != int(lengths[0]):
                 raise ReviewError("validation_error", "Incomplete request body.")
@@ -170,6 +183,7 @@ class EngineHandler(BaseHTTPRequestHandler):
             status, body = 500, b'{"error": "internal error: response not serialisable"}'
         self.send_response(status)
         self.send_header("Content-Type", "application/json")
+        self.send_header("Cache-Control", "no-store")
         self.send_header("Content-Length", str(len(body)))
         origin = self.headers.get("Origin")
         if origin in ALLOWED_ORIGINS:
@@ -185,12 +199,29 @@ class EngineHandler(BaseHTTPRequestHandler):
             return
         try:
             url = urlsplit(self.path)
+            if url.path == "/host/health":
+                proof = getattr(self.review_api, "host_proof", None)
+                if self.headers.get("Origin") is not None:
+                    raise ReviewError(
+                        "permission_denied", "Only the desktop host can verify its session."
+                    )
+                if proof is None:
+                    raise ReviewError(
+                        "workspace_failure", "Desktop project sessions are not configured."
+                    )
+                query = parse_qs(url.query, keep_blank_values=True)
+                if set(query) != {"challenge"} or len(query["challenge"]) != 1:
+                    raise ReviewError("validation_error", "Provide exactly one host challenge.")
+                self._send_json(200, proof(query["challenge"][0]))
+                return
             route = ROUTES.get(url.path)
             if route is None:
                 self._send_json(404, {"error": "not found", "path": self.path})
                 return
             query = {k: v[-1] for k, v in parse_qs(url.query, keep_blank_values=True).items()}
             status, payload = 200, route(query)
+        except ReviewError as exc:
+            status, payload = ERROR_STATUS.get(exc.code, 503), exc.to_dict()
         except ValueError as exc:
             status, payload = 400, {"error": str(exc)}
         except core.Unavailable as exc:
@@ -238,11 +269,15 @@ def _shutdown_when_stdin_closes(httpd: ThreadingHTTPServer) -> None:
 
 
 def serve(
-    host: str = DEFAULT_HOST, port: int | None = None, exit_with_parent: bool = False
+    host: str = DEFAULT_HOST,
+    port: int | None = None,
+    exit_with_parent: bool = False,
+    *,
+    review_api: ReviewAPI | None = None,
 ) -> None:
     if port is None:
         port = int(os.environ.get("TMODEL_ENGINE_PORT", DEFAULT_PORT))
-    httpd = make_server(host, port)
+    httpd = make_server(host, port, review_api=review_api)
     bound_host, bound_port = httpd.server_address[:2]
     print(
         f"tmodel-engine {core.version()['version']} listening on http://{bound_host}:{bound_port}",

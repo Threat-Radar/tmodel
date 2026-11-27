@@ -41,6 +41,11 @@ pub struct EngineState {
 }
 
 impl EngineState {
+    pub fn owned(&self) -> bool {
+        matches!(*self.process.lock().unwrap(), Some(EngineProcess::Started))
+            && self.child.lock().unwrap().is_some()
+    }
+
     fn set(&self, p: EngineProcess) {
         *self.process.lock().unwrap() = Some(p);
         self.exited.notify_all();
@@ -75,6 +80,8 @@ pub fn tmodel_engine_answers(port: u16) -> bool {
 /// Decide what to do about the port, then start the sidecar if it is ours to start.
 pub fn start(app: &AppHandle) {
     let state = app.state::<EngineState>();
+    let projects = app.state::<crate::project_host::ProjectHostState>();
+    projects.clear();
     if !port_is_free(ENGINE_PORT) {
         state.set(if tmodel_engine_answers(ENGINE_PORT) {
             EngineProcess::External
@@ -84,22 +91,40 @@ pub fn start(app: &AppHandle) {
         return;
     }
 
+    let credentials = app
+        .path()
+        .app_local_data_dir()
+        .map_err(|_| "Cannot find the desktop identity directory.".to_string())
+        .and_then(|directory| projects.initialize(&directory))
+        .ok(); // A missing private identity disables writes, not read-only browsing.
+
     // The one-file engine runs as a launcher plus the Python process. A process
     // group permits killing both if needed. --exit-with-parent stops the engine
     // when stdin closes, on normal quit as well as app crash or forced quit.
+    // #288 must enable its --projects CLI option when the storage implementation
+    // lands. Until then, pass the host binding but preserve read-only startup.
     let spawned = app.shell().sidecar(SIDECAR).and_then(|cmd| {
-        cmd.args([
-            "serve",
-            "--port",
-            &ENGINE_PORT.to_string(),
-            "--exit-with-parent",
-        ])
-        .set_process_group(true)
-        .spawn()
+        let cmd = cmd
+            .env("TMODEL_HOST_TOKEN", "")
+            .env("TMODEL_REVIEWER_ID", "")
+            .args([
+                "serve",
+                "--port",
+                &ENGINE_PORT.to_string(),
+                "--exit-with-parent",
+            ]);
+        let cmd = if let Some(credentials) = credentials {
+            cmd.env("TMODEL_HOST_TOKEN", &credentials.token)
+                .env("TMODEL_REVIEWER_ID", &credentials.identity)
+        } else {
+            cmd
+        };
+        cmd.set_process_group(true).spawn()
     });
     let (mut rx, child) = match spawned {
         Ok(pair) => pair,
         Err(err) => {
+            projects.clear();
             state.set(EngineProcess::SpawnFailed {
                 error: err.to_string(),
             });
@@ -121,6 +146,7 @@ pub fn start(app: &AppHandle) {
                     lines.drain(..excess);
                 }
                 CommandEvent::Terminated(payload) => {
+                    app.state::<crate::project_host::ProjectHostState>().clear();
                     state.child.lock().unwrap().take();
                     let stderr = state.stderr.lock().unwrap().join("\n");
                     state.set(EngineProcess::Exited {
@@ -137,6 +163,7 @@ pub fn start(app: &AppHandle) {
 /// Close stdin so the engine exits normally and PyInstaller removes its unpacked
 /// runtime. SIGKILL would stop both processes but leave an _MEI directory behind.
 pub fn stop(app: &AppHandle) {
+    app.state::<crate::project_host::ProjectHostState>().clear();
     let state = app.state::<EngineState>();
     let child = state.child.lock().unwrap().take();
     if let Some(child) = child {

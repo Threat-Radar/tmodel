@@ -1,4 +1,4 @@
-"""Storage boundary for local human review (#288/#289), not a persistence adapter."""
+"""Local review storage contract and adapter for #288's version writer (#289)."""
 
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
@@ -61,14 +61,57 @@ class ReviewWorkspace(Protocol):
     def commit(self, model_id: str, expected_revision: str, document: Mapping[str, Any]) -> str: ...
 
 
+class ProjectReviewWorkspace:
+    """Use #288's version writer; physical storage remains owned by #288."""
+
+    def __init__(self, projects: Any) -> None:
+        self.projects = projects
+
+    def read(self, model_id: str, revision: str) -> ModelRevision:
+        return self.projects.read(model_id, revision)
+
+    def history(self, model_id: str, revision: str) -> Sequence[ModelRevision]:
+        return self.projects.history(model_id, revision)
+
+    def validate(self, document: Mapping[str, Any]) -> None:
+        self.projects.validate(document)
+
+    def commit(self, model_id: str, expected_revision: str, document: Mapping[str, Any]) -> str:
+        return self.commit_version(
+            model_id, expected_revision, document, description=None, summary=None
+        )
+
+    def commit_version(
+        self,
+        model_id: str,
+        expected_revision: str,
+        document: Mapping[str, Any],
+        *,
+        description: str | None,
+        summary: Mapping[str, Any] | None,
+    ) -> str:
+        return self.projects.save_version(
+            model_id,
+            expected_revision,
+            document,
+            description=description,
+            summary=summary,
+        )
+
+
 @dataclass(frozen=True)
 class ReviewPrincipal:
     """Verified by the host, never constructed from an HTTP request body.
 
-    The host binds its authenticated session to an existing human Party, model
-    access and explicit actions. Model roles (including sponsor) grant nothing.
+    The host binds its authenticated session to a human Party, model access and
+    explicit actions. Only the native host may provision its verified local user
+    on first save. Model roles (including sponsor) grant nothing.
     """
 
     party_id: str
     model_ids: frozenset[str]
     actions: frozenset[str] = frozenset({"read"})
+    # Host-only capability: provision this verified person's identity atomically
+    # with their first change to an editable copy. Never reclassify an old Party.
+    allow_party_creation: bool = False
+    display_name: str = "Local reviewer"

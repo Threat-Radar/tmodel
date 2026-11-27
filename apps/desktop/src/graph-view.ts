@@ -980,11 +980,10 @@ export class KnowledgeGraphView {
   /** Shows the recorded Assertion/Review state of one relationship, if any. */
   private appendRelationshipReview(item: HTMLElement, relationship: GraphRelationship): void {
     const { properties } = relationship;
-    // Structured provenance is authoritative and rendered per Assertion below;
-    // a legacy aggregate badge would misdescribe authored or mixed-state edges.
-    const review = relationship.assertions?.length
-      ? undefined
-      : relationshipReviewState(properties);
+    // The engine's human evidence is distinct from recorded per-Assertion
+    // verdicts. Older structured snapshots retain recorded details below.
+    const review = typeof properties.human_reviewed === "boolean" || !relationship.assertions?.length
+      ? relationshipReviewState(properties) : undefined;
     if (!review && !relationship.assertions?.length) return;
     if (review) {
       item.classList.add(`review-${review.kind}`);
@@ -1001,7 +1000,7 @@ export class KnowledgeGraphView {
         const presentation = reviewStatePresentation(assertion.assertion_status, status);
         item.append(this.textElement(
           "span",
-          `${assertion.id} · ${presentation.label} · confidence: ${assertion.confidence ?? "not recorded"}`,
+          `${assertion.id} · Recorded ${presentation.label} · confidence: ${assertion.confidence ?? "not recorded"}`,
           "review-raw",
         ));
         if (assertion.description) {
