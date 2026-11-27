@@ -4,7 +4,7 @@ id: DL-0071
 title: Store façade with an Oxigraph adapter, and the library as nodes and edges
 type: process
 status: draft
-version: "0.1.1"
+version: "0.2.0"
 date: "2026-11-25"
 updated: "2026-11-26"
 human_owner: Maimcghee
@@ -54,7 +54,10 @@ DL-0070 on main first.
      `library:<id>#<fragment>` into the node and a locator for the edge.
   2. All relation kinds, plus `cites` naming a record, become one forward edge per
      fact: `superseded_by`, `updated_by` and `cited_by` are read from the other end.
-     `stated_by` keeps which records state each one. Citations with no record id
+     `see_also` and `contradicts` have no direction (the library's
+     `docs/references.md` calls them symmetric), so each pair is one edge, from the
+     lower record id to the higher (`SYMMETRIC`). `stated_by` keeps which records
+     state each one. Citations with no record id
      stay on the node. A link to a record not held is listed in `missing`, with no
      edge and no empty node.
   3. The library is one graph, `library`, replaced only when `Library.digest`
@@ -70,6 +73,8 @@ DL-0070 on main first.
 | Add and remove single nodes or edges | Deferred: the agreed rebuild is a whole source at a time (answer 3), and a per-record update would need its own id and digest rules. |
 | Derive edge ids from the properties too | Rejected: changing a property would change the id. Two edges with the same ends and type give their own ids instead. |
 | Keep the inverse links as written | Rejected: 4 of the 12 `supersedes` and 3 of the 6 `updates` links on the pinned library are recorded on one side only, so two records would disagree in the graph. |
+| One `see_also` or `contradicts` edge per side that states it | Rejected in review (@Clovier, #273): the links have no direction, and on the pinned library 173 `see_also` pairs are recorded on both sides and 411 on one. So one pair became two edges and another one. Each pair is now one edge, with both records in `stated_by`. |
+| Write a symmetric pair as two edges, one each way | Rejected: it gives two ids for one fact, and an export would show every pair twice. |
 | Create empty nodes for missing link targets | Rejected (answer 2): the pinned library has none, and an empty node would look like a record. |
 | RDF-star quoted triples as subjects | Not available: pyoxigraph 0.5 implements RDF 1.2, which replaces them with reifiers. ADR-0008 says "RDF-star"; the reifier is its standard form, so no ADR change is proposed. |
 | Use the schema's `tmodel:` namespace for store IRIs | Deferred to the exports (#53): store IRIs are internal, and an export chooses its published vocabulary. |
@@ -79,7 +84,7 @@ DL-0070 on main first.
 
 Local, on Python 3.14 with `pyoxigraph` 0.5.13:
 
-- **38 new tests**, the façade tests each run against Oxigraph and the stand-in adapter:
+- **39 new tests**, the façade tests each run against Oxigraph and the stand-in adapter:
   - a small graph written, read back and rebuilt in a fresh store, with the same ids and edges;
   - an unchanged digest writes nothing, and a changed one replaces only that graph;
   - the same id kept separately in two graphs;
@@ -89,16 +94,19 @@ Local, on Python 3.14 with `pyoxigraph` 0.5.13:
 - The library tests use the fixture library and small built libraries:
   - node ids;
   - one-sided and two-sided inverse links giving the same edges;
+  - one-sided and two-sided `see_also` and `contradicts` links giving one edge per pair;
   - record cites as edges, with external cites kept on the node;
   - missing targets listed;
   - loading twice giving the same store (#142's test).
-- **822 engine tests pass, 10 skipped** (784 before). Ruff lint and format pass.
+- **823 engine tests pass, 10 skipped** (784 before). Ruff lint and format pass.
 - The whole pinned library (`e406827`, 685 records) loads in 0.09 s:
-  - 1,080 edges (757 `see_also`, 240 `cites`, 60 `part_of`, 12 `supersedes`, 6 `updates`, 4 `implements_concept`, 1 `contradicts`);
+  - 907 edges (584 `see_also`, 240 `cites`, 60 `part_of`, 12 `supersedes`, 6 `updates`, 4 `implements_concept`, 1 `contradicts`). Before the review fix there were 1,080, because the 173 `see_also` pairs stated on both sides were two edges each;
   - 860 external cites on nodes, and nothing missing;
   - a rebuild gives the same store.
 
 # Human accepted / rejected
 
-@Clovier accepted the three answers on #65 (2026-11-16). No human has reviewed this
-code yet.
+@Clovier accepted the three answers on #65 (2026-11-16). On 2026-11-26, @Clovier's
+review of #273 asked for two changes: the DL number, and one edge per `see_also` or
+`contradicts` pair. Both are made here. @Maimcghee asked for the fixes ("please do
+what needs to be done"); the code is Claude Code's draft until the review accepts it.
