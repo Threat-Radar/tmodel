@@ -60,12 +60,26 @@ export function modelOptionGroups(models: readonly ModelSummary[]): ModelOptionG
   return groups;
 }
 
-/** A one-line description of a model for the picker's status line. */
+/** Full summary shown in the model information disclosure. */
 export function modelSummaryLine(model: ModelSummary): string {
   const threats = model.counts.threats ?? 0;
   const paths = model.counts.attack_paths ?? 0;
   return `${model.kind_label} · ${threats} ${threats === 1 ? "threat" : "threats"}, `
     + `${model.reviewed_threats} with an accepted review · ${paths} attack ${paths === 1 ? "path" : "paths"}`;
+}
+
+/** Counts accepted threat reviews without assigning a review verdict to the model. */
+export function modelReviewLabel(model: ModelSummary): string {
+  const threats = model.counts.threats ?? 0;
+  if (threats === 0) return "No threats";
+  if (model.kind === "proposal" && model.reviewed_threats === 0) return "Unreviewed";
+  return `${model.reviewed_threats}/${threats} accepted`;
+}
+
+interface ModelReviewInfo {
+  disclosure: HTMLDetailsElement;
+  label: HTMLElement;
+  summary: HTMLElement;
 }
 
 export function readRememberedModel(storage: Pick<Storage, "getItem"> | undefined = browserStorage()): string | null {
@@ -116,6 +130,7 @@ export class ModelPicker {
   constructor(
     private readonly select: HTMLSelectElement,
     private readonly status: HTMLElement,
+    private readonly review: ModelReviewInfo,
     private readonly onChange: (model: ModelSummary) => void,
     private readonly documentRoot: Pick<Document, "createElement"> = document,
   ) {
@@ -127,6 +142,7 @@ export class ModelPicker {
 
   setModels(response: ModelListResponse): void {
     this.models = response.models;
+    this.hideReview();
     const children: HTMLElement[] = [];
     for (const group of modelOptionGroups(response.models)) {
       const optgroup = this.documentRoot.createElement("optgroup") as HTMLOptGroupElement;
@@ -150,7 +166,11 @@ export class ModelPicker {
 
   show(model: ModelSummary): void {
     this.select.value = model.file;
-    this.status.textContent = [modelSummaryLine(model), this.problemNote, this.externalNote].filter(Boolean).join(" · ");
+    this.review.label.textContent = modelReviewLabel(model);
+    this.review.summary.textContent = modelSummaryLine(model);
+    this.review.disclosure.hidden = false;
+    this.review.disclosure.open = false;
+    this.status.textContent = [this.problemNote, this.externalNote].filter(Boolean).join(" · ");
   }
 
   notice(message: string): void {
@@ -160,6 +180,12 @@ export class ModelPicker {
 
   waiting(message: string): void {
     this.select.disabled = true;
+    this.hideReview();
     this.status.textContent = message;
+  }
+
+  private hideReview(): void {
+    this.review.disclosure.hidden = true;
+    this.review.disclosure.open = false;
   }
 }

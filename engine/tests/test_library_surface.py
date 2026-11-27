@@ -8,6 +8,7 @@ when it is not checked out, as in CI.
 import json
 import os
 import shutil
+import sys
 import threading
 import urllib.error
 import urllib.parse
@@ -125,6 +126,28 @@ def test_core_without_a_library_is_unavailable(monkeypatch, tmp_path):
     monkeypatch.setenv("TMODEL_LIBRARY", str(tmp_path))
     with pytest.raises(core.Unavailable, match="no library at .*TMODEL_LIBRARY"):
         core.library_records()
+
+
+def test_source_checkout_serves_the_submodule(monkeypatch):
+    monkeypatch.delenv("TMODEL_LIBRARY", raising=False)
+    monkeypatch.delattr(sys, "frozen", raising=False)
+    assert library_module.configured_root() == PINNED
+
+
+def test_packaged_engine_serves_its_bundled_copy(monkeypatch, tmp_path):
+    # A packaged engine has no repo around it; bin/build-engine bundles the
+    # library below PyInstaller's _MEIPASS, which is the default there (#259).
+    monkeypatch.delenv("TMODEL_LIBRARY", raising=False)
+    monkeypatch.setattr(sys, "frozen", True, raising=False)
+    monkeypatch.setattr(sys, "_MEIPASS", str(tmp_path), raising=False)
+    assert library_module.configured_root() == tmp_path / "library"
+
+
+def test_tmodel_library_still_wins_in_a_packaged_engine(monkeypatch, tmp_path):
+    monkeypatch.setenv("TMODEL_LIBRARY", str(FIXTURES))
+    monkeypatch.setattr(sys, "frozen", True, raising=False)
+    monkeypatch.setattr(sys, "_MEIPASS", str(tmp_path), raising=False)
+    assert library_module.configured_root() == FIXTURES
 
 
 # --- local API -----------------------------------------------------------------

@@ -1,0 +1,2020 @@
+# owasp-agentic-threats-mitigations-v1-1: AI-proposed requirement extraction; recorded human decisions appear in reviews.
+# Agent: automated extraction. Human owner: @paria03.
+# Source: library:owasp-agentic-threats-mitigations-v1-1; library snapshot e4068272cec52a92b4414ea2a88a23b7125ce79d; read 2026-11-14.
+# Record content digest: 65e3bd59f99c411b055c6caf2bac96ab361dff8c010e4bef532a593ce10345ff.
+# Coverage: 105 top-level mitigation bullets / 105 converted / 0 skipped (104 distinct bullet texts).
+# Attribution: OWASP GenAI Security Project, Agentic AI - Threats and Mitigations v1.1 (December 2025).
+# Adapted/paraphrased; this fragment is CC-BY-SA-4.0: https://creativecommons.org/licenses/by-sa/4.0/
+# Official PDF text read via https://genai.owasp.org/download/45674/?tmstv=1739819891 ; binary digest not reverified.
+# Nested bullets remain within their parent Requirement; duplicated PB2/S3 bullets 5 and 6 retained.
+# Playbook/Step/bullet paths are ordinal source locators, not source-issued requirement numbers.
+requirements:
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-1-bullet-1
+  name: "Playbook 1 / Step 1 / bullet 1 — Constrain available tools to reduce opportunities to manipulate…"
+  text: Constrain available tools to reduce opportunities to manipulate agent interactions.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-1-step-1-bullet-1"
+  source_locator: Mitigation Strategies > Playbook 1 > Step 1 > top-level bullet 1 (printed p. 35;
+    PDF page 36)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-1-bullet-2
+  name: "Playbook 1 / Step 1 / bullet 2 — Screen generated responses for signs of manipulation."
+  text: Screen generated responses for signs of manipulation.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-1-step-1-bullet-2"
+  source_locator: Mitigation Strategies > Playbook 1 > Step 1 > top-level bullet 2 (printed p. 35;
+    PDF page 36)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-1-bullet-3
+  name: "Playbook 1 / Step 1 / bullet 3 — Compare agent behavior with its assigned role and expected…"
+  text: Compare agent behavior with its assigned role and expected activities.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-1-step-1-bullet-3"
+  source_locator: Mitigation Strategies > Playbook 1 > Step 1 > top-level bullet 3 (printed p. 35;
+    PDF page 36)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-2-bullet-1
+  name: "Playbook 1 / Step 2 / bullet 1 — Check that agent goals remain consistent and stop unintended…"
+  text: Check that agent goals remain consistent and stop unintended changes.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-1-step-2-bullet-1"
+  source_locator: Mitigation Strategies > Playbook 1 > Step 2 > top-level bullet 1 (printed p. 35;
+    PDF page 36)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-2-bullet-2
+  name: "Playbook 1 / Step 2 / bullet 2 — Detect unusually frequent attempts to change an agent's goals."
+  text: Detect unusually frequent attempts to change an agent's goals.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-1-step-2-bullet-2"
+  source_locator: Mitigation Strategies > Playbook 1 > Step 2 > top-level bullet 2 (printed p. 35;
+    PDF page 36)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-2-bullet-3
+  name: "Playbook 1 / Step 2 / bullet 3 — Constrain agents from adjusting their objectives beyond…"
+  text: Constrain agents from adjusting their objectives beyond approved operating limits.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-1-step-2-bullet-3"
+  source_locator: Mitigation Strategies > Playbook 1 > Step 2 > top-level bullet 3 (printed p. 35;
+    PDF page 36)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-3-bullet-1
+  name: "Playbook 1 / Step 3 / bullet 1 — Protect audit records with cryptography and storage that…"
+  text: Protect audit records with cryptography and storage that prevents alteration.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-1-step-3-bullet-1"
+  source_locator: Mitigation Strategies > Playbook 1 > Step 3 > top-level bullet 1 (printed p. 35;
+    PDF page 36)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-3-bullet-2
+  name: "Playbook 1 / Step 3 / bullet 2 — Detect unusual decisions as agent workflows execute."
+  text: Detect unusual decisions as agent workflows execute.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-1-step-3-bullet-2"
+  source_locator: Mitigation Strategies > Playbook 1 > Step 3 > top-level bullet 2 (printed p. 35;
+    PDF page 36)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-3-bullet-3
+  name: "Playbook 1 / Step 3 / bullet 3 — Record human overrides and inspect them for bias or…"
+  text: Record human overrides and inspect them for bias or misalignment.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-1-step-3-bullet-3"
+  source_locator: Mitigation Strategies > Playbook 1 > Step 3 > top-level bullet 3 (printed p. 35;
+    PDF page 36)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-3-bullet-4
+  name: "Playbook 1 / Step 3 / bullet 4 — Flag suspicious approval reversals in consequential workflows."
+  text: Flag suspicious approval reversals in consequential workflows.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-1-step-3-bullet-4"
+  source_locator: Mitigation Strategies > Playbook 1 > Step 3 > top-level bullet 4 (printed p. 35;
+    PDF page 36)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-3-bullet-5
+  name: "Playbook 1 / Step 3 / bullet 5 — Detect responses attempting to manipulate human decisions."
+  text: Detect responses attempting to manipulate human decisions.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-1-step-3-bullet-5"
+  source_locator: Mitigation Strategies > Playbook 1 > Step 3 > top-level bullet 5 (printed p. 35;
+    PDF page 36)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-1
+  name: "Playbook 2 / Step 1 / bullet 1 — Scan candidate memories for anomalies, restrict persistence to…"
+  text: Scan candidate memories for anomalies, restrict persistence to trusted sources and cryptographically
+    protect durable data.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-2-step-1-bullet-1"
+  source_locator: Mitigation Strategies > Playbook 2 > Step 1 > top-level bullet 1 (printed p. 36;
+    PDF page 37)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-2
+  name: "Playbook 2 / Step 1 / bullet 2 — Record access to agent memory."
+  text: Record access to agent memory.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-2-step-1-bullet-2"
+  source_locator: Mitigation Strategies > Playbook 2 > Step 1 > top-level bullet 2 (printed p. 36;
+    PDF page 37)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-3
+  name: "Playbook 2 / Step 1 / bullet 3 — Isolate session memories to prevent unintended cross-session…"
+  text: Isolate session memories to prevent unintended cross-session knowledge transfer.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-2-step-1-bullet-3"
+  source_locator: Mitigation Strategies > Playbook 2 > Step 1 > top-level bullet 3 (printed p. 36;
+    PDF page 37)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-4
+  name: "Playbook 2 / Step 1 / bullet 4 — Restrict retrieval to memories relevant to the current…"
+  text: Restrict retrieval to memories relevant to the current authorized task.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-2-step-1-bullet-4"
+  source_locator: Mitigation Strategies > Playbook 2 > Step 1 > top-level bullet 4 (printed p. 36;
+    PDF page 37)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-5
+  name: "Playbook 2 / Step 1 / bullet 5 — Set sensitivity-based retention limits for agent memory."
+  text: Set sensitivity-based retention limits for agent memory.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-2-step-1-bullet-5"
+  source_locator: Mitigation Strategies > Playbook 2 > Step 1 > top-level bullet 5 (printed p. 36;
+    PDF page 37)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-6
+  name: "Playbook 2 / Step 1 / bullet 6 — Record trusted-source attribution for memory changes."
+  text: Record trusted-source attribution for memory changes.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-2-step-1-bullet-6"
+  source_locator: Mitigation Strategies > Playbook 2 > Step 1 > top-level bullet 6 (printed p. 36;
+    PDF page 37)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-7
+  name: "Playbook 2 / Step 1 / bullet 7 — Validate durable memory changes using multiple agents and…"
+  text: Validate durable memory changes using multiple agents and external checks before committing
+    them.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-2-step-1-bullet-7"
+  source_locator: Mitigation Strategies > Playbook 2 > Step 1 > top-level bullet 7 (printed p. 36;
+    PDF page 37)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-8
+  name: "Playbook 2 / Step 1 / bullet 8 — Check candidate long-term knowledge against trusted sources…"
+  text: Check candidate long-term knowledge against trusted sources before storage using probabilistic
+    fact verification.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-2-step-1-bullet-8"
+  source_locator: Mitigation Strategies > Playbook 2 > Step 1 > top-level bullet 8 (printed p. 36;
+    PDF page 37)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-1
+  name: "Playbook 2 / Step 2 / bullet 1 — Detect unexpected memory changes and unauthorized access."
+  text: Detect unexpected memory changes and unauthorized access.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-2-step-2-bullet-1"
+  source_locator: Mitigation Strategies > Playbook 2 > Step 2 > top-level bullet 1 (printed p. 36;
+    PDF page 37)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-2
+  name: "Playbook 2 / Step 2 / bullet 2 — Revalidate suspicious committed memories using multiple agents…"
+  text: Revalidate suspicious committed memories using multiple agents or external checks.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-2-step-2-bullet-2"
+  source_locator: Mitigation Strategies > Playbook 2 > Step 2 > top-level bullet 2 (printed p. 36;
+    PDF page 37)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-3
+  name: "Playbook 2 / Step 2 / bullet 3 — Recheck stored knowledge for drift and contamination using…"
+  text: Recheck stored knowledge for drift and contamination using probabilistic truth assessment.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-2-step-2-bullet-3"
+  source_locator: Mitigation Strategies > Playbook 2 > Step 2 > top-level bullet 3 (printed p. 36;
+    PDF page 37)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-4
+  name: "Playbook 2 / Step 2 / bullet 4 — Restore a previously validated knowledge state when anomalies…"
+  text: Restore a previously validated knowledge state when anomalies are found.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-2-step-2-bullet-4"
+  source_locator: Mitigation Strategies > Playbook 2 > Step 2 > top-level bullet 4 (printed p. 36;
+    PDF page 37)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-5
+  name: "Playbook 2 / Step 2 / bullet 5 — Capture agent-memory snapshots that support forensic…"
+  text: Capture agent-memory snapshots that support forensic restoration.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-2-step-2-bullet-5"
+  source_locator: Mitigation Strategies > Playbook 2 > Step 2 > top-level bullet 5 (printed p. 36;
+    PDF page 37)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-6
+  name: "Playbook 2 / Step 2 / bullet 6 — Flag unusually frequent memory modifications."
+  text: Flag unusually frequent memory modifications.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-2-step-2-bullet-6"
+  source_locator: Mitigation Strategies > Playbook 2 > Step 2 > top-level bullet 6 (printed p. 36;
+    PDF page 37)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-3-bullet-1
+  name: "Playbook 2 / Step 3 / bullet 1 — Compare new knowledge with established facts through…"
+  text: Compare new knowledge with established facts through probabilistic truth checks.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-2-step-3-bullet-1"
+  source_locator: Mitigation Strategies > Playbook 2 > Step 3 > top-level bullet 1 (printed p. 37;
+    PDF page 38)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-3-bullet-2
+  name: "Playbook 2 / Step 3 / bullet 2 — Prevent unverified information from propagating into agent…"
+  text: Prevent unverified information from propagating into agent decisions.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-2-step-3-bullet-2"
+  source_locator: Mitigation Strategies > Playbook 2 > Step 3 > top-level bullet 2 (printed p. 37;
+    PDF page 38)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-3-bullet-3
+  name: "Playbook 2 / Step 3 / bullet 3 — Maintain the historical lineage of agent-generated knowledge."
+  text: Maintain the historical lineage of agent-generated knowledge.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-2-step-3-bullet-3"
+  source_locator: Mitigation Strategies > Playbook 2 > Step 3 > top-level bullet 3 (printed p. 37;
+    PDF page 38)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-3-bullet-4
+  name: "Playbook 2 / Step 3 / bullet 4 — Version knowledge updates so changes remain auditable and…"
+  text: Version knowledge updates so changes remain auditable and reversible.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-2-step-3-bullet-4"
+  source_locator: Mitigation Strategies > Playbook 2 > Step 3 > top-level bullet 4 (printed p. 37;
+    PDF page 38)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-3-bullet-5
+  name: "Playbook 2 / Step 3 / bullet 5 — Check long-term memory-access patterns for drift while…"
+  text: Check long-term memory-access patterns for drift while validating log integrity and correlating
+    suspicious activity.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-2-step-3-bullet-5"
+  source_locator: Mitigation Strategies > Playbook 2 > Step 3 > top-level bullet 5 (printed p. 37;
+    PDF page 38)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-3-bullet-6
+  name: "Playbook 2 / Step 3 / bullet 6 — Check long-term memory-access patterns for drift while…"
+  text: Check long-term memory-access patterns for drift while validating log integrity and correlating
+    suspicious activity.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-2-step-3-bullet-6"
+  source_locator: Mitigation Strategies > Playbook 2 > Step 3 > top-level bullet 6 (printed p. 37;
+    PDF page 38)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-1
+  name: "Playbook 3 / Step 1 / bullet 1 — Enforce access rules defining which tools an agent may invoke."
+  text: Enforce access rules defining which tools an agent may invoke.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-3-step-1-bullet-1"
+  source_locator: Mitigation Strategies > Playbook 3 > Step 1 > top-level bullet 1 (printed p. 37;
+    PDF page 38)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-2
+  name: "Playbook 3 / Step 1 / bullet 2 — Version and peer-review prompts, scripts and memory definitions…"
+  text: Version and peer-review prompts, scripts and memory definitions like source code.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-3-step-1-bullet-2"
+  source_locator: Mitigation Strategies > Playbook 3 > Step 1 > top-level bullet 2 (printed p. 37;
+    PDF page 38)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-3
+  name: "Playbook 3 / Step 1 / bullet 3 — Authenticate each tool invocation at the function boundary."
+  text: Authenticate each tool invocation at the function boundary.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-3-step-1-bullet-3"
+  source_locator: Mitigation Strategies > Playbook 3 > Step 1 > top-level bullet 3 (printed p. 37;
+    PDF page 38)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-4
+  name: "Playbook 3 / Step 1 / bullet 4 — Run tools in resettable isolated sandboxes with constrained…"
+  text: Run tools in resettable isolated sandboxes with constrained resources, system calls and network
+    access, including inter-agent protocol calls.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-3-step-1-bullet-4"
+  source_locator: Mitigation Strategies > Playbook 3 > Step 1 > top-level bullet 4 (printed p. 37;
+    PDF page 38)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-5
+  name: "Playbook 3 / Step 1 / bullet 5 — Limit request rates for APIs and expensive computations."
+  text: Limit request rates for APIs and expensive computations.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-3-step-1-bullet-5"
+  source_locator: Mitigation Strategies > Playbook 3 > Step 1 > top-level bullet 5 (printed p. 38;
+    PDF page 39)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-6
+  name: "Playbook 3 / Step 1 / bullet 6 — Restrict tool use when live risk indicators exceed the allowed…"
+  text: Restrict tool use when live risk indicators exceed the allowed threshold.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-3-step-1-bullet-6"
+  source_locator: Mitigation Strategies > Playbook 3 > Step 1 > top-level bullet 6 (printed p. 38;
+    PDF page 39)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-7
+  name: "Playbook 3 / Step 1 / bullet 7 — Grant tool permissions only when needed and revoke them after…"
+  text: Grant tool permissions only when needed and revoke them after use.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-3-step-1-bullet-7"
+  source_locator: Mitigation Strategies > Playbook 3 > Step 1 > top-level bullet 7 (printed p. 38;
+    PDF page 39)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-8
+  name: "Playbook 3 / Step 1 / bullet 8 — Sign agent cards, prompts and model or tool definitions and…"
+  text: Sign agent cards, prompts and model or tool definitions and maintain verifiable component
+    inventories.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-3-step-1-bullet-8"
+  source_locator: Mitigation Strategies > Playbook 3 > Step 1 > top-level bullet 8 (printed p. 38;
+    PDF page 39)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-2-bullet-1
+  name: "Playbook 3 / Step 2 / bullet 1 — Capture tool interactions with evidence sufficient for forensic…"
+  text: Capture tool interactions with evidence sufficient for forensic tracing.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-3-step-2-bullet-1"
+  source_locator: Mitigation Strategies > Playbook 3 > Step 2 > top-level bullet 1 (printed p. 38;
+    PDF page 39)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-2-bullet-2
+  name: "Playbook 3 / Step 2 / bullet 2 — Detect command sequences that evade security restrictions."
+  text: Detect command sequences that evade security restrictions.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-3-step-2-bullet-2"
+  source_locator: Mitigation Strategies > Playbook 3 > Step 2 > top-level bullet 2 (printed p. 38;
+    PDF page 39)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-2-bullet-3
+  name: "Playbook 3 / Step 2 / bullet 3 — Obtain user approval before agents execute financial, medical…"
+  text: Obtain user approval before agents execute financial, medical or administrative tool operations.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-3-step-2-bullet-3"
+  source_locator: Mitigation Strategies > Playbook 3 > Step 2 > top-level bullet 3 (printed p. 38;
+    PDF page 39)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-2-bullet-4
+  name: "Playbook 3 / Step 2 / bullet 4 — Keep detailed tool-execution records for audits and anomaly…"
+  text: Keep detailed tool-execution records for audits and anomaly investigation.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-3-step-2-bullet-4"
+  source_locator: Mitigation Strategies > Playbook 3 > Step 2 > top-level bullet 4 (printed p. 38;
+    PDF page 39)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-2-bullet-5
+  name: "Playbook 3 / Step 2 / bullet 5 — Have people verify privileged generated code before execution."
+  text: Have people verify privileged generated code before execution.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-3-step-2-bullet-5"
+  source_locator: Mitigation Strategies > Playbook 3 > Step 2 > top-level bullet 5 (printed p. 38;
+    PDF page 39)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-2-bullet-6
+  name: "Playbook 3 / Step 2 / bullet 6 — Flag unusually rapid repeated invocations of an agent tool."
+  text: Flag unusually rapid repeated invocations of an agent tool.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-3-step-2-bullet-6"
+  source_locator: Mitigation Strategies > Playbook 3 > Step 2 > top-level bullet 6 (printed p. 38;
+    PDF page 39)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-2-bullet-7
+  name: "Playbook 3 / Step 2 / bullet 7 — Watch tool results for unexpected sensitive operations, data…"
+  text: Watch tool results for unexpected sensitive operations, data disclosure, drift or capability
+    changes.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-3-step-2-bullet-7"
+  source_locator: Mitigation Strategies > Playbook 3 > Step 2 > top-level bullet 7 (printed p. 38;
+    PDF page 39)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-1
+  name: "Playbook 3 / Step 3 / bullet 1 — Detect excessive agent workloads as requests arrive."
+  text: Detect excessive agent workloads as requests arrive.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-3-step-3-bullet-1"
+  source_locator: Mitigation Strategies > Playbook 3 > Step 3 > top-level bullet 1 (printed p. 38;
+    PDF page 39)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-2
+  name: "Playbook 3 / Step 3 / bullet 2 — Suspend agent processes automatically when their resource…"
+  text: Suspend agent processes automatically when their resource budgets are exceeded.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-3-step-3-bullet-2"
+  source_locator: Mitigation Strategies > Playbook 3 > Step 3 > top-level bullet 2 (printed p. 38;
+    PDF page 39)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-3
+  name: "Playbook 3 / Step 3 / bullet 3 — Flag generated code that attempts to bypass execution…"
+  text: Flag generated code that attempts to bypass execution restrictions.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-3-step-3-bullet-3"
+  source_locator: Mitigation Strategies > Playbook 3 > Step 3 > top-level bullet 3 (printed p. 38;
+    PDF page 39)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-4
+  name: "Playbook 3 / Step 3 / bullet 4 — Track aggregate resource use across agents to prevent…"
+  text: Track aggregate resource use across agents to prevent collective overload.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-3-step-3-bullet-4"
+  source_locator: Mitigation Strategies > Playbook 3 > Step 3 > top-level bullet 4 (printed p. 38;
+    PDF page 39)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-5
+  name: "Playbook 3 / Step 3 / bullet 5 — Constrain simultaneous agent requests to modify systems."
+  text: Constrain simultaneous agent requests to modify systems.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-3-step-3-bullet-5"
+  source_locator: Mitigation Strategies > Playbook 3 > Step 3 > top-level bullet 5 (printed p. 38;
+    PDF page 39)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-6
+  name: "Playbook 3 / Step 3 / bullet 6 — Monitor inventoried agent dependencies for compromise…"
+  text: Monitor inventoried agent dependencies for compromise indicators and security threats.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-3-step-3-bullet-6"
+  source_locator: Mitigation Strategies > Playbook 3 > Step 3 > top-level bullet 6 (printed p. 38;
+    PDF page 39)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-7
+  name: "Playbook 3 / Step 3 / bullet 7 — Test defenses against poisoned supply-chain components through…"
+  text: Test defenses against poisoned supply-chain components through red-team exercises.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-3-step-3-bullet-7"
+  source_locator: Mitigation Strategies > Playbook 3 > Step 3 > top-level bullet 7 (printed p. 38;
+    PDF page 39)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-1
+  name: "Playbook 4 / Step 1 / bullet 1 — Verify agent identities with cryptographic mechanisms."
+  text: Verify agent identities with cryptographic mechanisms.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-4-step-1-bullet-1"
+  source_locator: Mitigation Strategies > Playbook 4 > Step 1 > top-level bullet 1 (printed p. 39;
+    PDF page 40)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-2
+  name: "Playbook 4 / Step 1 / bullet 2 — Grant role-based and attribute-based permissions limited to…"
+  text: Grant role-based and attribute-based permissions limited to each agent's needs.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-4-step-1-bullet-2"
+  source_locator: Mitigation Strategies > Playbook 4 > Step 1 > top-level bullet 2 (printed p. 39;
+    PDF page 40)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-3
+  name: "Playbook 4 / Step 1 / bullet 3 — Use multifactor authentication for privileged agent accounts."
+  text: Use multifactor authentication for privileged agent accounts.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-4-step-1-bullet-3"
+  source_locator: Mitigation Strategies > Playbook 4 > Step 1 > top-level bullet 3 (printed p. 39;
+    PDF page 40)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-4
+  name: "Playbook 4 / Step 1 / bullet 4 — Reauthenticate agents throughout long-running sessions."
+  text: Reauthenticate agents throughout long-running sessions.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-4-step-1-bullet-4"
+  source_locator: Mitigation Strategies > Playbook 4 > Step 1 > top-level bullet 4 (printed p. 39;
+    PDF page 40)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-5
+  name: "Playbook 4 / Step 1 / bullet 5 — Permit cross-agent privilege delegation only through explicitly…"
+  text: Permit cross-agent privilege delegation only through explicitly authorized workflows.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-4-step-1-bullet-5"
+  source_locator: Mitigation Strategies > Playbook 4 > Step 1 > top-level bullet 5 (printed p. 39;
+    PDF page 40)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-6
+  name: "Playbook 4 / Step 1 / bullet 6 — Authenticate both participants before allowing agent-to-agent…"
+  text: Authenticate both participants before allowing agent-to-agent exchanges.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-4-step-1-bullet-6"
+  source_locator: Mitigation Strategies > Playbook 4 > Step 1 > top-level bullet 6 (printed p. 39;
+    PDF page 40)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-7
+  name: "Playbook 4 / Step 1 / bullet 7 — Issue temporary agent credentials with short expiration periods."
+  text: Issue temporary agent credentials with short expiration periods.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-4-step-1-bullet-7"
+  source_locator: Mitigation Strategies > Playbook 4 > Step 1 > top-level bullet 7 (printed p. 39;
+    PDF page 40)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-2-bullet-1
+  name: "Playbook 4 / Step 2 / bullet 1 — Expire elevated access automatically through dynamic…"
+  text: Expire elevated access automatically through dynamic authorization controls.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-4-step-2-bullet-1"
+  source_locator: Mitigation Strategies > Playbook 4 > Step 2 > top-level bullet 1 (printed p. 39;
+    PDF page 40)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-2-bullet-2
+  name: "Playbook 4 / Step 2 / bullet 2 — Use behavioral profiles to detect inconsistent role assignments…"
+  text: Use behavioral profiles to detect inconsistent role assignments or access patterns.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-4-step-2-bullet-2"
+  source_locator: Mitigation Strategies > Playbook 4 > Step 2 > top-level bullet 2 (printed p. 39;
+    PDF page 40)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-2-bullet-3
+  name: "Playbook 4 / Step 2 / bullet 3 — Require human or two-agent validation for consequential…"
+  text: Require human or two-agent validation for consequential authentication changes.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-4-step-2-bullet-3"
+  source_locator: Mitigation Strategies > Playbook 4 > Step 2 > top-level bullet 3 (printed p. 39;
+    PDF page 40)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-2-bullet-4
+  name: "Playbook 4 / Step 2 / bullet 4 — Flag roles inherited outside an agent's usual authorized scope."
+  text: Flag roles inherited outside an agent's usual authorized scope.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-4-step-2-bullet-4"
+  source_locator: Mitigation Strategies > Playbook 4 > Step 2 > top-level bullet 4 (printed p. 39;
+    PDF page 40)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-2-bullet-5
+  name: "Playbook 4 / Step 2 / bullet 5 — Downgrade elevated privileges automatically when their approved…"
+  text: Downgrade elevated privileges automatically when their approved duration ends.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-4-step-2-bullet-5"
+  source_locator: Mitigation Strategies > Playbook 4 > Step 2 > top-level bullet 5 (printed p. 39;
+    PDF page 40)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-1
+  name: "Playbook 4 / Step 3 / bullet 1 — Track longitudinal behavior for inconsistent identity…"
+  text: Track longitudinal behavior for inconsistent identity verification.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-4-step-3-bullet-1"
+  source_locator: Mitigation Strategies > Playbook 4 > Step 3 > top-level bullet 1 (printed p. 39;
+    PDF page 40)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-2
+  name: "Playbook 4 / Step 3 / bullet 2 — Detect unexpected role changes or permission misuse by agents."
+  text: Detect unexpected role changes or permission misuse by agents.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-4-step-3-bullet-2"
+  source_locator: Mitigation Strategies > Playbook 4 > Step 3 > top-level bullet 2 (printed p. 39;
+    PDF page 40)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-3
+  name: "Playbook 4 / Step 3 / bullet 3 — Flag privileged actions outside the agent's normal…"
+  text: Flag privileged actions outside the agent's normal responsibilities.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-4-step-3-bullet-3"
+  source_locator: Mitigation Strategies > Playbook 4 > Step 3 > top-level bullet 3 (printed p. 39;
+    PDF page 40)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-4
+  name: "Playbook 4 / Step 3 / bullet 4 — Compare authentication events with historical access records to…"
+  text: Compare authentication events with historical access records to identify suspicious deviations.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-4-step-3-bullet-4"
+  source_locator: Mitigation Strategies > Playbook 4 > Step 3 > top-level bullet 4 (printed p. 39;
+    PDF page 40)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-5
+  name: "Playbook 4 / Step 3 / bullet 5 — Flag identity-related behavior inconsistent with the agent's…"
+  text: Flag identity-related behavior inconsistent with the agent's history.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-4-step-3-bullet-5"
+  source_locator: Mitigation Strategies > Playbook 4 > Step 3 > top-level bullet 5 (printed p. 39;
+    PDF page 40)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-6
+  name: "Playbook 4 / Step 3 / bullet 6 — Detect repeated unsuccessful authentication attempts by agents…"
+  text: Detect repeated unsuccessful authentication attempts by agents or users.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-4-step-3-bullet-6"
+  source_locator: Mitigation Strategies > Playbook 4 > Step 3 > top-level bullet 6 (printed p. 39;
+    PDF page 40)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-7
+  name: "Playbook 4 / Step 3 / bullet 7 — Detect recursive cross-agent tool chains and isolate agents…"
+  text: Detect recursive cross-agent tool chains and isolate agents producing suspicious protocol
+    traffic.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-4-step-3-bullet-7"
+  source_locator: Mitigation Strategies > Playbook 4 > Step 3 > top-level bullet 7 (printed p. 40;
+    PDF page 41)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-1-bullet-1
+  name: "Playbook 5 / Step 1 / bullet 1 — Prioritize human review queues using risk-sensitive agent trust…"
+  text: Prioritize human review queues using risk-sensitive agent trust scores.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-5-step-1-bullet-1"
+  source_locator: Mitigation Strategies > Playbook 5 > Step 1 > top-level bullet 1 (printed p. 40;
+    PDF page 41)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-1-bullet-2
+  name: "Playbook 5 / Step 1 / bullet 2 — Route high-impact actions to human oversight while automating…"
+  text: Route high-impact actions to human oversight while automating low-risk approvals.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-5-step-1-bullet-2"
+  source_locator: Mitigation Strategies > Playbook 5 > Step 1 > top-level bullet 2 (printed p. 40;
+    PDF page 41)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-1-bullet-3
+  name: "Playbook 5 / Step 1 / bullet 3 — Reduce generated notifications to avoid overloading human…"
+  text: Reduce generated notifications to avoid overloading human reviewers.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-5-step-1-bullet-3"
+  source_locator: Mitigation Strategies > Playbook 5 > Step 1 > top-level bullet 3 (printed p. 40;
+    PDF page 41)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-1-bullet-4
+  name: "Playbook 5 / Step 1 / bullet 4 — Cap notification, request and approval frequency to limit…"
+  text: Cap notification, request and approval frequency to limit reviewer fatigue.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-5-step-1-bullet-4"
+  source_locator: Mitigation Strategies > Playbook 5 > Step 1 > top-level bullet 4 (printed p. 40;
+    PDF page 41)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-1-bullet-5
+  name: "Playbook 5 / Step 1 / bullet 5 — Require verification by two agents before an agent changes its…"
+  text: Require verification by two agents before an agent changes its operating goals.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-5-step-1-bullet-5"
+  source_locator: Mitigation Strategies > Playbook 5 > Step 1 > top-level bullet 5 (printed p. 40;
+    PDF page 41)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-1-bullet-6
+  name: "Playbook 5 / Step 1 / bullet 6 — Provide concise explanations of agent decisions to help human…"
+  text: Provide concise explanations of agent decisions to help human reviewers assess them.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-5-step-1-bullet-6"
+  source_locator: Mitigation Strategies > Playbook 5 > Step 1 > top-level bullet 6 (printed p. 40;
+    PDF page 41)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-1-bullet-7
+  name: "Playbook 5 / Step 1 / bullet 7 — Redistribute review tasks to balance workload among people."
+  text: Redistribute review tasks to balance workload among people.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-5-step-1-bullet-7"
+  source_locator: Mitigation Strategies > Playbook 5 > Step 1 > top-level bullet 7 (printed p. 40;
+    PDF page 41)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-2-bullet-1
+  name: "Playbook 5 / Step 2 / bullet 1 — Detect and block agent behavior inconsistent with approved…"
+  text: Detect and block agent behavior inconsistent with approved goals.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-5-step-2-bullet-1"
+  source_locator: Mitigation Strategies > Playbook 5 > Step 2 > top-level bullet 1 (printed p. 40;
+    PDF page 41)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-2-bullet-2
+  name: "Playbook 5 / Step 2 / bullet 2 — Track repeated requests from an agent to change its goals."
+  text: Track repeated requests from an agent to change its goals.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-5-step-2-bullet-2"
+  source_locator: Mitigation Strategies > Playbook 5 > Step 2 > top-level bullet 2 (printed p. 40;
+    PDF page 41)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-3-bullet-1
+  name: "Playbook 5 / Step 3 / bullet 1 — Make decision audit records cryptographically protected and…"
+  text: Make decision audit records cryptographically protected and resistant to alteration.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-5-step-3-bullet-1"
+  source_locator: Mitigation Strategies > Playbook 5 > Step 3 > top-level bullet 1 (printed p. 40;
+    PDF page 41)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-3-bullet-2
+  name: "Playbook 5 / Step 3 / bullet 2 — Detect unusual decision patterns in running workflows."
+  text: Detect unusual decision patterns in running workflows.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-5-step-3-bullet-2"
+  source_locator: Mitigation Strategies > Playbook 5 > Step 3 > top-level bullet 2 (printed p. 40;
+    PDF page 41)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-3-bullet-3
+  name: "Playbook 5 / Step 3 / bullet 3 — Record and inspect human overrides for bias or agent…"
+  text: Record and inspect human overrides for bias or agent misalignment.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-5-step-3-bullet-3"
+  source_locator: Mitigation Strategies > Playbook 5 > Step 3 > top-level bullet 3 (printed p. 40;
+    PDF page 41)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-3-bullet-4
+  name: "Playbook 5 / Step 3 / bullet 4 — Flag suspicious transitions from denial to approval in…"
+  text: Flag suspicious transitions from denial to approval in consequential decisions.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-5-step-3-bullet-4"
+  source_locator: Mitigation Strategies > Playbook 5 > Step 3 > top-level bullet 4 (printed p. 41;
+    PDF page 42)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-1
+  name: "Playbook 6 / Step 1 / bullet 1 — Authenticate and encrypt inter-agent messages, including…"
+  text: Authenticate and encrypt inter-agent messages, including forwarded messages.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-6-step-1-bullet-1"
+  source_locator: Mitigation Strategies > Playbook 6 > Step 1 > top-level bullet 1 (printed p. 41;
+    PDF page 42)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-2
+  name: "Playbook 6 / Step 1 / bullet 2 — Evaluate multi-agent transactions using agent trust scores."
+  text: Evaluate multi-agent transactions using agent trust scores.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-6-step-1-bullet-2"
+  source_locator: Mitigation Strategies > Playbook 6 > Step 1 > top-level bullet 2 (printed p. 41;
+    PDF page 42)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-3
+  name: "Playbook 6 / Step 1 / bullet 3 — Use consensus checks before consequential agent operations."
+  text: Use consensus checks before consequential agent operations.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-6-step-1-bullet-3"
+  source_locator: Mitigation Strategies > Playbook 6 > Step 1 > top-level bullet 3 (printed p. 41;
+    PDF page 42)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-4
+  name: "Playbook 6 / Step 1 / bullet 4 — Require approval from multiple agents for decisions critical to…"
+  text: Require approval from multiple agents for decisions critical to a workflow.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-6-step-1-bullet-4"
+  source_locator: Mitigation Strategies > Playbook 6 > Step 1 > top-level bullet 4 (printed p. 41;
+    PDF page 42)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-5
+  name: "Playbook 6 / Step 1 / bullet 5 — Separate agent tasks to limit cross-agent privilege escalation."
+  text: Separate agent tasks to limit cross-agent privilege escalation.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-6-step-1-bullet-5"
+  source_locator: Mitigation Strategies > Playbook 6 > Step 1 > top-level bullet 5 (printed p. 41;
+    PDF page 42)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-6
+  name: "Playbook 6 / Step 1 / bullet 6 — Validate multi-agent exchanges to prevent malicious reasoning…"
+  text: Validate multi-agent exchanges to prevent malicious reasoning from spreading from one agent.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-6-step-1-bullet-6"
+  source_locator: Mitigation Strategies > Playbook 6 > Step 1 > top-level bullet 6 (printed p. 41;
+    PDF page 42)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-7
+  name: "Playbook 6 / Step 1 / bullet 7 — Require distributed consensus before consequential system…"
+  text: Require distributed consensus before consequential system changes.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-6-step-1-bullet-7"
+  source_locator: Mitigation Strategies > Playbook 6 > Step 1 > top-level bullet 7 (printed p. 41;
+    PDF page 42)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-8
+  name: "Playbook 6 / Step 1 / bullet 8 — Apply per-agent quotas and rate limits to prevent request…"
+  text: Apply per-agent quotas and rate limits to prevent request flooding.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-6-step-1-bullet-8"
+  source_locator: Mitigation Strategies > Playbook 6 > Step 1 > top-level bullet 8 (printed p. 41;
+    PDF page 42)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-9
+  name: "Playbook 6 / Step 1 / bullet 9 — Segment agent networks and limit communications to…"
+  text: Segment agent networks and limit communications to role-appropriate peers.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-6-step-1-bullet-9"
+  source_locator: Mitigation Strategies > Playbook 6 > Step 1 > top-level bullet 9 (printed p. 41;
+    PDF page 42)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-2-bullet-1
+  name: "Playbook 6 / Step 2 / bullet 1 — Detect agent behavior outside approved security policy during…"
+  text: Detect agent behavior outside approved security policy during execution.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-6-step-2-bullet-1"
+  source_locator: Mitigation Strategies > Playbook 6 > Step 2 > top-level bullet 1 (printed p. 41;
+    PDF page 42)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-2-bullet-2
+  name: "Playbook 6 / Step 2 / bullet 2 — Isolate rogue agents and their memory and communication history…"
+  text: Isolate rogue agents and their memory and communication history while restricting their system
+    access.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-6-step-2-bullet-2"
+  source_locator: Mitigation Strategies > Playbook 6 > Step 2 > top-level bullet 2 (printed p. 41;
+    PDF page 42)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-2-bullet-3
+  name: "Playbook 6 / Step 2 / bullet 3 — Reduce suspicious agents' permissions pending review."
+  text: Reduce suspicious agents' permissions pending review.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-6-step-2-bullet-3"
+  source_locator: Mitigation Strategies > Playbook 6 > Step 2 > top-level bullet 3 (printed p. 41;
+    PDF page 42)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-2-bullet-4
+  name: "Playbook 6 / Step 2 / bullet 4 — Disable unauthorized agent processes automatically to contain…"
+  text: Disable unauthorized agent processes automatically to contain rogue behavior.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-6-step-2-bullet-4"
+  source_locator: Mitigation Strategies > Playbook 6 > Step 2 > top-level bullet 4 (printed p. 41;
+    PDF page 42)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-2-bullet-5
+  name: "Playbook 6 / Step 2 / bullet 5 — Detect attempts by blocked agents to return using another…"
+  text: Detect attempts by blocked agents to return using another identity.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-6-step-2-bullet-5"
+  source_locator: Mitigation Strategies > Playbook 6 > Step 2 > top-level bullet 5 (printed p. 42;
+    PDF page 43)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-3-bullet-1
+  name: "Playbook 6 / Step 3 / bullet 1 — Flag abnormal task delegation, role changes and privilege…"
+  text: Flag abnormal task delegation, role changes and privilege escalation across agents.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-6-step-3-bullet-1"
+  source_locator: Mitigation Strategies > Playbook 6 > Step 3 > top-level bullet 1 (printed p. 42;
+    PDF page 43)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-3-bullet-2
+  name: "Playbook 6 / Step 3 / bullet 2 — Log inter-agent exchanges and identify requests outside usual…"
+  text: Log inter-agent exchanges and identify requests outside usual behavior.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-6-step-3-bullet-2"
+  source_locator: Mitigation Strategies > Playbook 6 > Step 3 > top-level bullet 2 (printed p. 42;
+    PDF page 43)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-3-bullet-3
+  name: "Playbook 6 / Step 3 / bullet 3 — Flag sudden trust-score deterioration, including failures…"
+  text: Flag sudden trust-score deterioration, including failures propagating through multi-agent
+    systems.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-6-step-3-bullet-3"
+  source_locator: Mitigation Strategies > Playbook 6 > Step 3 > top-level bullet 3 (printed p. 42;
+    PDF page 43)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-3-bullet-4
+  name: "Playbook 6 / Step 3 / bullet 4 — Detect repeated approval overrides or decisions approved by…"
+  text: Detect repeated approval overrides or decisions approved by another agent after denial.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-6-step-3-bullet-4"
+  source_locator: Mitigation Strategies > Playbook 6 > Step 3 > top-level bullet 4 (printed p. 42;
+    PDF page 43)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-3-bullet-5
+  name: "Playbook 6 / Step 3 / bullet 5 — Detect excessive agent execution, system modification or…"
+  text: Detect excessive agent execution, system modification or privilege escalation rates.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-6-step-3-bullet-5"
+  source_locator: Mitigation Strategies > Playbook 6 > Step 3 > top-level bullet 5 (printed p. 42;
+    PDF page 43)
+- id: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-3-bullet-6
+  name: "Playbook 6 / Step 3 / bullet 6 — Compare decisions in similar situations and flag unexplained…"
+  text: Compare decisions in similar situations and flag unexplained contradictions.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:owasp-agentic-threats-mitigations-v1-1#playbook-6-step-3-bullet-6"
+  source_locator: Mitigation Strategies > Playbook 6 > Step 3 > top-level bullet 6 (printed p. 42;
+    PDF page 43)
+threat_instances:
+- id: threat-instance:owasp-agentic-threats-mitigations-v1-1-t6
+  name: T6 — Intent Breaking & Goal Manipulation
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:owasp-agentic-threats-mitigations-v1-1-t8
+  name: T8 — Repudiation & Untraceability
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:owasp-agentic-threats-mitigations-v1-1-t1
+  name: T1 — Memory Poisoning
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:owasp-agentic-threats-mitigations-v1-1-t2
+  name: T2 — Tool Misuse
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:owasp-agentic-threats-mitigations-v1-1-t17
+  name: T17 — Supply Chain Compromise
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:owasp-agentic-threats-mitigations-v1-1-t3
+  name: T3 — Privilege Compromise
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:owasp-agentic-threats-mitigations-v1-1-t11
+  name: T11 — Unexpected RCE & Code Attacks
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:owasp-agentic-threats-mitigations-v1-1-t4
+  name: T4 — Resource Overload
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:owasp-agentic-threats-mitigations-v1-1-t9
+  name: T9 — Identity Spoofing & Impersonation
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:owasp-agentic-threats-mitigations-v1-1-t10
+  name: T10 — Overwhelming HITL
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:owasp-agentic-threats-mitigations-v1-1-t15
+  name: T15 — Human Manipulation
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:owasp-agentic-threats-mitigations-v1-1-t12
+  name: T12 — Agent Communication Poisoning
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:owasp-agentic-threats-mitigations-v1-1-t13
+  name: T13 — Rogue Agents in Multi-Agent Systems
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+parties:
+- id: party:paria03
+  name: '@paria03'
+  party_kind: person
+assertions:
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-1-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t6
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-1-bullet-1
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t6
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Mitigation Strategies > Playbook 1 >
+    Step 1 > top-level bullet 1 (printed p. 35; PDF page 36); Playbook 1 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection originated as an AI interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-1-bullet-2-addresses-owasp-agentic-threats-mitigations-v1-1-t6
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-1-bullet-2
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t6
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 1 >
+    Step 1 > top-level bullet 2 (printed p. 35; PDF page 36); Playbook 1 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-1-bullet-3-addresses-owasp-agentic-threats-mitigations-v1-1-t6
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-1-bullet-3
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t6
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 1 >
+    Step 1 > top-level bullet 3 (printed p. 35; PDF page 36); Playbook 1 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-2-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t6
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-2-bullet-1
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t6
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 1 >
+    Step 2 > top-level bullet 1 (printed p. 35; PDF page 36); Playbook 1 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-2-bullet-2-addresses-owasp-agentic-threats-mitigations-v1-1-t6
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-2-bullet-2
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t6
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 1 >
+    Step 2 > top-level bullet 2 (printed p. 35; PDF page 36); Playbook 1 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-2-bullet-3-addresses-owasp-agentic-threats-mitigations-v1-1-t6
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-2-bullet-3
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t6
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 1 >
+    Step 2 > top-level bullet 3 (printed p. 35; PDF page 36); Playbook 1 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-3-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t8
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-3-bullet-1
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t8
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 1 >
+    Step 3 > top-level bullet 1 (printed p. 35; PDF page 36); Playbook 1 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-3-bullet-2-addresses-owasp-agentic-threats-mitigations-v1-1-t8
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-3-bullet-2
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t8
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 1 >
+    Step 3 > top-level bullet 2 (printed p. 35; PDF page 36); Playbook 1 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-3-bullet-3-addresses-owasp-agentic-threats-mitigations-v1-1-t8
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-3-bullet-3
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t8
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 1 >
+    Step 3 > top-level bullet 3 (printed p. 35; PDF page 36); Playbook 1 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-3-bullet-4-addresses-owasp-agentic-threats-mitigations-v1-1-t8
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-3-bullet-4
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t8
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 1 >
+    Step 3 > top-level bullet 4 (printed p. 35; PDF page 36); Playbook 1 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-3-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t8
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-3-bullet-5
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t8
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 1 >
+    Step 3 > top-level bullet 5 (printed p. 35; PDF page 36); Playbook 1 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t1
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-1
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t1
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 2 >
+    Step 1 > top-level bullet 1 (printed p. 36; PDF page 37); Playbook 2 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-2-addresses-owasp-agentic-threats-mitigations-v1-1-t1
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-2
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t1
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Mitigation Strategies > Playbook 2 >
+    Step 1 > top-level bullet 2 (printed p. 36; PDF page 37); Playbook 2 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection originated as an AI interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-3-addresses-owasp-agentic-threats-mitigations-v1-1-t1
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-3
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t1
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 2 >
+    Step 1 > top-level bullet 3 (printed p. 36; PDF page 37); Playbook 2 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-4-addresses-owasp-agentic-threats-mitigations-v1-1-t1
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-4
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t1
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 2 >
+    Step 1 > top-level bullet 4 (printed p. 36; PDF page 37); Playbook 2 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t1
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-5
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t1
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 2 >
+    Step 1 > top-level bullet 5 (printed p. 36; PDF page 37); Playbook 2 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-6-addresses-owasp-agentic-threats-mitigations-v1-1-t1
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-6
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t1
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 2 >
+    Step 1 > top-level bullet 6 (printed p. 36; PDF page 37); Playbook 2 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-7-addresses-owasp-agentic-threats-mitigations-v1-1-t1
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-7
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t1
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 2 >
+    Step 1 > top-level bullet 7 (printed p. 36; PDF page 37); Playbook 2 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-8-addresses-owasp-agentic-threats-mitigations-v1-1-t1
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-8
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t1
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 2 >
+    Step 1 > top-level bullet 8 (printed p. 36; PDF page 37); Playbook 2 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t1
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-1
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t1
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 2 >
+    Step 2 > top-level bullet 1 (printed p. 36; PDF page 37); Playbook 2 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-2-addresses-owasp-agentic-threats-mitigations-v1-1-t1
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-2
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t1
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 2 >
+    Step 2 > top-level bullet 2 (printed p. 36; PDF page 37); Playbook 2 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-3-addresses-owasp-agentic-threats-mitigations-v1-1-t1
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-3
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t1
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 2 >
+    Step 2 > top-level bullet 3 (printed p. 36; PDF page 37); Playbook 2 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-4-addresses-owasp-agentic-threats-mitigations-v1-1-t1
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-4
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t1
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 2 >
+    Step 2 > top-level bullet 4 (printed p. 36; PDF page 37); Playbook 2 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t1
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-5
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t1
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Mitigation Strategies > Playbook 2 >
+    Step 2 > top-level bullet 5 (printed p. 36; PDF page 37); Playbook 2 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection originated as an AI interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-6-addresses-owasp-agentic-threats-mitigations-v1-1-t1
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-6
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t1
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 2 >
+    Step 2 > top-level bullet 6 (printed p. 36; PDF page 37); Playbook 2 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-3-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t1
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-3-bullet-1
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t1
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 2 >
+    Step 3 > top-level bullet 1 (printed p. 37; PDF page 38); Playbook 2 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-3-bullet-2-addresses-owasp-agentic-threats-mitigations-v1-1-t1
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-3-bullet-2
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t1
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 2 >
+    Step 3 > top-level bullet 2 (printed p. 37; PDF page 38); Playbook 2 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-3-bullet-3-addresses-owasp-agentic-threats-mitigations-v1-1-t1
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-3-bullet-3
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t1
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 2 >
+    Step 3 > top-level bullet 3 (printed p. 37; PDF page 38); Playbook 2 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-3-bullet-4-addresses-owasp-agentic-threats-mitigations-v1-1-t1
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-3-bullet-4
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t1
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 2 >
+    Step 3 > top-level bullet 4 (printed p. 37; PDF page 38); Playbook 2 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-3-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t1
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-3-bullet-5
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t1
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 2 >
+    Step 3 > top-level bullet 5 (printed p. 37; PDF page 38); Playbook 2 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-3-bullet-6-addresses-owasp-agentic-threats-mitigations-v1-1-t1
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-3-bullet-6
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t1
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 2 >
+    Step 3 > top-level bullet 6 (printed p. 37; PDF page 38); Playbook 2 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t2
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-1
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t2
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 >
+    Step 1 > top-level bullet 1 (printed p. 37; PDF page 38); Playbook 3 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-2-addresses-owasp-agentic-threats-mitigations-v1-1-t17
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-2
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t17
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 >
+    Step 1 > top-level bullet 2 (printed p. 37; PDF page 38); Playbook 3 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-3-addresses-owasp-agentic-threats-mitigations-v1-1-t3
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-3
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t3
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 >
+    Step 1 > top-level bullet 3 (printed p. 37; PDF page 38); Playbook 3 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-4-addresses-owasp-agentic-threats-mitigations-v1-1-t11
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-4
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t11
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 >
+    Step 1 > top-level bullet 4 (printed p. 37; PDF page 38); Playbook 3 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t4
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-5
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t4
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Mitigation Strategies > Playbook 3 >
+    Step 1 > top-level bullet 5 (printed p. 38; PDF page 39); Playbook 3 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection originated as an AI interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-6-addresses-owasp-agentic-threats-mitigations-v1-1-t2
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-6
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t2
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 >
+    Step 1 > top-level bullet 6 (printed p. 38; PDF page 39); Playbook 3 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-7-addresses-owasp-agentic-threats-mitigations-v1-1-t3
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-7
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t3
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 >
+    Step 1 > top-level bullet 7 (printed p. 38; PDF page 39); Playbook 3 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-8-addresses-owasp-agentic-threats-mitigations-v1-1-t17
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-8
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t17
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 >
+    Step 1 > top-level bullet 8 (printed p. 38; PDF page 39); Playbook 3 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-2-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t2
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-2-bullet-1
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t2
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 >
+    Step 2 > top-level bullet 1 (printed p. 38; PDF page 39); Playbook 3 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-2-bullet-2-addresses-owasp-agentic-threats-mitigations-v1-1-t2
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-2-bullet-2
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t2
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 >
+    Step 2 > top-level bullet 2 (printed p. 38; PDF page 39); Playbook 3 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-2-bullet-3-addresses-owasp-agentic-threats-mitigations-v1-1-t2
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-2-bullet-3
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t2
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 >
+    Step 2 > top-level bullet 3 (printed p. 38; PDF page 39); Playbook 3 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-2-bullet-4-addresses-owasp-agentic-threats-mitigations-v1-1-t2
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-2-bullet-4
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t2
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 >
+    Step 2 > top-level bullet 4 (printed p. 38; PDF page 39); Playbook 3 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-2-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t11
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-2-bullet-5
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t11
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 >
+    Step 2 > top-level bullet 5 (printed p. 38; PDF page 39); Playbook 3 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-2-bullet-6-addresses-owasp-agentic-threats-mitigations-v1-1-t4
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-2-bullet-6
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t4
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 >
+    Step 2 > top-level bullet 6 (printed p. 38; PDF page 39); Playbook 3 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-2-bullet-7-addresses-owasp-agentic-threats-mitigations-v1-1-t2
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-2-bullet-7
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t2
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 >
+    Step 2 > top-level bullet 7 (printed p. 38; PDF page 39); Playbook 3 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t4
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-1
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t4
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Mitigation Strategies > Playbook 3 >
+    Step 3 > top-level bullet 1 (printed p. 38; PDF page 39); Playbook 3 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection originated as an AI interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-2-addresses-owasp-agentic-threats-mitigations-v1-1-t4
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-2
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t4
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 >
+    Step 3 > top-level bullet 2 (printed p. 38; PDF page 39); Playbook 3 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-3-addresses-owasp-agentic-threats-mitigations-v1-1-t11
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-3
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t11
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 >
+    Step 3 > top-level bullet 3 (printed p. 38; PDF page 39); Playbook 3 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-4-addresses-owasp-agentic-threats-mitigations-v1-1-t4
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-4
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t4
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 >
+    Step 3 > top-level bullet 4 (printed p. 38; PDF page 39); Playbook 3 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t4
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-5
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t4
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 >
+    Step 3 > top-level bullet 5 (printed p. 38; PDF page 39); Playbook 3 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-6-addresses-owasp-agentic-threats-mitigations-v1-1-t17
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-6
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t17
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 >
+    Step 3 > top-level bullet 6 (printed p. 38; PDF page 39); Playbook 3 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-7-addresses-owasp-agentic-threats-mitigations-v1-1-t17
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-7
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t17
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 3 >
+    Step 3 > top-level bullet 7 (printed p. 38; PDF page 39); Playbook 3 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t3
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-1
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t3
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 4 >
+    Step 1 > top-level bullet 1 (printed p. 39; PDF page 40); Playbook 4 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-2-addresses-owasp-agentic-threats-mitigations-v1-1-t3
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-2
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t3
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 4 >
+    Step 1 > top-level bullet 2 (printed p. 39; PDF page 40); Playbook 4 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-3-addresses-owasp-agentic-threats-mitigations-v1-1-t3
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-3
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t3
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 4 >
+    Step 1 > top-level bullet 3 (printed p. 39; PDF page 40); Playbook 4 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-4-addresses-owasp-agentic-threats-mitigations-v1-1-t3
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-4
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t3
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 4 >
+    Step 1 > top-level bullet 4 (printed p. 39; PDF page 40); Playbook 4 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t3
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-5
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t3
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 4 >
+    Step 1 > top-level bullet 5 (printed p. 39; PDF page 40); Playbook 4 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-6-addresses-owasp-agentic-threats-mitigations-v1-1-t3
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-6
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t3
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Mitigation Strategies > Playbook 4 >
+    Step 1 > top-level bullet 6 (printed p. 39; PDF page 40); Playbook 4 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection originated as an AI interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-7-addresses-owasp-agentic-threats-mitigations-v1-1-t3
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-7
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t3
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 4 >
+    Step 1 > top-level bullet 7 (printed p. 39; PDF page 40); Playbook 4 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-2-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t3
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-2-bullet-1
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t3
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 4 >
+    Step 2 > top-level bullet 1 (printed p. 39; PDF page 40); Playbook 4 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-2-bullet-2-addresses-owasp-agentic-threats-mitigations-v1-1-t3
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-2-bullet-2
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t3
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 4 >
+    Step 2 > top-level bullet 2 (printed p. 39; PDF page 40); Playbook 4 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-2-bullet-3-addresses-owasp-agentic-threats-mitigations-v1-1-t3
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-2-bullet-3
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t3
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 4 >
+    Step 2 > top-level bullet 3 (printed p. 39; PDF page 40); Playbook 4 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-2-bullet-4-addresses-owasp-agentic-threats-mitigations-v1-1-t3
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-2-bullet-4
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t3
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 4 >
+    Step 2 > top-level bullet 4 (printed p. 39; PDF page 40); Playbook 4 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-2-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t3
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-2-bullet-5
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t3
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 4 >
+    Step 2 > top-level bullet 5 (printed p. 39; PDF page 40); Playbook 4 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t9
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-1
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t9
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 4 >
+    Step 3 > top-level bullet 1 (printed p. 39; PDF page 40); Playbook 4 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-2-addresses-owasp-agentic-threats-mitigations-v1-1-t9
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-2
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t9
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 4 >
+    Step 3 > top-level bullet 2 (printed p. 39; PDF page 40); Playbook 4 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-3-addresses-owasp-agentic-threats-mitigations-v1-1-t9
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-3
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t9
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 4 >
+    Step 3 > top-level bullet 3 (printed p. 39; PDF page 40); Playbook 4 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-4-addresses-owasp-agentic-threats-mitigations-v1-1-t9
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-4
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t9
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 4 >
+    Step 3 > top-level bullet 4 (printed p. 39; PDF page 40); Playbook 4 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t9
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-5
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t9
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Mitigation Strategies > Playbook 4 >
+    Step 3 > top-level bullet 5 (printed p. 39; PDF page 40); Playbook 4 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection originated as an AI interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-6-addresses-owasp-agentic-threats-mitigations-v1-1-t9
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-6
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t9
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 4 >
+    Step 3 > top-level bullet 6 (printed p. 39; PDF page 40); Playbook 4 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-7-addresses-owasp-agentic-threats-mitigations-v1-1-t9
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-7
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t9
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 4 >
+    Step 3 > top-level bullet 7 (printed p. 40; PDF page 41); Playbook 4 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-1-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t10
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-1-bullet-1
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t10
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 5 >
+    Step 1 > top-level bullet 1 (printed p. 40; PDF page 41); Playbook 5 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-1-bullet-2-addresses-owasp-agentic-threats-mitigations-v1-1-t10
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-1-bullet-2
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t10
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 5 >
+    Step 1 > top-level bullet 2 (printed p. 40; PDF page 41); Playbook 5 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-1-bullet-3-addresses-owasp-agentic-threats-mitigations-v1-1-t10
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-1-bullet-3
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t10
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 5 >
+    Step 1 > top-level bullet 3 (printed p. 40; PDF page 41); Playbook 5 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-1-bullet-4-addresses-owasp-agentic-threats-mitigations-v1-1-t10
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-1-bullet-4
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t10
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 5 >
+    Step 1 > top-level bullet 4 (printed p. 40; PDF page 41); Playbook 5 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-1-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t10
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-1-bullet-5
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t10
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 5 >
+    Step 1 > top-level bullet 5 (printed p. 40; PDF page 41); Playbook 5 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-1-bullet-6-addresses-owasp-agentic-threats-mitigations-v1-1-t10
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-1-bullet-6
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t10
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 5 >
+    Step 1 > top-level bullet 6 (printed p. 40; PDF page 41); Playbook 5 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-1-bullet-7-addresses-owasp-agentic-threats-mitigations-v1-1-t10
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-1-bullet-7
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t10
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 5 >
+    Step 1 > top-level bullet 7 (printed p. 40; PDF page 41); Playbook 5 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-2-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t10
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-2-bullet-1
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t10
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 5 >
+    Step 2 > top-level bullet 1 (printed p. 40; PDF page 41); Playbook 5 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-2-bullet-2-addresses-owasp-agentic-threats-mitigations-v1-1-t10
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-2-bullet-2
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t10
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 5 >
+    Step 2 > top-level bullet 2 (printed p. 40; PDF page 41); Playbook 5 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-3-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t15
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-3-bullet-1
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t15
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Mitigation Strategies > Playbook 5 >
+    Step 3 > top-level bullet 1 (printed p. 40; PDF page 41); Playbook 5 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection originated as an AI interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-3-bullet-2-addresses-owasp-agentic-threats-mitigations-v1-1-t15
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-3-bullet-2
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t15
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 5 >
+    Step 3 > top-level bullet 2 (printed p. 40; PDF page 41); Playbook 5 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-3-bullet-3-addresses-owasp-agentic-threats-mitigations-v1-1-t15
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-3-bullet-3
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t15
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 5 >
+    Step 3 > top-level bullet 3 (printed p. 40; PDF page 41); Playbook 5 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-3-bullet-4-addresses-owasp-agentic-threats-mitigations-v1-1-t15
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-3-bullet-4
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t15
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 5 >
+    Step 3 > top-level bullet 4 (printed p. 41; PDF page 42); Playbook 5 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t12
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-1
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t12
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 6 >
+    Step 1 > top-level bullet 1 (printed p. 41; PDF page 42); Playbook 6 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-2-addresses-owasp-agentic-threats-mitigations-v1-1-t12
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-2
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t12
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 6 >
+    Step 1 > top-level bullet 2 (printed p. 41; PDF page 42); Playbook 6 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-3-addresses-owasp-agentic-threats-mitigations-v1-1-t12
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-3
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t12
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 6 >
+    Step 1 > top-level bullet 3 (printed p. 41; PDF page 42); Playbook 6 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-4-addresses-owasp-agentic-threats-mitigations-v1-1-t12
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-4
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t12
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 6 >
+    Step 1 > top-level bullet 4 (printed p. 41; PDF page 42); Playbook 6 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t12
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-5
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t12
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 6 >
+    Step 1 > top-level bullet 5 (printed p. 41; PDF page 42); Playbook 6 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-6-addresses-owasp-agentic-threats-mitigations-v1-1-t12
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-6
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t12
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 6 >
+    Step 1 > top-level bullet 6 (printed p. 41; PDF page 42); Playbook 6 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-7-addresses-owasp-agentic-threats-mitigations-v1-1-t12
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-7
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t12
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 6 >
+    Step 1 > top-level bullet 7 (printed p. 41; PDF page 42); Playbook 6 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-8-addresses-owasp-agentic-threats-mitigations-v1-1-t12
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-8
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t12
+  confidence: medium
+  assertion_status: proposed
+  description: 'Originally AI-proposed, 2026-11-14; human sample rejected (see recorded Review). Basis: Mitigation Strategies > Playbook 6 >
+    Step 1 > top-level bullet 8 (printed p. 41; PDF page 42); Playbook 6 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection originated as an AI interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-9-addresses-owasp-agentic-threats-mitigations-v1-1-t12
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-9
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t12
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 6 >
+    Step 1 > top-level bullet 9 (printed p. 41; PDF page 42); Playbook 6 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-2-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t13
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-2-bullet-1
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t13
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 6 >
+    Step 2 > top-level bullet 1 (printed p. 41; PDF page 42); Playbook 6 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-2-bullet-2-addresses-owasp-agentic-threats-mitigations-v1-1-t13
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-2-bullet-2
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t13
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 6 >
+    Step 2 > top-level bullet 2 (printed p. 41; PDF page 42); Playbook 6 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-2-bullet-3-addresses-owasp-agentic-threats-mitigations-v1-1-t13
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-2-bullet-3
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t13
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 6 >
+    Step 2 > top-level bullet 3 (printed p. 41; PDF page 42); Playbook 6 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-2-bullet-4-addresses-owasp-agentic-threats-mitigations-v1-1-t13
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-2-bullet-4
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t13
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 6 >
+    Step 2 > top-level bullet 4 (printed p. 41; PDF page 42); Playbook 6 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-2-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t13
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-2-bullet-5
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t13
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 6 >
+    Step 2 > top-level bullet 5 (printed p. 42; PDF page 43); Playbook 6 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-3-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t12
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-3-bullet-1
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t12
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 6 >
+    Step 3 > top-level bullet 1 (printed p. 42; PDF page 43); Playbook 6 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-3-bullet-2-addresses-owasp-agentic-threats-mitigations-v1-1-t12
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-3-bullet-2
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t12
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 6 >
+    Step 3 > top-level bullet 2 (printed p. 42; PDF page 43); Playbook 6 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-3-bullet-3-addresses-owasp-agentic-threats-mitigations-v1-1-t12
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-3-bullet-3
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t12
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 6 >
+    Step 3 > top-level bullet 3 (printed p. 42; PDF page 43); Playbook 6 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-3-bullet-4-addresses-owasp-agentic-threats-mitigations-v1-1-t12
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-3-bullet-4
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t12
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 6 >
+    Step 3 > top-level bullet 4 (printed p. 42; PDF page 43); Playbook 6 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-3-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t12
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-3-bullet-5
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t12
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Mitigation Strategies > Playbook 6 >
+    Step 3 > top-level bullet 5 (printed p. 42; PDF page 43); Playbook 6 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection is an unreviewed interpretation.'
+- id: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-3-bullet-6-addresses-owasp-agentic-threats-mitigations-v1-1-t12
+  subject: requirement:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-3-bullet-6
+  predicate: addresses
+  object: threat-instance:owasp-agentic-threats-mitigations-v1-1-t12
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Mitigation Strategies > Playbook 6 >
+    Step 3 > top-level bullet 6 (printed p. 42; PDF page 43); Playbook 6 names this threat in its
+    threat mapping (pp. 34–35); this individual control-to-threat selection originated as an AI interpretation.'
+reviews:
+- id: review:paria03-owasp-agentic-threats-mitigations-v1-1-playbook-1-step-1-bullet-1
+  reviews: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-1-step-1-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t6
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as an interpreted relationship: restricting available tools reduces opportunities
+    for goal manipulation. This is partial protection, not proof that manipulation is prevented.'
+- id: review:paria03-owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-2
+  reviews: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-1-bullet-2-addresses-owasp-agentic-threats-mitigations-v1-1-t1
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as an interpreted investigation relationship: memory access logs support investigation
+    of memory poisoning. Logging does not prevent poisoning.'
+- id: review:paria03-owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-5
+  reviews: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-2-step-2-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t1
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as an interpreted recovery relationship: memory snapshots support recovery
+    from memory poisoning if a trustworthy snapshot exists.'
+- id: review:paria03-owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-5
+  reviews: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-1-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t4
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as an interpreted relationship: limiting expensive requests directly limits
+    excessive consumption associated with resource overload.'
+- id: review:paria03-owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-1
+  reviews: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-3-step-3-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t4
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as an interpreted detection relationship: detecting excessive workloads helps
+    identify resource overload. A response is required to stop the overload.'
+- id: review:paria03-owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-6
+  reviews: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-1-bullet-6-addresses-owasp-agentic-threats-mitigations-v1-1-t3
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as an interpreted relationship: authenticating communicating agents helps block
+    unauthorized participants relevant to privilege compromise. Authentication alone does not enforce
+    permissions.'
+- id: review:paria03-owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-5
+  reviews: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-4-step-3-bullet-5-addresses-owasp-agentic-threats-mitigations-v1-1-t9
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as an interpreted detection relationship: unusual identity behavior can help
+    detect impersonation. Anomalies are not proof of impersonation.'
+- id: review:paria03-owasp-agentic-threats-mitigations-v1-1-playbook-5-step-3-bullet-1
+  reviews: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-5-step-3-bullet-1-addresses-owasp-agentic-threats-mitigations-v1-1-t15
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as an indirect investigation relationship: protected decision audit logs support
+    investigation of human manipulation. They do not prevent deceptive persuasion.'
+- id: review:paria03-owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-8
+  reviews: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-1-bullet-8-addresses-owasp-agentic-threats-mitigations-v1-1-t12
+  reviewer: party:paria03
+  review_status: rejected
+  justification: 'Rejected the current control-to-threat connection: quotas limit flooding but do not
+    establish message truth or integrity. Without an additional rationale, this control fits resource
+    overload more directly than communication poisoning.'
+- id: review:paria03-owasp-agentic-threats-mitigations-v1-1-playbook-6-step-3-bullet-6
+  reviews: assertion:owasp-agentic-threats-mitigations-v1-1-playbook-6-step-3-bullet-6-addresses-owasp-agentic-threats-mitigations-v1-1-t12
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as an interpreted detection relationship: contradictory agent decisions may
+    reveal manipulation associated with communication poisoning. Contradictions alone are not proof.'

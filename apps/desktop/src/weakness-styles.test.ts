@@ -6,15 +6,15 @@ const styles = readFileSync(new URL("./styles.css", import.meta.url), "utf8");
 
 describe("weakness view color contrast", () => {
   it("keeps pagination status text readable in light and dark mode", () => {
-    const [light, dark] = cssRules(".weakness-pagination");
+    const [light, dark] = cssRules(".library-pagination");
     expect(contrastRatio(cssProperty(light, "color"), "#ffffff")).toBeGreaterThanOrEqual(4.5);
     expect(contrastRatio(cssProperty(dark, "color"), "#111827")).toBeGreaterThanOrEqual(4.5);
   });
 
   it("keeps disabled controls legible and focus indicators explicit", () => {
-    const [lightDisabled, darkDisabled] = cssRules(".weakness-pagination button:disabled");
+    const [lightDisabled, darkDisabled] = cssRules(".library-pagination button:disabled");
     const [lightFocus, darkFocus] = cssRules(
-      ".weakness-pagination select:focus-visible, .weakness-pagination button:focus-visible",
+      ".library-pagination button:focus-visible, .library-clear-filters:focus-visible, .requirements-coverage > summary:focus-visible, .coverage-body:focus-visible",
     );
     expect(contrastRatio(
       cssProperty(lightDisabled, "color"),

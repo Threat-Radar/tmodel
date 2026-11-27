@@ -19,6 +19,7 @@ import pytest
 PACKAGED_ENGINE = os.environ.get("TMODEL_PACKAGED_ENGINE")
 pytestmark = pytest.mark.skipif(not PACKAGED_ENGINE, reason="build the packaged engine first")
 MODEL = Path(__file__).resolve().parents[2] / "spec/vectors/mvp-01-software-doc-service.yaml"
+PINNED_LIBRARY = Path(__file__).resolve().parents[2] / "library"
 
 
 def engine_url(proc):
@@ -69,6 +70,13 @@ def test_relocated_engine_serves_bundled_graph_without_checkout(
         assert graph["nodes"] and graph["edges"]
         if filename == MODEL.name:
             assert (len(graph["nodes"]), len(graph["edges"])) == (42, 69)
+        if filename == "mvp-02-automotive-ecu.yaml":
+            coverage = get_json(
+                base, "coverage", file=filename, product="product:telematics-control-unit"
+            )
+            assert coverage["count"] == 5
+            assert coverage["counts"]["satisfied"] == 2
+            assert len(coverage["proposed_assertions"]) == 1
         # The GUI passes /graph's resolved filename back to /attack-paths.
         paths = get_json(base, "attack-paths", file=str(model), goal=goal)["paths"]
         assert len(paths) == 2
@@ -115,6 +123,46 @@ def test_relocated_engine_serves_bundled_graph_without_checkout(
                 proc.wait(timeout=10)
             proc.stdout.close()
             proc.stderr.close()
+    assert not list(tmp_path.glob("_MEI*"))
+
+
+def test_relocated_engine_serves_bundled_library_without_checkout(tmp_path):
+    # The Library tab works in a downloaded app: only the executable, with no
+    # checkout around it and no TMODEL_LIBRARY (#259).
+    executable = tmp_path / "tmodel-engine"
+    shutil.copy2(PACKAGED_ENGINE, executable)
+    result = subprocess.run(
+        [str(executable), "library", "--in-process", "--json"],
+        cwd=tmp_path,
+        env={"HOME": str(tmp_path), "TMPDIR": str(tmp_path)},
+        capture_output=True,
+        text=True,
+        timeout=60,
+        check=True,
+    )
+    library = json.loads(result.stdout)["library"]
+    assert library["problems"] == []
+    assert library["count"] > 0
+    records = list(PINNED_LIBRARY.glob("records/*/*/record.yaml"))
+    if records:  # the submodule is checked out here, as in the desktop CI job
+        assert library["count"] == len(records)
+    assert not list(tmp_path.glob("_MEI*"))
+
+
+def test_relocated_engine_reads_bundled_cwe_release_without_checkout(tmp_path):
+    # The Weaknesses tab works in a downloaded app: no TMODEL_CWE_CATALOG (ADR-0014).
+    executable = tmp_path / "tmodel-engine"
+    shutil.copy2(PACKAGED_ENGINE, executable)
+    result = subprocess.run(
+        [str(executable), "weaknesses", "--limit", "1", "--in-process", "--json"],
+        cwd=tmp_path,
+        env={"HOME": str(tmp_path), "TMPDIR": str(tmp_path)},
+        capture_output=True,
+        text=True,
+        timeout=120,
+        check=True,
+    )
+    assert json.loads(result.stdout)["total"] > 0
     assert not list(tmp_path.glob("_MEI*"))
 
 

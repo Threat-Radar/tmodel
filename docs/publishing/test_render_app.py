@@ -37,6 +37,32 @@ def test_static_data_covers_every_model_and_the_complete_library(
     assert record_count > 0
 
 
+def test_sdl_data_contains_each_public_program_without_local_proposals(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def fail_if_read(*_args):
+        pytest.fail("preview generation read local proposals")
+
+    monkeypatch.setattr(render_app.core.proposals, "load_proposals", fail_if_read)
+    render_app._write_sdl_data(tmp_path)
+    listing = json.loads((tmp_path / "models.json").read_text())
+    assert listing == render_app.core.sdl_models()
+    assert listing["models"]
+    for model in listing["models"]:
+        views = json.loads((tmp_path / f"{Path(model['file']).stem}.json").read_text())[
+            "views"
+        ]
+        assert set(views) == {program["id"] for program in model["programs"]}
+        for program in model["programs"]:
+            view = views[program["id"]]
+            assert view["file"] == model["file"]
+            assert view["program"]["name"] == program["name"]
+            assert isinstance(view["phases"], list) and isinstance(
+                view["awaiting_review"], list
+            )
+            assert "proposals" not in view
+
+
 def test_static_data_is_byte_deterministic(tmp_path: Path) -> None:
     first = tmp_path / "first"
     second = tmp_path / "second"

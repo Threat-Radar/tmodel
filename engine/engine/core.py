@@ -292,7 +292,10 @@ def _row(r: LibraryRecord) -> dict[str, Any]:
 
 
 def _served_catalog() -> cwe.CweCatalog:
-    """The CWE release the library pins, read from the file `$TMODEL_CWE_CATALOG` names."""
+    """The CWE release the library pins.
+
+    The file `$TMODEL_CWE_CATALOG` names, or a packaged engine's bundled copy (ADR-0014).
+    """
     record = _served_library().get(cwe.LIBRARY_RECORD)
     pinned = record.content.sha256 if record is not None else None
     if record is None or not pinned:
@@ -301,7 +304,7 @@ def _served_catalog() -> cwe.CweCatalog:
             "(the CWE extraction is Threat-Radar/library#21); set TMODEL_LIBRARY to a "
             "library checkout that has it"
         )
-    path = cwe.configured_catalog()
+    path = cwe.configured_catalog(record.content.url)
     if path is None:
         raise Unavailable(
             f"no CWE catalog: download {record.content.url} (SHA-256 {pinned}) "
@@ -1071,6 +1074,21 @@ def pending_proposals(query: Mapping[str, str] | None = None) -> dict[str, Any]:
         raise GraphError(_sanitized_model_error(path, exc)) from exc
     except (KeyError, TypeError) as exc:
         raise GraphError(f"{path.name}: malformed proposals ({type(exc).__name__}: {exc})") from exc
+
+
+def requirement_coverage(query: Mapping[str, str] | None = None) -> dict[str, Any]:
+    """Read-only coverage for an approved model filename and required Product id (#170)."""
+    from engine.coverage import collect
+
+    values = _values(query or {}, ("file", "product"), "parameter")
+    for name in ("file", "product"):
+        if name not in values:
+            raise GraphError(f"missing query parameter: {name}")
+    path = _approved_vector_path(values["file"])
+    try:
+        return {"file": path.name, **collect(load_vector_document(path), values["product"])}
+    except GraphError as exc:
+        raise GraphError(_sanitized_model_error(path, exc)) from exc
 
 
 def evaluate_tara_gate(

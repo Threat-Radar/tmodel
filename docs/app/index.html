@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>tmodel</title>
-    <script type="module" crossorigin src="/tmodel/app/assets/index-gfwJfhP4.js"></script>
-    <link rel="stylesheet" crossorigin href="/tmodel/app/assets/index-Cn9s_3rU.css">
+    <script type="module" crossorigin src="/tmodel/app/assets/index-0rptW0VK.js"></script>
+    <link rel="stylesheet" crossorigin href="/tmodel/app/assets/index-BxhxBQ_N.css">
   </head>
   <body>
     <main class="app-shell">
@@ -14,11 +14,14 @@
         <div class="app-header-copy">
           <p class="eyebrow">Threat Radar</p>
           <h1>tmodel</h1>
-          <p class="subtitle">Read example threat models, follow their attack paths, and browse the reference library and CWE weaknesses.</p>
         </div>
         <div class="model-picker">
-          <label for="model-select">Example model</label>
+          <label for="model-select">Model</label>
           <select id="model-select" disabled><option value="">Loading example models…</option></select>
+          <details id="model-picker-info" class="info-disclosure model-info" hidden>
+            <summary><span id="model-review-label"></span><span class="visually-hidden"> · Model information</span></summary>
+            <div class="info-panel" tabindex="0"><p id="model-picker-summary"></p></div>
+          </details>
           <p id="model-picker-status" class="hint" role="status" aria-live="polite"></p>
         </div>
         <div id="engine-panel" class="engine-panel"><div id="engine-status" class="status status-pending" role="status" aria-live="polite">checking local engine…</div><p id="engine-hint" class="hint"></p></div>
@@ -28,11 +31,14 @@
           <button id="report-tab" type="button" role="tab" aria-controls="report-view-panel" aria-selected="true">Model report</button>
           <button id="paths-tab" type="button" role="tab" aria-controls="paths-view-panel" aria-selected="false" tabindex="-1">Attack paths</button>
           <button id="graph-tab" type="button" role="tab" aria-controls="graph-view-panel" aria-selected="false" tabindex="-1">Explore graph</button>
-          <button id="requirements-tab" type="button" role="tab" aria-controls="requirements-view-panel" aria-selected="false" tabindex="-1">Requirements</button>
           <button id="library-tab" type="button" role="tab" aria-controls="library-view-panel" aria-selected="false" tabindex="-1">Library</button>
-          <button id="weakness-tab" type="button" role="tab" aria-controls="weakness-view-panel" aria-selected="false" tabindex="-1">Weaknesses</button>
-          <button id="sdl-tab" type="button" role="tab" aria-controls="sdl-view-panel" aria-selected="false" tabindex="-1">SDL</button>
         </div>
+        <select id="library-view-select" class="library-view-select" aria-label="Library view" hidden>
+          <option value="records">All Library Records</option>
+          <option value="weaknesses">CWE Weaknesses</option>
+          <option value="requirements">Security Requirements</option>
+          <option value="sdl">SDL</option>
+        </select>
       </nav>
 
       <section id="report-view-panel" class="view-panel" role="tabpanel" aria-labelledby="report-tab">
@@ -59,169 +65,213 @@
       </section>
 
       <section id="library-view-panel" class="view-panel" role="tabpanel" aria-labelledby="library-tab" hidden>
-        <div id="library-workspace" class="library-workspace" aria-busy="false">
-          <section class="library-main">
-            <div class="library-heading">
-              <div><p class="eyebrow">Reference library</p><h2>Library documents</h2></div>
-              <span id="library-result-count" class="count-badge">0 documents</span>
-            </div>
-            <div class="source-row"><div id="library-source-notice" class="data-source-notice" role="note"></div><button id="library-retry" class="retry-button" type="button" hidden>Retry library</button></div>
-            <div class="library-controls" aria-label="Library search and filters">
-              <label class="search-control" for="library-search"><span>Search</span><input id="library-search" type="search" placeholder="Title, publisher, topic, or tags" autocomplete="off" /></label>
-              <label for="library-type-filter"><span>Type</span><select id="library-type-filter"><option value="">All types</option></select></label>
-              <label for="library-status-filter"><span>Status</span><select id="library-status-filter"><option value="">All statuses</option></select></label>
-              <label for="library-topic-filter"><span>Topic</span><select id="library-topic-filter"><option value="">All topics</option></select></label>
-            </div>
-            <div id="library-request-status" class="library-request-status" role="status" aria-live="polite">Loading library documents…</div>
-            <div id="library-warning" class="library-warning" role="alert" hidden></div>
-            <p id="library-empty" class="library-empty" hidden>No documents match the current search and filters.</p>
-            <div id="library-table-region" class="library-table-region" role="region" aria-label="Library documents" tabindex="0" hidden>
-              <table class="library-table">
-                <caption>Library document records</caption>
-                <thead><tr>
-                  <th scope="col" aria-sort="ascending"><button type="button" data-library-sort data-sort="title">Title</button></th>
-                  <th scope="col" aria-sort="none"><button type="button" data-library-sort data-sort="type">Type</button></th>
-                  <th scope="col" aria-sort="none"><button type="button" data-library-sort data-sort="status">Status</button></th>
-                  <th scope="col" aria-sort="none"><button type="button" data-library-sort data-sort="topic">Topic</button></th>
-                  <th scope="col" aria-sort="none"><button type="button" data-library-sort data-sort="date">Date</button></th>
-                  <th scope="col">Reviewed artifacts</th>
-                </tr></thead>
-                <tbody id="library-table-body"></tbody>
-              </table>
-            </div>
-          </section>
-          <aside class="panel library-inspector" aria-label="Selected library document">
-            <p class="eyebrow">Selected document</p><h2 id="library-detail-title">Select a document</h2>
-            <div class="library-detail-badges"><span id="library-detail-type" class="type-chip" hidden></span><span id="library-detail-record-status" class="status-chip" hidden></span></div>
-            <div class="library-detail-id"><span>Document ID</span><code id="library-detail-id" class="stable-id"></code></div>
-            <p id="library-detail-status" class="direction-help" role="status" aria-live="polite">Choose a row to inspect its document details.</p>
-            <dl id="library-detail-list" class="property-list"></dl>
-            <section id="library-detail-evidence" class="inspector-section library-detail-section" hidden><h3>Evidence &amp; Extraction</h3><p id="library-detail-evidence-summary" class="library-detail-summary"></p></section>
-            <section id="library-detail-assessment" class="inspector-section library-detail-section" hidden><h3>Research assessment</h3><dl id="library-detail-assessment-list" class="property-list"></dl></section>
-          </aside>
-        </div>
-      </section>
-
-      <section id="weakness-view-panel" class="view-panel" role="tabpanel" aria-labelledby="weakness-tab" hidden>
-        <div id="weakness-workspace" class="library-workspace weakness-workspace" aria-busy="false">
-          <section class="library-main weakness-main">
-            <div class="library-heading">
-              <div><p class="eyebrow">MITRE Common Weakness Enumeration</p><h2>Weaknesses (CWE)</h2></div>
-              <span id="weakness-result-count" class="count-badge">0 weaknesses</span>
-            </div>
-            <div class="source-row"><div id="weakness-source-notice" class="data-source-notice" role="note"></div><button id="weakness-retry" class="retry-button" type="button" hidden>Retry weaknesses</button></div>
-            <div class="library-controls weakness-controls" aria-label="CWE weakness search and filters">
-              <label class="search-control" for="weakness-search"><span>Search</span><input id="weakness-search" type="search" placeholder="CWE ID, name, description, or alternate term" autocomplete="off" /></label>
-              <label for="weakness-abstraction-filter"><span>Abstraction</span><select id="weakness-abstraction-filter"><option value="">All abstractions</option></select></label>
-              <label for="weakness-structure-filter"><span>Structure</span><select id="weakness-structure-filter"><option value="">All structures</option></select></label>
-              <label for="weakness-status-filter"><span>Status</span><select id="weakness-status-filter"><option value="">All statuses</option></select></label>
-              <label for="weakness-usage-filter"><span>Usage</span><select id="weakness-usage-filter"><option value="">All usages</option></select></label>
-            </div>
-            <div id="weakness-request-status" class="library-request-status" role="status" aria-live="polite">Loading CWE weaknesses…</div>
-            <p id="weakness-sort-help" class="visually-hidden" aria-live="polite">ID sorted ascending. Select the column again to reverse it.</p>
-            <div id="weakness-warning" class="library-warning" role="alert" hidden></div>
-            <p id="weakness-empty" class="library-empty" hidden>No weaknesses match the current search and filters.</p>
-            <div id="weakness-table-region" class="library-table-region weakness-table-region" role="region" aria-label="CWE weaknesses" tabindex="0" hidden>
-              <table class="library-table weakness-table">
-                <caption>CWE weakness records</caption>
-                <thead><tr>
-                  <th scope="col" aria-sort="ascending"><button type="button" data-weakness-sort data-sort="id">ID</button></th>
-                  <th scope="col" aria-sort="none"><button type="button" data-weakness-sort data-sort="name">Name</button></th>
-                  <th scope="col" aria-sort="none"><button type="button" data-weakness-sort data-sort="abstraction">Abstraction</button></th>
-                  <th scope="col" aria-sort="none"><button type="button" data-weakness-sort data-sort="structure">Structure</button></th>
-                  <th scope="col" aria-sort="none"><button type="button" data-weakness-sort data-sort="status">Status</button></th>
-                  <th scope="col" aria-sort="none"><button type="button" data-weakness-sort data-sort="usage">Usage</button></th>
-                  <th scope="col" aria-sort="none"><button type="button" data-weakness-sort data-sort="likelihood">Likelihood</button></th>
-                  <th scope="col" title="Related CAPEC attack patterns">CAPEC</th>
-                  <th scope="col" title="Observed examples">Observed</th>
-                  <th scope="col" title="Potential mitigations">Mitigations</th>
-                </tr></thead>
-                <tbody id="weakness-table-body"></tbody>
-              </table>
-            </div>
-            <div class="weakness-pagination" aria-label="Weakness table pagination">
-              <label for="weakness-page-size">Rows per page <select id="weakness-page-size"><option value="25" selected>25</option><option value="50">50</option><option value="100">100</option></select></label>
-              <span id="weakness-page-status" role="status" aria-live="polite">0–0 of 0</span>
-              <button id="weakness-page-previous" type="button" disabled>Previous</button>
-              <button id="weakness-page-next" type="button" disabled>Next</button>
-            </div>
-            <aside class="weakness-attribution" aria-label="CWE attribution and terms">
-              <p id="weakness-attribution-notice"></p>
-              <p id="weakness-attribution-license"></p>
-              <a id="weakness-attribution-terms" href="https://cwe.mitre.org/about/termsofuse.html" target="_blank" rel="noopener noreferrer">CWE Terms of Use</a>
+        <section class="library-subview" data-library-view="records" aria-labelledby="library-heading">
+          <div id="library-workspace" class="library-workspace" aria-busy="false">
+            <section class="library-main">
+              <div class="library-heading">
+                <div><p class="eyebrow">Reference library</p><div class="library-heading-title">
+                  <h2 id="library-heading">Library documents</h2>
+                  <details class="info-disclosure">
+                    <summary><span class="info-icon" aria-hidden="true">i</span><span class="visually-hidden">Library documents source information</span></summary>
+                    <div class="info-panel" tabindex="0"><p id="library-source-notice"></p></div>
+                  </details>
+                </div></div>
+                <div class="library-heading-actions"><button id="library-retry" class="retry-button" type="button" hidden>Retry library</button></div>
+              </div>
+              <div class="library-controls" aria-label="Library search and filters">
+                <div class="search-control">
+                  <div class="library-search-heading"><label for="library-search">Search</label><button id="library-clear-filters" class="library-clear-filters" type="button" hidden>Clear filters</button></div>
+                  <input id="library-search" type="search" placeholder="Title, publisher, topic, or tags" autocomplete="off" />
+                </div>
+                <label for="library-type-filter"><span>Type</span><select id="library-type-filter"><option value="">All types</option></select></label>
+                <label for="library-status-filter"><span>Status</span><select id="library-status-filter"><option value="">All statuses</option></select></label>
+                <label for="library-topic-filter"><span>Topic</span><select id="library-topic-filter"><option value="">All topics</option></select></label>
+              </div>
+              <div id="library-request-status" class="library-request-status" role="status" aria-live="polite">Loading library documents…</div>
+              <div id="library-warning" class="library-warning" role="alert" hidden></div>
+              <p id="library-empty" class="library-empty" role="status" hidden>No documents match the current search and filters.</p>
+              <div id="library-table-region" class="library-table-region" role="region" aria-label="Library documents" tabindex="0" hidden>
+                <table class="library-table">
+                  <caption>Library document records</caption>
+                  <thead><tr>
+                    <th scope="col" aria-sort="ascending"><button type="button" data-library-sort data-sort="title">Title</button></th>
+                    <th scope="col" aria-sort="none"><button type="button" data-library-sort data-sort="type">Type</button></th>
+                    <th scope="col" aria-sort="none"><button type="button" data-library-sort data-sort="status">Status</button></th>
+                    <th scope="col" aria-sort="none"><button type="button" data-library-sort data-sort="topic">Topic</button></th>
+                    <th scope="col" aria-sort="none"><button type="button" data-library-sort data-sort="date">Date</button></th>
+                    <th scope="col">Reviewed artifacts</th>
+                  </tr></thead>
+                  <tbody id="library-table-body"></tbody>
+                </table>
+              </div>
+              <div class="library-pagination" role="group" aria-label="Library table pagination">
+                <span id="library-page-status" role="status"></span>
+                <button id="library-page-previous" type="button" hidden disabled>Previous</button>
+                <button id="library-page-next" type="button" hidden disabled>Next</button>
+              </div>
+            </section>
+            <aside class="panel library-inspector" aria-labelledby="library-inspector-heading" tabindex="0">
+              <h2 id="library-inspector-heading" class="library-inspector-heading">Details</h2>
+              <h3 id="library-detail-title" class="library-detail-title"></h3>
+              <code id="library-detail-id" class="library-detail-id"></code>
+              <div class="library-detail-badges"><span id="library-detail-type" class="type-chip" hidden></span><span id="library-detail-record-status" class="status-chip" hidden></span></div>
+              <p id="library-detail-status" class="library-detail-status" role="status" aria-live="polite">Select a row to view its details.</p>
+              <dl id="library-detail-list" class="property-list"></dl>
+              <details id="library-detail-evidence" class="library-detail-section" hidden><summary>Evidence and extraction</summary><p id="library-detail-evidence-summary" class="library-detail-summary"></p></details>
+              <details id="library-detail-assessment" class="library-detail-section" hidden><summary>Research assessment</summary><dl id="library-detail-assessment-list" class="property-list"></dl></details>
             </aside>
-          </section>
-          <aside class="panel library-inspector weakness-inspector" aria-label="Selected CWE weakness">
-            <p class="eyebrow">Selected weakness</p><h2 id="weakness-detail-title">Select a weakness</h2>
-            <div id="weakness-detail-badges" class="library-detail-badges"></div>
-            <div class="library-detail-id"><span>CWE ID</span><code id="weakness-detail-id" class="stable-id"></code></div>
-            <p id="weakness-detail-description" class="weakness-detail-description"></p>
-            <div class="source-row weakness-detail-status-row"><p id="weakness-detail-status" class="direction-help" role="status" aria-live="polite">Choose a row to inspect its CWE details.</p><button id="weakness-detail-retry" class="retry-button" type="button" hidden>Retry details</button></div>
-            <dl id="weakness-detail-list" class="property-list weakness-overview"></dl>
-            <div id="weakness-detail-sections"></div>
-          </aside>
-        </div>
-      </section>
-
-      <section id="requirements-view-panel" class="view-panel" role="tabpanel" aria-labelledby="requirements-tab" hidden>
-        <div id="requirements-workspace" class="library-workspace requirements-workspace" aria-busy="false">
-          <section class="library-main requirements-main">
-            <div class="library-heading">
-              <div><p id="requirements-heading-eyebrow" class="eyebrow">Recorded product evidence</p><h2>Requirements</h2></div>
-              <span id="requirements-result-count" class="count-badge">0 requirements</span>
-            </div>
-            <div class="source-row"><div id="requirements-source-notice" class="data-source-notice" role="note">Open an example model to load its requirements.</div><button id="requirements-retry" class="retry-button" type="button" hidden>Retry requirements</button></div>
-            <div class="library-controls requirements-controls" aria-label="Requirement search and filters">
-              <label for="requirements-mode"><span>Browse</span><select id="requirements-mode"><option value="model">Model requirements</option><option value="standards">Extracted standards catalog</option></select></label>
-              <label class="search-control" for="requirements-search"><span>Search</span><input id="requirements-search" type="search" placeholder="Requirement ID, name, statement, or source" autocomplete="off" /></label>
-              <label for="requirements-kind-filter"><span>Kind</span><select id="requirements-kind-filter"><option value="">All kinds</option></select></label>
-              <label id="requirements-normativity-control" for="requirements-normativity-filter" hidden><span>Normativity</span><select id="requirements-normativity-filter"><option value="">All normativity</option></select></label>
-              <label id="requirements-source-control" for="requirements-source-filter" hidden><span>Standard</span><select id="requirements-source-filter"><option value="">All standards</option></select></label>
-              <label id="requirements-product-control" for="requirements-product-filter"><span>Product</span><select id="requirements-product-filter"><option value="">All products</option></select></label>
-            </div>
-            <details id="requirements-coverage" class="requirements-coverage" open>
-              <summary>Recorded requirement coverage</summary>
-              <p class="coverage-disclaimer">Recorded model evidence only — not verified regulatory compliance or proof that a mitigation is effective.</p>
-              <div id="requirements-coverage-status" class="library-request-status" role="status" aria-live="polite">Select a product to see recorded coverage.</div>
-              <div id="requirements-coverage-content"></div>
-            </details>
-            <div id="requirements-request-status" class="library-request-status" role="status" aria-live="polite">Open this view to load requirements from the selected model.</div>
-            <p id="requirements-sort-help" class="visually-hidden" aria-live="polite">ID sorted ascending. Select the column again to reverse it.</p>
-            <p id="requirements-empty" class="library-empty" hidden>No requirements match the current search and filters.</p>
-            <div id="requirements-table-region" class="library-table-region requirements-table-region" role="region" aria-label="Requirements" tabindex="0" hidden>
-              <table class="library-table requirements-table">
-                <caption id="requirements-table-caption">Requirements recorded in the selected model</caption>
-                <thead><tr>
-                  <th scope="col" aria-sort="ascending"><button type="button" data-requirement-sort data-sort="id">Requirement ID and name</button></th>
-                  <th scope="col" aria-sort="none"><button type="button" data-requirement-sort data-sort="kind">Kind</button></th>
-                  <th scope="col" aria-sort="none"><button type="button" data-requirement-sort data-sort="normativity">Normativity</button></th>
-                  <th scope="col" aria-sort="none"><button type="button" data-requirement-sort data-sort="source">Source</button></th>
-                  <th id="requirements-scope-heading" scope="col">Applies to product</th>
-                  <th scope="col" aria-sort="none"><button id="requirements-satisfaction-heading" type="button" data-requirement-sort data-sort="satisfaction">Recorded satisfaction</button></th>
-                </tr></thead>
-                <tbody id="requirements-table-body"></tbody>
-              </table>
-            </div>
-            <div class="requirements-pagination" aria-label="Requirements table pagination">
-              <label for="requirements-page-size">Rows per page <select id="requirements-page-size"><option value="10" selected>10</option><option value="25">25</option><option value="50">50</option></select></label>
-              <span id="requirements-page-status" role="status" aria-live="polite">0–0 of 0</span>
-              <button id="requirements-page-previous" type="button" disabled>Previous</button>
-              <button id="requirements-page-next" type="button" disabled>Next</button>
-            </div>
-            <aside id="requirements-attribution" class="requirements-attribution" aria-label="OWASP ASVS attribution and license" hidden>
-              <p>Adapted from <a href="https://owasp.org/www-project-application-security-verification-standard/" target="_blank" rel="noopener noreferrer">OWASP Application Security Verification Standard (ASVS) 5.0.0</a>; licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>.</p>
+          </div>
+        </section>
+        <section class="library-subview" data-library-view="weaknesses" aria-labelledby="weakness-heading" hidden>
+          <div id="weakness-workspace" class="library-workspace weakness-workspace" aria-busy="false">
+            <section class="library-main weakness-main">
+              <div class="library-heading">
+                <div><p class="eyebrow">MITRE Common Weakness Enumeration</p><div class="library-heading-title">
+                  <h2 id="weakness-heading">CWE weaknesses</h2>
+                  <details class="info-disclosure">
+                    <summary><span class="info-icon" aria-hidden="true">i</span><span class="visually-hidden">CWE weaknesses source information</span></summary>
+                    <div class="info-panel" tabindex="0"><p id="weakness-source-notice"></p></div>
+                  </details>
+                </div></div>
+                <div class="library-heading-actions"><button id="weakness-retry" class="retry-button" type="button" hidden>Retry weaknesses</button></div>
+              </div>
+              <div class="library-controls weakness-controls" aria-label="CWE weakness search and filters">
+                <div class="search-control">
+                  <div class="library-search-heading"><label for="weakness-search">Search</label><button id="weakness-clear-filters" class="library-clear-filters" type="button" hidden>Clear filters</button></div>
+                  <input id="weakness-search" type="search" placeholder="CWE ID, name, description, or alternate term" autocomplete="off" />
+                </div>
+                <label for="weakness-abstraction-filter"><span>Abstraction</span><select id="weakness-abstraction-filter"><option value="">All abstractions</option></select></label>
+                <label for="weakness-structure-filter"><span>Structure</span><select id="weakness-structure-filter"><option value="">All structures</option></select></label>
+                <label for="weakness-status-filter"><span>Status</span><select id="weakness-status-filter"><option value="">All statuses</option></select></label>
+                <label for="weakness-usage-filter"><span>Usage</span><select id="weakness-usage-filter"><option value="">All usages</option></select></label>
+              </div>
+              <div id="weakness-request-status" class="library-request-status" role="status" aria-live="polite">Loading CWE weaknesses…</div>
+              <p id="weakness-sort-help" class="visually-hidden" aria-live="polite">ID sorted ascending. Select the column again to reverse it.</p>
+              <div id="weakness-warning" class="library-warning" role="alert" hidden></div>
+              <p id="weakness-empty" class="library-empty" role="status" hidden>No weaknesses match the current search and filters.</p>
+              <div id="weakness-table-region" class="library-table-region weakness-table-region" role="region" aria-label="CWE weaknesses" tabindex="0" hidden>
+                <table class="library-table weakness-table">
+                  <caption>CWE weakness records</caption>
+                  <thead><tr>
+                    <th scope="col" aria-sort="ascending"><button type="button" data-weakness-sort data-sort="id">ID</button></th>
+                    <th scope="col" aria-sort="none"><button type="button" data-weakness-sort data-sort="name">Name</button></th>
+                    <th scope="col" aria-sort="none"><button type="button" data-weakness-sort data-sort="abstraction">Abstraction</button></th>
+                    <th scope="col" aria-sort="none"><button type="button" data-weakness-sort data-sort="structure">Structure</button></th>
+                    <th scope="col" aria-sort="none"><button type="button" data-weakness-sort data-sort="status">Status</button></th>
+                    <th scope="col" aria-sort="none"><button type="button" data-weakness-sort data-sort="usage">Usage</button></th>
+                    <th scope="col" aria-sort="none"><button type="button" data-weakness-sort data-sort="likelihood">Likelihood</button></th>
+                    <th scope="col" title="Related CAPEC attack patterns">CAPEC</th>
+                    <th scope="col" title="Observed examples">Observed</th>
+                    <th scope="col" title="Potential mitigations">Mitigations</th>
+                  </tr></thead>
+                  <tbody id="weakness-table-body"></tbody>
+                </table>
+              </div>
+              <div class="library-pagination" role="group" aria-label="CWE weaknesses table pagination">
+                <span id="weakness-page-status" role="status"></span>
+                <button id="weakness-page-previous" type="button" hidden disabled>Previous</button>
+                <button id="weakness-page-next" type="button" hidden disabled>Next</button>
+              </div>
+              <details class="weakness-attribution">
+                <summary>© 2006–2026 The MITRE Corporation · CWE Terms of Use</summary>
+                <div class="weakness-attribution-content" role="region" aria-label="CWE copyright and license" tabindex="0">
+                  <p id="weakness-attribution-notice"></p>
+                  <p id="weakness-attribution-license"></p>
+                  <a id="weakness-attribution-terms" href="https://cwe.mitre.org/about/termsofuse.html" target="_blank" rel="noopener noreferrer">CWE Terms of Use</a>
+                </div>
+              </details>
+            </section>
+            <aside class="panel library-inspector weakness-inspector" aria-labelledby="weakness-inspector-heading" tabindex="0">
+              <h2 id="weakness-inspector-heading" class="library-inspector-heading">Details</h2>
+              <h3 id="weakness-detail-title" class="library-detail-title"></h3>
+              <code id="weakness-detail-id" class="library-detail-id"></code>
+              <div id="weakness-detail-badges" class="library-detail-badges"></div>
+              <p id="weakness-detail-description" class="library-detail-description"></p>
+              <div class="library-detail-feedback"><p id="weakness-detail-status" class="library-detail-status" role="status" aria-live="polite">Select a row to view its details.</p><button id="weakness-detail-retry" class="retry-button" type="button" hidden>Retry details</button></div>
+              <dl id="weakness-detail-list" class="property-list"></dl>
+              <div id="weakness-detail-sections"></div>
             </aside>
-          </section>
-          <aside class="panel library-inspector requirements-inspector" aria-label="Selected requirement">
-            <p class="eyebrow">Selected requirement</p><h2 id="requirements-detail-title">Select a requirement</h2>
-            <div id="requirements-detail-badges" class="library-detail-badges"></div>
-            <div class="library-detail-id"><span>Requirement ID</span><code id="requirements-detail-id" class="stable-id"></code></div>
-            <p id="requirements-detail-text" class="requirement-statement"></p>
-            <p id="requirements-detail-status" class="direction-help" role="status" aria-live="polite">Choose a row to inspect its full statement, provenance, scope, relationships, Assertions, and Reviews.</p>
-            <dl id="requirements-detail-list" class="property-list"></dl>
-            <div id="requirements-detail-relationships"></div>
-          </aside>
-        </div>
+          </div>
+        </section>
+        <section class="library-subview" data-library-view="requirements" aria-labelledby="requirements-heading" hidden>
+          <div id="requirements-workspace" class="library-workspace requirements-workspace" aria-busy="false">
+            <section class="library-main requirements-main">
+              <div class="library-heading">
+                <div><p id="requirements-heading-eyebrow" class="eyebrow">Recorded product evidence</p><div class="library-heading-title">
+                  <h2 id="requirements-heading">Security requirements</h2>
+                  <details class="info-disclosure">
+                    <summary><span class="info-icon" aria-hidden="true">i</span><span class="visually-hidden">Security requirements source information</span></summary>
+                    <div class="info-panel" tabindex="0"><p id="requirements-source-notice">Open an example model to load its requirements.</p></div>
+                  </details>
+                </div></div>
+                <div class="library-heading-actions"><button id="requirements-retry" class="retry-button" type="button" hidden>Retry requirements</button></div>
+              </div>
+              <div class="library-controls requirements-controls" aria-label="Requirement search and filters">
+                <label for="requirements-mode"><span>Browse</span><select id="requirements-mode"><option value="model">Model requirements</option><option value="standards">Extracted standards catalog</option></select></label>
+                <div class="search-control">
+                  <div class="library-search-heading"><label for="requirements-search">Search</label><button id="requirements-clear-filters" class="library-clear-filters" type="button" hidden>Clear filters</button></div>
+                  <input id="requirements-search" type="search" placeholder="Requirement ID, name, statement, or source" autocomplete="off" />
+                </div>
+                <label for="requirements-kind-filter"><span>Kind</span><select id="requirements-kind-filter"><option value="">All kinds</option></select></label>
+                <label id="requirements-normativity-control" for="requirements-normativity-filter" hidden><span>Normativity</span><select id="requirements-normativity-filter"><option value="">All normativity</option></select></label>
+                <label id="requirements-source-control" for="requirements-source-filter" hidden><span>Standard</span><select id="requirements-source-filter"><option value="">All standards</option></select></label>
+                <label id="requirements-product-control" for="requirements-product-filter" hidden><span>Product</span><select id="requirements-product-filter"><option value="">All products</option></select></label>
+              </div>
+              <details id="requirements-coverage" class="requirements-coverage" open>
+                <summary>Recorded requirement coverage</summary>
+                <div class="coverage-body" role="region" aria-label="Recorded coverage results" tabindex="0">
+                  <p class="coverage-disclaimer">Recorded evidence alone cannot verify regulatory compliance or mitigation effectiveness.</p>
+                  <div id="requirements-coverage-status" class="library-request-status" role="status"></div>
+                  <div id="requirements-coverage-content"></div>
+                </div>
+              </details>
+              <div id="requirements-request-status" class="library-request-status" role="status" aria-live="polite">Open this view to load requirements from the selected model.</div>
+              <p id="requirements-sort-help" class="visually-hidden" aria-live="polite">ID sorted ascending. Select the column again to reverse it.</p>
+              <p id="requirements-empty" class="library-empty" role="status" hidden>No requirements match the current search and filters.</p>
+              <div id="requirements-table-region" class="library-table-region requirements-table-region" role="region" aria-label="Requirements" tabindex="0" hidden>
+                <table class="library-table requirements-table">
+                  <caption id="requirements-table-caption">Requirements recorded in the selected model</caption>
+                  <thead><tr>
+                    <th scope="col" aria-sort="ascending"><button type="button" data-requirement-sort data-sort="id">Requirement ID and name</button></th>
+                    <th scope="col" aria-sort="none"><button type="button" data-requirement-sort data-sort="kind">Kind</button></th>
+                    <th scope="col" aria-sort="none"><button type="button" data-requirement-sort data-sort="normativity">Normativity</button></th>
+                    <th scope="col" aria-sort="none"><button type="button" data-requirement-sort data-sort="source">Source</button></th>
+                    <th id="requirements-scope-heading" scope="col">Applies to product</th>
+                    <th scope="col" aria-sort="none"><button id="requirements-satisfaction-heading" type="button" data-requirement-sort data-sort="satisfaction">Recorded satisfaction</button></th>
+                  </tr></thead>
+                  <tbody id="requirements-table-body"></tbody>
+                </table>
+              </div>
+              <div class="library-pagination" role="group" aria-label="Requirements table pagination">
+                <span id="requirements-page-status" role="status"></span>
+                <button id="requirements-page-previous" type="button" hidden disabled>Previous</button>
+                <button id="requirements-page-next" type="button" hidden disabled>Next</button>
+              </div>
+              <aside id="requirements-attribution" class="requirements-attribution" aria-label="OWASP ASVS attribution and license" hidden>
+                <p>Adapted from <a href="https://owasp.org/www-project-application-security-verification-standard/" target="_blank" rel="noopener noreferrer">OWASP Application Security Verification Standard (ASVS) 5.0.0</a>; licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>.</p>
+              </aside>
+            </section>
+            <aside class="panel library-inspector requirements-inspector" aria-labelledby="requirements-inspector-heading" tabindex="0">
+              <h2 id="requirements-inspector-heading" class="library-inspector-heading">Details</h2>
+              <h3 id="requirements-detail-title" class="library-detail-title"></h3>
+              <code id="requirements-detail-id" class="library-detail-id"></code>
+              <div id="requirements-detail-badges" class="library-detail-badges"></div>
+              <p id="requirements-detail-text" class="library-detail-description"></p>
+              <p id="requirements-detail-description" class="library-detail-description"></p>
+              <p id="requirements-detail-status" class="library-detail-status" role="status" aria-live="polite">Select a row to view its details.</p>
+              <dl id="requirements-detail-list" class="property-list"></dl>
+              <div id="requirements-detail-relationships"></div>
+            </aside>
+          </div>
+        </section>
+        <section class="library-subview sdl-view" data-library-view="sdl" id="sdl-workspace" aria-labelledby="sdl-heading" hidden>
+          <div class="sdl-heading">
+            <div><p class="eyebrow">Secure development lifecycle</p><h2 id="sdl-heading">tmodel SDL</h2></div>
+            <label for="sdl-model-select"><span>SDL model</span><select id="sdl-model-select"></select></label>
+          </div>
+          <div id="sdl-status" class="library-request-status" role="status" aria-live="polite">Open this view to load SDL models.</div>
+          <div id="sdl-content" class="sdl-content"></div>
+        </section>
       </section>
 
       <section id="graph-view-panel" class="view-panel" role="tabpanel" aria-labelledby="graph-tab" hidden>
@@ -247,14 +297,6 @@
             <section class="inspector-section"><h3>Connected relationships</h3><p class="direction-help">→ outgoing · ← incoming</p><ul id="relationship-list" class="relationship-list"></ul></section>
           </aside>
         </section>
-      </section>
-      <section id="sdl-view-panel" class="view-panel" role="tabpanel" aria-labelledby="sdl-tab" hidden>
-        <div class="sdl-heading">
-          <div><p class="eyebrow">Secure development lifecycle</p><h2>tmodel SDL</h2></div>
-          <label for="sdl-model-select"><span>SDL model</span><select id="sdl-model-select"></select></label>
-        </div>
-        <div id="sdl-status" class="library-request-status" role="status" aria-live="polite">Open this view to load SDL models from the local engine.</div>
-        <div id="sdl-content" class="sdl-content"></div>
       </section>
     </main>
   </body>

@@ -1,0 +1,546 @@
+# csa-maestro-2025: AI-proposed requirement extraction; recorded human decisions appear in reviews.
+# Agent: automated extraction. Human owner: @paria03. Recorded human decisions are listed below.
+# Source: library:csa-maestro-2025; library snapshot e4068272cec52a92b4414ea2a88a23b7125ce79d; read 2026-11-14.
+# Record content digest: (not recorded).
+# Coverage: 18 mitigation blocks / all 18 represented as 24 Requirements / 0 mitigation blocks skipped.
+# Capture sha256: 10cb6b7964fb514b19c429b1461724741de31dde683c2da9e85c3cb642a233e4 (HTML).
+# Seven layer Requirements are AUTHORED instantiations of one umbrella instruction.
+requirements:
+- id: requirement:csa-maestro-2025-layer-1-foundation-models
+  name: "Layer 1 — Foundation Models — Tailor security controls for the foundation models layer to its…"
+  text: Tailor security controls for the foundation models layer to its identified threats.
+  text_origin: authored
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:csa-maestro-2025#layer-1-foundation-models"
+  source_locator: '§3.2 A, Layer 1: Foundation Models; §3.2 C, Layer-Specific Mitigations'
+- id: requirement:csa-maestro-2025-layer-2-data-operations
+  name: "Layer 2 — Data Operations — Tailor security controls for the data operations layer to its…"
+  text: Tailor security controls for the data operations layer to its identified threats.
+  text_origin: authored
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:csa-maestro-2025#layer-2-data-operations"
+  source_locator: '§3.2 A, Layer 2: Data Operations; §3.2 C, Layer-Specific Mitigations'
+- id: requirement:csa-maestro-2025-layer-3-agent-frameworks
+  name: "Layer 3 — Agent Frameworks — Tailor security controls for the agent frameworks layer to its…"
+  text: Tailor security controls for the agent frameworks layer to its identified threats.
+  text_origin: authored
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:csa-maestro-2025#layer-3-agent-frameworks"
+  source_locator: '§3.2 A, Layer 3: Agent Frameworks; §3.2 C, Layer-Specific Mitigations'
+- id: requirement:csa-maestro-2025-layer-4-deployment-and-infrastructure
+  name: "Layer 4 — Deployment and Infrastructure — Tailor security controls for the deployment and infrastructure…"
+  text: Tailor security controls for the deployment and infrastructure layer to its identified threats.
+  text_origin: authored
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:csa-maestro-2025#layer-4-deployment-and-infrastructure"
+  source_locator: '§3.2 A, Layer 4: Deployment and Infrastructure; §3.2 C, Layer-Specific Mitigations'
+- id: requirement:csa-maestro-2025-layer-5-evaluation-and-observability
+  name: "Layer 5 — Evaluation and Observability — Tailor security controls for the evaluation and observability…"
+  text: Tailor security controls for the evaluation and observability layer to its identified threats.
+  text_origin: authored
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:csa-maestro-2025#layer-5-evaluation-and-observability"
+  source_locator: '§3.2 A, Layer 5: Evaluation and Observability; §3.2 C, Layer-Specific Mitigations'
+- id: requirement:csa-maestro-2025-layer-6-security-and-compliance
+  name: "Layer 6 — Security and Compliance — Tailor security controls for the security and compliance layer…"
+  text: Tailor security controls for the security and compliance layer to its identified threats.
+  text_origin: authored
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:csa-maestro-2025#layer-6-security-and-compliance"
+  source_locator: '§3.2 A, Layer 6: Security and Compliance; §3.2 C, Layer-Specific Mitigations'
+- id: requirement:csa-maestro-2025-layer-7-agent-ecosystem
+  name: "Layer 7 — Agent Ecosystem — Tailor security controls for the agent ecosystem layer to its…"
+  text: Tailor security controls for the agent ecosystem layer to its identified threats.
+  text_origin: authored
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:csa-maestro-2025#layer-7-agent-ecosystem"
+  source_locator: '§3.2 A, Layer 7: Agent Ecosystem; §3.2 C, Layer-Specific Mitigations'
+- id: requirement:csa-maestro-2025-defense-in-depth
+  name: "Defense in Depth — Use several protective layers across the system."
+  text: Use several protective layers across the system.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:csa-maestro-2025#defense-in-depth"
+  source_locator: §3.2 C, Mitigation Strategies > Defense in Depth
+- id: requirement:csa-maestro-2025-secure-inter-layer-communication
+  name: "Secure Inter-Layer Communication — Protect communication between architecture layers with secure…"
+  text: Protect communication between architecture layers with secure protocols.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:csa-maestro-2025#secure-inter-layer-communication"
+  source_locator: §3.2 C, Mitigation Strategies > Secure Inter-Layer Communication
+- id: requirement:csa-maestro-2025-system-wide-monitoring
+  name: "System-Wide Monitoring — Detect unusual behavior across the complete agent system."
+  text: Detect unusual behavior across the complete agent system.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:csa-maestro-2025#system-wide-monitoring"
+  source_locator: §3.2 C, Mitigation Strategies > System-Wide Monitoring
+- id: requirement:csa-maestro-2025-incident-response-plan
+  name: "Incident Response Plan — Prepare a response plan for incidents affecting multiple…"
+  text: Prepare a response plan for incidents affecting multiple architecture layers.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:csa-maestro-2025#incident-response-plan"
+  source_locator: §3.2 C, Mitigation Strategies > Incident Response Plan
+- id: requirement:csa-maestro-2025-adversarial-training
+  name: "Adversarial Training — Train agents against adversarial inputs to improve their…"
+  text: Train agents against adversarial inputs to improve their resilience.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:csa-maestro-2025#adversarial-training"
+  source_locator: §3.2 C, Mitigation Strategies > Adversarial Training
+- id: requirement:csa-maestro-2025-formal-verification
+  name: "Formal Verification — Use formal specifications and verification to check agent…"
+  text: Use formal specifications and verification to check agent behavior and goal alignment.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:csa-maestro-2025#formal-verification"
+  source_locator: §3.2 C, Mitigation Strategies > Formal Verification
+- id: requirement:csa-maestro-2025-explainable-ai-xai
+  name: "Explainable AI (XAI) — Make agent decisions sufficiently transparent to support…"
+  text: Make agent decisions sufficiently transparent to support auditing.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:csa-maestro-2025#explainable-ai-xai"
+  source_locator: §3.2 C, Mitigation Strategies > Explainable AI (XAI)
+- id: requirement:csa-maestro-2025-red-teaming
+  name: "Red Teaming — Exercise agent systems with simulated attacks to discover…"
+  text: Exercise agent systems with simulated attacks to discover vulnerabilities.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: "library:csa-maestro-2025#red-teaming"
+  source_locator: §3.2 C, Mitigation Strategies > Red Teaming
+- id: requirement:csa-maestro-2025-safety-monitoring
+  name: "Safety Monitoring — Observe agent behavior during execution to detect unsafe…"
+  text: Observe agent behavior during execution to detect unsafe actions.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:csa-maestro-2025#safety-monitoring"
+  source_locator: §3.2 C, Mitigation Strategies > Safety Monitoring
+- id: requirement:csa-maestro-2025-single-agent-pattern
+  name: "Single-Agent Pattern — Validate agent input and restrict modification of internal…"
+  text: Validate agent input and restrict modification of internal parameters.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:csa-maestro-2025#single-agent-pattern"
+  source_locator: §4, Single-Agent Pattern > Mitigation
+- id: requirement:csa-maestro-2025-multi-agent-pattern
+  name: "Multi-Agent Pattern — Validate inter-agent input and use protected communication with…"
+  text: Validate inter-agent input and use protected communication with mutual authentication.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:csa-maestro-2025#multi-agent-pattern"
+  source_locator: §4, Multi-Agent Pattern > Mitigations
+- id: requirement:csa-maestro-2025-unconstrained-conversational-autonomy
+  name: "Unconstrained Conversational Autonomy — Validate conversational input and apply safety filters tailored…"
+  text: Validate conversational input and apply safety filters tailored to the interaction.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:csa-maestro-2025#unconstrained-conversational-autonomy"
+  source_locator: §4, Unconstrained Conversational Autonomy > Mitigations
+- id: requirement:csa-maestro-2025-task-oriented-agent-pattern
+  name: "Task-Oriented Agent Pattern — Protect API-based agents with request-rate controls and load…"
+  text: Protect API-based agents with request-rate controls and load balancing.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:csa-maestro-2025#task-oriented-agent-pattern"
+  source_locator: §4, Task-Oriented Agent Pattern > Mitigations
+- id: requirement:csa-maestro-2025-hierarchical-agent-pattern
+  name: "Hierarchical Agent Pattern — Protect agent communication, constrain access and routinely…"
+  text: Protect agent communication, constrain access and routinely monitor hierarchical agents.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:csa-maestro-2025#hierarchical-agent-pattern"
+  source_locator: §4, Hierarchical Agent Pattern > Mitigations
+- id: requirement:csa-maestro-2025-distributed-agent-ecosystem
+  name: "Distributed Agent Ecosystem — Distinguish legitimate agents using strong identity management…"
+  text: Distinguish legitimate agents using strong identity management and reputation mechanisms.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:csa-maestro-2025#distributed-agent-ecosystem"
+  source_locator: §4, Distributed Agent Ecosystem > Mitigations
+- id: requirement:csa-maestro-2025-human-in-the-loop-collaboration
+  name: "Human-in-the-Loop Collaboration — Validate human input and retain auditable records of…"
+  text: Validate human input and retain auditable records of human-agent interactions.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:csa-maestro-2025#human-in-the-loop-collaboration"
+  source_locator: §4, Human-in-the-Loop Collaboration > Mitigations
+- id: requirement:csa-maestro-2025-self-learning-and-adaptive-agents
+  name: "Self-Learning and Adaptive Agents — Clean and validate data used to train adaptive agents."
+  text: Clean and validate data used to train adaptive agents.
+  text_origin: paraphrase
+  requirement_kind: technical
+  normativity: recommended
+  source_ref: "library:csa-maestro-2025#self-learning-and-adaptive-agents"
+  source_locator: §4, Self-Learning and Adaptive Agents > Mitigations
+threat_instances:
+- id: threat-instance:csa-maestro-2025-layer-1-adversarial-examples
+  name: Adversarial Examples
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:csa-maestro-2025-layer-2-data-poisoning
+  name: Data Poisoning
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:csa-maestro-2025-layer-3-compromised-framework-components
+  name: Compromised Framework Components
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:csa-maestro-2025-layer-4-compromised-container-images
+  name: Compromised Container Images
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:csa-maestro-2025-layer-5-manipulation-of-evaluation-metrics
+  name: Manipulation of Evaluation Metrics
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:csa-maestro-2025-layer-6-compromised-security-ai-agents
+  name: Compromised Security AI Agents
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:csa-maestro-2025-layer-7-agent-impersonation
+  name: Agent Impersonation
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:csa-maestro-2025-supply-chain-attacks
+  name: Supply Chain Attacks
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:csa-maestro-2025-lateral-movement
+  name: Lateral Movement
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:csa-maestro-2025-goal-misalignment-cascades
+  name: Goal Misalignment Cascades
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:csa-maestro-2025-adversarial-examples
+  name: Adversarial Examples
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:csa-maestro-2025-agent-goal-manipulation
+  name: Agent Goal Manipulation
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:csa-maestro-2025-repudiation
+  name: Repudiation
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:csa-maestro-2025-compromised-agents
+  name: Compromised Agents
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:csa-maestro-2025-agent-tool-misuse
+  name: Agent Tool Misuse
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:csa-maestro-2025-single-agent-pattern-goal-manipulation
+  name: Goal Manipulation
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:csa-maestro-2025-multi-agent-pattern-communication-channel-attack
+  name: Communication Channel Attack
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:csa-maestro-2025-unconstrained-conversational-autonomy-prompt-injection-jailbreaking
+  name: Prompt Injection/Jailbreaking
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:csa-maestro-2025-task-oriented-agent-pattern-denial-of-service-dos-through-overload
+  name: Denial-of-Service (DoS) through Overload
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:csa-maestro-2025-hierarchical-agent-pattern-compromise-of-a-higher-level-agent-to-control-subordinates
+  name: Compromise of a Higher-Level Agent to Control Subordinates
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:csa-maestro-2025-distributed-agent-ecosystem-sybil-attack-through-agent-impersonation
+  name: Sybil Attack through Agent Impersonation
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:csa-maestro-2025-human-in-the-loop-collaboration-manipulation-of-human-input-feedback-to-skew-agent-behavior
+  name: Manipulation of Human Input/Feedback to Skew Agent Behavior
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:csa-maestro-2025-self-learning-and-adaptive-agents-data-poisoning-through-backdoor-trigger-injection
+  name: Data Poisoning through Backdoor Trigger Injection
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+parties:
+- id: party:paria03
+  name: '@paria03'
+  party_kind: person
+assertions:
+- id: assertion:csa-maestro-2025-layer-1-foundation-models-addresses-csa-maestro-2025-layer-1-adversarial-examples
+  subject: requirement:csa-maestro-2025-layer-1-foundation-models
+  predicate: addresses
+  object: threat-instance:csa-maestro-2025-layer-1-adversarial-examples
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: §3.2 A, Layer 1: Foundation Models; §3.2
+    C, Layer-Specific Mitigations; layer-specific umbrella advice instantiated for this named threat,
+    not a source-prescribed concrete control.'
+- id: assertion:csa-maestro-2025-layer-2-data-operations-addresses-csa-maestro-2025-layer-2-data-poisoning
+  subject: requirement:csa-maestro-2025-layer-2-data-operations
+  predicate: addresses
+  object: threat-instance:csa-maestro-2025-layer-2-data-poisoning
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: §3.2 A, Layer 2: Data Operations; §3.2
+    C, Layer-Specific Mitigations; layer-specific umbrella advice instantiated for this named threat,
+    not a source-prescribed concrete control.'
+- id: assertion:csa-maestro-2025-layer-3-agent-frameworks-addresses-csa-maestro-2025-layer-3-compromised-framework-components
+  subject: requirement:csa-maestro-2025-layer-3-agent-frameworks
+  predicate: addresses
+  object: threat-instance:csa-maestro-2025-layer-3-compromised-framework-components
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: §3.2 A, Layer 3: Agent Frameworks; §3.2
+    C, Layer-Specific Mitigations; layer-specific umbrella advice instantiated for this named threat,
+    not a source-prescribed concrete control.'
+- id: assertion:csa-maestro-2025-layer-4-deployment-and-infrastructure-addresses-csa-maestro-2025-layer-4-compromised-container-images
+  subject: requirement:csa-maestro-2025-layer-4-deployment-and-infrastructure
+  predicate: addresses
+  object: threat-instance:csa-maestro-2025-layer-4-compromised-container-images
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: §3.2 A, Layer 4: Deployment and Infrastructure;
+    §3.2 C, Layer-Specific Mitigations; layer-specific umbrella advice instantiated for this named
+    threat, not a source-prescribed concrete control.'
+- id: assertion:csa-maestro-2025-layer-5-evaluation-and-observability-addresses-csa-maestro-2025-layer-5-manipulation-of-evaluation-metrics
+  subject: requirement:csa-maestro-2025-layer-5-evaluation-and-observability
+  predicate: addresses
+  object: threat-instance:csa-maestro-2025-layer-5-manipulation-of-evaluation-metrics
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: §3.2 A, Layer 5: Evaluation and Observability;
+    §3.2 C, Layer-Specific Mitigations; layer-specific umbrella advice instantiated for this named
+    threat, not a source-prescribed concrete control.'
+- id: assertion:csa-maestro-2025-layer-6-security-and-compliance-addresses-csa-maestro-2025-layer-6-compromised-security-ai-agents
+  subject: requirement:csa-maestro-2025-layer-6-security-and-compliance
+  predicate: addresses
+  object: threat-instance:csa-maestro-2025-layer-6-compromised-security-ai-agents
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: §3.2 A, Layer 6: Security and Compliance;
+    §3.2 C, Layer-Specific Mitigations; layer-specific umbrella advice instantiated for this named
+    threat, not a source-prescribed concrete control.'
+- id: assertion:csa-maestro-2025-layer-7-agent-ecosystem-addresses-csa-maestro-2025-layer-7-agent-impersonation
+  subject: requirement:csa-maestro-2025-layer-7-agent-ecosystem
+  predicate: addresses
+  object: threat-instance:csa-maestro-2025-layer-7-agent-impersonation
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: §3.2 A, Layer 7: Agent Ecosystem; §3.2
+    C, Layer-Specific Mitigations; layer-specific umbrella advice instantiated for this named threat,
+    not a source-prescribed concrete control.'
+- id: assertion:csa-maestro-2025-defense-in-depth-addresses-csa-maestro-2025-supply-chain-attacks
+  subject: requirement:csa-maestro-2025-defense-in-depth
+  predicate: addresses
+  object: threat-instance:csa-maestro-2025-supply-chain-attacks
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: §3.2 C, Mitigation Strategies > Defense
+    in Depth; proposed relationship to the named threat at §3.2 B. Cross-Layer Threats, not an explicit
+    source crosswalk.'
+- id: assertion:csa-maestro-2025-secure-inter-layer-communication-addresses-csa-maestro-2025-lateral-movement
+  subject: requirement:csa-maestro-2025-secure-inter-layer-communication
+  predicate: addresses
+  object: threat-instance:csa-maestro-2025-lateral-movement
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: §3.2 C, Mitigation Strategies > Secure
+    Inter-Layer Communication; proposed relationship to the named threat at §3.2 B. Cross-Layer Threats,
+    not an explicit source crosswalk.'
+- id: assertion:csa-maestro-2025-system-wide-monitoring-addresses-csa-maestro-2025-lateral-movement
+  subject: requirement:csa-maestro-2025-system-wide-monitoring
+  predicate: addresses
+  object: threat-instance:csa-maestro-2025-lateral-movement
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: §3.2 C, Mitigation Strategies > System-Wide
+    Monitoring; proposed relationship to the named threat at §3.2 B. Cross-Layer Threats, not an
+    explicit source crosswalk.'
+- id: assertion:csa-maestro-2025-incident-response-plan-addresses-csa-maestro-2025-goal-misalignment-cascades
+  subject: requirement:csa-maestro-2025-incident-response-plan
+  predicate: addresses
+  object: threat-instance:csa-maestro-2025-goal-misalignment-cascades
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: §3.2 C, Mitigation Strategies > Incident
+    Response Plan; proposed relationship to the named threat at §3.2 B. Cross-Layer Threats, not
+    an explicit source crosswalk.'
+- id: assertion:csa-maestro-2025-adversarial-training-addresses-csa-maestro-2025-adversarial-examples
+  subject: requirement:csa-maestro-2025-adversarial-training
+  predicate: addresses
+  object: threat-instance:csa-maestro-2025-adversarial-examples
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: §3.2 C, Mitigation Strategies > Adversarial
+    Training; proposed relationship to the named threat at §3.2 A. Layer 1, not an explicit source
+    crosswalk.'
+- id: assertion:csa-maestro-2025-formal-verification-addresses-csa-maestro-2025-agent-goal-manipulation
+  subject: requirement:csa-maestro-2025-formal-verification
+  predicate: addresses
+  object: threat-instance:csa-maestro-2025-agent-goal-manipulation
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: §3.2 C, Mitigation Strategies > Formal
+    Verification; proposed relationship to the named threat at §3.2 A. Layer 7, not an explicit source
+    crosswalk.'
+- id: assertion:csa-maestro-2025-explainable-ai-xai-addresses-csa-maestro-2025-repudiation
+  subject: requirement:csa-maestro-2025-explainable-ai-xai
+  predicate: addresses
+  object: threat-instance:csa-maestro-2025-repudiation
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: §3.2 C, Mitigation Strategies > Explainable
+    AI (XAI); proposed relationship to the named threat at §3.2 A. Layer 7, not an explicit source
+    crosswalk.'
+- id: assertion:csa-maestro-2025-red-teaming-addresses-csa-maestro-2025-compromised-agents
+  subject: requirement:csa-maestro-2025-red-teaming
+  predicate: addresses
+  object: threat-instance:csa-maestro-2025-compromised-agents
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: §3.2 C, Mitigation Strategies > Red Teaming;
+    proposed relationship to the named threat at §3.2 A. Layer 7, not an explicit source crosswalk.'
+- id: assertion:csa-maestro-2025-safety-monitoring-addresses-csa-maestro-2025-agent-tool-misuse
+  subject: requirement:csa-maestro-2025-safety-monitoring
+  predicate: addresses
+  object: threat-instance:csa-maestro-2025-agent-tool-misuse
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: §3.2 C, Mitigation Strategies > Safety
+    Monitoring; proposed relationship to the named threat at §3.2 A. Layer 7, not an explicit source
+    crosswalk.'
+- id: assertion:csa-maestro-2025-single-agent-pattern-addresses-csa-maestro-2025-single-agent-pattern-goal-manipulation
+  subject: requirement:csa-maestro-2025-single-agent-pattern
+  predicate: addresses
+  object: threat-instance:csa-maestro-2025-single-agent-pattern-goal-manipulation
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: §4, Single-Agent Pattern > Mitigation;
+    the pattern explicitly pairs this mitigation with the named threat.'
+- id: assertion:csa-maestro-2025-multi-agent-pattern-addresses-csa-maestro-2025-multi-agent-pattern-communication-channel-attack
+  subject: requirement:csa-maestro-2025-multi-agent-pattern
+  predicate: addresses
+  object: threat-instance:csa-maestro-2025-multi-agent-pattern-communication-channel-attack
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: §4, Multi-Agent Pattern > Mitigations;
+    the pattern explicitly pairs this mitigation with the named threat.'
+- id: assertion:csa-maestro-2025-unconstrained-conversational-autonomy-addresses-csa-maestro-2025-unconstrained-conversational-autonomy-prompt-injection-jailbreaking
+  subject: requirement:csa-maestro-2025-unconstrained-conversational-autonomy
+  predicate: addresses
+  object: threat-instance:csa-maestro-2025-unconstrained-conversational-autonomy-prompt-injection-jailbreaking
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: §4, Unconstrained Conversational Autonomy
+    > Mitigations; the pattern explicitly pairs this mitigation with the named threat.'
+- id: assertion:csa-maestro-2025-task-oriented-agent-pattern-addresses-csa-maestro-2025-task-oriented-agent-pattern-denial-of-service-dos-through-overload
+  subject: requirement:csa-maestro-2025-task-oriented-agent-pattern
+  predicate: addresses
+  object: threat-instance:csa-maestro-2025-task-oriented-agent-pattern-denial-of-service-dos-through-overload
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: §4, Task-Oriented Agent Pattern > Mitigations;
+    the pattern explicitly pairs this mitigation with the named threat.'
+- id: assertion:csa-maestro-2025-hierarchical-agent-pattern-addresses-csa-maestro-2025-hierarchical-agent-pattern-compromise-of-a-higher-level-agent-to-control-subordinates
+  subject: requirement:csa-maestro-2025-hierarchical-agent-pattern
+  predicate: addresses
+  object: threat-instance:csa-maestro-2025-hierarchical-agent-pattern-compromise-of-a-higher-level-agent-to-control-subordinates
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: §4, Hierarchical Agent Pattern > Mitigations;
+    the pattern explicitly pairs this mitigation with the named threat.'
+- id: assertion:csa-maestro-2025-distributed-agent-ecosystem-addresses-csa-maestro-2025-distributed-agent-ecosystem-sybil-attack-through-agent-impersonation
+  subject: requirement:csa-maestro-2025-distributed-agent-ecosystem
+  predicate: addresses
+  object: threat-instance:csa-maestro-2025-distributed-agent-ecosystem-sybil-attack-through-agent-impersonation
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: §4, Distributed Agent Ecosystem > Mitigations;
+    the pattern explicitly pairs this mitigation with the named threat.'
+- id: assertion:csa-maestro-2025-human-in-the-loop-collaboration-addresses-csa-maestro-2025-human-in-the-loop-collaboration-manipulation-of-human-input-feedback-to-skew-agent-behavior
+  subject: requirement:csa-maestro-2025-human-in-the-loop-collaboration
+  predicate: addresses
+  object: threat-instance:csa-maestro-2025-human-in-the-loop-collaboration-manipulation-of-human-input-feedback-to-skew-agent-behavior
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: §4, Human-in-the-Loop Collaboration >
+    Mitigations; the pattern explicitly pairs this mitigation with the named threat.'
+- id: assertion:csa-maestro-2025-self-learning-and-adaptive-agents-addresses-csa-maestro-2025-self-learning-and-adaptive-agents-data-poisoning-through-backdoor-trigger-injection
+  subject: requirement:csa-maestro-2025-self-learning-and-adaptive-agents
+  predicate: addresses
+  object: threat-instance:csa-maestro-2025-self-learning-and-adaptive-agents-data-poisoning-through-backdoor-trigger-injection
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: §4, Self-Learning and Adaptive Agents
+    > Mitigations; the pattern explicitly pairs this mitigation with the named threat.'
+reviews:
+- id: review:paria03-csa-maestro-2025-layer-1-foundation-models
+  reviews: assertion:csa-maestro-2025-layer-1-foundation-models-addresses-csa-maestro-2025-layer-1-adversarial-examples
+  reviewer: party:paria03
+  review_status: accepted
+  justification: The source identifies adversarial examples in this layer and recommends controls for
+    its listed threats. I accept this as a general relationship.
+- id: review:paria03-csa-maestro-2025-layer-4-deployment-and-infrastructure
+  reviews: assertion:csa-maestro-2025-layer-4-deployment-and-infrastructure-addresses-csa-maestro-2025-layer-4-compromised-container-images
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as a general layer-specific relationship: the source lists compromised container
+    images among deployment threats and recommends tailored controls. This is a partial mapping, not evidence
+    that a control is implemented.'
+- id: review:paria03-csa-maestro-2025-layer-6-security-and-compliance
+  reviews: assertion:csa-maestro-2025-layer-6-security-and-compliance-addresses-csa-maestro-2025-layer-6-compromised-security-ai-agents
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as a general layer-specific relationship: the source identifies compromised
+    security AI agents in the security and compliance layer and recommends tailored controls. This is
+    a partial mapping, not evidence that a control is implemented.'
+- id: review:paria03-csa-maestro-2025-secure-inter-layer-communication
+  reviews: assertion:csa-maestro-2025-secure-inter-layer-communication-addresses-csa-maestro-2025-lateral-movement
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as an inferred relationship: protected inter-layer communication is relevant
+    to lateral movement. This does not establish that communication protection alone stops such movement.'
+- id: review:paria03-csa-maestro-2025-incident-response-plan
+  reviews: assertion:csa-maestro-2025-incident-response-plan-addresses-csa-maestro-2025-goal-misalignment-cascades
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as an inferred response relationship: a cross-layer incident plan is relevant
+    to cascading goal changes. This supports incident response, not a finding that the cascade is prevented.'
+- id: review:paria03-csa-maestro-2025-explainable-ai-xai
+  reviews: assertion:csa-maestro-2025-explainable-ai-xai-addresses-csa-maestro-2025-repudiation
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as an inferred accountability relationship: transparent decisions support auditing
+    when agents deny their actions. Explainability alone does not provide a complete audit trail.'
+- id: review:paria03-csa-maestro-2025-safety-monitoring
+  reviews: assertion:csa-maestro-2025-safety-monitoring-addresses-csa-maestro-2025-agent-tool-misuse
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as an inferred detection relationship: runtime monitoring can help identify
+    unsafe tool use. This is not a prevention or effectiveness finding.'
+- id: review:paria03-csa-maestro-2025-unconstrained-conversational-autonomy
+  reviews: assertion:csa-maestro-2025-unconstrained-conversational-autonomy-addresses-csa-maestro-2025-unconstrained-conversational-autonomy-prompt-injection-jailbreaking
+  reviewer: party:paria03
+  review_status: accepted
+  justification: Accepted because the source explicitly pairs input validation and conversation-specific
+    safety filters with prompt injection and jailbreaking in the Unconstrained Conversational Autonomy
+    pattern.
+- id: review:paria03-csa-maestro-2025-hierarchical-agent-pattern
+  reviews: assertion:csa-maestro-2025-hierarchical-agent-pattern-addresses-csa-maestro-2025-hierarchical-agent-pattern-compromise-of-a-higher-level-agent-to-control-subordinates
+  reviewer: party:paria03
+  review_status: accepted
+  justification: Accepted because the source explicitly pairs secure agent communication, access controls
+    and monitoring with takeover of a higher-level agent in the Hierarchical Agent pattern.
+- id: review:paria03-csa-maestro-2025-self-learning-and-adaptive-agents
+  reviews: assertion:csa-maestro-2025-self-learning-and-adaptive-agents-addresses-csa-maestro-2025-self-learning-and-adaptive-agents-data-poisoning-through-backdoor-trigger-injection
+  reviewer: party:paria03
+  review_status: accepted
+  justification: Accepted because the source explicitly pairs training-data sanitization and validation
+    with poisoning through a hidden backdoor trigger in the Self-Learning and Adaptive Agents pattern.

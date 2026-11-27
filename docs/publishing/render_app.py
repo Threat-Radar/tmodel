@@ -3,7 +3,8 @@
 
 The application bundle is the existing Vite frontend built in ``pages`` mode.
 The data files are exact, path-sanitised engine responses for every model that
-``GET /models`` lists, plus the complete ``GET /library/table`` response.
+``GET /models`` lists, the complete ``GET /library/table`` response, and
+read-only SDL examples from the repository vectors.
 
     engine/.venv/bin/python docs/publishing/render_app.py
     engine/.venv/bin/python docs/publishing/render_app.py --check
@@ -30,7 +31,9 @@ sys.path.insert(0, str(ROOT / "engine"))
 os.environ.pop("TMODEL_LIBRARY", None)
 
 try:
-    from engine import core
+    from engine.load.vector import load_vector_document
+
+    from engine import core, sdl
 except ImportError as exc:
     raise SystemExit(
         f"render_app: cannot import the engine ({exc}); run with engine/.venv/bin/python"
@@ -49,6 +52,25 @@ def _write_json(path: Path, payload: Any) -> None:
 def _public_file(payload: dict[str, Any], file: str) -> dict[str, Any]:
     """Replace the engine's approved absolute model path with its public file name."""
     return {**payload, "file": file}
+
+
+def _write_sdl_data(out: Path) -> None:
+    listing = core.sdl_models()
+    xwalk = dict(load_vector_document(core.CROSSWALK_FILE))
+    for model in listing["models"]:
+        file = model["file"]
+        if model.get("error"):
+            raise RuntimeError(f"refusing to omit SDL model data: {model['error']}")
+        doc = dict(load_vector_document(core.APPROVED_VECTOR_DIRECTORY / file))
+        # Use the same collector as GET /sdl, without reading local proposal files.
+        views = {
+            program["id"]: _public_file(
+                sdl.collect(doc, xwalk, program=program["id"]), file
+            )
+            for program in model["programs"]
+        }
+        _write_json(out / f"{Path(file).stem}.json", {"views": views})
+    _write_json(out / "models.json", listing)
 
 
 def write_data(out: Path) -> tuple[int, int]:
@@ -101,6 +123,7 @@ def write_data(out: Path) -> tuple[int, int]:
             "the unfiltered library table did not contain every loaded record"
         )
     _write_json(out / "data" / "library" / "table.json", library)
+    _write_sdl_data(out / "data" / "sdl")
     return len(listing["models"]), library["count"]
 
 
