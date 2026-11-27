@@ -4,9 +4,9 @@ id: DL-0011-lane-catalogs-schema
 title: "RPT-0014 lane catalogs-schema: WAVE 1 calibration (S-0855, S-0166, S-0728)"
 type: process
 status: draft
-version: "0.2.1"
+version: "0.2.2"
 date: "2026-11-08"
-updated: "2026-11-13"
+updated: "2026-11-26"
 record: DL-0011
 issue: 79
 ---
@@ -57,7 +57,7 @@ Each `summary.md` has the six `summarize` sections, the RPT-0014 applicability t
 - **Greshake: AIT-068 (multimodal) is linked but flagged as weak.** The paper has only a limited LLaVA example (§5.3, Fig. 28).
 - **BIML type `article`, body `other`.** It is an institute white paper with no DOI, so `paper` would overstate its review status and `academic` its publisher.
 - **Tags.** The AI subject tags (`prompt-injection`, `ai-threat-model`, `ai-weakness-catalog` and so on) are LANES.md's *proposed* set, not yet in `schema/tags.yaml`. Role tags are from the controlled set: `normative` for NIST (RPT-0014 maps to its ids), `evidence` for Greshake, `prior-art` for BIML.
-- **Reference expansion only partly done.** NIST's 449 references need a scripted title match, so this pass was not attempted. Greshake's taxonomy references are all in `sources.md`. BIML has four in-scope candidates missing (two Barreno papers, Kloft and Laskov 2007, and NISTIR 8269 draft); they are listed in its summary rather than created as stubs, because calibration records live in tmodel, not the library.
+- **Reference expansion only partly done.** NIST's 449 references need a scripted title match, so this pass was not attempted. Greshake's taxonomy references are all in `sources.md`. BIML has twelve in-scope works missing; the full corrected list is in its summary. The earlier four-candidate count was superseded by the complete 35-reference check. These remain candidates rather than new stubs in this calibration, because calibration records live in tmodel, not the library.
 
 ## Calibration points for the integration lane (#82)
 
@@ -102,3 +102,15 @@ The lane's 20 WAVE 1 sources had the same check in Threat-Radar/library#51. FSF 
 ## Human review
 
 @Clovier checked the three records against the sources on 2026-11-09 (#228). Not yet signed. @paria03 (review partner per LANES.md) reads at least three entries per record against the source, then signs `reviewed_by` in each `summary.md`. Until then each record is a hypothesis (R-018).
+
+## Review-partner follow-up (#285, 2026-11-26)
+
+The three pinned PDFs were fetched again and all three hashes match the records.
+The source-check sample and locators are recorded in
+[review-catalogs-schema-285.md](review-catalogs-schema-285.md). The catalog
+recount is 98 of 146 entries carrying NISTAML ids, 60 through AIT-075; the
+PDF body contains 25 leaf ids after rejoining split NISTAML text. The stale
+four-candidate BIML bullet above now agrees with the twelve-work list.
+
+The sample verification does not populate the blank human `reviewed_by`
+fields. Those remain pending the designated review partner's confirmation.
