@@ -60,7 +60,10 @@ By default these go through the local API, exactly like the desktop app
 instead, for scripts that do not want a server.
 
 Exit codes: 0 ok · 1 engine unreachable, unhealthy, an engine error, or incomplete
-risk inputs · 2 usage error, or an input `import-sbom` refuses.
+risk inputs; for `import-sbom`, a file it could not write (the error and what it left
+are printed) · 2 usage error, or an input `import-sbom` refuses. `import-sbom` exits 0
+with its warnings printed, such as an SBOM most of whose packages are another
+platform's, or a backup it could not remove once both outputs were written.
 """
 
 from __future__ import annotations
@@ -673,6 +676,10 @@ def _import_sbom(args: argparse.Namespace) -> int:
         print(result.report_text, end="")
     else:
         print(f"wrote {args.output} and the import report {args.report}")
+    # What the import wrote but the user should know (import_sbom.ImportResult.warnings),
+    # such as an SBOM most of whose packages are another platform's: the import stands.
+    for warning in result.warnings:
+        print(f"warning: {warning}", file=sys.stderr)
     return 0
 
 

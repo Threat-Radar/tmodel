@@ -17,16 +17,20 @@ and the engine loads, plus an import report. The mapping is RPT-0004 Table 6
   the scanned build, keyed by the digest the SBOM records and the build's platform
   (R-ID-1), whose `build_composed_of` lists the components (ADR-0011 A4). The SBOM does
   not say whether its digest is a platform manifest's or an index's, which every
-  platform of a release shares, so the platform comes from `--platform` or from a scan
-  Grype made of the image itself, and is checked against the packages' `arch`
-  qualifiers, variant and all: it is refused when more packages are built for another
-  platform than for it, a platform that names no variant takes the one its packages
-  pin, arm64 with none is v8, and 32-bit arm needs one. Packages built for another
-  platform, which an image can hold (Debian's multiarch, for cross-compiling), are
-  Components like any other, and the report lists them. The ids are made from the
-  keys: the whole repository, and the whole digest with the platform, so no two
-  platforms give one id. The SBOM never fills the design-level `composed_of`
-  (R-EDGE-2);
+  platform of a release shares, so the platform's os and architecture come from
+  `--platform` or from a scan Grype made of the image itself, which must agree, and the
+  image's own purl must not name another architecture. A variant those leave out is
+  the one the packages' `arch` qualifiers pin (two are refused, as an ambiguity), arm64
+  with none is v8, and 32-bit arm needs one. Otherwise the packages never refuse the
+  import: those built for another platform, which an image can hold (Debian's
+  multiarch, for cross-compiling), are Components like any other, the report lists
+  them, and when they outnumber the platform's own, or none is built for its
+  architecture, or Linux packages meet another os, the report and a warning say so.
+  The ids are made from the keys: one made from a free-form key (the Product's purl, a
+  Component's, a Party's name, a match or a CWE link) always ends in a short hash of
+  the key, and the ProductInstance's holds the whole digest with the platform, so no
+  two keys give one id, and one key gives one id in every import. The SBOM never fills
+  the design-level `composed_of` (R-EDGE-2);
 - one Component per SBOM entry other than files (R-ID-4), keyed by its purl, qualifiers
   and all, normalized by the rules the purl specification gives every type (R-ID-3),
   with `version`, `component_kind` from CycloneDX's `type` (A3), and every purl and CPE
@@ -59,11 +63,13 @@ or a scan of another image, is refused with a message naming it. The model and t
 report are written to temporary files and put in place together, and an existing
 file is never replaced without `--force`, because people edit starter models: not
 even one that appears while the import runs, or one a Mac's volume reads as the same
-name in another case or Unicode form.
+name in another case or Unicode form. Once both are in place the import stands: a
+temporary file or a backup it cannot remove then is named in a warning.
 """
 
 from __future__ import annotations
 
+import contextlib
 import hashlib
 import json
 import os
@@ -166,15 +172,18 @@ ARCH_VARIANTS = {
     ("rpm", "armv7hl"): ("arm", "v7"),
 }
 NO_ARCHITECTURE = frozenset({"noarch", "all", "any"})
+# The purl types of Linux distributions' packages (Alpine's, Debian's, RPM's and Arch
+# Linux's): under a platform whose os is not linux, a warning says so (_check_os).
+LINUX_TYPES = frozenset({"apk", "deb", "rpm", "alpm"})
 # A 64-bit platform runs its 32-bit sibling's packages too, which Debian's multiarch
 # and RPM's multilib install beside the native ones (libc6:i386 on amd64). A sibling's
 # variant is not the platform's (which is the 64-bit architecture's own), so it is
 # reported, never compared or taken: a 64-bit CPU that runs 32-bit code runs each of
 # its variants, and multiarch can install armel and armhf beside arm64. A package for
 # any other CPU is foreign, as multiarch installs one for cross-compiling, and is kept
-# like any other unless more packages are built for another platform than for this one
-# (_Builder._check_majority); SIBLING_OF counts a foreign sibling with its own 64-bit
-# architecture, as the platform's own counts with it.
+# like any other; a warning says when more packages are built for another platform
+# than for this one (_Builder._check_majority), where SIBLING_OF counts a foreign
+# sibling with its own 64-bit architecture, as the platform's own counts with it.
 ALSO_RUNS = {"amd64": "386", "arm64": "arm"}
 SIBLING_OF = {sibling: arch for arch, sibling in ALSO_RUNS.items()}
 # A platform's variant when neither the platform nor its packages name one. arm64 has
@@ -335,11 +344,14 @@ class ScanInfo:
 
 @dataclass
 class ImportResult:
-    """The model and report texts, and what was written."""
+    """The model and report texts, what was written, and the warnings: what the import
+    did not refuse but the user should know, each on one line (the command prints each
+    as `warning: ...`)."""
 
     model_text: str
     report_text: str
     counts: dict[str, int] = field(default_factory=dict)
+    warnings: list[str] = field(default_factory=list)
 
 
 def run(
@@ -360,7 +372,7 @@ def run(
     _check_outputs(inputs, outputs, force)
     result = build(sbom, scan=scan, platform=platform, output_name=_display_path(out))
     texts = [result.model_text] + ([result.report_text] if report_path is not None else [])
-    _publish(list(zip(outputs, texts, strict=True)), force)
+    result.warnings += _publish(list(zip(outputs, texts, strict=True)), force)
     return result
 
 
@@ -387,7 +399,7 @@ def build(
     model_text = _header(builder, output_name) + _dump(doc)
     _read_back(model_text, doc)
     report_text = builder.report(output_name)
-    return ImportResult(model_text, report_text, builder.counts())
+    return ImportResult(model_text, report_text, builder.counts(), list(builder.warnings))
 
 
 # Reading and checking the inputs -----------------------------------------------------
@@ -983,6 +995,9 @@ class _Row:
     name: str | None
     version: str | None
     details: tuple[_Detail, ...]
+    # The SBOM entry the match is on (artifact.id, the entry's bom-ref when Grype read the
+    # SBOM), or "": it orders twins, matches that say one finding (_finding).
+    artifact_id: str
     fingerprint: str  # the SHA-256 of the match as canonical JSON
 
 
@@ -1017,7 +1032,14 @@ class _Builder:
         # a variant they pin, or arm64's, completes it.
         self.platform = platform
         self.platform_source = platform_source  # "--platform", the scan, or both
-        self.platform_notes: list[str] = []  # how the platform was completed, for the report
+        # How the platform was completed, and what the packages say against it, for the
+        # report; and the warnings, which the command prints (_warn).
+        self.platform_notes: list[str] = []
+        self.warnings: list[str] = []
+        self.image_arch: str | None = None  # the image purl's arch, as written
+        self.linux_packages: Counter[str] = Counter()  # Components by Linux purl type
+        self.advice_os = platform.os  # the os a warning's advice names (_warn)
+        self.pointed: tuple[str, str] | None = None  # the build a warning's advice names
         self.ids: dict[str, str] = {}  # object id -> the key it was made from
         self.notes: Counter[str] = Counter()  # what was left out, by reason
         self.repeats: Counter[str] = Counter()  # what the inputs repeat, written once
@@ -1056,14 +1078,37 @@ class _Builder:
 
     # ids
 
-    def _id(self, prefix: str, key: str, readable: str, limit: int = 80) -> str:
-        """A stable id from `readable`; the same key always gets the same id."""
-        slug = _slug(readable, limit=limit)
-        candidate = f"{prefix}:{slug}"
-        owner = self.ids.get(candidate)
-        if owner is not None and owner != key:
-            candidate = f"{prefix}:{_slug(slug, limit=limit - 10)}-{_short_hash(key)}"
-        self.ids[candidate] = key
+    def _id(
+        self,
+        prefix: str,
+        key: str,
+        readable: str,
+        limit: int = 80,
+        *,
+        hashed: bool = False,
+        twin: int = 0,
+    ) -> str:
+        """An id from `readable`: the same key always gets the same id, and no id is two
+        objects'. A `hashed` id, made from a free-form key (a purl, a party's name, a
+        match), always ends in a short hash of the key (_slug), so two keys whose
+        readable slugs are one get two ids in every import, and adding or removing other
+        objects changes none, twins aside: adding or removing one of several twins can
+        renumber the twins after it. An id made from a canonical key (a Vulnerability's or a
+        Weakness's id, the ProductInstance's digest and platform) is the slug alone.
+        Should another object have the id all the same (a slug that spells another id,
+        two short hashes that are one, or a `twin`: the number of objects before this
+        one with the same key, such as package matches that say one finding), a
+        counter is hashed in with the key, one step at a time, until the id is free, so
+        twins are told apart by the order they come in."""
+        owner = f"{key}\n{twin}" if twin else key
+        mark = _short_hash(key) if hashed else None
+        candidate = f"{prefix}:{_slug(readable, limit=limit, mark=mark)}"
+        attempt = 0
+        while self.ids.get(candidate, owner) != owner:
+            attempt += 1
+            seed = key if attempt == 1 and not hashed else f"{key}#{attempt}"
+            candidate = f"{prefix}:{_slug(readable, limit=limit, mark=_short_hash(seed))}"
+        self.ids[candidate] = owner
         return candidate
 
     # the product and the scanned build
@@ -1074,10 +1119,15 @@ class _Builder:
         self.purl_name = repository.rsplit("/", 1)[-1].lower()
         self.purl_url = quote(self.repository_url, safe="/:")
         self.product_purl = f"pkg:oci/{self.purl_name}?repository_url={self.purl_url}"
-        # Each id is made from its key, whole: here the repository with its registry
-        # (R-ID-2), so another registry or path gives another id. An id is a readable
-        # slug; the purl in identifiers stays the key.
-        self.product_id = self._id("product", self.product_purl, self.repository_url)
+        # Each id is made from its key, whole: here the versionless purl, which holds the
+        # repository with its registry (R-ID-2), so another registry or path gives another
+        # id. The id is a readable slug of the repository and a short hash of the key
+        # (_id): the slug writes each run of characters other than letters and digits as
+        # one dash, so team/alpha-beta/app, team/alpha/beta/app, team/alpha.beta/app and
+        # team/alpha_beta/app share one slug, and the hash tells them apart in separate
+        # imports too. The same repository, whatever its tag or digest, always gives the
+        # same id. The purl in identifiers stays the key.
+        self.product_id = self._id("product", self.product_purl, self.repository_url, hashed=True)
 
     def _instance(self) -> None:
         """The scanned build's purl, key and id, once the packages have settled the
@@ -1133,7 +1183,9 @@ class _Builder:
             self.components[key] = self._component(entries[key], name)
         self._check_architectures(name)
         for component in self.components.values():  # in key order
-            component.id = self._id("component", component.key, component.readable)
+            # The key is the normalized purl, qualifiers and all, so the aarch64 and the
+            # x86_64 build of one package never share an id, in one import or two.
+            component.id = self._id("component", component.key, component.readable, hashed=True)
         named = {(c.supplier, "supplier") for c in self.components.values() if c.supplier}
         named |= {
             (c.manufacturer, "manufacturer") for c in self.components.values() if c.manufacturer
@@ -1270,7 +1322,7 @@ class _Builder:
             if party["_key"] == key:
                 party["_roles"].add(role)
                 return party_id
-        party_id = self._id("party", key, name)
+        party_id = self._id("party", key, name, hashed=True)  # "Alpine Linux", "alpine.linux"
         self.parties[party_id] = {"_key": key, "_roles": {role}, "name": name}
         return party_id
 
@@ -1281,27 +1333,40 @@ class _Builder:
     # the platform, checked against the SBOM
 
     def _check_architectures(self, name: str) -> None:
-        """The SBOM's own record of its CPU must fit the platform (R-ID-1): the image's
-        purl, when it has an arch, names the platform's architecture; the packages' arch
-        qualifiers, read through ARCH_VARIANTS and ARCHITECTURES, do not contradict it
-        (_check_majority); nor do the variants of those built for its own architecture
-        (_check_variant), which then settle it (_settle_platform). A package built for
-        another platform is kept like any other, and reported (foreign). A name in
-        neither table is listed, not checked; noarch, all and any are skipped."""
+        """The SBOM's own record of its CPU and os, checked against the platform (R-ID-1).
+        The image's purl, when it has an arch, must name the platform's architecture, in
+        any case, or the import is refused: like `--platform` and the scan, it is metadata
+        about the build. The packages' arch qualifiers, read through ARCH_VARIANTS and
+        ARCHITECTURES, are counted against the platform (_check_majority), and so are the
+        variants of those built for its own architecture (_check_variant), which can give
+        the platform a variant its metadata leaves out (_settle_platform). They never
+        contradict the platform into a refusal: a package built for another platform is
+        kept like any other, and reported (foreign), and when such packages outnumber the
+        platform's own, the report and a warning say so (_warn), as one does when Linux
+        packages meet another os (_check_os). What they can still refuse is a platform
+        they leave unsettled: two variants pinned when it names none, an ambiguity, or no
+        variant for 32-bit arm. A name in neither table is listed, not checked; noarch,
+        all and any are skipped."""
         platform = self.platform.architecture
         given = f"the platform is {self.platform} (from {self.platform_source})"
         image = _parse_purl(self.info.purl) if self.info.purl is not None else None
         image_arch = dict(image.qualifiers).get("arch") if image is not None else None
-        # An oci purl names its arch as an image index does, so a name not in the table
-        # is compared as it is. The oci type has no qualifier for a variant.
-        if image_arch is not None and ARCHITECTURES.get(image_arch.lower(), image_arch) != platform:
-            raise SbomImportError(
-                f"{name}: metadata.component.purl says arch={image_arch}, but {given}"
-            )
+        if image_arch is not None:
+            # An oci purl names its arch as an image index does, so a name not in the
+            # table is compared as it is, in lower case, as --platform and the scan are
+            # read. The oci type has no qualifier for a variant.
+            named = image_arch.lower()
+            if ARCHITECTURES.get(named, named) != platform:
+                raise SbomImportError(
+                    f"{name}: metadata.component.purl says arch={image_arch}, but {given}"
+                )
+            self.image_arch = image_arch
         unknown: Counter[tuple[str, str]] = Counter()  # (purl type, name) -> Components
         for component in self.components.values():
             arch = component.arch
             purl = _parse_purl(component.key)  # a Component with an arch has a purl key
+            if purl is not None and purl.type in LINUX_TYPES:
+                self.linux_packages[purl.type] += 1
             if arch is None or purl is None or arch.lower() in NO_ARCHITECTURE:
                 continue
             built = _built_for(purl, arch)
@@ -1310,24 +1375,34 @@ class _Builder:
                 continue
             oci, variant = built
             self.architectures[oci, variant or "", arch] += 1
-        self._check_majority(name, given)
-        self._check_variant(name, given)
+        # The advice names linux when the packages are a Linux distribution's, so every
+        # warning's advice agrees with the one for the os (_check_os).
+        self.advice_os = "linux" if self.linux_packages else self.platform.os
+        outnumbered = self._check_majority(name, given)
+        self._check_variant(name, given, quiet=outnumbered)
         self._settle_platform(name)
+        self._check_os(name)
         for (kind, arch), n in sorted(unknown.items()):
             self.listed.setdefault(UNCHECKED_ARCH, []).append(
                 f"{_one_line(arch)}: {n} Component{'' if n == 1 else 's'} (pkg:{kind})"
             )
 
-    def _check_majority(self, name: str, given: str) -> None:
+    def _check_majority(self, name: str, given: str) -> bool:
         """Packages built for another platform's CPU are kept, as an image can hold some
-        (Debian's multiarch, for cross-compiling, or an emulator's), unless more of the
-        SBOM's packages are built for one other platform than for this one: those built
-        for the platform's architecture or the 32-bit sibling it also runs (ALSO_RUNS),
-        against those for each other architecture with its own sibling (SIBLING_OF). A
-        tie goes to the platform, since the packages then do not say it is another build,
-        and the report says so. Some package must be built for the platform's own
-        architecture too: an SBOM all of whose packages are for 386 is the 386 build's,
-        though amd64 runs them."""
+        (Debian's multiarch, for cross-compiling, or an emulator's), and never refuse the
+        import: the platform's os and architecture come from `--platform` and the scan
+        alone (the packages can give only a variant those leave out, _check_variant), and
+        only the image's purl is held to them (_check_architectures). But when more of
+        the SBOM's packages are built for one other platform than for this one (those
+        built for the platform's architecture or the 32-bit sibling it also runs,
+        ALSO_RUNS, against those for each other architecture with its own sibling,
+        SIBLING_OF), or none is built for the platform's own architecture (an SBOM all of
+        whose packages are for 386 is more likely the 386 build's, though amd64 runs
+        them), the SBOM may be of another build, and the report and a warning say so,
+        with the counts (_warn). Returns whether another platform outnumbered this one.
+        A tie with another platform gives no warning of its own, but one where none is
+        built for the platform's own architecture still warns, for that (8 packages for
+        386 and 8 for arm64 under linux/amd64)."""
         arch = self.platform.architecture
         sibling = ALSO_RUNS.get(arch)
         counts: Counter[str] = Counter()  # packages, by the platform they count toward
@@ -1341,39 +1416,44 @@ class _Builder:
         mine = counts[arch]
         native = f"{arch} or the {sibling} it also runs" if sibling else arch
         rivals = sorted((g for g in counts if g != arch), key=lambda g: (-counts[g], g))
-        if rivals and counts[rivals[0]] >= mine:
+        if rivals and counts[rivals[0]] > mine:
             rival = rivals[0]
             built = " and ".join(sorted(ocis[rival], key=lambda o: (o != rival, o)))
             said = f"{built} (arch={', '.join(sorted(labels[rival]))})"
-            if counts[rival] > mine:
-                raise SbomImportError(
-                    f"{name}: {counts[rival]} of the SBOM's packages are built for {said}, "
-                    f"but {given}, and {mine or 'none'} for {native}: more are built for "
-                    "another platform than for this one, so the SBOM is not of that build"
-                )
-            self.platform_notes.append(
-                f"{mine} of the packages are built for {said} and {mine} for {native}: a "
-                "tie, which goes to the platform, so the packages do not contradict it"
+            self._warn(
+                name,
+                f"{counts[rival]} of the SBOM's packages are built for {said} and "
+                f"{mine or 'none'} for {native}, though {given}",
+                _build_to_pass(self.architectures),
             )
+            return True
         if self.architectures and not any(oci == arch for oci, _, _ in self.architectures):
             said = ", ".join(
                 f"arch={label} ({n} Component{'' if n == 1 else 's'})"
                 for (_, _, label), n in sorted(self.architectures.items())
             )
-            raise SbomImportError(
-                f"{name}: none of the SBOM's packages is built for {arch}, though {given}; "
-                f"they say {said}"
+            self._warn(
+                name,
+                f"none of the SBOM's packages is built for {arch}, though {given}; they say {said}",
+                _build_to_pass(self.architectures),
             )
+        return False
 
-    def _check_variant(self, name: str, given: str) -> None:
+    def _check_variant(self, name: str, given: str, *, quiet: bool = False) -> None:
         """The variants that packages built for the platform's own architecture pin. A
         platform that names none takes the one they pin, so the arm/v6 and arm/v7 builds
         of one index never share a key; when they pin two, the digest and the platform
-        name no one build, and the variant is asked for. A platform that names one is
-        checked as _check_majority checks an architecture: it is refused when more of
-        them pin one other variant than pin its own, a tie goes to the platform, and those
-        that pin another are kept and reported (foreign). A 32-bit sibling's variant is
-        never compared or taken (ALSO_RUNS)."""
+        name no one build, and the variant is asked for. A platform that names one keeps
+        it, as _check_majority keeps an architecture: those that pin another are kept and
+        reported (foreign), and when more of them pin one other variant than pin its own,
+        the report and a warning say so, with the counts (_warn), unless `quiet`, as when
+        another architecture outnumbers the platform's: _check_majority has warned of that
+        already, and the variants say nothing of their own, since a platform of this
+        architecture with another variant would bring that warning back. That warning
+        advises another architecture (_build_to_pass), or none when the image's purl
+        names the platform's; either way, the report lists the packages that pin another
+        variant as kept (foreign). A 32-bit sibling's variant is never compared or taken
+        (ALSO_RUNS)."""
         arch = self.platform.architecture
         pinned: Counter[str] = Counter()  # a variant of the platform's own -> packages
         labels: dict[str, set[str]] = {}  # and the names that pin it
@@ -1404,19 +1484,72 @@ class _Builder:
                 )
             return
         rival = next((v for v in most if v != mine), None)
-        if rival is None or pinned[rival] < pinned[mine]:
-            return
-        if pinned[rival] > pinned[mine]:
-            raise SbomImportError(
-                f"{name}: {pinned[rival]} of the SBOM's packages are built for {said[rival]}, "
-                f"but {given}, and {pinned[mine] or 'none'} for {arch}/{mine}: more pin "
-                "another variant than the platform's, so the SBOM is not of that build"
+        if rival is not None and pinned[rival] > pinned[mine] and not quiet:
+            self._warn(
+                name,
+                f"{pinned[rival]} of the SBOM's packages are built for {said[rival]} and "
+                f"{pinned[mine] or 'none'} for {arch}/{mine}, though {given}",
+                (arch, rival),
             )
-        self.platform_notes.append(
-            f"{pinned[mine]} of the packages are built for {said[rival]} and {pinned[mine]} "
-            f"for {said[mine]}: a tie, which goes to the platform, so the packages do not "
-            "contradict it"
+
+    def _check_os(self, name: str) -> None:
+        """Packages of a purl type only Linux distributions use (LINUX_TYPES) under a
+        platform whose os is another: a warning, never a refusal, as for the packages'
+        architectures (_warn). It names the os and the package types, and a linux
+        platform to pass: for the architecture and variant a warning above points to, if
+        one does, so the two never send the user two ways, or else the platform's."""
+        if not self.linux_packages or self.platform.os == "linux":
+            return
+        build = self.pointed or (self.platform.architecture, self.platform.variant or "")
+        self._warn(
+            name,
+            f"{sum(self.linux_packages.values())} of the SBOM's packages are "
+            f"{_and(sorted(self.linux_packages))} packages, which Linux distributions "
+            f"install, though the platform's os is {self.platform.os} (the platform is "
+            f"{self.platform}, from {self.platform_source})",
+            build,
         )
+
+    def _warn(self, name: str, found: str, build: tuple[str, str]) -> None:
+        """Say, in the report and as a warning, what the packages found against the
+        platform (`found`, with the counts and where the platform came from), that every
+        package is kept, and what to pass if the SBOM is of the build they point to:
+        `build`, an architecture and the variant its packages pin (or ""), on linux when
+        the packages are a Linux distribution's, or else on the platform's os
+        (advice_os). The advice never names a platform the import would refuse. When the
+        image's own purl names an architecture, the import got here only because it is
+        the platform's, so no other architecture is named, and the note says the purl
+        names the platform's too. When the scan records a platform that would contradict
+        the one named, the advice adds a scan Grype made of the SBOM, which records none
+        (_build_platform)."""
+        oci, variant = build
+        if self.image_arch is not None and oci != self.platform.architecture:
+            advice = (
+                "the SBOM's own image purl also names the platform's architecture "
+                f"(metadata.component.purl, arch={self.image_arch})"
+            )
+        else:
+            self.pointed = build
+            platform = "/".join(p for p in (self.advice_os, oci, variant) if p)
+            if not variant and oci in VARIANT_NEEDED:
+                platform += "/VARIANT"  # 32-bit arm needs one (_settle_platform)
+            advice = (
+                "if the SBOM is of another build, pass its platform, for example "
+                f"--platform {platform}"
+            )
+            recorded = self.scan_info.platform if self.scan_info is not None else (None,) * 3
+            wanted = (self.advice_os, oci, variant or None)
+            if any(
+                mine is not None and theirs is not None and mine != theirs
+                for mine, theirs in zip(wanted, recorded, strict=True)
+            ):
+                advice += (
+                    ", with a scan Grype made of the SBOM (grype sbom:FILE -o json), not of "
+                    "the image"
+                )
+        note = f"{found}. Every package is kept as a Component; {advice}"
+        self.platform_notes.append(note)
+        self.warnings.append(f"{name}: {note}")
 
     def _settle_platform(self, name: str) -> None:
         """A platform that still names no variant (DEFAULT_VARIANTS, VARIANT_NEEDED):
@@ -1801,8 +1934,15 @@ class _Builder:
         out = []
         ordered = sorted(
             self.matches,
-            key=lambda m: (m.ref, self.components[m.component].id, m.row.vid, m.row.fingerprint),
+            key=lambda m: (
+                m.ref,
+                self.components[m.component].id,
+                m.row.vid,
+                m.row.artifact_id,
+                m.row.fingerprint,
+            ),
         )
+        twins: Counter[str] = Counter()  # matches so far that say one finding, by its key
         for link in ordered:
             vulnerability = self.vulnerabilities[link.ref]
             component = self.components[link.component]
@@ -1810,15 +1950,19 @@ class _Builder:
             confidences = [
                 MATCH_CONFIDENCE[d.type] for d in row.details if d.type in MATCH_CONFIDENCE
             ]
-            readable = f"{link.ref}-in-{component.id.removeprefix('component:')}"
+            # Readable from the Component's purl, not its id, which ends in a hash of its
+            # own; the Assertion's id ends in a hash of the finding (_finding), so a scan
+            # whose scores differ gives it the same id.
+            readable = f"{link.ref}-in-{component.readable}"
             via = ""
             if row.vid != link.ref:
                 readable += f"-from-{row.vid}"
                 via = f" on {row.vid}"
+            key = _finding(link)
+            twin = twins[key]
+            twins[key] += 1
             obj: dict[str, Any] = {
-                "id": self._id(
-                    "assertion", f"match:{link.ref}:{link.component}:{row.fingerprint}", readable
-                ),
+                "id": self._id("assertion", key, readable, hashed=True, twin=twin),
                 "name": f"{link.ref} is in {component.name} (Grype match{via}, proposed)",
                 "description": _match_description(row),
                 "subject": vulnerability.id,
@@ -1839,7 +1983,7 @@ class _Builder:
             party = None if source == UNNAMED_SOURCE else self._party_id(source)
             readable = f"{cve}-{cwe}-from-{source}"
             obj: dict[str, Any] = {
-                "id": self._id("assertion", f"cwe:{cve}:{cwe}:{source}", readable),
+                "id": self._id("assertion", f"cwe:{cve}:{cwe}:{source}", readable, hashed=True),
                 "name": f"{cve} is an instance of {cwe} (assigned by {source}, proposed)",
                 "description": (
                     f"The scan's database records {source} assigning {cwe} to {cve}"
@@ -1878,6 +2022,64 @@ def _refs(row: _Row, cves_of: Mapping[str, set[str]]) -> tuple[str, ...]:
     its ids with, or else the id Grype reports (#257)."""
     paired = set().union(*(cves_of.get(other, set()) for other in row.others))
     return tuple(paired) if len(paired) == 1 else (row.vid,)
+
+
+def _finding(link: _Match) -> str:
+    """The key a package match's Assertion id is made from: which finding the match is,
+    and nothing a scan with a newer vulnerability database changes. That is the CVE it
+    is linked to, the vulnerability id and namespace Grype reports, the Component's key,
+    and each match detail's type and matcher; never a score (CVSS, EPSS, Grype's risk),
+    a description, a URL, a fix state or a time, which the match's fingerprint holds.
+    Matches with one key are twins, such as Grype's matches on one package the SBOM records
+    twice. They are told apart by their order (_Builder._id): by the SBOM entry each is on
+    (`artifact.id`), which a rescan of the same SBOM keeps, then by fingerprint."""
+    row = link.row
+    return "match:" + json.dumps(
+        [
+            link.ref,
+            row.vid,
+            row.records[0].namespace,
+            link.component,
+            sorted([detail.type or "", detail.matcher or ""] for detail in row.details),
+        ],
+        ensure_ascii=False,
+        separators=(",", ":"),
+    )
+
+
+def _and(words: list[str]) -> str:
+    """Words joined as a list is said: apk; deb and rpm; alpm, deb and rpm."""
+    return words[0] if len(words) == 1 else f"{', '.join(words[:-1])} and {words[-1]}"
+
+
+def _build_to_pass(architectures: Counter[tuple[str, str, str]]) -> tuple[str, str]:
+    """The architecture and variant a warning advises when the packages say the SBOM
+    may be of another build (_Builder._warn). Of the architectures the packages are
+    built for, the one under which the most of them are native, built for it or for
+    the 32-bit sibling it also runs (ALSO_RUNS): under it no other platform can
+    outnumber the platform's own, and some package is built for it, so following the
+    advice gives no such warning again, from any platform. On a tie, the one the most
+    packages are built for themselves (8 for ppc64le beat 6 for arm64 and 2 for the arm
+    it runs), then the first by name. 386 packages alone advise 386, as amd64, which
+    runs them, is built for by none. Its variant is the one most of its own packages
+    pin, the first in sorted order on a tie; when they pin none, arm64's is its default
+    (v8), and 32-bit arm's is left to the user (VARIANT, _warn)."""
+    built: Counter[str] = Counter()
+    for (oci, _, _), n in architectures.items():
+        built[oci] += n
+
+    def native(arch: str) -> int:
+        sibling = ALSO_RUNS.get(arch)
+        return built[arch] + (built[sibling] if sibling else 0)
+
+    arch = min(built, key=lambda candidate: (-native(candidate), -built[candidate], candidate))
+    pinned: Counter[str] = Counter()
+    for (oci, variant, _), n in architectures.items():
+        if oci == arch and variant:
+            pinned[variant] += n
+    if pinned:
+        return arch, min(pinned, key=lambda variant: (-pinned[variant], variant))
+    return arch, DEFAULT_VARIANTS.get(arch, "")
 
 
 # The report -----------------------------------------------------------------------
@@ -2049,7 +2251,10 @@ SCAN_FIELDS = {
     "matches[].artifact.purl": "joins the match to its Component (R-MATCH-2)",
     "matches[].artifact.name": "checked against the Component's name",
     "matches[].artifact.version": "checked against the Component's version",
-    "matches[].artifact.id": "left out: the join is by purl, not by ref (R-MATCH-2)",
+    "matches[].artifact.id": (
+        "orders twins, matches that say one finding, so a rescan keeps their ids; the join "
+        "is by purl, not by ref (R-MATCH-2)"
+    ),
     "matches[].artifact.type": "left out: the Component has it",
     "matches[].artifact.cpes": "left out: the Component has the SBOM's CPEs",
     "matches[].artifact.locations": "left out: content identity is post-MVP (R-ID-4)",
@@ -2231,7 +2436,11 @@ class _Report:
                 fit.append(f"{text}, which {platform} also runs (multiarch and multilib)")
             else:
                 fit.append(text)
-        lines = [f"- The packages fit the platform: {'; '.join(fit)}."]
+        # Every package can be another platform's: those only warn (_warn).
+        if fit:
+            lines = [f"- The packages fit the platform: {'; '.join(fit)}."]
+        else:
+            lines = ["- No package fits the platform."]
         if kept:
             lines.append(
                 "- Packages built for another platform, kept as Components with their "
@@ -2514,7 +2723,7 @@ def _taken(path: Path) -> SbomImportError:
 _Placed = tuple[Path, tuple[int, int], Path | None]
 
 
-def _publish(files: list[tuple[Path, str]], force: bool) -> None:
+def _publish(files: list[tuple[Path, str]], force: bool) -> list[str]:
     """Write each text to a temporary file beside its path, then put them all in place.
     Unforced, each is put where nothing is, by an operation that fails if anything is
     there by then (`_place_new`), so a file that appeared after `_check_outputs`, or
@@ -2524,7 +2733,10 @@ def _publish(files: list[tuple[Path, str]], force: bool) -> None:
     and puts back what --force replaced, so a failed import never leaves half of its
     output; and it never removes or replaces a file this import did not put there.
     Each temporary file and second name is recorded as soon as it is made, so a failed
-    import removes every one, and names in a note any it cannot remove (`_remove`)."""
+    import removes every one, and names in a note any it cannot remove (`_remove`).
+    Once every output is in place the import stands, and they are removed one by one:
+    the warnings returned name each one that could not be, which is left beside its
+    output, and say that the outputs were written."""
     temporaries: list[Path] = []
     backups: list[Path | None] = []
     kept: list[Path] = []  # second names whose file could not be put back
@@ -2541,6 +2753,7 @@ def _publish(files: list[tuple[Path, str]], force: bool) -> None:
                     _place_new(temporary, path, text, placed)
                     continue
                 stamp = _stamp(temporary)
+                _take_mode(temporary, path)
                 os.replace(temporary, path)  # atomic: a failed move leaves the old file
                 placed.append((path, stamp, backups[index]))
         except BaseException as exc:
@@ -2563,8 +2776,20 @@ def _publish(files: list[tuple[Path, str]], force: bool) -> None:
         for note in _remove(leftovers):
             exc.add_note(note)
         raise
-    for leftover in [*temporaries, *(b for b in backups if b is not None)]:
-        leftover.unlink(missing_ok=True)  # in place already, or no longer needed
+    # Every output is in place: what is left beside them is no longer needed (a moved
+    # temporary file is gone already), and one that cannot be removed fails nothing.
+    return _remove(
+        [
+            (temporary, path, "the temporary file this import wrote for it")
+            for (path, _), temporary in zip(files, temporaries, strict=True)
+        ]
+        + [
+            (backup, path, "a backup of the file --force replaced")
+            for (path, _), backup in zip(files, backups, strict=False)
+            if backup is not None
+        ],
+        written=True,
+    )
 
 
 def _place_new(temporary: Path, path: Path, text: str, placed: list[_Placed]) -> None:
@@ -2572,7 +2797,8 @@ def _place_new(temporary: Path, path: Path, text: str, placed: list[_Placed]) ->
     name, by a hard link, which fails if anything is at `path`, even a dangling link or a
     name the volume reads as the same; or, on a volume without hard links, a file
     created exclusively. Each is recorded in `placed` once it exists, so a failure can
-    take it back."""
+    take it back. The temporary file is removed by `_publish`, once every output is in
+    place, so failing to remove it never takes back an import that is done."""
     stamp = _stamp(temporary)  # the file the link gives a second name
     try:
         os.link(temporary, path)
@@ -2582,21 +2808,46 @@ def _place_new(temporary: Path, path: Path, text: str, placed: list[_Placed]) ->
         _create_new(path, text, placed)
     else:
         placed.append((path, stamp, None))
-    temporary.unlink()
 
 
 def _create_new(path: Path, text: str, placed: list[_Placed]) -> None:
-    """Create `path` exclusively (it must not exist, even as a link) and write the text."""
+    """Create `path` exclusively (it must not exist, even as a link), write the text, and
+    record the file in `placed` by its device and inode, taken once the text is in it:
+    on a FAT or exFAT volume (macOS's msdos and exfat drivers) an empty file's inode is
+    a placeholder, which changes once data is written, so a stamp taken at the create
+    would not match the file `_take_back` finds, and a failed import would leave it.
+    `placed` does not hold the file while it is written, so a write that fails takes it
+    back here: the file is removed while the path still names it, and named in a note
+    when it cannot be removed or another file is there by then."""
     try:
         fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o666)
     except FileExistsError:
         raise _taken(path) from None
-    with os.fdopen(fd, "w", encoding="utf-8") as handle:
-        info = os.fstat(handle.fileno())
-        placed.append((path, (info.st_dev, info.st_ino), None))
+    handle = os.fdopen(fd, "w", encoding="utf-8")
+    try:
         handle.write(text)
         handle.flush()
-        os.fsync(handle.fileno())
+        os.fsync(fd)
+        info = os.fstat(fd)
+    except BaseException as exc:
+        mine = _names(path, fd)
+        with contextlib.suppress(OSError):
+            handle.close()  # it fails as the write did, and that error is the one to show
+        if mine:
+            what = "the file this import created there, which its failed write left unfinished"
+            notes = _remove([(path, path, what)])
+        else:
+            notes = [
+                _one_line(
+                    f"{path.name}: the file this import put there was replaced by another "
+                    "program while the import ran, and is left as it is"
+                )
+            ]
+        for note in notes:
+            exc.add_note(note)
+        raise
+    placed.append((path, (info.st_dev, info.st_ino), None))
+    handle.close()  # recorded first, so a failure here takes the file back too
 
 
 def _take_back(placed: list[_Placed]) -> tuple[list[Path], list[str]]:
@@ -2627,18 +2878,25 @@ def _take_back(placed: list[_Placed]) -> tuple[list[Path], list[str]]:
     return keep, [_one_line(note) for note in notes]
 
 
-def _remove(leftovers: list[tuple[Path, Path, str]]) -> list[str]:
-    """Remove what a failed import made beside its outputs, each given as (the file, the
-    output it was made for, what it is), and return a note naming each one that could
-    not be removed, so none is left unsaid and the error that caused it still comes out."""
+def _remove(leftovers: list[tuple[Path, Path, str]], *, written: bool = False) -> list[str]:
+    """Remove what an import made beside its outputs, each given as (the file, the
+    output it was made for, what it is), one by one, and return a note naming each one
+    that could not be removed, so none is left unsaid. For a failed import, the notes
+    go on the error that caused it, which still comes out; once the outputs are
+    `written`, they are warnings, which say so, and the import stands."""
     notes = []
     for leftover, path, what in leftovers:
         try:
             leftover.unlink(missing_ok=True)
         except OSError as exc:
+            done = "the outputs were written, but " if written else ""
+            # The file is the output itself when writing it failed (_create_new).
+            named, where = (
+                ("", "there") if leftover == path else (f"{leftover.name}, ", "beside it")
+            )
             notes.append(
-                f"{path.name}: {leftover.name}, {what}, could not be removed "
-                f"({exc.strerror or exc}) and is left beside it; it can be deleted"
+                f"{path.name}: {done}{named}{what}, could not be removed "
+                f"({exc.strerror or exc}) and is left {where}; it can be deleted"
             )
     return [_one_line(note) for note in notes]
 
@@ -2656,6 +2914,17 @@ def _holds(path: Path, stamp: tuple[int, int]) -> bool:
         return False
 
 
+def _names(path: Path, fd: int) -> bool:
+    """Whether `path` still names the open file `fd`, by device and inode, as `_holds`
+    asks of a file this import has closed. Both are read at once, so they agree even on
+    a FAT or exFAT volume, whose placeholder inode for an empty file holds still."""
+    try:
+        info = os.fstat(fd)
+    except OSError:
+        return False
+    return _holds(path, (info.st_dev, info.st_ino))
+
+
 def _temporary(path: Path, text: str) -> Path:
     """A new file beside `path` holding the text. It is created as `_create_new` creates a
     file, with mode 0o666 less the umask, because `_place_new` links this very file into
@@ -2671,16 +2940,36 @@ def _temporary(path: Path, text: str) -> Path:
                 handle.write(text)
                 handle.flush()
                 os.fsync(handle.fileno())
-        except BaseException:
-            temporary.unlink(missing_ok=True)
+        except BaseException as exc:
+            # As in _keep: the error that stopped the write comes out, and the file is
+            # removed, or named in a note on that error if it cannot be.
+            what = "the temporary file this import was writing for it"
+            for note in _remove([(temporary, path, what)]):
+                exc.add_note(note)
             raise
         return temporary
     raise SbomImportError(f"{_one_line(path.parent.name)}: could not make a temporary file there")
 
 
+def _take_mode(temporary: Path, path: Path) -> None:
+    """Give the temporary file the permission bits of the regular file at `path`, which
+    --force is about to replace with it, so a private model stays private (0600 stays
+    0600). A link at `path` is replaced, not followed, so the file it names keeps its
+    own mode and the new one follows the umask, as a new file does."""
+    try:
+        info = os.lstat(path)
+    except FileNotFoundError:
+        return
+    if stat.S_ISREG(info.st_mode):
+        os.chmod(temporary, info.st_mode & 0o777)
+
+
 def _keep(path: Path) -> Path:
     """A second name beside `path` for what is there now (a file or a link), so a failed
-    import can put it back. The file itself stays where it is until it is replaced."""
+    import can put it back. The file itself stays where it is until it is replaced. On
+    a volume without hard links it is a copy, which can fail part way, as on a full
+    disk: the caller records only a backup that was made, so the part made is removed
+    here before the error comes out, or named in a note on it if it cannot be."""
     backup = path.parent / f".import-sbom-{secrets.token_hex(8)}.old"
     if os.path.islink(path):
         os.symlink(os.readlink(path), backup)
@@ -2688,7 +2977,13 @@ def _keep(path: Path) -> Path:
     try:
         os.link(path, backup)
     except OSError:  # a volume without hard links: a copy keeps the same bytes
-        shutil.copy2(path, backup)
+        try:
+            shutil.copy2(path, backup)
+        except BaseException as exc:
+            what = "a partial copy this import made of it (the file is unchanged)"
+            for note in _remove([(backup, path, what)]):
+                exc.add_note(note)
+            raise
     return backup
 
 
@@ -2752,6 +3047,7 @@ def _row(match: Any, index: int, name: str) -> _Row:
         name=_text_at(artifact, "name", name, where),
         version=_text_at(artifact, "version", name, where),
         details=details,
+        artifact_id=_text_at(artifact, "id", name, where) or "",
         fingerprint=hashlib.sha256(canonical.encode("utf-8")).hexdigest(),
     )
 
@@ -2999,11 +3295,19 @@ def _one_line(text: str) -> str:
     )
 
 
-def _slug(text: str, limit: int = 80) -> str:
+def _slug(text: str, limit: int = 80, *, mark: str | None = None) -> str:
+    """`text` as an id's readable part: in lower case, each run of characters other than
+    letters and digits one dash, and at most `limit` characters. A `mark`, the short
+    hash of a key an id ends in (_Builder._id), always comes after it, the slug cut to
+    make room; without one, a slug too long is cut, with a short hash of `text` after
+    it, so two texts whose readable parts are one (team/alpha-beta/app,
+    team/alpha/beta/app) still give two slugs once each carries its own mark."""
     slug = re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-") or "x"
-    if len(slug) > limit:
-        slug = slug[: limit - 9].rstrip("-") + "-" + _short_hash(text)
-    return slug
+    if mark is None:
+        if len(slug) <= limit:
+            return slug
+        mark = _short_hash(text)
+    return slug[: limit - len(mark) - 1].rstrip("-") + "-" + mark
 
 
 def _short_hash(text: str) -> str:

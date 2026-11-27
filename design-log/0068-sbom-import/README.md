@@ -4,9 +4,9 @@ id: DL-0068
 title: "SBOM import: a starter model from Syft's CycloneDX SBOM of a container image and Grype's scan of it (#257)"
 type: process
 status: draft
-version: "0.5.0"
+version: "0.6.0"
 date: "2026-11-25"
-updated: "2026-11-26"
+updated: "2026-11-27"
 record: DL-0068
 bears_on: [DEC-001a, DEC-002, DEC-009, R-018]
 defers_to: ARCH-0001
@@ -42,9 +42,13 @@ Each line is one of Table 6's candidate rules or one of #257's acceptance criter
 - **Product:** one, keyed by the image's versionless purl (R-ID-2), such as
   `pkg:oci/alpine?repository_url=index.docker.io/library/alpine`. A short image name resolves the
   way Docker resolves it (`alpine` is `index.docker.io/library/alpine`). Its id is made from the
-  whole repository, registry and path (`product:index-docker-io-library-alpine`), so the same path
-  in another registry gets another id. The id is a readable slug, so two repository URLs that
-  differ only in punctuation (`ghcr.io/org/app`, `ghcr.io/org-app`) would still share one; the
+  whole repository, registry and path: a readable slug of it and a short hash of the Product's
+  key, its purl, the first 8 hex digits of the key's SHA-256
+  (`product:index-docker-io-library-alpine-d27fdaeb`). So the same path in another registry gets
+  another id, and so do two repositories whose slugs are one because they differ only in
+  punctuation (`ghcr.io/team/alpha-beta/app`, `ghcr.io/team/alpha/beta/app`), in separate imports
+  too; and one repository gets one id whatever its tag or digest (Review changes, fifth round,
+  items 2 and 7; until then the id was the slug alone, and such repositories shared one). The
   purl in `identifiers` stays the key.
 - **ProductInstance:** the scanned build, keyed by the digest Syft records in
   `metadata.component.version` and the build's platform (R-ID-1; decision 2 below), such as
@@ -83,6 +87,21 @@ Each line is one of Table 6's candidate rules or one of #257's acceptance criter
   (R-PROV-2), and `evidence` holds the input files' SHA-256 (R-PROV-1): the scan's, and for a
   package match the SBOM's too. `asserted_by` is Grype, a `software_agent` Party, except on a CWE
   link.
+- **Ids:** each id is a readable slug of what its object is. An id made from a free-form key (the
+  Product's purl, a Component's normalized purl, a Party's `organization:NAME`, a package match's
+  finding and a CWE link's `cwe:...`) always ends in a dash and the first 8 hex digits of the
+  key's SHA-256, so one key gets one id in every import, two keys never share one, and adding or
+  removing other objects changes none, twins aside (`component:apk-alpine-zlib-1-3-2-r0-aa0ed361` for the
+  aarch64 zlib). A package match's finding is the CVE it is linked to, the vulnerability id and
+  namespace Grype reports, the Component's key, and each match detail's type and matcher, so a
+  scan whose scores differ keeps its ids; matches with one finding are twins, told apart by
+  their order: by the SBOM entry each is on (`artifact.id`), which a rescan of the same SBOM
+  keeps, then by fingerprint. So a rescan keeps twins' ids too, and adding or removing one of
+  several twins can renumber only the twins after it. A Vulnerability's and a Weakness's id are their canonical ids' slugs alone
+  (`vulnerability:cve-2026-85091`, `weakness:cwe-787`), the ProductInstance's holds the whole digest
+  and platform, and Grype's Party is `party:grype`. Should an id be another key's all the same, a
+  counter is hashed in with the key until it is free (Review changes, fifth round, items 7, 8 and
+  15).
 - **Nothing else:** no assets, trust boundaries, data flows, threats, attack paths or mitigations
   (Table 6f). `Vulnerability.affects` is not set: deriving a Product's `affects` from package
   matches is RPT-0004's proposal (R-MATCH-1), not a rule yet.
@@ -119,21 +138,32 @@ them decides a `DEC-*`; the sponsor can change any of them.
    checked against the platform: the image's purl, when it has an `arch`, and each package purl's
    `arch` qualifier, read through a small table of distribution names (`aarch64` is `arm64`,
    `x86_64` is `amd64`, `i686` and `x86` are `386`, `armhf` is `arm`, `ppc64el` is `ppc64le`).
-   A package built for the platform's architecture or, on a 64-bit platform, for the 32-bit one it
-   also runs (multiarch and multilib) is native; one built for any other is foreign, and is kept as
-   a Component like any other, with its dependencies and matches, and the report lists it (Review
-   changes, fourth round, item 1; until then it was refused). The platform is refused when more
-   packages are built for one other platform than for it, each architecture counting with its own
-   32-bit sibling, as the platform's does; a tie goes to the platform. An SBOM none of whose
-   packages is built for the platform's own architecture is refused too. A name not in the table is
-   listed in the report as not checked, and `noarch`, `all` and `any` are skipped. This changes a
-   documented choice: the key was the digest alone (Review changes, second round, item 2), and the
-   command line: the fixture's import now needs `--platform linux/arm64/v8`. The rest stays. The
-   first version reads SBOMs of container images only, and refuses any other SBOM with a message
-   saying why: a folder or a file has no digest to key its build by. An image named by a version
-   tag gives Syft no digest either (pilot.md: Syft writes the digest only for `latest` or a digest
-   reference), and the message says to name the image by digest. A scan must also name this SBOM's
-   root `bom-ref` as its image id when Grype read an SBOM (Review changes, item 6).
+   An image purl naming another architecture, in any case (`arch=MIPS64LE` is `mips64le`), is
+   refused, as a scan that contradicts `--platform` is: those are metadata about the build, and
+   the platform's os and architecture come from them alone. The packages' qualifiers never refuse
+   the import by contradicting the platform (Review changes, fifth round, item 1; the fourth
+   round refused an SBOM most of whose packages were another platform's); what they can still
+   refuse is a platform they leave unsettled, as the third round's paragraph below says, such as
+   two variants pinned when the platform names none, an ambiguity. A package built for the
+   platform's architecture or, on a 64-bit platform, for the 32-bit one it also runs (multiarch and
+   multilib) is native; one built for any other is foreign, and is kept as a Component like any
+   other, with its dependencies and matches, and the report lists it (fourth round, item 1; until
+   then it was refused). When more packages are built for one other platform than for it, each
+   architecture counting with its own 32-bit sibling, as the platform's does, or none is built for
+   the platform's own architecture, the report and a warning say so, with the counts, where the
+   platform came from, and the `--platform` to pass if the SBOM is of another build; the command
+   prints the warning and exits 0. So does an SBOM with packages of a type only Linux
+   distributions use (`apk`, `deb`, `rpm`, `alpm`) under a platform whose os is not linux (fifth
+   round, item 11). The advice never names a platform the import would refuse, and following it
+   imports without that warning (fifth round, item 6). A name not in the table is listed in the
+   report as not checked, and `noarch`, `all` and `any` are skipped. This changes a documented
+   choice: the key was the digest alone (Review changes, second round, item 2), and the command
+   line: the fixture's import now needs `--platform linux/arm64/v8`. The rest stays. The first
+   version reads SBOMs of container images only, and refuses any other SBOM with a message saying
+   why: a folder or a file has no digest to key its build by. An image named by a version tag
+   gives Syft no digest either (pilot.md: Syft writes the digest only for `latest` or a digest
+   reference), and the message says to name the image by digest. A scan must also name this
+   SBOM's root `bom-ref` as its image id when Grype read an SBOM (Review changes, item 6).
 
    Since the third round (Review changes, third round, items 1 and 2), the variant is checked too.
    Some names pin a 32-bit ARM variant, which depends on the distribution, so a second table reads
@@ -142,23 +172,24 @@ them decides a `DEC-*`; the sponsor can change any of them.
    arm/v7, Ubuntu's `armhf` arm/v7, and RPM's `armv6hl` arm/v6 and `armv7hl` arm/v7. Raspbian
    writes Debian's `armhf` for ARMv6, so another distribution's `armhf` pins no variant, and no
    other name pins one (`aarch64` and `arm64` say nothing of v8.x). The variants that packages
-   built for the platform's own architecture pin are checked as the architectures are: a platform
-   that names a variant is refused when more of them pin one other variant than pin its own, a tie
-   goes to the platform, and those that pin another are kept and reported (fourth round, item 1;
-   until then any other variant was refused). A platform that names none takes the one they pin,
-   and the model and the report say so; when they pin two, it is refused, with a message asking for
-   the variant. A 32-bit sibling's variant is reported, never compared or taken, since the
-   platform's variant is the 64-bit architecture's own. Two rules then settle a platform still
-   without one: arm64's variant is v8, the only arm64 variant the OCI image index specification
-   lists, so `linux/arm64` and `linux/arm64/v8` are one platform, one id and one model; and 32-bit
-   arm, whose v5, v6 and v7 builds one index can list side by side, is refused, with a message
-   asking for the variant. Each part of a platform must have its form: the os and the architecture
-   letters and digits, a variant letters and digits with dots between them (`v8.1`), so `v8-1` is
-   refused and no two platforms give one id. This changes two documented choices. The platform was
-   keyed as given, so `linux/arm64` and `linux/arm64/v8`, which containerd treats as one platform,
-   gave two ids (name it as the image index lists it, this said); they now give one. And a 32-bit
-   arm platform with no variant was read; it is now refused unless its packages pin one. The
-   platform is otherwise keyed as given, in lower case.
+   built for the platform's own architecture pin are counted as the architectures are: a platform
+   that names a variant keeps it, those that pin another are kept and reported, and when more of
+   them pin one other variant than pin its own, the report and a warning say so (fifth round, item
+   1; the fourth round refused that, and until then any other variant was refused). A platform
+   that names none takes the one they pin, and the model and the report say so; when they pin two,
+   it is refused, with a message asking for the variant. A 32-bit sibling's variant is reported,
+   never compared or taken, since the platform's variant is the 64-bit architecture's own. Two
+   rules then settle a platform still without one: arm64's variant is v8, the only arm64 variant
+   the OCI image index specification lists, so `linux/arm64` and `linux/arm64/v8` are one
+   platform, one id and one model; and 32-bit arm, whose v5, v6 and v7 builds one index can list
+   side by side, is refused, with a message asking for the variant. Each part of a platform must
+   have its form: the os and the architecture letters and digits, a variant letters and digits
+   with dots between them (`v8.1`), so `v8-1` is refused and no two platforms give one id. This
+   changes two documented choices. The platform was keyed as given, so `linux/arm64` and
+   `linux/arm64/v8`, which containerd treats as one platform, gave two ids (name it as the image
+   index lists it, this said); they now give one. And a 32-bit arm platform with no variant was
+   read; it is now refused unless its packages pin one. The platform is otherwise keyed as given,
+   in lower case.
 3. **Where `dependsOn` goes.** `uses_component`, option (b) of R-EDGE-3: the edge all seven example
    models with a dependency use (none uses `depends_on`), and the one the schema defines as the edge
    "along which vuln/finding propagation is sound". The engine does not propagate findings itself today; the
@@ -186,8 +217,10 @@ them decides a `DEC-*`; the sponsor can change any of them.
   other; where they give different descriptions, suppliers or manufacturers, that field is left out
   and listed. (Changed after review, item 1 below: until then, purls that differed only in
   qualifiers were one Component. The first round's example was zlib for `aarch64` and for
-  `x86_64`, which one build cannot hold, so since the second round's item 2 such an SBOM is
-  refused.)
+  `x86_64`, which one build rarely holds: from the second round's item 2 such an SBOM was
+  refused, and since the fourth round's item 1 it is read, the `x86_64` zlib kept as a Component
+  built for another platform. Each of the two has its own id, in every import, since the fifth
+  round's item 7.)
 - **Only the purl rules every type shares are applied.** Which names ignore case differs by type
   and changed between purl-spec versions (DL-0015, Phase 2), so two purls that differ only in such a
   case stay two Components, and a match on one is listed, never joined to the other.
@@ -212,15 +245,17 @@ them decides a `DEC-*`; the sponsor can change any of them.
   Grype marks invalid, and a database dated after the scan. Since the second round (items 2 and 5):
   no platform, or a `--platform` that is not `OS/ARCH[/VARIANT]` or names its architecture as a
   distribution does (`aarch64`); a `--platform` the scan's platform contradicts; the image's purl
-  built for an architecture the platform does not run; packages none of which is built for the
-  platform's own architecture, and (since the fourth round, item 1, which keeps the others) more
-  packages built for one other platform than for this one; and a time that leaves Python's years
-  1 to 9999 when moved to UTC, which now gets the field's message instead of a traceback. Since
-  the third round (items 1, 2 and 4): a platform part outside its form (`v8-1`, `arm-64`);
-  packages that pin a variant other than the platform's (since the fourth round, only when more
-  pin it than pin the platform's), or two variants of its architecture when the platform names
-  none; and 32-bit arm with no variant from the platform or the packages. Nesting deeper than 64
-  levels now gets the same refusal on every Python version.
+  naming another architecture than the platform's (in any case since the fifth round, item 9); and
+  a time that leaves Python's years 1 to 9999 when moved to UTC, which now gets the field's message
+  instead of a traceback. Since the third
+  round (items 1, 2 and 4): a platform part outside its form (`v8-1`, `arm-64`); two variants of
+  its architecture pinned by the packages when the platform names none; and 32-bit arm with no
+  variant from the platform or the packages. Nesting deeper than 64 levels now gets the same
+  refusal on every Python version. From the second round to the fourth, the packages' own
+  architectures refused an import too: any package for an architecture the platform does not run,
+  or (since the third round) pinning another variant, and since the fourth round only more such
+  packages than the platform's own; and an SBOM none of whose packages is built for the
+  platform's own architecture. Since the fifth round (item 1) they give a warning instead.
 - **Outputs:** the model and the report are written to temporary files beside their paths and put
   in place only when both are written, so a failed import leaves neither, and puts back any file
   `--force` was replacing. An existing model or report, or a dangling link at its path, is never
@@ -231,10 +266,19 @@ them decides a `DEC-*`; the sponsor can change any of them.
   the same name in another case or Unicode form (names are compared as a Mac's volume compares
   them). Taking back a failed import removes or puts back only a file this import put there, and a
   file `--force` was replacing that cannot be put back is kept under its second name, which the
-  command prints. The model's text is read back before it is written and must give the model it was
-  made from. Input text in the model's header and the report is escaped, so a line break cannot end
-  a comment. The header names the output only by its relative path, or by its name when the path is
-  absolute, so no home folder lands in a committed file.
+  command prints. Once both files are in place the import stands: a temporary file or a backup
+  that cannot be removed then is named in a warning, and the command exits 0; and a backup copy
+  cut short, on a volume without hard links, is removed, or named, before its error comes out
+  (Review changes, fifth round, item 3), as is a temporary file whose write fails (item 5). On a
+  volume without hard links (FAT, exFAT), each output is created exclusively and recorded by the
+  identity it has once written, since such a volume gives an empty file a placeholder inode, so a
+  failed import takes back what it created there too (item 4). `--force` gives each file it
+  replaces the replaced file's permission bits, so a private model stays private; a new file, and
+  one put where a link was, follow the umask (item 10). The model's text is read back before it
+  is written and must give the model it was made from. Input text in the model's header and the
+  report is escaped, so a line break cannot end a comment. The header names the output only by
+  its relative path, or by its name when the path is absolute, so no home folder lands in a
+  committed file.
 - **Grype's distro is reported, not checked.** The report says whether the distribution Grype
   detected matches the SBOM's operating system, and flags a difference; it is not a refusal,
   because the two tools are not known to spell every distribution's name the same way.
@@ -276,13 +320,13 @@ day, which is why every Assertion records the database's build time (R-PROV-2).
   placeholder CWEs; a match on a part the SBOM lacks); suppliers; dependencies that are not between
   Components; entries sharing a key; every refusal, each checked to write nothing; the command line;
   and that the same files give the same bytes. Since the reviews, also the regression tests listed
-  under each item of the four rounds below: 254 tests in all (236 after the third round, 185 after
-  the second, 135 after the first), counting each parametrized case.
-- **The fixture's numbers are unchanged by the four rounds:** 17 Components, 24 dependency edges,
+  under each item of the five rounds below: 317 tests in all (254 after the fourth round, 236 after
+  the third, 185 after the second, 135 after the first), counting each parametrized case.
+- **The fixture's numbers are unchanged by the five rounds:** 17 Components, 24 dependency edges,
   15 Vulnerabilities, 9 Weaknesses, 4 Parties and 45 Assertions (30 package matches, 15 CWE links).
   Every package has its own purl and every match its own (CVE, Component) pair, so keeping the
   qualifiers and one Assertion per match (Review changes, items 1 and 4) change no count. Only two
-  ids changed in the first round (item 6): `product:alpine` is now
+  ids changed in the first round (item 6): `product:alpine` became
   `product:index-docker-io-library-alpine`, and `product-instance:alpine-260479a1cfaf` became
   `product-instance:sha256-260479a1cfaf304c4c20da7f8405d3ce313513dcd534bb743257bdd2fe0f3e2d`. The
   second round changes one id again (item 2), because the key now holds the platform: the
@@ -295,7 +339,16 @@ day, which is why every Assertion records the database's build time (R-PROV-2).
   report adds a line saying that it is v8. The fourth round changes nothing of the fixture's: with
   either spelling, the model and the report are f21f4a5's byte for byte, and with
   `--platform linux/amd64` the import is still refused (exit code 2, nothing written), now with the
-  counts.
+  counts. The fifth round changes ids only (items 2 and 7): the Product's, every Component's, the
+  three CWE sources' Parties' and every Assertion's id now ends in a dash and 8 hex digits, a
+  short hash of the object's key (`product:index-docker-io-library-alpine-d27fdaeb`,
+  `component:apk-alpine-zlib-1-3-2-r0-aa0ed361`): 66 of the model's 92 ids. The Vulnerabilities',
+  the Weaknesses', the ProductInstance's and `party:grype` are unchanged. With either spelling, a
+  diff of the two versions' models, each old id mapped to its new one by matching every object on
+  what it is, shows no other difference, header included. The report shows no id, and differs
+  from 4be86c1's in one line, which says what `matches[].artifact.id` is now read for (item 18).
+  With `--platform linux/amd64` the import now writes the model and
+  the report and prints the warning (exit code 0, item 1).
 - The engine lists the imported model and opens it (`core.list_models`, `core.model_graph`): 30
   `propagates_to`, 15 `instance_of`, 24 `uses_component` and 17 `build_composed_of` edges. The
   attack-graph checks pass too; the model has no paths yet.
@@ -789,6 +842,417 @@ item says. Every test of the earlier rounds passes unchanged.
 
 `engine/engine/cli.py` and the app are not changed.
 
+## Review changes, fifth round (2026-11-27)
+
+@kriishnaa-18 re-reviewed 4be86c1 and asked for changes: three findings, all P2 (items 1 to 3).
+Items 4 to 18 are defects an independent review of those fixes found while they were checked,
+one P2 and fourteen P3 (items 14 to 17 on its second pass, and item 18 on its third), each
+reproduced before it was fixed. As in the earlier rounds, each item
+says what was wrong, what changed (in `engine/engine/import_sbom.py` unless it says otherwise),
+and the regression tests in `engine/tests/test_import_sbom.py`, each of which was run on 4be86c1
+first and failed there, as the item says, unless it says the test guards a fix: a copy of the
+final test file, run in a worktree of 4be86c1, failed 80 of its 88 new or changed cases, and
+the other 8 are the guards items 4 and 15 name. Every other test (228, and the schema check,
+which is skipped where LinkML is not installed) passes unchanged, there and here.
+
+1. **The packages' architectures warn, where they refused (P2).** The fourth round's majority rule
+   (`_Builder._check_majority`, and `_Builder._check_variant` for variants) still refused a valid
+   SBOM when its packages built for another platform outnumbered the platform's own, even when
+   `--platform` and the scan's `source.target` agreed: 16 arm64 packages beside 2 amd64 ones were
+   refused under `linux/amd64`, and so was an SBOM none of whose packages is built for the
+   platform's own architecture. This item replaces the fourth round's majority refusal (fourth
+   round, item 1), and its tie rule with it. The platform's os and architecture come only from
+   metadata, which must agree: `--platform` and the scan's `source.target` give them
+   (`_build_platform`), and the image's own purl, when it names an architecture, must name the
+   platform's (`_Builder._check_architectures`); a disagreement among them is refused as before.
+   A variant the metadata leaves out still comes from the packages, as since the third round.
+   The packages' `arch` qualifiers never refuse an import by contradicting the platform:
+   `_check_majority` no longer raises, for
+   more packages built for another platform or for none built for the platform's architecture,
+   and `_check_variant` no longer raises when the platform names a variant and more packages pin
+   another. Every package stays a Component, with its dependency edges and its matches, and is
+   reported as before (`_Builder.foreign`, the report's architecture lines and the model header's
+   one line). In place of the refusal, `_Builder._warn` adds a note to the report when the
+   packages built for one other platform outnumber the platform's own, when none is built for its
+   architecture, or when more pin one other variant than the platform's. The note gives the counts
+   and where the platform came from, says that every package is kept, and names the `--platform`
+   to pass if the SBOM is of another build: the platform's os with the architecture and variant
+   most of those packages are built for (`_likeliest`, which item 14 replaces), and a scan Grype
+   made of the SBOM when the scan records a platform that one would contradict (items 6, 11 and
+   14 refine which platform it names). `ImportResult.warnings` carries the same
+   text after the SBOM's name, and `engine/engine/cli.py` prints each warning as `warning: ...` on
+   stderr and exits 0. That warning is the safety net the refusal was. These stay refusals: a scan
+   that contradicts `--platform`, an image purl for another architecture, 32-bit arm with no
+   variant anywhere, and packages that pin two variants when the platform names none, which is an
+   ambiguity, not a contradiction, and asks for `--platform OS/ARCH/VARIANT`. A platform that
+   names no variant still takes the one its packages pin. A tie with another platform gives no
+   warning of its own, and the tie rule's note goes; one where none is built for the platform's
+   own architecture still warns, for that (8 packages for 386 and 8 for arm64 under
+   `linux/amd64`, item 13). When no package fits the platform, the report's line says "No package
+   fits the platform." instead of listing nothing. Which `--platform` the advice names, and when
+   it adds the scan, are the agent's choices, open to review. Tests:
+   `test_an_sbom_mostly_for_another_platform_imports_with_a_warning` (the review's case: 16
+   packages for arm64 and 2 for amd64, a dependency between the two and one from an arm64 package,
+   and a match on one, under `linux/amd64` from `--platform` and a scan of the image, and from
+   `--platform` alone: every Component, edge and Assertion of the fixture's model is kept with the
+   new ones, and the report and the warning give the counts),
+   `test_an_sbom_with_no_package_for_the_platforms_architecture_imports_with_a_warning` (every
+   package for 386 under `linux/amd64`, with all 24 edges and 30 matches),
+   `test_metadata_that_contradicts_the_platform_is_still_refused` (the review's SBOM imports under
+   `--platform linux/amd64`, and is refused with a scan of the image pulled for `linux/arm64/v8`,
+   and with an image purl for arm64) and `test_the_command_prints_the_platform_warning_and_exits_0`
+   (the fixture under `linux/amd64`). The tests that expected the old refusals now check the
+   warning, renamed to say so: `test_a_platform_the_packages_contradict_is_refused` is
+   `test_packages_that_contradict_the_platform_are_kept_with_a_warning` (four cases),
+   `test_most_packages_built_for_another_platform_is_a_contradiction` is
+   `test_most_packages_built_for_another_platform_give_a_warning` (four cases),
+   `test_a_variant_the_packages_contradict_is_refused` is
+   `test_a_variant_the_packages_contradict_is_kept_with_a_warning` (seven cases),
+   `test_a_variant_the_scan_records_is_checked_against_the_packages` is
+   `test_a_variant_the_scan_records_is_kept_with_a_warning`, and
+   `test_most_packages_pinning_another_variant_is_a_contradiction` is
+   `test_most_packages_pinning_another_variant_give_a_warning` (two cases); and
+   `test_a_tie_goes_to_the_platform` is `test_a_tie_with_another_platform_gives_no_warning` (four
+   cases). `test_packages_that_pin_two_variants_are_refused`,
+   `test_two_variants_and_a_platform_that_names_none_asks_for_it` and
+   `test_32_bit_arm_with_no_variant_anywhere_is_refused` pass unchanged. On 4be86c1 every one of
+   those imports was refused with the fourth round's message ("16 of the SBOM's packages are built
+   for arm64 (arch=aarch64), but the platform is linux/amd64 (from --platform and the scan
+   (source.target)), and 2 for amd64 or the 386 it also runs: more are built for another platform
+   than for this one, so the SBOM is not of that build", "none of the SBOM's packages is built for
+   amd64", "more pin another variant than the platform's"), and the command exited 2; the ties
+   failed on `ImportResult.warnings`, which 4be86c1 does not have; and the metadata test failed at
+   its first import, while its two refusals are 4be86c1's, unchanged.
+2. **One repository, one Product id, in every import (P2).** `_Builder._id` makes an id a readable
+   slug, which writes each run of characters other than letters and digits as one dash, and adds a
+   short hash of the key only when another key already has that slug in the same model. A model
+   has one Product, so the hash never came: `ghcr.io/team/alpha-beta/app` and
+   `ghcr.io/team/alpha/beta/app` got one id, `product:ghcr-io-team-alpha-beta-app`, in their
+   separate imports, as did `team/alpha.beta/app` and `team/alpha_beta/app`. Now the Product id is
+   always the readable slug, as before, and a short hash of the repository URL, registry and path
+   as `_image_repository` normalizes it: `_id` and `_slug` take `hashed`, which always ends the
+   slug in the first 8 hex digits of the text's SHA-256, cutting the slug to make room, so the
+   part after `product:` stays within the 80 characters `_id` allows; the `_id` registry records
+   the id under the Product's purl, as before. Every distinct repository gets its own id, and one
+   repository the same id in every import, whatever its tag or digest. This changes a documented
+   choice: the mapping said two repositories that differ only in punctuation would share an id.
+   With these fixes the fixture's Product id was `product:index-docker-io-library-alpine-1b919904`,
+   in its own `id` and the ProductInstance's `of_product`, and no other id changed: the
+   ProductInstance's was already made from the whole digest and the platform. Item 7 then makes
+   every id made from a free-form key end in a hash of its key, the Product's included, so the
+   hash is now its purl's, and the id `product:index-docker-io-library-alpine-d27fdaeb`. Tests:
+   `test_repositories_whose_slugs_are_one_get_distinct_product_ids` (the review's two
+   repositories and two more, on one registry, in separate imports: four ids),
+   `test_one_repository_has_one_product_id_in_every_import` (two tags and a digest of one
+   repository: one id), and `test_ids_follow_the_identity_keys`, updated for the fixture's new id
+   (the three hold item 7's ids now).
+   On 4be86c1 the four ids were one, `product:ghcr-io-team-alpha-beta-app`, and the other two
+   tests found ids without the hash (`product:ghcr-io-team-app`,
+   `product:index-docker-io-library-alpine`).
+3. **What is left once the outputs are written (P2).** Once both outputs were in place, `_publish`
+   removed its temporary files and the backups `--force` makes with an `unlink` that nothing
+   caught, so a backup that could not be removed failed the import after both outputs had been
+   replaced: `run` raised, and the command printed `error: cannot write (Permission denied)` and
+   exited 1. And on a volume without hard links, `_keep` makes each backup with `shutil.copy2`,
+   which can fail part way, on a full disk, after it has made the file; the caller records only a
+   backup `_keep` returns, so a partial `.import-sbom-....old` was left beside the outputs without
+   a word. Now, once every output is in place, `_publish` removes each leftover with `_remove`,
+   which catches `OSError` file by file and goes on, and returns one warning for each file kept.
+   The warning names the output, the file and what it is, and says the outputs were written:
+   `model.yaml: the outputs were written, but .import-sbom-<hex>.old, a backup of the file --force
+   replaced, could not be removed (Permission denied) and is left beside it; it can be deleted`.
+   `run` puts them on `ImportResult.warnings` (a new field, empty by default), and
+   `engine/engine/cli.py` prints each as `warning: ...` and exits 0. `_place_new` no longer
+   removes its temporary file as soon as it has linked it into place: `_publish` removes it with
+   the rest, so failing to remove a temporary file never takes back an import that is done either.
+   `_keep` removes a partial copy before the error comes out, and when it cannot, adds a note to
+   the error naming it, which `_print_notes` prints; the caller still removes or names every backup
+   made before it, each recorded as it is made (fourth round, item 2). Tests:
+   `test_a_backup_left_after_a_forced_import_is_a_warning` (both outputs replaced and their two
+   backups not removable: `run` returns, both files hold the new text, and the two warnings name
+   the two backups, which hold the old texts),
+   `test_the_command_prints_a_kept_backup_as_a_warning_and_exits_0`,
+   `test_a_temporary_file_left_after_an_import_is_a_warning` (unforced, the two temporary files
+   not removable: both outputs are written, and the two warnings name the two temporary files),
+   `test_a_backup_copy_that_fails_part_way_leaves_nothing` (with `os.link` failing, the model's
+   backup copy cut short, and the report's after the model's was made: no `.import-sbom-*.old`
+   file is left, the old outputs are unchanged, and the original error comes out) and
+   `test_a_partial_backup_that_cannot_be_removed_is_named`. On 4be86c1 `run` raised the
+   PermissionError, and the command exited 1; failing to remove the model's temporary file took
+   the model back, and the import raised the PermissionError too; the partial copy was left beside
+   the outputs, in both cases; and the error had no note.
+4. **A failed import on a FAT or exFAT volume (found while checking this round, P2).** On a volume
+   without hard links, `_place_new` creates each output exclusively (`_create_new`), which
+   recorded the file's device and inode from `fstat` right after the create, before the text was
+   written. macOS's msdos and exfat drivers give an empty file a placeholder inode (a number near
+   2^64, one per file), which changes once data is written, so when the second output failed,
+   `_take_back` found another inode at the model's path, left the model, and said another program
+   had replaced it, which was false. With this round's first three items, on a 20 MB FAT and a
+   20 MB exFAT disk image (made with `hdiutil`), filled so the report's placement ran out of
+   space, the command exited 1 with that note twice and left `model.yaml` and an empty
+   `report.md` (4be86c1 removed the model's temporary file before placing the report, which
+   freed the room, but it left the model in the same way when the report's placement failed
+   otherwise, as the two existing tests below show). Now `_create_new` writes, flushes
+   and syncs the text first and records the stamp from `fstat` after that: a probe on both volumes
+   showed that stamp equals `lstat` once the file is closed, and that an empty file's placeholder
+   holds still and is that file's own. `placed` does not hold the file while it is written, so a
+   write that fails is taken back in `_create_new` itself: the file is removed while the path
+   still names the open file (`_names`, which reads `fstat` and `lstat` at once), and named in a
+   note when it cannot be removed or another file is there by then (`_remove`, whose note now says
+   "left there" when the file is the output itself). On the same two volumes, short of space in
+   the same place, the command now exits 1 with `error: cannot write (No space left on device)`
+   alone and leaves nothing; a traced run showed the model created and written, the report's
+   create failing, and the model taken back with no note. The review's probe of a failed move on
+   each volume, and the two existing tests that failed with their temporary folders on such a
+   volume, `test_a_failed_move_leaves_neither_file` and
+   `test_a_volume_that_reads_two_forms_as_one_name_is_not_written_over`, pass on both; with
+   4be86c1's code they left `model.yaml` and `café.yaml` behind. At every free-space level on
+   both volumes, fresh and forced, the import now either writes both files and leaves nothing
+   else, or fails for lack of space and leaves nothing, or the old files put back. Six tests
+   cannot hold on such a volume, before these fixes or after, for what it lacks (item 17):
+   `test_a_fifo_is_refused_without_waiting` (no FIFOs),
+   `test_a_second_name_for_an_input_is_never_written_over` (no hard links),
+   `test_a_report_that_cannot_be_written_leaves_no_model` (a 0500 folder stays writable),
+   `test_a_file_that_appears_after_the_check_is_never_written_over` (its harness hooks `os.link`,
+   which such a volume never reaches), and `test_the_outputs_get_the_usual_file_permissions` and
+   item 10's test (every file there is 0700). Tests, which run anywhere, CI included, with
+   `fstat` and `lstat` patched so that an
+   empty file reports one fixed placeholder inode, and hard links failing:
+   `test_a_failed_import_on_a_volume_with_placeholder_inodes_leaves_nothing` (the report cannot be
+   created: nothing is left, and no note),
+   `test_an_import_on_a_volume_with_placeholder_inodes_is_written`, and
+   `test_a_write_that_fails_on_a_volume_with_placeholder_inodes_is_taken_back` (the model's own
+   write fails: its file is removed; or named, when it cannot be removed; or, when another
+   program's file is at the name by then, left with a note). On 4be86c1 the failed import and the
+   failed write left the model, with the false note; the file that could not be removed got the
+   false note in place of its own; and the successful import failed only on
+   `ImportResult.warnings`, which 4be86c1 does not have, as its files were written there too. The
+   case of another program's file passes on 4be86c1 too: it guards that the new removal never
+   takes another program's file.
+5. **A temporary file that cannot be written or removed (found while checking this round, P3).**
+   When writing a temporary file failed, `_temporary` removed it with an `unlink` that nothing
+   caught, so when that failed too, its error replaced the original and the file was never named:
+   with the report's temporary file failing its `fsync` on a full disk, and neither temporary file
+   removable, the command said `error: cannot write (Permission denied)` and named only the
+   model's. Now `_temporary` removes the file through `_remove`, as `_keep` removes a partial
+   backup, adds its notes to the original error and raises that. Test:
+   `test_a_temporary_file_that_cannot_be_written_or_removed_is_named` (the command prints `No
+   space left on device` and names both temporary files). On 4be86c1 it printed `Permission
+   denied`.
+6. **The advice never names a platform the import refuses (found while checking this round,
+   P3).** Two cases. When the SBOM's image purl names an architecture, the import gets that far
+   only if it is the platform's, so a `--platform` for another architecture is refused: the
+   fixture with `arch=amd64` in its image purl, under `linux/amd64`, was told to pass
+   `--platform linux/arm64`, which the purl then refused. Now `_Builder._warn` names no other
+   architecture when the image purl names one, and says instead that the SBOM's own image purl
+   also names the platform's architecture; advice for another variant of that architecture stays,
+   as an `oci` purl names no variant, unless another architecture outnumbers the platform's too:
+   then, as the next sentences say, the variants give no warning, and only the report lists the
+   packages that pin another variant (item 16). And when another architecture outnumbered the
+   platform's,
+   `_check_variant` could warn too: with 6 Alpine `armv7` packages and 10 `aarch64` ones under
+   `linux/arm/v6`, one warning named `linux/arm64` and another `linux/arm/v7`, under which the
+   first came back. Now `_check_majority` says whether it warned so, and `_check_variant` then
+   gives no warning of its own. The scan's wording is unchanged. Tests:
+   `test_an_image_purl_for_the_platform_is_named_in_place_of_another_architecture`,
+   `test_an_image_purl_leaves_the_advice_for_another_variant` and
+   `test_another_architecture_outnumbering_the_platforms_gives_one_warning` (under `linux/arm/v6`
+   and `linux/arm/v7`: one warning, naming `linux/arm64`, which item 14 writes `linux/arm64/v8`);
+   and every test of a warning that names a platform to pass now imports the SBOM again under it,
+   and finds no warning there (`followed`, or the test's own import; item 17 adds the last two).
+   On 4be86c1 each of these imports was refused by the fourth round's majority rule.
+7. **Ids that changed or collided between imports (found while checking this round, P3, as item
+   2).** `_id` added a hash only when another key had the slug in the same model, so a
+   Component's, a Party's and an Assertion's id depended on what else the import held: the armv7
+   zlib was `component:apk-alpine-zlib-1-3-2-r0` alone and `...-r0-a7ac6a88` beside the aarch64
+   one; the aarch64 and the x86_64 zlib had one id in their separate imports; `Alpine Linux` and
+   `alpine.linux` were `party:alpine-linux` and `party:alpine-linux-33d91671` in one import, and
+   `alpine.linux` was `party:alpine-linux` in another; and adding a package could change the ids
+   of another package's Assertions. Now every id made from a free-form key always ends in a short
+   hash of that key, not of its readable text: the Product's (its purl), each Component's (its
+   normalized purl), each Party's (`organization:NAME`) and both kinds of Assertion's
+   (`match:...` and `cwe:...`; item 15 makes a package match's key its finding alone); a package
+   match's readable part names the Component's purl, not
+   its id, which ends in a hash of its own. The Vulnerabilities' and Weaknesses' ids (their
+   canonical ids), the ProductInstance's (the whole digest and platform) and `party:grype` are as
+   they were. The Product's hash changes from the repository URL's to its purl's, so the fixture's
+   Product is `...-d27fdaeb`, where item 2 made it `...-1b919904`. In the fixture's model, 66 of the
+   92 ids change: the Product, the 17 Components, the 3 CWE sources' Parties and the 45 Assertions,
+   each the old id with a dash and 8 hex digits after it. A diff of the two versions' models, each
+   old id mapped to its new one by matching every object on what it is, shows nothing else
+   changed, header included; and the report is 4be86c1's byte for byte, as it shows no id. Tests:
+   `test_a_components_id_is_the_same_beside_another_build_of_it`,
+   `test_two_builds_of_one_package_never_share_an_id`,
+   `test_parties_whose_names_slug_alike_keep_their_own_ids` and
+   `test_assertion_ids_hold_when_another_package_is_added` (a zlib whose purl has no qualifiers,
+   and no match of its own); the tests that show ids hold the new ones
+   (`test_ids_follow_the_identity_keys`, `test_packages_built_for_another_platform_are_kept` and
+   item 2's), and
+   `test_an_sbom_with_no_package_for_the_platforms_architecture_imports_with_a_warning` compares
+   its two builds by name, as their ids now differ. On 4be86c1 each failed as this item's
+   first sentences say.
+8. **An id another key has taken is never given twice (found while checking this round, P3).**
+   `_id`'s fallback, the slug and a hash of the key, was given out unchecked, so a crafted entry
+   could hold it first: `pkg:apk/alpine/zlib@1.3.2-r0-a7ac6a88`, beside the two zlibs, took
+   `component:apk-alpine-zlib-1-3-2-r0-a7ac6a88`, the armv7 zlib's fallback, and the import ended
+   in `internal error: the model does not hold together (duplicate model object id ...)`. Now
+   `_id` keeps deriving a new suffix, a hash of the key with a counter after it, until the id is
+   free, so the same inputs always give the same ids. Under item 7 that entry no longer
+   collides, as each Component's id ends in its own key's hash; the same collision is still
+   possible among ids that are slugs alone, such as `GHSA-AAAA-BBBB-CCCC`, `ghsa-aaaa-bbbb-cccc`
+   and a third id that spells the second's fallback. Tests:
+   `test_a_purl_that_spells_another_components_id_gives_a_model` (the review's entry) and
+   `test_vulnerability_ids_that_spell_one_another_give_a_model` (the same collision under the new
+   rule). On 4be86c1 both ended in the internal error, for `...-r0-a7ac6a88` and for
+   `vulnerability:ghsa-aaaa-bbbb-cccc-8b8e9abd`.
+9. **An image purl's architecture in any case (found while checking this round, P3).**
+   `_check_architectures` compared an image purl's arch that the table does not know as it was
+   written, so `arch=MIPS64LE` was refused under `--platform linux/mips64le`, which is read in
+   lower case. Now it is compared in lower case too. Test:
+   `test_an_image_purl_names_its_architecture_in_any_case`. On 4be86c1:
+   `metadata.component.purl says arch=MIPS64LE, but the platform is linux/mips64le`.
+10. **`--force` keeps the mode of the file it replaces (found while checking this round, P3).** A
+    forced import moved its temporary file, made by the umask (0644 under 022), over the model, so
+    a private 0600 model became readable by others. Now `_publish` gives the temporary file the
+    permission bits of the regular file it replaces, before the move (`_take_mode`); a link at the
+    path is replaced, not followed, so the new file there follows the umask, as a new file does.
+    Test: `test_a_forced_import_keeps_the_mode_of_the_file_it_replaces` (a 0600 model stays 0600,
+    a link at the report's name becomes a 0644 file, and the file the link named keeps its mode
+    and text); `test_the_outputs_get_the_usual_file_permissions` passes unchanged. On 4be86c1 the
+    model became 0644.
+11. **Linux packages under another os (found while checking this round, P3).** Nothing compared
+    the platform's os with the packages: `--platform windows/arm64/v8` imported the fixture's 16
+    `apk` packages without a word. Now `_Builder._check_os` warns, through `_warn` (the report's
+    note and `ImportResult.warnings`, never a refusal), when packages of a purl type only Linux
+    distributions use (`apk`, `deb`, `rpm`, `alpm`) meet a platform whose os is not linux. The
+    warning names the os and the types, and the `linux/ARCH[/VARIANT]` platform to pass. Every
+    warning's advice then names linux when the packages are a Linux distribution's, and the OS
+    warning names the architecture another warning names, so two warnings never send the user two
+    ways (`advice_os`, `pointed`; the agent's choice, open to review). Tests:
+    `test_linux_packages_under_another_os_give_a_warning` (the command exits 0 with the warning,
+    and under the platform it names there is none) and `test_two_warnings_name_one_platform_to_pass`
+    (`windows/amd64`: both warnings name `linux/arm64`, under which there is none). On 4be86c1 the
+    first printed nothing, and the second was refused by the majority rule.
+12. **Two parts no test checked (found while checking this round, P3).** Mutating the report's "No
+    package fits the platform." line, or the `/VARIANT` placeholder in the advice, failed no test.
+    Tests: `test_the_report_says_when_no_package_fits_the_platform` (the fixture under
+    `linux/amd64`) and `test_the_advice_asks_for_the_variant_32_bit_arm_needs` (Raspbian's `armhf`
+    packages, which pin no variant, under `linux/amd64`: the advice names `linux/arm/VARIANT`, and
+    `linux/arm/v6` then imports with no warning). On 4be86c1 both imports were refused. The
+    review's four mutations, and one for each other change of items 4 to 11, each fail at least
+    one test now; taking the stamp before the write again, as 4be86c1 did, fails
+    `test_a_failed_import_on_a_volume_with_placeholder_inodes_leaves_nothing`.
+13. **Sentences that were no longer true (found while checking this round, P3).** Corrected: the
+    note in "Other choices" that an SBOM with zlib for `aarch64` and for `x86_64` is refused (it
+    is read since the fourth round); "the packages never refuse" (decision 2, item 1 of this round
+    and a test's header), since packages that pin two variants under a platform that names none
+    are still refused, as an ambiguity; that the platform comes only from metadata (the module's
+    docstring, `_check_majority`'s and item 1), since a variant the metadata leaves out comes from
+    the packages; the tie (item 1, `_check_majority`'s docstring), since a tie where none is built
+    for the platform's own architecture still warns, for that; and the exit codes in
+    `engine/engine/cli.py`'s docstring, which now give `import-sbom`'s 1 for a file it could not
+    write and say that it exits 0 with its warnings. Also corrected: the module docstring's account
+    of the ids and a comment on the report's line for foreign packages. Test:
+    `test_a_tie_where_none_is_built_for_the_platforms_architecture_still_warns` (8 packages for 386
+    and 8 for arm64 under `linux/amd64`: one warning, naming `linux/386`, under which there is
+    none). On 4be86c1 the import was refused.
+14. **Advice that sent the user back and forth (found while checking this round, P3).**
+    `_likeliest` advised the single build most of the outnumbering packages were built for, but a
+    group of builds holds together only under its 64-bit architecture: with 7 packages for
+    x86_64, 5 for Alpine's `armhf` (arm/v6) and 4 left for aarch64, `linux/amd64` advised
+    `linux/arm/v6`, `linux/arm/v6` advised `linux/amd64`, and only `linux/arm64` gave no warning.
+    Now one rule, `_build_to_pass`, names the platform for both warnings, more packages for
+    another platform and none for the platform's own architecture. Of the architectures the
+    packages are built for, it takes the one under which the most of them are native, built for
+    it or for the 32-bit sibling it also runs; on a tie, the one the most are built for
+    themselves (8 for ppc64le beat 6 for arm64 and 2 for the arm it runs), then the first by
+    name. 386 packages alone advise `linux/386`, as no package is built for the amd64 that runs
+    them. Its variant is the one most of its own packages pin, the first in sorted order
+    on a tie; arm64's default, v8, when they pin none; and the `/VARIANT` placeholder for 32-bit
+    arm. Under the platform it names, no other platform can outnumber the platform's own and some
+    package is built for it, so the advice leads to a model with no such warning, from any
+    platform. The os's and the image purl's rules (items 6 and 11) are unchanged. As arm64's
+    default is v8, the advice now writes arm64 as `linux/arm64/v8`, the platform the import reads
+    `linux/arm64` as, and ten test cases that expected `linux/arm64` there expect that. `followed`'s
+    docstring now says only what it does. Tests:
+    `test_the_advice_names_the_platform_most_packages_are_native_to` (the review's case under
+    `linux/amd64`, `linux/arm/v6` and `linux/386`: each advises `linux/arm64/v8`, under which, as
+    under `linux/arm64`, there is no warning),
+    `test_packages_for_386_alone_advise_386_not_the_amd64_that_runs_them` (under `linux/amd64`
+    and `linux/arm64`), `test_a_tie_goes_to_the_architecture_more_packages_are_built_for` and
+    `test_the_advice_leads_to_no_warning_from_any_platform` (six mixes of
+    builds, each imported under six platforms, every warning's advice followed to a model with no
+    warning). On 4be86c1 each import was refused by the majority rule.
+15. **A rescan gave a match a new id (found while checking this round, P3).** Item 7 hashed a
+    package match's key, its CVE, its Component's key and its fingerprint, the SHA-256 of the
+    whole match, so a scan with a newer database, whose EPSS, risk or CVSS for the same finding
+    differ, gave its Assertion a new id: changing only `matches[0].vulnerability.epss` moved the
+    zlib match's. 4be86c1, whose ids were slugs alone, kept it. Now the key is the finding alone
+    (`_finding`): the CVE it is linked to, the vulnerability id and namespace Grype reports, the
+    Component's key, and each match detail's type and matcher; never a score, an EPSS, a risk, a
+    description, a URL, a fix state or a time. Matches that share a finding are twins, and keep
+    one Assertion each: `_id` takes a `twin` count and gives each later twin the next free id its
+    counter gives, so twins are told apart by their order, which follows their fingerprints, so
+    the scan's own order still changes nothing; a twin's id can change when its scores do, and no
+    other match's can. The fixture has no twins. In its model the 30 package matches' ids change
+    once more, each keeping its readable part; the 15 CWE links' and every other id stay item
+    7's, and the report is the same. Tests:
+    `test_a_rescan_that_changes_only_scores_or_words_keeps_every_assertion_id` (EPSS, risk, CVSS,
+    description, fix state and URLs, each changed on every match),
+    `test_matches_that_differ_in_type_or_matcher_keep_ids_of_their_own` (each match's id is the
+    same with the other or without it),
+    `test_matches_that_say_one_finding_get_two_ids_in_a_fixed_order` and
+    `test_cwe_link_ids_are_the_round_s_own`. The six rescan cases pass on 4be86c1, whose
+    Assertion ids held no hash, so they guard this fix: run on a copy of the review's snapshot
+    of this round's code before item 14, all six failed. On 4be86c1 the type and matcher cases
+    failed, as one of the two matches took a fallback id that changed with the other's presence,
+    and the CWE link's id had no hash; the twins case passes there, as a guard of one Assertion
+    per match.
+16. **What the variants say when the image purl has spoken (found while checking this round,
+    P3).** `_check_variant`'s docstring said that when another architecture outnumbers the
+    platform's, the warning for that names the architecture, and item 6 said that advice for
+    another variant of the image purl's architecture stays. With an image purl, that warning
+    names no other architecture (item 6), and the variants then give no warning either: with 6
+    `armv7` packages and 10 `aarch64` ones under `linux/arm/v6`, and an image purl for arm, the
+    one warning names no platform, and only the report lists the 6 packages for arm/v7, as kept.
+    Both texts now say exactly that; the code is unchanged. Test:
+    `test_an_image_purl_and_another_architecture_leave_the_variants_to_the_report`. On 4be86c1
+    the import was refused.
+17. **What this entry said of the tests (found while checking this round, P3).** Item 4 said that
+    two tests cannot hold on a FAT or exFAT volume; with their temporary folders on one
+    (`--basetemp`), six fail, as item 4 now says, each for what such a volume lacks. On 600 MB
+    FAT and exFAT images, the whole test file failed those six and no other, with this round's
+    code before item 14 and with its final code. And item 6 said that every test of a warning
+    imports the SBOM again under the platform its advice names, which
+    `test_the_command_prints_the_platform_warning_and_exits_0` and
+    `test_metadata_that_contradicts_the_platform_is_still_refused` did not; both now do, and item
+    6 says it of every test of a warning that names a platform to pass. On 4be86c1 both tests
+    failed before their new lines: the command exited 2, and the first import was refused.
+18. **Twins kept their ids only by chance in a rescan (found in the final check of this round,
+    P3).** Item 15 told twins apart by their fingerprints, which hold every score, so a rescan that
+    changed only their scores could swap the two ids: in the review's probe of 7 real twin pairs,
+    20 rescans each, about half the pairs swapped on each rescan, though only the ids moved, as
+    real twins' Assertions are the same apart from their ids. Real twins come from a package the
+    SBOM records twice, under two bom-refs (as Syft does for a package it finds in two places):
+    Grype's two matches share everything but `artifact.id` and the locations. And with twins whose
+    words differ, which the probe made up, adding a match could move which description an existing
+    id carried, so the Ids bullet's "adding or removing other objects changes none" was not true of
+    twins. Now `_row` reads `artifact.id`, the SBOM entry a match is on (its bom-ref, when Grype
+    read the SBOM), and `_Builder._match_assertions` orders twins by it, then by fingerprint, the
+    order under which the same probe found no rescan to swap any pair, of all 140. The report's
+    line for `matches[].artifact.id` says what it is read for, the one line of the fixture's report
+    that changes; the join is still by purl (R-MATCH-2). The Ids bullet now says that adding or
+    removing one of several twins can renumber the twins after it. The fixture has no twins, so its
+    model is unchanged. Test: `test_twins_keep_their_ids_when_their_scores_change` (two twins on
+    two entries, with other affected versions so each Assertion's description names its match,
+    imported and then rescanned with new scores and in the other order: each keeps its id). On this
+    round's code before this item, two of its four cases failed, the two ids swapped. On 4be86c1
+    all four failed: one twin took the bare slug and the other a fallback id hashed from a key that
+    held its fingerprint, which the rescan's new scores changed.
+
+`engine/engine/cli.py` now prints the warnings and gives `import-sbom`'s exit codes; the app is not
+changed.
+
 ## What a human accepted
 
 - @Clovier, 2026-11-25, after asking for each term to be explained: build #257 now, with the four
@@ -805,6 +1269,10 @@ item says. Every test of the earlier rounds passes unchanged.
 - @Clovier, 2026-11-26: asked for these fixes ("fix 268", after @kriishnaa-18's review of
   f21f4a5); the wording and code are Claude Code's draft until the pull request review accepts
   them.
+- @Clovier, 2026-11-27: asked for these fixes ("fix 268", after @kriishnaa-18's re-review of
+  4be86c1), and asked that everything be covered, so an independent review of the fixes, whose
+  findings are items 4 to 18, was run before anything was pushed; the wording and code are
+  Claude Code's draft until the pull request review accepts them.
 
 The code, the mapping and the choices above are the agent's draft until a human reviews them on the
 pull request.
@@ -857,13 +1325,12 @@ pull request.
   `os.version`, as Windows images do; the key holds the os, the architecture and the variant only.
   The import has been checked on a Linux image only.
 - **Packages for a foreign CPU:** kept since the fourth round (item 1), which settles this
-  follow-up, and refused only when more are built for one other platform than for the build's.
-  The rule and its tie were checked on SBOMs made from the fixture; no real multiarch or emulator
-  image has been imported here.
-- **A second name left after a forced import that succeeds:** if one cannot be removed once both
-  outputs are in place, the command still ends with an error (exit code 1) that does not name it,
-  as before the fourth round; only a failed import's cleanup names what it leaves (fourth round,
-  item 2). Saying it as a warning would need `engine/engine/cli.py` to print notes on success.
+  follow-up, and since the fifth (item 1) never refused: a warning says when more are built for
+  one other platform than for the build's, or none for its architecture. The rule was checked on
+  SBOMs made from the fixture; no real multiarch or emulator image has been imported here.
+- **A second name left after a forced import that succeeds:** settled in the fifth round (item
+  3). One that cannot be removed once both outputs are in place is named in a warning, and the
+  command exits 0, where it used to end with an error (exit code 1) that did not name it.
 - **Weakness names** from the pinned CWE catalog, instead of the id alone.
 - **The model list's label:** `pv-` files show as "Proposal example (AI-drafted, unreviewed)"
   (`MODEL_KINDS` in `engine/engine/core.py`); an imported one is tool-made, not AI-drafted.
@@ -875,9 +1342,10 @@ pull request.
 - **#243 also changes `engine/engine/cli.py`** (@kriishnaa-18's review, not blocking): check the
   `import-sbom` command when the two come together. The first round did not touch `cli.py`; the
   second adds `--platform` to `import-sbom` and prints a failed import's notes; the third and the
-  fourth do not change it. @Maimcghee's review of e12ab07 (a note, not blocking) adds that #243
-  adds its command in the same place, so whichever of the two merges second has a simple conflict
-  to resolve by keeping both commands.
+  fourth do not change it; the fifth prints an import's warnings and gives its exit codes.
+  @Maimcghee's review of e12ab07 (a note, not blocking) adds that #243 adds its command in the
+  same place, so whichever of the two merges second has a simple conflict to resolve by keeping
+  both commands.
 - **Party names for CWE sources** (@Maimcghee's review of e12ab07, a note, not blocking): the
   three CWE sources among the fixture's four Parties are named as the scan's database names them,
   and two of those names are raw identifiers: `134c704f-9b21-4f2e-91b3-4a467353bcc0`, an NVD

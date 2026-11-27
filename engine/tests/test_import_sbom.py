@@ -11,9 +11,13 @@ the digest names, so each import here gives it, as `--platform linux/arm64/v8` d
 The sections headed "Review of c39f2a4" hold the regression tests for the eight findings
 of @kriishnaa-18's review, those headed "Review of 9207ad9" the tests for the five of the
 re-review, those headed "Review of e12ab07" the tests for the four of the third round
-(@kriishnaa-18's three and @Maimcghee's one), and those headed "Review of f21f4a5" the
-tests for the two of the fourth; each failed before its fix (DL-0068, "Review changes",
-and its second, third and fourth rounds).
+(@kriishnaa-18's three and @Maimcghee's one), those headed "Review of f21f4a5" the tests
+for the two of the fourth, and those headed "Review of 4be86c1" the tests for the
+fifth's seventeen items: the review's three findings, and fourteen defects an
+independent review found while those fixes were checked. Each failed before its fix,
+unless its item says it guards one (DL-0068, "Review changes", and its second to fifth
+rounds). The fifth round turned the tests that expected a refusal from the packages'
+architectures into tests of the warning that replaces it, where they stand.
 """
 
 from __future__ import annotations
@@ -869,7 +873,9 @@ def test_the_order_of_the_matches_changes_nothing(tmp_path: Path) -> None:
 
 def test_ids_follow_the_identity_keys(imported, tmp_path: Path) -> None:
     _, doc, _ = imported
-    assert doc["products"][0]["id"] == "product:index-docker-io-library-alpine"  # R-ID-2
+    # R-ID-2: the repository's slug, and a short hash of the Product's key, its purl
+    # (review of 4be86c1, finding 2 and item 7)
+    assert doc["products"][0]["id"] == "product:index-docker-io-library-alpine-d27fdaeb"
     assert doc["product_instances"][0]["id"] == INSTANCE  # R-ID-1: the digest and the platform
     products = set()
     for n, image in enumerate(("ghcr.io/org/app", "index.docker.io/org/app", "quay.io/org/app")):
@@ -1294,21 +1300,55 @@ def test_a_platform_the_scan_contradicts_is_refused(tmp_path: Path, target, mess
 
 
 @pytest.mark.parametrize(
-    ("arch", "platform", "message"),
+    ("arch", "platform", "found", "other"),
     [
-        ("aarch64", "linux/amd64", r"packages are built for arm64 \(arch=aarch64\)"),
-        ("x86", "linux/amd64", "none of the SBOM's packages is built for amd64"),
-        ("armv7", "linux/arm64/v8", "none of the SBOM's packages is built for arm64"),
-        ("ppc64le", "linux/arm64/v8", r"packages are built for ppc64le \(arch=ppc64le\)"),
+        (
+            "aarch64",
+            "linux/amd64",
+            "16 of the SBOM's packages are built for arm64 (arch=aarch64) and none for amd64 or "
+            "the 386 it also runs, though the platform is linux/amd64 (from --platform)",
+            "linux/arm64/v8",
+        ),
+        (
+            "x86",
+            "linux/amd64",
+            "none of the SBOM's packages is built for amd64, though the platform is linux/amd64 "
+            "(from --platform); they say arch=x86 (16 Components)",
+            "linux/386",
+        ),
+        (
+            "armv7",
+            "linux/arm64/v8",
+            "none of the SBOM's packages is built for arm64, though the platform is "
+            "linux/arm64/v8 (from --platform); they say arch=armv7 (16 Components)",
+            "linux/arm/v7",
+        ),
+        (
+            "ppc64le",
+            "linux/arm64/v8",
+            "16 of the SBOM's packages are built for ppc64le (arch=ppc64le) and none for arm64 "
+            "or the arm it also runs, though the platform is linux/arm64/v8 (from --platform)",
+            "linux/ppc64le",
+        ),
     ],
 )
-def test_a_platform_the_packages_contradict_is_refused(
-    tmp_path: Path, arch: str, platform: str, message: str
+def test_packages_that_contradict_the_platform_are_kept_with_a_warning(
+    tmp_path: Path, arch: str, platform: str, found: str, other: str
 ) -> None:
+    # These were refused until the review of 4be86c1 (finding 1): the platform comes from
+    # its metadata, and the packages' architectures only warn.
     sbom = dump(tmp_path, "s.json", built_for(sbom_doc(), arch))
-    with pytest.raises(SbomImportError, match=message):
-        run(sbom, platform=platform, output=tmp_path / "model.yaml")
-    assert not (tmp_path / "model.yaml").exists()
+    result = run(sbom, platform=platform, output=tmp_path / "model.yaml")
+    doc = load(tmp_path / "model.yaml")
+    assert len(doc["components"]) == 17
+    assert instance(doc)["name"].endswith(f" for {platform}")
+    note = (
+        f"{found}. Every package is kept as a Component; if the SBOM is of another build, pass "
+        f"its platform, for example --platform {other}"
+    )
+    assert result.warnings == [f"s.json: {note}"]
+    assert f"- {note}.\n" in result.report_text
+    assert followed(tmp_path, result.warnings[0], sbom=built_for(sbom_doc(), arch)) == []
 
 
 def test_an_image_purl_for_another_architecture_is_refused(tmp_path: Path) -> None:
@@ -1518,23 +1558,44 @@ def without_arch(sbom: dict) -> dict:
         ("armv6hl", "rpm/fedora", "linux/arm/v7", "arm/v6"),
     ],
 )
-def test_a_variant_the_packages_contradict_is_refused(
+def test_a_variant_the_packages_contradict_is_kept_with_a_warning(
     tmp_path: Path, arch: str, distribution, platform: str, built: str
 ) -> None:
+    # Refused until the review of 4be86c1 (finding 1): the platform names the variant, and
+    # the packages only warn.
     sbom = dump(tmp_path, "s.json", built_for(sbom_doc(), arch, distribution))
-    message = rf"packages are built for {built} \(arch={arch}\), but the platform is {platform}"
-    with pytest.raises(SbomImportError, match=message):
-        run(sbom, platform=platform, output=tmp_path / "model.yaml")
-    assert not (tmp_path / "model.yaml").exists()
+    result = run(sbom, platform=platform, output=tmp_path / "model.yaml")
+    doc = load(tmp_path / "model.yaml")
+    assert len(doc["components"]) == 17
+    assert instance(doc)["id"] == f"{INSTANCE_OF}{platform.replace('/', '-')}"
+    found = (
+        f"16 of the SBOM's packages are built for {built} (arch={arch}) and none for "
+        f"{platform.removeprefix('linux/')}, though the platform is {platform} (from --platform)"
+    )
+    (warning,) = result.warnings
+    assert warning.startswith(f"s.json: {found}. Every package is kept as a Component; ")
+    assert warning.endswith(f", for example --platform linux/{built}")
+    assert f"- {found}. " in result.report_text
+    assert (
+        f"16 Components built for {built} (arch={arch}), not the platform's " in result.report_text
+    )
+    assert followed(tmp_path, warning, sbom=built_for(sbom_doc(), arch, distribution)) == []
 
 
-def test_a_variant_the_scan_records_is_checked_against_the_packages(tmp_path: Path) -> None:
+def test_a_variant_the_scan_records_is_kept_with_a_warning(tmp_path: Path) -> None:
     sbom = dump(tmp_path, "s.json", built_for(sbom_doc(), "armv7"))
     scan = dump(tmp_path, "g.json", direct_scan(architecture="arm", architectureVariant="v6"))
-    message = r"built for arm/v7 \(arch=armv7\), but the platform is linux/arm/v6 \(from the scan"
-    with pytest.raises(SbomImportError, match=message):
-        run(sbom, scan=scan, platform=None, output=tmp_path / "model.yaml")
-    assert not (tmp_path / "model.yaml").exists()
+    result = run(sbom, scan=scan, platform=None, output=tmp_path / "model.yaml")
+    assert instance(load(tmp_path / "model.yaml"))["id"] == f"{INSTANCE_OF}linux-arm-v6"
+    # The scan records v6, so the advice names a scan that records no platform.
+    assert result.warnings == [
+        "s.json: 16 of the SBOM's packages are built for arm/v7 (arch=armv7) and none for "
+        "arm/v6, though the platform is linux/arm/v6 (from the scan (source.target)). Every "
+        "package is kept as a Component; if the SBOM is of another build, pass its platform, "
+        "for example --platform linux/arm/v7, with a scan Grype made of the SBOM (grype "
+        "sbom:FILE -o json), not of the image"
+    ]
+    assert followed(tmp_path, result.warnings[0], sbom=built_for(sbom_doc(), "armv7")) == []
 
 
 @pytest.mark.parametrize(
@@ -1830,7 +1891,7 @@ def test_packages_built_for_another_platform_are_kept(imported, tmp_path: Path, 
     assert sorted(added) == [X86_MUSL, X86_ZLIB]  # and the two foreign ones
     assert edges(doc) == edges(fixture) | {
         (added[X86_ZLIB], added[X86_MUSL]),
-        ("component:apk-alpine-scanelf-1-3-9-r1", added[X86_ZLIB]),
+        ("component:apk-alpine-scanelf-1-3-9-r1-d3af478a", added[X86_ZLIB]),
     }
     assertions = by_id(doc, "assertions")
     assert set(by_id(fixture, "assertions")) < set(assertions)
@@ -1862,40 +1923,54 @@ def test_arm64_packages_are_foreign_to_a_32_bit_arm_platform(tmp_path: Path) -> 
 
 
 @pytest.mark.parametrize(
-    ("rebuild", "message"),
+    ("rebuild", "found", "other"),
     [
         (  # the fixture itself
             {},
-            r"16 of the SBOM's packages are built for arm64 \(arch=aarch64\), but the platform "
-            r"is linux/amd64 \(from --platform\), and none for amd64 or the 386 it also runs: "
-            "more are built for another platform than for this one",
+            "16 of the SBOM's packages are built for arm64 (arch=aarch64) and none for amd64 or "
+            "the 386 it also runs, though the platform is linux/amd64 (from --platform)",
+            "linux/arm64/v8",
         ),
-        (  # the review's: 1 for the platform beside 15 for another
+        (  # the fourth round's: 1 for the platform beside 15 for another
             {"x86_64": 1},
-            r"15 of the SBOM's packages are built for arm64 \(arch=aarch64\), but the platform "
-            r"is linux/amd64 \(from --platform\), and 1 for amd64 or the 386 it also runs",
+            "15 of the SBOM's packages are built for arm64 (arch=aarch64) and 1 for amd64 or the "
+            "386 it also runs, though the platform is linux/amd64 (from --platform)",
+            "linux/arm64/v8",
         ),
         (  # another platform's packages count with its sibling's, as the platform's do
             {"x86_64": 6, "armv7": 5},
-            r"10 of the SBOM's packages are built for arm64 and arm \(arch=aarch64, armv7\), but "
-            r"the platform is linux/amd64 \(from --platform\), and 6 for amd64",
+            "10 of the SBOM's packages are built for arm64 and arm (arch=aarch64, armv7) and 6 "
+            "for amd64 or the 386 it also runs, though the platform is linux/amd64 (from "
+            "--platform)",
+            "linux/arm64/v8",  # 10 native there: its 5 and the 5 for arm
         ),
         (  # all for the sibling, which amd64 runs, and none for amd64 itself
             {"x86": 16},
-            r"none of the SBOM's packages is built for amd64, though the platform is "
-            r"linux/amd64 \(from --platform\); they say arch=x86 \(16 Components\)",
+            "none of the SBOM's packages is built for amd64, though the platform is linux/amd64 "
+            "(from --platform); they say arch=x86 (16 Components)",
+            "linux/386",
         ),
     ],
 )
-def test_most_packages_built_for_another_platform_is_a_contradiction(
-    tmp_path: Path, rebuild: dict, message: str
+def test_most_packages_built_for_another_platform_give_a_warning(
+    tmp_path: Path, rebuild: dict, found: str, other: str
 ) -> None:
+    # Refused until the review of 4be86c1 (finding 1), which keeps the counts as a warning.
     sbom = sbom_doc()
     for arch, count in rebuild.items():
         rebuilt(sbom, arch, count)
-    with pytest.raises(SbomImportError, match=message):
-        run(dump(tmp_path, "s.json", sbom), platform="linux/amd64", output=tmp_path / "model.yaml")
-    assert not (tmp_path / "model.yaml").exists()
+    path = dump(tmp_path, "s.json", sbom)
+    result = run(path, platform="linux/amd64", output=tmp_path / "model.yaml")
+    doc = load(tmp_path / "model.yaml")
+    assert len(doc["components"]) == 17
+    assert instance(doc)["id"] == f"{INSTANCE_OF}linux-amd64"
+    note = (
+        f"{found}. Every package is kept as a Component; if the SBOM is of another build, pass "
+        f"its platform, for example --platform {other}"
+    )
+    assert result.warnings == [f"s.json: {note}"]
+    assert f"- {note}.\n" in result.report_text
+    assert followed(tmp_path, result.warnings[0], sbom=sbom) == []
 
 
 @pytest.mark.parametrize(
@@ -1908,15 +1983,20 @@ def test_most_packages_built_for_another_platform_is_a_contradiction(
         ("armhf", "armv7", "linux/arm/v7", "arm/v6 (arch=armhf), not the platform's arm/v7"),
     ],
 )
-def test_a_tie_goes_to_the_platform(
+def test_a_tie_with_another_platform_gives_no_warning(
     tmp_path: Path, half: str, rest: str, platform: str, kept: str
 ) -> None:
+    # A tie with another build gives no warning of its own, and since the review of
+    # 4be86c1 (finding 1) no note of a tie. Each case has packages for the platform's own
+    # architecture; one with none still warns, for that (item 13 of the fifth round).
     sbom = built_for(rebuilt(sbom_doc(), half, 8), rest)  # 8 packages for each of two builds
-    doc, report = import_sbom_doc(tmp_path, sbom, platform=platform)
+    result = run(dump(tmp_path, "s.json", sbom), platform=platform, output=tmp_path / "model.yaml")
+    doc = load(tmp_path / "model.yaml")
     assert instance(doc)["name"].endswith(f" for {platform}")
     assert len(doc["components"]) == 17
-    assert "a tie, which goes to the platform, so the packages do not contradict it" in report
-    assert f"8 Components built for {kept}: kept." in report
+    assert result.warnings == []
+    assert "a tie" not in result.report_text
+    assert f"8 Components built for {kept}: kept." in result.report_text
 
 
 def test_packages_pinning_another_variant_beside_the_platforms_are_kept(tmp_path: Path) -> None:
@@ -1929,28 +2009,39 @@ def test_packages_pinning_another_variant_beside_the_platforms_are_kept(tmp_path
 
 
 @pytest.mark.parametrize(
-    ("armhf", "message"),
+    ("armhf", "found"),
     [
-        (  # the third round's contradicting selection, now with its counts
+        (  # the third round's contradicting selection
             0,
-            r"16 of the SBOM's packages are built for arm/v7 \(arch=armv7\), but the platform "
-            r"is linux/arm/v6 \(from --platform\), and none for arm/v6: more pin another "
-            "variant than the platform's",
+            "16 of the SBOM's packages are built for arm/v7 (arch=armv7) and none for arm/v6, "
+            "though the platform is linux/arm/v6 (from --platform)",
         ),
         (  # most of them contradict it, as for an architecture
             1,
-            r"15 of the SBOM's packages are built for arm/v7 \(arch=armv7\), but the platform "
-            r"is linux/arm/v6 \(from --platform\), and 1 for arm/v6",
+            "15 of the SBOM's packages are built for arm/v7 (arch=armv7) and 1 for arm/v6, "
+            "though the platform is linux/arm/v6 (from --platform)",
         ),
     ],
 )
-def test_most_packages_pinning_another_variant_is_a_contradiction(
-    tmp_path: Path, armhf: int, message: str
+def test_most_packages_pinning_another_variant_give_a_warning(
+    tmp_path: Path, armhf: int, found: str
 ) -> None:
+    # Refused until the review of 4be86c1 (finding 1): the platform keeps its variant.
     sbom = dump(tmp_path, "s.json", built_for(rebuilt(sbom_doc(), "armhf", armhf), "armv7"))
-    with pytest.raises(SbomImportError, match=message):
-        run(sbom, platform="linux/arm/v6", output=tmp_path / "model.yaml")
-    assert not (tmp_path / "model.yaml").exists()
+    result = run(sbom, platform="linux/arm/v6", output=tmp_path / "model.yaml")
+    doc = load(tmp_path / "model.yaml")
+    assert len(doc["components"]) == 17
+    assert instance(doc)["id"] == f"{INSTANCE_OF}linux-arm-v6"
+    note = (
+        f"{found}. Every package is kept as a Component; if the SBOM is of another build, pass "
+        "its platform, for example --platform linux/arm/v7"
+    )
+    assert result.warnings == [f"s.json: {note}"]
+    assert f"- {note}.\n" in result.report_text
+    kept = f"{16 - armhf} Components built for arm/v7 (arch=armv7), not the platform's arm/v6: kept"
+    assert kept in result.report_text
+    again = built_for(rebuilt(sbom_doc(), "armhf", armhf), "armv7")
+    assert followed(tmp_path, result.warnings[0], sbom=again) == []
 
 
 def test_two_variants_and_a_platform_that_names_none_asks_for_it(tmp_path: Path) -> None:
@@ -2020,3 +2111,1007 @@ def test_a_backup_that_cannot_be_removed_is_named(tmp_path: Path, monkeypatch) -
     assert any(left.name in note and "could not be removed" in note for note in notes)
     assert out.read_text(encoding="utf-8") == "edited by a person\n"
     assert report.read_text(encoding="utf-8") == "an older report\n"
+
+
+# Review of 4be86c1, finding 1: the packages' architectures warn, where they refused ------
+
+
+def mostly_another_platforms(sbom: dict) -> dict:
+    """`sbom` with two packages built for x86_64 beside its 16 for arm64, one depending on
+    the other and an arm64 one depending on one of them: under linux/amd64, an SBOM most
+    of whose packages are another platform's."""
+    zlib, musl = (foreign_copy(sbom, name, "x86_64") for name in ("zlib", "musl"))
+    depends(sbom, zlib, musl)
+    depends(sbom, package(sbom, "scanelf"), zlib)
+    return sbom
+
+
+@pytest.mark.parametrize(
+    ("direct", "source"),
+    [(True, "--platform and the scan (source.target)"), (False, "--platform")],
+    ids=["--platform and a scan of the image", "--platform alone"],
+)
+def test_an_sbom_mostly_for_another_platform_imports_with_a_warning(
+    imported, tmp_path: Path, direct: bool, source: str
+) -> None:
+    # The review's case: 16 packages for arm64 and 2 for amd64, and the platform is
+    # linux/amd64, as --platform and a scan Grype made of the image itself both say.
+    _, fixture, _ = imported
+    sbom = mostly_another_platforms(sbom_doc())
+    if direct:
+        scan = direct_scan(architecture="amd64")
+        del scan["source"]["target"]["architectureVariant"]
+    else:
+        scan = scan_doc()  # made of the SBOM, so it records no platform
+    scan["matches"].append(match("CVE-2026-0001", purl=X86_ZLIB))
+    out = tmp_path / "model.yaml"
+    result = run(
+        dump(tmp_path, "s.json", sbom),
+        scan=dump(tmp_path, "g.json", scan),
+        platform="linux/amd64",
+        output=out,
+    )
+    doc = load(out)
+    assert instance(doc)["id"] == f"{INSTANCE_OF}linux-amd64"
+    components, theirs = by_id(doc, "components"), by_id(fixture, "components")
+    assert set(theirs) < set(components)  # every package of the fixture's model, and
+    added = {components[i]["identifiers"][0]: i for i in set(components) - set(theirs)}
+    assert sorted(added) == [X86_MUSL, X86_ZLIB]  # the two for amd64
+    assert sorted(instance(doc)["build_composed_of"]) == sorted(components)
+    assert edges(doc) == edges(fixture) | {
+        (added[X86_ZLIB], added[X86_MUSL]),
+        ("component:apk-alpine-scanelf-1-3-9-r1-d3af478a", added[X86_ZLIB]),
+    }
+    assertions = by_id(doc, "assertions")
+    assert set(by_id(fixture, "assertions")) < set(assertions)  # the 45, and one more
+    (new,) = [a for i, a in assertions.items() if i not in by_id(fixture, "assertions")]
+    assert (new["predicate"], new["object"]) == ("propagates_to", added[X86_ZLIB])
+    assert result.counts["components"] == 19 and result.counts["match_assertions"] == 31
+    found = (
+        "16 of the SBOM's packages are built for arm64 (arch=aarch64) and 2 for amd64 or the "
+        f"386 it also runs, though the platform is linux/amd64 (from {source})"
+    )
+    advice = (
+        "if the SBOM is of another build, pass its platform, for example --platform linux/arm64/v8"
+    )
+    if direct:  # this scan records linux/amd64, so another build needs a scan of the SBOM
+        advice += ", with a scan Grype made of the SBOM (grype sbom:FILE -o json), not of the image"
+    note = f"{found}. Every package is kept as a Component; {advice}"
+    assert result.warnings == [f"s.json: {note}"]
+    report = result.report_text
+    assert f"- {note}.\n" in report
+    assert (
+        "- The packages fit the platform: 2 Components built for amd64 (arch=x86_64).\n" in report
+    )
+    assert "16 Components built for arm64 (arch=aarch64), not the platform's amd64: kept." in report
+    assert (
+        "# 16 Components built for another platform (arm64) are kept; the report lists them.\n"
+        in result.model_text
+    )
+    assert followed(tmp_path, result.warnings[0], sbom=sbom) == []
+
+
+def test_an_sbom_with_no_package_for_the_platforms_architecture_imports_with_a_warning(
+    imported, tmp_path: Path
+) -> None:
+    # Every package built for 386, which amd64 also runs, and none for amd64 itself: each
+    # is kept, with its edges and its matches.
+    _, fixture, _ = imported
+    scan = scan_doc()
+    for row in scan["matches"]:
+        row["artifact"]["purl"] = row["artifact"]["purl"].replace("arch=aarch64", "arch=x86")
+    result = run(
+        dump(tmp_path, "s.json", built_for(sbom_doc(), "x86")),
+        scan=dump(tmp_path, "g.json", scan),
+        platform="linux/amd64",
+        output=tmp_path / "model.yaml",
+    )
+    doc = load(tmp_path / "model.yaml")
+    # By name: each build's packages have ids of their own (item 7 of this round).
+    assert by_name(doc) == by_name(fixture)
+    assert result.counts == {
+        "components": 17,
+        "dependency_edges": 24,
+        "vulnerabilities": 15,
+        "weaknesses": 9,
+        "match_assertions": 30,
+        "cwe_assertions": 15,
+        "parties": 4,
+    }
+    note = (
+        "none of the SBOM's packages is built for amd64, though the platform is linux/amd64 "
+        "(from --platform); they say arch=x86 (16 Components). Every package is kept as a "
+        "Component; if the SBOM is of another build, pass its platform, for example "
+        "--platform linux/386"
+    )
+    assert result.warnings == [f"s.json: {note}"]
+    assert f"- {note}.\n" in result.report_text
+    assert (
+        "- The packages fit the platform: 16 Components built for 386 (arch=x86), which amd64 "
+        "also runs (multiarch and multilib).\n" in result.report_text
+    )
+    assert followed(tmp_path, result.warnings[0], sbom=built_for(sbom_doc(), "x86")) == []
+
+
+def by_name(doc: dict) -> tuple[list, list, list]:
+    """A model's Components, dependency edges and Assertions by the Components' names,
+    for two builds whose Components have ids of their own."""
+    names = {c["id"]: c["name"] for c in doc["components"]}
+    return (
+        sorted(names.values()),
+        sorted((names[dependent], names[used]) for dependent, used in edges(doc)),
+        sorted(
+            (a["subject"], a["predicate"], names.get(a["object"], a["object"]))
+            for a in doc["assertions"]
+        ),
+    )
+
+
+def advised(warning: str) -> str:
+    """The platform a warning's advice names."""
+    return warning.split("for example --platform ", 1)[1].split(",", 1)[0]
+
+
+def followed(tmp_path: Path, warning: str, *, sbom: dict, **kwargs) -> list[str]:
+    """The warnings of the same SBOM imported again, with no scan unless one is given,
+    under the platform the warning advises. Each test that calls it expects none: the
+    advice leads to a model with no warning (items 6 and 14 of the fifth round)."""
+    name = f"followed-{len(list(tmp_path.glob('followed-*')))}"
+    path = dump(folder(tmp_path, name), "s.json", sbom)
+    platform = advised(warning)
+    return run(path, platform=platform, output=path.with_name("model.yaml"), **kwargs).warnings
+
+
+def test_metadata_that_contradicts_the_platform_is_still_refused(tmp_path: Path) -> None:
+    # The packages' architectures only warn, but what gives the platform must agree: the
+    # same SBOM imports under --platform, and is refused with a scan of the image pulled
+    # for another platform, or with an image purl for another architecture.
+    sbom = mostly_another_platforms(sbom_doc())
+    out = tmp_path / "model.yaml"
+    result = run(dump(tmp_path, "s.json", sbom), platform="linux/amd64", output=out)
+    assert len(load(out)["components"]) == 19 and len(result.warnings) == 1
+    assert followed(tmp_path, result.warnings[0], sbom=sbom) == []
+    out.unlink()
+    arm64 = dump(tmp_path, "g.json", direct_scan())  # pulled for linux/arm64/v8
+    with pytest.raises(SbomImportError, match="gives the architecture amd64, but the scan records"):
+        run(dump(tmp_path, "s.json", sbom), scan=arm64, platform="linux/amd64", output=out)
+    sbom["metadata"]["component"]["purl"] = (
+        "pkg:oci/alpine@" + DIGEST.replace(":", "%3A") + "?arch=arm64"
+    )
+    message = r"metadata.component.purl says arch=arm64, but the platform is linux/amd64 \(from"
+    with pytest.raises(SbomImportError, match=message):
+        run(dump(tmp_path, "s.json", sbom), platform="linux/amd64", output=out)
+    assert not out.exists()
+
+
+def test_the_command_prints_the_platform_warning_and_exits_0(tmp_path: Path, capsys) -> None:
+    # The fixture under linux/amd64, which the fourth round refused (exit code 2).
+    out, report = tmp_path / "model.yaml", tmp_path / "report.md"
+    argv = [
+        "import-sbom",
+        str(SBOM),
+        "--scan",
+        str(SCAN),
+        "--platform",
+        "linux/amd64",
+        "-o",
+        str(out),
+        "--report",
+        str(report),
+    ]
+    assert cli.main(argv) == 0
+    captured = capsys.readouterr()
+    assert captured.out.startswith("wrote ")
+    assert captured.err == (
+        "warning: alpine-3.24.2.cdx.json: 16 of the SBOM's packages are built for arm64 "
+        "(arch=aarch64) and none for amd64 or the 386 it also runs, though the platform is "
+        "linux/amd64 (from --platform). Every package is kept as a Component; if the SBOM is "
+        "of another build, pass its platform, for example --platform linux/arm64/v8\n"
+    )
+    assert len(load(out)["components"]) == 17
+    assert followed(tmp_path, captured.err.removeprefix("warning: "), sbom=sbom_doc()) == []
+
+
+# Review of 4be86c1, finding 2: one repository, one Product id, in every import ------------
+
+
+def product_id(tmp_path: Path, name: str, image: str, digest: str = DIGEST) -> str:
+    """The Product id an import gives the fixture's SBOM of `image` at `digest`."""
+    sbom = sbom_doc()
+    sbom["metadata"]["component"].update(name=image, version=digest)
+    model, _ = import_sbom_doc(folder(tmp_path, name), sbom)
+    return model["products"][0]["id"]
+
+
+def test_repositories_whose_slugs_are_one_get_distinct_product_ids(tmp_path: Path) -> None:
+    # On 4be86c1 all four were product:ghcr-io-team-alpha-beta-app: the slug writes each
+    # run of characters other than letters and digits as one dash.
+    paths = ("alpha-beta", "alpha/beta", "alpha.beta", "alpha_beta")
+    ids = [product_id(tmp_path, str(n), f"ghcr.io/team/{p}/app") for n, p in enumerate(paths)]
+    assert ids == [  # the slug, and a short hash of each repository's purl (item 7)
+        "product:ghcr-io-team-alpha-beta-app-e56b5526",
+        "product:ghcr-io-team-alpha-beta-app-b1dbb4b7",
+        "product:ghcr-io-team-alpha-beta-app-f8eb62b0",
+        "product:ghcr-io-team-alpha-beta-app-84cc3bb4",
+    ]
+
+
+def test_one_repository_has_one_product_id_in_every_import(tmp_path: Path) -> None:
+    other = "sha256:" + "a" * 64
+    ids = {
+        product_id(tmp_path, "tag", "ghcr.io/team/app:1.0"),
+        product_id(tmp_path, "another-tag", "ghcr.io/team/app:2.0", other),
+        product_id(tmp_path, "by-digest", f"ghcr.io/team/app@{other}", other),
+    }
+    # A short hash of the Product's key, pkg:oci/app?repository_url=ghcr.io/team/app
+    assert ids == {"product:ghcr-io-team-app-5869f5a1"}
+
+
+# Review of 4be86c1, finding 3: what is left once the outputs are written ------------------
+
+
+def undeletable(monkeypatch, suffix: str) -> None:
+    """Make removing each file whose name ends in `suffix` fail, as in a folder where this
+    user can make files but not delete them."""
+    real = os.unlink
+
+    def unlink(path, *args, **kwargs):
+        if Path(path).name.endswith(suffix):
+            raise PermissionError(13, "Permission denied")
+        return real(path, *args, **kwargs)
+
+    monkeypatch.setattr(import_sbom.os, "unlink", unlink)
+
+
+def test_a_backup_left_after_a_forced_import_is_a_warning(tmp_path: Path, monkeypatch) -> None:
+    out, report = forced_outputs(tmp_path)
+    undeletable(monkeypatch, ".old")  # both files are replaced; removing their backups fails
+    result = run(SBOM, scan=SCAN, output=out, report=report, force=True)  # and it returns
+    assert out.read_text(encoding="utf-8") == result.model_text
+    assert report.read_text(encoding="utf-8") == result.report_text
+    kept = {p.read_text(encoding="utf-8"): p.name for p in tmp_path.iterdir() if p.suffix == ".old"}
+    assert sorted(kept) == ["an older report\n", "edited by a person\n"]
+    assert len(list(tmp_path.iterdir())) == 4  # the two outputs and the two backups
+    assert result.warnings == [
+        f"{output}: the outputs were written, but {kept[old]}, a backup of the file --force "
+        "replaced, could not be removed (Permission denied) and is left beside it; it can be "
+        "deleted"
+        for output, old in (
+            ("model.yaml", "edited by a person\n"),
+            ("report.md", "an older report\n"),
+        )
+    ]
+
+
+def test_the_command_prints_a_kept_backup_as_a_warning_and_exits_0(
+    tmp_path: Path, monkeypatch, capsys
+) -> None:
+    out, report = forced_outputs(tmp_path)
+    undeletable(monkeypatch, ".old")
+    argv = [
+        "import-sbom",
+        str(SBOM),
+        "--scan",
+        str(SCAN),
+        "--platform",
+        PLATFORM,
+        "-o",
+        str(out),
+        "--report",
+        str(report),
+        "--force",
+    ]
+    assert cli.main(argv) == 0  # on 4be86c1: 1, and "error: cannot write (Permission denied)"
+    captured = capsys.readouterr()
+    assert captured.out.startswith("wrote ")
+    kept = sorted(p.name for p in tmp_path.iterdir() if p.suffix == ".old")
+    lines = captured.err.splitlines()
+    assert len(kept) == len(lines) == 2
+    for name in kept:
+        (line,) = [line for line in lines if name in line]
+        assert line.startswith("warning: ") and "the outputs were written, but " in line
+    assert load(out)["products"]
+    assert report.read_text(encoding="utf-8").startswith("# tmodel import-sbom report")
+
+
+def test_a_temporary_file_left_after_an_import_is_a_warning(tmp_path: Path, monkeypatch) -> None:
+    # Unforced, each output is a hard link to its temporary file, which is removed once
+    # both are in place; on 4be86c1, failing to remove the first took both outputs back.
+    out, report = tmp_path / "model.yaml", tmp_path / "report.md"
+    undeletable(monkeypatch, ".tmp")
+    result = run(SBOM, scan=SCAN, output=out, report=report)
+    assert out.read_text(encoding="utf-8") == result.model_text
+    assert report.read_text(encoding="utf-8") == result.report_text
+    left = {p.read_text(encoding="utf-8"): p.name for p in tmp_path.iterdir() if p.suffix == ".tmp"}
+    assert set(left) == {result.model_text, result.report_text}
+    assert result.warnings == [
+        f"{output}: the outputs were written, but {left[text]}, the temporary file this import "
+        "wrote for it, could not be removed (Permission denied) and is left beside it; it can be "
+        "deleted"
+        for output, text in (("model.yaml", result.model_text), ("report.md", result.report_text))
+    ]
+
+
+def copies_that_fail_part_way(monkeypatch, failing: int) -> list[Path]:
+    """Make --force back up each file by copying it, as on a volume without hard links,
+    and make copy number `failing` (1, the model's; 2, the report's) stop half way with an
+    error, as a full disk would. Returns the copies begun."""
+    begun: list[Path] = []
+    real = shutil.copy2
+
+    def no_links(src, dst, *args, **kwargs):  # as on FAT and exFAT
+        raise PermissionError(1, "Operation not permitted")
+
+    def copy2(src, dst, *args, **kwargs):
+        begun.append(Path(dst))
+        if len(begun) < failing:
+            return real(src, dst, *args, **kwargs)
+        data = Path(src).read_bytes()
+        Path(dst).write_bytes(data[: len(data) // 2])
+        raise OSError(28, "No space left on device")
+
+    monkeypatch.setattr(import_sbom.os, "link", no_links)
+    monkeypatch.setattr(import_sbom.shutil, "copy2", copy2)
+    return begun
+
+
+@pytest.mark.parametrize("failing", [1, 2], ids=["the model's backup", "the report's backup"])
+def test_a_backup_copy_that_fails_part_way_leaves_nothing(
+    tmp_path: Path, monkeypatch, failing: int
+) -> None:
+    out, report = forced_outputs(tmp_path)
+    begun = copies_that_fail_part_way(monkeypatch, failing)
+    with pytest.raises(OSError, match="No space left"):
+        run(SBOM, scan=SCAN, output=out, report=report, force=True)
+    assert len(begun) == failing  # the copies made, and the one cut short, are all removed
+    assert out.read_text(encoding="utf-8") == "edited by a person\n"
+    assert report.read_text(encoding="utf-8") == "an older report\n"
+    assert sorted(p.name for p in tmp_path.iterdir()) == ["model.yaml", "report.md"]
+
+
+def test_a_partial_backup_that_cannot_be_removed_is_named(tmp_path: Path, monkeypatch) -> None:
+    out, report = forced_outputs(tmp_path)
+    begun = copies_that_fail_part_way(monkeypatch, 1)
+    undeletable(monkeypatch, ".old")
+    with pytest.raises(OSError, match="No space left") as raised:
+        run(SBOM, scan=SCAN, output=out, report=report, force=True)
+    (partial,) = begun
+    assert partial.read_text(encoding="utf-8") == "edited by"  # half of the old model
+    assert getattr(raised.value, "__notes__", []) == [
+        f"model.yaml: {partial.name}, a partial copy this import made of it (the file is "
+        "unchanged), could not be removed (Permission denied) and is left beside it; it can be "
+        "deleted"
+    ]
+    assert out.read_text(encoding="utf-8") == "edited by a person\n"
+    assert report.read_text(encoding="utf-8") == "an older report\n"
+    assert sorted(p.name for p in tmp_path.iterdir()) == sorted(
+        ["model.yaml", "report.md", partial.name]
+    )
+
+
+# Review of 4be86c1, item 4: a FAT or exFAT volume's placeholder inodes -------------------
+
+# The inode macOS's msdos driver gave one empty file in the review's probe (2**64 - 25).
+PLACEHOLDER = 18446744073709551591
+
+
+class Placeholder:
+    """A file's status, as an empty file's reads on a FAT or exFAT volume: its inode is a
+    placeholder, which changes once data is written to the file."""
+
+    st_ino = PLACEHOLDER
+
+    def __init__(self, info: os.stat_result) -> None:
+        self._info = info
+
+    def __getattr__(self, name: str):
+        return getattr(self._info, name)
+
+
+def placeholder_inodes(monkeypatch) -> None:
+    """Make the volume read as FAT and exFAT do on macOS: every empty file shows one fixed
+    placeholder inode, and no hard link can be made, so each output is created
+    exclusively and written (_create_new)."""
+    for name in ("fstat", "lstat"):
+        real = getattr(os, name)
+
+        def status(*args, real=real, **kwargs):
+            info = real(*args, **kwargs)
+            return Placeholder(info) if info.st_size == 0 else info
+
+        monkeypatch.setattr(import_sbom.os, name, status)
+
+    def no_links(src, dst, *args, **kwargs):
+        raise OSError(45, "Operation not supported")
+
+    monkeypatch.setattr(import_sbom.os, "link", no_links)
+
+
+def test_a_failed_import_on_a_volume_with_placeholder_inodes_leaves_nothing(
+    tmp_path: Path, monkeypatch
+) -> None:
+    # On 4be86c1 the model was stamped while still empty, so the undo found another inode
+    # there, left the model, and said another program had replaced it.
+    out, report = tmp_path / "model.yaml", tmp_path / "report.md"
+    placeholder_inodes(monkeypatch)
+    failing_move(monkeypatch, report)  # the report cannot be created, as on a full disk
+    with pytest.raises(OSError, match="No space left") as raised:
+        run(SBOM, scan=SCAN, output=out, report=report)
+    assert list(tmp_path.iterdir()) == []
+    assert getattr(raised.value, "__notes__", []) == []  # nothing left, so nothing to say
+
+
+def test_an_import_on_a_volume_with_placeholder_inodes_is_written(
+    tmp_path: Path, monkeypatch
+) -> None:
+    out, report = tmp_path / "model.yaml", tmp_path / "report.md"
+    placeholder_inodes(monkeypatch)
+    result = run(SBOM, scan=SCAN, output=out, report=report)
+    assert out.read_text(encoding="utf-8") == result.model_text
+    assert report.read_text(encoding="utf-8") == result.report_text
+    assert sorted(p.name for p in tmp_path.iterdir()) == ["model.yaml", "report.md"]
+    assert result.warnings == []
+
+
+@pytest.mark.parametrize("then", ["removed", "not removable", "replaced"])
+def test_a_write_that_fails_on_a_volume_with_placeholder_inodes_is_taken_back(
+    tmp_path: Path, monkeypatch, then: str
+) -> None:
+    # The model's own write fails (its fsync, the third after the two temporary files'),
+    # and _create_new takes its file back while the path still names it.
+    out, report = tmp_path / "model.yaml", tmp_path / "report.md"
+    placeholder_inodes(monkeypatch)
+    real, calls = os.fsync, []
+
+    def fsync(fd):
+        calls.append(fd)
+        if len(calls) == 3:
+            if then == "replaced":  # another program puts its own file at the model's name
+                (tmp_path / "theirs").write_text("their model\n", encoding="utf-8")
+                os.replace(tmp_path / "theirs", out)
+            raise OSError(28, "No space left on device")
+        return real(fd)
+
+    monkeypatch.setattr(import_sbom.os, "fsync", fsync)
+    if then == "not removable":
+        undeletable(monkeypatch, "model.yaml")
+    with pytest.raises(OSError, match="No space left") as raised:
+        run(SBOM, scan=SCAN, output=out, report=report)
+    notes = getattr(raised.value, "__notes__", [])
+    if then == "removed":
+        assert list(tmp_path.iterdir()) == [] and notes == []
+    elif then == "not removable":
+        assert [p.name for p in tmp_path.iterdir()] == ["model.yaml"]
+        assert notes == [
+            "model.yaml: the file this import created there, which its failed write left "
+            "unfinished, could not be removed (Permission denied) and is left there; it can "
+            "be deleted"
+        ]
+    else:  # never removed: the path names another program's file now
+        assert out.read_text(encoding="utf-8") == "their model\n"
+        assert notes == [
+            "model.yaml: the file this import put there was replaced by another program while "
+            "the import ran, and is left as it is"
+        ]
+
+
+# Review of 4be86c1, item 5: a temporary file that cannot be written or removed -----------
+
+
+def test_a_temporary_file_that_cannot_be_written_or_removed_is_named(
+    tmp_path: Path, monkeypatch, capsys
+) -> None:
+    out, report = tmp_path / "model.yaml", tmp_path / "report.md"
+    real, calls = os.fsync, []
+
+    def fsync(fd):  # the second: the report's temporary file, on a full disk
+        calls.append(fd)
+        if len(calls) == 2:
+            raise OSError(28, "No space left on device")
+        return real(fd)
+
+    monkeypatch.setattr(import_sbom.os, "fsync", fsync)
+    undeletable(monkeypatch, ".tmp")
+    argv = [
+        "import-sbom",
+        str(SBOM),
+        "--scan",
+        str(SCAN),
+        "--platform",
+        PLATFORM,
+        "-o",
+        str(out),
+        "--report",
+        str(report),
+    ]
+    assert cli.main(argv) == 1
+    err = capsys.readouterr().err
+    left = sorted(p.name for p in tmp_path.iterdir())
+    assert len(left) == 2 and all(name.endswith(".tmp") for name in left)
+    # On 4be86c1 the unlink's error replaced the full disk's, and the report's temporary
+    # file went unnamed.
+    assert err.startswith("error: cannot write (No space left on device)\n")
+    assert all(name in err for name in left)
+
+
+# Review of 4be86c1, item 6: the advice never names a platform the import refuses ---------
+
+
+def image_purl(sbom: dict, arch: str) -> dict:
+    """`sbom` with an image purl naming the architecture `arch`, as Syft can write one."""
+    sbom["metadata"]["component"]["purl"] = (
+        "pkg:oci/alpine@" + DIGEST.replace(":", "%3A") + f"?arch={arch}"
+    )
+    return sbom
+
+
+def test_an_image_purl_for_the_platform_is_named_in_place_of_another_architecture(
+    tmp_path: Path,
+) -> None:
+    # In the round's first fixes the advice named --platform linux/arm64, which the image
+    # purl then refused.
+    path = dump(tmp_path, "s.json", image_purl(sbom_doc(), "amd64"))
+    result = run(path, platform="linux/amd64", output=tmp_path / "model.yaml")
+    assert result.warnings == [
+        "s.json: 16 of the SBOM's packages are built for arm64 (arch=aarch64) and none for "
+        "amd64 or the 386 it also runs, though the platform is linux/amd64 (from --platform). "
+        "Every package is kept as a Component; the SBOM's own image purl also names the "
+        "platform's architecture (metadata.component.purl, arch=amd64)"
+    ]
+
+
+def test_an_image_purl_leaves_the_advice_for_another_variant(tmp_path: Path) -> None:
+    # The oci purl names no variant, so another variant of its architecture is accepted.
+    sbom = image_purl(built_for(sbom_doc(), "armv7"), "arm")
+    result = run(
+        dump(tmp_path, "s.json", sbom), platform="linux/arm/v6", output=tmp_path / "m.yaml"
+    )
+    (warning,) = result.warnings
+    assert advised(warning) == "linux/arm/v7"
+    assert followed(tmp_path, warning, sbom=sbom) == []
+
+
+@pytest.mark.parametrize("platform", ["linux/arm/v6", "linux/arm/v7"])
+def test_another_architecture_outnumbering_the_platforms_gives_one_warning(
+    tmp_path: Path, platform: str
+) -> None:
+    # The review's case, 6 Alpine armv7 packages and 10 aarch64 ones: under linux/arm/v6
+    # a second warning named linux/arm/v7, under which the first came back.
+    sbom = rebuilt(sbom_doc(), "armv7", 6)
+    result = run(dump(tmp_path, "s.json", sbom), platform=platform, output=tmp_path / "m.yaml")
+    (warning,) = result.warnings
+    assert warning.startswith(
+        "s.json: 10 of the SBOM's packages are built for arm64 (arch=aarch64) and 6 for arm, "
+        f"though the platform is {platform} (from --platform). Every package is kept"
+    )
+    assert advised(warning) == "linux/arm64/v8"
+    assert followed(tmp_path, warning, sbom=sbom) == []
+
+
+# Review of 4be86c1, item 7: every id made from a free-form key ends in a hash of the key --
+
+
+def ids_by_purl(doc: dict) -> dict[str, str]:
+    return {c["identifiers"][0]: c["id"] for c in doc["components"] if c.get("identifiers")}
+
+
+def test_a_components_id_is_the_same_beside_another_build_of_it(tmp_path: Path) -> None:
+    # On 4be86c1 the armv7 zlib was ...-r0 alone, and ...-r0-a7ac6a88 beside the aarch64 one.
+    beside = sbom_doc()
+    zlib_copy(beside, ARM32_ZLIB)
+    one, _ = import_sbom_doc(folder(tmp_path, "beside"), beside)
+    two, _ = import_sbom_doc(
+        folder(tmp_path, "alone"), built_for(sbom_doc(), "armv7"), platform="linux/arm/v7"
+    )
+    assert ids_by_purl(one)[ARM32_ZLIB] == ids_by_purl(two)[ARM32_ZLIB]
+
+
+def test_two_builds_of_one_package_never_share_an_id(tmp_path: Path) -> None:
+    # On 4be86c1 the aarch64 and the x86_64 zlib were both ...-zlib-1-3-2-r0, in their
+    # separate imports, as was every other package of the two builds.
+    arm, _ = import_sbom_doc(folder(tmp_path, "arm"), sbom_doc())
+    amd, _ = import_sbom_doc(
+        folder(tmp_path, "amd"), built_for(sbom_doc(), "x86_64"), platform="linux/amd64"
+    )
+    assert ids_by_purl(arm)[ZLIB] != ids_by_purl(amd)[X86_ZLIB]
+    assert not set(ids_by_purl(arm).values()) & set(ids_by_purl(amd).values())
+
+
+def test_parties_whose_names_slug_alike_keep_their_own_ids(tmp_path: Path) -> None:
+    def parties(name: str, suppliers: dict[str, str]) -> dict[str, str]:
+        sbom = sbom_doc()
+        for supplied, supplier in suppliers.items():
+            package(sbom, supplied)["supplier"] = {"name": supplier}
+        doc, _ = import_sbom_doc(folder(tmp_path, name), sbom)
+        return {p["name"]: p["id"] for p in doc["parties"]}
+
+    both = parties("both", {"zlib": "Alpine Linux", "musl": "alpine.linux"})
+    one = parties("one", {"musl": "alpine.linux"})
+    assert both["Alpine Linux"] != both["alpine.linux"]
+    assert one["alpine.linux"] == both["alpine.linux"]  # on 4be86c1, ...-alpine-linux here
+
+
+def test_assertion_ids_hold_when_another_package_is_added(imported, tmp_path: Path) -> None:
+    # A zlib whose purl has no qualifiers, and no match of its own: on 4be86c1 it took the
+    # matched zlib's id, so the ids of that zlib's Assertions changed too.
+    _, fixture, _ = imported
+    sbom = sbom_doc()
+    zlib_copy(sbom, "pkg:apk/alpine/zlib@1.3.2-r0")
+    out = tmp_path / "model.yaml"
+    run(dump(tmp_path, "s.json", sbom), scan=SCAN, output=out)
+    assert set(by_id(load(out), "assertions")) == set(by_id(fixture, "assertions"))
+
+
+# Review of 4be86c1, item 8: an id another key has taken is never given twice ------------
+
+
+def test_a_purl_that_spells_another_components_id_gives_a_model(tmp_path: Path) -> None:
+    # The review's crafted entry: its plain id was the armv7 zlib's fallback, which
+    # 4be86c1 gave out unchecked ("internal error ... duplicate model object id").
+    sbom = sbom_doc()
+    zlib_copy(sbom, ARM32_ZLIB)
+    crafted = "1.3.2-r0-a7ac6a88"
+    sbom["components"].append(
+        {
+            "bom-ref": "crafted",
+            "type": "library",
+            "name": "zlib",
+            "version": crafted,
+            "purl": f"pkg:apk/alpine/zlib@{crafted}",
+        }
+    )
+    doc, _ = import_sbom_doc(tmp_path, sbom)
+    ids = [c["id"] for c in doc["components"]]
+    assert len(ids) == len(set(ids)) == 19
+
+
+def test_vulnerability_ids_that_spell_one_another_give_a_model(tmp_path: Path) -> None:
+    # A Vulnerability's id is its slug alone, so the second of two that slug alike takes
+    # its key's hash, which a third can spell: the same collision under the new rule.
+    second = "ghsa-aaaa-bbbb-cccc"
+    crafted = "GHSA-aaaa-bbbb-cccc-" + hashlib.sha256(second.encode()).hexdigest()[:8]
+    rows = [match("GHSA-AAAA-BBBB-CCCC"), match(second), match(crafted)]
+    doc, _ = import_matches(tmp_path, rows)
+    ids = [v["id"] for v in doc["vulnerabilities"]]
+    assert len(ids) == len(set(ids)) == 3
+
+
+# Review of 4be86c1, item 9: an image purl's architecture in any case --------------------
+
+
+def test_an_image_purl_names_its_architecture_in_any_case(tmp_path: Path) -> None:
+    # On 4be86c1 a name the table does not know was compared as written.
+    sbom = image_purl(without_arch(sbom_doc()), "MIPS64LE")
+    doc, _ = import_sbom_doc(tmp_path, sbom, platform="linux/mips64le")
+    assert instance(doc)["id"] == f"{INSTANCE_OF}linux-mips64le"
+
+
+# Review of 4be86c1, item 10: --force keeps the mode of the file it replaces --------------
+
+
+def test_a_forced_import_keeps_the_mode_of_the_file_it_replaces(tmp_path: Path) -> None:
+    out, report = forced_outputs(tmp_path)
+    out.chmod(0o600)  # a private model
+    linked = tmp_path / "linked.md"
+    linked.write_text("theirs\n", encoding="utf-8")
+    linked.chmod(0o600)
+    report.unlink()
+    report.symlink_to(linked.name)  # and a link at the report's name
+    old = os.umask(0o022)
+    try:
+        result = run(SBOM, scan=SCAN, output=out, report=report, force=True)
+    finally:
+        os.umask(old)
+    assert out.read_text(encoding="utf-8") == result.model_text
+    assert oct(out.stat().st_mode & 0o777) == "0o600"  # on 4be86c1, 0o644
+    assert not report.is_symlink()  # the link is replaced, by a new file that follows the umask
+    assert oct(report.stat().st_mode & 0o777) == "0o644"
+    assert linked.read_text(encoding="utf-8") == "theirs\n"
+    assert oct(linked.stat().st_mode & 0o777) == "0o600"
+    assert sorted(p.name for p in tmp_path.iterdir()) == ["linked.md", "model.yaml", "report.md"]
+
+
+# Review of 4be86c1, item 11: Linux packages under another os ----------------------------
+
+
+def test_linux_packages_under_another_os_give_a_warning(tmp_path: Path, capsys) -> None:
+    out = tmp_path / "model.yaml"
+    argv = [
+        "import-sbom",
+        str(SBOM),
+        "--scan",
+        str(SCAN),
+        "--platform",
+        "windows/arm64/v8",
+        "-o",
+        str(out),
+        "--report",
+        str(tmp_path / "report.md"),
+    ]
+    assert cli.main(argv) == 0
+    warning = (
+        "alpine-3.24.2.cdx.json: 16 of the SBOM's packages are apk packages, which Linux "
+        "distributions install, though the platform's os is windows (the platform is "
+        "windows/arm64/v8, from --platform). Every package is kept as a Component; if the "
+        "SBOM is of another build, pass its platform, for example --platform linux/arm64/v8"
+    )
+    assert capsys.readouterr().err == f"warning: {warning}\n"
+    assert instance(load(out))["id"] == f"{INSTANCE_OF}windows-arm64-v8"
+    assert (
+        run(SBOM, scan=SCAN, platform=advised(warning), output=tmp_path / "linux.yaml").warnings
+        == []
+    )
+
+
+def test_two_warnings_name_one_platform_to_pass(tmp_path: Path) -> None:
+    # Another os and another architecture: both warnings name linux/arm64/v8, which clears
+    # them.
+    result = run(SBOM, platform="windows/amd64", output=tmp_path / "model.yaml")
+    assert [advised(warning) for warning in result.warnings] == ["linux/arm64/v8", "linux/arm64/v8"]
+    assert followed(tmp_path, result.warnings[0], sbom=sbom_doc()) == []
+
+
+# Review of 4be86c1, item 12: the report's line and the advice's placeholder ---------------
+
+
+def test_the_report_says_when_no_package_fits_the_platform(tmp_path: Path) -> None:
+    result = run(SBOM, platform="linux/amd64", output=tmp_path / "model.yaml")
+    assert "\n- No package fits the platform.\n" in result.report_text
+    assert "The packages fit the platform:" not in result.report_text
+
+
+def test_the_advice_asks_for_the_variant_32_bit_arm_needs(tmp_path: Path) -> None:
+    # Raspbian's armhf names 32-bit arm and pins no variant, which the platform then needs.
+    sbom = built_for(sbom_doc(), "armhf", "deb/raspbian")
+    result = run(dump(tmp_path, "s.json", sbom), platform="linux/amd64", output=tmp_path / "m.yaml")
+    (warning,) = result.warnings
+    assert warning.endswith(", for example --platform linux/arm/VARIANT")
+    sbom_path = dump(folder(tmp_path, "v6"), "s.json", sbom)
+    assert (
+        run(sbom_path, platform="linux/arm/v6", output=sbom_path.with_name("m.yaml")).warnings == []
+    )
+
+
+# Review of 4be86c1, item 13: what the design log and the code said ------------------------
+
+
+def test_a_tie_where_none_is_built_for_the_platforms_architecture_still_warns(
+    tmp_path: Path,
+) -> None:
+    # 8 packages for 386 and 8 for arm64: a tie, which warns not as one, but because none
+    # is built for amd64 itself.
+    sbom = built_for(rebuilt(sbom_doc(), "x86", 8), "aarch64")
+    result = run(dump(tmp_path, "s.json", sbom), platform="linux/amd64", output=tmp_path / "m.yaml")
+    (warning,) = result.warnings
+    assert warning.startswith("s.json: none of the SBOM's packages is built for amd64, though")
+    assert advised(warning) == "linux/386"
+    assert followed(tmp_path, warning, sbom=sbom) == []
+
+
+# Review of 4be86c1, item 14: the advice leads to a model with no warning ----------------
+
+
+def three_builds(sbom: dict) -> dict:
+    """The review's case: 7 packages built for x86_64, 5 for Alpine's armhf (arm/v6), and
+    4 left for aarch64. Under arm64, the 4 and the 5 for the arm it also runs are native."""
+    rebuilt(sbom, "x86_64", 7)
+    return rebuilt(sbom, "armhf", 5)
+
+
+@pytest.mark.parametrize("platform", ["linux/amd64", "linux/arm/v6", "linux/386"])
+def test_the_advice_names_the_platform_most_packages_are_native_to(
+    tmp_path: Path, platform: str
+) -> None:
+    # In the round's first fixes linux/amd64 advised linux/arm/v6 and linux/arm/v6 advised
+    # linux/amd64: the largest single build, which holds together only under arm64.
+    sbom = three_builds(sbom_doc())
+    result = run(dump(tmp_path, "s.json", sbom), platform=platform, output=tmp_path / "m.yaml")
+    (warning,) = result.warnings
+    assert advised(warning) == "linux/arm64/v8"  # arm64's own variant, as linux/arm64 is
+    assert followed(tmp_path, warning, sbom=sbom) == []
+    arm64 = dump(folder(tmp_path, "arm64"), "s.json", sbom)
+    assert run(arm64, platform="linux/arm64", output=arm64.with_name("m.yaml")).warnings == []
+
+
+@pytest.mark.parametrize("platform", ["linux/amd64", "linux/arm64"])
+def test_packages_for_386_alone_advise_386_not_the_amd64_that_runs_them(
+    tmp_path: Path, platform: str
+) -> None:
+    sbom = built_for(sbom_doc(), "x86")
+    result = run(dump(tmp_path, "s.json", sbom), platform=platform, output=tmp_path / "m.yaml")
+    (warning,) = result.warnings
+    assert advised(warning) == "linux/386"
+    assert followed(tmp_path, warning, sbom=sbom) == []
+
+
+def test_a_tie_goes_to_the_architecture_more_packages_are_built_for(tmp_path: Path) -> None:
+    # 8 packages for ppc64le, 6 for arm64 and 2 for the arm it also runs: 8 are native under
+    # either, and more are built for ppc64le itself.
+    sbom = rebuilt(rebuilt(sbom_doc(), "ppc64le", 8), "armv7", 2)
+    result = run(dump(tmp_path, "s.json", sbom), platform="linux/amd64", output=tmp_path / "m.yaml")
+    (warning,) = result.warnings
+    assert advised(warning) == "linux/ppc64le"
+    assert followed(tmp_path, warning, sbom=sbom) == []
+
+
+# Mixes of builds, each imported under each platform: every warning's advice leads to a
+# model with no warning, from wherever it is followed.
+MIXES = {
+    "the review's three builds": lambda sbom: three_builds(sbom),
+    "amd64, arm64 and arm": lambda sbom: rebuilt(rebuilt(sbom, "x86_64", 6), "armv7", 5),
+    "386 alone": lambda sbom: built_for(sbom, "x86"),
+    "386 and arm64 even": lambda sbom: rebuilt(sbom, "x86", 8),
+    "two variants of arm": lambda sbom: built_for(rebuilt(sbom, "armhf", 6), "armv7"),
+    "ppc64le and arm64": lambda sbom: rebuilt(sbom, "ppc64le", 12),
+}
+STARTS = [
+    "linux/amd64",
+    "linux/arm64",
+    "linux/arm/v6",
+    "linux/arm/v7",
+    "linux/386",
+    "linux/ppc64le",
+]
+
+
+@pytest.mark.parametrize("mix", list(MIXES))
+def test_the_advice_leads_to_no_warning_from_any_platform(tmp_path: Path, mix: str) -> None:
+    sbom = MIXES[mix](sbom_doc())
+    warned = 0
+    for n, platform in enumerate(STARTS):
+        path = dump(folder(tmp_path, f"start-{n}"), "s.json", sbom)
+        for warning in run(path, platform=platform, output=path.with_name("m.yaml")).warnings:
+            warned += 1
+            assert followed(tmp_path, warning, sbom=sbom) == [], (platform, warning)
+    assert warned  # each mix warns under some platform
+
+
+# Review of 4be86c1, item 15: a rescan keeps every Assertion's id ------------------------
+
+
+def rescanned(field: str, record: dict) -> None:
+    """Change one field of a vulnerability record as a newer database would."""
+    if field == "epss":
+        record["epss"] = [dict(item, epss=0.5, percentile=0.9) for item in record.get("epss", [])]
+    elif field == "risk":
+        record["risk"] = 0.99
+    elif field == "cvss":
+        record["cvss"] = [dict(item, version="3.1") for item in record.get("cvss", [])]
+    elif field == "description":
+        record["description"] = "The words of a newer database."
+    elif field == "fix state":
+        record["fix"] = {"versions": [], "state": "not-fixed", "available": []}
+    elif field == "urls":
+        record["urls"] = ["https://example.org/a-newer-advisory"]
+
+
+@pytest.mark.parametrize("field", ["epss", "risk", "cvss", "description", "fix state", "urls"])
+def test_a_rescan_that_changes_only_scores_or_words_keeps_every_assertion_id(
+    imported, tmp_path: Path, field: str
+) -> None:
+    # In the round's first fixes a match's id held a hash of the whole match, so a newer
+    # database's EPSS gave the same finding a new id.
+    _, fixture, _ = imported
+    scan = scan_doc()
+    for row in scan["matches"]:
+        for record in [row["vulnerability"], *row.get("relatedVulnerabilities", [])]:
+            rescanned(field, record)
+        if field == "fix state":
+            for detail in row["matchDetails"]:
+                detail["fix"] = {"suggestedVersion": "9.9.9-r0"}
+    out = tmp_path / "model.yaml"
+    run(SBOM, scan=dump(tmp_path, "g.json", scan), output=out)
+    assert set(by_id(load(out), "assertions")) == set(by_id(fixture, "assertions"))
+
+
+@pytest.mark.parametrize("differ", ["type", "matcher"])
+def test_matches_that_differ_in_type_or_matcher_keep_ids_of_their_own(
+    tmp_path: Path, differ: str
+) -> None:
+    one = match("CVE-2026-0001")
+    two = match("CVE-2026-0001")
+    two["matchDetails"][0][differ] = "cpe-match" if differ == "type" else "stock-matcher"
+
+    def ids(name: str, rows: list[dict]) -> dict[str, str]:
+        doc, _ = import_matches(folder(tmp_path, name), rows)
+        links = [a for a in doc["assertions"] if a["predicate"] == "propagates_to"]
+        return {a["description"]: a["id"] for a in links}
+
+    both = ids("both", [one, two])
+    assert len(set(both.values())) == 2
+    # Each has its own id, whatever the other: neither is told apart by order.
+    assert ids("one", [one]).items() <= both.items()
+    assert ids("two", [two]).items() <= both.items()
+
+
+def test_matches_that_say_one_finding_get_two_ids_in_a_fixed_order(tmp_path: Path) -> None:
+    # Twins: the same CVE, vulnerability, Component, type and matcher, and other scores.
+    one = match("CVE-2026-0001")
+    two = copy.deepcopy(one)
+    two["vulnerability"]["risk"] = 0.99
+    models = []
+    for name, rows in (("forward", [one, two]), ("backward", [two, one])):
+        doc, _ = import_matches(folder(tmp_path, name), rows)
+        models.append(
+            sorted(a["id"] for a in doc["assertions"] if a["predicate"] == "propagates_to")
+        )
+    assert len(set(models[0])) == 2  # one Assertion per match
+    assert models[0] == models[1]  # told apart by an order of their own, not the scan's
+
+
+def test_cwe_link_ids_are_the_round_s_own(imported) -> None:
+    # A CWE link's id is its (CVE, CWE, source)'s, as since item 7 of this round.
+    _, doc, _ = imported
+    links = {a["id"] for a in doc["assertions"] if a["predicate"] == "instance_of"}
+    assert "assertion:cve-2026-85091-cwe-787-from-disclosure-vulncheck-com-f142048c" in links
+
+
+# Review of 4be86c1, item 16: what the variants say when the image purl has spoken -------
+
+
+def test_an_image_purl_and_another_architecture_leave_the_variants_to_the_report(
+    tmp_path: Path,
+) -> None:
+    # 6 Alpine armv7 packages and 10 aarch64 ones under linux/arm/v6, with an image purl for
+    # arm: one warning, with no advice, and the report lists the packages for arm/v7.
+    sbom = image_purl(rebuilt(sbom_doc(), "armv7", 6), "arm")
+    result = run(
+        dump(tmp_path, "s.json", sbom), platform="linux/arm/v6", output=tmp_path / "m.yaml"
+    )
+    (warning,) = result.warnings
+    assert "--platform " not in warning.split(". Every package is kept", 1)[1]
+    assert "6 Components built for arm/v7 (arch=armv7), not the platform's arm/v6: kept" in (
+        result.report_text
+    )
+
+
+# Review of 4be86c1, item 18: twins keep their ids in a rescan ------------------------------
+
+
+def twin_match(artifact_id: str, constraint: str, risk: float) -> dict:
+    """One of two twins as Grype gives them for a package the SBOM records twice: one
+    finding on two SBOM entries (`artifact.id`), here with other affected versions, so each
+    Assertion's description says which match it is, and with a score of its own."""
+    row = match("CVE-2026-0001")
+    row["artifact"]["id"] = artifact_id
+    row["matchDetails"][0]["found"] = {
+        "versionConstraint": constraint,
+        "vulnerabilityID": "CVE-2026-0001",
+    }
+    row["vulnerability"]["risk"] = risk
+    return row
+
+
+@pytest.mark.parametrize(
+    ("first", "again"),
+    [
+        ((0.1, 0.2), (0.9, 0.05)),
+        ((0.5, 0.6), (0.7, 0.8)),
+        ((0.25, 0.75), (0.75, 0.25)),
+        ((0.01, 0.02), (0.03, 0.04)),
+    ],
+)
+def test_twins_keep_their_ids_when_their_scores_change(
+    tmp_path: Path, first: tuple[float, float], again: tuple[float, float]
+) -> None:
+    # Ordered by the SBOM entry each is on, then by fingerprint, each twin keeps its own id
+    # in a rescan whose scores differ, whatever order the scan lists them in.
+    def ids(name: str, rows: list[dict]) -> dict[str, str]:
+        doc, _ = import_matches(folder(tmp_path, name), rows)
+        return {
+            a["description"]: a["id"]
+            for a in doc["assertions"]
+            if a["predicate"] == "propagates_to"
+        }
+
+    scan = [
+        twin_match("entry-b", "< 1.3.3", first[0]),
+        twin_match("entry-a", "< 1.3.2-r1", first[1]),
+    ]
+    rescan = [
+        twin_match("entry-a", "< 1.3.2-r1", again[1]),
+        twin_match("entry-b", "< 1.3.3", again[0]),
+    ]
+    before, after = ids("scan", scan), ids("rescan", rescan)
+    assert len(before) == 2 and len(set(before.values())) == 2  # one Assertion per match
+    assert after == before
