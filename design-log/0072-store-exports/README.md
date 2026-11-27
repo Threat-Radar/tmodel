@@ -1,6 +1,6 @@
 ---
 schema: archdoc/v1
-id: DL-0071
+id: DL-0072
 title: Exports of the working store - Turtle, TriG, JSON-LD, GraphML and CSV
 type: process
 status: draft
@@ -13,7 +13,7 @@ defers_to: ARCH-0001
 
 # Question and scope
 
-#65 left the exports to a second story: Turtle, JSON-LD, GraphML and CSV, written from the working store (#53, BACKLOG T-209). ADR-0004 decision 4 and ADR-0007 fix them as derived, never canonical. ADR-0007 also asks for the DEC-002 round trip (CF-008): test what each format keeps and what it loses. Every object and edge keeps one stable id in every encoding (ADR-0004). This builds on the store façade (DL-0070, #273) and is stacked on it.
+#65 left the exports to a second story: Turtle, JSON-LD, GraphML and CSV, written from the working store (#53, BACKLOG T-209). ADR-0004 decision 4 and ADR-0007 fix them as derived, never canonical. ADR-0007 also asks for the DEC-002 round trip (CF-008): test what each format keeps and what it loses. Every object and edge keeps one stable id in every encoding (ADR-0004). This builds on the store façade (DL-0071, #273) and is stacked on it. (This entry was opened as DL-0071, and the façade's as DL-0070. Both moved up one on 2026-11-26, because #272 took DL-0070 on main first.)
 
 # What was built
 
@@ -47,7 +47,7 @@ defers_to: ARCH-0001
 
 | Option | Outcome and reason |
 |---|---|
-| Map store IRIs to the schema's `tmodel:` namespace | Deferred. Library records, relation kinds and the store's own types aren't schema terms, and the schema declares no IRI form for ids. The store IRIs are stable, and an export carries them with prefixes. DL-0070 had left this to the exports. |
+| Map store IRIs to the schema's `tmodel:` namespace | Deferred. Library records, relation kinds and the store's own types aren't schema terms, and the schema declares no IRI form for ids. The store IRIs are stable, and an export carries them with prefixes. DL-0071 had left this to the exports. |
 | RDF 1.2 reifiers in JSON-LD | Not possible yet: neither JSON-LD 1.1 nor Oxigraph can write a triple term. |
 | Turtle for several graphs | Turtle has no named graphs. TriG is Turtle with graphs. |
 | CSV with one column per property | Rejected: an empty cell can't tell an absent property from an empty one, and numbers lose their type. One JSON column keeps both. |
