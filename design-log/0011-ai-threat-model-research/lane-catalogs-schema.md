@@ -4,7 +4,7 @@ id: DL-0011-lane-catalogs-schema
 title: "RPT-0014 lane catalogs-schema: WAVE 1 calibration (S-0855, S-0166, S-0728)"
 type: process
 status: draft
-version: "0.2.2"
+version: "0.2.3"
 date: "2026-11-08"
 updated: "2026-11-26"
 record: DL-0011
@@ -29,7 +29,7 @@ Under `research/0014-ai-threat-model/calibration/catalogs-schema/`:
 | `greshake-2023-indirect-prompt-injection/` | S-0166, Greshake et al., AISec '23 | summarized | high |
 | `biml-ara-ml-2020/` | S-0728, BIML ARA of ML systems v1.0 | summarized | medium (read in part) |
 
-Each `summary.md` has the six `summarize` sections, the RPT-0014 applicability table, a reference-expansion note, and `reviewed_by: ""` in its front matter for the review partner to sign.
+Each `summary.md` has the six `summarize` sections, the RPT-0014 applicability table, a reference-expansion note, and `reviewed_by: "paria03"` following the explicit #285 sample acceptance on 2026-11-26.
 
 ## How it was run
 
@@ -101,7 +101,7 @@ The lane's 20 WAVE 1 sources had the same check in Threat-Radar/library#51. FSF 
 
 ## Human review
 
-@Clovier checked the three records against the sources on 2026-11-09 (#228). Not yet signed. @paria03 (review partner per LANES.md) reads at least three entries per record against the source, then signs `reviewed_by` in each `summary.md`. Until then each record is a hypothesis (R-018).
+@Clovier checked the three records against the sources on 2026-11-09 (#228). The #285 follow-up records at least three source checks per calibration record. On 2026-11-26, @paria03 explicitly accepted the eight-summary checklist and authorized `reviewed_by: "paria03"` in these three calibration summaries and the five sampled library summaries. The approval is limited to that documented sample (R-018).
 
 ## Review-partner follow-up (#285, 2026-11-26)
 
@@ -112,5 +112,6 @@ recount is 98 of 146 entries carrying NISTAML ids, 60 through AIT-075; the
 PDF body contains 25 leaf ids after rejoining split NISTAML text. The stale
 four-candidate BIML bullet above now agrees with the twelve-work list.
 
-The sample verification does not populate the blank human `reviewed_by`
-fields. Those remain pending the designated review partner's confirmation.
+Following @paria03's explicit acceptance of the eight-summary checklist, the
+three calibration summaries now carry the authorized `reviewed_by` signatures.
+The companion evidence records the five library signatures and the scope limit.

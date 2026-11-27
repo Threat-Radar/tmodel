@@ -4,7 +4,7 @@ id: DL-0011-review-catalogs-schema-285
 title: "Catalogs-schema review-partner source checks (#285)"
 type: process
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 date: "2026-11-26"
 updated: "2026-11-26"
 record: RPT-0014
@@ -16,9 +16,10 @@ defers_to: ARCH-0001
 
 Task: [#285](https://github.com/Threat-Radar/tmodel/issues/285). This records
 source verification of the three calibration summaries on #228 at `0bb869b`
-and the five-record sample from library#51 at `8fc3878`. It does not change
-applicability judgments or grant human sign-off. Every sampled summary's
-`reviewed_by` remains blank pending confirmation from @paria03.
+and the five-record sample from library#51 at `8fc3878`. On 2026-11-26,
+@paria03 explicitly accepted the eight-summary checklist and authorized the
+`reviewed_by` signatures. All eight sampled summaries now record that sign-off.
+Applicability judgments and the summaries' stated limits are preserved.
 
 ## Calibration sample
 
@@ -40,8 +41,8 @@ Primary sources:
 
 The calibration catalog recount is 98 of 146 entries carrying a NISTAML id,
 60 through AIT-075. Correct the stale lane-note bullet from four missing BIML
-references to twelve. No calibration record, applicability rating or signature
-is changed by that correction.
+references to twelve. That wording correction changes no calibration claims
+or applicability ratings; the later authorized signature is recorded separately.
 
 ## Five-record library sample
 
@@ -68,13 +69,18 @@ It is not a source review of the other lane records or of all reference stubs.
 - Run the library's CI steps locally while hosted Actions are paused. Keep
   local results separate from hosted CI, and verify tmodel's new-head CI.
 
-## Human review boundary
+## Recorded human acceptance
 
-The remaining #285 acceptance step is confirmation of these eight sampled
-summaries by the designated review partner. Only then should the three
-calibration and five library `reviewed_by` fields be populated. The issue
-must remain open while those signatures are pending; neither a successful
-automated check nor a PR approval substitutes for that human record.
+On 2026-11-26, @paria03 responded to the source-check checklist with:
+"Accept and sign these eight summaries". Record `reviewed_by: "paria03"` on
+exactly the three calibration and five sampled library summaries. The source
+checks remain the evidence; the user's explicit acceptance supplies the human
+sign-off. The record does not infer review of the other lane summaries,
+reference stubs, an entire corpus, or a product risk assessment.
+
+This completes #285's signature requirement once both commits are pushed and
+the review/check evidence is recorded. Original provenance, partial-read
+limits, applicability ratings and source captures remain unchanged.
 
 Local checks: archdoc validates 28 documents with zero errors, and diff checks
 pass. Companion library checks validate 967 records with zero errors and the

@@ -3,9 +3,9 @@ schema: "library-summary/v1"
 id: biml-ara-ml-2020
 record: biml-ara-ml-2020
 type: summary
-updated: "2026-11-22"
+updated: "2026-11-26"
 lane: catalogs-schema
-reviewed_by: ""
+reviewed_by: "paria03"
 ---
 
 # An Architectural Risk Analysis of Machine Learning Systems: Toward More Secure Machine Learning

@@ -3,9 +3,9 @@ schema: "library-summary/v1"
 id: nist-ai-100-2-e2025
 record: nist-ai-100-2-e2025
 type: summary
-updated: "2026-11-22"
+updated: "2026-11-26"
 lane: catalogs-schema
-reviewed_by: ""
+reviewed_by: "paria03"
 ---
 
 # Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations (NIST AI 100-2 E2025)
