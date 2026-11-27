@@ -1,6 +1,7 @@
 """`tmodel` command line — the agentic surface over the same engine the GUI uses.
 
-  tmodel serve                 start the local engine (loopback only)
+  tmodel serve [--projects]    start the local engine (loopback only); --projects also
+                               serves the project folders the host opens (#288)
   tmodel health [--json]       ask the running engine whether it is healthy
   tmodel version [--json]      ask the running engine for its version
   tmodel risk FILE --matrix annex-h-table-h8 [--goal G] [--json]
@@ -667,8 +668,18 @@ def _coverage(args: argparse.Namespace) -> int:
 
 
 def _serve(args: argparse.Namespace) -> int:
+    host_token = None
+    if args.projects:  # the host's secret comes from the environment, never argv (#288)
+        host_token = os.environ.get("TMODEL_HOST_TOKEN")
+        if not host_token:
+            print(
+                "error: --projects needs TMODEL_HOST_TOKEN, a secret of at least 32 "
+                "characters, such as one from secrets.token_urlsafe(32)",
+                file=sys.stderr,
+            )
+            return 1
     try:
-        server.serve(port=args.port, exit_with_parent=args.exit_with_parent)
+        server.serve(port=args.port, exit_with_parent=args.exit_with_parent, host_token=host_token)
     except (ValueError, OSError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
@@ -685,6 +696,12 @@ def build_parser() -> argparse.ArgumentParser:
         "--exit-with-parent",
         action="store_true",
         help="stop when stdin closes (the desktop app starts the engine this way)",
+    )
+    serve.add_argument(
+        "--projects",
+        action="store_true",
+        help="let the host open and create threat model project folders (#288); the "
+        "host's secret is read from TMODEL_HOST_TOKEN; off by default",
     )
     serve.set_defaults(func=_serve)
 

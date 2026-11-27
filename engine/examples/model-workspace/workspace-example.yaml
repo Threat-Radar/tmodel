@@ -1,0 +1,51 @@
+# Synthetic source model for the editable model workspace contract (#288, DL-0075).
+# Not a real product assessment and not a human sign-off: the ids, the Assertion and
+# the ratings are illustrative test data. contract.json shows the workspace's answers
+# when this file is the selected example model.
+parties:
+  - id: party:example-reviewer
+    name: Example reviewer
+    party_kind: person
+  - id: party:example-agent
+    name: Example drafting agent
+    party_kind: software_agent
+products:
+  - id: product:example-service
+    name: Example service
+    description: A one-threat synthetic model for the workspace contract.
+threat_instances:
+  - id: threat-instance:example
+    name: Example threat
+    realizes_damage: damage-scenario:example
+damage_scenarios:
+  - id: damage-scenario:example
+    name: Example damage
+attack_steps:
+  - id: attack-step:example
+    name: Example step
+attack_paths:
+  - id: attack-path:example
+    name: Example path
+    steps: [attack-step:example]
+    realizes_threat: threat-instance:example
+    attack_feasibility: low
+assertions:
+  - id: assertion:example-path
+    subject: attack-path:example
+    predicate: realizes_threat
+    object: threat-instance:example
+    assertion_status: proposed
+    asserted_by: party:example-agent
+    confidence: medium
+risk_scores:
+  - id: risk-score:example
+    threat: threat-instance:example
+    damage_scenario: damage-scenario:example
+    for_stakeholder: party:example-reviewer
+    attack_paths: [attack-path:example]
+    mitigation_status: planned
+    impact:
+      safety: moderate
+      financial: major
+      operational: moderate
+      privacy: negligible
