@@ -1,3 +1,4 @@
+import cytoscape, { type StylesheetJson } from "cytoscape";
 import { describe, expect, it, vi } from "vitest";
 import type { AttackPathOption } from "./attack-path";
 import { EngineGraphDataProvider, type EngineGraphResponse } from "./engine-graph-provider";
@@ -12,6 +13,7 @@ import type { AttackPathResponse, GraphDataProvider, GraphResponse } from "./gra
 import {
   AUTHORED_EDGE_SELECTOR,
   AUTHORED_EDGE_STYLE,
+  GRAPH_CATEGORY_TOKENS,
   KnowledgeGraphView,
   REVIEW_STATE_EDGE_STYLES,
 } from "./graph-view";
@@ -669,8 +671,14 @@ describe("knowledge-graph startup and recovery", () => {
     const { view, document } = createDomView();
     view.renderLegend();
 
-    expect(document.byId("type-legend").textContent).toContain("Other types");
-    expect(document.byId("type-legend").textContent).toContain("Requirement");
+    const entries = document.byId("type-legend").children;
+    expect(entries.map((entry) => entry.textContent)).toEqual(Object.keys(GRAPH_CATEGORY_TOKENS));
+    for (const entry of entries) {
+      const swatch = entry.children[0];
+      expect(swatch.tagName).toBe("span");
+      expect(swatch.className).toBe("legend-swatch");
+      expect(swatch.style.backgroundColor).toBe(`var(--${GRAPH_CATEGORY_TOKENS[entry.textContent]})`);
+    }
     const relationshipLegend = document.byId("relationship-legend");
     expect(relationshipLegend.textContent).toBe(
       "StructuralAcceptedProposedChanges RequestedRejectedUnknown Status",
@@ -681,6 +689,11 @@ describe("knowledge-graph startup and recovery", () => {
     expect(divider.className).toBe("legend-divider");
     expect(divider.attributes.get("aria-hidden")).toBe("true");
     expect(states.map((item) => item.children[0].tagName)).toEqual(Array(6).fill("svg"));
+    for (const [index, style] of Object.values(REVIEW_STATE_EDGE_STYLES).entries()) {
+      const line = states[index + 1].children[0].children[0];
+      expect(line.attributes.get("stroke")).toBe(`var(--${style.token})`);
+      expect(line.attributes.get("stroke-dasharray")).toBe(style.dashPattern?.join(" "));
+    }
     expect(states.slice(1).map((item) => (item as unknown as { title: string }).title)).toEqual([
       "Relationship review status: Accepted",
       "Relationship review status: Proposed",
@@ -690,12 +703,52 @@ describe("knowledge-graph startup and recovery", () => {
     ]);
   });
 
+  it("draws a distinct circular selection ring only on the selected path node", () => {
+    const tokens = new Map([
+      ["--text", "#20354b"], ["--graph-canvas", "#f6f9fc"],
+      ["--graph-highlight", "#3c6b96"], ["--graph-step", "#227eaa"], ["--font-ui", "Inter"],
+    ]);
+    const documentRoot = {
+      defaultView: { getComputedStyle: () => ({ getPropertyValue: (name: string) => tokens.get(name) ?? "#587c9d" }) },
+    } as unknown as Document;
+    const view = new KnowledgeGraphView(undefined, documentRoot) as unknown as { graphStyle(): StylesheetJson };
+    const cy = cytoscape({
+      headless: true, styleEnabled: true, style: view.graphStyle(), layout: { name: "preset" },
+      elements: [
+        { data: { id: "a", domainType: "AttackStep" }, classes: "path-step view-member", position: { x: 30, y: 40 } },
+        { data: { id: "b", domainType: "AttackStep" }, classes: "path-step" },
+      ],
+    });
+    try {
+      const a = cy.getElementById("a");
+      const b = cy.getElementById("b");
+      a.select();
+      expect(a.style("shape")).toBe("ellipse");
+      expect(a.style("width")).toBe("28px");
+      expect(a.position()).toEqual({ x: 30, y: 40 });
+      expect(a.style("background-color")).toBe(b.style("background-color"));
+      expect(a.style("border-color")).toBe("rgb(246,249,252)");
+      expect(a.style("underlay-color")).toBe("rgb(32,53,75)");
+      expect(a.style("underlay-shape")).toBe("ellipse");
+      expect(a.style("underlay-opacity")).toBe("1");
+      const ringWidth = parseFloat(a.style("underlay-padding")) - parseFloat(a.style("border-width")) / 2;
+      expect(ringWidth * 0.3).toBeGreaterThanOrEqual(1.5);
+      expect(b.style("border-color")).toBe("rgb(60,107,150)");
+      expect(b.style("underlay-opacity")).toBe("0");
+
+      a.unselect();
+      b.select();
+      expect(a.style("underlay-opacity")).toBe("0");
+      expect(b.style("underlay-opacity")).toBe("1");
+    } finally {
+      cy.destroy();
+    }
+  });
+
   it("keeps authored canvas edges solid after all Assertion review-state rules", () => {
     expect(AUTHORED_EDGE_SELECTOR).toBe("edge[?authored]");
     expect(AUTHORED_EDGE_STYLE).toMatchObject({
       "line-style": "solid",
-      "line-color": "#94a3b8",
-      "target-arrow-color": "#64748b",
     });
     expect(REVIEW_STATE_EDGE_STYLES.proposed.dashPattern).toEqual([7, 4]);
     expect(REVIEW_STATE_EDGE_STYLES.rejected.dashPattern).toEqual([2, 3]);

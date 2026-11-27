@@ -45,3 +45,14 @@ No push or PR was authorized for this issue.
 
 Production save/reopen and packaged-app review testing require #288 and #290
 integration. Hosted CI has not run for this local branch.
+
+## PR integration with current main
+
+Opening the draft PR exposed generated-preview conflicts with the branding and
+welcome changes merged in #278. Merged current main without changing those
+source features, then regenerated the preview using the publishing playbook.
+No authored source conflicts required manual resolution. Type checking, all
+701 frontend tests, 124 publishing tests, preview freshness, architecture and
+published identity/link guards passed. The #289 engine implementation is unchanged.
+Whitespace checks against current main passed for authored files; generated
+bundled JavaScript retains its upstream template whitespace.

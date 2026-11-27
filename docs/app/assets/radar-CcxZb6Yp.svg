@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="radar-symbol" viewBox="0 0 100 100">
+  <style>
+    svg.radar-symbol {
+      --radar-ink: var(--text, #20354b);
+      --radar-rings: var(--icon, #587c9d);
+      --radar-sweep: var(--selected, #dce8f2);
+    }
+    @media (prefers-color-scheme: dark) {
+      svg.radar-symbol {
+        --radar-ink: var(--text, #e8f0f7);
+        --radar-rings: var(--icon, #a3c4de);
+        --radar-sweep: var(--selected, #304a62);
+      }
+    }
+  </style>
+  <circle cx="50" cy="50" r="29" fill="none" stroke="var(--radar-rings)" stroke-width="1.5"/>
+  <circle cx="50" cy="50" r="13" fill="none" stroke="var(--radar-rings)" stroke-width="1.5"/>
+  <path d="M50 50V6A44 44 0 0 1 89 70Z" fill="var(--radar-sweep)" fill-opacity=".52"/>
+  <circle cx="50" cy="50" r="44" fill="none" stroke="var(--radar-ink)" stroke-width="2"/>
+  <path d="M50 50 83 21" fill="none" stroke="var(--radar-ink)" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="71" cy="31" r="5" fill="var(--radar-ink)"/>
+  <circle cx="29" cy="66" r="3.5" fill="var(--radar-rings)"/>
+  <circle cx="50" cy="50" r="4" fill="var(--radar-ink)"/>
+</svg>

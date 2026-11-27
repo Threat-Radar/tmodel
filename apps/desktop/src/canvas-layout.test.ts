@@ -84,6 +84,7 @@ const MEASURE = CHROME !== undefined || Boolean(process.env.CI);
 
 /** Runs in the page and measures each workspace independently. */
 const PROBE = `window.addEventListener("load", () => {
+  document.getElementById("workspace").hidden = false;
   const size = (panelId, canvasId) => {
     for (const panel of document.querySelectorAll(".view-panel")) panel.hidden = panel.id !== panelId;
     const canvas = document.getElementById(canvasId);
@@ -233,7 +234,7 @@ function measure(): Map<number, Layout> {
   if (body === undefined) throw new Error("index.html has no <body>");
   // The app's own script loads from <head>, so the page below runs only the probe.
   if (/<script/iu.test(body)) throw new Error("index.html's <body> has a script; this test expects none");
-  const css = ["./styles.css", "./report.css"]
+  const css = ["./theme.css", "./styles.css", "./report.css", "./welcome.css"]
     .map((file) => readFileSync(new URL(file, import.meta.url), "utf8"))
     .join("\n");
   const page = `<!doctype html><html lang="en"><head><meta charset="utf-8"><style>${css}</style></head>`
