@@ -8,8 +8,10 @@ The answers agreed on #65 for the library loader:
 2. **Edges.** Every relation kind, and `cites` where it names a record, is one edge
    per fact, written forward whichever record states it: `superseded_by`, `updated_by`
    and `cited_by` are read from the other end as `supersedes`, `updates` and `cites`.
-   So a link recorded on one side only gives the same graph as one recorded on both.
-   `stated_by` lists the records that state it. Citations with no record id stay on
+   `see_also` and `contradicts` have no direction (the library's `docs/references.md`
+   calls them symmetric), so each pair is one edge, from the lower record id to the
+   higher. So a link recorded on one side only gives the same graph as one recorded on
+   both. `stated_by` lists the records that state it. Citations with no record id stay on
    the record's node as data. A relation to a record the library does not hold makes
    no edge and no empty node; `LibraryLoad.missing` lists it.
 3. **Rebuild.** The library is one graph, `library`, loaded whole and replaced only
@@ -31,6 +33,8 @@ NODE_TYPE = "LibraryRecord"
 PREFIX = "library:"
 # An inverse relation kind, and the forward kind it is read as from the other end.
 FORWARD = {"superseded_by": "supersedes", "updated_by": "updates", "cited_by": "cites"}
+# Relation kinds with no direction: one edge per pair, from the lower id to the higher.
+SYMMETRIC = frozenset({"see_also", "contradicts"})
 
 
 def node_id(record_id: str) -> str:
@@ -76,6 +80,9 @@ def library_graph(library: Library) -> LibraryGraph:
                 continue
             if kind in FORWARD:
                 fact = (target, FORWARD[kind], record.id)
+            elif kind in SYMMETRIC:
+                low, high = sorted((record.id, target))
+                fact = (low, kind, high)
             else:
                 fact = (record.id, kind, target)
             sayers = stated.setdefault(fact, [])

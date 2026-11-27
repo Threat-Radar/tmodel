@@ -86,6 +86,36 @@ def test_inverse_links_are_one_forward_edge():
     ]
 
 
+def test_symmetric_links_are_one_edge_per_pair():
+    """`see_also` and `contradicts` have no direction (docs/references.md in the library):
+    on the pinned library, 173 `see_also` pairs are recorded on both sides and 411 on one."""
+    one_side = library(
+        record("a"),
+        record("b", relations=(("see_also", ("a",)),)),
+        record("c", relations=(("contradicts", ("d",)),)),
+        record("d"),
+    )
+    both_sides = library(
+        record("a", relations=(("see_also", ("b",)),)),
+        record("b", relations=(("see_also", ("a",)),)),
+        record("c", relations=(("contradicts", ("d",)),)),
+        record("d", relations=(("contradicts", ("c",)),)),
+    )
+    a, b = Store(), Store()
+    store_library.load_library(a, one_side)
+    store_library.load_library(b, both_sides)
+    facts = lambda s: [(e.id, e.source, e.type, e.target) for e in s.edges()]  # noqa: E731
+    assert facts(a) == facts(b)
+    assert edges(a) == [
+        ("library:a", "see_also", "library:b", ("b",)),
+        ("library:c", "contradicts", "library:d", ("c",)),
+    ]
+    assert edges(b) == [
+        ("library:a", "see_also", "library:b", ("a", "b")),
+        ("library:c", "contradicts", "library:d", ("c", "d")),
+    ]
+
+
 def test_cites_naming_a_record_are_edges_and_the_rest_stay_data():
     lib = library(
         record(
@@ -103,9 +133,9 @@ def test_cites_naming_a_record_are_edges_and_the_rest_stay_data():
     store_library.load_library(store, lib)
     assert edges(store) == [
         ("library:a", "cites", "library:b", ("a", "b")),
+        ("library:a", "see_also", "library:b", ("b",)),
+        ("library:b", "contradicts", "library:c", ("c",)),
         ("library:b", "part_of", "library:c", ("b",)),
-        ("library:b", "see_also", "library:a", ("b",)),
-        ("library:c", "contradicts", "library:b", ("c",)),
         ("library:c", "implements_concept", "library:a", ("c",)),
     ]
     assert store.node("library:a", GRAPH).properties["cites"] == (
