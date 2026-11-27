@@ -113,6 +113,23 @@ python3 design-log/0024-schema-proposal-g13/check-refs.py \
   spec/vectors/mvp-*.yaml spec/vectors/tv-*.yaml spec/vectors/pv-*.yaml
 ```
 
+## Imported starter models (`im-NN-*.yaml`, #281)
+
+Not drafted by AI: `tmodel import-sbom` (#257, DL-0068) makes them from a container image's
+SBOM and its Grype scan. They hold the product, the scanned build, its parts and their
+dependencies, and the known vulnerabilities and CWEs the scan found; every Assertion is
+`proposed` and no Review is recorded. They validate against the same proposed container
+(the `schema` workflow checks any it finds), and the app labels them "Imported starter model
+(from an SBOM, unreviewed)". The engine opens them like the other examples, and `tmodel
+propose` and `tmodel accept` work on them, so a person reviews their links as for a `pv-`
+model. They hold no attack paths, so the attack-path tests leave them out. None is
+committed yet. To check one by hand, as the workflow does:
+
+```sh
+linkml-validate -s spec/vectors/example-container-proposed.linkml.yaml \
+  -C ExampleModelProposed spec/vectors/im-01-NAME.yaml
+```
+
 ## Validating a vector
 
 `linkml` is installed. Each vector is one tree-rooted file validated against the

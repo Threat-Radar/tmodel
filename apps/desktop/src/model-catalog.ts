@@ -77,7 +77,9 @@ export function modelSummaryLine(model: ModelSummary): string {
 export function modelReviewLabel(model: ModelSummary): string {
   const threats = model.counts.threats ?? 0;
   if (threats === 0) return "No threats";
-  if (model.kind === "proposal" && model.reviewed_threats === 0) return "Unreviewed";
+  // A proposal is AI-drafted and an imported model (#281) tool-made: neither is reviewed yet.
+  const unreviewedKind = model.kind === "proposal" || model.kind === "imported";
+  if (unreviewedKind && model.reviewed_threats === 0) return "Unreviewed";
   return `${model.reviewed_threats}/${threats} accepted`;
 }
 

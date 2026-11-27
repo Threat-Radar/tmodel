@@ -10,7 +10,7 @@
 import type { AttackPathResponse } from "./graph-types";
 import type { EngineGraphResponse, ModelListProblem, ModelSummary } from "./model-types";
 import { buildModelReport, readableDescription } from "./model-report.ts";
-import { exampleNotice, MODEL_LIST_NOTICE, renderModelReport } from "./report-render.ts";
+import { exampleNotice, modelListNotice, renderModelReport } from "./report-render.ts";
 import { html, join, trusted } from "./safe-html.ts";
 
 export interface ModelBundleEntry {
@@ -160,14 +160,15 @@ ${description ? html`<p>${description}</p>` : ""}
   const problems = bundle.problems.length > 0
     ? html`<div class="problems"><p>These model files could not be loaded:</p><ul>${bundle.problems.map((problem) => html`<li>${problem.file}: ${problem.error}</li>`)}</ul></div>`
     : "";
+  const notice = modelListNotice(bundle.models.map(({ summary }) => summary.kind));
   const body = html`<main class="model-page model-index">
 <h1>Example threat models</h1>
 <p class="lead">Worked examples of what tmodel produces: each page is a threat-model report, in the order a TARA reads it, with every threat and attack path marked with its review status.</p>
-<div class="model-report"><p class="example-banner" role="note"><strong>Example data.</strong> ${MODEL_LIST_NOTICE}</p></div>
+<div class="model-report"><p class="example-banner" role="note"><strong>Example data.</strong> ${notice}</p></div>
 <ul class="model-list">${join(items)}</ul>
 ${problems}
 </main>`;
-  return page("Example threat models", `Example data. ${MODEL_LIST_NOTICE}`, bundle.nav_html, reportCss, body.value);
+  return page("Example threat models", `Example data. ${notice}`, bundle.nav_html, reportCss, body.value);
 }
 
 function page(title: string, description: string, navHtml: string, reportCss: string, body: string): string {

@@ -55,9 +55,23 @@ def test_core_examples_come_first_and_the_order_is_stable():
     first = core.list_models()
     assert first == core.list_models()
     kinds = [model["kind"] for model in first["models"]]
-    assert kinds == sorted(kinds, key=["core", "worked", "proposal", "other"].index)
+    assert kinds == sorted(kinds, key=["core", "worked", "proposal", "imported", "other"].index)
     core_files = [m["file"] for m in first["models"] if m["kind"] == "core"]
     assert core_files == sorted(core_files)
+
+
+def test_an_imported_model_has_its_own_kind_after_the_proposals(tmp_path, monkeypatch):
+    # #281: a model `tmodel import-sbom` wrote (im-) is tool-made, not AI-drafted (pv-).
+    source = (VECTORS / "pv-01-can-injection-theft.yaml").read_text(encoding="utf-8")
+    (tmp_path / "pv-01-can-injection-theft.yaml").write_text(source, encoding="utf-8")
+    (tmp_path / "im-01-example.yaml").write_text(source, encoding="utf-8")
+    monkeypatch.setattr(core, "APPROVED_VECTOR_DIRECTORY", tmp_path)
+    models = core.list_models()["models"]
+    assert [(m["file"], m["kind"]) for m in models] == [
+        ("pv-01-can-injection-theft.yaml", "proposal"),
+        ("im-01-example.yaml", "imported"),
+    ]
+    assert models[1]["kind_label"] == "Imported starter model (from an SBOM, unreviewed)"
 
 
 def test_titles_and_descriptions_come_from_the_model_itself():
