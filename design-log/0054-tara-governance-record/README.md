@@ -4,9 +4,9 @@ id: DL-0054
 title: "Governed TARA record for the TCU, and the DEC-001b schema proposal it needs (#180, #64)"
 type: process
 status: draft
-version: "0.1.1"
+version: "0.1.2"
 date: "2026-11-13"
-updated: "2026-11-15"
+updated: "2026-11-26"
 record: DL-0054
 bears_on: [DEC-001, R-018, R-043]
 defers_to: ARCH-0001
@@ -78,7 +78,9 @@ The publish gate (a role unfilled, an open comment, YAML and PR approvals disagr
 
 ## What a human accepted
 
-Nothing yet. @Maimcghee reviews the PR. @nymble decides the proposal (all five changes, and decision 1's choice) in a DEC-001b ADR, since `spec/` changes need the sponsor's review (CODEOWNERS).
+At first, nothing. @Maimcghee reviewed the PR. @nymble decides the proposal (all five changes, and decision 1's choice) in a DEC-001b ADR, since `spec/` changes need the sponsor's review (CODEOWNERS).
+
+**2026-11-26: the owner's review.** @Maimcghee reviewed version 1 in the owner role and approved it. That review (`review:tcu-tara-v1-owner`, by the person party `party:maimcghee`) replaces the example entry. The AI review's one comment is resolved by #252, which fixed the page's DEC-003 line. Version 1 stays a draft: the assessor's and the approver's reviews are still to come, and the TARA gate (DL-0066) reports only those two as missing.
 
 ## Rejected, and why
 
@@ -94,7 +96,7 @@ Nothing yet. @Maimcghee reviews the PR. @nymble decides the proposal (all five c
 - **The collector reads Reviews of Assertions only.** `tmodel tara` (#181, PR #242) summarizes review evidence per Assertion, so if DEC-001b accepts change 1, a Review of a version would export as `unreviewed` until the collector reads it. Both use the same rule today: only a review whose reviewer Party is a `person` can count.
 - A `/docs/models/` CODEOWNERS rule for the approver (DL-0027 decision 2): @nymble's `.github/` change.
 - The I5 Gate check that evaluates "an approved TARA exists".
-- Fixing the TARA page's DEC-003 line (the open comment): a small separate change to `docs/publishing/tara.yaml`.
+- Fixing the TARA page's DEC-003 line (the open comment): done in #252, which resolves the comment.
 
 ## How it was checked
 
