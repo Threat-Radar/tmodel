@@ -1,12 +1,12 @@
 ---
 schema: archdoc/v1
-id: DL-0070
+id: DL-0071
 title: Store façade with an Oxigraph adapter, and the library as nodes and edges
 type: process
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 date: "2026-11-25"
-updated: "2026-11-25"
+updated: "2026-11-26"
 human_owner: Maimcghee
 defers_to: ARCH-0001
 ---
@@ -21,6 +21,9 @@ questions. The exports (Turtle, JSON-LD, GraphML, CSV) are a second story (#53).
 The three answers were posted on #65 on 2026-11-16, with a fourth from the CWE
 import (#233), and @Clovier accepted them for #142 the same day. This entry records
 them as built.
+
+This entry was opened as DL-0070. It became DL-0071 on 2026-11-26, because #272 took
+DL-0070 on main first.
 
 # What was built
 
