@@ -203,3 +203,32 @@ def test_conflicting_legacy_rating_stays_incomplete_on_every_surface(
     for transport in (["--in-process"], ["--url", engine_url]):
         assert main(["risk", file.name, "--matrix", MATRIX_ID, "--json", *transport]) == 1
         assert json.loads(capsys.readouterr().out) == expected
+
+
+@pytest.mark.parametrize("foreign_owner", [False, True])
+def test_unlinked_damage_scope_is_withheld_through_api_and_cli(
+    engine_url, tmp_path, monkeypatch, capsys, foreign_owner
+):
+    import yaml
+    from test_risk import model
+
+    doc = model(("high",))
+    del doc["threat_instances"][0]["realizes_damage"]
+    if foreign_owner:
+        doc["threat_instances"].append({"id": "threat:other", "realizes_damage": "damage:d"})
+    path = tmp_path / "unlinked-damage.yaml"
+    path.write_text(yaml.safe_dump(doc))
+    before = path.read_bytes()
+    monkeypatch.setattr(core, "APPROVED_VECTOR_DIRECTORY", tmp_path)
+    expected = core.risk_assessments(path.name, MATRIX_ID, "threat:t")
+    row = expected["assessments"][0]
+    assert not row["complete"]
+    assert "damage_scenario_scope_mismatch" in row["problems"]
+    for result in [row, *row["paths"], *row["routes"]]:
+        assert all(value is None for value in result["derived_risk"].values())
+    assert api(engine_url, file=path.name, matrix=MATRIX_ID, goal="threat:t") == expected
+    args = ["risk", path.name, "--matrix", MATRIX_ID, "--goal", "threat:t", "--json"]
+    for transport in (["--in-process"], ["--url", engine_url]):
+        assert main([*args, *transport]) == 1
+        assert json.loads(capsys.readouterr().out) == expected
+    assert path.read_bytes() == before

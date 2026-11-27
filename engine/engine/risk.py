@@ -127,7 +127,7 @@ def _assessment(
     linked_damage = _records(doc, "threat_instances")[threat].get("realizes_damage")
     if linked_damage is None and len(threat_damages) == 1:
         linked_damage = threat_damages[0]
-    if damage is not None and threat_damages and damage not in threat_damages:
+    if damage is not None and damage not in threat_damages:
         problems.append("damage_scenario_scope_mismatch")
     stakeholder = score.get("for_stakeholder")
     if stakeholder is not None and (not isinstance(stakeholder, str) or stakeholder not in parties):

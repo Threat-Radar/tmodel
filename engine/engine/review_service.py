@@ -27,6 +27,7 @@ SAVE_FIELDS = BASE_FIELDS - {"revision"} | {
     "reviews",
     "feasibility",
     "impacts",
+    "description",
 }
 SEVERITIES = {"negligible", "moderate", "major", "severe"}
 
@@ -62,6 +63,27 @@ def _json_safe(value: Any) -> Any:
     return value
 
 
+def _version_summary(risk: Mapping[str, Any]) -> dict[str, Any]:
+    """Describe calculated results for version history, retaining unknown inputs."""
+    assessments = risk["assessments"]
+    return {
+        "matrix": risk["matrix"],
+        "assessments": len(assessments),
+        "incomplete": sum(not item["complete"] for item in assessments),
+        "derived_risk": {
+            category: max(
+                (
+                    item["derived_risk"][category]
+                    for item in assessments
+                    if item["derived_risk"][category] is not None
+                ),
+                default=None,
+            )
+            for category in CATEGORIES
+        },
+    }
+
+
 class ReviewService:
     def __init__(self, workspace: ReviewWorkspace) -> None:
         self.workspace = workspace
@@ -72,6 +94,7 @@ class ReviewService:
         principal: ReviewPrincipal,
         *,
         saving: bool = False,
+        require_reviewer: bool = True,
     ) -> ModelRevision:
         _object(request, SAVE_FIELDS if saving else BASE_FIELDS, "request")
         model_id = _text(request.get("model_id"), "model_id", 256)
@@ -85,8 +108,11 @@ class ReviewService:
             raise ReviewError("workspace_failure", "Workspace returned a different revision.")
         # Detach even if an adapter accidentally returns a shared Python mapping.
         snapshot = ModelRevision(model_id, revision, deepcopy(snapshot.document), snapshot.editable)
-        person = _records(snapshot.document, "parties").get(principal.party_id, {})
-        if person.get("party_kind") != "person":
+        person = _records(snapshot.document, "parties").get(principal.party_id)
+        if require_reviewer and not (
+            (person is not None and person.get("party_kind") == "person")
+            or (person is None and principal.allow_party_creation)
+        ):
             raise ReviewError("permission_denied", "The verified reviewer must be a human Party.")
         if saving and not snapshot.editable:
             raise ReviewError("permission_denied", "Create an editable copy before saving.")
@@ -118,7 +144,9 @@ class ReviewService:
         ]
         return {"threat": threat, "route": route, "owners": owners, "assertions": assertions}
 
-    def _views(self, doc: Mapping[str, Any], matrix: Any, model_id: str) -> dict[str, Any]:
+    def _views(
+        self, doc: Mapping[str, Any], matrix: Any, model_id: str, *, editable: bool = True
+    ) -> dict[str, Any]:
         # All outputs derive from one document. No approved-vector loader or reread.
         risk = assess_document(doc, matrix=matrix)
         graph = AttackGraph.from_dict(doc)
@@ -135,7 +163,7 @@ class ReviewService:
                 model_id=model_id,
                 file=model_id,
                 kind="local",
-                kind_label="Editable local model",
+                kind_label="Editable local model" if editable else "Read-only local model",
             ),
         }
 
@@ -167,9 +195,14 @@ class ReviewService:
     def refresh_model(
         self, request: Mapping[str, Any], principal: ReviewPrincipal
     ) -> dict[str, Any]:
-        snapshot = self._open(request, principal)
+        snapshot = self._open(request, principal, require_reviewer=False)
         try:
-            views = self._views(snapshot.document, request.get("matrix"), snapshot.model_id)
+            views = self._views(
+                snapshot.document,
+                request.get("matrix"),
+                snapshot.model_id,
+                editable=snapshot.editable,
+            )
         except (GraphError, ValueError) as exc:
             raise ReviewError("validation_error", str(exc), field="model") from exc
         return {
@@ -261,6 +294,25 @@ class ReviewService:
                 updates[name] = value
             if not any(updates.values()):
                 _invalid("request", "Provide at least one review or rating update.")
+            description = request.get("description")
+            if description is not None:
+                _text(description, "description")
+            commit_version = getattr(self.workspace, "commit_version", None)
+            if description is not None and commit_version is None:
+                raise ReviewError(
+                    "workspace_failure", "This workspace cannot save version descriptions."
+                )
+            if principal.party_id not in _records(doc, "parties"):
+                parties = doc.setdefault("parties", [])
+                if parties is None:
+                    parties = doc["parties"] = []
+                parties.append(
+                    {
+                        "id": principal.party_id,
+                        "name": principal.display_name,
+                        "party_kind": "person",
+                    }
+                )
             if updates["reviews"]:
                 self._review_updates(doc, selected, updates["reviews"], principal)
             if updates["feasibility"] or updates["impacts"]:
@@ -273,7 +325,16 @@ class ReviewService:
         except (GraphError, ValueError) as exc:
             raise ReviewError("validation_error", str(exc), field="model") from exc
         try:
-            revision = self.workspace.commit(snapshot.model_id, snapshot.revision, doc)
+            if commit_version is not None:
+                revision = commit_version(
+                    snapshot.model_id,
+                    snapshot.revision,
+                    doc,
+                    description=description or "Human review and rating updates",
+                    summary=_version_summary(views["risk"]),
+                )
+            else:
+                revision = self.workspace.commit(snapshot.model_id, snapshot.revision, doc)
         except ReviewError:
             raise
         except Exception as exc:

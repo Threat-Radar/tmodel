@@ -107,7 +107,9 @@
         "confidence": "medium",
         "description": null,
         "evidence": [],
-        "reviews": []
+        "reviews": [],
+        "human_reviewed": false,
+        "effective_status": "proposed"
        }
       ],
       "properties": {
@@ -115,7 +117,10 @@
         "assertion:path"
        ],
        "assertion_status": "proposed",
-       "confidence": "medium"
+       "confidence": "medium",
+       "human_reviewed": false,
+       "effective_assertion_status": "proposed",
+       "effective_review_status": null
       }
      },
      {
@@ -412,7 +417,9 @@
          "confidence": "medium",
          "description": null,
          "evidence": [],
-         "reviews": []
+         "reviews": [],
+         "human_reviewed": false,
+         "effective_status": "proposed"
         }
        ],
        "properties": {
@@ -420,7 +427,10 @@
          "assertion:path"
         ],
         "assertion_status": "proposed",
-        "confidence": "medium"
+        "confidence": "medium",
+        "human_reviewed": false,
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null
        }
       },
       {

@@ -267,9 +267,11 @@
           "assertion_status": "proposed",
           "confidence": "medium",
           "description": null,
+          "effective_status": "proposed",
           "evidence": [
             "https://samcurry.net/hacking-kia"
           ],
+          "human_reviewed": false,
           "id": "assertion:takeover-realizes",
           "reviews": []
         }
@@ -284,7 +286,10 @@
           "assertion:takeover-realizes"
         ],
         "assertion_status": "proposed",
-        "confidence": "medium"
+        "confidence": "medium",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "realizes_threat",
       "source": "attack-path:takeover",
@@ -737,9 +742,11 @@
           "assertion_status": "proposed",
           "confidence": "low",
           "description": "No source names a CWE; this mapping is the AI drafter's hypothesis.",
+          "effective_status": "proposed",
           "evidence": [
             "https://samcurry.net/hacking-kia"
           ],
+          "human_reviewed": false,
           "id": "assertion:token-step-exploits",
           "reviews": []
         }
@@ -757,7 +764,10 @@
           "assertion:token-step-exploits"
         ],
         "assertion_status": "proposed",
-        "confidence": "low"
+        "confidence": "low",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "exploits",
       "source": "attack-step:dealer-token",

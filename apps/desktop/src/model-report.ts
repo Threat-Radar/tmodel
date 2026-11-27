@@ -12,7 +12,7 @@
 
 import type { AttackPathResponse, GraphProperties, GraphPropertyValue } from "./graph-types";
 import type { AttackPathFailure, EngineGraphEdge, EngineGraphNode, ModelReportInput } from "./model-types";
-import { reviewStatePresentation } from "./review-status.ts";
+import { relationshipReviewState } from "./review-status.ts";
 
 /** Records about the model rather than the system; never drawn as nodes in the default views. */
 export const BOOKKEEPING_TYPES: ReadonlySet<string> = new Set([
@@ -727,19 +727,17 @@ function statusFrom(
   const reviewIds = properties ? strings(properties.review_ids) : [];
   const reviews = reviewIds.map((id) => index.node(id)).filter(isDefined);
   const reviewers = unique(reviews.flatMap((review) => (
-    index.linked(review.id, "reviewer").map(displayName)
+    index.linked(review.id, "reviewer")
+      .filter((party) => party.properties.party_kind === "person").map(displayName)
   )));
   const justification = reviews.map((review) => text(review.properties.justification))
     .filter(isString)
     .map(collapse)
     .join(" ") || null;
 
-  let kind: ReportStatusKind;
-  if (assertionStatus === null && reviewStatus === null) kind = "not_reviewed";
-  else {
-    const presented = reviewStatePresentation(assertionStatus, reviewStatus).kind;
-    kind = presented;
-  }
+  const presented = properties ? relationshipReviewState(properties) : undefined;
+  const kind: ReportStatusKind = !presented || presented.label === "Not Reviewed"
+    ? "not_reviewed" : presented.kind;
   return {
     kind,
     label: statusLabel(kind, source),

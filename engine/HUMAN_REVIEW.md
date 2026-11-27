@@ -1,35 +1,69 @@
 # Local human review API — #289
 
-This is an implementation contract for C7, using the existing schema and risk
-engine. The workspace protocol is **proposed for integration with #288**; it is
-not a decision about storage location, version history format, or desktop login.
-The frontend integration belongs to #290. Merge #288, then #289, then #290.
-This branch also depends on the exact relationship and risk-scope fixes in #269.
+This implements C7's review backend using the existing schema and risk engine. Physical storage
+belongs to #288 and the interface belongs to #290. Merge #288, then #289, then
+#290, with #269's exact relationship and risk-scope fixes available first.
 
 ## Integration status
 
-The review service and opt-in HTTP operations are implemented and tested with a
-storage test double. There is no production workspace adapter in this change.
-The normal desktop launch remains read-only. Before enabling the workflow:
+The review service, HTTP operations, project-version adapter and native host
+commands are implemented. The adapter follows the #288 contract fixture published
+with #295; the actual #288 storage implementation is not in a published branch
+at this revision. Adapter tests use storage doubles, not real project files.
+**C7 is not complete until real save/reopen and packaged-app integration pass.**
 
-1. Implement/adapt `ReviewWorkspace` in #288, including full schema validation,
-   atomic compare-and-save, immutable previous revisions and editable-copy checks.
-2. Have the trusted desktop host verify the user, bind that identity to an existing
-   human Party and grant explicit model access and actions. An arbitrary name or
-   Party ID supplied by a webview is not identity verification. This binding and
-   secure session delivery need team agreement and launcher integration.
-3. Inject `ReviewAPI(ReviewService(workspace), sessions)` into
-   `make_server(review_api=...)`. Sessions map host-generated random bearer tokens
-   (at least 32 characters, e.g. `secrets.token_urlsafe(32)`) to `ReviewPrincipal`.
-   Tokens stay in process memory, must not be logged or put in URLs/YAML, and last
-   only for that server session. The host grants `read`, `review`, and/or `rate`
-   explicitly; Party classifications do not grant permissions.
-4. Connect #290 to the operations below, verify real save/reopen and conflict
-   behavior, and rehearse with the packaged desktop app. Do not mark C7 complete
-   based on the storage test double.
+The launcher deliberately preserves read-only startup until #288 supplies its
+`serve --projects` implementation. The remaining integration steps are:
 
-There is no endpoint to create a privileged session or accept a canonical
-proposal. Bundled examples must first be copied using #288's copy operation.
+1. Wire #288's project instance into `HostReviewAPI`, using the token and reviewer
+   identity passed by the native host as `TMODEL_HOST_TOKEN` and
+   `TMODEL_REVIEWER_ID`. Supply a trusted `list_models` callback returning #288's
+   opened-model registry, in the same shape as `/workspace/models`. That registry
+   grants access only to opaque `project:<32 lowercase hex>` and `file:<32 lowercase
+   hex>` IDs registered by native picker operations.
+2. Inject this API into #288's server handler alongside its workspace routes.
+   `make_server(review_api=...)` and `serve(review_api=...)` accept the configured
+   API. Keep #288's host-only path routes and token/Origin checks in place. There
+   is no endpoint to grant a reviewer identity or sponsor authority.
+3. Enable the launcher's `--projects` argument when the storage implementation and
+   CLI flag are present. Do not enable an unknown flag on the read-only engine.
+4. Verify full ExampleModel schema validation, real YAML save/reopen, stale saves,
+   failed saves and immutable history. Exercise #290's actual UI with the packaged
+   desktop app before declaring the workflow complete.
+
+### Native session and reviewer identity
+
+`project_host_session` and `project_host_step` implement #290's native command
+names. Only the application's own main window can invoke them. Native dialogs
+choose file/folder paths; webview requests cannot supply paths or reviewer IDs.
+The host sends those path grants directly to #288's host-only routes, with no
+Origin header. Cancelling a dialog returns null. Imported YAML is saved only to a
+new, user-selected file, preserving existing sources.
+
+The host creates a fresh cryptographically random session token per engine launch
+and a persistent random installation identifier in a private `reviewer-id` file
+under the app's local-data directory. The reviewer ID combines that installation
+identifier with the process's real OS user ID. It identifies the local OS account;
+it does not certify a person's legal identity or grant a sponsor role. A trusted
+host session grants read/review/rate on opened models only. Missing private
+identity storage disables writes while preserving ordinary read-only browsing.
+
+Before disclosing a bearer token or a selected path to the fixed engine port,
+Rust obtains a fresh 32-byte challenge's HMAC-SHA256 proof from
+`GET /host/health?challenge=<64 lowercase hex>`. The domain is
+`tmodel-host-session-v1:` followed by the ASCII challenge. The engine signs with
+the session token; Rust verifies the MAC. The proof route rejects every Origin
+header, requires no bearer, and returns no token. An unrelated health string or a
+replayed proof does not establish the session. An external engine is read-only
+from this desktop session. Tokens stay out of URLs, YAML, logs and command-line
+arguments; responses use `Cache-Control: no-store`.
+
+A read-only imported model can refresh without an existing reviewer Party. On the
+first permitted save, the host's verified local reviewer Party is added atomically
+to the editable copy with its review/rating changes. Existing Parties are never
+reclassified, original AI provenance remains intact, and canonical proposal
+acceptance remains restricted. This is the implemented local identity policy for
+team review, not an accepted architecture decision.
 
 ## Operations
 
@@ -38,7 +72,9 @@ The existing GET API and approved-vector restrictions are unchanged. Requests
 with a foreign Host or Origin are rejected, including when a token is supplied.
 Tauri production/dev origins support preflight; a local native client can omit
 Origin but still needs a token. Requests are bounded to 256 KiB and 100 changes
-of each type, with unique JSON keys and no nonfinite numbers.
+of each type, with unique JSON keys and no nonfinite numbers. A modest oversized
+body is drained within the existing timeout before returning a validation error,
+so closing unread input does not reset the connection before the UI gets it.
 
 | Shared name | HTTP route | Revision field | Result |
 | --- | --- | --- | --- |
@@ -51,6 +87,13 @@ of each type, with unique JSON keys and no nonfinite numbers.
 Use `saveModelChanges` for a Save button that includes reviews and ratings.
 Calling submitReview and saveRatings in succession is not an atomic combined save.
 Successful responses always include `model_id` and `revision`.
+
+Saves may include a nonblank `description` of at most 4096 characters. The project
+adapter stores it (or a default description) and a calculated-risk summary in the
+same `save_version` operation as the YAML. The summary records the matrix, number
+of assessments, incomplete count and highest **known calculated** score per
+S/F/O/P category (null when none is known). A known maximum alongside incomplete
+assessments must not be presented as a complete overall assessment.
 
 Context and save requests identify `model_id`, the appropriate revision field,
 `matrix`, `threat_id` and `route_id`. The matrix must explicitly be
@@ -151,6 +194,13 @@ scopes. Changing a stakeholder, damage link or graph structure is outside C7.
 | history(model_id, revision) | Ordered snapshots through that revision, no later/foreign content |
 | validate(document) | Full selected ExampleModel container/schema validation |
 | commit(model_id, expected_revision, document) | Revalidate and compare current revision atomically; retain old revisions; return new revision |
+
+`ProjectReviewWorkspace` adapts these operations to #288's published contract:
+`read`, `history` and `validate` delegate to its project instance; `commit_version`
+calls `save_version(model_id, expected_revision, document, description=..., summary=...)`.
+That method must return the new revision string, save metadata atomically with
+the document and enforce the guarantees above. Its actual implementation still
+needs integration verification; the fixture alone does not prove persistence.
 
 IDs and revisions are opaque strings, at most 256 characters. Physical paths are
 never frontend identifiers. The adapter must not alter the candidate on commit.

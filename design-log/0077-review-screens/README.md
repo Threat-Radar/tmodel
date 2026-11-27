@@ -150,8 +150,12 @@ fixture.
 - **#288's contract** is the one in the #288 worktree on 2026-11-27, not yet committed
   (`engine/MODEL_WORKSPACE.md`, `engine/examples/model-workspace/contract.json`, copied here as a
   fixture). Once #288 merges, the tests should read #288's file and the copy should go.
-- **The desktop host does not have its part yet,** so projects stay unavailable in this build
-  and the home page says so; the normal launch is as read-only as before. The host must add:
+- **The desktop host's part is in #291 since its commit 1a01456**
+  (`apps/desktop/src-tauri/src/project_host.rs`): `project_host_session` and
+  `project_host_step`, with the native pickers, the two commands this change calls. Until a
+  build includes it, projects stay unavailable and the home page says so; the normal launch is
+  as read-only as before. An end-to-end rehearsal with the real engine and the packaged app is
+  still to come. What this entry asked the host for:
   1. At launch, a token of at least 32 random characters, passed to the engine as
      `TMODEL_HOST_TOKEN` in its environment (never its arguments), with
      `serve --projects --enable-import`, and a review session for that token bound to the
@@ -171,7 +175,9 @@ fixture.
   model's views, and #289 requires the session's Party to be a human Party in the model. A
   project from an imported SBOM has no such Party, so it cannot be shown until the engine offers
   views without that check or the project gains the reviewer's Party. The app reports the
-  engine's refusal.
+  engine's refusal. Since 1a01456, #291 lets the native host add its verified reviewer as a
+  Party on the first save (`allow_party_creation`); whether an imported project can be shown
+  before that first save is still to be checked end to end.
 
 ## How it was checked
 
@@ -193,6 +199,11 @@ fixture.
   0.12 also reports on e30dc7f. Under heavy load one run failed #291's
   `test_invalid_framing_or_large_body_is_rejected` with a reset connection; that file passed
   three times alone, and the next full run passed.
+- After #291 moved to 1a01456, whose review service now reports each assertion's effective
+  status (`human_reviewed`, `effective_status` and the like), this branch merged it,
+  `human-review-revisions.json` was regenerated with `TMODEL_UPDATE_FIXTURES=1`, and the 70
+  review and project tests pass with it; the whole app suite passes but for the dark-mode
+  contrast test.
 - A headless Chrome tour of a Vite development server with the mock: the home page, opening a
   project and a read-only file, Review & Edit, a save and its refreshed views, the version table,
   Risk Score, the Graph, an older version, a validation error, dark mode and a 700 pixel window.
@@ -226,7 +237,8 @@ No human has rejected anything in this entry yet. The agent set these approaches
 
 ## Follow-ups
 
-- The host's part, listed above, and the review session for its token.
+- An end-to-end rehearsal of #291's host part with these screens, the real engine and the
+  packaged app.
 - Engine views for workspace models without the reviewer-Party check, or the importer adding
   the reviewer's Party, so imported projects can be shown.
 - #289's save could record a version description and the engine's risk summary in #288's

@@ -384,9 +384,11 @@
           "assertion_status": "proposed",
           "confidence": "high",
           "description": null,
+          "effective_status": "proposed",
           "evidence": [
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml"
           ],
+          "human_reviewed": false,
           "id": "assertion:admin-path-realizes",
           "reviews": []
         }
@@ -401,7 +403,10 @@
           "assertion:admin-path-realizes"
         ],
         "assertion_status": "proposed",
-        "confidence": "high"
+        "confidence": "high",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "realizes_threat",
       "source": "attack-path:admin-via-sqli",
@@ -1601,9 +1606,11 @@
           "assertion_status": "proposed",
           "confidence": "high",
           "description": null,
+          "effective_status": "proposed",
           "evidence": [
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/login.ts#L34"
           ],
+          "human_reviewed": false,
           "id": "assertion:inject-login-exploits-cwe-89",
           "reviews": []
         }
@@ -1618,7 +1625,10 @@
           "assertion:inject-login-exploits-cwe-89"
         ],
         "assertion_status": "proposed",
-        "confidence": "high"
+        "confidence": "high",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "exploits",
       "source": "attack-step:inject-login",
@@ -1630,9 +1640,11 @@
           "assertion_status": "proposed",
           "confidence": "high",
           "description": null,
+          "effective_status": "proposed",
           "evidence": [
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/basket.ts#L18-L19"
           ],
+          "human_reviewed": false,
           "id": "assertion:basket-step-exploits-cwe-639",
           "reviews": []
         }
@@ -1647,7 +1659,10 @@
           "assertion:basket-step-exploits-cwe-639"
         ],
         "assertion_status": "proposed",
-        "confidence": "high"
+        "confidence": "high",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "exploits",
       "source": "attack-step:change-basket-number",
@@ -1659,9 +1674,11 @@
           "assertion_status": "proposed",
           "confidence": "high",
           "description": null,
+          "effective_status": "proposed",
           "evidence": [
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/frontend/src/app/search-result/search-result.component.ts#L146"
           ],
+          "human_reviewed": false,
           "id": "assertion:search-step-exploits-cwe-79",
           "reviews": []
         }
@@ -1676,7 +1693,10 @@
           "assertion:search-step-exploits-cwe-79"
         ],
         "assertion_status": "proposed",
-        "confidence": "high"
+        "confidence": "high",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "exploits",
       "source": "attack-step:shopper-opens-link",
@@ -1688,9 +1708,11 @@
           "assertion_status": "proposed",
           "confidence": "high",
           "description": null,
+          "effective_status": "proposed",
           "evidence": [
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/server.ts#L294"
           ],
+          "human_reviewed": false,
           "id": "assertion:ftp-step-exploits-cwe-548",
           "reviews": []
         }
@@ -1705,7 +1727,10 @@
           "assertion:ftp-step-exploits-cwe-548"
         ],
         "assertion_status": "proposed",
-        "confidence": "high"
+        "confidence": "high",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "exploits",
       "source": "attack-step:browse-ftp",
@@ -1717,10 +1742,12 @@
           "assertion_status": "proposed",
           "confidence": "medium",
           "description": null,
+          "effective_status": "proposed",
           "evidence": [
             "https://nvd.nist.gov/vuln/detail/CVE-2015-9235",
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/package.json#L123"
           ],
+          "human_reviewed": false,
           "id": "assertion:forge-step-exploits-cve-2015-9235",
           "reviews": []
         }
@@ -1736,7 +1763,10 @@
           "assertion:forge-step-exploits-cve-2015-9235"
         ],
         "assertion_status": "proposed",
-        "confidence": "medium"
+        "confidence": "medium",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "exploits",
       "source": "attack-step:sign-wrong-algorithm",
@@ -1748,10 +1778,12 @@
           "assertion_status": "proposed",
           "confidence": "high",
           "description": "The storefront declares the administration route (app.routing.ts, line 80), the line Juice Shop marks for Admin Section.",
+          "effective_status": "proposed",
           "evidence": [
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/frontend/src/app/app.routing.ts#L80",
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L51-L67"
           ],
+          "human_reviewed": false,
           "id": "assertion:find-route-targets-storefront",
           "reviews": []
         }
@@ -1770,7 +1802,10 @@
           "assertion:find-route-targets-storefront"
         ],
         "assertion_status": "proposed",
-        "confidence": "high"
+        "confidence": "high",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "targets_element",
       "source": "attack-step:find-admin-route",
@@ -1782,11 +1817,13 @@
           "assertion_status": "proposed",
           "confidence": "high",
           "description": "The route's AdminGuard lets a token through only when its role is admin (app.guard.ts, lines 52 to 60).",
+          "effective_status": "proposed",
           "evidence": [
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/frontend/src/app/app.routing.ts#L79-L83",
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/frontend/src/app/app.guard.ts#L52-L60",
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L51-L67"
           ],
+          "human_reviewed": false,
           "id": "assertion:open-admin-targets-admin-section",
           "reviews": []
         }
@@ -1806,7 +1843,10 @@
           "assertion:open-admin-targets-admin-section"
         ],
         "assertion_status": "proposed",
-        "confidence": "high"
+        "confidence": "high",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "targets_element",
       "source": "attack-step:open-admin",
@@ -1818,12 +1858,14 @@
           "assertion_status": "proposed",
           "confidence": "high",
           "description": "The basket API requires a login token (server.ts, lines 388 and 431), and View Basket counts only for a logged-in user whose own basket differs (routes/basket.ts, lines 21 to 24).",
+          "effective_status": "proposed",
           "evidence": [
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/server.ts#L388",
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/server.ts#L431",
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/basket.ts#L21-L24",
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L1224-L1239"
           ],
+          "human_reviewed": false,
           "id": "assertion:own-login-targets-login-request",
           "reviews": []
         }
@@ -1844,7 +1886,10 @@
           "assertion:own-login-targets-login-request"
         ],
         "assertion_status": "proposed",
-        "confidence": "high"
+        "confidence": "high",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "targets_element",
       "source": "attack-step:own-login",
@@ -1856,10 +1901,12 @@
           "assertion_status": "proposed",
           "confidence": "high",
           "description": "The search page reads its text from the link's q parameter (line 139), and the DOM XSS challenge gives the iframe payload.",
+          "effective_status": "proposed",
           "evidence": [
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/frontend/src/app/search-result/search-result.component.ts#L139",
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L265-L279"
           ],
+          "human_reviewed": false,
           "id": "assertion:craft-link-targets-storefront",
           "reviews": []
         }
@@ -1878,7 +1925,10 @@
           "assertion:craft-link-targets-storefront"
         ],
         "assertion_status": "proposed",
-        "confidence": "high"
+        "confidence": "high",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "targets_element",
       "source": "attack-step:craft-search-link",
@@ -1890,9 +1940,11 @@
           "assertion_status": "proposed",
           "confidence": "high",
           "description": "The server's robots.txt disallows /ftp (server.ts, lines 230 to 231), which names the folder.",
+          "effective_status": "proposed",
           "evidence": [
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/server.ts#L230-L231"
           ],
+          "human_reviewed": false,
           "id": "assertion:read-robots-targets-shop-api",
           "reviews": []
         }
@@ -1910,7 +1962,10 @@
           "assertion:read-robots-targets-shop-api"
         ],
         "assertion_status": "proposed",
-        "confidence": "high"
+        "confidence": "high",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "targets_element",
       "source": "attack-step:read-robots",
@@ -1922,11 +1977,13 @@
           "assertion_status": "proposed",
           "confidence": "high",
           "description": "The file route serves any .md or .pdf file in /ftp, and Confidential Document counts as solved when acquisitions.md is fetched (routes/fileServer.ts, lines 26 to 29).",
+          "effective_status": "proposed",
           "evidence": [
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/fileServer.ts#L26-L29",
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/fileServer.ts#L56-L57",
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L253-L264"
           ],
+          "human_reviewed": false,
           "id": "assertion:download-targets-ftp-download",
           "reviews": []
         }
@@ -1946,7 +2003,10 @@
           "assertion:download-targets-ftp-download"
         ],
         "assertion_status": "proposed",
-        "confidence": "high"
+        "confidence": "high",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "targets_element",
       "source": "attack-step:download-document",
@@ -1958,11 +2018,13 @@
           "assertion_status": "proposed",
           "confidence": "high",
           "description": "The server lists /encryptionkeys (server.ts, lines 301 to 303), the token checks load jwt.pub from it (lib/insecurity.ts, line 20), and the challenge's hint calls the key mandatory (challenges.yml, line 466).",
+          "effective_status": "proposed",
           "evidence": [
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/server.ts#L301-L303",
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/lib/insecurity.ts#L20",
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L466"
           ],
+          "human_reviewed": false,
           "id": "assertion:get-key-targets-key-folder",
           "reviews": []
         }
@@ -1982,7 +2044,10 @@
           "assertion:get-key-targets-key-folder"
         ],
         "assertion_status": "proposed",
-        "confidence": "high"
+        "confidence": "high",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "targets_element",
       "source": "attack-step:get-public-key",
@@ -1994,12 +2059,14 @@
           "assertion_status": "proposed",
           "confidence": "medium",
           "description": "The API checks tokens with the public key (lib/insecurity.ts, line 52), and the challenge is solved by an HS256 token for rsa_lord that passes that check (routes/verify.ts, lines 90 to 91 and 116 to 133).",
+          "effective_status": "proposed",
           "evidence": [
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/lib/insecurity.ts#L52",
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/verify.ts#L90-L91",
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/routes/verify.ts#L116-L133",
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/data/static/challenges.yml#L455-L472"
           ],
+          "human_reviewed": false,
           "id": "assertion:forged-token-targets-token-flow",
           "reviews": []
         }
@@ -2020,7 +2087,10 @@
           "assertion:forged-token-targets-token-flow"
         ],
         "assertion_status": "proposed",
-        "confidence": "medium"
+        "confidence": "medium",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "targets_element",
       "source": "attack-step:use-forged-token",
@@ -2032,10 +2102,12 @@
           "assertion_status": "proposed",
           "confidence": "high",
           "description": null,
+          "effective_status": "proposed",
           "evidence": [
             "https://nvd.nist.gov/vuln/detail/CVE-2015-9235",
             "https://github.com/juice-shop/juice-shop/blob/266448aba68cd8ba5915f526a128da4fa7bc3f9f/package.json#L123"
           ],
+          "human_reviewed": false,
           "id": "assertion:cve-2015-9235-propagates-to-jsonwebtoken",
           "reviews": []
         }
@@ -2051,7 +2123,10 @@
           "assertion:cve-2015-9235-propagates-to-jsonwebtoken"
         ],
         "assertion_status": "proposed",
-        "confidence": "high"
+        "confidence": "high",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "propagates_to",
       "source": "vulnerability:cve-2015-9235",
@@ -2063,9 +2138,11 @@
           "assertion_status": "proposed",
           "confidence": "high",
           "description": null,
+          "effective_status": "proposed",
           "evidence": [
             "https://nvd.nist.gov/vuln/detail/CVE-2015-9235"
           ],
+          "human_reviewed": false,
           "id": "assertion:cve-2015-9235-instance-of-cwe-327",
           "reviews": []
         }
@@ -2080,7 +2157,10 @@
           "assertion:cve-2015-9235-instance-of-cwe-327"
         ],
         "assertion_status": "proposed",
-        "confidence": "high"
+        "confidence": "high",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "instance_of",
       "source": "vulnerability:cve-2015-9235",
@@ -2092,9 +2172,11 @@
           "assertion_status": "proposed",
           "confidence": "high",
           "description": null,
+          "effective_status": "proposed",
           "evidence": [
             "https://nvd.nist.gov/vuln/detail/CVE-2015-9235"
           ],
+          "human_reviewed": false,
           "id": "assertion:cve-2015-9235-instance-of-cwe-20",
           "reviews": []
         }
@@ -2109,7 +2191,10 @@
           "assertion:cve-2015-9235-instance-of-cwe-20"
         ],
         "assertion_status": "proposed",
-        "confidence": "high"
+        "confidence": "high",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "instance_of",
       "source": "vulnerability:cve-2015-9235",
@@ -2121,9 +2206,11 @@
           "assertion_status": "proposed",
           "confidence": "medium",
           "description": null,
+          "effective_status": "proposed",
           "evidence": [
             "https://capec.mitre.org/data/definitions/66.html"
           ],
+          "human_reviewed": false,
           "id": "assertion:cwe-89-exploited-by-capec-66",
           "reviews": []
         }
@@ -2138,7 +2225,10 @@
           "assertion:cwe-89-exploited-by-capec-66"
         ],
         "assertion_status": "proposed",
-        "confidence": "medium"
+        "confidence": "medium",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "exploited_by",
       "source": "weakness:cwe-89",
@@ -2150,9 +2240,11 @@
           "assertion_status": "proposed",
           "confidence": "medium",
           "description": null,
+          "effective_status": "proposed",
           "evidence": [
             "https://capec.mitre.org/data/definitions/588.html"
           ],
+          "human_reviewed": false,
           "id": "assertion:cwe-79-exploited-by-capec-588",
           "reviews": []
         }
@@ -2167,7 +2259,10 @@
           "assertion:cwe-79-exploited-by-capec-588"
         ],
         "assertion_status": "proposed",
-        "confidence": "medium"
+        "confidence": "medium",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "exploited_by",
       "source": "weakness:cwe-79",
@@ -2179,9 +2274,11 @@
           "assertion_status": "proposed",
           "confidence": "medium",
           "description": null,
+          "effective_status": "proposed",
           "evidence": [
             "https://capec.mitre.org/data/definitions/127.html"
           ],
+          "human_reviewed": false,
           "id": "assertion:cwe-548-exploited-by-capec-127",
           "reviews": []
         }
@@ -2196,7 +2293,10 @@
           "assertion:cwe-548-exploited-by-capec-127"
         ],
         "assertion_status": "proposed",
-        "confidence": "medium"
+        "confidence": "medium",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "exploited_by",
       "source": "weakness:cwe-548",

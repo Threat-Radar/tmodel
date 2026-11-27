@@ -93,6 +93,15 @@ scope and asset queries share the same effective-edge resolver: authored slots
 and exact Assertion relationships with justified human acceptance. Proposed,
 agent-only or conflicting human verdicts cannot establish an Assertion-only link.
 
+Graph relationship properties also carry `human_reviewed`,
+`effective_assertion_status` and `effective_review_status` from that same exact
+statement resolver. Recorded `assertion_status`, `review_status` and complete
+Assertion/Review provenance remain unchanged. Per-Assertion provenance adds
+`human_reviewed` and `effective_status` without changing recorded verdicts. Model Report, Attack Paths and the
+graph use the effective evidence rather than treating an agent's accepted verdict
+as human acceptance. Older snapshots lacking that evidence cannot establish human
+acceptance from status strings alone.
+
 `path_reviewed` is the engine's effective human-review result for the threat's
 complete set of path-to-threat relationships. Both desktop and browser preview
 use it for the calculated panel's path acceptance label; raw graph status text
@@ -105,8 +114,9 @@ the panel shows the scope warning. The engine withholds calculated values at
 assessment, authored-path and route levels whenever damage is missing or either
 scope is invalid. Feasibility, impact, source ratings, reviews and diagnostics
 remain inspectable in the API and interface. A damage scope may match any of the
-threat's effective damage links; assessments retain their individual damage and
-stakeholder inputs.
+threat's effective damage links. An empty effective-link set never establishes
+a match, including when the referenced damage belongs to another threat.
+Assessments retain their individual damage and stakeholder inputs.
 
 The current mvp-02 diagnostic example has High feasibility and S/F/O/P impacts
 Severe/Major/Severe/Negligible. This profile derives **5/4/5/1**, with mitigation

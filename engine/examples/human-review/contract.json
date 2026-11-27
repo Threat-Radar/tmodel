@@ -332,7 +332,9 @@
                     "reviewer": "party:reviewer",
                     "justification": "Test-only human input supplied by the test client."
                   }
-                ]
+                ],
+                "human_reviewed": false,
+                "effective_status": "proposed"
               }
             ],
             "properties": {
@@ -350,7 +352,10 @@
               ],
               "review_justifications": [
                 "Test-only human input supplied by the test client."
-              ]
+              ],
+              "human_reviewed": false,
+              "effective_assertion_status": "proposed",
+              "effective_review_status": "accepted"
             }
           },
           {
@@ -690,7 +695,9 @@
                       "reviewer": "party:reviewer",
                       "justification": "Test-only human input supplied by the test client."
                     }
-                  ]
+                  ],
+                  "human_reviewed": false,
+                  "effective_status": "proposed"
                 }
               ],
               "properties": {
@@ -708,7 +715,10 @@
                 ],
                 "review_justifications": [
                   "Test-only human input supplied by the test client."
-                ]
+                ],
+                "human_reviewed": false,
+                "effective_assertion_status": "proposed",
+                "effective_review_status": "accepted"
               }
             },
             {
