@@ -172,3 +172,22 @@ model or the view, regenerate it from the engine folder:
 ```sh
 cd engine && TMODEL_UPDATE_FIXTURES=1 .venv/bin/pytest tests/test_sdl.py
 ```
+
+## Review screens (#290)
+
+`human-review-revisions.json` is the #289 review service's own answer, for the shared
+example in `engine/examples/human-review/`, to the two requests the review screens need
+beside `contract.json`'s: the refresh of r1 (a project version before its first save) and
+the context at r2 (after the contract's save, with the reviewer's own review to correct).
+`engine/tests/test_review_frontend_fixture.py` makes them with the same model, workspace
+double, principal and save request, and fails when they drift. After a contract change
+agreed on #289 and #290, regenerate it from the engine folder:
+
+```sh
+cd engine && TMODEL_UPDATE_FIXTURES=1 .venv/bin/pytest tests/test_review_frontend_fixture.py
+```
+
+`model-workspace-contract.json` is a copy of #288's `engine/examples/model-workspace/contract.json`
+(SHA-256 `efd4750f6b61a8c2…`), its examples of every workspace operation and error, made
+by #288's own tests. #288 is not merged into this branch yet; once it is, the tests should
+read #288's file instead and this copy should go.
