@@ -9,9 +9,10 @@ output with only its local paths shortened (DL-0068). Neither file says which pl
 the digest names, so each import here gives it, as `--platform linux/arm64/v8` does.
 
 The sections headed "Review of c39f2a4" hold the regression tests for the eight findings
-of @kriishnaa-18's review, and those headed "Review of 9207ad9" the tests for the five of
-the re-review; each failed before its fix (DL-0068, "Review changes" and "Review
-changes, second round").
+of @kriishnaa-18's review, those headed "Review of 9207ad9" the tests for the five of the
+re-review, and those headed "Review of e12ab07" the tests for the four of the third
+round (@kriishnaa-18's three and @Maimcghee's one); each failed before its fix (DL-0068,
+"Review changes", "Review changes, second round" and "Review changes, third round").
 """
 
 from __future__ import annotations
@@ -1196,11 +1197,15 @@ def test_a_volume_that_reads_two_forms_as_one_name_is_not_written_over(
 # Review of 9207ad9, finding 2: the build is the digest and the platform ----------------
 
 
-def built_for(sbom: dict, arch: str) -> dict:
-    """`sbom` with each package's arch qualifier `arch`: another platform's build."""
+def built_for(sbom: dict, arch: str, distribution: str | None = None) -> dict:
+    """`sbom` with each package's arch qualifier `arch`: another platform's build; and,
+    given a purl type and namespace such as `deb/debian`, as another distribution's."""
     for component in sbom["components"]:
         if "purl" in component:
-            component["purl"] = component["purl"].replace("arch=aarch64", f"arch={arch}")
+            purl = component["purl"].replace("arch=aarch64", f"arch={arch}")
+            if distribution is not None:
+                purl = purl.replace("pkg:apk/alpine/", f"pkg:{distribution}/")
+            component["purl"] = purl
     return sbom
 
 
@@ -1301,7 +1306,8 @@ def test_an_image_purl_for_another_architecture_is_refused(tmp_path: Path) -> No
 @pytest.mark.parametrize(
     ("arch", "listed"),
     [
-        ("armhf", "1 Component built for arm (arch=armhf), which arm64 also runs"),
+        # Alpine's armhf is ARMv6 (review of e12ab07, finding 1: the line names the variant).
+        ("armhf", "1 Component built for arm/v6 (arch=armhf), which arm64 also runs"),
         ("loongarch64", "- loongarch64: 1 Component"),
         ("noarch", None),  # names no CPU, so there is nothing to check
     ],
@@ -1462,4 +1468,283 @@ def test_the_command_exits_2_on_a_time_outside_utcs_range(tmp_path: Path, capsys
     argv = ["import-sbom", str(sbom), "--platform", PLATFORM, "-o", str(tmp_path / "model.yaml")]
     assert cli.main(argv) == 2
     assert "metadata.timestamp is '0001-01-01T00:00:00+14:00'" in capsys.readouterr().err
+    assert not (tmp_path / "model.yaml").exists()
+
+
+# Review of e12ab07, finding 1: a variant the packages pin is the build's -----------------
+
+INSTANCE_OF = f"product-instance:{DIGEST.replace(':', '-')}-"  # and the platform's parts
+
+
+def instance(doc: dict) -> dict:
+    (build,) = doc["product_instances"]
+    return build
+
+
+def without_arch(sbom: dict) -> dict:
+    """`sbom` with no arch qualifier on any package: nothing names its CPU."""
+    for component in sbom["components"]:
+        if "purl" in component:
+            component["purl"] = component["purl"].replace("arch=aarch64&", "")
+    return sbom
+
+
+@pytest.mark.parametrize(
+    ("arch", "distribution", "platform", "built"),
+    [
+        ("armv7", None, "linux/arm/v6", "arm/v7"),  # the review's example: Alpine's ARMv7
+        ("armhf", None, "linux/arm/v7", "arm/v6"),  # Alpine's armhf is ARMv6
+        ("armhf", "deb/debian", "linux/arm/v6", "arm/v7"),  # and Debian's ARMv7
+        ("armhf", "deb/ubuntu", "linux/arm/v6", "arm/v7"),
+        ("armel", "deb/debian", "linux/arm/v7", "arm/v5"),
+        ("armv7hl", "rpm/fedora", "linux/arm/v6", "arm/v7"),
+        ("armv6hl", "rpm/fedora", "linux/arm/v7", "arm/v6"),
+    ],
+)
+def test_a_variant_the_packages_contradict_is_refused(
+    tmp_path: Path, arch: str, distribution, platform: str, built: str
+) -> None:
+    sbom = dump(tmp_path, "s.json", built_for(sbom_doc(), arch, distribution))
+    message = rf"packages are built for {built} \(arch={arch}\), but the platform is {platform}"
+    with pytest.raises(SbomImportError, match=message):
+        run(sbom, platform=platform, output=tmp_path / "model.yaml")
+    assert not (tmp_path / "model.yaml").exists()
+
+
+def test_a_variant_the_scan_records_is_checked_against_the_packages(tmp_path: Path) -> None:
+    sbom = dump(tmp_path, "s.json", built_for(sbom_doc(), "armv7"))
+    scan = dump(tmp_path, "g.json", direct_scan(architecture="arm", architectureVariant="v6"))
+    message = r"built for arm/v7 \(arch=armv7\), but the platform is linux/arm/v6 \(from the scan"
+    with pytest.raises(SbomImportError, match=message):
+        run(sbom, scan=scan, platform=None, output=tmp_path / "model.yaml")
+    assert not (tmp_path / "model.yaml").exists()
+
+
+@pytest.mark.parametrize(
+    ("arch", "distribution", "variant"),
+    [
+        ("armv7", None, "v7"),
+        ("armhf", None, "v6"),
+        ("armhf", "deb/debian", "v7"),
+        ("armel", "deb/debian", "v5"),
+        ("armv7hl", "rpm/fedora", "v7"),
+    ],
+)
+def test_a_platform_with_no_variant_takes_the_one_its_packages_pin(
+    tmp_path: Path, arch: str, distribution, variant: str
+) -> None:
+    sbom = built_for(sbom_doc(), arch, distribution)
+    doc, report = import_sbom_doc(tmp_path, sbom, platform="linux/arm")
+    assert instance(doc)["id"] == f"{INSTANCE_OF}linux-arm-{variant}"
+    assert instance(doc)["name"].endswith(f" for linux/arm/{variant}")
+    assert (
+        f"Platform: linux/arm/{variant}, from --platform, and its variant {variant} from the "
+        f"packages' arch={arch}." in report
+    )
+
+
+def test_the_arm_v6_and_v7_builds_of_one_index_are_two_builds(tmp_path: Path) -> None:
+    # One index digest, and --platform linux/arm for both: the packages tell them apart.
+    v6, _ = import_sbom_doc(
+        folder(tmp_path, "v6"), built_for(sbom_doc(), "armhf"), platform="linux/arm"
+    )
+    v7, _ = import_sbom_doc(
+        folder(tmp_path, "v7"), built_for(sbom_doc(), "armv7"), platform="linux/arm"
+    )
+    assert instance(v6)["version"] == instance(v7)["version"] == DIGEST
+    assert instance(v6)["id"] != instance(v7)["id"]
+
+
+def test_packages_that_pin_two_variants_are_refused(tmp_path: Path) -> None:
+    sbom = built_for(sbom_doc(), "armv7")
+    zlib = next(c for c in sbom["components"] if c.get("name") == "zlib")
+    zlib["purl"] = zlib["purl"].replace("arch=armv7", "arch=armhf")  # Alpine's ARMv6
+    message = r"more than one variant of arm: arm/v6 \(arch=armhf\) and arm/v7 \(arch=armv7\)"
+    with pytest.raises(SbomImportError, match=message):
+        run(dump(tmp_path, "s.json", sbom), platform="linux/arm", output=tmp_path / "model.yaml")
+    assert not (tmp_path / "model.yaml").exists()
+
+
+@pytest.mark.parametrize(
+    "sbom",
+    [
+        # Raspbian writes Debian's armhf for ARMv6, so its armhf pins no variant.
+        lambda: built_for(sbom_doc(), "armhf", "deb/raspbian"),
+        lambda: without_arch(sbom_doc()),  # no package names a CPU at all
+    ],
+)
+def test_32_bit_arm_with_no_variant_anywhere_is_refused(tmp_path: Path, sbom) -> None:
+    path = dump(tmp_path, "s.json", sbom())
+    with pytest.raises(SbomImportError, match="names no variant, and no package's arch"):
+        run(path, platform="linux/arm", output=tmp_path / "model.yaml")
+    assert not (tmp_path / "model.yaml").exists()
+    doc, _ = import_sbom_doc(tmp_path, sbom(), platform="linux/arm/v6")  # named, it is read
+    assert instance(doc)["id"] == f"{INSTANCE_OF}linux-arm-v6"
+
+
+def test_arm64_with_no_variant_is_v8(tmp_path: Path) -> None:
+    models, reports = [], []
+    for platform in ("linux/arm64", "linux/arm64/v8"):
+        out = folder(tmp_path, platform.replace("/", "-")) / "model.yaml"
+        reports.append(run(SBOM, scan=SCAN, platform=platform, output=out).report_text)
+        models.append(out.read_bytes())
+    assert models[0] == models[1]  # one platform, so one build, one id and one model
+    assert instance(yaml.safe_load(models[0]))["id"] == INSTANCE
+    assert (
+        "linux/arm64 names no variant; for arm64 that is v8, the only arm64 variant the OCI "
+        "image index specification lists" in reports[0]
+    )
+
+
+def test_a_32_bit_siblings_variant_is_not_the_builds(tmp_path: Path) -> None:
+    sbom = sbom_doc()
+    zlib_copy(sbom, ARM32_ZLIB)  # Alpine's ARMv7 zlib beside the arm64 one (multiarch)
+    armhf = zlib_copy(sbom, ZLIB.replace("arch=aarch64", "arch=armhf"))  # and its ARMv6 one
+    armhf["bom-ref"] += "-armhf"
+    doc, report = import_sbom_doc(tmp_path, sbom, platform="linux/arm64")
+    assert instance(doc)["id"] == INSTANCE  # arm64's own variant, v8, not a sibling's
+    assert "16 Components built for arm64 (arch=aarch64)" in report
+    assert "1 Component built for arm/v6 (arch=armhf), which arm64 also runs" in report
+    assert "1 Component built for arm/v7 (arch=armv7), which arm64 also runs" in report
+
+
+@pytest.mark.parametrize(
+    ("platform", "message"),
+    [
+        ("linux/armhf", "a distribution's name for arm/v6 or arm/v7"),
+        ("linux/armv7hl", "a distribution's name for arm/v7"),
+    ],
+)
+def test_a_distributions_name_that_pins_a_variant_is_refused_as_a_platform(
+    tmp_path: Path, platform: str, message: str
+) -> None:
+    with pytest.raises(SbomImportError, match=message):
+        run(SBOM, platform=platform, output=tmp_path / "model.yaml")
+    assert list(tmp_path.iterdir()) == []
+
+
+# Review of e12ab07, finding 2: no two platforms give one id ------------------------------
+
+
+@pytest.mark.parametrize(
+    "platform",
+    [
+        "linux/arm64/v8-1",  # the review's example, whose id was v8.1's
+        "linux/arm64/v8_1",
+        "linux/arm64/v8.",
+        "linux/arm64/.v8",
+        "linux/arm64/v8..1",
+        "linux/arm-64/v8",
+        "lin_ux/arm64",
+        "linux/arm64.1",
+    ],
+)
+def test_a_platform_part_outside_its_form_is_refused(tmp_path: Path, platform: str) -> None:
+    with pytest.raises(SbomImportError, match="not OS/ARCH or OS/ARCH/VARIANT: the os and"):
+        run(SBOM, platform=platform, output=tmp_path / "model.yaml")
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_a_scans_platform_part_outside_its_form_is_refused(tmp_path: Path) -> None:
+    scan = dump(tmp_path, "g.json", direct_scan(architectureVariant="v8-1"))
+    with pytest.raises(SbomImportError, match="architectureVariant is 'v8-1', not a platform's"):
+        run(SBOM, scan=scan, platform=None, output=tmp_path / "model.yaml")
+
+
+def test_v8_1_and_v8_dash_1_are_never_one_build(tmp_path: Path) -> None:
+    # On e12ab07 both gave product-instance:sha256-...-linux-arm64-v8-1.
+    with pytest.raises(SbomImportError, match="not OS/ARCH or OS/ARCH/VARIANT"):
+        run(SBOM, platform="linux/arm64/v8-1", output=tmp_path / "model.yaml")
+    doc, _ = import_sbom_doc(tmp_path, sbom_doc(), platform="linux/arm64/v8.1")
+    assert instance(doc)["id"] == f"{INSTANCE_OF}linux-arm64-v8-1"  # a variant's dot, as -
+    assert instance(doc)["name"].endswith(" for linux/arm64/v8.1")
+
+
+def test_distinct_platforms_never_share_an_id(tmp_path: Path) -> None:
+    # Every valid platform, with and without a variant, dotted variants too: the id is
+    # the same exactly when the platform is (arm64 with no variant is arm64/v8).
+    sbom = dump(tmp_path, "s.json", without_arch(sbom_doc()))
+    variants = (None, "v1", "v7", "v8", "v8.0", "v8.1", "v81", "v8.1.1", "v8.11", "v81.1", "8.1")
+    ids: dict[str, set[str]] = {}  # the platform the model names -> its ids
+    for os_name in ("linux", "windows"):
+        for arch in ("amd64", "arm64", "arm", "386"):
+            for variant in variants:
+                platform = "/".join(p for p in (os_name, arch, variant) if p)
+                if arch == "arm" and variant is None:
+                    continue  # refused: 32-bit ARM needs its variant (finding 1)
+                result = import_sbom.build(sbom, platform=platform)
+                build = instance(yaml.safe_load(result.model_text))
+                named = build["name"].rsplit(" for ", 1)[1]
+                assert named == (
+                    f"{platform}/v8" if (arch, variant) == ("arm64", None) else platform
+                )
+                ids.setdefault(named, set()).add(build["id"])
+    assert all(len(found) == 1 for found in ids.values())  # one platform, one id
+    assert len(set().union(*ids.values())) == len(ids)  # and no id for two platforms
+
+
+# Review of e12ab07, not blocking: a blank description is counted as left out -------------
+
+BLANKS = ["", "   ", "\n\t ", "　", "​", None]  # 　 an ideographic space
+
+
+@pytest.mark.parametrize("blank", BLANKS)
+def test_a_blank_advisory_description_is_counted_as_left_out(tmp_path: Path, blank) -> None:
+    advisory = match("GHSA-aaaa-bbbb-cccc", ("CVE-2026-0001",))
+    advisory["vulnerability"]["description"] = blank  # the advisory's own record
+    advisory["relatedVulnerabilities"][0]["description"] = "NVD's words."
+    doc, report = import_matches(tmp_path, [advisory])
+    assert doc["vulnerabilities"][0]["description"] == "NVD's words."
+    fields = field_lines(report)
+    assert fields["matches[].vulnerability.description"] == "left out: 1 blank (counted above)"
+    assert fields["matches[].relatedVulnerabilities[].description"] == "Vulnerability.description"
+    assert "- 1 scan descriptions that are blank (null, or nothing but white space" in report
+    assert "Advisory descriptions left out" not in report  # nothing to list
+
+
+@pytest.mark.parametrize("blank", BLANKS)
+def test_a_blank_vulnerability_description_is_not_written(tmp_path: Path, blank) -> None:
+    row = match("CVE-2026-0001")
+    row["vulnerability"]["description"] = blank
+    doc, report = import_matches(tmp_path, [row])
+    assert "description" not in doc["vulnerabilities"][0]
+    assert field_lines(report)["matches[].vulnerability.description"] == (
+        "left out: 1 blank (counted above)"
+    )
+
+
+@pytest.mark.parametrize("blank", BLANKS)
+def test_a_blank_component_description_is_counted_as_left_out(tmp_path: Path, blank) -> None:
+    sbom = sbom_doc()
+    next(c for c in sbom["components"] if c.get("name") == "zlib")["description"] = blank
+    doc, report = import_sbom_doc(tmp_path, sbom)
+    zlib = next(c for c in doc["components"] if c["name"] == "zlib 1.3.2-r0")
+    assert "description" not in zlib
+    assert "- 1 SBOM component descriptions that are blank (null, or nothing but" in report
+    assert (
+        "left out where it is blank (counted above)"
+        in field_lines(report)["components[].description"]
+    )
+
+
+# Review of e12ab07 (@Maimcghee), finding 1: the depth is checked first, on every Python ---
+
+
+def test_the_depth_is_checked_before_the_top_level(tmp_path: Path, monkeypatch) -> None:
+    # Python 3.14's json reads a 100,000-deep array, where 3.11 to 3.13 raise
+    # RecursionError; read as 3.14 reads it, the file must still nest too deeply.
+    text = "[" * 100_000 + "]" * 100_000
+    deep: list = []
+    for _ in range(100_000 - 1):
+        deep = [deep]
+    real = json.loads
+
+    def loads_as_314(given: str, *args, **kwargs):
+        return deep if given == text else real(given, *args, **kwargs)
+
+    bad = tmp_path / "deep.json"
+    bad.write_text(text, encoding="utf-8")
+    monkeypatch.setattr(import_sbom.json, "loads", loads_as_314)
+    with pytest.raises(SbomImportError, match="nests too deeply"):
+        run(bad, output=tmp_path / "model.yaml")
     assert not (tmp_path / "model.yaml").exists()

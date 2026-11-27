@@ -19,8 +19,10 @@ and the engine loads, plus an import report. The mapping is RPT-0004 Table 6
   not say whether its digest is a platform manifest's or an index's, which every
   platform of a release shares, so the platform comes from `--platform` or from a scan
   Grype made of the image itself, and is checked against the packages' `arch`
-  qualifiers. The ids are made from the keys: the whole repository, and the whole
-  digest with the platform. The SBOM never fills the design-level `composed_of`
+  qualifiers, variant and all: a platform that names no variant takes the one its
+  packages pin, arm64 with none is v8, and 32-bit arm needs one. The ids are made from
+  the keys: the whole repository, and the whole digest with the platform, so no two
+  platforms give one id. The SBOM never fills the design-level `composed_of`
   (R-EDGE-2);
 - one Component per SBOM entry other than files (R-ID-4), keyed by its purl, qualifiers
   and all, normalized by the rules the purl specification gives every type (R-ID-3),
@@ -104,16 +106,29 @@ PATH_SCHEME = re.compile(r"(?:sbom|dir|file|docker-archive|oci-archive|oci-dir|s
 PURL_TYPE = re.compile(r"[a-z.+-][a-z0-9.+-]*")
 QUALIFIER_KEY = re.compile(r"[a-z._-][a-z0-9._-]*")
 SURROGATE = re.compile("[\ud800-\udfff]")
-# One part of an OCI platform (linux/arm64/v8): an image index writes Go's GOOS and
-# GOARCH names, and a variant such as v7 or v8, all in lower case.
-PLATFORM_PART = re.compile(r"[a-z0-9]+(?:[._-][a-z0-9]+)*")
+# The parts of an OCI platform (linux/arm64/v8), as an image index writes them, in lower
+# case: the os and the architecture are Go's GOOS and GOARCH names, letters and digits;
+# a variant, such as v7 or v8.1, is letters and digits with dots between them, and
+# never holds a dash. The instance id writes a variant's dots as dashes, as the models'
+# ids write a version's (product-instance:papermill-3-1-0), so a variant with a dash
+# could give another platform's id: v8-1 would be v8.1's (_Builder._instance).
+PLATFORM_NAME = re.compile(r"[a-z0-9]+")
+PLATFORM_VARIANT = re.compile(r"[a-z0-9]+(?:\.[a-z0-9]+)*")
+PLATFORM_PART_LENGTH = 20  # so the instance id is never cut to fit (_slug)
+PLATFORM_FORM = (
+    "the os and the architecture are letters and digits, and a variant is letters and "
+    f"digits with dots between them (v7, v8.1), each at most {PLATFORM_PART_LENGTH} characters"
+)
 PLATFORM_EXAMPLE = "linux/arm64/v8"
 
 # The names distributions write in a purl's `arch` qualifier, as the architecture an
 # OCI image index names (Go's GOARCH): Alpine's (x86_64, aarch64, x86, armhf, armv7),
 # Debian's (amd64, arm64, i386, armel, armhf, ppc64el) and RPM's (x86_64, aarch64,
-# i686), with the OCI names themselves for an `oci` purl. A name not here is listed
-# in the report as not checked; noarch, all and any (NO_ARCHITECTURE) name no CPU.
+# i686), with the OCI names themselves for an `oci` purl. Each name means one
+# architecture in every distribution that writes it, and pins no variant here:
+# aarch64 and arm64 say nothing of v8.x, and armhf is ARMv6 in Alpine but ARMv7 in
+# Debian (ARCH_VARIANTS). A name in neither table is listed in the report as not
+# checked; noarch, all and any (NO_ARCHITECTURE) name no CPU.
 ARCHITECTURES = {
     "amd64": "amd64",
     "x86_64": "amd64",
@@ -132,10 +147,35 @@ ARCHITECTURES = {
     "s390x": "s390x",
     "riscv64": "riscv64",
 }
+# The 32-bit ARM names whose variant the distribution defines, by the purl's type, or
+# for deb its type and namespace, as (architecture, variant): the platform an image
+# index lists for that build. Alpine's armhf is ARMv6 and its armv7 ARMv7 (Alpine's
+# images list linux/arm/v6 and linux/arm/v7); Debian's armel is ARMv5 and armhf ARMv7
+# (linux/arm/v5 and linux/arm/v7), and Ubuntu's armhf is ARMv7 too; RPM's armv6hl and
+# armv7hl say theirs. Raspbian writes Debian's armhf for ARMv6, so only Debian's and
+# Ubuntu's own deb packages pin a variant; another's armhf is arm, its variant unsaid.
+ARCH_VARIANTS = {
+    ("apk", "armhf"): ("arm", "v6"),
+    ("apk", "armv7"): ("arm", "v7"),
+    ("deb/debian", "armel"): ("arm", "v5"),
+    ("deb/debian", "armhf"): ("arm", "v7"),
+    ("deb/ubuntu", "armhf"): ("arm", "v7"),
+    ("rpm", "armv6hl"): ("arm", "v6"),
+    ("rpm", "armv7hl"): ("arm", "v7"),
+}
 NO_ARCHITECTURE = frozenset({"noarch", "all", "any"})
 # A 64-bit platform runs its 32-bit sibling's packages too, which Debian's multiarch
-# and RPM's multilib install beside the native ones (libc6:i386 on amd64).
+# and RPM's multilib install beside the native ones (libc6:i386 on amd64). A sibling's
+# variant is not the platform's (which is the 64-bit architecture's own), so it is
+# reported, never compared or taken: a 64-bit CPU that runs 32-bit code runs each of
+# its variants, and multiarch can install armel and armhf beside arm64.
 ALSO_RUNS = {"amd64": "386", "arm64": "arm"}
+# A platform's variant when neither the platform nor its packages name one. arm64 has
+# one, v8, the only arm64 variant the OCI image index specification lists, so
+# linux/arm64 and linux/arm64/v8 are one build and one key. 32-bit arm has several (v5,
+# v6, v7), which one index can list side by side, so without one it is refused.
+DEFAULT_VARIANTS = {"arm64": "v8"}
+VARIANT_NEEDED = frozenset({"arm"})
 
 # CycloneDX 1.7's component types, written as ComponentKind values (ADR-0011 A3).
 COMPONENT_KINDS = {
@@ -194,7 +234,8 @@ ADVISORY_WORDS = (
     "a CVE)"
 )
 UNCHECKED_ARCH = (
-    "Package architectures not checked against the platform (names this import does not know)"
+    "Package architectures not checked against the platform (names this import does not "
+    "know, or not for that purl type)"
 )
 
 # What became of a description that is not written, by reason, for the report's field
@@ -202,6 +243,12 @@ UNCHECKED_ARCH = (
 WORDS_ADVISORY = "an advisory's, whose match is written as another id"
 WORDS_OTHER = "in other words than the one written for its Vulnerability"
 WORDS_MATCH = "with their match"
+WORDS_BLANK = "blank"  # counted, under BLANK_SCAN; the others are each listed
+# A description with nothing to write: null, or text with nothing but white space and
+# characters that do not print (_blank). It is left out, and the report counts it.
+BLANK = "blank (null, or nothing but white space and characters that do not print)"
+BLANK_SBOM = f"SBOM component descriptions that are {BLANK}"
+BLANK_SCAN = f"scan descriptions that are {BLANK}"
 DESCRIPTION_PATHS = (
     "matches[].vulnerability.description",
     "matches[].relatedVulnerabilities[].description",
@@ -375,9 +422,12 @@ def _read_json(path: Path, label: str) -> tuple[InputFile, Any]:
         raise SbomImportError(
             f"{name}: not valid JSON, or holds a number too long to read"
         ) from exc
+    # The depth first: Python 3.14's json reads nesting that 3.11 to 3.13 refuse with a
+    # RecursionError, so a file that nests too deeply is refused as one on every version,
+    # whatever is at its top level.
+    _check_sound(doc, name)
     if not isinstance(doc, dict):
         raise SbomImportError(f"{name}: expected a JSON object at the top level")
-    _check_sound(doc, name)
     sha = hashlib.sha256(data).hexdigest()
     return InputFile(label, path.name, len(data), sha), doc
 
@@ -621,30 +671,56 @@ def _check_scan(doc: Mapping[str, Any], name: str, sbom: SbomInfo) -> ScanInfo:
 
 
 def parse_platform(text: str) -> Platform:
-    """`--platform OS/ARCH[/VARIANT]`, as `docker --platform` takes it, in any case."""
+    """`--platform OS/ARCH[/VARIANT]`, as `docker --platform` takes it, in any case. Each
+    part must have its form (PLATFORM_NAME, PLATFORM_VARIANT), so no two platforms
+    give one instance id."""
     parts = text.strip().lower().split("/")
-    if len(parts) not in (2, 3) or not all(_platform_part(part) for part in parts):
+    fields = PLATFORM_FIELDS[: len(parts)]  # the variant may be left out
+    if len(parts) not in (2, 3) or not all(
+        _platform_part(value, part) for value, (part, _) in zip(parts, fields, strict=True)
+    ):
         raise SbomImportError(
-            f"--platform is {text!r}, not OS/ARCH or OS/ARCH/VARIANT (for example "
-            f"{PLATFORM_EXAMPLE})"
+            f"--platform is {text!r}, not OS/ARCH or OS/ARCH/VARIANT: {PLATFORM_FORM} "
+            f"(for example {PLATFORM_EXAMPLE})"
         )
     _check_architecture_name(parts[1], "--platform")
     return Platform(*parts)
 
 
-def _platform_part(text: str) -> bool:
-    return len(text) <= 20 and PLATFORM_PART.fullmatch(text) is not None
+def _platform_part(text: str, part: str) -> bool:
+    form = PLATFORM_VARIANT if part == "variant" else PLATFORM_NAME
+    return len(text) <= PLATFORM_PART_LENGTH and form.fullmatch(text) is not None
 
 
 def _check_architecture_name(arch: str, where: str) -> None:
-    """A platform names its architecture as an image index does (arm64), not as a
-    distribution does (aarch64), which would give one build two keys."""
+    """A platform names its architecture as an image index does (arm64, or arm and a
+    variant), not as a distribution does (aarch64, armhf), which would give one build
+    two keys."""
+    means = sorted({"/".join(cpu) for (_, name), cpu in ARCH_VARIANTS.items() if name == arch})
     oci = ARCHITECTURES.get(arch)
-    if oci is not None and oci != arch:
+    if not means and oci is not None and oci != arch:
+        means = [oci]
+    if means:
         raise SbomImportError(
-            f"{where} names the architecture {arch!r}, a distribution's name for {oci}; "
-            f"give the name an image index uses, as in linux/{oci}"
+            f"{where} names the architecture {arch!r}, a distribution's name for "
+            f"{' or '.join(means)}; give the name an image index uses, as in "
+            f"linux/{means[-1]}"
         )
+
+
+def _built_for(purl: _Purl, arch: str) -> tuple[str, str | None] | None:
+    """The OCI architecture a package's arch qualifier names, and the variant when its
+    distribution's name pins one (ARCH_VARIANTS, by the purl's type and namespace, then
+    by its type; else ARCHITECTURES), or None for a name this import does not know."""
+    name = arch.lower()
+    kinds = [purl.type]
+    if purl.namespace:  # apk's, deb's and rpm's namespaces ignore case (purl specification)
+        kinds.insert(0, f"{purl.type}/{'/'.join(purl.namespace).lower()}")
+    for kind in kinds:
+        if (kind, name) in ARCH_VARIANTS:
+            return ARCH_VARIANTS[kind, name]
+    oci = ARCHITECTURES.get(name)
+    return (oci, None) if oci is not None else None
 
 
 def _scan_platform(target: Mapping[str, Any], name: str) -> tuple[str | None, ...]:
@@ -655,9 +731,10 @@ def _scan_platform(target: Mapping[str, Any], name: str) -> tuple[str | None, ..
         value = _text_at(target, key, name, "source.target")
         if value is not None:
             value = value.lower()
-            if not _platform_part(value):
+            if not _platform_part(value, part):
                 raise SbomImportError(
-                    f"{name}: source.target.{key} is {value!r}, not a platform's {part}"
+                    f"{name}: source.target.{key} is {value!r}, not a platform's {part} "
+                    f"({PLATFORM_FORM})"
                 )
             if part == "architecture":
                 _check_architecture_name(value, f"{name}: source.target.{key}")
@@ -875,6 +952,7 @@ class _Record:
     namespace: str | None
     description: str | None
     cwes: tuple[tuple[str | None, str | None, str | None, str | None], ...]
+    blank: bool = False  # it holds a description with nothing to write (_description_at)
 
 
 @dataclass(frozen=True)
@@ -928,15 +1006,19 @@ class _Builder:
         self.scan_file = scan_file
         self.scan = scan
         self.scan_info = scan_info
+        # The build's platform, settled once the packages are read (_check_architectures):
+        # a variant they pin, or arm64's, completes it.
         self.platform = platform
         self.platform_source = platform_source  # "--platform", the scan, or both
+        self.platform_notes: list[str] = []  # how the platform was completed, for the report
         self.ids: dict[str, str] = {}  # object id -> the key it was made from
         self.notes: Counter[str] = Counter()  # what was left out, by reason
         self.repeats: Counter[str] = Counter()  # what the inputs repeat, written once
         self.listed: dict[str, list[str]] = {}  # report lists, by heading
         self.types: Counter[str] = Counter()  # SBOM component entries, by CycloneDX type
-        # Components by the architecture their purl names: (OCI name, purl's name) -> n.
-        self.architectures: Counter[tuple[str, str]] = Counter()
+        # Components by the architecture their purl names: (OCI name, the variant it pins
+        # or "", purl's name) -> n.
+        self.architectures: Counter[tuple[str, str, str]] = Counter()
         # Descriptions in the scan that are not written, by field path and reason.
         self.words: dict[str, Counter[str]] = {path: Counter() for path in DESCRIPTION_PATHS}
         self.words_written: Counter[str] = Counter()  # and those that are, by path
@@ -959,7 +1041,8 @@ class _Builder:
                 "name": "Grype",
             }
         self._product()
-        self._components()
+        self._components()  # settles the platform (_check_architectures)
+        self._instance()
         self._dependencies()
         if scan is not None:
             self._matches()
@@ -981,20 +1064,32 @@ class _Builder:
     def _product(self) -> None:
         registry, repository = _image_repository(self.info.image)
         self.repository_url = f"{registry}/{repository}"
-        purl_name = repository.rsplit("/", 1)[-1].lower()
-        url = quote(self.repository_url, safe="/:")
-        self.product_purl = f"pkg:oci/{purl_name}?repository_url={url}"
+        self.purl_name = repository.rsplit("/", 1)[-1].lower()
+        self.purl_url = quote(self.repository_url, safe="/:")
+        self.product_purl = f"pkg:oci/{self.purl_name}?repository_url={self.purl_url}"
+        # Each id is made from its key, whole: here the repository with its registry
+        # (R-ID-2), so another registry or path gives another id. An id is a readable
+        # slug; the purl in identifiers stays the key.
+        self.product_id = self._id("product", self.product_purl, self.repository_url)
+
+    def _instance(self) -> None:
+        """The scanned build's purl, key and id, once the packages have settled the
+        platform (_check_architectures)."""
         digest = quote(self.info.digest, safe="")
         arch = quote(self.platform.architecture, safe="")
-        # The oci purl type's arch qualifier, and the qualifiers sorted by key.
-        self.instance_purl = f"pkg:oci/{purl_name}@{digest}?arch={arch}&repository_url={url}"
-        # Each id is made from its key, whole: the repository with its registry (R-ID-2),
-        # and the digest with the platform (R-ID-1), since an index digest names every
-        # platform of a release and the SBOM does not say which kind it holds. So another
-        # registry, path or platform gives another id. An id is a readable slug; the purl
-        # in identifiers stays the key. A platform's parts are short (_platform_part), so
-        # the build's id keeps the whole digest and platform.
-        self.product_id = self._id("product", self.product_purl, self.repository_url)
+        # The oci purl type's arch qualifier, and the qualifiers sorted by key. The type
+        # has no qualifier for a variant, so the key, the id and the name carry it.
+        self.instance_purl = (
+            f"pkg:oci/{self.purl_name}@{digest}?arch={arch}&repository_url={self.purl_url}"
+        )
+        # The key is the digest with the platform (R-ID-1), since an index digest names
+        # every platform of a release and the SBOM does not say which kind it holds, and
+        # the id is made from it whole, so another platform gives another id. The slug
+        # writes each part's letters and digits and a dash between parts, and a variant's
+        # dots as dashes, as the models' ids write a version's (papermill-3-1-0): v8.1
+        # is ...-linux-arm64-v8-1. No part holds a dash (PLATFORM_NAME, PLATFORM_VARIANT),
+        # so the id gives back the platform, and no two platforms share one. The parts
+        # are short (PLATFORM_PART_LENGTH), so the id is never cut to fit.
         self.instance_key = f"{self.info.digest} {self.platform}"
         self.instance_id = self._id(
             "product-instance", self.instance_key, self.instance_key, limit=160
@@ -1058,6 +1153,9 @@ class _Builder:
             readable, base = key, None
             if purl is not None:
                 self.notes["SBOM purls that do not parse (kept in identifiers)"] += 1
+        description, blank = _description_at(entry, name, where)
+        if blank:
+            self.notes[BLANK_SBOM] += 1
         return _Entry(
             where=where,
             key=key,
@@ -1066,7 +1164,7 @@ class _Builder:
             kind=kind,
             readable=readable,
             base=base,
-            description=_prose(_text_at(entry, "description", name, where)),
+            description=description,
             identifiers=tuple(identifiers),
             supplier=self._organization(entry, "supplier", name, where),
             manufacturer=self._organization(entry, "manufacturer", name, where),
@@ -1178,31 +1276,38 @@ class _Builder:
     def _check_architectures(self, name: str) -> None:
         """The SBOM's own record of its CPU must fit the platform (R-ID-1): the image's
         purl, when it has an arch, names the platform's architecture, and each package's
-        arch qualifier, read through ARCHITECTURES, names it too, or the 32-bit sibling a
-        64-bit platform also runs, with some package built for the platform's own. A name
-        not in the table is listed, not checked; noarch, all and any are skipped."""
+        arch qualifier, read through ARCH_VARIANTS and ARCHITECTURES, names it too, or the
+        32-bit sibling a 64-bit platform also runs, with some package built for the
+        platform's own; and a variant those of the platform's own architecture pin is
+        the platform's (_check_variant), which then settles (_settle_platform). A name in
+        neither table is listed, not checked; noarch, all and any are skipped."""
         platform = self.platform.architecture
         given = f"the platform is {self.platform} (from {self.platform_source})"
         image = _parse_purl(self.info.purl) if self.info.purl is not None else None
         image_arch = dict(image.qualifiers).get("arch") if image is not None else None
         # An oci purl names its arch as an image index does, so a name not in the table
-        # is compared as it is.
+        # is compared as it is. The oci type has no qualifier for a variant.
         if image_arch is not None and ARCHITECTURES.get(image_arch.lower(), image_arch) != platform:
             raise SbomImportError(
                 f"{name}: metadata.component.purl says arch={image_arch}, but {given}"
             )
         names: dict[str, set[str]] = {}  # OCI architecture -> the names packages give it
-        unknown: Counter[str] = Counter()
+        pinned: dict[str, set[str]] = {}  # a variant of the platform's own -> those names
+        unknown: Counter[tuple[str, str]] = Counter()  # (purl type, name) -> Components
         for component in self.components.values():
             arch = component.arch
-            if arch is None or arch.lower() in NO_ARCHITECTURE:
+            purl = _parse_purl(component.key)  # a Component with an arch has a purl key
+            if arch is None or purl is None or arch.lower() in NO_ARCHITECTURE:
                 continue
-            oci = ARCHITECTURES.get(arch.lower())
-            if oci is None:
-                unknown[arch] += 1
+            built = _built_for(purl, arch)
+            if built is None:
+                unknown[purl.type, arch] += 1
                 continue
+            oci, variant = built
             names.setdefault(oci, set()).add(arch)
-            self.architectures[oci, arch] += 1
+            self.architectures[oci, variant or "", arch] += 1
+            if oci == platform and variant is not None:
+                pinned.setdefault(variant, set()).add(arch)
         foreign = sorted(set(names) - {platform, ALSO_RUNS.get(platform)})
         if foreign:
             oci = foreign[0]
@@ -1217,9 +1322,65 @@ class _Builder:
                 f"{name}: none of the SBOM's packages is built for {platform}, though {given}; "
                 f"they say arch={said}"
             )
-        for arch, n in sorted(unknown.items()):
+        self._check_variant(pinned, name, given)
+        self._settle_platform(name)
+        for (kind, arch), n in sorted(unknown.items()):
             self.listed.setdefault(UNCHECKED_ARCH, []).append(
-                f"{_one_line(arch)}: {n} Component{'' if n == 1 else 's'}"
+                f"{_one_line(arch)}: {n} Component{'' if n == 1 else 's'} (pkg:{kind})"
+            )
+
+    def _check_variant(self, pinned: Mapping[str, set[str]], name: str, given: str) -> None:
+        """The variant that packages built for the platform's own architecture pin must be
+        the platform's, and a platform that names none takes it, so the arm/v6 and arm/v7
+        builds of one index never share a key. Packages that pin two are refused, since
+        one build is of one variant. A 32-bit sibling's variant is never compared or taken
+        (ALSO_RUNS)."""
+        arch = self.platform.architecture
+        said = {v: f"{arch}/{v} (arch={', '.join(sorted(n))})" for v, n in pinned.items()}
+        if len(pinned) > 1:
+            raise SbomImportError(
+                f"{name}: the SBOM's packages are built for more than one variant of {arch}: "
+                f"{' and '.join(said[v] for v in sorted(said))}, but one build is of one "
+                "variant, so the SBOM is not of one build (R-ID-1)"
+            )
+        if not pinned:
+            return
+        (variant,) = pinned
+        if self.platform.variant is None:
+            self.platform = Platform(self.platform.os, arch, variant)
+            self.platform_source += (
+                f", and its variant {variant} from the packages' "
+                f"arch={', '.join(sorted(pinned[variant]))}"
+            )
+        elif self.platform.variant != variant:
+            raise SbomImportError(
+                f"{name}: the SBOM's packages are built for {said[variant]}, but {given}; "
+                "the SBOM is not of that build"
+            )
+
+    def _settle_platform(self, name: str) -> None:
+        """A platform that still names no variant (DEFAULT_VARIANTS, VARIANT_NEEDED):
+        arm64's is v8, and 32-bit arm, whose builds of one index can differ in nothing
+        else, is refused, with a message asking for the variant."""
+        platform = self.platform
+        if platform.variant is not None:
+            return
+        default = DEFAULT_VARIANTS.get(platform.architecture)
+        if default is not None:
+            self.platform = Platform(platform.os, platform.architecture, default)
+            self.platform_notes.append(
+                f"{platform} names no variant; for {platform.architecture} that is {default}, "
+                f"the only {platform.architecture} variant the OCI image index specification "
+                f"lists, so {platform} and {self.platform} are one build, with one key"
+            )
+        elif platform.architecture in VARIANT_NEEDED:
+            raise SbomImportError(
+                f"{name}: the platform {platform} (from {self.platform_source}) names no "
+                "variant, and no package's arch qualifier pins one; an index can list "
+                f"{platform.architecture} builds that differ only in it (v5, v6, v7), so the "
+                f"digest and {platform} name no one build. Pass --platform "
+                f"{platform}/VARIANT as the image index lists it, for example --platform "
+                f"{platform}/v7"
             )
 
     # dependencies
@@ -1391,13 +1552,18 @@ class _Builder:
         record's Vulnerability, and only the one picked for it (`_descriptions`); the rest
         are left out, each listed: an advisory's whose match is written as another id
         (most often a CVE), one in other words than the one written, or one whose match
-        is left out whole."""
+        is left out whole. A blank one (null, or nothing to write) is counted, whatever
+        became of its match."""
         for row in rows:
             refs = refs_of.get(row.fingerprint)  # None when the match is left out
             for number, record in enumerate(row.records):
+                path = DESCRIPTION_PATHS[min(number, 1)]  # its own record, or a related one
+                if record.blank:
+                    self.words[path][WORDS_BLANK] += 1
+                    self.notes[BLANK_SCAN] += 1
+                    continue
                 if record.description is None:
                     continue
-                path = DESCRIPTION_PATHS[min(number, 1)]  # its own record, or a related one
                 if refs is None:
                     self.words[path][WORDS_MATCH] += 1
                 elif record.id not in refs:
@@ -1707,8 +1873,8 @@ SBOM_FIELDS = {
         "out, counted above"
     ),
     "components[].description": (
-        "Component.description; left out where entries recorded as one Component disagree "
-        "(listed above)"
+        "Component.description; left out where it is blank (counted above) or where entries "
+        "recorded as one Component disagree (listed above)"
     ),
     "components[].bom-ref": "joins dependencies to Components",
     "components[].supplier": INSIDE,
@@ -1896,6 +2062,7 @@ class _Report:
             "manifest's or an index's, which every platform of a release shares, so the "
             "build is keyed by the two (R-ID-1)."
         )
+        lines += [f"- {note}." for note in b.platform_notes]
         lines.append(self._architectures())
         if b.scan_info is not None:
             lines += self._scan_identity(b.scan_info)
@@ -1979,8 +2146,9 @@ class _Report:
             )
         said = []
         native_first = sorted(b.architectures.items(), key=lambda kv: (kv[0][0] != platform, kv))
-        for (oci, arch), n in native_first:
-            text = f"{n} Component{'' if n == 1 else 's'} built for {oci} (arch={arch})"
+        for (oci, variant, arch), n in native_first:
+            built = f"{oci}/{variant}" if variant else oci
+            text = f"{n} Component{'' if n == 1 else 's'} built for {built} (arch={arch})"
             if oci != platform:
                 text += f", which {platform} also runs (multiarch and multilib)"
             said.append(text)
@@ -1994,8 +2162,11 @@ class _Report:
         for path, left in b.words.items():
             if not left:
                 continue  # each one was written, as the field table says
-            reasons = ", ".join(f"{n} {why}" for why, n in sorted(left.items()))
-            text = f"left out: {reasons} (each listed above)"
+            listed = [f"{n} {why}" for why, n in sorted(left.items()) if why != WORDS_BLANK]
+            parts = [", ".join(listed) + " (each listed above)"] if listed else []
+            if left[WORDS_BLANK]:
+                parts.append(f"{left[WORDS_BLANK]} {WORDS_BLANK} (counted above)")
+            text = f"left out: {', and '.join(parts)}"
             written = b.words_written[path]
             rules[path] = f"Vulnerability.description, for {written}; {text}" if written else text
         return rules
@@ -2462,11 +2633,13 @@ def _record(record: Mapping[str, Any], name: str, where: str) -> _Record:
     vid = _text_at(record, "id", name, where)
     if vid is None:
         raise SbomImportError(f"{name}: {where} has no id")
+    description, blank = _description_at(record, name, where)
     return _Record(
         id=vid,
         namespace=_text_at(record, "namespace", name, where),
-        description=_prose(_text_at(record, "description", name, where)),
+        description=description,
         cwes=tuple(cwes),
+        blank=blank,
     )
 
 
@@ -2639,6 +2812,24 @@ def _prose(value: Any) -> str | None:
     space, so the model reads as the hand-written ones do. The words are unchanged."""
     text = _text(value)
     return " ".join(text.split()) if text is not None else None
+
+
+def _description_at(obj: Mapping[str, Any], name: str, where: str) -> tuple[str | None, bool]:
+    """obj's description on one line (_prose), or None; and whether the field is there
+    but blank: null, or text with nothing to write (_blank). A blank description is not
+    written, and the report counts it as left out (BLANK)."""
+    if "description" not in obj:
+        return None, False
+    text = _text_at(obj, "description", name, where)  # refuses a value that is not text
+    if text is None or _blank(text):
+        return None, True
+    return _prose(text), False
+
+
+def _blank(text: str) -> bool:
+    """Whether text holds nothing but white space and characters that do not print, such
+    as a zero-width space: nothing a description could say."""
+    return all(ch.isspace() or not ch.isprintable() for ch in text)
 
 
 def _utc(value: Any) -> str | None:
