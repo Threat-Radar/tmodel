@@ -1,13 +1,13 @@
 ---
 schema: "archdoc/v1"
-id: DL-0071
+id: DL-0073
 title: "tmodel branding, design system, and welcome screen"
 type: process
 status: draft
 version: "0.1.0"
 date: "2026-11-26"
 updated: "2026-11-26"
-record: DL-0071
+record: DL-0073
 defers_to: ARCH-0001
 bears_on: [APP-0001, DL-0038, DL-0051, DL-0070]
 ---
