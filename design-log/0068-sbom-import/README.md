@@ -4,7 +4,7 @@ id: DL-0068
 title: "SBOM import: a starter model from Syft's CycloneDX SBOM of a container image and Grype's scan of it (#257)"
 type: process
 status: draft
-version: "0.4.0"
+version: "0.5.0"
 date: "2026-11-25"
 updated: "2026-11-26"
 record: DL-0068
@@ -119,17 +119,21 @@ them decides a `DEC-*`; the sponsor can change any of them.
    checked against the platform: the image's purl, when it has an `arch`, and each package purl's
    `arch` qualifier, read through a small table of distribution names (`aarch64` is `arm64`,
    `x86_64` is `amd64`, `i686` and `x86` are `386`, `armhf` is `arm`, `ppc64el` is `ppc64le`).
-   A package may be built for the platform's architecture or, on a 64-bit platform, for the 32-bit
-   one it also runs (multiarch and multilib); any other is refused, and so is an SBOM none of whose
-   packages is built for the platform's own. A name not in the table is listed in the report as not
-   checked, and `noarch`, `all` and `any` are skipped. This changes a documented choice: the key was
-   the digest alone (Review changes, second round, item 2), and the command line: the fixture's
-   import now needs `--platform linux/arm64/v8`. The rest stays. The first version reads SBOMs of
-   container images only, and refuses any other SBOM with a message saying why: a folder or a file
-   has no digest to key its build by. An image named by a version tag gives Syft no digest either
-   (pilot.md: Syft writes the digest only for `latest` or a digest reference), and the message says
-   to name the image by digest. A scan must also name this SBOM's root `bom-ref` as its image id
-   when Grype read an SBOM (Review changes, item 6).
+   A package built for the platform's architecture or, on a 64-bit platform, for the 32-bit one it
+   also runs (multiarch and multilib) is native; one built for any other is foreign, and is kept as
+   a Component like any other, with its dependencies and matches, and the report lists it (Review
+   changes, fourth round, item 1; until then it was refused). The platform is refused when more
+   packages are built for one other platform than for it, each architecture counting with its own
+   32-bit sibling, as the platform's does; a tie goes to the platform. An SBOM none of whose
+   packages is built for the platform's own architecture is refused too. A name not in the table is
+   listed in the report as not checked, and `noarch`, `all` and `any` are skipped. This changes a
+   documented choice: the key was the digest alone (Review changes, second round, item 2), and the
+   command line: the fixture's import now needs `--platform linux/arm64/v8`. The rest stays. The
+   first version reads SBOMs of container images only, and refuses any other SBOM with a message
+   saying why: a folder or a file has no digest to key its build by. An image named by a version
+   tag gives Syft no digest either (pilot.md: Syft writes the digest only for `latest` or a digest
+   reference), and the message says to name the image by digest. A scan must also name this SBOM's
+   root `bom-ref` as its image id when Grype read an SBOM (Review changes, item 6).
 
    Since the third round (Review changes, third round, items 1 and 2), the variant is checked too.
    Some names pin a 32-bit ARM variant, which depends on the distribution, so a second table reads
@@ -137,21 +141,24 @@ them decides a `DEC-*`; the sponsor can change any of them.
    build: Alpine's `armhf` is arm/v6 and `armv7` arm/v7, Debian's `armel` arm/v5 and `armhf`
    arm/v7, Ubuntu's `armhf` arm/v7, and RPM's `armv6hl` arm/v6 and `armv7hl` arm/v7. Raspbian
    writes Debian's `armhf` for ARMv6, so another distribution's `armhf` pins no variant, and no
-   other name pins one (`aarch64` and `arm64` say nothing of v8.x). A variant that packages built
-   for the platform's own architecture pin must be the platform's; a platform that names none takes
-   it, and the model and the report say so; packages that pin two are refused. A 32-bit sibling's
-   variant is reported, never compared or taken, since the platform's variant is the 64-bit
-   architecture's own. Two rules then settle a platform still without one: arm64's variant is v8,
-   the only arm64 variant the OCI image index specification lists, so `linux/arm64` and
-   `linux/arm64/v8` are one platform, one id and one model; and 32-bit arm, whose v5, v6 and v7
-   builds one index can list side by side, is refused, with a message asking for the variant. Each
-   part of a platform must have its form: the os and the architecture letters and digits, a
-   variant letters and digits with dots between them (`v8.1`), so `v8-1` is refused and no two
-   platforms give one id. This changes two documented choices. The platform was keyed as given, so
-   `linux/arm64` and `linux/arm64/v8`, which containerd treats as one platform, gave two ids (name
-   it as the image index lists it, this said); they now give one. And a 32-bit arm platform with no
-   variant was read; it is now refused unless its packages pin one. The platform is otherwise keyed
-   as given, in lower case.
+   other name pins one (`aarch64` and `arm64` say nothing of v8.x). The variants that packages
+   built for the platform's own architecture pin are checked as the architectures are: a platform
+   that names a variant is refused when more of them pin one other variant than pin its own, a tie
+   goes to the platform, and those that pin another are kept and reported (fourth round, item 1;
+   until then any other variant was refused). A platform that names none takes the one they pin,
+   and the model and the report say so; when they pin two, it is refused, with a message asking for
+   the variant. A 32-bit sibling's variant is reported, never compared or taken, since the
+   platform's variant is the 64-bit architecture's own. Two rules then settle a platform still
+   without one: arm64's variant is v8, the only arm64 variant the OCI image index specification
+   lists, so `linux/arm64` and `linux/arm64/v8` are one platform, one id and one model; and 32-bit
+   arm, whose v5, v6 and v7 builds one index can list side by side, is refused, with a message
+   asking for the variant. Each part of a platform must have its form: the os and the architecture
+   letters and digits, a variant letters and digits with dots between them (`v8.1`), so `v8-1` is
+   refused and no two platforms give one id. This changes two documented choices. The platform was
+   keyed as given, so `linux/arm64` and `linux/arm64/v8`, which containerd treats as one platform,
+   gave two ids (name it as the image index lists it, this said); they now give one. And a 32-bit
+   arm platform with no variant was read; it is now refused unless its packages pin one. The
+   platform is otherwise keyed as given, in lower case.
 3. **Where `dependsOn` goes.** `uses_component`, option (b) of R-EDGE-3: the edge all seven example
    models with a dependency use (none uses `depends_on`), and the one the schema defines as the edge
    "along which vuln/finding propagation is sound". The engine does not propagate findings itself today; the
@@ -204,13 +211,16 @@ them decides a `DEC-*`; the sponsor can change any of them.
   SBOM whose name and version give two digests; a Grype version that is not a release, a database
   Grype marks invalid, and a database dated after the scan. Since the second round (items 2 and 5):
   no platform, or a `--platform` that is not `OS/ARCH[/VARIANT]` or names its architecture as a
-  distribution does (`aarch64`); a `--platform` the scan's platform contradicts; packages, or the
-  image's purl, built for an architecture the platform does not run; and a time that leaves
-  Python's years 1 to 9999 when moved to UTC, which now gets the field's message instead of a
-  traceback. Since the third round (items 1, 2 and 4): a platform part outside its form (`v8-1`,
-  `arm-64`); packages that pin a variant other than the platform's, or two variants of its
-  architecture; and 32-bit arm with no variant from the platform or the packages. Nesting deeper
-  than 64 levels now gets the same refusal on every Python version.
+  distribution does (`aarch64`); a `--platform` the scan's platform contradicts; the image's purl
+  built for an architecture the platform does not run; packages none of which is built for the
+  platform's own architecture, and (since the fourth round, item 1, which keeps the others) more
+  packages built for one other platform than for this one; and a time that leaves Python's years
+  1 to 9999 when moved to UTC, which now gets the field's message instead of a traceback. Since
+  the third round (items 1, 2 and 4): a platform part outside its form (`v8-1`, `arm-64`);
+  packages that pin a variant other than the platform's (since the fourth round, only when more
+  pin it than pin the platform's), or two variants of its architecture when the platform names
+  none; and 32-bit arm with no variant from the platform or the packages. Nesting deeper than 64
+  levels now gets the same refusal on every Python version.
 - **Outputs:** the model and the report are written to temporary files beside their paths and put
   in place only when both are written, so a failed import leaves neither, and puts back any file
   `--force` was replacing. An existing model or report, or a dangling link at its path, is never
@@ -266,9 +276,9 @@ day, which is why every Assertion records the database's build time (R-PROV-2).
   placeholder CWEs; a match on a part the SBOM lacks); suppliers; dependencies that are not between
   Components; entries sharing a key; every refusal, each checked to write nothing; the command line;
   and that the same files give the same bytes. Since the reviews, also the regression tests listed
-  under each item of the three rounds below: 236 tests in all (185 after the second round, 135 after
-  the first), counting each parametrized case.
-- **The fixture's numbers are unchanged by the three rounds:** 17 Components, 24 dependency edges,
+  under each item of the four rounds below: 254 tests in all (236 after the third round, 185 after
+  the second, 135 after the first), counting each parametrized case.
+- **The fixture's numbers are unchanged by the four rounds:** 17 Components, 24 dependency edges,
   15 Vulnerabilities, 9 Weaknesses, 4 Parties and 45 Assertions (30 package matches, 15 CWE links).
   Every package has its own purl and every match its own (CVE, Component) pair, so keeping the
   qualifiers and one Assertion per match (Review changes, items 1 and 4) change no count. Only two
@@ -282,7 +292,10 @@ day, which is why every Assertion records the database's build time (R-PROV-2).
   fixture's model changes. The third round changes none: imported with `--platform linux/arm64/v8`,
   the model is e12ab07's byte for byte, and `--platform linux/arm64` now gives the same bytes. One
   line of its report changes (`components[].description`, item 3), and with `linux/arm64` the
-  report adds a line saying that it is v8.
+  report adds a line saying that it is v8. The fourth round changes nothing of the fixture's: with
+  either spelling, the model and the report are f21f4a5's byte for byte, and with
+  `--platform linux/amd64` the import is still refused (exit code 2, nothing written), now with the
+  counts.
 - The engine lists the imported model and opens it (`core.list_models`, `core.model_graph`): 30
   `propagates_to`, 15 `instance_of`, 24 `uses_component` and 17 `build_composed_of` edges. The
   attack-graph checks pass too; the model has no paths yet.
@@ -692,6 +705,90 @@ item says.
 @Maimcghee's two notes, Parties named by raw identifiers and the `cli.py` conflict with #243, are
 follow-ups below. `engine/engine/cli.py` and the app are not changed.
 
+## Review changes, fourth round (2026-11-26)
+
+@kriishnaa-18 re-reviewed f21f4a5 and asked for changes: one blocking finding (P2) and one that is
+not blocking (P3). Item 3 is a defect found while checking those fixes. As in the earlier rounds, each item says what was wrong, what changed (in
+`engine/engine/import_sbom.py` unless it says otherwise), and the regression tests in
+`engine/tests/test_import_sbom.py`, each of which was run on f21f4a5 first and failed there, as the
+item says. Every test of the earlier rounds passes unchanged.
+
+1. **Packages built for another platform are kept (P2).** `_check_architectures` refused an SBOM if
+   any package was built for an architecture the platform does not run, other than the 32-bit
+   sibling a 64-bit platform also runs. A real image can hold such packages: Debian's multiarch
+   installs them, after `dpkg --add-architecture`, for cross-compiling, and an emulator or a
+   toolchain can bring some. So a valid SBOM was refused even when its native packages and the
+   platform (from `--platform` or a scan of the image) agree. This item reverses the second round's
+   refusal of foreign-architecture packages (second round, item 2; the follow-ups listed it as
+   open). Now a package is native, built for the platform's architecture or for the 32-bit sibling
+   it also runs (`ALSO_RUNS`), or foreign, built for any other architecture the tables know, and a
+   foreign one is a Component like any other, with its dependency edges and its vulnerability
+   matches. What replaces the refusal is a majority rule, `_Builder._check_majority`: the platform
+   is refused only when more packages are built for one other platform than for it, each other
+   architecture counting with its own 32-bit sibling (`SIBLING_OF`), as the platform's does, and the
+   message gives the counts. So the fixture under `--platform linux/amd64` (16 for arm64, none for
+   amd64) and 1 amd64 package beside 15 arm64 ones are still refused. A 32-bit platform does not run
+   64-bit code, so arm64 packages are foreign to arm/v7, counted apart from arm's own. The tie rule
+   is the agent's choice, open to review: a tie goes to the platform, which the packages then do not
+   contradict (as when no package names a CPU), and the report says so. Refusing a tie would leave
+   an evenly split SBOM no way in, since no option overrides the check, and a build's own packages
+   are nearly always most of it. An SBOM none of whose packages is built for the platform's own
+   architecture is still refused (all 386 is the 386 build, though amd64 runs it), and so is an
+   image purl naming another architecture. The variants follow the same rule, in
+   `_Builder._check_variant`: a platform that names a variant is refused when more of its
+   architecture's packages pin one other variant than pin its own, as the third round's Alpine
+   `armv7` packages under `--platform linux/arm/v6` still are, now with the counts; a tie goes to
+   the platform; and packages that pin another variant beside those are kept and reported. A
+   platform that names no variant still takes the one its packages pin, and when they pin two it is
+   still refused, now with a message asking for the variant (`--platform linux/arm/VARIANT`). The
+   third round's tables and rules (`ARCH_VARIANTS`, `_built_for`, `_settle_platform`, and a 32-bit
+   sibling's variant reported, never compared or taken) are unchanged. The report lists the kept
+   packages by architecture ("2 Components built for amd64 (arch=x86_64), not the platform's arm64:
+   kept"), and the model's header says it in one line (`_Builder.foreign`). This changes two
+   documented choices, in decision 2: packages built for another architecture were refused, and so
+   were packages that pin a second variant under a platform that names one. The plan for this round
+   refused a variant only when none of the variant-pinning packages gives the platform's; the agent
+   applied the architectures' majority rule instead, since otherwise one Alpine `armhf` package
+   beside 15 `armv7` ones would let the third round's contradiction through under
+   `--platform linux/arm/v6`. Tests: `test_packages_built_for_another_platform_are_kept` (the
+   platform from `--platform` and from a scan of the image: two x86_64 packages, one depending on
+   the other, a native package depending on one, and a match on one; every Component, edge and
+   Assertion of the fixture's model is kept, and so are the foreign ones),
+   `test_arm64_packages_are_foreign_to_a_32_bit_arm_platform`,
+   `test_most_packages_built_for_another_platform_is_a_contradiction` (four cases: the fixture; 1
+   for amd64 beside 15 for arm64; 6 for amd64 against 5 for arm64 and 5 for arm; and all for 386),
+   `test_a_tie_goes_to_the_platform` (two ties of architectures and two of variants),
+   `test_packages_pinning_another_variant_beside_the_platforms_are_kept`,
+   `test_most_packages_pinning_another_variant_is_a_contradiction` (none and 1 of 16 for the
+   platform's variant) and `test_two_variants_and_a_platform_that_names_none_asks_for_it`. On
+   f21f4a5: the mixed SBOMs, the ties and the kept variant were refused ("the SBOM's packages are
+   built for amd64 (arch=x86_64), but the platform is linux/arm64/v8 (from --platform)", the same
+   from the scan, and "more than one variant of arm" for the variants); and the contradictions were
+   refused without their counts, and the two variants without asking for one (pytest: Regex pattern
+   did not match).
+2. **Every backup is tracked (P3).** With `--force`, `_publish` made the second names that keep the
+   files it replaces (`_keep`) in one list comprehension, so when the second one failed, the list
+   was never assigned, and the first, `.import-sbom-....old`, was left beside the outputs without a
+   word. Now each is recorded as soon as `_keep` makes it, so a failure while making a later one
+   removes the earlier ones; and `_remove` removes what a failed import made, names in a note on the
+   original error any file it could not remove, as the second round's take-back notes do, and lets
+   that error come out (the command prints the notes). Tests:
+   `test_a_failed_second_backup_leaves_no_first_one` (no `.import-sbom-*.old` file beside the
+   outputs, the outputs unchanged, and the original error) and
+   `test_a_backup_that_cannot_be_removed_is_named`. On f21f4a5 the first left a
+   `.import-sbom-....old` file beside the outputs, and the second's error had no note. A forced
+   import that succeeds removes its second names as before (follow-ups).
+3. **The outputs get the usual file permissions (found while checking this round).** Since the
+   second round, `_place_new` links the temporary file into place, and `_temporary` made it with
+   `tempfile.NamedTemporaryFile`, which creates a file only its owner can read (mode 0600). So the
+   model and the report were 0600, where a file the user saves follows their umask (0644 under
+   the usual 022). `_temporary` now creates the file as `_create_new` does, with mode 0o666 less
+   the umask, under a random `.import-sbom-<hex>.tmp` name it creates exclusively. Test:
+   `test_the_outputs_get_the_usual_file_permissions` (an unforced import, then a forced one, under
+   umask 022). On f21f4a5 both files were 0600.
+
+`engine/engine/cli.py` and the app are not changed.
+
 ## What a human accepted
 
 - @Clovier, 2026-11-25, after asking for each term to be explained: build #257 now, with the four
@@ -705,6 +802,9 @@ follow-ups below. `engine/engine/cli.py` and the app are not changed.
 - @Clovier, 2026-11-26: asked for these fixes ("review/fix what's outstanding", after
   @kriishnaa-18's and @Maimcghee's reviews of e12ab07); the wording and code are Claude Code's
   draft until the pull request review accepts them.
+- @Clovier, 2026-11-26: asked for these fixes ("fix 268", after @kriishnaa-18's review of
+  f21f4a5); the wording and code are Claude Code's draft until the pull request review accepts
+  them.
 
 The code, the mapping and the choices above are the agent's draft until a human reviews them on the
 pull request.
@@ -756,9 +856,14 @@ pull request.
 - **`os.version`:** an image index can list two builds of one os and architecture that differ in
   `os.version`, as Windows images do; the key holds the os, the architecture and the variant only.
   The import has been checked on a Linux image only.
-- **Packages for a foreign CPU:** an SBOM with packages built for an architecture the platform does
-  not run (other than the 32-bit one a 64-bit platform runs) is refused, though an image can hold
-  them for emulation; no such image is known here.
+- **Packages for a foreign CPU:** kept since the fourth round (item 1), which settles this
+  follow-up, and refused only when more are built for one other platform than for the build's.
+  The rule and its tie were checked on SBOMs made from the fixture; no real multiarch or emulator
+  image has been imported here.
+- **A second name left after a forced import that succeeds:** if one cannot be removed once both
+  outputs are in place, the command still ends with an error (exit code 1) that does not name it,
+  as before the fourth round; only a failed import's cleanup names what it leaves (fourth round,
+  item 2). Saying it as a warning would need `engine/engine/cli.py` to print notes on success.
 - **Weakness names** from the pinned CWE catalog, instead of the id alone.
 - **The model list's label:** `pv-` files show as "Proposal example (AI-drafted, unreviewed)"
   (`MODEL_KINDS` in `engine/engine/core.py`); an imported one is tool-made, not AI-drafted.
@@ -769,10 +874,10 @@ pull request.
   (`build_composed_of`). This change does not touch the app.
 - **#243 also changes `engine/engine/cli.py`** (@kriishnaa-18's review, not blocking): check the
   `import-sbom` command when the two come together. The first round did not touch `cli.py`; the
-  second adds `--platform` to `import-sbom` and prints a failed import's notes; the third does not
-  change it. @Maimcghee's review of e12ab07 (a note, not blocking) adds that #243 adds its command
-  in the same place, so whichever of the two merges second has a simple conflict to resolve by
-  keeping both commands.
+  second adds `--platform` to `import-sbom` and prints a failed import's notes; the third and the
+  fourth do not change it. @Maimcghee's review of e12ab07 (a note, not blocking) adds that #243
+  adds its command in the same place, so whichever of the two merges second has a simple conflict
+  to resolve by keeping both commands.
 - **Party names for CWE sources** (@Maimcghee's review of e12ab07, a note, not blocking): the
   three CWE sources among the fixture's four Parties are named as the scan's database names them,
   and two of those names are raw identifiers: `134c704f-9b21-4f2e-91b3-4a467353bcc0`, an NVD
