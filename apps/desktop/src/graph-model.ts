@@ -7,7 +7,7 @@ import type {
 } from "./graph-types";
 import {
   relationshipReviewState,
-  reviewStatePresentation,
+  assertionReviewState,
   type ReviewStateKind,
   type ReviewStatePresentation,
 } from "./review-status";
@@ -133,9 +133,11 @@ export function toCytoscapeEdgeElement(edge: GraphEdge): CytoscapeEdgeElement {
   // are proposed, rejected, or disputed; those verdicts remain in the inspector.
   if (edge.authored === true) return { group: "edges", data };
 
-  const review = edge.assertions?.length
-    ? structuredAssertionPresentation(edge.assertions)
-    : relationshipReviewState(edge.properties);
+  const review = typeof edge.properties.human_reviewed === "boolean"
+    ? relationshipReviewState(edge.properties)
+    : edge.assertions?.length
+      ? structuredAssertionPresentation(edge.assertions)
+      : relationshipReviewState(edge.properties);
   if (review) {
     data.reviewState = review.kind;
     data.assertionStatus = review.assertionStatus;
@@ -149,9 +151,8 @@ export function toCytoscapeEdgeElement(edge: GraphEdge): CytoscapeEdgeElement {
 function structuredAssertionPresentation(
   assertions: readonly GraphAssertionProvenance[],
 ): ReviewStatePresentation {
-  const presentations = assertions.map((assertion) => reviewStatePresentation(
-    assertion.assertion_status,
-    combinedReviewStatus(assertion.reviews.map((review) => review.review_status)),
+  const presentations = assertions.map((assertion) => assertionReviewState(
+    assertion, combinedReviewStatus(assertion.reviews.map((review) => review.review_status)),
   ));
   const kinds = new Set(presentations.map((presentation) => presentation.kind));
   if (assertions.length === 1) return presentations[0];

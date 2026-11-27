@@ -589,7 +589,9 @@
                 "assertion_status": "accepted",
                 "confidence": "medium",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: V1.3 Sanitization, row 1.3.6 (0x10-V1-Encoding-and-Sanitization.md; PDF p.27); the pinned ASVS record maps V1.3.6 to CWE-918 through its composed legacy CWE mapping and labels that mapping inferred.",
+                "effective_status": "accepted",
                 "evidence": [],
+                "human_reviewed": true,
                 "id": "assertion:owasp-asvs-5-v1-3-6--addresses--cwe-918",
                 "reviews": [
                   {
@@ -612,6 +614,9 @@
               ],
               "assertion_status": "accepted",
               "confidence": "medium",
+              "effective_assertion_status": "accepted",
+              "effective_review_status": "accepted",
+              "human_reviewed": true,
               "review_ids": [
                 "review:owasp-asvs-5-v1-3-6--addresses--cwe-918"
               ],
@@ -633,7 +638,9 @@
                 "assertion_status": "accepted",
                 "confidence": "medium",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: V1.5 Safe Deserialization, row 1.5.1 (0x10-V1-Encoding-and-Sanitization.md; PDF p.28); the pinned ASVS record maps V1.5.1 to CWE-611 through its composed legacy CWE mapping and labels that mapping inferred.",
+                "effective_status": "accepted",
                 "evidence": [],
+                "human_reviewed": true,
                 "id": "assertion:owasp-asvs-5-v1-5-1--addresses--cwe-611",
                 "reviews": [
                   {
@@ -656,6 +663,9 @@
               ],
               "assertion_status": "accepted",
               "confidence": "medium",
+              "effective_assertion_status": "accepted",
+              "effective_review_status": "accepted",
+              "human_reviewed": true,
               "review_ids": [
                 "review:owasp-asvs-5-v1-5-1--addresses--cwe-611"
               ],
@@ -677,7 +687,9 @@
                 "assertion_status": "accepted",
                 "confidence": "medium",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: V1.5 Safe Deserialization, row 1.5.3 (0x10-V1-Encoding-and-Sanitization.md; PDF p.29); the pinned ASVS record maps V1.5.3 to CWE-436 through its composed legacy CWE mapping and labels that mapping inferred.",
+                "effective_status": "accepted",
                 "evidence": [],
+                "human_reviewed": true,
                 "id": "assertion:owasp-asvs-5-v1-5-3--addresses--cwe-436",
                 "reviews": [
                   {
@@ -700,6 +712,9 @@
               ],
               "assertion_status": "accepted",
               "confidence": "medium",
+              "effective_assertion_status": "accepted",
+              "effective_review_status": "accepted",
+              "human_reviewed": true,
               "review_ids": [
                 "review:owasp-asvs-5-v1-5-3--addresses--cwe-436"
               ],
@@ -721,7 +736,9 @@
                 "assertion_status": "proposed",
                 "confidence": "medium",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: V5.2 File Upload and Content, row 5.2.1 (0x14-V5-File-Handling.md; PDF p.43); the pinned ASVS record maps V5.2.1 to CWE-400 through its composed legacy CWE mapping and labels that mapping inferred.",
+                "effective_status": "proposed",
                 "evidence": [],
+                "human_reviewed": false,
                 "id": "assertion:owasp-asvs-5-v5-2-1--addresses--cwe-400",
                 "reviews": []
               }
@@ -736,7 +753,10 @@
                 "assertion:owasp-asvs-5-v5-2-1--addresses--cwe-400"
               ],
               "assertion_status": "proposed",
-              "confidence": "medium"
+              "confidence": "medium",
+              "effective_assertion_status": "proposed",
+              "effective_review_status": null,
+              "human_reviewed": false
             },
             "relationship_type": "addresses",
             "source": "requirement:owasp-asvs-5-v5-2-1",
@@ -748,7 +768,9 @@
                 "assertion_status": "accepted",
                 "confidence": "medium",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: V5.2 File Upload and Content, row 5.2.2 (0x14-V5-File-Handling.md; PDF p.43); the pinned ASVS record maps V5.2.2 to CWE-434 through its composed legacy CWE mapping and labels that mapping inferred.",
+                "effective_status": "accepted",
                 "evidence": [],
+                "human_reviewed": true,
                 "id": "assertion:owasp-asvs-5-v5-2-2--addresses--cwe-434",
                 "reviews": [
                   {
@@ -771,6 +793,9 @@
               ],
               "assertion_status": "accepted",
               "confidence": "medium",
+              "effective_assertion_status": "accepted",
+              "effective_review_status": "accepted",
+              "human_reviewed": true,
               "review_ids": [
                 "review:owasp-asvs-5-v5-2-2--addresses--cwe-434"
               ],
@@ -792,7 +817,9 @@
                 "assertion_status": "proposed",
                 "confidence": "medium",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: V5.2 File Upload and Content, row 5.2.3 (0x14-V5-File-Handling.md; PDF p.43); the pinned ASVS record maps V5.2.3 to CWE-409 through its composed legacy CWE mapping and labels that mapping inferred.",
+                "effective_status": "proposed",
                 "evidence": [],
+                "human_reviewed": false,
                 "id": "assertion:owasp-asvs-5-v5-2-3--addresses--cwe-409",
                 "reviews": []
               }
@@ -807,7 +834,10 @@
                 "assertion:owasp-asvs-5-v5-2-3--addresses--cwe-409"
               ],
               "assertion_status": "proposed",
-              "confidence": "medium"
+              "confidence": "medium",
+              "effective_assertion_status": "proposed",
+              "effective_review_status": null,
+              "human_reviewed": false
             },
             "relationship_type": "addresses",
             "source": "requirement:owasp-asvs-5-v5-2-3",
@@ -819,7 +849,9 @@
                 "assertion_status": "proposed",
                 "confidence": "medium",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: V5.2 File Upload and Content, row 5.2.4 (0x14-V5-File-Handling.md; PDF p.43); the pinned ASVS record maps V5.2.4 to CWE-770 through its composed legacy CWE mapping and labels that mapping inferred.",
+                "effective_status": "proposed",
                 "evidence": [],
+                "human_reviewed": false,
                 "id": "assertion:owasp-asvs-5-v5-2-4--addresses--cwe-770",
                 "reviews": []
               }
@@ -834,7 +866,10 @@
                 "assertion:owasp-asvs-5-v5-2-4--addresses--cwe-770"
               ],
               "assertion_status": "proposed",
-              "confidence": "medium"
+              "confidence": "medium",
+              "effective_assertion_status": "proposed",
+              "effective_review_status": null,
+              "human_reviewed": false
             },
             "relationship_type": "addresses",
             "source": "requirement:owasp-asvs-5-v5-2-4",
@@ -846,7 +881,9 @@
                 "assertion_status": "accepted",
                 "confidence": "medium",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: V5.2 File Upload and Content, row 5.2.5 (0x14-V5-File-Handling.md; PDF p.43); the pinned ASVS record maps V5.2.5 to CWE-61 through its composed legacy CWE mapping and labels that mapping inferred.",
+                "effective_status": "accepted",
                 "evidence": [],
+                "human_reviewed": true,
                 "id": "assertion:owasp-asvs-5-v5-2-5--addresses--cwe-61",
                 "reviews": [
                   {
@@ -869,6 +906,9 @@
               ],
               "assertion_status": "accepted",
               "confidence": "medium",
+              "effective_assertion_status": "accepted",
+              "effective_review_status": "accepted",
+              "human_reviewed": true,
               "review_ids": [
                 "review:owasp-asvs-5-v5-2-5--addresses--cwe-61"
               ],
@@ -890,7 +930,9 @@
                 "assertion_status": "accepted",
                 "confidence": "medium",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: V5.3 File Storage, row 5.3.2 (0x14-V5-File-Handling.md; PDF p.44); the pinned ASVS record maps V5.3.2 to CWE-73 through its composed legacy CWE mapping and labels that mapping inferred.",
+                "effective_status": "accepted",
                 "evidence": [],
+                "human_reviewed": true,
                 "id": "assertion:owasp-asvs-5-v5-3-2--addresses--cwe-73",
                 "reviews": [
                   {
@@ -913,6 +955,9 @@
               ],
               "assertion_status": "accepted",
               "confidence": "medium",
+              "effective_assertion_status": "accepted",
+              "effective_review_status": "accepted",
+              "human_reviewed": true,
               "review_ids": [
                 "review:owasp-asvs-5-v5-3-2--addresses--cwe-73"
               ],
@@ -934,7 +979,9 @@
                 "assertion_status": "proposed",
                 "confidence": "medium",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: V5.3 File Storage, row 5.3.3 (0x14-V5-File-Handling.md; PDF p.44); the pinned ASVS record maps V5.3.3 to CWE-23 through its composed legacy CWE mapping and labels that mapping inferred.",
+                "effective_status": "proposed",
                 "evidence": [],
+                "human_reviewed": false,
                 "id": "assertion:owasp-asvs-5-v5-3-3--addresses--cwe-23",
                 "reviews": []
               }
@@ -949,7 +996,10 @@
                 "assertion:owasp-asvs-5-v5-3-3--addresses--cwe-23"
               ],
               "assertion_status": "proposed",
-              "confidence": "medium"
+              "confidence": "medium",
+              "effective_assertion_status": "proposed",
+              "effective_review_status": null,
+              "human_reviewed": false
             },
             "relationship_type": "addresses",
             "source": "requirement:owasp-asvs-5-v5-3-3",
@@ -961,7 +1011,9 @@
                 "assertion_status": "proposed",
                 "confidence": "medium",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: V5.4 File Download, row 5.4.1 (0x14-V5-File-Handling.md; PDF p.44); the pinned ASVS record maps V5.4.1 to CWE-641 through its composed legacy CWE mapping and labels that mapping inferred.",
+                "effective_status": "proposed",
                 "evidence": [],
+                "human_reviewed": false,
                 "id": "assertion:owasp-asvs-5-v5-4-1--addresses--cwe-641",
                 "reviews": []
               }
@@ -976,7 +1028,10 @@
                 "assertion:owasp-asvs-5-v5-4-1--addresses--cwe-641"
               ],
               "assertion_status": "proposed",
-              "confidence": "medium"
+              "confidence": "medium",
+              "effective_assertion_status": "proposed",
+              "effective_review_status": null,
+              "human_reviewed": false
             },
             "relationship_type": "addresses",
             "source": "requirement:owasp-asvs-5-v5-4-1",
@@ -988,7 +1043,9 @@
                 "assertion_status": "proposed",
                 "confidence": "medium",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: V5.4 File Download, row 5.4.3 (0x14-V5-File-Handling.md; PDF p.44); the pinned ASVS record maps V5.4.3 to CWE-509 through its composed legacy CWE mapping and labels that mapping inferred.",
+                "effective_status": "proposed",
                 "evidence": [],
+                "human_reviewed": false,
                 "id": "assertion:owasp-asvs-5-v5-4-3--addresses--cwe-509",
                 "reviews": []
               }
@@ -1003,7 +1060,10 @@
                 "assertion:owasp-asvs-5-v5-4-3--addresses--cwe-509"
               ],
               "assertion_status": "proposed",
-              "confidence": "medium"
+              "confidence": "medium",
+              "effective_assertion_status": "proposed",
+              "effective_review_status": null,
+              "human_reviewed": false
             },
             "relationship_type": "addresses",
             "source": "requirement:owasp-asvs-5-v5-4-3",
@@ -1015,7 +1075,9 @@
                 "assertion_status": "proposed",
                 "confidence": "medium",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: V6.1 Authentication Documentation, row 6.1.3 (0x15-V6-Authentication.md; PDF p.46); the pinned ASVS record maps V6.1.3 to CWE-306 through its composed legacy CWE mapping and labels that mapping inferred.",
+                "effective_status": "rejected",
                 "evidence": [],
+                "human_reviewed": false,
                 "id": "assertion:owasp-asvs-5-v6-1-3--addresses--cwe-306",
                 "reviews": [
                   {
@@ -1038,6 +1100,9 @@
               ],
               "assertion_status": "proposed",
               "confidence": "medium",
+              "effective_assertion_status": "proposed",
+              "effective_review_status": "rejected",
+              "human_reviewed": false,
               "review_ids": [
                 "review:owasp-asvs-5-v6-1-3--addresses--cwe-306"
               ],
@@ -1059,7 +1124,9 @@
                 "assertion_status": "proposed",
                 "confidence": "medium",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: V6.2 Password Security, row 6.2.1 (0x15-V6-Authentication.md; PDF p.46); the pinned ASVS record maps V6.2.1 to CWE-521 through its composed legacy CWE mapping and labels that mapping inferred.",
+                "effective_status": "proposed",
                 "evidence": [],
+                "human_reviewed": false,
                 "id": "assertion:owasp-asvs-5-v6-2-1--addresses--cwe-521",
                 "reviews": []
               }
@@ -1074,7 +1141,10 @@
                 "assertion:owasp-asvs-5-v6-2-1--addresses--cwe-521"
               ],
               "assertion_status": "proposed",
-              "confidence": "medium"
+              "confidence": "medium",
+              "effective_assertion_status": "proposed",
+              "effective_review_status": null,
+              "human_reviewed": false
             },
             "relationship_type": "addresses",
             "source": "requirement:owasp-asvs-5-v6-2-1",
@@ -1086,7 +1156,9 @@
                 "assertion_status": "proposed",
                 "confidence": "medium",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: V6.2 Password Security, row 6.2.3 (0x15-V6-Authentication.md; PDF p.46); the pinned ASVS record maps V6.2.3 to CWE-620 through its composed legacy CWE mapping and labels that mapping inferred.",
+                "effective_status": "proposed",
                 "evidence": [],
+                "human_reviewed": false,
                 "id": "assertion:owasp-asvs-5-v6-2-3--addresses--cwe-620",
                 "reviews": []
               }
@@ -1101,7 +1173,10 @@
                 "assertion:owasp-asvs-5-v6-2-3--addresses--cwe-620"
               ],
               "assertion_status": "proposed",
-              "confidence": "medium"
+              "confidence": "medium",
+              "effective_assertion_status": "proposed",
+              "effective_review_status": null,
+              "human_reviewed": false
             },
             "relationship_type": "addresses",
             "source": "requirement:owasp-asvs-5-v6-2-3",
@@ -1113,7 +1188,9 @@
                 "assertion_status": "proposed",
                 "confidence": "medium",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: V6.2 Password Security, row 6.2.4 (0x15-V6-Authentication.md; PDF p.46); the pinned ASVS record maps V6.2.4 to CWE-521 through its composed legacy CWE mapping and labels that mapping inferred.",
+                "effective_status": "proposed",
                 "evidence": [],
+                "human_reviewed": false,
                 "id": "assertion:owasp-asvs-5-v6-2-4--addresses--cwe-521",
                 "reviews": []
               }
@@ -1128,7 +1205,10 @@
                 "assertion:owasp-asvs-5-v6-2-4--addresses--cwe-521"
               ],
               "assertion_status": "proposed",
-              "confidence": "medium"
+              "confidence": "medium",
+              "effective_assertion_status": "proposed",
+              "effective_review_status": null,
+              "human_reviewed": false
             },
             "relationship_type": "addresses",
             "source": "requirement:owasp-asvs-5-v6-2-4",
@@ -1140,7 +1220,9 @@
                 "assertion_status": "proposed",
                 "confidence": "medium",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: V6.2 Password Security, row 6.2.6 (0x15-V6-Authentication.md; PDF p.46); the pinned ASVS record maps V6.2.6 to CWE-549 through its composed legacy CWE mapping and labels that mapping inferred.",
+                "effective_status": "proposed",
                 "evidence": [],
+                "human_reviewed": false,
                 "id": "assertion:owasp-asvs-5-v6-2-6--addresses--cwe-549",
                 "reviews": []
               }
@@ -1155,7 +1237,10 @@
                 "assertion:owasp-asvs-5-v6-2-6--addresses--cwe-549"
               ],
               "assertion_status": "proposed",
-              "confidence": "medium"
+              "confidence": "medium",
+              "effective_assertion_status": "proposed",
+              "effective_review_status": null,
+              "human_reviewed": false
             },
             "relationship_type": "addresses",
             "source": "requirement:owasp-asvs-5-v6-2-6",
@@ -1167,7 +1252,9 @@
                 "assertion_status": "accepted",
                 "confidence": "medium",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: V6.3 General Authentication Security, row 6.3.1 (0x15-V6-Authentication.md; PDF p.47); the pinned ASVS record maps V6.3.1 to CWE-307 through its composed legacy CWE mapping and labels that mapping inferred.",
+                "effective_status": "accepted",
                 "evidence": [],
+                "human_reviewed": true,
                 "id": "assertion:owasp-asvs-5-v6-3-1--addresses--cwe-307",
                 "reviews": [
                   {
@@ -1190,6 +1277,9 @@
               ],
               "assertion_status": "accepted",
               "confidence": "medium",
+              "effective_assertion_status": "accepted",
+              "effective_review_status": "accepted",
+              "human_reviewed": true,
               "review_ids": [
                 "review:owasp-asvs-5-v6-3-1--addresses--cwe-307"
               ],
@@ -1211,7 +1301,9 @@
                 "assertion_status": "accepted",
                 "confidence": "medium",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: V6.3 General Authentication Security, row 6.3.4 (0x15-V6-Authentication.md; PDF p.48); the pinned ASVS record maps V6.3.4 to CWE-306 through its composed legacy CWE mapping and labels that mapping inferred.",
+                "effective_status": "accepted",
                 "evidence": [],
+                "human_reviewed": true,
                 "id": "assertion:owasp-asvs-5-v6-3-4--addresses--cwe-306",
                 "reviews": [
                   {
@@ -1234,6 +1326,9 @@
               ],
               "assertion_status": "accepted",
               "confidence": "medium",
+              "effective_assertion_status": "accepted",
+              "effective_review_status": "accepted",
+              "human_reviewed": true,
               "review_ids": [
                 "review:owasp-asvs-5-v6-3-4--addresses--cwe-306"
               ],
@@ -1255,7 +1350,9 @@
                 "assertion_status": "proposed",
                 "confidence": "medium",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: V6.4 Authentication Factor Lifecycle and Recovery, row 6.4.1 (0x15-V6-Authentication.md; PDF p.49); the pinned ASVS record maps V6.4.1 to CWE-330 through its composed legacy CWE mapping and labels that mapping inferred.",
+                "effective_status": "proposed",
                 "evidence": [],
+                "human_reviewed": false,
                 "id": "assertion:owasp-asvs-5-v6-4-1--addresses--cwe-330",
                 "reviews": []
               }
@@ -1270,7 +1367,10 @@
                 "assertion:owasp-asvs-5-v6-4-1--addresses--cwe-330"
               ],
               "assertion_status": "proposed",
-              "confidence": "medium"
+              "confidence": "medium",
+              "effective_assertion_status": "proposed",
+              "effective_review_status": null,
+              "human_reviewed": false
             },
             "relationship_type": "addresses",
             "source": "requirement:owasp-asvs-5-v6-4-1",
@@ -1282,7 +1382,9 @@
                 "assertion_status": "proposed",
                 "confidence": "medium",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: V6.4 Authentication Factor Lifecycle and Recovery, row 6.4.2 (0x15-V6-Authentication.md; PDF p.49); the pinned ASVS record maps V6.4.2 to CWE-640 through its composed legacy CWE mapping and labels that mapping inferred.",
+                "effective_status": "proposed",
                 "evidence": [],
+                "human_reviewed": false,
                 "id": "assertion:owasp-asvs-5-v6-4-2--addresses--cwe-640",
                 "reviews": []
               }
@@ -1297,7 +1399,10 @@
                 "assertion:owasp-asvs-5-v6-4-2--addresses--cwe-640"
               ],
               "assertion_status": "proposed",
-              "confidence": "medium"
+              "confidence": "medium",
+              "effective_assertion_status": "proposed",
+              "effective_review_status": null,
+              "human_reviewed": false
             },
             "relationship_type": "addresses",
             "source": "requirement:owasp-asvs-5-v6-4-2",
@@ -1309,7 +1414,9 @@
                 "assertion_status": "accepted",
                 "confidence": "medium",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: V13.2 Backend Communication Configuration, row 13.2.5 (0x22-V13-Configuration.md; PDF p.80); the pinned ASVS record maps V13.2.5 to CWE-918 through its composed legacy CWE mapping and labels that mapping inferred.",
+                "effective_status": "accepted",
                 "evidence": [],
+                "human_reviewed": true,
                 "id": "assertion:owasp-asvs-5-v13-2-5--addresses--cwe-918",
                 "reviews": [
                   {
@@ -1332,6 +1439,9 @@
               ],
               "assertion_status": "accepted",
               "confidence": "medium",
+              "effective_assertion_status": "accepted",
+              "effective_review_status": "accepted",
+              "human_reviewed": true,
               "review_ids": [
                 "review:owasp-asvs-5-v13-2-5--addresses--cwe-918"
               ],
@@ -2553,7 +2663,9 @@
                 "assertion_status": "accepted",
                 "confidence": "high",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: Annex I, Part II, point (7) adds secure and timely distribution details to the update capability in Part I, point (2)(c).",
+                "effective_status": "accepted",
                 "evidence": [],
+                "human_reviewed": true,
                 "id": "assertion:cra-partii-7--refines--parti-2-c",
                 "reviews": [
                   {
@@ -2576,6 +2688,9 @@
               ],
               "assertion_status": "accepted",
               "confidence": "high",
+              "effective_assertion_status": "accepted",
+              "effective_review_status": "accepted",
+              "human_reviewed": true,
               "review_ids": [
                 "review:cra-partii-7--refines--parti-2-c"
               ],
@@ -2597,7 +2712,9 @@
                 "assertion_status": "accepted",
                 "confidence": "high",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: Annex I, Part II, point (8) adds timing, charge and advisory obligations to the update capability in Part I, point (2)(c).",
+                "effective_status": "accepted",
                 "evidence": [],
+                "human_reviewed": true,
                 "id": "assertion:cra-partii-8--refines--parti-2-c",
                 "reviews": [
                   {
@@ -2620,6 +2737,9 @@
               ],
               "assertion_status": "accepted",
               "confidence": "high",
+              "effective_assertion_status": "accepted",
+              "effective_review_status": "accepted",
+              "human_reviewed": true,
               "review_ids": [
                 "review:cra-partii-8--refines--parti-2-c"
               ],
@@ -2641,7 +2761,9 @@
                 "assertion_status": "accepted",
                 "confidence": "high",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: Annex I, Part II, point (4), after the semicolon, defines the justified-delay exception to the same point's disclosure duty.",
+                "effective_status": "accepted",
                 "evidence": [],
+                "human_reviewed": true,
                 "id": "assertion:cra-partii-4-delay--refines--partii-4",
                 "reviews": [
                   {
@@ -2664,6 +2786,9 @@
               ],
               "assertion_status": "accepted",
               "confidence": "high",
+              "effective_assertion_status": "accepted",
+              "effective_review_status": "accepted",
+              "human_reviewed": true,
               "review_ids": [
                 "review:cra-partii-4-delay--refines--partii-4"
               ],
@@ -2685,7 +2810,9 @@
                 "assertion_status": "accepted",
                 "confidence": "medium",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: Annex I, Part II, point (6) specifies a reporting contact and information-sharing measures that operationalize the coordinated-disclosure policy required by point (5).",
+                "effective_status": "accepted",
                 "evidence": [],
+                "human_reviewed": true,
                 "id": "assertion:cra-partii-6--refines--partii-5",
                 "reviews": [
                   {
@@ -2708,6 +2835,9 @@
               ],
               "assertion_status": "accepted",
               "confidence": "medium",
+              "effective_assertion_status": "accepted",
+              "effective_review_status": "accepted",
+              "human_reviewed": true,
               "review_ids": [
                 "review:cra-partii-6--refines--partii-5"
               ],
@@ -2729,7 +2859,9 @@
                 "assertion_status": "accepted",
                 "confidence": "high",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: Annex I, Part I, point (2)(d) expressly requires authentication or comparable access controls; mvp-02 identifies CWE-306 as missing authentication for a critical function.",
+                "effective_status": "accepted",
                 "evidence": [],
+                "human_reviewed": true,
                 "id": "assertion:cra-parti-2-d--addresses--cwe-306",
                 "reviews": [
                   {
@@ -2752,6 +2884,9 @@
               ],
               "assertion_status": "accepted",
               "confidence": "high",
+              "effective_assertion_status": "accepted",
+              "effective_review_status": "accepted",
+              "human_reviewed": true,
               "review_ids": [
                 "review:cra-parti-2-d--addresses--cwe-306"
               ],
@@ -2773,7 +2908,9 @@
                 "assertion_status": "accepted",
                 "confidence": "medium",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: Annex I, Part I, point (2)(d) requires protection from unauthorized access; the mvp-02 threat is an unauthenticated diagnostic command path.",
+                "effective_status": "accepted",
                 "evidence": [],
+                "human_reviewed": true,
                 "id": "assertion:cra-parti-2-d--addresses--remote-diag-injection",
                 "reviews": [
                   {
@@ -2796,6 +2933,9 @@
               ],
               "assertion_status": "accepted",
               "confidence": "medium",
+              "effective_assertion_status": "accepted",
+              "effective_review_status": "accepted",
+              "human_reviewed": true,
               "review_ids": [
                 "review:cra-parti-2-d--addresses--remote-diag-injection"
               ],
@@ -2817,7 +2957,9 @@
                 "assertion_status": "accepted",
                 "confidence": "medium",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: Annex I, Part I, point (2)(f) protects commands and configuration from unauthorized modification; the mvp-02 threat injects unauthorized commands.",
+                "effective_status": "accepted",
                 "evidence": [],
+                "human_reviewed": true,
                 "id": "assertion:cra-parti-2-f--addresses--remote-diag-injection",
                 "reviews": [
                   {
@@ -2840,6 +2982,9 @@
               ],
               "assertion_status": "accepted",
               "confidence": "medium",
+              "effective_assertion_status": "accepted",
+              "effective_review_status": "accepted",
+              "human_reviewed": true,
               "review_ids": [
                 "review:cra-parti-2-f--addresses--remote-diag-injection"
               ],
@@ -3824,7 +3969,9 @@
                 "assertion_status": "proposed",
                 "confidence": "high",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: §7.3.1 explicitly bases the layered-defense design on the threat model.",
+                "effective_status": "rejected",
                 "evidence": [],
+                "human_reviewed": false,
                 "id": "assertion:iec-sd-2--derived-from--sr-2",
                 "reviews": [
                   {
@@ -3847,6 +3994,9 @@
               ],
               "assertion_status": "proposed",
               "confidence": "high",
+              "effective_assertion_status": "proposed",
+              "effective_review_status": "rejected",
+              "human_reviewed": false,
               "review_ids": [
                 "review:iec-sd-2--derived-from--sr-2"
               ],
@@ -3868,7 +4018,9 @@
                 "assertion_status": "accepted",
                 "confidence": "high",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: §7.3.1 adds responsibility assignment for every defensive layer to SD-2's layered-defense obligation.",
+                "effective_status": "accepted",
                 "evidence": [],
+                "human_reviewed": true,
                 "id": "assertion:iec-sd-2-2--refines--sd-2",
                 "reviews": [
                   {
@@ -3891,6 +4043,9 @@
               ],
               "assertion_status": "accepted",
               "confidence": "high",
+              "effective_assertion_status": "accepted",
+              "effective_review_status": "accepted",
+              "human_reviewed": true,
               "review_ids": [
                 "review:iec-sd-2-2--refines--sd-2"
               ],
@@ -3912,7 +4067,9 @@
                 "assertion_status": "accepted",
                 "confidence": "high",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: §7.5.1 lists attack-surface reduction as one of the secure-design practices maintained under SD-4.",
+                "effective_status": "accepted",
                 "evidence": [],
+                "human_reviewed": true,
                 "id": "assertion:iec-sd-4-e--refines--sd-4",
                 "reviews": [
                   {
@@ -3935,6 +4092,9 @@
               ],
               "assertion_status": "accepted",
               "confidence": "high",
+              "effective_assertion_status": "accepted",
+              "effective_review_status": "accepted",
+              "human_reviewed": true,
               "review_ids": [
                 "review:iec-sd-4-e--refines--sd-4"
               ],
@@ -3956,7 +4116,9 @@
                 "assertion_status": "accepted",
                 "confidence": "high",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: §8.3.1 adds the tool-use condition to SI-1's static-analysis obligation.",
+                "effective_status": "accepted",
                 "evidence": [],
+                "human_reviewed": true,
                 "id": "assertion:iec-si-1-sca-tool--refines--si-1",
                 "reviews": [
                   {
@@ -3979,6 +4141,9 @@
               ],
               "assertion_status": "accepted",
               "confidence": "high",
+              "effective_assertion_status": "accepted",
+              "effective_review_status": "accepted",
+              "human_reviewed": true,
               "review_ids": [
                 "review:iec-si-1-sca-tool--refines--si-1"
               ],
@@ -4000,7 +4165,9 @@
                 "assertion_status": "proposed",
                 "confidence": "high",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: §8.3.1 extends SI-1 static analysis to new and changed source and adds traceability and threat checks.",
+                "effective_status": "proposed",
                 "evidence": [],
+                "human_reviewed": false,
                 "id": "assertion:iec-si-1-sca-changes--refines--si-1",
                 "reviews": []
               }
@@ -4015,7 +4182,10 @@
                 "assertion:iec-si-1-sca-changes--refines--si-1"
               ],
               "assertion_status": "proposed",
-              "confidence": "high"
+              "confidence": "high",
+              "effective_assertion_status": "proposed",
+              "effective_review_status": null,
+              "human_reviewed": false
             },
             "relationship_type": "refines",
             "source": "requirement:iec-62443-4-1-2018-si-1-sca-changes",
@@ -4027,7 +4197,9 @@
                 "assertion_status": "accepted",
                 "confidence": "high",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: §9.2.1 enumerates the testing categories used to meet SVV-1.",
+                "effective_status": "accepted",
                 "evidence": [],
+                "human_reviewed": true,
                 "id": "assertion:iec-svv-1-types--refines--svv-1",
                 "reviews": [
                   {
@@ -4050,6 +4222,9 @@
               ],
               "assertion_status": "accepted",
               "confidence": "high",
+              "effective_assertion_status": "accepted",
+              "effective_review_status": "accepted",
+              "human_reviewed": true,
               "review_ids": [
                 "review:iec-svv-1-types--refines--svv-1"
               ],
@@ -4071,7 +4246,9 @@
                 "assertion_status": "accepted",
                 "confidence": "high",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: §9.3.1 requires both confirmation and attempted defeat of each mitigation under SVV-2.",
+                "effective_status": "accepted",
                 "evidence": [],
+                "human_reviewed": true,
                 "id": "assertion:iec-svv-2-activities--refines--svv-2",
                 "reviews": [
                   {
@@ -4094,6 +4271,9 @@
               ],
               "assertion_status": "accepted",
               "confidence": "high",
+              "effective_assertion_status": "accepted",
+              "effective_review_status": "accepted",
+              "human_reviewed": true,
               "review_ids": [
                 "review:iec-svv-2-activities--refines--svv-2"
               ],
@@ -4115,7 +4295,9 @@
                 "assertion_status": "accepted",
                 "confidence": "high",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: §9.4.1 specifies the information source required for SVV-3 known-vulnerability testing.",
+                "effective_status": "accepted",
                 "evidence": [],
+                "human_reviewed": true,
                 "id": "assertion:iec-svv-3-known--refines--svv-3",
                 "reviews": [
                   {
@@ -4138,6 +4320,9 @@
               ],
               "assertion_status": "accepted",
               "confidence": "high",
+              "effective_assertion_status": "accepted",
+              "effective_review_status": "accepted",
+              "human_reviewed": true,
               "review_ids": [
                 "review:iec-svv-3-known--refines--svv-3"
               ],
@@ -4159,7 +4344,9 @@
                 "assertion_status": "proposed",
                 "confidence": "high",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: §9.4.1 makes abuse-case and malformed-input testing part of SVV-3.",
+                "effective_status": "proposed",
                 "evidence": [],
+                "human_reviewed": false,
                 "id": "assertion:iec-svv-3-a--refines--svv-3",
                 "reviews": []
               }
@@ -4174,7 +4361,10 @@
                 "assertion:iec-svv-3-a--refines--svv-3"
               ],
               "assertion_status": "proposed",
-              "confidence": "high"
+              "confidence": "high",
+              "effective_assertion_status": "proposed",
+              "effective_review_status": null,
+              "human_reviewed": false
             },
             "relationship_type": "refines",
             "source": "requirement:iec-62443-4-1-2018-svv-3-a",
@@ -4186,7 +4376,9 @@
                 "assertion_status": "proposed",
                 "confidence": "high",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: §9.4.1 makes attack-surface analysis part of SVV-3.",
+                "effective_status": "proposed",
                 "evidence": [],
+                "human_reviewed": false,
                 "id": "assertion:iec-svv-3-b--refines--svv-3",
                 "reviews": []
               }
@@ -4201,7 +4393,10 @@
                 "assertion:iec-svv-3-b--refines--svv-3"
               ],
               "assertion_status": "proposed",
-              "confidence": "high"
+              "confidence": "high",
+              "effective_assertion_status": "proposed",
+              "effective_review_status": null,
+              "human_reviewed": false
             },
             "relationship_type": "refines",
             "source": "requirement:iec-62443-4-1-2018-svv-3-b",
@@ -4213,7 +4408,9 @@
                 "assertion_status": "proposed",
                 "confidence": "high",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: §9.4.1 makes black-box known-vulnerability scanning part of SVV-3.",
+                "effective_status": "proposed",
                 "evidence": [],
+                "human_reviewed": false,
                 "id": "assertion:iec-svv-3-c--refines--svv-3",
                 "reviews": []
               }
@@ -4228,7 +4425,10 @@
                 "assertion:iec-svv-3-c--refines--svv-3"
               ],
               "assertion_status": "proposed",
-              "confidence": "high"
+              "confidence": "high",
+              "effective_assertion_status": "proposed",
+              "effective_review_status": null,
+              "human_reviewed": false
             },
             "relationship_type": "refines",
             "source": "requirement:iec-62443-4-1-2018-svv-3-c",
@@ -4240,7 +4440,9 @@
                 "assertion_status": "accepted",
                 "confidence": "high",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: §9.4.1 makes executable composition analysis part of SVV-3.",
+                "effective_status": "accepted",
                 "evidence": [],
+                "human_reviewed": true,
                 "id": "assertion:iec-svv-3-d--refines--svv-3",
                 "reviews": [
                   {
@@ -4263,6 +4465,9 @@
               ],
               "assertion_status": "accepted",
               "confidence": "high",
+              "effective_assertion_status": "accepted",
+              "effective_review_status": "accepted",
+              "human_reviewed": true,
               "review_ids": [
                 "review:iec-svv-3-d--refines--svv-3"
               ],
@@ -4284,7 +4489,9 @@
                 "assertion_status": "proposed",
                 "confidence": "high",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: §9.4.1 makes dynamic resource testing part of SVV-3 when tools exist.",
+                "effective_status": "proposed",
                 "evidence": [],
+                "human_reviewed": false,
                 "id": "assertion:iec-svv-3-e--refines--svv-3",
                 "reviews": []
               }
@@ -4299,7 +4506,10 @@
                 "assertion:iec-svv-3-e--refines--svv-3"
               ],
               "assertion_status": "proposed",
-              "confidence": "high"
+              "confidence": "high",
+              "effective_assertion_status": "proposed",
+              "effective_review_status": null,
+              "human_reviewed": false
             },
             "relationship_type": "refines",
             "source": "requirement:iec-62443-4-1-2018-svv-3-e",
@@ -4311,7 +4521,9 @@
                 "assertion_status": "proposed",
                 "confidence": "high",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: §10.5.1 explicitly bases issue disposition and reporting on DM-3's impact assessment.",
+                "effective_status": "rejected",
                 "evidence": [],
+                "human_reviewed": false,
                 "id": "assertion:iec-dm-4--derived-from--dm-3",
                 "reviews": [
                   {
@@ -4334,6 +4546,9 @@
               ],
               "assertion_status": "proposed",
               "confidence": "high",
+              "effective_assertion_status": "proposed",
+              "effective_review_status": "rejected",
+              "human_reviewed": false,
               "review_ids": [
                 "review:iec-dm-4--derived-from--dm-3"
               ],
@@ -4355,7 +4570,9 @@
                 "assertion_status": "proposed",
                 "confidence": "high",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: §10.5.1 defines the residual-risk threshold and disposition choices used by DM-4.",
+                "effective_status": "proposed",
                 "evidence": [],
+                "human_reviewed": false,
                 "id": "assertion:iec-dm-4-residual--refines--dm-4",
                 "reviews": []
               }
@@ -4370,7 +4587,10 @@
                 "assertion:iec-dm-4-residual--refines--dm-4"
               ],
               "assertion_status": "proposed",
-              "confidence": "high"
+              "confidence": "high",
+              "effective_assertion_status": "proposed",
+              "effective_review_status": null,
+              "human_reviewed": false
             },
             "relationship_type": "refines",
             "source": "requirement:iec-62443-4-1-2018-dm-4-residual",
@@ -4382,7 +4602,9 @@
                 "assertion_status": "proposed",
                 "confidence": "high",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: §10.5.1 adds a release-cycle review of open issues to DM-4.",
+                "effective_status": "proposed",
                 "evidence": [],
+                "human_reviewed": false,
                 "id": "assertion:iec-dm-4-periodic--refines--dm-4",
                 "reviews": []
               }
@@ -4397,7 +4619,10 @@
                 "assertion:iec-dm-4-periodic--refines--dm-4"
               ],
               "assertion_status": "proposed",
-              "confidence": "high"
+              "confidence": "high",
+              "effective_assertion_status": "proposed",
+              "effective_review_status": null,
+              "human_reviewed": false
             },
             "relationship_type": "refines",
             "source": "requirement:iec-62443-4-1-2018-dm-4-periodic",
@@ -4409,7 +4634,9 @@
                 "assertion_status": "accepted",
                 "confidence": "high",
                 "description": "Proposed by Codex (GPT-5), 2026-11-16. Basis: §10.7.1 sets an annual minimum frequency for the DM-6 process review.",
+                "effective_status": "accepted",
                 "evidence": [],
+                "human_reviewed": true,
                 "id": "assertion:iec-dm-6-annual--refines--dm-6",
                 "reviews": [
                   {
@@ -4432,6 +4659,9 @@
               ],
               "assertion_status": "accepted",
               "confidence": "high",
+              "effective_assertion_status": "accepted",
+              "effective_review_status": "accepted",
+              "human_reviewed": true,
               "review_ids": [
                 "review:iec-dm-6-annual--refines--dm-6"
               ],

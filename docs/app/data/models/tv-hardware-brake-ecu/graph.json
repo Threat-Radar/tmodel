@@ -528,7 +528,9 @@
           "assertion_status": "accepted",
           "confidence": "high",
           "description": null,
+          "effective_status": "accepted",
           "evidence": [],
+          "human_reviewed": true,
           "id": "assertion:fw-weakness-map",
           "reviews": [
             {
@@ -548,6 +550,9 @@
         ],
         "assertion_status": "accepted",
         "confidence": "high",
+        "effective_assertion_status": "accepted",
+        "effective_review_status": "accepted",
+        "human_reviewed": true,
         "review_ids": [
           "review:hw-map"
         ],
@@ -569,7 +574,9 @@
           "assertion_status": "proposed",
           "confidence": "low",
           "description": "AI-PROPOSED edge. assertion_status `proposed`; a hypothesis until a human confirms it in the lab. The paired Review requests changes, not acceptance.",
+          "effective_status": "changes_requested",
           "evidence": [],
+          "human_reviewed": false,
           "id": "assertion:ai-glitch-step",
           "reviews": [
             {
@@ -592,6 +599,9 @@
         ],
         "assertion_status": "proposed",
         "confidence": "low",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": "changes_requested",
+        "human_reviewed": false,
         "review_ids": [
           "review:ai-glitch"
         ],
@@ -613,7 +623,9 @@
           "assertion_status": "accepted",
           "confidence": "high",
           "description": null,
+          "effective_status": "accepted",
           "evidence": [],
+          "human_reviewed": true,
           "id": "assertion:tm-hw-scope",
           "reviews": [
             {
@@ -633,6 +645,9 @@
         ],
         "assertion_status": "accepted",
         "confidence": "high",
+        "effective_assertion_status": "accepted",
+        "effective_review_status": "accepted",
+        "human_reviewed": true,
         "review_ids": [
           "review:tm-hw-approval"
         ],

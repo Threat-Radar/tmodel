@@ -1,6 +1,6 @@
 import type { GraphState } from "./graph-model";
 import type { AttackPathResponse, AttackPathResult } from "./graph-types";
-import { reviewStatePresentation, type ReviewStatePresentation } from "./review-status";
+import { relationshipReviewState, type ReviewStatePresentation } from "./review-status";
 
 export interface AttackPathOption {
   id: string;
@@ -89,7 +89,13 @@ export function attackPathPresentation(
 
 /** The shared review presentation for one path's PR #132 `review` record. */
 export function attackPathReviewState(review: AttackPathResult["review"]): ReviewStatePresentation {
-  return reviewStatePresentation(review.assertion_status, review.review_status);
+  return relationshipReviewState({
+    assertion_status: review.assertion_status,
+    review_status: review.review_status,
+    human_reviewed: review.reviewed,
+    effective_assertion_status: review.assertion_status,
+    effective_review_status: review.review_status,
+  })!;
 }
 
 export function attackPathReviewLabel(review: AttackPathResult["review"]): string {

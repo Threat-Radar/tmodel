@@ -3,17 +3,137 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" type="image/svg+xml" href="/tmodel/app/assets/radar-CcxZb6Yp.svg" />
+    <link rel="preload" href="/tmodel/app/assets/Unbounded-Bold-C3zOEeQu.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/tmodel/app/assets/InterVariable-DiVDrmQJ.woff2" as="font" type="font/woff2" crossorigin />
     <title>tmodel</title>
-    <script type="module" crossorigin src="/tmodel/app/assets/index-DsuP6Wb8.js"></script>
-    <link rel="stylesheet" crossorigin href="/tmodel/app/assets/index-DRm4RZT-.css">
+    <script type="module" crossorigin src="/tmodel/app/assets/index-Z4INl6Q7.js"></script>
+    <link rel="stylesheet" crossorigin href="/tmodel/app/assets/index-P3bycMBu.css">
   </head>
   <body>
-    <main class="app-shell">
+    <main id="welcome" class="welcome" aria-labelledby="welcome-title" tabindex="-1" hidden>
+      <svg class="welcome-art" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <radialGradient id="fog">
+            <stop offset="0" stop-color="var(--welcome-center)" stop-opacity="1"/>
+            <stop offset=".55" stop-color="var(--welcome-center)" stop-opacity=".93"/>
+            <stop offset="1" stop-color="var(--welcome-center)" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="wash" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop stop-color="var(--welcome-wash)" stop-opacity=".06"/>
+            <stop offset="1" stop-color="var(--welcome-wash)" stop-opacity=".23"/>
+          </linearGradient>
+          <linearGradient id="beam">
+            <stop stop-color="var(--welcome-beam)" stop-opacity="0"/>
+            <stop offset="1" stop-color="var(--welcome-beam)" stop-opacity=".16"/>
+          </linearGradient>
+        </defs>
+        <path d="M-90 20 C210 210 80 595 380 805 C535 910 875 880 1170 1000 L-90 1000Z" fill="var(--welcome-powder)" opacity=".43"/>
+        <g class="welcome-contours" stroke="var(--welcome-contour)" stroke-width=".85" fill="none" opacity="var(--welcome-contour-opacity)">
+          <path d="M-90 95 C250 260 85 620 395 820 C590 946 800 905 1090 1000" stroke-opacity=".30">
+            <animate attributeName="d" begin="indefinite" dur="28s" repeatCount="indefinite" calcMode="spline"
+              keyTimes="0;.25;.5;.75;1" keySplines=".42 0 .58 1;.42 0 .58 1;.42 0 .58 1;.42 0 .58 1"
+              values="M-90 95 C250 260 85 620 395 820 C590 946 800 905 1090 1000;
+                      M-90 95 C267 248 40 632 410 809 C607 939 800 905 1090 1000;
+                      M-90 95 C224 281 73 580 399 825 C598 950 800 905 1090 1000;
+                      M-90 95 C234 280 119 619 382 831 C571 957 800 905 1090 1000;
+                      M-90 95 C250 260 85 620 395 820 C590 946 800 905 1090 1000"/>
+          </path>
+          <path d="M-90 140 C205 290 48 675 360 861 C545 970 760 947 1045 1000" stroke-opacity=".24">
+            <animate attributeName="d" begin="indefinite" dur="28s" repeatCount="indefinite" calcMode="spline"
+              keyTimes="0;.25;.5;.75;1" keySplines=".42 0 .58 1;.42 0 .58 1;.42 0 .58 1;.42 0 .58 1"
+              values="M-90 140 C205 290 48 675 360 861 C545 970 760 947 1045 1000;
+                      M-90 140 C219 283 14 684 367 845 C551 959 760 947 1045 1000;
+                      M-90 140 C186 309 33 634 372 863 C554 971 760 947 1045 1000;
+                      M-90 140 C187 313 80 667 348 874 C532 981 760 947 1045 1000;
+                      M-90 140 C205 290 48 675 360 861 C545 970 760 947 1045 1000"/>
+          </path>
+        </g>
+        <g fill="none" stroke="var(--welcome-ring)" stroke-width="1" opacity="var(--welcome-ring-opacity)">
+          <circle cx="1128" cy="585" r="190"/>
+          <circle cx="1128" cy="585" r="258"/>
+          <circle cx="1128" cy="585" r="326"/>
+          <circle cx="1128" cy="585" r="394"/>
+          <circle cx="1128" cy="585" r="462"/>
+          <circle cx="1128" cy="585" r="530"/>
+          <circle cx="1128" cy="585" r="598"/>
+          <path d="M1128 45V1120M530 585H1700M748 205L1508 965M748 965L1508 205" stroke-dasharray="3 9"/>
+        </g>
+        <path d="M1128 585L1128 -13 A598 598 0 0 1 1670 838Z" fill="url(#wash)"/>
+        <g class="welcome-sweep" opacity="var(--welcome-sweep-opacity)">
+          <path d="M1128 585L1128 57A528 528 0 0 1 1376 119Z" fill="url(#beam)"/>
+          <path d="M1128 585L1376 119" stroke="var(--welcome-beam)" opacity=".35"/>
+        </g>
+        <g class="welcome-network-left" opacity="var(--welcome-network-left-opacity)">
+          <g stroke="var(--welcome-graph)" stroke-width="1.1" fill="none" opacity=".46">
+            <path d="M90 200L187 259L269 212L386 330L187 259L155 418L64 484"/>
+            <path d="M155 418L288 485L386 330M288 485L389 620L228 718L90 683L64 484"/>
+          </g>
+          <g fill="var(--welcome-graph)" opacity=".62">
+            <circle cx="90" cy="200" r="3"/>
+            <circle cx="187" cy="259" r="5"/>
+            <circle cx="269" cy="212" r="3"/>
+            <circle cx="386" cy="330" r="3"/>
+            <circle cx="155" cy="418" r="4"/>
+            <circle cx="64" cy="484" r="4"/>
+            <circle cx="288" cy="485" r="4"/>
+            <circle cx="389" cy="620" r="3"/>
+            <circle cx="228" cy="718" r="5"/>
+            <circle cx="90" cy="683" r="3"/>
+          </g>
+          <g fill="none" stroke="var(--welcome-graph)" opacity=".55">
+            <circle class="welcome-node" cx="187" cy="259" r="13"/>
+            <circle cx="228" cy="718" r="11"/>
+          </g>
+        </g>
+        <g class="welcome-network-right" opacity="var(--welcome-network-right-opacity)">
+          <g stroke="var(--welcome-graph)" stroke-width="1.1" fill="none" opacity=".46">
+            <path d="M1081 123L1192 197L1308 143L1379 245L1192 197L1252 367L1379 245"/>
+            <path d="M1252 367L1339 473L1440 414"/>
+          </g>
+          <g fill="var(--welcome-graph)" opacity=".62">
+            <circle cx="1081" cy="123" r="3"/>
+            <circle cx="1192" cy="197" r="5"/>
+            <circle cx="1308" cy="143" r="4"/>
+            <circle cx="1379" cy="245" r="4"/>
+            <circle cx="1252" cy="367" r="4"/>
+            <circle cx="1339" cy="473" r="5"/>
+          </g>
+          <g fill="none" stroke="var(--welcome-graph)" opacity=".55">
+            <circle class="welcome-node" cx="1192" cy="197" r="14"/>
+            <circle cx="1339" cy="473" r="13"/>
+          </g>
+        </g>
+        <ellipse cx="706" cy="420" rx="470" ry="350" fill="url(#fog)"/>
+      </svg>
+      <div class="welcome-content">
+        <div class="brand-lockup">
+          <span class="brand-radar" aria-hidden="true"></span>
+          <div class="brand-lettering">
+            <span class="brand-wordmark">tmodel</span>
+            <span class="brand-subtitle">THREAT RADAR</span>
+          </div>
+        </div>
+        <h1 id="welcome-title">See the threat.<br />Understand the risk.</h1>
+        <p>Your workspace for threat modeling and risk assessment.</p>
+        <button id="get-started" class="primary-button" type="button">
+          Get started
+          <svg viewBox="0 0 20 20" width="16" height="16" fill="none" aria-hidden="true">
+            <path d="M4 10h11m-4-4 4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </main>
+    <main id="workspace" class="app-shell" aria-label="tmodel workspace" tabindex="-1" hidden>
       <div id="preview-banner" class="preview-banner" role="note" hidden>Example data, read-only preview</div>
       <header class="app-header">
-        <div class="app-header-copy">
-          <p class="eyebrow">Threat Radar</p>
-          <h1>tmodel</h1>
+        <div class="brand-lockup header-brand">
+          <span class="brand-radar" aria-hidden="true"></span>
+          <div class="brand-lettering">
+            <h1 class="brand-wordmark">tmodel</h1>
+            <span class="brand-subtitle">THREAT RADAR</span>
+          </div>
         </div>
         <div class="model-picker">
           <label for="model-select">Model</label>
