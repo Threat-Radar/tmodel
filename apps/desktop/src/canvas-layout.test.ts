@@ -1,5 +1,6 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import { bindInfoDisclosures } from "./library-presentation";
+import attackPatternFixture from "./fixtures/attack-pattern-table.json";
 import weaknessFixture from "./fixtures/weakness-table.json";
 // @ts-expect-error The app deliberately does not install @types/node; Vitest runs this in Node.
 import { spawnSync } from "node:child_process";
@@ -19,7 +20,8 @@ import { pathToFileURL } from "node:url";
  * headless Chrome at widths on both sides of the 720, 1100 and 1500 px
  * breakpoints. The two canvases share `.graph-canvas`, so a rule meant for one
  * can quietly resize the other (#247, and the #255 review). Also measure the
- * Library toolbar and the space the CWE attribution disclosure returns to the table.
+ * Library toolbar and the space the CWE attribution disclosure returns to the table,
+ * and lay the CAPEC table (#236) out with its attribution showing, as it does with rows.
  */
 
 interface CanvasSize {
@@ -156,7 +158,12 @@ const PROBE = `window.addEventListener("load", () => {
     modelInfo.hidden = false;
     popovers.push(exercisePopover(modelInfo, document.getElementById("report-tab")));
 
-    const tables = [["records", "library"], ["weaknesses", "weakness"], ["requirements", "requirements"]].map(([view, prefix]) => {
+    document.getElementById("attack-pattern-attribution").hidden = false;
+    document.getElementById("attack-pattern-attribution-notice").textContent = ${JSON.stringify(attackPatternFixture.catalog.notice)};
+    document.getElementById("attack-pattern-attribution-license").textContent = ${JSON.stringify(attackPatternFixture.catalog.license)};
+    const tables = [
+      ["records", "library"], ["weaknesses", "weakness"], ["attack-patterns", "attack-pattern"], ["requirements", "requirements"],
+    ].map(([view, prefix]) => {
       for (const section of panel.querySelectorAll(".library-subview")) section.hidden = section.dataset.libraryView !== view;
       const main = document.querySelector("#" + prefix + "-workspace .library-main");
       popovers.push(exercisePopover(main.querySelector(".info-disclosure"), document.getElementById(prefix + "-search")));
@@ -175,7 +182,7 @@ const PROBE = `window.addEventListener("load", () => {
       const before = controls.offsetHeight;
       document.getElementById(prefix + "-clear-filters").hidden = false;
       const clearAddsHeight = controls.offsetHeight > before;
-      const trailingAttribution = main.querySelector(".weakness-attribution");
+      const trailingAttribution = main.querySelector(".weakness-attribution, .attack-pattern-attribution");
       const attributionSpace = trailingAttribution
         ? trailingAttribution.offsetHeight + parseFloat(getComputedStyle(trailingAttribution).marginTop)
         : 0;
@@ -300,8 +307,9 @@ describe.skipIf(!MEASURE)("application layout in a real browser", () => {
     expect(library.collapsedTableHeight).toBeGreaterThan(library.expandedTableHeight);
   });
 
-  it.each(WIDTHS)("anchors the three Library record tables to a right-aligned footer at %ipx", (width) => {
+  it.each(WIDTHS)("anchors the four Library record tables to a right-aligned footer at %ipx", (width) => {
     const { library } = layouts.get(width) as Layout;
+    expect(library.tables.map((table) => table.prefix)).toEqual(["library", "weakness", "attack-pattern", "requirements"]);
     for (const table of library.tables) {
       expect(table.footerOffsets, table.prefix).toEqual([0, 0, 0]);
       expect(table.rightAligned, table.prefix).toBe(true);
@@ -313,7 +321,7 @@ describe.skipIf(!MEASURE)("application layout in a real browser", () => {
 
   it("dismisses source and model popovers as focus travels and returns focus on Escape", () => {
     for (const { library, width, height } of layouts.values()) {
-      expect(library.popovers).toHaveLength(4);
+      expect(library.popovers).toHaveLength(5);
       for (const popover of library.popovers) {
         expect(popover, `${popover.nextControlId} at ${width} × ${height}`).toMatchObject({
           focusStaysInside: true,

@@ -94,16 +94,17 @@ should show `catalog.notice` and link to `catalog.terms_url`. The licence in ful
 > this license in any such copy. CWE is a trademark of The MITRE Corporation. Please
 > contact cwe@mitre.org if you require further clarification on this issue.
 
-## Attack-pattern table (#244)
+## Attack-pattern table and details (#244, #236)
 
 `attack-pattern-table.json` is the engine's answer to `GET /attack-patterns/table`, with no
 parameters, over the CAPEC sample in `engine/tests/fixtures/capec/`: 13 attack patterns
-copied verbatim from CAPEC 3.9. It lets the attack-pattern table view (#236) start before
-the CAPEC import reaches a running engine (DL-0056).
+copied verbatim from CAPEC 3.9 (DL-0056). `attack-pattern-details.json` holds the engine's
+answer to `GET /attack-patterns?id=CAPEC-N` for each of those 13 rows, keyed by CAPEC id
+(DL-0076).
 
-It is generated in the same way as the weakness fixture, and
+Both are generated in the same way as the weakness fixture, and
 `engine/tests/test_attack_pattern_table.py` fails when the engine's answer no longer
-matches it. Agree a new shape on #236 first, then regenerate it from the engine folder:
+matches either. Agree a new shape on #236 first, then regenerate both from the engine folder:
 
 ```sh
 cd engine && TMODEL_UPDATE_FIXTURES=1 .venv/bin/pytest tests/test_attack_pattern_table.py
@@ -129,6 +130,15 @@ edition, publication, publisher, date and URL (`resolved` is false for one the r
 does not define), and the tmodel objects the import makes for it. `GET /attack-patterns`
 without parameters says where each CAPEC field goes, which links the import could not
 map, and which citations and attack-pattern links name nothing in the release.
+
+The desktop app uses these two fixtures only when opened with
+`?attackPatternSource=fixture`; its normal source is the local engine and the pinned
+release. The GitHub Pages build uses them because a static page has no local engine or
+catalog. Unlike the weakness fixture, they include every row's full entry, so the
+fixture's details view shows the engine's own answers rather than stopping at the row.
+The app loads `attack-pattern-details.json` as a separate chunk, on the first selected
+row or search, and reads alternate terms from it, so the fixture's search looks in the
+same fields as the engine's.
 
 The rows are CAPEC content. The CAPEC Terms of Use (https://capec.mitre.org/about/termsofuse.html)
 allow copies provided that each one reproduces MITRE's copyright designation and licence,

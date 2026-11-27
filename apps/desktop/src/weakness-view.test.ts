@@ -153,7 +153,7 @@ describe("weaknesses view", () => {
     expect(python?.parentElement?.tagName).toBe("pre");
     expect(detailText).toContain("Updated examples");
     expect(detailText).toContain("Previous Entry Name");
-    expect(detailText).toContain("Proposed — not human-reviewed");
+    expect(detailText).toContain("Proposed, not human-reviewed");
     expect(detailText).toContain("Imported relationships are proposals until a human accepts them");
     expect(detailText).toContain("Assertion ID assertion:cwe-79-capec-63");
     expect(detailText).toContain("Asserted by party:mitre-cwe");

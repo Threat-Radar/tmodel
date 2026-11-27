@@ -1,11 +1,16 @@
-import type { CweFieldValue, WeaknessEntry } from "./weakness-types";
+import type { CweFieldValue } from "./weakness-types";
 
-export function fieldValues(entry: WeaknessEntry, name: string): readonly CweFieldValue[] {
+/** A CWE or CAPEC entry's preserved fields; the CAPEC reader keeps them by CWE's rules (DL-0056). */
+export interface CatalogFields {
+  readonly fields: Readonly<Record<string, CweFieldValue>>;
+}
+
+export function fieldValues(entry: CatalogFields, name: string): readonly CweFieldValue[] {
   return asArray(entry.fields[name]);
 }
 
 export function fieldItems(
-  entry: WeaknessEntry,
+  entry: CatalogFields,
   container: string,
   item: string,
 ): readonly CweFieldValue[] {
