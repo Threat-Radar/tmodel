@@ -16,6 +16,9 @@ export interface GraphAssertionProvenance {
   description: string | null;
   evidence: readonly string[];
   reviews: readonly GraphAssertionReviewProvenance[];
+  /** Engine evidence; optional only for older snapshots. Raw statuses stay intact. */
+  human_reviewed?: boolean;
+  effective_status?: string;
 }
 
 export interface GraphNode {

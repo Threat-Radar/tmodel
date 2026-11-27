@@ -279,7 +279,9 @@
       "assertion_status": "accepted",
       "confidence": "high",
       "description": "Reviewed realizing edge; accepted by a human reviewer.",
+      "effective_status": "accepted",
       "evidence": [],
+      "human_reviewed": true,
       "id": "assertion:xxe-path-realizes",
       "reviews": [
        {
@@ -302,6 +304,9 @@
      ],
      "assertion_status": "accepted",
      "confidence": "high",
+     "effective_assertion_status": "accepted",
+     "effective_review_status": "accepted",
+     "human_reviewed": true,
      "review_ids": [
       "review:xxe-path"
      ],
@@ -368,7 +373,9 @@
       "assertion_status": "proposed",
       "confidence": "low",
       "description": "AI-PROPOSED edge. assertion_status is `proposed` (NOT accepted); it is a hypothesis until a human accepts it. The paired Review requests changes.",
+      "effective_status": "changes_requested",
       "evidence": [],
+      "human_reviewed": false,
       "id": "assertion:ai-imds-pivot-realizes",
       "reviews": [
        {
@@ -391,6 +398,9 @@
      ],
      "assertion_status": "proposed",
      "confidence": "low",
+     "effective_assertion_status": "proposed",
+     "effective_review_status": "changes_requested",
+     "human_reviewed": false,
      "review_ids": [
       "review:ai-triage"
      ],
@@ -736,7 +746,9 @@
       "assertion_status": "accepted",
       "confidence": "high",
       "description": "Reviewed propagation edge (\u00a75) \u2014 not a facet property; reified so a Review can point at it.",
+      "effective_status": "accepted",
       "evidence": [],
+      "human_reviewed": true,
       "id": "assertion:vuln-propagation",
       "reviews": [
        {
@@ -759,6 +771,9 @@
      ],
      "assertion_status": "accepted",
      "confidence": "high",
+     "effective_assertion_status": "accepted",
+     "effective_review_status": "accepted",
+     "human_reviewed": true,
      "review_ids": [
       "review:vuln-prop"
      ],
@@ -780,7 +795,9 @@
       "assertion_status": "accepted",
       "confidence": "high",
       "description": "The CVE-to-CWE step of the ADR-0002 backbone (CVE, CWE, CAPEC, ATT&CK). Vulnerability has no Weakness slot, so the link is reified, with the predicate ARCH-0001 \u00a73 and PLAN-0002 \u00a75 name (RPT-0004 mapping.md, finding 7). In a real import the CWE comes from the CVE record and stays proposed until a human reviews it (R-018).",
+      "effective_status": "accepted",
       "evidence": [],
+      "human_reviewed": true,
       "id": "assertion:cve-cwe-instance",
       "reviews": [
        {
@@ -803,6 +820,9 @@
      ],
      "assertion_status": "accepted",
      "confidence": "high",
+     "effective_assertion_status": "accepted",
+     "effective_review_status": "accepted",
+     "human_reviewed": true,
      "review_ids": [
       "review:cve-cwe"
      ],
@@ -824,7 +844,9 @@
       "assertion_status": "accepted",
       "confidence": "high",
       "description": "The human-reviewed CWE\u2194CAPEC mapping the schema calls out (\u00a72).",
+      "effective_status": "accepted",
       "evidence": [],
+      "human_reviewed": true,
       "id": "assertion:cwe-capec-map",
       "reviews": [
        {
@@ -847,6 +869,9 @@
      ],
      "assertion_status": "accepted",
      "confidence": "high",
+     "effective_assertion_status": "accepted",
+     "effective_review_status": "accepted",
+     "human_reviewed": true,
      "review_ids": [
       "review:cwe-capec"
      ],

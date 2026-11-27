@@ -310,13 +310,14 @@ def test_assertion_only_damage_scope_matches_asset_query(kind, status, verdict, 
     assert bool(asset_threats(doc)["asset:a"]) is effective
     assert matching["threat_damage_scenarios"] == (["damage:d"] if effective else [])
     assert matching["threat_damage_scenario"] == ("damage:d" if effective else None)
-    assert matching["complete"]
+    assert matching["complete"] is effective
+    assert ("damage_scenario_scope_mismatch" in matching["problems"]) is not effective
     doc["risk_scores"][0]["damage_scenario"] = "damage:other"
     unrelated = assessment(doc)
-    assert ("damage_scenario_scope_mismatch" in unrelated["problems"]) is effective
-    assert unrelated["complete"] is not effective
+    assert "damage_scenario_scope_mismatch" in unrelated["problems"]
+    assert not unrelated["complete"]
     for result in [unrelated, *unrelated["routes"], *unrelated["paths"]]:
-        assert (result["derived_risk"]["safety"] is None) is effective
+        assert result["derived_risk"]["safety"] is None
     doc["risk_scores"][0]["damage_scenario"] = "damage:d"
     assert doc == before
 
@@ -412,3 +413,21 @@ def test_headlamp_rating_projection_matches_rpt0007():
     assert assessment(dos)["feasibility"] == "low"
     assert assessment(dos)["derived_risk"]["operational"] == 2
     assert assessment(dos)["derived_risk"]["privacy"] is None
+
+
+@pytest.mark.parametrize("foreign_owner", [False, True])
+def test_unlinked_damage_cannot_complete_an_assessment(foreign_owner):
+    doc = model(("high",))
+    del doc["threat_instances"][0]["realizes_damage"]
+    if foreign_owner:
+        doc["threat_instances"].append({"id": "threat:other", "realizes_damage": "damage:d"})
+    before = deepcopy(doc)
+    out = assessment(doc)
+    assert not out["complete"]
+    assert out["threat_damage_scenarios"] == []
+    assert "damage_scenario_scope_mismatch" in out["problems"]
+    for result in [out, *out["routes"], *out["paths"]]:
+        assert all(value is None for value in result["derived_risk"].values())
+    assert out["feasibility"] == "high"
+    assert out["impact"]["safety"] == "severe"
+    assert doc == before

@@ -647,9 +647,9 @@ describe("knowledge-graph startup and recovery", () => {
     const text = document.byId("relationship-list").children[0].textContent;
     expect(text).toContain("Direct authored relationship remains established.");
     expect(text).not.toContain("Unknown Status");
-    expect(text).toContain("assertion:first · Changes Requested · confidence: low");
+    expect(text).toContain("assertion:first · Recorded Changes Requested · confidence: low");
     expect(text).toContain("Review review:first · changes_requested · Needs more evidence.");
-    expect(text).toContain("assertion:second · Accepted · confidence: high");
+    expect(text).toContain("assertion:second · Recorded Accepted · confidence: high");
     expect(text).toContain("Review review:second · accepted · Sufficient evidence.");
   });
 
