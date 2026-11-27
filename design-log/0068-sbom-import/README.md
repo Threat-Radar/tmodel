@@ -31,7 +31,7 @@ match predicate's name and `confidence` scale.
 
 - `engine/engine/import_sbom.py`: the import, and the command `tmodel import-sbom SBOM [--scan SCAN]
   [--platform OS/ARCH[/VARIANT]] -o MODEL [--report FILE] [--force]` in `engine/engine/cli.py`. It
-  runs in-process only; the API has no route to it.
+  runs in-process; the app's route to the same import is DL-0078 (#287).
 - `engine/tests/test_import_sbom.py` and the fixture in `engine/tests/fixtures/sbom-import/`.
 - This entry.
 

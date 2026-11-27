@@ -1,0 +1,394 @@
+"""The Import New Product route (#287): `POST /import/sbom` on a real local server."""
+
+from __future__ import annotations
+
+import base64
+import hashlib
+import json
+import socket
+import tempfile
+import threading
+import time
+import urllib.error
+import urllib.request
+from pathlib import Path
+from urllib.parse import urlsplit
+
+import pytest
+import yaml
+
+from engine import import_sbom
+from engine.api import import_route, server
+from engine.api.server import EngineHandler, make_server
+
+FIXTURES = Path(__file__).parent / "fixtures" / "sbom-import"
+SBOM = FIXTURES / "alpine-3.24.2.cdx.json"
+SCAN = FIXTURES / "alpine-3.24.2.grype.json"
+ORIGIN = "tauri://localhost"
+TINY = {"sbom": {"name": "a.json", "base64": "e30="}}  # `{}`, refused by the importer
+
+
+def serve(import_enabled: bool):
+    httpd = make_server("127.0.0.1", 0, import_enabled=import_enabled)
+    threading.Thread(target=httpd.serve_forever, daemon=True).start()
+    return httpd, f"http://127.0.0.1:{httpd.server_address[1]}"
+
+
+@pytest.fixture
+def enabled():
+    httpd, base = serve(True)
+    yield base
+    httpd.shutdown()
+    httpd.server_close()
+
+
+@pytest.fixture
+def disabled():
+    httpd, base = serve(False)
+    yield base
+    httpd.shutdown()
+    httpd.server_close()
+
+
+def post(base, payload, *, path=import_route.PATH, headers=None, raw=None):
+    body = raw if raw is not None else json.dumps(payload).encode("utf-8")
+    request = urllib.request.Request(
+        base + path,
+        data=body,
+        method="POST",
+        headers={"Content-Type": "application/json", **(headers or {})},
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=60) as response:
+            return response.status, dict(response.headers), json.loads(response.read())
+    except urllib.error.HTTPError as exc:
+        return exc.code, dict(exc.headers), json.loads(exc.read())
+
+
+def encoded(path: Path, name: str | None = None) -> dict[str, str]:
+    data = base64.b64encode(path.read_bytes()).decode("ascii")
+    return {"name": path.name if name is None else name, "base64": data}
+
+
+def upload(platform="linux/arm64/v8", scan=True):
+    return {
+        "sbom": encoded(SBOM),
+        "scan": encoded(SCAN) if scan else None,
+        "platform": platform,
+    }
+
+
+def error(body):
+    return body["error"]["code"], body["error"]["message"]
+
+
+def test_the_route_is_off_unless_the_host_enables_it(disabled):
+    status, _, body = post(disabled, upload())
+    assert status == 503 and error(body)[0] == "not_enabled"
+
+
+def test_an_import_answers_with_what_the_command_line_writes(enabled):
+    status, headers, body = post(enabled, upload(), headers={"Origin": ORIGIN})
+    assert status == 200
+    expected = import_sbom.build(
+        SBOM, scan=SCAN, platform="linux/arm64/v8", output_name="original.yaml"
+    )
+    assert body["model_text"] == expected.model_text  # byte for byte, header included
+    assert body["report_text"] == expected.report_text
+    assert body["warnings"] == []
+    assert body["counts"] == expected.counts
+    assert body["counts"]["components"] == 17 and body["counts"]["vulnerabilities"] == 15
+    assert body["platform"] == "linux/arm64/v8"
+    assert body["product"] == "index.docker.io/library/alpine"
+    assert body["suggested_name"] == "alpine"
+    assert headers["Access-Control-Allow-Origin"] == ORIGIN
+    assert "original.yaml" in body["model_text"]  # the project's file, in the header
+    yaml.safe_load(body["model_text"])  # the model reads back
+
+
+def test_the_model_records_the_files_own_digests(enabled):
+    status, _, body = post(enabled, upload())
+    assert status == 200
+    for path in (SBOM, SCAN):
+        assert hashlib.sha256(path.read_bytes()).hexdigest() in body["model_text"]
+
+
+def test_a_warning_comes_back_with_the_model(enabled):
+    status, _, body = post(enabled, upload(platform="linux/amd64"))
+    assert status == 200
+    (warning,) = body["warnings"]
+    assert "built for arm64" in warning and "--platform linux/arm64/v8" in warning
+
+
+def test_a_refused_import_names_the_reason(enabled):
+    status, _, body = post(enabled, upload(platform="linux/arm64/v8-1"))
+    assert status == 422 and error(body)[0] == "import_refused"
+    assert "v8-1" in error(body)[1]
+
+
+@pytest.mark.parametrize("platform", [None, ""])
+def test_without_a_platform_the_import_asks_for_one(enabled, platform):
+    status, _, body = post(enabled, upload(platform=platform))
+    assert status == 422 and error(body)[0] == "import_refused"
+    assert "--platform" in error(body)[1]
+
+
+def test_an_sbom_alone_imports_without_vulnerabilities(enabled):
+    status, _, body = post(enabled, upload(scan=False))
+    assert status == 200
+    assert body["counts"]["components"] == 17 and body["counts"]["vulnerabilities"] == 0
+
+
+@pytest.mark.parametrize(
+    ("payload", "message", "field"),
+    [
+        ([], "must be a JSON object", None),
+        ({}, "Provide the SBOM file", "sbom"),
+        ({"sbom": "text"}, "its name and its bytes in base64", "sbom"),
+        ({"sbom": {"name": "a.json", "text": "{}"}}, "its name and its bytes in base64", "sbom"),
+        ({"sbom": {"name": 5, "base64": "e30="}}, "its name and its bytes in base64", "sbom"),
+        ({"sbom": {"name": "a.json", "base64": ""}}, "is empty", "sbom"),
+        ({"sbom": {"name": "a.json", "base64": "@@@@"}}, "base64 is not valid", "sbom"),
+        ({"sbom": {"name": "a.json", "base64": "ZT\u00e9="}}, "base64 is not valid", "sbom"),
+        ({**TINY, "scan": {"base64": "e30"}}, "base64 is not valid", "scan"),
+        ({**TINY, "platform": 5}, "platform must be text", "platform"),
+        ({**TINY, "project": "x"}, "Unknown field 'project'", None),
+    ],
+)
+def test_a_malformed_request_is_refused(enabled, payload, message, field):
+    status, _, body = post(enabled, payload)
+    assert status == 422 and error(body)[0] == "validation_error"
+    assert message in error(body)[1]
+    assert body["error"].get("fields", [{}])[0].get("field") == field
+
+
+@pytest.mark.parametrize(
+    ("raw", "message"),
+    [
+        (b"not json", "is not JSON"),
+        (b'{"sbom": {"base64": "e30="}, "platform": NaN}', "is not JSON"),
+        (b'{"sbom": {"base64": "e30="}, "sbom": {"base64": "e30="}}', "'sbom' appears twice"),
+        (b"[" * 100_000 + b"]" * 100_000, "Send only the SBOM"),
+        (b'{"sbom": {"base64": "e30="}, "platform": [' + b"0.0," * 1000 + b"0.0]}", "Send only"),
+        (
+            b'{"sbom": {"base64": "e30="}, "x": ' + b"[[]," * 50 + b"[]" + b"]" * 50 + b"}",
+            "Send only",
+        ),
+    ],
+)
+def test_a_body_that_is_not_the_envelope_is_refused(enabled, raw, message):
+    status, _, body = post(enabled, None, raw=raw)
+    assert status == 422 and error(body)[0] == "validation_error"
+    assert message in error(body)[1]
+
+
+def test_only_json_is_accepted(enabled):
+    status, _, body = post(enabled, TINY, headers={"Content-Type": "text/plain"})
+    assert status == 422 and error(body)[0] == "validation_error"
+
+
+def test_files_over_the_limit_are_refused(enabled, monkeypatch):
+    monkeypatch.setattr(import_route, "_MAX_ENCODED", 1024)
+    status, _, body = post(enabled, upload())
+    assert status == 422 and "larger than" in error(body)[1]
+    assert body["error"]["fields"][0]["field"] == "sbom"
+    monkeypatch.setattr(import_route, "MAX_BODY_BYTES", 10)  # refused before it is read
+    status, _, body = post(enabled, TINY)
+    assert status == 422 and "too large" in error(body)[1]
+
+
+@pytest.mark.parametrize("extra", [1, 2, 3])
+def test_a_file_just_over_the_limit_is_refused_alike(enabled, monkeypatch, extra):
+    # base64 rounds up to four characters, so the bytes are checked as well as the text.
+    monkeypatch.setattr(import_route, "MAX_FILE_BYTES", 31)
+    monkeypatch.setattr(import_route, "_MAX_ENCODED", 44)
+    data = base64.b64encode(b" " * (31 + extra)).decode("ascii")
+    status, _, body = post(enabled, {"sbom": {"name": "a.json", "base64": data}})
+    assert status == 422 and error(body)[0] == "validation_error"
+    assert body["error"]["fields"][0]["field"] == "sbom"
+
+
+def test_a_name_full_of_brackets_and_commas_still_imports(enabled):
+    payload = upload()
+    payload["sbom"]["name"] = "sbom" + "[" * 20 + ", final, v2.json"
+    status, _, body = post(enabled, payload)
+    assert status == 200 and body["counts"]["components"] == 17
+
+
+def test_a_foreign_host_or_origin_is_refused(enabled):
+    status, _, body = post(enabled, TINY, headers={"Host": "attacker.example"})
+    assert status == 403 and error(body)[0] == "permission_denied"
+    status, headers, body = post(enabled, TINY, headers={"Origin": "https://attacker.example"})
+    assert status == 403 and error(body)[0] == "permission_denied"
+    assert "Access-Control-Allow-Origin" not in headers
+
+
+def test_an_unknown_operation_is_not_found(enabled):
+    status, _, body = post(enabled, TINY, path="/import/other")
+    assert status == 404 and error(body)[0] == "not_found"
+
+
+def preflight(base, origin, path=import_route.PATH):
+    request = urllib.request.Request(
+        base + path,
+        method="OPTIONS",
+        headers={"Origin": origin, "Access-Control-Request-Method": "POST"},
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=10) as response:
+            return response.status, dict(response.headers)
+    except urllib.error.HTTPError as exc:
+        return exc.code, dict(exc.headers)
+
+
+def test_the_preflight_lets_the_app_read_why_importing_is_off(enabled, disabled):
+    for base in (enabled, disabled):
+        status, headers = preflight(base, ORIGIN)
+        assert status == 204
+        assert headers["Access-Control-Allow-Origin"] == ORIGIN
+        assert headers["Access-Control-Allow-Methods"] == "POST"
+        assert headers["Access-Control-Allow-Headers"] == "Content-Type"
+    assert preflight(enabled, "https://attacker.example")[0] == 403
+    assert preflight(enabled, ORIGIN, path="/import/other")[0] == 403
+    # After the preflight, the app can read the refusal, so it can say why.
+    status, headers, body = post(disabled, TINY, headers={"Origin": ORIGIN})
+    assert status == 503 and error(body)[0] == "not_enabled"
+    assert headers["Access-Control-Allow-Origin"] == ORIGIN
+
+
+def test_file_names_lose_their_folders_and_no_path_comes_back(enabled):
+    payload = upload()
+    payload["sbom"]["name"] = "../../Users/someone/secret folder/my sbom.cdx.json"
+    payload["scan"]["name"] = "C:\\Users\\someone\\scan.json"
+    status, _, body = post(enabled, payload)
+    assert status == 200
+    text = json.dumps(body)
+    assert "Users" not in text and "someone" not in text and ".." not in body["model_text"]
+    assert "my-sbom.cdx.json" in body["model_text"]  # the base name, made safe
+
+
+@pytest.mark.parametrize(("sbom", "scan"), [("Alpine.json", "alpine.json"), ("a.json", "a.json")])
+def test_two_files_are_read_whatever_their_names(enabled, sbom, scan):
+    # Names that differ only in case, or not at all, are one file on a Mac's disk; the route
+    # never writes them to disk, so each is read as sent.
+    payload = {**upload(), "sbom": encoded(SBOM, sbom), "scan": encoded(SCAN, scan)}
+    status, _, body = post(enabled, payload)
+    assert status == 200 and body["counts"]["vulnerabilities"] == 15
+
+
+def test_nothing_is_read_from_or_written_to_disk(enabled, monkeypatch):
+    def refuse(*_args, **_kwargs):
+        raise AssertionError("the route touched the disk")
+
+    monkeypatch.setattr(import_sbom, "_read", refuse)  # how the importer reads a path
+    for name in ("mkdtemp", "mkstemp", "NamedTemporaryFile", "TemporaryDirectory"):
+        monkeypatch.setattr(tempfile, name, refuse)
+    status, _, body = post(enabled, upload())
+    assert status == 200 and body["counts"]["vulnerabilities"] == 15
+
+
+def test_imports_run_one_at_a_time(enabled, monkeypatch):
+    # A second import waits for the first; one that waits too long is told to try again.
+    results = []
+
+    def one():
+        status, _, body = post(enabled, upload())
+        results.append((status, body.get("model_text")))
+
+    threads = [threading.Thread(target=one) for _ in range(3)]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join(120)
+    assert [status for status, _ in results] == [200, 200, 200]
+    assert len({text for _, text in results}) == 1
+    monkeypatch.setattr(import_route, "WAIT_SECONDS", 0.2)
+    with import_route._SLOT:
+        status, _, body = post(enabled, TINY)
+    assert status == 503 and error(body)[0] == "busy"
+
+
+BIG = {"sbom": {"name": "big.json", "base64": base64.b64encode(b" " * 2_000_000).decode("ascii")}}
+
+
+def test_a_refusal_reaches_a_client_still_sending_a_large_body(enabled, disabled, monkeypatch):
+    # The body is read and discarded first, so the client sees the refusal, not a reset.
+    status, _, body = post(disabled, BIG, headers={"Origin": ORIGIN})
+    assert status == 503 and error(body)[0] == "not_enabled"
+    status, _, body = post(enabled, BIG, headers={"Content-Type": "text/plain"})
+    assert status == 422 and error(body)[0] == "validation_error"
+    monkeypatch.setattr(import_route, "WAIT_SECONDS", 0.2)
+    with import_route._SLOT:
+        status, _, body = post(enabled, BIG)
+    assert status == 503 and error(body)[0] == "busy"
+    assert post(enabled, TINY)[0] == 422  # the slot is free again
+
+
+class _Connection:
+    def __init__(self):
+        self.timeouts = []
+
+    def settimeout(self, value):
+        self.timeouts.append(value)
+
+
+class _Trickle:
+    """A body arriving one byte per read, each read taking `step` seconds of a fake clock."""
+
+    def __init__(self, clock, step, stall=False):
+        self.clock, self.step, self.stall = clock, step, stall
+
+    def read1(self, _n):
+        if self.stall:
+            raise TimeoutError
+        self.clock[0] += self.step
+        return b" "
+
+
+def handler(rfile):
+    h = EngineHandler.__new__(EngineHandler)
+    h.connection, h.rfile = _Connection(), rfile
+    return h
+
+
+def test_the_whole_body_must_arrive_by_the_deadline(monkeypatch):
+    clock = [0.0]
+    monkeypatch.setattr(server.time, "monotonic", lambda: clock[0])
+    h = handler(_Trickle(clock, step=0.4))  # every read is quick; the whole body is not
+    with pytest.raises(import_route.ImportRouteError) as refused:
+        h._read_body(100, 1)
+    assert refused.value.status == 408 and refused.value.code == "request_timeout"
+    assert clock[0] < 1.5  # cut off at the deadline, not a timeout after each read
+    assert h.connection.timeouts[-1] == 1  # restored for sending the answer
+    stalled = handler(_Trickle(clock, step=0, stall=True))
+    with pytest.raises(import_route.ImportRouteError) as refused:
+        stalled._read_body(100, 1)
+    assert refused.value.status == 408
+    assert handler(_Trickle(clock, step=0.1))._read_body(3, 1) == b"   "
+
+
+def test_a_stalled_client_is_answered(enabled, monkeypatch):
+    monkeypatch.setattr(import_route, "READ_SECONDS", 1)
+    url = urlsplit(enabled)
+    with socket.create_connection((url.hostname, url.port), timeout=10) as sock:
+        sock.sendall(
+            b"POST /import/sbom HTTP/1.1\r\nHost: 127.0.0.1\r\n"
+            b"Content-Type: application/json\r\nContent-Length: 100\r\n\r\n{"
+        )
+        started = time.monotonic()
+        answer = b""
+        while chunk := sock.recv(65536):
+            answer += chunk
+    assert answer.split(b"\r\n", 1)[0].endswith(b"408 Request Timeout")
+    assert b'"request_timeout"' in answer
+    assert time.monotonic() - started < 5
+
+
+def test_an_unexpected_failure_names_no_path(enabled, monkeypatch):
+    def broken(*_args, **_kwargs):
+        raise OSError("/private/tmp/somewhere: disk full")
+
+    monkeypatch.setattr(import_route.import_sbom, "build", broken)
+    status, _, body = post(enabled, upload())
+    assert status == 500 and error(body)[0] == "internal_error"
+    assert "/private" not in json.dumps(body)
