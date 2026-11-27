@@ -16,6 +16,7 @@ import {
   ModelPicker,
   readRememberedModel,
   rememberModel,
+  requestedModel,
   syncModelUrl,
 } from "./model-catalog";
 import { BOOKKEEPING_TYPES } from "./model-report";
@@ -32,6 +33,9 @@ import { weaknessViewElements, WeaknessesView } from "./weakness-view";
 import { CompatibleCoverageProvider } from "./coverage-provider";
 import { RequirementsView, requirementsViewElements } from "./requirements-view";
 import { StaticRequirementStandardsSource } from "./requirements-catalog-provider";
+
+import { initializeWelcome } from "./welcome";
+import radarMark from "./assets/radar.svg?raw";
 
 const POLL_MS = 2000;
 // Vite replaces MODE at build time; the Pages bundle can therefore eliminate
@@ -120,6 +124,14 @@ window.addEventListener("DOMContentLoaded", () => {
     if (!element) throw new Error(`Missing required application element #${id}`);
     return element as T;
   };
+
+  // Keep the mark in the page's SVG tree so it inherits the window theme,
+  // including when the webview appearance differs from the system appearance.
+  const radarTemplate = document.createElement("template");
+  radarTemplate.innerHTML = radarMark;
+  for (const icon of document.querySelectorAll(".brand-radar")) {
+    icon.append(radarTemplate.content.cloneNode(true));
+  }
 
   bindInfoDisclosures(document);
   if (preview) {
@@ -267,7 +279,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const catalog = new EngineModelCatalogProvider(staticApi?.engineBase, staticApi?.fetch);
   const catalogStartup = new GraphStartup({
     start: async () => {
-      const requested = parameters.get("model") ?? parameters.get("file");
+      const requested = requestedModel(parameters);
       await openInitialModel({
         catalog,
         requested,
@@ -346,7 +358,24 @@ window.addEventListener("DOMContentLoaded", () => {
     explore?.view.setVisible(view === "graph");
   }
 
+  initializeWelcome({
+    welcome: required("welcome"),
+    workspace: required("workspace"),
+    start: required("get-started"),
+  }, {
+    isPreview: preview,
+    location: window.location,
+    navigation,
+    events: window,
+    reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)"),
+  });
   navigation.start();
+  const refreshCanvasThemes = () => {
+    pathView.refreshTheme();
+    explore?.view.refreshTheme();
+  };
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", refreshCanvasThemes);
+  void document.fonts.ready.then(refreshCanvasThemes);
 
   if (preview) {
     void catalogStartup.startNow();

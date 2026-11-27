@@ -35,6 +35,11 @@ export function chooseModel(
   return findModel(models, requested) ?? findModel(models, remembered) ?? models[0];
 }
 
+/** Read the first nonempty model reference in the URL, preferring a model ID. */
+export function requestedModel(parameters: URLSearchParams): string | undefined {
+  return parameters.get("model")?.trim() || parameters.get("file")?.trim() || undefined;
+}
+
 export function findModel(models: readonly ModelSummary[], key: string | null | undefined): ModelSummary | undefined {
   if (!key) return undefined;
   const wanted = key.trim();
