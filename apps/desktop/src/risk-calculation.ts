@@ -27,6 +27,7 @@ interface Assessment {
   path_reviewed: boolean;
   damage_scenario: string | null;
   threat_damage_scenario?: string | null;
+  threat_damage_scenarios?: string[];
   for_stakeholder: string | null;
   feasibility: string | null;
   impact: Vector<string | null>;
@@ -76,6 +77,7 @@ export function parseRiskCalculation(value: unknown, file: string, matrix: strin
       || typeof item.path_reviewed !== "boolean"
       || !nullableString(item.damage_scenario) || !nullableString(item.for_stakeholder)
       || (item.threat_damage_scenario !== undefined && !nullableString(item.threat_damage_scenario))
+      || (item.threat_damage_scenarios !== undefined && !strings(item.threat_damage_scenarios))
       || !feasibility(item.feasibility) || typeof item.complete !== "boolean"
       || !strings(item.problems) || !Array.isArray(item.routes) || !Array.isArray(item.paths)
       || !record(item.recorded) || !feasibility(item.recorded.feasibility) || !nullableString(item.recorded.risk)
@@ -120,6 +122,15 @@ function problems(items: string[]): SafeHtml | string {
   }</ul></details>` : "";
 }
 
+function invalidScope(item: Assessment): boolean {
+  return item.damage_scenario === null || item.problems.some((problem) =>
+    ["damage_scenario_scope_mismatch", "attack_path_scope_mismatch"].includes(problem));
+}
+
+function damageLinks(item: Assessment): string[] {
+  return item.threat_damage_scenarios ?? (item.threat_damage_scenario ? [item.threat_damage_scenario] : []);
+}
+
 export function renderRiskCalculation(result: RiskCalculation, report: ModelReport): string {
   const names = new Map<string, string>();
   for (const item of [...report.threats, ...report.damageScenarios]) names.set(item.id, item.name);
@@ -141,20 +152,21 @@ ${result.assessments.length === 0 ? html`<p>No threats are recorded in this mode
 <th scope="row">${name(item.threat, "Threat")}
 ${item.id ? html`<div class="cell-note">Assessment: ${name(item.id, "Recorded assessment")}</div>` : ""}
 ${item.damage_scenario ? html`<div class="cell-note">Assessment damage: ${name(item.damage_scenario, "Damage scenario")}</div>` : ""}
-${item.threat_damage_scenario && item.threat_damage_scenario !== item.damage_scenario ? html`<div class="cell-note">Threat-linked damage: ${name(item.threat_damage_scenario, "Damage scenario")}</div>` : ""}
-${!item.damage_scenario && !item.threat_damage_scenario ? html`<div class="cell-note">Damage not recorded</div>` : ""}
+${damageLinks(item).filter((id) => id !== item.damage_scenario).map((id) => html`<div class="cell-note">Threat-linked damage: ${name(id, "Damage scenario")}</div>`)}
+${!item.damage_scenario && !damageLinks(item).length ? html`<div class="cell-note">Damage not recorded</div>` : ""}
 <div class="cell-note">For ${name(item.for_stakeholder, "stakeholder not recorded")}</div><div class="cell-note">Path review: ${item.path_reviewed ? "Accepted" : "Not accepted"}</div>
-<details><summary>Assessment identifiers</summary><dl><dt>Assessment</dt><dd>${item.id ?? "Not recorded"}</dd><dt>Damage</dt><dd>${item.damage_scenario ?? "Not recorded"}</dd><dt>Threat-linked damage</dt><dd>${item.threat_damage_scenario ?? "Not recorded"}</dd><dt>Stakeholder</dt><dd>${item.for_stakeholder ?? "Not recorded"}</dd></dl></details></th>
+<details><summary>Assessment identifiers</summary><dl><dt>Assessment</dt><dd>${item.id ?? "Not recorded"}</dd><dt>Damage</dt><dd>${item.damage_scenario ?? "Not recorded"}</dd><dt>Threat-linked damage</dt><dd>${damageLinks(item).join(", ") || "Not recorded"}</dd><dt>Stakeholder</dt><dd>${item.for_stakeholder ?? "Not recorded"}</dd></dl></details></th>
 <td>${label(item.feasibility)}</td><td>${values(item.impact, "Not rated")}</td><td>${values(item.derived_risk)}</td>
 <td>${label(item.mitigation_status)}</td><td>${item.id === null ? "Not assessed: no risk assessment recorded" : item.complete ? "Inputs available" : "Incomplete assessment"}
-${item.problems.includes("damage_scenario_scope_mismatch") ? html`<p class="warning-note">Damage scope mismatch: the assessment damage differs from the threat-linked damage.</p>` : ""}${problems(item.problems)}</td>
+${item.problems.includes("damage_scenario_scope_mismatch") ? html`<p class="warning-note">Damage scope mismatch: the assessment damage differs from the threat-linked damage.</p>` : ""}
+${item.problems.includes("attack_path_scope_mismatch") ? html`<p class="warning-note">Attack-path scope mismatch: the assessment paths differ from the threat-linked paths.</p>` : ""}${problems(item.problems)}</td>
 </tr>`)}</tbody></table></div>`}
 ${result.assessments.map((item) => html`<details><summary>Routes for ${name(item.threat, "threat")}${item.for_stakeholder ? html` · ${name(item.for_stakeholder, "stakeholder")}` : ""}</summary>
 <p>${item.id ? html`Assessment: ${name(item.id, "Recorded assessment")}` : "No risk assessment recorded"}. Damage: ${name(item.damage_scenario ?? item.threat_damage_scenario ?? null, "Not recorded")}.</p>
 ${item.routes.length === 0 ? html`<p>No attack routes are available.</p>` : html`<ol>${item.routes.map((route, index) => html`<li>
 <strong>Route ${index + 1}</strong>: ${route.steps.map((id) => name(id, "Attack step")).join(" → ")}
 <p>Route feasibility: ${label(route.feasibility)}</p>
-${item.problems.includes("damage_scenario_scope_mismatch") ? html`<p class="warning-note">Route risk values are withheld until the assessment damage matches the threat-linked damage.</p>` : values(route.derived_risk)}
+${invalidScope(item) ? html`<p class="warning-note">Route risk values are withheld until the assessment damage and attack-path scope are valid.</p>` : values(route.derived_risk)}
 ${route.problems.includes("conflicting_route_ratings") ? html`<p class="warning-note">Conflicting recorded ratings. This route remains unresolved.</p>` : ""}
 <p>Rating sources:</p>${route.rating_paths.length ? html`<ul>${route.rating_paths.map((id) => html`<li>${name(id, "Authored path")}: ${label(item.paths.find((path) => path.id === id)?.feasibility ?? null)}</li>`)}</ul>` : html`<p>No unambiguous route rating is recorded.</p>`}
 ${problems(route.problems)}

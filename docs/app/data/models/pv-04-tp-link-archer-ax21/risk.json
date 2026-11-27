@@ -71,7 +71,10 @@
         }
       ],
       "threat": "threat-instance:lan-command-injection",
-      "threat_damage_scenario": "damage-scenario:router-takeover"
+      "threat_damage_scenario": "damage-scenario:router-takeover",
+      "threat_damage_scenarios": [
+        "damage-scenario:router-takeover"
+      ]
     }
   ],
   "count": 1,

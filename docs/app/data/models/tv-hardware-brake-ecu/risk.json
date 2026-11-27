@@ -63,7 +63,10 @@
         }
       ],
       "threat": "threat-instance:fw-tamper",
-      "threat_damage_scenario": "damage-scenario:unsafe-braking"
+      "threat_damage_scenario": "damage-scenario:unsafe-braking",
+      "threat_damage_scenarios": [
+        "damage-scenario:unsafe-braking"
+      ]
     }
   ],
   "count": 1,

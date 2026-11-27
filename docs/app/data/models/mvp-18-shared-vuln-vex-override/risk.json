@@ -60,7 +60,10 @@
         }
       ],
       "threat": "threat-instance:weak-rng-key-recovery",
-      "threat_damage_scenario": "damage-scenario:tls-session-compromise"
+      "threat_damage_scenario": "damage-scenario:tls-session-compromise",
+      "threat_damage_scenarios": [
+        "damage-scenario:tls-session-compromise"
+      ]
     },
     {
       "complete": false,
@@ -152,7 +155,10 @@
         }
       ],
       "threat": "threat-instance:side-channel-seed-leak",
-      "threat_damage_scenario": "damage-scenario:tls-session-compromise"
+      "threat_damage_scenario": "damage-scenario:tls-session-compromise",
+      "threat_damage_scenarios": [
+        "damage-scenario:tls-session-compromise"
+      ]
     }
   ],
   "count": 2,

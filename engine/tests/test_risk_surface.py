@@ -59,6 +59,24 @@ def test_api_cli_and_in_process_are_identical(engine_url, capsys):
     assert json.loads(capsys.readouterr().out) == expected
 
 
+def test_invalid_papermill_scope_is_withheld_in_api_and_cli(engine_url, capsys):
+    file = "mvp-01-software-doc-service.yaml"
+    goal = "threat-instance:xxe-file-read"
+    expected = core.risk_assessments(file, MATRIX_ID, goal)
+    row = expected["assessments"][0]
+    assert "attack_path_scope_mismatch" in row["problems"]
+    assert all(
+        value is None
+        for result in [row, *row["routes"], *row["paths"]]
+        for value in result["derived_risk"].values()
+    )
+    assert api(engine_url, file=file, matrix=MATRIX_ID, goal=goal) == expected
+    args = ["risk", file, "--matrix", MATRIX_ID, "--goal", goal, "--json"]
+    for transport in (["--in-process"], ["--url", engine_url]):
+        assert main([*args, *transport]) == 1
+        assert json.loads(capsys.readouterr().out) == expected
+
+
 def test_incomplete_or_path_emits_json_and_nonzero_exit(capsys):
     assert main(["risk", MODEL, "--matrix", MATRIX_ID, "--json", "--in-process"]) == 1
     out = json.loads(capsys.readouterr().out)

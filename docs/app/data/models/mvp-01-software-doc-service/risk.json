@@ -42,10 +42,10 @@
         {
           "authored_path": "attack-path:xxe-file-read",
           "derived_risk": {
-            "financial": 3,
-            "operational": 2,
-            "privacy": 4,
-            "safety": 1
+            "financial": null,
+            "operational": null,
+            "privacy": null,
+            "safety": null
           },
           "feasibility": "medium",
           "goal_step": "attack-step:read-internal-file",
@@ -63,7 +63,10 @@
         }
       ],
       "threat": "threat-instance:xxe-file-read",
-      "threat_damage_scenario": "damage-scenario:tenant-data-exfil"
+      "threat_damage_scenario": "damage-scenario:tenant-data-exfil",
+      "threat_damage_scenarios": [
+        "damage-scenario:tenant-data-exfil"
+      ]
     },
     {
       "complete": false,
@@ -155,7 +158,10 @@
         }
       ],
       "threat": "threat-instance:imds-pivot",
-      "threat_damage_scenario": "damage-scenario:tenant-data-exfil"
+      "threat_damage_scenario": "damage-scenario:tenant-data-exfil",
+      "threat_damage_scenarios": [
+        "damage-scenario:tenant-data-exfil"
+      ]
     }
   ],
   "count": 2,

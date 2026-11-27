@@ -85,7 +85,10 @@
         }
       ],
       "threat": "threat-instance:cloud-jwt-bypass",
-      "threat_damage_scenario": "damage-scenario:fleet-wide-compromise"
+      "threat_damage_scenario": "damage-scenario:fleet-wide-compromise",
+      "threat_damage_scenarios": [
+        "damage-scenario:fleet-wide-compromise"
+      ]
     },
     {
       "complete": false,
@@ -154,7 +157,10 @@
         }
       ],
       "threat": "threat-instance:gateway-default-creds",
-      "threat_damage_scenario": "damage-scenario:fleet-wide-compromise"
+      "threat_damage_scenario": "damage-scenario:fleet-wide-compromise",
+      "threat_damage_scenarios": [
+        "damage-scenario:fleet-wide-compromise"
+      ]
     },
     {
       "complete": false,
@@ -248,7 +254,10 @@
         }
       ],
       "threat": "threat-instance:cross-subsystem-chain",
-      "threat_damage_scenario": "damage-scenario:fleet-wide-compromise"
+      "threat_damage_scenario": "damage-scenario:fleet-wide-compromise",
+      "threat_damage_scenarios": [
+        "damage-scenario:fleet-wide-compromise"
+      ]
     }
   ],
   "count": 3,

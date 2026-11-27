@@ -71,7 +71,10 @@
         }
       ],
       "threat": "threat-instance:owner-data-harvest",
-      "threat_damage_scenario": "damage-scenario:owner-data-disclosed"
+      "threat_damage_scenario": "damage-scenario:owner-data-disclosed",
+      "threat_damage_scenarios": [
+        "damage-scenario:owner-data-disclosed"
+      ]
     },
     {
       "complete": false,
@@ -147,7 +150,10 @@
         }
       ],
       "threat": "threat-instance:silent-account-takeover",
-      "threat_damage_scenario": "damage-scenario:silent-takeover"
+      "threat_damage_scenario": "damage-scenario:silent-takeover",
+      "threat_damage_scenarios": [
+        "damage-scenario:silent-takeover"
+      ]
     }
   ],
   "count": 2,

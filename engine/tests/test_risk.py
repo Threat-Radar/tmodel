@@ -189,6 +189,9 @@ def test_omitting_a_route_from_the_authored_score_does_not_lower_risk():
     assert "attack_path_scope_mismatch" in out["problems"]
     assert len(out["paths"]) == 2
     assert out["derived_risk"]["safety"] is None
+    for result in [*out["routes"], *out["paths"]]:
+        assert all(value is None for value in result["derived_risk"].values())
+        assert result["feasibility"] in FEASIBILITIES
 
 
 def test_missing_assessment_stays_in_output_without_invented_ratings():
@@ -257,6 +260,112 @@ def test_foreign_damage_cannot_supply_a_threats_impact():
     out = assessment(doc)
     assert "damage_scenario_scope_mismatch" in out["problems"]
     assert all(value is None for value in out["derived_risk"].values())
+    assert all(
+        value is None
+        for result in [*out["routes"], *out["paths"]]
+        for value in result["derived_risk"].values()
+    )
+
+
+@pytest.mark.parametrize(
+    "kind,status,verdict,reason,effective",
+    [
+        ("person", "accepted", "accepted", "Checked damage", True),
+        ("person", " ACCEPTED ", " Accepted ", "Checked damage", True),
+        ("software_agent", "accepted", "accepted", "Checked damage", False),
+        ("person", "proposed", "accepted", "Checked damage", False),
+        ("person", "accepted", "rejected", "Different damage", False),
+        ("person", "accepted", "accepted", " ", False),
+    ],
+)
+def test_assertion_only_damage_scope_matches_asset_query(kind, status, verdict, reason, effective):
+    from engine.asset_goals import asset_threats
+
+    doc = model(("high",))
+    del doc["threat_instances"][0]["realizes_damage"]
+    doc["assets"] = [{"id": "asset:a"}]
+    doc["damage_scenarios"][0]["damages_asset"] = ["asset:a"]
+    doc["damage_scenarios"].append({"id": "damage:other"})
+    doc["parties"].append({"id": "party:reviewer", "party_kind": kind})
+    doc["assertions"] = [
+        {
+            "id": "assertion:damage",
+            "subject": "threat:t",
+            "predicate": "realizes_damage",
+            "object": "damage:d",
+            "assertion_status": status,
+        }
+    ]
+    doc["reviews"] = [
+        {
+            "id": "review:damage",
+            "reviews": "assertion:damage",
+            "reviewer": "party:reviewer",
+            "review_status": verdict,
+            "justification": reason,
+        }
+    ]
+    before = deepcopy(doc)
+    matching = assessment(doc)
+    assert bool(asset_threats(doc)["asset:a"]) is effective
+    assert matching["threat_damage_scenarios"] == (["damage:d"] if effective else [])
+    assert matching["threat_damage_scenario"] == ("damage:d" if effective else None)
+    assert matching["complete"]
+    doc["risk_scores"][0]["damage_scenario"] = "damage:other"
+    unrelated = assessment(doc)
+    assert ("damage_scenario_scope_mismatch" in unrelated["problems"]) is effective
+    assert unrelated["complete"] is not effective
+    for result in [unrelated, *unrelated["routes"], *unrelated["paths"]]:
+        assert (result["derived_risk"]["safety"] is None) is effective
+    doc["risk_scores"][0]["damage_scenario"] = "damage:d"
+    assert doc == before
+
+
+def test_multiple_effective_damage_links_preserve_each_assessment_scope():
+    doc = model(("high",))
+    doc["damage_scenarios"].append({"id": "damage:other"})
+    doc["parties"].append({"id": "party:reviewer", "party_kind": "person"})
+    doc["assertions"] = [
+        {
+            "id": "assertion:other-damage",
+            "subject": "threat:t",
+            "predicate": "realizes_damage",
+            "object": "damage:other",
+            "assertion_status": "accepted",
+        }
+    ]
+    doc["reviews"] = [
+        {
+            "id": "review:other-damage",
+            "reviews": "assertion:other-damage",
+            "reviewer": "party:reviewer",
+            "review_status": "accepted",
+            "justification": "Independent damage from the same threat",
+        }
+    ]
+    for damage in ("damage:d", "damage:other"):
+        doc["risk_scores"][0]["damage_scenario"] = damage
+        out = assessment(doc)
+        assert out["complete"]
+        assert out["threat_damage_scenarios"] == ["damage:d", "damage:other"]
+        assert out["derived_risk"]["safety"] == 5
+
+
+def test_papermill_invalid_path_scope_withholds_all_calculated_values():
+    from pathlib import Path
+
+    from engine.load.vector import load_vector_document
+
+    path = Path(__file__).resolve().parents[2] / "spec/vectors/mvp-01-software-doc-service.yaml"
+    doc = load_vector_document(path)
+    out = assess_document(doc, matrix=MATRIX_ID, goal="threat-instance:xxe-file-read")[
+        "assessments"
+    ][0]
+    assert "attack_path_scope_mismatch" in out["problems"]
+    assert out["routes"]
+    for result in [out, *out["routes"], *out["paths"]]:
+        assert all(value is None for value in result["derived_risk"].values())
+    assert out["routes"][0]["feasibility"] is not None
 
 
 def test_assessments_remain_separate_without_a_stakeholder_collapse():

@@ -86,8 +86,12 @@ reviewer; merely reading an input is not proof that a human rated it.
 The desktop and browser preview show each conflicting rating and its source,
 distinguish an absent assessment from an incomplete one, and retain assessment,
 damage and stakeholder context. `threat_damage_scenario` preserves the threat's
-authored damage link even when no RiskScore exists; it does not create one or
-fill missing assessment inputs.
+authored damage link (or the sole effective Assertion-only link) even when no
+RiskScore exists. `threat_damage_scenarios` lists all effective damage links;
+neither field creates a RiskScore or fills missing assessment inputs. Damage
+scope and asset queries share the same effective-edge resolver: authored slots
+and exact Assertion relationships with justified human acceptance. Proposed,
+agent-only or conflicting human verdicts cannot establish an Assertion-only link.
 
 `path_reviewed` is the engine's effective human-review result for the threat's
 complete set of path-to-threat relationships. Both desktop and browser preview
@@ -96,10 +100,13 @@ cannot establish acceptance. AI-only reviews do not count, while multiple
 justified human acceptances remain accepted. This flag does not approve the
 assessment or its inputs.
 
-When `damage_scenario_scope_mismatch` is reported, the panel shows the scope
-warning and withholds individual route risk values. Feasibility and source
-ratings remain inspectable. The API retains the route calculations as diagnostic
-data; they are not presented as valid risk results for a differently scoped threat.
+When `damage_scenario_scope_mismatch` or `attack_path_scope_mismatch` is reported,
+the panel shows the scope warning. The engine withholds calculated values at
+assessment, authored-path and route levels whenever damage is missing or either
+scope is invalid. Feasibility, impact, source ratings, reviews and diagnostics
+remain inspectable in the API and interface. A damage scope may match any of the
+threat's effective damage links; assessments retain their individual damage and
+stakeholder inputs.
 
 The current mvp-02 diagnostic example has High feasibility and S/F/O/P impacts
 Severe/Major/Severe/Negligible. This profile derives **5/4/5/1**, with mitigation
@@ -171,7 +178,8 @@ the rated subset could understate the worst risk. Known category risks can
 still appear when other impact categories are missing. Missing damage,
 mitigation status, or a mismatch between the assessment's path/damage scope
 and its threat is listed under `problems`. Missing damage and scope mismatches
-suppress the aggregate risk rather than silently dropping or mixing paths.
+suppress assessment, authored-path and route risk rather than silently dropping
+or mixing paths.
 Missing mitigation status makes the assessment incomplete but does not change
 the numeric risk: mitigation remains a peer field.
 

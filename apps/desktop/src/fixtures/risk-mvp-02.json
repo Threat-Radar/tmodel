@@ -60,7 +60,10 @@
         }
       ],
       "threat": "threat-instance:remote-diag-injection",
-      "threat_damage_scenario": "damage-scenario:unauthorized-can-actuation"
+      "threat_damage_scenario": "damage-scenario:unauthorized-can-actuation",
+      "threat_damage_scenarios": [
+        "damage-scenario:unauthorized-can-actuation"
+      ]
     },
     {
       "complete": false,
@@ -154,7 +157,10 @@
         }
       ],
       "threat": "threat-instance:infotainment-pivot",
-      "threat_damage_scenario": "damage-scenario:unauthorized-can-actuation"
+      "threat_damage_scenario": "damage-scenario:unauthorized-can-actuation",
+      "threat_damage_scenarios": [
+        "damage-scenario:unauthorized-can-actuation"
+      ]
     }
   ],
   "count": 2,

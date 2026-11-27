@@ -73,7 +73,10 @@
         }
       ],
       "threat": "threat-instance:spoofed-key-validated",
-      "threat_damage_scenario": "damage-scenario:vehicle-stolen"
+      "threat_damage_scenario": "damage-scenario:vehicle-stolen",
+      "threat_damage_scenarios": [
+        "damage-scenario:vehicle-stolen"
+      ]
     }
   ],
   "count": 1,

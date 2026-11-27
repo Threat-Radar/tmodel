@@ -71,7 +71,10 @@
         }
       ],
       "threat": "threat-instance:login-sqli",
-      "threat_damage_scenario": "damage-scenario:admin-takeover"
+      "threat_damage_scenario": "damage-scenario:admin-takeover",
+      "threat_damage_scenarios": [
+        "damage-scenario:admin-takeover"
+      ]
     },
     {
       "complete": false,
@@ -143,7 +146,10 @@
         }
       ],
       "threat": "threat-instance:basket-idor",
-      "threat_damage_scenario": "damage-scenario:basket-exposed"
+      "threat_damage_scenario": "damage-scenario:basket-exposed",
+      "threat_damage_scenarios": [
+        "damage-scenario:basket-exposed"
+      ]
     },
     {
       "complete": false,
@@ -215,7 +221,10 @@
         }
       ],
       "threat": "threat-instance:search-dom-xss",
-      "threat_damage_scenario": "damage-scenario:script-in-session"
+      "threat_damage_scenario": "damage-scenario:script-in-session",
+      "threat_damage_scenarios": [
+        "damage-scenario:script-in-session"
+      ]
     },
     {
       "complete": false,
@@ -288,7 +297,10 @@
         }
       ],
       "threat": "threat-instance:ftp-listing",
-      "threat_damage_scenario": "damage-scenario:documents-read"
+      "threat_damage_scenario": "damage-scenario:documents-read",
+      "threat_damage_scenarios": [
+        "damage-scenario:documents-read"
+      ]
     },
     {
       "complete": false,
@@ -361,7 +373,10 @@
         }
       ],
       "threat": "threat-instance:jwt-forgery",
-      "threat_damage_scenario": "damage-scenario:forged-identity"
+      "threat_damage_scenario": "damage-scenario:forged-identity",
+      "threat_damage_scenarios": [
+        "damage-scenario:forged-identity"
+      ]
     }
   ],
   "count": 5,

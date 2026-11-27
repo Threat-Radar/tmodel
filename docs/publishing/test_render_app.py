@@ -27,6 +27,15 @@ def test_static_data_covers_every_model_and_the_complete_library(
         assert risk["matrix"] == "annex-h-table-h8"
         assert risk["count"] == len(risk["assessments"])
         assert all("recorded" in item for item in risk["assessments"])
+        for item in risk["assessments"]:
+            if item["damage_scenario"] is None or any(
+                problem.endswith("scope_mismatch") for problem in item["problems"]
+            ):
+                assert all(
+                    value is None
+                    for result in [item, *item["routes"]]
+                    for value in result["derived_risk"].values()
+                )
         assert all(
             "review_records" not in path
             for item in risk["assessments"]

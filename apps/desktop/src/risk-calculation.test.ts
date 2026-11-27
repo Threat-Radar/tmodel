@@ -151,23 +151,39 @@ describe("engine risk calculation in the report (#63)", () => {
     }
   });
 
-  it("withholds route risk values and exposes a damage-scope warning", () => {
+  it.each([
+    ["damage_scenario_scope_mismatch", "Damage scope mismatch"],
+    ["attack_path_scope_mismatch", "Attack-path scope mismatch"],
+  ])("withholds route values for %s while preserving recorded evidence", (problem, warning) => {
     const response = structuredClone(fixture);
     const item = response.assessments[0];
     item.complete = false;
-    item.problems = ["damage_scenario_scope_mismatch"];
+    item.problems = [problem];
     item.threat_damage_scenario = "damage:other";
     item.derived_risk = { safety: null, financial: null, operational: null, privacy: null };
     response.assessments = [item];
     response.count = 1;
-    // The engine keeps route values for inspection, but they do not apply to this threat.
+    // Defense in depth for an older snapshot that still carries scoped-out values.
     expect(item.routes[0].derived_risk.safety).toBe(5);
     const rendered = renderRiskCalculation(parseRiskCalculation(response, file, RISK_MATRIX), report);
-    expect(rendered).toContain("Damage scope mismatch");
+    expect(rendered).toContain(warning);
     expect(rendered).toContain("Route risk values are withheld");
     expect(rendered).toContain("Route feasibility: High");
     expect(rendered).not.toContain("Safety: 5");
     expect(rendered).toContain("Safety: Not calculated");
+    expect(rendered).toContain("AttackPath.attack_feasibility");
+    expect(rendered).toContain(problem);
+  });
+
+  it("preserves all effective damage links without choosing a single Assertion target", () => {
+    const response = parseRiskCalculation(structuredClone(fixture), file, RISK_MATRIX);
+    response.assessments = [response.assessments[0]];
+    response.count = 1;
+    response.assessments[0].threat_damage_scenario = null;
+    response.assessments[0].threat_damage_scenarios = ["damage:first", "damage:second"];
+    const rendered = renderRiskCalculation(response, report);
+    expect(rendered).toContain("damage:first, damage:second");
+    expect(rendered).not.toContain("Damage not recorded");
   });
 
   it("serves the same calculation through the static preview with no engine fallback", async () => {

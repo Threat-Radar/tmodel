@@ -42,10 +42,10 @@
         {
           "authored_path": "attack-path:deser-rce",
           "derived_risk": {
-            "financial": 3,
-            "operational": 3,
-            "privacy": 4,
-            "safety": 1
+            "financial": null,
+            "operational": null,
+            "privacy": null,
+            "safety": null
           },
           "feasibility": "medium",
           "goal_step": "attack-step:trigger-gadget-chain",
@@ -63,7 +63,10 @@
         }
       ],
       "threat": "threat-instance:rce-via-deser",
-      "threat_damage_scenario": "damage-scenario:token-forgery"
+      "threat_damage_scenario": "damage-scenario:token-forgery",
+      "threat_damage_scenarios": [
+        "damage-scenario:token-forgery"
+      ]
     },
     {
       "complete": false,
@@ -157,7 +160,10 @@
         }
       ],
       "threat": "threat-instance:supply-chain-rce",
-      "threat_damage_scenario": "damage-scenario:token-forgery"
+      "threat_damage_scenario": "damage-scenario:token-forgery",
+      "threat_damage_scenarios": [
+        "damage-scenario:token-forgery"
+      ]
     }
   ],
   "count": 2,
