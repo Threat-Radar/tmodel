@@ -23,8 +23,9 @@ describe("integrated application shell", () => {
 
   it("keeps the compact header's brand, model picker, summary and engine indicator", () => {
     const header = html.slice(html.indexOf('<header class="app-header"'), html.indexOf("</header>"));
-    expect(header).toContain("Threat Radar");
-    expect(header).toContain("<h1>tmodel</h1>");
+    expect(header).toContain("THREAT RADAR");
+    expect(header).toContain('class="brand-radar" aria-hidden="true"');
+    expect(header).toContain('<h1 class="brand-wordmark">tmodel</h1>');
     for (const id of ["model-select", "model-picker-status", "model-picker-summary", "engine-status"]) {
       expect(header).toContain(`id="${id}"`);
     }

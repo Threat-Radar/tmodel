@@ -9,6 +9,7 @@ import {
   modelReviewLabel,
   readRememberedModel,
   rememberModel,
+  requestedModel,
   syncModelUrl,
 } from "./model-catalog";
 import type { ModelListResponse, ModelSummary } from "./model-types";
@@ -37,6 +38,15 @@ describe("choosing a model", () => {
     expect(chooseModel(MODELS, { requested: "mvp-02-automotive-ecu.yaml" })?.id).toBe("mvp-02-automotive-ecu");
     expect(chooseModel(MODELS, { remembered: "tv-hardware-brake-ecu.yaml" })?.id).toBe("tv-hardware-brake-ecu");
     expect(chooseModel(MODELS)?.id).toBe("mvp-01-software-doc-service");
+  });
+
+  it.each([
+    ["model=tcu&file=other.yaml", "tcu"],
+    ["model=&file=tcu.yaml", "tcu.yaml"],
+    ["model=%20&file=%20tcu.yaml%20", "tcu.yaml"],
+    ["model=%20&file=", undefined],
+  ])("reads nonempty model references from %s", (query, expected) => {
+    expect(requestedModel(new URLSearchParams(query))).toBe(expected);
   });
 
   it("ignores a model the engine does not list instead of guessing", () => {
