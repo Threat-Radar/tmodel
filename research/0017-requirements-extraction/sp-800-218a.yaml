@@ -1,0 +1,868 @@
+# sp-800-218a: AI-proposed requirement extraction; recorded human decisions appear in reviews.
+# Agent: automated extraction. Human owner: @paria03.
+# Source: library:sp-800-218a; library snapshot e4068272cec52a92b4414ea2a88a23b7125ce79d; read 2026-11-14.
+# Record content digest: e088c8bc75716824dae7c36a987f408364638561d381ed001b5c12254a7b10d8.
+# Coverage: 168 source entries / 81 converted / 87 skipped; see agentic-coverage.md.
+# Reuses the library extraction designators, locators and recommendation semantics.
+# Considerations mean evaluate the option; they do not require adopting it.
+requirements:
+- id: requirement:sp-800-218a-po-1-1-r1
+  name: "PO.1.1.R1 — Cover AI-model development when defining infrastructure and…"
+  text: Cover AI-model development when defining infrastructure and process security needs.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#PO.1.1.R1
+  source_locator: Table 1 (§3), PO.1.1 Recommendations/Considerations/Notes, R1, p. 8
+- id: requirement:sp-800-218a-po-1-1-r2
+  name: "PO.1.1.R2 — Choose model architectures and training methods that support…"
+  text: Choose model architectures and training methods that support security, privacy and reproducibility.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#PO.1.1.R2
+  source_locator: Table 1 (§3), PO.1.1 Recommendations/Considerations/Notes, R2, p. 8
+- id: requirement:sp-800-218a-po-1-2-r1
+  name: "PO.1.2.R1 — Keep organizational policy aligned with applicable…"
+  text: Keep organizational policy aligned with applicable AI-development, operations and data-science
+    obligations.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#PO.1.2.R1
+  source_locator: Table 1 (§3), PO.1.2 Recommendations/Considerations/Notes, R1, p. 8
+- id: requirement:sp-800-218a-po-1-2-c1
+  name: "PO.1.2.C1 — Evaluate adapting existing organizational data-classification…"
+  text: Evaluate adapting existing organizational data-classification rules and procedures.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#PO.1.2.C1
+  source_locator: Table 1 (§3), PO.1.2 Recommendations/Considerations/Notes, C1, p. 8
+- id: requirement:sp-800-218a-po-1-3-r1
+  name: "PO.1.3.R1 — Communicate AI-development security expectations to component…"
+  text: Communicate AI-development security expectations to component suppliers.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PO.1.3.R1
+  source_locator: Table 1 (§3), PO.1.3 Recommendations/Considerations/Notes, R1, p. 8
+- id: requirement:sp-800-218a-po-2-1-r1
+  name: "PO.2.1.R1 — Assign AI-development security responsibilities across the…"
+  text: Assign AI-development security responsibilities across the software lifecycle, including
+    operations and data science.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#PO.2.1.R1
+  source_locator: Table 1 (§3), PO.2.1 Recommendations/Considerations/Notes, R1, p. 9
+- id: requirement:sp-800-218a-po-2-2-r1
+  name: "PO.2.2.R1 — Teach each role the relevant model threats, vulnerabilities and…"
+  text: Teach each role the relevant model threats, vulnerabilities and defenses.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PO.2.2.R1
+  source_locator: Table 1 (§3), PO.2.2 Recommendations/Considerations/Notes, R1, p. 9
+- id: requirement:sp-800-218a-po-2-3-r1
+  name: "PO.2.3.R1 — Obtain leadership support for secure practices in AI-model…"
+  text: Obtain leadership support for secure practices in AI-model development.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PO.2.3.R1
+  source_locator: Table 1 (§3), PO.2.3 Recommendations/Considerations/Notes, R1, p. 9
+- id: requirement:sp-800-218a-po-3-1-r1
+  name: "PO.3.1.R1 — Plan automated security tooling that scales to…"
+  text: Plan automated security tooling that scales to model-development workloads and reduces manual
+    work.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#PO.3.1.R1
+  source_locator: Table 1 (§3), PO.3.1 Recommendations/Considerations/Notes, R1, p. 9
+- id: requirement:sp-800-218a-po-3-2-r1
+  name: "PO.3.2.R1 — Put the planned automated model-development security toolchains…"
+  text: Put the planned automated model-development security toolchains into operation.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PO.3.2.R1
+  source_locator: Table 1 (§3), PO.3.2 Recommendations/Considerations/Notes, R1, p. 9
+- id: requirement:sp-800-218a-po-3-2-r2
+  name: "PO.3.2.R2 — Check toolchain security at intervals justified by its risk."
+  text: Check toolchain security at intervals justified by its risk.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PO.3.2.R2
+  source_locator: Table 1 (§3), PO.3.2 Recommendations/Considerations/Notes, R2, p. 9
+- id: requirement:sp-800-218a-po-4-1-r1
+  name: "PO.4.1.R1 — Apply protective controls throughout model development rather…"
+  text: Apply protective controls throughout model development rather than only conventional software
+    phases.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#PO.4.1.R1
+  source_locator: Table 1 (§3), PO.4.1 Recommendations/Considerations/Notes, R1, p. 10
+- id: requirement:sp-800-218a-po-4-1-c1
+  name: "PO.4.1.C1 — Evaluate requiring human approval when security-check risk…"
+  text: Evaluate requiring human approval when security-check risk exceeds defined thresholds.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#PO.4.1.C1
+  source_locator: Table 1 (§3), PO.4.1 Recommendations/Considerations/Notes, C1, p. 10
+- id: requirement:sp-800-218a-po-5-1-c1
+  name: "PO.5.1.C1 — Evaluate isolating execution environments through segmentation,…"
+  text: Evaluate isolating execution environments through segmentation, containment or constrained
+    interfaces where practical.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PO.5.1.C1
+  source_locator: Table 1 (§3), PO.5.1 Recommendations/Considerations/Notes, C1, p. 10
+- id: requirement:sp-800-218a-po-5-1-r1
+  name: "PO.5.1.R1 — Measure and constrain user resource consumption and request…"
+  text: Measure and constrain user resource consumption and request rates during model development.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PO.5.1.R1
+  source_locator: Table 1 (§3), PO.5.1 Recommendations/Considerations/Notes, R1, p. 10
+- id: requirement:sp-800-218a-po-5-1-r2
+  name: "PO.5.1.R2 — Keep sensitive development data only in approved environments…"
+  text: Keep sensitive development data only in approved environments and approved locations within
+    them.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PO.5.1.R2
+  source_locator: Table 1 (§3), PO.5.1 Recommendations/Considerations/Notes, R2, p. 10
+- id: requirement:sp-800-218a-po-5-1-r3
+  name: "PO.5.1.R3 — Restrict privileges throughout training pipelines, model…"
+  text: Restrict privileges throughout training pipelines, model registries and related development
+    infrastructure.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PO.5.1.R3
+  source_locator: Table 1 (§3), PO.5.1 Recommendations/Considerations/Notes, R3, p. 10
+- id: requirement:sp-800-218a-po-5-1-r4
+  name: "PO.5.1.R4 — Observe training-pipeline activity and changes made to…"
+  text: Observe training-pipeline activity and changes made to registered models continuously.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PO.5.1.R4
+  source_locator: Table 1 (§3), PO.5.1 Recommendations/Considerations/Notes, R4, p. 11
+- id: requirement:sp-800-218a-po-5-1-r5
+  name: "PO.5.1.R5 — Harden each development environment using appropriate…"
+  text: Harden each development environment using appropriate configuration guidance.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PO.5.1.R5
+  source_locator: Table 1 (§3), PO.5.1 Recommendations/Considerations/Notes, R5, p. 11
+- id: requirement:sp-800-218a-po-5-1-r6
+  name: "PO.5.1.R6 — Continuously check development environments for exposed…"
+  text: Continuously check development environments for exposed plaintext credentials or other secrets.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PO.5.1.R6
+  source_locator: Table 1 (§3), PO.5.1 Recommendations/Considerations/Notes, R6, p. 11
+- id: requirement:sp-800-218a-po-5-3
+  name: "PO.5.3 — Continuously observe execution behavior and performance in…"
+  text: Continuously observe execution behavior and performance in development environments to identify
+    suspicious activity.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PO.5.3
+  source_locator: Table 1 (§3), PO.5.3, p. 11
+- id: requirement:sp-800-218a-po-5-3-r1
+  name: "PO.5.3.R1 — Continuously monitor the security of development infrastructure…"
+  text: Continuously monitor the security of development infrastructure hosting models, weights,
+    APIs, configuration or training data.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PO.5.3.R1
+  source_locator: Table 1 (§3), PO.5.3 Recommendations/Considerations/Notes, R1, p. 11
+- id: requirement:sp-800-218a-po-5-3-r2
+  name: "PO.5.3.R2 — Alert when model activity crosses a risk threshold or otherwise…"
+  text: Alert when model activity crosses a risk threshold or otherwise warrants investigation.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PO.5.3.R2
+  source_locator: Table 1 (§3), PO.5.3 Recommendations/Considerations/Notes, R2, p. 11
+- id: requirement:sp-800-218a-ps-1-1-r1
+  name: "PS.1.1.R1 — Protect model code, weights, pipelines and reward models…"
+  text: Protect model code, weights, pipelines and reward models according to their confidentiality,
+    integrity and availability needs across storage mechanisms.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PS.1.1.R1
+  source_locator: Table 1 (§3), PS.1.1 Recommendations/Considerations/Notes, R1, p. 11
+- id: requirement:sp-800-218a-ps-1-1-r2
+  name: "PS.1.1.R2 — Minimize direct model and model-component access regardless of…"
+  text: Minimize direct model and model-component access regardless of execution or storage location.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PS.1.1.R2
+  source_locator: Table 1 (§3), PS.1.1 Recommendations/Considerations/Notes, R2, p. 11
+- id: requirement:sp-800-218a-ps-1-1-r3
+  name: "PS.1.1.R3 — Keep reward models separate from models and datasets."
+  text: Keep reward models separate from models and datasets.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PS.1.1.R3
+  source_locator: Table 1 (§3), PS.1.1 Recommendations/Considerations/Notes, R3, p. 11
+- id: requirement:sp-800-218a-ps-1-1-r4
+  name: "PS.1.1.R4 — Expose model weights through indirect access alone."
+  text: Expose model weights through indirect access alone.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PS.1.1.R4
+  source_locator: Table 1 (§3), PS.1.1 Recommendations/Considerations/Notes, R4, p. 12
+- id: requirement:sp-800-218a-ps-1-1-c1
+  name: "PS.1.1.C1 — Evaluate prohibiting direct human access to model weights."
+  text: Evaluate prohibiting direct human access to model weights.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PS.1.1.C1
+  source_locator: Table 1 (§3), PS.1.1 Recommendations/Considerations/Notes, C1, p. 12
+- id: requirement:sp-800-218a-ps-1-1-c2
+  name: "PS.1.1.C2 — Evaluate limiting all model-development activities to…"
+  text: Evaluate limiting all model-development activities to organizationally approved environments.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PS.1.1.C2
+  source_locator: Table 1 (§3), PS.1.1 Recommendations/Considerations/Notes, C2, p. 12
+- id: requirement:sp-800-218a-ps-1-2
+  name: "PS.1.2 — Prevent unauthorized reading or alteration of data used for…"
+  text: Prevent unauthorized reading or alteration of data used for training, testing, fine-tuning
+    and alignment.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PS.1.2
+  source_locator: Table 1 (§3), PS.1.2, p. 12
+- id: requirement:sp-800-218a-ps-1-2-r1
+  name: "PS.1.2.R1 — Continuously check development-dataset integrity and, for…"
+  text: Continuously check development-dataset integrity and, for nonpublic datasets, confidentiality.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PS.1.2.R1
+  source_locator: Table 1 (§3), PS.1.2 Recommendations/Considerations/Notes, R1, p. 12
+- id: requirement:sp-800-218a-ps-1-2-c1
+  name: "PS.1.2.C1 — Evaluate securely retaining training, testing, fine-tuning and…"
+  text: Evaluate securely retaining training, testing, fine-tuning and alignment datasets for later
+    reference where feasible.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PS.1.2.C1
+  source_locator: Table 1 (§3), PS.1.2 Recommendations/Considerations/Notes, C1, p. 12
+- id: requirement:sp-800-218a-ps-1-3
+  name: "PS.1.3 — Protect model weights and configuration from unauthorized…"
+  text: Protect model weights and configuration from unauthorized access or changes.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PS.1.3
+  source_locator: Table 1 (§3), PS.1.3, p. 12
+- id: requirement:sp-800-218a-ps-1-3-r1
+  name: "PS.1.3.R1 — Store model weights and configuration separately from…"
+  text: Store model weights and configuration separately from development datasets.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PS.1.3.R1
+  source_locator: Table 1 (§3), PS.1.3 Recommendations/Considerations/Notes, R1, p. 12
+- id: requirement:sp-800-218a-ps-1-3-r2
+  name: "PS.1.3.R2 — Continuously check weight and configuration integrity and…"
+  text: Continuously check weight and configuration integrity and protect confidentiality for closed
+    models.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PS.1.3.R2
+  source_locator: Table 1 (§3), PS.1.3 Recommendations/Considerations/Notes, R2, p. 12
+- id: requirement:sp-800-218a-ps-1-3-r3
+  name: "PS.1.3.R3 — Minimize access to model weights, configuration and development…"
+  text: Minimize access to model weights, configuration and development services.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PS.1.3.R3
+  source_locator: Table 1 (§3), PS.1.3 Recommendations/Considerations/Notes, R3, p. 12
+- id: requirement:sp-800-218a-ps-1-3-r4
+  name: "PS.1.3.R4 — Apply protections proportionate to weight-related risk, such as…"
+  text: Apply protections proportionate to weight-related risk, such as encryption, integrity checks,
+    signatures, multiparty approval or isolation.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PS.1.3.R4
+  source_locator: Table 1 (§3), PS.1.3 Recommendations/Considerations/Notes, R4, p. 12
+- id: requirement:sp-800-218a-ps-2-1-r1
+  name: "PS.2.1.R1 — Supply hashes or signatures enabling integrity checks of models…"
+  text: Supply hashes or signatures enabling integrity checks of models and their components, artifacts
+    and documentation.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#PS.2.1.R1
+  source_locator: Table 1 (§3), PS.2.1 Recommendations/Considerations/Notes, R1, p. 12
+- id: requirement:sp-800-218a-ps-2-1-r2
+  name: "PS.2.1.R2 — Sign modifications made to an AI model digitally."
+  text: Sign modifications made to an AI model digitally.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#PS.2.1.R2
+  source_locator: Table 1 (§3), PS.2.1 Recommendations/Considerations/Notes, R2, p. 12
+- id: requirement:sp-800-218a-ps-3-1-r1
+  name: "PS.3.1.R1 — Track versions of infrastructure tooling used to create…"
+  text: Track versions of infrastructure tooling used to create datasets and train models.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#PS.3.1.R1
+  source_locator: Table 1 (§3), PS.3.1 Recommendations/Considerations/Notes, R1, p. 12
+- id: requirement:sp-800-218a-ps-3-1-r2
+  name: "PS.3.1.R2 — Retain the reasoning behind the choice of an AI model."
+  text: Retain the reasoning behind the choice of an AI model.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#PS.3.1.R2
+  source_locator: Table 1 (§3), PS.3.1 Recommendations/Considerations/Notes, R2, p. 13
+- id: requirement:sp-800-218a-ps-3-1-r3
+  name: "PS.3.1.R3 — Retain records of the full training process, including…"
+  text: Retain records of the full training process, including preprocessing and model architecture.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#PS.3.1.R3
+  source_locator: Table 1 (§3), PS.3.1 Recommendations/Considerations/Notes, R3, p. 13
+- id: requirement:sp-800-218a-ps-3-2-r1
+  name: "PS.3.2.R1 — Record provenance for models, components and derivatives,…"
+  text: Record provenance for models, components and derivatives, including the training libraries,
+    frameworks and pipelines.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#PS.3.2.R1
+  source_locator: Table 1 (§3), PS.3.2 Recommendations/Considerations/Notes, R1, p. 13
+- id: requirement:sp-800-218a-ps-3-2-r2
+  name: "PS.3.2.R2 — Identify models trained with sensitive data and decide whether…"
+  text: Identify models trained with sensitive data and decide whether access should be limited to
+    people authorized for that data.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#PS.3.2.R2
+  source_locator: Table 1 (§3), PS.3.2 Recommendations/Considerations/Notes, R2, p. 13
+- id: requirement:sp-800-218a-ps-3-2-c1
+  name: "PS.3.2.C1 — Evaluate sharing provenance for model-development datasets."
+  text: Evaluate sharing provenance for model-development datasets.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#PS.3.2.C1
+  source_locator: Table 1 (§3), PS.3.2 Recommendations/Considerations/Notes, C1, p. 13
+- id: requirement:sp-800-218a-pw-1-1-r1
+  name: "PW.1.1.R1 — Include model-specific attacks and weaknesses, including…"
+  text: Include model-specific attacks and weaknesses, including poisoning, injected content, service
+    exhaustion, supply-chain compromise, disclosure and weight theft, in risk models.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#PW.1.1.R1
+  source_locator: Table 1 (§3), PW.1.1 Recommendations/Considerations/Notes, R1, p. 13
+- id: requirement:sp-800-218a-pw-1-1-c1
+  name: "PW.1.1.C1 — Evaluate periodically updating risk models for future releases…"
+  text: Evaluate periodically updating risk models for future releases and derivatives.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#PW.1.1.C1
+  source_locator: Table 1 (§3), PW.1.1 Recommendations/Considerations/Notes, C1, p. 14
+- id: requirement:sp-800-218a-pw-1-1-c2
+  name: "PW.1.1.C2 — Evaluate whether a model makes consequential security decisions…"
+  text: Evaluate whether a model makes consequential security decisions without human participation
+    in its critical path.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#PW.1.1.C2
+  source_locator: Table 1 (§3), PW.1.1 Recommendations/Considerations/Notes, C2, p. 14
+- id: requirement:sp-800-218a-pw-3-1
+  name: "PW.3.1 — Check development data for poisoning, bias, excessive…"
+  text: Check development data for poisoning, bias, excessive uniformity and tampering before use
+    and mitigate identified risks.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PW.3.1
+  source_locator: Table 1 (§3), PW.3.1, p. 14
+- id: requirement:sp-800-218a-pw-3-1-r1
+  name: "PW.3.1.R1 — Check dataset integrity and any known provenance before using…"
+  text: Check dataset integrity and any known provenance before using it for model development.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PW.3.1.R1
+  source_locator: Table 1 (§3), PW.3.1 Recommendations/Considerations/Notes, R1, p. 14
+- id: requirement:sp-800-218a-pw-3-1-r2
+  name: "PW.3.1.R2 — Choose suitable dataset-analysis and modification techniques…"
+  text: Choose suitable dataset-analysis and modification techniques such as anomaly detection, bias
+    analysis, filtering, cleaning or fact checking.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PW.3.1.R2
+  source_locator: Table 1 (§3), PW.3.1 Recommendations/Considerations/Notes, R2, p. 15
+- id: requirement:sp-800-218a-pw-3-1-c1
+  name: "PW.3.1.C1 — Evaluate having people examine development datasets through…"
+  text: Evaluate having people examine development datasets through exploratory analysis or similar
+    techniques.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PW.3.1.C1
+  source_locator: Table 1 (§3), PW.3.1 Recommendations/Considerations/Notes, C1, p. 15
+- id: requirement:sp-800-218a-pw-3-2
+  name: "PW.3.2 — Record known development-dataset provenance and explicitly…"
+  text: Record known development-dataset provenance and explicitly identify data whose provenance
+    is unknown.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#PW.3.2
+  source_locator: Table 1 (§3), PW.3.2, p. 15
+- id: requirement:sp-800-218a-pw-3-3
+  name: "PW.3.3 — Use adversarial examples in training and testing datasets to…"
+  text: Use adversarial examples in training and testing datasets to improve attack resistance.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PW.3.3
+  source_locator: Table 1 (§3), PW.3.3, p. 15
+- id: requirement:sp-800-218a-pw-3-3-r1
+  name: "PW.3.3.R1 — Control and test adversarial samples before allowing their use…"
+  text: Control and test adversarial samples before allowing their use in training or testing.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PW.3.3.R1
+  source_locator: Table 1 (§3), PW.3.3 Recommendations/Considerations/Notes, R1, p. 15
+- id: requirement:sp-800-218a-pw-4-1-c1
+  name: "PW.4.1.C1 — Evaluate adopting an existing model instead of developing a…"
+  text: Evaluate adopting an existing model instead of developing a replacement.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PW.4.1.C1
+  source_locator: Table 1 (§3), PW.4.1 Recommendations/Considerations/Notes, C1, p. 15
+- id: requirement:sp-800-218a-pw-4-4-r1
+  name: "PW.4.4.R1 — Check integrity, provenance and security before using acquired…"
+  text: Check integrity, provenance and security before using acquired models, datasets, reward models,
+    adaptation layers or configuration.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PW.4.4.R1
+  source_locator: Table 1 (§3), PW.4.4 Recommendations/Considerations/Notes, R1, p. 15
+- id: requirement:sp-800-218a-pw-4-4-r2
+  name: "PW.4.4.R2 — Inspect and extensively test acquired models and components for…"
+  text: Inspect and extensively test acquired models and components for malicious content and vulnerabilities
+    before use.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PW.4.4.R2
+  source_locator: Table 1 (§3), PW.4.4 Recommendations/Considerations/Notes, R2, p. 16
+- id: requirement:sp-800-218a-pw-5-1-r1
+  name: "PW.5.1.R1 — Extend secure-coding guidance to address AI-specific…"
+  text: Extend secure-coding guidance to address AI-specific implementation risks.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PW.5.1.R1
+  source_locator: Table 1 (§3), PW.5.1 Recommendations/Considerations/Notes, R1, p. 16
+- id: requirement:sp-800-218a-pw-5-1-r2
+  name: "PW.5.1.R2 — Log, analyze and contextually validate model inputs and…"
+  text: Log, analyze and contextually validate model inputs and outputs, sanitizing or discarding
+    problematic content.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PW.5.1.R2
+  source_locator: Table 1 (§3), PW.5.1 Recommendations/Considerations/Notes, R2, p. 16
+- id: requirement:sp-800-218a-pw-5-1-r3
+  name: "PW.5.1.R3 — Encode model inputs and outputs so they cannot trigger…"
+  text: Encode model inputs and outputs so they cannot trigger unauthorized code execution.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PW.5.1.R3
+  source_locator: Table 1 (§3), PW.5.1 Recommendations/Considerations/Notes, R3, p. 16
+- id: requirement:sp-800-218a-pw-6-1-c1
+  name: "PW.6.1.C1 — Evaluate model-serialization formats that reduce opportunities…"
+  text: Evaluate model-serialization formats that reduce opportunities to embed malicious content.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PW.6.1.C1
+  source_locator: Table 1 (§3), PW.6.1 Recommendations/Considerations/Notes, C1, p. 16
+- id: requirement:sp-800-218a-pw-6-2-c1
+  name: "PW.6.2.C1 — Evaluate recording build-tool versions and features as…"
+  text: Evaluate recording build-tool versions and features as provenance evidence.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#PW.6.2.C1
+  source_locator: Table 1 (§3), PW.6.2 Recommendations/Considerations/Notes, C1, p. 16
+- id: requirement:sp-800-218a-pw-7-1-r1
+  name: "PW.7.1.R1 — Include models and supporting components in code-review and…"
+  text: Include models and supporting components in code-review and analysis guidance.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#PW.7.1.R1
+  source_locator: Table 1 (§3), PW.7.1 Recommendations/Considerations/Notes, R1, p. 16
+- id: requirement:sp-800-218a-pw-7-1-c1
+  name: "PW.7.1.C1 — Evaluate scanning model code in addition to testing model…"
+  text: Evaluate scanning model code in addition to testing model behavior.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#PW.7.1.C1
+  source_locator: Table 1 (§3), PW.7.1 Recommendations/Considerations/Notes, C1, p. 16
+- id: requirement:sp-800-218a-pw-7-2-r1
+  name: "PW.7.2.R1 — Scan models for malware, vulnerabilities, backdoors and related…"
+  text: Scan models for malware, vulnerabilities, backdoors and related defects under organizational
+    review policy.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PW.7.2.R1
+  source_locator: Table 1 (§3), PW.7.2 Recommendations/Considerations/Notes, R1, p. 16
+- id: requirement:sp-800-218a-pw-8-1-r1
+  name: "PW.8.1.R1 — Include model testing in executable-testing policy using…"
+  text: Include model testing in executable-testing policy using suitable unit, integration, penetration,
+    red-team, use-case or adversarial methods.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#PW.8.1.R1
+  source_locator: Table 1 (§3), PW.8.1 Recommendations/Considerations/Notes, R1, p. 17
+- id: requirement:sp-800-218a-pw-8-1-c1
+  name: "PW.8.1.C1 — Evaluate automating regression checks in the development…"
+  text: Evaluate automating regression checks in the development pipeline where possible.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#PW.8.1.C1
+  source_locator: Table 1 (§3), PW.8.1 Recommendations/Considerations/Notes, C1, p. 17
+- id: requirement:sp-800-218a-pw-8-2-r1
+  name: "PW.8.2.R1 — Test model vulnerabilities according to organizational testing…"
+  text: Test model vulnerabilities according to organizational testing policy.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PW.8.2.R1
+  source_locator: Table 1 (§3), PW.8.2 Recommendations/Considerations/Notes, R1, p. 17
+- id: requirement:sp-800-218a-pw-8-2-r2
+  name: "PW.8.2.R2 — Repeat model tests after retraining or introducing new data…"
+  text: Repeat model tests after retraining or introducing new data sources.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#PW.8.2.R2
+  source_locator: Table 1 (§3), PW.8.2 Recommendations/Considerations/Notes, R2, p. 17
+- id: requirement:sp-800-218a-rv-1-1-r1
+  name: "RV.1.1.R1 — Record and analyze model input and output activity to detect…"
+  text: Record and analyze model input and output activity to detect security and performance problems.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#RV.1.1.R1
+  source_locator: Table 1 (§3), RV.1.1 Recommendations/Considerations/Notes, R1, p. 17
+- id: requirement:sp-800-218a-rv-1-1-r2
+  name: "RV.1.1.R2 — Tell model users how to report suspected security or…"
+  text: Tell model users how to report suspected security or performance issues.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#RV.1.1.R2
+  source_locator: Table 1 (§3), RV.1.1 Recommendations/Considerations/Notes, R2, p. 18
+- id: requirement:sp-800-218a-rv-1-1-r3
+  name: "RV.1.1.R3 — Watch vulnerability and incident sources for model concerns and…"
+  text: Watch vulnerability and incident sources for model concerns and affected training frameworks
+    or libraries.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#RV.1.1.R3
+  source_locator: Table 1 (§3), RV.1.1 Recommendations/Considerations/Notes, R3, p. 18
+- id: requirement:sp-800-218a-rv-1-2-r1
+  name: "RV.1.2.R1 — Frequently scan and test models for vulnerabilities missed…"
+  text: Frequently scan and test models for vulnerabilities missed previously.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#RV.1.2.R1
+  source_locator: Table 1 (§3), RV.1.2 Recommendations/Considerations/Notes, R1, p. 18
+- id: requirement:sp-800-218a-rv-1-2-r2
+  name: "RV.1.2.R2 — Use automation for most continuing scans and tests while…"
+  text: Use automation for most continuing scans and tests while involving people when needed.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#RV.1.2.R2
+  source_locator: Table 1 (§3), RV.1.2 Recommendations/Considerations/Notes, R2, p. 18
+- id: requirement:sp-800-218a-rv-1-2-r3
+  name: "RV.1.2.R3 — Audit AI models periodically."
+  text: Audit AI models periodically.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#RV.1.2.R3
+  source_locator: Table 1 (§3), RV.1.2 Recommendations/Considerations/Notes, R3, p. 18
+- id: requirement:sp-800-218a-rv-1-3-r1
+  name: "RV.1.3.R1 — Cover model vulnerabilities in organizational disclosure and…"
+  text: Cover model vulnerabilities in organizational disclosure and remediation policy.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#RV.1.3.R1
+  source_locator: Table 1 (§3), RV.1.3 Recommendations/Considerations/Notes, R1, p. 18
+- id: requirement:sp-800-218a-rv-1-3-r2
+  name: "RV.1.3.R2 — Explain model limitations and cybersecurity reporting…"
+  text: Explain model limitations and cybersecurity reporting procedures to users.
+  text_origin: paraphrase
+  requirement_kind: documentation
+  normativity: recommended
+  source_ref: library:sp-800-218a#RV.1.3.R2
+  source_locator: Table 1 (§3), RV.1.3 Recommendations/Considerations/Notes, R2, p. 18
+- id: requirement:sp-800-218a-rv-2-2-r1
+  name: "RV.2.2.R1 — Account for model-rebuilding cost and duration when choosing…"
+  text: Account for model-rebuilding cost and duration when choosing risk responses.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#RV.2.2.R1
+  source_locator: Table 1 (§3), RV.2.2 Recommendations/Considerations/Notes, R1, p. 18
+- id: requirement:sp-800-218a-rv-2-2-r2
+  name: "RV.2.2.R2 — Define and follow rules for stopping model use and reverting to…"
+  text: Define and follow rules for stopping model use and reverting to earlier model and component
+    versions.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#RV.2.2.R2
+  source_locator: Table 1 (§3), RV.2.2 Recommendations/Considerations/Notes, R2, p. 19
+- id: requirement:sp-800-218a-rv-2-2-c1
+  name: "RV.2.2.C1 — Evaluate maintaining alternate operational arrangements so…"
+  text: Evaluate maintaining alternate operational arrangements so model use can stop until its risks
+    are addressed.
+  text_origin: paraphrase
+  requirement_kind: process
+  normativity: recommended
+  source_ref: library:sp-800-218a#RV.2.2.C1
+  source_locator: Table 1 (§3), RV.2.2 Recommendations/Considerations/Notes, C1, p. 19
+threat_instances:
+- id: threat-instance:sp-800-218a-resource-exhaustion
+  name: Denial-of-service conditions arising from adversarial prompts
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:sp-800-218a-disclosure
+  name: Unauthorized information disclosure
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:sp-800-218a-weight-theft
+  name: Theft of AI model weights
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:sp-800-218a-poisoning
+  name: Poisoning of training data
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:sp-800-218a-supply-chain
+  name: Supply chain attacks
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+- id: threat-instance:sp-800-218a-injected-content
+  name: Malicious code or other unwanted content in inputs and outputs
+  description: Source-named threat category; unreviewed stub, not a product assessment.
+parties:
+- id: party:paria03
+  name: '@paria03'
+  party_kind: person
+assertions:
+- id: assertion:sp-800-218a-po-5-1-r1-addresses-sp-800-218a-resource-exhaustion
+  subject: requirement:sp-800-218a-po-5-1-r1
+  predicate: addresses
+  object: threat-instance:sp-800-218a-resource-exhaustion
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Table 1 (§3), PO.5.1 Recommendations/Considerations/Notes,
+    R1, p. 10; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.'
+- id: assertion:sp-800-218a-po-5-1-r6-addresses-sp-800-218a-disclosure
+  subject: requirement:sp-800-218a-po-5-1-r6
+  predicate: addresses
+  object: threat-instance:sp-800-218a-disclosure
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Table 1 (§3), PO.5.1 Recommendations/Considerations/Notes,
+    R6, p. 11; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.'
+- id: assertion:sp-800-218a-ps-1-1-r2-addresses-sp-800-218a-weight-theft
+  subject: requirement:sp-800-218a-ps-1-1-r2
+  predicate: addresses
+  object: threat-instance:sp-800-218a-weight-theft
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Table 1 (§3), PS.1.1 Recommendations/Considerations/Notes,
+    R2, p. 11; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.'
+- id: assertion:sp-800-218a-ps-1-3-r3-addresses-sp-800-218a-weight-theft
+  subject: requirement:sp-800-218a-ps-1-3-r3
+  predicate: addresses
+  object: threat-instance:sp-800-218a-weight-theft
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PS.1.3 Recommendations/Considerations/Notes,
+    R3, p. 12; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.'
+- id: assertion:sp-800-218a-ps-1-3-r4-addresses-sp-800-218a-weight-theft
+  subject: requirement:sp-800-218a-ps-1-3-r4
+  predicate: addresses
+  object: threat-instance:sp-800-218a-weight-theft
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Table 1 (§3), PS.1.3 Recommendations/Considerations/Notes,
+    R4, p. 12; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.'
+- id: assertion:sp-800-218a-pw-3-1-addresses-sp-800-218a-poisoning
+  subject: requirement:sp-800-218a-pw-3-1
+  predicate: addresses
+  object: threat-instance:sp-800-218a-poisoning
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Table 1 (§3), PW.3.1, p. 14; safeguard
+    targets the named risk enumerated at Table 1, PW.1.1.R1.'
+- id: assertion:sp-800-218a-pw-3-1-r1-addresses-sp-800-218a-poisoning
+  subject: requirement:sp-800-218a-pw-3-1-r1
+  predicate: addresses
+  object: threat-instance:sp-800-218a-poisoning
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Table 1 (§3), PW.3.1 Recommendations/Considerations/Notes,
+    R1, p. 14; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.'
+- id: assertion:sp-800-218a-pw-3-1-r2-addresses-sp-800-218a-poisoning
+  subject: requirement:sp-800-218a-pw-3-1-r2
+  predicate: addresses
+  object: threat-instance:sp-800-218a-poisoning
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Table 1 (§3), PW.3.1 Recommendations/Considerations/Notes,
+    R2, p. 15; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.'
+- id: assertion:sp-800-218a-pw-4-4-r1-addresses-sp-800-218a-supply-chain
+  subject: requirement:sp-800-218a-pw-4-4-r1
+  predicate: addresses
+  object: threat-instance:sp-800-218a-supply-chain
+  confidence: medium
+  assertion_status: proposed
+  description: 'AI-proposed, 2026-11-14; unreviewed. Basis: Table 1 (§3), PW.4.4 Recommendations/Considerations/Notes,
+    R1, p. 15; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.'
+- id: assertion:sp-800-218a-pw-4-4-r2-addresses-sp-800-218a-supply-chain
+  subject: requirement:sp-800-218a-pw-4-4-r2
+  predicate: addresses
+  object: threat-instance:sp-800-218a-supply-chain
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Table 1 (§3), PW.4.4 Recommendations/Considerations/Notes,
+    R2, p. 16; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.'
+- id: assertion:sp-800-218a-pw-5-1-r2-addresses-sp-800-218a-injected-content
+  subject: requirement:sp-800-218a-pw-5-1-r2
+  predicate: addresses
+  object: threat-instance:sp-800-218a-injected-content
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Table 1 (§3), PW.5.1 Recommendations/Considerations/Notes,
+    R2, p. 16; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.'
+- id: assertion:sp-800-218a-pw-5-1-r3-addresses-sp-800-218a-injected-content
+  subject: requirement:sp-800-218a-pw-5-1-r3
+  predicate: addresses
+  object: threat-instance:sp-800-218a-injected-content
+  confidence: medium
+  assertion_status: accepted
+  description: 'Originally AI-proposed, 2026-11-14; human sample accepted (see recorded Review). Basis: Table 1 (§3), PW.5.1 Recommendations/Considerations/Notes,
+    R3, p. 16; safeguard targets the named risk enumerated at Table 1, PW.1.1.R1.'
+reviews:
+- id: review:paria03-sp-800-218a-po-5-1-r1
+  reviews: assertion:sp-800-218a-po-5-1-r1-addresses-sp-800-218a-resource-exhaustion
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as a proposed relationship: resource and request limits address service exhaustion
+    by limiting excessive consumption during model development.'
+- id: review:paria03-sp-800-218a-po-5-1-r6
+  reviews: assertion:sp-800-218a-po-5-1-r6-addresses-sp-800-218a-disclosure
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as a proposed relationship: monitoring for exposed secrets addresses information
+    disclosure from leaked secrets specifically, not every form of disclosure.'
+- id: review:paria03-sp-800-218a-ps-1-1-r2
+  reviews: assertion:sp-800-218a-ps-1-1-r2-addresses-sp-800-218a-weight-theft
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as a proposed relationship: restricting direct model access reduces opportunities
+    for unauthorized access and model-weight theft.'
+- id: review:paria03-sp-800-218a-ps-1-3-r4
+  reviews: assertion:sp-800-218a-ps-1-3-r4-addresses-sp-800-218a-weight-theft
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as a proposed relationship: encryption and access controls can protect model
+    weights from theft. Hashes alone do not prevent theft.'
+- id: review:paria03-sp-800-218a-pw-3-1
+  reviews: assertion:sp-800-218a-pw-3-1-addresses-sp-800-218a-poisoning
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as a proposed relationship: checking development data for poisoning and tampering
+    directly addresses poisoned training data.'
+- id: review:paria03-sp-800-218a-pw-3-1-r1
+  reviews: assertion:sp-800-218a-pw-3-1-r1-addresses-sp-800-218a-poisoning
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as a proposed relationship: data provenance and integrity checks help detect
+    changes associated with poisoned data. A known origin does not guarantee safe content.'
+- id: review:paria03-sp-800-218a-pw-3-1-r2
+  reviews: assertion:sp-800-218a-pw-3-1-r2-addresses-sp-800-218a-poisoning
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as a proposed relationship: data analysis, filtering and cleaning can identify
+    or remove harmful data relevant to poisoning.'
+- id: review:paria03-sp-800-218a-pw-4-4-r2
+  reviews: assertion:sp-800-218a-pw-4-4-r2-addresses-sp-800-218a-supply-chain
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as a proposed relationship: testing acquired models and components for malicious
+    content addresses supply-chain attacks.'
+- id: review:paria03-sp-800-218a-pw-5-1-r2
+  reviews: assertion:sp-800-218a-pw-5-1-r2-addresses-sp-800-218a-injected-content
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as a proposed relationship: contextual input and output validation and sanitization
+    address malicious content. Logging alone does not remove content.'
+- id: review:paria03-sp-800-218a-pw-5-1-r3
+  reviews: assertion:sp-800-218a-pw-5-1-r3-addresses-sp-800-218a-injected-content
+  reviewer: party:paria03
+  review_status: accepted
+  justification: 'Accepted as a proposed relationship: input and output encoding addresses unauthorized
+    code execution from executable content, not every harmful output.'

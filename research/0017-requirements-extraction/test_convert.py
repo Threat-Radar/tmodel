@@ -121,6 +121,20 @@ class Convert(unittest.TestCase):
             n, errs, _, _ = check.check(p)
             self.assertEqual(errs, [], name)
 
+    def test_native_locator_is_preserved_and_its_reference_is_percent_encoded(self):
+        des = "3 > Controls / access#1% §A"
+        spec = {"record": FREE["record"], "requirements": [
+            dict(FREE["requirements"][0], designator=des, locator="Security controls")]}
+        d = make(self.tmp.name + "/uri", spec, "regulator")
+        out, doc, *_ = self.run_convert(d)
+        r = doc["requirements"][0]
+        self.assertEqual(r["source_ref"], "library:demo-free#3%20%3E%20Controls%20%2F%20access%231%25%20%C2%A7A")
+        self.assertEqual(r["source_locator"], des + " (Security controls)")
+        self.assertEqual(r["id"], "requirement:demo-free-3-controls-access-1-a")
+        p = pathlib.Path(self.tmp.name) / "demo-free.yaml"
+        p.write_text(out)
+        self.assertEqual(check.check(p)[1], [])
+
 
 GOOD = """
 requirements:
@@ -162,6 +176,18 @@ class Check(unittest.TestCase):
 
     def test_good(self):
         self.assertEqual(self.errors(GOOD), [])
+
+    def test_source_ref_rejects_invalid_fragments_even_when_linkml_accepts_the_string(self):
+        for fragment in ("", "heading with spaces", "a>b", "a<b", "a#b", "bad%", "bad%GG", "bad%2"):
+            with self.subTest(fragment=fragment):
+                text = GOOD.replace("library:demo-free#1", "library:demo-free#" + fragment)
+                self.assertTrue(any("invalid URI fragment" in e for e in self.errors(text)))
+
+    def test_source_ref_accepts_native_keys_and_encoded_locators(self):
+        for fragment in ("RQ-09-01", "PO.5.1.R1", "a/b?c=d", "%C2%A73%20%3E%20Controls", "a%231"):
+            with self.subTest(fragment=fragment):
+                text = GOOD.replace("library:demo-free#1", "library:demo-free#" + fragment)
+                self.assertEqual(self.errors(text), [])
 
     def test_each_rule_fails(self):
         cases = {
