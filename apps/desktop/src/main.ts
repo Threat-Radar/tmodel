@@ -40,6 +40,8 @@ import radarMark from "./assets/radar.svg?raw";
 import { DesktopProjects, ProjectAttackPathView, ProjectReportView, projectBackend } from "./desktop-projects";
 import type { ModelSummary } from "./model-types";
 import type { VersionApi } from "./revision-api";
+// Import New Product (#290's import screen, in its own files: import-*.ts).
+import { createImportScreen } from "./import-screen";
 
 const POLL_MS = 2000;
 // Vite replaces MODE at build time; the Pages bundle can therefore eliminate
@@ -450,7 +452,14 @@ window.addEventListener("DOMContentLoaded", () => {
         else void catalogStartup.retryNow();
       },
     });
-    projects.installHome(required("welcome"), required<HTMLButtonElement>("get-started"));
+    // Import New Product: its own screen, opened from the home page.
+    const importScreen = createImportScreen(document, parameters, projects);
+    document.body.append(importScreen.element);
+    projects.onEnterWorkspace(() => importScreen.hide());
+    const welcome = required("welcome");
+    projects.installHome(welcome, required<HTMLButtonElement>("get-started"), {
+      importProduct: (opener) => importScreen.open(welcome, opener),
+    });
   }
 
   initializeWelcome({
