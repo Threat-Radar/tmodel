@@ -20,6 +20,8 @@ from typing import Any
 from urllib.parse import parse_qs, urlsplit
 
 from engine import core
+from engine.api.reviews import ERROR_STATUS, MAX_BODY, OPERATIONS, ReviewAPI
+from engine.review_workspace import ReviewError
 
 DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 47811
@@ -98,6 +100,68 @@ def is_loopback(host: str) -> bool:
 
 class EngineHandler(BaseHTTPRequestHandler):
     server_version = "tmodel-engine"
+    review_api: ReviewAPI | None = None
+
+    def do_OPTIONS(self) -> None:  # noqa: N802
+        if (
+            self.path not in OPERATIONS
+            or self.review_api is None
+            or self.headers.get("Origin") not in ALLOWED_ORIGINS
+            or not self._local_host()
+        ):
+            self._send_json(403, {"error": "forbidden preflight"})
+            return
+        self.send_response(204)
+        self.send_header("Access-Control-Allow-Origin", self.headers["Origin"])
+        self.send_header("Vary", "Origin")
+        self.send_header("Access-Control-Allow-Methods", "POST")
+        self.send_header("Access-Control-Allow-Headers", "Authorization, Content-Type")
+        self.send_header("Content-Length", "0")
+        self.end_headers()
+
+    def _local_host(self) -> bool:
+        host = (self.headers.get("Host") or "").rsplit(":", 1)[0].strip("[]")
+        return is_loopback(host)
+
+    def do_POST(self) -> None:  # noqa: N802
+        try:
+            if not self._local_host() or self.headers.get("Origin") not in (None, *ALLOWED_ORIGINS):
+                raise ReviewError("permission_denied", "Forbidden host or origin.")
+            if self.path not in OPERATIONS:
+                self._send_json(
+                    404, {"error": {"code": "not_found", "message": "Unknown operation."}}
+                )
+                return
+            if self.review_api is None:
+                raise ReviewError(
+                    "workspace_failure", "Editable review sessions are not configured."
+                )
+            principal = self.review_api.authenticate(self.headers.get("Authorization", ""))
+            if self.headers.get_content_type() != "application/json":
+                raise ReviewError("validation_error", "Content-Type must be application/json.")
+            lengths = self.headers.get_all("Content-Length", [])
+            if (
+                self.headers.get("Transfer-Encoding") is not None
+                or len(lengths) != 1
+                or len(lengths[0]) > 6
+                or not lengths[0].isascii()
+                or not lengths[0].isdigit()
+                or not 0 < int(lengths[0]) <= MAX_BODY
+            ):
+                raise ReviewError(
+                    "validation_error", "Provide a JSON body of at most 262144 bytes."
+                )
+            self.connection.settimeout(5)
+            body = self.rfile.read(int(lengths[0]))
+            if len(body) != int(lengths[0]):
+                raise ReviewError("validation_error", "Incomplete request body.")
+            self._send_json(200, self.review_api.dispatch(self.path, principal, body))
+        except ReviewError as exc:
+            self._send_json(ERROR_STATUS.get(exc.code, 503), exc.to_dict())
+        except Exception:
+            self._send_json(
+                500, {"error": {"code": "internal_error", "message": "Review operation failed."}}
+            )
 
     def _send_json(self, status: int, payload: dict[str, Any]) -> None:
         try:
@@ -139,13 +203,20 @@ class EngineHandler(BaseHTTPRequestHandler):
         pass  # quiet by default; the GUI polls /health
 
 
-def make_server(host: str = DEFAULT_HOST, port: int = DEFAULT_PORT) -> ThreadingHTTPServer:
+def make_server(
+    host: str = DEFAULT_HOST,
+    port: int = DEFAULT_PORT,
+    *,
+    review_api: ReviewAPI | None = None,
+) -> ThreadingHTTPServer:
     """Create (but do not start) the server. Raises ValueError for non-loopback hosts."""
     if not is_loopback(host):
         raise ValueError(
             f"refusing to bind non-loopback host {host!r}: the engine API is local-only"
         )
-    return ThreadingHTTPServer((host, port), EngineHandler)
+    # Per-server handler class: configuring one app must not enable another.
+    handler = type("ConfiguredEngineHandler", (EngineHandler,), {"review_api": review_api})
+    return ThreadingHTTPServer((host, port), handler)
 
 
 def _shutdown_when_stdin_closes(httpd: ThreadingHTTPServer) -> None:

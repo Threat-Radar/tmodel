@@ -1,0 +1,888 @@
+{
+  "note": "Synthetic test fixture, not human acceptance or production credentials.",
+  "context": {
+    "request": {
+      "model_id": "local:one",
+      "revision": "r1",
+      "matrix": "annex-h-table-h8",
+      "threat_id": "threat:t",
+      "route_id": "route:7890519f47b26b95758afe64edec616d4baf426e4c91b9b0e03609ea4d992eaf"
+    },
+    "response": {
+      "model_id": "local:one",
+      "revision": "r1",
+      "reviewer_id": "party:reviewer",
+      "route": {
+        "id": "route:7890519f47b26b95758afe64edec616d4baf426e4c91b9b0e03609ea4d992eaf",
+        "steps": [
+          "step:a"
+        ],
+        "goal_step": "step:a",
+        "authored_path": "path:a",
+        "rating_paths": [
+          "path:a"
+        ],
+        "feasibility": "low",
+        "problems": []
+      },
+      "threat": {
+        "id": "threat:t",
+        "realizes_damage": "damage:d"
+      },
+      "attack_paths": [
+        {
+          "id": "path:a",
+          "steps": [
+            "step:a"
+          ],
+          "realizes_threat": "threat:t",
+          "attack_feasibility": "low"
+        }
+      ],
+      "assertions": [
+        {
+          "id": "assertion:path",
+          "subject": "path:a",
+          "predicate": "realizes_threat",
+          "object": "threat:t",
+          "assertion_status": "proposed",
+          "asserted_by": "party:agent",
+          "generated_by": "test fixture",
+          "confidence": "medium"
+        }
+      ],
+      "reviews": [],
+      "history": [],
+      "review_states": [
+        {
+          "id": "assertion:path",
+          "assertion_status": "proposed",
+          "status": "proposed",
+          "reviewed": false,
+          "review_ids": [],
+          "human_review_ids": []
+        }
+      ],
+      "risk_scores": [
+        {
+          "id": "risk:r",
+          "threat": "threat:t",
+          "damage_scenario": "damage:d",
+          "for_stakeholder": "party:reviewer",
+          "attack_paths": [
+            "path:a"
+          ],
+          "mitigation_status": "planned",
+          "impact": {
+            "safety": "severe",
+            "financial": "major",
+            "operational": "moderate",
+            "privacy": "negligible"
+          }
+        }
+      ],
+      "calculated_risk": {
+        "matrix": "annex-h-table-h8",
+        "count": 1,
+        "assessments": [
+          {
+            "id": "risk:r",
+            "threat": "threat:t",
+            "damage_scenario": "damage:d",
+            "threat_damage_scenario": "damage:d",
+            "threat_damage_scenarios": [
+              "damage:d"
+            ],
+            "path_reviewed": false,
+            "for_stakeholder": "party:reviewer",
+            "feasibility": "low",
+            "impact": {
+              "safety": "severe",
+              "financial": "major",
+              "operational": "moderate",
+              "privacy": "negligible"
+            },
+            "mitigation_status": "planned",
+            "derived_risk": {
+              "safety": 3,
+              "financial": 2,
+              "operational": 2,
+              "privacy": 1
+            },
+            "recorded": {
+              "feasibility": null,
+              "risk": null
+            },
+            "paths": [
+              {
+                "id": "path:a",
+                "feasibility": "low",
+                "rating_source": "AttackPath.attack_feasibility",
+                "used_for_ratings": true,
+                "route_ids": [
+                  "route:7890519f47b26b95758afe64edec616d4baf426e4c91b9b0e03609ea4d992eaf"
+                ],
+                "alternatives": [
+                  [
+                    "step:a"
+                  ]
+                ],
+                "derived_risk": {
+                  "safety": 3,
+                  "financial": 2,
+                  "operational": 2,
+                  "privacy": 1
+                },
+                "review_records": {
+                  "assertions": [
+                    {
+                      "id": "assertion:path",
+                      "assertion_status": "proposed",
+                      "asserted_by": "party:agent"
+                    }
+                  ],
+                  "reviews": []
+                },
+                "problems": []
+              }
+            ],
+            "routes": [
+              {
+                "id": "route:7890519f47b26b95758afe64edec616d4baf426e4c91b9b0e03609ea4d992eaf",
+                "steps": [
+                  "step:a"
+                ],
+                "goal_step": "step:a",
+                "authored_path": "path:a",
+                "rating_paths": [
+                  "path:a"
+                ],
+                "feasibility": "low",
+                "problems": [],
+                "derived_risk": {
+                  "safety": 3,
+                  "financial": 2,
+                  "operational": 2,
+                  "privacy": 1
+                }
+              }
+            ],
+            "complete": true,
+            "problems": []
+          }
+        ]
+      },
+      "permitted_actions": {
+        "submit_review": true,
+        "save_feasibility": true,
+        "save_impacts": true,
+        "correct_own_review": false,
+        "accept_proposal": false
+      },
+      "problems": []
+    }
+  },
+  "save": {
+    "request": {
+      "model_id": "local:one",
+      "expected_revision": "r1",
+      "matrix": "annex-h-table-h8",
+      "threat_id": "threat:t",
+      "route_id": "route:7890519f47b26b95758afe64edec616d4baf426e4c91b9b0e03609ea4d992eaf",
+      "reviews": [
+        {
+          "assertion_id": "assertion:path",
+          "verdict": "accepted",
+          "rationale": "Test-only human input supplied by the test client.",
+          "annotation": "Synthetic contract example"
+        }
+      ],
+      "feasibility": [
+        {
+          "attack_path_id": "path:a",
+          "rating": "high"
+        }
+      ],
+      "impacts": [
+        {
+          "risk_score_id": "risk:r",
+          "damage_scenario_id": "damage:d",
+          "stakeholder_id": "party:reviewer",
+          "values": {
+            "privacy": "major"
+          }
+        }
+      ]
+    },
+    "response": {
+      "model_id": "local:one",
+      "revision": "r2",
+      "graph": {
+        "model_id": "local:one",
+        "revision": "r2",
+        "nodes": [
+          {
+            "id": "party:reviewer",
+            "domain_type": "Party",
+            "label": "party:reviewer",
+            "properties": {
+              "party_kind": "person"
+            }
+          },
+          {
+            "id": "party:other",
+            "domain_type": "Party",
+            "label": "party:other",
+            "properties": {
+              "party_kind": "person"
+            }
+          },
+          {
+            "id": "party:agent",
+            "domain_type": "Party",
+            "label": "party:agent",
+            "properties": {
+              "party_kind": "software_agent"
+            }
+          },
+          {
+            "id": "threat:t",
+            "domain_type": "ThreatInstance",
+            "label": "threat:t",
+            "properties": {}
+          },
+          {
+            "id": "step:a",
+            "domain_type": "AttackStep",
+            "label": "step:a",
+            "properties": {}
+          },
+          {
+            "id": "path:a",
+            "domain_type": "AttackPath",
+            "label": "path:a",
+            "properties": {
+              "attack_feasibility": "high"
+            }
+          },
+          {
+            "id": "damage:d",
+            "domain_type": "DamageScenario",
+            "label": "damage:d",
+            "properties": {}
+          },
+          {
+            "id": "risk:r",
+            "domain_type": "RiskScore",
+            "label": "risk:r",
+            "properties": {
+              "mitigation_status": "planned",
+              "impact": "{\"financial\": \"major\", \"operational\": \"moderate\", \"privacy\": \"major\", \"safety\": \"severe\"}"
+            }
+          },
+          {
+            "id": "review:fixture-review",
+            "domain_type": "Review",
+            "label": "review:fixture-review",
+            "properties": {
+              "review_status": "accepted",
+              "justification": "Test-only human input supplied by the test client.",
+              "description": "Synthetic contract example"
+            }
+          },
+          {
+            "id": "assertion:path",
+            "domain_type": "Assertion",
+            "label": "assertion:path",
+            "properties": {
+              "predicate": "realizes_threat",
+              "assertion_status": "proposed",
+              "generated_by": "test fixture",
+              "confidence": "medium"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "id": "relationship:threat:t|realizes_damage|damage:d",
+            "source": "threat:t",
+            "target": "damage:d",
+            "relationship_type": "realizes_damage",
+            "authored": true,
+            "assertions": [],
+            "properties": {}
+          },
+          {
+            "id": "relationship:path:a|realizes_threat|threat:t",
+            "source": "path:a",
+            "target": "threat:t",
+            "relationship_type": "realizes_threat",
+            "authored": true,
+            "assertions": [
+              {
+                "id": "assertion:path",
+                "assertion_status": "proposed",
+                "confidence": "medium",
+                "description": null,
+                "evidence": [],
+                "reviews": [
+                  {
+                    "id": "review:fixture-review",
+                    "review_status": "accepted",
+                    "reviewer": "party:reviewer",
+                    "justification": "Test-only human input supplied by the test client."
+                  }
+                ]
+              }
+            ],
+            "properties": {
+              "assertion_ids": [
+                "assertion:path"
+              ],
+              "assertion_status": "proposed",
+              "confidence": "medium",
+              "review_ids": [
+                "review:fixture-review"
+              ],
+              "review_status": "accepted",
+              "review_statuses": [
+                "accepted"
+              ],
+              "review_justifications": [
+                "Test-only human input supplied by the test client."
+              ]
+            }
+          },
+          {
+            "id": "relationship:path:a|steps|step:a",
+            "source": "path:a",
+            "target": "step:a",
+            "relationship_type": "steps",
+            "authored": true,
+            "assertions": [],
+            "properties": {}
+          },
+          {
+            "id": "relationship:risk:r|attack_paths|path:a",
+            "source": "risk:r",
+            "target": "path:a",
+            "relationship_type": "attack_paths",
+            "authored": true,
+            "assertions": [],
+            "properties": {}
+          },
+          {
+            "id": "relationship:risk:r|damage_scenario|damage:d",
+            "source": "risk:r",
+            "target": "damage:d",
+            "relationship_type": "damage_scenario",
+            "authored": true,
+            "assertions": [],
+            "properties": {}
+          },
+          {
+            "id": "relationship:risk:r|for_stakeholder|party:reviewer",
+            "source": "risk:r",
+            "target": "party:reviewer",
+            "relationship_type": "for_stakeholder",
+            "authored": true,
+            "assertions": [],
+            "properties": {}
+          },
+          {
+            "id": "relationship:risk:r|threat|threat:t",
+            "source": "risk:r",
+            "target": "threat:t",
+            "relationship_type": "threat",
+            "authored": true,
+            "assertions": [],
+            "properties": {}
+          },
+          {
+            "id": "relationship:review:fixture-review|reviewer|party:reviewer",
+            "source": "review:fixture-review",
+            "target": "party:reviewer",
+            "relationship_type": "reviewer",
+            "authored": true,
+            "assertions": [],
+            "properties": {}
+          },
+          {
+            "id": "relationship:review:fixture-review|reviews|assertion:path",
+            "source": "review:fixture-review",
+            "target": "assertion:path",
+            "relationship_type": "reviews",
+            "authored": true,
+            "assertions": [],
+            "properties": {}
+          },
+          {
+            "id": "relationship:assertion:path|asserted_by|party:agent",
+            "source": "assertion:path",
+            "target": "party:agent",
+            "relationship_type": "asserted_by",
+            "authored": true,
+            "assertions": [],
+            "properties": {}
+          },
+          {
+            "id": "relationship:assertion:path|object|threat:t",
+            "source": "assertion:path",
+            "target": "threat:t",
+            "relationship_type": "object",
+            "authored": true,
+            "assertions": [],
+            "properties": {}
+          },
+          {
+            "id": "relationship:assertion:path|subject|path:a",
+            "source": "assertion:path",
+            "target": "path:a",
+            "relationship_type": "subject",
+            "authored": true,
+            "assertions": [],
+            "properties": {}
+          }
+        ],
+        "file": "local:one"
+      },
+      "risk": {
+        "model_id": "local:one",
+        "revision": "r2",
+        "matrix": "annex-h-table-h8",
+        "count": 1,
+        "assessments": [
+          {
+            "id": "risk:r",
+            "threat": "threat:t",
+            "damage_scenario": "damage:d",
+            "threat_damage_scenario": "damage:d",
+            "threat_damage_scenarios": [
+              "damage:d"
+            ],
+            "path_reviewed": false,
+            "for_stakeholder": "party:reviewer",
+            "feasibility": "high",
+            "impact": {
+              "safety": "severe",
+              "financial": "major",
+              "operational": "moderate",
+              "privacy": "major"
+            },
+            "mitigation_status": "planned",
+            "derived_risk": {
+              "safety": 5,
+              "financial": 4,
+              "operational": 3,
+              "privacy": 4
+            },
+            "recorded": {
+              "feasibility": null,
+              "risk": null
+            },
+            "paths": [
+              {
+                "id": "path:a",
+                "feasibility": "high",
+                "rating_source": "AttackPath.attack_feasibility",
+                "used_for_ratings": true,
+                "route_ids": [
+                  "route:7890519f47b26b95758afe64edec616d4baf426e4c91b9b0e03609ea4d992eaf"
+                ],
+                "alternatives": [
+                  [
+                    "step:a"
+                  ]
+                ],
+                "derived_risk": {
+                  "safety": 5,
+                  "financial": 4,
+                  "operational": 3,
+                  "privacy": 4
+                },
+                "review_records": {
+                  "assertions": [
+                    {
+                      "id": "assertion:path",
+                      "assertion_status": "proposed",
+                      "asserted_by": "party:agent"
+                    }
+                  ],
+                  "reviews": [
+                    {
+                      "id": "review:fixture-review",
+                      "reviews": "assertion:path",
+                      "reviewer": "party:reviewer",
+                      "review_status": "accepted",
+                      "justification": "Test-only human input supplied by the test client."
+                    }
+                  ]
+                },
+                "problems": []
+              }
+            ],
+            "routes": [
+              {
+                "id": "route:7890519f47b26b95758afe64edec616d4baf426e4c91b9b0e03609ea4d992eaf",
+                "steps": [
+                  "step:a"
+                ],
+                "goal_step": "step:a",
+                "authored_path": "path:a",
+                "rating_paths": [
+                  "path:a"
+                ],
+                "feasibility": "high",
+                "problems": [],
+                "derived_risk": {
+                  "safety": 5,
+                  "financial": 4,
+                  "operational": 3,
+                  "privacy": 4
+                }
+              }
+            ],
+            "complete": true,
+            "problems": []
+          }
+        ]
+      },
+      "attack_paths": {
+        "model_id": "local:one",
+        "revision": "r2",
+        "responses": [
+          {
+            "file": "local:one",
+            "goal": "threat:t",
+            "paths": [
+              {
+                "steps": [
+                  "step:a"
+                ],
+                "goal_step": "step:a",
+                "authored_path": "path:a",
+                "step_phases": {},
+                "review": {
+                  "reviewed": false,
+                  "assertion_status": "proposed",
+                  "review_status": "accepted"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "report_data": {
+        "model_id": "local:one",
+        "revision": "r2",
+        "graph": {
+          "model_id": "local:one",
+          "revision": "r2",
+          "nodes": [
+            {
+              "id": "party:reviewer",
+              "domain_type": "Party",
+              "label": "party:reviewer",
+              "properties": {
+                "party_kind": "person"
+              }
+            },
+            {
+              "id": "party:other",
+              "domain_type": "Party",
+              "label": "party:other",
+              "properties": {
+                "party_kind": "person"
+              }
+            },
+            {
+              "id": "party:agent",
+              "domain_type": "Party",
+              "label": "party:agent",
+              "properties": {
+                "party_kind": "software_agent"
+              }
+            },
+            {
+              "id": "threat:t",
+              "domain_type": "ThreatInstance",
+              "label": "threat:t",
+              "properties": {}
+            },
+            {
+              "id": "step:a",
+              "domain_type": "AttackStep",
+              "label": "step:a",
+              "properties": {}
+            },
+            {
+              "id": "path:a",
+              "domain_type": "AttackPath",
+              "label": "path:a",
+              "properties": {
+                "attack_feasibility": "high"
+              }
+            },
+            {
+              "id": "damage:d",
+              "domain_type": "DamageScenario",
+              "label": "damage:d",
+              "properties": {}
+            },
+            {
+              "id": "risk:r",
+              "domain_type": "RiskScore",
+              "label": "risk:r",
+              "properties": {
+                "mitigation_status": "planned",
+                "impact": "{\"financial\": \"major\", \"operational\": \"moderate\", \"privacy\": \"major\", \"safety\": \"severe\"}"
+              }
+            },
+            {
+              "id": "review:fixture-review",
+              "domain_type": "Review",
+              "label": "review:fixture-review",
+              "properties": {
+                "review_status": "accepted",
+                "justification": "Test-only human input supplied by the test client.",
+                "description": "Synthetic contract example"
+              }
+            },
+            {
+              "id": "assertion:path",
+              "domain_type": "Assertion",
+              "label": "assertion:path",
+              "properties": {
+                "predicate": "realizes_threat",
+                "assertion_status": "proposed",
+                "generated_by": "test fixture",
+                "confidence": "medium"
+              }
+            }
+          ],
+          "edges": [
+            {
+              "id": "relationship:threat:t|realizes_damage|damage:d",
+              "source": "threat:t",
+              "target": "damage:d",
+              "relationship_type": "realizes_damage",
+              "authored": true,
+              "assertions": [],
+              "properties": {}
+            },
+            {
+              "id": "relationship:path:a|realizes_threat|threat:t",
+              "source": "path:a",
+              "target": "threat:t",
+              "relationship_type": "realizes_threat",
+              "authored": true,
+              "assertions": [
+                {
+                  "id": "assertion:path",
+                  "assertion_status": "proposed",
+                  "confidence": "medium",
+                  "description": null,
+                  "evidence": [],
+                  "reviews": [
+                    {
+                      "id": "review:fixture-review",
+                      "review_status": "accepted",
+                      "reviewer": "party:reviewer",
+                      "justification": "Test-only human input supplied by the test client."
+                    }
+                  ]
+                }
+              ],
+              "properties": {
+                "assertion_ids": [
+                  "assertion:path"
+                ],
+                "assertion_status": "proposed",
+                "confidence": "medium",
+                "review_ids": [
+                  "review:fixture-review"
+                ],
+                "review_status": "accepted",
+                "review_statuses": [
+                  "accepted"
+                ],
+                "review_justifications": [
+                  "Test-only human input supplied by the test client."
+                ]
+              }
+            },
+            {
+              "id": "relationship:path:a|steps|step:a",
+              "source": "path:a",
+              "target": "step:a",
+              "relationship_type": "steps",
+              "authored": true,
+              "assertions": [],
+              "properties": {}
+            },
+            {
+              "id": "relationship:risk:r|attack_paths|path:a",
+              "source": "risk:r",
+              "target": "path:a",
+              "relationship_type": "attack_paths",
+              "authored": true,
+              "assertions": [],
+              "properties": {}
+            },
+            {
+              "id": "relationship:risk:r|damage_scenario|damage:d",
+              "source": "risk:r",
+              "target": "damage:d",
+              "relationship_type": "damage_scenario",
+              "authored": true,
+              "assertions": [],
+              "properties": {}
+            },
+            {
+              "id": "relationship:risk:r|for_stakeholder|party:reviewer",
+              "source": "risk:r",
+              "target": "party:reviewer",
+              "relationship_type": "for_stakeholder",
+              "authored": true,
+              "assertions": [],
+              "properties": {}
+            },
+            {
+              "id": "relationship:risk:r|threat|threat:t",
+              "source": "risk:r",
+              "target": "threat:t",
+              "relationship_type": "threat",
+              "authored": true,
+              "assertions": [],
+              "properties": {}
+            },
+            {
+              "id": "relationship:review:fixture-review|reviewer|party:reviewer",
+              "source": "review:fixture-review",
+              "target": "party:reviewer",
+              "relationship_type": "reviewer",
+              "authored": true,
+              "assertions": [],
+              "properties": {}
+            },
+            {
+              "id": "relationship:review:fixture-review|reviews|assertion:path",
+              "source": "review:fixture-review",
+              "target": "assertion:path",
+              "relationship_type": "reviews",
+              "authored": true,
+              "assertions": [],
+              "properties": {}
+            },
+            {
+              "id": "relationship:assertion:path|asserted_by|party:agent",
+              "source": "assertion:path",
+              "target": "party:agent",
+              "relationship_type": "asserted_by",
+              "authored": true,
+              "assertions": [],
+              "properties": {}
+            },
+            {
+              "id": "relationship:assertion:path|object|threat:t",
+              "source": "assertion:path",
+              "target": "threat:t",
+              "relationship_type": "object",
+              "authored": true,
+              "assertions": [],
+              "properties": {}
+            },
+            {
+              "id": "relationship:assertion:path|subject|path:a",
+              "source": "assertion:path",
+              "target": "path:a",
+              "relationship_type": "subject",
+              "authored": true,
+              "assertions": [],
+              "properties": {}
+            }
+          ],
+          "file": "local:one"
+        },
+        "model": {
+          "id": "local:one",
+          "file": "local:one",
+          "title": "local:one",
+          "description": null,
+          "kind": "local",
+          "kind_label": "Editable local model",
+          "counts": {
+            "assets": 0,
+            "components": 0,
+            "damage_scenarios": 1,
+            "threats": 1,
+            "attack_paths": 1,
+            "mitigations": 0,
+            "risk_scores": 1,
+            "requirements": 0
+          },
+          "reviewed_threats": 0
+        },
+        "attackPaths": [
+          {
+            "file": "local:one",
+            "goal": "threat:t",
+            "paths": [
+              {
+                "steps": [
+                  "step:a"
+                ],
+                "goal_step": "step:a",
+                "authored_path": "path:a",
+                "step_phases": {},
+                "review": {
+                  "reviewed": false,
+                  "assertion_status": "proposed",
+                  "review_status": "accepted"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "refresh_request": {
+    "model_id": "local:one",
+    "revision": "r2",
+    "matrix": "annex-h-table-h8"
+  },
+  "errors": [
+    {
+      "error": {
+        "code": "validation_error",
+        "message": "Explain the review decision.",
+        "fields": [
+          {
+            "field": "rationale",
+            "message": "Explain the review decision."
+          }
+        ]
+      }
+    },
+    {
+      "error": {
+        "code": "permission_denied",
+        "message": "This session cannot submit reviews."
+      }
+    },
+    {
+      "error": {
+        "code": "revision_conflict",
+        "message": "Reload before retrying.",
+        "current_revision": "r2"
+      }
+    },
+    {
+      "error": {
+        "code": "save_failure",
+        "message": "The model could not be saved. Retry your changes."
+      }
+    }
+  ]
+}

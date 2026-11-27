@@ -1,0 +1,43 @@
+# Synthetic C7 contract fixture; not a real product assessment or human sign-off.
+parties:
+- id: party:reviewer
+  party_kind: person
+- id: party:other
+  party_kind: person
+- id: party:agent
+  party_kind: software_agent
+threat_instances:
+- id: threat:t
+  realizes_damage: damage:d
+damage_scenarios:
+- id: damage:d
+attack_steps:
+- id: step:a
+attack_paths:
+- id: path:a
+  steps:
+  - step:a
+  realizes_threat: threat:t
+  attack_feasibility: low
+assertions:
+- id: assertion:path
+  subject: path:a
+  predicate: realizes_threat
+  object: threat:t
+  assertion_status: proposed
+  asserted_by: party:agent
+  generated_by: test fixture
+  confidence: medium
+risk_scores:
+- id: risk:r
+  threat: threat:t
+  damage_scenario: damage:d
+  for_stakeholder: party:reviewer
+  attack_paths:
+  - path:a
+  mitigation_status: planned
+  impact:
+    safety: severe
+    financial: major
+    operational: moderate
+    privacy: negligible

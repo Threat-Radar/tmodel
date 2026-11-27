@@ -880,20 +880,35 @@ def list_models() -> dict[str, Any]:
 def _model_summary(path: Path) -> dict[str, Any] | None:
     """One model's list entry, or None for a file with no model objects."""
     doc = load_vector_document(path)
-    attack_graph = AttackGraph.from_dict(doc)  # the same integrity checks as /graph
-    if not project_model_graph(doc).nodes:
-        return None
-    products = [p for p in doc.get("products") or [] if isinstance(p, Mapping)]
-    names = [p["name"].strip() for p in products if _has_text(p.get("name"))]
     kind, kind_label = next(
         ((kind, label) for prefix, kind, label in MODEL_KINDS if path.name.startswith(prefix)),
         ("other", "Example model"),
     )
+    return model_summary(doc, model_id=path.stem, file=path.name, kind=kind, kind_label=kind_label)
+
+
+def model_summary(
+    doc: Mapping[str, Any],
+    *,
+    model_id: str,
+    file: str,
+    kind: str = "other",
+    kind_label: str = "Example model",
+) -> dict[str, Any] | None:
+    """The existing report header, derived from a supplied document (#208/#289).
+
+    Local workspace ids used as file labels are opaque, not GET /graph inputs.
+    """
+    attack_graph = AttackGraph.from_dict(doc)
+    if not project_model_graph(doc).nodes:
+        return None
+    products = [p for p in doc.get("products") or [] if isinstance(p, Mapping)]
+    names = [p["name"].strip() for p in products if _has_text(p.get("name"))]
     threats = attack_graph.threats()
     return {
-        "id": path.stem,
-        "file": path.name,
-        "title": " and ".join(names) if names else path.stem,
+        "id": model_id,
+        "file": file,
+        "title": " and ".join(names) if names else model_id,
         "description": _products_description(products),
         "kind": kind,
         "kind_label": kind_label,
