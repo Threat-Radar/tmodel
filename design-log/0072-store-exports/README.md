@@ -4,7 +4,7 @@ id: DL-0072
 title: Exports of the working store - Turtle, TriG, JSON-LD, GraphML and CSV
 type: process
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 date: "2026-11-26"
 updated: "2026-11-26"
 human_owner: Maimcghee
@@ -65,12 +65,12 @@ Local, on Python 3.14 with `pyoxigraph` 0.5.13:
   - GraphML: one node per id, the graph order picks whose fields are written, typed keys, line breaks and odd ids kept, and a NUL refused;
   - the same bytes twice, the same bytes through the stand-in, and unknown or repeated graphs refused;
   - with rdflib installed, it reads the JSON-LD and the classic TriG and finds every edge.
-- **Engine suite:** 845 passed, 12 skipped (822 before). The 2 new skips are the rdflib test, since rdflib isn't an engine dependency. Ruff lint and format pass.
-- **The whole pinned library** (`e406827`, 685 records, 1,080 edges). Each export takes about 0.1 s:
-  - TriG 1.55 MB, Turtle 1.53 MB, JSON-LD 3.62 MB, GraphML 1.63 MB, and CSV 1.12 MB plus 0.16 MB;
+- **Engine suite:** 846 passed, 12 skipped (823 before). The 2 new skips are the rdflib test, since rdflib isn't an engine dependency. With rdflib 7.6.0 installed, all 25 export tests pass. Ruff lint and format pass.
+- **The whole pinned library** (`e406827`, 685 records, 907 edges, after #273's one edge per `see_also` pair). Each export takes about 0.1 s:
+  - TriG 1.51 MB, Turtle 1.49 MB, JSON-LD 3.46 MB, GraphML 1.59 MB, and CSV 1.12 MB plus 0.14 MB;
   - TriG and JSON-LD read back identical;
-  - rdflib 7.6.0 reads the JSON-LD and the classic TriG (22,343 quads each), but not the RDF 1.2 TriG;
-  - networkx 3.4.2 reads the GraphML: 685 nodes, 1,080 edges.
+  - rdflib 7.6.0 reads the JSON-LD and the classic TriG (21,305 quads each), but not the RDF 1.2 TriG;
+  - networkx 3.4.2 reads the GraphML: 685 nodes, 907 edges. Each `see_also` pair is one edge, so no pair shows twice (@Clovier's review).
 
 # Human accepted / rejected
 
