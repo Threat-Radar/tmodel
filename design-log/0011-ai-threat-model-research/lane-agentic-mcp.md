@@ -4,9 +4,9 @@ id: DL-0011-lane-agentic-mcp
 title: "RPT-0014 agentic/MCP WAVE 1 bibliography completion (#78)"
 type: process
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 date: "2026-11-25"
-updated: "2026-11-25"
+updated: "2026-11-26"
 record: RPT-0014
 issue: 78
 defers_to: ARCH-0001
@@ -50,11 +50,13 @@ submodule and its pin are unchanged. The implementation is in the library branch
    publisher URLs, versioned PDFs, reference numbers and named bibliography
    entries as locators. Compared source identities against all existing library
    records and the 1,181-entry `sources.md` corpus before ingestion.
-4. Recorded 147 distinct first-hop cited works in 190 citation edges: 10 held
-   records, 58 already in the corpus, and 79 new bibliography stubs. `cites`
-   captures source facts; new stubs carry `cited_by` as explicitly required by
-   WAVE 1 Step 2.5. The library audit calls out its difference from the library's
-   draft reference-semantics policy, so review can confirm that choice.
+4. Recorded 147 distinct first-hop works in 190 citation edges. After review
+   corrections these comprise nine held records, 59 corpus works, 77 new
+   bibliography stubs and two pending canonical records owned by
+   [library#51](https://github.com/Threat-Radar/library/pull/51). `cites` records
+   source facts. Reverse library `cited_by` links are removed to follow the
+   library reference policy; the conflicting instruction in `LANES.md` is
+   corrected in this follow-up.
 5. Used `bin/ingest --stub` for each new record. Left every new record at
    `status: stub`, `confidence: low`, with no invented applicability, acceptance
    or `bears_on` claims. @paria03 owns their future reading in #78; any full
@@ -67,7 +69,8 @@ The reviewable evidence lives alongside the actual library records:
 - `docs/agentic-mcp-wave1/references.csv`: 190 citations with source-side locators,
   target identity and disposition.
 
-These paths will be linked to the library PR when publication is authorized.
+These artifacts are in [library#53](https://github.com/Threat-Radar/library/pull/53);
+this companion note is [tmodel#271](https://github.com/Threat-Radar/tmodel/pull/271).
 This tmodel note intentionally does not duplicate the CSVs or bump the library pin.
 
 ## Accepted and rejected findings
@@ -94,12 +97,37 @@ This tmodel note intentionally does not duplicate the CSVs or bump the library p
   New metadata, the tag promotion, reference semantics and the added CISA
   applicability rows need review through the normal PR process.
 
+## Review follow-up — 2026-11-26
+
+Address the findings from @Clovier and @Maimcghee on library#53 and tmodel#271:
+
+- Correct Habler [4] to OWASP's Multi-Agentic System Threat Modeling Guide,
+  source-corpus S-0761. The other OWASP paper is a different work. Preserve the
+  source's OWASP URL as a title/locator frontier citation. The former 10-held
+  claim counted one record twice; correcting it restores 147 distinct works
+  with nine held identities and 59 corpus works.
+- Shorten 14 new overlong/truncated ids and disambiguate Lakera's ChainGuard
+  before the unmerged records acquire permanent ids. Retain full issue number
+  2106, every content URL, capture hash, title and existing review state. The
+  library audit includes the complete id-change CSV.
+- Remove duplicate stub additions for arXiv 2305.13860 and 2306.08833. Keep their
+  factual citations as frontier entries with explicit pending ids and ownership
+  in library#51. This does not edit the other lane's records or create dangling
+  links. After #51 merges, those entries can resolve to its canonical ids. This
+  change adds 77 stubs rather than 79.
+- Remove inverse library `cited_by` links from new stubs, retain forward `cites`,
+  and clarify `LANES.md` so later lanes follow the same rule.
+- Replace pre-publication statements with PR links and exact CI status.
+
+These are corrections to the proposal in response to review. They do not
+record fresh human approval or sign anyone's `reviewed_by` field.
+
 ## Validation
 
 Library baseline: 686 records, 381 written, 305 scaffold, 42 fully extracted,
-24 topics, 0 errors and 99 warnings. After the bibliography pass: 765 records,
-381 written, 384 scaffold, 42 fully extracted, 25 topics, 0 errors and the same
-99 warnings. The increase is exactly 79 intentional stubs, not 79 read sources.
+24 topics, 0 errors and 99 warnings. After review corrections: 763 records,
+381 written, 382 scaffold, 42 fully extracted, 25 topics, 0 errors and the same
+99 warnings. The increase is exactly 77 intentional stubs, not 77 read sources.
 
 Local checks:
 
@@ -110,11 +138,18 @@ Local checks:
   no dangling relations;
 - `bin/check-pr-extraction ba336a9`, preserving the existing CISA extraction;
 - assignment IDs, summary sections, applicability axes, controlled tags,
-  reference dispositions, new-stub ownership and citation backlinks reconciled;
+  reference dispositions, new-stub ownership and forward citations reconciled;
 - tmodel `python3 bin/validate-archdoc` and `git diff --check` in both repos.
 
-The branch is kept local pending publication authorization. Hosted CI has not
-run for these commits; local validation is not reported as hosted CI success.
+An isolated trial merge with library#51 at `8fc3878` is conflict-free. Its
+combined 1,045 records validate with zero errors and the same 99 warnings;
+the two cross-lane arXiv duplicates no longer add warnings. The check does
+not modify the peer branch.
+
+The earlier tmodel head `368b5e4` passed hosted CI. The companion library head
+`7390bfa` had no hosted runs: GitHub paused this fork's Actions because of usage
+volume, and a maintainer must restore them. The review follow-up is locally
+validated pending push authorization; it does not yet have fresh hosted CI.
 
 ## Issue status and next stage
 
