@@ -7,7 +7,8 @@ linkml-validate checks the shape and check-edges.py checks that references
 resolve. This checks what neither can:
 
 1. Every Requirement has source_ref, source_locator, text_origin,
-   requirement_kind and normativity; its id and source_ref name this file's record.
+   requirement_kind and normativity; its id and source_ref name this file's record,
+   and source_ref has a valid nonempty URI fragment.
 2. A licensed source (record id starting iso- or iec-) is never `verbatim`.
 3. No link slot is filled directly: addresses, satisfied_by, refines,
    derived_from, conflicts_with, maps_to and Mitigation.stated_as stay empty.
@@ -32,6 +33,8 @@ LINK_SLOTS = ["addresses", "satisfied_by", "refines", "derived_from", "conflicts
 PREDICATES = {"addresses", "stated_as", "satisfied_by", "refines", "derived_from", "conflicts_with"}
 WITHIN_SOURCE = {"refines", "derived_from", "conflicts_with"}
 LICENSED = re.compile(r"^(iso|iec)-")
+# RFC 3986 fragment characters; native locators outside this set are percent-encoded.
+URI_FRAGMENT = re.compile(r"(?:[A-Za-z0-9._~!$&'()*+,;=:@/?-]|%[0-9A-Fa-f]{2})+\Z")
 
 
 def check(path):
@@ -52,8 +55,14 @@ def check(path):
                 errs.append(f"{rid}: no {k}")
         if not str(rid).startswith(f"requirement:{record}-"):
             errs.append(f"{rid}: id does not start with requirement:{record}-")
-        if r.get("source_ref") and not str(r["source_ref"]).startswith(f"library:{record}#"):
-            errs.append(f"{rid}: source_ref {r['source_ref']} is not library:{record}#...")
+        if r.get("source_ref"):
+            ref = str(r["source_ref"])
+            prefix = f"library:{record}#"
+            if not ref.startswith(prefix):
+                errs.append(f"{rid}: source_ref {r['source_ref']} is not {prefix}...")
+            elif not URI_FRAGMENT.fullmatch(ref[len(prefix):]):
+                errs.append(
+                    f"{rid}: source_ref has an invalid URI fragment; use a local key or percent-encoding")
         if LICENSED.match(record) and r.get("text_origin") == "verbatim":
             errs.append(f"{rid}: licensed source, but text_origin is verbatim")
         if not str(r.get("text") or "").strip():

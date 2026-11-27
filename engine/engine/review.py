@@ -11,7 +11,8 @@ from typing import Any
 from engine.graph import GraphError
 
 
-def _status(value: Any) -> str:
+def normalize_status(value: Any) -> str:
+    """Normalize recorded status spelling without changing the authored value."""
     return re.sub(r"[\s-]+", "_", value.strip().lower()) if isinstance(value, str) else ""
 
 
@@ -40,12 +41,12 @@ def assertion_review_state(
         if isinstance(review.get("reviewer"), str)
         and parties.get(review["reviewer"], {}).get("party_kind") == "person"
     ]
-    verdicts = {_status(review.get("review_status")) for review in human}
+    verdicts = {normalize_status(review.get("review_status")) for review in human}
     justified = all(
         isinstance(review.get("justification"), str) and bool(review["justification"].strip())
         for review in human
     )
-    recorded = _status(assertion.get("assertion_status"))
+    recorded = normalize_status(assertion.get("assertion_status"))
     if "rejected" in verdicts:
         state = "rejected"
     elif "changes_requested" in verdicts:

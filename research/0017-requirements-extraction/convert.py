@@ -31,6 +31,7 @@ import re
 import subprocess
 import sys
 import textwrap
+from urllib.parse import quote
 
 import yaml
 
@@ -220,7 +221,7 @@ def convert(record_dir, owner, only=(), skips=None, extra_normativity=None, empt
         mark = f"  # REVIEW: the source states a condition ({' '.join(str(cond).split())[:60]}); " \
                f"consider conditional" if cond else ""
         lines.append(f"    normativity: {norm}{mark}")
-        lines.append(f"    source_ref: {q('library:' + record_id + '#' + des)}")
+        lines.append(f"    source_ref: {q('library:' + record_id + '#' + quote(des, safe='-._~'))}")
         lines.append(f"    source_locator: {q(locator(e, des))}")
 
     lines += [
