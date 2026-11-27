@@ -1,0 +1,148 @@
+/* #290: projects, Review & Edit and the home entry points. Desktop only:
+   desktop-projects.ts adds these rules at run time, so the browser preview's
+   stylesheet never contains them. Colours come from theme.css tokens, so the
+   light and dark themes both apply. */
+
+/* Home page entry points (the team's design), under the welcome text. */
+.welcome-entry { width: min(100%, 44rem); margin: 0 0 clamp(18px, 3vh, 28px); }
+.welcome-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
+.welcome-option { display: grid; width: 100%; height: 100%; gap: var(--space-2); align-content: start; padding: var(--space-4); border: 1px solid var(--control-border); border-radius: var(--radius-panel); background: var(--surface); color: var(--text); font: inherit; text-align: left; cursor: pointer; box-shadow: var(--shadow-panel); }
+.welcome-option:hover:not([aria-disabled="true"]) { border-color: var(--focus); background: var(--hover); }
+.welcome-option[aria-disabled="true"] { border-style: dashed; background: var(--surface-subtle); color: var(--text-secondary); cursor: default; box-shadow: none; }
+.welcome-option-title { font-size: 1rem; font-weight: var(--weight-bold); }
+.welcome-option-help { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.45; }
+.welcome-option-unavailable { display: block; margin-top: var(--space-1); color: var(--warning-text); font-weight: var(--weight-semibold); }
+.welcome .welcome-entry-status { min-height: 1.2em; margin: var(--space-2) 0 0; font-size: 0.82rem; }
+.welcome .welcome-entry-status:empty { min-height: 0; margin: 0; }
+@media (max-width: 720px) {
+  .welcome-options { grid-template-columns: minmax(0, 1fr); }
+}
+
+.project-mock-banner { margin: 0 0 var(--space-2); padding: var(--space-2) var(--space-3); border: 1px dashed var(--warning-border); border-radius: var(--radius-control); background: var(--warning-bg); color: var(--warning-text); font-size: 0.76rem; font-weight: var(--weight-semibold); }
+
+/* The project view: header, side navigation, then the shown view. */
+.app-shell.is-project { display: grid; grid-template-columns: minmax(9.5rem, 12.5rem) minmax(0, 1fr); grid-template-rows: auto auto auto minmax(0, 1fr); column-gap: var(--space-4); }
+.app-shell.is-project > :is(.preview-banner, .project-mock-banner, .app-header, .project-bar) { grid-column: 1 / -1; }
+.app-shell.is-project > .app-navigation { display: none; }
+.app-shell.is-project .model-picker { display: none; }
+.app-shell.is-project > .project-navigation { grid-column: 1; grid-row: 4; align-self: start; }
+.app-shell.is-project > .view-panel { grid-column: 2; grid-row: 4; min-height: 0; }
+
+.project-bar { width: 100%; max-width: 1600px; margin: 0 auto var(--space-3); padding: var(--space-3) var(--space-4); border: 1px solid var(--border); border-radius: var(--radius-panel); background: var(--surface); box-shadow: var(--shadow-panel); }
+.project-bar-main { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--space-2) var(--space-5); }
+.project-bar-title { min-width: 0; margin-right: auto; }
+.project-bar-title .eyebrow { margin-bottom: 2px; }
+.project-bar-name { overflow-wrap: anywhere; }
+.project-bar-version { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-2); }
+.project-bar-version label { color: var(--text-muted); font-size: 0.76rem; font-weight: 750; }
+.project-version-select { min-width: 13rem; padding: 6px 8px; border: 1px solid var(--control-border); border-radius: var(--radius-control); background: var(--surface); color: var(--text); font: inherit; font-size: 0.84rem; font-weight: var(--weight-semibold); }
+.project-version-mode { padding: 3px 8px; border: 1px solid var(--border); border-radius: var(--radius-pill); font-size: 0.7rem; font-weight: 750; }
+.project-version-mode:empty { display: none; }
+.project-version-mode.is-current { border-color: var(--success-border); background: var(--success-bg); color: var(--success-text); }
+.project-version-mode.is-older { border-color: var(--warning-border); background: var(--warning-bg); color: var(--warning-text); }
+.project-unsaved { padding: 3px 8px; border: 1px dashed var(--review-line); border-radius: var(--radius-pill); background: var(--review-bg); color: var(--review-text); font-size: 0.7rem; font-weight: 750; }
+.project-bar-status-row { display: flex; align-items: center; gap: var(--space-2); }
+.project-bar-status { margin: var(--space-2) 0 0; color: var(--text-secondary); font-size: 0.76rem; }
+.project-bar-status:empty { margin: 0; }
+.project-bar-status.is-error { color: var(--danger-text); font-weight: var(--weight-semibold); }
+.project-bar-status-row .retry-button { margin-top: var(--space-2); }
+.version-history { margin-top: var(--space-2); }
+.version-history > summary { width: fit-content; padding: 2px 4px; border-radius: var(--radius-small); color: var(--text-secondary); font-size: 0.76rem; font-weight: 750; cursor: pointer; }
+.version-history-body { margin-top: var(--space-2); }
+.version-table { width: 100%; border-collapse: collapse; font-size: 0.76rem; }
+.version-table caption { padding-bottom: var(--space-2); color: var(--text-muted); font-size: 0.72rem; text-align: left; }
+.version-table :is(th, td) { padding: 7px 9px; border-top: 1px solid var(--divider); text-align: left; vertical-align: top; }
+.version-table thead th { border-top: 0; background: var(--surface-subtle); color: var(--text-muted); font-size: 0.68rem; font-weight: 800; }
+.version-table tr.is-viewing { background: var(--selected); }
+.version-button { padding: 0; border: 0; background: transparent; color: var(--link); font: inherit; font-weight: 750; text-decoration: underline; cursor: pointer; }
+.version-chip { display: inline-block; margin-left: 4px; padding: 1px 6px; border: 1px solid var(--border); border-radius: var(--radius-pill); color: var(--text-secondary); font-size: 0.64rem; font-weight: 750; }
+.version-chip.is-current { border-color: var(--success-border); color: var(--success-text); }
+
+.project-navigation ul { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.project-nav-button { width: 100%; padding: 8px 10px; border: 1px solid transparent; border-radius: var(--radius-control); background: transparent; color: var(--text-secondary); font: inherit; font-size: 0.8rem; font-weight: 700; text-align: left; cursor: pointer; }
+.project-nav-button:hover { background: var(--hover); color: var(--link); }
+.project-nav-button[aria-current="page"] { border-color: var(--border); background: var(--selected); color: var(--link); box-shadow: inset 3px 0 var(--primary-bg); }
+.project-nav-unsaved { color: var(--review-text); font-size: 0.7rem; }
+
+.risk-score-panel { overflow: hidden; }
+.risk-score-scroll { width: 100%; max-width: 1600px; min-height: 0; flex: 1; margin: 0 auto; padding: var(--space-4); overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius-panel); background: var(--surface); }
+.risk-score-version { color: var(--text-secondary); font-size: 0.82rem; }
+
+@media (max-width: 720px) {
+  .app-shell.is-project { display: flex; }
+  .project-navigation ul { display: flex; flex-wrap: wrap; }
+  .project-nav-button { width: auto; }
+}
+
+/* Review & Edit, in the attack-path view's side column. */
+.path-side { min-width: 0; background: var(--surface-inset); }
+.review-panel { padding: 14px 16px 18px; border-top: 1px solid var(--divider); background: var(--surface-inset); font-size: 0.8rem; line-height: 1.45; }
+.review-panel-heading { margin: 0 0 2px; font-size: 1rem; }
+.review-panel-heading:focus { outline: none; }
+.review-target { margin: 0 0 var(--space-3); color: var(--text-muted); font-size: 0.74rem; }
+.review-route { display: grid; gap: 4px; margin-bottom: var(--space-3); }
+.review-route-select, .review-panel select, .review-panel textarea { width: 100%; min-width: 0; padding: 6px 8px; border: 1px solid var(--control-border); border-radius: var(--radius-control); background: var(--surface); color: var(--text); font: inherit; font-size: 0.8rem; }
+.review-panel textarea { resize: vertical; }
+.review-panel textarea:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.review-panel textarea:disabled { background: var(--disabled-bg); color: var(--disabled-text); }
+.review-panel [aria-invalid="true"] { border-color: var(--danger-line); }
+.review-block { margin: 0 0 var(--space-4); }
+.review-block h3 { margin: 0 0 4px; font-size: 0.78rem; }
+.review-block h4 { margin: 0 0 4px; font-size: 0.82rem; }
+.review-help { margin: 0 0 var(--space-2); color: var(--text-muted); font-size: 0.74rem; }
+.review-meta { margin: 0 0 var(--space-2); color: var(--text-muted); font-size: 0.72rem; overflow-wrap: anywhere; }
+.review-assertion { margin: 0 0 var(--space-3); padding: var(--space-3); border: 1px solid var(--border); border-radius: var(--radius-panel); background: var(--surface); }
+.review-assertion > legend { padding: 0 4px; font-weight: var(--weight-bold); overflow-wrap: anywhere; }
+.review-verdict { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); margin: var(--space-2) 0; padding: var(--space-2) var(--space-3); border: 1px solid var(--divider); border-radius: var(--radius-control); }
+.review-verdict > legend { padding: 0 4px; color: var(--text-secondary); font-size: 0.74rem; font-weight: 750; }
+.review-choice { display: inline-flex; align-items: center; gap: 6px; font-weight: var(--weight-semibold); cursor: pointer; }
+.review-label { display: block; margin: var(--space-2) 0 3px; color: var(--text-secondary); font-size: 0.74rem; font-weight: 750; }
+.review-field { margin-bottom: var(--space-2); }
+.review-was { display: block; margin-top: 2px; color: var(--review-text); font-size: 0.7rem; font-weight: var(--weight-semibold); }
+.review-records { margin: 0 0 var(--space-2); padding-left: 18px; }
+.review-records li { overflow-wrap: anywhere; }
+.review-empty { margin: 0 0 var(--space-2); color: var(--text-muted); font-style: italic; }
+.review-value { display: flex; justify-content: space-between; gap: var(--space-2); margin: 0 0 4px; }
+.review-impact { margin: 0 0 var(--space-3); padding: var(--space-2) var(--space-3); border: 1px solid var(--border); border-radius: var(--radius-panel); background: var(--surface); }
+.review-impact > legend { padding: 0 4px; font-weight: var(--weight-bold); overflow-wrap: anywhere; }
+.review-impact-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--space-3); }
+.review-flag, .review-flags li { color: var(--warning-text); }
+.review-flags { margin: 0 0 var(--space-2); padding-left: 18px; }
+.review-flag { margin: 0 0 var(--space-2); font-weight: var(--weight-semibold); }
+.review-notice { margin: 0 0 var(--space-3); padding: var(--space-2) var(--space-3); border: 1px dashed var(--warning-border); border-radius: var(--radius-control); background: var(--warning-bg); color: var(--warning-text); }
+.review-notice p { margin: 0 0 var(--space-2); }
+.review-notice p:last-child { margin: 0; }
+.review-saved { margin: 0 0 var(--space-3); padding: var(--space-2) var(--space-3); border: 1px solid var(--success-border); border-radius: var(--radius-control); background: var(--success-bg); color: var(--success-text); font-weight: var(--weight-semibold); }
+.review-loading { color: var(--text-muted); }
+.review-risk { margin: 0; padding-left: 18px; }
+.review-history > summary { color: var(--text-secondary); font-weight: 750; cursor: pointer; }
+.review-history ol { margin: var(--space-2) 0 0; padding-left: 18px; }
+.review-history-version { color: var(--text-muted); font-weight: 750; }
+.field-error { margin: 3px 0 var(--space-2); color: var(--danger-text); font-size: 0.74rem; font-weight: var(--weight-semibold); }
+.review-changes { margin: 0 0 var(--space-2); }
+.review-changes ul { margin: 4px 0 0; padding-left: 18px; }
+.review-changes-count { margin: 0; }
+.review-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin: var(--space-2) 0; }
+.review-actions .primary-button { min-height: 38px; font-size: 0.84rem; }
+.primary-button[aria-disabled="true"] { border-color: var(--border); background: var(--disabled-bg); color: var(--disabled-text); cursor: default; }
+.review-secondary { min-height: 32px; padding: 5px 11px; border: 1px solid var(--control-border); border-radius: var(--radius-control); background: var(--surface); color: var(--text); font: inherit; font-size: 0.78rem; font-weight: 700; cursor: pointer; }
+.review-secondary:hover:not(:disabled) { background: var(--hover); }
+.review-secondary:disabled { border-color: var(--border); background: var(--disabled-bg); color: var(--disabled-text); cursor: default; }
+.review-link { padding: 0; border: 0; background: transparent; color: var(--danger-text); font: inherit; text-align: left; text-decoration: underline; cursor: pointer; }
+.review-status { min-height: 1.2em; margin: var(--space-2) 0 0; color: var(--text-secondary); }
+.review-status:empty { min-height: 0; margin: 0; }
+.review-alert { margin-top: var(--space-2); padding: var(--space-2) var(--space-3); border: 1px solid var(--danger-border); border-radius: var(--radius-control); background: var(--danger-bg); color: var(--danger-text); }
+.review-alert:empty, .review-alert[hidden] { display: none; }
+.review-alert p { margin: 0 0 var(--space-2); }
+.review-alert ul { margin: 0 0 var(--space-2); padding-left: 18px; }
+.review-alert:focus { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* Under 1500px the review form stacks under the diagram: a shorter diagram keeps both in view. */
+@media (max-width: 1499.98px) {
+  .path-workspace:has(.review-panel.is-reviewing) .path-view-canvas { height: clamp(240px, 38vh, 380px); }
+}
+@media (min-width: 1500px) {
+  .path-workspace > .path-side { min-height: 0; overflow-y: auto; border-left: 1px solid var(--divider); }
+  .path-side > .path-view-summary { min-height: auto; overflow: visible; border-left: 0; }
+  .path-workspace:has(.review-panel.is-reviewing) { grid-template-columns: minmax(0, 1fr) minmax(360px, 520px); }
+}

@@ -36,6 +36,10 @@ import { StaticRequirementStandardsSource } from "./requirements-catalog-provide
 
 import { initializeWelcome } from "./welcome";
 import radarMark from "./assets/radar.svg?raw";
+// #290: projects, review and the home entry points (desktop only; see desktop-projects.ts).
+import { DesktopProjects, ProjectAttackPathView, ProjectReportView, projectBackend } from "./desktop-projects";
+import type { ModelSummary } from "./model-types";
+import type { VersionApi } from "./revision-api";
 
 const POLL_MS = 2000;
 // Vite replaces MODE at build time; the Pages bundle can therefore eliminate
@@ -115,6 +119,23 @@ function createExploreGraph(
   return { savedViews, startup, usesEngine, view };
 }
 
+/**
+ * #290: the Explore graph for one project version, from that version's views
+ * in memory (revision-api.ts). Desktop only: the browser preview has no projects.
+ */
+function createProjectExploreGraph(file: string, title: string, showBookkeeping: boolean, api: VersionApi): ExploreGraph {
+  const view = new KnowledgeGraphView(new EngineGraphDataProvider(file, api.engineBase, api.fetch, {
+    hiddenDomainTypes: showBookkeeping ? undefined : BOOKKEEPING_TYPES,
+    initialView: "threats",
+    metadata: { source: "engine", label: "Project version", notice: `Project version: ${title}` },
+  }));
+  const startup = connectGraphStartup(() => view.start(), false, {
+    notice: document.querySelector<HTMLElement>("#data-source-notice"),
+    retryButton: document.querySelector<HTMLButtonElement>("#graph-retry"),
+  });
+  return { startup, usesEngine: false, view };
+}
+
 window.addEventListener("DOMContentLoaded", () => {
   const parameters = new URLSearchParams(window.location.search);
   const preview = BROWSER_PREVIEW_BUILD;
@@ -183,14 +204,16 @@ window.addEventListener("DOMContentLoaded", () => {
       staticApi,
     );
 
-  const pathView = new AttackPathView({
+  // #290: set below, outside the browser preview, once the views it wires exist.
+  let projects: DesktopProjects | undefined;
+  const pathView = new (preview ? AttackPathView : ProjectAttackPathView)({
     select: required("path-view-select"),
     banner: required("path-view-banner"),
     canvas: required("path-view-canvas"),
     summary: required("path-view-summary"),
     fit: required("path-view-fit"),
   });
-  const reportView = new ModelReportView({
+  const reportView = new (preview ? ModelReportView : ProjectReportView)({
     status: required("report-status"),
     content: required("report-content"),
     retry: required("report-retry"),
@@ -203,9 +226,12 @@ window.addEventListener("DOMContentLoaded", () => {
       if (session.current) void session.open(session.current);
       else void catalogStartup.retryNow();
     },
-    calculateRisk: (file, matrix) => new EngineGraphDataProvider(
-      file, staticApi?.engineBase, staticApi?.fetch,
-    ).getRiskCalculation(matrix),
+    calculateRisk: preview
+      ? (file, matrix) => new EngineGraphDataProvider(
+        file, staticApi?.engineBase, staticApi?.fetch,
+      ).getRiskCalculation(matrix)
+      // #290: a project version's risk comes from its own views, never the approved-vector route.
+      : (file, matrix) => projects?.calculateRisk(file, matrix) ?? new EngineGraphDataProvider(file).getRiskCalculation(matrix),
   });
   const picker = new ModelPicker(required("model-select"), required("model-picker-status"), {
     disclosure: required("model-picker-info"),
@@ -227,7 +253,10 @@ window.addEventListener("DOMContentLoaded", () => {
   const replaceExplore = (file: string | undefined) => {
     explore?.savedViews?.dispose();
     explore?.view.dispose();
-    explore = createExploreGraph(parameters, file, bookkeepingToggle.checked, staticApi);
+    const projectApi = preview ? undefined : projects?.revisionApi(file);
+    explore = projectApi && file
+      ? createProjectExploreGraph(file, session.current?.title ?? file, bookkeepingToggle.checked, projectApi)
+      : createExploreGraph(parameters, file, bookkeepingToggle.checked, staticApi);
     explore.view.setVisible(visibleView === "graph");
     startExploreIfVisible();
   };
@@ -235,47 +264,80 @@ window.addEventListener("DOMContentLoaded", () => {
     if (!preview || session.current) replaceExplore(session.current?.file);
   });
 
-  // Only the latest choice is shown; see model-session.ts.
-  const session = new ModelSession({
-    views: { picker, report: reportView, paths: pathView },
-    source: (model) => new EngineGraphDataProvider(
+  const exampleSource = (model: ModelSummary) => new EngineGraphDataProvider(
+    model.file,
+    staticApi?.engineBase,
+    staticApi?.fetch,
+    staticApi ? {
+      metadata: {
+        source: "static-preview",
+        label: "Published example data",
+        notice: `Published example data from ${model.file}`,
+      },
+    } : {},
+  );
+  const exampleChanged = (model: ModelSummary) => {
+    required("report-scroll").scrollTop = 0;
+    if (preview) syncModelUrl(model);
+    replaceExplore(model.file);
+    const graphProvider = new EngineGraphDataProvider(
       model.file,
       staticApi?.engineBase,
       staticApi?.fetch,
-      staticApi ? {
-        metadata: {
-          source: "static-preview",
-          label: "Published example data",
-          notice: `Published example data from ${model.file}`,
+    );
+    const coverageProvider = new CompatibleCoverageProvider(
+      model.file,
+      graphProvider,
+      staticApi?.engineBase,
+      staticApi?.fetch,
+    );
+    requirementsView.openModel({
+      file: model.file,
+      notice: staticApi
+        ? `Published example requirements from ${model.file}`
+        : `Requirements from the local engine model ${model.file}`,
+      getGraph: () => graphProvider.getModelGraph(),
+      getCoverage: (product, signal) => coverageProvider.getCoverage(product, signal),
+    });
+    bookkeepingToggle.disabled = false;
+  };
+  // #290: a project version reads its own views in memory; examples are unchanged.
+  const projectChanged = (model: ModelSummary, api: VersionApi) => {
+    required("report-scroll").scrollTop = 0;
+    replaceExplore(model.file);
+    const graphProvider = new EngineGraphDataProvider(model.file, api.engineBase, api.fetch);
+    const coverageProvider = new CompatibleCoverageProvider(model.file, graphProvider, api.engineBase, api.fetch);
+    requirementsView.openModel({
+      file: model.file,
+      notice: `Requirements from the project ${model.title}, as the shown version records them`,
+      getGraph: () => graphProvider.getModelGraph(),
+      getCoverage: (product, signal) => coverageProvider.getCoverage(product, signal),
+    });
+    bookkeepingToggle.disabled = false;
+  };
+
+  // Only the latest choice is shown; see model-session.ts.
+  const session = new ModelSession({
+    views: {
+      picker: preview ? picker : {
+        show: (model) => {
+          if (projects?.isProjectFile(model.file)) return;
+          projects?.exampleShown(model);
+          picker.show(model);
         },
-      } : {},
-    ),
-    modelChanged: (model) => {
-      required("report-scroll").scrollTop = 0;
-      if (preview) syncModelUrl(model);
-      replaceExplore(model.file);
-      const graphProvider = new EngineGraphDataProvider(
-        model.file,
-        staticApi?.engineBase,
-        staticApi?.fetch,
-      );
-      const coverageProvider = new CompatibleCoverageProvider(
-        model.file,
-        graphProvider,
-        staticApi?.engineBase,
-        staticApi?.fetch,
-      );
-      requirementsView.openModel({
-        file: model.file,
-        notice: staticApi
-          ? `Published example requirements from ${model.file}`
-          : `Requirements from the local engine model ${model.file}`,
-        getGraph: () => graphProvider.getModelGraph(),
-        getCoverage: (product, signal) => coverageProvider.getCoverage(product, signal),
-      });
-      bookkeepingToggle.disabled = false;
+      },
+      report: reportView,
+      paths: pathView,
     },
-    remember: rememberModel,
+    source: preview ? exampleSource : (model) => projects?.source(model) ?? exampleSource(model),
+    modelChanged: preview ? exampleChanged : (model) => {
+      const api = projects?.revisionApi(model.file);
+      if (api) projectChanged(model, api);
+      else exampleChanged(model);
+    },
+    remember: preview ? rememberModel : (file) => {
+      if (!projects?.isProjectFile(file)) rememberModel(file);
+    },
   });
 
   // The model list loads once the engine answers, and retries like the graph does.
@@ -287,10 +349,16 @@ window.addEventListener("DOMContentLoaded", () => {
         catalog,
         requested,
         remembered: readRememberedModel(),
-        setModels: (response) => picker.setModels(response),
+        setModels: preview ? (response) => picker.setModels(response) : (response) => {
+          projects?.examplesListed(response);
+          picker.setModels(response);
+        },
         notice: (message) => picker.notice(message),
-        empty: () => reportView.failed("The engine lists no example models."),
-        open: (model) => session.open(model),
+        empty: preview ? () => reportView.failed("The engine lists no example models.") : () => {
+          if (!projects?.isOpen) reportView.failed("The engine lists no example models.");
+        },
+        // #290: an example arriving after a project opened must not replace it.
+        open: preview ? (model) => session.open(model) : (model) => projects?.isOpen ? Promise.resolve() : session.open(model),
       });
     },
     onWaiting: () => {
@@ -301,6 +369,7 @@ window.addEventListener("DOMContentLoaded", () => {
     onFailure: (error, willRetry) => {
       const message = error instanceof Error ? error.message : String(error);
       picker.waiting("Could not list the example models.");
+      if (!preview && projects?.isOpen) return;
       reportView.failed(`Could not list the example models: ${message}${willRetry ? " · retrying" : ""}`);
     },
   }, !preview);
@@ -359,6 +428,29 @@ window.addEventListener("DOMContentLoaded", () => {
     librarySelect.hidden = view !== "library";
     pathView.setVisible(view === "paths");
     explore?.view.setVisible(view === "graph");
+    if (!preview) projects?.viewShown(view);
+  }
+
+  if (!preview) {
+    // #290: projects, Review & Edit and the home entry points of the team's design.
+    const header = required("workspace").querySelector<HTMLElement>(":scope > .app-header");
+    if (!header) throw new Error("Missing required application element .app-header");
+    projects = new DesktopProjects({
+      documentRoot: document,
+      backend: projectBackend(parameters),
+      workspace: required("workspace"),
+      header,
+      appPanels: [required("report-view-panel"), required("paths-view-panel"), libraryPanel, required("graph-view-panel")],
+      pathSummary: required("path-view-summary"),
+      pathView: pathView as ProjectAttackPathView,
+      navigation,
+      showModel: (model) => session.open(model),
+      reopenExample: (model) => {
+        if (model) void session.open(model);
+        else void catalogStartup.retryNow();
+      },
+    });
+    projects.installHome(required("welcome"), required<HTMLButtonElement>("get-started"));
   }
 
   initializeWelcome({
