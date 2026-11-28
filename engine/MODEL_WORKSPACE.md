@@ -91,8 +91,8 @@ before.
   characters.
 - A version in an answer has `number` (1 for v001, null for a read-only file) for
   display, and no file name.
-- `GET /workspace/models` also says whether the LinkML schema check runs
-  (`schema_validation`).
+- `GET /workspace/models` also says that every save is checked against the schema
+  (`schema_validation`, always true: by LinkML, or without it by `engine/schema_check.py`).
 - A request body must arrive whole within 5 seconds, or the answer is 422.
 - Answers carry `Cache-Control: no-store`. The Tauri origins get CORS headers on the app
   routes, whose preflight allows the `Authorization` header.
@@ -168,19 +168,26 @@ model. `tests/test_workspace_api.py` checks that the engine still answers exactl
    `pv-*` ExampleModelProposed. Any other file, such as the SBOM importer's output, gets
    the first of ExampleModelProposed (the core plus the classes ADR-0011 accepted),
    ExampleModel and ExampleModelSdl that holds its collections.
-3. **The LinkML schema check**, when LinkML is installed and `spec/schema/` is present
-   (a source checkout): the container class, closed to unknown fields, as
-   `linkml-validate` runs in CI.
+3. **The schema check:** the container class, closed to unknown fields, as
+   `linkml-validate` runs in CI. LinkML does it when it is installed and `spec/schema/`
+   is present (a source checkout). Without LinkML, as in the engine's CI job and the
+   packaged app, `engine/schema_check.py` does it. That module reads the same container
+   files and the object model they import, which `bin/build-engine` bundles. It applies
+   the part of LinkML those files use, and refuses to load a schema that uses any other
+   part, so a schema change cannot quietly weaken it. The engine does not start with
+   project folders on if the schema cannot be loaded.
 4. **The engine's own checks**, as `GET /graph` and `GET /risk` apply them: at least one
    model object, unique ids, every reference slot resolving, the attack graph (gates and
    steps), and the references and the feasibility, impact and mitigation values the risk
    calculation reads.
 5. **A YAML round trip:** the YAML to be stored must read back equal to the document.
 
-Without LinkML, as in the engine's CI job and the packaged app, check 3 does not run:
-unknown fields inside a record, and the types and values of slots the engine does not
-read, are not checked. `validate(document)`, which has no project to go by, uses the
-container a file would get; a save then uses its project's own container.
+The two schema checks give the same verdict on 51 broken copies of `pv-01`, `mvp-02`
+and `tv-software-auth-service` (DL-0081). Their `fields[0].field` can differ: LinkML
+names the record (`attack_paths[0]`), and `engine/schema_check.py` the field in it
+(`attack_paths[0].colour`). Neither checks that a reference resolves; check 4 does.
+`validate(document)`, which has no project to go by, uses the container a file would
+get; a save then uses its project's own container.
 
 ## Errors
 

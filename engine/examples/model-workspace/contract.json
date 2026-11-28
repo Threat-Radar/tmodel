@@ -651,7 +651,7 @@
         }
       ],
       "problems": [],
-      "schema_validation": false
+      "schema_validation": true
     }
   },
   "openModel": {
