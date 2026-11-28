@@ -1,6 +1,6 @@
 ---
 name: kg-propose
-description: Propose additions, edits or removals to a tmodel knowledge graph, an attack-path threat model (spec/vectors/mvp-*, tv-*, pv-*), an SDL model (sdl-*) or the saved KG views the Graph tab loads, as proposals only, with `tmodel propose`. For Claude Code, Grok Bot or any agent. An agent proposes; only the sponsor accepts, with `tmodel accept` in a pull request.
+description: Propose additions, edits or removals to a tmodel knowledge graph, an attack-path threat model (spec/vectors/mvp-*, tv-*, pv-*), an imported starter model (im-*), an SDL model (sdl-*) or the saved KG views the Graph tab loads, as proposals only, with `tmodel propose`. For Claude Code, Grok Bot or any agent. An agent proposes; only the sponsor accepts, with `tmodel accept` in a pull request.
 ---
 
 # KG propose: patch → proposal → sponsor decides in a PR

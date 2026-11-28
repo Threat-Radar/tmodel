@@ -7,6 +7,8 @@ import type { ModelReportInput } from "./model-types";
 import {
   defaultViewLeaks,
   exampleNotice,
+  MODEL_LIST_NOTICE,
+  modelListNotice,
   REPORT_SECTIONS,
   renderModelReport,
   renderPathSummary,
@@ -288,6 +290,24 @@ describe("renderer fixes from the #208 review", () => {
     expect(core).toContain("illustrative threat model written for the tmodel project");
     // mvp-02 records reviews, so it does not claim none exist.
     expect(core).not.toContain("No human review is recorded");
+  });
+
+  it("tells an imported starter model apart from a proposal drafted by AI (#281)", () => {
+    const imported = exampleNotice({ model: { ...buildModelReport(MVP02).model, kind: "imported" }, reviewers: [] });
+    expect(imported).toContain("imported by tmodel import-sbom from a container image's SBOM");
+    expect(imported).toContain("every link in it is proposed until a person reviews it");
+    expect(imported).toContain("No human review is recorded in it");
+    expect(imported).not.toContain("drafted by AI");
+    expect(imported).not.toContain("illustrative threat model");
+  });
+
+  it("names imported models in the list's banner only when the list holds one (#281)", () => {
+    expect(modelListNotice(["core", "worked", "proposal"])).toBe(MODEL_LIST_NOTICE);
+    expect(MODEL_LIST_NOTICE).not.toContain("import");
+    const withImport = modelListNotice(["core", "imported"]);
+    expect(withImport).toContain("or imported by tmodel import-sbom");
+    expect(withImport).toContain("none of them is a security assessment");
+    expect(withImport).toContain("The proposal examples were drafted by AI");
   });
 
   it("warns when the engine could not compute some attack paths, at the top and on the path", () => {

@@ -184,6 +184,7 @@ it("distinguishes an unreviewed proposal from a model with no accepted threat re
   const model = MODELS[0];
   const zeroAccepted = { ...model, reviewed_threats: 0, counts: { threats: 2 } };
   expect(modelReviewLabel({ ...zeroAccepted, kind: "proposal" })).toBe("Unreviewed");
+  expect(modelReviewLabel({ ...zeroAccepted, kind: "imported" })).toBe("Unreviewed");
   expect(modelReviewLabel(zeroAccepted)).toBe("0/2 accepted");
   expect(modelReviewLabel({ ...zeroAccepted, counts: {} })).toBe("No threats");
 });

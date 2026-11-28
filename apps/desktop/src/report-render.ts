@@ -53,11 +53,15 @@ export const REPORT_SECTIONS = [
 // What kind of example a model is, in the words spec/vectors/README.md uses for
 // each family. A proposal model (`pv-*`) is drafted by AI from published sources
 // about a real product (an attack write-up, or the product's own code) and names
-// the real product; the others are illustrative models written to exercise the
-// object model.
+// the real product; an imported model (`im-*`) is made by `tmodel import-sbom` from
+// a container image's SBOM and its scan, by a tool rather than by AI (#281); the
+// others are illustrative models written to exercise the object model.
 const EXAMPLE_KIND_NOTICES: Readonly<Record<string, string>> = {
   proposal: "This model was drafted by AI from published sources about a real product, "
     + "to exercise tmodel's object model. It is not a verified security assessment of the product it names.",
+  imported: "This model was imported by tmodel import-sbom from a container image's SBOM and its "
+    + "vulnerability scan; every link in it is proposed until a person reviews it. It is a starter "
+    + "model, not a security assessment.",
 };
 const DEFAULT_KIND_NOTICE = "This is an illustrative threat model written for the tmodel project to exercise "
   + "its object model. It is not a security assessment of a real product.";
@@ -72,11 +76,23 @@ export function exampleNotice(report: Pick<ModelReport, "model" | "reviewers">):
   return `${kind} ${review}`;
 }
 
-/** The banner for a list of example models of every kind (the Pages index). */
-export const MODEL_LIST_NOTICE = "These models were written to exercise tmodel's object model; none of them is a "
-  + "security assessment. The proposal examples were drafted by AI from published sources about real products, "
+const LIST_ORIGIN = "These models were written to exercise tmodel's object model; none of them is a "
+  + "security assessment.";
+const LIST_ORIGIN_WITH_IMPORTS = "These models were written to exercise tmodel's object model, or imported by "
+  + "tmodel import-sbom from a container image's SBOM and its vulnerability scan; none of them is a security "
+  + "assessment.";
+const LIST_PROPOSALS = "The proposal examples were drafted by AI from published sources about real products, "
   + "such as attack write-ups, and name those products. AI-proposed threats and paths are hypotheses until a "
   + "human reviewer accepts them.";
+
+/** The banner for a list of example models of every kind (the Pages index). */
+export const MODEL_LIST_NOTICE = `${LIST_ORIGIN} ${LIST_PROPOSALS}`;
+
+/** The list's banner for the kinds it holds: a list with an imported model (`im-*`, #281)
+ * says that it was imported, since it was not written to exercise the object model. */
+export function modelListNotice(kinds: readonly string[]): string {
+  return kinds.includes("imported") ? `${LIST_ORIGIN_WITH_IMPORTS} ${LIST_PROPOSALS}` : MODEL_LIST_NOTICE;
+}
 
 export function renderModelReport(report: ModelReport, options: ReportRenderOptions = {}): string {
   // One anchor per path, unique within the report even when two ids slug alike.

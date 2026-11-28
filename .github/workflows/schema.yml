@@ -10,6 +10,8 @@ name: schema
 # 5. The SDL example (sdl-*.yaml, DL-0040) validates against the SDL proposal
 #    container. render_sdl.py --check resolves its references, applies the PROC-0002
 #    review rules (DL-0042) and fails if docs/sdl/ is stale.
+# 6. Every imported starter model (im-*.yaml, made by tmodel import-sbom, #281)
+#    validates against the proposed container, when there are any.
 # GitHub runners only, no cloud services (APP-0001 A-043).
 
 on:
@@ -81,6 +83,15 @@ jobs:
           for v in spec/vectors/sdl-*.yaml; do
             echo "== $v"
             linkml-validate -s spec/vectors/example-container-sdl.linkml.yaml -C ExampleModelSdl "$v"
+          done
+      - name: Imported starter models validate (proposed container, #281)
+        run: |
+          shopt -s nullglob
+          files=(spec/vectors/im-*.yaml)
+          if [ ${#files[@]} -eq 0 ]; then echo "no imported models"; exit 0; fi
+          for v in "${files[@]}"; do
+            echo "== $v"
+            linkml-validate -s spec/vectors/example-container-proposed.linkml.yaml -C ExampleModelProposed "$v"
           done
       - name: SDL page is fresh and the review rules hold (PROC-0002, DL-0042)
         run: |

@@ -15,10 +15,12 @@ from engine.paths import enumerate_paths
 VECTORS = Path(__file__).resolve().parents[2] / "spec" / "vectors"
 # pv-* files are example models (DL-0024): their attack paths are AI-proposed and not yet
 # reviewed, so they join this test once a human has reviewed them (ADR-0011, decision 4).
+# im-* files are imported starter models (#281): an SBOM's parts and their known
+# vulnerabilities, with no attack paths until someone adds and reviews them.
 EXAMPLE_MODELS = sorted(
     p
     for p in VECTORS.glob("*.yaml")
-    if ".linkml." not in p.name and not p.name.startswith(("pv-", "sdl-"))
+    if ".linkml." not in p.name and not p.name.startswith(("pv-", "im-", "sdl-"))
 )
 
 # file -> threat -> expected paths (step ids without the "attack-step:" prefix)

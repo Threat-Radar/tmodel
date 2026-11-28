@@ -7,9 +7,13 @@ from engine.graph import AttackGraph, GraphError, ReviewState
 from engine.load.vector import load_vector
 
 VECTORS = Path(__file__).resolve().parents[2] / "spec" / "vectors"
-# Attack-path models only: the SDL examples (sdl-*.yaml, DL-0040) model a program, not paths.
+# Attack-path models only: the SDL examples (sdl-*.yaml, DL-0040) model a program, not paths,
+# and an imported starter model (im-*.yaml, #281) holds an SBOM's parts and their known
+# vulnerabilities, with no attack paths until someone adds them.
 EXAMPLE_MODELS = sorted(
-    p for p in VECTORS.glob("*.yaml") if ".linkml." not in p.name and not p.name.startswith("sdl-")
+    p
+    for p in VECTORS.glob("*.yaml")
+    if ".linkml." not in p.name and not p.name.startswith(("sdl-", "im-"))
 )
 
 

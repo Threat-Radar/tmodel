@@ -82,6 +82,8 @@ MODEL_KINDS = (
     ("mvp-", "core", "Core example"),
     ("tv-", "worked", "Worked example with governance"),
     ("pv-", "proposal", "Proposal example (AI-drafted, unreviewed)"),
+    # Made by `tmodel import-sbom` from an image's SBOM and scan: tool-made, not AI-drafted (#281).
+    ("im-", "imported", "Imported starter model (from an SBOM, unreviewed)"),
 )
 # Schema test harnesses live beside the models but are not models.
 HARNESS_SUFFIX = ".linkml.yaml"
@@ -1003,7 +1005,7 @@ def sdl(query: Mapping[str, str] | None = None) -> dict[str, Any]:
 
 
 def _model_path(file: str) -> Path:
-    """An example model in the approved directory: mvp-*, tv-*, pv-* or sdl-*.yaml."""
+    """An example model in the approved directory: mvp-*, tv-*, pv-*, im-* or sdl-*.yaml."""
     path = _approved_vector_path(file)
     if not path.name.startswith(proposals.MODEL_PREFIXES) or path.suffix != ".yaml":
         raise GraphError(

@@ -3,8 +3,8 @@
 An AI agent (Claude Code, Grok Bot, any script) or a person hands the engine a *patch*.
 A patch can add objects, edit or remove existing ones, and make Assertions. It can
 target any example model in spec/vectors: a threat or attack-path model (`mvp-*`,
-`tv-*`, `pv-*`), an SDL model (`sdl-*`), or the model's saved KG views (the `views`
-collection the Graph tab loads).
+`tv-*`, `pv-*`), an imported starter model (`im-*`, #281), an SDL model (`sdl-*`), or
+the model's saved KG views (the `views` collection the Graph tab loads).
 
 The engine checks the patch and appends it to a proposals file beside the model. It
 never edits the model, never writes a Review and never sets anything to accepted. The
@@ -52,7 +52,8 @@ from engine.model_graph import COLLECTION_DOMAIN_TYPES, RELATIONSHIP_SLOTS, proj
 PATCH_SCHEMA = "tmodel.patch/v1"
 PATCH_SCHEMAS = ("tmodel.patch/v0", PATCH_SCHEMA)
 PROPOSALS_SCHEMA = "tmodel.proposals/v0"
-MODEL_PREFIXES = ("mvp-", "tv-", "pv-", "sdl-")
+# im-: a model `tmodel import-sbom` made (#281); its links are reviewed like any proposal.
+MODEL_PREFIXES = ("mvp-", "tv-", "pv-", "im-", "sdl-")
 SDL_PREFIX = "sdl-"
 # Collections a patch may add to, edit or remove from. Reviews are never among them:
 # only the sponsor writes a Review (`tmodel accept`). Assertions are made with

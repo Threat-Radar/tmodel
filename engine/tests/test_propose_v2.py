@@ -255,6 +255,21 @@ def test_view_members_follow_the_example_queries():
 # ---- tmodel accept: the sponsor's decision ----
 
 
+def test_an_imported_model_is_proposed_to_and_accepted_like_the_others(vectors):
+    # #281: an imported starter model (im-*) is a proposal target, so a person reviews its
+    # links as for a pv- model, and the Graph tab's saved views load for it.
+    imported = "im-01-example.yaml"
+    shutil.copy(vectors / THREAT, vectors / imported)
+    pid = core.propose(patch(target=imported))["proposal"]["id"]
+    listed = {m["file"]: (m["kind"], m["pending"]) for m in core.pending_proposals()["models"]}
+    assert listed[imported] == ("threat", 1)
+    (shown,) = core.pending_proposals({"file": imported})["proposals"]
+    assert shown["id"] == pid
+    out = decide(vectors, imported, pid, declare_sponsor="nymble")
+    assert out["model_changed"] and out["verdict"] == "accepted"
+    assert core.model_graph(imported)["nodes"]
+
+
 def test_accept_applies_keeps_comments_and_writes_reviews(vectors):
     pid = core.propose(PATCH)["proposal"]["id"]
     text = (vectors / THREAT).read_text()
