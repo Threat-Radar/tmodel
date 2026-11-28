@@ -4,7 +4,7 @@ id: DL-0078
 title: "Import New Product: the engine route that runs tmodel import-sbom for the app (#287)"
 type: process
 status: draft
-version: "0.1.0"
+version: "0.2.0"
 date: "2026-11-27"
 updated: "2026-11-27"
 record: DL-0078
@@ -95,6 +95,24 @@ engine offer that screen?
 - **The switch.** One flag now. When #288's workspace and #289's review operations land, the
   host may enable all three together, and the route may then take #289's session as the review
   operations do; that is a choice for then.
+
+## With #288's project folders on main (2026-11-27)
+
+#298 (#288) merged first, so this change took main in (`b38074f`). `serve()` and `tmodel serve`
+conflicted as text, each adding an option, and both are kept: the workspace routes wrap this
+route's handler (`install_workspace_routes`) and pass every other path on to it. A test of the
+two together then found what the text merge could not: the workspace routes and this handler
+each had a private `_read_body`, with different arguments, and the workspace one, ahead of this
+handler in the class, replaced it, so with project folders on every import failed with 500. The
+workspace helper is now `_read_workspace_body`. Tests, in `engine/tests/test_import_route.py`:
+
+- `test_the_import_route_answers_beside_the_project_routes`: an import, its preflight and a
+  project route on one server. On `b38074f` the import answered 500.
+- `test_the_workspace_routes_share_no_helper_with_this_handler`: the two may share only
+  `do_GET`, `do_POST` and `do_OPTIONS`, which the workspace routes pass on. It failed on
+  `b38074f`.
+- `test_the_serve_command_passes_both_switches`: `--enable-import` and `--projects` reach
+  `serve()`.
 
 ## How it was checked
 

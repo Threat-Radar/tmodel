@@ -255,7 +255,7 @@ class WorkspaceRoutes:
             or not 0 < int(lengths[0]) <= MAX_BODY
         ):
             raise _invalid("request", f"Provide a JSON body of at most {MAX_BODY} bytes.")
-        body = self._read_body(int(lengths[0]))
+        body = self._read_workspace_body(int(lengths[0]))
         try:
             request = json.loads(
                 body, object_pairs_hook=_unique_object, parse_constant=_reject_constant
@@ -266,9 +266,11 @@ class WorkspaceRoutes:
             raise _invalid("request", "Expected a JSON object with unique fields.")
         return request
 
-    def _read_body(self, length: int) -> bytes:
+    def _read_workspace_body(self, length: int) -> bytes:
         """The whole body within BODY_TIMEOUT_S: one deadline for all of it, so a client
-        sending a byte at a time cannot hold the engine's thread."""
+        sending a byte at a time cannot hold the engine's thread. Named for the workspace
+        routes: these routes sit in front of the engine's handler in one class, so a
+        helper named like one of its own (its `_read_body`) would replace it."""
         deadline = time.monotonic() + BODY_TIMEOUT_S
         chunks: list[bytes] = []
         remaining = length

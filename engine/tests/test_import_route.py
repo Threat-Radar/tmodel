@@ -392,3 +392,74 @@ def test_an_unexpected_failure_names_no_path(enabled, monkeypatch):
     status, _, body = post(enabled, upload())
     assert status == 500 and error(body)[0] == "internal_error"
     assert "/private" not in json.dumps(body)
+
+
+# Beside #288's project routes (#298), now on main -----------------------------------------
+
+
+def test_the_import_route_answers_beside_the_project_routes(monkeypatch, tmp_path):
+    # serve() puts #288's workspace routes in front of this handler, and they pass every
+    # other path on, so the import, its preflight and the project routes all answer.
+    from workspace_support import EXAMPLE, TOKEN, Clock, Tokens, projects, use_examples
+
+    from engine.api.workspace import install_workspace_routes
+    from engine.model_workspace import ProjectWorkspace
+
+    use_examples(monkeypatch, tmp_path)
+    workspace = ProjectWorkspace(schema_check=False, clock=Clock(), token=Tokens())
+    workspace.create_project(projects(tmp_path) / "Project", source_file=EXAMPLE)
+    httpd = make_server("127.0.0.1", 0, import_enabled=True)
+    install_workspace_routes(httpd, workspace, TOKEN)
+    threading.Thread(target=httpd.serve_forever, daemon=True).start()
+    base = f"http://127.0.0.1:{httpd.server_address[1]}"
+    try:
+        status, headers, body = post(base, upload(), headers={"Origin": ORIGIN})
+        assert status == 200 and body["counts"]["components"] == 17
+        assert headers["Access-Control-Allow-Origin"] == ORIGIN
+        status, headers = preflight(base, ORIGIN)
+        assert status == 204 and headers["Access-Control-Allow-Headers"] == "Content-Type"
+        listed = urllib.request.Request(
+            base + "/workspace/models", headers={"Authorization": f"Bearer {TOKEN}"}
+        )
+        with urllib.request.urlopen(listed, timeout=10) as response:
+            assert response.status == 200 and json.loads(response.read())["count"] == 1
+    finally:
+        httpd.shutdown()
+        httpd.server_close()
+
+
+@pytest.mark.parametrize(
+    ("argv", "expected"),
+    [
+        ([], {"import_enabled": False, "host_token": None}),
+        (["--enable-import"], {"import_enabled": True, "host_token": None}),
+        (["--enable-import", "--projects"], {"import_enabled": True, "host_token": "secret"}),
+    ],
+)
+def test_the_serve_command_passes_both_switches(monkeypatch, argv, expected):
+    from engine import cli
+
+    token = "test-host-token-" + "x" * 32  # a test secret, not a credential
+    seen = {}
+    monkeypatch.setattr(server, "serve", lambda **kwargs: seen.update(kwargs))
+    monkeypatch.setenv("TMODEL_HOST_TOKEN", token)
+    assert cli.main(["serve", *argv]) == 0
+    if expected["host_token"] == "secret":
+        expected = {**expected, "host_token": token}
+    assert {key: seen[key] for key in expected} == expected
+
+
+def test_the_workspace_routes_share_no_helper_with_this_handler():
+    # The workspace routes sit in front of this handler in one class, so a private helper
+    # of theirs with the same name would replace this one: on b38074f both had a
+    # `_read_body`, with different arguments, and every import failed with 500 once
+    # project folders were on. Only the request methods they pass on may be shared.
+    from engine.api.workspace import WorkspaceRoutes
+
+    def names(cls):
+        return {name for name in vars(cls) if not name.startswith("__")}
+
+    ours = set().union(
+        *(names(cls) for cls in EngineHandler.__mro__ if cls.__module__.startswith("engine."))
+    )
+    assert names(WorkspaceRoutes) & ours == {"do_GET", "do_POST", "do_OPTIONS"}
