@@ -4,7 +4,7 @@ id: DL-0080
 title: "Import New Product: the app's screen for an SBOM and its scan (#287, #290)"
 type: process
 status: draft
-version: "0.1.0"
+version: "0.2.0"
 date: "2026-11-27"
 updated: "2026-11-27"
 record: DL-0080
@@ -66,12 +66,18 @@ All of it is in `apps/desktop/src/`, on top of #290's screens (DL-0077):
 
 ## What is still pending
 
-- **The engine route** is in the import-route pull request (DL-0078), stacked on #268's
-  importer. Until both merge, the engine has no `POST /import/sbom`, and the screen shows that
-  the import failed.
+- **The engine route** is #297 (DL-0078). #268's importer is merged, and #297 is on `main`
+  waiting for review. Until it merges, the engine has no `POST /import/sbom`, and the screen
+  shows that the import failed.
+- **Turning the route on in the app:** the desktop launcher starts the engine without
+  `--enable-import`, as it starts it without `--projects`, so in the packaged app the engine
+  answers `not_enabled` and the screen stays disabled until the team turns them on (DL-0078's
+  one switch).
 - **The host's step** that saves the model's text and starts a project from it (DL-0077).
-- **Imported projects cannot be shown yet:** #289's refreshModel needs the reviewer's Party in
-  the model, and an imported model has none (DL-0077).
+- **Showing imported projects:** #289's refreshModel needs the reviewer's Party in the model,
+  and an imported model has none. Since #291's 1a01456 the host can add its verified reviewer as
+  a Party on the first save (`allow_party_creation`); whether an imported project can be shown
+  before that save is still to be checked end to end (DL-0077).
 
 ## How it was checked
 
