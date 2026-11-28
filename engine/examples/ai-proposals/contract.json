@@ -1,0 +1,298 @@
+{
+ "note": "Answers of the engine's /ai/* routes (#302, DL-0082), made by tests/test_ai_paths.py from the real routes, with a stand-in for Ollama and sample CAPEC text. The model and the drafted names are illustrative test data; generated_by.seconds and the Ollama URL's port are fixed for the example.",
+ "examples": {
+  "status_ready": {
+   "request": {
+    "method": "GET",
+    "path": "/ai/status",
+    "body": null
+   },
+   "status": 200,
+   "answer": {
+    "enabled": true,
+    "ready": true,
+    "reason": null,
+    "ollama": {
+     "url": "http://127.0.0.1:11434",
+     "running": true,
+     "version": "0.33.2"
+    },
+    "model": {
+     "name": "qwen3.5:9b",
+     "installed": true,
+     "digest": "56671c2ab9380000000000000000000000000000000000000000000000000000",
+     "size_bytes": 6550000000
+    },
+    "setup": null
+   }
+  },
+  "status_model_missing": {
+   "request": {
+    "method": "GET",
+    "path": "/ai/status",
+    "body": null
+   },
+   "status": 200,
+   "answer": {
+    "enabled": true,
+    "ready": false,
+    "reason": "model_missing",
+    "ollama": {
+     "url": "http://127.0.0.1:11434",
+     "running": true,
+     "version": "0.33.2"
+    },
+    "model": {
+     "name": "qwen3.5:9b",
+     "installed": false
+    },
+    "setup": [
+     "Install Ollama from https://ollama.com/download and open it.",
+     "In Terminal, run: ollama pull qwen3.5:9b"
+    ]
+   }
+  },
+  "status_not_enabled": {
+   "request": {
+    "method": "GET",
+    "path": "/ai/status",
+    "body": null
+   },
+   "status": 200,
+   "answer": {
+    "enabled": false,
+    "ready": false,
+    "reason": "not_enabled",
+    "ollama": {
+     "url": "http://127.0.0.1:11434",
+     "running": null,
+     "version": null
+    },
+    "model": {
+     "name": "qwen3.5:9b",
+     "installed": null
+    },
+    "setup": [
+     "Start the engine with: tmodel serve --enable-ai",
+     "Install Ollama from https://ollama.com/download and open it.",
+     "In Terminal, run: ollama pull qwen3.5:9b"
+    ]
+   }
+  },
+  "attack_paths": {
+   "request": {
+    "method": "POST",
+    "path": "/ai/attack-paths",
+    "body": {
+     "model_text": "# Synthetic imported model for the AI proposals contract (#302, DL-0082).\n# Not a real product or scan: the components, CVE ids and links are illustrative test\n# data, shaped like `tmodel import-sbom` output. contract.json shows the engine's answers\n# when the app asks for attack paths for this model.\nparties:\n  - id: party:grype\n    name: Grype\n    party_kind: software_agent\nproducts:\n  - id: product:example-image\n    name: example.org/team/service\n    description: A synthetic container image for the AI proposals contract.\ncomponents:\n  - id: component:example-tls-library\n    name: example-tls 3.5.8\n    version: 3.5.8\n    component_kind: library\n  - id: component:example-compression-library\n    name: example-zlib 1.3.2\n    version: 1.3.2\n    component_kind: library\nweaknesses:\n  - id: weakness:cwe-770\n    name: CWE-770\n    catalog_ref: CWE-770\n  - id: weakness:cwe-787\n    name: CWE-787\n    catalog_ref: CWE-787\nvulnerabilities:\n  - id: vulnerability:cve-2099-0001\n    name: CVE-2099-0001\n    description: A synthetic flaw that lets a client make the TLS library allocate without limit.\n    catalog_ref: CVE-2099-0001\n  - id: vulnerability:cve-2099-0002\n    name: CVE-2099-0002\n    description: A synthetic flaw that lets a crafted stream write past a buffer while it is inflated.\n    catalog_ref: CVE-2099-0002\nassertions:\n  - id: assertion:cve-2099-0001-in-tls\n    subject: vulnerability:cve-2099-0001\n    predicate: propagates_to\n    object: component:example-tls-library\n    assertion_status: proposed\n    asserted_by: party:grype\n  - id: assertion:cve-2099-0001-cwe-770\n    subject: vulnerability:cve-2099-0001\n    predicate: instance_of\n    object: weakness:cwe-770\n    assertion_status: proposed\n    asserted_by: party:grype\n  - id: assertion:cve-2099-0002-in-zlib\n    subject: vulnerability:cve-2099-0002\n    predicate: propagates_to\n    object: component:example-compression-library\n    assertion_status: proposed\n    asserted_by: party:grype\n  - id: assertion:cve-2099-0002-cwe-787\n    subject: vulnerability:cve-2099-0002\n    predicate: instance_of\n    object: weakness:cwe-787\n    assertion_status: proposed\n    asserted_by: party:grype\n",
+     "max_paths": 2
+    }
+   },
+   "status": 200,
+   "answer": {
+    "model_text": "# Synthetic imported model for the AI proposals contract (#302, DL-0082).\n# Not a real product or scan: the components, CVE ids and links are illustrative test\n# data, shaped like `tmodel import-sbom` output. contract.json shows the engine's answers\n# when the app asks for attack paths for this model.\nparties:\n  - id: party:grype\n    name: Grype\n    party_kind: software_agent\n  - id: party:ai-qwen3-5-9b\n    name: qwen3.5:9b (local LLM through Ollama)\n    description: Software agent whose attack paths are proposals until a person reviews them\n      (#302).\n    party_kind: software_agent\nproducts:\n  - id: product:example-image\n    name: example.org/team/service\n    description: A synthetic container image for the AI proposals contract.\ncomponents:\n  - id: component:example-tls-library\n    name: example-tls 3.5.8\n    version: 3.5.8\n    component_kind: library\n  - id: component:example-compression-library\n    name: example-zlib 1.3.2\n    version: 1.3.2\n    component_kind: library\nweaknesses:\n  - id: weakness:cwe-770\n    name: CWE-770\n    catalog_ref: CWE-770\n  - id: weakness:cwe-787\n    name: CWE-787\n    catalog_ref: CWE-787\nvulnerabilities:\n  - id: vulnerability:cve-2099-0001\n    name: CVE-2099-0001\n    description: A synthetic flaw that lets a client make the TLS library allocate without limit.\n    catalog_ref: CVE-2099-0001\n  - id: vulnerability:cve-2099-0002\n    name: CVE-2099-0002\n    description: A synthetic flaw that lets a crafted stream write past a buffer while it is inflated.\n    catalog_ref: CVE-2099-0002\nassertions:\n  - id: assertion:cve-2099-0001-in-tls\n    subject: vulnerability:cve-2099-0001\n    predicate: propagates_to\n    object: component:example-tls-library\n    assertion_status: proposed\n    asserted_by: party:grype\n  - id: assertion:cve-2099-0001-cwe-770\n    subject: vulnerability:cve-2099-0001\n    predicate: instance_of\n    object: weakness:cwe-770\n    assertion_status: proposed\n    asserted_by: party:grype\n  - id: assertion:cve-2099-0002-in-zlib\n    subject: vulnerability:cve-2099-0002\n    predicate: propagates_to\n    object: component:example-compression-library\n    assertion_status: proposed\n    asserted_by: party:grype\n  - id: assertion:cve-2099-0002-cwe-787\n    subject: vulnerability:cve-2099-0002\n    predicate: instance_of\n    object: weakness:cwe-787\n    assertion_status: proposed\n    asserted_by: party:grype\n  - id: assertion:ai-exhaust-the-tls-library-s-memory-1-exploits\n    subject: attack-step:ai-exhaust-the-tls-library-s-memory-1\n    predicate: exploits\n    object: weakness:cwe-770\n    confidence: low\n    assertion_status: proposed\n    asserted_by: party:ai-qwen3-5-9b\n    asserted_at: '2026-11-28T09:00:00Z'\n    generated_by: tmodel ai-paths (qwen3.5:9b, digest 56671c2ab938, prompt attack-paths/v1)\n  - id: assertion:ai-exhaust-the-tls-library-s-memory-1-targets\n    subject: attack-step:ai-exhaust-the-tls-library-s-memory-1\n    predicate: targets_element\n    object: component:example-tls-library\n    confidence: low\n    assertion_status: proposed\n    asserted_by: party:ai-qwen3-5-9b\n    asserted_at: '2026-11-28T09:00:00Z'\n    generated_by: tmodel ai-paths (qwen3.5:9b, digest 56671c2ab938, prompt attack-paths/v1)\n  - id: assertion:ai-exhaust-the-tls-library-s-memory-1-pattern\n    subject: attack-step:ai-exhaust-the-tls-library-s-memory-1\n    predicate: instance_of\n    object: attack-pattern:capec-125\n    confidence: low\n    assertion_status: proposed\n    asserted_by: party:ai-qwen3-5-9b\n    asserted_at: '2026-11-28T09:00:00Z'\n    generated_by: tmodel ai-paths (qwen3.5:9b, digest 56671c2ab938, prompt attack-paths/v1)\n  - id: assertion:ai-exhaust-the-tls-library-s-memory-1-exploited-by\n    subject: weakness:cwe-770\n    predicate: exploited_by\n    object: attack-pattern:capec-125\n    confidence: low\n    assertion_status: proposed\n    asserted_by: party:ai-qwen3-5-9b\n    asserted_at: '2026-11-28T09:00:00Z'\n    generated_by: tmodel ai-paths (qwen3.5:9b, digest 56671c2ab938, prompt attack-paths/v1)\n  - id: assertion:ai-exhaust-the-tls-library-s-memory-2-exploits\n    subject: attack-step:ai-exhaust-the-tls-library-s-memory-2\n    predicate: exploits\n    object: weakness:cwe-770\n    confidence: low\n    assertion_status: proposed\n    asserted_by: party:ai-qwen3-5-9b\n    asserted_at: '2026-11-28T09:00:00Z'\n    generated_by: tmodel ai-paths (qwen3.5:9b, digest 56671c2ab938, prompt attack-paths/v1)\n  - id: assertion:ai-exhaust-the-tls-library-s-memory-2-targets\n    subject: attack-step:ai-exhaust-the-tls-library-s-memory-2\n    predicate: targets_element\n    object: component:example-tls-library\n    confidence: low\n    assertion_status: proposed\n    asserted_by: party:ai-qwen3-5-9b\n    asserted_at: '2026-11-28T09:00:00Z'\n    generated_by: tmodel ai-paths (qwen3.5:9b, digest 56671c2ab938, prompt attack-paths/v1)\n  - id: assertion:ai-exhaust-the-tls-library-s-memory-2-pattern\n    subject: attack-step:ai-exhaust-the-tls-library-s-memory-2\n    predicate: instance_of\n    object: attack-pattern:capec-130\n    confidence: low\n    assertion_status: proposed\n    asserted_by: party:ai-qwen3-5-9b\n    asserted_at: '2026-11-28T09:00:00Z'\n    generated_by: tmodel ai-paths (qwen3.5:9b, digest 56671c2ab938, prompt attack-paths/v1)\n  - id: assertion:ai-exhaust-the-tls-library-s-memory-2-exploited-by\n    subject: weakness:cwe-770\n    predicate: exploited_by\n    object: attack-pattern:capec-130\n    confidence: low\n    assertion_status: proposed\n    asserted_by: party:ai-qwen3-5-9b\n    asserted_at: '2026-11-28T09:00:00Z'\n    generated_by: tmodel ai-paths (qwen3.5:9b, digest 56671c2ab938, prompt attack-paths/v1)\n  - id: assertion:ai-exhaust-the-tls-library-s-memory-realizes\n    subject: attack-path:ai-exhaust-the-tls-library-s-memory\n    predicate: realizes_threat\n    object: threat-instance:ai-exhaust-the-tls-library-s-memory\n    confidence: low\n    assertion_status: proposed\n    asserted_by: party:ai-qwen3-5-9b\n    asserted_at: '2026-11-28T09:00:00Z'\n    generated_by: tmodel ai-paths (qwen3.5:9b, digest 56671c2ab938, prompt attack-paths/v1)\n  - id: assertion:ai-exhaust-the-tls-library-s-memory-exploits-cwe-770\n    subject: threat-instance:ai-exhaust-the-tls-library-s-memory\n    predicate: exploits_weakness\n    object: weakness:cwe-770\n    confidence: low\n    assertion_status: proposed\n    asserted_by: party:ai-qwen3-5-9b\n    asserted_at: '2026-11-28T09:00:00Z'\n    generated_by: tmodel ai-paths (qwen3.5:9b, digest 56671c2ab938, prompt attack-paths/v1)\n  - id: assertion:ai-overflow-the-decompressor-to-run-code-1-exploits\n    subject: attack-step:ai-overflow-the-decompressor-to-run-code-1\n    predicate: exploits\n    object: weakness:cwe-787\n    confidence: low\n    assertion_status: proposed\n    asserted_by: party:ai-qwen3-5-9b\n    asserted_at: '2026-11-28T09:00:00Z'\n    generated_by: tmodel ai-paths (qwen3.5:9b, digest 56671c2ab938, prompt attack-paths/v1)\n  - id: assertion:ai-overflow-the-decompressor-to-run-code-1-targets\n    subject: attack-step:ai-overflow-the-decompressor-to-run-code-1\n    predicate: targets_element\n    object: component:example-compression-library\n    confidence: low\n    assertion_status: proposed\n    asserted_by: party:ai-qwen3-5-9b\n    asserted_at: '2026-11-28T09:00:00Z'\n    generated_by: tmodel ai-paths (qwen3.5:9b, digest 56671c2ab938, prompt attack-paths/v1)\n  - id: assertion:ai-overflow-the-decompressor-to-run-code-1-pattern\n    subject: attack-step:ai-overflow-the-decompressor-to-run-code-1\n    predicate: instance_of\n    object: attack-pattern:capec-100\n    confidence: low\n    assertion_status: proposed\n    asserted_by: party:ai-qwen3-5-9b\n    asserted_at: '2026-11-28T09:00:00Z'\n    generated_by: tmodel ai-paths (qwen3.5:9b, digest 56671c2ab938, prompt attack-paths/v1)\n  - id: assertion:ai-overflow-the-decompressor-to-run-code-1-exploited-by\n    subject: weakness:cwe-787\n    predicate: exploited_by\n    object: attack-pattern:capec-100\n    confidence: low\n    assertion_status: proposed\n    asserted_by: party:ai-qwen3-5-9b\n    asserted_at: '2026-11-28T09:00:00Z'\n    generated_by: tmodel ai-paths (qwen3.5:9b, digest 56671c2ab938, prompt attack-paths/v1)\n  - id: assertion:ai-overflow-the-decompressor-to-run-code-2-exploits\n    subject: attack-step:ai-overflow-the-decompressor-to-run-code-2\n    predicate: exploits\n    object: weakness:cwe-787\n    confidence: low\n    assertion_status: proposed\n    asserted_by: party:ai-qwen3-5-9b\n    asserted_at: '2026-11-28T09:00:00Z'\n    generated_by: tmodel ai-paths (qwen3.5:9b, digest 56671c2ab938, prompt attack-paths/v1)\n  - id: assertion:ai-overflow-the-decompressor-to-run-code-2-targets\n    subject: attack-step:ai-overflow-the-decompressor-to-run-code-2\n    predicate: targets_element\n    object: component:example-compression-library\n    confidence: low\n    assertion_status: proposed\n    asserted_by: party:ai-qwen3-5-9b\n    asserted_at: '2026-11-28T09:00:00Z'\n    generated_by: tmodel ai-paths (qwen3.5:9b, digest 56671c2ab938, prompt attack-paths/v1)\n  - id: assertion:ai-overflow-the-decompressor-to-run-code-2-pattern\n    subject: attack-step:ai-overflow-the-decompressor-to-run-code-2\n    predicate: instance_of\n    object: attack-pattern:capec-100\n    confidence: low\n    assertion_status: proposed\n    asserted_by: party:ai-qwen3-5-9b\n    asserted_at: '2026-11-28T09:00:00Z'\n    generated_by: tmodel ai-paths (qwen3.5:9b, digest 56671c2ab938, prompt attack-paths/v1)\n  - id: assertion:ai-overflow-the-decompressor-to-run-code-realizes\n    subject: attack-path:ai-overflow-the-decompressor-to-run-code\n    predicate: realizes_threat\n    object: threat-instance:ai-overflow-the-decompressor-to-run-code\n    confidence: low\n    assertion_status: proposed\n    asserted_by: party:ai-qwen3-5-9b\n    asserted_at: '2026-11-28T09:00:00Z'\n    generated_by: tmodel ai-paths (qwen3.5:9b, digest 56671c2ab938, prompt attack-paths/v1)\n  - id: assertion:ai-overflow-the-decompressor-to-run-code-exploits-cwe-787\n    subject: threat-instance:ai-overflow-the-decompressor-to-run-code\n    predicate: exploits_weakness\n    object: weakness:cwe-787\n    confidence: low\n    assertion_status: proposed\n    asserted_by: party:ai-qwen3-5-9b\n    asserted_at: '2026-11-28T09:00:00Z'\n    generated_by: tmodel ai-paths (qwen3.5:9b, digest 56671c2ab938, prompt attack-paths/v1)\n\ndamage_scenarios:\n  - id: damage-scenario:ai-exhaust-the-tls-library-s-memory\n    name: The service stops answering its clients\n    description: AI-proposed damage (qwen3.5:9b), not reviewed.\n  - id: damage-scenario:ai-overflow-the-decompressor-to-run-code\n    name: An attacker runs code inside the container\n    description: AI-proposed damage (qwen3.5:9b), not reviewed.\n\nthreat_instances:\n  - id: threat-instance:ai-exhaust-the-tls-library-s-memory\n    name: Denial of service through the TLS library\n    description: AI-proposed threat (qwen3.5:9b), not reviewed.\n    realizes_damage: damage-scenario:ai-exhaust-the-tls-library-s-memory\n    source_method: ai:qwen3.5:9b (proposal, unreviewed)\n  - id: threat-instance:ai-overflow-the-decompressor-to-run-code\n    name: Code execution through the compression library\n    description: AI-proposed threat (qwen3.5:9b), not reviewed.\n    realizes_damage: damage-scenario:ai-overflow-the-decompressor-to-run-code\n    source_method: ai:qwen3.5:9b (proposal, unreviewed)\n\nattack_patterns:\n  - id: attack-pattern:capec-125\n    name: Flooding\n    catalog_ref: CAPEC-125\n  - id: attack-pattern:capec-130\n    name: Excessive Allocation\n    catalog_ref: CAPEC-130\n  - id: attack-pattern:capec-100\n    name: Overflow Buffers\n    catalog_ref: CAPEC-100\n\nattack_steps:\n  - id: attack-step:ai-exhaust-the-tls-library-s-memory-1\n    name: Open many connections at once\n    precedes:\n    - attack-step:ai-exhaust-the-tls-library-s-memory-2\n  - id: attack-step:ai-exhaust-the-tls-library-s-memory-2\n    name: Make each connection allocate without limit\n  - id: attack-step:ai-overflow-the-decompressor-to-run-code-1\n    name: Send a crafted compressed stream\n    precedes:\n    - attack-step:ai-overflow-the-decompressor-to-run-code-2\n  - id: attack-step:ai-overflow-the-decompressor-to-run-code-2\n    name: Write past the buffer to take control\n\nattack_paths:\n  - id: attack-path:ai-exhaust-the-tls-library-s-memory\n    name: Exhaust the TLS library's memory\n    description: AI-proposed path (qwen3.5:9b); its realizing edge is a proposed Assertion,\n      not reviewed.\n    steps:\n    - attack-step:ai-exhaust-the-tls-library-s-memory-1\n    - attack-step:ai-exhaust-the-tls-library-s-memory-2\n    realizes_threat: threat-instance:ai-exhaust-the-tls-library-s-memory\n  - id: attack-path:ai-overflow-the-decompressor-to-run-code\n    name: Overflow the decompressor to run code\n    description: AI-proposed path (qwen3.5:9b); its realizing edge is a proposed Assertion,\n      not reviewed.\n    steps:\n    - attack-step:ai-overflow-the-decompressor-to-run-code-1\n    - attack-step:ai-overflow-the-decompressor-to-run-code-2\n    realizes_threat: threat-instance:ai-overflow-the-decompressor-to-run-code\n",
+    "summary": {
+     "threat_instances": 2,
+     "attack_steps": 4,
+     "attack_paths": 2
+    },
+    "paths": [
+     {
+      "id": "attack-path:ai-exhaust-the-tls-library-s-memory",
+      "name": "Exhaust the TLS library's memory",
+      "threat": "threat-instance:ai-exhaust-the-tls-library-s-memory",
+      "threat_name": "Denial of service through the TLS library",
+      "damage": "The service stops answering its clients",
+      "steps": [
+       {
+        "id": "attack-step:ai-exhaust-the-tls-library-s-memory-1",
+        "name": "Open many connections at once",
+        "component": "component:example-tls-library",
+        "weakness": "weakness:cwe-770",
+        "capec": "CAPEC-125"
+       },
+       {
+        "id": "attack-step:ai-exhaust-the-tls-library-s-memory-2",
+        "name": "Make each connection allocate without limit",
+        "component": "component:example-tls-library",
+        "weakness": "weakness:cwe-770",
+        "capec": "CAPEC-130"
+       }
+      ]
+     },
+     {
+      "id": "attack-path:ai-overflow-the-decompressor-to-run-code",
+      "name": "Overflow the decompressor to run code",
+      "threat": "threat-instance:ai-overflow-the-decompressor-to-run-code",
+      "threat_name": "Code execution through the compression library",
+      "damage": "An attacker runs code inside the container",
+      "steps": [
+       {
+        "id": "attack-step:ai-overflow-the-decompressor-to-run-code-1",
+        "name": "Send a crafted compressed stream",
+        "component": "component:example-compression-library",
+        "weakness": "weakness:cwe-787",
+        "capec": "CAPEC-100"
+       },
+       {
+        "id": "attack-step:ai-overflow-the-decompressor-to-run-code-2",
+        "name": "Write past the buffer to take control",
+        "component": "component:example-compression-library",
+        "weakness": "weakness:cwe-787",
+        "capec": "CAPEC-100"
+       }
+      ]
+     }
+    ],
+    "warnings": [
+     "Overflow the decompressor to run code: every step uses one pattern"
+    ],
+    "generated_by": {
+     "model": "qwen3.5:9b",
+     "digest": "56671c2ab938",
+     "prompt": "attack-paths/v1",
+     "seconds": 56.2,
+     "attempts": 1
+    }
+   }
+  },
+  "error_not_enabled": {
+   "request": {
+    "method": "POST",
+    "path": "/ai/attack-paths",
+    "body": {
+     "model_text": "# Synthetic imported model for the AI proposals contract (#302, DL-0082).\n# Not a real product or scan: the components, CVE ids and links are illustrative test\n# data, shaped like `tmodel import-sbom` output. contract.json shows the engine's answers\n# when the app asks for attack paths for this model.\nparties:\n  - id: party:grype\n    name: Grype\n    party_kind: software_agent\nproducts:\n  - id: product:example-image\n    name: example.org/team/service\n    description: A synthetic container image for the AI proposals contract.\ncomponents:\n  - id: component:example-tls-library\n    name: example-tls 3.5.8\n    version: 3.5.8\n    component_kind: library\n  - id: component:example-compression-library\n    name: example-zlib 1.3.2\n    version: 1.3.2\n    component_kind: library\nweaknesses:\n  - id: weakness:cwe-770\n    name: CWE-770\n    catalog_ref: CWE-770\n  - id: weakness:cwe-787\n    name: CWE-787\n    catalog_ref: CWE-787\nvulnerabilities:\n  - id: vulnerability:cve-2099-0001\n    name: CVE-2099-0001\n    description: A synthetic flaw that lets a client make the TLS library allocate without limit.\n    catalog_ref: CVE-2099-0001\n  - id: vulnerability:cve-2099-0002\n    name: CVE-2099-0002\n    description: A synthetic flaw that lets a crafted stream write past a buffer while it is inflated.\n    catalog_ref: CVE-2099-0002\nassertions:\n  - id: assertion:cve-2099-0001-in-tls\n    subject: vulnerability:cve-2099-0001\n    predicate: propagates_to\n    object: component:example-tls-library\n    assertion_status: proposed\n    asserted_by: party:grype\n  - id: assertion:cve-2099-0001-cwe-770\n    subject: vulnerability:cve-2099-0001\n    predicate: instance_of\n    object: weakness:cwe-770\n    assertion_status: proposed\n    asserted_by: party:grype\n  - id: assertion:cve-2099-0002-in-zlib\n    subject: vulnerability:cve-2099-0002\n    predicate: propagates_to\n    object: component:example-compression-library\n    assertion_status: proposed\n    asserted_by: party:grype\n  - id: assertion:cve-2099-0002-cwe-787\n    subject: vulnerability:cve-2099-0002\n    predicate: instance_of\n    object: weakness:cwe-787\n    assertion_status: proposed\n    asserted_by: party:grype\n",
+     "max_paths": 2
+    }
+   },
+   "status": 503,
+   "answer": {
+    "error": {
+     "code": "not_enabled",
+     "message": "AI proposals are not enabled in this engine."
+    }
+   }
+  },
+  "error_ai_unavailable": {
+   "request": {
+    "method": "POST",
+    "path": "/ai/attack-paths",
+    "body": {
+     "model_text": "# Synthetic imported model for the AI proposals contract (#302, DL-0082).\n# Not a real product or scan: the components, CVE ids and links are illustrative test\n# data, shaped like `tmodel import-sbom` output. contract.json shows the engine's answers\n# when the app asks for attack paths for this model.\nparties:\n  - id: party:grype\n    name: Grype\n    party_kind: software_agent\nproducts:\n  - id: product:example-image\n    name: example.org/team/service\n    description: A synthetic container image for the AI proposals contract.\ncomponents:\n  - id: component:example-tls-library\n    name: example-tls 3.5.8\n    version: 3.5.8\n    component_kind: library\n  - id: component:example-compression-library\n    name: example-zlib 1.3.2\n    version: 1.3.2\n    component_kind: library\nweaknesses:\n  - id: weakness:cwe-770\n    name: CWE-770\n    catalog_ref: CWE-770\n  - id: weakness:cwe-787\n    name: CWE-787\n    catalog_ref: CWE-787\nvulnerabilities:\n  - id: vulnerability:cve-2099-0001\n    name: CVE-2099-0001\n    description: A synthetic flaw that lets a client make the TLS library allocate without limit.\n    catalog_ref: CVE-2099-0001\n  - id: vulnerability:cve-2099-0002\n    name: CVE-2099-0002\n    description: A synthetic flaw that lets a crafted stream write past a buffer while it is inflated.\n    catalog_ref: CVE-2099-0002\nassertions:\n  - id: assertion:cve-2099-0001-in-tls\n    subject: vulnerability:cve-2099-0001\n    predicate: propagates_to\n    object: component:example-tls-library\n    assertion_status: proposed\n    asserted_by: party:grype\n  - id: assertion:cve-2099-0001-cwe-770\n    subject: vulnerability:cve-2099-0001\n    predicate: instance_of\n    object: weakness:cwe-770\n    assertion_status: proposed\n    asserted_by: party:grype\n  - id: assertion:cve-2099-0002-in-zlib\n    subject: vulnerability:cve-2099-0002\n    predicate: propagates_to\n    object: component:example-compression-library\n    assertion_status: proposed\n    asserted_by: party:grype\n  - id: assertion:cve-2099-0002-cwe-787\n    subject: vulnerability:cve-2099-0002\n    predicate: instance_of\n    object: weakness:cwe-787\n    assertion_status: proposed\n    asserted_by: party:grype\n",
+     "max_paths": 2
+    }
+   },
+   "status": 503,
+   "answer": {
+    "error": {
+     "code": "ai_unavailable",
+     "message": "The local LLM is not ready.",
+     "problems": [
+      "model_missing"
+     ],
+     "setup": [
+      "Install Ollama from https://ollama.com/download and open it.",
+      "In Terminal, run: ollama pull qwen3.5:9b"
+     ]
+    }
+   }
+  },
+  "error_busy": {
+   "request": {
+    "method": "POST",
+    "path": "/ai/attack-paths",
+    "body": {
+     "model_text": "# Synthetic imported model for the AI proposals contract (#302, DL-0082).\n# Not a real product or scan: the components, CVE ids and links are illustrative test\n# data, shaped like `tmodel import-sbom` output. contract.json shows the engine's answers\n# when the app asks for attack paths for this model.\nparties:\n  - id: party:grype\n    name: Grype\n    party_kind: software_agent\nproducts:\n  - id: product:example-image\n    name: example.org/team/service\n    description: A synthetic container image for the AI proposals contract.\ncomponents:\n  - id: component:example-tls-library\n    name: example-tls 3.5.8\n    version: 3.5.8\n    component_kind: library\n  - id: component:example-compression-library\n    name: example-zlib 1.3.2\n    version: 1.3.2\n    component_kind: library\nweaknesses:\n  - id: weakness:cwe-770\n    name: CWE-770\n    catalog_ref: CWE-770\n  - id: weakness:cwe-787\n    name: CWE-787\n    catalog_ref: CWE-787\nvulnerabilities:\n  - id: vulnerability:cve-2099-0001\n    name: CVE-2099-0001\n    description: A synthetic flaw that lets a client make the TLS library allocate without limit.\n    catalog_ref: CVE-2099-0001\n  - id: vulnerability:cve-2099-0002\n    name: CVE-2099-0002\n    description: A synthetic flaw that lets a crafted stream write past a buffer while it is inflated.\n    catalog_ref: CVE-2099-0002\nassertions:\n  - id: assertion:cve-2099-0001-in-tls\n    subject: vulnerability:cve-2099-0001\n    predicate: propagates_to\n    object: component:example-tls-library\n    assertion_status: proposed\n    asserted_by: party:grype\n  - id: assertion:cve-2099-0001-cwe-770\n    subject: vulnerability:cve-2099-0001\n    predicate: instance_of\n    object: weakness:cwe-770\n    assertion_status: proposed\n    asserted_by: party:grype\n  - id: assertion:cve-2099-0002-in-zlib\n    subject: vulnerability:cve-2099-0002\n    predicate: propagates_to\n    object: component:example-compression-library\n    assertion_status: proposed\n    asserted_by: party:grype\n  - id: assertion:cve-2099-0002-cwe-787\n    subject: vulnerability:cve-2099-0002\n    predicate: instance_of\n    object: weakness:cwe-787\n    assertion_status: proposed\n    asserted_by: party:grype\n",
+     "max_paths": 2
+    }
+   },
+   "status": 503,
+   "answer": {
+    "error": {
+     "code": "busy",
+     "message": "A draft is already running; try again when it finishes."
+    }
+   }
+  },
+  "error_validation": {
+   "request": {
+    "method": "POST",
+    "path": "/ai/attack-paths",
+    "body": {
+     "max_paths": 2
+    }
+   },
+   "status": 422,
+   "answer": {
+    "error": {
+     "code": "validation_error",
+     "message": "model_text: give the model as YAML text."
+    }
+   }
+  },
+  "error_nothing_to_draft": {
+   "request": {
+    "method": "POST",
+    "path": "/ai/attack-paths",
+    "body": {
+     "model_text": "components: []\n"
+    }
+   },
+   "status": 422,
+   "answer": {
+    "error": {
+     "code": "nothing_to_draft",
+     "message": "No component in this model has a weakness the CWE release relates to a CAPEC pattern, so there is nothing to draft from."
+    }
+   }
+  },
+  "error_generation_failed": {
+   "request": {
+    "method": "POST",
+    "path": "/ai/attack-paths",
+    "body": {
+     "model_text": "# Synthetic imported model for the AI proposals contract (#302, DL-0082).\n# Not a real product or scan: the components, CVE ids and links are illustrative test\n# data, shaped like `tmodel import-sbom` output. contract.json shows the engine's answers\n# when the app asks for attack paths for this model.\nparties:\n  - id: party:grype\n    name: Grype\n    party_kind: software_agent\nproducts:\n  - id: product:example-image\n    name: example.org/team/service\n    description: A synthetic container image for the AI proposals contract.\ncomponents:\n  - id: component:example-tls-library\n    name: example-tls 3.5.8\n    version: 3.5.8\n    component_kind: library\n  - id: component:example-compression-library\n    name: example-zlib 1.3.2\n    version: 1.3.2\n    component_kind: library\nweaknesses:\n  - id: weakness:cwe-770\n    name: CWE-770\n    catalog_ref: CWE-770\n  - id: weakness:cwe-787\n    name: CWE-787\n    catalog_ref: CWE-787\nvulnerabilities:\n  - id: vulnerability:cve-2099-0001\n    name: CVE-2099-0001\n    description: A synthetic flaw that lets a client make the TLS library allocate without limit.\n    catalog_ref: CVE-2099-0001\n  - id: vulnerability:cve-2099-0002\n    name: CVE-2099-0002\n    description: A synthetic flaw that lets a crafted stream write past a buffer while it is inflated.\n    catalog_ref: CVE-2099-0002\nassertions:\n  - id: assertion:cve-2099-0001-in-tls\n    subject: vulnerability:cve-2099-0001\n    predicate: propagates_to\n    object: component:example-tls-library\n    assertion_status: proposed\n    asserted_by: party:grype\n  - id: assertion:cve-2099-0001-cwe-770\n    subject: vulnerability:cve-2099-0001\n    predicate: instance_of\n    object: weakness:cwe-770\n    assertion_status: proposed\n    asserted_by: party:grype\n  - id: assertion:cve-2099-0002-in-zlib\n    subject: vulnerability:cve-2099-0002\n    predicate: propagates_to\n    object: component:example-compression-library\n    assertion_status: proposed\n    asserted_by: party:grype\n  - id: assertion:cve-2099-0002-cwe-787\n    subject: vulnerability:cve-2099-0002\n    predicate: instance_of\n    object: weakness:cwe-787\n    assertion_status: proposed\n    asserted_by: party:grype\n",
+     "max_paths": 2
+    }
+   },
+   "status": 422,
+   "answer": {
+    "error": {
+     "code": "generation_failed",
+     "message": "The model's answers failed the checks 3 times.",
+     "problems": [
+      "give between 1 and 2 paths"
+     ]
+    }
+   }
+  },
+  "error_not_found": {
+   "request": {
+    "method": "GET",
+    "path": "/ai/other",
+    "body": null
+   },
+   "status": 404,
+   "answer": {
+    "error": {
+     "code": "not_found",
+     "message": "Unknown operation."
+    }
+   }
+  },
+  "error_permission_denied": {
+   "request": {
+    "method": "GET",
+    "path": "/ai/status",
+    "body": null
+   },
+   "status": 403,
+   "answer": {
+    "error": {
+     "code": "permission_denied",
+     "message": "Forbidden host or origin."
+    }
+   }
+  }
+ }
+}

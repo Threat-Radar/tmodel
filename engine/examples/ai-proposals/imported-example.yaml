@@ -1,0 +1,62 @@
+# Synthetic imported model for the AI proposals contract (#302, DL-0082).
+# Not a real product or scan: the components, CVE ids and links are illustrative test
+# data, shaped like `tmodel import-sbom` output. contract.json shows the engine's answers
+# when the app asks for attack paths for this model.
+parties:
+  - id: party:grype
+    name: Grype
+    party_kind: software_agent
+products:
+  - id: product:example-image
+    name: example.org/team/service
+    description: A synthetic container image for the AI proposals contract.
+components:
+  - id: component:example-tls-library
+    name: example-tls 3.5.8
+    version: 3.5.8
+    component_kind: library
+  - id: component:example-compression-library
+    name: example-zlib 1.3.2
+    version: 1.3.2
+    component_kind: library
+weaknesses:
+  - id: weakness:cwe-770
+    name: CWE-770
+    catalog_ref: CWE-770
+  - id: weakness:cwe-787
+    name: CWE-787
+    catalog_ref: CWE-787
+vulnerabilities:
+  - id: vulnerability:cve-2099-0001
+    name: CVE-2099-0001
+    description: A synthetic flaw that lets a client make the TLS library allocate without limit.
+    catalog_ref: CVE-2099-0001
+  - id: vulnerability:cve-2099-0002
+    name: CVE-2099-0002
+    description: A synthetic flaw that lets a crafted stream write past a buffer while it is inflated.
+    catalog_ref: CVE-2099-0002
+assertions:
+  - id: assertion:cve-2099-0001-in-tls
+    subject: vulnerability:cve-2099-0001
+    predicate: propagates_to
+    object: component:example-tls-library
+    assertion_status: proposed
+    asserted_by: party:grype
+  - id: assertion:cve-2099-0001-cwe-770
+    subject: vulnerability:cve-2099-0001
+    predicate: instance_of
+    object: weakness:cwe-770
+    assertion_status: proposed
+    asserted_by: party:grype
+  - id: assertion:cve-2099-0002-in-zlib
+    subject: vulnerability:cve-2099-0002
+    predicate: propagates_to
+    object: component:example-compression-library
+    assertion_status: proposed
+    asserted_by: party:grype
+  - id: assertion:cve-2099-0002-cwe-787
+    subject: vulnerability:cve-2099-0002
+    predicate: instance_of
+    object: weakness:cwe-787
+    assertion_status: proposed
+    asserted_by: party:grype
