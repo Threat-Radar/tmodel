@@ -1,11 +1,12 @@
 """The attack-pattern feeds (#244, #236): GET /attack-patterns/table, GET /attack-patterns, and
-the GUI's fixture.
+the GUI's fixtures.
 
 The engine reads the CAPEC sample (`fixtures/capec/`, 13 attack patterns copied verbatim
 from CAPEC 3.9) through TMODEL_CAPEC_CATALOG, with the digest a one-record test library
 pins (TMODEL_LIBRARY). `apps/desktop/src/fixtures/attack-pattern-table.json` must equal
-the engine's answer; TMODEL_UPDATE_FIXTURES=1 rewrites it after a shape change agreed
-on #236.
+the engine's answer, and `attack-pattern-details.json` its answer to GET /attack-patterns
+for each of the table's rows; TMODEL_UPDATE_FIXTURES=1 rewrites both after a shape change
+agreed on #236.
 """
 
 import json
@@ -28,6 +29,7 @@ SAMPLE = CAPEC / "capec_v3.9-sample.xml"
 GUI_FIXTURE = (
     TESTS.parents[1] / "apps" / "desktop" / "src" / "fixtures" / "attack-pattern-table.json"
 )
+GUI_DETAILS = GUI_FIXTURE.with_name("attack-pattern-details.json")
 ROW_KEYS = [
     "id",
     "attack_pattern",
@@ -88,7 +90,7 @@ def ids(payload):
     return [row["id"] for row in payload["rows"]]
 
 
-# --- the GUI's sample fixture ---------------------------------------------------------------
+# --- the GUI's sample fixtures --------------------------------------------------------------
 
 
 def test_gui_fixture_is_the_engines_answer():
@@ -100,6 +102,21 @@ def test_gui_fixture_is_the_engines_answer():
         "the attack-pattern feed changed: agree the new shape on #236, then regenerate the "
         "fixture with TMODEL_UPDATE_FIXTURES=1 pytest tests/test_attack_pattern_table.py"
     )
+
+
+def test_gui_details_fixture_is_the_engines_answer():
+    # GET /attack-patterns?id= for each row the table fixture holds, keyed by CAPEC id (#236)
+    rows = core.attack_pattern_table()["rows"]
+    payload = {row["id"]: core.attack_patterns({"id": row["id"]}) for row in rows}
+    if os.environ.get("TMODEL_UPDATE_FIXTURES") == "1":
+        text = json.dumps(payload, indent=2, ensure_ascii=False) + "\n"
+        GUI_DETAILS.write_text(text, encoding="utf-8")
+    assert json.loads(GUI_DETAILS.read_text(encoding="utf-8")) == payload, (
+        "an attack-pattern details answer changed: agree the new shape on #236, then regenerate "
+        "the fixtures with TMODEL_UPDATE_FIXTURES=1 pytest tests/test_attack_pattern_table.py"
+    )
+    assert list(payload) == BY_NUMBER  # one answer for each row, in the table's order
+    assert all(answer["entry"]["kind"] == "Attack_Pattern" for answer in payload.values())
 
 
 def test_row_shape():

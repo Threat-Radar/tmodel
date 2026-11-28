@@ -1,7 +1,8 @@
 """Load an example model (a `spec/vectors/*.yaml` file) into an AttackGraph.
 
 Stand-in for the library loader and store façade (#60, #65) until they exist:
-only the attack structure is read; everything else in the file is ignored.
+The attack structure and explicit asset-target relationships are read. The
+whole model projection validates asset links when the model declares assets.
 """
 
 from __future__ import annotations

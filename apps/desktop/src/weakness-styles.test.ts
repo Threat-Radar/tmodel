@@ -24,6 +24,8 @@ describe.each([["light", light], ["dark", dark]] as const)("%s theme contrast", 
     ["graph-status-accepted", "graph-canvas"], ["graph-product", "graph-canvas"],
     ["text", "path-step-bg"], ["text", "path-threat-bg"], ["text", "path-damage-bg"],
     ["text", "path-mitigation-bg"], ["text", "path-target-bg"],
+    // The CAPEC table's muted "Not stated" cells, on every row background (#236).
+    ["text-muted", "surface-striped"], ["text-muted", "hover"], ["text-muted", "selected"],
   ])("keeps %s readable on %s", (foreground, background) => {
     expect(contrastRatio(colors[foreground], colors[background])).toBeGreaterThanOrEqual(4.5);
   });
@@ -52,10 +54,29 @@ describe("Library controls use shared theme colors", () => {
   });
 
   it("indicates keyboard focus on pagination and disclosures", () => {
-    for (const selector of [".library-pagination button:focus-visible", ".weakness-detail-section > summary:focus-visible"]) {
+    for (const selector of [
+      ".library-pagination button:focus-visible",
+      ".weakness-detail-section > summary:focus-visible",
+      ".attack-pattern-detail-section > summary:focus-visible",
+      ".attack-pattern-attribution summary:focus-visible",
+      ".attack-pattern-attribution-content:focus-visible",
+    ]) {
+      expect(styles.indexOf(selector), selector).toBeGreaterThan(-1);
       const rule = styles.slice(styles.indexOf(selector)).split("}")[0];
       expect(rule).toContain("outline: 2px solid var(--focus)");
     }
+  });
+
+  it("styles the CAPEC inspector's catalog fields as the CWE inspector's", () => {
+    for (const name of [
+      "detail-section-body", "detail-items", "field-value", "field-row", "field-attribute", "field-label",
+      "field-text", "identifier-link", "assertions", "assertion-provenance", "proposal-note", "section-count",
+    ]) {
+      const rule = (styles as string).split("\n")
+        .find((line: string) => line.includes(`.weakness-${name}`) && line.includes("{"));
+      expect(rule, name).toContain(`.attack-pattern-${name}`);
+    }
+    expect(styles).toMatch(/\.attack-pattern-missing \{ color: var\(--text-muted\); \}/);
   });
 });
 

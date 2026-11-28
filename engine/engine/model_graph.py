@@ -9,11 +9,12 @@ from __future__ import annotations
 
 import json
 from collections.abc import Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import date, datetime
 from typing import Any
 
 from engine.graph import GraphError
+from engine.review import assertion_review_state, relationship_review_states
 
 # Collection names come from the sponsor-approved ExampleModel containers.  This
 # is an adapter map only; it does not add to or alter the canonical schema.
@@ -214,6 +215,7 @@ def project_model_graph(doc: Mapping[str, Any]) -> ModelGraph:
                 _add_edge(edges, source, target, slot, authored=True)
 
     reviews = _reviews_by_assertion(doc)
+    parties = {party["id"]: party for party in _collection(doc, "parties")}
     for assertion in _collection(doc, "assertions"):
         subject = assertion.get("subject")
         predicate = assertion.get("predicate")
@@ -223,6 +225,7 @@ def project_model_graph(doc: Mapping[str, Any]) -> ModelGraph:
                 f"{assertion['id']}: assertion subject, predicate, and object must be strings"
             )
         assertion_reviews = reviews.get(assertion["id"], [])
+        review_state = assertion_review_state(assertion, assertion_reviews, parties)
         assertion_provenance: dict[str, Any] = {
             "id": assertion["id"],
             "assertion_status": _json_value(assertion.get("assertion_status")),
@@ -230,6 +233,8 @@ def project_model_graph(doc: Mapping[str, Any]) -> ModelGraph:
             "description": None,
             "evidence": [],
             "reviews": [],
+            "human_reviewed": review_state["reviewed"],
+            "effective_status": review_state["status"],
         }
         description = assertion.get("description")
         if isinstance(description, str) and description.strip():
@@ -249,6 +254,21 @@ def project_model_graph(doc: Mapping[str, Any]) -> ModelGraph:
             ]
         _add_edge(edges, subject, object_id, predicate, assertion=assertion_provenance)
 
+    # Preserve recorded statuses above, and expose the same exact-statement
+    # human evidence used by attack-path and risk queries separately.
+    states = relationship_review_states(doc)
+    for key, edge in edges.items():
+        if key in states:
+            state = states[key]
+            edges[key] = replace(
+                edge,
+                properties={
+                    **edge.properties,
+                    "human_reviewed": state["reviewed"],
+                    "effective_assertion_status": state["assertion_status"],
+                    "effective_review_status": state["review_status"],
+                },
+            )
     return ModelGraph(nodes=nodes, edges=tuple(edges.values()))
 
 

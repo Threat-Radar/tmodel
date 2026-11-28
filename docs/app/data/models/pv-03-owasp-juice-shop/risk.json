@@ -1,0 +1,385 @@
+{
+  "assessments": [
+    {
+      "complete": false,
+      "damage_scenario": null,
+      "derived_risk": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "feasibility": null,
+      "for_stakeholder": null,
+      "id": null,
+      "impact": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "mitigation_status": null,
+      "path_reviewed": false,
+      "paths": [
+        {
+          "feasibility": null,
+          "id": "attack-path:admin-via-sqli",
+          "rating_source": "AttackPath.attack_feasibility",
+          "route_ids": [
+            "route:f6ec6585c3fe03db59f4d8f3f95fe52cecd9bbe8044a154d7d80c748f68861eb"
+          ],
+          "used_for_ratings": true
+        }
+      ],
+      "problems": [
+        "damage_scenario_missing",
+        "impact_missing:safety",
+        "impact_missing:financial",
+        "impact_missing:operational",
+        "impact_missing:privacy",
+        "mitigation_status_missing",
+        "route:f6ec6585c3fe03db59f4d8f3f95fe52cecd9bbe8044a154d7d80c748f68861eb:feasibility_missing",
+        "attack-path:admin-via-sqli:feasibility_missing"
+      ],
+      "recorded": {
+        "feasibility": null,
+        "risk": null
+      },
+      "routes": [
+        {
+          "authored_path": "attack-path:admin-via-sqli",
+          "derived_risk": {
+            "financial": null,
+            "operational": null,
+            "privacy": null,
+            "safety": null
+          },
+          "feasibility": null,
+          "goal_step": "attack-step:open-admin",
+          "id": "route:f6ec6585c3fe03db59f4d8f3f95fe52cecd9bbe8044a154d7d80c748f68861eb",
+          "problems": [
+            "feasibility_missing"
+          ],
+          "rating_paths": [
+            "attack-path:admin-via-sqli"
+          ],
+          "steps": [
+            "attack-step:inject-login",
+            "attack-step:find-admin-route",
+            "attack-step:open-admin"
+          ]
+        }
+      ],
+      "threat": "threat-instance:login-sqli",
+      "threat_damage_scenario": "damage-scenario:admin-takeover",
+      "threat_damage_scenarios": [
+        "damage-scenario:admin-takeover"
+      ]
+    },
+    {
+      "complete": false,
+      "damage_scenario": null,
+      "derived_risk": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "feasibility": null,
+      "for_stakeholder": null,
+      "id": null,
+      "impact": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "mitigation_status": null,
+      "path_reviewed": false,
+      "paths": [
+        {
+          "feasibility": null,
+          "id": "attack-path:basket-idor",
+          "rating_source": "AttackPath.attack_feasibility",
+          "route_ids": [
+            "route:040aefd1ac3f74a64c2d705a27926a6005b4c362b5f0ee8d109b3a4a0fbd8182"
+          ],
+          "used_for_ratings": true
+        }
+      ],
+      "problems": [
+        "damage_scenario_missing",
+        "impact_missing:safety",
+        "impact_missing:financial",
+        "impact_missing:operational",
+        "impact_missing:privacy",
+        "mitigation_status_missing",
+        "route:040aefd1ac3f74a64c2d705a27926a6005b4c362b5f0ee8d109b3a4a0fbd8182:feasibility_missing",
+        "attack-path:basket-idor:feasibility_missing"
+      ],
+      "recorded": {
+        "feasibility": null,
+        "risk": null
+      },
+      "routes": [
+        {
+          "authored_path": "attack-path:basket-idor",
+          "derived_risk": {
+            "financial": null,
+            "operational": null,
+            "privacy": null,
+            "safety": null
+          },
+          "feasibility": null,
+          "goal_step": "attack-step:change-basket-number",
+          "id": "route:040aefd1ac3f74a64c2d705a27926a6005b4c362b5f0ee8d109b3a4a0fbd8182",
+          "problems": [
+            "feasibility_missing"
+          ],
+          "rating_paths": [
+            "attack-path:basket-idor"
+          ],
+          "steps": [
+            "attack-step:own-login",
+            "attack-step:change-basket-number"
+          ]
+        }
+      ],
+      "threat": "threat-instance:basket-idor",
+      "threat_damage_scenario": "damage-scenario:basket-exposed",
+      "threat_damage_scenarios": [
+        "damage-scenario:basket-exposed"
+      ]
+    },
+    {
+      "complete": false,
+      "damage_scenario": null,
+      "derived_risk": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "feasibility": null,
+      "for_stakeholder": null,
+      "id": null,
+      "impact": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "mitigation_status": null,
+      "path_reviewed": false,
+      "paths": [
+        {
+          "feasibility": null,
+          "id": "attack-path:search-xss",
+          "rating_source": "AttackPath.attack_feasibility",
+          "route_ids": [
+            "route:72d55d7533c19ae57b1f518bf22d5ffa63d2d23481eca976a7c64bdc59548b52"
+          ],
+          "used_for_ratings": true
+        }
+      ],
+      "problems": [
+        "damage_scenario_missing",
+        "impact_missing:safety",
+        "impact_missing:financial",
+        "impact_missing:operational",
+        "impact_missing:privacy",
+        "mitigation_status_missing",
+        "route:72d55d7533c19ae57b1f518bf22d5ffa63d2d23481eca976a7c64bdc59548b52:feasibility_missing",
+        "attack-path:search-xss:feasibility_missing"
+      ],
+      "recorded": {
+        "feasibility": null,
+        "risk": null
+      },
+      "routes": [
+        {
+          "authored_path": "attack-path:search-xss",
+          "derived_risk": {
+            "financial": null,
+            "operational": null,
+            "privacy": null,
+            "safety": null
+          },
+          "feasibility": null,
+          "goal_step": "attack-step:shopper-opens-link",
+          "id": "route:72d55d7533c19ae57b1f518bf22d5ffa63d2d23481eca976a7c64bdc59548b52",
+          "problems": [
+            "feasibility_missing"
+          ],
+          "rating_paths": [
+            "attack-path:search-xss"
+          ],
+          "steps": [
+            "attack-step:craft-search-link",
+            "attack-step:shopper-opens-link"
+          ]
+        }
+      ],
+      "threat": "threat-instance:search-dom-xss",
+      "threat_damage_scenario": "damage-scenario:script-in-session",
+      "threat_damage_scenarios": [
+        "damage-scenario:script-in-session"
+      ]
+    },
+    {
+      "complete": false,
+      "damage_scenario": null,
+      "derived_risk": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "feasibility": null,
+      "for_stakeholder": null,
+      "id": null,
+      "impact": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "mitigation_status": null,
+      "path_reviewed": false,
+      "paths": [
+        {
+          "feasibility": null,
+          "id": "attack-path:ftp-documents",
+          "rating_source": "AttackPath.attack_feasibility",
+          "route_ids": [
+            "route:0ea66452baa29acf8f4f30dd85b46e4648d9859f435bccc2603d7f08f807da29"
+          ],
+          "used_for_ratings": true
+        }
+      ],
+      "problems": [
+        "damage_scenario_missing",
+        "impact_missing:safety",
+        "impact_missing:financial",
+        "impact_missing:operational",
+        "impact_missing:privacy",
+        "mitigation_status_missing",
+        "route:0ea66452baa29acf8f4f30dd85b46e4648d9859f435bccc2603d7f08f807da29:feasibility_missing",
+        "attack-path:ftp-documents:feasibility_missing"
+      ],
+      "recorded": {
+        "feasibility": null,
+        "risk": null
+      },
+      "routes": [
+        {
+          "authored_path": "attack-path:ftp-documents",
+          "derived_risk": {
+            "financial": null,
+            "operational": null,
+            "privacy": null,
+            "safety": null
+          },
+          "feasibility": null,
+          "goal_step": "attack-step:download-document",
+          "id": "route:0ea66452baa29acf8f4f30dd85b46e4648d9859f435bccc2603d7f08f807da29",
+          "problems": [
+            "feasibility_missing"
+          ],
+          "rating_paths": [
+            "attack-path:ftp-documents"
+          ],
+          "steps": [
+            "attack-step:read-robots",
+            "attack-step:browse-ftp",
+            "attack-step:download-document"
+          ]
+        }
+      ],
+      "threat": "threat-instance:ftp-listing",
+      "threat_damage_scenario": "damage-scenario:documents-read",
+      "threat_damage_scenarios": [
+        "damage-scenario:documents-read"
+      ]
+    },
+    {
+      "complete": false,
+      "damage_scenario": null,
+      "derived_risk": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "feasibility": null,
+      "for_stakeholder": null,
+      "id": null,
+      "impact": {
+        "financial": null,
+        "operational": null,
+        "privacy": null,
+        "safety": null
+      },
+      "mitigation_status": null,
+      "path_reviewed": false,
+      "paths": [
+        {
+          "feasibility": null,
+          "id": "attack-path:jwt-forgery",
+          "rating_source": "AttackPath.attack_feasibility",
+          "route_ids": [
+            "route:321cd0e8d69db3b893e0dbaf23611d48caf46a2070a1a45a584fe9a9f9154033"
+          ],
+          "used_for_ratings": true
+        }
+      ],
+      "problems": [
+        "damage_scenario_missing",
+        "impact_missing:safety",
+        "impact_missing:financial",
+        "impact_missing:operational",
+        "impact_missing:privacy",
+        "mitigation_status_missing",
+        "route:321cd0e8d69db3b893e0dbaf23611d48caf46a2070a1a45a584fe9a9f9154033:feasibility_missing",
+        "attack-path:jwt-forgery:feasibility_missing"
+      ],
+      "recorded": {
+        "feasibility": null,
+        "risk": null
+      },
+      "routes": [
+        {
+          "authored_path": "attack-path:jwt-forgery",
+          "derived_risk": {
+            "financial": null,
+            "operational": null,
+            "privacy": null,
+            "safety": null
+          },
+          "feasibility": null,
+          "goal_step": "attack-step:use-forged-token",
+          "id": "route:321cd0e8d69db3b893e0dbaf23611d48caf46a2070a1a45a584fe9a9f9154033",
+          "problems": [
+            "feasibility_missing"
+          ],
+          "rating_paths": [
+            "attack-path:jwt-forgery"
+          ],
+          "steps": [
+            "attack-step:get-public-key",
+            "attack-step:sign-wrong-algorithm",
+            "attack-step:use-forged-token"
+          ]
+        }
+      ],
+      "threat": "threat-instance:jwt-forgery",
+      "threat_damage_scenario": "damage-scenario:forged-identity",
+      "threat_damage_scenarios": [
+        "damage-scenario:forged-identity"
+      ]
+    }
+  ],
+  "count": 5,
+  "file": "pv-03-owasp-juice-shop.yaml",
+  "matrix": "annex-h-table-h8"
+}

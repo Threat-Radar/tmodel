@@ -9,6 +9,8 @@
   --rp-subtle: #f6f8fb;
   --rp-border: #dde3ec;
   --rp-accent: #3730a3;
+  --rp-action-bg: #3730a3;
+  --rp-action-fg: #ffffff;
   --rp-ok-bg: #dcfce7; --rp-ok-fg: #166534; --rp-ok-line: #16a34a;
   --rp-bad-bg: #fee2e2; --rp-bad-fg: #991b1b; --rp-bad-line: #dc2626;
   --rp-warn-bg: #ffedd5; --rp-warn-fg: #9a3412; --rp-warn-line: #ea580c;
@@ -65,6 +67,14 @@
 
 .report-table-scroll { max-width: 100%; margin-bottom: 14px; overflow-x: auto; }
 .report-table-scroll:last-child { margin-bottom: 0; }
+.risk-calculator { margin-bottom: 18px; }
+.risk-calculator > label { display: block; margin-bottom: 6px; font-weight: 650; }
+.risk-calculator > select { max-width: 100%; min-height: 34px; margin: 0 8px 8px 0; padding: 7px; border: 1px solid var(--rp-border); border-radius: 6px; font: inherit; }
+.risk-calculator > button { min-height: 34px; padding: 7px 12px; border: 1px solid var(--rp-action-bg); border-radius: 6px; background: var(--rp-action-bg); color: var(--rp-action-fg); font: inherit; cursor: pointer; }
+.risk-calculator > button:focus-visible { outline: 2px solid var(--rp-accent); outline-offset: 2px; }
+.risk-calculator > button:disabled { opacity: 0.6; cursor: wait; }
+.calculated-risk { margin: 14px 0; }
+.calculated-risk > details { margin: 8px 0; }
 .report-table { width: 100%; border-collapse: collapse; }
 .report-table caption { padding: 0 0 7px; color: var(--rp-muted); font-size: 0.76rem; font-weight: 700; text-align: left; }
 .report-table th, .report-table td { padding: 9px 10px; border-top: 1px solid var(--rp-border); text-align: left; vertical-align: top; }
@@ -160,6 +170,8 @@
     --rp-subtle: #172033;
     --rp-border: #334155;
     --rp-accent: #a5b4fc;
+    --rp-action-bg: #a5b4fc;
+    --rp-action-fg: #111827;
     --rp-ok-bg: #0f2e1d; --rp-ok-fg: #86efac; --rp-ok-line: #22c55e;
     --rp-bad-bg: #3f1818; --rp-bad-fg: #fecaca; --rp-bad-line: #f87171;
     --rp-warn-bg: #3b2312; --rp-warn-fg: #fdba74; --rp-warn-line: #fb923c;

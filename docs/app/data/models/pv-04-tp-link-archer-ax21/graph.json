@@ -132,10 +132,12 @@
           "assertion_status": "proposed",
           "confidence": "high",
           "description": null,
+          "effective_status": "proposed",
           "evidence": [
             "https://nvd.nist.gov/vuln/detail/CVE-2023-1389",
             "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2023-1389"
           ],
+          "human_reviewed": false,
           "id": "assertion:lan-path-realizes",
           "reviews": []
         }
@@ -151,7 +153,10 @@
           "assertion:lan-path-realizes"
         ],
         "assertion_status": "proposed",
-        "confidence": "high"
+        "confidence": "high",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "realizes_threat",
       "source": "attack-path:lan-to-root",
@@ -604,9 +609,11 @@
           "assertion_status": "proposed",
           "confidence": "high",
           "description": "NVD and CISA rate the flaw adjacent-network (CVSS 3.1 AV:A), so it needs a device on the router's LAN or Wi-Fi; the CNA's CVE record gives no score.",
+          "effective_status": "proposed",
           "evidence": [
             "https://nvd.nist.gov/vuln/detail/CVE-2023-1389"
           ],
+          "human_reviewed": false,
           "id": "assertion:reach-step-targets-admin-requests",
           "reviews": []
         }
@@ -624,7 +631,10 @@
           "assertion:reach-step-targets-admin-requests"
         ],
         "assertion_status": "proposed",
-        "confidence": "high"
+        "confidence": "high",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "targets_element",
       "source": "attack-step:reach-admin-interface",
@@ -636,12 +646,14 @@
           "assertion_status": "proposed",
           "confidence": "high",
           "description": "NVD describes an unauthenticated command injection in the web management interface; CISA lists it as exploited in the wild (added 2023-05-01).",
+          "effective_status": "proposed",
           "evidence": [
             "https://nvd.nist.gov/vuln/detail/CVE-2023-1389",
             "https://www.cve.org/CVERecord?id=CVE-2023-1389",
             "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2023-1389",
             "https://www.zerodayinitiative.com/advisories/ZDI-23-451/"
           ],
+          "human_reviewed": false,
           "id": "assertion:inject-step-exploits-cve-2023-1389",
           "reviews": []
         }
@@ -662,7 +674,10 @@
           "assertion:inject-step-exploits-cve-2023-1389"
         ],
         "assertion_status": "proposed",
-        "confidence": "high"
+        "confidence": "high",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "exploits",
       "source": "attack-step:inject-command",
@@ -674,11 +689,13 @@
           "assertion_status": "proposed",
           "confidence": "high",
           "description": "NVD: the injected commands run as root, with confidentiality, integrity and availability all rated High. ZDI-23-451 also gives root. ZDI's blog reports botnets using the flaw to enlist routers.",
+          "effective_status": "proposed",
           "evidence": [
             "https://nvd.nist.gov/vuln/detail/CVE-2023-1389",
             "https://www.zerodayinitiative.com/advisories/ZDI-23-451/",
             "https://www.zerodayinitiative.com/blog/2023/4/21/tp-link-wan-side-vulnerability-cve-2023-1389-added-to-the-mirai-botnet-arsenal"
           ],
+          "human_reviewed": false,
           "id": "assertion:root-step-targets-router-control",
           "reviews": []
         }
@@ -698,7 +715,10 @@
           "assertion:root-step-targets-router-control"
         ],
         "assertion_status": "proposed",
-        "confidence": "high"
+        "confidence": "high",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "targets_element",
       "source": "attack-step:run-as-root",
@@ -710,10 +730,12 @@
           "assertion_status": "proposed",
           "confidence": "high",
           "description": "NVD's range is firmware before 1.1.4 Build 20230219. The pinned 1.1.3 Build 20221125 is inside it, and TP-Link's V3 page lists 1.1.4 Build 20230219 as the next release.",
+          "effective_status": "proposed",
           "evidence": [
             "https://nvd.nist.gov/vuln/detail/CVE-2023-1389",
             "https://www.tp-link.com/us/support/download/archer-ax21/v3/"
           ],
+          "human_reviewed": false,
           "id": "assertion:cve-2023-1389-propagates-to-firmware",
           "reviews": []
         }
@@ -732,7 +754,10 @@
           "assertion:cve-2023-1389-propagates-to-firmware"
         ],
         "assertion_status": "proposed",
-        "confidence": "high"
+        "confidence": "high",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "propagates_to",
       "source": "vulnerability:cve-2023-1389",
@@ -744,10 +769,12 @@
           "assertion_status": "proposed",
           "confidence": "high",
           "description": null,
+          "effective_status": "proposed",
           "evidence": [
             "https://nvd.nist.gov/vuln/detail/CVE-2023-1389",
             "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2023-1389"
           ],
+          "human_reviewed": false,
           "id": "assertion:cve-2023-1389-instance-of-cwe-77",
           "reviews": []
         }
@@ -763,7 +790,10 @@
           "assertion:cve-2023-1389-instance-of-cwe-77"
         ],
         "assertion_status": "proposed",
-        "confidence": "high"
+        "confidence": "high",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "instance_of",
       "source": "vulnerability:cve-2023-1389",
@@ -775,10 +805,12 @@
           "assertion_status": "proposed",
           "confidence": "medium",
           "description": "CWE 4.20 links CWE-77 to CAPEC-248, and CAPEC 3.9 links CAPEC-248 back to CWE-77.",
+          "effective_status": "proposed",
           "evidence": [
             "https://cwe.mitre.org/data/definitions/77.html",
             "https://capec.mitre.org/data/definitions/248.html"
           ],
+          "human_reviewed": false,
           "id": "assertion:cwe-77-exploited-by-capec-248",
           "reviews": []
         }
@@ -797,7 +829,10 @@
           "assertion:cwe-77-exploited-by-capec-248"
         ],
         "assertion_status": "proposed",
-        "confidence": "medium"
+        "confidence": "medium",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "exploited_by",
       "source": "weakness:cwe-77",

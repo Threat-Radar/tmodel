@@ -3,8 +3,35 @@
 The engine can calculate the risk vector from existing model records through
 `core.risk_assessments`, `GET /risk`, and `tmodel risk`. This is the first slice
 of #63 Part 2. It does not change the canonical schema or rate an attack for a
-human. The desktop report continues to display authored risk data; it is not
-wired to this new endpoint yet.
+human. In the desktop Model report, choose the informative matrix profile in
+the Risk section and click **Calculate risk**. The app calls this endpoint and
+shows each category and route, with recorded inputs and unresolved problems.
+The authored assessments remain separately labeled. Calculate again to refresh
+the engine answer; the browser preview reads the same calculation from its
+published model snapshot and never contacts a local engine.
+
+The matrix selector starts empty. Once deliberately chosen, the profile stays
+selected while switching models in the same application session, and each new
+model automatically refreshes its calculation. Clearing the selection stops
+automatic calculation. An error clears the previous calculated
+result, and an answer for an earlier model cannot replace the current model's
+view. Calculating does not write a rating, edit an Assertion or record a Review.
+
+## Asset goals and phase output
+
+`tmodel paths FILE --goal asset:ID` and `GET /attack-paths?file=FILE&goal=asset:ID`
+enumerate routes for threats with explicit `targets_element` links to the
+Asset or `realizes_damage` to a DamageScenario whose `damages_asset` names it.
+Authored slots and Assertions with justified, non-contradicted person acceptance
+count. Proposed/rejected links and an asset's component location do not count.
+Known but unlinked assets return no paths; unknown assets return an error.
+Each asset result names its threat. The response retains `step_phases` keyed by
+step id, separately from attack technique identifiers, for every goal type.
+Path review evidence is scoped to the exact path-to-threat relationship. All
+matching human verdicts count, including reviews of duplicate Assertions; one
+accepted record cannot hide a rejection or request for changes. An accepted,
+justified person-reviewed Assertion can also link a path to a threat when its
+authored `realizes_threat` slot is absent.
 
 ## Try the calculation
 
@@ -56,6 +83,40 @@ risk. The original authored `RiskScore.feasibility` and free-text `risk` remain
 under `recorded`; they are not trusted as computed results. No model file is
 rewritten. The recorded inputs' human provenance must still be checked by a
 reviewer; merely reading an input is not proof that a human rated it.
+The desktop and browser preview show each conflicting rating and its source,
+distinguish an absent assessment from an incomplete one, and retain assessment,
+damage and stakeholder context. `threat_damage_scenario` preserves the threat's
+authored damage link (or the sole effective Assertion-only link) even when no
+RiskScore exists. `threat_damage_scenarios` lists all effective damage links;
+neither field creates a RiskScore or fills missing assessment inputs. Damage
+scope and asset queries share the same effective-edge resolver: authored slots
+and exact Assertion relationships with justified human acceptance. Proposed,
+agent-only or conflicting human verdicts cannot establish an Assertion-only link.
+
+Graph relationship properties also carry `human_reviewed`,
+`effective_assertion_status` and `effective_review_status` from that same exact
+statement resolver. Recorded `assertion_status`, `review_status` and complete
+Assertion/Review provenance remain unchanged. Per-Assertion provenance adds
+`human_reviewed` and `effective_status` without changing recorded verdicts. Model Report, Attack Paths and the
+graph use the effective evidence rather than treating an agent's accepted verdict
+as human acceptance. Older snapshots lacking that evidence cannot establish human
+acceptance from status strings alone.
+
+`path_reviewed` is the engine's effective human-review result for the threat's
+complete set of path-to-threat relationships. Both desktop and browser preview
+use it for the calculated panel's path acceptance label; raw graph status text
+cannot establish acceptance. AI-only reviews do not count, while multiple
+justified human acceptances remain accepted. This flag does not approve the
+assessment or its inputs.
+
+When `damage_scenario_scope_mismatch` or `attack_path_scope_mismatch` is reported,
+the panel shows the scope warning. The engine withholds calculated values at
+assessment, authored-path and route levels whenever damage is missing or either
+scope is invalid. Feasibility, impact, source ratings, reviews and diagnostics
+remain inspectable in the API and interface. A damage scope may match any of the
+threat's effective damage links. An empty effective-link set never establishes
+a match, including when the referenced damage belongs to another threat.
+Assessments retain their individual damage and stakeholder inputs.
 
 The current mvp-02 diagnostic example has High feasibility and S/F/O/P impacts
 Severe/Major/Severe/Negligible. This profile derives **5/4/5/1**, with mitigation
@@ -127,7 +188,8 @@ the rated subset could understate the worst risk. Known category risks can
 still appear when other impact categories are missing. Missing damage,
 mitigation status, or a mismatch between the assessment's path/damage scope
 and its threat is listed under `problems`. Missing damage and scope mismatches
-suppress the aggregate risk rather than silently dropping or mixing paths.
+suppress assessment, authored-path and route risk rather than silently dropping
+or mixing paths.
 Missing mitigation status makes the assessment incomplete but does not change
 the numeric risk: mitigation remains a peer field.
 

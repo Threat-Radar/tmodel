@@ -1,12 +1,13 @@
 // Application tabs, synchronized with the URL hash.
 // The Model Report is the default view.
 export type AppView = "report" | "paths" | "graph" | "library";
-export type LibraryView = "records" | "weaknesses" | "requirements" | "sdl";
+export type LibraryView = "records" | "weaknesses" | "attack-patterns" | "requirements" | "sdl";
 
 // Keep the original hashes so bookmarks and links still open the same table.
 const LIBRARY_HASHES: Record<LibraryView, string> = {
   records: "library",
   weaknesses: "weaknesses",
+  "attack-patterns": "attack-patterns",
   requirements: "requirements",
   sdl: "sdl",
 };

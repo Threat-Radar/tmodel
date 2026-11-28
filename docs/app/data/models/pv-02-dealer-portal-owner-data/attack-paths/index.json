@@ -1,4 +1,10 @@
 {
+  "assets": [
+    "asset:account-roles",
+    "asset:owner-personal-data",
+    "asset:remote-commands",
+    "asset:vehicle-location"
+  ],
   "file": "pv-02-dealer-portal-owner-data.yaml",
   "reviewed_threats": [],
   "steps": 6,

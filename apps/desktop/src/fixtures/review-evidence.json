@@ -1,0 +1,2267 @@
+{
+ "cases": [
+  {
+   "human_reviewed": false,
+   "input": {
+    "attackPaths": [
+     {
+      "file": "review-evidence.yaml",
+      "goal": "threat:t",
+      "paths": [
+       {
+        "authored_path": "path:a",
+        "goal_step": "step:a",
+        "review": {
+         "assertion_status": "accepted",
+         "review_status": null,
+         "reviewed": false
+        },
+        "step_phases": {},
+        "steps": [
+         "step:a"
+        ]
+       }
+      ]
+     }
+    ],
+    "graph": {
+     "edges": [
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:threat:t|realizes_damage|damage:d",
+       "properties": {},
+       "relationship_type": "realizes_damage",
+       "source": "threat:t",
+       "target": "damage:d"
+      },
+      {
+       "assertions": [
+        {
+         "assertion_status": "accepted",
+         "confidence": null,
+         "description": null,
+         "effective_status": "unreviewed",
+         "evidence": [],
+         "human_reviewed": false,
+         "id": "assertion:a",
+         "reviews": [
+          {
+           "id": "review:0",
+           "justification": "Automated opinion",
+           "review_status": "accepted",
+           "reviewer": "party:agent"
+          }
+         ]
+        }
+       ],
+       "authored": true,
+       "id": "relationship:path:a|realizes_threat|threat:t",
+       "properties": {
+        "assertion_ids": [
+         "assertion:a"
+        ],
+        "assertion_status": "accepted",
+        "effective_assertion_status": "accepted",
+        "effective_review_status": null,
+        "human_reviewed": false,
+        "review_ids": [
+         "review:0"
+        ],
+        "review_justifications": [
+         "Automated opinion"
+        ],
+        "review_status": "accepted",
+        "review_statuses": [
+         "accepted"
+        ]
+       },
+       "relationship_type": "realizes_threat",
+       "source": "path:a",
+       "target": "threat:t"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:path:a|steps|step:a",
+       "properties": {},
+       "relationship_type": "steps",
+       "source": "path:a",
+       "target": "step:a"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:risk:r|attack_paths|path:a",
+       "properties": {},
+       "relationship_type": "attack_paths",
+       "source": "risk:r",
+       "target": "path:a"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:risk:r|damage_scenario|damage:d",
+       "properties": {},
+       "relationship_type": "damage_scenario",
+       "source": "risk:r",
+       "target": "damage:d"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:risk:r|for_stakeholder|party:human",
+       "properties": {},
+       "relationship_type": "for_stakeholder",
+       "source": "risk:r",
+       "target": "party:human"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:risk:r|threat|threat:t",
+       "properties": {},
+       "relationship_type": "threat",
+       "source": "risk:r",
+       "target": "threat:t"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:review:0|reviewer|party:agent",
+       "properties": {},
+       "relationship_type": "reviewer",
+       "source": "review:0",
+       "target": "party:agent"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:review:0|reviews|assertion:a",
+       "properties": {},
+       "relationship_type": "reviews",
+       "source": "review:0",
+       "target": "assertion:a"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:assertion:a|object|threat:t",
+       "properties": {},
+       "relationship_type": "object",
+       "source": "assertion:a",
+       "target": "threat:t"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:assertion:a|subject|path:a",
+       "properties": {},
+       "relationship_type": "subject",
+       "source": "assertion:a",
+       "target": "path:a"
+      }
+     ],
+     "file": "review-evidence.yaml",
+     "nodes": [
+      {
+       "domain_type": "Party",
+       "id": "party:human",
+       "label": "human",
+       "properties": {
+        "party_kind": "person"
+       }
+      },
+      {
+       "domain_type": "Party",
+       "id": "party:human2",
+       "label": "human2",
+       "properties": {
+        "party_kind": "person"
+       }
+      },
+      {
+       "domain_type": "Party",
+       "id": "party:agent",
+       "label": "agent",
+       "properties": {
+        "party_kind": "software_agent"
+       }
+      },
+      {
+       "domain_type": "ThreatInstance",
+       "id": "threat:t",
+       "label": "Fixture threat",
+       "properties": {
+        "source_method": "ai:fixture"
+       }
+      },
+      {
+       "domain_type": "AttackStep",
+       "id": "step:a",
+       "label": "Fixture step",
+       "properties": {}
+      },
+      {
+       "domain_type": "AttackPath",
+       "id": "path:a",
+       "label": "Fixture route",
+       "properties": {
+        "attack_feasibility": "high"
+       }
+      },
+      {
+       "domain_type": "DamageScenario",
+       "id": "damage:d",
+       "label": "Fixture damage",
+       "properties": {}
+      },
+      {
+       "domain_type": "RiskScore",
+       "id": "risk:r",
+       "label": "risk:r",
+       "properties": {
+        "impact": "{\"financial\": \"moderate\", \"operational\": \"moderate\", \"privacy\": \"moderate\", \"safety\": \"moderate\"}",
+        "mitigation_status": "planned"
+       }
+      },
+      {
+       "domain_type": "Review",
+       "id": "review:0",
+       "label": "review:0",
+       "properties": {
+        "justification": "Automated opinion",
+        "review_status": "accepted"
+       }
+      },
+      {
+       "domain_type": "Assertion",
+       "id": "assertion:a",
+       "label": "assertion:a",
+       "properties": {
+        "assertion_status": "accepted",
+        "predicate": "realizes_threat"
+       }
+      }
+     ]
+    },
+    "model": {
+     "counts": {},
+     "description": "Test judgments only.",
+     "file": "review-evidence.yaml",
+     "id": "review-evidence",
+     "kind": "core",
+     "kind_label": "Synthetic fixture",
+     "reviewed_threats": 0,
+     "title": "Synthetic review evidence"
+    }
+   },
+   "name": "agent_only",
+   "risk": {
+    "assessments": [
+     {
+      "complete": true,
+      "damage_scenario": "damage:d",
+      "derived_risk": {
+       "financial": 3,
+       "operational": 3,
+       "privacy": 3,
+       "safety": 3
+      },
+      "feasibility": "high",
+      "for_stakeholder": "party:human",
+      "id": "risk:r",
+      "impact": {
+       "financial": "moderate",
+       "operational": "moderate",
+       "privacy": "moderate",
+       "safety": "moderate"
+      },
+      "mitigation_status": "planned",
+      "path_reviewed": false,
+      "paths": [
+       {
+        "alternatives": [
+         [
+          "step:a"
+         ]
+        ],
+        "derived_risk": {
+         "financial": 3,
+         "operational": 3,
+         "privacy": 3,
+         "safety": 3
+        },
+        "feasibility": "high",
+        "id": "path:a",
+        "problems": [],
+        "rating_source": "AttackPath.attack_feasibility",
+        "review_records": {
+         "assertions": [
+          {
+           "assertion_status": "accepted",
+           "id": "assertion:a"
+          }
+         ],
+         "reviews": [
+          {
+           "id": "review:0",
+           "justification": "Automated opinion",
+           "review_status": "accepted",
+           "reviewer": "party:agent",
+           "reviews": "assertion:a"
+          }
+         ]
+        },
+        "route_ids": [
+         "route:7890519f47b26b95758afe64edec616d4baf426e4c91b9b0e03609ea4d992eaf"
+        ],
+        "used_for_ratings": true
+       }
+      ],
+      "problems": [],
+      "recorded": {
+       "feasibility": null,
+       "risk": null
+      },
+      "routes": [
+       {
+        "authored_path": "path:a",
+        "derived_risk": {
+         "financial": 3,
+         "operational": 3,
+         "privacy": 3,
+         "safety": 3
+        },
+        "feasibility": "high",
+        "goal_step": "step:a",
+        "id": "route:7890519f47b26b95758afe64edec616d4baf426e4c91b9b0e03609ea4d992eaf",
+        "problems": [],
+        "rating_paths": [
+         "path:a"
+        ],
+        "steps": [
+         "step:a"
+        ]
+       }
+      ],
+      "threat": "threat:t",
+      "threat_damage_scenario": "damage:d",
+      "threat_damage_scenarios": [
+       "damage:d"
+      ]
+     }
+    ],
+    "count": 1,
+    "file": "review-evidence.yaml",
+    "matrix": "annex-h-table-h8"
+   }
+  },
+  {
+   "human_reviewed": false,
+   "input": {
+    "attackPaths": [
+     {
+      "file": "review-evidence.yaml",
+      "goal": "threat:t",
+      "paths": [
+       {
+        "authored_path": "path:a",
+        "goal_step": "step:a",
+        "review": {
+         "assertion_status": "accepted",
+         "review_status": "accepted",
+         "reviewed": false
+        },
+        "step_phases": {},
+        "steps": [
+         "step:a"
+        ]
+       }
+      ]
+     }
+    ],
+    "graph": {
+     "edges": [
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:threat:t|realizes_damage|damage:d",
+       "properties": {},
+       "relationship_type": "realizes_damage",
+       "source": "threat:t",
+       "target": "damage:d"
+      },
+      {
+       "assertions": [
+        {
+         "assertion_status": "accepted",
+         "confidence": null,
+         "description": null,
+         "effective_status": "unreviewed",
+         "evidence": [],
+         "human_reviewed": false,
+         "id": "assertion:a",
+         "reviews": [
+          {
+           "id": "review:0",
+           "justification": " ",
+           "review_status": "accepted",
+           "reviewer": "party:human"
+          }
+         ]
+        }
+       ],
+       "authored": true,
+       "id": "relationship:path:a|realizes_threat|threat:t",
+       "properties": {
+        "assertion_ids": [
+         "assertion:a"
+        ],
+        "assertion_status": "accepted",
+        "effective_assertion_status": "accepted",
+        "effective_review_status": "accepted",
+        "human_reviewed": false,
+        "review_ids": [
+         "review:0"
+        ],
+        "review_justifications": [],
+        "review_status": "accepted",
+        "review_statuses": [
+         "accepted"
+        ]
+       },
+       "relationship_type": "realizes_threat",
+       "source": "path:a",
+       "target": "threat:t"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:path:a|steps|step:a",
+       "properties": {},
+       "relationship_type": "steps",
+       "source": "path:a",
+       "target": "step:a"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:risk:r|attack_paths|path:a",
+       "properties": {},
+       "relationship_type": "attack_paths",
+       "source": "risk:r",
+       "target": "path:a"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:risk:r|damage_scenario|damage:d",
+       "properties": {},
+       "relationship_type": "damage_scenario",
+       "source": "risk:r",
+       "target": "damage:d"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:risk:r|for_stakeholder|party:human",
+       "properties": {},
+       "relationship_type": "for_stakeholder",
+       "source": "risk:r",
+       "target": "party:human"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:risk:r|threat|threat:t",
+       "properties": {},
+       "relationship_type": "threat",
+       "source": "risk:r",
+       "target": "threat:t"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:review:0|reviewer|party:human",
+       "properties": {},
+       "relationship_type": "reviewer",
+       "source": "review:0",
+       "target": "party:human"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:review:0|reviews|assertion:a",
+       "properties": {},
+       "relationship_type": "reviews",
+       "source": "review:0",
+       "target": "assertion:a"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:assertion:a|object|threat:t",
+       "properties": {},
+       "relationship_type": "object",
+       "source": "assertion:a",
+       "target": "threat:t"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:assertion:a|subject|path:a",
+       "properties": {},
+       "relationship_type": "subject",
+       "source": "assertion:a",
+       "target": "path:a"
+      }
+     ],
+     "file": "review-evidence.yaml",
+     "nodes": [
+      {
+       "domain_type": "Party",
+       "id": "party:human",
+       "label": "human",
+       "properties": {
+        "party_kind": "person"
+       }
+      },
+      {
+       "domain_type": "Party",
+       "id": "party:human2",
+       "label": "human2",
+       "properties": {
+        "party_kind": "person"
+       }
+      },
+      {
+       "domain_type": "Party",
+       "id": "party:agent",
+       "label": "agent",
+       "properties": {
+        "party_kind": "software_agent"
+       }
+      },
+      {
+       "domain_type": "ThreatInstance",
+       "id": "threat:t",
+       "label": "Fixture threat",
+       "properties": {
+        "source_method": "ai:fixture"
+       }
+      },
+      {
+       "domain_type": "AttackStep",
+       "id": "step:a",
+       "label": "Fixture step",
+       "properties": {}
+      },
+      {
+       "domain_type": "AttackPath",
+       "id": "path:a",
+       "label": "Fixture route",
+       "properties": {
+        "attack_feasibility": "high"
+       }
+      },
+      {
+       "domain_type": "DamageScenario",
+       "id": "damage:d",
+       "label": "Fixture damage",
+       "properties": {}
+      },
+      {
+       "domain_type": "RiskScore",
+       "id": "risk:r",
+       "label": "risk:r",
+       "properties": {
+        "impact": "{\"financial\": \"moderate\", \"operational\": \"moderate\", \"privacy\": \"moderate\", \"safety\": \"moderate\"}",
+        "mitigation_status": "planned"
+       }
+      },
+      {
+       "domain_type": "Review",
+       "id": "review:0",
+       "label": "review:0",
+       "properties": {
+        "justification": " ",
+        "review_status": "accepted"
+       }
+      },
+      {
+       "domain_type": "Assertion",
+       "id": "assertion:a",
+       "label": "assertion:a",
+       "properties": {
+        "assertion_status": "accepted",
+        "predicate": "realizes_threat"
+       }
+      }
+     ]
+    },
+    "model": {
+     "counts": {},
+     "description": "Test judgments only.",
+     "file": "review-evidence.yaml",
+     "id": "review-evidence",
+     "kind": "core",
+     "kind_label": "Synthetic fixture",
+     "reviewed_threats": 0,
+     "title": "Synthetic review evidence"
+    }
+   },
+   "name": "unjustified_human",
+   "risk": {
+    "assessments": [
+     {
+      "complete": true,
+      "damage_scenario": "damage:d",
+      "derived_risk": {
+       "financial": 3,
+       "operational": 3,
+       "privacy": 3,
+       "safety": 3
+      },
+      "feasibility": "high",
+      "for_stakeholder": "party:human",
+      "id": "risk:r",
+      "impact": {
+       "financial": "moderate",
+       "operational": "moderate",
+       "privacy": "moderate",
+       "safety": "moderate"
+      },
+      "mitigation_status": "planned",
+      "path_reviewed": false,
+      "paths": [
+       {
+        "alternatives": [
+         [
+          "step:a"
+         ]
+        ],
+        "derived_risk": {
+         "financial": 3,
+         "operational": 3,
+         "privacy": 3,
+         "safety": 3
+        },
+        "feasibility": "high",
+        "id": "path:a",
+        "problems": [],
+        "rating_source": "AttackPath.attack_feasibility",
+        "review_records": {
+         "assertions": [
+          {
+           "assertion_status": "accepted",
+           "id": "assertion:a"
+          }
+         ],
+         "reviews": [
+          {
+           "id": "review:0",
+           "justification": " ",
+           "review_status": "accepted",
+           "reviewer": "party:human",
+           "reviews": "assertion:a"
+          }
+         ]
+        },
+        "route_ids": [
+         "route:7890519f47b26b95758afe64edec616d4baf426e4c91b9b0e03609ea4d992eaf"
+        ],
+        "used_for_ratings": true
+       }
+      ],
+      "problems": [],
+      "recorded": {
+       "feasibility": null,
+       "risk": null
+      },
+      "routes": [
+       {
+        "authored_path": "path:a",
+        "derived_risk": {
+         "financial": 3,
+         "operational": 3,
+         "privacy": 3,
+         "safety": 3
+        },
+        "feasibility": "high",
+        "goal_step": "step:a",
+        "id": "route:7890519f47b26b95758afe64edec616d4baf426e4c91b9b0e03609ea4d992eaf",
+        "problems": [],
+        "rating_paths": [
+         "path:a"
+        ],
+        "steps": [
+         "step:a"
+        ]
+       }
+      ],
+      "threat": "threat:t",
+      "threat_damage_scenario": "damage:d",
+      "threat_damage_scenarios": [
+       "damage:d"
+      ]
+     }
+    ],
+    "count": 1,
+    "file": "review-evidence.yaml",
+    "matrix": "annex-h-table-h8"
+   }
+  },
+  {
+   "human_reviewed": true,
+   "input": {
+    "attackPaths": [
+     {
+      "file": "review-evidence.yaml",
+      "goal": "threat:t",
+      "paths": [
+       {
+        "authored_path": "path:a",
+        "goal_step": "step:a",
+        "review": {
+         "assertion_status": "accepted",
+         "review_status": "accepted",
+         "reviewed": true
+        },
+        "step_phases": {},
+        "steps": [
+         "step:a"
+        ]
+       }
+      ]
+     }
+    ],
+    "graph": {
+     "edges": [
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:threat:t|realizes_damage|damage:d",
+       "properties": {},
+       "relationship_type": "realizes_damage",
+       "source": "threat:t",
+       "target": "damage:d"
+      },
+      {
+       "assertions": [
+        {
+         "assertion_status": "accepted",
+         "confidence": null,
+         "description": null,
+         "effective_status": "accepted",
+         "evidence": [],
+         "human_reviewed": true,
+         "id": "assertion:a",
+         "reviews": [
+          {
+           "id": "review:0",
+           "justification": "Checked",
+           "review_status": "accepted",
+           "reviewer": "party:human"
+          }
+         ]
+        },
+        {
+         "assertion_status": "accepted",
+         "confidence": null,
+         "description": null,
+         "effective_status": "accepted",
+         "evidence": [],
+         "human_reviewed": true,
+         "id": "assertion:1",
+         "reviews": [
+          {
+           "id": "review:1",
+           "justification": "Checked independently",
+           "review_status": "accepted",
+           "reviewer": "party:human2"
+          }
+         ]
+        }
+       ],
+       "authored": true,
+       "id": "relationship:path:a|realizes_threat|threat:t",
+       "properties": {
+        "assertion_confidences": [
+         "not_recorded",
+         "not_recorded"
+        ],
+        "assertion_ids": [
+         "assertion:a",
+         "assertion:1"
+        ],
+        "assertion_statuses": [
+         "accepted",
+         "accepted"
+        ],
+        "effective_assertion_status": "accepted",
+        "effective_review_status": "accepted",
+        "human_reviewed": true,
+        "review_ids": [
+         "review:0",
+         "review:1"
+        ],
+        "review_statuses": [
+         "accepted",
+         "accepted"
+        ]
+       },
+       "relationship_type": "realizes_threat",
+       "source": "path:a",
+       "target": "threat:t"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:path:a|steps|step:a",
+       "properties": {},
+       "relationship_type": "steps",
+       "source": "path:a",
+       "target": "step:a"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:risk:r|attack_paths|path:a",
+       "properties": {},
+       "relationship_type": "attack_paths",
+       "source": "risk:r",
+       "target": "path:a"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:risk:r|damage_scenario|damage:d",
+       "properties": {},
+       "relationship_type": "damage_scenario",
+       "source": "risk:r",
+       "target": "damage:d"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:risk:r|for_stakeholder|party:human",
+       "properties": {},
+       "relationship_type": "for_stakeholder",
+       "source": "risk:r",
+       "target": "party:human"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:risk:r|threat|threat:t",
+       "properties": {},
+       "relationship_type": "threat",
+       "source": "risk:r",
+       "target": "threat:t"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:review:0|reviewer|party:human",
+       "properties": {},
+       "relationship_type": "reviewer",
+       "source": "review:0",
+       "target": "party:human"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:review:0|reviews|assertion:a",
+       "properties": {},
+       "relationship_type": "reviews",
+       "source": "review:0",
+       "target": "assertion:a"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:review:1|reviewer|party:human2",
+       "properties": {},
+       "relationship_type": "reviewer",
+       "source": "review:1",
+       "target": "party:human2"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:review:1|reviews|assertion:1",
+       "properties": {},
+       "relationship_type": "reviews",
+       "source": "review:1",
+       "target": "assertion:1"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:assertion:a|object|threat:t",
+       "properties": {},
+       "relationship_type": "object",
+       "source": "assertion:a",
+       "target": "threat:t"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:assertion:a|subject|path:a",
+       "properties": {},
+       "relationship_type": "subject",
+       "source": "assertion:a",
+       "target": "path:a"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:assertion:1|object|threat:t",
+       "properties": {},
+       "relationship_type": "object",
+       "source": "assertion:1",
+       "target": "threat:t"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:assertion:1|subject|path:a",
+       "properties": {},
+       "relationship_type": "subject",
+       "source": "assertion:1",
+       "target": "path:a"
+      }
+     ],
+     "file": "review-evidence.yaml",
+     "nodes": [
+      {
+       "domain_type": "Party",
+       "id": "party:human",
+       "label": "human",
+       "properties": {
+        "party_kind": "person"
+       }
+      },
+      {
+       "domain_type": "Party",
+       "id": "party:human2",
+       "label": "human2",
+       "properties": {
+        "party_kind": "person"
+       }
+      },
+      {
+       "domain_type": "Party",
+       "id": "party:agent",
+       "label": "agent",
+       "properties": {
+        "party_kind": "software_agent"
+       }
+      },
+      {
+       "domain_type": "ThreatInstance",
+       "id": "threat:t",
+       "label": "Fixture threat",
+       "properties": {
+        "source_method": "ai:fixture"
+       }
+      },
+      {
+       "domain_type": "AttackStep",
+       "id": "step:a",
+       "label": "Fixture step",
+       "properties": {}
+      },
+      {
+       "domain_type": "AttackPath",
+       "id": "path:a",
+       "label": "Fixture route",
+       "properties": {
+        "attack_feasibility": "high"
+       }
+      },
+      {
+       "domain_type": "DamageScenario",
+       "id": "damage:d",
+       "label": "Fixture damage",
+       "properties": {}
+      },
+      {
+       "domain_type": "RiskScore",
+       "id": "risk:r",
+       "label": "risk:r",
+       "properties": {
+        "impact": "{\"financial\": \"moderate\", \"operational\": \"moderate\", \"privacy\": \"moderate\", \"safety\": \"moderate\"}",
+        "mitigation_status": "planned"
+       }
+      },
+      {
+       "domain_type": "Review",
+       "id": "review:0",
+       "label": "review:0",
+       "properties": {
+        "justification": "Checked",
+        "review_status": "accepted"
+       }
+      },
+      {
+       "domain_type": "Review",
+       "id": "review:1",
+       "label": "review:1",
+       "properties": {
+        "justification": "Checked independently",
+        "review_status": "accepted"
+       }
+      },
+      {
+       "domain_type": "Assertion",
+       "id": "assertion:a",
+       "label": "assertion:a",
+       "properties": {
+        "assertion_status": "accepted",
+        "predicate": "realizes_threat"
+       }
+      },
+      {
+       "domain_type": "Assertion",
+       "id": "assertion:1",
+       "label": "assertion:1",
+       "properties": {
+        "assertion_status": "accepted",
+        "predicate": "realizes_threat"
+       }
+      }
+     ]
+    },
+    "model": {
+     "counts": {},
+     "description": "Test judgments only.",
+     "file": "review-evidence.yaml",
+     "id": "review-evidence",
+     "kind": "core",
+     "kind_label": "Synthetic fixture",
+     "reviewed_threats": 1,
+     "title": "Synthetic review evidence"
+    }
+   },
+   "name": "multiple_human_assertions",
+   "risk": {
+    "assessments": [
+     {
+      "complete": true,
+      "damage_scenario": "damage:d",
+      "derived_risk": {
+       "financial": 3,
+       "operational": 3,
+       "privacy": 3,
+       "safety": 3
+      },
+      "feasibility": "high",
+      "for_stakeholder": "party:human",
+      "id": "risk:r",
+      "impact": {
+       "financial": "moderate",
+       "operational": "moderate",
+       "privacy": "moderate",
+       "safety": "moderate"
+      },
+      "mitigation_status": "planned",
+      "path_reviewed": true,
+      "paths": [
+       {
+        "alternatives": [
+         [
+          "step:a"
+         ]
+        ],
+        "derived_risk": {
+         "financial": 3,
+         "operational": 3,
+         "privacy": 3,
+         "safety": 3
+        },
+        "feasibility": "high",
+        "id": "path:a",
+        "problems": [],
+        "rating_source": "AttackPath.attack_feasibility",
+        "review_records": {
+         "assertions": [
+          {
+           "assertion_status": "accepted",
+           "id": "assertion:a"
+          },
+          {
+           "assertion_status": "accepted",
+           "id": "assertion:1"
+          }
+         ],
+         "reviews": [
+          {
+           "id": "review:0",
+           "justification": "Checked",
+           "review_status": "accepted",
+           "reviewer": "party:human",
+           "reviews": "assertion:a"
+          },
+          {
+           "id": "review:1",
+           "justification": "Checked independently",
+           "review_status": "accepted",
+           "reviewer": "party:human2",
+           "reviews": "assertion:1"
+          }
+         ]
+        },
+        "route_ids": [
+         "route:7890519f47b26b95758afe64edec616d4baf426e4c91b9b0e03609ea4d992eaf"
+        ],
+        "used_for_ratings": true
+       }
+      ],
+      "problems": [],
+      "recorded": {
+       "feasibility": null,
+       "risk": null
+      },
+      "routes": [
+       {
+        "authored_path": "path:a",
+        "derived_risk": {
+         "financial": 3,
+         "operational": 3,
+         "privacy": 3,
+         "safety": 3
+        },
+        "feasibility": "high",
+        "goal_step": "step:a",
+        "id": "route:7890519f47b26b95758afe64edec616d4baf426e4c91b9b0e03609ea4d992eaf",
+        "problems": [],
+        "rating_paths": [
+         "path:a"
+        ],
+        "steps": [
+         "step:a"
+        ]
+       }
+      ],
+      "threat": "threat:t",
+      "threat_damage_scenario": "damage:d",
+      "threat_damage_scenarios": [
+       "damage:d"
+      ]
+     }
+    ],
+    "count": 1,
+    "file": "review-evidence.yaml",
+    "matrix": "annex-h-table-h8"
+   }
+  },
+  {
+   "human_reviewed": true,
+   "input": {
+    "attackPaths": [
+     {
+      "file": "review-evidence.yaml",
+      "goal": "threat:t",
+      "paths": [
+       {
+        "authored_path": "path:a",
+        "goal_step": "step:a",
+        "review": {
+         "assertion_status": "accepted",
+         "review_status": "accepted",
+         "reviewed": true
+        },
+        "step_phases": {},
+        "steps": [
+         "step:a"
+        ]
+       }
+      ]
+     }
+    ],
+    "graph": {
+     "edges": [
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:threat:t|realizes_damage|damage:d",
+       "properties": {},
+       "relationship_type": "realizes_damage",
+       "source": "threat:t",
+       "target": "damage:d"
+      },
+      {
+       "assertions": [
+        {
+         "assertion_status": "accepted",
+         "confidence": null,
+         "description": null,
+         "effective_status": "accepted",
+         "evidence": [],
+         "human_reviewed": true,
+         "id": "assertion:a",
+         "reviews": [
+          {
+           "id": "review:0",
+           "justification": "Checked",
+           "review_status": "accepted",
+           "reviewer": "party:human"
+          },
+          {
+           "id": "review:1",
+           "justification": "Automated concern",
+           "review_status": "rejected",
+           "reviewer": "party:agent"
+          }
+         ]
+        }
+       ],
+       "authored": true,
+       "id": "relationship:path:a|realizes_threat|threat:t",
+       "properties": {
+        "assertion_ids": [
+         "assertion:a"
+        ],
+        "assertion_status": "accepted",
+        "effective_assertion_status": "accepted",
+        "effective_review_status": "accepted",
+        "human_reviewed": true,
+        "review_ids": [
+         "review:0",
+         "review:1"
+        ],
+        "review_justifications": [
+         "Checked",
+         "Automated concern"
+        ],
+        "review_status": "rejected",
+        "review_statuses": [
+         "accepted",
+         "rejected"
+        ]
+       },
+       "relationship_type": "realizes_threat",
+       "source": "path:a",
+       "target": "threat:t"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:path:a|steps|step:a",
+       "properties": {},
+       "relationship_type": "steps",
+       "source": "path:a",
+       "target": "step:a"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:risk:r|attack_paths|path:a",
+       "properties": {},
+       "relationship_type": "attack_paths",
+       "source": "risk:r",
+       "target": "path:a"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:risk:r|damage_scenario|damage:d",
+       "properties": {},
+       "relationship_type": "damage_scenario",
+       "source": "risk:r",
+       "target": "damage:d"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:risk:r|for_stakeholder|party:human",
+       "properties": {},
+       "relationship_type": "for_stakeholder",
+       "source": "risk:r",
+       "target": "party:human"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:risk:r|threat|threat:t",
+       "properties": {},
+       "relationship_type": "threat",
+       "source": "risk:r",
+       "target": "threat:t"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:review:0|reviewer|party:human",
+       "properties": {},
+       "relationship_type": "reviewer",
+       "source": "review:0",
+       "target": "party:human"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:review:0|reviews|assertion:a",
+       "properties": {},
+       "relationship_type": "reviews",
+       "source": "review:0",
+       "target": "assertion:a"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:review:1|reviewer|party:agent",
+       "properties": {},
+       "relationship_type": "reviewer",
+       "source": "review:1",
+       "target": "party:agent"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:review:1|reviews|assertion:a",
+       "properties": {},
+       "relationship_type": "reviews",
+       "source": "review:1",
+       "target": "assertion:a"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:assertion:a|object|threat:t",
+       "properties": {},
+       "relationship_type": "object",
+       "source": "assertion:a",
+       "target": "threat:t"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:assertion:a|subject|path:a",
+       "properties": {},
+       "relationship_type": "subject",
+       "source": "assertion:a",
+       "target": "path:a"
+      }
+     ],
+     "file": "review-evidence.yaml",
+     "nodes": [
+      {
+       "domain_type": "Party",
+       "id": "party:human",
+       "label": "human",
+       "properties": {
+        "party_kind": "person"
+       }
+      },
+      {
+       "domain_type": "Party",
+       "id": "party:human2",
+       "label": "human2",
+       "properties": {
+        "party_kind": "person"
+       }
+      },
+      {
+       "domain_type": "Party",
+       "id": "party:agent",
+       "label": "agent",
+       "properties": {
+        "party_kind": "software_agent"
+       }
+      },
+      {
+       "domain_type": "ThreatInstance",
+       "id": "threat:t",
+       "label": "Fixture threat",
+       "properties": {
+        "source_method": "ai:fixture"
+       }
+      },
+      {
+       "domain_type": "AttackStep",
+       "id": "step:a",
+       "label": "Fixture step",
+       "properties": {}
+      },
+      {
+       "domain_type": "AttackPath",
+       "id": "path:a",
+       "label": "Fixture route",
+       "properties": {
+        "attack_feasibility": "high"
+       }
+      },
+      {
+       "domain_type": "DamageScenario",
+       "id": "damage:d",
+       "label": "Fixture damage",
+       "properties": {}
+      },
+      {
+       "domain_type": "RiskScore",
+       "id": "risk:r",
+       "label": "risk:r",
+       "properties": {
+        "impact": "{\"financial\": \"moderate\", \"operational\": \"moderate\", \"privacy\": \"moderate\", \"safety\": \"moderate\"}",
+        "mitigation_status": "planned"
+       }
+      },
+      {
+       "domain_type": "Review",
+       "id": "review:0",
+       "label": "review:0",
+       "properties": {
+        "justification": "Checked",
+        "review_status": "accepted"
+       }
+      },
+      {
+       "domain_type": "Review",
+       "id": "review:1",
+       "label": "review:1",
+       "properties": {
+        "justification": "Automated concern",
+        "review_status": "rejected"
+       }
+      },
+      {
+       "domain_type": "Assertion",
+       "id": "assertion:a",
+       "label": "assertion:a",
+       "properties": {
+        "assertion_status": "accepted",
+        "predicate": "realizes_threat"
+       }
+      }
+     ]
+    },
+    "model": {
+     "counts": {},
+     "description": "Test judgments only.",
+     "file": "review-evidence.yaml",
+     "id": "review-evidence",
+     "kind": "core",
+     "kind_label": "Synthetic fixture",
+     "reviewed_threats": 1,
+     "title": "Synthetic review evidence"
+    }
+   },
+   "name": "human_accepts_agent_rejects",
+   "risk": {
+    "assessments": [
+     {
+      "complete": true,
+      "damage_scenario": "damage:d",
+      "derived_risk": {
+       "financial": 3,
+       "operational": 3,
+       "privacy": 3,
+       "safety": 3
+      },
+      "feasibility": "high",
+      "for_stakeholder": "party:human",
+      "id": "risk:r",
+      "impact": {
+       "financial": "moderate",
+       "operational": "moderate",
+       "privacy": "moderate",
+       "safety": "moderate"
+      },
+      "mitigation_status": "planned",
+      "path_reviewed": true,
+      "paths": [
+       {
+        "alternatives": [
+         [
+          "step:a"
+         ]
+        ],
+        "derived_risk": {
+         "financial": 3,
+         "operational": 3,
+         "privacy": 3,
+         "safety": 3
+        },
+        "feasibility": "high",
+        "id": "path:a",
+        "problems": [],
+        "rating_source": "AttackPath.attack_feasibility",
+        "review_records": {
+         "assertions": [
+          {
+           "assertion_status": "accepted",
+           "id": "assertion:a"
+          }
+         ],
+         "reviews": [
+          {
+           "id": "review:0",
+           "justification": "Checked",
+           "review_status": "accepted",
+           "reviewer": "party:human",
+           "reviews": "assertion:a"
+          },
+          {
+           "id": "review:1",
+           "justification": "Automated concern",
+           "review_status": "rejected",
+           "reviewer": "party:agent",
+           "reviews": "assertion:a"
+          }
+         ]
+        },
+        "route_ids": [
+         "route:7890519f47b26b95758afe64edec616d4baf426e4c91b9b0e03609ea4d992eaf"
+        ],
+        "used_for_ratings": true
+       }
+      ],
+      "problems": [],
+      "recorded": {
+       "feasibility": null,
+       "risk": null
+      },
+      "routes": [
+       {
+        "authored_path": "path:a",
+        "derived_risk": {
+         "financial": 3,
+         "operational": 3,
+         "privacy": 3,
+         "safety": 3
+        },
+        "feasibility": "high",
+        "goal_step": "step:a",
+        "id": "route:7890519f47b26b95758afe64edec616d4baf426e4c91b9b0e03609ea4d992eaf",
+        "problems": [],
+        "rating_paths": [
+         "path:a"
+        ],
+        "steps": [
+         "step:a"
+        ]
+       }
+      ],
+      "threat": "threat:t",
+      "threat_damage_scenario": "damage:d",
+      "threat_damage_scenarios": [
+       "damage:d"
+      ]
+     }
+    ],
+    "count": 1,
+    "file": "review-evidence.yaml",
+    "matrix": "annex-h-table-h8"
+   }
+  },
+  {
+   "human_reviewed": false,
+   "input": {
+    "attackPaths": [
+     {
+      "file": "review-evidence.yaml",
+      "goal": "threat:t",
+      "paths": [
+       {
+        "authored_path": "path:a",
+        "goal_step": "step:a",
+        "review": {
+         "assertion_status": "accepted",
+         "review_status": "rejected",
+         "reviewed": false
+        },
+        "step_phases": {},
+        "steps": [
+         "step:a"
+        ]
+       }
+      ]
+     }
+    ],
+    "graph": {
+     "edges": [
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:threat:t|realizes_damage|damage:d",
+       "properties": {},
+       "relationship_type": "realizes_damage",
+       "source": "threat:t",
+       "target": "damage:d"
+      },
+      {
+       "assertions": [
+        {
+         "assertion_status": "accepted",
+         "confidence": null,
+         "description": null,
+         "effective_status": "rejected",
+         "evidence": [],
+         "human_reviewed": false,
+         "id": "assertion:a",
+         "reviews": [
+          {
+           "id": "review:0",
+           "justification": "Invalid path",
+           "review_status": "rejected",
+           "reviewer": "party:human"
+          },
+          {
+           "id": "review:1",
+           "justification": "Automated opinion",
+           "review_status": "accepted",
+           "reviewer": "party:agent"
+          }
+         ]
+        }
+       ],
+       "authored": true,
+       "id": "relationship:path:a|realizes_threat|threat:t",
+       "properties": {
+        "assertion_ids": [
+         "assertion:a"
+        ],
+        "assertion_status": "accepted",
+        "effective_assertion_status": "accepted",
+        "effective_review_status": "rejected",
+        "human_reviewed": false,
+        "review_ids": [
+         "review:0",
+         "review:1"
+        ],
+        "review_justifications": [
+         "Invalid path",
+         "Automated opinion"
+        ],
+        "review_status": "rejected",
+        "review_statuses": [
+         "rejected",
+         "accepted"
+        ]
+       },
+       "relationship_type": "realizes_threat",
+       "source": "path:a",
+       "target": "threat:t"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:path:a|steps|step:a",
+       "properties": {},
+       "relationship_type": "steps",
+       "source": "path:a",
+       "target": "step:a"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:risk:r|attack_paths|path:a",
+       "properties": {},
+       "relationship_type": "attack_paths",
+       "source": "risk:r",
+       "target": "path:a"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:risk:r|damage_scenario|damage:d",
+       "properties": {},
+       "relationship_type": "damage_scenario",
+       "source": "risk:r",
+       "target": "damage:d"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:risk:r|for_stakeholder|party:human",
+       "properties": {},
+       "relationship_type": "for_stakeholder",
+       "source": "risk:r",
+       "target": "party:human"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:risk:r|threat|threat:t",
+       "properties": {},
+       "relationship_type": "threat",
+       "source": "risk:r",
+       "target": "threat:t"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:review:0|reviewer|party:human",
+       "properties": {},
+       "relationship_type": "reviewer",
+       "source": "review:0",
+       "target": "party:human"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:review:0|reviews|assertion:a",
+       "properties": {},
+       "relationship_type": "reviews",
+       "source": "review:0",
+       "target": "assertion:a"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:review:1|reviewer|party:agent",
+       "properties": {},
+       "relationship_type": "reviewer",
+       "source": "review:1",
+       "target": "party:agent"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:review:1|reviews|assertion:a",
+       "properties": {},
+       "relationship_type": "reviews",
+       "source": "review:1",
+       "target": "assertion:a"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:assertion:a|object|threat:t",
+       "properties": {},
+       "relationship_type": "object",
+       "source": "assertion:a",
+       "target": "threat:t"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:assertion:a|subject|path:a",
+       "properties": {},
+       "relationship_type": "subject",
+       "source": "assertion:a",
+       "target": "path:a"
+      }
+     ],
+     "file": "review-evidence.yaml",
+     "nodes": [
+      {
+       "domain_type": "Party",
+       "id": "party:human",
+       "label": "human",
+       "properties": {
+        "party_kind": "person"
+       }
+      },
+      {
+       "domain_type": "Party",
+       "id": "party:human2",
+       "label": "human2",
+       "properties": {
+        "party_kind": "person"
+       }
+      },
+      {
+       "domain_type": "Party",
+       "id": "party:agent",
+       "label": "agent",
+       "properties": {
+        "party_kind": "software_agent"
+       }
+      },
+      {
+       "domain_type": "ThreatInstance",
+       "id": "threat:t",
+       "label": "Fixture threat",
+       "properties": {
+        "source_method": "ai:fixture"
+       }
+      },
+      {
+       "domain_type": "AttackStep",
+       "id": "step:a",
+       "label": "Fixture step",
+       "properties": {}
+      },
+      {
+       "domain_type": "AttackPath",
+       "id": "path:a",
+       "label": "Fixture route",
+       "properties": {
+        "attack_feasibility": "high"
+       }
+      },
+      {
+       "domain_type": "DamageScenario",
+       "id": "damage:d",
+       "label": "Fixture damage",
+       "properties": {}
+      },
+      {
+       "domain_type": "RiskScore",
+       "id": "risk:r",
+       "label": "risk:r",
+       "properties": {
+        "impact": "{\"financial\": \"moderate\", \"operational\": \"moderate\", \"privacy\": \"moderate\", \"safety\": \"moderate\"}",
+        "mitigation_status": "planned"
+       }
+      },
+      {
+       "domain_type": "Review",
+       "id": "review:0",
+       "label": "review:0",
+       "properties": {
+        "justification": "Invalid path",
+        "review_status": "rejected"
+       }
+      },
+      {
+       "domain_type": "Review",
+       "id": "review:1",
+       "label": "review:1",
+       "properties": {
+        "justification": "Automated opinion",
+        "review_status": "accepted"
+       }
+      },
+      {
+       "domain_type": "Assertion",
+       "id": "assertion:a",
+       "label": "assertion:a",
+       "properties": {
+        "assertion_status": "accepted",
+        "predicate": "realizes_threat"
+       }
+      }
+     ]
+    },
+    "model": {
+     "counts": {},
+     "description": "Test judgments only.",
+     "file": "review-evidence.yaml",
+     "id": "review-evidence",
+     "kind": "core",
+     "kind_label": "Synthetic fixture",
+     "reviewed_threats": 0,
+     "title": "Synthetic review evidence"
+    }
+   },
+   "name": "human_rejects_agent_accepts",
+   "risk": {
+    "assessments": [
+     {
+      "complete": true,
+      "damage_scenario": "damage:d",
+      "derived_risk": {
+       "financial": 3,
+       "operational": 3,
+       "privacy": 3,
+       "safety": 3
+      },
+      "feasibility": "high",
+      "for_stakeholder": "party:human",
+      "id": "risk:r",
+      "impact": {
+       "financial": "moderate",
+       "operational": "moderate",
+       "privacy": "moderate",
+       "safety": "moderate"
+      },
+      "mitigation_status": "planned",
+      "path_reviewed": false,
+      "paths": [
+       {
+        "alternatives": [
+         [
+          "step:a"
+         ]
+        ],
+        "derived_risk": {
+         "financial": 3,
+         "operational": 3,
+         "privacy": 3,
+         "safety": 3
+        },
+        "feasibility": "high",
+        "id": "path:a",
+        "problems": [],
+        "rating_source": "AttackPath.attack_feasibility",
+        "review_records": {
+         "assertions": [
+          {
+           "assertion_status": "accepted",
+           "id": "assertion:a"
+          }
+         ],
+         "reviews": [
+          {
+           "id": "review:0",
+           "justification": "Invalid path",
+           "review_status": "rejected",
+           "reviewer": "party:human",
+           "reviews": "assertion:a"
+          },
+          {
+           "id": "review:1",
+           "justification": "Automated opinion",
+           "review_status": "accepted",
+           "reviewer": "party:agent",
+           "reviews": "assertion:a"
+          }
+         ]
+        },
+        "route_ids": [
+         "route:7890519f47b26b95758afe64edec616d4baf426e4c91b9b0e03609ea4d992eaf"
+        ],
+        "used_for_ratings": true
+       }
+      ],
+      "problems": [],
+      "recorded": {
+       "feasibility": null,
+       "risk": null
+      },
+      "routes": [
+       {
+        "authored_path": "path:a",
+        "derived_risk": {
+         "financial": 3,
+         "operational": 3,
+         "privacy": 3,
+         "safety": 3
+        },
+        "feasibility": "high",
+        "goal_step": "step:a",
+        "id": "route:7890519f47b26b95758afe64edec616d4baf426e4c91b9b0e03609ea4d992eaf",
+        "problems": [],
+        "rating_paths": [
+         "path:a"
+        ],
+        "steps": [
+         "step:a"
+        ]
+       }
+      ],
+      "threat": "threat:t",
+      "threat_damage_scenario": "damage:d",
+      "threat_damage_scenarios": [
+       "damage:d"
+      ]
+     }
+    ],
+    "count": 1,
+    "file": "review-evidence.yaml",
+    "matrix": "annex-h-table-h8"
+   }
+  },
+  {
+   "human_reviewed": false,
+   "input": {
+    "attackPaths": [
+     {
+      "file": "review-evidence.yaml",
+      "goal": "threat:t",
+      "paths": [
+       {
+        "authored_path": "path:a",
+        "goal_step": "step:a",
+        "review": {
+         "assertion_status": "accepted",
+         "review_status": null,
+         "reviewed": false
+        },
+        "step_phases": {},
+        "steps": [
+         "step:a"
+        ]
+       }
+      ]
+     }
+    ],
+    "graph": {
+     "edges": [
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:threat:t|realizes_damage|damage:d",
+       "properties": {},
+       "relationship_type": "realizes_damage",
+       "source": "threat:t",
+       "target": "damage:d"
+      },
+      {
+       "assertions": [
+        {
+         "assertion_status": "accepted",
+         "confidence": null,
+         "description": null,
+         "effective_status": "unreviewed",
+         "evidence": [],
+         "human_reviewed": false,
+         "id": "assertion:a",
+         "reviews": []
+        }
+       ],
+       "authored": true,
+       "id": "relationship:path:a|realizes_threat|threat:t",
+       "properties": {
+        "assertion_ids": [
+         "assertion:a"
+        ],
+        "assertion_status": "accepted",
+        "effective_assertion_status": "accepted",
+        "effective_review_status": null,
+        "human_reviewed": false
+       },
+       "relationship_type": "realizes_threat",
+       "source": "path:a",
+       "target": "threat:t"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:path:a|steps|step:a",
+       "properties": {},
+       "relationship_type": "steps",
+       "source": "path:a",
+       "target": "step:a"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:risk:r|attack_paths|path:a",
+       "properties": {},
+       "relationship_type": "attack_paths",
+       "source": "risk:r",
+       "target": "path:a"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:risk:r|damage_scenario|damage:d",
+       "properties": {},
+       "relationship_type": "damage_scenario",
+       "source": "risk:r",
+       "target": "damage:d"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:risk:r|for_stakeholder|party:human",
+       "properties": {},
+       "relationship_type": "for_stakeholder",
+       "source": "risk:r",
+       "target": "party:human"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:risk:r|threat|threat:t",
+       "properties": {},
+       "relationship_type": "threat",
+       "source": "risk:r",
+       "target": "threat:t"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:assertion:a|object|threat:t",
+       "properties": {},
+       "relationship_type": "object",
+       "source": "assertion:a",
+       "target": "threat:t"
+      },
+      {
+       "assertions": [],
+       "authored": true,
+       "id": "relationship:assertion:a|subject|path:a",
+       "properties": {},
+       "relationship_type": "subject",
+       "source": "assertion:a",
+       "target": "path:a"
+      }
+     ],
+     "file": "review-evidence.yaml",
+     "nodes": [
+      {
+       "domain_type": "Party",
+       "id": "party:human",
+       "label": "human",
+       "properties": {
+        "party_kind": "person"
+       }
+      },
+      {
+       "domain_type": "Party",
+       "id": "party:human2",
+       "label": "human2",
+       "properties": {
+        "party_kind": "person"
+       }
+      },
+      {
+       "domain_type": "Party",
+       "id": "party:agent",
+       "label": "agent",
+       "properties": {
+        "party_kind": "software_agent"
+       }
+      },
+      {
+       "domain_type": "ThreatInstance",
+       "id": "threat:t",
+       "label": "Fixture threat",
+       "properties": {
+        "source_method": "ai:fixture"
+       }
+      },
+      {
+       "domain_type": "AttackStep",
+       "id": "step:a",
+       "label": "Fixture step",
+       "properties": {}
+      },
+      {
+       "domain_type": "AttackPath",
+       "id": "path:a",
+       "label": "Fixture route",
+       "properties": {
+        "attack_feasibility": "high"
+       }
+      },
+      {
+       "domain_type": "DamageScenario",
+       "id": "damage:d",
+       "label": "Fixture damage",
+       "properties": {}
+      },
+      {
+       "domain_type": "RiskScore",
+       "id": "risk:r",
+       "label": "risk:r",
+       "properties": {
+        "impact": "{\"financial\": \"moderate\", \"operational\": \"moderate\", \"privacy\": \"moderate\", \"safety\": \"moderate\"}",
+        "mitigation_status": "planned"
+       }
+      },
+      {
+       "domain_type": "Assertion",
+       "id": "assertion:a",
+       "label": "assertion:a",
+       "properties": {
+        "assertion_status": "accepted",
+        "predicate": "realizes_threat"
+       }
+      }
+     ]
+    },
+    "model": {
+     "counts": {},
+     "description": "Test judgments only.",
+     "file": "review-evidence.yaml",
+     "id": "review-evidence",
+     "kind": "core",
+     "kind_label": "Synthetic fixture",
+     "reviewed_threats": 0,
+     "title": "Synthetic review evidence"
+    }
+   },
+   "name": "no_review",
+   "risk": {
+    "assessments": [
+     {
+      "complete": true,
+      "damage_scenario": "damage:d",
+      "derived_risk": {
+       "financial": 3,
+       "operational": 3,
+       "privacy": 3,
+       "safety": 3
+      },
+      "feasibility": "high",
+      "for_stakeholder": "party:human",
+      "id": "risk:r",
+      "impact": {
+       "financial": "moderate",
+       "operational": "moderate",
+       "privacy": "moderate",
+       "safety": "moderate"
+      },
+      "mitigation_status": "planned",
+      "path_reviewed": false,
+      "paths": [
+       {
+        "alternatives": [
+         [
+          "step:a"
+         ]
+        ],
+        "derived_risk": {
+         "financial": 3,
+         "operational": 3,
+         "privacy": 3,
+         "safety": 3
+        },
+        "feasibility": "high",
+        "id": "path:a",
+        "problems": [],
+        "rating_source": "AttackPath.attack_feasibility",
+        "review_records": {
+         "assertions": [
+          {
+           "assertion_status": "accepted",
+           "id": "assertion:a"
+          }
+         ],
+         "reviews": []
+        },
+        "route_ids": [
+         "route:7890519f47b26b95758afe64edec616d4baf426e4c91b9b0e03609ea4d992eaf"
+        ],
+        "used_for_ratings": true
+       }
+      ],
+      "problems": [],
+      "recorded": {
+       "feasibility": null,
+       "risk": null
+      },
+      "routes": [
+       {
+        "authored_path": "path:a",
+        "derived_risk": {
+         "financial": 3,
+         "operational": 3,
+         "privacy": 3,
+         "safety": 3
+        },
+        "feasibility": "high",
+        "goal_step": "step:a",
+        "id": "route:7890519f47b26b95758afe64edec616d4baf426e4c91b9b0e03609ea4d992eaf",
+        "problems": [],
+        "rating_paths": [
+         "path:a"
+        ],
+        "steps": [
+         "step:a"
+        ]
+       }
+      ],
+      "threat": "threat:t",
+      "threat_damage_scenario": "damage:d",
+      "threat_damage_scenarios": [
+       "damage:d"
+      ]
+     }
+    ],
+    "count": 1,
+    "file": "review-evidence.yaml",
+    "matrix": "annex-h-table-h8"
+   }
+  }
+ ],
+ "note": "Synthetic review judgments, not human project sign-offs."
+}

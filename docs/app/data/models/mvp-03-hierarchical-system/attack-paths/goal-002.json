@@ -10,6 +10,10 @@
         "review_status": "changes_requested",
         "reviewed": false
       },
+      "step_phases": {
+        "attack-step:call-fleet-api": "exploitation",
+        "attack-step:chain-to-in-vehicle": "lateral_movement"
+      },
       "steps": [
         "attack-step:forge-jwt-none-alg",
         "attack-step:call-fleet-api",
@@ -23,6 +27,10 @@
         "assertion_status": "proposed",
         "review_status": "changes_requested",
         "reviewed": false
+      },
+      "step_phases": {
+        "attack-step:call-fleet-api": "exploitation",
+        "attack-step:chain-to-in-vehicle": "lateral_movement"
       },
       "steps": [
         "attack-step:forge-jwt-weak-key",

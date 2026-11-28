@@ -198,7 +198,7 @@ const SIX_TABLES = [
   ["report-threats", "Threats and their review status"],
   ["report-paths", "Attack paths: how each threat could be carried out"],
   ["report-mitigations", "Mitigations: what is done about the threats"],
-  ["report-risk", "Risk: how likely and how bad, per threat"],
+  ["report-risk", "Recorded risk assessments"],
 ] as const;
 
 function sectionMarkup(markup: string, id: string): string {

@@ -35,6 +35,7 @@ export interface ReportRenderOptions {
   interactive?: boolean;
   /** Static pages: a contents list linking to each section. */
   contents?: boolean;
+  riskCalculation?: boolean;
 }
 
 /** The report's sections, in the order #208 and a TARA read them. */
@@ -103,7 +104,7 @@ export function renderModelReport(report: ModelReport, options: ReportRenderOpti
     section(3, catalogSection(report)),
     section(4, pathsSection(report, options, anchors)),
     section(5, mitigationsSection(report)),
-    section(6, riskSection(report)),
+    section(6, riskSection(report, options)),
     section(7, requirementsSection(report)),
   ];
   return html`<article class="model-report" aria-labelledby="report-title">
@@ -446,13 +447,20 @@ function mitigationRow(row: MitigationRow): SafeHtml {
 </tr>`;
 }
 
-function riskSection(report: ModelReport): SafeHtml {
-  return table(
-    "Risk: how likely and how bad, per threat",
+function riskSection(report: ModelReport, options: ReportRenderOptions): SafeHtml {
+  const recorded = table(
+    "Recorded risk assessments",
     ["Threat", "Damage", "Feasibility", "Impact", "Risk", "Mitigation status"],
     report.risks.map(riskRow),
     "No threats, so no risk to assess.",
   );
+  const calculator = options.riskCalculation ? html`<div class="risk-calculator">
+<label for="risk-matrix">Risk matrix</label>
+<select id="risk-matrix" data-risk-matrix><option value="">Select a matrix profile</option><option value="annex-h-table-h8">Annex H Table H.8 (informative example)</option></select>
+<button type="button" data-calculate-risk>Calculate risk</button>
+<div data-risk-result aria-live="polite" aria-busy="false"></div>
+</div>` : "";
+  return html`${calculator}${recorded}`;
 }
 
 function riskRow(row: RiskRow): SafeHtml {

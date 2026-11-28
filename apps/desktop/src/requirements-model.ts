@@ -1,5 +1,5 @@
 import type { EngineGraphEdge, EngineGraphNode, EngineGraphResponse } from "./model-types";
-import { relationshipReviewState, type ReviewStateKind } from "./review-status";
+import { assertionReviewState, relationshipReviewState, type ReviewStateKind } from "./review-status";
 
 export const REQUIREMENT_SORTS = [
   "id", "name", "kind", "normativity", "source", "satisfaction",
@@ -227,10 +227,9 @@ function requirementRow(
       id: assertion.id,
       status: assertion.assertion_status,
       confidence: assertion.confidence,
-      reviewState: relationshipReviewState({
-        assertion_status: assertion.assertion_status,
-        review_status: combinedReviewStatus(assertion.reviews.map((review) => review.review_status)),
-      })?.kind ?? "unknown",
+      reviewState: assertionReviewState(
+        assertion, combinedReviewStatus(assertion.reviews.map((review) => review.review_status)),
+      ).kind,
       description: assertion.description,
       evidence: [...assertion.evidence],
       reviews: assertion.reviews.map((review) => ({

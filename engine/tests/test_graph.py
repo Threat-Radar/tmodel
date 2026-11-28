@@ -120,7 +120,16 @@ def test_a_rejecting_review_keeps_an_accepted_assertions_threat_unreviewed():
                 "assertion_status": "accepted",
             }
         ],
-        "reviews": [{"id": "review:p", "reviews": "assertion:p", "review_status": "rejected"}],
+        "parties": [{"id": "party:reviewer", "party_kind": "person"}],
+        "reviews": [
+            {
+                "id": "review:p",
+                "reviews": "assertion:p",
+                "reviewer": "party:reviewer",
+                "review_status": "rejected",
+                "justification": "Checked the exact path-to-threat relationship.",
+            }
+        ],
     }
     graph = AttackGraph.from_dict(doc)
     assert graph.paths["attack-path:p"].review.to_dict() == {
