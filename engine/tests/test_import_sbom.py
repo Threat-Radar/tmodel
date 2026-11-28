@@ -457,6 +457,46 @@ def test_an_oversized_file_is_refused(tmp_path: Path, monkeypatch) -> None:
         run(SBOM, output=tmp_path / "model.yaml")
 
 
+def test_an_upload_imports_exactly_as_the_files_do() -> None:
+    # #287: the app's route passes each file's name and bytes, and gets what the files give.
+    from_files = import_sbom.build(SBOM, scan=SCAN, platform=PLATFORM, output_name="original.yaml")
+    uploaded = import_sbom.build(
+        import_sbom.Upload(SBOM.name, SBOM.read_bytes()),
+        scan=import_sbom.Upload(SCAN.name, SCAN.read_bytes()),
+        platform=PLATFORM,
+        output_name="original.yaml",
+    )
+    assert uploaded == from_files
+
+
+@pytest.mark.parametrize(
+    ("data", "message"),
+    [
+        (b"\xff\xfe not text", "not UTF-8 text"),
+        (b"[1, 2]", "a JSON object at the top level"),
+        (b'{"a": 1, "a": 2}', "appears twice in one JSON object"),
+        (b'{"a": NaN}', "NaN is not a JSON value"),
+        (b"[" * 100_000 + b"]" * 100_000, "nests too deeply"),
+    ],
+)
+def test_an_upload_is_refused_as_the_file_would_be(
+    tmp_path: Path, data: bytes, message: str
+) -> None:
+    path = tmp_path / "sbom.json"
+    path.write_bytes(data)
+    with pytest.raises(SbomImportError, match=message) as from_file:
+        import_sbom.build(path)
+    with pytest.raises(SbomImportError, match=message) as uploaded:
+        import_sbom.build(import_sbom.Upload("sbom.json", data))
+    assert str(uploaded.value) == str(from_file.value)
+
+
+def test_an_oversized_upload_is_refused(monkeypatch) -> None:
+    monkeypatch.setattr(import_sbom, "MAX_INPUT_BYTES", 100)
+    with pytest.raises(SbomImportError, match="sbom.json: larger than 100 bytes"):
+        import_sbom.build(import_sbom.Upload("sbom.json", SBOM.read_bytes()))
+
+
 @pytest.mark.skipif(not hasattr(os, "mkfifo"), reason="needs a FIFO")
 def test_a_fifo_is_refused_without_waiting(tmp_path: Path) -> None:
     fifo = tmp_path / "sbom.json"
@@ -2218,8 +2258,10 @@ def test_an_sbom_with_no_package_for_the_platforms_architecture_imports_with_a_w
         "weaknesses": 9,
         "match_assertions": 30,
         "cwe_assertions": 15,
+        "assertions": 45,
         "parties": 4,
     }
+    assert len(doc["assertions"]) == result.counts["assertions"]
     note = (
         "none of the SBOM's packages is built for amd64, though the platform is linux/amd64 "
         "(from --platform); they say arch=x86 (16 Components). Every package is kept as a "

@@ -297,6 +297,17 @@ class InputFile:
 
 
 @dataclass(frozen=True)
+class Upload:
+    """A file a caller holds rather than a path to one: its base name and its bytes.
+
+    The app's import route (#287) passes the files it is sent this way, so they are read
+    with the same checks as a file on disk and nothing is written anywhere."""
+
+    name: str
+    data: bytes
+
+
+@dataclass(frozen=True)
 class SbomInfo:
     serial: str | None
     timestamp: str | None
@@ -353,12 +364,16 @@ class ScanInfo:
 class ImportResult:
     """The model and report texts, what was written, and the warnings: what the import
     did not refuse but the user should know, each on one line (the command prints each
-    as `warning: ...`)."""
+    as `warning: ...`). `product` is the image's repository, registry and path, and
+    `platform` the build's settled platform (OS/ARCH[/VARIANT]), for a caller that shows
+    them, such as the app's Import New Product screen (#287)."""
 
     model_text: str
     report_text: str
     counts: dict[str, int] = field(default_factory=dict)
     warnings: list[str] = field(default_factory=list)
+    product: str = ""
+    platform: str = ""
 
 
 def run(
@@ -384,19 +399,22 @@ def run(
 
 
 def build(
-    sbom: str | Path,
+    sbom: str | Path | Upload,
     *,
-    scan: str | Path | None = None,
+    scan: str | Path | Upload | None = None,
     platform: str | None = None,
     output_name: str = "MODEL.yaml",
 ) -> ImportResult:
-    """The model and report texts for these inputs; nothing is written."""
+    """The model and report texts for these inputs; nothing is written.
+
+    Each input is a path, or an Upload of a file's name and bytes: the two give the same
+    model, report and refusals for the same name and bytes."""
     given = parse_platform(platform) if platform is not None else None
-    sbom_file, sbom_doc = _read_json(Path(sbom), "SBOM")
+    sbom_file, sbom_doc = _load(sbom, "SBOM")
     info = _check_sbom(sbom_doc, _one_line(sbom_file.name))
     scan_file = scan_doc = scan_info = None
     if scan is not None:
-        scan_file, scan_doc = _read_json(Path(scan), "scan")
+        scan_file, scan_doc = _load(scan, "scan")
         scan_info = _check_scan(scan_doc, _one_line(scan_file.name), info)
     scan_name = _one_line(scan_file.name) if scan_file is not None else None
     build_platform = _build_platform(given, scan_info, _one_line(sbom_file.name), scan_name)
@@ -406,7 +424,14 @@ def build(
     model_text = _header(builder, output_name) + _dump(doc)
     _read_back(model_text, doc)
     report_text = builder.report(output_name)
-    return ImportResult(model_text, report_text, builder.counts(), list(builder.warnings))
+    return ImportResult(
+        model_text,
+        report_text,
+        builder.counts(),
+        list(builder.warnings),
+        builder.repository_url,
+        str(builder.platform),
+    )
 
 
 # Reading and checking the inputs -----------------------------------------------------
@@ -420,9 +445,21 @@ class _NotJson(ValueError):
     """A value Python's json reads but JSON does not have, such as NaN."""
 
 
+def _load(source: str | Path | Upload, label: str) -> tuple[InputFile, Any]:
+    if isinstance(source, Upload):
+        if len(source.data) > MAX_INPUT_BYTES:
+            name = _one_line(source.name)
+            raise SbomImportError(f"{name}: larger than {MAX_INPUT_BYTES} bytes, so it is not read")
+        return _parse_json(source.name, source.data, label)
+    return _read_json(Path(source), label)
+
+
 def _read_json(path: Path, label: str) -> tuple[InputFile, Any]:
-    name = _one_line(path.name)
-    data = _read(path)
+    return _parse_json(path.name, _read(path), label)
+
+
+def _parse_json(file_name: str, data: bytes, label: str) -> tuple[InputFile, Any]:
+    name = _one_line(file_name)
     try:
         text = data.decode("utf-8")
     except UnicodeDecodeError as exc:
@@ -455,7 +492,7 @@ def _read_json(path: Path, label: str) -> tuple[InputFile, Any]:
     if not isinstance(doc, dict):
         raise SbomImportError(f"{name}: expected a JSON object at the top level")
     sha = hashlib.sha256(data).hexdigest()
-    return InputFile(label, path.name, len(data), sha), doc
+    return InputFile(label, file_name, len(data), sha), doc
 
 
 def _object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
@@ -2020,6 +2057,9 @@ class _Builder:
             "weaknesses": len(self.weaknesses),
             "match_assertions": len(self.matches),
             "cwe_assertions": len(self.cwe_links),
+            # Every Assertion the model holds: one for each match and each CWE link
+            # (_match_assertions, _cwe_assertions), the two counts above.
+            "assertions": len(self.matches) + len(self.cwe_links),
             "parties": len(self.parties),
         }
 
@@ -2360,7 +2400,7 @@ class _Report:
             f"1 Product, 1 ProductInstance, {counts['components']} Components, "
             f"{counts['vulnerabilities']} Vulnerabilities, {counts['weaknesses']} Weaknesses, "
             f"{counts['parties']} Parties and "
-            f"{counts['match_assertions'] + counts['cwe_assertions']} Assertions "
+            f"{counts['assertions']} Assertions "
             f"({counts['match_assertions']} package matches, {counts['cwe_assertions']} CWE "
             "links). Every Assertion is proposed, and no Review is recorded (R-018). No "
             "assets, trust boundaries, data flows, threats, attack paths or mitigations: "

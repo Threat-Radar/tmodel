@@ -2,6 +2,7 @@
 
   tmodel serve [--projects]    start the local engine (loopback only); --projects also
                                serves the project folders the host opens (#288)
+  tmodel serve --enable-import also answer the app's Import New Product screen (#287)
   tmodel health [--json]       ask the running engine whether it is healthy
   tmodel version [--json]      ask the running engine for its version
   tmodel risk FILE --matrix annex-h-table-h8 [--goal G] [--json]
@@ -659,7 +660,7 @@ def _accept(args: argparse.Namespace) -> int:
 
 
 def _import_sbom(args: argparse.Namespace) -> int:
-    from engine import import_sbom  # a file-to-file step: never reachable from the API
+    from engine import import_sbom  # file to file; the app's route is api/import_route.py (#287)
 
     try:
         result = import_sbom.run(
@@ -731,7 +732,12 @@ def _serve(args: argparse.Namespace) -> int:
             )
             return 1
     try:
-        server.serve(port=args.port, exit_with_parent=args.exit_with_parent, host_token=host_token)
+        server.serve(
+            port=args.port,
+            exit_with_parent=args.exit_with_parent,
+            import_enabled=args.enable_import,
+            host_token=host_token,
+        )
     except (ValueError, OSError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
@@ -744,6 +750,11 @@ def build_parser() -> argparse.ArgumentParser:
 
     serve = sub.add_parser("serve", help="start the local engine (127.0.0.1 only)")
     serve.add_argument("--port", type=int, default=None, help="port (default 47811; 0 = any)")
+    serve.add_argument(
+        "--enable-import",
+        action="store_true",
+        help="answer POST /import/sbom, the app's Import New Product screen (#287); off by default",
+    )
     serve.add_argument(
         "--exit-with-parent",
         action="store_true",
@@ -909,7 +920,7 @@ def build_parser() -> argparse.ArgumentParser:
         "-o",
         "--output",
         required=True,
-        help="the model file to write, e.g. spec/vectors/pv-05-NAME.yaml",
+        help="the model file to write, e.g. spec/vectors/im-01-NAME.yaml (#281)",
     )
     imported.add_argument("--report", help="write the import report here instead of printing it")
     imported.add_argument(
