@@ -1,0 +1,4550 @@
+{
+  "CAPEC-5": {
+    "catalog": {
+      "name": "CAPEC",
+      "version": "3.9",
+      "date": "2023-01-24",
+      "schema": "3.5",
+      "file": "capec_v3.9-sample.xml",
+      "sha256": "0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e",
+      "attack_patterns": 13,
+      "categories": 3,
+      "views": 3,
+      "references": 16,
+      "unknown_fields": 0,
+      "notice": "Copyright © 2007-2023, The MITRE Corporation. CAPEC and the CAPEC logo are trademarks of The MITRE Corporation.",
+      "license": "The MITRE Corporation (MITRE) hereby grants you a non-exclusive, royalty-free license to use Common Attack Pattern Enumeration and Classification (CAPEC™) for research, development, and commercial purposes. Any copy you make for such purposes is authorized provided that you reproduce MITRE’s copyright designation and this license in any such copy.",
+      "terms_url": "https://capec.mitre.org/about/termsofuse.html"
+    },
+    "id": "CAPEC-5",
+    "entry": {
+      "id": "CAPEC-5",
+      "kind": "Attack_Pattern",
+      "name": "Blue Boxing",
+      "status": "Obsolete",
+      "abstraction": "Detailed",
+      "view_type": null,
+      "likelihood": "Medium",
+      "severity": "Very High",
+      "description": "This type of attack against older telephone switches and trunks has been around for decades. A tone is sent by an adversary to impersonate a supervisor signal which has the effect of rerouting or usurping command of the line. While the US infrastructure proper may not contain widespread vulnerabilities to this type of attack, many companies are connected globally through call centers and business process outsourcing. These international systems may be operated in countries which have not upgraded Telco infrastructure and so are vulnerable to Blue boxing. Blue boxing is a result of failure on the part of the system to enforce strong authorization for administrative functions. While the infrastructure is different than standard current applications like web applications, there are historical lessons to be learned to upgrade the access control for administrative functions. This attack pattern is included in CAPEC for historical purposes.",
+      "alternate_terms": [],
+      "related_attack_patterns": [
+        {
+          "nature": "ChildOf",
+          "id": "CAPEC-220"
+        }
+      ],
+      "weaknesses": [
+        "CWE-285"
+      ],
+      "attack_techniques": [],
+      "steps": 0,
+      "mitigations": 2,
+      "examples": 1,
+      "url": "https://capec.mitre.org/data/definitions/5.html",
+      "fields": {
+        "@ID": "5",
+        "@Name": "Blue Boxing",
+        "@Abstraction": "Detailed",
+        "@Status": "Obsolete",
+        "Description": [
+          {
+            "#xhtml": "<p>This type of attack against older telephone switches and trunks has been around for decades. A tone is sent by an adversary to impersonate a supervisor signal which has the effect of rerouting or usurping command of the line. While the US infrastructure proper may not contain widespread vulnerabilities to this type of attack, many companies are connected globally through call centers and business process outsourcing. These international systems may be operated in countries which have not upgraded Telco infrastructure and so are vulnerable to Blue boxing. Blue boxing is a result of failure on the part of the system to enforce strong authorization for administrative functions. While the infrastructure is different than standard current applications like web applications, there are historical lessons to be learned to upgrade the access control for administrative functions.</p>\n            <p>\n               <b>This attack pattern is included in CAPEC for historical purposes.</b>\n            </p>"
+          }
+        ],
+        "Likelihood_Of_Attack": [
+          "Medium"
+        ],
+        "Typical_Severity": [
+          "Very High"
+        ],
+        "Related_Attack_Patterns": [
+          {
+            "Related_Attack_Pattern": [
+              {
+                "@Nature": "ChildOf",
+                "@CAPEC_ID": "220"
+              }
+            ]
+          }
+        ],
+        "Prerequisites": [
+          {
+            "Prerequisite": [
+              "System must use weak authentication mechanisms for administrative functions."
+            ]
+          }
+        ],
+        "Skills_Required": [
+          {
+            "Skill": [
+              {
+                "@Level": "Low",
+                "#text": "Given a vulnerable phone system, the attackers' technical vector relies on attacks that are well documented in cracker 'zines and have been around for decades."
+              }
+            ]
+          }
+        ],
+        "Resources_Required": [
+          {
+            "Resource": [
+              "CCITT-5 or other vulnerable lines, with the ability to send tones such as combined 2,400 Hz and 2,600 Hz tones to the switch"
+            ]
+          }
+        ],
+        "Consequences": [
+          {
+            "Consequence": [
+              {
+                "Scope": [
+                  "Availability"
+                ],
+                "Impact": [
+                  "Resource Consumption"
+                ],
+                "Note": [
+                  "Denial of Service"
+                ]
+              },
+              {
+                "Scope": [
+                  "Confidentiality",
+                  "Access Control",
+                  "Authorization"
+                ],
+                "Impact": [
+                  "Gain Privileges"
+                ]
+              }
+            ]
+          }
+        ],
+        "Mitigations": [
+          {
+            "Mitigation": [
+              "Implementation: Upgrade phone lines. Note this may be prohibitively expensive",
+              "Use strong access control such as two factor access control for administrative access to the switch"
+            ]
+          }
+        ],
+        "Example_Instances": [
+          {
+            "Example": [
+              "An adversary identifies a vulnerable CCITT-5 phone line, and sends a combination tone to the switch in order to request administrative access. Based on tone and timing parameters the request is verified for access to the switch. Once the adversary has gained control of the switch launching calls, routing calls, and a whole host of opportunities are available."
+            ]
+          }
+        ],
+        "Related_Weaknesses": [
+          {
+            "Related_Weakness": [
+              {
+                "@CWE_ID": "285"
+              }
+            ]
+          }
+        ],
+        "References": [
+          {
+            "Reference": [
+              {
+                "@External_Reference_ID": "REF-1"
+              }
+            ]
+          }
+        ],
+        "Content_History": [
+          {
+            "Submission": [
+              {
+                "Submission_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Submission_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Submission_Date": [
+                  "2014-06-23"
+                ]
+              }
+            ],
+            "Modification": [
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2019-04-04"
+                ],
+                "Modification_Comment": [
+                  "Updated Related_Weaknesses"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2023-01-24"
+                ],
+                "Modification_Comment": [
+                  "Updated @Status, Description"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "references": [
+      {
+        "id": "REF-1",
+        "section": null,
+        "resolved": true,
+        "title": "Exploiting Software: How to Break Code",
+        "authors": [
+          "G. Hoglund",
+          "G. McGraw"
+        ],
+        "edition": null,
+        "publication": null,
+        "publisher": "Addison-Wesley",
+        "year": "2004",
+        "month": "--02",
+        "day": null,
+        "url": null,
+        "url_date": null
+      }
+    ],
+    "objects": {
+      "parties": [
+        {
+          "id": "party:mitre-capec",
+          "name": "MITRE CAPEC Program",
+          "party_kind": "organization"
+        }
+      ],
+      "attack_patterns": [
+        {
+          "id": "attack-pattern:capec-5",
+          "name": "Blue Boxing",
+          "description": "This type of attack against older telephone switches and trunks has been around for decades. A tone is sent by an adversary to impersonate a supervisor signal which has the effect of rerouting or usurping command of the line. While the US infrastructure proper may not contain widespread vulnerabilities to this type of attack, many companies are connected globally through call centers and business process outsourcing. These international systems may be operated in countries which have not upgraded Telco infrastructure and so are vulnerable to Blue boxing. Blue boxing is a result of failure on the part of the system to enforce strong authorization for administrative functions. While the infrastructure is different than standard current applications like web applications, there are historical lessons to be learned to upgrade the access control for administrative functions. This attack pattern is included in CAPEC for historical purposes.",
+          "catalog_ref": "CAPEC-5"
+        }
+      ],
+      "weaknesses": [
+        {
+          "id": "weakness:cwe-285",
+          "catalog_ref": "CWE-285"
+        }
+      ],
+      "assertions": [
+        {
+          "id": "assertion:capec-5-related-weakness-cwe-285",
+          "name": "CWE-285 is exploited by CAPEC-5",
+          "subject": "weakness:cwe-285",
+          "predicate": "exploited_by",
+          "object": "attack-pattern:capec-5",
+          "assertion_status": "proposed",
+          "asserted_by": "party:mitre-capec",
+          "generated_by": "tmodel CAPEC import: CAPEC 3.9 (2023-01-24), capec_v3.9-sample.xml, SHA-256 0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
+        }
+      ]
+    }
+  },
+  "CAPEC-7": {
+    "catalog": {
+      "name": "CAPEC",
+      "version": "3.9",
+      "date": "2023-01-24",
+      "schema": "3.5",
+      "file": "capec_v3.9-sample.xml",
+      "sha256": "0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e",
+      "attack_patterns": 13,
+      "categories": 3,
+      "views": 3,
+      "references": 16,
+      "unknown_fields": 0,
+      "notice": "Copyright © 2007-2023, The MITRE Corporation. CAPEC and the CAPEC logo are trademarks of The MITRE Corporation.",
+      "license": "The MITRE Corporation (MITRE) hereby grants you a non-exclusive, royalty-free license to use Common Attack Pattern Enumeration and Classification (CAPEC™) for research, development, and commercial purposes. Any copy you make for such purposes is authorized provided that you reproduce MITRE’s copyright designation and this license in any such copy.",
+      "terms_url": "https://capec.mitre.org/about/termsofuse.html"
+    },
+    "id": "CAPEC-7",
+    "entry": {
+      "id": "CAPEC-7",
+      "kind": "Attack_Pattern",
+      "name": "Blind SQL Injection",
+      "status": "Draft",
+      "abstraction": "Detailed",
+      "view_type": null,
+      "likelihood": "High",
+      "severity": "High",
+      "description": "Blind SQL Injection results from an insufficient mitigation for SQL Injection. Although suppressing database error messages are considered best practice, the suppression alone is not sufficient to prevent SQL Injection. Blind SQL Injection is a form of SQL Injection that overcomes the lack of error messages. Without the error messages that facilitate SQL Injection, the adversary constructs input strings that probe the target through simple Boolean SQL expressions. The adversary can determine if the syntax and structure of the injection was successful based on whether the query was executed or not. Applied iteratively, the adversary determines how and where the target is vulnerable to SQL Injection.",
+      "alternate_terms": [],
+      "related_attack_patterns": [
+        {
+          "nature": "ChildOf",
+          "id": "CAPEC-66"
+        }
+      ],
+      "weaknesses": [
+        "CWE-89",
+        "CWE-209",
+        "CWE-74",
+        "CWE-20",
+        "CWE-697",
+        "CWE-707"
+      ],
+      "attack_techniques": [],
+      "steps": 6,
+      "mitigations": 2,
+      "examples": 2,
+      "url": "https://capec.mitre.org/data/definitions/7.html",
+      "fields": {
+        "@ID": "7",
+        "@Name": "Blind SQL Injection",
+        "@Abstraction": "Detailed",
+        "@Status": "Draft",
+        "Description": [
+          "Blind SQL Injection results from an insufficient mitigation for SQL Injection. Although suppressing database error messages are considered best practice, the suppression alone is not sufficient to prevent SQL Injection. Blind SQL Injection is a form of SQL Injection that overcomes the lack of error messages. Without the error messages that facilitate SQL Injection, the adversary constructs input strings that probe the target through simple Boolean SQL expressions. The adversary can determine if the syntax and structure of the injection was successful based on whether the query was executed or not. Applied iteratively, the adversary determines how and where the target is vulnerable to SQL Injection."
+        ],
+        "Likelihood_Of_Attack": [
+          "High"
+        ],
+        "Typical_Severity": [
+          "High"
+        ],
+        "Related_Attack_Patterns": [
+          {
+            "Related_Attack_Pattern": [
+              {
+                "@Nature": "ChildOf",
+                "@CAPEC_ID": "66"
+              }
+            ]
+          }
+        ],
+        "Execution_Flow": [
+          {
+            "Attack_Step": [
+              {
+                "Step": [
+                  "1"
+                ],
+                "Phase": [
+                  "Explore"
+                ],
+                "Description": [
+                  {
+                    "#xhtml": "[Hypothesize SQL queries in application]<p>Generated hypotheses regarding the SQL queries in an application. For example, the adversary may hypothesize that their input is passed directly into a query that looks like:</p>\n                  <div style=\"margin-left:1em;\" class=\"informative\">\"SELECT * FROM orders WHERE ordernum = _____\"<br/>or<br/>\"SELECT * FROM orders WHERE ordernum IN (_____)\"<br/>or<br/>\"SELECT * FROM orders WHERE ordernum in (_____) ORDER BY _____\"</div>\n                  <p>Of course, there are many other possibilities.</p>"
+                  }
+                ],
+                "Technique": [
+                  "Research types of SQL queries and determine which ones could be used at various places in an application."
+                ]
+              },
+              {
+                "Step": [
+                  "2"
+                ],
+                "Phase": [
+                  "Explore"
+                ],
+                "Description": [
+                  {
+                    "#xhtml": "[Determine how to inject information into the queries]<p>Determine how to inject information into the queries from the previous step such that the injection does not impact their logic. For example, the following are possible injections for those queries:</p>\n                  <div style=\"margin-left:1em;\" class=\"informative\">\"5' OR 1=1; --\"<br/>and<br/>\"5) OR 1=1; --\"<br/>and<br/>\"ordernum DESC; --\"</div>"
+                  }
+                ],
+                "Technique": [
+                  "Add clauses to the SQL queries such that the query logic does not change.",
+                  "Add delays to the SQL queries in case server does not provide clear error messages (e.g. WAITFOR DELAY '0:0:10' in SQL Server or BENCHMARK(1000000000,MD5(1) in MySQL). If these can be injected into the queries, then the length of time that the server takes to respond reveals whether the query is injectable or not."
+                ]
+              },
+              {
+                "Step": [
+                  "3"
+                ],
+                "Phase": [
+                  "Experiment"
+                ],
+                "Description": [
+                  "[Determine user-controllable input susceptible to injection] Determine the user-controllable input susceptible to injection. For each user-controllable input that the adversary suspects is vulnerable to SQL injection, attempt to inject the values determined in the previous step. If an error does not occur, then the adversary knows that the SQL injection was successful."
+                ],
+                "Technique": [
+                  "Use web browser to inject input through text fields or through HTTP GET parameters.",
+                  "Use a web application debugging tool such as Tamper Data, TamperIE, WebScarab,etc. to modify HTTP POST parameters, hidden fields, non-freeform fields, etc.",
+                  "Use network-level packet injection tools such as netcat to inject input",
+                  "Use modified client (modified by reverse engineering) to inject input."
+                ]
+              },
+              {
+                "Step": [
+                  "4"
+                ],
+                "Phase": [
+                  "Experiment"
+                ],
+                "Description": [
+                  "[Determine database type] Determines the type of the database, such as MS SQL Server or Oracle or MySQL, using logical conditions as part of the injected queries"
+                ],
+                "Technique": [
+                  "Try injecting a string containing char(0x31)=char(0x31) (this evaluates to 1=1 in SQL Server only)",
+                  "Try injecting a string containing 0x313D31 (this evaluates to 1=1 in MySQL only)",
+                  "Inject other database-specific commands into input fields susceptible to SQL Injection. The adversary can determine the type of database that is running by checking whether the query executed successfully or not (i.e. whether the adversary received a normal response from the server or not)."
+                ]
+              },
+              {
+                "Step": [
+                  "5"
+                ],
+                "Phase": [
+                  "Exploit"
+                ],
+                "Description": [
+                  "[Extract information about database schema] Extract information about database schema by getting the database to answer yes/no questions about the schema."
+                ],
+                "Technique": [
+                  "Automatically extract database schema using a tool such as Absinthe.",
+                  "Manually perform the blind SQL Injection to extract desired information about the database schema."
+                ]
+              },
+              {
+                "Step": [
+                  "6"
+                ],
+                "Phase": [
+                  "Exploit"
+                ],
+                "Description": [
+                  "[Exploit SQL Injection vulnerability] Use the information obtained in the previous steps to successfully inject the database in order to bypass checks or modify, add, retrieve or delete data from the database"
+                ],
+                "Technique": [
+                  "Use information about how to inject commands into SQL queries as well as information about the database schema to execute attacks such as dropping tables, inserting records, etc."
+                ]
+              }
+            ]
+          }
+        ],
+        "Prerequisites": [
+          {
+            "Prerequisite": [
+              "SQL queries used by the application to store, retrieve or modify data.",
+              "User-controllable input that is not properly validated by the application as part of SQL queries."
+            ]
+          }
+        ],
+        "Skills_Required": [
+          {
+            "Skill": [
+              {
+                "@Level": "Medium",
+                "#text": "Determining the database type and version, as well as the right number and type of parameters to the query being injected in the absence of error messages requires greater skill than reverse-engineering database error messages."
+              }
+            ]
+          }
+        ],
+        "Resources_Required": [
+          {
+            "Resource": [
+              "None: No specialized resources are required to execute this type of attack."
+            ]
+          }
+        ],
+        "Indicators": [
+          {
+            "Indicator": [
+              "The only indicators of successful Blind SQL Injection are the application or database logs that show similar queries with slightly differing logical conditions that increase in complexity over time. However, this requires extensive logging as well as knowledge of the queries that can be used to perform such injection and return meaningful information from the database."
+            ]
+          }
+        ],
+        "Consequences": [
+          {
+            "Consequence": [
+              {
+                "Scope": [
+                  "Integrity"
+                ],
+                "Impact": [
+                  "Modify Data"
+                ]
+              },
+              {
+                "Scope": [
+                  "Confidentiality"
+                ],
+                "Impact": [
+                  "Read Data"
+                ]
+              },
+              {
+                "Scope": [
+                  "Confidentiality",
+                  "Integrity",
+                  "Availability"
+                ],
+                "Impact": [
+                  "Execute Unauthorized Commands"
+                ],
+                "Note": [
+                  "Run Arbitrary Code"
+                ]
+              }
+            ]
+          }
+        ],
+        "Mitigations": [
+          {
+            "Mitigation": [
+              "Security by Obscurity is not a solution to preventing SQL Injection. Rather than suppress error messages and exceptions, the application must handle them gracefully, returning either a custom error page or redirecting the user to a default page, without revealing any information about the database or the application internals.",
+              "Strong input validation - All user-controllable input must be validated and filtered for illegal characters as well as SQL content. Keywords such as UNION, SELECT or INSERT must be filtered in addition to characters such as a single-quote(') or SQL-comments (--) based on the context in which they appear."
+            ]
+          }
+        ],
+        "Example_Instances": [
+          {
+            "Example": [
+              {
+                "#xhtml": "<p>An adversary may try entering something like \"username' AND 1=1; --\" in an input field. If the result is the same as when the adversary entered \"username\" in the field, then the adversary knows that the application is vulnerable to SQL Injection. The adversary can then ask yes/no questions from the database server to extract information from it. For example, the adversary can extract table names from a database using the following types of queries:</p>\n               <div style=\"margin-left:1em;\" class=\"informative\">\"username' AND ascii(lower(substring((SELECT TOP 1 name FROM sysobjects WHERE xtype='U'), 1, 1))) &gt; 108\".</div>\n               <p>If the above query executes properly, then the adversary knows that the first character in a table name in the database is a letter between m and z. If it doesn't, then the adversary knows that the character must be between a and l (assuming of course that table names only contain alphabetic characters). By performing a binary search on all character positions, the adversary can determine all table names in the database. Subsequently, the adversary may execute an actual attack and send something like:</p>\n               <div style=\"margin-left:1em;\" class=\"informative\">\"username'; DROP TABLE trades; --</div>"
+              },
+              "In the PHP application TimeSheet 1.1, an adversary can successfully retrieve username and password hashes from the database using Blind SQL Injection. If the adversary is aware of the local path structure, the adversary can also remotely execute arbitrary code and write the output of the injected queries to the local path. Blind SQL Injection is possible since the application does not properly sanitize the $_POST['username'] variable in the login.php file. See also: CVE-2006-4705"
+            ]
+          }
+        ],
+        "Related_Weaknesses": [
+          {
+            "Related_Weakness": [
+              {
+                "@CWE_ID": "89"
+              },
+              {
+                "@CWE_ID": "209"
+              },
+              {
+                "@CWE_ID": "74"
+              },
+              {
+                "@CWE_ID": "20"
+              },
+              {
+                "@CWE_ID": "697"
+              },
+              {
+                "@CWE_ID": "707"
+              }
+            ]
+          }
+        ],
+        "Taxonomy_Mappings": [
+          {
+            "Taxonomy_Mapping": [
+              {
+                "@Taxonomy_Name": "OWASP Attacks",
+                "Entry_Name": [
+                  "Blind SQL Injection"
+                ]
+              }
+            ]
+          }
+        ],
+        "Content_History": [
+          {
+            "Submission": [
+              {
+                "Submission_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Submission_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Submission_Date": [
+                  "2014-06-23"
+                ]
+              }
+            ],
+            "Modification": [
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2017-01-09"
+                ],
+                "Modification_Comment": [
+                  "Updated Related_Attack_Patterns"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2017-08-04"
+                ],
+                "Modification_Comment": [
+                  "Updated Attack_Phases, Description, Description Summary, Examples-Instances, Payload_Activation_Impact, Resources_Required"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2018-07-31"
+                ],
+                "Modification_Comment": [
+                  "Updated References, Related_Weaknesses"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2020-07-30"
+                ],
+                "Modification_Comment": [
+                  "Updated Execution_Flow"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2020-12-17"
+                ],
+                "Modification_Comment": [
+                  "Updated Taxonomy_Mappings"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2021-06-24"
+                ],
+                "Modification_Comment": [
+                  "Updated Related_Weaknesses"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2022-09-29"
+                ],
+                "Modification_Comment": [
+                  "Updated Example_Instances, Execution_Flow"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "references": [],
+    "objects": {
+      "parties": [
+        {
+          "id": "party:mitre-capec",
+          "name": "MITRE CAPEC Program",
+          "party_kind": "organization"
+        }
+      ],
+      "attack_patterns": [
+        {
+          "id": "attack-pattern:capec-7",
+          "name": "Blind SQL Injection",
+          "description": "Blind SQL Injection results from an insufficient mitigation for SQL Injection. Although suppressing database error messages are considered best practice, the suppression alone is not sufficient to prevent SQL Injection. Blind SQL Injection is a form of SQL Injection that overcomes the lack of error messages. Without the error messages that facilitate SQL Injection, the adversary constructs input strings that probe the target through simple Boolean SQL expressions. The adversary can determine if the syntax and structure of the injection was successful based on whether the query was executed or not. Applied iteratively, the adversary determines how and where the target is vulnerable to SQL Injection.",
+          "catalog_ref": "CAPEC-7"
+        }
+      ],
+      "weaknesses": [
+        {
+          "id": "weakness:cwe-20",
+          "catalog_ref": "CWE-20"
+        },
+        {
+          "id": "weakness:cwe-74",
+          "catalog_ref": "CWE-74"
+        },
+        {
+          "id": "weakness:cwe-89",
+          "catalog_ref": "CWE-89"
+        },
+        {
+          "id": "weakness:cwe-209",
+          "catalog_ref": "CWE-209"
+        },
+        {
+          "id": "weakness:cwe-697",
+          "catalog_ref": "CWE-697"
+        },
+        {
+          "id": "weakness:cwe-707",
+          "catalog_ref": "CWE-707"
+        }
+      ],
+      "assertions": [
+        {
+          "id": "assertion:capec-7-related-weakness-cwe-89",
+          "name": "CWE-89 is exploited by CAPEC-7",
+          "subject": "weakness:cwe-89",
+          "predicate": "exploited_by",
+          "object": "attack-pattern:capec-7",
+          "assertion_status": "proposed",
+          "asserted_by": "party:mitre-capec",
+          "generated_by": "tmodel CAPEC import: CAPEC 3.9 (2023-01-24), capec_v3.9-sample.xml, SHA-256 0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
+        },
+        {
+          "id": "assertion:capec-7-related-weakness-cwe-209",
+          "name": "CWE-209 is exploited by CAPEC-7",
+          "subject": "weakness:cwe-209",
+          "predicate": "exploited_by",
+          "object": "attack-pattern:capec-7",
+          "assertion_status": "proposed",
+          "asserted_by": "party:mitre-capec",
+          "generated_by": "tmodel CAPEC import: CAPEC 3.9 (2023-01-24), capec_v3.9-sample.xml, SHA-256 0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
+        },
+        {
+          "id": "assertion:capec-7-related-weakness-cwe-74",
+          "name": "CWE-74 is exploited by CAPEC-7",
+          "subject": "weakness:cwe-74",
+          "predicate": "exploited_by",
+          "object": "attack-pattern:capec-7",
+          "assertion_status": "proposed",
+          "asserted_by": "party:mitre-capec",
+          "generated_by": "tmodel CAPEC import: CAPEC 3.9 (2023-01-24), capec_v3.9-sample.xml, SHA-256 0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
+        },
+        {
+          "id": "assertion:capec-7-related-weakness-cwe-20",
+          "name": "CWE-20 is exploited by CAPEC-7",
+          "subject": "weakness:cwe-20",
+          "predicate": "exploited_by",
+          "object": "attack-pattern:capec-7",
+          "assertion_status": "proposed",
+          "asserted_by": "party:mitre-capec",
+          "generated_by": "tmodel CAPEC import: CAPEC 3.9 (2023-01-24), capec_v3.9-sample.xml, SHA-256 0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
+        },
+        {
+          "id": "assertion:capec-7-related-weakness-cwe-697",
+          "name": "CWE-697 is exploited by CAPEC-7",
+          "subject": "weakness:cwe-697",
+          "predicate": "exploited_by",
+          "object": "attack-pattern:capec-7",
+          "assertion_status": "proposed",
+          "asserted_by": "party:mitre-capec",
+          "generated_by": "tmodel CAPEC import: CAPEC 3.9 (2023-01-24), capec_v3.9-sample.xml, SHA-256 0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
+        },
+        {
+          "id": "assertion:capec-7-related-weakness-cwe-707",
+          "name": "CWE-707 is exploited by CAPEC-7",
+          "subject": "weakness:cwe-707",
+          "predicate": "exploited_by",
+          "object": "attack-pattern:capec-7",
+          "assertion_status": "proposed",
+          "asserted_by": "party:mitre-capec",
+          "generated_by": "tmodel CAPEC import: CAPEC 3.9 (2023-01-24), capec_v3.9-sample.xml, SHA-256 0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
+        }
+      ]
+    }
+  },
+  "CAPEC-23": {
+    "catalog": {
+      "name": "CAPEC",
+      "version": "3.9",
+      "date": "2023-01-24",
+      "schema": "3.5",
+      "file": "capec_v3.9-sample.xml",
+      "sha256": "0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e",
+      "attack_patterns": 13,
+      "categories": 3,
+      "views": 3,
+      "references": 16,
+      "unknown_fields": 0,
+      "notice": "Copyright © 2007-2023, The MITRE Corporation. CAPEC and the CAPEC logo are trademarks of The MITRE Corporation.",
+      "license": "The MITRE Corporation (MITRE) hereby grants you a non-exclusive, royalty-free license to use Common Attack Pattern Enumeration and Classification (CAPEC™) for research, development, and commercial purposes. Any copy you make for such purposes is authorized provided that you reproduce MITRE’s copyright designation and this license in any such copy.",
+      "terms_url": "https://capec.mitre.org/about/termsofuse.html"
+    },
+    "id": "CAPEC-23",
+    "entry": {
+      "id": "CAPEC-23",
+      "kind": "Attack_Pattern",
+      "name": "File Content Injection",
+      "status": "Draft",
+      "abstraction": "Standard",
+      "view_type": null,
+      "likelihood": "High",
+      "severity": "Very High",
+      "description": "An adversary poisons files with a malicious payload (targeting the file systems accessible by the target software), which may be passed through by standard channels such as via email, and standard web content like PDF and multimedia files. The adversary exploits known vulnerabilities or handling routines in the target processes, in order to exploit the host's trust in executing remote content, including binary files.",
+      "alternate_terms": [],
+      "related_attack_patterns": [
+        {
+          "nature": "ChildOf",
+          "id": "CAPEC-242"
+        },
+        {
+          "nature": "CanAlsoBe",
+          "id": "CAPEC-165"
+        }
+      ],
+      "weaknesses": [
+        "CWE-20"
+      ],
+      "attack_techniques": [],
+      "steps": 0,
+      "mitigations": 6,
+      "examples": 1,
+      "url": "https://capec.mitre.org/data/definitions/23.html",
+      "fields": {
+        "@ID": "23",
+        "@Name": "File Content Injection",
+        "@Abstraction": "Standard",
+        "@Status": "Draft",
+        "Description": [
+          "An adversary poisons files with a malicious payload (targeting the file systems accessible by the target software), which may be passed through by standard channels such as via email, and standard web content like PDF and multimedia files. The adversary exploits known vulnerabilities or handling routines in the target processes, in order to exploit the host's trust in executing remote content, including binary files."
+        ],
+        "Extended_Description": [
+          {
+            "#xhtml": "<p>Vulnerabilities of this type have been found in a wide variety of commercial applications from Microsoft Office to Adobe Acrobat and Apple Safari web browser. When the adversary knows the standard handling routines and can identify vulnerabilities and entry points, they can be exploited by otherwise seemingly normal content. Once the attack is executed, the adversary's program can access relative directories such as C:\\Program Files or other standard system directories to launch further attacks. In a worst case scenario, these programs are combined with other propagation logic and work as a virus.</p>"
+          }
+        ],
+        "Likelihood_Of_Attack": [
+          "High"
+        ],
+        "Typical_Severity": [
+          "Very High"
+        ],
+        "Related_Attack_Patterns": [
+          {
+            "Related_Attack_Pattern": [
+              {
+                "@Nature": "ChildOf",
+                "@CAPEC_ID": "242"
+              },
+              {
+                "@Nature": "CanAlsoBe",
+                "@CAPEC_ID": "165"
+              }
+            ]
+          }
+        ],
+        "Prerequisites": [
+          {
+            "Prerequisite": [
+              "The target software must consume files.",
+              "The adversary must have access to modify files that the target software will consume."
+            ]
+          }
+        ],
+        "Skills_Required": [
+          {
+            "Skill": [
+              {
+                "@Level": "Medium",
+                "#text": "How to poison a file with malicious payload that will exploit a vulnerability when the file is opened. The adversary must also know how to place the file onto a system where it will be opened by an unsuspecting party, or force the file to be opened."
+              }
+            ]
+          }
+        ],
+        "Consequences": [
+          {
+            "Consequence": [
+              {
+                "Scope": [
+                  "Confidentiality",
+                  "Integrity",
+                  "Availability"
+                ],
+                "Impact": [
+                  "Execute Unauthorized Commands"
+                ],
+                "Note": [
+                  "Run Arbitrary Code"
+                ]
+              }
+            ]
+          }
+        ],
+        "Mitigations": [
+          {
+            "Mitigation": [
+              "Design: Enforce principle of least privilege",
+              "Design: Validate all input for content including files. Ensure that if files and remote content must be accepted that once accepted, they are placed in a sandbox type location so that lower assurance clients cannot write up to higher assurance processes (like Web server processes for example)",
+              "Design: Execute programs with constrained privileges, so parent process does not open up further vulnerabilities. Ensure that all directories, temporary directories and files, and memory are executing with limited privileges to protect against remote execution.",
+              "Design: Proxy communication to host, so that communications are terminated at the proxy, sanitizing the requests before forwarding to server host.",
+              "Implementation: Virus scanning on host",
+              "Implementation: Host integrity monitoring for critical files, directories, and processes. The goal of host integrity monitoring is to be aware when a security issue has occurred so that incident response and other forensic activities can begin."
+            ]
+          }
+        ],
+        "Example_Instances": [
+          {
+            "Example": [
+              {
+                "#xhtml": "<p>PHP is a very popular language used for developing web applications. When PHP is used with global variables, a vulnerability may be opened that affects the file system. A standard HTML form that allows for remote users to upload files, may also place those files in a public directory where the adversary can directly access and execute them through a browser. This vulnerability allows remote adversaries to execute arbitrary code on the system, and can result in the adversary being able to erase intrusion evidence from system and application logs.</p>"
+              }
+            ]
+          }
+        ],
+        "Related_Weaknesses": [
+          {
+            "Related_Weakness": [
+              {
+                "@CWE_ID": "20"
+              }
+            ]
+          }
+        ],
+        "References": [
+          {
+            "Reference": [
+              {
+                "@External_Reference_ID": "REF-1"
+              }
+            ]
+          }
+        ],
+        "Content_History": [
+          {
+            "Submission": [
+              {
+                "Submission_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Submission_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Submission_Date": [
+                  "2014-06-23"
+                ]
+              }
+            ],
+            "Modification": [
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2015-12-07"
+                ],
+                "Modification_Comment": [
+                  "Updated Related_Attack_Patterns"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2017-08-04"
+                ],
+                "Modification_Comment": [
+                  "Updated Attack_Prerequisites, Description Summary, Examples-Instances, Payload_Activation_Impact"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2018-07-31"
+                ],
+                "Modification_Comment": [
+                  "Updated Attacker_Skills_or_Knowledge_Required"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2019-04-04"
+                ],
+                "Modification_Comment": [
+                  "Updated Related_Weaknesses"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2020-07-30"
+                ],
+                "Modification_Comment": [
+                  "Updated Example_Instances"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2020-12-17"
+                ],
+                "Modification_Comment": [
+                  "Updated Example_Instances, References"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2022-02-22"
+                ],
+                "Modification_Comment": [
+                  "Updated Description, Extended_Description"
+                ]
+              }
+            ],
+            "Previous_Entry_Name": [
+              {
+                "@Date": "2015-12-07",
+                "#text": "File System Function Injection, Content Based"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "references": [
+      {
+        "id": "REF-1",
+        "section": null,
+        "resolved": true,
+        "title": "Exploiting Software: How to Break Code",
+        "authors": [
+          "G. Hoglund",
+          "G. McGraw"
+        ],
+        "edition": null,
+        "publication": null,
+        "publisher": "Addison-Wesley",
+        "year": "2004",
+        "month": "--02",
+        "day": null,
+        "url": null,
+        "url_date": null
+      }
+    ],
+    "objects": {
+      "parties": [
+        {
+          "id": "party:mitre-capec",
+          "name": "MITRE CAPEC Program",
+          "party_kind": "organization"
+        }
+      ],
+      "attack_patterns": [
+        {
+          "id": "attack-pattern:capec-23",
+          "name": "File Content Injection",
+          "description": "An adversary poisons files with a malicious payload (targeting the file systems accessible by the target software), which may be passed through by standard channels such as via email, and standard web content like PDF and multimedia files. The adversary exploits known vulnerabilities or handling routines in the target processes, in order to exploit the host's trust in executing remote content, including binary files.",
+          "catalog_ref": "CAPEC-23"
+        }
+      ],
+      "weaknesses": [
+        {
+          "id": "weakness:cwe-20",
+          "catalog_ref": "CWE-20"
+        }
+      ],
+      "assertions": [
+        {
+          "id": "assertion:capec-23-related-weakness-cwe-20",
+          "name": "CWE-20 is exploited by CAPEC-23",
+          "subject": "weakness:cwe-20",
+          "predicate": "exploited_by",
+          "object": "attack-pattern:capec-23",
+          "assertion_status": "proposed",
+          "asserted_by": "party:mitre-capec",
+          "generated_by": "tmodel CAPEC import: CAPEC 3.9 (2023-01-24), capec_v3.9-sample.xml, SHA-256 0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
+        }
+      ]
+    }
+  },
+  "CAPEC-63": {
+    "catalog": {
+      "name": "CAPEC",
+      "version": "3.9",
+      "date": "2023-01-24",
+      "schema": "3.5",
+      "file": "capec_v3.9-sample.xml",
+      "sha256": "0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e",
+      "attack_patterns": 13,
+      "categories": 3,
+      "views": 3,
+      "references": 16,
+      "unknown_fields": 0,
+      "notice": "Copyright © 2007-2023, The MITRE Corporation. CAPEC and the CAPEC logo are trademarks of The MITRE Corporation.",
+      "license": "The MITRE Corporation (MITRE) hereby grants you a non-exclusive, royalty-free license to use Common Attack Pattern Enumeration and Classification (CAPEC™) for research, development, and commercial purposes. Any copy you make for such purposes is authorized provided that you reproduce MITRE’s copyright designation and this license in any such copy.",
+      "terms_url": "https://capec.mitre.org/about/termsofuse.html"
+    },
+    "id": "CAPEC-63",
+    "entry": {
+      "id": "CAPEC-63",
+      "kind": "Attack_Pattern",
+      "name": "Cross-Site Scripting (XSS)",
+      "status": "Draft",
+      "abstraction": "Standard",
+      "view_type": null,
+      "likelihood": "High",
+      "severity": "Very High",
+      "description": "An adversary embeds malicious scripts in content that will be served to web browsers. The goal of the attack is for the target software, the client-side browser, to execute the script with the users' privilege level. An attack of this type exploits a programs' vulnerabilities that are brought on by allowing remote hosts to execute code and scripts. Web browsers, for example, have some simple security controls in place, but if a remote attacker is allowed to execute scripts (through injecting them in to user-generated content like bulletin boards) then these controls may be bypassed. Further, these attacks are very difficult for an end user to detect.",
+      "alternate_terms": [],
+      "related_attack_patterns": [
+        {
+          "nature": "ChildOf",
+          "id": "CAPEC-242"
+        },
+        {
+          "nature": "CanPrecede",
+          "id": "CAPEC-107"
+        }
+      ],
+      "weaknesses": [
+        "CWE-79",
+        "CWE-20"
+      ],
+      "attack_techniques": [],
+      "steps": 5,
+      "mitigations": 8,
+      "examples": 1,
+      "url": "https://capec.mitre.org/data/definitions/63.html",
+      "fields": {
+        "@ID": "63",
+        "@Name": "Cross-Site Scripting (XSS)",
+        "@Abstraction": "Standard",
+        "@Status": "Draft",
+        "Description": [
+          "An adversary embeds malicious scripts in content that will be served to web browsers. The goal of the attack is for the target software, the client-side browser, to execute the script with the users' privilege level. An attack of this type exploits a programs' vulnerabilities that are brought on by allowing remote hosts to execute code and scripts. Web browsers, for example, have some simple security controls in place, but if a remote attacker is allowed to execute scripts (through injecting them in to user-generated content like bulletin boards) then these controls may be bypassed. Further, these attacks are very difficult for an end user to detect."
+        ],
+        "Likelihood_Of_Attack": [
+          "High"
+        ],
+        "Typical_Severity": [
+          "Very High"
+        ],
+        "Related_Attack_Patterns": [
+          {
+            "Related_Attack_Pattern": [
+              {
+                "@Nature": "ChildOf",
+                "@CAPEC_ID": "242"
+              },
+              {
+                "@Nature": "CanPrecede",
+                "@CAPEC_ID": "107"
+              }
+            ]
+          }
+        ],
+        "Execution_Flow": [
+          {
+            "Attack_Step": [
+              {
+                "Step": [
+                  "1"
+                ],
+                "Phase": [
+                  "Explore"
+                ],
+                "Description": [
+                  "[Survey the application for user-controllable inputs] Using a browser or an automated tool, an attacker follows all public links and actions on a web site. They record all the links, the forms, the resources accessed and all other potential entry-points for the web application."
+                ],
+                "Technique": [
+                  "Use a spidering tool to follow and record all links and analyze the web pages to find entry points. Make special note of any links that include parameters in the URL.",
+                  "Use a proxy tool to record all links visited during a manual traversal of the web application.",
+                  "Use a browser to manually explore the website and analyze how it is constructed. Many browsers' plugins are available to facilitate the analysis or automate the discovery."
+                ]
+              },
+              {
+                "Step": [
+                  "2"
+                ],
+                "Phase": [
+                  "Experiment"
+                ],
+                "Description": [
+                  "[Probe identified potential entry points for XSS vulnerability] The attacker uses the entry points gathered in the \"Explore\" phase as a target list and injects various common script payloads to determine if an entry point actually represents a vulnerability and to characterize the extent to which the vulnerability can be exploited."
+                ],
+                "Technique": [
+                  "Use a list of XSS probe strings to inject script in parameters of known URLs. If possible, the probe strings contain a unique identifier.",
+                  "Use a proxy tool to record results of manual input of XSS probes in known URLs.",
+                  "Use a list of XSS probe strings to inject script into UI entry fields. If possible, the probe strings contain a unique identifier.",
+                  "Use a list of XSS probe strings to inject script into resources accessed by the application. If possible, the probe strings contain a unique identifier."
+                ]
+              },
+              {
+                "Step": [
+                  "3"
+                ],
+                "Phase": [
+                  "Exploit"
+                ],
+                "Description": [
+                  "[Steal session IDs, credentials, page content, etc.] As the attacker succeeds in exploiting the vulnerability, they can choose to steal user's credentials in order to reuse or to analyze them later on."
+                ],
+                "Technique": [
+                  "Develop malicious JavaScript that is injected through vectors identified during the Experiment Phase and loaded by the victim's browser and sends document information to the attacker.",
+                  "Develop malicious JavaScript that injected through vectors identified during the Experiment Phase and takes commands from an attacker's server and then causes the browser to execute appropriately."
+                ]
+              },
+              {
+                "Step": [
+                  "4"
+                ],
+                "Phase": [
+                  "Exploit"
+                ],
+                "Description": [
+                  "[Forceful browsing] When the attacker targets the current application or another one (through CSRF vulnerabilities), the user will then be the one who perform the attacks without being aware of it. These attacks are mostly targeting application logic flaws, but it can also be used to create a widespread attack against a particular website on the user's current network (Internet or not)."
+                ],
+                "Technique": [
+                  "Develop malicious JavaScript that is injected through vectors identified during the Experiment Phase and loaded by the victim's browser and performs actions on the same web site",
+                  "Develop malicious JavaScript that injected through vectors identified during the Experiment Phase and takes commands from an attacker's server and then causes the browser to execute request to other web sites (especially the web applications that have CSRF vulnerabilities)."
+                ]
+              },
+              {
+                "Step": [
+                  "5"
+                ],
+                "Phase": [
+                  "Exploit"
+                ],
+                "Description": [
+                  "[Content spoofing] By manipulating the content, the attacker targets the information that the user would like to get from the website."
+                ],
+                "Technique": [
+                  "Develop malicious JavaScript that is injected through vectors identified during the Experiment Phase and loaded by the victim's browser and exposes attacker-modified invalid information to the user on the current web page."
+                ]
+              }
+            ]
+          }
+        ],
+        "Prerequisites": [
+          {
+            "Prerequisite": [
+              "Target client software must be a client that allows scripting communication from remote hosts, such as a JavaScript-enabled Web Browser."
+            ]
+          }
+        ],
+        "Skills_Required": [
+          {
+            "Skill": [
+              {
+                "@Level": "Low",
+                "#text": "To achieve a redirection and use of less trusted source, an attacker can simply place a script in bulletin board, blog, wiki, or other user-generated content site that are echoed back to other client machines."
+              },
+              {
+                "@Level": "High",
+                "#text": "Exploiting a client side vulnerability to inject malicious scripts into the browser's executable process."
+              }
+            ]
+          }
+        ],
+        "Resources_Required": [
+          {
+            "Resource": [
+              "Ability to deploy a custom hostile service for access by targeted clients. Ability to communicate synchronously or asynchronously with client machine."
+            ]
+          }
+        ],
+        "Consequences": [
+          {
+            "Consequence": [
+              {
+                "Scope": [
+                  "Confidentiality",
+                  "Integrity",
+                  "Availability"
+                ],
+                "Impact": [
+                  "Execute Unauthorized Commands"
+                ],
+                "Note": [
+                  "Run Arbitrary Code"
+                ]
+              },
+              {
+                "Scope": [
+                  "Integrity"
+                ],
+                "Impact": [
+                  "Modify Data"
+                ]
+              },
+              {
+                "Scope": [
+                  "Confidentiality"
+                ],
+                "Impact": [
+                  "Read Data"
+                ]
+              }
+            ]
+          }
+        ],
+        "Mitigations": [
+          {
+            "Mitigation": [
+              "Design: Use browser technologies that do not allow client side scripting.",
+              "Design: Utilize strict type, character, and encoding enforcement",
+              "Design: Server side developers should not proxy content via XHR or other means, if a http proxy for remote content is setup on the server side, the client's browser has no way of discerning where the data is originating from.",
+              "Implementation: Ensure all content that is delivered to client is sanitized against an acceptable content specification.",
+              "Implementation: Perform input validation for all remote content.",
+              "Implementation: Perform output validation for all remote content.",
+              "Implementation: Session tokens for specific host",
+              "Implementation: Patching software. There are many attack vectors for XSS on the client side and the server side. Many vulnerabilities are fixed in service packs for browser, web servers, and plug in technologies, staying current on patch release that deal with XSS countermeasures mitigates this."
+            ]
+          }
+        ],
+        "Example_Instances": [
+          {
+            "Example": [
+              {
+                "#xhtml": "<p>Classic phishing attacks lure users to click on content that appears trustworthy, such as logos, and links that seem to go to their trusted financial institutions and online auction sites. But instead the attacker appends malicious scripts into the otherwise innocent appearing resources. The HTML source for a standard phishing attack looks like this:</p>\n               <div style=\"margin-left:1em;\" class=\"attack\">&lt;a href=\"www.exampletrustedsite.com?Name=&lt;script&gt;maliciousscript&lt;/script&gt;\"&gt;Trusted Site&lt;/a&gt;</div>\n               <p>When the user clicks the link, the appended script also executes on the local user's machine.</p>"
+              }
+            ]
+          }
+        ],
+        "Related_Weaknesses": [
+          {
+            "Related_Weakness": [
+              {
+                "@CWE_ID": "79"
+              },
+              {
+                "@CWE_ID": "20"
+              }
+            ]
+          }
+        ],
+        "Taxonomy_Mappings": [
+          {
+            "Taxonomy_Mapping": [
+              {
+                "@Taxonomy_Name": "WASC",
+                "Entry_ID": [
+                  "08"
+                ],
+                "Entry_Name": [
+                  "Cross-Site Scripting"
+                ]
+              },
+              {
+                "@Taxonomy_Name": "OWASP Attacks",
+                "Entry_Name": [
+                  "Cross Site Scripting (XSS)"
+                ]
+              }
+            ]
+          }
+        ],
+        "References": [
+          {
+            "Reference": [
+              {
+                "@External_Reference_ID": "REF-1"
+              }
+            ]
+          }
+        ],
+        "Content_History": [
+          {
+            "Submission": [
+              {
+                "Submission_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Submission_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Submission_Date": [
+                  "2014-06-23"
+                ]
+              }
+            ],
+            "Modification": [
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2017-05-01"
+                ],
+                "Modification_Comment": [
+                  "Updated Activation_Zone, Attack_Prerequisites, Description Summary, Examples-Instances, Payload, Payload_Activation_Impact, Related_Attack_Patterns, Related_Weaknesses, Resources_Required, Typical_Likelihood_of_Exploit"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2020-07-30"
+                ],
+                "Modification_Comment": [
+                  "Updated Execution_Flow"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2020-12-17"
+                ],
+                "Modification_Comment": [
+                  "Updated Related_Attack_Patterns, Taxonomy_Mappings"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2022-09-29"
+                ],
+                "Modification_Comment": [
+                  "Updated Example_Instances"
+                ]
+              }
+            ],
+            "Previous_Entry_Name": [
+              {
+                "@Date": "2017-05-01",
+                "#text": "Simple Script Injection"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "references": [
+      {
+        "id": "REF-1",
+        "section": null,
+        "resolved": true,
+        "title": "Exploiting Software: How to Break Code",
+        "authors": [
+          "G. Hoglund",
+          "G. McGraw"
+        ],
+        "edition": null,
+        "publication": null,
+        "publisher": "Addison-Wesley",
+        "year": "2004",
+        "month": "--02",
+        "day": null,
+        "url": null,
+        "url_date": null
+      }
+    ],
+    "objects": {
+      "parties": [
+        {
+          "id": "party:mitre-capec",
+          "name": "MITRE CAPEC Program",
+          "party_kind": "organization"
+        }
+      ],
+      "attack_patterns": [
+        {
+          "id": "attack-pattern:capec-63",
+          "name": "Cross-Site Scripting (XSS)",
+          "description": "An adversary embeds malicious scripts in content that will be served to web browsers. The goal of the attack is for the target software, the client-side browser, to execute the script with the users' privilege level. An attack of this type exploits a programs' vulnerabilities that are brought on by allowing remote hosts to execute code and scripts. Web browsers, for example, have some simple security controls in place, but if a remote attacker is allowed to execute scripts (through injecting them in to user-generated content like bulletin boards) then these controls may be bypassed. Further, these attacks are very difficult for an end user to detect.",
+          "catalog_ref": "CAPEC-63"
+        }
+      ],
+      "weaknesses": [
+        {
+          "id": "weakness:cwe-20",
+          "catalog_ref": "CWE-20"
+        },
+        {
+          "id": "weakness:cwe-79",
+          "catalog_ref": "CWE-79"
+        }
+      ],
+      "assertions": [
+        {
+          "id": "assertion:capec-63-related-weakness-cwe-79",
+          "name": "CWE-79 is exploited by CAPEC-63",
+          "subject": "weakness:cwe-79",
+          "predicate": "exploited_by",
+          "object": "attack-pattern:capec-63",
+          "assertion_status": "proposed",
+          "asserted_by": "party:mitre-capec",
+          "generated_by": "tmodel CAPEC import: CAPEC 3.9 (2023-01-24), capec_v3.9-sample.xml, SHA-256 0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
+        },
+        {
+          "id": "assertion:capec-63-related-weakness-cwe-20",
+          "name": "CWE-20 is exploited by CAPEC-63",
+          "subject": "weakness:cwe-20",
+          "predicate": "exploited_by",
+          "object": "attack-pattern:capec-63",
+          "assertion_status": "proposed",
+          "asserted_by": "party:mitre-capec",
+          "generated_by": "tmodel CAPEC import: CAPEC 3.9 (2023-01-24), capec_v3.9-sample.xml, SHA-256 0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
+        }
+      ]
+    }
+  },
+  "CAPEC-66": {
+    "catalog": {
+      "name": "CAPEC",
+      "version": "3.9",
+      "date": "2023-01-24",
+      "schema": "3.5",
+      "file": "capec_v3.9-sample.xml",
+      "sha256": "0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e",
+      "attack_patterns": 13,
+      "categories": 3,
+      "views": 3,
+      "references": 16,
+      "unknown_fields": 0,
+      "notice": "Copyright © 2007-2023, The MITRE Corporation. CAPEC and the CAPEC logo are trademarks of The MITRE Corporation.",
+      "license": "The MITRE Corporation (MITRE) hereby grants you a non-exclusive, royalty-free license to use Common Attack Pattern Enumeration and Classification (CAPEC™) for research, development, and commercial purposes. Any copy you make for such purposes is authorized provided that you reproduce MITRE’s copyright designation and this license in any such copy.",
+      "terms_url": "https://capec.mitre.org/about/termsofuse.html"
+    },
+    "id": "CAPEC-66",
+    "entry": {
+      "id": "CAPEC-66",
+      "kind": "Attack_Pattern",
+      "name": "SQL Injection",
+      "status": "Draft",
+      "abstraction": "Standard",
+      "view_type": null,
+      "likelihood": "High",
+      "severity": "High",
+      "description": "This attack exploits target software that constructs SQL statements based on user input. An attacker crafts input strings so that when the target software constructs SQL statements based on the input, the resulting SQL statement performs actions other than those the application intended. SQL Injection results from failure of the application to appropriately validate input.",
+      "alternate_terms": [],
+      "related_attack_patterns": [
+        {
+          "nature": "ChildOf",
+          "id": "CAPEC-248"
+        }
+      ],
+      "weaknesses": [
+        "CWE-89",
+        "CWE-1286"
+      ],
+      "attack_techniques": [],
+      "steps": 4,
+      "mitigations": 3,
+      "examples": 1,
+      "url": "https://capec.mitre.org/data/definitions/66.html",
+      "fields": {
+        "@ID": "66",
+        "@Name": "SQL Injection",
+        "@Abstraction": "Standard",
+        "@Status": "Draft",
+        "Description": [
+          "This attack exploits target software that constructs SQL statements based on user input. An attacker crafts input strings so that when the target software constructs SQL statements based on the input, the resulting SQL statement performs actions other than those the application intended. SQL Injection results from failure of the application to appropriately validate input."
+        ],
+        "Extended_Description": [
+          {
+            "#xhtml": "<p>When specially crafted user-controlled input consisting of SQL syntax is used without proper validation as part of SQL queries, it is possible to glean information from the database in ways not envisaged during application design. Depending upon the database and the design of the application, it may also be possible to leverage injection to have the database execute system-related commands of the attackers' choice. SQL Injection enables an attacker to interact directly to the database, thus bypassing the application completely. Successful injection can cause information disclosure as well as ability to add or modify data in the database.</p>"
+          }
+        ],
+        "Likelihood_Of_Attack": [
+          "High"
+        ],
+        "Typical_Severity": [
+          "High"
+        ],
+        "Related_Attack_Patterns": [
+          {
+            "Related_Attack_Pattern": [
+              {
+                "@Nature": "ChildOf",
+                "@CAPEC_ID": "248"
+              }
+            ]
+          }
+        ],
+        "Execution_Flow": [
+          {
+            "Attack_Step": [
+              {
+                "Step": [
+                  "1"
+                ],
+                "Phase": [
+                  "Explore"
+                ],
+                "Description": [
+                  "[Survey application] The attacker first takes an inventory of the functionality exposed by the application."
+                ],
+                "Technique": [
+                  "Spider web sites for all available links",
+                  "Sniff network communications with application using a utility such as WireShark."
+                ]
+              },
+              {
+                "Step": [
+                  "2"
+                ],
+                "Phase": [
+                  "Experiment"
+                ],
+                "Description": [
+                  "[Determine user-controllable input susceptible to injection] Determine the user-controllable input susceptible to injection. For each user-controllable input that the attacker suspects is vulnerable to SQL injection, attempt to inject characters that have special meaning in SQL (such as a single quote character, a double quote character, two hyphens, a parenthesis, etc.). The goal is to create a SQL query with an invalid syntax."
+                ],
+                "Technique": [
+                  "Use web browser to inject input through text fields or through HTTP GET parameters.",
+                  "Use a web application debugging tool such as Tamper Data, TamperIE, WebScarab,etc. to modify HTTP POST parameters, hidden fields, non-freeform fields, etc.",
+                  "Use network-level packet injection tools such as netcat to inject input",
+                  "Use modified client (modified by reverse engineering) to inject input."
+                ]
+              },
+              {
+                "Step": [
+                  "3"
+                ],
+                "Phase": [
+                  "Experiment"
+                ],
+                "Description": [
+                  "[Experiment with SQL Injection vulnerabilities] After determining that a given input is vulnerable to SQL Injection, hypothesize what the underlying query looks like. Iteratively try to add logic to the query to extract information from the database, or to modify or delete information in the database."
+                ],
+                "Technique": [
+                  "Use public resources such as \"SQL Injection Cheat Sheet\" at http://ferruh.mavituna.com/makale/sql-injection-cheatsheet/, and try different approaches for adding logic to SQL queries.",
+                  "Add logic to query, and use detailed error messages from the server to debug the query. For example, if adding a single quote to a query causes an error message, try : \"' OR 1=1; --\", or something else that would syntactically complete a hypothesized query. Iteratively refine the query.",
+                  "Use \"Blind SQL Injection\" techniques to extract information about the database schema.",
+                  "If a denial of service attack is the goal, try stacking queries. This does not work on all platforms (most notably, it does not work on Oracle or MySQL). Examples of inputs to try include: \"'; DROP TABLE SYSOBJECTS; --\" and \"'); DROP TABLE SYSOBJECTS; --\". These particular queries will likely not work because the SYSOBJECTS table is generally protected."
+                ]
+              },
+              {
+                "Step": [
+                  "4"
+                ],
+                "Phase": [
+                  "Exploit"
+                ],
+                "Description": [
+                  "[Exploit SQL Injection vulnerability] After refining and adding various logic to SQL queries, craft and execute the underlying SQL query that will be used to attack the target system. The goal is to reveal, modify, and/or delete database data, using the knowledge obtained in the previous step. This could entail crafting and executing multiple SQL queries if a denial of service attack is the intent."
+                ],
+                "Technique": [
+                  "Craft and Execute underlying SQL query"
+                ]
+              }
+            ]
+          }
+        ],
+        "Prerequisites": [
+          {
+            "Prerequisite": [
+              "SQL queries used by the application to store, retrieve or modify data.",
+              "User-controllable input that is not properly validated by the application as part of SQL queries."
+            ]
+          }
+        ],
+        "Skills_Required": [
+          {
+            "Skill": [
+              {
+                "@Level": "Low",
+                "#text": "It is fairly simple for someone with basic SQL knowledge to perform SQL injection, in general. In certain instances, however, specific knowledge of the database employed may be required."
+              }
+            ]
+          }
+        ],
+        "Resources_Required": [
+          {
+            "Resource": [
+              "None: No specialized resources are required to execute this type of attack."
+            ]
+          }
+        ],
+        "Indicators": [
+          {
+            "Indicator": [
+              "Too many false or invalid queries to the database, especially those caused by malformed input."
+            ]
+          }
+        ],
+        "Consequences": [
+          {
+            "Consequence": [
+              {
+                "Scope": [
+                  "Integrity"
+                ],
+                "Impact": [
+                  "Modify Data"
+                ]
+              },
+              {
+                "Scope": [
+                  "Confidentiality"
+                ],
+                "Impact": [
+                  "Read Data"
+                ]
+              },
+              {
+                "Scope": [
+                  "Confidentiality",
+                  "Integrity",
+                  "Availability"
+                ],
+                "Impact": [
+                  "Execute Unauthorized Commands"
+                ],
+                "Note": [
+                  "Run Arbitrary Code"
+                ]
+              },
+              {
+                "Scope": [
+                  "Confidentiality",
+                  "Access Control",
+                  "Authorization"
+                ],
+                "Impact": [
+                  "Gain Privileges"
+                ]
+              }
+            ]
+          }
+        ],
+        "Mitigations": [
+          {
+            "Mitigation": [
+              "Strong input validation - All user-controllable input must be validated and filtered for illegal characters as well as SQL content. Keywords such as UNION, SELECT or INSERT must be filtered in addition to characters such as a single-quote(') or SQL-comments (--) based on the context in which they appear.",
+              "Use of parameterized queries or stored procedures - Parameterization causes the input to be restricted to certain domains, such as strings or integers, and any input outside such domains is considered invalid and the query fails. Note that SQL Injection is possible even in the presence of stored procedures if the eventual query is constructed dynamically.",
+              "Use of custom error pages - Attackers can glean information about the nature of queries from descriptive error messages. Input validation must be coupled with customized error pages that inform about an error without disclosing information about the database or application."
+            ]
+          }
+        ],
+        "Example_Instances": [
+          {
+            "Example": [
+              "With PHP-Nuke versions 7.9 and earlier, an attacker can successfully access and modify data, including sensitive contents such as usernames and password hashes, and compromise the application through SQL Injection. The protection mechanism against SQL Injection employs a denylist approach to input validation. However, because of an improper denylist, it is possible to inject content such as \"foo'/**/UNION\" or \"foo UNION/**/\" to bypass validation and glean sensitive information from the database. See also: CVE-2006-5525"
+            ]
+          }
+        ],
+        "Related_Weaknesses": [
+          {
+            "Related_Weakness": [
+              {
+                "@CWE_ID": "89"
+              },
+              {
+                "@CWE_ID": "1286"
+              }
+            ]
+          }
+        ],
+        "Taxonomy_Mappings": [
+          {
+            "Taxonomy_Mapping": [
+              {
+                "@Taxonomy_Name": "WASC",
+                "Entry_ID": [
+                  "19"
+                ],
+                "Entry_Name": [
+                  "SQL Injection"
+                ]
+              },
+              {
+                "@Taxonomy_Name": "OWASP Attacks",
+                "Entry_Name": [
+                  "SQL Injection"
+                ]
+              }
+            ]
+          }
+        ],
+        "References": [
+          {
+            "Reference": [
+              {
+                "@External_Reference_ID": "REF-607",
+                "@Section": "Testing for SQL Injection"
+              }
+            ]
+          }
+        ],
+        "Content_History": [
+          {
+            "Submission": [
+              {
+                "Submission_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Submission_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Submission_Date": [
+                  "2014-06-23"
+                ]
+              }
+            ],
+            "Modification": [
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2017-08-04"
+                ],
+                "Modification_Comment": [
+                  "Updated Resources_Required"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2018-07-31"
+                ],
+                "Modification_Comment": [
+                  "Updated References, Related_Weaknesses"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2019-04-04"
+                ],
+                "Modification_Comment": [
+                  "Updated Execution_Flow"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2020-07-30"
+                ],
+                "Modification_Comment": [
+                  "Updated Example_Instances, Related_Weaknesses"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2020-12-17"
+                ],
+                "Modification_Comment": [
+                  "Updated References, Taxonomy_Mappings"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2021-06-24"
+                ],
+                "Modification_Comment": [
+                  "Updated Description"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2022-02-22"
+                ],
+                "Modification_Comment": [
+                  "Updated Description, Extended_Description"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "references": [
+      {
+        "id": "REF-607",
+        "section": "Testing for SQL Injection",
+        "resolved": true,
+        "title": "OWASP Web Security Testing Guide",
+        "authors": [],
+        "edition": null,
+        "publication": null,
+        "publisher": "The Open Web Application Security Project (OWASP)",
+        "year": null,
+        "month": null,
+        "day": null,
+        "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/05-Testing_for_SQL_Injection.html",
+        "url_date": null
+      }
+    ],
+    "objects": {
+      "parties": [
+        {
+          "id": "party:mitre-capec",
+          "name": "MITRE CAPEC Program",
+          "party_kind": "organization"
+        }
+      ],
+      "attack_patterns": [
+        {
+          "id": "attack-pattern:capec-66",
+          "name": "SQL Injection",
+          "description": "This attack exploits target software that constructs SQL statements based on user input. An attacker crafts input strings so that when the target software constructs SQL statements based on the input, the resulting SQL statement performs actions other than those the application intended. SQL Injection results from failure of the application to appropriately validate input.",
+          "catalog_ref": "CAPEC-66"
+        }
+      ],
+      "weaknesses": [
+        {
+          "id": "weakness:cwe-89",
+          "catalog_ref": "CWE-89"
+        },
+        {
+          "id": "weakness:cwe-1286",
+          "catalog_ref": "CWE-1286"
+        }
+      ],
+      "assertions": [
+        {
+          "id": "assertion:capec-66-related-weakness-cwe-89",
+          "name": "CWE-89 is exploited by CAPEC-66",
+          "subject": "weakness:cwe-89",
+          "predicate": "exploited_by",
+          "object": "attack-pattern:capec-66",
+          "assertion_status": "proposed",
+          "asserted_by": "party:mitre-capec",
+          "generated_by": "tmodel CAPEC import: CAPEC 3.9 (2023-01-24), capec_v3.9-sample.xml, SHA-256 0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
+        },
+        {
+          "id": "assertion:capec-66-related-weakness-cwe-1286",
+          "name": "CWE-1286 is exploited by CAPEC-66",
+          "subject": "weakness:cwe-1286",
+          "predicate": "exploited_by",
+          "object": "attack-pattern:capec-66",
+          "assertion_status": "proposed",
+          "asserted_by": "party:mitre-capec",
+          "generated_by": "tmodel CAPEC import: CAPEC 3.9 (2023-01-24), capec_v3.9-sample.xml, SHA-256 0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
+        }
+      ]
+    }
+  },
+  "CAPEC-88": {
+    "catalog": {
+      "name": "CAPEC",
+      "version": "3.9",
+      "date": "2023-01-24",
+      "schema": "3.5",
+      "file": "capec_v3.9-sample.xml",
+      "sha256": "0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e",
+      "attack_patterns": 13,
+      "categories": 3,
+      "views": 3,
+      "references": 16,
+      "unknown_fields": 0,
+      "notice": "Copyright © 2007-2023, The MITRE Corporation. CAPEC and the CAPEC logo are trademarks of The MITRE Corporation.",
+      "license": "The MITRE Corporation (MITRE) hereby grants you a non-exclusive, royalty-free license to use Common Attack Pattern Enumeration and Classification (CAPEC™) for research, development, and commercial purposes. Any copy you make for such purposes is authorized provided that you reproduce MITRE’s copyright designation and this license in any such copy.",
+      "terms_url": "https://capec.mitre.org/about/termsofuse.html"
+    },
+    "id": "CAPEC-88",
+    "entry": {
+      "id": "CAPEC-88",
+      "kind": "Attack_Pattern",
+      "name": "OS Command Injection",
+      "status": "Draft",
+      "abstraction": "Standard",
+      "view_type": null,
+      "likelihood": "High",
+      "severity": "High",
+      "description": "In this type of an attack, an adversary injects operating system commands into existing application functions. An application that uses untrusted input to build command strings is vulnerable. An adversary can leverage OS command injection in an application to elevate privileges, execute arbitrary commands and compromise the underlying operating system.",
+      "alternate_terms": [],
+      "related_attack_patterns": [
+        {
+          "nature": "ChildOf",
+          "id": "CAPEC-248"
+        }
+      ],
+      "weaknesses": [
+        "CWE-78",
+        "CWE-88",
+        "CWE-20",
+        "CWE-697"
+      ],
+      "attack_techniques": [],
+      "steps": 4,
+      "mitigations": 3,
+      "examples": 1,
+      "url": "https://capec.mitre.org/data/definitions/88.html",
+      "fields": {
+        "@ID": "88",
+        "@Name": "OS Command Injection",
+        "@Abstraction": "Standard",
+        "@Status": "Draft",
+        "Description": [
+          "In this type of an attack, an adversary injects operating system commands into existing application functions. An application that uses untrusted input to build command strings is vulnerable. An adversary can leverage OS command injection in an application to elevate privileges, execute arbitrary commands and compromise the underlying operating system."
+        ],
+        "Likelihood_Of_Attack": [
+          "High"
+        ],
+        "Typical_Severity": [
+          "High"
+        ],
+        "Related_Attack_Patterns": [
+          {
+            "Related_Attack_Pattern": [
+              {
+                "@Nature": "ChildOf",
+                "@CAPEC_ID": "248"
+              }
+            ]
+          }
+        ],
+        "Execution_Flow": [
+          {
+            "Attack_Step": [
+              {
+                "Step": [
+                  "1"
+                ],
+                "Phase": [
+                  "Explore"
+                ],
+                "Description": [
+                  "[Identify inputs for OS commands] The attacker determines user controllable input that gets passed as part of a command to the underlying operating system."
+                ],
+                "Technique": [
+                  "Port mapping. Identify ports that the system is listening on, and attempt to identify inputs and protocol types on those ports.",
+                  "TCP/IP Fingerprinting. The attacker uses various software to make connections or partial connections and observe idiosyncratic responses from the operating system. Using those responses, they attempt to guess the actual operating system.",
+                  "Induce errors to find informative error messages"
+                ]
+              },
+              {
+                "Step": [
+                  "2"
+                ],
+                "Phase": [
+                  "Explore"
+                ],
+                "Description": [
+                  "[Survey the Application] The attacker surveys the target application, possibly as a valid and authenticated user"
+                ],
+                "Technique": [
+                  "Spidering web sites for all available links",
+                  "Inventory all application inputs"
+                ]
+              },
+              {
+                "Step": [
+                  "3"
+                ],
+                "Phase": [
+                  "Experiment"
+                ],
+                "Description": [
+                  "[Vary inputs, looking for malicious results.] Depending on whether the application being exploited is a remote or local one the attacker crafts the appropriate malicious input, containing OS commands, to be passed to the application"
+                ],
+                "Technique": [
+                  "Inject command delimiters using network packet injection tools (netcat, nemesis, etc.)",
+                  "Inject command delimiters using web test frameworks (proxies, TamperData, custom programs, etc.)"
+                ]
+              },
+              {
+                "Step": [
+                  "4"
+                ],
+                "Phase": [
+                  "Exploit"
+                ],
+                "Description": [
+                  "[Execute malicious commands] The attacker may steal information, install a back door access mechanism, elevate privileges or compromise the system in some other way."
+                ],
+                "Technique": [
+                  "The attacker executes a command that stores sensitive information into a location where they can retrieve it later (perhaps using a different command injection)."
+                ]
+              }
+            ]
+          }
+        ],
+        "Prerequisites": [
+          {
+            "Prerequisite": [
+              "User controllable input used as part of commands to the underlying operating system."
+            ]
+          }
+        ],
+        "Skills_Required": [
+          {
+            "Skill": [
+              {
+                "@Level": "High",
+                "#text": "The attacker needs to have knowledge of not only the application to exploit but also the exact nature of commands that pertain to the target operating system. This may involve, though not always, knowledge of specific assembly commands for the platform."
+              }
+            ]
+          }
+        ],
+        "Consequences": [
+          {
+            "Consequence": [
+              {
+                "Scope": [
+                  "Confidentiality",
+                  "Integrity",
+                  "Availability"
+                ],
+                "Impact": [
+                  "Execute Unauthorized Commands"
+                ],
+                "Note": [
+                  "Run Arbitrary Code"
+                ]
+              },
+              {
+                "Scope": [
+                  "Confidentiality",
+                  "Access Control",
+                  "Authorization"
+                ],
+                "Impact": [
+                  "Gain Privileges",
+                  "Bypass Protection Mechanism"
+                ]
+              },
+              {
+                "Scope": [
+                  "Confidentiality"
+                ],
+                "Impact": [
+                  "Read Data"
+                ]
+              }
+            ]
+          }
+        ],
+        "Mitigations": [
+          {
+            "Mitigation": [
+              "Use language APIs rather than relying on passing data to the operating system shell or command line. Doing so ensures that the available protection mechanisms in the language are intact and applicable.",
+              "Filter all incoming data to escape or remove characters or strings that can be potentially misinterpreted as operating system or shell commands",
+              "All application processes should be run with the minimal privileges required. Also, processes must shed privileges as soon as they no longer require them."
+            ]
+          }
+        ],
+        "Example_Instances": [
+          {
+            "Example": [
+              {
+                "#xhtml": "<p>A transaction processing system relies on code written in a number of languages. To access this functionality, the system passes transaction information on the system command line.</p>\n               <p>An attacker can gain access to the system command line and execute malicious commands by injecting these commands in the transaction data. If successful, the attacker can steal information, install backdoors and perform other nefarious activities that can compromise the system and its data.</p>See also: A vulnerability in Mozilla Firefox 1.x browser allows an attacker to execute arbitrary commands on the UNIX/Linux operating system. The vulnerability is caused due to the shell script used to launch Firefox parsing shell commands that are enclosed within back-ticks in the URL provided via the command line. This can be exploited to execute arbitrary shell commands by tricking a user into following a malicious link in an external application which uses Firefox as the default browser (e.g. the mail client Evolution on Red Hat Enterprise Linux 4)."
+              }
+            ]
+          }
+        ],
+        "Related_Weaknesses": [
+          {
+            "Related_Weakness": [
+              {
+                "@CWE_ID": "78"
+              },
+              {
+                "@CWE_ID": "88"
+              },
+              {
+                "@CWE_ID": "20"
+              },
+              {
+                "@CWE_ID": "697"
+              }
+            ]
+          }
+        ],
+        "Taxonomy_Mappings": [
+          {
+            "Taxonomy_Mapping": [
+              {
+                "@Taxonomy_Name": "WASC",
+                "Entry_ID": [
+                  "31"
+                ],
+                "Entry_Name": [
+                  "OS Commanding"
+                ]
+              }
+            ]
+          }
+        ],
+        "References": [
+          {
+            "Reference": [
+              {
+                "@External_Reference_ID": "REF-543"
+              }
+            ]
+          }
+        ],
+        "Content_History": [
+          {
+            "Submission": [
+              {
+                "Submission_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Submission_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Submission_Date": [
+                  "2014-06-23"
+                ]
+              }
+            ],
+            "Modification": [
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2020-07-30"
+                ],
+                "Modification_Comment": [
+                  "Updated Execution_Flow"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2020-12-17"
+                ],
+                "Modification_Comment": [
+                  "Updated Taxonomy_Mappings"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2021-06-24"
+                ],
+                "Modification_Comment": [
+                  "Updated Execution_Flow, Related_Weaknesses"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "references": [
+      {
+        "id": "REF-543",
+        "section": null,
+        "resolved": true,
+        "title": "Secunia Advisory SA16869: Firefox Command Line URL Shell Command Injection",
+        "authors": [],
+        "edition": null,
+        "publication": "Secunia Advisories",
+        "publisher": "Secunia",
+        "year": "2005",
+        "month": "--09",
+        "day": "---20",
+        "url": "http://secunia.com/advisories/16869/",
+        "url_date": null
+      }
+    ],
+    "objects": {
+      "parties": [
+        {
+          "id": "party:mitre-capec",
+          "name": "MITRE CAPEC Program",
+          "party_kind": "organization"
+        }
+      ],
+      "attack_patterns": [
+        {
+          "id": "attack-pattern:capec-88",
+          "name": "OS Command Injection",
+          "description": "In this type of an attack, an adversary injects operating system commands into existing application functions. An application that uses untrusted input to build command strings is vulnerable. An adversary can leverage OS command injection in an application to elevate privileges, execute arbitrary commands and compromise the underlying operating system.",
+          "catalog_ref": "CAPEC-88"
+        }
+      ],
+      "weaknesses": [
+        {
+          "id": "weakness:cwe-20",
+          "catalog_ref": "CWE-20"
+        },
+        {
+          "id": "weakness:cwe-78",
+          "catalog_ref": "CWE-78"
+        },
+        {
+          "id": "weakness:cwe-88",
+          "catalog_ref": "CWE-88"
+        },
+        {
+          "id": "weakness:cwe-697",
+          "catalog_ref": "CWE-697"
+        }
+      ],
+      "assertions": [
+        {
+          "id": "assertion:capec-88-related-weakness-cwe-78",
+          "name": "CWE-78 is exploited by CAPEC-88",
+          "subject": "weakness:cwe-78",
+          "predicate": "exploited_by",
+          "object": "attack-pattern:capec-88",
+          "assertion_status": "proposed",
+          "asserted_by": "party:mitre-capec",
+          "generated_by": "tmodel CAPEC import: CAPEC 3.9 (2023-01-24), capec_v3.9-sample.xml, SHA-256 0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
+        },
+        {
+          "id": "assertion:capec-88-related-weakness-cwe-88",
+          "name": "CWE-88 is exploited by CAPEC-88",
+          "subject": "weakness:cwe-88",
+          "predicate": "exploited_by",
+          "object": "attack-pattern:capec-88",
+          "assertion_status": "proposed",
+          "asserted_by": "party:mitre-capec",
+          "generated_by": "tmodel CAPEC import: CAPEC 3.9 (2023-01-24), capec_v3.9-sample.xml, SHA-256 0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
+        },
+        {
+          "id": "assertion:capec-88-related-weakness-cwe-20",
+          "name": "CWE-20 is exploited by CAPEC-88",
+          "subject": "weakness:cwe-20",
+          "predicate": "exploited_by",
+          "object": "attack-pattern:capec-88",
+          "assertion_status": "proposed",
+          "asserted_by": "party:mitre-capec",
+          "generated_by": "tmodel CAPEC import: CAPEC 3.9 (2023-01-24), capec_v3.9-sample.xml, SHA-256 0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
+        },
+        {
+          "id": "assertion:capec-88-related-weakness-cwe-697",
+          "name": "CWE-697 is exploited by CAPEC-88",
+          "subject": "weakness:cwe-697",
+          "predicate": "exploited_by",
+          "object": "attack-pattern:capec-88",
+          "assertion_status": "proposed",
+          "asserted_by": "party:mitre-capec",
+          "generated_by": "tmodel CAPEC import: CAPEC 3.9 (2023-01-24), capec_v3.9-sample.xml, SHA-256 0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
+        }
+      ]
+    }
+  },
+  "CAPEC-115": {
+    "catalog": {
+      "name": "CAPEC",
+      "version": "3.9",
+      "date": "2023-01-24",
+      "schema": "3.5",
+      "file": "capec_v3.9-sample.xml",
+      "sha256": "0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e",
+      "attack_patterns": 13,
+      "categories": 3,
+      "views": 3,
+      "references": 16,
+      "unknown_fields": 0,
+      "notice": "Copyright © 2007-2023, The MITRE Corporation. CAPEC and the CAPEC logo are trademarks of The MITRE Corporation.",
+      "license": "The MITRE Corporation (MITRE) hereby grants you a non-exclusive, royalty-free license to use Common Attack Pattern Enumeration and Classification (CAPEC™) for research, development, and commercial purposes. Any copy you make for such purposes is authorized provided that you reproduce MITRE’s copyright designation and this license in any such copy.",
+      "terms_url": "https://capec.mitre.org/about/termsofuse.html"
+    },
+    "id": "CAPEC-115",
+    "entry": {
+      "id": "CAPEC-115",
+      "kind": "Attack_Pattern",
+      "name": "Authentication Bypass",
+      "status": "Draft",
+      "abstraction": "Meta",
+      "view_type": null,
+      "likelihood": null,
+      "severity": "Medium",
+      "description": "An attacker gains access to application, service, or device with the privileges of an authorized or privileged user by evading or circumventing an authentication mechanism. The attacker is therefore able to access protected data without authentication ever having taken place.",
+      "alternate_terms": [],
+      "related_attack_patterns": [],
+      "weaknesses": [
+        "CWE-287"
+      ],
+      "attack_techniques": [
+        "T1548"
+      ],
+      "steps": 0,
+      "mitigations": 0,
+      "examples": 0,
+      "url": "https://capec.mitre.org/data/definitions/115.html",
+      "fields": {
+        "@ID": "115",
+        "@Name": "Authentication Bypass",
+        "@Abstraction": "Meta",
+        "@Status": "Draft",
+        "Description": [
+          "An attacker gains access to application, service, or device with the privileges of an authorized or privileged user by evading or circumventing an authentication mechanism. The attacker is therefore able to access protected data without authentication ever having taken place."
+        ],
+        "Extended_Description": [
+          {
+            "#xhtml": "<p>This refers to an attacker gaining access equivalent to an authenticated user without ever going through an authentication procedure. This is usually the result of the attacker using an unexpected access procedure that does not go through the proper checkpoints where authentication should occur. For example, a web site might assume that all users will click through a given link in order to get to secure material and simply authenticate everyone that clicks the link. However, an attacker might be able to reach secured web content by explicitly entering the path to the content rather than clicking through the authentication link, thereby avoiding the check entirely. This attack pattern differs from other authentication attacks in that attacks of this pattern avoid authentication entirely, rather than faking authentication by exploiting flaws or by stealing credentials from legitimate users.</p>"
+          }
+        ],
+        "Typical_Severity": [
+          "Medium"
+        ],
+        "Prerequisites": [
+          {
+            "Prerequisite": [
+              "An authentication mechanism or subsystem implementing some form of authentication such as passwords, digest authentication, security certificates, etc."
+            ]
+          }
+        ],
+        "Resources_Required": [
+          {
+            "Resource": [
+              "A client application, such as a web browser, or a scripting language capable of interacting with the target."
+            ]
+          }
+        ],
+        "Related_Weaknesses": [
+          {
+            "Related_Weakness": [
+              {
+                "@CWE_ID": "287"
+              }
+            ]
+          }
+        ],
+        "Taxonomy_Mappings": [
+          {
+            "Taxonomy_Mapping": [
+              {
+                "@Taxonomy_Name": "ATTACK",
+                "Entry_ID": [
+                  "1548"
+                ],
+                "Entry_Name": [
+                  "Abuse Elevation Control Mechanism"
+                ]
+              }
+            ]
+          }
+        ],
+        "References": [
+          {
+            "Reference": [
+              {
+                "@External_Reference_ID": "REF-598",
+                "@Section": "Testing for Bypassing Authentication Schema"
+              }
+            ]
+          }
+        ],
+        "Content_History": [
+          {
+            "Submission": [
+              {
+                "Submission_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Submission_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Submission_Date": [
+                  "2014-06-23"
+                ]
+              }
+            ],
+            "Modification": [
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2015-11-09"
+                ],
+                "Modification_Comment": [
+                  "Updated Related_Attack_Patterns"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2017-08-04"
+                ],
+                "Modification_Comment": [
+                  "Updated Related_Weaknesses"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2020-12-17"
+                ],
+                "Modification_Comment": [
+                  "Updated References"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2021-06-24"
+                ],
+                "Modification_Comment": [
+                  "Updated Taxonomy_Mappings"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2022-02-22"
+                ],
+                "Modification_Comment": [
+                  "Updated Description, Extended_Description"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "references": [
+      {
+        "id": "REF-598",
+        "section": "Testing for Bypassing Authentication Schema",
+        "resolved": true,
+        "title": "OWASP Web Security Testing Guide",
+        "authors": [],
+        "edition": null,
+        "publication": null,
+        "publisher": "The Open Web Application Security Project (OWASP)",
+        "year": null,
+        "month": null,
+        "day": null,
+        "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/04-Authentication_Testing/04-Testing_for_Bypassing_Authentication_Schema.html",
+        "url_date": null
+      }
+    ],
+    "objects": {
+      "parties": [
+        {
+          "id": "party:mitre-capec",
+          "name": "MITRE CAPEC Program",
+          "party_kind": "organization"
+        }
+      ],
+      "attack_patterns": [
+        {
+          "id": "attack-pattern:capec-115",
+          "name": "Authentication Bypass",
+          "description": "An attacker gains access to application, service, or device with the privileges of an authorized or privileged user by evading or circumventing an authentication mechanism. The attacker is therefore able to access protected data without authentication ever having taken place.",
+          "catalog_ref": "CAPEC-115"
+        }
+      ],
+      "weaknesses": [
+        {
+          "id": "weakness:cwe-287",
+          "catalog_ref": "CWE-287"
+        }
+      ],
+      "assertions": [
+        {
+          "id": "assertion:capec-115-related-weakness-cwe-287",
+          "name": "CWE-287 is exploited by CAPEC-115",
+          "subject": "weakness:cwe-287",
+          "predicate": "exploited_by",
+          "object": "attack-pattern:capec-115",
+          "assertion_status": "proposed",
+          "asserted_by": "party:mitre-capec",
+          "generated_by": "tmodel CAPEC import: CAPEC 3.9 (2023-01-24), capec_v3.9-sample.xml, SHA-256 0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
+        }
+      ]
+    }
+  },
+  "CAPEC-192": {
+    "catalog": {
+      "name": "CAPEC",
+      "version": "3.9",
+      "date": "2023-01-24",
+      "schema": "3.5",
+      "file": "capec_v3.9-sample.xml",
+      "sha256": "0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e",
+      "attack_patterns": 13,
+      "categories": 3,
+      "views": 3,
+      "references": 16,
+      "unknown_fields": 0,
+      "notice": "Copyright © 2007-2023, The MITRE Corporation. CAPEC and the CAPEC logo are trademarks of The MITRE Corporation.",
+      "license": "The MITRE Corporation (MITRE) hereby grants you a non-exclusive, royalty-free license to use Common Attack Pattern Enumeration and Classification (CAPEC™) for research, development, and commercial purposes. Any copy you make for such purposes is authorized provided that you reproduce MITRE’s copyright designation and this license in any such copy.",
+      "terms_url": "https://capec.mitre.org/about/termsofuse.html"
+    },
+    "id": "CAPEC-192",
+    "entry": {
+      "id": "CAPEC-192",
+      "kind": "Attack_Pattern",
+      "name": "Protocol Analysis",
+      "status": "Stable",
+      "abstraction": "Meta",
+      "view_type": null,
+      "likelihood": "Low",
+      "severity": "Low",
+      "description": "An adversary engages in activities to decipher and/or decode protocol information for a network or application communication protocol used for transmitting information between interconnected nodes or systems on a packet-switched data network. While this type of analysis involves the analysis of a networking protocol inherently, it does not require the presence of an actual or physical network.",
+      "alternate_terms": [],
+      "related_attack_patterns": [],
+      "weaknesses": [
+        "CWE-326"
+      ],
+      "attack_techniques": [],
+      "steps": 0,
+      "mitigations": 0,
+      "examples": 0,
+      "url": "https://capec.mitre.org/data/definitions/192.html",
+      "fields": {
+        "@ID": "192",
+        "@Name": "Protocol Analysis",
+        "@Abstraction": "Meta",
+        "@Status": "Stable",
+        "Description": [
+          "An adversary engages in activities to decipher and/or decode protocol information for a network or application communication protocol used for transmitting information between interconnected nodes or systems on a packet-switched data network. While this type of analysis involves the analysis of a networking protocol inherently, it does not require the presence of an actual or physical network."
+        ],
+        "Extended_Description": [
+          {
+            "#xhtml": "<p>Although certain techniques for protocol analysis benefit from manipulating live 'on-the-wire' interactions between communicating components, static or dynamic analysis techniques applied to executables as well as to device drivers, such as network interface drivers, can also be used to reveal the function and characteristics of a communication protocol implementation. Depending upon the methods used the process may involve observing, interacting, and modifying actual communications occurring between hosts. The goal of protocol analysis is to derive the data transmission syntax, as well as to extract the meaningful content, including packet or content delimiters used by the protocol. This type of analysis is often performed on closed-specification protocols, or proprietary protocols, but is also useful for analyzing publicly available specifications to determine how particular implementations deviate from published specifications.</p>"
+          }
+        ],
+        "Likelihood_Of_Attack": [
+          "Low"
+        ],
+        "Typical_Severity": [
+          "Low"
+        ],
+        "Prerequisites": [
+          {
+            "Prerequisite": [
+              "Access to a binary executable.",
+              "The ability to observe and interact with a communication channel between communicating processes."
+            ]
+          }
+        ],
+        "Skills_Required": [
+          {
+            "Skill": [
+              {
+                "@Level": "High",
+                "#text": "Knowlegde of the Open Systems Interconnection model (OSI model), and famililarity with Wireshark or some other packet analyzer."
+              }
+            ]
+          }
+        ],
+        "Resources_Required": [
+          {
+            "Resource": [
+              "Depending on the type of analysis, a variety of tools might be required, such as static code and/or dynamic analysis tools. Alternatively, the effort might require debugging programs such as ollydbg, SoftICE, or disassemblers like IDA Pro. In some instances, packet sniffing or packet analyzing programs such as TCP dump or Wireshark are necessary. Lastly, specific protocol analysis might require tools such as PDB (Protocol Debug), or packet injection tools like pcap or Nemesis."
+            ]
+          }
+        ],
+        "Consequences": [
+          {
+            "Consequence": [
+              {
+                "Scope": [
+                  "Confidentiality"
+                ],
+                "Impact": [
+                  "Read Data"
+                ],
+                "Note": [
+                  "Successful deciphering of protocol information compromises the confidentiality of future sensitive communications."
+                ]
+              },
+              {
+                "Scope": [
+                  "Integrity"
+                ],
+                "Impact": [
+                  "Modify Data"
+                ],
+                "Note": [
+                  "Modifying communications after successful deciphering of protocol information compromises integrity."
+                ]
+              }
+            ]
+          }
+        ],
+        "Related_Weaknesses": [
+          {
+            "Related_Weakness": [
+              {
+                "@CWE_ID": "326"
+              }
+            ]
+          }
+        ],
+        "References": [
+          {
+            "Reference": [
+              {
+                "@External_Reference_ID": "REF-57",
+                "@Section": "Proprietary protocol"
+              },
+              {
+                "@External_Reference_ID": "REF-50",
+                "@Section": "Reverse engineering"
+              }
+            ]
+          }
+        ],
+        "Notes": [
+          {
+            "Note": [
+              {
+                "@Type": "Other",
+                "#xhtml": "<p>There are several challenges inherent to protocol analysis depending upon the nature of the protocol being analyzed. There may also be other types of factors which complicate the process such as encryption or ad hoc obfuscation of the protocol. In general there are two kinds of networking protocols, each associated with its own challenges and analysis approaches or methodologies. Some protocols are human-readable, which is to say they are text-based protocols. Examples of these types of protocols include HTTP, SMTP, and SOAP. Additionally, application-layer protocols can be embedded or encapsulated within human-readable protocols in the data portion of the packet. Typically, human-readable protocol implementations are susceptible to automatic decoding by the appropriate tools, such as Wireshark/ethereal, tcpdump, or similar protocol sniffers or analyzers.</p>\n               <p>The presence of well-known protocol specifications in addition to easily identified protocol delimiters, such as Carriage Return or Line Feed characters (CRLF) result in text-based protocols susceptibility to direct scrutiny through manual processes. Protocol analysis against protocol implementations such as HTTP is often performed to identify idiosyncratic implementations of a protocol by a server or client. In the case of application-layer protocols which are embedded within text-based protocols, analysis techniques typically benefit from the well-known nature of the encapsulating protocols and can focus on discovering the semantic characteristics of the proprietary protocol or API, since the syntax and protocol delimiters of the underlying protocols can be readily identified.</p>\n               <p>When performing protocol analysis of machine-readable (non-text-based) protocols difficulties emerge as the protocol itself was designed to be read by computing process. Such protocols are typically composed entirely in binary with no apparent syntax, grammar, or structural boundaries. Examples of these types of protocols are IP, UDP, and TCP. Binary protocols with published specifications can be automatically decoded by protocol analyzers, but in the case of proprietary, closed-specification, binary protocols there are no immediate indicators of packet syntax such as packet boundaries, delimiters, or structure, or the presence or absence of encryption or obfuscation. In these cases there is no one technology that can extract or reveal the structure of the packet on the wire, so it is necessary to use trial and error approaches while observing application behavior based on systematic mutations introduced at the packet-level. Tools such as Protocol Debug (PDB) or other packet injection suites are often employed. In cases where the binary executable is available, protocol analysis can be augmented with static and dynamic analysis techniques.</p>"
+              }
+            ]
+          }
+        ],
+        "Content_History": [
+          {
+            "Submission": [
+              {
+                "Submission_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Submission_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Submission_Date": [
+                  "2014-06-23"
+                ]
+              }
+            ],
+            "Modification": [
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2015-11-09"
+                ],
+                "Modification_Comment": [
+                  "Updated Activation_Zone, Attacker_Skills_or_Knowledge_Required, Description Summary, Injection_Vector, Other_Notes, Payload, Payload_Activation_Impact, Related_Attack_Patterns, Related_Weaknesses"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2017-05-01"
+                ],
+                "Modification_Comment": [
+                  "Updated Attack_Motivation-Consequences, Attack_Prerequisites, Description Summary, Resources_Required, Typical_Likelihood_of_Exploit"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2018-07-31"
+                ],
+                "Modification_Comment": [
+                  "Updated Attacker_Skills_or_Knowledge_Required, Related_Weaknesses"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2022-02-22"
+                ],
+                "Modification_Comment": [
+                  "Updated Description, Extended_Description"
+                ]
+              }
+            ],
+            "Previous_Entry_Name": [
+              {
+                "@Date": "2015-11-09",
+                "#text": "Protocol Reverse Engineering"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "references": [
+      {
+        "id": "REF-57",
+        "section": "Proprietary protocol",
+        "resolved": true,
+        "title": "Wikipedia",
+        "authors": [],
+        "edition": null,
+        "publication": null,
+        "publisher": "The Wikimedia Foundation, Inc",
+        "year": null,
+        "month": null,
+        "day": null,
+        "url": "http://en.wikipedia.org/wiki/Proprietary_protocol",
+        "url_date": null
+      },
+      {
+        "id": "REF-50",
+        "section": "Reverse engineering",
+        "resolved": true,
+        "title": "Wikipedia",
+        "authors": [],
+        "edition": null,
+        "publication": null,
+        "publisher": "The Wikimedia Foundation, Inc",
+        "year": null,
+        "month": null,
+        "day": null,
+        "url": "http://en.wikipedia.org/wiki/Reverse_engineering",
+        "url_date": null
+      }
+    ],
+    "objects": {
+      "parties": [
+        {
+          "id": "party:mitre-capec",
+          "name": "MITRE CAPEC Program",
+          "party_kind": "organization"
+        }
+      ],
+      "attack_patterns": [
+        {
+          "id": "attack-pattern:capec-192",
+          "name": "Protocol Analysis",
+          "description": "An adversary engages in activities to decipher and/or decode protocol information for a network or application communication protocol used for transmitting information between interconnected nodes or systems on a packet-switched data network. While this type of analysis involves the analysis of a networking protocol inherently, it does not require the presence of an actual or physical network.",
+          "catalog_ref": "CAPEC-192"
+        }
+      ],
+      "weaknesses": [
+        {
+          "id": "weakness:cwe-326",
+          "catalog_ref": "CWE-326"
+        }
+      ],
+      "assertions": [
+        {
+          "id": "assertion:capec-192-related-weakness-cwe-326",
+          "name": "CWE-326 is exploited by CAPEC-192",
+          "subject": "weakness:cwe-326",
+          "predicate": "exploited_by",
+          "object": "attack-pattern:capec-192",
+          "assertion_status": "proposed",
+          "asserted_by": "party:mitre-capec",
+          "generated_by": "tmodel CAPEC import: CAPEC 3.9 (2023-01-24), capec_v3.9-sample.xml, SHA-256 0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
+        }
+      ]
+    }
+  },
+  "CAPEC-273": {
+    "catalog": {
+      "name": "CAPEC",
+      "version": "3.9",
+      "date": "2023-01-24",
+      "schema": "3.5",
+      "file": "capec_v3.9-sample.xml",
+      "sha256": "0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e",
+      "attack_patterns": 13,
+      "categories": 3,
+      "views": 3,
+      "references": 16,
+      "unknown_fields": 0,
+      "notice": "Copyright © 2007-2023, The MITRE Corporation. CAPEC and the CAPEC logo are trademarks of The MITRE Corporation.",
+      "license": "The MITRE Corporation (MITRE) hereby grants you a non-exclusive, royalty-free license to use Common Attack Pattern Enumeration and Classification (CAPEC™) for research, development, and commercial purposes. Any copy you make for such purposes is authorized provided that you reproduce MITRE’s copyright designation and this license in any such copy.",
+      "terms_url": "https://capec.mitre.org/about/termsofuse.html"
+    },
+    "id": "CAPEC-273",
+    "entry": {
+      "id": "CAPEC-273",
+      "kind": "Attack_Pattern",
+      "name": "HTTP Response Smuggling",
+      "status": "Stable",
+      "abstraction": "Detailed",
+      "view_type": null,
+      "likelihood": "Medium",
+      "severity": "High",
+      "description": "An adversary manipulates and injects malicious content in the form of secret unauthorized HTTP responses, into a single HTTP response from a vulnerable or compromised back-end HTTP agent (e.g., server). See CanPrecede relationships for possible consequences.",
+      "alternate_terms": [
+        "HTTP Desync"
+      ],
+      "related_attack_patterns": [
+        {
+          "nature": "ChildOf",
+          "id": "CAPEC-220"
+        },
+        {
+          "nature": "PeerOf",
+          "id": "CAPEC-33"
+        },
+        {
+          "nature": "CanPrecede",
+          "id": "CAPEC-115"
+        },
+        {
+          "nature": "CanPrecede",
+          "id": "CAPEC-141"
+        },
+        {
+          "nature": "CanPrecede",
+          "id": "CAPEC-63"
+        },
+        {
+          "nature": "CanPrecede",
+          "id": "CAPEC-593"
+        },
+        {
+          "nature": "CanPrecede",
+          "id": "CAPEC-148"
+        },
+        {
+          "nature": "CanPrecede",
+          "id": "CAPEC-154"
+        }
+      ],
+      "weaknesses": [
+        "CWE-74",
+        "CWE-436",
+        "CWE-444"
+      ],
+      "attack_techniques": [],
+      "steps": 4,
+      "mitigations": 13,
+      "examples": 2,
+      "url": "https://capec.mitre.org/data/definitions/273.html",
+      "fields": {
+        "@ID": "273",
+        "@Name": "HTTP Response Smuggling",
+        "@Abstraction": "Detailed",
+        "@Status": "Stable",
+        "Description": [
+          {
+            "#xhtml": "<p>An adversary manipulates and injects malicious content in the form of secret unauthorized HTTP responses, into a single HTTP response from a vulnerable or compromised back-end HTTP agent (e.g., server).</p>\n            <p>See CanPrecede relationships for possible consequences.</p>"
+          }
+        ],
+        "Extended_Description": [
+          {
+            "#xhtml": "<p>In the maliciously manipulated HTTP response, an adversary can add duplicate header fields that HTTP agents interpret as belonging to separate responses.</p>\n            <p>The combined HTTP response ends up being parsed or interpreted as two or more HTTP responses by the targeted client HTTP agent. This allows malicious HTTP responses to bypass security controls. This is performed by the abuse of interpretation and parsing discrepancies in different intermediary HTTP agents (e.g., load balancer, reverse proxy, web caching proxies, application firewalls, etc.) or client HTTP agents (e.g., web browser) in the path of the malicious HTTP responses.</p>\n            <p>This attack usually involves the misuse of the HTTP headers: Content-Length and Transfer-Encoding. These abuses are discussed in RFC 2616 #4.4.3 and section #4.2 and are related to ordering and precedence of these headers. [REF-38]</p>\n            <p>Additionally this attack can be performed through modification and/or fuzzing of parameters composing the request-line of HTTP messages.</p>\n            <p>This attack is usually the result of the usage of outdated or incompatible HTTP protocol versions in the HTTP agents.</p>\n            <p>This differs from CAPEC-33 HTTP Request Smuggling, which is usually an attempt to compromise a back-end HTTP agent via HTTP Request messages. HTTP Response Smuggling is an attempt to compromise a<i>client agent (e.g., web browser)</i>.</p>\n            <p>HTTP Splitting (CAPEC-105 and CAPEC-34) is different from HTTP Smuggling due to the fact that during implementation of asynchronous requests, HTTP Splitting requires the embedding/injection of arbitrary HTML headers and content through user input into browser cookies or Ajax web/browser object parameters like XMLHttpRequest.</p>"
+          }
+        ],
+        "Alternate_Terms": [
+          {
+            "Alternate_Term": [
+              {
+                "Term": [
+                  "HTTP Desync"
+                ],
+                "Description": [
+                  "Modification/manipulation of HTTP message headers, request-line and body parameters to disrupt and interfere in the interpretation and parsing of HTTP message lengths/boundaries for consecutive HTTP messages by HTTP agents in a HTTP chain or network path."
+                ]
+              }
+            ]
+          }
+        ],
+        "Likelihood_Of_Attack": [
+          "Medium"
+        ],
+        "Typical_Severity": [
+          "High"
+        ],
+        "Related_Attack_Patterns": [
+          {
+            "Related_Attack_Pattern": [
+              {
+                "@Nature": "ChildOf",
+                "@CAPEC_ID": "220"
+              },
+              {
+                "@Nature": "PeerOf",
+                "@CAPEC_ID": "33"
+              },
+              {
+                "@Nature": "CanPrecede",
+                "@CAPEC_ID": "115"
+              },
+              {
+                "@Nature": "CanPrecede",
+                "@CAPEC_ID": "141"
+              },
+              {
+                "@Nature": "CanPrecede",
+                "@CAPEC_ID": "63"
+              },
+              {
+                "@Nature": "CanPrecede",
+                "@CAPEC_ID": "593"
+              },
+              {
+                "@Nature": "CanPrecede",
+                "@CAPEC_ID": "148"
+              },
+              {
+                "@Nature": "CanPrecede",
+                "@CAPEC_ID": "154"
+              }
+            ]
+          }
+        ],
+        "Execution_Flow": [
+          {
+            "Attack_Step": [
+              {
+                "Step": [
+                  "1"
+                ],
+                "Phase": [
+                  "Explore"
+                ],
+                "Description": [
+                  "[Survey network to identify target] The adversary performs network reconnaissance by monitoring relevant traffic to identify the network path and parsing of the HTTP messages with the goal of identifying potential targets."
+                ],
+                "Technique": [
+                  "Scan networks to fingerprint HTTP infrastructure and monitor HTTP traffic to identify HTTP network path with a tool such as a Network Protocol Analyzer."
+                ]
+              },
+              {
+                "Step": [
+                  "1"
+                ],
+                "Phase": [
+                  "Experiment"
+                ],
+                "Description": [
+                  "[Identify vulnerabilities in targeted HTTP infrastructure and technologies] The adversary sends a variety of benign/ambiguous HTTP requests to observe responses from HTTP infrastructure to intended targets in order to identify differences/discrepancies in the interpretation and parsing of HTTP requests by examining supported HTTP protocol versions, message sizes, and HTTP headers."
+                ]
+              },
+              {
+                "Step": [
+                  "2"
+                ],
+                "Phase": [
+                  "Experiment"
+                ],
+                "Description": [
+                  "[Cause differential HTTP responses by experimenting with identified HTTP Response vulnerabilities] The adversary sends maliciously crafted HTTP request to back-end HTTP infrastructure to inject adversary data into HTTP responses (intended for intermediary and/or front-end client/victim HTTP agents communicating with back-end HTTP infrastructure) for the purpose of interfering with the parsing of HTTP response. The intended consequences of the malicious HTTP request and the subsequent adversary injection and manipulation of HTTP responses will be observed to confirm applicability of identified vulnerabilities in the adversary's plan of attack."
+                ],
+                "Technique": [
+                  "Continue the monitoring of HTTP traffic.",
+                  {
+                    "#xhtml": "<p>Inject additional HTTP headers to utilize various combinations of HTTP Headers within a single HTTP message such as: Content-Length &amp; Transfer-Encoding (CL;TE), Transfer-Encoding &amp; Content-Length (TE;CL), or double Transfer-Encoding (TE;TE), so that additional embedded message or data in the body of the original message are unprocessed and treated as part of subsequent messages by the intended target HTTP agent.</p>\n                  <p>From these HTTP Header combinations the adversary observes any timing delays (usually in the form of HTTP 404 Error response) or any other unintended consequences.</p>\n                  <ul>\n                     <li>For CL;TE and TE;CL HTTP headers combination, the first HTTP agent, in the HTTP message path that receives the HTTP message, takes precedence or only processes the one header but not the other, while the second/final HTTP agent processes the opposite header allowing for embedded HTTP message to be ignored and smuggled to the intended target HTTP agent.</li>\n                     <li>For TE;TE HTTP headers combination, all HTTP agents in HTTP message path process Transfer-Encoding header, however, adversary obfuscation of one of the Transfer-Encoding headers, by not adhering strictly to the protocol specification, can cause it to be unprocessed/ignored by a designated HTTP agent, hence allowing embedded HTTP messages to be smuggled. See Mitigations for details.</li>\n                  </ul>"
+                  },
+                  {
+                    "#xhtml": "<p>Construct a very large HTTP message via multiple Content-Length headers of various data lengths that can potentially cause subsequent messages to be ignored by an intermediary HTTP agent (e.g., firewall) and/or eventually parsed separately by the target HTTP agent.</p>\n                  <p>Note that most modern HTTP infrastructure reject HTTP messages with multiple Content-Length headers.</p>"
+                  },
+                  "Monitor HTTP traffic using a tool such as a Network Protocol Analyzer."
+                ]
+              },
+              {
+                "Step": [
+                  "1"
+                ],
+                "Phase": [
+                  "Exploit"
+                ],
+                "Description": [
+                  "[Perform HTTP Response Smuggling attack] Using knowledge discovered in the experiment section above, smuggle a message to cause one of the consequences."
+                ],
+                "Technique": [
+                  "Leverage techniques identified in the Experiment Phase."
+                ]
+              }
+            ]
+          }
+        ],
+        "Prerequisites": [
+          {
+            "Prerequisite": [
+              "A vulnerable or compromised server or domain/site capable of allowing adversary to insert/inject malicious content that will appear in the server's response to target HTTP agents (e.g., proxies and users' web browsers).",
+              "Differences in the way the two HTTP agents parse and interpret HTTP responses and its headers.",
+              "HTTP agents running on HTTP/1.1 that allow for Keep Alive mode, Pipelined queries, and Chunked queries and responses."
+            ]
+          }
+        ],
+        "Skills_Required": [
+          {
+            "Skill": [
+              {
+                "@Level": "Medium",
+                "#text": "Detailed knowledge on HTTP protocol: request and response messages structure and usage of specific headers."
+              },
+              {
+                "@Level": "Medium",
+                "#text": "Detailed knowledge on how specific HTTP agents receive, send, process, interpret, and parse a variety of HTTP messages and headers."
+              },
+              {
+                "@Level": "Medium",
+                "#text": "Possess knowledge on the exact details in the discrepancies between several targeted HTTP agents in path of an HTTP message in parsing its message structure and individual headers."
+              }
+            ]
+          }
+        ],
+        "Resources_Required": [
+          {
+            "Resource": [
+              "Tools capable of monitoring HTTP messages, and crafting malicious HTTP messages and/or injecting malicious content into HTTP messages."
+            ]
+          }
+        ],
+        "Indicators": [
+          {
+            "Indicator": [
+              "Differences in responses processed by the two agents. This requires careful monitoring or a capable log analysis tool."
+            ]
+          }
+        ],
+        "Consequences": [
+          {
+            "Consequence": [
+              {
+                "Scope": [
+                  "Confidentiality",
+                  "Integrity",
+                  "Availability"
+                ],
+                "Impact": [
+                  "Execute Unauthorized Commands"
+                ]
+              },
+              {
+                "Scope": [
+                  "Confidentiality",
+                  "Access Control",
+                  "Authorization"
+                ],
+                "Impact": [
+                  "Gain Privileges"
+                ]
+              },
+              {
+                "Scope": [
+                  "Integrity"
+                ],
+                "Impact": [
+                  "Modify Data"
+                ]
+              }
+            ]
+          }
+        ],
+        "Mitigations": [
+          {
+            "Mitigation": [
+              "Design: evaluate HTTP agents prior to deployment for parsing/interpretation discrepancies.",
+              "Configuration: front-end HTTP agents notice ambiguous requests.",
+              "Configuration: back-end HTTP agents reject ambiguous requests and close the network connection.",
+              "Configuration: Disable reuse of back-end connections.",
+              "Configuration: Use HTTP/2 for back-end connections.",
+              "Configuration: Use the same web server software for front-end and back-end server.",
+              "Implementation: Utilize a Web Application Firewall (WAF) that has built-in mitigation to detect abnormal requests/responses.",
+              "Configuration: Prioritize Transfer-Encoding header over Content-Length, whenever an HTTP message contains both.",
+              "Configuration: Disallow HTTP messages with both Transfer-Encoding and Content-Length or Double Content-Length Headers.",
+              {
+                "#xhtml": "Configuration: Disallow Malformed/Invalid Transfer-Encoding Headers used in obfuscation, such as:<ul>\n                  <li>Headers with no space before the value “chunked”</li>\n                  <li>Headers with extra spaces</li>\n                  <li>Headers beginning with trailing characters</li>\n                  <li>Headers providing a value “chunk” instead of “chunked” (the server normalizes this as chunked encoding)</li>\n                  <li>Headers with multiple spaces before the value “chunked”</li>\n                  <li>Headers with quoted values (whether single or double quotations)</li>\n                  <li>Headers with CRLF characters before the value “chunked”</li>\n                  <li>Values with invalid characters</li>\n               </ul>"
+              },
+              "Configuration: Install latest vendor security patches available for both intermediary and back-end HTTP infrastructure (i.e. proxies and web servers)",
+              "Configuration: Ensure that HTTP infrastructure in the chain or network path utilize a strict uniform parsing process.",
+              "Implementation: Utilize intermediary HTTP infrastructure capable of filtering and/or sanitizing user-input."
+            ]
+          }
+        ],
+        "Example_Instances": [
+          {
+            "Example": [
+              {
+                "#xhtml": "<p>When using Undertow, a Java-based web server in Red Hat's Jboss Enterprise Application Platform version 7.0, the code responsible for parsing HTTP requests permitted invalid characters, that could allow the injection of data into HTTP responses from Undertow to clients when used in tandem with a proxy; allowing for web-cache poisoning, XSS, and confidentiality violation of sensitive information from other HTTP requests sent to Undertow. See also: CVE-2017-2666</p>"
+              },
+              {
+                "#xhtml": "<p>Mozilla Firefox and Thunderbird before 1.5.04, with various proxy servers, interpreted HTTP responses differently if HTTP response headers included a space between the header name and colon or if HTTP 1.1 headers were sent through a proxy configured with HTTP 1.0, allowing for HTTP Smuggling vulnerability. See also: CVE-2006-2786</p>"
+              }
+            ]
+          }
+        ],
+        "Related_Weaknesses": [
+          {
+            "Related_Weakness": [
+              {
+                "@CWE_ID": "74"
+              },
+              {
+                "@CWE_ID": "436"
+              },
+              {
+                "@CWE_ID": "444"
+              }
+            ]
+          }
+        ],
+        "Taxonomy_Mappings": [
+          {
+            "Taxonomy_Mapping": [
+              {
+                "@Taxonomy_Name": "WASC",
+                "Entry_ID": [
+                  "27"
+                ],
+                "Entry_Name": [
+                  "HTTP Response Smuggling"
+                ]
+              }
+            ]
+          }
+        ],
+        "References": [
+          {
+            "Reference": [
+              {
+                "@External_Reference_ID": "REF-38"
+              },
+              {
+                "@External_Reference_ID": "REF-117"
+              },
+              {
+                "@External_Reference_ID": "REF-675"
+              },
+              {
+                "@External_Reference_ID": "REF-676"
+              },
+              {
+                "@External_Reference_ID": "REF-677"
+              },
+              {
+                "@External_Reference_ID": "REF-678"
+              }
+            ]
+          }
+        ],
+        "Notes": [
+          {
+            "Note": [
+              {
+                "@Type": "Terminology",
+                "#text": "HTTP Splitting – \"the act of forcing a sender of (HTTP) messages to emit data stream consisting of more messages than the sender’s intension. The messages sent are 100% valid and RFC compliant\" [REF-117]."
+              },
+              {
+                "@Type": "Terminology",
+                "#text": "HTTP Smuggling – \"the act of forcing a sender of (HTTP) messages to emit data stream which may be parsed as a different set of messages (i.e. dislocated message boundaries) than the sender’s intention. This is done by virtue of forcing the sender to emit non-standard messages which can be interpreted in more than one way\" [REF-117]."
+              },
+              {
+                "@Type": "Relationship",
+                "#text": "HTTP Smuggling is an evolution of previous HTTP Splitting techniques which are commonly remediated against."
+              }
+            ]
+          }
+        ],
+        "Content_History": [
+          {
+            "Submission": [
+              {
+                "Submission_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Submission_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Submission_Date": [
+                  "2014-06-23"
+                ]
+              }
+            ],
+            "Modification": [
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2017-08-04"
+                ],
+                "Modification_Comment": [
+                  "Updated Related_Attack_Patterns, Resources_Required"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2018-07-31"
+                ],
+                "Modification_Comment": [
+                  "Updated References"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2020-12-17"
+                ],
+                "Modification_Comment": [
+                  "Updated Taxonomy_Mappings"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2021-10-21"
+                ],
+                "Modification_Comment": [
+                  "Updated @Status, Alternate_Terms, Consequences, Description, Example_Instances, Execution_Flow, Extended_Description, Indicators, Likelihood_Of_Attack, Mitigations, Notes, Prerequisites, References, Related_Attack_Patterns, Resources_Required, Skills_Required, Typical_Severity"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2022-09-29"
+                ],
+                "Modification_Comment": [
+                  "Updated Alternate_Terms, Extended_Description, Related_Weaknesses"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "references": [
+      {
+        "id": "REF-38",
+        "section": null,
+        "resolved": true,
+        "title": "HTTP 1.1 Specification (RFC 2616)",
+        "authors": [],
+        "edition": null,
+        "publication": "IETF RFC",
+        "publisher": null,
+        "year": null,
+        "month": null,
+        "day": null,
+        "url": "http://www.ietf.org/rfc/rfc2616.txt",
+        "url_date": null
+      },
+      {
+        "id": "REF-117",
+        "section": null,
+        "resolved": true,
+        "title": "HTTP Response Smuggling",
+        "authors": [],
+        "edition": null,
+        "publication": null,
+        "publisher": "Beyond Security",
+        "year": null,
+        "month": null,
+        "day": null,
+        "url": "http://www.securiteam.com/securityreviews/5CP0L0AHPC.html",
+        "url_date": null
+      },
+      {
+        "id": "REF-675",
+        "section": null,
+        "resolved": true,
+        "title": "HTTP Response Smuggling",
+        "authors": [
+          "Robert Auger"
+        ],
+        "edition": null,
+        "publication": null,
+        "publisher": "The Web Application Security Consortium",
+        "year": "2011",
+        "month": "--02",
+        "day": null,
+        "url": "http://projects.webappsec.org/w/page/13246930/HTTP%20Response%20Smuggling",
+        "url_date": "2021-10-06"
+      },
+      {
+        "id": "REF-676",
+        "section": null,
+        "resolved": true,
+        "title": "Mozilla Foundation Security Advisory 2006-33 HTTP response smuggling",
+        "authors": [
+          "Kazuho Oku"
+        ],
+        "edition": null,
+        "publication": null,
+        "publisher": "Mozilla Corporation",
+        "year": "2006",
+        "month": "--06",
+        "day": "---01",
+        "url": "https://www.mozilla.org/en-US/security/advisories/mfsa2006-33/",
+        "url_date": "2021-10-06"
+      },
+      {
+        "id": "REF-677",
+        "section": null,
+        "resolved": true,
+        "title": "Testing for HTTP Splitting Smuggling",
+        "authors": [],
+        "edition": null,
+        "publication": null,
+        "publisher": "Open Web Application Security Project",
+        "year": null,
+        "month": null,
+        "day": null,
+        "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/15-Testing_for_HTTP_Splitting_Smuggling.html",
+        "url_date": "2021-10-06"
+      },
+      {
+        "id": "REF-678",
+        "section": null,
+        "resolved": true,
+        "title": "HTTP Desync Attacks in the Wild and How to Defend Against Them",
+        "authors": [
+          "Edi Kogan",
+          "Daniel Kerman"
+        ],
+        "edition": null,
+        "publication": null,
+        "publisher": "Imperva",
+        "year": "2019",
+        "month": "--10",
+        "day": "---29",
+        "url": "https://www.imperva.com/blog/http-desync-attacks-and-defence-methods/",
+        "url_date": "2021-10-06"
+      }
+    ],
+    "objects": {
+      "parties": [
+        {
+          "id": "party:mitre-capec",
+          "name": "MITRE CAPEC Program",
+          "party_kind": "organization"
+        }
+      ],
+      "attack_patterns": [
+        {
+          "id": "attack-pattern:capec-273",
+          "name": "HTTP Response Smuggling",
+          "description": "An adversary manipulates and injects malicious content in the form of secret unauthorized HTTP responses, into a single HTTP response from a vulnerable or compromised back-end HTTP agent (e.g., server). See CanPrecede relationships for possible consequences.",
+          "catalog_ref": "CAPEC-273"
+        }
+      ],
+      "weaknesses": [
+        {
+          "id": "weakness:cwe-74",
+          "catalog_ref": "CWE-74"
+        },
+        {
+          "id": "weakness:cwe-436",
+          "catalog_ref": "CWE-436"
+        },
+        {
+          "id": "weakness:cwe-444",
+          "catalog_ref": "CWE-444"
+        }
+      ],
+      "assertions": [
+        {
+          "id": "assertion:capec-273-related-weakness-cwe-74",
+          "name": "CWE-74 is exploited by CAPEC-273",
+          "subject": "weakness:cwe-74",
+          "predicate": "exploited_by",
+          "object": "attack-pattern:capec-273",
+          "assertion_status": "proposed",
+          "asserted_by": "party:mitre-capec",
+          "generated_by": "tmodel CAPEC import: CAPEC 3.9 (2023-01-24), capec_v3.9-sample.xml, SHA-256 0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
+        },
+        {
+          "id": "assertion:capec-273-related-weakness-cwe-436",
+          "name": "CWE-436 is exploited by CAPEC-273",
+          "subject": "weakness:cwe-436",
+          "predicate": "exploited_by",
+          "object": "attack-pattern:capec-273",
+          "assertion_status": "proposed",
+          "asserted_by": "party:mitre-capec",
+          "generated_by": "tmodel CAPEC import: CAPEC 3.9 (2023-01-24), capec_v3.9-sample.xml, SHA-256 0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
+        },
+        {
+          "id": "assertion:capec-273-related-weakness-cwe-444",
+          "name": "CWE-444 is exploited by CAPEC-273",
+          "subject": "weakness:cwe-444",
+          "predicate": "exploited_by",
+          "object": "attack-pattern:capec-273",
+          "assertion_status": "proposed",
+          "asserted_by": "party:mitre-capec",
+          "generated_by": "tmodel CAPEC import: CAPEC 3.9 (2023-01-24), capec_v3.9-sample.xml, SHA-256 0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
+        }
+      ]
+    }
+  },
+  "CAPEC-478": {
+    "catalog": {
+      "name": "CAPEC",
+      "version": "3.9",
+      "date": "2023-01-24",
+      "schema": "3.5",
+      "file": "capec_v3.9-sample.xml",
+      "sha256": "0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e",
+      "attack_patterns": 13,
+      "categories": 3,
+      "views": 3,
+      "references": 16,
+      "unknown_fields": 0,
+      "notice": "Copyright © 2007-2023, The MITRE Corporation. CAPEC and the CAPEC logo are trademarks of The MITRE Corporation.",
+      "license": "The MITRE Corporation (MITRE) hereby grants you a non-exclusive, royalty-free license to use Common Attack Pattern Enumeration and Classification (CAPEC™) for research, development, and commercial purposes. Any copy you make for such purposes is authorized provided that you reproduce MITRE’s copyright designation and this license in any such copy.",
+      "terms_url": "https://capec.mitre.org/about/termsofuse.html"
+    },
+    "id": "CAPEC-478",
+    "entry": {
+      "id": "CAPEC-478",
+      "kind": "Attack_Pattern",
+      "name": "Modification of Windows Service Configuration",
+      "status": "Usable",
+      "abstraction": "Detailed",
+      "view_type": null,
+      "likelihood": "Low",
+      "severity": "High",
+      "description": "An adversary exploits a weakness in access control to modify the execution parameters of a Windows service. The goal of this attack is to execute a malicious binary in place of an existing service.",
+      "alternate_terms": [],
+      "related_attack_patterns": [
+        {
+          "nature": "ChildOf",
+          "id": "CAPEC-203"
+        }
+      ],
+      "weaknesses": [
+        "CWE-284"
+      ],
+      "attack_techniques": [
+        "T1574.011",
+        "T1543.003"
+      ],
+      "steps": 3,
+      "mitigations": 1,
+      "examples": 0,
+      "url": "https://capec.mitre.org/data/definitions/478.html",
+      "fields": {
+        "@ID": "478",
+        "@Name": "Modification of Windows Service Configuration",
+        "@Abstraction": "Detailed",
+        "@Status": "Usable",
+        "Description": [
+          "An adversary exploits a weakness in access control to modify the execution parameters of a Windows service. The goal of this attack is to execute a malicious binary in place of an existing service."
+        ],
+        "Likelihood_Of_Attack": [
+          "Low"
+        ],
+        "Typical_Severity": [
+          "High"
+        ],
+        "Related_Attack_Patterns": [
+          {
+            "Related_Attack_Pattern": [
+              {
+                "@Nature": "ChildOf",
+                "@CAPEC_ID": "203"
+              }
+            ]
+          }
+        ],
+        "Execution_Flow": [
+          {
+            "Attack_Step": [
+              {
+                "Step": [
+                  "1"
+                ],
+                "Phase": [
+                  "Explore"
+                ],
+                "Description": [
+                  "[Determine target system] The adversary must first determine the system they wish to modify the registry of. This needs to be a windows machine as this attack only works on the windows registry."
+                ]
+              },
+              {
+                "Step": [
+                  "2"
+                ],
+                "Phase": [
+                  "Experiment"
+                ],
+                "Description": [
+                  "[Gain access to the system] The adversary needs to gain access to the system in some way so that they can modify the windows registry."
+                ],
+                "Technique": [
+                  "Gain physical access to a system either through shoulder surfing a password or accessing a system that is left unlocked.",
+                  "Gain remote access to a system through a variety of means."
+                ]
+              },
+              {
+                "Step": [
+                  "3"
+                ],
+                "Phase": [
+                  "Exploit"
+                ],
+                "Description": [
+                  "[Modify windows registry] The adversary will modify the windows registry by changing the configuration settings for a service. Specifically, the adversary will change the path settings to define a path to a malicious binary to be executed."
+                ]
+              }
+            ]
+          }
+        ],
+        "Prerequisites": [
+          {
+            "Prerequisite": [
+              "The adversary must have the capability to write to the Windows Registry on the targeted system."
+            ]
+          }
+        ],
+        "Resources_Required": [
+          {
+            "Resource": [
+              "None: No specialized resources are required to execute this type of attack."
+            ]
+          }
+        ],
+        "Consequences": [
+          {
+            "Consequence": [
+              {
+                "Scope": [
+                  "Integrity"
+                ],
+                "Impact": [
+                  "Execute Unauthorized Commands"
+                ],
+                "Note": [
+                  "By altering specific configuration settings for the service, the adversary could run arbitrary code to be executed."
+                ]
+              }
+            ]
+          }
+        ],
+        "Mitigations": [
+          {
+            "Mitigation": [
+              "Ensure proper permissions are set for Registry hives to prevent users from modifying keys for system components that may lead to privilege escalation."
+            ]
+          }
+        ],
+        "Related_Weaknesses": [
+          {
+            "Related_Weakness": [
+              {
+                "@CWE_ID": "284"
+              }
+            ]
+          }
+        ],
+        "Taxonomy_Mappings": [
+          {
+            "Taxonomy_Mapping": [
+              {
+                "@Taxonomy_Name": "ATTACK",
+                "Entry_ID": [
+                  "1574.011"
+                ],
+                "Entry_Name": [
+                  "Hijack Execution Flow:Service Registry Permissions Weakness"
+                ]
+              },
+              {
+                "@Taxonomy_Name": "ATTACK",
+                "Entry_ID": [
+                  "1543.003"
+                ],
+                "Entry_Name": [
+                  "Create or Modify System Process:Windows Service"
+                ]
+              }
+            ]
+          }
+        ],
+        "Content_History": [
+          {
+            "Submission": [
+              {
+                "Submission_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Submission_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Submission_Date": [
+                  "2018-04-25"
+                ]
+              }
+            ],
+            "Modification": [
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2019-04-04"
+                ],
+                "Modification_Comment": [
+                  "Updated Related_Weaknesses"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2020-07-30"
+                ],
+                "Modification_Comment": [
+                  "Updated Taxonomy_Mappings"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2021-10-21"
+                ],
+                "Modification_Comment": [
+                  "Updated Description, Execution_Flow"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "references": [],
+    "objects": {
+      "parties": [
+        {
+          "id": "party:mitre-capec",
+          "name": "MITRE CAPEC Program",
+          "party_kind": "organization"
+        }
+      ],
+      "attack_patterns": [
+        {
+          "id": "attack-pattern:capec-478",
+          "name": "Modification of Windows Service Configuration",
+          "description": "An adversary exploits a weakness in access control to modify the execution parameters of a Windows service. The goal of this attack is to execute a malicious binary in place of an existing service.",
+          "catalog_ref": "CAPEC-478"
+        }
+      ],
+      "weaknesses": [
+        {
+          "id": "weakness:cwe-284",
+          "catalog_ref": "CWE-284"
+        }
+      ],
+      "assertions": [
+        {
+          "id": "assertion:capec-478-related-weakness-cwe-284",
+          "name": "CWE-284 is exploited by CAPEC-478",
+          "subject": "weakness:cwe-284",
+          "predicate": "exploited_by",
+          "object": "attack-pattern:capec-478",
+          "assertion_status": "proposed",
+          "asserted_by": "party:mitre-capec",
+          "generated_by": "tmodel CAPEC import: CAPEC 3.9 (2023-01-24), capec_v3.9-sample.xml, SHA-256 0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
+        }
+      ]
+    }
+  },
+  "CAPEC-497": {
+    "catalog": {
+      "name": "CAPEC",
+      "version": "3.9",
+      "date": "2023-01-24",
+      "schema": "3.5",
+      "file": "capec_v3.9-sample.xml",
+      "sha256": "0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e",
+      "attack_patterns": 13,
+      "categories": 3,
+      "views": 3,
+      "references": 16,
+      "unknown_fields": 0,
+      "notice": "Copyright © 2007-2023, The MITRE Corporation. CAPEC and the CAPEC logo are trademarks of The MITRE Corporation.",
+      "license": "The MITRE Corporation (MITRE) hereby grants you a non-exclusive, royalty-free license to use Common Attack Pattern Enumeration and Classification (CAPEC™) for research, development, and commercial purposes. Any copy you make for such purposes is authorized provided that you reproduce MITRE’s copyright designation and this license in any such copy.",
+      "terms_url": "https://capec.mitre.org/about/termsofuse.html"
+    },
+    "id": "CAPEC-497",
+    "entry": {
+      "id": "CAPEC-497",
+      "kind": "Attack_Pattern",
+      "name": "File Discovery",
+      "status": "Draft",
+      "abstraction": "Standard",
+      "view_type": null,
+      "likelihood": "High",
+      "severity": "Very Low",
+      "description": "An adversary engages in probing and exploration activities to determine if common key files exists. Such files often contain configuration and security parameters of the targeted application, system or network. Using this knowledge may often pave the way for more damaging attacks.",
+      "alternate_terms": [],
+      "related_attack_patterns": [
+        {
+          "nature": "ChildOf",
+          "id": "CAPEC-169"
+        }
+      ],
+      "weaknesses": [
+        "CWE-200"
+      ],
+      "attack_techniques": [
+        "T1083"
+      ],
+      "steps": 0,
+      "mitigations": 1,
+      "examples": 0,
+      "url": "https://capec.mitre.org/data/definitions/497.html",
+      "fields": {
+        "@ID": "497",
+        "@Name": "File Discovery",
+        "@Abstraction": "Standard",
+        "@Status": "Draft",
+        "Description": [
+          "An adversary engages in probing and exploration activities to determine if common key files exists. Such files often contain configuration and security parameters of the targeted application, system or network. Using this knowledge may often pave the way for more damaging attacks."
+        ],
+        "Likelihood_Of_Attack": [
+          "High"
+        ],
+        "Typical_Severity": [
+          "Very Low"
+        ],
+        "Related_Attack_Patterns": [
+          {
+            "Related_Attack_Pattern": [
+              {
+                "@Nature": "ChildOf",
+                "@CAPEC_ID": "169",
+                "Exclude_Related": [
+                  {
+                    "@Exclude_ID": "512"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "Prerequisites": [
+          {
+            "Prerequisite": [
+              "The adversary must know the location of these common key files."
+            ]
+          }
+        ],
+        "Consequences": [
+          {
+            "Consequence": [
+              {
+                "Scope": [
+                  "Confidentiality"
+                ],
+                "Impact": [
+                  "Read Data"
+                ]
+              }
+            ]
+          }
+        ],
+        "Mitigations": [
+          {
+            "Mitigation": [
+              "Leverage file protection mechanisms to render these files accessible only to authorized parties."
+            ]
+          }
+        ],
+        "Related_Weaknesses": [
+          {
+            "Related_Weakness": [
+              {
+                "@CWE_ID": "200"
+              }
+            ]
+          }
+        ],
+        "Taxonomy_Mappings": [
+          {
+            "Taxonomy_Mapping": [
+              {
+                "@Taxonomy_Name": "ATTACK",
+                "Entry_ID": [
+                  "1083"
+                ],
+                "Entry_Name": [
+                  "File and Directory Discovery"
+                ]
+              }
+            ]
+          }
+        ],
+        "Content_History": [
+          {
+            "Submission": [
+              {
+                "Submission_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Submission_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Submission_Date": [
+                  "2019-09-30"
+                ]
+              }
+            ],
+            "Modification": [
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2020-07-30"
+                ],
+                "Modification_Comment": [
+                  "Updated Taxonomy_Mappings"
+                ]
+              },
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2020-12-17"
+                ],
+                "Modification_Comment": [
+                  "Updated Resources_Required"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "references": [],
+    "objects": {
+      "parties": [
+        {
+          "id": "party:mitre-capec",
+          "name": "MITRE CAPEC Program",
+          "party_kind": "organization"
+        }
+      ],
+      "attack_patterns": [
+        {
+          "id": "attack-pattern:capec-497",
+          "name": "File Discovery",
+          "description": "An adversary engages in probing and exploration activities to determine if common key files exists. Such files often contain configuration and security parameters of the targeted application, system or network. Using this knowledge may often pave the way for more damaging attacks.",
+          "catalog_ref": "CAPEC-497"
+        }
+      ],
+      "weaknesses": [
+        {
+          "id": "weakness:cwe-200",
+          "catalog_ref": "CWE-200"
+        }
+      ],
+      "assertions": [
+        {
+          "id": "assertion:capec-497-related-weakness-cwe-200",
+          "name": "CWE-200 is exploited by CAPEC-497",
+          "subject": "weakness:cwe-200",
+          "predicate": "exploited_by",
+          "object": "attack-pattern:capec-497",
+          "assertion_status": "proposed",
+          "asserted_by": "party:mitre-capec",
+          "generated_by": "tmodel CAPEC import: CAPEC 3.9 (2023-01-24), capec_v3.9-sample.xml, SHA-256 0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
+        }
+      ]
+    }
+  },
+  "CAPEC-602": {
+    "catalog": {
+      "name": "CAPEC",
+      "version": "3.9",
+      "date": "2023-01-24",
+      "schema": "3.5",
+      "file": "capec_v3.9-sample.xml",
+      "sha256": "0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e",
+      "attack_patterns": 13,
+      "categories": 3,
+      "views": 3,
+      "references": 16,
+      "unknown_fields": 0,
+      "notice": "Copyright © 2007-2023, The MITRE Corporation. CAPEC and the CAPEC logo are trademarks of The MITRE Corporation.",
+      "license": "The MITRE Corporation (MITRE) hereby grants you a non-exclusive, royalty-free license to use Common Attack Pattern Enumeration and Classification (CAPEC™) for research, development, and commercial purposes. Any copy you make for such purposes is authorized provided that you reproduce MITRE’s copyright designation and this license in any such copy.",
+      "terms_url": "https://capec.mitre.org/about/termsofuse.html"
+    },
+    "id": "CAPEC-602",
+    "entry": {
+      "id": "CAPEC-602",
+      "kind": "Attack_Pattern",
+      "name": "DEPRECATED: Degradation",
+      "status": "Deprecated",
+      "abstraction": "Meta",
+      "view_type": null,
+      "likelihood": null,
+      "severity": null,
+      "description": "This attack pattern has been deprecated.",
+      "alternate_terms": [],
+      "related_attack_patterns": [],
+      "weaknesses": [],
+      "attack_techniques": [],
+      "steps": 0,
+      "mitigations": 0,
+      "examples": 0,
+      "url": "https://capec.mitre.org/data/definitions/602.html",
+      "fields": {
+        "@ID": "602",
+        "@Name": "DEPRECATED: Degradation",
+        "@Abstraction": "Meta",
+        "@Status": "Deprecated",
+        "Description": [
+          "This attack pattern has been deprecated."
+        ],
+        "Content_History": [
+          {
+            "Submission": [
+              {
+                "Submission_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Submission_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Submission_Date": [
+                  "2015-11-09"
+                ]
+              }
+            ],
+            "Modification": [
+              {
+                "Modification_Name": [
+                  "CAPEC Content Team"
+                ],
+                "Modification_Organization": [
+                  "The MITRE Corporation"
+                ],
+                "Modification_Date": [
+                  "2017-05-01"
+                ],
+                "Modification_Comment": [
+                  "Updated Description Summary"
+                ]
+              }
+            ],
+            "Previous_Entry_Name": [
+              {
+                "@Date": "2017-05-01",
+                "#text": "Degradation"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "references": [],
+    "objects": {
+      "parties": [
+        {
+          "id": "party:mitre-capec",
+          "name": "MITRE CAPEC Program",
+          "party_kind": "organization"
+        }
+      ],
+      "attack_patterns": [
+        {
+          "id": "attack-pattern:capec-602",
+          "name": "DEPRECATED: Degradation",
+          "description": "This attack pattern has been deprecated.",
+          "catalog_ref": "CAPEC-602"
+        }
+      ],
+      "weaknesses": [],
+      "assertions": []
+    }
+  },
+  "CAPEC-701": {
+    "catalog": {
+      "name": "CAPEC",
+      "version": "3.9",
+      "date": "2023-01-24",
+      "schema": "3.5",
+      "file": "capec_v3.9-sample.xml",
+      "sha256": "0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e",
+      "attack_patterns": 13,
+      "categories": 3,
+      "views": 3,
+      "references": 16,
+      "unknown_fields": 0,
+      "notice": "Copyright © 2007-2023, The MITRE Corporation. CAPEC and the CAPEC logo are trademarks of The MITRE Corporation.",
+      "license": "The MITRE Corporation (MITRE) hereby grants you a non-exclusive, royalty-free license to use Common Attack Pattern Enumeration and Classification (CAPEC™) for research, development, and commercial purposes. Any copy you make for such purposes is authorized provided that you reproduce MITRE’s copyright designation and this license in any such copy.",
+      "terms_url": "https://capec.mitre.org/about/termsofuse.html"
+    },
+    "id": "CAPEC-701",
+    "entry": {
+      "id": "CAPEC-701",
+      "kind": "Attack_Pattern",
+      "name": "Browser in the Middle (BiTM)",
+      "status": "Draft",
+      "abstraction": "Standard",
+      "view_type": null,
+      "likelihood": "Medium",
+      "severity": "High",
+      "description": "An adversary exploits the inherent functionalities of a web browser, in order to establish an unnoticed remote desktop connection in the victim's browser to the adversary's system. The adversary must deploy a web client with a remote desktop session that the victim can access.",
+      "alternate_terms": [],
+      "related_attack_patterns": [
+        {
+          "nature": "ChildOf",
+          "id": "CAPEC-94"
+        },
+        {
+          "nature": "CanPrecede",
+          "id": "CAPEC-151"
+        },
+        {
+          "nature": "CanPrecede",
+          "id": "CAPEC-148"
+        },
+        {
+          "nature": "CanFollow",
+          "id": "CAPEC-98"
+        }
+      ],
+      "weaknesses": [
+        "CWE-294",
+        "CWE-345"
+      ],
+      "attack_techniques": [],
+      "steps": 3,
+      "mitigations": 1,
+      "examples": 0,
+      "url": "https://capec.mitre.org/data/definitions/701.html",
+      "fields": {
+        "@ID": "701",
+        "@Name": "Browser in the Middle (BiTM)",
+        "@Abstraction": "Standard",
+        "@Status": "Draft",
+        "Description": [
+          "An adversary exploits the inherent functionalities of a web browser, in order to establish an unnoticed remote desktop connection in the victim's browser to the adversary's system. The adversary must deploy a web client with a remote desktop session that the victim can access."
+        ],
+        "Extended_Description": [
+          {
+            "#xhtml": "<p>Unlike Adversary in the Browser, the victim does not need to install a malicious application. Browser in the Middle uses the inherent functionalities of a web browser to convince the victim they are browsing normally under the assumption that the connection is secure. All the actions performed by the victim in the open window are actually performed on the machine of the adversary. These victim-authenticated sessions are available to the adversary to use. All entered data such as passwords and usernames can be logged by the adversary and the content displayed to the victim can be altered arbitrarily. Varieties of multifactor authentication which rely solely on user input and do not use a form of hardware-based secret exchange are vulnerable to browser in the middle.</p>"
+          }
+        ],
+        "Likelihood_Of_Attack": [
+          "Medium"
+        ],
+        "Typical_Severity": [
+          "High"
+        ],
+        "Related_Attack_Patterns": [
+          {
+            "Related_Attack_Pattern": [
+              {
+                "@Nature": "ChildOf",
+                "@CAPEC_ID": "94"
+              },
+              {
+                "@Nature": "CanPrecede",
+                "@CAPEC_ID": "151"
+              },
+              {
+                "@Nature": "CanPrecede",
+                "@CAPEC_ID": "148"
+              },
+              {
+                "@Nature": "CanFollow",
+                "@CAPEC_ID": "98"
+              }
+            ]
+          }
+        ],
+        "Execution_Flow": [
+          {
+            "Attack_Step": [
+              {
+                "Step": [
+                  "1"
+                ],
+                "Phase": [
+                  "Explore"
+                ],
+                "Description": [
+                  "[Identify potential targets] The adversary identifies an application or service that the target is likely to use."
+                ],
+                "Technique": [
+                  "The adversary stands up a server to host the transparent browser and entices victims to use it by using a domain name similar to the legitimate application. In addition to the transparent browser, the adversary could also install a web proxy, sniffer, keylogger, and other tools to assist in their goals."
+                ]
+              },
+              {
+                "Step": [
+                  "2"
+                ],
+                "Phase": [
+                  "Experiment"
+                ],
+                "Description": [
+                  "[Lure victims] The adversary crafts a phishing campaign to lure unsuspecting victims into using the transparent browser."
+                ],
+                "Technique": [
+                  "An adversary can create a convincing email with a link to download the web client and interact with the transparent browser."
+                ]
+              },
+              {
+                "Step": [
+                  "3"
+                ],
+                "Phase": [
+                  "Exploit"
+                ],
+                "Description": [
+                  "[Monitor and Manipulate Data] When the victim establishes the connection to the transparent browser, the adversary can view victim activity and make alterations to what the victim sees when browsing the web."
+                ],
+                "Technique": [
+                  "Once a victim has established a connection to the transparent browser, the adversary can use installed tools such as a web proxy, keylogger, or additional malicious browser extensions to gather and manipulate data or impersonate the victim."
+                ]
+              }
+            ]
+          }
+        ],
+        "Prerequisites": [
+          {
+            "Prerequisite": [
+              "The adversary must create a convincing web client to establish the connection. The victim then needs to be lured onto the adversary's webpage. In addition, the victim's machine must not use local authentication APIs, a hardware token, or a Trusted Platform Module (TPM) to authenticate."
+            ]
+          }
+        ],
+        "Skills_Required": [
+          {
+            "Skill": [
+              {
+                "@Level": "Medium"
+              }
+            ]
+          }
+        ],
+        "Resources_Required": [
+          {
+            "Resource": [
+              "A web application with a client is needed to enable the victim's browser to establish a remote desktop connection to the system of the adversary."
+            ]
+          }
+        ],
+        "Consequences": [
+          {
+            "Consequence": [
+              {
+                "Scope": [
+                  "Confidentiality",
+                  "Access Control",
+                  "Authentication"
+                ],
+                "Impact": [
+                  "Gain Privileges"
+                ],
+                "Likelihood": [
+                  "High"
+                ]
+              },
+              {
+                "Scope": [
+                  "Confidentiality",
+                  "Authorization"
+                ],
+                "Impact": [
+                  "Read Data"
+                ],
+                "Likelihood": [
+                  "High"
+                ]
+              },
+              {
+                "Scope": [
+                  "Integrity"
+                ],
+                "Impact": [
+                  "Modify Data"
+                ],
+                "Likelihood": [
+                  "Medium"
+                ]
+              }
+            ]
+          }
+        ],
+        "Mitigations": [
+          {
+            "Mitigation": [
+              "Implementation: Use strong, mutual authentication to fully authenticate with both ends of any communications channel"
+            ]
+          }
+        ],
+        "Related_Weaknesses": [
+          {
+            "Related_Weakness": [
+              {
+                "@CWE_ID": "294"
+              },
+              {
+                "@CWE_ID": "345"
+              }
+            ]
+          }
+        ],
+        "References": [
+          {
+            "Reference": [
+              {
+                "@External_Reference_ID": "REF-747"
+              }
+            ]
+          }
+        ],
+        "Content_History": [
+          {
+            "Submission": [
+              {
+                "Submission_Name": [
+                  "Jonas Tzschoppe"
+                ],
+                "Submission_Organization": [
+                  "Nuremberg Institute of Technology"
+                ],
+                "Submission_Date": [
+                  "2023-01-24"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "references": [
+      {
+        "id": "REF-747",
+        "section": null,
+        "resolved": true,
+        "title": "Browser-in-the-Middle (BitM) attack",
+        "authors": [
+          "Tommasi F.",
+          "Catalano, C.",
+          "Taurino I."
+        ],
+        "edition": null,
+        "publication": null,
+        "publisher": null,
+        "year": "2021",
+        "month": "--04",
+        "day": "---17",
+        "url": "https://link.springer.com/article/10.1007/s10207-021-00548-5#citeas",
+        "url_date": "2023-01-13"
+      }
+    ],
+    "objects": {
+      "parties": [
+        {
+          "id": "party:mitre-capec",
+          "name": "MITRE CAPEC Program",
+          "party_kind": "organization"
+        }
+      ],
+      "attack_patterns": [
+        {
+          "id": "attack-pattern:capec-701",
+          "name": "Browser in the Middle (BiTM)",
+          "description": "An adversary exploits the inherent functionalities of a web browser, in order to establish an unnoticed remote desktop connection in the victim's browser to the adversary's system. The adversary must deploy a web client with a remote desktop session that the victim can access.",
+          "catalog_ref": "CAPEC-701"
+        }
+      ],
+      "weaknesses": [
+        {
+          "id": "weakness:cwe-294",
+          "catalog_ref": "CWE-294"
+        },
+        {
+          "id": "weakness:cwe-345",
+          "catalog_ref": "CWE-345"
+        }
+      ],
+      "assertions": [
+        {
+          "id": "assertion:capec-701-related-weakness-cwe-294",
+          "name": "CWE-294 is exploited by CAPEC-701",
+          "subject": "weakness:cwe-294",
+          "predicate": "exploited_by",
+          "object": "attack-pattern:capec-701",
+          "assertion_status": "proposed",
+          "asserted_by": "party:mitre-capec",
+          "generated_by": "tmodel CAPEC import: CAPEC 3.9 (2023-01-24), capec_v3.9-sample.xml, SHA-256 0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
+        },
+        {
+          "id": "assertion:capec-701-related-weakness-cwe-345",
+          "name": "CWE-345 is exploited by CAPEC-701",
+          "subject": "weakness:cwe-345",
+          "predicate": "exploited_by",
+          "object": "attack-pattern:capec-701",
+          "assertion_status": "proposed",
+          "asserted_by": "party:mitre-capec",
+          "generated_by": "tmodel CAPEC import: CAPEC 3.9 (2023-01-24), capec_v3.9-sample.xml, SHA-256 0faa35f49021c2bc652725a53ad371d047675d4e40370dace32f558f15c18b7e"
+        }
+      ]
+    }
+  }
+}

@@ -8,8 +8,8 @@
     <link rel="preload" href="/tmodel/app/assets/Unbounded-Bold-C3zOEeQu.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/tmodel/app/assets/InterVariable-DiVDrmQJ.woff2" as="font" type="font/woff2" crossorigin />
     <title>tmodel</title>
-    <script type="module" crossorigin src="/tmodel/app/assets/index-Z4INl6Q7.js"></script>
-    <link rel="stylesheet" crossorigin href="/tmodel/app/assets/index-P3bycMBu.css">
+    <script type="module" crossorigin src="/tmodel/app/assets/index-Cs7_GV-t.js"></script>
+    <link rel="stylesheet" crossorigin href="/tmodel/app/assets/index-Ch3SfK7U.css">
   </head>
   <body>
     <main id="welcome" class="welcome" aria-labelledby="welcome-title" tabindex="-1" hidden>
@@ -156,6 +156,7 @@
         <select id="library-view-select" class="library-view-select" aria-label="Library view" hidden>
           <option value="records">All Library Records</option>
           <option value="weaknesses">CWE Weaknesses</option>
+          <option value="attack-patterns">CAPEC Attack Patterns</option>
           <option value="requirements">Security Requirements</option>
           <option value="sdl">SDL</option>
         </select>
@@ -310,6 +311,78 @@
               <div class="library-detail-feedback"><p id="weakness-detail-status" class="library-detail-status" role="status" aria-live="polite">Select a row to view its details.</p><button id="weakness-detail-retry" class="retry-button" type="button" hidden>Retry details</button></div>
               <dl id="weakness-detail-list" class="property-list"></dl>
               <div id="weakness-detail-sections"></div>
+            </aside>
+          </div>
+        </section>
+        <section class="library-subview" data-library-view="attack-patterns" aria-labelledby="attack-pattern-heading" hidden>
+          <div id="attack-pattern-workspace" class="library-workspace attack-pattern-workspace" aria-busy="false">
+            <section class="library-main attack-pattern-main">
+              <div class="library-heading">
+                <div><p class="eyebrow">MITRE Common Attack Pattern Enumeration and Classification</p><div class="library-heading-title">
+                  <h2 id="attack-pattern-heading">CAPEC attack patterns</h2>
+                  <details class="info-disclosure">
+                    <summary><span class="info-icon" aria-hidden="true">i</span><span class="visually-hidden">CAPEC attack patterns source information</span></summary>
+                    <div class="info-panel" tabindex="0"><p id="attack-pattern-source-notice"></p></div>
+                  </details>
+                </div></div>
+                <div class="library-heading-actions"><button id="attack-pattern-retry" class="retry-button" type="button" hidden>Retry attack patterns</button></div>
+              </div>
+              <div class="library-controls attack-pattern-controls" role="group" aria-label="CAPEC attack pattern search and filters">
+                <div class="search-control">
+                  <div class="library-search-heading"><label for="attack-pattern-search">Search</label><button id="attack-pattern-clear-filters" class="library-clear-filters" type="button" hidden>Clear filters</button></div>
+                  <input id="attack-pattern-search" type="search" placeholder="CAPEC ID, name, description, alternate term, CWE or ATT&amp;CK ID" autocomplete="off" />
+                </div>
+                <label for="attack-pattern-abstraction-filter"><span>Abstraction</span><select id="attack-pattern-abstraction-filter"><option value="">All abstractions</option></select></label>
+                <label for="attack-pattern-status-filter"><span>Status</span><select id="attack-pattern-status-filter"><option value="">All statuses</option></select></label>
+                <label for="attack-pattern-likelihood-filter"><span>Likelihood</span><select id="attack-pattern-likelihood-filter"><option value="">All likelihoods</option></select></label>
+                <label for="attack-pattern-severity-filter"><span>Severity</span><select id="attack-pattern-severity-filter"><option value="">All severities</option></select></label>
+              </div>
+              <div id="attack-pattern-request-status" class="library-request-status" role="status" aria-live="polite">Loading CAPEC attack patterns…</div>
+              <p id="attack-pattern-sort-help" class="visually-hidden" aria-live="polite">ID sorted ascending. Select the column again to reverse it.</p>
+              <div id="attack-pattern-warning" class="library-warning" role="alert" hidden></div>
+              <p id="attack-pattern-empty" class="library-empty" role="status" hidden>No CAPEC attack patterns match the current search and filters.</p>
+              <div id="attack-pattern-table-region" class="library-table-region attack-pattern-table-region" role="region" aria-label="CAPEC attack patterns" tabindex="0" hidden>
+                <table class="library-table attack-pattern-table">
+                  <caption>CAPEC attack pattern records</caption>
+                  <thead><tr>
+                    <th scope="col" aria-sort="ascending"><button type="button" data-attack-pattern-sort data-sort="id">ID</button></th>
+                    <th scope="col" aria-sort="none"><button type="button" data-attack-pattern-sort data-sort="name">Name</button></th>
+                    <th scope="col" aria-sort="none"><button type="button" data-attack-pattern-sort data-sort="abstraction">Abstraction</button></th>
+                    <th scope="col" aria-sort="none"><button type="button" data-attack-pattern-sort data-sort="status">Status</button></th>
+                    <th scope="col" aria-sort="none"><button type="button" data-attack-pattern-sort data-sort="likelihood">Likelihood</button></th>
+                    <th scope="col" aria-sort="none"><button type="button" data-attack-pattern-sort data-sort="severity">Severity</button></th>
+                    <th scope="col" title="Related CWE weaknesses">CWE</th>
+                    <th scope="col" title="ATT&amp;CK techniques">ATT&amp;CK</th>
+                    <th scope="col" title="Attack steps in the execution flow">Steps</th>
+                    <th scope="col" title="Mitigations">Mitigations</th>
+                  </tr></thead>
+                  <tbody id="attack-pattern-table-body"></tbody>
+                </table>
+              </div>
+              <div class="library-pagination" role="group" aria-label="CAPEC attack patterns table pagination">
+                <span id="attack-pattern-page-status" role="status"></span>
+                <button id="attack-pattern-page-previous" type="button" hidden disabled>Previous</button>
+                <button id="attack-pattern-page-next" type="button" hidden disabled>Next</button>
+              </div>
+              <details id="attack-pattern-attribution" class="attack-pattern-attribution" hidden>
+                <summary id="attack-pattern-attribution-summary">© The MITRE Corporation · CAPEC Terms of Use</summary>
+                <div class="attack-pattern-attribution-content" role="region" aria-label="CAPEC copyright and license" tabindex="0">
+                  <p id="attack-pattern-attribution-notice"></p>
+                  <p id="attack-pattern-attribution-license"></p>
+                  <a id="attack-pattern-attribution-terms" href="https://capec.mitre.org/about/termsofuse.html" target="_blank" rel="noopener noreferrer">CAPEC Terms of Use</a>
+                </div>
+              </details>
+            </section>
+            <aside id="attack-pattern-inspector" class="panel library-inspector attack-pattern-inspector" aria-labelledby="attack-pattern-inspector-heading attack-pattern-detail-id attack-pattern-detail-title" tabindex="0">
+              <h2 id="attack-pattern-inspector-heading" class="library-inspector-heading">Details</h2>
+              <button id="attack-pattern-back-to-row" class="attack-pattern-back-to-row" type="button" aria-controls="attack-pattern-table-region" hidden>Back to selected row</button>
+              <h3 id="attack-pattern-detail-title" class="library-detail-title"></h3>
+              <code id="attack-pattern-detail-id" class="library-detail-id"></code>
+              <div id="attack-pattern-detail-badges" class="library-detail-badges"></div>
+              <p id="attack-pattern-detail-description" class="library-detail-description"></p>
+              <div class="library-detail-feedback"><p id="attack-pattern-detail-status" class="library-detail-status" role="status" aria-live="polite">Select a row to view its details.</p><button id="attack-pattern-detail-retry" class="retry-button" type="button" hidden>Retry details</button></div>
+              <dl id="attack-pattern-detail-list" class="property-list"></dl>
+              <div id="attack-pattern-detail-sections"></div>
             </aside>
           </div>
         </section>

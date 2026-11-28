@@ -32,6 +32,7 @@ describe("application navigation", () => {
   it.each([
     ["#library", "records"],
     ["#weaknesses", "weaknesses"],
+    ["#attack-patterns", "attack-patterns"],
     ["#requirements", "requirements"],
     ["#sdl", "sdl"],
   ] as const)("opens deep link %s inside Library", (hash, view) => {
@@ -119,6 +120,22 @@ describe("application navigation", () => {
     harness.button("library").click();
     expect(harness.navigation.currentLibraryView).toBe("records");
     expect(harness.location.hash).toBe("#library");
+  });
+
+  it("keeps the CAPEC view's hash in history beside the CWE view", () => {
+    const harness = navigationHarness("#weaknesses");
+    harness.navigation.start();
+    harness.navigation.activateLibrary("attack-patterns");
+    expect(harness.location.hash).toBe("#attack-patterns");
+    expect(harness.navigation.currentLibraryView).toBe("attack-patterns");
+    expect(harness.navigation.hasDestination("#attack-patterns")).toBe(true);
+
+    harness.hashEvents.navigate("#weaknesses");
+    harness.hashEvents.navigate("#attack-patterns");
+    harness.hashEvents.navigate("#attack-patterns");
+    expect(harness.activated("library").mock.calls.flat()).toEqual([
+      "weaknesses", "attack-patterns", "weaknesses", "attack-patterns",
+    ]);
   });
 
   it("starts the graph only once and resizes it across repeated view switches", async () => {

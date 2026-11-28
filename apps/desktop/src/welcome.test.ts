@@ -95,7 +95,7 @@ describe("desktop welcome and direct navigation", () => {
     { search: "?model=example", hash: "#graph" },
     { search: "?model=example", hash: "#unknown" },
     { search: "?model=&file=example.yaml", hash: "" },
-    ...["report", "paths", "graph", "library", "weaknesses", "requirements", "sdl"]
+    ...["report", "paths", "graph", "library", "weaknesses", "attack-patterns", "requirements", "sdl"]
       .map((view) => ({ search: "", hash: `#${view}` })),
   ])("opens the workspace directly at %o", (location) => {
     const initialLocation = { ...location };

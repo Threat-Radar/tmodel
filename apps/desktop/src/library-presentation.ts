@@ -13,10 +13,11 @@ export function renderPagination(
   offset: number,
   count: number,
   total: number,
+  pageSize = LIBRARY_PAGE_SIZE,
 ): void {
   const end = Math.min(offset + count, total);
   pageStatus.textContent = count ? `${offset + 1}–${end} of ${total}` : `0 of ${total}`;
-  previousPage.hidden = nextPage.hidden = total <= LIBRARY_PAGE_SIZE;
+  previousPage.hidden = nextPage.hidden = total <= pageSize;
   previousPage.disabled = offset === 0;
   nextPage.disabled = end >= total;
 }

@@ -49,6 +49,22 @@ Copyright © 2006–2026, The MITRE Corporation.
 
 CWE™ is free to use by any organization or individual for any research, development, and/or commercial purposes, per these CWE Terms of Use. Accordingly, The MITRE Corporation hereby grants you a non-exclusive, royalty-free license to use CWE for research, development, and commercial purposes. Any copy you make for such purposes is authorized on the condition that you reproduce MITRE’s copyright designation and this license in any such copy. CWE is a trademark of The MITRE Corporation. Please contact cwe@mitre.org if you require further clarification on this issue.
 
+## CAPEC (MITRE)
+
+- Release: CAPEC 3.9 (`capec_v3.9.xml`, 2023-01-24), the release the library pins
+- Project: https://capec.mitre.org/
+- Terms of use: https://capec.mitre.org/about/termsofuse.html
+
+The app carries the engine's answers for the 13 attack patterns of the sample cut from
+this release (`engine/tests/fixtures/capec/`) as the Attack Patterns tab's development
+fixture, which the browser preview shows. The engine does not carry the release: it reads
+the file that `TMODEL_CAPEC_CATALOG` names. MITRE's terms allow copies that reproduce its
+copyright designation and license:
+
+Copyright © 2007-2023, The MITRE Corporation. CAPEC and the CAPEC logo are trademarks of The MITRE Corporation.
+
+The MITRE Corporation (MITRE) hereby grants you a non-exclusive, royalty-free license to use Common Attack Pattern Enumeration and Classification (CAPEC™) for research, development, and commercial purposes. Any copy you make for such purposes is authorized provided that you reproduce MITRE’s copyright designation and this license in any such copy.
+
 ## Inter and Unbounded
 
 Inter Variable is distributed as the upstream WOFF2 from

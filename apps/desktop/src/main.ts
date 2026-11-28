@@ -30,6 +30,8 @@ import { StaticLibraryDataProvider } from "./static-library-provider";
 import { configurePreviewChrome, openInitialModel } from "./preview-bootstrap";
 import { createWeaknessProvider } from "./weakness-provider";
 import { weaknessViewElements, WeaknessesView } from "./weakness-view";
+import { createAttackPatternProvider } from "./attack-pattern-provider";
+import { attackPatternViewElements, AttackPatternsView } from "./attack-pattern-view";
 import { CompatibleCoverageProvider } from "./coverage-provider";
 import { RequirementsView, requirementsViewElements } from "./requirements-view";
 import { StaticRequirementStandardsSource } from "./requirements-catalog-provider";
@@ -162,6 +164,11 @@ window.addEventListener("DOMContentLoaded", () => {
   const weaknessProvider = createWeaknessProvider(preview, parameters);
   const weaknessUsesEngine = weaknessProvider.metadata.source === "engine";
   const weaknessView = new WeaknessesView(weaknessProvider, weaknessViewElements());
+  // The same split for CAPEC (#236): the 13-pattern sample in Pages and with
+  // ?attackPatternSource=fixture; otherwise the local engine's pinned release.
+  const attackPatternProvider = createAttackPatternProvider(preview, parameters);
+  const attackPatternUsesEngine = attackPatternProvider.metadata.source === "engine";
+  const attackPatternView = new AttackPatternsView(attackPatternProvider, attackPatternViewElements());
   const requirementsView = new RequirementsView(
     requirementsViewElements(),
     new StaticRequirementStandardsSource(),
@@ -312,7 +319,13 @@ window.addEventListener("DOMContentLoaded", () => {
   const libraryPanel = required("library-view-panel");
   const librarySelect = required<HTMLSelectElement>("library-view-select");
   const librarySections = libraryPanel.querySelectorAll<HTMLElement>("[data-library-view]");
-  const libraryViews = { records: libraryView, weaknesses: weaknessView, requirements: requirementsView, sdl: sdlView };
+  const libraryViews = {
+    records: libraryView,
+    weaknesses: weaknessView,
+    "attack-patterns": attackPatternView,
+    requirements: requirementsView,
+    sdl: sdlView,
+  };
 
   const navigation = new AppNavigation([
     {
@@ -388,6 +401,7 @@ window.addEventListener("DOMContentLoaded", () => {
       void catalogStartup.engineStateChanged(lastEngineState);
       if (libraryUsesEngine) void libraryView.engineStateChanged(lastEngineState);
       if (weaknessUsesEngine) void weaknessView.engineStateChanged(lastEngineState);
+      if (attackPatternUsesEngine) void attackPatternView.engineStateChanged(lastEngineState);
       if (navigation.currentLibraryView === "requirements") void requirementsView.engineStateChanged(lastEngineState);
       if (visibleView === "graph" && explore?.usesEngine) void explore.startup.engineStateChanged(lastEngineState);
       if (navigation.currentLibraryView === "sdl") void sdlView.engineStateChanged(lastEngineState);
