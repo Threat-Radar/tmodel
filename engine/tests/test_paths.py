@@ -117,6 +117,7 @@ def test_threat_goal_uses_authored_paths_final_steps():
         "steps": ["a", "goal"],
         "goal_step": "goal",
         "authored_path": "p1",
+        "step_phases": {},
         "review": {"reviewed": False, "assertion_status": None, "review_status": None},
     }
 
@@ -137,6 +138,7 @@ def test_step_goal_has_no_authored_path():
     assert enumerate_paths(g, "a")[0].to_dict() == {
         "steps": ["a"],
         "goal_step": "a",
+        "step_phases": {},
         "review": {"reviewed": False, "assertion_status": None, "review_status": None},
     }
 

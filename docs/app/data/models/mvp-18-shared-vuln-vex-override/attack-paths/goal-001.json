@@ -10,6 +10,9 @@
         "review_status": "changes_requested",
         "reviewed": false
       },
+      "step_phases": {
+        "attack-step:recover-seed": "exploitation"
+      },
       "steps": [
         "attack-step:power-side-channel",
         "attack-step:recover-seed"
@@ -22,6 +25,9 @@
         "assertion_status": "proposed",
         "review_status": "changes_requested",
         "reviewed": false
+      },
+      "step_phases": {
+        "attack-step:recover-seed": "exploitation"
       },
       "steps": [
         "attack-step:emi-side-channel",

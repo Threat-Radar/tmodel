@@ -10,6 +10,11 @@
         "review_status": null,
         "reviewed": false
       },
+      "step_phases": {
+        "attack-step:find-admin-route": "reconnaissance",
+        "attack-step:inject-login": "exploitation",
+        "attack-step:open-admin": "actions_on_objectives"
+      },
       "steps": [
         "attack-step:inject-login",
         "attack-step:find-admin-route",

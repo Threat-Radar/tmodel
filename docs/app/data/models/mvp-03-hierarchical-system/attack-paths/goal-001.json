@@ -10,6 +10,9 @@
         "review_status": null,
         "reviewed": false
       },
+      "step_phases": {
+        "attack-step:call-fleet-api": "exploitation"
+      },
       "steps": [
         "attack-step:forge-jwt-none-alg",
         "attack-step:call-fleet-api"
@@ -22,6 +25,9 @@
         "assertion_status": null,
         "review_status": null,
         "reviewed": false
+      },
+      "step_phases": {
+        "attack-step:call-fleet-api": "exploitation"
       },
       "steps": [
         "attack-step:forge-jwt-weak-key",

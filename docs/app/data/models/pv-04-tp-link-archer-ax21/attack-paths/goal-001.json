@@ -10,6 +10,11 @@
         "review_status": null,
         "reviewed": false
       },
+      "step_phases": {
+        "attack-step:inject-command": "exploitation",
+        "attack-step:reach-admin-interface": "delivery",
+        "attack-step:run-as-root": "actions_on_objectives"
+      },
       "steps": [
         "attack-step:reach-admin-interface",
         "attack-step:inject-command",

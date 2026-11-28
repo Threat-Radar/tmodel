@@ -10,6 +10,10 @@
         "review_status": null,
         "reviewed": false
       },
+      "step_phases": {
+        "attack-step:derive-session-key": "exploitation",
+        "attack-step:observe-rng-outputs": "reconnaissance"
+      },
       "steps": [
         "attack-step:observe-rng-outputs",
         "attack-step:capture-tls-handshake",

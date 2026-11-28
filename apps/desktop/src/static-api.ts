@@ -2,6 +2,7 @@
  * GET-only adapter from the existing engine clients to the JSON files emitted
  * by docs/publishing/render_app.py. It deliberately has no localhost fallback.
  */
+import { RISK_MATRIX } from "./risk-calculation";
 
 interface GoalFile {
   goal: string;
@@ -44,6 +45,12 @@ export class StaticPreviewApi {
     }
     const root = `models/${encodeURIComponent(model)}/`;
     if (request.pathname === "/graph") return this.get(`${root}graph.json`, init);
+    if (request.pathname === "/risk") {
+      if (request.searchParams.get("matrix") !== RISK_MATRIX || request.searchParams.has("goal")) {
+        return jsonError(400, "select the published Annex H Table H.8 example profile for this model");
+      }
+      return this.get(`${root}risk.json`, init);
+    }
     if (request.pathname !== "/attack-paths") return jsonError(404, "static preview route not found");
 
     const goal = request.searchParams.get("goal");

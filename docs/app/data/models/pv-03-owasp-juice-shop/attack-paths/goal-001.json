@@ -10,6 +10,10 @@
         "review_status": null,
         "reviewed": false
       },
+      "step_phases": {
+        "attack-step:change-basket-number": "actions_on_objectives",
+        "attack-step:own-login": "delivery"
+      },
       "steps": [
         "attack-step:own-login",
         "attack-step:change-basket-number"
