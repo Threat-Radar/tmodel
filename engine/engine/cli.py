@@ -1,6 +1,7 @@
 """`tmodel` command line — the agentic surface over the same engine the GUI uses.
 
-  tmodel serve                 start the local engine (loopback only)
+  tmodel serve [--projects]    start the local engine (loopback only); --projects also
+                               serves the project folders the host opens (#288)
   tmodel health [--json]       ask the running engine whether it is healthy
   tmodel version [--json]      ask the running engine for its version
   tmodel risk FILE --matrix annex-h-table-h8 [--goal G] [--json]
@@ -47,13 +48,23 @@
                 [--verdict accepted|rejected|changes_requested] [--declare-sponsor GH]
                                the sponsor decides one proposal, in a branch; always
                                in-process, never through the API (DL-0046)
+  tmodel import-sbom SBOM [--scan SCAN] [--platform OS/ARCH[/VARIANT]] -o MODEL
+                [--report FILE] [--force]
+                               write a starter model from Syft's CycloneDX SBOM of a
+                               container image and Grype's JSON scan of it; every
+                               claim proposed (#257, DL-0068); always in-process.
+                               --platform names the build (linux/arm64/v8) unless
+                               the scan records it
 
 By default these go through the local API, exactly like the desktop app
 (APP-0001 A-030, A-060). `--in-process` calls the engine code directly
 instead, for scripts that do not want a server.
 
 Exit codes: 0 ok · 1 engine unreachable, unhealthy, an engine error, or incomplete
-risk inputs · 2 usage error.
+risk inputs; for `import-sbom`, a file it could not write (the error and what it left
+are printed) · 2 usage error, or an input `import-sbom` refuses. `import-sbom` exits 0
+with its warnings printed, such as an SBOM most of whose packages are another
+platform's, or a backup it could not remove once both outputs were written.
 """
 
 from __future__ import annotations
@@ -647,6 +658,43 @@ def _accept(args: argparse.Namespace) -> int:
     return 0
 
 
+def _import_sbom(args: argparse.Namespace) -> int:
+    from engine import import_sbom  # a file-to-file step: never reachable from the API
+
+    try:
+        result = import_sbom.run(
+            args.sbom,
+            scan=args.scan,
+            output=args.output,
+            report=args.report,
+            force=args.force,
+            platform=args.platform,
+        )
+    except import_sbom.SbomImportError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        _print_notes(exc)
+        return 2
+    except OSError as exc:
+        print(f"error: cannot write ({exc.strerror or exc})", file=sys.stderr)
+        _print_notes(exc)
+        return 1
+    if args.report is None:
+        print(result.report_text, end="")
+    else:
+        print(f"wrote {args.output} and the import report {args.report}")
+    # What the import wrote but the user should know (import_sbom.ImportResult.warnings),
+    # such as an SBOM most of whose packages are another platform's: the import stands.
+    for warning in result.warnings:
+        print(f"warning: {warning}", file=sys.stderr)
+    return 0
+
+
+def _print_notes(exc: BaseException) -> None:
+    # What a failed import kept, such as the file --force was replacing (import_sbom).
+    for note in getattr(exc, "__notes__", ()):
+        print(f"  {note}", file=sys.stderr)
+
+
 def _coverage(args: argparse.Namespace) -> int:
     file = os.path.abspath(args.file) if os.path.dirname(args.file) else args.file
     params = {"file": file, "product": args.product}
@@ -672,8 +720,18 @@ def _coverage(args: argparse.Namespace) -> int:
 
 
 def _serve(args: argparse.Namespace) -> int:
+    host_token = None
+    if args.projects:  # the host's secret comes from the environment, never argv (#288)
+        host_token = os.environ.get("TMODEL_HOST_TOKEN")
+        if not host_token:
+            print(
+                "error: --projects needs TMODEL_HOST_TOKEN, a secret of at least 32 "
+                "characters, such as one from secrets.token_urlsafe(32)",
+                file=sys.stderr,
+            )
+            return 1
     try:
-        server.serve(port=args.port, exit_with_parent=args.exit_with_parent)
+        server.serve(port=args.port, exit_with_parent=args.exit_with_parent, host_token=host_token)
     except (ValueError, OSError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
@@ -690,6 +748,12 @@ def build_parser() -> argparse.ArgumentParser:
         "--exit-with-parent",
         action="store_true",
         help="stop when stdin closes (the desktop app starts the engine this way)",
+    )
+    serve.add_argument(
+        "--projects",
+        action="store_true",
+        help="let the host open and create threat model project folders (#288); the "
+        "host's secret is read from TMODEL_HOST_TOKEN; off by default",
     )
     serve.set_defaults(func=_serve)
 
@@ -822,6 +886,36 @@ def build_parser() -> argparse.ArgumentParser:
     )
     decide.add_argument("--json", action="store_true", help="print JSON")
     decide.set_defaults(func=_accept)
+
+    imported = sub.add_parser(
+        "import-sbom",
+        help="write a starter model from an image's SBOM and its Grype scan (#257)",
+    )
+    imported.add_argument(
+        "sbom", help="Syft's CycloneDX 1.7 JSON SBOM of a container image named by digest"
+    )
+    imported.add_argument("--scan", help="Grype's JSON scan of that SBOM: grype sbom:FILE -o json")
+    imported.add_argument(
+        "--platform",
+        metavar="OS/ARCH[/VARIANT]",
+        help=(
+            "the platform of the build the SBOM's digest names, e.g. linux/arm64/v8: the "
+            "SBOM does not say whether its digest is a platform's or an index's, which "
+            "every platform shares. Needed unless the scan records it, as Grype does when "
+            "it read the image itself (not the SBOM)"
+        ),
+    )
+    imported.add_argument(
+        "-o",
+        "--output",
+        required=True,
+        help="the model file to write, e.g. spec/vectors/pv-05-NAME.yaml",
+    )
+    imported.add_argument("--report", help="write the import report here instead of printing it")
+    imported.add_argument(
+        "--force", action="store_true", help="replace the model or report if it exists"
+    )
+    imported.set_defaults(func=_import_sbom)
     return parser
 
 

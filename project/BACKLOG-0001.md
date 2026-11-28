@@ -7,9 +7,9 @@ description: "Task backlog. Each task becomes a GitHub issue; this file is the d
 type: backlog
 category: process
 status: draft
-version: "0.2.9"
+version: "0.2.10"
 date: "2026-09-23"
-updated: "2026-10-26"
+updated: "2026-11-26"
 needs_review: true
 reviewed: false
 canonical_path: project/BACKLOG-0001.md
@@ -162,6 +162,22 @@ remote servers. Tracking epic: the GitHub "Path A" issue. Slices 0–3 are the s
 
 ## Parking lot
 
+- **Governed TARA pilot (#178): parked 2026-11-26 by team decision.** No one works on it until the team picks it up again.
+  - **Done, and kept:**
+    - #179 (DL-0027);
+    - #180, the governance record (#251);
+    - #181, the collect phase (#242);
+    - #183, the publish gate and input digest (#253);
+    - #184, the clause 15 gaps (#209, #252);
+    - the gate evaluator for #185 (#265).
+
+    The `tara.yml` CI check keeps running on `models/` changes.
+  - **Parked:**
+    - #182, the render phase (draft #267);
+    - #185, the Gate check;
+    - the owner review of TCU TARA version 1 (draft #274).
+
+    Version 1 stays a draft, with no assessor or approver review.
 - ISO/SAE 21434 full risk analysis (high value, optional; may exceed one semester).
 - Export to a common threat-model format (R-006).
 - Rule-based scanning engine, if not chosen at DEC-005.
