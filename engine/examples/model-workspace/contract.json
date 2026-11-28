@@ -1,0 +1,1094 @@
+{
+  "note": "Synthetic examples of the #288 project routes, for #290's mocks. tests/test_workspace_api.py makes them from examples/model-workspace/workspace-example.yaml with a fixed clock and fixed ids, and checks that the engine still answers exactly this. Paths are placeholders; no value is a credential or a human review.",
+  "enable": {
+    "command": "TMODEL_HOST_TOKEN=<secret> tmodel serve --projects",
+    "header": "Authorization: Bearer <the host token>, on every request",
+    "host_only": "The /workspace/host/* routes take paths and refuse any request with an Origin header, so only the desktop host can call them.",
+    "saving": "There is no save route: #289's saveModelChanges calls ProjectWorkspace.commit, which is save_version with no description or summary."
+  },
+  "createProject": {
+    "request": {
+      "method": "POST",
+      "path": "/workspace/host/create-project",
+      "body": {
+        "path": "/Users/example/Threat Models/Example Threat Model",
+        "source_file": "workspace-example.yaml"
+      }
+    },
+    "status": 201,
+    "response": {
+      "model_id": "project:f0369fccc1c2c86117197ae78432722d",
+      "kind": "project",
+      "name": "Example Threat Model",
+      "editable": true,
+      "container": "ExampleModelProposed",
+      "created_at": "2026-11-27T12:00:00Z",
+      "current_revision": "v001",
+      "version_count": 1,
+      "source": {
+        "file": "workspace-example.yaml",
+        "sha256": "fedede9403741ecde657609801c84f6ef919a376ac74479408d88b801a77cd9f",
+        "origin": "example"
+      },
+      "revision": "v001",
+      "version": {
+        "number": 1,
+        "version": "v001",
+        "description": "Initial model, copied from workspace-example.yaml",
+        "created_at": "2026-11-27T12:00:00Z",
+        "parent_version": null,
+        "sha256": "fedede9403741ecde657609801c84f6ef919a376ac74479408d88b801a77cd9f",
+        "summary": null
+      },
+      "document": {
+        "parties": [
+          {
+            "id": "party:example-reviewer",
+            "name": "Example reviewer",
+            "party_kind": "person"
+          },
+          {
+            "id": "party:example-agent",
+            "name": "Example drafting agent",
+            "party_kind": "software_agent"
+          }
+        ],
+        "products": [
+          {
+            "id": "product:example-service",
+            "name": "Example service",
+            "description": "A one-threat synthetic model for the workspace contract."
+          }
+        ],
+        "threat_instances": [
+          {
+            "id": "threat-instance:example",
+            "name": "Example threat",
+            "realizes_damage": "damage-scenario:example"
+          }
+        ],
+        "damage_scenarios": [
+          {
+            "id": "damage-scenario:example",
+            "name": "Example damage"
+          }
+        ],
+        "attack_steps": [
+          {
+            "id": "attack-step:example",
+            "name": "Example step"
+          }
+        ],
+        "attack_paths": [
+          {
+            "id": "attack-path:example",
+            "name": "Example path",
+            "steps": [
+              "attack-step:example"
+            ],
+            "realizes_threat": "threat-instance:example",
+            "attack_feasibility": "low"
+          }
+        ],
+        "assertions": [
+          {
+            "id": "assertion:example-path",
+            "subject": "attack-path:example",
+            "predicate": "realizes_threat",
+            "object": "threat-instance:example",
+            "assertion_status": "proposed",
+            "asserted_by": "party:example-agent",
+            "confidence": "medium"
+          }
+        ],
+        "risk_scores": [
+          {
+            "id": "risk-score:example",
+            "threat": "threat-instance:example",
+            "damage_scenario": "damage-scenario:example",
+            "for_stakeholder": "party:example-reviewer",
+            "attack_paths": [
+              "attack-path:example"
+            ],
+            "mitigation_status": "planned",
+            "impact": {
+              "safety": "moderate",
+              "financial": "major",
+              "operational": "moderate",
+              "privacy": "negligible"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "saveVersion": {
+    "request": {
+      "call": "ProjectWorkspace.save_version",
+      "model_id": "project:f0369fccc1c2c86117197ae78432722d",
+      "expected_revision": "v001",
+      "description": "Reviewed the example path and rated it high",
+      "summary": {
+        "matrix": "annex-h-table-h8",
+        "derived_risk": {
+          "safety": 3,
+          "financial": 4,
+          "operational": 3,
+          "privacy": 1
+        }
+      },
+      "document": {
+        "parties": [
+          {
+            "id": "party:example-reviewer",
+            "name": "Example reviewer",
+            "party_kind": "person"
+          },
+          {
+            "id": "party:example-agent",
+            "name": "Example drafting agent",
+            "party_kind": "software_agent"
+          }
+        ],
+        "products": [
+          {
+            "id": "product:example-service",
+            "name": "Example service",
+            "description": "A one-threat synthetic model for the workspace contract."
+          }
+        ],
+        "threat_instances": [
+          {
+            "id": "threat-instance:example",
+            "name": "Example threat",
+            "realizes_damage": "damage-scenario:example"
+          }
+        ],
+        "damage_scenarios": [
+          {
+            "id": "damage-scenario:example",
+            "name": "Example damage"
+          }
+        ],
+        "attack_steps": [
+          {
+            "id": "attack-step:example",
+            "name": "Example step"
+          }
+        ],
+        "attack_paths": [
+          {
+            "id": "attack-path:example",
+            "name": "Example path",
+            "steps": [
+              "attack-step:example"
+            ],
+            "realizes_threat": "threat-instance:example",
+            "attack_feasibility": "high"
+          }
+        ],
+        "assertions": [
+          {
+            "id": "assertion:example-path",
+            "subject": "attack-path:example",
+            "predicate": "realizes_threat",
+            "object": "threat-instance:example",
+            "assertion_status": "proposed",
+            "asserted_by": "party:example-agent",
+            "confidence": "medium"
+          }
+        ],
+        "risk_scores": [
+          {
+            "id": "risk-score:example",
+            "threat": "threat-instance:example",
+            "damage_scenario": "damage-scenario:example",
+            "for_stakeholder": "party:example-reviewer",
+            "attack_paths": [
+              "attack-path:example"
+            ],
+            "mitigation_status": "planned",
+            "impact": {
+              "safety": "moderate",
+              "financial": "major",
+              "operational": "moderate",
+              "privacy": "negligible"
+            }
+          }
+        ],
+        "reviews": [
+          {
+            "id": "review:test-1",
+            "reviews": "assertion:example-path",
+            "reviewer": "party:example-reviewer",
+            "review_status": "accepted",
+            "justification": "Test-only input from the test client, not a human review."
+          }
+        ]
+      }
+    },
+    "response": {
+      "revision": "v002"
+    }
+  },
+  "openProject": {
+    "request": {
+      "method": "POST",
+      "path": "/workspace/host/open-project",
+      "body": {
+        "path": "/Users/example/Threat Models/Example Threat Model"
+      }
+    },
+    "status": 200,
+    "response": {
+      "model_id": "project:f0369fccc1c2c86117197ae78432722d",
+      "kind": "project",
+      "name": "Example Threat Model",
+      "editable": true,
+      "container": "ExampleModelProposed",
+      "created_at": "2026-11-27T12:00:00Z",
+      "current_revision": "v002",
+      "version_count": 2,
+      "source": {
+        "file": "workspace-example.yaml",
+        "sha256": "fedede9403741ecde657609801c84f6ef919a376ac74479408d88b801a77cd9f",
+        "origin": "example"
+      },
+      "revision": "v002",
+      "version": {
+        "number": 2,
+        "version": "v002",
+        "description": "Reviewed the example path and rated it high",
+        "created_at": "2026-11-27T12:01:00Z",
+        "parent_version": "v001",
+        "sha256": "c8f1252fbb7e99af0a01d27b3bcd9becb61dd2c880be108b8cb897032ce3140e",
+        "summary": {
+          "matrix": "annex-h-table-h8",
+          "derived_risk": {
+            "safety": 3,
+            "financial": 4,
+            "operational": 3,
+            "privacy": 1
+          }
+        }
+      },
+      "document": {
+        "parties": [
+          {
+            "id": "party:example-reviewer",
+            "name": "Example reviewer",
+            "party_kind": "person"
+          },
+          {
+            "id": "party:example-agent",
+            "name": "Example drafting agent",
+            "party_kind": "software_agent"
+          }
+        ],
+        "products": [
+          {
+            "id": "product:example-service",
+            "name": "Example service",
+            "description": "A one-threat synthetic model for the workspace contract."
+          }
+        ],
+        "threat_instances": [
+          {
+            "id": "threat-instance:example",
+            "name": "Example threat",
+            "realizes_damage": "damage-scenario:example"
+          }
+        ],
+        "damage_scenarios": [
+          {
+            "id": "damage-scenario:example",
+            "name": "Example damage"
+          }
+        ],
+        "attack_steps": [
+          {
+            "id": "attack-step:example",
+            "name": "Example step"
+          }
+        ],
+        "attack_paths": [
+          {
+            "id": "attack-path:example",
+            "name": "Example path",
+            "steps": [
+              "attack-step:example"
+            ],
+            "realizes_threat": "threat-instance:example",
+            "attack_feasibility": "high"
+          }
+        ],
+        "assertions": [
+          {
+            "id": "assertion:example-path",
+            "subject": "attack-path:example",
+            "predicate": "realizes_threat",
+            "object": "threat-instance:example",
+            "assertion_status": "proposed",
+            "asserted_by": "party:example-agent",
+            "confidence": "medium"
+          }
+        ],
+        "risk_scores": [
+          {
+            "id": "risk-score:example",
+            "threat": "threat-instance:example",
+            "damage_scenario": "damage-scenario:example",
+            "for_stakeholder": "party:example-reviewer",
+            "attack_paths": [
+              "attack-path:example"
+            ],
+            "mitigation_status": "planned",
+            "impact": {
+              "safety": "moderate",
+              "financial": "major",
+              "operational": "moderate",
+              "privacy": "negligible"
+            }
+          }
+        ],
+        "reviews": [
+          {
+            "id": "review:test-1",
+            "reviews": "assertion:example-path",
+            "reviewer": "party:example-reviewer",
+            "review_status": "accepted",
+            "justification": "Test-only input from the test client, not a human review."
+          }
+        ]
+      }
+    }
+  },
+  "openFile": {
+    "request": {
+      "method": "POST",
+      "path": "/workspace/host/open-file",
+      "body": {
+        "path": "/Users/example/Downloads/imported-model.yaml"
+      }
+    },
+    "status": 200,
+    "response": {
+      "model_id": "file:06acc749550acd623b921e8eff448d20",
+      "kind": "file",
+      "name": "imported-model.yaml",
+      "editable": false,
+      "container": "ExampleModelProposed",
+      "created_at": "2026-11-27T12:02:00Z",
+      "current_revision": "sha256:fedede9403741ecde657609801c84f6ef919a376ac74479408d88b801a77cd9f",
+      "version_count": 1,
+      "source": {
+        "file": "imported-model.yaml",
+        "sha256": "fedede9403741ecde657609801c84f6ef919a376ac74479408d88b801a77cd9f",
+        "origin": "file"
+      },
+      "revision": "sha256:fedede9403741ecde657609801c84f6ef919a376ac74479408d88b801a77cd9f",
+      "version": {
+        "number": null,
+        "version": "sha256:fedede9403741ecde657609801c84f6ef919a376ac74479408d88b801a77cd9f",
+        "description": "Opened read-only from imported-model.yaml",
+        "created_at": "2026-11-27T12:02:00Z",
+        "parent_version": null,
+        "sha256": "fedede9403741ecde657609801c84f6ef919a376ac74479408d88b801a77cd9f",
+        "summary": null
+      },
+      "document": {
+        "parties": [
+          {
+            "id": "party:example-reviewer",
+            "name": "Example reviewer",
+            "party_kind": "person"
+          },
+          {
+            "id": "party:example-agent",
+            "name": "Example drafting agent",
+            "party_kind": "software_agent"
+          }
+        ],
+        "products": [
+          {
+            "id": "product:example-service",
+            "name": "Example service",
+            "description": "A one-threat synthetic model for the workspace contract."
+          }
+        ],
+        "threat_instances": [
+          {
+            "id": "threat-instance:example",
+            "name": "Example threat",
+            "realizes_damage": "damage-scenario:example"
+          }
+        ],
+        "damage_scenarios": [
+          {
+            "id": "damage-scenario:example",
+            "name": "Example damage"
+          }
+        ],
+        "attack_steps": [
+          {
+            "id": "attack-step:example",
+            "name": "Example step"
+          }
+        ],
+        "attack_paths": [
+          {
+            "id": "attack-path:example",
+            "name": "Example path",
+            "steps": [
+              "attack-step:example"
+            ],
+            "realizes_threat": "threat-instance:example",
+            "attack_feasibility": "low"
+          }
+        ],
+        "assertions": [
+          {
+            "id": "assertion:example-path",
+            "subject": "attack-path:example",
+            "predicate": "realizes_threat",
+            "object": "threat-instance:example",
+            "assertion_status": "proposed",
+            "asserted_by": "party:example-agent",
+            "confidence": "medium"
+          }
+        ],
+        "risk_scores": [
+          {
+            "id": "risk-score:example",
+            "threat": "threat-instance:example",
+            "damage_scenario": "damage-scenario:example",
+            "for_stakeholder": "party:example-reviewer",
+            "attack_paths": [
+              "attack-path:example"
+            ],
+            "mitigation_status": "planned",
+            "impact": {
+              "safety": "moderate",
+              "financial": "major",
+              "operational": "moderate",
+              "privacy": "negligible"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "startProjectFromFile": {
+    "request": {
+      "method": "POST",
+      "path": "/workspace/host/create-project",
+      "body": {
+        "path": "/Users/example/Threat Models/Imported Model",
+        "model_id": "file:06acc749550acd623b921e8eff448d20",
+        "name": "Imported model"
+      }
+    },
+    "status": 201,
+    "response": {
+      "model_id": "project:b3277bb3d6a9ee865f98b7fc0747fb93",
+      "kind": "project",
+      "name": "Imported model",
+      "editable": true,
+      "container": "ExampleModelProposed",
+      "created_at": "2026-11-27T12:03:00Z",
+      "current_revision": "v001",
+      "version_count": 1,
+      "source": {
+        "file": "imported-model.yaml",
+        "sha256": "fedede9403741ecde657609801c84f6ef919a376ac74479408d88b801a77cd9f",
+        "origin": "file"
+      },
+      "revision": "v001",
+      "version": {
+        "number": 1,
+        "version": "v001",
+        "description": "Initial model, copied from imported-model.yaml",
+        "created_at": "2026-11-27T12:03:00Z",
+        "parent_version": null,
+        "sha256": "fedede9403741ecde657609801c84f6ef919a376ac74479408d88b801a77cd9f",
+        "summary": null
+      },
+      "document": {
+        "parties": [
+          {
+            "id": "party:example-reviewer",
+            "name": "Example reviewer",
+            "party_kind": "person"
+          },
+          {
+            "id": "party:example-agent",
+            "name": "Example drafting agent",
+            "party_kind": "software_agent"
+          }
+        ],
+        "products": [
+          {
+            "id": "product:example-service",
+            "name": "Example service",
+            "description": "A one-threat synthetic model for the workspace contract."
+          }
+        ],
+        "threat_instances": [
+          {
+            "id": "threat-instance:example",
+            "name": "Example threat",
+            "realizes_damage": "damage-scenario:example"
+          }
+        ],
+        "damage_scenarios": [
+          {
+            "id": "damage-scenario:example",
+            "name": "Example damage"
+          }
+        ],
+        "attack_steps": [
+          {
+            "id": "attack-step:example",
+            "name": "Example step"
+          }
+        ],
+        "attack_paths": [
+          {
+            "id": "attack-path:example",
+            "name": "Example path",
+            "steps": [
+              "attack-step:example"
+            ],
+            "realizes_threat": "threat-instance:example",
+            "attack_feasibility": "low"
+          }
+        ],
+        "assertions": [
+          {
+            "id": "assertion:example-path",
+            "subject": "attack-path:example",
+            "predicate": "realizes_threat",
+            "object": "threat-instance:example",
+            "assertion_status": "proposed",
+            "asserted_by": "party:example-agent",
+            "confidence": "medium"
+          }
+        ],
+        "risk_scores": [
+          {
+            "id": "risk-score:example",
+            "threat": "threat-instance:example",
+            "damage_scenario": "damage-scenario:example",
+            "for_stakeholder": "party:example-reviewer",
+            "attack_paths": [
+              "attack-path:example"
+            ],
+            "mitigation_status": "planned",
+            "impact": {
+              "safety": "moderate",
+              "financial": "major",
+              "operational": "moderate",
+              "privacy": "negligible"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "listOpenModels": {
+    "request": {
+      "method": "GET",
+      "path": "/workspace/models"
+    },
+    "status": 200,
+    "response": {
+      "count": 3,
+      "models": [
+        {
+          "model_id": "project:f0369fccc1c2c86117197ae78432722d",
+          "kind": "project",
+          "name": "Example Threat Model",
+          "editable": true,
+          "container": "ExampleModelProposed",
+          "created_at": "2026-11-27T12:00:00Z",
+          "current_revision": "v002",
+          "version_count": 2,
+          "source": {
+            "file": "workspace-example.yaml",
+            "sha256": "fedede9403741ecde657609801c84f6ef919a376ac74479408d88b801a77cd9f",
+            "origin": "example"
+          }
+        },
+        {
+          "model_id": "file:06acc749550acd623b921e8eff448d20",
+          "kind": "file",
+          "name": "imported-model.yaml",
+          "editable": false,
+          "container": "ExampleModelProposed",
+          "created_at": "2026-11-27T12:02:00Z",
+          "current_revision": "sha256:fedede9403741ecde657609801c84f6ef919a376ac74479408d88b801a77cd9f",
+          "version_count": 1,
+          "source": {
+            "file": "imported-model.yaml",
+            "sha256": "fedede9403741ecde657609801c84f6ef919a376ac74479408d88b801a77cd9f",
+            "origin": "file"
+          }
+        },
+        {
+          "model_id": "project:b3277bb3d6a9ee865f98b7fc0747fb93",
+          "kind": "project",
+          "name": "Imported model",
+          "editable": true,
+          "container": "ExampleModelProposed",
+          "created_at": "2026-11-27T12:03:00Z",
+          "current_revision": "v001",
+          "version_count": 1,
+          "source": {
+            "file": "imported-model.yaml",
+            "sha256": "fedede9403741ecde657609801c84f6ef919a376ac74479408d88b801a77cd9f",
+            "origin": "file"
+          }
+        }
+      ],
+      "problems": [],
+      "schema_validation": false
+    }
+  },
+  "openModel": {
+    "request": {
+      "method": "GET",
+      "path": "/workspace/model",
+      "query": {
+        "model_id": "project:f0369fccc1c2c86117197ae78432722d"
+      }
+    },
+    "status": 200,
+    "response": {
+      "model_id": "project:f0369fccc1c2c86117197ae78432722d",
+      "kind": "project",
+      "name": "Example Threat Model",
+      "editable": true,
+      "container": "ExampleModelProposed",
+      "created_at": "2026-11-27T12:00:00Z",
+      "current_revision": "v002",
+      "version_count": 2,
+      "source": {
+        "file": "workspace-example.yaml",
+        "sha256": "fedede9403741ecde657609801c84f6ef919a376ac74479408d88b801a77cd9f",
+        "origin": "example"
+      },
+      "revision": "v002",
+      "version": {
+        "number": 2,
+        "version": "v002",
+        "description": "Reviewed the example path and rated it high",
+        "created_at": "2026-11-27T12:01:00Z",
+        "parent_version": "v001",
+        "sha256": "c8f1252fbb7e99af0a01d27b3bcd9becb61dd2c880be108b8cb897032ce3140e",
+        "summary": {
+          "matrix": "annex-h-table-h8",
+          "derived_risk": {
+            "safety": 3,
+            "financial": 4,
+            "operational": 3,
+            "privacy": 1
+          }
+        }
+      },
+      "document": {
+        "parties": [
+          {
+            "id": "party:example-reviewer",
+            "name": "Example reviewer",
+            "party_kind": "person"
+          },
+          {
+            "id": "party:example-agent",
+            "name": "Example drafting agent",
+            "party_kind": "software_agent"
+          }
+        ],
+        "products": [
+          {
+            "id": "product:example-service",
+            "name": "Example service",
+            "description": "A one-threat synthetic model for the workspace contract."
+          }
+        ],
+        "threat_instances": [
+          {
+            "id": "threat-instance:example",
+            "name": "Example threat",
+            "realizes_damage": "damage-scenario:example"
+          }
+        ],
+        "damage_scenarios": [
+          {
+            "id": "damage-scenario:example",
+            "name": "Example damage"
+          }
+        ],
+        "attack_steps": [
+          {
+            "id": "attack-step:example",
+            "name": "Example step"
+          }
+        ],
+        "attack_paths": [
+          {
+            "id": "attack-path:example",
+            "name": "Example path",
+            "steps": [
+              "attack-step:example"
+            ],
+            "realizes_threat": "threat-instance:example",
+            "attack_feasibility": "high"
+          }
+        ],
+        "assertions": [
+          {
+            "id": "assertion:example-path",
+            "subject": "attack-path:example",
+            "predicate": "realizes_threat",
+            "object": "threat-instance:example",
+            "assertion_status": "proposed",
+            "asserted_by": "party:example-agent",
+            "confidence": "medium"
+          }
+        ],
+        "risk_scores": [
+          {
+            "id": "risk-score:example",
+            "threat": "threat-instance:example",
+            "damage_scenario": "damage-scenario:example",
+            "for_stakeholder": "party:example-reviewer",
+            "attack_paths": [
+              "attack-path:example"
+            ],
+            "mitigation_status": "planned",
+            "impact": {
+              "safety": "moderate",
+              "financial": "major",
+              "operational": "moderate",
+              "privacy": "negligible"
+            }
+          }
+        ],
+        "reviews": [
+          {
+            "id": "review:test-1",
+            "reviews": "assertion:example-path",
+            "reviewer": "party:example-reviewer",
+            "review_status": "accepted",
+            "justification": "Test-only input from the test client, not a human review."
+          }
+        ]
+      }
+    }
+  },
+  "readVersion": {
+    "request": {
+      "method": "GET",
+      "path": "/workspace/model",
+      "query": {
+        "model_id": "project:f0369fccc1c2c86117197ae78432722d",
+        "revision": "v001"
+      }
+    },
+    "status": 200,
+    "response": {
+      "model_id": "project:f0369fccc1c2c86117197ae78432722d",
+      "kind": "project",
+      "name": "Example Threat Model",
+      "editable": true,
+      "container": "ExampleModelProposed",
+      "created_at": "2026-11-27T12:00:00Z",
+      "current_revision": "v002",
+      "version_count": 2,
+      "source": {
+        "file": "workspace-example.yaml",
+        "sha256": "fedede9403741ecde657609801c84f6ef919a376ac74479408d88b801a77cd9f",
+        "origin": "example"
+      },
+      "revision": "v001",
+      "version": {
+        "number": 1,
+        "version": "v001",
+        "description": "Initial model, copied from workspace-example.yaml",
+        "created_at": "2026-11-27T12:00:00Z",
+        "parent_version": null,
+        "sha256": "fedede9403741ecde657609801c84f6ef919a376ac74479408d88b801a77cd9f",
+        "summary": null
+      },
+      "document": {
+        "parties": [
+          {
+            "id": "party:example-reviewer",
+            "name": "Example reviewer",
+            "party_kind": "person"
+          },
+          {
+            "id": "party:example-agent",
+            "name": "Example drafting agent",
+            "party_kind": "software_agent"
+          }
+        ],
+        "products": [
+          {
+            "id": "product:example-service",
+            "name": "Example service",
+            "description": "A one-threat synthetic model for the workspace contract."
+          }
+        ],
+        "threat_instances": [
+          {
+            "id": "threat-instance:example",
+            "name": "Example threat",
+            "realizes_damage": "damage-scenario:example"
+          }
+        ],
+        "damage_scenarios": [
+          {
+            "id": "damage-scenario:example",
+            "name": "Example damage"
+          }
+        ],
+        "attack_steps": [
+          {
+            "id": "attack-step:example",
+            "name": "Example step"
+          }
+        ],
+        "attack_paths": [
+          {
+            "id": "attack-path:example",
+            "name": "Example path",
+            "steps": [
+              "attack-step:example"
+            ],
+            "realizes_threat": "threat-instance:example",
+            "attack_feasibility": "low"
+          }
+        ],
+        "assertions": [
+          {
+            "id": "assertion:example-path",
+            "subject": "attack-path:example",
+            "predicate": "realizes_threat",
+            "object": "threat-instance:example",
+            "assertion_status": "proposed",
+            "asserted_by": "party:example-agent",
+            "confidence": "medium"
+          }
+        ],
+        "risk_scores": [
+          {
+            "id": "risk-score:example",
+            "threat": "threat-instance:example",
+            "damage_scenario": "damage-scenario:example",
+            "for_stakeholder": "party:example-reviewer",
+            "attack_paths": [
+              "attack-path:example"
+            ],
+            "mitigation_status": "planned",
+            "impact": {
+              "safety": "moderate",
+              "financial": "major",
+              "operational": "moderate",
+              "privacy": "negligible"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "listVersions": {
+    "request": {
+      "method": "GET",
+      "path": "/workspace/versions",
+      "query": {
+        "model_id": "project:f0369fccc1c2c86117197ae78432722d"
+      }
+    },
+    "status": 200,
+    "response": {
+      "model_id": "project:f0369fccc1c2c86117197ae78432722d",
+      "revision": "v002",
+      "current_revision": "v002",
+      "versions": [
+        {
+          "number": 1,
+          "version": "v001",
+          "description": "Initial model, copied from workspace-example.yaml",
+          "created_at": "2026-11-27T12:00:00Z",
+          "parent_version": null,
+          "sha256": "fedede9403741ecde657609801c84f6ef919a376ac74479408d88b801a77cd9f",
+          "summary": null
+        },
+        {
+          "number": 2,
+          "version": "v002",
+          "description": "Reviewed the example path and rated it high",
+          "created_at": "2026-11-27T12:01:00Z",
+          "parent_version": "v001",
+          "sha256": "c8f1252fbb7e99af0a01d27b3bcd9becb61dd2c880be108b8cb897032ce3140e",
+          "summary": {
+            "matrix": "annex-h-table-h8",
+            "derived_risk": {
+              "safety": 3,
+              "financial": 4,
+              "operational": 3,
+              "privacy": 1
+            }
+          }
+        }
+      ]
+    }
+  },
+  "errors": [
+    {
+      "operation": "createProject",
+      "request": {
+        "method": "POST",
+        "path": "/workspace/host/create-project",
+        "body": {
+          "path": "/Users/example/Threat Models/Example Threat Model",
+          "source_file": "workspace-example.yaml"
+        }
+      },
+      "status": 422,
+      "response": {
+        "error": {
+          "code": "validation_error",
+          "message": "This folder already holds a project. Open it instead.",
+          "fields": [
+            {
+              "field": "path",
+              "message": "This folder already holds a project. Open it instead."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "operation": "openModel",
+      "request": {
+        "method": "GET",
+        "path": "/workspace/model",
+        "query": {
+          "model_id": "project:00000000000000000000000000000000"
+        }
+      },
+      "status": 404,
+      "response": {
+        "error": {
+          "code": "not_found",
+          "message": "This model is not open in the engine, or has no such version."
+        }
+      }
+    },
+    {
+      "operation": "saveVersion",
+      "request": {
+        "call": "ProjectWorkspace.save_version",
+        "model_id": "project:f0369fccc1c2c86117197ae78432722d",
+        "expected_revision": "v001",
+        "description": "Reviewed the example path and rated it high",
+        "summary": {
+          "matrix": "annex-h-table-h8",
+          "derived_risk": {
+            "safety": 3,
+            "financial": 4,
+            "operational": 3,
+            "privacy": 1
+          }
+        }
+      },
+      "status": 409,
+      "response": {
+        "error": {
+          "code": "revision_conflict",
+          "message": "A newer version was saved. Reload before retrying.",
+          "current_revision": "v002"
+        }
+      }
+    },
+    {
+      "operation": "listOpenModels",
+      "request": {
+        "method": "GET",
+        "path": "/workspace/models"
+      },
+      "status": 403,
+      "response": {
+        "error": {
+          "code": "permission_denied",
+          "message": "The host's session token is required."
+        }
+      }
+    },
+    {
+      "operation": "openProject",
+      "request": {
+        "method": "POST",
+        "path": "/workspace/host/open-project",
+        "body": {
+          "path": "/Users/example/Threat Models/Example Threat Model"
+        }
+      },
+      "status": 403,
+      "response": {
+        "error": {
+          "code": "permission_denied",
+          "message": "Only the desktop host can pass a folder or file path."
+        }
+      }
+    },
+    {
+      "operation": "createProject",
+      "request": {
+        "method": "POST",
+        "path": "/workspace/host/create-project",
+        "body": {
+          "path": "/Users/example/Threat Models/Another",
+          "source_file": "workspace-example.yaml"
+        }
+      },
+      "status": 503,
+      "response": {
+        "error": {
+          "code": "save_failure",
+          "message": "The model could not be saved. Retry your changes."
+        }
+      }
+    },
+    {
+      "operation": "listOpenModels",
+      "request": {
+        "method": "GET",
+        "path": "/workspace/models"
+      },
+      "status": 500,
+      "response": {
+        "error": {
+          "code": "internal_error",
+          "message": "Workspace operation failed."
+        }
+      }
+    },
+    {
+      "operation": "listOpenModels",
+      "request": {
+        "method": "GET",
+        "path": "/workspace/models"
+      },
+      "status": 503,
+      "response": {
+        "error": {
+          "code": "workspace_failure",
+          "message": "Project folders are not enabled in this engine."
+        }
+      }
+    }
+  ]
+}
