@@ -102,10 +102,24 @@ def is_loopback(host: str) -> bool:
 PREFLIGHT_HEADERS = {import_route.PATH: "Content-Type"}
 
 
+class _ClientGone(Exception):
+    """The client closed the connection part way through its request body: there is
+    nobody to answer, so the request ends without a reply."""
+
+
 class EngineHandler(BaseHTTPRequestHandler):
     server_version = "tmodel-engine"
     # The Import New Product route (#287) runs only when the host enables it.
     import_enabled: bool = False
+
+    def handle(self) -> None:
+        """Serve the connection. A client that goes away part way (a reset or a broken
+        pipe) ends it quietly, on every route, the workspace routes' too, instead of
+        printing a traceback for a reply nobody can read."""
+        try:
+            super().handle()
+        except (BrokenPipeError, ConnectionResetError):
+            self.close_connection = True
 
     def _local_host(self) -> bool:
         host = (self.headers.get("Host") or "").rsplit(":", 1)[0].strip("[]")
@@ -142,6 +156,8 @@ class EngineHandler(BaseHTTPRequestHandler):
             if self.path != import_route.PATH:
                 raise import_route.ImportRouteError(404, "not_found", "Unknown operation.")
             self._send_json(200, self._post_import())
+        except _ClientGone:
+            self.close_connection = True
         except import_route.ImportRouteError as exc:
             self._send_json(exc.status, exc.to_dict())
         except Exception:  # never drop the connection, and never send a path or a traceback
@@ -226,6 +242,8 @@ class EngineHandler(BaseHTTPRequestHandler):
             raise import_route.ImportRouteError(
                 408, "request_timeout", f"The request did not arrive within {seconds} seconds."
             ) from None
+        except OSError:  # the client reset the connection, or went away
+            raise _ClientGone from None
         finally:
             self.connection.settimeout(seconds)  # for sending the answer
         return b"".join(chunks)
@@ -306,6 +324,7 @@ def serve(
     host: str = DEFAULT_HOST,
     port: int | None = None,
     exit_with_parent: bool = False,
+    *,
     import_enabled: bool = False,
     host_token: str | None = None,
 ) -> None:

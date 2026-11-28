@@ -46,7 +46,7 @@ engine offer that screen?
   The importer's `-o` help now suggests an `im-` file name (#281).
 - `design-log/0068-sbom-import/README.md`: its line saying the API has no route to the import
   now points here.
-- `engine/tests/test_import_route.py`: 43 tests on a real local server, and 7 in
+- `engine/tests/test_import_route.py`: 51 tests, 45 of them on a real local server, and 7 in
   `engine/tests/test_import_sbom.py` for `Upload`.
 - This entry.
 
@@ -112,11 +112,20 @@ workspace helper is now `_read_workspace_body`. Tests, in `engine/tests/test_imp
   `do_GET`, `do_POST` and `do_OPTIONS`, which the workspace routes pass on. It failed on
   `b38074f`.
 - `test_the_serve_command_passes_both_switches`: `--enable-import` and `--projects` reach
-  `serve()`.
+  `serve()`, which takes both by name only (`test_serve_takes_its_switches_by_name_only`): by
+  position, a token meant for `host_token` would have turned importing on instead.
+
+An independent review of `d4fb812` found one more thing, also on main's workspace routes: a
+client that reset the connection part way through its body got an answer written into the
+closed connection, which raised again and printed a traceback (a 500 from this route, a 400
+from the workspace routes). The engine's handler now ends such a connection quietly on every
+route (`EngineHandler.handle`), and this route stops reading without answering. Test:
+`test_a_client_that_resets_part_way_through_its_body_is_let_go_quietly`, for this route and a
+workspace route; both cases failed on `d4fb812`.
 
 ## How it was checked
 
-- `engine/tests/test_import_route.py` (43 tests):
+- `engine/tests/test_import_route.py` (51 tests):
   - **Switched off by default:** a POST is answered `503 not_enabled`.
   - **The fixture's answer:** the model and report equal the command line's byte for byte, with
     each file's own digest, and the counts, platform, product and name come back.

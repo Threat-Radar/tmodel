@@ -6,6 +6,7 @@ import base64
 import hashlib
 import json
 import socket
+import struct
 import tempfile
 import threading
 import time
@@ -463,3 +464,62 @@ def test_the_workspace_routes_share_no_helper_with_this_handler():
         *(names(cls) for cls in EngineHandler.__mro__ if cls.__module__.startswith("engine."))
     )
     assert names(WorkspaceRoutes) & ours == {"do_GET", "do_POST", "do_OPTIONS"}
+
+
+def reset_server(route: str):
+    """A server for the reset test, and the request head and the part of a body to send."""
+    if route == "import":
+        httpd = make_server("127.0.0.1", 0, import_enabled=True)
+        head = f"POST {import_route.PATH} HTTP/1.1\r\nContent-Length: 1000000\r\n"
+        return httpd, head, b"{" * 1000
+    from workspace_support import TOKEN, Clock, Tokens
+
+    from engine.api.workspace import install_workspace_routes
+    from engine.model_workspace import ProjectWorkspace
+
+    httpd = make_server("127.0.0.1", 0)
+    workspace = ProjectWorkspace(schema_check=False, clock=Clock(), token=Tokens())
+    install_workspace_routes(httpd, workspace, TOKEN)
+    head = (
+        "POST /workspace/host/open-file HTTP/1.1\r\n"
+        f"Authorization: Bearer {TOKEN}\r\nContent-Length: 5000\r\n"
+    )
+    return httpd, head, b"{" * 100
+
+
+@pytest.mark.parametrize("route", ["import", "workspace"])
+def test_a_client_that_resets_part_way_through_its_body_is_let_go_quietly(route):
+    # On d4fb812 the engine answered into the closed connection, which raised again and
+    # printed a traceback: the import route with a 500, the workspace routes with a 400.
+    # Now the connection ends quietly, and the one-import slot is free.
+    httpd, head, part = reset_server(route)
+    errors, closed = [], threading.Event()
+    httpd.handle_error = lambda request, address: errors.append(address)
+    shutdown_request = httpd.shutdown_request
+
+    def closing(request):
+        shutdown_request(request)
+        closed.set()
+
+    httpd.shutdown_request = closing
+    threading.Thread(target=httpd.serve_forever, daemon=True).start()
+    request = head + "Host: 127.0.0.1\r\nContent-Type: application/json\r\n\r\n"
+    try:
+        with socket.create_connection(httpd.server_address[:2]) as client:
+            client.sendall(request.encode("ascii") + part)
+            time.sleep(0.5)  # the engine is reading the body
+            client.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, struct.pack("ii", 1, 0))
+        assert closed.wait(10)  # closed with a reset, not a FIN
+        assert errors == []
+        assert import_route.acquire_slot()
+        import_route.release_slot()
+    finally:
+        httpd.shutdown()
+        httpd.server_close()
+
+
+def test_serve_takes_its_switches_by_name_only():
+    # serve(host, port, exit_with_parent, ...) then the switches: by position, a token in
+    # the fourth place would have turned importing on and left project folders off.
+    with pytest.raises(TypeError):
+        server.serve("127.0.0.1", 0, False, "test-host-token-" + "x" * 32)
