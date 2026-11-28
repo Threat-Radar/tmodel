@@ -100,6 +100,7 @@ PY
 "$VPY" -m PyInstaller --onefile --clean --noconfirm --log-level WARN \
   --name "$NAME" \
   --add-data "$PWD/spec/vectors:spec/vectors" \
+  --add-data "$PWD/spec/schema/tmodel-object-model.linkml.yaml:spec/schema" \
   --add-data "$PWD/spec/MAP-0001.yaml:spec" \
   --add-data "$PWD/$LIB:library" \
   --add-data "$PWD/$CAT:catalogs" \
@@ -118,4 +119,9 @@ env -i HOME="$HOME" "$OUT/$NAME" library --in-process --json \
 # The bundled CWE release loads with no TMODEL_CWE_CATALOG (ADR-0014).
 env -i HOME="$HOME" "$OUT/$NAME" weaknesses --limit 1 --in-process --json \
   | "$VPY" -c 'import json, sys; n = json.load(sys.stdin)["total"]; assert n, "bundled CWE release is empty"; print(f"bundled CWE release: {n} entries")'
+# Project saves check the schema with no LinkML: the containers and the object model
+# they import load from the bundle (#288, DL-0081). The engine stops when stdin closes.
+SERVED=$(env -i HOME="$HOME" TMODEL_HOST_TOKEN="$("$VPY" -c 'import secrets; print(secrets.token_urlsafe(32))')" \
+  "$OUT/$NAME" serve --projects --port 0 --exit-with-parent </dev/null)
+grep -q "project folders: on" <<<"$SERVED" || { echo "project folders do not start" >&2; exit 1; }
 echo "built $OUT/$NAME"
