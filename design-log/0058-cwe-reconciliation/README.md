@@ -1,0 +1,129 @@
+---
+schema: "archdoc/v1"
+id: DL-0058
+title: "CWE import reconciliation: the file read twice, every loss named, and a CI check on MITRE's release (#146, #61)"
+type: process
+status: draft
+version: "0.1.3"
+date: "2026-11-15"
+updated: "2026-11-25"
+record: DL-0058
+bears_on: [DEC-008]
+defers_to: ARCH-0001
+---
+
+# DL-0058: the CWE import's reconciliation
+
+AI-assisted design record (per `CLAUDE.md`). Student: @Clovier, the Data lane owner, working with Claude Code.
+
+## Question asked
+
+- **#146** (part of #61) is PLAN-0002 §5's acceptance test for the CWE import. A reconciliation report must show that the imported entries equal the union of the entries across the views, that the imported relationships equal the distinct (entry, type, target, view) tuples, and, with a field-level diff, any CWE field left unmapped. A CI job must fail on any loss. The test plan: drop one relationship from a test import, and the report shows the loss and the check fails; in CI, the job passes on the real import. The last box links the report on #61.
+- It builds on #145 (DL-0057), which keeps every relationship with its view.
+
+## What was produced
+
+| File | Change |
+|---|---|
+| `engine/engine/load/cwe_reconcile.py` | new: `reconcile()`, `to_markdown()`, and the command `python -m engine.load.cwe_reconcile` |
+| `engine/tests/test_cwe_reconcile.py` | 32 tests, one of which runs only when MITRE's file is at hand |
+| `design-log/0058-cwe-reconciliation/report-cwe-4.20.md` | the report for MITRE's CWE 4.20, the release the library pins |
+| `.github/workflows/cwe.yml` | new: the CI job |
+| `CONTRIBUTING.md` §10 | how to run it, and how to refresh the report |
+
+### One file, read twice
+
+The importer reads the file into entries (DL-0050, DL-0057). The reconciliation reads the same bytes a second time with ElementTree alone, with none of the importer's code, and compares the two readings:
+
+- **Entries.** The kind and id of every Weakness, Category and View, and the id of every External_Reference, each counted as often as the file gives it.
+- **Relationships.** The (entry, nature, target, view, ordinal, chain) tuples, counted as often as they are written, all together, by nature and by view.
+- **Fields.** For every copy of every entry and reference, field by field: an attribute by its exact value, and any other field element by element, in order, its structured text (XHTML) included: each element's name and path, the names and values of its attributes, and its own text. A field the reader does not know is kept (DL-0050), so it is flagged but not counted as lost.
+- **Links.** The CAPEC links and the observed examples, counted, and each compared with the one the import serves (`attack_patterns`, `observed_examples`).
+
+`lossless` is true only when all four agree. The second read must give the bytes the importer read (the same SHA-256), so a file that changes between the two reads is refused.
+
+### "The union of entries across the views"
+
+PLAN-0002 §5 wrote the entry check as "imported entry count == union of entries across the three views". The import reads the whole catalog instead (#61, question 1), so the report gives that criterion on its own and then says how the two differ. In 4.20, the relationships of the three views it names (CWE-1000, CWE-699 and CWE-1194) reach 1,000 entries, and the import has all of them. Across all the views, 1,371 of the 1,450 entries are reached by some view's relationships. The other 79 are the 64 deprecated entries, two of which are implicit views, and the 15 other implicit views, which pick their members with a filter instead of listing them. An import that took its entries from the views' relationships would drop all 79.
+
+### The report
+
+The report is Markdown, and the same file always gives the same text: it names no time, no path and no file name, only the file's SHA-256. The committed `report-cwe-4.20.md` is the report for MITRE's 4.20 zip. `--write` refreshes it, and `--check` fails when it is not the report the file gives, so it cannot go stale without CI saying so.
+
+### The CI job
+
+`.github/workflows/cwe.yml` runs when the importer, the reconciliation, the engine's dependencies, this folder or the workflow itself change. It installs the engine and downloads MITRE's zip from the URL the library's `cwe` record names. It refuses any other bytes, checking them with `sha256sum` against the record's digest. Then it runs the reconciliation with `--check`. It fails on any loss and on a stale report, and it adds the report to the run's summary page.
+
+## How it was checked
+
+- **The sample** (12 entries and 3 references) is lossless: 20 relationships, and 15 entries and references compared field by field.
+- **Losses made on purpose, each named.** One relationship dropped, as #146's test plan asks: the report shows CWE-79 ChildOf CWE-74 in CWE-1000 missing, and the command exits 1. Also named: a weakness dropped (once, as an entry), a field dropped, an attribute kept with another value, an attribute inside a field changed, words lost from a field, and a word swapped for another, which leaves the counts equal.
+- **Kept, not lost.** An unknown field is flagged and the import stays lossless. A relationship written twice is counted twice in both readings.
+- **The command.** `--write` then `--check` passes. A stale report fails, with how to regenerate it. A missing report is a read error. Other bytes than the pinned ones are refused, and so is a file that changes between the reads. The report does not depend on the file's name.
+- **MITRE's whole 4.20 zip** is lossless: 969 weaknesses, 422 categories, 59 views and 1,026 references; 6,626 relationships, all distinct with their ordinals and chains; 2,476 entries and references compared element by element, XHTML included, none lost and none unknown; 1,212 CAPEC links and 3,134 observed examples, each with the file's values; the three views PLAN-0002 §5 names reach 1,000 entries, all imported. It takes about 1.7 s.
+- **CWE 4.21**, read without a digest, is lossless too, with the 2026-11-25 checks: its three named views reach 1,015 entries, all imported. Its five new External_Reference fields are flagged as unknown, as DL-0050 found.
+- **The CI job's steps, run locally.** MITRE's zip, downloaded fresh, matches the digest, and the reconciliation passes with `--check`. A first run found that the report named the file, so a download saved under another name could never match. The report now leaves the name out, and a test holds that.
+- **The engine.** 527 passed and 5 skipped on Python 3.11, 3.12 and 3.13, with MITRE's file at hand. `ruff check` and `ruff format --check` are clean.
+
+## Choices the agent made, open to review
+
+1. **A second, independent reading,** rather than counting what the importer read: a count of the importer's own output cannot show what it missed.
+2. **Fields compared by their content in order,** not by rebuilding the XML and comparing bytes. The import's field form (DL-0050) is not XML. Whitespace and the order of attributes are not kept, by design, so the attributes inside a field are compared by name and value, and each element's text with each run of whitespace one space. Since 2026-11-25 the comparison is element by element: the importer's `#xhtml` markup is read back as elements, so the elements inside structured text are compared too.
+3. **Membership of implicit views is not evaluated.** Their filters are expressions, not lists, so the report says which entries no relationship reaches instead of working out every view's members.
+4. **Relationships compared as counts per tuple,** so a relationship written twice must be kept twice. Since 2026-11-25 the tuple carries the Ordinal and the Chain_ID the import keeps on each relationship (DL-0057).
+5. **A committed report checked by CI,** rather than a CI artifact. An artifact expires, so a link on #61 would break, while the committed report can be read in review and linked, and `--check` keeps it true.
+6. **CI downloads MITRE's file.** It is never committed (`CLAUDE.md`), and CI has no other copy. The URL and digest are the library record's, written into the workflow because tmodel's library pin (`a28a013`) predates the record's digest. How the app gets the catalog stays DEC-008's question.
+7. **A workflow of its own,** `cwe.yml`, rather than a job in `app.yml`: it needs the network, and it runs only when the import changes. `.github/` is @nymble's in `CODEOWNERS`.
+8. **`python -m engine.load.cwe_reconcile`, not a `tmodel` command.** It is a check that reads a local file, not an answer of the engine's API (APP-0001 A-060).
+
+## Review changes (2026-11-23)
+
+@kriishnaa-18 reviewed the pull request and found that equal totals could still hide a loss. Both blocking findings and the smaller one are fixed, each with a regression test that fails on the old code:
+
+1. **A relationship that loses a copy while another gains one.** The report listed such tuples under `repeated_differently`, but `lossless` checked only the totals, which stay equal. It now requires every (entry, nature, target, view) tuple to be kept as many times as the file writes it. Test: the file writes PeerOf CWE-352 twice, and an import that keeps it once and keeps CWE-79's ChildOf CWE-74 twice is no longer lossless.
+2. **Two entries that trade kinds.** The report listed them under `kind_changed`, but `lossless` compared only the counts by kind, which stay equal. It now requires every entry to keep its own kind. Test: CWE-373 read as a category and CWE-411 as a weakness; neither carries CAPEC links or observed examples, so nothing else in the report moves.
+3. **Reference counts.** References were compared as sets of ids, so a reference the file defines twice and the import keeps once went unseen. `lossless` now requires equal totals, and the report gains `references.repeated_differently`, naming each id kept a different number of times. Test: the file defines REF-7 twice and an import that keeps one copy is named and fails.
+
+Before the fix, all three test cases came out lossless; now each one fails and names what was lost. The report's text names references kept a different number of times beside the entries read as another kind, so a lossless report reads as before: the committed report for CWE 4.20 is unchanged, and `--check` still passes on MITRE's file.
+
+@paria03 then found that an element kept under another name still passed. Each side's signature counted the elements and kept their attributes and words, but not their names, so CWE-79's `Modes_Of_Introduction/Introduction/Phase` read as `Wrong_Phase` (same place, attributes and text) came out lossless. Both signatures now also carry every element's path from the field down, in document order. A field whose paths differ is not kept: the report lists it with `differs: names` and the first path that differs. Test: that rename, which came out lossless on the old code. A field dropped whole now lists `names` among its differences too. The whole CWE 4.20 release still reconciles as lossless, and the committed report is unchanged.
+
+## Review changes (2026-11-25)
+
+@kriishnaa-18 re-reviewed `f9912fe`: the earlier findings were fixed, and three more could still let a loss pass. Each now has a regression test, and before the fix all seven tests came out lossless (`assert True is False` on the first check of each):
+
+1. **Field comparison could miss data loss (high).** Each side flattened a field into one list of elements, one of attributes and one of words, so which element held which text and attributes was lost. Moving CWE-79's Phase text into the Note beside it kept every list equal. Structured text gave only its words, as the importer's `#xhtml` rule does, so an XHTML image that lost its `src` passed too. Now each field is a list of its elements in document order, each with its path, its attributes and its own text, and the importer's `#xhtml` markup is read back as elements, so the elements inside XHTML are compared as well. A field whose tallies all agree but whose elements differ is listed with `differs: placement`, and every field not kept now gives `first_difference`, the first element each side gives differently. Tests: the Phase text moved to the Note (`placement`), and an image added to CWE-79's Extended_Description in the sample, kept whole, then served without its `src` (`attributes`).
+2. **Typed relationships and links were not fully compared (medium).** The relationship tuples left out the Ordinal and the Chain_ID that the import keeps on each relationship, and the links were compared as totals, while the fields check reads the kept fields, not the values the app reads. Now the tuples carry both, and each entry's CAPEC ids and each observed example's reference, description and link must equal what the import serves (`attack_patterns`, `observed_examples`), listed under `values_differ`. Tests: CWE-79's ChildOf CWE-74 without its ordinal and CWE-692's StartsWith CWE-184 without its chain; CWE-79's first observed example served with another CVE and URL; CWE-689's first CAPEC link served as another attack pattern.
+3. **Copies keyed by id could hide (medium).** Entries, fields and references were held in mappings by id, so an entry imported twice folded into one, and only the last copy of a reference the file defines twice was compared. Now nothing is keyed by id: every entry is counted as often as each side gives it (`entries.repeated_differently`), and each copy is compared with the same copy on the other side, first with first, a loss naming its `copy`. Tests: CWE-769, which writes no relationship and has no link, imported twice; REF-7 defined twice with different titles and the second copy kept twice.
+
+The smaller points are done too. The report now gives #146's criterion on its own, the union across the three named views, apart from the coverage across all views. It says "the 15 other implicit views", since two of the 17 implicit views are among the 64 deprecated entries. The workflow also runs when the `library` gitlink moves, since the pin carries the `cwe` record.
+
+The committed report for 4.20 changes in four sentences: the three-view criterion, the distinct tuples' label (now with ordinal and chain), how fields are compared, and a new line on the links' values. `--check` passes on MITRE's file, and the release is still lossless, with no element, value or copy that differs. The engine suite: 745 passed and 6 skipped on Python 3.13 with MITRE's file at hand (CI runs 3.11 to 3.13), and `ruff check` and `ruff format --check` are clean on the changed files.
+
+## What a human accepted
+
+- @Clovier, 2026-11-15: take #146 once #145 was up for review (#248), as local work, nothing committed until reviewed.
+- @Clovier, 2026-11-25: "also fix 249", after @kriishnaa-18's re-review of `f9912fe`. The fixes above are Claude Code's draft; the pull request review is where they are accepted or rejected.
+
+The code, the report and the choices above are the agent's draft until a human reviews them on the pull request.
+
+## What was rejected, and why
+
+- **Counting only what the importer read.** It cannot show what the importer missed.
+- **Comparing word counts only.** A word swapped for another would pass, so the words themselves are compared.
+- **Comparing flattened lists of a field's elements, attributes and words** (until 2026-11-25). Text moved to the next element keeps every list equal, so each element is compared with its own attributes and text.
+- **Reading structured text by its words alone** (until 2026-11-25). An attribute inside XHTML, such as an image's `src`, would not count, so the `#xhtml` markup is read back as elements.
+- **A reconciliation over three views.** It would call 79 entries the import keeps "extra", and it would miss what PLAN-0002 §5 wants, which is that nothing is dropped.
+- **Committing MITRE's catalog for CI.** `CLAUDE.md` forbids committing third-party files; the library holds the locator and the digest.
+- **A CI artifact as the report.** It expires, and the link on #61 with it.
+
+## Follow-ups
+
+- Link the report on #61 (#146's last box) once this merges.
+- When tmodel's library pin moves past library#21, have the workflow read the URL and the digest from the submodule's `cwe` record.
+- When the library pins another CWE release, regenerate the report for it.
+- The same check for the CAPEC import (#244), once it merges.
+
+## Gate
+
+`bin/validate-archdoc` clean. The engine tests, `ruff check` and `ruff format --check` pass.
