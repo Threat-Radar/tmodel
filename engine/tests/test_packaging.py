@@ -26,16 +26,31 @@ PINNED_LIBRARY = Path(__file__).resolve().parents[2] / "library"
 
 
 def test_packaged_reviews_save_and_reopen_without_python_or_linkml(tmp_path):
-    from test_review_project_integration import IDENTITY, changes, project, selection
-    from test_workspace_api import call
-    from workspace_support import EXAMPLE, EXAMPLES, TOKEN
-
+    # The packaging runner has only pytest. Keep this black-box client independent
+    # of the engine, YAML, LinkML and source-suite helpers, just like its other tests.
+    token = "test-only-packaged-review-token-" + "x" * 32
+    identity = f"party:local:{'2' * 32}:{os.getuid()}"
     executable = tmp_path / "tmodel-engine"
     shutil.copyfile(PACKAGED_ENGINE, executable)
     executable.chmod(0o700)
     source = tmp_path / "source.yaml"
-    source.write_bytes((EXAMPLES / EXAMPLE).read_bytes())
+    source.write_bytes(
+        (Path(__file__).parents[1] / "examples/model-workspace/workspace-example.yaml").read_bytes()
+    )
     folder = tmp_path / "Packaged review project"
+
+    def post(url, path, body):
+        request = urllib.request.Request(
+            url + path,
+            data=json.dumps(body).encode(),
+            headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
+        )
+        try:
+            response = urllib.request.urlopen(request, timeout=20)
+        except urllib.error.HTTPError as error:
+            response = error
+        with response:
+            return response.status, json.load(response)
 
     @contextmanager
     def launched():
@@ -48,8 +63,8 @@ def test_packaged_reviews_save_and_reopen_without_python_or_linkml(tmp_path):
             env={
                 "HOME": str(tmp_path),
                 "TMPDIR": str(tmp_path),
-                "TMODEL_HOST_TOKEN": TOKEN,
-                "TMODEL_REVIEWER_ID": IDENTITY,
+                "TMODEL_HOST_TOKEN": token,
+                "TMODEL_REVIEWER_ID": identity,
             },
         )
         try:
@@ -67,22 +82,54 @@ def test_packaged_reviews_save_and_reopen_without_python_or_linkml(tmp_path):
         challenge = "c" * 64
         proof = get_json(url, "host/health", challenge=challenge)
         expected = hmac.new(
-            TOKEN.encode(), b"tmodel-host-session-v1:" + challenge.encode(), hashlib.sha256
+            token.encode(), b"tmodel-host-session-v1:" + challenge.encode(), hashlib.sha256
         ).hexdigest()
         assert proof == {"challenge": challenge, "proof": expected}
-        model_id = project(url, folder, source)
-        selected = selection(url, model_id)
-        payload = changes(selected)
-        status, _, saved = call(url, "/reviews/changes", "POST", payload)
+        status, opened = post(url, "/workspace/host/open-file", {"path": str(source)})
+        assert status == 200, opened
+        status, created = post(
+            url,
+            "/workspace/host/create-project",
+            {"path": str(folder), "model_id": opened["model_id"]},
+        )
+        assert status == 201, created
+        model_id = created["model_id"]
+        selected = {"model_id": model_id, "revision": "v001", "matrix": "annex-h-table-h8"}
+        status, views = post(url, "/reviews/refresh", selected)
+        assert status == 200, views
+        assessment = views["risk"]["assessments"][0]
+        payload = {
+            "model_id": model_id,
+            "expected_revision": "v001",
+            "matrix": selected["matrix"],
+            "threat_id": assessment["threat"],
+            "route_id": assessment["routes"][0]["id"],
+            "description": "Synthetic packaged review test",
+            "reviews": [
+                {
+                    "assertion_id": "assertion:example-path",
+                    "verdict": "accepted",
+                    "rationale": "Synthetic test input, not project human acceptance.",
+                }
+            ],
+            "feasibility": [{"attack_path_id": "attack-path:example", "rating": "high"}],
+            "impacts": [
+                {
+                    "risk_score_id": "risk-score:example",
+                    "damage_scenario_id": "damage-scenario:example",
+                    "stakeholder_id": "party:example-reviewer",
+                    "values": {"safety": "severe"},
+                }
+            ],
+        }
+        status, saved = post(url, "/reviews/changes", payload)
         assert status == 200 and saved["revision"] == "v002", saved
-        assert call(url, "/reviews/changes", "POST", payload)[0] == 409
+        assert post(url, "/reviews/changes", payload)[0] == 409
 
     with launched() as url:
-        status, _, opened = call(url, "/workspace/host/open-project", "POST", {"path": str(folder)})
+        status, opened = post(url, "/workspace/host/open-project", {"path": str(folder)})
         assert status == 200 and opened["model_id"] == model_id
-        status, _, refreshed = call(
-            url, "/reviews/refresh", "POST", {**selected, "revision": "v002"}
-        )
+        status, refreshed = post(url, "/reviews/refresh", {**selected, "revision": "v002"})
         assert status == 200 and refreshed == saved
         assert (folder / "original.yaml").read_bytes() == source.read_bytes()
 

@@ -182,3 +182,20 @@ should retain assessment/incomplete counts, not just category values.
 
 No new human verdict or implementation approval is recorded. These updates remain
 local until the user authorizes pushing them to the existing draft PR #291.
+
+
+## Hosted packaging-test correction
+
+The first hosted run on 837a706 passed the Python, frontend, preview, architecture,
+TARA and security checks, but its macOS packaged-resource test failed. The new
+black-box test imported source-suite helpers, which indirectly imported PyYAML;
+the packaging runner deliberately installs only pytest. The failure was in the
+test driver, before exercising the executable, not a successful C7 test.
+
+Removed all source-suite/engine imports from that packaging test. Its HTTP client,
+fixture byte copy, native-session proof, save, conflict and restart/reopen checks
+now use only the Python standard library. The runner still installs only pytest.
+A fresh environment confirmed that yaml, linkml and pyoxigraph were unavailable;
+all **8 packaged-engine tests passed** there against the engine from the built
+macOS app (93.60 seconds). Ruff lint/format and whitespace checks passed. Fresh
+hosted CI must validate the corrected head; the failed run is not reported green.
