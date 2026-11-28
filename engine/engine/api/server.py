@@ -307,15 +307,31 @@ def serve(
     port: int | None = None,
     exit_with_parent: bool = False,
     import_enabled: bool = False,
+    host_token: str | None = None,
 ) -> None:
+    """Serve until stopped. With `import_enabled`, the app's Import New Product route
+    answers (#287). With `host_token`, the host's secret, the host can open and create
+    threat model project folders (#288); without it the /workspace/* routes answer "not
+    enabled" and write nothing. The workspace routes wrap the import route's handler and
+    pass every other path on to it, so the two work together."""
+    from engine.api.workspace import check_host_token, install_workspace_routes
+    from engine.model_workspace import ProjectWorkspace
+
     if port is None:
         port = int(os.environ.get("TMODEL_ENGINE_PORT", DEFAULT_PORT))
+    projects = None
+    if host_token is not None:
+        check_host_token(host_token)  # before binding, so a bad secret fails fast
+        projects = ProjectWorkspace()
     httpd = make_server(host, port, import_enabled=import_enabled)
+    install_workspace_routes(httpd, projects, host_token)
     bound_host, bound_port = httpd.server_address[:2]
     print(
         f"tmodel-engine {core.version()['version']} listening on http://{bound_host}:{bound_port}",
         flush=True,
     )
+    if projects is not None:
+        print("project folders: on, for callers with the host token (#288)", flush=True)
     if exit_with_parent:
         _shutdown_when_stdin_closes(httpd)
     try:

@@ -1,0 +1,145 @@
+.brand-lockup {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--brand-gap);
+  color: var(--text);
+}
+
+.brand-radar {
+  display: block;
+  flex: none;
+  width: var(--brand-size);
+  aspect-ratio: 1;
+}
+
+.brand-radar svg { display: block; width: 100%; height: 100%; }
+
+.brand-lettering {
+  display: grid;
+  justify-items: center;
+  gap: var(--brand-line-gap);
+}
+
+.brand-wordmark {
+  margin: 0;
+  font-family: var(--font-wordmark);
+  font-size: var(--brand-word-size);
+  font-weight: var(--weight-bold);
+  line-height: 1;
+  letter-spacing: -.045em;
+}
+
+.brand-subtitle {
+  padding-inline-start: .26em;
+  font-size: var(--brand-subtitle-size);
+  font-weight: var(--weight-medium);
+  line-height: 1.15;
+  letter-spacing: .26em;
+  white-space: nowrap;
+}
+
+.header-brand {
+  --brand-size: 42px;
+  --brand-gap: 5px;
+  --brand-word-size: 1.24rem;
+  --brand-line-gap: 4px;
+  --brand-subtitle-size: .52rem;
+}
+
+.welcome {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  min-height: 100vh;
+  min-height: 100svh;
+  place-items: center;
+  overflow: hidden;
+  padding: clamp(28px, 7vh, 72px) var(--space-6);
+  background:
+    radial-gradient(ellipse at 82% 62%, var(--welcome-powder), transparent 57%),
+    radial-gradient(ellipse at 0% 5%, var(--welcome-corner), transparent 48%),
+    var(--background);
+}
+
+.welcome:focus, .app-shell:focus { outline: none; }
+
+.welcome::before {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  background-image: radial-gradient(var(--welcome-graph) .7px, transparent .7px);
+  background-size: 23px 23px;
+  mask-image: linear-gradient(115deg, transparent 14%, #000 78%);
+  opacity: var(--welcome-texture-opacity);
+  content: "";
+  pointer-events: none;
+}
+
+.welcome-art {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.welcome-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.welcome .brand-lockup {
+  --brand-size: clamp(68px, 9.2vw, 118px);
+  --brand-gap: clamp(9px, 1.45vw, 20px);
+  --brand-word-size: clamp(2.08rem, 5.95vw, 4.75rem);
+  --brand-line-gap: clamp(7px, 1vw, 13px);
+  --brand-subtitle-size: clamp(.59rem, 1.45vw, 1.125rem);
+  margin-block-end: clamp(26px, 5.7vh, 49px);
+  /* The wordmark carries more visual weight than the line-drawn radar. */
+  margin-inline-end: clamp(10px, 2vw, 30px);
+}
+
+.welcome h1 {
+  margin: 0;
+  font-size: clamp(1.35rem, 2.85vw, 2.07rem);
+  font-weight: var(--weight-medium);
+  line-height: 1.15;
+  letter-spacing: -.043em;
+}
+
+.welcome p {
+  margin: var(--space-4) 0 clamp(22px, 4vh, 32px);
+  max-width: 45ch;
+  color: var(--text-secondary);
+  font-size: clamp(.875rem, 1.35vw, 1rem);
+  line-height: 1.55;
+}
+
+.welcome-sweep {
+  transform-origin: 1128px 585px;
+  animation: welcome-sweep 54s linear infinite;
+}
+
+.welcome-node { animation: welcome-pulse 3.8s ease-in-out both; }
+.welcome-network-right .welcome-node { animation-delay: .6s; }
+.workspace-enter { animation: workspace-enter var(--motion-enter) var(--ease-out) both; }
+
+@keyframes welcome-sweep { to { transform: rotate(1turn); } }
+@keyframes welcome-pulse { 50% { opacity: .45; } }
+@keyframes workspace-enter {
+  from { opacity: .5; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 370px) {
+  .welcome { padding-inline: var(--space-3); }
+  .welcome .brand-lockup { --brand-size: 57px; --brand-gap: 7px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome-sweep, .welcome-node, .workspace-enter { animation: none; }
+}

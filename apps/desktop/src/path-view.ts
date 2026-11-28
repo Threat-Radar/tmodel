@@ -10,6 +10,7 @@
 // restores the fitted drawing. The connectors are the layout's own routes,
 // drawn exactly as the report's SVG draws them.
 
+import { canvasTheme } from "./canvas-theme";
 import cytoscape, { type Core, type ElementDefinition, type StylesheetJson } from "cytoscape";
 import type { ModelReport, PathRow, ReportStatusKind } from "./model-report";
 import {
@@ -35,25 +36,25 @@ export interface PathViewElements {
 export const MAX_FIT_ZOOM = 1.25;
 const FIT_PADDING = 24;
 
-const NODE_COLORS: Readonly<Record<DiagramNodeKind, { fill: string; line: string; text: string }>> = {
-  step: { fill: "#f5f3ff", line: "#7c3aed", text: "#172033" },
-  gate: { fill: "#1e293b", line: "#1e293b", text: "#ffffff" },
-  threat: { fill: "#fff1f2", line: "#be123c", text: "#172033" },
-  damage: { fill: "#fff7ed", line: "#c2410c", text: "#172033" },
-  mitigation: { fill: "#f0fdf4", line: "#15803d", text: "#172033" },
-  target: { fill: "#eff6ff", line: "#2563eb", text: "#172033" },
+const NODE_TOKENS: Readonly<Record<DiagramNodeKind, { fill: string; line: string }>> = {
+  step: { fill: "path-step-bg", line: "graph-step" },
+  gate: { fill: "primary-bg", line: "primary-bg" },
+  threat: { fill: "path-threat-bg", line: "graph-threat" },
+  damage: { fill: "path-damage-bg", line: "path-damage-line" },
+  mitigation: { fill: "path-mitigation-bg", line: "graph-status-accepted" },
+  target: { fill: "path-target-bg", line: "graph-product" },
 };
 
-const STATUS_LINES: Partial<Record<ReportStatusKind, string>> = {
-  rejected: "#dc2626",
-  changes_requested: "#ea580c",
-  proposed: "#d97706",
-  not_reviewed: "#d97706",
+const STATUS_TOKENS: Partial<Record<ReportStatusKind, string>> = {
+  rejected: "graph-status-rejected",
+  changes_requested: "graph-status-changes",
+  proposed: "graph-status-proposed",
+  not_reviewed: "graph-status-proposed",
 };
 
-const LABEL_COLORS: Partial<Record<string, string>> = {
-  mitigates: "#15803d",
-  targets: "#1d4ed8",
+const LABEL_TOKENS: Partial<Record<string, string>> = {
+  mitigates: "graph-status-accepted",
+  targets: "graph-product",
 };
 
 /**
@@ -266,6 +267,10 @@ export class AttackPathView {
     }
   }
 
+  refreshTheme(): void {
+    this.cy?.style(pathViewStyle(this.documentRoot));
+  }
+
   private ensureCore(): Core {
     if (this.cy) return this.cy;
     this.cy = this.createCore({
@@ -279,7 +284,7 @@ export class AttackPathView {
       userZoomingEnabled: true,
       autoungrabify: true,
       boxSelectionEnabled: false,
-      style: pathViewStyle(),
+      style: pathViewStyle(this.documentRoot),
     });
     this.cy.on("tap", "node[kind != 'edge-label']", (event) => this.highlight(event.target.id()));
     return this.cy;
@@ -291,7 +296,8 @@ function round(value: number, digits = 2): number {
   return Math.round(value * scale) / scale;
 }
 
-export function pathViewStyle(): StylesheetJson {
+function pathViewStyle(documentRoot: Document): StylesheetJson {
+  const theme = canvasTheme(documentRoot);
   return [
     {
       selector: "node",
@@ -307,18 +313,19 @@ export function pathViewStyle(): StylesheetJson {
         "text-justification": "left",
         "font-size": 12.5,
         "font-weight": 600,
+        "font-family": theme("font-ui"),
         "line-height": 1.25,
-        color: (element: cytoscape.NodeSingular) => NODE_COLORS[element.data("kind") as DiagramNodeKind]?.text ?? "#172033",
-        "background-color": (element: cytoscape.NodeSingular) => NODE_COLORS[element.data("kind") as DiagramNodeKind]?.fill ?? "#ffffff",
+        color: (element: cytoscape.NodeSingular) => theme(element.data("kind") === "gate" ? "primary-text" : "text"),
+        "background-color": (element: cytoscape.NodeSingular) => theme(NODE_TOKENS[element.data("kind") as DiagramNodeKind]?.fill ?? "surface"),
         "border-width": 1.8,
-        "border-color": (element: cytoscape.NodeSingular) => NODE_COLORS[element.data("kind") as DiagramNodeKind]?.line ?? "#64748b",
+        "border-color": (element: cytoscape.NodeSingular) => theme(NODE_TOKENS[element.data("kind") as DiagramNodeKind]?.line ?? "graph-arrow"),
       },
     },
     { selector: "node.gate", style: { "font-size": 13, "font-weight": 800, "text-justification": "center", "corner-radius": 15 } },
     { selector: "node.threat", style: { "border-width": 2.6 } },
-    ...(Object.entries(STATUS_LINES).map(([kind, color]) => ({
+    ...(Object.entries(STATUS_TOKENS).map(([kind, token]) => ({
       selector: `node.status-${kind}`,
-      style: { "border-color": color, "border-style": "dashed" as const },
+      style: { "border-color": theme(token), "border-style": "dashed" as const },
     }))),
     {
       selector: "edge",
@@ -327,8 +334,8 @@ export function pathViewStyle(): StylesheetJson {
         "curve-style": "straight",
         "source-endpoint": (element: cytoscape.EdgeSingular) => String(element.data("sourceEndpoint")),
         "target-endpoint": (element: cytoscape.EdgeSingular) => String(element.data("targetEndpoint")),
-        "line-color": "#64748b",
-        "target-arrow-color": "#64748b",
+        "line-color": theme("graph-arrow"),
+        "target-arrow-color": theme("graph-arrow"),
         "target-arrow-shape": "triangle",
         "arrow-scale": 0.85,
       },
@@ -343,8 +350,8 @@ export function pathViewStyle(): StylesheetJson {
         "segment-radii": CONNECTOR_RADIUS,
       },
     },
-    { selector: "edge.mitigates", style: { "line-color": "#15803d", "target-arrow-color": "#15803d", "line-style": "dashed", "line-dash-pattern": [6, 4] } },
-    { selector: "edge.targets", style: { "line-color": "#2563eb", "target-arrow-color": "#2563eb", "line-style": "dashed", "line-dash-pattern": [2, 3] } },
+    { selector: "edge.mitigates", style: { "line-color": theme("graph-status-accepted"), "target-arrow-color": theme("graph-status-accepted"), "line-style": "dashed", "line-dash-pattern": [6, 4] } },
+    { selector: "edge.targets", style: { "line-color": theme("graph-product"), "target-arrow-color": theme("graph-product"), "line-style": "dashed", "line-dash-pattern": [2, 3] } },
     {
       selector: "node.edge-label",
       style: {
@@ -354,11 +361,12 @@ export function pathViewStyle(): StylesheetJson {
         label: "data(label)",
         "font-size": 11,
         "font-weight": 700,
-        color: (element: cytoscape.NodeSingular) => LABEL_COLORS[String(element.data("edgeKind"))] ?? "#475569",
+        "font-family": theme("font-ui"),
+        color: (element: cytoscape.NodeSingular) => theme(LABEL_TOKENS[String(element.data("edgeKind"))] ?? "text-secondary"),
         "text-valign": "center",
         "text-halign": "center",
         "text-max-width": "200px",
-        "background-color": "#f8fafc",
+        "background-color": theme("graph-canvas"),
         "background-opacity": 1,
         "border-width": 0,
         events: "no",
@@ -366,7 +374,7 @@ export function pathViewStyle(): StylesheetJson {
     },
     {
       selector: "node:selected",
-      style: { "border-width": 4, "border-color": "#facc15", "overlay-color": "#facc15", "overlay-opacity": 0.12 },
+      style: { "border-width": 4, "border-color": theme("focus"), "overlay-color": theme("focus"), "overlay-opacity": 0.12 },
     },
   ] as StylesheetJson;
 }

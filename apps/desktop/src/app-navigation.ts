@@ -44,6 +44,10 @@ export class AppNavigation {
     return this.current === "library" ? this.libraryView : undefined;
   }
 
+  hasDestination(hash: string): boolean {
+    return this.destinationForHash(hash) !== undefined;
+  }
+
   start(): void {
     this.syncFromHash();
   }
@@ -73,15 +77,17 @@ export class AppNavigation {
   }
 
   private syncFromHash(): void {
-    const requested = this.location.hash.replace(/^#/, "");
+    const destination = this.destinationForHash(this.location.hash);
+    this.apply(destination?.view ?? this.views[0].view, destination?.libraryView ?? "records", false);
+  }
+
+  private destinationForHash(hash: string): { view: AppView; libraryView: LibraryView } | undefined {
+    const requested = hash.replace(/^#/, "");
     for (const libraryView of Object.keys(LIBRARY_HASHES) as LibraryView[]) {
-      if (LIBRARY_HASHES[libraryView] === requested) {
-        this.apply("library", libraryView, false);
-        return;
-      }
+      if (LIBRARY_HASHES[libraryView] === requested) return { view: "library", libraryView };
     }
-    const view = this.views.find((candidate) => candidate.view === requested)?.view ?? this.views[0].view;
-    this.apply(view, "records", false);
+    const view = this.views.find((candidate) => candidate.view === requested)?.view;
+    if (view) return { view, libraryView: "records" };
   }
 
   private handleTabKey(event: KeyboardEvent, currentIndex: number): void {
