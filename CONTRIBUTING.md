@@ -186,12 +186,11 @@ check it out first (`git submodule update --init library`), or set
 `TMODEL_LIBRARY` to another library checkout. `tmodel library` lists the records,
 and `--type`, `--topic` and `--status` filter them (#140).
 
-The CWE weaknesses (#144) come from the CWE release that the library's `cwe` record
-pins. The engine reads MITRE's file, unchanged, from the path in
-`TMODEL_CWE_CATALOG`, refuses a file with any other SHA-256, and never downloads it
-itself. The pinned submodule predates the CWE extraction (Threat-Radar/library#21),
-so until the pin moves, also point `TMODEL_LIBRARY` at a library checkout that has
-it. `tmodel weaknesses` lists the weaknesses, and `tmodel weaknesses --id CWE-79`
+The CWE weaknesses (#144) come from the CWE release the library pins: its newest CWE
+record, now `cwe-4-21` (CWE 4.21), which supersedes `cwe` (4.20). A new release is a
+new library record, never an edit to an old one (DL-0065). The engine reads MITRE's
+file, unchanged, from the path in `TMODEL_CWE_CATALOG`, refuses a file with any other
+SHA-256, and never downloads it itself. `tmodel weaknesses` lists the weaknesses, and `tmodel weaknesses --id CWE-79`
 shows one with every field (DL-0050). `tmodel weaknesses --relationships --view CWE-1000`
 gives their relationships in one or more CWE views, with the inverses the schema
 declares (DL-0057). The project's own weakness types, `tr-weak-NNNN`, load beside
@@ -200,8 +199,8 @@ of `engine/engine/load/local_weaknesses.py` gives; where the team keeps that fil
 not decided yet.
 
 ```sh
-curl -LO https://cwe.mitre.org/data/xml/cwec_v4.20.xml.zip   # the file the record pins
-export TMODEL_CWE_CATALOG="$PWD/cwec_v4.20.xml.zip"
+curl -LO https://cwe.mitre.org/data/xml/cwec_v4.21.xml.zip   # the file the record pins
+export TMODEL_CWE_CATALOG="$PWD/cwec_v4.21.xml.zip"
 ```
 
 The CAPEC attack patterns (#244) work the same way, from the CAPEC release that the

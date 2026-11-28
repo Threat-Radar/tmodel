@@ -20,6 +20,16 @@ PACKAGED_ENGINE = os.environ.get("TMODEL_PACKAGED_ENGINE")
 pytestmark = pytest.mark.skipif(not PACKAGED_ENGINE, reason="build the packaged engine first")
 MODEL = Path(__file__).resolve().parents[2] / "spec/vectors/mvp-01-software-doc-service.yaml"
 PINNED_LIBRARY = Path(__file__).resolve().parents[2] / "library"
+# The CWE release the app ships: the bundled library's newest CWE record (DL-0065). A
+# library bump that brings another CWE record fails these checks until its pull request
+# updates them. test_load_cwe.py checks the same in a source checkout, but CI's engine
+# jobs do not check out the library, so this job is where CI checks it (#262 review).
+PINNED_CWE_RECORD = "cwe-4-21"
+PINNED_CWE = {
+    "version": "4.21",
+    "file": "cwec_v4.21.xml.zip",
+    "sha256": "5225e2b4976696b5b90b62cdad0ddab4e8898103d61350971e366a377e718862",
+}
 
 
 def engine_url(proc):
@@ -140,12 +150,24 @@ def test_relocated_engine_serves_bundled_library_without_checkout(tmp_path):
         timeout=60,
         check=True,
     )
-    library = json.loads(result.stdout)["library"]
+    answer = json.loads(result.stdout)
+    library = answer["library"]
     assert library["problems"] == []
     assert library["count"] > 0
     records = list(PINNED_LIBRARY.glob("records/*/*/record.yaml"))
     if records:  # the submodule is checked out here, as in the desktop CI job
         assert library["count"] == len(records)
+    # The bundled library's newest CWE record pins the release the app ships: it
+    # supersedes `cwe`, and no record supersedes it.
+    by_id = {r["id"]: r for r in answer["records"]}
+    cwe_record = by_id[PINNED_CWE_RECORD]
+    assert cwe_record["content"]["sha256"] == PINNED_CWE["sha256"]
+    assert cwe_record["content"]["url"].endswith("/" + PINNED_CWE["file"])
+    assert cwe_record["relations"].get("supersedes") == ["cwe"]
+    newer = [
+        i for i, r in by_id.items() if PINNED_CWE_RECORD in r["relations"].get("supersedes", [])
+    ]
+    assert newer == []
     assert not list(tmp_path.glob("_MEI*"))
 
 
@@ -162,7 +184,10 @@ def test_relocated_engine_reads_bundled_cwe_release_without_checkout(tmp_path):
         timeout=120,
         check=True,
     )
-    assert json.loads(result.stdout)["total"] > 0
+    answer = json.loads(result.stdout)
+    assert answer["total"] > 0
+    # Exactly the pinned release: its version, file and SHA-256, not just a non-empty one.
+    assert {key: answer["catalog"][key] for key in PINNED_CWE} == PINNED_CWE
     assert not list(tmp_path.glob("_MEI*"))
 
 

@@ -38,7 +38,7 @@ Tauri includes this notice in the distributed application. On macOS it is at
 
 ## CWE (MITRE)
 
-- Release: CWE 4.20 (`cwec_v4.20.xml.zip`), the release the library pins (ADR-0014)
+- Release: CWE 4.21 (`cwec_v4.21.xml.zip`), the release the library pins (ADR-0014)
 - Project: https://cwe.mitre.org/
 - Terms of use: https://cwe.mitre.org/about/termsofuse.html
 

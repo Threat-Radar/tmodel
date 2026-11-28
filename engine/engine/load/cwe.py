@@ -2,8 +2,10 @@
 
 Input is the CWE List as MITRE publishes it, `cwec_vX.Y.xml.zip` or the XML inside
 it, written to CWE XML Schema 7 (namespace `http://cwe.mitre.org/cwe-7`). Which
-release the engine reads is the library's call: its `cwe` record pins the file's
-SHA-256 (Threat-Radar/library#21), and `load_catalog` refuses any other bytes.
+release the engine reads is the library's call. Each release is a library record that
+pins the file's SHA-256: the first is `cwe` (4.20, Threat-Radar/library#21), and each
+newer one is a new record that supersedes the one before. `served_record` finds the
+newest, and `load_catalog` refuses any other bytes.
 
 Lossless: every element and attribute of an entry is kept in `CweEntry.fields`, so a
 CWE field that has no tmodel slot is carried, not dropped. `CweCatalog.report()`
@@ -59,10 +61,13 @@ from dataclasses import dataclass, field
 from functools import cached_property
 from pathlib import Path, PurePosixPath
 from types import MappingProxyType
-from typing import Any
+from typing import TYPE_CHECKING, Any
 from urllib.parse import urlparse
 from xml.etree import ElementTree
 from xml.sax.saxutils import escape, quoteattr
+
+if TYPE_CHECKING:
+    from engine.load.library import Library, LibraryRecord
 
 CWE_NS = "http://cwe.mitre.org/cwe-7"  # CWE XML Schema 7.x; CWE 5.0 (schema 8) is not read
 XHTML_NS = "http://www.w3.org/1999/xhtml"
@@ -72,7 +77,9 @@ XSI_NS = "http://www.w3.org/2001/XMLSchema-instance"
 CATALOG_ENV = "TMODEL_CWE_CATALOG"
 # Where a packaged engine finds the release that bin/build-engine bundled (ADR-0014).
 BUNDLED_CATALOGS = "catalogs"
-# The library record that pins the release: content.url and content.sha256.
+# The first library record of the CWE line (4.20). A newer release is a new record that
+# supersedes the one before, because library ids are never reused; `served_record`
+# follows that chain to the record whose content.url and content.sha256 the engine serves.
 LIBRARY_RECORD = "cwe"
 # The 4.21 XML is 18.6 MB. A zip whose XML is larger than this is refused.
 MAX_XML_BYTES = 256 * 1024 * 1024
@@ -99,8 +106,9 @@ CONTAINERS = (
     ("External_References", "External_Reference"),
 )
 # Each entry's own fields in CWE XML Schema 7.3, attributes first, then child elements
-# in schema order (library record `cwe`, distilled/messages.yaml). A field outside these
-# lists is still kept, and is reported in CweCatalog.unknown.
+# in schema order (library record `cwe`, distilled/messages.yaml); schema 7.4 declares
+# the same ones. A field outside these lists is still kept, and is reported in
+# CweCatalog.unknown.
 ENTRY_FIELDS: Mapping[str, tuple[str, ...]] = MappingProxyType(
     {
         "Weakness": (
@@ -172,6 +180,13 @@ ENTRY_FIELDS: Mapping[str, tuple[str, ...]] = MappingProxyType(
             "Publisher",
             "URL",
             "URL_Date",
+            # Declared by schema 8.0 (CWE 5.0), not 7.x. CWE 4.21 carries them anyway,
+            # which is one reason it fails 7.4 validation (library record `cwe-4-21`).
+            "Alt_URL",
+            "Alt_URL_Date",
+            "Media_Type",
+            "Access_Restrictions",
+            "Rationale",
         ),
     }
 )
@@ -529,6 +544,32 @@ def configured_catalog(url: str | None = None) -> Path | None:
 def bundled_name(url: str) -> str:
     """The file name a bundled copy of the release at `url` has: the URL's last segment."""
     return PurePosixPath(urlparse(url).path).name
+
+
+def served_record(library: Library) -> LibraryRecord | None:
+    """The library record of the CWE release the engine serves: the newest one.
+
+    The line starts at LIBRARY_RECORD (`cwe`, 4.20). A newer release is a new record that
+    supersedes the one before, so this follows `supersedes` forward until no record
+    supersedes the current one: `cwe-4-21` once the library has it. None when the
+    library has no `cwe` record. A line that forks or loops is a library mistake, so
+    it raises rather than pick a record.
+    """
+    record = library.get(LIBRARY_RECORD)
+    seen: set[str] = set()
+    while record is not None:
+        seen.add(record.id)
+        newer = sorted(r.id for r in library if record.id in r.related("supersedes"))
+        if not newer:
+            return record
+        if len(newer) > 1:
+            raise CweError(
+                f"the library's CWE line forks: {', '.join(newer)} each supersede {record.id}"
+            )
+        if newer[0] in seen:
+            raise CweError(f"the library's CWE line loops back to {newer[0]}")
+        record = library.get(newer[0])
+    return None
 
 
 _cache_lock = threading.Lock()

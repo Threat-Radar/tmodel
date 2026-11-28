@@ -52,7 +52,7 @@ records:
     topic: artifact-statements
   - id: iso-sae-21434-2021
     type: spec
-    topic: threat-modeling
+    topic: sdl
   - id: fips-140-3
     type: spec
     topic: cryptography
@@ -2069,6 +2069,9 @@ records:
   - id: w3c-shacl
     type: spec
     topic: predicate-rendering
+  - id: cwe-4-21
+    type: dataset
+    topic: schema-representations
 outputs:
   - path: docs/bibliography/index.html
     format: html

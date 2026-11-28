@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>MITRE CWE: Common Weakness Enumeration 4.21</title>
+<style>
+:root {
+  --ink: #1a1916;
+  --muted: #5c574e;
+  --line: #e2dcd0;
+  --paper: #f6f3ec;
+  --card: #fffcf7;
+  --accent: #1e4d3a;
+  --warn: #6b4e16;
+  --warn-bg: #f3ead3;
+  --bad-bg: #f6e4dc;
+  --ok-bg: #e5efe8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px 40px; }
+header { border-bottom: 1px solid var(--line); background: var(--card); }
+.bar {
+  max-width: 920px; margin: 0 auto; padding: 16px 24px;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 18px;
+}
+.mark { font-weight: 650; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.92rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+h1 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); line-height: 1.15; letter-spacing: -0.03em; margin: 20px 0 6px; }
+h2 { font-size: 1.15rem; margin: 1.25em 0 0.3em; padding-top: 0.6em; border-top: 1px solid var(--line); }
+h3 { font-size: 1rem; margin: 1em 0 0.2em; }
+.kicker { margin: 18px 0 0; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+.lede { color: var(--muted); margin-top: 0; }
+.banner, .callout {
+  background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0;
+}
+.callout.quiet { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.callout strong { color: var(--ink); }
+ul.clean { padding-left: 1.2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.4em 0 0.8em; background: var(--card); }
+th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 6px 10px; font-size: 0.93rem; }
+table.kv { background: transparent; }
+table.kv td { border-bottom: none; padding: 2px 12px 2px 0; }
+td.rowhead { color: var(--muted); font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; width: 1%; padding-top: 6px; }
+th { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+code { font-size: 0.9em; }
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--card);
+  border: 1px solid var(--line); font-size: 0.82rem; margin: 0 4px 4px 0;
+}
+.badge.core { background: var(--ok-bg); }
+.badge.none, .badge.not-assessed { background: var(--bad-bg); }
+.badge.broad { background: var(--warn-bg); }
+.meta { color: var(--muted); font-size: 0.92rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.cardlink { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.cardlink:hover { background: transparent; }
+.cardlink strong { color: var(--accent); }
+ol.refs { list-style: none; padding: 0; margin: 0; }
+ol.refs li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+ol.refs cite { font-style: italic; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 18px 0 0; font-weight: 600; }
+</style>
+</head>
+<body>
+<style>.site-nav{border-bottom:1px solid #e2dcd0;background:#fffcf7;font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.site-nav .bar{max-width:920px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 18px}.site-nav .mark{font-weight:650;letter-spacing:-0.03em;color:#1a1916;text-decoration:none}.site-nav nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.92rem}.site-nav nav a{color:#5c574e;text-decoration:none}.site-nav nav a[aria-current=page]{color:#1a1916;font-weight:650}</style><header class="site-nav"><div class="bar"><a class="mark" href="../../../../index.html">tmodel</a><nav aria-label="Site"><a href="../../../../index.html">Home</a><a href="../../../../bibliography/index.html" aria-current="page">Bibliography</a><a href="../../../../reports/index.html">Reports</a></nav></div></header>
+<main class="wrap">
+
+<p class="kicker">Library record · cwe-4-21</p>
+<h1>MITRE CWE: Common Weakness Enumeration 4.21</h1>
+<p class="lede"></p>
+<p>
+  <span class="badge">dataset</span>
+  <span class="badge">other</span>
+  <span class="badge">summarized</span>
+  <span class="badge">medium</span>
+</p>
+<p class="meta">Topic: <strong>schema-representations</strong> (<code>record.yaml</code> topic). Status <code>summarized</code> is how far review got, not a quality score.</p>
+<h2>Bibliographic links</h2>
+<ul><li>Source: <a href="https://cwe.mitre.org/data/xml/cwec_v4.21.xml.zip">https://cwe.mitre.org/data/xml/cwec_v4.21.xml.zip</a></li><li>Identifier URL: <a href="https://cwe.mitre.org/">https://cwe.mitre.org/</a></li><li>SHA-256: <code>5225e2b4976696b5b90b62cdad0ddab4e8898103d61350971e366a377e718862</code></li></ul>
+<h2>Dataset</h2>
+<div class="callout"><strong>Catalog, not one row.</strong> This record is the enumeration itself. Retrieved is when the library looked, not an edition date. Empty authors are omitted, not missing paper metadata.</div>
+<table><tbody><tr><td>Retrieved</td><td>2026-11-22</td></tr><tr><td>Version</td><td>4.21 (XML schema 7.4)</td></tr><tr><td>Maturity</td><td>best-practice</td></tr><tr><td>xsd</td><td>https://cwe.mitre.org/data/xsd/cwe_schema_v7.4.xsd</td></tr><tr><td>Media type</td><td>application/zip</td></tr></tbody></table>
+<h2>Applicability</h2>
+<table><thead><tr><th>Axis</th><th>Rating</th></tr></thead><tbody><tr><td>Security</td><td><span class="badge core">core</span></td></tr><tr><td>Cryptography</td><td><span class="badge adjacent">adjacent</span></td></tr><tr><td>This project</td><td><span class="badge core">core</span></td></tr></tbody></table><p class="meta">From <code>record.yaml</code>; a missing axis is not assessed, not <code>none</code>.</p>
+<h2>Tags</h2>
+<table class="kv"><tbody><tr><td class="rowhead">Topic</td><td><span class="badge">cwe</span> <span class="badge">weakness</span> <span class="badge">mitre</span> <span class="badge">graph</span> <span class="badge">xml-schema</span> <span class="badge">catalog</span></td></tr></tbody></table>
+<h2>Bears on</h2>
+<ul><li><code>DEC-001</code></li><li><code>DEC-002</code></li><li><code>DEC-008</code></li><li><code>R-010</code></li></ul>
+<h2>Usefulness</h2><p><span class="badge">useful</span> The CWE release tmodel&#x27;s engine serves: the newest list in the 7.x schema its importer reads, the same weaknesses as CWE 5.0.</p><p class="meta">Assessed 2026-11-22.</p>
+<h2>Recorded relations</h2><p class="meta">Curatorial <code>relations</code> only — not crosswalk edges.</p><h3><code>supersedes</code></h3><ul><li><a class="rec" data-id="cwe" href="../../other/cwe/summary.html">MITRE CWE — Common Weakness Enumeration</a></li></ul><h3><code>see_also</code></h3><ul><li><a class="rec" data-id="cve-json-5" href="../../other/cve-json-5/summary.html">CVE JSON Record Format v5</a></li><li><a class="rec" data-id="capec" href="../../other/capec/summary.html">MITRE CAPEC — Common Attack Pattern Enumeration and Classification</a></li><li><a class="rec" data-id="open-threat-model" href="../../vendor/open-threat-model/summary.html">Open Threat Model specification and JSON Schema</a></li></ul>
+
+<h2>Summary</h2><p class="meta">Prose from <code>summary.md</code>, unedited.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>dataset (best-practice)</td></tr><tr><td><strong>Publisher</strong></td><td>The MITRE Corporation (CWE Program)</td></tr><tr><td><strong>Version</strong></td><td>CWE List 4.21, catalog dated 2026-10-28; XML schema 7.4 (October 27, 2026), namespace <code>http://cwe.mitre.org/cwe-7</code></td></tr><tr><td><strong>Source</strong></td><td>https://cwe.mitre.org/data/xml/cwec_v4.21.xml.zip, SHA-256 <code>5225e2b4…7e718862</code>; unzipped <code>cwec_v4.21.xml</code>, 18,571,978 bytes, SHA-256 <code>3bd5b7f8…2756bdeb</code></td></tr><tr><td><strong>Schema</strong></td><td>https://cwe.mitre.org/data/xsd/cwe_schema_v7.4.xsd, SHA-256 <code>8ce16831…f5aa384e</code></td></tr><tr><td><strong>Licence</strong></td><td>CWE terms of use (https://cwe.mitre.org/about/termsofuse.html); a copy of CWE content keeps MITRE&#x27;s copyright designation and licence</td></tr><tr><td><strong>Supersedes</strong></td><td><code>cwe</code> (CWE 4.20, schema 7.3, fully extracted)</td></tr></tbody></table>
+<h2>Overview</h2>
+<p>CWE 4.21 is MITRE&#x27;s October 2026 catalog of software and hardware weakness types, in the same XML format as 4.20 (schema 7.x). MITRE released it beside CWE 5.0, which moves to schema 8.0 (namespace <code>http://cwe.mitre.org/cwe-8</code>, Categories become Groupings). The two carry the same 984 weaknesses, with identical IDs and names, so 4.21 is the newest list a schema 7.x reader can take. It is not a clean 7.x file: it carries some of 5.0&#x27;s new content in places schema 7.4 does not allow (see below).</p>
+<h2>Changes from 4.20</h2>
+<table><thead><tr><th></th><th>4.20</th><th>4.21</th></tr></thead><tbody><tr><td>Weaknesses</td><td>969</td><td>984 (28 deprecated)</td></tr><tr><td>Categories</td><td>422</td><td>431</td></tr><tr><td>Views</td><td>59</td><td>62</td></tr><tr><td>External references</td><td>1,026</td><td>1,081</td></tr></tbody></table>
+<p>Nothing was removed: every 4.20 ID is still in 4.21.</p>
+<p><strong>15 new weaknesses</strong>, all with status Incomplete:</p>
+<table><thead><tr><th>ID</th><th>Name</th></tr></thead><tbody><tr><td>CWE-1461</td><td>Hardware Simulation / Synthesis Mismatch</td></tr><tr><td>CWE-1462</td><td>Improper Session Management</td></tr><tr><td>CWE-1463</td><td>Insufficient Session Timeout Value</td></tr><tr><td>CWE-1464</td><td>Improper Session Invalidation</td></tr><tr><td>CWE-1465</td><td>Improper Session Invalidation after User Logout</td></tr><tr><td>CWE-1466</td><td>Improper Session Invalidation after Authentication Credential Change</td></tr><tr><td>CWE-1467</td><td>Use of Singular Authentication Artifact for Multiple User Sessions</td></tr><tr><td>CWE-1469</td><td>Improper Check for Credential Expiration</td></tr><tr><td>CWE-1470</td><td>Improper External Identity Verification</td></tr><tr><td>CWE-1471</td><td>Insufficiently Controlled Parser Differential</td></tr><tr><td>CWE-1472</td><td>Generation of Credential with Long Expiration</td></tr><tr><td>CWE-1473</td><td>Improper Expiration of Cached Data</td></tr><tr><td>CWE-1474</td><td>Non-Equivalent Data Transformation</td></tr><tr><td>CWE-1475</td><td>Incomplete Data/State Propagation</td></tr><tr><td>CWE-1476</td><td>Improper Request Propagation before Data Reception in Write Transactions in a Bus Architecture</td></tr></tbody></table>
+<p><strong>3 weaknesses deprecated</strong>, now with mapping usage <code>Prohibited</code>: CWE-377 (Insecure Temporary File), CWE-391 (Unchecked Error Condition) and CWE-613 (Insufficient Session Expiration). For CWE-613, MITRE points to CWE-1462 and its descendants instead.</p>
+<p><strong>9 new categories</strong> (CWE-1451 to CWE-1459) for the OpenSSF Secure Coding Guide for Python (2026), and <strong>3 new views</strong>: CWE-1449 (that guide), CWE-1460 (Top 20 Secure PLC Coding Practices) and CWE-1468 (OWASP Golang Secure Coding Practices Guide).</p>
+<h2>Schema 7.4, and where 4.21 departs from it</h2>
+<p>Schema 7.4 declares the same elements and attributes as 7.3, less one: <code>Demonstrative_Example</code> no longer has a <code>References</code> child. It also makes the three children of <code>Content_History/Modification</code> required and rewords some documentation.</p>
+<p><strong>The 4.21 file does not validate against schema 7.4.</strong> Checked with xmllint (libxml2 2.13.9) offline, using the W3C catalog recipe in <code>../cwe/distilled/schema/README.md</code>; the 4.20 file still validates against 7.3 the same way. Every one of the 81 errors is content schema 8.0 adds:</p>
+<table><thead><tr><th>Departure from 7.4</th><th>Errors</th><th>In schema 8.0</th></tr></thead><tbody><tr><td><code>Taxonomy_Mapping/@Taxonomy_Name</code> values <code>OWASP Golang Secure Coding Practices Guide</code> and <code>PLC Top 20</code></td><td>47</td><td>enumeration values</td></tr><tr><td><code>External_Reference</code> children <code>Rationale</code>, <code>Alt_URL</code>, <code>Media_Type</code> and <code>Access_Restrictions</code>, plus <code>Alt_URL_Date</code> (xmllint reports only the first unexpected child of each reference)</td><td>19</td><td>declared fields</td></tr><tr><td><code>Phase</code> text such as <code>(Custom AI) Training</code> and <code>(Custom Hardware) Hardware Architecture</code></td><td>10</td><td>a new <code>Custom_Phase</code> element, domain <code>AI</code> or <code>Hardware</code></td></tr><tr><td><code>Related_Weakness/@Nature</code> value <code>Overlaps</code></td><td>3</td><td>enumeration value</td></tr><tr><td><code>Impact</code> value <code>DoS: Prevent Access</code></td><td>2</td><td>enumeration value</td></tr></tbody></table>
+<h2>Applicability</h2>
+<ul><li><strong>Security: core.</strong> The same vocabulary as <code>cwe</code>; CVE records and NVD cite CWE IDs.</li><li><strong>Cryptography: adjacent.</strong> Covers cryptographic weaknesses as entries; not a cryptographic specification.</li><li><strong>This project: core.</strong> The CWE release tmodel&#x27;s engine serves and its app ships, pinned by this record&#x27;s digest (DEC-008; tmodel ADR-0014, a cached pinned mirror). It keys tmodel&#x27;s Weakness type (ARCH-0001 §3, R-010). Its departures bear on DEC-002 (import formats): a reader that rejects files failing their declared schema would reject this release.</li></ul>
+<h2>Implementations</h2>
+<p>Not searched for this release (2026-11-22). Consumers already held in this library: CVE Record Format 5.x (<code>cve-json-5</code>) and Open Threat Model (<code>open-threat-model</code>). tmodel&#x27;s importer (<code>engine/engine/load/cwe.py</code>) reads the whole file without loss: 984 weaknesses, 431 categories and 62 views.</p>
+<h2>Artifacts in this record</h2>
+<ul><li><code>record.yaml</code>: metadata, digests and relations (<code>supersedes: cwe</code>).</li><li><code>summary.md</code>: this page.</li></ul>
+<p>There is no <code>distilled/</code>. The schema 7.x extraction lives in <code>cwe</code> and still describes this file&#x27;s structure, apart from the departures above.</p>
+<h2>Limits</h2>
+<ul><li>Summary bar, not FX-1: the full extraction stays with <code>cwe</code> (4.20, schema 7.3). Extracting the CWE line again, for schema 8.0 and CWE 5.0, belongs to tmodel #61.</li><li>The record pins the XML distribution only. CSV and HTML views, and MITRE&#x27;s web pages, were not examined.</li><li>4.21 and 5.0 were compared on weakness IDs and names only. Categories (Groupings in 5.0), views and relationships were not compared.</li><li>Deprecated entries stay in the file, so links made before 4.21 can point at a retired entry. The <code>owasp-asvs-5</code> record links 8 requirements to CWE-613, as inferred legacy mappings (OWASP dropped CWE mappings in ASVS 5.0). Those links are left as they are; whether to remap them is that record&#x27;s call.</li><li>Added so tmodel can move its CWE pin to 4.21 (tmodel #61, question 3).</li></ul>
+
+<footer><p>Generated from <code>record.yaml</code> and <code>summary.md</code> in this directory by the library's <code>bin/render-html</code>. Do not hand-edit. Static HTML, no scripts, no trackers.</p></footer>
+</main>
+</body>
+</html>
