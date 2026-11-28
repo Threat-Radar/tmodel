@@ -33,6 +33,7 @@ from __future__ import annotations
 import hashlib
 import os
 import re
+import sys
 import threading
 from collections import Counter
 from collections.abc import Iterable, Mapping
@@ -405,14 +406,24 @@ def load_catalog(path: str | Path, sha256: str | None = None) -> CapecCatalog:
     return _from_bytes(path.name, _read(path), sha256)
 
 
-def configured_catalog() -> Path | None:
-    """The catalog file `$TMODEL_CAPEC_CATALOG` names, or None when it is not set.
+def configured_catalog(url: str | None = None) -> Path | None:
+    """The CAPEC release to read: `$TMODEL_CAPEC_CATALOG` if set, else a packaged engine's
+    copy.
 
-    The engine never fetches the catalog itself: whether it is bundled, cached or
-    fetched at install is DEC-008, still open.
+    The engine never fetches a catalog itself. DEC-008 is open; until the sponsor decides
+    it, the team's interim rule (ADR-0014, proposed) applies, as it does to CWE:
+    `bin/build-engine` downloads the release the library pins at `url`, checks its SHA-256
+    and bundles it below `_MEIPASS` as `catalogs/<bundled_name(url)>`, and a packaged
+    engine reads that copy. In a source checkout there is none until the variable names a
+    file.
     """
     configured = os.environ.get(CATALOG_ENV, "").strip()
-    return Path(os.path.expanduser(configured)) if configured else None
+    if configured:
+        return Path(os.path.expanduser(configured))
+    if url and getattr(sys, "frozen", False):
+        bundled = Path(sys._MEIPASS) / cwe.BUNDLED_CATALOGS / cwe.bundled_name(url)
+        return bundled if bundled.is_file() else None
+    return None
 
 
 _cache_lock = threading.Lock()

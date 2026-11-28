@@ -603,7 +603,8 @@ def _weakness_row(w: _Weakness) -> dict[str, Any]:
 
 
 def _served_capec_catalog() -> capec.CapecCatalog:
-    """The CAPEC release the library pins, read from the file `$TMODEL_CAPEC_CATALOG` names."""
+    """The CAPEC release the library pins: the file `$TMODEL_CAPEC_CATALOG` names, or the
+    copy a packaged engine bundles (ADR-0014's interim rule)."""
     record = _served_library().get(capec.LIBRARY_RECORD)
     pinned = record.content.sha256 if record is not None else None
     if record is None or not pinned:
@@ -612,7 +613,7 @@ def _served_capec_catalog() -> capec.CapecCatalog:
             "(it has one from library commit 4173143 on); set TMODEL_LIBRARY to a "
             "library checkout that has it"
         )
-    path = capec.configured_catalog()
+    path = capec.configured_catalog(record.content.url)
     if path is None:
         raise Unavailable(
             f"no CAPEC catalog: download {record.content.url} (SHA-256 {pinned}) "
