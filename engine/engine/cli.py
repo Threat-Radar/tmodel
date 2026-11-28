@@ -1,7 +1,9 @@
 """`tmodel` command line — the agentic surface over the same engine the GUI uses.
 
-  tmodel serve [--projects]    start the local engine (loopback only); --projects also
-                               serves the project folders the host opens (#288)
+  tmodel serve [--projects] [--enable-ai]
+                               start the local engine (loopback only); --projects also
+                               serves the project folders the host opens (#288), and
+                               --enable-ai the app's AI-proposed attack paths (#302)
   tmodel health [--json]       ask the running engine whether it is healthy
   tmodel version [--json]      ask the running engine for its version
   tmodel risk FILE --matrix annex-h-table-h8 [--goal G] [--json]
@@ -55,6 +57,12 @@
                                claim proposed (#257, DL-0068); always in-process.
                                --platform names the build (linux/arm64/v8) unless
                                the scan records it
+  tmodel ai-status [--json]    is the local LLM ready (Ollama running, the model
+                               installed)? If not, the setup steps (#302)
+  tmodel ai-paths MODEL -o OUT [--max-paths N] [--force] [--json]
+                               write MODEL with a local LLM's attack paths added, each
+                               a proposal for a person to review (#302, DL-0082);
+                               always in-process
 
 By default these go through the local API, exactly like the desktop app
 (APP-0001 A-030, A-060). `--in-process` calls the engine code directly
@@ -726,7 +734,12 @@ def _serve(args: argparse.Namespace) -> int:
             )
             return 1
     try:
-        server.serve(port=args.port, exit_with_parent=args.exit_with_parent, host_token=host_token)
+        server.serve(
+            port=args.port,
+            exit_with_parent=args.exit_with_parent,
+            host_token=host_token,
+            ai_enabled=args.enable_ai,
+        )
     except (ValueError, OSError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
@@ -749,6 +762,11 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="let the host open and create threat model project folders (#288); the "
         "host's secret is read from TMODEL_HOST_TOKEN; off by default",
+    )
+    serve.add_argument(
+        "--enable-ai",
+        action="store_true",
+        help="answer POST /ai/attack-paths through a local Ollama (#302); off by default",
     )
     serve.set_defaults(func=_serve)
 
@@ -911,7 +929,95 @@ def build_parser() -> argparse.ArgumentParser:
         "--force", action="store_true", help="replace the model or report if it exists"
     )
     imported.set_defaults(func=_import_sbom)
+
+    status = sub.add_parser("ai-status", help="is the local LLM ready? (#302)")
+    status.add_argument("--json", action="store_true", help="print JSON")
+    status.set_defaults(func=_ai_status)
+
+    drafting = sub.add_parser(
+        "ai-paths", help="add a local LLM's attack paths to a model, as proposals (#302)"
+    )
+    drafting.add_argument("model", help="the model file to draft attack paths for")
+    drafting.add_argument("-o", "--output", required=True, help="the model file to write")
+    drafting.add_argument(
+        "--max-paths", type=int, default=3, help="at most this many paths (1 to 10; default 3)"
+    )
+    drafting.add_argument("--force", action="store_true", help="replace OUT if it exists")
+    drafting.add_argument("--json", action="store_true", help="print JSON")
+    drafting.set_defaults(func=_ai_paths)
     return parser
+
+
+def _ai_status(args: argparse.Namespace) -> int:
+    from engine.api.ai_routes import AiService
+
+    try:
+        status = AiService().status()
+    except ValueError as exc:  # a TMODEL_OLLAMA_URL that is not this machine's
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+    if args.json:
+        print(json.dumps(status, indent=2))
+    elif status["ready"]:
+        print(f"ready: {status['model']['name']} through Ollama {status['ollama']['version']}")
+    else:
+        print(f"not ready: {status['reason']}")
+        for step in status["setup"]:
+            print(f"  {step}")
+    return 0 if status["ready"] else 1
+
+
+def _ai_paths(args: argparse.Namespace) -> int:
+    from engine import ai_paths
+
+    source, out = Path(args.model), Path(args.output)
+    if out.exists() and not args.force:
+        print(f"error: {out} exists; pass --force to replace it", file=sys.stderr)
+        return 2
+    try:
+        text = source.read_text(encoding="utf-8")
+        result = ai_paths.draft(text, max_paths=args.max_paths)
+    except (OSError, UnicodeDecodeError) as exc:
+        print(f"error: cannot read {source}: {exc}", file=sys.stderr)
+        return 2
+    except ValueError as exc:  # a TMODEL_OLLAMA_URL that is not this machine's
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+    except ai_paths.AiError as exc:
+        print(f"error: {exc.code}: {exc.message}", file=sys.stderr)
+        for problem in exc.problems:
+            print(f"  {problem}", file=sys.stderr)
+        return 2 if exc.code in ("validation_error", "nothing_to_draft") else 1
+    temporary = out.with_name(f".{out.name}.tmp")
+    try:
+        temporary.write_text(result.model_text, encoding="utf-8")
+        temporary.replace(out)
+    except OSError as exc:
+        temporary.unlink(missing_ok=True)
+        print(f"error: cannot write {out}: {exc}", file=sys.stderr)
+        return 1
+    if args.json:
+        print(
+            json.dumps(
+                {
+                    "paths": result.paths,
+                    "warnings": result.warnings,
+                    "generated_by": result.generated_by,
+                },
+                indent=2,
+            )
+        )
+        return 0
+    g = result.generated_by
+    print(
+        f"wrote {out}: {len(result.paths)} proposed attack paths "
+        f"from {g['model']} in {g['seconds']} s"
+    )
+    for path in result.paths:
+        print(f"  {path['name']}: " + " -> ".join(step["name"] for step in path["steps"]))
+    for warning in result.warnings:
+        print(f"warning: {warning}", file=sys.stderr)
+    return 0
 
 
 def main(argv: list[str] | None = None) -> int:

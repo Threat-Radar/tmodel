@@ -171,10 +171,15 @@ def serve(
     port: int | None = None,
     exit_with_parent: bool = False,
     host_token: str | None = None,
+    *,
+    ai_enabled: bool = False,
 ) -> None:
     """Serve until stopped. With `host_token`, the host's secret, the host can open and
     create threat model project folders (#288); without it the /workspace/* routes
-    answer "not enabled" and write nothing."""
+    answer "not enabled" and write nothing. With `ai_enabled`, POST /ai/attack-paths
+    drafts attack paths through a local Ollama (#302); without it, it answers "not
+    enabled"."""
+    from engine.api.ai_routes import AiService, install_ai_routes
     from engine.api.workspace import check_host_token, install_workspace_routes
     from engine.model_workspace import ProjectWorkspace
 
@@ -184,8 +189,10 @@ def serve(
     if host_token is not None:
         check_host_token(host_token)  # before binding, so a bad secret fails fast
         projects = ProjectWorkspace()
+    ai = AiService() if ai_enabled else None  # before binding, so a bad URL fails fast
     httpd = make_server(host, port)
     install_workspace_routes(httpd, projects, host_token)
+    install_ai_routes(httpd, ai)
     bound_host, bound_port = httpd.server_address[:2]
     print(
         f"tmodel-engine {core.version()['version']} listening on http://{bound_host}:{bound_port}",
@@ -193,6 +200,11 @@ def serve(
     )
     if projects is not None:
         print("project folders: on, for callers with the host token (#288)", flush=True)
+    if ai is not None:
+        print(
+            f"AI proposals: on, with {ai.llm.model} through Ollama at {ai.llm.url} (#302)",
+            flush=True,
+        )
     if exit_with_parent:
         _shutdown_when_stdin_closes(httpd)
     try:
