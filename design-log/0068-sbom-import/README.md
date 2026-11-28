@@ -4,7 +4,7 @@ id: DL-0068
 title: "SBOM import: a starter model from Syft's CycloneDX SBOM of a container image and Grype's scan of it (#257)"
 type: process
 status: draft
-version: "0.6.0"
+version: "0.7.0"
 date: "2026-11-25"
 updated: "2026-11-27"
 record: DL-0068
@@ -43,13 +43,14 @@ Each line is one of Table 6's candidate rules or one of #257's acceptance criter
   `pkg:oci/alpine?repository_url=index.docker.io/library/alpine`. A short image name resolves the
   way Docker resolves it (`alpine` is `index.docker.io/library/alpine`). Its id is made from the
   whole repository, registry and path: a readable slug of it and a short hash of the Product's
-  key, its purl, the first 8 hex digits of the key's SHA-256
-  (`product:index-docker-io-library-alpine-d27fdaeb`). So the same path in another registry gets
-  another id, and so do two repositories whose slugs are one because they differ only in
-  punctuation (`ghcr.io/team/alpha-beta/app`, `ghcr.io/team/alpha/beta/app`), in separate imports
-  too; and one repository gets one id whatever its tag or digest (Review changes, fifth round,
-  items 2 and 7; until then the id was the slug alone, and such repositories shared one). The
-  purl in `identifiers` stays the key.
+  key, its purl, the first 16 hex digits (64 bits) of the key's SHA-256
+  (`product:index-docker-io-library-alpine-d27fdaebde4326e0`). So the same path in another
+  registry gets another id, and so do two repositories whose slugs are one because they differ
+  only in punctuation (`ghcr.io/team/alpha-beta/app`, `ghcr.io/team/alpha/beta/app`), in separate
+  imports too, but for a 1 in 2^64 chance; and one repository gets one id whatever its tag or
+  digest (Review changes, fifth round, items 2 and 7; until then the id was the slug alone, and
+  such repositories shared one; the hash had 8 digits until the sixth round). The purl in
+  `identifiers` stays the key.
 - **ProductInstance:** the scanned build, keyed by the digest Syft records in
   `metadata.component.version` and the build's platform (R-ID-1; decision 2 below), such as
   `linux/arm64/v8`. The digest is in `identifiers` and `version`, beside the versioned purl with the
@@ -89,10 +90,11 @@ Each line is one of Table 6's candidate rules or one of #257's acceptance criter
   link.
 - **Ids:** each id is a readable slug of what its object is. An id made from a free-form key (the
   Product's purl, a Component's normalized purl, a Party's `organization:NAME`, a package match's
-  finding and a CWE link's `cwe:...`) always ends in a dash and the first 8 hex digits of the
-  key's SHA-256, so one key gets one id in every import, two keys never share one, and adding or
-  removing other objects changes none, twins aside (`component:apk-alpine-zlib-1-3-2-r0-aa0ed361` for the
-  aarch64 zlib). A package match's finding is the CVE it is linked to, the vulnerability id and
+  finding and a CWE link's `cwe:...`) always ends in a dash and the first 16 hex digits (64 bits)
+  of the key's SHA-256, so one key gets one id in every import, two keys never share one in an
+  import and share one in two only by a 1 in 2^64 chance, and adding or removing other objects
+  changes none, twins aside (`component:apk-alpine-zlib-1-3-2-r0-aa0ed361800ecaef` for the aarch64
+  zlib). A package match's finding is the CVE it is linked to, the vulnerability id and
   namespace Grype reports, the Component's key, and each match detail's type and matcher, so a
   scan whose scores differ keeps its ids; matches with one finding are twins, told apart by
   their order: by the SBOM entry each is on (`artifact.id`), which a rescan of the same SBOM
@@ -320,9 +322,10 @@ day, which is why every Assertion records the database's build time (R-PROV-2).
   placeholder CWEs; a match on a part the SBOM lacks); suppliers; dependencies that are not between
   Components; entries sharing a key; every refusal, each checked to write nothing; the command line;
   and that the same files give the same bytes. Since the reviews, also the regression tests listed
-  under each item of the five rounds below: 317 tests in all (254 after the fourth round, 236 after
-  the third, 185 after the second, 135 after the first), counting each parametrized case.
-- **The fixture's numbers are unchanged by the five rounds:** 17 Components, 24 dependency edges,
+  under each item of the six rounds below: 319 tests in all (317 after the fifth round, 254 after
+  the fourth, 236 after the third, 185 after the second, 135 after the first), counting each
+  parametrized case.
+- **The fixture's numbers are unchanged by the six rounds:** 17 Components, 24 dependency edges,
   15 Vulnerabilities, 9 Weaknesses, 4 Parties and 45 Assertions (30 package matches, 15 CWE links).
   Every package has its own purl and every match its own (CVE, Component) pair, so keeping the
   qualifiers and one Assertion per match (Review changes, items 1 and 4) change no count. Only two
@@ -348,7 +351,13 @@ day, which is why every Assertion records the database's build time (R-PROV-2).
   what it is, shows no other difference, header included. The report shows no id, and differs
   from 4be86c1's in one line, which says what `matches[].artifact.id` is now read for (item 18).
   With `--platform linux/amd64` the import now writes the model and
-  the report and prints the warning (exit code 0, item 1).
+  the report and prints the warning (exit code 0, item 1). The sixth round changes the same 66 ids
+  again, and nothing else: each now ends in 16 hex digits, its 8 and the next 8 of the same
+  SHA-256 (`product:index-docker-io-library-alpine-d27fdaebde4326e0`), and one of them, a CWE
+  link whose source is named by a UUID, gives up one character of its readable part to stay within
+  80. Imported with `--platform linux/arm64/v8` and with `--platform linux/amd64`, each model is
+  775a45c's byte for byte once each old id is mapped to its new one, and each report is 775a45c's
+  byte for byte.
 - The engine lists the imported model and opens it (`core.list_models`, `core.model_graph`): 30
   `propagates_to`, 15 `instance_of`, 24 `uses_component` and 17 `build_composed_of` edges. The
   attack-graph checks pass too; the model has no paths yet.
@@ -1253,6 +1262,48 @@ which is skipped where LinkML is not installed) passes unchanged, there and here
 `engine/engine/cli.py` now prints the warnings and gives `import-sbom`'s exit codes; the app is not
 changed.
 
+## Review changes, sixth round (2026-11-27)
+
+@kriishnaa-18 re-reviewed 775a45c: the fifth round's fixes hold, and one minor correctness issue
+remains (item 1). As in the earlier rounds, the item says what was wrong, what changed (in
+`engine/engine/import_sbom.py`), and its regression tests in `engine/tests/test_import_sbom.py`,
+each run on 775a45c first, where it failed. Every other test passes, six of them (eight cases)
+once the ids they name carry 16 digits.
+
+1. **A hashed id ended in 32 bits of its key's hash (P3).** An id made from a free-form key ended
+   in the first 8 hex digits of the key's SHA-256 (fifth round, items 2 and 7). In one import a
+   counter tells apart two keys whose ids would be one, but in separate imports the hash is all
+   that tells apart two repositories whose slugs are one, and 32 bits left each such pair a 1 in
+   2^32 chance of one Product id. A search over the separators between the same ten letters found
+   a pair in under 78,000 tries: `ghcr.io/team/a-b-c-d-e/f.g/h-i.j` and
+   `ghcr.io/team/a.b-c/d-e-f.g.h/i_j`, which on 775a45c both gave
+   `product:ghcr-io-team-a-b-c-d-e-f-g-h-i-j-c9e24419`. Now `HASH_DIGITS` is 16, so every hashed
+   id (the Product's, every Component's, every Party's but `party:grype`, and every Assertion's)
+   ends in 64 bits of its key's SHA-256: the 8 digits it had and the next 8. One key still gives
+   one id in every import, and two free-form keys share one in separate imports only by a 1 in
+   2^64 chance. The rule is one for every hashed id, as the Ids bullet has said since the fifth
+   round, and the same reasoning reaches the Components', Parties' and Assertions' ids, so they
+   lengthen with the Product's.
+
+   The 80-character limit stays, by choice: no id grows past the length it could reach before,
+   and a hashed id's readable part gives up what passes 63 characters, where it gave up what
+   passed 71 (`_slug`). One of the fixture's ids does, by one character: a CWE link whose source
+   is named by a UUID. A limit of 88 would keep every readable part whole, at the cost of longer
+   ids. An id made from a canonical key is unchanged unless it holds a hash: one whose slug is
+   longer than 80 characters is cut and ends in a hash of it, and one whose id another object has
+   takes a fallback hash, and both hashes now have 16 digits. Two canonical keys whose slugs are
+   one, such as `GHSA-AAAA-BBBB-CCCC` and `ghsa-aaaa-bbbb-cccc` (one advisory), still give one id
+   in separate imports, as before, since the slug alone is the id.
+
+   Tests: `test_repositories_whose_first_8_hash_digits_are_one_get_distinct_product_ids` (the two
+   repositories above, imported separately: on 775a45c both got the one id) and
+   `test_every_hashed_id_ends_in_16_hex_digits` (all 66 of the fixture's hashed ids, with the
+   Product's, the 16 Components' that have a purl and the 3 Parties' checked against their keys:
+   on 775a45c none had 16 digits). The two tests that craft a version and an advisory id spelling
+   another object's id now spell its 16-digit id. The advisory test still meets the collision it
+   was written for; the version test, a guard since the fifth round, meets none, since a
+   Component's id ends in its own key's hash.
+
 ## What a human accepted
 
 - @Clovier, 2026-11-25, after asking for each term to be explained: build #257 now, with the four
@@ -1273,6 +1324,10 @@ changed.
   4be86c1), and asked that everything be covered, so an independent review of the fixes, whose
   findings are items 4 to 18, was run before anything was pushed; the wording and code are
   Claude Code's draft until the pull request review accepts them.
+- @Clovier, 2026-11-27: asked for review fixes to go in overnight ("continue working and fixing
+  reviews until i wake up"), which covers the sixth round, after @kriishnaa-18's review of
+  775a45c; the wording and code are Claude Code's draft until the pull request review accepts
+  them.
 
 The code, the mapping and the choices above are the agent's draft until a human reviews them on the
 pull request.
