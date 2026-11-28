@@ -4,9 +4,9 @@ id: DL-0055
 title: "Two more AI product example models (Copilot agent mode, Agentforce) and an app test"
 type: research
 status: draft
-version: "0.1.0"
+version: "0.1.1"
 date: "2026-11-09"
-updated: "2026-11-15"
+updated: "2026-11-26"
 record: DL-0055
 defers_to: ARCH-0001
 ---
@@ -56,11 +56,18 @@ The example-models README (0.2.0) records the two models, gaps AI-8 to AI-12, an
 
 ## Human review
 
-Not yet reviewed:
-
-- @Maimcghee checks the sources against each file, as was done for pv-01 and pv-02.
-- The attack paths wait for a reviewer, as pv-01 and pv-02 do.
-- Until both are done, every Assertion stays `proposed` (R-018).
+- **Sources: checked (2026-11-26).** @Maimcghee checked both files against their sources, as was done for pv-01 and pv-02. Claude Code fetched each source and matched every specific claim to its text.
+  - **em-02.** The Embrace The Red write-up and the CVE record are byte-identical to the copies the model was built from (`01abf71f…`, `a3ba4014…`).
+    - From the write-up: the `"chat.tools.autoApprove": true` line in `.vscode/settings.json` ("YOLO mode"); invisible text being "very unreliable", with a VS Code indicator; conditional prompt injection by OS; the calculator demo; the botnet and AI-virus sections; the further angles (`.vscode/tasks.json`, MCP servers, other agents' configuration files); "Many other editors do show the diff"; and the August 2025 Patch Tuesday fix.
+    - From the CVE record: the description, the CVSS 3.1 vector (7.8), Visual Studio 2022 17.14.12 as the fixed version, publication on 2025-08-12, CWE-77, and CISA ADP's SSVC values.
+  - **em-03.** Noma's page has changed since 2026-11-09 (now `c83ef269…`), and every claim still matches it:
+    - the "Orange" probe, and the Description field's 42,000-character limit;
+    - the $5 domain, the employee request as quoted, Web-to-Lead and the image tag;
+    - the re-secured domain, which has no date;
+    - Trusted URLs Enforcement on 2025-09-08, with the "untrusted URLs" quote;
+    - the recommendations to enforce Trusted URLs, audit leads, and validate and sanitize input.
+  - **Not checkable against a source:** the step-to-technique links are the AI drafter's mapping, since ATLAS has no case study for either attack (gap AI-8).
+- **Not yet reviewed:** the attack paths wait for a reviewer, as pv-01 and pv-02 do. Until then, every Assertion stays `proposed` (R-018).
 
 ## Currency check (2026-11-22)
 
