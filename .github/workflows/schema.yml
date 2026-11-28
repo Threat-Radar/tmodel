@@ -1,7 +1,8 @@
 name: schema
 # The LinkML object model and its example vectors (#64; ADR-0007, ADR-0010).
 # 1. The generated JSON Schema, SHACL and Python types match the LinkML file.
-# 2. Every example vector validates against its container.
+# 2. Every example vector validates against its container: mvp- the core one,
+#    tv- the full one and pv- the proposed one (#281).
 # 3. Every id-reference in the MVP core vectors resolves (linkml-validate does
 #    not check references between objects; DL-0021).
 # 4. Every requirement extraction file (research/0017-requirements-extraction,
@@ -75,6 +76,12 @@ jobs:
           for v in spec/vectors/tv-*.yaml; do
             echo "== $v"
             linkml-validate -s spec/vectors/example-container.linkml.yaml -C ExampleModel "$v"
+          done
+      - name: Proposal vectors validate (proposed container, DL-0024, #281)
+        run: |
+          for v in spec/vectors/pv-*.yaml; do
+            echo "== $v"
+            linkml-validate -s spec/vectors/example-container-proposed.linkml.yaml -C ExampleModelProposed "$v"
           done
       - name: SDL example validates (SDL proposal container, DL-0040)
         run: |
