@@ -166,6 +166,24 @@ def test_relocated_engine_reads_bundled_cwe_release_without_checkout(tmp_path):
     assert not list(tmp_path.glob("_MEI*"))
 
 
+def test_relocated_engine_reads_bundled_capec_release_without_checkout(tmp_path):
+    # The Attack Patterns tab and the AI proposals (#302) work in a downloaded app: no
+    # TMODEL_CAPEC_CATALOG (ADR-0014's interim rule; DEC-008 is open).
+    executable = tmp_path / "tmodel-engine"
+    shutil.copy2(PACKAGED_ENGINE, executable)
+    result = subprocess.run(
+        [str(executable), "attack-patterns", "--limit", "1", "--in-process", "--json"],
+        cwd=tmp_path,
+        env={"HOME": str(tmp_path), "TMPDIR": str(tmp_path)},
+        capture_output=True,
+        text=True,
+        timeout=120,
+        check=True,
+    )
+    assert json.loads(result.stdout)["total"] > 0
+    assert not list(tmp_path.glob("_MEI*"))
+
+
 def test_bundled_engine_reads_model_without_system_python(tmp_path):
     result = subprocess.run(
         [

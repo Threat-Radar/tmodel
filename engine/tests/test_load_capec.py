@@ -9,6 +9,7 @@ check the whole release as well.
 """
 
 import os
+import sys
 import threading
 import zipfile
 from collections import Counter
@@ -596,3 +597,43 @@ def _source_tally(element):
             e, a, w = _source_tally(child)
             elements, attributes, words = elements + e, attributes + a, words + w
     return elements, attributes, words
+
+
+# --- a packaged engine's bundled release (ADR-0014's interim rule; DEC-008 is open) -------
+
+PINNED_URL = "https://capec.mitre.org/data/xml/capec_v3.9.xml"
+
+
+def test_packaged_engine_reads_its_bundled_release(monkeypatch, tmp_path):
+    # bin/build-engine bundles the pinned release below _MEIPASS/catalogs, as for CWE.
+    monkeypatch.delenv(capec.CATALOG_ENV, raising=False)
+    monkeypatch.setattr(sys, "frozen", True, raising=False)
+    monkeypatch.setattr(sys, "_MEIPASS", str(tmp_path), raising=False)
+    bundled = tmp_path / cwe.BUNDLED_CATALOGS / "capec_v3.9.xml"
+    bundled.parent.mkdir()
+    bundled.write_bytes(b"release bytes")
+    assert capec.configured_catalog(PINNED_URL) == bundled
+    assert capec.configured_catalog() is None  # without the pinned url there is nothing to find
+
+
+def test_packaged_engine_without_a_bundled_release_has_none(monkeypatch, tmp_path):
+    monkeypatch.delenv(capec.CATALOG_ENV, raising=False)
+    monkeypatch.setattr(sys, "frozen", True, raising=False)
+    monkeypatch.setattr(sys, "_MEIPASS", str(tmp_path), raising=False)
+    assert capec.configured_catalog(PINNED_URL) is None
+
+
+def test_a_source_checkout_never_looks_for_a_bundled_release(monkeypatch, tmp_path):
+    monkeypatch.delenv(capec.CATALOG_ENV, raising=False)
+    monkeypatch.delattr(sys, "frozen", raising=False)
+    monkeypatch.setattr(sys, "_MEIPASS", str(tmp_path), raising=False)
+    (tmp_path / cwe.BUNDLED_CATALOGS).mkdir()
+    (tmp_path / cwe.BUNDLED_CATALOGS / "capec_v3.9.xml").write_bytes(b"release bytes")
+    assert capec.configured_catalog(PINNED_URL) is None
+
+
+def test_the_variable_still_wins_in_a_packaged_engine(monkeypatch, tmp_path):
+    monkeypatch.setenv(capec.CATALOG_ENV, str(SAMPLE))
+    monkeypatch.setattr(sys, "frozen", True, raising=False)
+    monkeypatch.setattr(sys, "_MEIPASS", str(tmp_path), raising=False)
+    assert capec.configured_catalog(PINNED_URL) == SAMPLE
