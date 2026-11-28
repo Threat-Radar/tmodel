@@ -10,6 +10,10 @@
         "review_status": null,
         "reviewed": false
       },
+      "step_phases": {
+        "attack-step:craft-search-link": "weaponization",
+        "attack-step:shopper-opens-link": "exploitation"
+      },
       "steps": [
         "attack-step:craft-search-link",
         "attack-step:shopper-opens-link"

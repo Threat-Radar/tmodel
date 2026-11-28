@@ -1,4 +1,8 @@
 {
+  "assets": [
+    "asset:diagnostic-service",
+    "asset:safety-can-commands"
+  ],
   "file": "mvp-02-automotive-ecu.yaml",
   "reviewed_threats": [
     "threat-instance:remote-diag-injection"

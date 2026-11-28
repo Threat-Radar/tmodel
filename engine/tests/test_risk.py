@@ -70,6 +70,47 @@ def test_vector_keeps_inputs_and_categories_and_does_not_trust_authored_risk():
     assert out["for_stakeholder"] == "party:user"
 
 
+@pytest.mark.parametrize(
+    ("reviews", "reviewed"),
+    [
+        ([("software_agent", "accepted")], False),
+        ([("person", "accepted"), ("person", "accepted")], True),
+        ([("person", "accepted"), ("software_agent", "rejected")], True),
+        ([("person", "accepted"), ("person", "rejected")], False),
+    ],
+)
+def test_path_review_uses_all_matching_human_evidence(reviews, reviewed):
+    doc = model(("high",))
+    doc["assertions"], doc["reviews"] = [], []
+    for index, (kind, verdict) in enumerate(reviews):
+        party = f"party:reviewer-{index}"
+        assertion = f"assertion:path-{index}"
+        doc["parties"].append({"id": party, "party_kind": kind})
+        doc["assertions"].append(
+            {
+                "id": assertion,
+                "subject": "path:0",
+                "predicate": "realizes_threat",
+                "object": "threat:t",
+                "assertion_status": "accepted",
+            }
+        )
+        doc["reviews"].append(
+            {
+                "id": f"review:{index}",
+                "reviews": assertion,
+                "reviewer": party,
+                "review_status": verdict,
+                "justification": "Test evidence for this exact statement",
+            }
+        )
+    before = deepcopy(doc)
+    out = assessment(doc)
+    assert out["path_reviewed"] is reviewed
+    assert out["derived_risk"]["safety"] == 5
+    assert doc == before
+
+
 @pytest.mark.parametrize("ratings", list(product(FEASIBILITIES, repeat=2)))
 def test_worst_path_is_at_least_each_route_for_every_category(ratings):
     out = assessment(model(ratings))
@@ -148,6 +189,9 @@ def test_omitting_a_route_from_the_authored_score_does_not_lower_risk():
     assert "attack_path_scope_mismatch" in out["problems"]
     assert len(out["paths"]) == 2
     assert out["derived_risk"]["safety"] is None
+    for result in [*out["routes"], *out["paths"]]:
+        assert all(value is None for value in result["derived_risk"].values())
+        assert result["feasibility"] in FEASIBILITIES
 
 
 def test_missing_assessment_stays_in_output_without_invented_ratings():
@@ -155,6 +199,8 @@ def test_missing_assessment_stays_in_output_without_invented_ratings():
     doc["risk_scores"] = []
     out = assessment(doc)
     assert out["id"] is None
+    assert out["damage_scenario"] is None
+    assert out["threat_damage_scenario"] == doc["threat_instances"][0]["realizes_damage"]
     assert not out["complete"]
     assert all(value is None for value in out["derived_risk"].values())
 
@@ -214,6 +260,113 @@ def test_foreign_damage_cannot_supply_a_threats_impact():
     out = assessment(doc)
     assert "damage_scenario_scope_mismatch" in out["problems"]
     assert all(value is None for value in out["derived_risk"].values())
+    assert all(
+        value is None
+        for result in [*out["routes"], *out["paths"]]
+        for value in result["derived_risk"].values()
+    )
+
+
+@pytest.mark.parametrize(
+    "kind,status,verdict,reason,effective",
+    [
+        ("person", "accepted", "accepted", "Checked damage", True),
+        ("person", " ACCEPTED ", " Accepted ", "Checked damage", True),
+        ("software_agent", "accepted", "accepted", "Checked damage", False),
+        ("person", "proposed", "accepted", "Checked damage", False),
+        ("person", "accepted", "rejected", "Different damage", False),
+        ("person", "accepted", "accepted", " ", False),
+    ],
+)
+def test_assertion_only_damage_scope_matches_asset_query(kind, status, verdict, reason, effective):
+    from engine.asset_goals import asset_threats
+
+    doc = model(("high",))
+    del doc["threat_instances"][0]["realizes_damage"]
+    doc["assets"] = [{"id": "asset:a"}]
+    doc["damage_scenarios"][0]["damages_asset"] = ["asset:a"]
+    doc["damage_scenarios"].append({"id": "damage:other"})
+    doc["parties"].append({"id": "party:reviewer", "party_kind": kind})
+    doc["assertions"] = [
+        {
+            "id": "assertion:damage",
+            "subject": "threat:t",
+            "predicate": "realizes_damage",
+            "object": "damage:d",
+            "assertion_status": status,
+        }
+    ]
+    doc["reviews"] = [
+        {
+            "id": "review:damage",
+            "reviews": "assertion:damage",
+            "reviewer": "party:reviewer",
+            "review_status": verdict,
+            "justification": reason,
+        }
+    ]
+    before = deepcopy(doc)
+    matching = assessment(doc)
+    assert bool(asset_threats(doc)["asset:a"]) is effective
+    assert matching["threat_damage_scenarios"] == (["damage:d"] if effective else [])
+    assert matching["threat_damage_scenario"] == ("damage:d" if effective else None)
+    assert matching["complete"] is effective
+    assert ("damage_scenario_scope_mismatch" in matching["problems"]) is not effective
+    doc["risk_scores"][0]["damage_scenario"] = "damage:other"
+    unrelated = assessment(doc)
+    assert "damage_scenario_scope_mismatch" in unrelated["problems"]
+    assert not unrelated["complete"]
+    for result in [unrelated, *unrelated["routes"], *unrelated["paths"]]:
+        assert result["derived_risk"]["safety"] is None
+    doc["risk_scores"][0]["damage_scenario"] = "damage:d"
+    assert doc == before
+
+
+def test_multiple_effective_damage_links_preserve_each_assessment_scope():
+    doc = model(("high",))
+    doc["damage_scenarios"].append({"id": "damage:other"})
+    doc["parties"].append({"id": "party:reviewer", "party_kind": "person"})
+    doc["assertions"] = [
+        {
+            "id": "assertion:other-damage",
+            "subject": "threat:t",
+            "predicate": "realizes_damage",
+            "object": "damage:other",
+            "assertion_status": "accepted",
+        }
+    ]
+    doc["reviews"] = [
+        {
+            "id": "review:other-damage",
+            "reviews": "assertion:other-damage",
+            "reviewer": "party:reviewer",
+            "review_status": "accepted",
+            "justification": "Independent damage from the same threat",
+        }
+    ]
+    for damage in ("damage:d", "damage:other"):
+        doc["risk_scores"][0]["damage_scenario"] = damage
+        out = assessment(doc)
+        assert out["complete"]
+        assert out["threat_damage_scenarios"] == ["damage:d", "damage:other"]
+        assert out["derived_risk"]["safety"] == 5
+
+
+def test_papermill_invalid_path_scope_withholds_all_calculated_values():
+    from pathlib import Path
+
+    from engine.load.vector import load_vector_document
+
+    path = Path(__file__).resolve().parents[2] / "spec/vectors/mvp-01-software-doc-service.yaml"
+    doc = load_vector_document(path)
+    out = assess_document(doc, matrix=MATRIX_ID, goal="threat-instance:xxe-file-read")[
+        "assessments"
+    ][0]
+    assert "attack_path_scope_mismatch" in out["problems"]
+    assert out["routes"]
+    for result in [out, *out["routes"], *out["paths"]]:
+        assert all(value is None for value in result["derived_risk"].values())
+    assert out["routes"][0]["feasibility"] is not None
 
 
 def test_assessments_remain_separate_without_a_stakeholder_collapse():
@@ -260,3 +413,21 @@ def test_headlamp_rating_projection_matches_rpt0007():
     assert assessment(dos)["feasibility"] == "low"
     assert assessment(dos)["derived_risk"]["operational"] == 2
     assert assessment(dos)["derived_risk"]["privacy"] is None
+
+
+@pytest.mark.parametrize("foreign_owner", [False, True])
+def test_unlinked_damage_cannot_complete_an_assessment(foreign_owner):
+    doc = model(("high",))
+    del doc["threat_instances"][0]["realizes_damage"]
+    if foreign_owner:
+        doc["threat_instances"].append({"id": "threat:other", "realizes_damage": "damage:d"})
+    before = deepcopy(doc)
+    out = assessment(doc)
+    assert not out["complete"]
+    assert out["threat_damage_scenarios"] == []
+    assert "damage_scenario_scope_mismatch" in out["problems"]
+    for result in [out, *out["routes"], *out["paths"]]:
+        assert all(value is None for value in result["derived_risk"].values())
+    assert out["feasibility"] == "high"
+    assert out["impact"]["safety"] == "severe"
+    assert doc == before

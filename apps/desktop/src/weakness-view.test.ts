@@ -38,7 +38,8 @@ describe("weaknesses view", () => {
     await settle();
 
     expect(elements.tableBody.children).toHaveLength(9);
-    expect(elements.resultCount.textContent).toBe("9 weaknesses");
+    expect(elements.nextPage.hidden).toBe(true);
+    expect(elements.previousPage.hidden).toBe(true);
     expect(elements.pageStatus.textContent).toBe("1–9 of 9");
     expect(elements.attributionNotice.textContent).toBe(fixture.catalog.notice);
     expect(elements.attributionLicense.textContent).toBe(fixture.catalog.license);
@@ -70,8 +71,6 @@ describe("weaknesses view", () => {
     const statusSort = elements.sortButtons.find((button) => button.dataset.sort === "status")!;
     statusSort.dispatch("click");
     statusSort.dispatch("click");
-    elements.pageSize.value = "50";
-    elements.pageSize.dispatch("change");
     await settle();
 
     expect(calls[calls.length - 1]).toEqual({
@@ -154,7 +153,7 @@ describe("weaknesses view", () => {
     expect(python?.parentElement?.tagName).toBe("pre");
     expect(detailText).toContain("Updated examples");
     expect(detailText).toContain("Previous Entry Name");
-    expect(detailText).toContain("Proposed — not human-reviewed");
+    expect(detailText).toContain("Proposed, not human-reviewed");
     expect(detailText).toContain("Imported relationships are proposals until a human accepts them");
     expect(detailText).toContain("Assertion ID assertion:cwe-79-capec-63");
     expect(detailText).toContain("Asserted by party:mitre-cwe");
@@ -184,9 +183,9 @@ describe("weaknesses view", () => {
     expect(disclosures.length).toBeGreaterThan(10);
     expect(disclosures.every((details) => details.children[0]?.tagName === "summary")).toBe(true);
     expect(disclosure(elements, "Extended Description").open).toBe(true);
-    expect(disclosure(elements, "Alternate Terms").open).toBe(true);
-    expect(disclosure(elements, "Background and Applicable Platforms").open).toBe(true);
-    expect(disclosure(elements, "Common Consequences").open).toBe(true);
+    expect(disclosure(elements, "Alternate Terms").open).toBe(false);
+    expect(disclosure(elements, "Background and Applicable Platforms").open).toBe(false);
+    expect(disclosure(elements, "Common Consequences").open).toBe(false);
     expect(disclosure(elements, "Potential Mitigations").open).toBe(false);
     expect(disclosure(elements, "Demonstrative Examples").open).toBe(false);
     expect(disclosure(elements, "Proposed Relationships").open).toBe(false);
@@ -262,7 +261,9 @@ describe("weaknesses view", () => {
     }));
     await settle();
     expect(elements.emptyState.hidden).toBe(false);
-    expect(elements.requestStatus.textContent).toContain("No CWE weaknesses");
+    expect(elements.emptyState.textContent).toBe("No CWE weaknesses match the current search and filters.");
+    expect(elements.requestStatus.textContent).toBe("");
+    expect(elements.pageStatus.textContent).toBe("0 of 0");
 
     await view.retry();
     expect(elements.requestStatus.textContent).toContain("catalog unavailable");
@@ -275,23 +276,47 @@ describe("weaknesses view", () => {
 
   it("moves to the next and previous server page", async () => {
     const calls: WeaknessTableQuery[] = [];
-    const data = provider((query) => calls.push({ ...query }));
+    const data = provider();
+    const rows = Array.from({ length: 60 }, (_, index) => ({
+      ...fixtureResponse.rows[0], id: `CWE-${index + 1}`, name: `Example ${index + 1}`,
+    }));
+    const full = { ...fixtureResponse, catalog: { ...fixtureResponse.catalog, weaknesses: rows.length }, rows };
     data.getTable = vi.fn(async (query) => {
       calls.push({ ...query });
-      const page = applyWeaknessQuery(fixtureResponse, query);
-      return { ...page, total: 60 };
+      return applyWeaknessQuery(full, query);
     });
     const { view, elements } = viewHarness(data);
     view.activate();
     await settle();
 
+    expect(elements.nextPage.hidden).toBe(false);
     expect(elements.nextPage.disabled).toBe(false);
+    expect(elements.pageStatus.textContent).toBe("1–50 of 60");
     elements.nextPage.dispatch("click");
     await settle();
-    expect(calls[calls.length - 1].offset).toBe(25);
+    expect(calls[calls.length - 1]?.offset).toBe(50);
+    expect(elements.pageStatus.textContent).toBe("51–60 of 60");
     elements.previousPage.dispatch("click");
     await settle();
-    expect(calls[calls.length - 1].offset).toBe(0);
+    expect(calls[calls.length - 1]?.offset).toBe(0);
+
+    elements.abstractionFilter.value = rows[0].abstraction ?? "";
+    elements.abstractionFilter.dispatch("change");
+    await settle();
+    elements.nextPage.dispatch("click");
+    await settle();
+    elements.search.value = "Example";
+    elements.search.dispatch("search");
+    await settle();
+    elements.nextPage.dispatch("click");
+    await settle();
+    expect(elements.pageStatus.textContent).toBe("51–60 of 60");
+    expect(elements.clearFilters.hidden).toBe(false);
+    elements.clearFilters.dispatch("click");
+    await settle();
+    expect(calls[calls.length - 1]).toMatchObject({ search: undefined, abstraction: undefined, offset: 0, limit: 50 });
+    expect(elements.clearFilters.hidden).toBe(true);
+    expect(elements.pageStatus.textContent).toBe("1–50 of 60");
   });
 
   it("does not let stale table or detail requests replace newer selections", async () => {
@@ -487,14 +512,13 @@ function viewHarness(data: WeaknessDataProvider) {
     statusFilter: make("select"),
     usageFilter: make("select"),
     sortButtons,
-    resultCount: make(),
+    clearFilters: make("button"),
     requestStatus: make(),
     warning: make(),
     retryButton: make("button"),
     tableRegion: make(),
     tableBody: make("tbody"),
     emptyState: make(),
-    pageSize: make("select"),
     previousPage: make("button"),
     nextPage: make("button"),
     pageStatus: make(),
@@ -511,7 +535,6 @@ function viewHarness(data: WeaknessDataProvider) {
     detailRetryButton: make("button"),
     detailSections: make(),
   };
-  elements.pageSize.value = "25";
   elements.warning.hidden = true;
   elements.retryButton.hidden = true;
   elements.detailRetryButton.hidden = true;
@@ -597,6 +620,8 @@ class FakeElement {
   open = false;
   private readonly attributes = new Map<string, string>();
   private readonly listeners = new Map<string, Array<() => void>>();
+
+  focus(): void {}
 
   constructor(readonly tagName: string) {}
 

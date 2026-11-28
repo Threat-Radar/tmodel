@@ -10,6 +10,10 @@
         "review_status": "accepted",
         "reviewed": true
       },
+      "step_phases": {
+        "attack-step:read-internal-file": "exploitation",
+        "attack-step:upload-crafted-doc": "delivery"
+      },
       "steps": [
         "attack-step:upload-crafted-doc",
         "attack-step:parser-resolves-entity",

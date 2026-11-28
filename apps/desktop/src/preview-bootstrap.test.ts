@@ -24,17 +24,14 @@ const MVP_01 = model("mvp-01-software-doc-service");
 const MVP_02 = model("mvp-02-automotive-ecu");
 
 describe("browser preview bootstrap smoke", () => {
-  it("shows preview chrome, keeps Library available, and hides unsupported features", () => {
+  it("shows preview chrome and hides engine-only graph controls", () => {
     const element = (hidden = false) => ({ hidden });
     const elements = {
       body: { dataset: {} as DOMStringMap },
       banner: element(true),
       enginePanel: element(),
-      sdlTab: element(),
-      sdlPanel: element(),
       proposals: element(),
       savedViews: element(),
-      libraryTab: element(true),
       modelSelect: { disabled: false, options: [{ textContent: "Waiting for the local engine…" }] },
       modelStatus: { textContent: "" },
       reportStatus: { textContent: "Waiting for the local engine…" },
@@ -46,11 +43,8 @@ describe("browser preview bootstrap smoke", () => {
 
     expect(elements.banner.hidden).toBe(false);
     expect(elements.enginePanel.hidden).toBe(true);
-    expect(elements.sdlTab.hidden).toBe(true);
-    expect(elements.sdlPanel.hidden).toBe(true);
     expect(elements.proposals.hidden).toBe(true);
     expect(elements.savedViews.hidden).toBe(true);
-    expect(elements.libraryTab.hidden).toBe(false);
     expect(elements.body.dataset.appMode).toBe("browser-preview");
     expect(elements.modelSelect.options[0].textContent).toBe(PREVIEW_MODEL_WAITING);
     expect(elements.modelStatus.textContent).toBe(PREVIEW_MODEL_WAITING);

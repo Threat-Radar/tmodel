@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 import { CompatibleCoverageProvider } from "./coverage-provider";
 import { REQUIREMENTS_GRAPH } from "./requirements-fixture.test-support";
+import { EngineSdlDataProvider } from "./engine-sdl-provider";
+import sdlFixture from "./fixtures/sdl-01-view.json";
 import { StaticPreviewApi } from "./static-api";
 
 describe("static preview API", () => {
@@ -32,6 +34,26 @@ describe("static preview API", () => {
     expect(seen.join(" ")).not.toContain("localhost");
   });
 
+  it("serves SDL from published data, with support for multiple programs", async () => {
+    const file = "sdl-example.yaml";
+    const listing = { models: [{ file, programs: [{ id: "program:one", name: "One" }] }] };
+    const fetchMock = vi.fn<typeof fetch>(async (input) => {
+      const path = new URL(String(input)).pathname;
+      if (path.endsWith("/sdl/models.json")) return json(listing);
+      if (path.endsWith("/sdl/sdl-example.json")) return json({ views: { "program:one": sdlFixture } });
+      return json({ views: { "program:one": sdlFixture, "program:two": sdlFixture } });
+    });
+    const api = new StaticPreviewApi("https://example.test/tmodel/app/data/", fetchMock);
+    const provider = new EngineSdlDataProvider(api.engineBase, api.fetch);
+    await expect(provider.listModels()).resolves.toEqual(listing.models);
+    await expect(provider.getView(file)).resolves.toEqual(sdlFixture);
+    await expect(provider.getView("sdl-other.yaml", "program:two")).resolves.toEqual(sdlFixture);
+    await expect(provider.getView("sdl-other.yaml")).rejects.toThrow("select an SDL program");
+    await expect(provider.getView(file, "__proto__")).rejects.toThrow("unknown SDL program");
+    expect(fetchMock.mock.calls.every(([url]) => String(url).startsWith("https://example.test/tmodel/app/data/sdl/")))
+      .toBe(true);
+  });
+
   it("rejects mutations and unsafe model paths without making a network request", async () => {
     const fetchMock = vi.fn<typeof fetch>();
     const api = new StaticPreviewApi("https://example.test/tmodel/app/data/", fetchMock);
@@ -41,6 +63,8 @@ describe("static preview API", () => {
     expect(mutation.status).toBe(405);
     expect(await mutation.json()).toEqual({ error: "browser preview data is read-only" });
     expect(escape.status).toBe(400);
+    const sdlEscape = await api.fetch(`${api.engineBase}sdl?file=..%2Fsecret.yaml`);
+    expect(sdlEscape.status).toBe(400);
     expect(fetchMock).not.toHaveBeenCalled();
   });
 

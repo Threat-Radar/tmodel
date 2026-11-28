@@ -778,7 +778,7 @@ def _attack_pattern_row(p: capec.CapecEntry) -> dict[str, Any]:
 
 
 def attack_paths(file: str, goal: str | None = None) -> dict[str, Any]:
-    """Attack paths to `goal` (a step or threat id) in a model file (#63).
+    """Attack paths to `goal` (an asset, step or threat id) in a model file (#63).
 
     Without a goal, lists the file's threats, each with whether it is reviewed,
     so a caller can pick one. Raises GraphError (a ValueError) for a bad file or
@@ -792,6 +792,7 @@ def attack_paths(file: str, goal: str | None = None) -> dict[str, Any]:
         return {
             "file": str(path),
             "threats": graph.threats(),
+            "assets": sorted(graph.asset_threats),
             "reviewed_threats": [t for t in graph.threats() if graph.threat_reviewed(t)],
             "steps": len(graph.steps),
         }
@@ -1074,6 +1075,21 @@ def pending_proposals(query: Mapping[str, str] | None = None) -> dict[str, Any]:
         raise GraphError(_sanitized_model_error(path, exc)) from exc
     except (KeyError, TypeError) as exc:
         raise GraphError(f"{path.name}: malformed proposals ({type(exc).__name__}: {exc})") from exc
+
+
+def requirement_coverage(query: Mapping[str, str] | None = None) -> dict[str, Any]:
+    """Read-only coverage for an approved model filename and required Product id (#170)."""
+    from engine.coverage import collect
+
+    values = _values(query or {}, ("file", "product"), "parameter")
+    for name in ("file", "product"):
+        if name not in values:
+            raise GraphError(f"missing query parameter: {name}")
+    path = _approved_vector_path(values["file"])
+    try:
+        return {"file": path.name, **collect(load_vector_document(path), values["product"])}
+    except GraphError as exc:
+        raise GraphError(_sanitized_model_error(path, exc)) from exc
 
 
 def evaluate_tara_gate(

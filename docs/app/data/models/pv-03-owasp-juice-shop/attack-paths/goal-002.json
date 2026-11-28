@@ -10,6 +10,11 @@
         "review_status": null,
         "reviewed": false
       },
+      "step_phases": {
+        "attack-step:browse-ftp": "reconnaissance",
+        "attack-step:download-document": "actions_on_objectives",
+        "attack-step:read-robots": "reconnaissance"
+      },
       "steps": [
         "attack-step:read-robots",
         "attack-step:browse-ftp",

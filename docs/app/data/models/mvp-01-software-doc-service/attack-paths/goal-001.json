@@ -10,6 +10,9 @@
         "review_status": "changes_requested",
         "reviewed": false
       },
+      "step_phases": {
+        "attack-step:fetch-instance-credentials": "exploitation"
+      },
       "steps": [
         "attack-step:point-entity-at-metadata",
         "attack-step:fetch-instance-credentials"
@@ -22,6 +25,9 @@
         "assertion_status": "proposed",
         "review_status": "changes_requested",
         "reviewed": false
+      },
+      "step_phases": {
+        "attack-step:fetch-instance-credentials": "exploitation"
       },
       "steps": [
         "attack-step:dns-rebind-to-metadata",

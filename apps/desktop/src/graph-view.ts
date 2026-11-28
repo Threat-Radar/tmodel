@@ -1,9 +1,11 @@
+import { canvasTheme } from "./canvas-theme";
 import { savedViewPresentation } from "./graph-saved-views";
 import cytoscape, {
   type Core,
   type ElementDefinition,
   type Layouts,
   type NodeCollection,
+  type StylesheetJson,
 } from "cytoscape";
 import {
   attackPathOptionsForResponses,
@@ -54,20 +56,19 @@ import {
   type ReviewStateKind,
 } from "./review-status";
 
-const TYPE_COLORS: Readonly<Record<string, string>> = {
-  Product: "#2563eb",
-  Component: "#0f766e",
-  Vulnerability: "#dc2626",
-  Weakness: "#ea580c",
-  AttackPattern: "#9333ea",
-  ThreatInstance: "#be123c",
-  AttackPath: "#4f46e5",
-  AttackStep: "#7c3aed",
-  Requirement: "#0891b2",
+export const GRAPH_CATEGORY_TOKENS: Readonly<Record<string, string>> = {
+  Product: "graph-product",
+  Component: "graph-component",
+  Vulnerability: "graph-vulnerability",
+  Weakness: "graph-weakness",
+  AttackPattern: "graph-pattern",
+  ThreatInstance: "graph-threat",
+  AttackPath: "graph-path",
+  AttackStep: "graph-step",
+  Requirement: "graph-requirement",
+  "Other types": "graph-other",
 };
-// Node types outside TYPE_COLORS are drawn with this color and share one
-// "Other types" legend entry.
-const OTHER_TYPE_COLOR = "#64748b";
+const EDGE_LABEL_FONT_SIZE = 7;
 // Placement time per batch before the remaining nodes use a short search, so
 // expanding a dense large graph cannot freeze the window.
 const PLACEMENT_BUDGET_MS = 250;
@@ -78,22 +79,19 @@ const SAVED_VIEW_LOAD_LIMIT = 60;
 // both a color and a line pattern. Structural relationships keep the neutral
 // default edge style.
 export const REVIEW_STATE_EDGE_STYLES: Readonly<Record<ReviewStateKind, {
-  color: string;
+  token: string;
   dashPattern?: number[];
 }>> = {
-  accepted: { color: "#15803d" },
-  proposed: { color: "#b45309", dashPattern: [7, 4] },
-  changes_requested: { color: "#c2410c", dashPattern: [10, 3, 2, 3] },
-  rejected: { color: "#b91c1c", dashPattern: [2, 3] },
-  unknown: { color: "#6b7280", dashPattern: [14, 4, 2, 4, 2, 4] },
+  accepted: { token: "graph-status-accepted" },
+  proposed: { token: "graph-status-proposed", dashPattern: [7, 4] },
+  changes_requested: { token: "graph-status-changes", dashPattern: [10, 3, 2, 3] },
+  rejected: { token: "graph-status-rejected", dashPattern: [2, 3] },
+  unknown: { token: "graph-status-unknown", dashPattern: [14, 4, 2, 4, 2, 4] },
 };
 
 export const AUTHORED_EDGE_SELECTOR = "edge[?authored]";
 export const AUTHORED_EDGE_STYLE = {
   width: 1.7,
-  "line-color": "#94a3b8",
-  "target-arrow-color": "#64748b",
-  color: "#526078",
   "line-style": "solid" as const,
 };
 
@@ -348,99 +346,113 @@ export class KnowledgeGraphView {
       layout: { name: "preset" },
       minZoom: 0.3,
       maxZoom: 2.5,
-      style: [
-        {
-          selector: "node",
-          style: {
-            "background-color": (element) => TYPE_COLORS[element.data("domainType")] ?? OTHER_TYPE_COLOR,
-            label: "data(label)", color: "#172033", "font-size": 7, "font-weight": 600,
-            "text-wrap": "wrap", "text-max-width": "76px", "text-valign": "bottom",
-            "text-margin-y": 10, "text-background-color": "#f8fafc",
-            "text-background-opacity": 0.9, "text-background-padding": "2px",
-            width: 28, height: 28, "border-width": 2, "border-color": "#ffffff",
-          },
-        },
-        {
-          selector: "edge",
-          style: {
-            width: 1.7, "line-color": "#94a3b8", "target-arrow-color": "#64748b",
-            "target-arrow-shape": "triangle", "curve-style": "bezier", label: "data(label)",
-            "source-distance-from-node": 5, "target-distance-from-node": 8,
-            "font-size": 5, color: "#526078", "text-background-color": "#ffffff",
-            "text-background-opacity": 1, "text-background-padding": "3px",
-            "text-background-shape": "roundrectangle", "text-rotation": "autorotate",
-            "text-margin-y": -7,
-          },
-        },
-        ...REVIEW_STATE_KINDS.map((kind) => {
-          const { color, dashPattern } = REVIEW_STATE_EDGE_STYLES[kind];
-          return {
-            selector: `edge[reviewState = "${kind}"]`,
-            style: {
-              "line-color": color, "target-arrow-color": color, color,
-              ...(dashPattern
-                ? { "line-style": "dashed" as const, "line-dash-pattern": dashPattern }
-                : { width: 2.4 }),
-            },
-          };
-        }),
-        {
-          // This rule deliberately follows review-state rules. If old or mixed
-          // DTO metadata also supplies reviewState, authored provenance wins.
-          selector: AUTHORED_EDGE_SELECTOR,
-          style: AUTHORED_EDGE_STYLE,
-        },
-        {
-          selector: "node:selected",
-          style: {
-            "border-width": 5, "border-color": "#facc15", "overlay-color": "#facc15",
-            "overlay-opacity": 0.12, "overlay-padding": 8,
-          },
-        },
-        {
-          selector: ".path-dimmed",
-          style: { opacity: 0.16, "text-opacity": 0.2 },
-        },
-        {
-          selector: "node.path-step",
-          style: {
-            opacity: 1, "text-opacity": 1, "border-width": 5, "border-color": "#f59e0b",
-            "overlay-color": "#fbbf24", "overlay-opacity": 0.14, "overlay-padding": 7,
-          },
-        },
-        {
-          selector: "edge.path-edge",
-          style: {
-            opacity: 1, "text-opacity": 1, width: 4, "line-color": "#f59e0b",
-            "target-arrow-color": "#d97706", "arrow-scale": 1.3, "z-index": 20,
-          },
-        },
-        {
-          selector: "node.path-step:selected",
-          style: {
-            "border-width": 6, "border-color": "#facc15", "overlay-color": "#facc15",
-            "overlay-opacity": 0.2, "overlay-padding": 8,
-          },
-        },
-        {
-          selector: ".view-dimmed",
-          style: { opacity: 0.16, "text-opacity": 0.2 },
-        },
-        {
-          selector: "node.view-member",
-          style: { "border-width": 4, "border-color": "#0ea5e9" },
-        },
-        {
-          selector: "node.path-dimmed:selected",
-          style: {
-            opacity: 0.65, "border-width": 6, "border-color": "#facc15",
-            "overlay-color": "#facc15", "overlay-opacity": 0.15, "overlay-padding": 8,
-          },
-        },
-      ],
+      style: this.graphStyle(),
     });
     this.cy.on("tap", "node", (event) => this.handleSelection(event.target.id()));
     this.renderNodeList();
+  }
+
+  refreshTheme(): void {
+    this.cy?.style(this.graphStyle());
+  }
+
+  private graphStyle(): StylesheetJson {
+    const theme = canvasTheme(this.documentRoot);
+    const nodeColors = new Map(Object.entries(GRAPH_CATEGORY_TOKENS).map(([type, token]) => [type, theme(token)]));
+    const otherColor = theme(GRAPH_CATEGORY_TOKENS["Other types"]);
+    return [
+      {
+        selector: "node",
+        style: {
+          "background-color": (element) => nodeColors.get(element.data("domainType")) ?? otherColor,
+          label: "data(label)", color: theme("text"), "font-family": theme("font-ui"), "font-size": 9, "font-weight": 600,
+          "text-wrap": "wrap", "text-max-width": "76px", "text-valign": "bottom",
+          "text-margin-y": 10, "text-background-color": theme("graph-canvas"),
+          "text-background-opacity": 0.9, "text-background-padding": "2px",
+          width: 28, height: 28, "border-width": 2, "border-color": theme("surface"),
+        },
+      },
+      {
+        selector: "edge",
+        style: {
+          width: 1.7, "line-color": theme("graph-edge"), "target-arrow-color": theme("graph-arrow"),
+          "target-arrow-shape": "triangle", "curve-style": "bezier", label: "data(label)",
+          "source-distance-from-node": 5, "target-distance-from-node": 8,
+          "font-size": EDGE_LABEL_FONT_SIZE, color: theme("text-secondary"), "font-family": theme("font-ui"), "text-background-color": theme("surface"),
+          "text-background-opacity": 1, "text-background-padding": "3px",
+          "text-background-shape": "roundrectangle", "text-rotation": "autorotate",
+          "text-margin-y": -7,
+        },
+      },
+      ...REVIEW_STATE_KINDS.map((kind) => {
+        const { token, dashPattern } = REVIEW_STATE_EDGE_STYLES[kind];
+        const color = theme(token);
+        return {
+          selector: `edge[reviewState = "${kind}"]`,
+          style: {
+            "line-color": color, "target-arrow-color": color,
+            ...(dashPattern
+              ? { "line-style": "dashed" as const, "line-dash-pattern": dashPattern }
+              : { width: 2.4 }),
+          },
+        };
+      }),
+      {
+        // This rule deliberately follows review-state rules. If old or mixed
+        // DTO metadata also supplies reviewState, authored provenance wins.
+        selector: AUTHORED_EDGE_SELECTOR,
+        style: { ...AUTHORED_EDGE_STYLE, "line-color": theme("graph-edge"), "target-arrow-color": theme("graph-arrow") },
+      },
+      {
+        selector: "node:selected",
+        style: {
+          "border-width": 5, "border-color": theme("focus"), "overlay-color": theme("focus"),
+          "overlay-opacity": 0.12, "overlay-padding": 8,
+        },
+      },
+      {
+        selector: ".path-dimmed",
+        style: { opacity: 0.16, "text-opacity": 0.2 },
+      },
+      {
+        selector: "node.path-step",
+        style: {
+          opacity: 1, "text-opacity": 1, "border-width": 5, "border-color": theme("graph-highlight"),
+          "overlay-color": theme("graph-highlight"), "overlay-opacity": 0.14, "overlay-padding": 7,
+        },
+      },
+      {
+        selector: "edge.path-edge",
+        style: {
+          opacity: 1, "text-opacity": 1, width: 4, "line-color": theme("graph-highlight"),
+          "target-arrow-color": theme("graph-highlight"), "arrow-scale": 1.3, "z-index": 20,
+        },
+      },
+      {
+        selector: ".view-dimmed",
+        style: { opacity: 0.16, "text-opacity": 0.2 },
+      },
+      {
+        selector: "node.view-member",
+        style: { "border-width": 4, "border-color": theme("focus") },
+      },
+      {
+        selector: "node.path-step:selected",
+        style: {
+          // The canvas-colored border separates the categorical fill from the selection ring.
+          "border-width": 6, "border-color": theme("graph-canvas"), "overlay-opacity": 0,
+          "underlay-shape": "ellipse", "underlay-color": theme("text"),
+          "underlay-opacity": 1, "underlay-padding": 8,
+        },
+      },
+      {
+        selector: "node.path-dimmed:selected",
+        style: {
+          opacity: 0.65, "border-width": 6, "border-color": theme("focus"),
+          "overlay-color": theme("focus"), "overlay-opacity": 0.15, "overlay-padding": 8,
+        },
+      },
+    ];
   }
 
   private handleSelection(nodeId: string): void {
@@ -968,11 +980,10 @@ export class KnowledgeGraphView {
   /** Shows the recorded Assertion/Review state of one relationship, if any. */
   private appendRelationshipReview(item: HTMLElement, relationship: GraphRelationship): void {
     const { properties } = relationship;
-    // Structured provenance is authoritative and rendered per Assertion below;
-    // a legacy aggregate badge would misdescribe authored or mixed-state edges.
-    const review = relationship.assertions?.length
-      ? undefined
-      : relationshipReviewState(properties);
+    // The engine's human evidence is distinct from recorded per-Assertion
+    // verdicts. Older structured snapshots retain recorded details below.
+    const review = typeof properties.human_reviewed === "boolean" || !relationship.assertions?.length
+      ? relationshipReviewState(properties) : undefined;
     if (!review && !relationship.assertions?.length) return;
     if (review) {
       item.classList.add(`review-${review.kind}`);
@@ -989,7 +1000,7 @@ export class KnowledgeGraphView {
         const presentation = reviewStatePresentation(assertion.assertion_status, status);
         item.append(this.textElement(
           "span",
-          `${assertion.id} · ${presentation.label} · confidence: ${assertion.confidence ?? "not recorded"}`,
+          `${assertion.id} · Recorded ${presentation.label} · confidence: ${assertion.confidence ?? "not recorded"}`,
           "review-raw",
         ));
         if (assertion.description) {
@@ -1023,12 +1034,12 @@ export class KnowledgeGraphView {
   private renderLegend(): void {
     const legend = this.requiredElement("type-legend");
     legend.replaceChildren();
-    const types: [string, string][] = [...Object.entries(TYPE_COLORS), ["Other types", OTHER_TYPE_COLOR]];
-    for (const [type, color] of types) {
+    for (const [type, token] of Object.entries(GRAPH_CATEGORY_TOKENS)) {
       const item = this.documentRoot.createElement("li");
       const swatch = this.documentRoot.createElement("span");
       swatch.className = "legend-swatch";
-      swatch.style.backgroundColor = color;
+      swatch.setAttribute("aria-hidden", "true");
+      swatch.style.backgroundColor = `var(--${token})`;
       item.append(swatch, this.documentRoot.createTextNode(type));
       legend.append(item);
     }
@@ -1064,7 +1075,7 @@ export class KnowledgeGraphView {
     line.setAttribute("x2", "20");
     line.setAttribute("y2", "3");
     const style = kind ? REVIEW_STATE_EDGE_STYLES[kind] : undefined;
-    line.setAttribute("stroke", style?.color ?? "#94a3b8");
+    line.setAttribute("stroke", `var(--${style?.token ?? "graph-edge"})`);
     line.setAttribute("stroke-width", kind === "accepted" ? "2.4" : "1.7");
     if (style?.dashPattern) line.setAttribute("stroke-dasharray", style.dashPattern.join(" "));
     svg.append(line);
@@ -1115,12 +1126,12 @@ function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : "unexpected error";
 }
 
-// Edge labels use a 5px font with 3px padding (see the edge style above);
-// this estimate is close enough to keep new labels off existing nodes.
+// Estimate the Inter label with 3px padding on each side so placement
+// reserves space around the edge when loading its new neighbors.
 function edgeLabelSize(edge?: GraphEdge): { width: number; height: number } | undefined {
   if (!edge) return undefined;
   const text = toCytoscapeEdgeElement(edge).data.label;
-  return { width: text.length * 3 + 6, height: 12 };
+  return { width: text.length * EDGE_LABEL_FONT_SIZE * .6 + 6, height: EDGE_LABEL_FONT_SIZE + 7 };
 }
 
 function plainBox(box: { x1: number; y1: number; x2: number; y2: number }): Box {

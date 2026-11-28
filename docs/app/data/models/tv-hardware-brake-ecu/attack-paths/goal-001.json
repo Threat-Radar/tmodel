@@ -10,6 +10,10 @@
         "review_status": null,
         "reviewed": false
       },
+      "step_phases": {
+        "attack-step:gain-physical-access": "access",
+        "attack-step:reflash-unit": "installation"
+      },
       "steps": [
         "attack-step:gain-physical-access",
         "attack-step:connect-debug-probe",

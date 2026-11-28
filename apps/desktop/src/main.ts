@@ -1,4 +1,5 @@
-import { AppNavigation } from "./app-navigation";
+import { bindInfoDisclosures } from "./library-presentation";
+import { AppNavigation, type AppView, type LibraryView } from "./app-navigation";
 import { staticDataBase } from "./app-mode";
 import { checkEngine, describe, engineProcess, type EngineState } from "./engine";
 import { EngineGraphDataProvider } from "./engine-graph-provider";
@@ -15,6 +16,7 @@ import {
   ModelPicker,
   readRememberedModel,
   rememberModel,
+  requestedModel,
   syncModelUrl,
 } from "./model-catalog";
 import { BOOKKEEPING_TYPES } from "./model-report";
@@ -28,9 +30,14 @@ import { StaticLibraryDataProvider } from "./static-library-provider";
 import { configurePreviewChrome, openInitialModel } from "./preview-bootstrap";
 import { createWeaknessProvider } from "./weakness-provider";
 import { weaknessViewElements, WeaknessesView } from "./weakness-view";
+import { createAttackPatternProvider } from "./attack-pattern-provider";
+import { attackPatternViewElements, AttackPatternsView } from "./attack-pattern-view";
 import { CompatibleCoverageProvider } from "./coverage-provider";
 import { RequirementsView, requirementsViewElements } from "./requirements-view";
 import { StaticRequirementStandardsSource } from "./requirements-catalog-provider";
+
+import { initializeWelcome } from "./welcome";
+import radarMark from "./assets/radar.svg?raw";
 
 const POLL_MS = 2000;
 // Vite replaces MODE at build time; the Pages bundle can therefore eliminate
@@ -120,16 +127,22 @@ window.addEventListener("DOMContentLoaded", () => {
     return element as T;
   };
 
+  // Keep the mark in the page's SVG tree so it inherits the window theme,
+  // including when the webview appearance differs from the system appearance.
+  const radarTemplate = document.createElement("template");
+  radarTemplate.innerHTML = radarMark;
+  for (const icon of document.querySelectorAll(".brand-radar")) {
+    icon.append(radarTemplate.content.cloneNode(true));
+  }
+
+  bindInfoDisclosures(document);
   if (preview) {
     configurePreviewChrome({
       body: document.body,
       banner: required("preview-banner"),
       enginePanel: required("engine-panel"),
-      sdlTab: required("sdl-tab"),
-      sdlPanel: required("sdl-view-panel"),
       proposals: required("graph-proposals"),
       savedViews: required("saved-view-toolbar"),
-      libraryTab: required("library-tab"),
       modelSelect: required<HTMLSelectElement>("model-select"),
       modelStatus: required("model-picker-status"),
       reportStatus: required("report-status"),
@@ -151,13 +164,18 @@ window.addEventListener("DOMContentLoaded", () => {
   const weaknessProvider = createWeaknessProvider(preview, parameters);
   const weaknessUsesEngine = weaknessProvider.metadata.source === "engine";
   const weaknessView = new WeaknessesView(weaknessProvider, weaknessViewElements());
+  // The same split for CAPEC (#236): the 13-pattern sample in Pages and with
+  // ?attackPatternSource=fixture; otherwise the local engine's pinned release.
+  const attackPatternProvider = createAttackPatternProvider(preview, parameters);
+  const attackPatternUsesEngine = attackPatternProvider.metadata.source === "engine";
+  const attackPatternView = new AttackPatternsView(attackPatternProvider, attackPatternViewElements());
   const requirementsView = new RequirementsView(
     requirementsViewElements(),
     new StaticRequirementStandardsSource(),
   );
 
   let lastEngineState: EngineState | undefined;
-  let visibleView: string | undefined;
+  let visibleView: AppView | undefined;
   const bookkeepingToggle = required<HTMLInputElement>("graph-show-bookkeeping");
   if (preview) bookkeepingToggle.disabled = true;
   // Desktop keeps its eager engine graph so health polling behaves exactly as
@@ -192,8 +210,15 @@ window.addEventListener("DOMContentLoaded", () => {
       if (session.current) void session.open(session.current);
       else void catalogStartup.retryNow();
     },
+    calculateRisk: (file, matrix) => new EngineGraphDataProvider(
+      file, staticApi?.engineBase, staticApi?.fetch,
+    ).getRiskCalculation(matrix),
   });
-  const picker = new ModelPicker(required("model-select"), required("model-picker-status"), (model) => {
+  const picker = new ModelPicker(required("model-select"), required("model-picker-status"), {
+    disclosure: required("model-picker-info"),
+    label: required("model-review-label"),
+    summary: required("model-picker-summary"),
+  }, (model) => {
     void session.open(model);
   });
 
@@ -249,7 +274,6 @@ window.addEventListener("DOMContentLoaded", () => {
       );
       requirementsView.openModel({
         file: model.file,
-        title: model.title,
         notice: staticApi
           ? `Published example requirements from ${model.file}`
           : `Requirements from the local engine model ${model.file}`,
@@ -265,7 +289,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const catalog = new EngineModelCatalogProvider(staticApi?.engineBase, staticApi?.fetch);
   const catalogStartup = new GraphStartup({
     start: async () => {
-      const requested = parameters.get("model") ?? parameters.get("file");
+      const requested = requestedModel(parameters);
       await openInitialModel({
         catalog,
         requested,
@@ -288,7 +312,20 @@ window.addEventListener("DOMContentLoaded", () => {
     },
   }, !preview);
 
-  const sdlView = new SdlProgramView(new EngineSdlDataProvider(), sdlViewElements());
+  const sdlView = new SdlProgramView(
+    new EngineSdlDataProvider(staticApi?.engineBase, staticApi?.fetch),
+    sdlViewElements(),
+  );
+  const libraryPanel = required("library-view-panel");
+  const librarySelect = required<HTMLSelectElement>("library-view-select");
+  const librarySections = libraryPanel.querySelectorAll<HTMLElement>("[data-library-view]");
+  const libraryViews = {
+    records: libraryView,
+    weaknesses: weaknessView,
+    "attack-patterns": attackPatternView,
+    requirements: requirementsView,
+    sdl: sdlView,
+  };
 
   const navigation = new AppNavigation([
     {
@@ -317,50 +354,44 @@ window.addEventListener("DOMContentLoaded", () => {
       },
     },
     {
-      view: "requirements",
-      button: required("requirements-tab"),
-      panel: required("requirements-view-panel"),
-      activated: () => {
-        show("requirements");
-        requirementsView.activate();
-      },
-    },
-    {
       view: "library",
       button: required("library-tab"),
-      panel: required("library-view-panel"),
-      activated: () => {
+      panel: libraryPanel,
+      activated: (view) => {
         show("library");
-        libraryView.activate();
+        librarySelect.value = view;
+        for (const section of librarySections) section.hidden = section.dataset.libraryView !== view;
+        libraryViews[view].activate();
       },
     },
-    {
-      view: "weaknesses",
-      button: required("weakness-tab"),
-      panel: required("weakness-view-panel"),
-      activated: () => {
-        show("weaknesses");
-        weaknessView.activate();
-      },
-    },
-    ...(!preview ? [{
-      view: "sdl" as const,
-      button: required<HTMLButtonElement>("sdl-tab"),
-      panel: required("sdl-view-panel"),
-      activated: () => {
-        show("sdl");
-        sdlView.activate();
-      },
-    }] : []),
   ]);
+  librarySelect.addEventListener("change", () => navigation.activateLibrary(librarySelect.value as LibraryView));
 
-  function show(view: string): void {
+  function show(view: AppView): void {
     visibleView = view;
+    librarySelect.hidden = view !== "library";
     pathView.setVisible(view === "paths");
     explore?.view.setVisible(view === "graph");
   }
 
+  initializeWelcome({
+    welcome: required("welcome"),
+    workspace: required("workspace"),
+    start: required("get-started"),
+  }, {
+    isPreview: preview,
+    location: window.location,
+    navigation,
+    events: window,
+    reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)"),
+  });
   navigation.start();
+  const refreshCanvasThemes = () => {
+    pathView.refreshTheme();
+    explore?.view.refreshTheme();
+  };
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", refreshCanvasThemes);
+  void document.fonts.ready.then(refreshCanvasThemes);
 
   if (preview) {
     void catalogStartup.startNow();
@@ -370,9 +401,10 @@ window.addEventListener("DOMContentLoaded", () => {
       void catalogStartup.engineStateChanged(lastEngineState);
       if (libraryUsesEngine) void libraryView.engineStateChanged(lastEngineState);
       if (weaknessUsesEngine) void weaknessView.engineStateChanged(lastEngineState);
-      if (visibleView === "requirements") void requirementsView.engineStateChanged(lastEngineState);
+      if (attackPatternUsesEngine) void attackPatternView.engineStateChanged(lastEngineState);
+      if (navigation.currentLibraryView === "requirements") void requirementsView.engineStateChanged(lastEngineState);
       if (visibleView === "graph" && explore?.usesEngine) void explore.startup.engineStateChanged(lastEngineState);
-      if (visibleView === "sdl") void sdlView.engineStateChanged(lastEngineState);
+      if (navigation.currentLibraryView === "sdl") void sdlView.engineStateChanged(lastEngineState);
     };
     void poll();
     window.setInterval(() => void poll(), POLL_MS);

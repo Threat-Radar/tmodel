@@ -1,5 +1,5 @@
 import type { EngineGraphEdge, EngineGraphNode, EngineGraphResponse } from "./model-types";
-import { relationshipReviewState, type ReviewStateKind } from "./review-status";
+import { assertionReviewState, relationshipReviewState, type ReviewStateKind } from "./review-status";
 
 export const REQUIREMENT_SORTS = [
   "id", "name", "kind", "normativity", "source", "satisfaction",
@@ -136,7 +136,7 @@ export function buildRequirementCatalog(
   catalogSource?: Omit<RequirementCatalogSource, "count">,
 ): RequirementCatalog {
   const nodes = new Map(graph.nodes.map((node) => [node.id, node]));
-  const products = graph.nodes.filter((node) => node.domain_type === "Product")
+  const products = [...nodes.values()].filter((node) => node.domain_type === "Product")
     .map((node) => ({ id: node.id, name: node.label }))
     .sort((left, right) => left.name.localeCompare(right.name) || left.id.localeCompare(right.id));
   const established = graph.edges.filter((edge) => (
@@ -227,10 +227,9 @@ function requirementRow(
       id: assertion.id,
       status: assertion.assertion_status,
       confidence: assertion.confidence,
-      reviewState: relationshipReviewState({
-        assertion_status: assertion.assertion_status,
-        review_status: combinedReviewStatus(assertion.reviews.map((review) => review.review_status)),
-      })?.kind ?? "unknown",
+      reviewState: assertionReviewState(
+        assertion, combinedReviewStatus(assertion.reviews.map((review) => review.review_status)),
+      ).kind,
       description: assertion.description,
       evidence: [...assertion.evidence],
       reviews: assertion.reviews.map((review) => ({

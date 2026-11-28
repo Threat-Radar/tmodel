@@ -6,8 +6,10 @@ import {
   ModelPicker,
   modelOptionGroups,
   modelSummaryLine,
+  modelReviewLabel,
   readRememberedModel,
   rememberModel,
+  requestedModel,
   syncModelUrl,
 } from "./model-catalog";
 import type { ModelListResponse, ModelSummary } from "./model-types";
@@ -36,6 +38,15 @@ describe("choosing a model", () => {
     expect(chooseModel(MODELS, { requested: "mvp-02-automotive-ecu.yaml" })?.id).toBe("mvp-02-automotive-ecu");
     expect(chooseModel(MODELS, { remembered: "tv-hardware-brake-ecu.yaml" })?.id).toBe("tv-hardware-brake-ecu");
     expect(chooseModel(MODELS)?.id).toBe("mvp-01-software-doc-service");
+  });
+
+  it.each([
+    ["model=tcu&file=other.yaml", "tcu"],
+    ["model=&file=tcu.yaml", "tcu.yaml"],
+    ["model=%20&file=%20tcu.yaml%20", "tcu.yaml"],
+    ["model=%20&file=", undefined],
+  ])("reads nonempty model references from %s", (query, expected) => {
+    expect(requestedModel(new URLSearchParams(query))).toBe(expected);
   });
 
   it("ignores a model the engine does not list instead of guessing", () => {
@@ -111,9 +122,13 @@ describe("model picker", () => {
     const changed = vi.fn();
     const select = new FakeElement("select") as FakeElement & { value: string; disabled: boolean };
     const status = new FakeElement("p");
+    const disclosure = new FakeElement("details");
+    const label = new FakeElement("span");
+    const summary = new FakeElement("p");
     const picker = new ModelPicker(
       select as unknown as HTMLSelectElement,
       status as unknown as HTMLElement,
+      { disclosure: disclosure as unknown as HTMLDetailsElement, label: label as unknown as HTMLElement, summary: summary as unknown as HTMLElement },
       changed,
       { createElement: (tag: string) => new FakeElement(tag) } as unknown as Document,
     );
@@ -128,7 +143,10 @@ describe("model picker", () => {
 
     picker.show(MODELS[1]);
     expect(select.value).toBe("mvp-02-automotive-ecu.yaml");
-    expect(status.textContent).toContain("Core example · 2 threats");
+    expect(summary.textContent).toContain("Core example · 2 threats");
+    expect(label.textContent).toBe("1/2 accepted");
+    expect(disclosure.hidden).toBe(false);
+    expect(disclosure.open).toBe(false);
     // Opening a model does not hide that another file failed to load.
     expect(status.textContent).toContain("Could not load: bad.yaml (bad)");
 
@@ -139,20 +157,35 @@ describe("model picker", () => {
 });
 
 describe("model picker without load problems", () => {
-  it("shows only the opened model's summary", () => {
+  it("keeps routine summary out of the header status line", () => {
     const select = new FakeElement("select");
     const status = new FakeElement("p");
+    const disclosure = new FakeElement("details");
+    const label = new FakeElement("span");
+    const summary = new FakeElement("p");
     const picker = new ModelPicker(
       select as unknown as HTMLSelectElement,
       status as unknown as HTMLElement,
+      { disclosure: disclosure as unknown as HTMLDetailsElement, label: label as unknown as HTMLElement, summary: summary as unknown as HTMLElement },
       () => undefined,
       { createElement: (tag: string) => new FakeElement(tag) } as unknown as Document,
     );
     picker.setModels({ count: 1, models: [MODELS[0]], problems: [] });
     expect(status.textContent).toBe("");
     picker.show(MODELS[0]);
-    expect(status.textContent).not.toContain("Could not load");
+    expect(status.textContent).toBe("");
+    expect(summary.textContent).toBe(modelSummaryLine(MODELS[0]));
+    picker.waiting("Waiting");
+    expect(disclosure.hidden).toBe(true);
   });
+});
+
+it("distinguishes an unreviewed proposal from a model with no accepted threat reviews", () => {
+  const model = MODELS[0];
+  const zeroAccepted = { ...model, reviewed_threats: 0, counts: { threats: 2 } };
+  expect(modelReviewLabel({ ...zeroAccepted, kind: "proposal" })).toBe("Unreviewed");
+  expect(modelReviewLabel(zeroAccepted)).toBe("0/2 accepted");
+  expect(modelReviewLabel({ ...zeroAccepted, counts: {} })).toBe("No threats");
 });
 
 class FakeElement {
@@ -161,6 +194,8 @@ class FakeElement {
   label = "";
   value = "";
   disabled = false;
+  hidden = false;
+  open = false;
   innerHTML: string | undefined;
   private readonly listeners = new Map<string, (() => void)[]>();
 
