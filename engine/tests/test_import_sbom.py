@@ -14,10 +14,12 @@ re-review, those headed "Review of e12ab07" the tests for the four of the third 
 (@kriishnaa-18's three and @Maimcghee's one), those headed "Review of f21f4a5" the tests
 for the two of the fourth, and those headed "Review of 4be86c1" the tests for the
 fifth's seventeen items: the review's three findings, and fourteen defects an
-independent review found while those fixes were checked. Each failed before its fix,
-unless its item says it guards one (DL-0068, "Review changes", and its second to fifth
-rounds). The fifth round turned the tests that expected a refusal from the packages'
-architectures into tests of the warning that replaces it, where they stand.
+independent review found while those fixes were checked; the one headed "Review of
+775a45c" holds the tests for the sixth's one point, the length of an id's hash. Each
+failed before its fix, unless its item says it guards one (DL-0068, "Review changes",
+and its second to sixth rounds). The fifth round turned the tests that expected a
+refusal from the packages' architectures into tests of the warning that replaces it,
+where they stand.
 """
 
 from __future__ import annotations
@@ -875,7 +877,7 @@ def test_ids_follow_the_identity_keys(imported, tmp_path: Path) -> None:
     _, doc, _ = imported
     # R-ID-2: the repository's slug, and a short hash of the Product's key, its purl
     # (review of 4be86c1, finding 2 and item 7)
-    assert doc["products"][0]["id"] == "product:index-docker-io-library-alpine-d27fdaeb"
+    assert doc["products"][0]["id"] == "product:index-docker-io-library-alpine-d27fdaebde4326e0"
     assert doc["product_instances"][0]["id"] == INSTANCE  # R-ID-1: the digest and the platform
     products = set()
     for n, image in enumerate(("ghcr.io/org/app", "index.docker.io/org/app", "quay.io/org/app")):
@@ -1891,7 +1893,7 @@ def test_packages_built_for_another_platform_are_kept(imported, tmp_path: Path, 
     assert sorted(added) == [X86_MUSL, X86_ZLIB]  # and the two foreign ones
     assert edges(doc) == edges(fixture) | {
         (added[X86_ZLIB], added[X86_MUSL]),
-        ("component:apk-alpine-scanelf-1-3-9-r1-d3af478a", added[X86_ZLIB]),
+        ("component:apk-alpine-scanelf-1-3-9-r1-d3af478a22b9bb5a", added[X86_ZLIB]),
     }
     assertions = by_id(doc, "assertions")
     assert set(by_id(fixture, "assertions")) < set(assertions)
@@ -2160,7 +2162,7 @@ def test_an_sbom_mostly_for_another_platform_imports_with_a_warning(
     assert sorted(instance(doc)["build_composed_of"]) == sorted(components)
     assert edges(doc) == edges(fixture) | {
         (added[X86_ZLIB], added[X86_MUSL]),
-        ("component:apk-alpine-scanelf-1-3-9-r1-d3af478a", added[X86_ZLIB]),
+        ("component:apk-alpine-scanelf-1-3-9-r1-d3af478a22b9bb5a", added[X86_ZLIB]),
     }
     assertions = by_id(doc, "assertions")
     assert set(by_id(fixture, "assertions")) < set(assertions)  # the 45, and one more
@@ -2315,12 +2317,17 @@ def test_the_command_prints_the_platform_warning_and_exits_0(tmp_path: Path, cap
 # Review of 4be86c1, finding 2: one repository, one Product id, in every import ------------
 
 
-def product_id(tmp_path: Path, name: str, image: str, digest: str = DIGEST) -> str:
-    """The Product id an import gives the fixture's SBOM of `image` at `digest`."""
+def product_doc(tmp_path: Path, name: str, image: str, digest: str = DIGEST) -> dict:
+    """The Product an import of the fixture's SBOM of `image` at `digest` gives."""
     sbom = sbom_doc()
     sbom["metadata"]["component"].update(name=image, version=digest)
     model, _ = import_sbom_doc(folder(tmp_path, name), sbom)
-    return model["products"][0]["id"]
+    return model["products"][0]
+
+
+def product_id(tmp_path: Path, name: str, image: str, digest: str = DIGEST) -> str:
+    """The Product id an import gives the fixture's SBOM of `image` at `digest`."""
+    return product_doc(tmp_path, name, image, digest)["id"]
 
 
 def test_repositories_whose_slugs_are_one_get_distinct_product_ids(tmp_path: Path) -> None:
@@ -2329,10 +2336,10 @@ def test_repositories_whose_slugs_are_one_get_distinct_product_ids(tmp_path: Pat
     paths = ("alpha-beta", "alpha/beta", "alpha.beta", "alpha_beta")
     ids = [product_id(tmp_path, str(n), f"ghcr.io/team/{p}/app") for n, p in enumerate(paths)]
     assert ids == [  # the slug, and a short hash of each repository's purl (item 7)
-        "product:ghcr-io-team-alpha-beta-app-e56b5526",
-        "product:ghcr-io-team-alpha-beta-app-b1dbb4b7",
-        "product:ghcr-io-team-alpha-beta-app-f8eb62b0",
-        "product:ghcr-io-team-alpha-beta-app-84cc3bb4",
+        "product:ghcr-io-team-alpha-beta-app-e56b5526030a2766",
+        "product:ghcr-io-team-alpha-beta-app-b1dbb4b7c26a337a",
+        "product:ghcr-io-team-alpha-beta-app-f8eb62b0a564557f",
+        "product:ghcr-io-team-alpha-beta-app-84cc3bb4f64f8e94",
     ]
 
 
@@ -2344,7 +2351,7 @@ def test_one_repository_has_one_product_id_in_every_import(tmp_path: Path) -> No
         product_id(tmp_path, "by-digest", f"ghcr.io/team/app@{other}", other),
     }
     # A short hash of the Product's key, pkg:oci/app?repository_url=ghcr.io/team/app
-    assert ids == {"product:ghcr-io-team-app-5869f5a1"}
+    assert ids == {"product:ghcr-io-team-app-5869f5a1214081a9"}
 
 
 # Review of 4be86c1, finding 3: what is left once the outputs are written ------------------
@@ -2747,10 +2754,12 @@ def test_assertion_ids_hold_when_another_package_is_added(imported, tmp_path: Pa
 
 def test_a_purl_that_spells_another_components_id_gives_a_model(tmp_path: Path) -> None:
     # The review's crafted entry: its plain id was the armv7 zlib's fallback, which
-    # 4be86c1 gave out unchecked ("internal error ... duplicate model object id").
+    # 4be86c1 gave out unchecked ("internal error ... duplicate model object id"). Since
+    # the fifth round a Component's id ends in its own key's hash, so this one meets no other
+    # id; the test guards that. Its version spells the armv7 zlib's id, with 16 hex digits.
     sbom = sbom_doc()
     zlib_copy(sbom, ARM32_ZLIB)
-    crafted = "1.3.2-r0-a7ac6a88"
+    crafted = "1.3.2-r0-a7ac6a88ed21e672"
     sbom["components"].append(
         {
             "bom-ref": "crafted",
@@ -2769,7 +2778,7 @@ def test_vulnerability_ids_that_spell_one_another_give_a_model(tmp_path: Path) -
     # A Vulnerability's id is its slug alone, so the second of two that slug alike takes
     # its key's hash, which a third can spell: the same collision under the new rule.
     second = "ghsa-aaaa-bbbb-cccc"
-    crafted = "GHSA-aaaa-bbbb-cccc-" + hashlib.sha256(second.encode()).hexdigest()[:8]
+    crafted = "GHSA-aaaa-bbbb-cccc-" + import_sbom._short_hash(second)
     rows = [match("GHSA-AAAA-BBBB-CCCC"), match(second), match(crafted)]
     doc, _ = import_matches(tmp_path, rows)
     ids = [v["id"] for v in doc["vulnerabilities"]]
@@ -3043,7 +3052,8 @@ def test_cwe_link_ids_are_the_round_s_own(imported) -> None:
     # A CWE link's id is its (CVE, CWE, source)'s, as since item 7 of this round.
     _, doc, _ = imported
     links = {a["id"] for a in doc["assertions"] if a["predicate"] == "instance_of"}
-    assert "assertion:cve-2026-85091-cwe-787-from-disclosure-vulncheck-com-f142048c" in links
+    link = "assertion:cve-2026-85091-cwe-787-from-disclosure-vulncheck-com-f142048c4f65315a"
+    assert link in links
 
 
 # Review of 4be86c1, item 16: what the variants say when the image purl has spoken -------
@@ -3115,3 +3125,48 @@ def test_twins_keep_their_ids_when_their_scores_change(
     before, after = ids("scan", scan), ids("rescan", rescan)
     assert len(before) == 2 and len(set(before.values())) == 2  # one Assertion per match
     assert after == before
+
+
+# Review of 775a45c: a hashed id ends in 64 bits of its key's SHA-256 --------------------
+
+
+def test_repositories_whose_first_8_hash_digits_are_one_get_distinct_product_ids(
+    tmp_path: Path,
+) -> None:
+    # Two repositories whose slugs are one are told apart in separate imports only by the
+    # hash of their purls. These two, found by trying the separators between the same
+    # letters, share the first 8 hex digits of it, so on 775a45c, which kept 8, both were
+    # product:ghcr-io-team-a-b-c-d-e-f-g-h-i-j-c9e24419.
+    images = ("ghcr.io/team/a-b-c-d-e/f.g/h-i.j", "ghcr.io/team/a.b-c/d-e-f.g.h/i_j")
+    products = [product_doc(tmp_path, str(n), image) for n, image in enumerate(images)]
+    digests = [hashlib.sha256(p["identifiers"][0].encode()).hexdigest() for p in products]
+    assert digests[0][:8] == digests[1][:8] == "c9e24419"
+    assert [p["id"] for p in products] == [
+        "product:ghcr-io-team-a-b-c-d-e-f-g-h-i-j-c9e2441940ecf2f9",
+        "product:ghcr-io-team-a-b-c-d-e-f-g-h-i-j-c9e24419d9def54b",
+    ]
+
+
+def test_every_hashed_id_ends_in_16_hex_digits(tmp_path: Path) -> None:
+    # The fixture's 66: the Product's, every Component's, the CWE sources' Parties' and
+    # every Assertion's. One rule for all, so none keeps the 8 digits the Product's outgrew.
+    doc, _ = import_sbom_doc(tmp_path, sbom_doc(), scan=SCAN)
+    product, parties = doc["products"][0], [p for p in doc["parties"] if p["id"] != "party:grype"]
+    hashed = [product["id"]] + [c["id"] for c in doc["components"]]
+    hashed += [a["id"] for a in doc["assertions"]] + [p["id"] for p in parties]
+    marks = [i.rsplit("-", 1)[1] for i in hashed]
+    assert len(hashed) == len(set(hashed)) == 66
+    assert all(len(m) == 16 and set(m) <= set("0123456789abcdef") for m in marks)
+
+    def mark(key: str) -> str:
+        return "-" + hashlib.sha256(key.encode()).hexdigest()[:16]
+
+    # Where the model shows the key: the Product's purl, a Component's purl (all but the
+    # operating system's, which has none) and a Party's organization:NAME.
+    assert product["id"] == "product:index-docker-io-library-alpine" + mark(
+        product["identifiers"][0]
+    )
+    purls = [c for c in doc["components"] if c.get("identifiers")]
+    assert len(purls) == 16
+    assert all(c["id"].endswith(mark(c["identifiers"][0])) for c in purls)
+    assert all(p["id"].endswith(mark("organization:" + p["name"])) for p in parties)

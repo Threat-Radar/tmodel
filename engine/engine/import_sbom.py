@@ -28,8 +28,10 @@ and the engine loads, plus an import report. The mapping is RPT-0004 Table 6
   architecture, or Linux packages meet another os, the report and a warning say so.
   The ids are made from the keys: one made from a free-form key (the Product's purl, a
   Component's, a Party's name, a match or a CWE link) always ends in a short hash of
-  the key, and the ProductInstance's holds the whole digest with the platform, so no
-  two keys give one id, and one key gives one id in every import. The SBOM never fills
+  the key, 64 bits of its SHA-256, and the ProductInstance's holds the whole digest with
+  the platform. So no two keys give one id in an import, two free-form keys give one in
+  separate imports only by a 1 in 2**64 chance, and one key gives one id in every import.
+  The SBOM never fills
   the design-level `composed_of` (R-EDGE-2);
 - one Component per SBOM entry other than files (R-ID-4), keyed by its purl, qualifiers
   and all, normalized by the rules the purl specification gives every type (R-ID-3),
@@ -100,6 +102,11 @@ CONTAINER_SCHEMA = "spec/vectors/example-container-proposed.linkml.yaml"
 MODEL_SUFFIXES = (".yaml", ".yml")
 
 DIGEST = re.compile(r"sha256:[0-9a-f]{64}")
+# A hashed id ends in this many hex digits of its key's SHA-256 (_short_hash): 64 bits, so
+# two keys whose slugs are one share an id in separate imports only by a 1 in 2**64 chance,
+# where 8 digits left it at 1 in 2**32 (#268, sixth review). In one import a counter tells
+# them apart whatever the hash (_Builder._id).
+HASH_DIGITS = 16
 CVE_ID = re.compile(r"CVE-\d{4}-\d{4,}")
 CWE_ID = re.compile(r"CWE-\d+")
 # A Grype release such as 0.119.0. A build without one says "[not provided]".
@@ -1091,10 +1098,12 @@ class _Builder:
         """An id from `readable`: the same key always gets the same id, and no id is two
         objects'. A `hashed` id, made from a free-form key (a purl, a party's name, a
         match), always ends in a short hash of the key (_slug), so two keys whose
-        readable slugs are one get two ids in every import, and adding or removing other
+        readable slugs are one get two ids in an import, and in separate imports unless
+        64 bits of their hashes are one (HASH_DIGITS), and adding or removing other
         objects changes none, twins aside: adding or removing one of several twins can
         renumber the twins after it. An id made from a canonical key (a Vulnerability's or a
-        Weakness's id, the ProductInstance's digest and platform) is the slug alone.
+        Weakness's id, the ProductInstance's digest and platform) is the slug alone, cut and
+        ended in a hash of it when longer than `limit` (_slug).
         Should another object have the id all the same (a slug that spells another id,
         two short hashes that are one, or a `twin`: the number of objects before this
         one with the same key, such as package matches that say one finding), a
@@ -1124,9 +1133,9 @@ class _Builder:
         # id. The id is a readable slug of the repository and a short hash of the key
         # (_id): the slug writes each run of characters other than letters and digits as
         # one dash, so team/alpha-beta/app, team/alpha/beta/app, team/alpha.beta/app and
-        # team/alpha_beta/app share one slug, and the hash tells them apart in separate
-        # imports too. The same repository, whatever its tag or digest, always gives the
-        # same id. The purl in identifiers stays the key.
+        # team/alpha_beta/app share one slug, and the hash (HASH_DIGITS) tells them apart
+        # in separate imports too. The same repository, whatever its tag or digest, always
+        # gives the same id. The purl in identifiers stays the key.
         self.product_id = self._id("product", self.product_purl, self.repository_url, hashed=True)
 
     def _instance(self) -> None:
@@ -1184,7 +1193,8 @@ class _Builder:
         self._check_architectures(name)
         for component in self.components.values():  # in key order
             # The key is the normalized purl, qualifiers and all, so the aarch64 and the
-            # x86_64 build of one package never share an id, in one import or two.
+            # x86_64 build of one package never share an id in one import, and in two only
+            # by a 1 in 2**64 chance (HASH_DIGITS).
             component.id = self._id("component", component.key, component.readable, hashed=True)
         named = {(c.supplier, "supplier") for c in self.components.values() if c.supplier}
         named |= {
@@ -3311,4 +3321,4 @@ def _slug(text: str, limit: int = 80, *, mark: str | None = None) -> str:
 
 
 def _short_hash(text: str) -> str:
-    return hashlib.sha256(text.encode("utf-8")).hexdigest()[:8]
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()[:HASH_DIGITS]
