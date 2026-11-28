@@ -70,6 +70,7 @@ export interface AttackPatternViewElements extends LibraryPagination {
   attributionLicense: HTMLElement;
   attributionTerms: HTMLAnchorElement;
   inspector: HTMLElement;
+  backToRow: HTMLButtonElement;
   detailTitle: HTMLElement;
   detailId: HTMLElement;
   detailBadges: HTMLElement;
@@ -93,8 +94,6 @@ export class AttackPatternsView {
   private failedRequestStartedConnected = false;
   private selectedId?: string;
   private searchTimer?: ReturnType<typeof setTimeout>;
-  /** The page button a keyboard user pressed, so focus survives it becoming disabled. */
-  private pageFocus?: "previous" | "next";
 
   constructor(
     private readonly provider: AttackPatternDataProvider,
@@ -195,6 +194,7 @@ export class AttackPatternsView {
     });
     this.elements.previousPage.addEventListener("click", () => this.changePage("previous"));
     this.elements.nextPage.addEventListener("click", () => this.changePage("next"));
+    this.elements.backToRow.addEventListener("click", () => this.focusTable(this.selectedId));
     this.elements.retryButton.addEventListener("click", () => {
       // The button hides while the table loads; keep a keyboard user's focus in the view.
       const hadFocus = this.documentRoot.activeElement === this.elements.retryButton;
@@ -220,8 +220,6 @@ export class AttackPatternsView {
 
   private changePage(direction: "previous" | "next"): void {
     if (this.tableState !== "loaded") return;
-    const button = direction === "previous" ? this.elements.previousPage : this.elements.nextPage;
-    this.pageFocus = this.documentRoot.activeElement === button ? direction : undefined;
     this.query.offset = direction === "previous"
       ? Math.max(0, this.query.offset - this.query.limit)
       : this.query.offset + this.query.limit;
@@ -279,7 +277,11 @@ export class AttackPatternsView {
   }
 
   private renderResponse(response: AttackPatternTableResponse): void {
+    const active = this.documentRoot.activeElement;
     const tableHadFocus = this.focusInTable();
+    const focusedRow = active && this.elements.tableBody.contains(active)
+      ? active.closest<HTMLTableRowElement>("tr")?.dataset.attackPatternId
+      : undefined;
     this.rows.clear();
     for (const row of response.rows) this.rows.set(row.id, row);
     const facets = response.contextual_facets;
@@ -302,9 +304,6 @@ export class AttackPatternsView {
     this.elements.tableRegion.hidden = response.total === 0;
     this.elements.retryButton.hidden = true;
     renderPagination(this.elements, response.query.offset, response.count, response.total, this.pageSize);
-    this.restorePageFocus();
-    // No rows hides the table, sort buttons included; keep a keyboard user's focus in the view.
-    if (tableHadFocus && response.total === 0) this.elements.search.focus();
     this.renderSource(response);
     this.renderAttribution(response);
     const unknown = response.catalog.unknown_fields;
@@ -313,21 +312,33 @@ export class AttackPatternsView {
       ? ""
       : `${unknown} catalog ${unknown === 1 ? "field is" : "fields are"} not recognized by this importer. The raw fields remain preserved in entry details.`;
     if (this.selectedId && this.rows.has(this.selectedId)) this.updateSelectedRow();
-    else if (this.selectedId) this.clearDetails();
+    else if (this.selectedId) {
+      if (this.elements.inspector.contains(active)) this.focusTable();
+      this.clearDetails();
+    }
+    if (focusedRow || (tableHadFocus && response.total === 0)) this.focusTable(focusedRow);
+    else this.restorePageFocus(active);
   }
 
-  /** A pressed page button now disabled hands focus to the other one, the table or Search. */
-  private restorePageFocus(): void {
-    const pressed = this.pageFocus;
-    this.pageFocus = undefined;
-    if (!pressed) return;
-    const [kept, other] = pressed === "previous"
-      ? [this.elements.previousPage, this.elements.nextPage]
-      : [this.elements.nextPage, this.elements.previousPage];
+  /** A page control that becomes unavailable hands focus to the other one or the table. */
+  private restorePageFocus(active: Element | null): void {
+    const { previousPage, nextPage } = this.elements;
+    if (active !== previousPage && active !== nextPage) return;
+    const [kept, other] = active === previousPage ? [previousPage, nextPage] : [nextPage, previousPage];
     if (!kept.disabled && !kept.hidden) return;
     if (!other.disabled && !other.hidden) other.focus();
-    else if (!this.elements.tableRegion.hidden) this.elements.tableRegion.focus();
-    else this.elements.search.focus();
+    else this.focusTable();
+  }
+
+  private focusTable(id?: string): void {
+    const { search, tableBody, tableRegion } = this.elements;
+    if (tableRegion.hidden) {
+      search.focus();
+      return;
+    }
+    const button = id ? [...tableBody.querySelectorAll("tr")]
+      .find((row) => row.dataset.attackPatternId === id)?.querySelector("button") : undefined;
+    (button ?? tableRegion).focus();
   }
 
   private renderSource(response: AttackPatternTableResponse): void {
@@ -356,7 +367,8 @@ export class AttackPatternsView {
   }
 
   private renderError(error: unknown): void {
-    const tableHadFocus = this.focusInTable();
+    const active = this.documentRoot.activeElement;
+    const needsFocus = this.focusInTable() || this.elements.inspector.contains(active);
     this.elements.requestStatus.textContent = `Unable to load CAPEC attack patterns: ${errorMessage(error)}`;
     this.elements.requestStatus.className = "library-request-status is-error";
     this.rows.clear();
@@ -367,9 +379,7 @@ export class AttackPatternsView {
     this.elements.attribution.hidden = true;
     this.elements.retryButton.hidden = false;
     resetPagination(this.elements);
-    this.pageFocus = undefined;
-    // The table and pager are now hidden; the retry button is where a keyboard user goes next.
-    if (tableHadFocus) this.elements.retryButton.focus();
+    if (needsFocus) this.elements.retryButton.focus();
   }
 
   private createRow(row: AttackPatternTableRow): HTMLTableRowElement {
@@ -381,7 +391,15 @@ export class AttackPatternsView {
     button.type = "button";
     button.className = "library-title-button";
     button.textContent = row.id;
-    button.addEventListener("click", () => void this.selectAttackPattern(row.id));
+    button.setAttribute("aria-controls", "attack-pattern-inspector");
+    button.addEventListener("click", (event) => {
+      void this.selectAttackPattern(row.id);
+      // Native button activation by keyboard or assistive technology has no click count.
+      if (event.detail === 0) {
+        this.elements.inspector.scrollTop = 0;
+        this.elements.inspector.focus();
+      }
+    });
     idCell.append(button);
     tr.append(
       idCell,
@@ -410,6 +428,7 @@ export class AttackPatternsView {
   }
 
   private renderRowDetails(row: AttackPatternTableRow): void {
+    this.elements.backToRow.hidden = false;
     this.elements.detailTitle.textContent = row.name;
     this.elements.detailId.textContent = row.id;
     this.elements.detailDescription.textContent = row.description;
@@ -423,6 +442,8 @@ export class AttackPatternsView {
     this.elements.detailId.textContent = entry.id;
     this.elements.detailDescription.textContent = entry.description;
     const row = this.rows.get(entry.id);
+    const { detailList, inspector } = this.elements;
+    const overviewHadFocus = detailList.contains(this.documentRoot.activeElement);
     if (row) this.renderOverview({
       ...row,
       name: entry.name,
@@ -438,6 +459,7 @@ export class AttackPatternsView {
       examples: entry.examples,
       url: entry.url,
     });
+    if (overviewHadFocus) (detailList.querySelector("a") ?? inspector).focus();
     this.elements.detailStatus.textContent = "";
     this.elements.detailRetryButton.hidden = true;
     const sections: HTMLElement[] = [];
@@ -623,6 +645,7 @@ export class AttackPatternsView {
   private clearDetails(): void {
     this.selectedId = undefined;
     this.detailRequests.cancel();
+    this.elements.backToRow.hidden = true;
     this.elements.detailTitle.textContent = "";
     this.elements.detailId.textContent = "";
     this.elements.detailBadges.replaceChildren();
@@ -722,6 +745,7 @@ export function attackPatternViewElements(root: Document = document): AttackPatt
     attributionLicense: required("attack-pattern-attribution-license"),
     attributionTerms: required("attack-pattern-attribution-terms"),
     inspector: required("attack-pattern-inspector"),
+    backToRow: required("attack-pattern-back-to-row"),
     detailTitle: required("attack-pattern-detail-title"),
     detailId: required("attack-pattern-detail-id"),
     detailBadges: required("attack-pattern-detail-badges"),

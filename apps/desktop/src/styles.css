@@ -162,8 +162,8 @@ h3 { margin-bottom: 10px; font-size: 0.84rem; text-transform: uppercase; letter-
 .library-controls label { display: grid; gap: 4px; color: var(--text-muted); font-size: 0.67rem; font-weight: 750; }
 .search-control { display: grid; min-width: 0; gap: 4px; }
 .library-search-heading { display: flex; min-height: 1rem; align-items: center; justify-content: space-between; gap: 4px; }
-.library-clear-filters { padding: 0 2px; border: 0; border-radius: var(--radius-small); background: transparent; color: var(--link); font-size: 0.67rem; font-weight: 700; line-height: 1rem; white-space: nowrap; cursor: pointer; }
-.library-clear-filters:hover { text-decoration: underline; }
+.library-clear-filters, .attack-pattern-back-to-row { padding: 0 2px; border: 0; border-radius: var(--radius-small); background: transparent; color: var(--link); font-size: 0.67rem; font-weight: 700; line-height: 1rem; white-space: nowrap; cursor: pointer; }
+.library-clear-filters:hover, .attack-pattern-back-to-row:hover { text-decoration: underline; }
 .library-view-select, .library-controls input, .library-controls select, .sdl-heading select { min-width: 0; padding: 7px 9px; border: 1px solid var(--control-border); border-radius: var(--radius-control); background: var(--surface); color: var(--text); font: inherit; font-size: 0.75rem; }
 .library-controls input, .library-controls select { width: 100%; }
 .library-view-select { width: 12rem; margin: 2px 0 4px auto; padding-block: 4px; font-weight: 700; }
@@ -192,6 +192,8 @@ h3 { margin-bottom: 10px; font-size: 0.84rem; text-transform: uppercase; letter-
 .library-title-button:focus-visible { border-radius: var(--radius-small); outline: 2px solid var(--focus); outline-offset: 2px; }
 .library-inspector { min-height: 0; padding: 14px; border-left: 1px solid var(--divider); border-radius: 0 var(--radius-panel) var(--radius-panel) 0; overflow-y: auto; overflow-wrap: anywhere; }
 .library-inspector-heading { margin: 0 0 7px; color: var(--text-muted); font-size: 0.74rem; font-weight: 750; }
+.attack-pattern-inspector:focus-visible { outline-offset: -2px; }
+.attack-pattern-back-to-row { margin-bottom: 7px; }
 .library-detail-title { margin: 0 0 3px; color: inherit; font-size: 0.91rem; line-height: 1.35; text-transform: none; letter-spacing: normal; }
 .library-detail-title:empty, .library-detail-id:empty { display: none; }
 .library-detail-badges { display: flex; flex-wrap: wrap; gap: 4px; }
@@ -234,7 +236,7 @@ h3 { margin-bottom: 10px; font-size: 0.84rem; text-transform: uppercase; letter-
 .attack-pattern-missing { color: var(--text-muted); }
 .library-pagination { display: flex; min-height: 34px; flex: none; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px; margin-top: auto; padding-top: 9px; color: var(--text-muted); font-size: 0.69rem; font-weight: 650; font-variant-numeric: tabular-nums; }
 .library-pagination button { padding: 5px 7px; border: 1px solid var(--control-border); border-radius: var(--radius-control); background: var(--surface); color: var(--text); font: inherit; font-weight: 700; cursor: pointer; }
-.library-pagination button:focus-visible, .library-clear-filters:focus-visible, .requirements-coverage > summary:focus-visible, .coverage-body:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.library-pagination button:focus-visible, .library-clear-filters:focus-visible, .attack-pattern-back-to-row:focus-visible, .requirements-coverage > summary:focus-visible, .coverage-body:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 .library-pagination button:disabled { border-color: var(--border); background: var(--disabled-bg); color: var(--disabled-text); cursor: default; }
 .weakness-attribution, .attack-pattern-attribution { flex: none; margin-top: 6px; padding-top: 3px; border-top: 1px solid var(--divider); color: var(--text-muted); font-size: 0.68rem; line-height: 1.45; }
 .weakness-attribution summary, .attack-pattern-attribution summary { display: flex; align-items: center; gap: 7px; width: fit-content; max-width: 100%; padding: 2px 6px 2px 3px; cursor: pointer; list-style: none; }

@@ -150,6 +150,121 @@ describe("attack patterns view", () => {
     expect(elements.statusFilter.value).toBe("Draft");
   });
 
+  it("opens the inspector from keyboard activation and returns focus to the selected row", async () => {
+    const data = provider();
+    const pending = deferred<AttackPatternDetailResponse | undefined>();
+    data.getAttackPattern = vi.fn(() => pending.promise);
+    const { view, elements, documentRoot } = viewHarness(data);
+    view.activate();
+    await settle();
+
+    const firstRowButton = rowFor(elements, "CAPEC-5").children[0].children[0];
+    const secondRowButton = rowFor(elements, "CAPEC-7").children[0].children[0];
+    expect(elements.backToRow.hidden).toBe(true);
+    firstRowButton.focus();
+    firstRowButton.dispatch("click", 0);
+    expect(documentRoot.activeElement).toBe(elements.inspector);
+    expect(elements.detailId.textContent).toBe("CAPEC-5");
+    expect(elements.detailStatus.textContent).toBe("Loading full CAPEC details…");
+    expect(firstRowButton.getAttribute("aria-current")).toBe("true");
+    expect(elements.backToRow.hidden).toBe(false);
+
+    elements.backToRow.focus();
+    pending.resolve(answers.get("CAPEC-5"));
+    await settle();
+    expect(documentRoot.activeElement).toBe(elements.backToRow);
+    elements.backToRow.dispatch("click", 0);
+    expect(documentRoot.activeElement).toBe(firstRowButton);
+
+    secondRowButton.focus();
+    secondRowButton.dispatch("click", 1);
+    expect(documentRoot.activeElement).toBe(secondRowButton);
+    expect(secondRowButton.getAttribute("aria-current")).toBe("true");
+    expect(firstRowButton.getAttribute("aria-current")).toBeNull();
+    elements.backToRow.dispatch("click", 0);
+    expect(documentRoot.activeElement).toBe(secondRowButton);
+  });
+
+  it("keeps focus on sort and filter controls and returns to the selected row after sorting", async () => {
+    const { view, elements, documentRoot } = viewHarness(provider());
+    view.activate();
+    await settle();
+
+    rowFor(elements, "CAPEC-66").children[0].children[0].dispatch("click", 0);
+    const nameSort = elements.sortButtons.find((button) => button.dataset.sort === "name")!;
+    nameSort.focus();
+    nameSort.dispatch("click", 0);
+    await settle();
+    expect(documentRoot.activeElement).toBe(nameSort);
+    const selectedButton = rowFor(elements, "CAPEC-66").children[0].children[0];
+    elements.backToRow.dispatch("click", 0);
+    expect(documentRoot.activeElement).toBe(selectedButton);
+    expect(selectedButton.getAttribute("aria-current")).toBe("true");
+
+    elements.statusFilter.focus();
+    elements.statusFilter.value = "Deprecated";
+    elements.statusFilter.dispatch("change");
+    await settle();
+    expect(documentRoot.activeElement).toBe(elements.statusFilter);
+    expect(elements.backToRow.hidden).toBe(true);
+    expect(view.currentSelection()).toBeUndefined();
+  });
+
+  it("keeps keyboard focus on the inspector's definition link when full details arrive", async () => {
+    const data = provider();
+    const pending = deferred<AttackPatternDetailResponse | undefined>();
+    data.getAttackPattern = vi.fn(() => pending.promise);
+    const { view, elements, documentRoot } = viewHarness(data);
+    view.activate();
+    await settle();
+
+    rowFor(elements, "CAPEC-66").children[0].children[0].dispatch("click", 0);
+    const [previewLink] = descendantsByTag(elements.detailList, "a");
+    previewLink.focus();
+    pending.resolve(answers.get("CAPEC-66"));
+    await settle();
+
+    const fullDetailLink = elements.detailList.querySelector("a");
+    expect(fullDetailLink).not.toBe(previewLink);
+    expect(documentRoot.activeElement).toBe(fullDetailLink);
+  });
+
+  it("restores row focus after a table refresh while that row stays visible", async () => {
+    const { view, elements, documentRoot } = viewHarness(provider());
+    view.activate();
+    await settle();
+
+    const rowButton = rowFor(elements, "CAPEC-66").children[0].children[0];
+    rowButton.focus();
+    await view.retry();
+    const refreshedButton = rowFor(elements, "CAPEC-66").children[0].children[0];
+    expect(refreshedButton).not.toBe(rowButton);
+    expect(documentRoot.activeElement).toBe(refreshedButton);
+  });
+
+  it("moves focus from the inspector to the table when a search removes the selected row", async () => {
+    const data = provider();
+    const pending = deferred<AttackPatternTableResponse>();
+    vi.mocked(data.getTable).mockResolvedValueOnce(answer({})).mockReturnValueOnce(pending.promise);
+    const { view, elements, documentRoot } = viewHarness(data);
+    view.activate();
+    await settle();
+
+    rowFor(elements, "CAPEC-66").children[0].children[0].dispatch("click", 0);
+    await settle();
+    elements.search.focus();
+    elements.search.value = "HTTP Desync";
+    elements.search.dispatch("search");
+    expect(documentRoot.activeElement).toBe(elements.search);
+    disclosure(elements, "Related CWE Weaknesses").children[0].focus();
+    pending.resolve(answer({ search: "HTTP Desync" }));
+    await settle();
+
+    expect(view.currentSelection()).toBeUndefined();
+    expect(elements.backToRow.hidden).toBe(true);
+    expect(documentRoot.activeElement).toBe(elements.tableRegion);
+  });
+
   it("shows a selected row's summary at once, then every field of the engine's entry", async () => {
     const data = provider();
     const pending = deferred<AttackPatternDetailResponse | undefined>();
@@ -500,6 +615,28 @@ describe("attack patterns view", () => {
     expect(elements.likelihoodFilter.value).toBe("");
   });
 
+  it("clears the selection on a page change and leaves focus where the user moved it", async () => {
+    const data = provider();
+    const pending = deferred<AttackPatternTableResponse>();
+    vi.mocked(data.getTable).mockResolvedValueOnce(answer({ limit: 10 })).mockReturnValueOnce(pending.promise);
+    const { view, elements, documentRoot } = viewHarness(data, 10);
+    view.activate();
+    await settle();
+
+    rowFor(elements, "CAPEC-5").children[0].children[0].dispatch("click", 0);
+    elements.nextPage.focus();
+    elements.nextPage.dispatch("click", 0);
+    elements.search.focus();
+    pending.resolve(answer({ limit: 10, offset: 10 }));
+    await settle();
+
+    expect(elements.pageStatus.textContent).toBe("11–13 of 13");
+    expect(elements.nextPage.disabled).toBe(true);
+    expect(view.currentSelection()).toBeUndefined();
+    expect(elements.backToRow.hidden).toBe(true);
+    expect(documentRoot.activeElement).toBe(elements.search);
+  });
+
   it("clears the inspector when the selected row leaves the page, and keeps it when it stays", async () => {
     const { view, elements } = viewHarness(provider());
     view.activate();
@@ -687,6 +824,7 @@ function viewHarness(data: AttackPatternDataProvider, pageSize?: number) {
     attributionLicense: make(),
     attributionTerms: make("a"),
     inspector: make("aside"),
+    backToRow: make("button"),
     detailTitle: make(),
     detailId: make(),
     detailBadges: make(),
@@ -697,13 +835,14 @@ function viewHarness(data: AttackPatternDataProvider, pageSize?: number) {
     detailSections: make(),
   };
   for (const hidden of [
-    elements.warning, elements.retryButton, elements.detailRetryButton, elements.tableRegion,
+    elements.warning, elements.retryButton, elements.backToRow, elements.detailRetryButton, elements.tableRegion,
     elements.emptyState, elements.attribution, elements.previousPage, elements.nextPage,
   ]) hidden.hidden = true;
   // As in index.html: the header row of sort buttons and the body sit inside the table region.
   const headerRow = make("tr");
   headerRow.append(...sortButtons.map((button) => button.parentElement!));
   elements.tableRegion.append(headerRow, elements.tableBody);
+  elements.inspector.append(elements.backToRow, elements.detailList, elements.detailRetryButton, elements.detailSections);
   return {
     documentRoot,
     elements,
@@ -825,7 +964,7 @@ class FakeElement {
   open = false;
   scrollTop = 0;
   private readonly attributes = new Map<string, string>();
-  private readonly listeners = new Map<string, Array<() => void>>();
+  private readonly listeners = new Map<string, Array<(event: Event) => void>>();
 
   constructor(readonly tagName: string, private readonly ownerDocument: FakeDocument) {}
 
@@ -835,14 +974,15 @@ class FakeElement {
 
   addEventListener(type: string, listener: EventListenerOrEventListenerObject): void {
     const callbacks = this.listeners.get(type) ?? [];
-    callbacks.push(() => typeof listener === "function"
-      ? listener(new Event(type))
-      : listener.handleEvent(new Event(type)));
+    callbacks.push((event) => typeof listener === "function"
+      ? listener(event)
+      : listener.handleEvent(event));
     this.listeners.set(type, callbacks);
   }
 
-  dispatch(type: string): void {
-    for (const callback of this.listeners.get(type) ?? []) callback();
+  dispatch(type: string, clickCount = 1): void {
+    const event = type === "click" ? Object.assign(new Event(type), { detail: clickCount }) : new Event(type);
+    for (const callback of this.listeners.get(type) ?? []) callback(event);
   }
 
   append(...nodes: FakeElement[]): void {
@@ -853,6 +993,10 @@ class FakeElement {
   }
 
   replaceChildren(...nodes: FakeElement[]): void {
+    for (const child of this.children) {
+      if (child.contains(this.ownerDocument.activeElement)) this.ownerDocument.activeElement = null;
+      child.parentElement = undefined;
+    }
     this.children.length = 0;
     this.append(...nodes);
   }

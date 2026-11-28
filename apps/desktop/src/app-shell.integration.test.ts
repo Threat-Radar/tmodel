@@ -66,7 +66,8 @@ describe("integrated application shell", () => {
     expect(section).toContain('id="attack-pattern-table-region" class="library-table-region attack-pattern-table-region" role="region" aria-label="CAPEC attack patterns" tabindex="0" hidden');
     expect(section).toContain('id="attack-pattern-request-status" class="library-request-status" role="status" aria-live="polite"');
     expect(section).toContain('id="attack-pattern-sort-help" class="visually-hidden" aria-live="polite"');
-    expect(section).toContain('id="attack-pattern-inspector" class="panel library-inspector attack-pattern-inspector" aria-labelledby="attack-pattern-inspector-heading" tabindex="0"');
+    expect(section).toMatch(/<aside id="attack-pattern-inspector"[^>]+aria-labelledby="attack-pattern-inspector-heading attack-pattern-detail-id attack-pattern-detail-title" tabindex="0">/u);
+    expect(section).toMatch(/<button id="attack-pattern-back-to-row"[^>]+aria-controls="attack-pattern-table-region" hidden>Back to selected row<\/button>/u);
     for (const filter of ["abstraction", "status", "likelihood", "severity"]) {
       expect(section).toContain(`<label for="attack-pattern-${filter}-filter">`);
     }

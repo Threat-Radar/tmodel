@@ -172,7 +172,11 @@ No engine code changed.
 
 ## What was rejected, and why
 
-No human has rejected anything in this change yet. The agent set these aside:
+The PR #294 review found that Enter left keyboard focus on the selected row. At a 700 px
+window, reaching the inspector then took 52 Tab presses. The review requested direct access
+to the inspector and a way back to the selected row.
+
+The agent set these aside during the initial implementation:
 
 - **A fixture that stops at the row, as CWE's does.** The issue asks for a details inspector, and
   the preview could not show one; the engine test keeps the fuller fixture from drifting.
@@ -186,6 +190,28 @@ No human has rejected anything in this change yet. The agent set these aside:
   phase, description and techniques read as separate rows, with all the techniques on one line.
 - **The CWE table's 1090 px minimum,** also from the first draft: it hid the last column at
   1440 px.
+
+## Keyboard focus review fix
+
+Enter or Space on a CAPEC row button selects the record and focuses the existing Details
+inspector immediately, while the full entry loads. The inspector's accessible name includes
+the selected record ID and title. Its first Tab stop is **Back to selected row**, which
+returns focus to the selected ID button so Tab can continue through the table. Pointer clicks
+still select the record as before. The row, inspector and return button use the design system's
+focus outline.
+
+Search, sort, filter and page controls retain focus while they remain available. A refreshed
+row is found by its CAPEC ID. If the selected row leaves the current results while focus is
+in its inspector, focus returns to the table region or to Search for an empty result. A page
+button that becomes disabled transfers focus only if it still held focus when results arrived.
+
+The native Tauri test builds used the pinned 615-record catalog from a local file. In the
+700 px dark window, Enter on CAPEC-1 focused Details immediately. Tab and Enter returned
+focus to CAPEC-1, and the next Tab reached CAPEC-2. Pagination, alternate-term search,
+the Meta filter and descending ID sort all kept focus usable. The 1280 px light window
+passed the round trip for CAPEC-66 and showed its related CWE links. The generated preview
+passed keyboard and focus-outline checks at both widths. All 762 frontend tests passed on
+rerun after the documented model-popover test flaked.
 
 ## Follow-ups
 
