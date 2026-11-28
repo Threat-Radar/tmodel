@@ -10,6 +10,10 @@
         "review_status": null,
         "reviewed": false
       },
+      "step_phases": {
+        "attack-step:enumerate-refresh-endpoint": "reconnaissance",
+        "attack-step:trigger-gadget-chain": "exploitation"
+      },
       "steps": [
         "attack-step:enumerate-refresh-endpoint",
         "attack-step:craft-serialized-payload",

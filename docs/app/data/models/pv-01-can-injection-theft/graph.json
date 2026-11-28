@@ -186,9 +186,11 @@
           "assertion_status": "proposed",
           "confidence": "medium",
           "description": "As the CVE record states it, in CISA-ADP's container; the CNA's container gives no CWE.",
+          "effective_status": "proposed",
           "evidence": [
             "https://cveawg.mitre.org/api/cve/CVE-2023-29389"
           ],
+          "human_reviewed": false,
           "id": "assertion:cve-cwe-instance",
           "reviews": []
         }
@@ -206,7 +208,10 @@
           "assertion:cve-cwe-instance"
         ],
         "assertion_status": "proposed",
-        "confidence": "medium"
+        "confidence": "medium",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "instance_of",
       "source": "vulnerability:cve-2023-29389",
@@ -308,9 +313,11 @@
           "assertion_status": "proposed",
           "confidence": "medium",
           "description": "AI-drafted from the write-up; awaits a human Review.",
+          "effective_status": "proposed",
           "evidence": [
             "https://kentindell.github.io/2023/04/03/can-injection/"
           ],
+          "human_reviewed": false,
           "id": "assertion:path-realizes-threat",
           "reviews": []
         }
@@ -328,7 +335,10 @@
           "assertion:path-realizes-threat"
         ],
         "assertion_status": "proposed",
-        "confidence": "medium"
+        "confidence": "medium",
+        "effective_assertion_status": "proposed",
+        "effective_review_status": null,
+        "human_reviewed": false
       },
       "relationship_type": "realizes_threat",
       "source": "attack-path:headlight-can-injection",

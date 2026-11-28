@@ -1,4 +1,9 @@
 {
+  "assets": [
+    "asset:home-connectivity",
+    "asset:others-services",
+    "asset:router-control"
+  ],
   "file": "pv-04-tp-link-archer-ax21.yaml",
   "reviewed_threats": [],
   "steps": 3,

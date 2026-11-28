@@ -3,6 +3,7 @@ from pathlib import Path
 
 import pytest
 import render_app
+import yaml
 
 
 def test_static_data_covers_every_model_and_the_complete_library(
@@ -21,6 +22,25 @@ def test_static_data_covers_every_model_and_the_complete_library(
         goals = json.loads((model_dir / "attack-paths/goals.json").read_text())["goals"]
         assert graph["file"] == model["file"]
         assert paths["file"] == model["file"]
+        risk = json.loads((model_dir / "risk.json").read_text())
+        assert risk["file"] == model["file"]
+        assert risk["matrix"] == "annex-h-table-h8"
+        assert risk["count"] == len(risk["assessments"])
+        assert all("recorded" in item for item in risk["assessments"])
+        for item in risk["assessments"]:
+            if item["damage_scenario"] is None or any(
+                problem.endswith("scope_mismatch") for problem in item["problems"]
+            ):
+                assert all(
+                    value is None
+                    for result in [item, *item["routes"]]
+                    for value in result["derived_risk"].values()
+                )
+        assert all(
+            "review_records" not in path
+            for item in risk["assessments"]
+            for path in item["paths"]
+        )
         assert len(goals) == len(paths["threats"])
         assert all(
             (model_dir / "attack-paths" / goal["file"]).is_file() for goal in goals
@@ -69,6 +89,40 @@ def test_static_data_is_byte_deterministic(tmp_path: Path) -> None:
     render_app.write_data(first)
     render_app.write_data(second)
     assert render_app._files(first) == render_app._files(second)
+
+
+@pytest.mark.parametrize("reviewer_kinds, reviewed", [(('software_agent',), False), (('person', 'person'), True)])
+def test_risk_snapshot_keeps_effective_review_without_private_review_records(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, reviewer_kinds, reviewed,
+) -> None:
+    source = render_app.core.APPROVED_VECTOR_DIRECTORY / "mvp-02-automotive-ecu.yaml"
+    doc = yaml.safe_load(source.read_text())
+    path = doc["attack_paths"][0]
+    threat = path["realizes_threat"]
+    doc["assertions"], doc["reviews"] = [], []
+    for index, kind in enumerate(reviewer_kinds):
+        reviewer = f"party:test-reviewer-{index}"
+        assertion = f"assertion:test-path-{index}"
+        doc["parties"].append({"id": reviewer, "party_kind": kind})
+        doc["assertions"].append({
+            "id": assertion, "subject": path["id"], "predicate": "realizes_threat",
+            "object": threat, "assertion_status": "accepted",
+        })
+        doc["reviews"].append({
+            "id": f"review:test-{index}", "reviews": assertion, "reviewer": reviewer,
+            "review_status": "accepted", "justification": "Private test review rationale",
+        })
+    models = tmp_path / "models"
+    models.mkdir()
+    file = models / source.name
+    file.write_text(yaml.safe_dump(doc))
+    monkeypatch.setattr(render_app.core, "APPROVED_VECTOR_DIRECTORY", models)
+    render_app.write_data(tmp_path / "published")
+    snapshot = tmp_path / "published/data/models" / file.stem / "risk.json"
+    rows = json.loads(snapshot.read_text())["assessments"]
+    assert next(row for row in rows if row["threat"] == threat)["path_reviewed"] is reviewed
+    assert "Private test review rationale" not in snapshot.read_text()
+    assert all("review_records" not in path for row in rows for path in row["paths"])
 
 
 def test_static_data_ignores_external_library_override(

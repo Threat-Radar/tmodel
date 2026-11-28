@@ -134,6 +134,9 @@ export function pathOptionLabel(row: PathRow): string {
 
 /** The one-line banner above the drawing: status, reviewer and what it means. */
 export function pathBannerText(row: PathRow): string {
+  if (row.status.kind === "accepted" && !row.status.reviewed) {
+    return "Human acceptance is not established. This path is not shown as reviewed.";
+  }
   const reviewers = row.status.reviewers.length > 0 ? ` by ${row.status.reviewers.join(", ")}` : "";
   switch (row.status.kind) {
     case "accepted":

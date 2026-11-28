@@ -10,6 +10,10 @@
         "review_status": null,
         "reviewed": false
       },
+      "step_phases": {
+        "attack-step:actuate-via-can": "exploitation",
+        "attack-step:reach-gateway-service": "delivery"
+      },
       "steps": [
         "attack-step:reach-gateway-service",
         "attack-step:use-default-creds",

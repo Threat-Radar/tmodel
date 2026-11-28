@@ -25,10 +25,13 @@ an interactive Knowledge Graph, and attack-path enumeration through the app,
 local API, and CLI. Example models include software services and automotive
 systems. The graph displays recorded accepted, rejected, and proposed states.
 
-The views are read-only. Report-first presentation and model selection are in
-review in [PR #211](https://github.com/Threat-Radar/tmodel/pull/211). Automatic
-risk calculation, requirement coverage, and review/authoring workflows remain
-under development. Ratings already present in example files are authored data.
+The views are read-only. In **Model report → Risk**, select the informative
+Annex H Table H.8 example profile and click **Calculate risk** to see the engine's
+per-category results, individual routes and unresolved inputs. Recorded ratings
+remain separate from calculated results; calculation does not approve a claim.
+The selected profile stays in place while switching models in the current
+session, and the calculation refreshes for the newly selected model.
+Requirement coverage and review/authoring workflows continue separately.
 
 ## Try it in five minutes
 
@@ -39,7 +42,8 @@ under development. Ratings already present in example files are authored data.
 2. Open the installer and copy `tmodel.app` to Applications. No Python, Node.js,
    or Rust installation is needed to run it.
 3. Open the app, wait for **connected to local engine**, and open the
-   **Knowledge Graph** tab to explore the example and highlight an attack path.
+   select an example model, then use **Model report**, **Attack paths**, or
+   **Explore graph**. The report's **Risk** section offers the calculation above.
 
 These are development prereleases for Apple Silicon Macs; Windows and Linux
 installers are not provided. Developer ID signing and notarization are pending.

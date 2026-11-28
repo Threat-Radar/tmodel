@@ -1,4 +1,12 @@
 {
+  "assets": [
+    "asset:admin-section",
+    "asset:baskets",
+    "asset:login-tokens",
+    "asset:shop-documents",
+    "asset:shopper-session",
+    "asset:user-accounts"
+  ],
   "file": "pv-03-owasp-juice-shop.yaml",
   "reviewed_threats": [],
   "steps": 13,

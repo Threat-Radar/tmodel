@@ -82,6 +82,9 @@ def test_reviewed_assertion_is_projected_as_semantic_edge():
     assert edge["assertions"][0]["reviews"][0]["id"] == "review:cve-cwe"
     assert edge["properties"] == {
         "assertion_ids": ["assertion:cve-cwe-instance"],
+        "human_reviewed": True,
+        "effective_assertion_status": "accepted",
+        "effective_review_status": "accepted",
         "assertion_status": "accepted",
         "confidence": "high",
         "assertion_descriptions": [
@@ -107,6 +110,9 @@ def test_proposed_assertion_keeps_its_review_verdict_on_the_edge():
     edge = next(edge for edge in result["edges"] if edge["id"] == edge_id)
     assert edge["properties"] == {
         "assertion_ids": ["assertion:ai-imds-pivot-realizes"],
+        "human_reviewed": False,
+        "effective_assertion_status": "proposed",
+        "effective_review_status": "changes_requested",
         "assertion_status": "proposed",
         "confidence": "low",
         "assertion_descriptions": [
@@ -342,6 +348,8 @@ def test_authored_and_multiple_assertion_provenance_coexist_on_one_edge():
     assert edge.assertions == (
         {
             "id": "assertion:first",
+            "human_reviewed": False,
+            "effective_status": "changes_requested",
             "assertion_status": "proposed",
             "confidence": "low",
             "description": "First basis.",
@@ -357,6 +365,8 @@ def test_authored_and_multiple_assertion_provenance_coexist_on_one_edge():
         },
         {
             "id": "assertion:second",
+            "human_reviewed": True,
+            "effective_status": "accepted",
             "assertion_status": "accepted",
             "confidence": "high",
             "description": "Second basis.",
@@ -373,6 +383,9 @@ def test_authored_and_multiple_assertion_provenance_coexist_on_one_edge():
     )
     assert edge.properties == {
         "assertion_ids": ["assertion:first", "assertion:second"],
+        "human_reviewed": False,
+        "effective_assertion_status": "accepted",
+        "effective_review_status": "changes_requested",
         "assertion_statuses": ["proposed", "accepted"],
         "assertion_confidences": ["low", "high"],
         "review_ids": ["review:first", "review:second"],

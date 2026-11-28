@@ -14,6 +14,7 @@ from typing import Any
 
 from engine.graph import AttackGraph, GraphError
 from engine.model_graph import project_model_graph
+from engine.relationships import effective_edges
 from engine.risk_routes import rated_routes
 
 MATRIX_ID = "annex-h-table-h8"
@@ -54,13 +55,21 @@ def assess_document(
     Computation neither accepts an assertion nor creates a human review.
     """
     _matrix(matrix)
-    project_model_graph(doc)  # duplicate ids and schema-backed references must resolve
+    projection = project_model_graph(doc)  # duplicate ids and schema-backed references must resolve
     graph = AttackGraph.from_dict(doc)
     threats = _records(doc, "threat_instances")
     damages = _records(doc, "damage_scenarios")
     paths = _records(doc, "attack_paths")
     scores = _records(doc, "risk_scores")
     parties = _records(doc, "parties")
+    linked_damages: dict[str, set[str]] = {}
+    for edge in effective_edges(doc, projection):
+        if (
+            edge.relationship_type == "realizes_damage"
+            and edge.source in threats
+            and edge.target in damages
+        ):
+            linked_damages.setdefault(edge.source, set()).add(edge.target)
     if goal is not None and goal not in threats:
         raise GraphError("unknown goal: expected a threat-instance id in this model")
 
@@ -73,10 +82,14 @@ def assess_document(
         if goal is not None and threat != goal:
             continue
         covered.add(threat)
-        assessments.append(_assessment(doc, graph, score, threat, damages, paths, parties, matrix))
+        assessments.append(
+            _assessment(doc, graph, score, threat, damages, paths, parties, matrix, linked_damages)
+        )
     for threat in threats:
         if threat not in covered and (goal is None or threat == goal):
-            assessments.append(_assessment(doc, graph, {}, threat, damages, paths, parties, matrix))
+            assessments.append(
+                _assessment(doc, graph, {}, threat, damages, paths, parties, matrix, linked_damages)
+            )
     return {"matrix": matrix, "count": len(assessments), "assessments": assessments}
 
 
@@ -102,6 +115,7 @@ def _assessment(
     paths: Mapping[str, Any],
     parties: Mapping[str, Any],
     matrix: str,
+    linked_damages: Mapping[str, set[str]],
 ) -> dict[str, Any]:
     problems: list[str] = []
     damage = score.get("damage_scenario")
@@ -109,8 +123,11 @@ def _assessment(
         problems.append("damage_scenario_missing")
     elif not isinstance(damage, str) or damage not in damages:
         raise GraphError("damage_scenario: expected a DamageScenario reference")
+    threat_damages = sorted(linked_damages.get(threat, ()))
     linked_damage = _records(doc, "threat_instances")[threat].get("realizes_damage")
-    if damage is not None and linked_damage is not None and damage != linked_damage:
+    if linked_damage is None and len(threat_damages) == 1:
+        linked_damage = threat_damages[0]
+    if damage is not None and damage not in threat_damages:
         problems.append("damage_scenario_scope_mismatch")
     stakeholder = score.get("for_stakeholder")
     if stakeholder is not None and (not isinstance(stakeholder, str) or stakeholder not in parties):
@@ -151,6 +168,7 @@ def _assessment(
     expected = {path.id for path in selected}
     if scope is not None and set(scope) != expected:
         problems.append("attack_path_scope_mismatch")
+    scope_valid = damage is not None and not any("scope_mismatch" in p for p in problems)
 
     ratings = {
         path.id: _optional_enum(
@@ -160,7 +178,9 @@ def _assessment(
     }
     routes = rated_routes(graph, threat, ratings) if selected else []
     for route in routes:
-        route["derived_risk"] = _derived(impact, route["feasibility"], matrix)
+        route["derived_risk"] = _derived(
+            impact, route["feasibility"] if scope_valid else None, matrix
+        )
         problems.extend(f"{route['id']}:{problem}" for problem in route["problems"])
 
     path_results = []
@@ -195,7 +215,7 @@ def _assessment(
                 "used_for_ratings": bool(owned),
                 "route_ids": [route["id"] for route in visible],
                 "alternatives": [route["steps"] for route in visible],
-                "derived_risk": _derived(impact, rating, matrix),
+                "derived_risk": _derived(impact, rating if scope_valid else None, matrix),
                 "review_records": _review_records(doc, path.id, threat),
                 "problems": path_problems,
             }
@@ -207,7 +227,6 @@ def _assessment(
         if all_routes_rated
         else None
     )
-    scope_valid = damage is not None and not any("scope_mismatch" in p for p in problems)
     derived = {
         category: risk_value(severity, feasibility, matrix=matrix)
         if severity is not None and feasibility is not None and scope_valid
@@ -218,6 +237,9 @@ def _assessment(
         "id": score.get("id"),
         "threat": threat,
         "damage_scenario": damage,
+        "threat_damage_scenario": linked_damage,
+        "threat_damage_scenarios": threat_damages,
+        "path_reviewed": graph.threat_reviewed(threat),
         "for_stakeholder": stakeholder,
         "feasibility": feasibility,
         "impact": impact,
