@@ -191,3 +191,14 @@ cd engine && TMODEL_UPDATE_FIXTURES=1 .venv/bin/pytest tests/test_review_fronten
 (SHA-256 `efd4750f6b61a8c2…`), its examples of every workspace operation and error, made
 by #288's own tests. #288 is not merged into this branch yet; once it is, the tests should
 read #288's file instead and this copy should go.
+
+`sbom-import-responses.json` holds answers of the engine's `POST /import/sbom` for the
+Import New Product screen, in that route's contract shape: a success, a success with a
+platform warning, and a refusal. Their model and report texts, counts, warning and refusal
+message are the #257 importer's own output for its `alpine-3.24.2` test files, from
+`import_sbom.build()` with `--platform linux/arm64/v8`, `linux/amd64`, and no scan or
+platform; `counts.assertions` is `match_assertions + cwe_assertions`, as the route adds it,
+and `product` and `suggested_name` are the values the route's contract example gives for
+this image. The importer is not on this branch, so no test here regenerates them. The model
+texts were made again from #268's 55a5f40, whose ids end in 16 hex digits of their keys'
+SHA-256 where they had 8; nothing else in them changed.
