@@ -4,9 +4,9 @@ id: DL-0011-lane-agentic-mcp
 title: "RPT-0014 agentic/MCP WAVE 1 bibliography completion (#78)"
 type: process
 status: draft
-version: "0.1.1"
+version: "0.1.2"
 date: "2026-11-25"
-updated: "2026-11-26"
+updated: "2026-11-28"
 record: RPT-0014
 issue: 78
 defers_to: ARCH-0001
@@ -51,8 +51,9 @@ submodule and its pin are unchanged. The implementation is in the library branch
    entries as locators. Compared source identities against all existing library
    records and the 1,181-entry `sources.md` corpus before ingestion.
 4. Recorded 147 distinct first-hop works in 190 citation edges. After review
-   corrections these comprise nine held records, 59 corpus works, 77 new
-   bibliography stubs and two pending canonical records owned by
+   corrections and resolution of merged references these comprise 12 held
+   records, 58 corpus works and 77 new bibliography stubs. Three newly held
+   citations resolve to canonical records delivered in merged
    [library#51](https://github.com/Threat-Radar/library/pull/51). `cites` records
    source facts. Reverse library `cited_by` links are removed to follow the
    library reference policy; the conflicting instruction in `LANES.md` is
@@ -146,10 +147,44 @@ combined 1,045 records validate with zero errors and the same 99 warnings;
 the two cross-lane arXiv duplicates no longer add warnings. The check does
 not modify the peer branch.
 
-The earlier tmodel head `368b5e4` passed hosted CI. The companion library head
-`7390bfa` had no hosted runs: GitHub paused this fork's Actions because of usage
-volume, and a maintainer must restore them. The review follow-up is locally
-validated pending push authorization; it does not yet have fresh hosted CI.
+The reviewed tmodel head `2ec7cf4` passed all six named hosted CI checks.
+@Clovier approved both that head and companion library head `4dc474e` on
+2026-11-27. That library head still has no hosted results, but Actions were
+restored under [#283](https://github.com/Threat-Radar/tmodel/issues/283):
+library#55 passed `validate` and `dco`. The old pause is historical, not a reason
+to omit fresh checks after a push.
+
+## Final bibliography follow-up — 2026-11-28
+
+Merged current `main` into both branches without changing the tmodel library
+pin. Library#51 has now merged, so the pending citations for arXiv 2305.13860
+and 2306.08833 resolve to its permanent ids. The same identity check found
+Brundage's report, arXiv 1802.07228 / S-0726, now held in that merged work;
+Liu's survey citation also resolves to its id. No target record is modified.
+Original cited titles, locators, capture limitations and existing reviews remain
+unchanged. The audit now has 12 held works, 58 corpus works and 77 new stubs:
+147 works / 190 edges, with zero pending PR references.
+
+The combined library has 1,045 records (404 written, 641 scaffold,
+42 fully extracted), 25 topics, zero errors and the same 99 warnings. Current
+`main` supplies the other lanes' records; this PR still adds only 77 stubs.
+The earlier isolated merge experiment is superseded by the actual merge.
+The five reviewer signatures tracked by #284 are still absent. The three
+corrections requested on library#22 are present; their later confirmation is
+linked on that PR. No `reviewed_by` value is inferred or authored here.
+@paria03's reciprocal five-record review is complete under #285.
+
+Local verification of this follow-up passes: 15 YAML reader tests,
+53 requirements files, 181 artifact files (zero errors and 38 existing
+warnings), export/reindex, 1,045 bibliography entries and the extraction gate.
+The evidence audit reconciles all 20 source records, 190 citations, 77 owned
+stubs and 97 topic members; source metadata, digests and review fields are
+unchanged. The architecture check passes (29 documents, zero errors), as do
+whitespace checks in both repos.
+
+Check the latest exact-head CI results on library#53 and tmodel#271 before
+merging. The earlier approval and CI status above apply to their named commits
+only; merge the library PR before this companion note.
 
 ## Issue status and next stage
 
@@ -162,7 +197,9 @@ open. This pass does not declare that gate passed.
 Later WAVE 2 work remains the six extraction units listed on #78, their complete
 file sets and reconciled `verify.md` files, the required news sweep, and real
 review-partner signatures. Neither the calibration comparison nor another
-person's review duty is silently assigned a completion status here.
+person's review duty is silently assigned a completion status here. The required
+five-source signature has its own owner and issue (#284); it is not an untracked
+implementation task for @paria03.
 
 Publication should use **Part of #78**, not **Closes #78**. No issue checkboxes,
 PR comments, source reviews or acceptance decisions were posted by this pass.
