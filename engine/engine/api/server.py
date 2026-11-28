@@ -130,17 +130,14 @@ class EngineHandler(BaseHTTPRequestHandler):
         app's origins whether or not the route is enabled, so that the app reads the
         POST's `not_enabled` rather than a failed request."""
         headers = PREFLIGHT_HEADERS.get(self.path)
-        if (
-            headers is None
-            or self.headers.get("Origin") not in ALLOWED_ORIGINS
-            or not self._local_host()
-        ):
+        origin = self.headers.get("Origin")  # read once: the value checked is the one sent
+        if headers is None or origin not in ALLOWED_ORIGINS or not self._local_host():
             self._send_json(
                 403, {"error": {"code": "permission_denied", "message": "Forbidden preflight."}}
             )
             return
         self.send_response(204)
-        self.send_header("Access-Control-Allow-Origin", self.headers["Origin"])
+        self.send_header("Access-Control-Allow-Origin", origin)
         self.send_header("Vary", "Origin")
         self.send_header("Access-Control-Allow-Methods", "POST")
         self.send_header("Access-Control-Allow-Headers", headers)

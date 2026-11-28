@@ -2258,8 +2258,10 @@ def test_an_sbom_with_no_package_for_the_platforms_architecture_imports_with_a_w
         "weaknesses": 9,
         "match_assertions": 30,
         "cwe_assertions": 15,
+        "assertions": 45,
         "parties": 4,
     }
+    assert len(doc["assertions"]) == result.counts["assertions"]
     note = (
         "none of the SBOM's packages is built for amd64, though the platform is linux/amd64 "
         "(from --platform); they say arch=x86 (16 Components). Every package is kept as a "

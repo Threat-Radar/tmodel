@@ -34,8 +34,19 @@ _MAX_ENCODED = 4 * -(-MAX_FILE_BYTES // 3)  # a file of that size in base64
 MAX_BODY_BYTES = 2 * _MAX_ENCODED + 64 * 1024  # two such files, their names, the platform
 # A request is three small objects whose bulk is base64, which has no brackets or commas.
 # Counting brackets and commas before parsing bounds how many values parsing can make: a
-# body of nested or long lists would otherwise take many times its size.
+# body of nested or long lists would otherwise take many times its size. Only those
+# outside strings count, so a file name or platform may hold any number of them.
 MAX_STRUCTURE = 64
+# A real request has about two dozen quotes, and any its two file names hold (a Mac's
+# names have at most 255 characters). Each string the count finds costs a little memory,
+# so a body of nothing but quotes is refused before the strings are looked for.
+MAX_QUOTES = 1024
+# A JSON string, from its opening quote to its closing one, or to the end of the body
+# when it has none (parsing stops there). Nothing after the quote can fail to match, so
+# the search never backtracks and stays linear, even on a body of escaped quotes. The
+# quantifiers are possessive (Python 3.11): without that, the search keeps a step to go
+# back to for every escape, about 90 bytes of memory for each byte of escapes.
+_STRING = re.compile(r'"[^"\\]*+(?:\\[\s\S]?[^"\\]*+)*+"?')
 READ_SECONDS = 30  # for the whole body, not for each read
 WAIT_SECONDS = 60  # for an import that is already running
 MODEL_FILE = "original.yaml"  # the file the model becomes in a project (#288)
@@ -141,18 +152,32 @@ def _upload(value: Any, field: str, label: str) -> import_sbom.Upload | None:
     return import_sbom.Upload(_base_name(value.get("name", ""), f"{field}.json"), data)
 
 
+def structure(text: str) -> int:
+    """The brackets and commas of a JSON text outside its strings: what can make the
+    values parsing builds. Parsing reads strings as this does, so none is hidden."""
+    bare = _STRING.sub('""', text)
+    return bare.count("{") + bare.count("[") + bare.count(",")
+
+
 def parse_request(
     body: bytes,
 ) -> tuple[import_sbom.Upload, import_sbom.Upload | None, str | None]:
     """The SBOM, the scan (or None) and the platform (or None) a request body names,
     or ImportRouteError for anything but exactly that."""
-    if body.count(b"{") + body.count(b"[") + body.count(b",") > MAX_STRUCTURE:
+    try:
+        # UTF-8 only (RFC 8259 §8.1), as the app sends, with or without a byte order mark,
+        # as json reads it: json would also read UTF-16 and UTF-32, whose bytes the
+        # structure count could not read as parsing does.
+        text = body.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        raise invalid("The request body must be JSON in UTF-8.") from None
+    if text.count('"') > MAX_QUOTES or structure(text) > MAX_STRUCTURE:
         raise invalid("Send only the SBOM, the scan and the platform.")
     try:
-        payload = json.loads(body, object_pairs_hook=_pairs, parse_constant=_constant)
+        payload = json.loads(text, object_pairs_hook=_pairs, parse_constant=_constant)
     except _Repeated as exc:
         raise invalid(f"The key {exc.args[0][:40]!r} appears twice in one object.") from None
-    except (ValueError, RecursionError):  # not JSON, not UTF-8, or NaN
+    except (ValueError, RecursionError):  # not JSON, or NaN
         raise invalid("The request body is not JSON.") from None
     if not isinstance(payload, dict):
         raise invalid("The request body must be a JSON object.")

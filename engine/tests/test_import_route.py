@@ -10,6 +10,7 @@ import struct
 import tempfile
 import threading
 import time
+import tracemalloc
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -140,6 +141,17 @@ def test_an_sbom_alone_imports_without_vulnerabilities(enabled):
     assert body["counts"]["components"] == 17 and body["counts"]["vulnerabilities"] == 0
 
 
+@pytest.mark.parametrize(("scan", "total"), [(True, 45), (False, 0)])
+def test_the_counts_give_every_assertion_and_both_kinds(enabled, scan, total):
+    # The Import New Product screen shows counts.assertions (#296); kriishnaa-18's review.
+    status, _, body = post(enabled, upload(scan=scan))
+    assert status == 200
+    counts = body["counts"]
+    assert counts["assertions"] == total
+    assert counts["assertions"] == counts["match_assertions"] + counts["cwe_assertions"]
+    assert len(yaml.safe_load(body["model_text"]).get("assertions", [])) == total
+
+
 @pytest.mark.parametrize(
     ("payload", "message", "field"),
     [
@@ -213,6 +225,75 @@ def test_a_name_full_of_brackets_and_commas_still_imports(enabled):
     payload = upload()
     payload["sbom"]["name"] = "sbom" + "[" * 20 + ", final, v2.json"
     status, _, body = post(enabled, payload)
+    assert status == 200 and body["counts"]["components"] == 17
+
+
+def test_names_with_more_commas_than_the_limit_still_import(enabled):
+    # kriishnaa-18's review: a name with 62 commas was refused, as the count took in
+    # strings. Only brackets and commas outside strings count now.
+    payload = upload()
+    payload["sbom"]["name"] = "sbom" + "," * 62 + ".json"
+    payload["scan"]["name"] = "scan" + '{[,\\"' * 40 + ".json"
+    assert import_route.structure(json.dumps(payload)) <= import_route.MAX_STRUCTURE
+    status, _, body = post(enabled, payload)
+    assert status == 200 and body["counts"]["components"] == 17
+
+
+@pytest.mark.parametrize(
+    ("text", "count"),
+    [
+        ('{"a": "x,y[", "b": [1, 2]}', 4),
+        (r'{"a": "q\"[,", "b": {}}', 3),  # an escaped quote does not end the string
+        (r'{"a": "\\", "b": [1, 2]}', 4),  # an escaped backslash does not escape the quote
+        (r'{"a": "\u0022,[", "b": 1}', 2),
+        ('{"a": "no end, [[[', 1),  # parsing stops at a string with no end
+    ],
+)
+def test_the_structure_count_reads_strings_as_parsing_does(text, count):
+    assert import_route.structure(text) == count
+
+
+def test_structure_after_a_string_with_escaped_quotes_still_counts(enabled):
+    raw = b'{"sbom": {"name": "a\\",", "base64": "e30="}, "x": [' + b"0," * 100 + b"0]}"
+    status, _, body = post(enabled, None, raw=raw)
+    assert status == 422 and "Send only" in error(body)[1]
+
+
+@pytest.mark.parametrize(
+    "raw", [b'"' + b'\\"' * 2_000_000, b'"' * 4_000_000], ids=["escaped", "bare"]
+)
+def test_a_body_of_quotes_is_refused_before_strings_are_looked_for(enabled, raw):
+    status, _, body = post(enabled, None, raw=raw)
+    assert status == 422 and "Send only" in error(body)[1]
+
+
+@pytest.mark.parametrize(
+    "text",
+    ['"' + '\\"' * 500_000, '"' + "\\\\" * 500_000, '{"a": "' + "\\n" * 500_000 + '"}'],
+    ids=["escaped quotes", "escaped backslashes", "other escapes"],
+)
+def test_the_structure_count_keeps_its_memory_flat(text):
+    # The second Claude Code review: a pattern that could backtrack kept about 90 bytes
+    # for each byte of escapes (97 MB on this 1 MB), which at 179 MB would freeze a Mac.
+    tracemalloc.start()
+    try:
+        import_route.structure(text)
+        peak = tracemalloc.get_traced_memory()[1]
+    finally:
+        tracemalloc.stop()
+    assert peak < len(text)
+
+
+@pytest.mark.parametrize("encoding", ["utf-16", "utf-32"])
+def test_only_utf_8_is_read(enabled, encoding):
+    # json reads UTF-16 and UTF-32 as well, but the structure count reads UTF-8 only.
+    status, _, body = post(enabled, None, raw=json.dumps(TINY).encode(encoding))
+    assert status == 422 and error(body)[0] == "validation_error"
+    assert "must be JSON in UTF-8" in error(body)[1]
+
+
+def test_a_byte_order_mark_is_read_past(enabled):
+    status, _, body = post(enabled, None, raw=b"\xef\xbb\xbf" + json.dumps(upload()).encode())
     assert status == 200 and body["counts"]["components"] == 17
 
 

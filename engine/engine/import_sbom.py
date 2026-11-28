@@ -2057,6 +2057,9 @@ class _Builder:
             "weaknesses": len(self.weaknesses),
             "match_assertions": len(self.matches),
             "cwe_assertions": len(self.cwe_links),
+            # Every Assertion the model holds: one for each match and each CWE link
+            # (_match_assertions, _cwe_assertions), the two counts above.
+            "assertions": len(self.matches) + len(self.cwe_links),
             "parties": len(self.parties),
         }
 
@@ -2397,7 +2400,7 @@ class _Report:
             f"1 Product, 1 ProductInstance, {counts['components']} Components, "
             f"{counts['vulnerabilities']} Vulnerabilities, {counts['weaknesses']} Weaknesses, "
             f"{counts['parties']} Parties and "
-            f"{counts['match_assertions'] + counts['cwe_assertions']} Assertions "
+            f"{counts['assertions']} Assertions "
             f"({counts['match_assertions']} package matches, {counts['cwe_assertions']} CWE "
             "links). Every Assertion is proposed, and no Review is recorded (R-018). No "
             "assets, trust boundaries, data flows, threats, attack paths or mitigations: "

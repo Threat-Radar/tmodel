@@ -4,9 +4,9 @@ id: DL-0078
 title: "Import New Product: the engine route that runs tmodel import-sbom for the app (#287)"
 type: process
 status: draft
-version: "0.2.0"
+version: "0.3.0"
 date: "2026-11-27"
-updated: "2026-11-27"
+updated: "2026-11-28"
 record: DL-0078
 human_owner: Clovier
 bears_on: [ADR-0003]
@@ -29,11 +29,11 @@ engine offer that screen?
   the SBOM and, if the user has one, of a Grype scan of the same image, each in base64 with
   its file name, and an optional platform (`OS/ARCH[/VARIANT]`). The engine runs
   `import_sbom.build` on those bytes in memory and answers with the model and the import
-  report as text, the counts, every warning, the settled platform, the product (the image's
-  repository) and a suggested name. Nothing is written to disk. The app then starts a project
-  from the model through the host (#288: the host saves the text, opens it with openFile and
-  creates the project from it), and the model becomes the project's `original.yaml`, so the
-  model's header names that file.
+  report as text, the counts (every Assertion, and each kind of them), every warning, the
+  settled platform, the product (the image's repository) and a suggested name. Nothing is
+  written to disk. The app then starts a project from the model through the host (#288: the
+  host saves the text, opens it with openFile and creates the project from it), and the model
+  becomes the project's `original.yaml`, so the model's header names that file.
 - `engine/engine/import_sbom.py`: `Upload`, a file's name and bytes. `build` takes one in place
   of a path, with the same checks, and gives the same model, report and refusals for the same
   name and bytes. `ImportResult` also carries `product` and `platform`.
@@ -46,7 +46,7 @@ engine offer that screen?
   The importer's `-o` help now suggests an `im-` file name (#281).
 - `design-log/0068-sbom-import/README.md`: its line saying the API has no route to the import
   now points here.
-- `engine/tests/test_import_route.py`: 51 tests, 45 of them on a real local server, and 7 in
+- `engine/tests/test_import_route.py`: 68 tests, 54 of them on a real local server, and 7 in
   `engine/tests/test_import_sbom.py` for `Upload`.
 - This entry.
 
@@ -75,8 +75,8 @@ engine offer that screen?
   `base64`; a repeated key or NaN is refused. Base64 has no brackets or commas, so a real
   request holds only a few. The body may hold at most 64 of them in all, counted before
   parsing, so parsing makes at most a few dozen values, and a crafted body of nested or long
-  lists cannot make it take many times its size. The count covers file names too, so a file
-  name with more than about 55 brackets and commas in all is refused.
+  lists cannot make it take many times its size. Only those outside strings count (from
+  kriishnaa-18's review, below), so a file name or platform may hold any number of them.
 - **One import at a time.** An import can hold hundreds of MB. A second waits up to 60 seconds
   for the first, then is answered `busy`. A client that stalls holds the slot until its
   30-second deadline, so a local process could keep the route busy.
@@ -123,9 +123,72 @@ route (`EngineHandler.handle`), and this route stops reading without answering. 
 `test_a_client_that_resets_part_way_through_its_body_is_let_go_quietly`, for this route and a
 workspace route; both cases failed on `d4fb812`.
 
+## kriishnaa-18's review (2026-11-28)
+
+kriishnaa-18 ran the route with the source engine and the packaged macOS engine, and asked for
+one change, with one smaller point. CodeQL flagged a third.
+
+- **The total of Assertions.** `counts` gave `match_assertions` and `cwe_assertions` but not
+  their total, so #296's screen, which shows `components`, `vulnerabilities`, `weaknesses` and
+  `assertions` first, showed "Not reported". `counts.assertions` is now the total, beside both
+  parts. Each match and each CWE link writes one Assertion (`_match_assertions`,
+  `_cwe_assertions`), so the sum is every Assertion the model holds, and the import report
+  uses the same count. Tests: `test_the_counts_give_every_assertion_and_both_kinds`, 45 with
+  the alpine scan and 0 without, each checked against the model's own `assertions` list; the
+  importer's exact counts test in `test_import_sbom.py` now includes the total and checks it
+  the same way. All three failed before this change.
+- **Brackets and commas in names.** A name with 62 commas was refused, because the structure
+  count took in strings. Only brackets and commas outside strings count now
+  (`import_route.structure`). The count finds the strings with one pattern that never
+  backtracks: a string runs to its closing quote, or to the end of the body when it has none,
+  where parsing stops too.
+  - A simpler pattern, which needs the closing quote, was rejected: it took 4 seconds on a
+    40,000-character body of escaped quotes, and its time grows with the square of the length.
+  - The pattern's quantifiers are possessive (Python 3.11; the engine needs 3.11 or later).
+    Without that, the search keeps a step to go back to for every escape. A second review of
+    this change, by another Claude Code agent, found it: 808 MB at its peak for a 9 MB body of
+    escaped quotes, and 889 MB for escaped backslashes, about 90 bytes for each byte, so a
+    179 MB body would have needed some 16 GB and could freeze the Mac. With possessive
+    quantifiers both stay flat, and the counts are the same: the review compared the two
+    patterns on 300,000 random texts.
+  - A body may hold at most 1,024 quote characters (`MAX_QUOTES`), checked before the strings
+    are looked for: a real request has about two dozen, and any its two file names hold. Each
+    string found costs a little memory, and a body of bare quotes took 2.3 seconds and 360 MB
+    at 36 MB, while the import slot was held.
+  - This reads a 179 MB request (two 64 MiB files) in under a second.
+  - The body is read as UTF-8 only (RFC 8259 §8.1, and what the app sends), with or without a
+    byte order mark, as before. `json` also reads UTF-16 and UTF-32, whose bytes the count
+    would not read as parsing does; such a body is now answered "The request body must be
+    JSON in UTF-8." So is one with an encoded lone surrogate, which `json` read before and
+    which no file name or base64 needs.
+
+  Tests: a name with 62 commas, and one with escaped quotes and brackets, import; five texts
+  are counted as parsing reads them; structure after an escaped quote still counts; bodies of
+  2 million escaped quotes and of 4 million bare quotes are refused before the strings are
+  looked for; the count's memory, traced, stays below the size of 1 MB texts of escaped
+  quotes, escaped backslashes and other escapes; UTF-16 and UTF-32 bodies are refused; a byte
+  order mark is read past. Each failed before this change, or with the pattern or the quote
+  limit put back as they were (the memory tests saw 97 MB), except the escaped-quote
+  structure test and the byte order mark, which pass on both and guard against a change.
+
+  The second review also checked, and found right: that the count never sees fewer brackets
+  and commas than parsing can reach (the 300,000 texts, against `json`'s own string reader);
+  that `counts.assertions` matches the model's `assertions` list in all 437 imports the route
+  and importer tests run, and with hand-made scans; the preflight, with the route on and off;
+  and that every header built from a request is checked against the list of the app's
+  origins.
+- **CodeQL's HTTP response splitting alert** on the preflight (`server.py`): it checked one
+  read of the `Origin` header and sent a second read. It now reads the header once and sends
+  the value it checked, as the workspace routes and the engine's other answers already do.
+  Only the app's origins were ever sent back, so no answer changes.
+
+The review's integration requirements are for the integration changes, as it says, and are
+listed under Follow-ups.
+
 ## How it was checked
 
-- `engine/tests/test_import_route.py` (51 tests):
+- `engine/tests/test_import_route.py` (68 tests; the 17 added for kriishnaa-18's review are
+  listed in that section):
   - **Switched off by default:** a POST is answered `503 not_enabled`.
   - **The fixture's answer:** the model and report equal the command line's byte for byte, with
     each file's own digest, and the counts, platform, product and name come back.
@@ -197,3 +260,8 @@ workspace route; both cases failed on `d4fb812`.
 - One switch for the import route, #288's workspace and #289's review operations, once all three
   have landed.
 - A read deadline for request headers, on every route of the server.
+- From kriishnaa-18's review, for the integration changes: reconcile `server.py` and `cli.py`
+  with #291, keeping the route dispatch, the checks and both switches; the launcher passes
+  `--enable-import` with `--projects`; the app checks that the engine on its port is its own
+  before sending a file; and the whole native workflow is tested, from importing a product to
+  a project, a human review, the risk recalculated and a saved version.
