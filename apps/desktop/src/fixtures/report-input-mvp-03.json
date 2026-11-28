@@ -12,6 +12,9 @@
       "review_status": null,
       "reviewed": false
      },
+     "step_phases": {
+      "attack-step:call-fleet-api": "exploitation"
+     },
      "steps": [
       "attack-step:forge-jwt-none-alg",
       "attack-step:call-fleet-api"
@@ -24,6 +27,9 @@
       "assertion_status": null,
       "review_status": null,
       "reviewed": false
+     },
+     "step_phases": {
+      "attack-step:call-fleet-api": "exploitation"
      },
      "steps": [
       "attack-step:forge-jwt-weak-key",
@@ -44,6 +50,10 @@
       "review_status": "changes_requested",
       "reviewed": false
      },
+     "step_phases": {
+      "attack-step:call-fleet-api": "exploitation",
+      "attack-step:chain-to-in-vehicle": "lateral_movement"
+     },
      "steps": [
       "attack-step:forge-jwt-none-alg",
       "attack-step:call-fleet-api",
@@ -57,6 +67,10 @@
       "assertion_status": "proposed",
       "review_status": "changes_requested",
       "reviewed": false
+     },
+     "step_phases": {
+      "attack-step:call-fleet-api": "exploitation",
+      "attack-step:chain-to-in-vehicle": "lateral_movement"
      },
      "steps": [
       "attack-step:forge-jwt-weak-key",
@@ -77,6 +91,10 @@
       "assertion_status": null,
       "review_status": null,
       "reviewed": false
+     },
+     "step_phases": {
+      "attack-step:actuate-via-can": "exploitation",
+      "attack-step:reach-gateway-service": "delivery"
      },
      "steps": [
       "attack-step:reach-gateway-service",
@@ -437,7 +455,9 @@
       "assertion_status": "proposed",
       "confidence": "low",
       "description": "AI-PROPOSED edge. assertion_status `proposed` (NOT accepted); a hypothesis until a human accepts it. The paired Review requests changes.",
+      "effective_status": "changes_requested",
       "evidence": [],
+      "human_reviewed": false,
       "id": "assertion:ai-cross-subsystem",
       "reviews": [
        {
@@ -460,6 +480,9 @@
      ],
      "assertion_status": "proposed",
      "confidence": "low",
+     "effective_assertion_status": "proposed",
+     "effective_review_status": "changes_requested",
+     "human_reviewed": false,
      "review_ids": [
       "review:ai-cross-subsystem"
      ],
@@ -823,7 +846,9 @@
       "assertion_status": "accepted",
       "confidence": "high",
       "description": "Reviewed propagation edge (\u00a75), reified so a Review can point at it.",
+      "effective_status": "accepted",
       "evidence": [],
+      "human_reviewed": true,
       "id": "assertion:vuln-propagation",
       "reviews": [
        {
@@ -846,6 +871,9 @@
      ],
      "assertion_status": "accepted",
      "confidence": "high",
+     "effective_assertion_status": "accepted",
+     "effective_review_status": "accepted",
+     "human_reviewed": true,
      "review_ids": [
       "review:vuln-prop"
      ],
@@ -867,7 +895,9 @@
       "assertion_status": "accepted",
       "confidence": "high",
       "description": "The CVE-to-CWE step of the ADR-0002 backbone (CVE, CWE, CAPEC, ATT&CK). Vulnerability has no Weakness slot, so the link is reified, with the predicate ARCH-0001 \u00a73 and PLAN-0002 \u00a75 name (RPT-0004 mapping.md, finding 7). In a real import the CWE comes from the CVE record and stays proposed until a human reviews it (R-018).",
+      "effective_status": "accepted",
       "evidence": [],
+      "human_reviewed": true,
       "id": "assertion:cve-cwe-instance",
       "reviews": [
        {
@@ -890,6 +920,9 @@
      ],
      "assertion_status": "accepted",
      "confidence": "high",
+     "effective_assertion_status": "accepted",
+     "effective_review_status": "accepted",
+     "human_reviewed": true,
      "review_ids": [
       "review:cve-cwe"
      ],
@@ -911,7 +944,9 @@
       "assertion_status": "accepted",
       "confidence": "high",
       "description": "Human-reviewed CWE\u2194CAPEC mapping (\u00a72).",
+      "effective_status": "accepted",
       "evidence": [],
+      "human_reviewed": true,
       "id": "assertion:cwe-capec-map",
       "reviews": [
        {
@@ -934,6 +969,9 @@
      ],
      "assertion_status": "accepted",
      "confidence": "high",
+     "effective_assertion_status": "accepted",
+     "effective_review_status": "accepted",
+     "human_reviewed": true,
      "review_ids": [
       "review:cwe-capec"
      ],
@@ -955,7 +993,9 @@
       "assertion_status": "accepted",
       "confidence": "high",
       "description": "Reviewed roll-up edge from a subsystem threat to the system-level damage (\u00a78 V3).",
+      "effective_status": "accepted",
       "evidence": [],
+      "human_reviewed": true,
       "id": "assertion:rollup-in-vehicle",
       "reviews": [
        {
@@ -978,6 +1018,9 @@
      ],
      "assertion_status": "accepted",
      "confidence": "high",
+     "effective_assertion_status": "accepted",
+     "effective_review_status": "accepted",
+     "human_reviewed": true,
      "review_ids": [
       "review:rollup-in-vehicle"
      ],
@@ -999,7 +1042,9 @@
       "assertion_status": "accepted",
       "confidence": "high",
       "description": null,
+      "effective_status": "accepted",
       "evidence": [],
+      "human_reviewed": true,
       "id": "assertion:rollup-cloud",
       "reviews": [
        {
@@ -1019,6 +1064,9 @@
      ],
      "assertion_status": "accepted",
      "confidence": "high",
+     "effective_assertion_status": "accepted",
+     "effective_review_status": "accepted",
+     "human_reviewed": true,
      "review_ids": [
       "review:rollup-cloud"
      ],

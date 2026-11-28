@@ -434,8 +434,11 @@ INVALID = [
     (lambda d: {**d, "colours": []}, "colours"),
     (lambda d: {**d, "parties": {"id": "party:x"}}, "parties"),
     (lambda d: _set(d, "attack_paths", "steps", ["attack-step:missing"]), "model"),
-    (lambda d: _set(d, "attack_steps", "gate", "xor_gate"), "model"),
-    (lambda d: _set(d, "attack_paths", "attack_feasibility", "certain"), "model"),
+    (lambda d: _set(d, "attack_steps", "gate", "xor_gate"), "attack_steps[0].gate"),
+    (
+        lambda d: _set(d, "attack_paths", "attack_feasibility", "certain"),
+        "attack_paths[0].attack_feasibility",
+    ),
     (lambda d: _set(d, "risk_scores", "weight", float("nan")), "risk_scores[0].weight"),
     (lambda d: _set(d, "attack_paths", "steps", ("attack-step:example",)), "attack_paths[0].steps"),
     (lambda d: _set(d, "parties", 1, "a number as a key"), "parties[0]"),
@@ -964,21 +967,62 @@ def test_with_linkml_every_example_and_a_review_save_pass_the_schema_check(tmp_p
 
 
 @needs_linkml
-def test_linkml_catches_what_the_engine_checks_alone_do_not(monkeypatch, tmp_path):
+def test_linkml_and_the_bundled_check_catch_what_the_engine_checks_alone_do_not(
+    monkeypatch, tmp_path
+):
     use_examples(monkeypatch, tmp_path)
-    for strict in (True, False):
+    for strict, field in ((True, "attack_paths[0]"), (False, "attack_paths[0].colour")):
         ws = ProjectWorkspace(schema_check=strict)
         model_id = ws.create_project(projects(tmp_path) / str(strict), source_file=EXAMPLE)[
             "model_id"
         ]
         candidate = deepcopy(ws.read(model_id, "v001").document)
         candidate["attack_paths"][0]["colour"] = "red"  # not a slot of AttackPath
-        if strict:
-            error = raises("validation_error", ws.save_version, model_id, "v001", candidate)
-            assert error.field == "attack_paths[0]"
-            assert "ExampleModelProposed" in error.message
-        else:
-            assert ws.save_version(model_id, "v001", candidate) == "v002"
+        error = raises("validation_error", ws.save_version, model_id, "v001", candidate)
+        assert error.field == field
+        assert "ExampleModelProposed" in error.message
+
+
+# What the engine's own checks do not read, the bundled schema check does (DL-0081): each
+# of these was saved as v002 without LinkML before it, and linkml-validate rejects each.
+SCHEMA_ONLY = [
+    (lambda d: _set(d, "attack_paths", "colour", "red"), "attack_paths[0].colour"),
+    (lambda d: _set(d, "parties", "party_kind", 3), "parties[0].party_kind"),
+    (
+        lambda d: {**d, "reviews": [{"id": "review:x", "review_status": "maybe"}]},
+        "reviews[0].reviews",
+    ),
+]
+
+
+@pytest.mark.parametrize(("change", "field"), SCHEMA_ONLY)
+def test_without_linkml_the_bundled_schema_check_refuses_the_save(project, change, field):
+    ws, model_id, folder = project
+    assert ws.schema_check is False
+    candidate = change(ws.read(model_id, "v001").document)
+    before = snapshot(folder)
+    error = raises("validation_error", ws.save_version, model_id, "v001", candidate)
+    assert error.field == field
+    assert error.message.startswith("Schema check (ExampleModelProposed): ")
+    assert snapshot(folder) == before
+    assert ws.list_models()["schema_validation"] is True
+
+
+def test_a_missing_object_model_fails_at_start(monkeypatch, tmp_path):
+    # The containers import ../schema/tmodel-object-model.linkml.yaml: a bundle without
+    # it must not start with saves unchecked.
+    vectors = tmp_path / "spec" / "vectors"
+    vectors.mkdir(parents=True)
+    for name in CONTAINER_FILES.values():
+        shutil.copyfile(VECTORS / name, vectors / name)
+    monkeypatch.setattr(model_workspace, "SCHEMA_DIRECTORY", vectors)
+    with pytest.raises(ValueError, match="object model"):
+        ProjectWorkspace(schema_check=False)
+
+
+def test_the_packaged_engine_bundles_the_object_model():
+    build = (VECTORS.parent.parent / "bin" / "build-engine").read_text(encoding="utf-8")
+    assert '"$PWD/spec/schema/tmodel-object-model.linkml.yaml:spec/schema"' in build
 
 
 # The way #289 uses the interface

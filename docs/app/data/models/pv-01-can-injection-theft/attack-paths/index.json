@@ -1,4 +1,8 @@
 {
+  "assets": [
+    "asset:key-validated-message",
+    "asset:vehicle"
+  ],
   "file": "pv-01-can-injection-theft.yaml",
   "reviewed_threats": [],
   "steps": 5,

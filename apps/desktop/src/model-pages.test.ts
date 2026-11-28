@@ -131,7 +131,7 @@ describe("published example-model pages (docs/models/)", () => {
         "Threats and their review status",
         "Attack paths: how each threat could be carried out",
         "Mitigations: what is done about the threats",
-        "Risk: how likely and how bad, per threat",
+        "Recorded risk assessments",
       ];
       const positions = wanted.map((caption) => captions.indexOf(caption));
       expect(positions.every((position) => position > -1)).toBe(true);

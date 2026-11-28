@@ -16,6 +16,9 @@ export interface GraphAssertionProvenance {
   description: string | null;
   evidence: readonly string[];
   reviews: readonly GraphAssertionReviewProvenance[];
+  /** Engine evidence; optional only for older snapshots. Raw statuses stay intact. */
+  human_reviewed?: boolean;
+  effective_status?: string;
 }
 
 export interface GraphNode {
@@ -88,6 +91,8 @@ export interface AttackPathResult {
   steps: string[];
   goal_step: string;
   authored_path?: string;
+  threat?: string;
+  step_phases?: Readonly<Record<string, string>>;
   review: AttackPathReview;
 }
 
@@ -100,6 +105,7 @@ export interface AttackPathResponse {
 export interface AttackPathGoalResponse {
   file: string;
   threats: readonly string[];
+  assets?: readonly string[];
   reviewed_threats: readonly string[];
   steps: number;
 }

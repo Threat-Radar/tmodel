@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import re
 from collections.abc import Mapping
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any
 
 GATES = ("and_gate", "or_gate")  # AttackGate enum in the core schema
@@ -27,22 +27,24 @@ class GraphError(ValueError):
 class ReviewState:
     """What the model records about an authored path's review (R-018).
 
-    The values are the file's own `assertion_status` and `review_status` (both
-    open strings in the schema). `reviewed` is true only for an accepted
-    Assertion with no contrary Review: the schema says an Assertion "must not be
-    `accepted` until provenance and a review are present", and a Review that
-    rejects it or asks for changes outweighs that status. Anything else,
-    including no record at all or a Review verdict the engine does not
-    recognise, is not presented as reviewed (CLAUDE.md; APP-0001 A-007, A-045).
-    The app applies the same rule (apps/desktop/src/review-status.ts); the shared
-    cases are in apps/desktop/src/fixtures/review-state-cases.json.
+    Real model inputs resolve justified person reviews for the exact
+    path/realizes_threat/threat statement, considering every human verdict.
+    Negative or unknown verdicts cannot establish acceptance. The two status
+    strings summarize those records; `human_reviewed` carries the evidence
+    result. Status-only construction remains a legacy presentation helper for
+    shared transport fixtures, not a way to accept model relationships.
     """
 
     assertion_status: str | None = None
     review_status: str | None = None
+    # Real model inputs resolve human evidence; None retains the status-only
+    # presentation helper used by legacy transport fixtures.
+    human_reviewed: bool | None = None
 
     @property
     def reviewed(self) -> bool:
+        if self.human_reviewed is not None:
+            return self.human_reviewed
         assertion = _status(self.assertion_status)
         review = _status(self.review_status)
         return assertion == "accepted" and review in (None, "accepted")
@@ -109,29 +111,31 @@ def _text(raw: Mapping[str, Any], field_name: str) -> str | None:
     return value
 
 
-def _reviews(doc: Mapping[str, Any]) -> dict[str, ReviewState]:
-    """Review state per authored path, from its `realizes_threat` Assertion and that
-    Assertion's latest Review."""
-    verdict: dict[str, str | None] = {}
+def _reviews(doc: Mapping[str, Any]) -> dict[tuple[str, str], ReviewState]:
+    """Human evidence scoped to the exact path/threat statement, independent of order."""
+    from engine.review import relationship_review_states
+
     for review in _entries(doc, "reviews"):
-        target = review.get("reviews")
-        if isinstance(target, str):
-            verdict[target] = _text(review, "review_status")
-    states: dict[str, ReviewState] = {}
+        _text(review, "review_status")
     for assertion in _entries(doc, "assertions"):
-        subject = assertion.get("subject")
-        if assertion.get("predicate") == "realizes_threat" and isinstance(subject, str):
-            states[subject] = ReviewState(
-                assertion_status=_text(assertion, "assertion_status"),
-                review_status=verdict.get(assertion["id"]),
-            )
-    return states
+        _text(assertion, "assertion_status")
+    _entries(doc, "parties")
+    return {
+        (subject, target): ReviewState(
+            state["assertion_status"], state["review_status"], state["reviewed"]
+        )
+        for (subject, predicate, target), state in relationship_review_states(doc).items()
+        if predicate == "realizes_threat"
+    }
 
 
 @dataclass
 class AttackGraph:
     steps: dict[str, AttackStep] = field(default_factory=dict)
     paths: dict[str, AttackPath] = field(default_factory=dict)
+    asset_threats: dict[str, tuple[str, ...]] = field(default_factory=dict)
+    path_reviews: dict[tuple[str, str], ReviewState] = field(default_factory=dict)
+    accepted_path_links: frozenset[tuple[str, str]] = frozenset()
 
     @classmethod
     def from_dict(cls, doc: Mapping[str, Any]) -> AttackGraph:
@@ -152,18 +156,29 @@ class AttackGraph:
                 raise GraphError(f"duplicate attack step id: {step.id}")
             graph.steps[step.id] = step
         reviews = _reviews(doc)
+        graph.path_reviews = reviews
         for raw in _entries(doc, "attack_paths"):
             path = AttackPath(
                 id=raw["id"],
                 steps=_ids(raw, "steps"),
                 realizes_threat=_text(raw, "realizes_threat"),
                 name=_text(raw, "name") or "",
-                review=reviews.get(raw["id"], ReviewState()),
+                review=reviews.get((raw["id"], raw.get("realizes_threat")), ReviewState()),
             )
             if path.id in graph.paths:
                 raise GraphError(f"duplicate attack path id: {path.id}")
             graph.paths[path.id] = path
+        threats = {threat["id"] for threat in _entries(doc, "threat_instances")}
+        graph.accepted_path_links = frozenset(
+            key
+            for key, state in reviews.items()
+            if state.reviewed and key[0] in graph.paths and key[1] in threats
+        )
         graph.validate()
+        if doc.get("assets"):
+            from engine.asset_goals import asset_threats
+
+            graph.asset_threats = asset_threats(doc)
         return graph
 
     def validate(self) -> None:
@@ -186,10 +201,24 @@ class AttackGraph:
         return [s.id for s in self.steps.values() if step_id in s.precedes]
 
     def paths_for_threat(self, threat_id: str) -> list[AttackPath]:
-        return [p for p in self.paths.values() if p.realizes_threat == threat_id]
+        return [
+            replace(
+                path,
+                realizes_threat=threat_id,
+                review=self.path_reviews.get(
+                    (path.id, threat_id),
+                    path.review if path.realizes_threat == threat_id else ReviewState(),
+                ),
+            )
+            for path in self.paths.values()
+            if path.realizes_threat == threat_id or (path.id, threat_id) in self.accepted_path_links
+        ]
 
     def threats(self) -> list[str]:
-        return sorted({p.realizes_threat for p in self.paths.values() if p.realizes_threat})
+        return sorted(
+            {p.realizes_threat for p in self.paths.values() if p.realizes_threat}
+            | {threat for _, threat in self.accepted_path_links}
+        )
 
     def threat_reviewed(self, threat_id: str) -> bool:
         """A threat counts as reviewed only if every authored path for it is."""

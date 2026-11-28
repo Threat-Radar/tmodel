@@ -10,6 +10,11 @@
         "review_status": null,
         "reviewed": false
       },
+      "step_phases": {
+        "attack-step:drive-away": "actions_on_objectives",
+        "attack-step:inject-key-validated": "exploitation",
+        "attack-step:reach-control-can": "delivery"
+      },
       "steps": [
         "attack-step:reach-control-can",
         "attack-step:inject-key-validated",

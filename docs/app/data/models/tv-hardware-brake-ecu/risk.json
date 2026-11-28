@@ -1,0 +1,75 @@
+{
+  "assessments": [
+    {
+      "complete": true,
+      "damage_scenario": "damage-scenario:unsafe-braking",
+      "derived_risk": {
+        "financial": 2,
+        "operational": 2,
+        "privacy": 1,
+        "safety": 3
+      },
+      "feasibility": "low",
+      "for_stakeholder": "party:fleet-operator",
+      "id": "risk-score:fw-tamper",
+      "impact": {
+        "financial": "moderate",
+        "operational": "major",
+        "privacy": "negligible",
+        "safety": "severe"
+      },
+      "mitigation_status": "in_progress",
+      "path_reviewed": false,
+      "paths": [
+        {
+          "feasibility": "low",
+          "id": "attack-path:fw-tamper-physical",
+          "rating_source": "AttackPath.attack_feasibility",
+          "route_ids": [
+            "route:0a57501d181de32bb1a0da44d97c000b772e8a2d0b1652d0b20a8aecc7a2eba1"
+          ],
+          "used_for_ratings": true
+        }
+      ],
+      "problems": [],
+      "recorded": {
+        "feasibility": "low",
+        "risk": "safety 4 (severe impact, low feasibility; 1–5 per 21434 M(I,F)); shown with its inputs"
+      },
+      "routes": [
+        {
+          "authored_path": "attack-path:fw-tamper-physical",
+          "derived_risk": {
+            "financial": 2,
+            "operational": 2,
+            "privacy": 1,
+            "safety": 3
+          },
+          "feasibility": "low",
+          "goal_step": "attack-step:reflash-unit",
+          "id": "route:0a57501d181de32bb1a0da44d97c000b772e8a2d0b1652d0b20a8aecc7a2eba1",
+          "problems": [],
+          "rating_paths": [
+            "attack-path:fw-tamper-physical"
+          ],
+          "steps": [
+            "attack-step:gain-physical-access",
+            "attack-step:connect-debug-probe",
+            "attack-step:bypass-readout-protection",
+            "attack-step:inject-voltage-glitch",
+            "attack-step:extract-and-modify-firmware",
+            "attack-step:reflash-unit"
+          ]
+        }
+      ],
+      "threat": "threat-instance:fw-tamper",
+      "threat_damage_scenario": "damage-scenario:unsafe-braking",
+      "threat_damage_scenarios": [
+        "damage-scenario:unsafe-braking"
+      ]
+    }
+  ],
+  "count": 1,
+  "file": "tv-hardware-brake-ecu.yaml",
+  "matrix": "annex-h-table-h8"
+}

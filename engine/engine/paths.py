@@ -12,7 +12,10 @@ order (ties in declaration order). Supersets of another path are dropped, so a
 step shared by two branches is not counted twice. Several predecessors without a
 gate is ambiguous and rejected, as is a cycle.
 
-A goal is a step id or a threat id. For a threat, the goal steps are the final
+A goal is an asset, step or threat id. Assets select threats explicitly targeting
+them, or realizing damage to them, through authored links or Assertions with
+justified human acceptance. Co-location never implies an attack. Threat identity
+is retained when different threats share a route. For a threat, the goal steps are the final
 steps of each authored AttackPath that realizes it (no other listed step is
 reachable from them); enumeration then runs over the whole graph, so shared steps
 count. Each result is credited to the authored path it overlaps most and carries
@@ -26,7 +29,7 @@ combinations.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import Any
 
 from engine.graph import AttackGraph, AttackPath, GraphError, ReviewState
@@ -40,11 +43,16 @@ class ComputedPath:
     goal_step: str
     authored_path: str | None = None  # the vector's AttackPath it came from, if any
     review: ReviewState = ReviewState()  # that path's review; none for a step goal
+    threat: str | None = None  # disambiguates routes when the goal is an Asset
+    step_phases: tuple[tuple[str, str], ...] = ()
 
     def to_dict(self) -> dict[str, Any]:
         out: dict[str, Any] = {"steps": list(self.steps), "goal_step": self.goal_step}
         if self.authored_path:
             out["authored_path"] = self.authored_path
+        if self.threat:
+            out["threat"] = self.threat
+        out["step_phases"] = dict(self.step_phases)
         out["review"] = self.review.to_dict()
         return out
 
@@ -52,14 +60,25 @@ class ComputedPath:
 def enumerate_paths(
     graph: AttackGraph, goal: str, limit: int = DEFAULT_LIMIT
 ) -> list[ComputedPath]:
-    """All minimal attack paths reaching `goal` (a step id or a threat id)."""
+    """All minimal attack paths reaching a step, threat or explicitly linked asset."""
+    if goal in graph.asset_threats:
+        results = []
+        for threat in graph.asset_threats[goal]:
+            if not graph.paths_for_threat(threat):
+                continue
+            results.extend(
+                replace(path, threat=threat) for path in enumerate_paths(graph, threat, limit)
+            )
+            if len(results) > limit:
+                raise GraphError(f"{goal}: more than {limit} attack paths; narrow the goal")
+        return results
     authored: list[AttackPath] = []
     if goal in graph.steps:
         sinks = [goal]
     else:
         authored = graph.paths_for_threat(goal)
         if not authored:
-            raise GraphError(f"unknown goal: {goal} (not a step, and no path realizes it)")
+            raise GraphError(f"unknown goal: {goal} (not an asset, step or realized threat)")
         sinks = []
         for path in authored:
             finals = _final_steps(graph, path.steps)
@@ -78,12 +97,18 @@ def enumerate_paths(
                     continue
                 seen.add(step_set)
                 best = _best_match(step_set, sink, authored, graph)
+                ordered = _ordered(graph, step_set, order)
                 result.append(
                     ComputedPath(
-                        _ordered(graph, step_set, order),
+                        ordered,
                         sink,
                         best.id if best else None,
                         best.review if best else ReviewState(),
+                        step_phases=tuple(
+                            (sid, graph.steps[sid].kill_chain_phase)
+                            for sid in ordered
+                            if graph.steps[sid].kill_chain_phase is not None
+                        ),
                     )
                 )
                 if len(result) > limit:

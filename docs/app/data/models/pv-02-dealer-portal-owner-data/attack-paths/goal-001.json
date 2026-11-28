@@ -10,6 +10,9 @@
         "review_status": null,
         "reviewed": false
       },
+      "step_phases": {
+        "attack-step:plate-to-vin": "reconnaissance"
+      },
       "steps": [
         "attack-step:plate-to-vin",
         "attack-step:dealer-token",

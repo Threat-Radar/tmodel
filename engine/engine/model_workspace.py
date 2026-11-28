@@ -53,6 +53,8 @@ from engine.load.vector import MODEL_SUFFIXES
 from engine.model_graph import project_model_graph
 from engine.review_workspace import ModelRevision, ReviewError
 from engine.risk import MATRIX_ID, assess_document
+from engine.schema_check import Container, SchemaError, load_container
+from engine.schema_check import check as schema_problems
 
 try:
     import fcntl
@@ -105,8 +107,8 @@ FAMILY_CONTAINERS = (
 # importer names for its output (DL-0068); ExampleModelSdl is ExampleModel plus the SDL
 # classes. No container holds all the others' collections.
 FITTING_CONTAINERS = ("ExampleModelProposed", "ExampleModel", "ExampleModelSdl")
-# The container files sit beside the examples and are bundled with them. LinkML also
-# needs the object model they import, which only a source checkout has.
+# The container files sit beside the examples and are bundled with them, and so is the
+# object model they import, ../schema/tmodel-object-model.linkml.yaml (bin/build-engine).
 SCHEMA_DIRECTORY = core.APPROVED_VECTOR_DIRECTORY
 
 _THREAD_LOCKS: dict[tuple[int, int], threading.Lock] = {}
@@ -116,8 +118,9 @@ _VALIDATORS: dict[str, Any] = {}
 
 
 def linkml_available() -> bool:
-    """Whether the LinkML schema check can run: LinkML is installed, and the object model
-    the containers import is present (a source checkout; the packaged engine has neither)."""
+    """Whether LinkML itself can check the schema: LinkML is installed, and the object
+    model the containers import is present (a source checkout; the packaged engine has
+    no LinkML, and checks with engine/schema_check.py instead)."""
     return (
         importlib.util.find_spec("linkml") is not None
         and (SCHEMA_DIRECTORY.parent / "schema" / "tmodel-object-model.linkml.yaml").is_file()
@@ -150,9 +153,10 @@ class ProjectWorkspace:
 
     It remembers, for this engine process, which id belongs to which folder or file.
     After a restart the host opens the folder again and gets the same id, because the
-    id is stored in project.json. `schema_check` None runs the LinkML check when
-    `linkml_available()`, True requires it, False leaves it out. `clock` and `token`
-    exist for repeatable tests.
+    id is stored in project.json. Every save is checked against its schema container.
+    `schema_check` None has LinkML do it when `linkml_available()`, True requires
+    LinkML, and False uses engine/schema_check.py, as the packaged app does. `clock`
+    and `token` exist for repeatable tests.
     """
 
     def __init__(
@@ -167,6 +171,7 @@ class ProjectWorkspace:
             raise ValueError("the LinkML schema check needs linkml and spec/schema/")
         self.schema_check = available if schema_check is None else schema_check
         self._containers = {name: _container_collections(name) for name in CONTAINER_FILES}
+        self._schemas = _bundled_schemas()  # at start, so a missing object model fails fast
         self._clock = clock or (lambda: datetime.now(UTC))
         self._token = token or secrets.token_hex
         self._models: dict[str, _Project | _File] = {}
@@ -345,7 +350,7 @@ class ProjectWorkspace:
             "count": len(models),
             "models": models,
             "problems": problems,
-            "schema_validation": self.schema_check,
+            "schema_validation": True,  # by LinkML or by engine/schema_check.py
         }
 
     def open_model(self, model_id: str, revision: str | None = None) -> dict[str, Any]:
@@ -559,6 +564,8 @@ class ProjectWorkspace:
                 raise _invalid(name, "Expected a list of records.")
         if self.schema_check:
             _schema_check(plain, container)
+        else:
+            _bundled_schema_check(plain, self._schemas[container])
         try:
             # The engine's own checks, as GET /graph and GET /risk apply them: unique ids,
             # resolving references, the attack graph, and the rating and impact values.
@@ -965,6 +972,26 @@ def _schema_check(plain: dict[str, Any], container: str) -> None:
         raise _invalid(
             _pointer(list(getattr(source, "absolute_path", None) or [])),
             _clip(f"Schema check ({container}): {detail}") + more,
+        )
+
+
+def _bundled_schemas() -> dict[str, Container]:
+    try:
+        return {name: load_container(SCHEMA_DIRECTORY, name) for name in CONTAINER_FILES}
+    except (SchemaError, yaml.YAMLError) as exc:
+        raise ValueError(
+            "cannot read the schema containers and the object model they import"
+        ) from exc
+
+
+def _bundled_schema_check(plain: dict[str, Any], schema: Container) -> None:
+    """The same container check without LinkML (engine/schema_check.py, DL-0081)."""
+    problems = schema_problems(plain, schema)
+    if problems:
+        more = f" ({len(problems) - 1} more)" if len(problems) > 1 else ""
+        raise _invalid(
+            _clip(problems[0].field),
+            _clip(f"Schema check ({schema.root}): {problems[0].message}") + more,
         )
 
 

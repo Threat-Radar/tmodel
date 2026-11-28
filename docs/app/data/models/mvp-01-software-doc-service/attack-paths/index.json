@@ -1,4 +1,5 @@
 {
+  "assets": [],
   "file": "mvp-01-software-doc-service.yaml",
   "reviewed_threats": [
     "threat-instance:xxe-file-read"

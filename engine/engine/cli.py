@@ -141,12 +141,17 @@ def _print_paths(payload: dict[str, Any]) -> None:
         print(f"{payload['file']}: {payload['steps']} steps; threats:")
         for threat in payload["threats"]:
             print(f"  {threat}" + ("" if threat in reviewed else "  [not reviewed]"))
+        if payload.get("assets"):
+            print("assets:")
+            for asset in payload["assets"]:
+                print(f"  {asset}")
         return
     paths = payload["paths"]
     print(f"{payload['goal']}: {len(paths)} path{'s' if len(paths) != 1 else ''}")
     for i, path in enumerate(paths, 1):
         steps = " -> ".join(_short(s) for s in path["steps"])
-        print(f"  {i}. {steps}{_review_note(path.get('review', {}))}")
+        threat = f" [{path['threat']}]" if path.get("threat") else ""
+        print(f"  {i}.{threat} {steps}{_review_note(path.get('review', {}))}")
 
 
 def _paths(args: argparse.Namespace) -> int:
@@ -726,7 +731,14 @@ def _serve(args: argparse.Namespace) -> int:
             )
             return 1
     try:
-        server.serve(port=args.port, exit_with_parent=args.exit_with_parent, host_token=host_token)
+        server.serve(
+            port=args.port,
+            exit_with_parent=args.exit_with_parent,
+            host_token=host_token,
+            reviewer_identity=(os.environ.get("TMODEL_REVIEWER_ID") or None)
+            if args.projects
+            else None,
+        )
     except (ValueError, OSError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
@@ -765,7 +777,7 @@ def build_parser() -> argparse.ArgumentParser:
     paths.add_argument(
         "file", help="model file, e.g. spec/vectors/mvp-01-software-doc-service.yaml"
     )
-    paths.add_argument("--goal", default=None, help="step or threat id; omit to list threats")
+    paths.add_argument("--goal", default=None, help="asset, step or threat id; omit to list goals")
     _add_transport(paths)
     paths.set_defaults(func=_paths)
 
