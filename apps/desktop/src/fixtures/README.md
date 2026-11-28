@@ -199,4 +199,6 @@ message are the #257 importer's own output for its `alpine-3.24.2` test files, f
 `import_sbom.build()` with `--platform linux/arm64/v8`, `linux/amd64`, and no scan or
 platform; `counts.assertions` is `match_assertions + cwe_assertions`, as the route adds it,
 and `product` and `suggested_name` are the values the route's contract example gives for
-this image. The importer is not on this branch, so no test here regenerates them.
+this image. The importer is not on this branch, so no test here regenerates them. The model
+texts were made again from #268's 55a5f40, whose ids end in 16 hex digits of their keys'
+SHA-256 where they had 8; nothing else in them changed.
