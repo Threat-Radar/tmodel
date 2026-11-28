@@ -4,9 +4,9 @@ id: RPT-0014-lanes
 title: "RPT-0014 work lanes: extraction and round-2 sweeps across five accounts"
 type: research
 status: draft
-version: "0.2.0"
+version: "0.2.1"
 date: "2026-10-03"
-updated: "2026-10-05"
+updated: "2026-11-26"
 record: RPT-0014
 issue: 71
 ---
@@ -81,8 +81,14 @@ For each source:
 
    A topic you did not assess is `not assessed`, not `none`.
 5. **Reference expansion:** list the source's cited references that are in
-   scope and **not** in `sources.md`. Add each as a `status: stub` record with
-   `relations.cited_by: [<this record>]`. Do not summarize stubs in this pass.
+   scope and **not** in `sources.md`. Add each as a `status: stub` record and
+   put the forward citation in the citing source's `cites` list. Do not add
+   library-to-library `relations.cited_by`: library `docs/references.md` reserves
+   it for project documents and derives inverse views. Check other open lane
+   PRs for the same work before assigning a new permanent id. If another PR
+   already owns the record, keep a title/locator frontier entry and record its
+   pending canonical id and PR in the lane audit until it merges. Do not
+   summarize stubs in this pass. (Clarified 2026-11-26 following library#53 review.)
 
 Open **one library PR per lane** for subset-1, with a body that says
 `Part of Threat-Radar/tmodel#<your lane issue>`. Run `bin/validate` before you
