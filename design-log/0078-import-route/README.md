@@ -46,7 +46,7 @@ engine offer that screen?
   The importer's `-o` help now suggests an `im-` file name (#281).
 - `design-log/0068-sbom-import/README.md`: its line saying the API has no route to the import
   now points here.
-- `engine/tests/test_import_route.py`: 68 tests, 54 of them on a real local server, and 7 in
+- `engine/tests/test_import_route.py`: 69 tests, 54 of them on a real local server, and 7 in
   `engine/tests/test_import_sbom.py` for `Upload`.
 - This entry.
 
@@ -177,18 +177,24 @@ one change, with one smaller point. CodeQL flagged a third.
   and importer tests run, and with hand-made scans; the preflight, with the route on and off;
   and that every header built from a request is checked against the list of the app's
   origins.
-- **CodeQL's HTTP response splitting alert** on the preflight (`server.py`): it checked one
-  read of the `Origin` header and sent a second read. It now reads the header once and sends
-  the value it checked, as the workspace routes and the engine's other answers already do.
-  Only the app's origins were ever sent back, so no answer changes.
+- **CodeQL's HTTP response splitting alert** on the preflight (`server.py`): a false
+  positive, like main's alert #2 on `_send_json`, which @Clovier dismissed on 2026-11-16, as
+  only one of the app's five origins was ever sent back. The first fix, reading the header
+  once, did not clear it: CodeQL raised the same alert on the new line, since it does not take
+  a check against `ALLOWED_ORIGINS` as making the value safe. `allowed_origin()` now gives the
+  module's own string for an allowed origin, and both answers that send the header, the
+  preflight and `_send_json`, send that string, so no text from the request reaches a header.
+  No answer changes. The workspace routes, which check the same way, are not flagged only
+  because CodeQL does not see their mixin as a request handler. Test:
+  `test_a_header_carries_the_engines_own_origin_string`.
 
 The review's integration requirements are for the integration changes, as it says, and are
 listed under Follow-ups.
 
 ## How it was checked
 
-- `engine/tests/test_import_route.py` (68 tests; the 17 added for kriishnaa-18's review are
-  listed in that section):
+- `engine/tests/test_import_route.py` (69 tests; the 18 added for kriishnaa-18's review and
+  CodeQL are listed in that section):
   - **Switched off by default:** a POST is answered `503 not_enabled`.
   - **The fixture's answer:** the model and report equal the command line's byte for byte, with
     each file's own digest, and the counts, platform, product and name come back.

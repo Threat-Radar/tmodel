@@ -305,6 +305,17 @@ def test_a_foreign_host_or_origin_is_refused(enabled):
     assert "Access-Control-Allow-Origin" not in headers
 
 
+def test_a_header_carries_the_engines_own_origin_string():
+    # CodeQL's response splitting check: an allowed origin is answered with the module's
+    # own string, an equal one, so no text from the request reaches a header.
+    for origin in server.ALLOWED_ORIGINS:
+        sent = origin.encode().decode()
+        assert sent == origin and sent is not origin
+        assert server.allowed_origin(sent) is origin
+    for other in (None, "", "https://attacker.example", "tauri://localhost\r\nX-Injected: 1"):
+        assert server.allowed_origin(other) is None
+
+
 def test_an_unknown_operation_is_not_found(enabled):
     status, _, body = post(enabled, TINY, path="/import/other")
     assert status == 404 and error(body)[0] == "not_found"

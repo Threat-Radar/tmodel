@@ -38,6 +38,16 @@ ALLOWED_ORIGINS = frozenset(
 )
 
 
+def allowed_origin(value: str | None) -> str | None:
+    """The app's origin that `value` names, as this module's own string, or None. An
+    answer's header carries that string, never the request's, so no request text reaches
+    a header (CodeQL's response splitting check); the two are equal."""
+    for origin in ALLOWED_ORIGINS:
+        if value == origin:
+            return origin
+    return None
+
+
 def _attack_paths(query: dict[str, str]) -> dict[str, Any]:
     if "file" not in query:
         raise ValueError("missing query parameter: file")
@@ -130,8 +140,8 @@ class EngineHandler(BaseHTTPRequestHandler):
         app's origins whether or not the route is enabled, so that the app reads the
         POST's `not_enabled` rather than a failed request."""
         headers = PREFLIGHT_HEADERS.get(self.path)
-        origin = self.headers.get("Origin")  # read once: the value checked is the one sent
-        if headers is None or origin not in ALLOWED_ORIGINS or not self._local_host():
+        origin = allowed_origin(self.headers.get("Origin"))
+        if headers is None or origin is None or not self._local_host():
             self._send_json(
                 403, {"error": {"code": "permission_denied", "message": "Forbidden preflight."}}
             )
@@ -253,8 +263,8 @@ class EngineHandler(BaseHTTPRequestHandler):
         self.send_response(status)
         self.send_header("Content-Type", "application/json")
         self.send_header("Content-Length", str(len(body)))
-        origin = self.headers.get("Origin")
-        if origin in ALLOWED_ORIGINS:
+        origin = allowed_origin(self.headers.get("Origin"))
+        if origin is not None:
             self.send_header("Access-Control-Allow-Origin", origin)
             self.send_header("Vary", "Origin")
         self.end_headers()
