@@ -7,9 +7,9 @@ description: "The DEC-* register: status, what blocks on each, and the evidence 
 type: process
 category: process
 status: active
-version: "0.1.9"
+version: "0.1.10"
 date: "2026-09-23"
-updated: "2026-10-26"
+updated: "2026-11-23"
 needs_review: false
 reviewed: true
 canonical_path: project/DECISIONS-0001.md
@@ -33,7 +33,7 @@ Status: `open` · `researching` · `proposed` (an ADR is drafted) · `accepted`.
 | **DEC-005** | MVP scope — what the early-Dec demo demonstrates | **accepted → ADR-0002** | everything downstream | ADR-0002 (Option A, multi-product/≥2-domain) |
 | **DEC-006** | UI stack and interaction model for the graphical threat model | **accepted → ADR-0003** | I3 | ADR-0003 (Path A); RPT-0012, APP-0001 |
 | **DEC-007** | Relationship to `tradar`: reuse / wrap / greenfield | **accepted → ADR-0001** | I2, I3 | ADR-0001 (radar/tmodel split) |
-| **DEC-008** | CWE/NVD integration: live vs cached mirror; automation | open | I2, I4, R-010 | RPT-0001 §CWE/NVD |
+| **DEC-008** | CWE/NVD integration: live vs cached mirror; automation | proposed → ADR-0014 | I2, I4, R-010 | ADR-0014 (proposed); DL-0064; #259 |
 | **DEC-009** | Generic-threat → product / product-family mapping; mitigation lifecycle | open | I4, R-020, R-021 | RPT-0001, ARCH-0001 §7; ADR-0012 gives a core Requirement + `applies_to_family` / `Mitigation.stated_as` hook (no ProductFamily class yet) |
 | **DEC-010** | Implementation stack & language for the application (GUI + backend + CLI) | **accepted → ADR-0003 (+ ADR-0009)** | I3 build | ADR-0003 (Path A) + ADR-0009 (engine language split: Python brain + Rust store/hot-paths); RPT-0012, APP-0001 |
 | **DEC-011** | Storage & edge model — file canonical SoT, edge-rich logical invariant, local embedded working store, derived export | **accepted → ADR-0004** | I-App build; narrows DEC-004 | ADR-0004; #50 |
@@ -57,6 +57,10 @@ DEC-003 → ADR-0006 (composite risk vector), DEC-004 → ADR-0008 (Oxigraph/RDF
 DEC-010 refined by ADR-0009 (engine language split). **Still open:** DEC-001 (object model —
 gated on #104 Stage 2/3), DEC-008 (CWE/NVD — leaning cached mirror per A-043), DEC-009
 (threat→product / mitigation-lifecycle — depends on DEC-001).
+
+**Catalogs (2026-11-23):** DEC-008 is `proposed` → ADR-0014 (cached pinned mirror), and the sponsor decides it
+(PROC-0001 §5). Until then the team works this way (@Clovier, 2026-11-23): the app ships the pinned copies, and a newer
+catalog release reaches the app only through a new pull request that moves its pin.
 
 **Object-model split (2026-10-12):** DEC-001 is split — **DEC-001a accepted → ADR-0010** (the core
 attack-path type system), **DEC-001b open** (the governed/program layer: ThreatModel, SecurityProgram
