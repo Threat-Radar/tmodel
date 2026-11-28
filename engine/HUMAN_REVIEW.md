@@ -6,30 +6,27 @@ belongs to #288 and the interface belongs to #290. Merge #288, then #289, then
 
 ## Integration status
 
-The review service, HTTP operations, project-version adapter and native host
-commands are implemented. The adapter follows the #288 contract fixture published
-with #295; the actual #288 storage implementation is not in a published branch
-at this revision. Adapter tests use storage doubles, not real project files.
-**C7 is not complete until real save/reopen and packaged-app integration pass.**
+The review service now uses #288's real `ProjectWorkspace` on the same server as
+its workspace routes. `make_desktop_server(host_token=..., reviewer_identity=...)`
+constructs the project registry and `HostReviewAPI` together; `serve` uses this
+factory. The CLI reads `TMODEL_REVIEWER_ID` only with `--projects`, alongside the
+host token. The native launcher passes `--projects` only when it has private host
+credentials. Without them, ordinary browsing remains read-only.
 
-The launcher deliberately preserves read-only startup until #288 supplies its
-`serve --projects` implementation. The remaining integration steps are:
+The workspace implementation merged in #298. This branch also includes #301's
+schema-validation follow-up, which must merge first: the standalone engine needs
+the bundled schema checker and schema files to validate every save without
+LinkML. No alternate storage implementation or risk formula is introduced here.
 
-1. Wire #288's project instance into `HostReviewAPI`, using the token and reviewer
-   identity passed by the native host as `TMODEL_HOST_TOKEN` and
-   `TMODEL_REVIEWER_ID`. Supply a trusted `list_models` callback returning #288's
-   opened-model registry, in the same shape as `/workspace/models`. That registry
-   grants access only to opaque `project:<32 lowercase hex>` and `file:<32 lowercase
-   hex>` IDs registered by native picker operations.
-2. Inject this API into #288's server handler alongside its workspace routes.
-   `make_server(review_api=...)` and `serve(review_api=...)` accept the configured
-   API. Keep #288's host-only path routes and token/Origin checks in place. There
-   is no endpoint to grant a reviewer identity or sponsor authority.
-3. Enable the launcher's `--projects` argument when the storage implementation and
-   CLI flag are present. Do not enable an unknown flag on the read-only engine.
-4. Verify full ExampleModel schema validation, real YAML save/reopen, stale saves,
-   failed saves and immutable history. Exercise #290's actual UI with the packaged
-   desktop app before declaring the workflow complete.
+Real-project HTTP tests cover first review and rating saves, metadata, corrections,
+reopening after a server restart, immutable earlier YAML, stale/concurrent saves,
+permission failures and failed disk writes. A separate packaged-engine test runs
+the same authenticated save/reopen flow with no source checkout, system Python or
+LinkML. Synthetic judgments in tests are not project human sign-offs.
+
+Before merging: land #269 and #301, then this PR, then #290/#295. The frontend's
+native picker/review/recalculation rehearsal remains a separate integration check;
+backend or packaged-engine tests alone do not declare all of C7 complete.
 
 ### Native session and reviewer identity
 
@@ -88,7 +85,8 @@ Use `saveModelChanges` for a Save button that includes reviews and ratings.
 Calling submitReview and saveRatings in succession is not an atomic combined save.
 Successful responses always include `model_id` and `revision`.
 
-Saves may include a nonblank `description` of at most 4096 characters. The project
+Saves may include a nonblank `description` of at most 500 characters, matching
+the workspace version metadata limit. The project
 adapter stores it (or a default description) and a calculated-risk summary in the
 same `save_version` operation as the YAML. The summary records the matrix, number
 of assessments, incomplete count and highest **known calculated** score per
@@ -199,8 +197,8 @@ scopes. Changing a stakeholder, damage link or graph structure is outside C7.
 `read`, `history` and `validate` delegate to its project instance; `commit_version`
 calls `save_version(model_id, expected_revision, document, description=..., summary=...)`.
 That method must return the new revision string, save metadata atomically with
-the document and enforce the guarantees above. Its actual implementation still
-needs integration verification; the fixture alone does not prove persistence.
+the document and enforce the guarantees above. The integration tests exercise these calls against real project folders, as well
+as a fresh server reopening the same model ID and saved revisions.
 
 IDs and revisions are opaque strings, at most 256 characters. Physical paths are
 never frontend identifiers. The adapter must not alter the candidate on commit.
@@ -251,5 +249,7 @@ the existing calculation.
 | workspace_failure | 503 | Workspace/session adapter unavailable; do not enable saves |
 | internal_error | 500 | Preserve edits and report an unexpected failure |
 
-The default engine returns workspace_failure for these operations until the host
-explicitly configures them. This does not imply the ordinary read-only app failed.
+The default CLI returns workspace_failure for these operations unless the host
+explicitly configures projects and a verified identity. A token without a reviewer
+identity enables workspace operations only. The native app supplies both through
+its private session; an externally running engine receives no native write grant.

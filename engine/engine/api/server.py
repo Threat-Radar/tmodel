@@ -268,34 +268,67 @@ def _shutdown_when_stdin_closes(httpd: ThreadingHTTPServer) -> None:
     threading.Thread(target=watch, name="stdin-watch", daemon=True).start()
 
 
+def make_desktop_server(
+    host: str = DEFAULT_HOST,
+    port: int = DEFAULT_PORT,
+    *,
+    host_token: str | None = None,
+    reviewer_identity: str | None = None,
+    review_api: ReviewAPI | None = None,
+) -> ThreadingHTTPServer:
+    """Configure the actual workspace and native reviewer on one loopback server.
+
+    No token means read-only startup. A token alone enables workspace operations;
+    only the trusted host's OS-bound identity enables the review session as well.
+    Validate the configuration before binding, never leaving a partial server.
+    """
+    from engine.api.host_reviews import HostReviewAPI
+    from engine.api.workspace import check_host_token, install_workspace_routes
+    from engine.model_workspace import ProjectWorkspace
+
+    projects = None
+    if host_token is not None:
+        check_host_token(host_token)
+        projects = ProjectWorkspace()
+    if reviewer_identity is not None:
+        if projects is None or review_api is not None:
+            raise ValueError("A native reviewer requires one configured project workspace.")
+        try:
+            review_api = HostReviewAPI(
+                projects, host_token, reviewer_identity, list_models=projects.list_models
+            )
+        except ReviewError as exc:
+            raise ValueError(exc.message) from exc
+    httpd = make_server(host, port, review_api=review_api)
+    install_workspace_routes(httpd, projects, host_token)
+    return httpd
+
+
 def serve(
     host: str = DEFAULT_HOST,
     port: int | None = None,
     exit_with_parent: bool = False,
     host_token: str | None = None,
     *,
+    reviewer_identity: str | None = None,
     review_api: ReviewAPI | None = None,
 ) -> None:
-    """Serve until stopped. With `host_token`, the host's secret, the host can open and
-    create threat model project folders (#288); without it the /workspace/* routes
-    answer "not enabled" and write nothing."""
-    from engine.api.workspace import check_host_token, install_workspace_routes
-    from engine.model_workspace import ProjectWorkspace
-
+    """Run the configured desktop API; workspace and review remain opt-in."""
     if port is None:
         port = int(os.environ.get("TMODEL_ENGINE_PORT", DEFAULT_PORT))
-    projects = None
-    if host_token is not None:
-        check_host_token(host_token)  # before binding, so a bad secret fails fast
-        projects = ProjectWorkspace()
-    httpd = make_server(host, port, review_api=review_api)
-    install_workspace_routes(httpd, projects, host_token)
+    httpd = make_desktop_server(
+        host,
+        port,
+        host_token=host_token,
+        reviewer_identity=reviewer_identity,
+        review_api=review_api,
+    )
     bound_host, bound_port = httpd.server_address[:2]
     print(
         f"tmodel-engine {core.version()['version']} listening on http://{bound_host}:{bound_port}",
         flush=True,
     )
-    if projects is not None:
+    if host_token is not None:
         print("project folders: on, for callers with the host token (#288)", flush=True)
     if exit_with_parent:
         _shutdown_when_stdin_closes(httpd)

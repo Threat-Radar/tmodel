@@ -101,8 +101,8 @@ pub fn start(app: &AppHandle) {
     // The one-file engine runs as a launcher plus the Python process. A process
     // group permits killing both if needed. --exit-with-parent stops the engine
     // when stdin closes, on normal quit as well as app crash or forced quit.
-    // #288 must enable its --projects CLI option when the storage implementation
-    // lands. Until then, pass the host binding but preserve read-only startup.
+    // A private native identity enables the shared project/review workspace.
+    // Without it, ordinary read-only browsing remains available.
     let spawned = app.shell().sidecar(SIDECAR).and_then(|cmd| {
         let cmd = cmd
             .env("TMODEL_HOST_TOKEN", "")
@@ -114,7 +114,8 @@ pub fn start(app: &AppHandle) {
                 "--exit-with-parent",
             ]);
         let cmd = if let Some(credentials) = credentials {
-            cmd.env("TMODEL_HOST_TOKEN", &credentials.token)
+            cmd.args(["--projects"])
+                .env("TMODEL_HOST_TOKEN", &credentials.token)
                 .env("TMODEL_REVIEWER_ID", &credentials.identity)
         } else {
             cmd

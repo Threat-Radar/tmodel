@@ -296,7 +296,7 @@ class ReviewService:
                 _invalid("request", "Provide at least one review or rating update.")
             description = request.get("description")
             if description is not None:
-                _text(description, "description")
+                _text(description, "description", 500)
             commit_version = getattr(self.workspace, "commit_version", None)
             if description is not None and commit_version is None:
                 raise ReviewError(

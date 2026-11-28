@@ -731,7 +731,14 @@ def _serve(args: argparse.Namespace) -> int:
             )
             return 1
     try:
-        server.serve(port=args.port, exit_with_parent=args.exit_with_parent, host_token=host_token)
+        server.serve(
+            port=args.port,
+            exit_with_parent=args.exit_with_parent,
+            host_token=host_token,
+            reviewer_identity=(os.environ.get("TMODEL_REVIEWER_ID") or None)
+            if args.projects
+            else None,
+        )
     except (ValueError, OSError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1

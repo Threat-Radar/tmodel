@@ -62,7 +62,9 @@ Whitespace checks against current main passed for authored files; generated
 bundled JavaScript retains its upstream template whitespace.
 
 
-## Finish request: project adapter and native host follow-up
+## Earlier finish request: project adapter and native host follow-up
+
+Historical status before #298 merged; the integration below supersedes its pending list.
 
 The user requested finishing #289. Reviewed issue #288 and the published #290
 screens in PR #295 (de70e15), including its copy of the workspace contract. The
@@ -124,3 +126,59 @@ Still required before #289/C7 can be marked complete:
 
 This follow-up remains local pending authorization to push. The existing PR stays
 in draft; neither storage-double tests nor earlier hosted CI establish completion.
+
+
+## Runtime integration after #298
+
+The user requested continuing #289 after #288's implementation became available.
+Merged current main (including #298) and the exact #301 schema-validation follow-up
+(8cb60a4) as a dependency. #301 must merge before this PR: activating project writes
+in a standalone engine without its schema check would not meet #288's acceptance
+criteria. No change was made to the separate storage implementation.
+
+Produced:
+
+- `make_desktop_server` configures one real `ProjectWorkspace`, its workspace
+  routes, and the native `HostReviewAPI` over the same registry. `serve` uses the
+  factory. The CLI reads the host identity only with `--projects`; a token alone
+  retains workspace operations without granting review permissions.
+- The native launcher now enables `--projects` when it has private credentials.
+  Missing private identity storage preserves read-only browsing. Existing external
+  engines receive no native write grant.
+- Aligned optional version descriptions with #288's 500-character limit. Longer
+  or blank descriptions fail before writes; rationale/annotation limits stay 4096.
+- Eight production-workspace integration cases cover a combined review/rating
+  save, all four views at one revision, a review correction, persistent history,
+  exact reopening after a server restart, immutable original/earlier versions,
+  stale/concurrent saves, failed disk writes, permissions and host CLI identity.
+- Added a packaged-engine regression: copy only the executable to a temporary
+  directory, with no system Python on PATH or LinkML, verify the native-session
+  proof, create a project from a YAML source, save review/rating changes, reject a
+  stale save, restart and reopen the exact same saved response.
+- Updated HUMAN_REVIEW.md to describe the active runtime rather than manual future
+  wiring. Compared #295's published r1 refresh/r2 context fixture with the backend;
+  it still matches, as does the complete shared save response.
+
+Validation:
+
+- Full Python 3.13 engine suite: **1457 passed, 14 skipped** without LinkML, after
+  installing current main's newly required pyoxigraph dependency. The first run
+  stopped at collection because the older validation environment lacked it; this
+  was an environment dependency, not a test assertion failure.
+- Targeted workspace/review checks: **47 passed**. The eight new real-workspace
+  cases also passed with pinned LinkML validation enabled.
+- Standalone engine build and all its smoke checks passed; **8 packaged tests
+  passed**, including the new authenticated review/restart/reopen case.
+- **9 Rust tests**, Rust formatting and Clippy with warnings denied passed using
+  the actual built sidecar; the debug macOS app bundle built successfully.
+- Type checking and **709 frontend tests** passed; **124 publishing tests**,
+  preview freshness, architecture and published identity/link checks passed.
+
+The backend can now be reviewed against real storage. The PR still depends on
+#269 and #301; do not merge it ahead of those dependencies. C7's frontend/native
+picker rehearsal belongs to the combined #290/#295 integration and is not claimed
+by the backend/package tests. In particular, #295's persisted-summary parser
+should retain assessment/incomplete counts, not just category values.
+
+No new human verdict or implementation approval is recorded. These updates remain
+local until the user authorizes pushing them to the existing draft PR #291.

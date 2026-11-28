@@ -4,6 +4,8 @@ TMODEL_PACKAGED_ENGINE=/absolute/path/to/tmodel-engine pytest tests/test_packagi
 The normal engine suite skips these until a sidecar has been built.
 """
 
+import hashlib
+import hmac
 import json
 import os
 import selectors
@@ -12,6 +14,7 @@ import subprocess
 import urllib.error
 import urllib.parse
 import urllib.request
+from contextlib import contextmanager
 from pathlib import Path
 
 import pytest
@@ -20,6 +23,68 @@ PACKAGED_ENGINE = os.environ.get("TMODEL_PACKAGED_ENGINE")
 pytestmark = pytest.mark.skipif(not PACKAGED_ENGINE, reason="build the packaged engine first")
 MODEL = Path(__file__).resolve().parents[2] / "spec/vectors/mvp-01-software-doc-service.yaml"
 PINNED_LIBRARY = Path(__file__).resolve().parents[2] / "library"
+
+
+def test_packaged_reviews_save_and_reopen_without_python_or_linkml(tmp_path):
+    from test_review_project_integration import IDENTITY, changes, project, selection
+    from test_workspace_api import call
+    from workspace_support import EXAMPLE, EXAMPLES, TOKEN
+
+    executable = tmp_path / "tmodel-engine"
+    shutil.copyfile(PACKAGED_ENGINE, executable)
+    executable.chmod(0o700)
+    source = tmp_path / "source.yaml"
+    source.write_bytes((EXAMPLES / EXAMPLE).read_bytes())
+    folder = tmp_path / "Packaged review project"
+
+    @contextmanager
+    def launched():
+        proc = subprocess.Popen(
+            [str(executable), "serve", "--projects", "--port", "0", "--exit-with-parent"],
+            cwd=tmp_path,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            env={
+                "HOME": str(tmp_path),
+                "TMPDIR": str(tmp_path),
+                "TMODEL_HOST_TOKEN": TOKEN,
+                "TMODEL_REVIEWER_ID": IDENTITY,
+            },
+        )
+        try:
+            yield engine_url(proc)
+        finally:
+            proc.stdin.close()
+            try:
+                assert proc.wait(timeout=60) == 0, proc.stderr.read().decode()
+            finally:
+                if proc.poll() is None:
+                    proc.kill()
+                    proc.wait(timeout=10)
+
+    with launched() as url:
+        challenge = "c" * 64
+        proof = get_json(url, "host/health", challenge=challenge)
+        expected = hmac.new(
+            TOKEN.encode(), b"tmodel-host-session-v1:" + challenge.encode(), hashlib.sha256
+        ).hexdigest()
+        assert proof == {"challenge": challenge, "proof": expected}
+        model_id = project(url, folder, source)
+        selected = selection(url, model_id)
+        payload = changes(selected)
+        status, _, saved = call(url, "/reviews/changes", "POST", payload)
+        assert status == 200 and saved["revision"] == "v002", saved
+        assert call(url, "/reviews/changes", "POST", payload)[0] == 409
+
+    with launched() as url:
+        status, _, opened = call(url, "/workspace/host/open-project", "POST", {"path": str(folder)})
+        assert status == 200 and opened["model_id"] == model_id
+        status, _, refreshed = call(
+            url, "/reviews/refresh", "POST", {**selected, "revision": "v002"}
+        )
+        assert status == 200 and refreshed == saved
+        assert (folder / "original.yaml").read_bytes() == source.read_bytes()
 
 
 def engine_url(proc):
